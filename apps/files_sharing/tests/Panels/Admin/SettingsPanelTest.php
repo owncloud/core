@@ -20,13 +20,16 @@
  */
 namespace OCA\Files_Sharing\Tests\Panels\Admin;
 
-use OCP\GroupInterface;
 use OCA\Files_Sharing\SharingBlacklist;
+use OCA\Files_Sharing\SharingAllowlist;
 use OCA\Files_Sharing\Panels\Admin\SettingsPanel;
 
 class SettingsPanelTest extends \Test\TestCase {
 	/** @var SharingBlacklist | \PHPUnit\Framework\MockObject\MockObject */
 	private $sharingBlacklist;
+
+	/** @var SharingAllowlist | \PHPUnit\Framework\MockObject\MockObject */
+	private $sharingAllowlist;
 
 	/** @var SettingsPanel | \PHPUnit\Framework\MockObject\MockObject */
 	private $settingsPanel;
@@ -36,7 +39,11 @@ class SettingsPanelTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->settingsPanel = new SettingsPanel($this->sharingBlacklist);
+		$this->sharingAllowlist= $this->getMockBuilder(SharingAllowlist::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->settingsPanel = new SettingsPanel($this->sharingBlacklist, $this->sharingAllowlist);
 	}
 
 	public function testGetSectionID() {
@@ -49,6 +56,16 @@ class SettingsPanelTest extends \Test\TestCase {
 
 	public function testGetPanel() {
 		$this->sharingBlacklist->method('getBlacklistedReceiverGroups')->willReturn([]);
+
+		$this->sharingAllowlist
+			->expects($this->any())
+			->method('getPublicShareSharersGroupsAllowlist')
+			->willReturn([]);
+
+		$this->sharingAllowlist
+			->expects($this->any())
+			->method('isPublicShareSharersGroupsAllowlistEnabled')
+			->willReturn(false);
 
 		$page = $this->settingsPanel->getPanel()->fetchPage();
 		$doc = new \DOMDocument();
@@ -76,6 +93,16 @@ class SettingsPanelTest extends \Test\TestCase {
 	public function testGetPanelWithBlacklist($ids) {
 		$this->sharingBlacklist->method('getBlacklistedReceiverGroups')->willReturn($ids);
 
+		$this->sharingAllowlist
+			->expects($this->any())
+			->method('getPublicShareSharersGroupsAllowlist')
+			->willReturn([]);
+
+		$this->sharingAllowlist
+			->expects($this->any())
+			->method('isPublicShareSharersGroupsAllowlistEnabled')
+			->willReturn(false);
+
 		$page = $this->settingsPanel->getPanel()->fetchPage();
 		$doc = new \DOMDocument();
 		$doc->loadHTML($page);
@@ -84,6 +111,7 @@ class SettingsPanelTest extends \Test\TestCase {
 		$inputNodes = $xpath->query('//input[@name="blacklisted_receiver_groups"]');
 		$this->assertEquals(1, $inputNodes->length);  // only 1 element should be found
 		$inputNode = $inputNodes->item(0);
+		$b = $inputNode->attributes->getNamedItem('value')->value;
 		$this->assertSame(\implode("|", $ids), $inputNode->attributes->getNamedItem('value')->value);
 	}
 }

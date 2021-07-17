@@ -731,6 +731,20 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * returns visibility of public link share tab
+	 *
+	 * @return bool
+	 */
+	public function isPublicLinkTabVisible() {
+		$publicLinksShareTab = $this->find("xpath", $this->publicLinksShareTabXpath);
+		if ($publicLinksShareTab) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * @param Session $session
 	 * @param integer $number
 	 *
@@ -821,6 +835,23 @@ class SharingDialog extends OwncloudPage {
 				throw new \Exception("Public link with title" . $entryName . "is present");
 			}
 		}
+	}
+
+	/**
+	 * @param Session $session
+	 * @param $entryName
+	 *
+	 * @return bool
+	 */
+	public function checkThatNameIsInPublicLinkList(Session $session, $entryName) {
+		$publicLinkTitles = $this->findAll("xpath", $this->publicLinkTitleXpath);
+		$found = false;
+		foreach ($publicLinkTitles as $publicLinkTitle) {
+			if ($entryName === $publicLinkTitle->getText()) {
+				$found = true;
+			}
+		}
+		return $found;
 	}
 
 	/**

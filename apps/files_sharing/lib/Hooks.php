@@ -67,6 +67,11 @@ class Hooks {
 	private $notificationPublisher;
 
 	/**
+	 * @var SharingAllowlist
+	 */
+	private $sharingAllowlist;
+
+	/**
 	 * @var ActivityManager
 	 */
 	private $activityManager;
@@ -80,6 +85,7 @@ class Hooks {
 	 * @param \OCP\Share\IManager $shareManager
 	 * @param NotificationPublisher $notificationPublisher
 	 * @param ActivityManager $activityManager
+	 * @param SharingAllowlist $sharingAllowlist
 	 * @param IUserSession|null $userSession
 	 */
 	public function __construct(
@@ -89,6 +95,7 @@ class Hooks {
 		\OCP\Share\IManager $shareManager,
 		NotificationPublisher $notificationPublisher,
 		ActivityManager $activityManager,
+		SharingAllowlist $sharingAllowlist,
 		$userSession
 	) {
 		$this->userSession = $userSession;
@@ -98,6 +105,7 @@ class Hooks {
 		$this->shareManager = $shareManager;
 		$this->notificationPublisher = $notificationPublisher;
 		$this->activityManager = $activityManager;
+		$this->sharingAllowlist= $sharingAllowlist;
 	}
 
 	public static function deleteUser($params) {
@@ -223,6 +231,15 @@ class Hooks {
 				$this->activityManager->publish($activityEvent);
 			}
 		);
+
+		$this->eventDispatcher->addListener('group.postDelete', function ($event) {
+			$groupId = $event->getSubject()->getGID();
+			$groupsAllowlist =  $this->sharingAllowlist->getPublicShareSharersGroupsAllowlist();
+
+			if (\in_array($groupId, $groupsAllowlist)) {
+				$this->sharingAllowlist->setPublicShareSharersGroupsAllowlist(array_diff($groupsAllowlist, [$groupId]));
+			}
+		});
 	}
 
 	private function getCurrentUserUid() {
@@ -263,5 +280,19 @@ class Hooks {
 		}
 
 		return null;
+	}
+
+	public static function extendJsConfig($array) {
+		$sharingAllowlist = new SharingAllowlist(
+			\OC::$server->getConfig(),
+			\OC::$server->getGroupManager()
+		);
+
+		$array['array']['oc_appconfig']['files_sharing'] = [
+			'publicShareSharersGroupsAllowlist' => $sharingAllowlist->getPublicShareSharersGroupsAllowlist(),
+			'publicShareSharersGroupsAllowlistEnabled' => $sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled(),
+		];
+
+		return $array;
 	}
 }

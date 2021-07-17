@@ -327,7 +327,8 @@ var OC = {
 		return {
 			uid: null,
 			displayName: null,
-			email: null
+			email: null,
+			groups: [],
 		};
 	},
 
@@ -856,6 +857,7 @@ var OC = {
  *
  * @property {String} uid user id
  * @property {String} displayName display name
+ * @property {Array} groups users group ids
  */
 
 /**

@@ -23,11 +23,13 @@ namespace OCA\Files_Sharing\Tests;
 
 use OCA\Files_Sharing\Hooks;
 use OCA\Files_Sharing\SharedStorage;
+use OCA\Files_Sharing\SharingAllowlist;
 use OCP\Activity\IEvent;
 use OCP\Activity\IManager as ActivityManager;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\Storage\IStorage;
+use OCP\IGroup;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\Share\IAttributes;
@@ -80,6 +82,11 @@ class HooksTest extends \Test\TestCase {
 	private $activityManager;
 
 	/**
+	 * @var SharingAllowlist | \PHPUnit\Framework\MockObject\MockObject
+	 */
+	private $sharingAllowlist;
+
+	/**
 	 * @var Hooks
 	 */
 	private $hooks;
@@ -92,6 +99,7 @@ class HooksTest extends \Test\TestCase {
 		$this->notificationPublisher = $this->createMock(NotificationPublisher::class);
 		$this->activityManager = $this->createMock(ActivityManager::class);
 		$this->userSession = $this->createMock(IUserSession::class);
+		$this->sharingAllowlist= $this->createMock(SharingAllowlist::class);
 
 		$this->hooks = new Hooks(
 			$this->rootFolder,
@@ -100,6 +108,7 @@ class HooksTest extends \Test\TestCase {
 			$this->shareManager,
 			$this->notificationPublisher,
 			$this->activityManager,
+			$this->sharingAllowlist,
 			$this->userSession
 		);
 		$this->hooks->registerListeners();
@@ -164,6 +173,17 @@ class HooksTest extends \Test\TestCase {
 
 		$this->assertNull($event->getArgument('resolvedWebLink'));
 		$this->assertNull($event->getArgument('resolvedDavLink'));
+	}
+
+	public function testDeleteGroup() {
+		$group = $this->createMock(IGroup::class);
+
+		$group->expects($this->once())->method('getGID')->willReturn('admin');
+		$this->sharingAllowlist->expects($this->once())->method('getPublicShareSharersGroupsAllowlist')->willReturn(['admin']);
+		$this->sharingAllowlist->expects($this->once())->method('setPublicShareSharersGroupsAllowlist')->with([]);
+
+		$event = new GenericEvent($group);
+		$this->eventDispatcher->dispatch('group.postDelete', $event);
 	}
 
 	public function testPublishShareNotification() {
@@ -376,5 +396,14 @@ class HooksTest extends \Test\TestCase {
 			'shareOwner' => 'owner_user',
 		]);
 		$this->eventDispatcher->dispatch('fromself.unshare', $event);
+	}
+
+	public function testExtendJsConfig() {
+		$expected['array']['oc_appconfig']['files_sharing'] = [
+			'publicShareSharersGroupsAllowlist' => [],
+			'publicShareSharersGroupsAllowlistEnabled' => false,
+		];
+
+		$this->assertEquals($expected, $this->hooks->extendJsConfig([]));
 	}
 }

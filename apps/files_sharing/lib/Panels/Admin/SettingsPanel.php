@@ -22,18 +22,25 @@ namespace OCA\Files_Sharing\Panels\Admin;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCA\Files_Sharing\SharingBlacklist;
+use OCA\Files_Sharing\SharingAllowlist;
 
 class SettingsPanel implements ISettings {
 	/** @var SharingBlacklist */
 	private $sharingBlacklist;
 
-	public function __construct(SharingBlacklist $sharingBlacklist) {
+	/** @var SharingAllowlist */
+	private $sharingAllowlist;
+
+	public function __construct(SharingBlacklist $sharingBlacklist, SharingAllowlist $sharingAllowlist) {
 		$this->sharingBlacklist = $sharingBlacklist;
+		$this->sharingAllowlist= $sharingAllowlist;
 	}
 
 	public function getPanel() {
 		$tmpl = new Template('files_sharing', 'settings');
 		$tmpl->assign('blacklistedReceivers', \implode('|', $this->sharingBlacklist->getBlacklistedReceiverGroups()));
+		$tmpl->assign('publicShareSharersGroupsAllowlist', \implode('|', $this->sharingAllowlist->getPublicShareSharersGroupsAllowlist()));
+		$tmpl->assign('publicShareSharersGroupsAllowlistEnabled', $this->sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled() ? 'yes' : 'no');
 		return $tmpl;
 	}
 
