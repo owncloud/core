@@ -7,15 +7,15 @@ assignees: ''
 ---
 
 <!--
-Thanks for reporting issues back to ownCloud! This is the issue tracker of ownCloud, if you have any support question please check out https://owncloud.org/support
+Thanks for reporting issues back to ownCloud! This is the issue tracker of ownCloud, if you have any support question please check out https://owncloud.com/support
 
 This is the bug tracker for the Server component. Find other components at https://github.com/owncloud/core/blob/master/.github/CONTRIBUTING.md#guidelines
 
-For reporting potential security issues please see https://owncloud.org/security/
+For reporting potential security issues please see https://owncloud.com/security/
 
 To make it possible for us to help you please fill out below information carefully.
 
-Before reporting any issues please make sure that you're using the latest available version of ownCloud, see https://owncloud.org/changelog/
+Before reporting any issues please make sure that you're using the latest available version of ownCloud, see https://owncloud.com/changelog/
 --> 
 ### Steps to reproduce
 1.

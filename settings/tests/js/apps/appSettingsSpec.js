@@ -36,7 +36,7 @@ describe('App Settings tests', function() {
 				"Author 2",
 				{
 					"@attributes": {
-						"email": "author3@owncloud.org"
+						"email": "author3@owncloud.com"
 					},
 					"@value": "Author 3"
 				}

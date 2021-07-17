@@ -39,10 +39,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyScriptDomainValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' www.owncloud.com www.owncloud.org 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' www.owncloud.com www.owncloud.online 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedScriptDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedScriptDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedScriptDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -58,7 +58,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' www.owncloud.com 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedScriptDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowScriptDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowScriptDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -66,7 +66,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedScriptDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowScriptDomain('www.owncloud.org')->disallowScriptDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowScriptDomain('www.owncloud.com')->disallowScriptDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -101,10 +101,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyStyleDomainValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' www.owncloud.com www.owncloud.org 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' www.owncloud.com www.owncloud.online 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedStyleDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedStyleDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedStyleDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -120,7 +120,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' www.owncloud.com 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedStyleDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowStyleDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowStyleDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -128,7 +128,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedStyleDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowStyleDomain('www.owncloud.org')->disallowStyleDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowStyleDomain('www.owncloud.com')->disallowStyleDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -161,10 +161,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyImageDomainValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob: www.owncloud.com www.owncloud.org;font-src 'self';connect-src 'self';media-src 'self'";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob: www.owncloud.com www.owncloud.online;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedImageDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedImageDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedImageDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -180,7 +180,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob: www.owncloud.com;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedImageDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowImageDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowImageDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -188,7 +188,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedImageDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowImageDomain('www.owncloud.org')->disallowImageDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowImageDomain('www.owncloud.online')->disallowImageDomain('www.owncloud.com');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -200,10 +200,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyFontDomainValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self' www.owncloud.com www.owncloud.org;connect-src 'self';media-src 'self'";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self' www.owncloud.com www.owncloud.online;connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedFontDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedFontDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedFontDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -219,7 +219,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self' www.owncloud.com;connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedFontDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowFontDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowFontDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -227,7 +227,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedFontDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowFontDomain('www.owncloud.org')->disallowFontDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowFontDomain('www.owncloud.online')->disallowFontDomain('www.owncloud.com');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -239,10 +239,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyConnectDomainValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self' www.owncloud.com www.owncloud.org;media-src 'self'";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self' www.owncloud.com www.owncloud.online;media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedConnectDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedConnectDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedConnectDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -258,7 +258,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self' www.owncloud.com;media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedConnectDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowConnectDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowConnectDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -266,7 +266,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedConnectDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowConnectDomain('www.owncloud.org')->disallowConnectDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowConnectDomain('www.owncloud.online')->disallowConnectDomain('www.owncloud.com');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -278,10 +278,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyMediaDomainValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self' www.owncloud.com www.owncloud.org";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self' www.owncloud.com www.owncloud.online";
 
 		$this->contentSecurityPolicy->addAllowedMediaDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedMediaDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedMediaDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -297,7 +297,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self' www.owncloud.com";
 
 		$this->contentSecurityPolicy->addAllowedMediaDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowMediaDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowMediaDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -305,7 +305,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedMediaDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowMediaDomain('www.owncloud.org')->disallowMediaDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowMediaDomain('www.owncloud.online')->disallowMediaDomain('www.owncloud.com');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -317,10 +317,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyObjectDomainValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';object-src www.owncloud.com www.owncloud.org";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';object-src www.owncloud.com www.owncloud.online";
 
 		$this->contentSecurityPolicy->addAllowedObjectDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedObjectDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedObjectDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -336,7 +336,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';object-src www.owncloud.com";
 
 		$this->contentSecurityPolicy->addAllowedObjectDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowObjectDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowObjectDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -344,7 +344,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedObjectDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowObjectDomain('www.owncloud.org')->disallowObjectDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowObjectDomain('www.owncloud.online')->disallowObjectDomain('www.owncloud.com');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -356,10 +356,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyFrameDomainValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';frame-src www.owncloud.com www.owncloud.org blob:";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';frame-src www.owncloud.com www.owncloud.online blob:";
 
 		$this->contentSecurityPolicy->addAllowedFrameDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedFrameDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedFrameDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -375,7 +375,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';frame-src www.owncloud.com blob:";
 
 		$this->contentSecurityPolicy->addAllowedFrameDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowFrameDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowFrameDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -383,7 +383,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedFrameDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowFrameDomain('www.owncloud.org')->disallowFrameDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowFrameDomain('www.owncloud.online')->disallowFrameDomain('www.owncloud.com');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -395,10 +395,10 @@ class ContentSecurityPolicyTest extends TestCase {
 	}
 
 	public function testGetPolicyChildSrcValidMultiple() {
-		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';child-src child.owncloud.com child.owncloud.org";
+		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';child-src child.owncloud.com child.owncloud.online";
 
 		$this->contentSecurityPolicy->addAllowedChildSrcDomain('child.owncloud.com');
-		$this->contentSecurityPolicy->addAllowedChildSrcDomain('child.owncloud.org');
+		$this->contentSecurityPolicy->addAllowedChildSrcDomain('child.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -414,7 +414,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self';child-src www.owncloud.com";
 
 		$this->contentSecurityPolicy->addAllowedChildSrcDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowChildSrcDomain('www.owncloud.org');
+		$this->contentSecurityPolicy->disallowChildSrcDomain('www.owncloud.online');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 
@@ -422,7 +422,7 @@ class ContentSecurityPolicyTest extends TestCase {
 		$expectedPolicy = "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'";
 
 		$this->contentSecurityPolicy->addAllowedChildSrcDomain('www.owncloud.com');
-		$this->contentSecurityPolicy->disallowChildSrcDomain('www.owncloud.org')->disallowChildSrcDomain('www.owncloud.com');
+		$this->contentSecurityPolicy->disallowChildSrcDomain('www.owncloud.online')->disallowChildSrcDomain('www.owncloud.com');
 		$this->assertSame($expectedPolicy, $this->contentSecurityPolicy->buildPolicy());
 	}
 }

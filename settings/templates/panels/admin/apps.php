@@ -18,7 +18,7 @@ script('settings', 'admin-apps');
 		{{/each}}
 
 		<li>
-			<a class="app-external" target="_blank" rel="noreferrer" href="https://owncloud.org/dev"><?php p($l->t('Developer documentation'));?> ↗</a>
+			<a class="app-external" target="_blank" rel="noreferrer" href="https://doc.owncloud.com/server/latest/developer_manual"><?php p($l->t('Developer documentation'));?> ↗</a>
 		</li>
 	</script>
 

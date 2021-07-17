@@ -31,14 +31,14 @@ class HTTPHelperTest extends \Test\TestCase {
 
 	public function isHttpTestData() {
 		return [
-			['http://wwww.owncloud.org/enterprise/', true],
-			['https://wwww.owncloud.org/enterprise/', true],
-			['HTTPS://WWW.OWNCLOUD.ORG', true],
-			['HTTP://WWW.OWNCLOUD.ORG', true],
-			['FILE://WWW.OWNCLOUD.ORG', false],
-			['file://www.owncloud.org', false],
-			['FTP://WWW.OWNCLOUD.ORG', false],
-			['ftp://www.owncloud.org', false],
+			['http://wwww.owncloud.com/enterprise/', true],
+			['https://wwww.owncloud.com/enterprise/', true],
+			['HTTPS://WWW.OWNCLOUD.COM', true],
+			['HTTP://WWW.OWNCLOUD.COM', true],
+			['FILE://WWW.OWNCLOUD.COM', false],
+			['file://www.owncloud.com', false],
+			['FTP://WWW.OWNCLOUD.COM', false],
+			['ftp://www.owncloud.com', false],
 		];
 	}
 
@@ -62,7 +62,7 @@ class HTTPHelperTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('post')
 			->with(
-				'https://owncloud.org',
+				'https://owncloud.com',
 				[
 					'body' => [
 						'Foo' => 'Bar',
@@ -77,7 +77,7 @@ class HTTPHelperTest extends \Test\TestCase {
 			->method('getBody')
 			->will($this->returnValue('Body of the requested page'));
 
-		$response = $this->httpHelperMock->post('https://owncloud.org', ['Foo' => 'Bar']);
+		$response = $this->httpHelperMock->post('https://owncloud.com', ['Foo' => 'Bar']);
 		$expected = [
 			'success' => true,
 			'result' => 'Body of the requested page'
@@ -96,7 +96,7 @@ class HTTPHelperTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('post')
 			->with(
-				'https://owncloud.org',
+				'https://owncloud.com',
 				[
 					'body' => [
 						'Foo' => 'Bar',
@@ -107,7 +107,7 @@ class HTTPHelperTest extends \Test\TestCase {
 			)
 			->will($this->throwException(new \Exception('Something failed')));
 
-		$response = $this->httpHelperMock->post('https://owncloud.org', ['Foo' => 'Bar']);
+		$response = $this->httpHelperMock->post('https://owncloud.com', ['Foo' => 'Bar']);
 		$expected = [
 			'success' => false,
 			'result' => 'Something failed'

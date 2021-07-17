@@ -5,7 +5,7 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=security_rating)](https://sonarcloud.io/dashboard?id=owncloud_core)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=owncloud_core&metric=coverage)](https://sonarcloud.io/dashboard?id=owncloud_core)
 
-**[ownCloud](http://ownCloud.org) gives you freedom and control over your own data.
+**[ownCloud](http://ownCloud.com) gives you freedom and control over your own data.
 A personal cloud which runs on your own server.**
 
 ![](https://github.com/owncloud/screenshots/blob/master/files/sidebar_1.png)
@@ -20,17 +20,16 @@ A personal cloud which runs on your own server.**
 * ...
 
 ## Installation instructions
-https://doc.owncloud.org/server/latest/admin_manual/installation/
+https://doc.owncloud.com/server/latest/admin_manual/installation/
 
 ## Contribution Guidelines
-https://owncloud.org/contribute/
+https://owncloud.com/contribute/
 
 ## Support
-Learn about the different ways you can get support for ownCloud: https://owncloud.org/support/
+Learn about the different ways you can get support for ownCloud: https://owncloud.com/support/
 
 ## Get in touch
-* :clipboard: [Forum](https://central.owncloud.org)
-* :envelope: [Mailing list](https://mailman.owncloud.org/mailman/listinfo)
+* :clipboard: [Forum](https://central.owncloud.com)
 * :hash: [IRC channel](https://web.libera.chat/?channels=#owncloud)
 * :busts_in_silhouette: [Facebook](https://facebook.com/ownclouders)
 * :hatching_chick: [Twitter](https://twitter.com/ownCloud)
@@ -40,4 +39,4 @@ Please submit translations via Transifex:
 https://www.transifex.com/projects/p/owncloud/
 
 For detailed information about translations:
-https://doc.owncloud.org/server/latest/developer_manual/core/translation.html
+https://doc.owncloud.com/server/latest/developer_manual/core/translation.html

@@ -497,7 +497,7 @@ class CardDavBackendTest extends TestCase {
 		$vCards[0] = new VCard();
 		$vCards[0]->add(new Text($vCards[0], 'UID', 'uid'));
 		$vCards[0]->add(new Text($vCards[0], 'FN', 'John Doe'));
-		$vCards[0]->add(new Text($vCards[0], 'CLOUD', 'john@owncloud.org'));
+		$vCards[0]->add(new Text($vCards[0], 'CLOUD', 'john@owncloud.com'));
 		$vCards[1] = new VCard();
 		$vCards[1]->add(new Text($vCards[1], 'UID', 'uid'));
 		$vCards[1]->add(new Text($vCards[1], 'FN', 'John M. Doe'));
@@ -537,7 +537,7 @@ class CardDavBackendTest extends TestCase {
 								'addressbookid' => $query->createNamedParameter(0),
 								'cardid' => $query->createNamedParameter($vCardIds[0]),
 								'name' => $query->createNamedParameter('CLOUD'),
-								'value' => $query->createNamedParameter('John@owncloud.org'),
+								'value' => $query->createNamedParameter('John@owncloud.com'),
 								'preferred' => $query->createNamedParameter(0)
 						]
 				);

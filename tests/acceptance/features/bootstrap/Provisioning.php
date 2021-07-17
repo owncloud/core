@@ -646,7 +646,7 @@ trait Provisioning {
 			} elseif ($setDefaultAttributes) {
 				$userAttribute['email'] = $this->getEmailAddressForUser($row['username']);
 				if ($userAttribute['email'] === null) {
-					$userAttribute['email'] = $row['username'] . '@owncloud.org';
+					$userAttribute['email'] = $row['username'] . '@owncloud.com';
 				}
 			} else {
 				$userAttribute['email'] = null;
@@ -951,7 +951,7 @@ trait Provisioning {
 							$userAttributes,
 							__METHOD__ . " userAttributes array does not have key 'userid'"
 						);
-						$attributesToCreateUser['email'] = $userAttributes['userid'] . '@owncloud.org';
+						$attributesToCreateUser['email'] = $userAttributes['userid'] . '@owncloud.com';
 					} else {
 						$attributesToCreateUser['email'] = $userAttributes['email'];
 					}
@@ -1314,7 +1314,7 @@ trait Provisioning {
 
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			if ($email === null) {
-				$email = $username . '@owncloud.org';
+				$email = $username . '@owncloud.com';
 			}
 			$userAttributes["username"] = $username;
 			$userAttributes["email"] = $email;
@@ -1351,7 +1351,7 @@ trait Provisioning {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $user . '@owncloud.org';
+			$email = $user . '@owncloud.com';
 			$bodyTable = new TableNode(
 				[
 					['userid', $user],
@@ -1415,7 +1415,7 @@ trait Provisioning {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $userToCreate . '@owncloud.org';
+			$email = $userToCreate . '@owncloud.com';
 			$bodyTable = new TableNode(
 				[
 					['userid', $userToCreate],
@@ -1461,7 +1461,7 @@ trait Provisioning {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $user . '@owncloud.org';
+			$email = $user . '@owncloud.com';
 			$bodyTable = new TableNode(
 				[
 					['userid', $user],
@@ -1515,7 +1515,7 @@ trait Provisioning {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $userToCreate . '@owncloud.org';
+			$email = $userToCreate . '@owncloud.com';
 			$bodyTable = new TableNode(
 				[
 					['userid', $userToCreate],
@@ -1569,7 +1569,7 @@ trait Provisioning {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
-			$email = $userToCreate . '@owncloud.org';
+			$email = $userToCreate . '@owncloud.com';
 			$bodyTable = new TableNode(
 				[
 					['userid', $userToCreate],
@@ -2944,7 +2944,7 @@ trait Provisioning {
 
 			if ($email === null) {
 				// escape @ & space if present in userId
-				$email = \str_replace(["@", " "], "", $user) . '@owncloud.org';
+				$email = \str_replace(["@", " "], "", $user) . '@owncloud.com';
 			}
 		}
 

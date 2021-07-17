@@ -694,7 +694,7 @@ class UsersTest extends OriginalTest {
 		$targetUser = $this->createMock(IUser::class);
 		$targetUser->expects($this->once())
 			->method('getEMailAddress')
-			->willReturn('demo@owncloud.org');
+			->willReturn('demo@owncloud.com');
 		$targetUser->expects($this->once())
 			->method('getHome')
 			->willReturn('/var/ocdata/UserToGet');
@@ -730,7 +730,7 @@ class UsersTest extends OriginalTest {
 			[
 				'enabled' => 'true',
 				'quota' => ['DummyValue', 'definition' => null],
-				'email' => 'demo@owncloud.org',
+				'email' => 'demo@owncloud.com',
 				'displayname' => 'Demo User',
 				'home' => '/var/ocdata/UserToGet',
 				'two_factor_auth_enabled' => 'false',
@@ -749,7 +749,7 @@ class UsersTest extends OriginalTest {
 		$targetUser
 			->expects($this->once())
 			->method('getEMailAddress')
-			->willReturn('demo@owncloud.org');
+			->willReturn('demo@owncloud.com');
 		$targetUser->expects($this->once())
 			->method('getHome')
 			->willReturn('/var/ocdata/UserToGet');
@@ -797,7 +797,7 @@ class UsersTest extends OriginalTest {
 			[
 				'enabled' => 'true',
 				'quota' => ['DummyValue', 'definition' => null],
-				'email' => 'demo@owncloud.org',
+				'email' => 'demo@owncloud.com',
 				'home' => '/var/ocdata/UserToGet',
 				'displayname' => 'Demo User',
 				'two_factor_auth_enabled' => 'false'
@@ -892,11 +892,11 @@ class UsersTest extends OriginalTest {
 		$targetUser
 			->expects($this->once())
 			->method('getEMailAddress')
-			->will($this->returnValue('subadmin@owncloud.org'));
+			->will($this->returnValue('subadmin@owncloud.com'));
 
 		$expected = new Result([
 			'quota' => ['DummyValue', 'definition' => null],
-			'email' => 'subadmin@owncloud.org',
+			'email' => 'subadmin@owncloud.com',
 			'displayname' => 'Subadmin User',
 			'home' => '/var/ocdata/UserToGet',
 			'two_factor_auth_enabled' => 'false',
@@ -983,10 +983,10 @@ class UsersTest extends OriginalTest {
 		$targetUser
 			->expects($this->once())
 			->method('setEMailAddress')
-			->with('demo@owncloud.org');
+			->with('demo@owncloud.com');
 
 		$expected = new Result(null, 100);
-		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.org']]));
+		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.com']]));
 	}
 
 	public function testEditUserRegularUserSelfEditClearEmail() {

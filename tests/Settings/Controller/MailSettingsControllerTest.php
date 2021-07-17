@@ -58,7 +58,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			'@',
 			'smtp',
 			'ssl',
-			'mx.owncloud.org',
+			'mx.owncloud.com',
 			'NTLM',
 			1,
 			'25'
@@ -72,7 +72,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			'@',
 			'smtp',
 			'ssl',
-			'mx.owncloud.org',
+			'mx.owncloud.com',
 			'NTLM',
 			0,
 			'25'
@@ -99,7 +99,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 				array($this->equalTo('mail_from_address'), $this->equalTo('demo')),
 				array($this->equalTo('mail_smtpmode'), $this->equalTo('smtp')),
 				array($this->equalTo('mail_smtpsecure'), $this->equalTo('ssl')),
-				array($this->equalTo('mail_smtphost'), $this->equalTo('mx.owncloud.org')),
+				array($this->equalTo('mail_smtphost'), $this->equalTo('mx.owncloud.com')),
 				array($this->equalTo('mail_smtpauthtype'), $this->equalTo('NTLM')),
 				array($this->equalTo('mail_smtpauth'), $this->equalTo(1)),
 				array($this->equalTo('mail_smtpport'), $this->equalTo('25')),
@@ -107,7 +107,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 				array($this->equalTo('mail_from_address'), $this->equalTo('demo@owncloud.com')),
 				array($this->equalTo('mail_smtpmode'), $this->equalTo('smtp')),
 				array($this->equalTo('mail_smtpsecure'), $this->equalTo('ssl')),
-				array($this->equalTo('mail_smtphost'), $this->equalTo('mx.owncloud.org')),
+				array($this->equalTo('mail_smtphost'), $this->equalTo('mx.owncloud.com')),
 				array($this->equalTo('mail_smtpauthtype'), $this->equalTo('NTLM')),
 				array($this->equalTo('mail_smtpport'), $this->equalTo('25'))
 			);
@@ -131,7 +131,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 					'mail_from_address' => 'demo',
 					'mail_smtpmode' => 'smtp',
 					'mail_smtpsecure' => 'ssl',
-					'mail_smtphost' => 'mx.owncloud.org',
+					'mail_smtphost' => 'mx.owncloud.com',
 					'mail_smtpauthtype' => 'NTLM',
 					'mail_smtpauth' => 1,
 					'mail_smtpport' => '25',
@@ -141,7 +141,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 					'mail_from_address' => 'demo',
 					'mail_smtpmode' => 'smtp',
 					'mail_smtpsecure' => 'ssl',
-					'mail_smtphost' => 'mx.owncloud.org',
+					'mail_smtphost' => 'mx.owncloud.com',
 					'mail_smtpauthtype' => 'NTLM',
 					'mail_smtpauth' => null,
 					'mail_smtpport' => '25',
@@ -157,7 +157,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			'demo',
 			'smtp',
 			'ssl',
-			'mx.owncloud.org',
+			'mx.owncloud.com',
 			'NTLM',
 			1,
 			'25'
@@ -171,7 +171,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			'demo',
 			'smtp',
 			'ssl',
-			'mx.owncloud.org',
+			'mx.owncloud.com',
 			'NTLM',
 			0,
 			'25'

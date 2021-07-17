@@ -12,4 +12,4 @@
 When you've encountered a security vulnerability, please disclose it securely.
 
 The security process is described at: 
-[https://owncloud.org/security/](https://owncloud.org/security/)
+[https://owncloud.com/security/](https://owncloud.com/security/)

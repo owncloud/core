@@ -122,10 +122,10 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$client->expects($this->at(0))
 			->method('get')
-			->with('https://www.owncloud.org/', []);
+			->with('https://www.owncloud.com/', []);
 		$client->expects($this->at(1))
 			->method('get')
-			->with('http://www.owncloud.org/', []);
+			->with('http://www.owncloud.com/', []);
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
@@ -149,7 +149,7 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$client->expects($this->at(0))
 			->method('get')
-			->with('https://www.owncloud.org/', [])
+			->with('https://www.owncloud.com/', [])
 			->will($this->throwException(new \Exception()));
 
 		$this->clientService->expects($this->once())
@@ -174,10 +174,10 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$client->expects($this->at(0))
 			->method('get')
-			->with('https://www.owncloud.org/', []);
+			->with('https://www.owncloud.com/', []);
 		$client->expects($this->at(1))
 			->method('get')
-			->with('http://www.owncloud.org/', [])
+			->with('http://www.owncloud.com/', [])
 			->will($this->throwException(new \Exception()));
 
 		$this->clientService->expects($this->once())
@@ -309,10 +309,10 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$client->expects($this->at(0))
 			->method('get')
-			->with('https://www.owncloud.org/', []);
+			->with('https://www.owncloud.com/', []);
 		$client->expects($this->at(1))
 			->method('get')
-			->with('http://www.owncloud.org/', [])
+			->with('http://www.owncloud.com/', [])
 			->will($this->throwException(new \Exception()));
 
 		$this->clientService->expects($this->once())
@@ -321,11 +321,11 @@ class CheckSetupControllerTest extends TestCase {
 		$this->urlGenerator->expects($this->at(0))
 			->method('linkToDocs')
 			->with('admin-performance')
-			->willReturn('http://doc.owncloud.org/server/go.php?to=admin-performance');
+			->willReturn('http://doc.owncloud.com/server/go.php?to=admin-performance');
 		$this->urlGenerator->expects($this->at(1))
 			->method('linkToDocs')
 			->with('admin-security')
-			->willReturn('https://doc.owncloud.org/server/8.1/admin_manual/configuration_server/hardening.html');
+			->willReturn('https://doc.owncloud.com/server/8.1/admin_manual/configuration_server/hardening.html');
 		$this->checkSetupController
 			->expects($this->once())
 			->method('isEndOfLive')
@@ -339,9 +339,9 @@ class CheckSetupControllerTest extends TestCase {
 			[
 				'serverHasInternetConnection' => false,
 				'isMemcacheConfigured' => true,
-				'memcacheDocs' => 'http://doc.owncloud.org/server/go.php?to=admin-performance',
+				'memcacheDocs' => 'http://doc.owncloud.com/server/go.php?to=admin-performance',
 				'isUrandomAvailable' => self::invokePrivate($this->checkSetupController, 'isUrandomAvailable'),
-				'securityDocs' => 'https://doc.owncloud.org/server/8.1/admin_manual/configuration_server/hardening.html',
+				'securityDocs' => 'https://doc.owncloud.com/server/8.1/admin_manual/configuration_server/hardening.html',
 				'isUsedTlsLibOutdated' => '',
 				'phpSupported' => [
 					'eol' => true,
@@ -465,7 +465,7 @@ class CheckSetupControllerTest extends TestCase {
 
 		$client->expects($this->at(0))
 			->method('get')
-			->with('https://www.owncloud.org/', [])
+			->with('https://www.owncloud.com/', [])
 			->will($this->throwException($exception));
 
 		$this->clientService->expects($this->once())
@@ -499,7 +499,7 @@ class CheckSetupControllerTest extends TestCase {
 
 		$client->expects($this->at(0))
 			->method('get')
-			->with('https://www.owncloud.org/', [])
+			->with('https://www.owncloud.com/', [])
 			->will($this->throwException($exception));
 
 		$this->clientService->expects($this->once())

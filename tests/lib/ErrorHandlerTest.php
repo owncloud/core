@@ -31,7 +31,7 @@ class ErrorHandlerTest extends \Test\TestCase {
 	public function passwordProvider() {
 		return [
 			['user', 'password'],
-			['user@owncloud.org', 'password'],
+			['user@owncloud.com', 'password'],
 			['user', 'pass@word'],
 			['us:er', 'password'],
 			['user', 'pass:word'],
@@ -44,8 +44,8 @@ class ErrorHandlerTest extends \Test\TestCase {
 	 * @param string $password
 	 */
 	public function testRemovePassword($username, $password) {
-		$url = 'http://'.$username.':'.$password.'@owncloud.org';
-		$expectedResult = 'http://xxx:xxx@owncloud.org';
+		$url = 'http://'.$username.':'.$password.'@owncloud.com';
+		$expectedResult = 'http://xxx:xxx@owncloud.com';
 		$result = TestableErrorHandler::testRemovePassword($url);
 
 		$this->assertEquals($expectedResult, $result);
