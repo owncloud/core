@@ -119,7 +119,7 @@ OC.L10N.register(
     "A valid email must be provided" : "Er moet een geldig e-mailadres worden opgegeven",
     "Use the following link to confirm your changes to the email address: {link}" : "Gebruik de volgende link om de wijziging van uw e-mailadres te bevestigen: {link}",
     "Email address changed to {mailAddress} successfully." : "E-mailadres succesvol gewijzigd naar {mailAddress}.",
-    "Cheers!" : "Proficiat!",
+    "Cheers!" : "Tot ziens!",
     "Hey there,\n\njust letting you know that you now have an %s account.\n\nYour username: %s\nAccess it: %s\n\n" : "Hallo,\n\nwe willen u laten weten dat u nu een %s account hebt.\n\nUw gebruikersnaam: %s\nGa naar: %s\n\n",
     "Language" : "Taal",
     "Apps Management" : "Apps Management",
