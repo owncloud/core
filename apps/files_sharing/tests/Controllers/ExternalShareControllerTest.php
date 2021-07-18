@@ -156,7 +156,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->method('newClient')
 			->will($this->returnValue($client));
 
-		$this->assertEquals(new DataResponse('https'), $this->getExternalShareController()->testRemote('owncloud.org'));
+		$this->assertEquals(new DataResponse('https'), $this->getExternalShareController()->testRemote('owncloud.com'));
 	}
 
 	public function testRemoteWithWorkingHttp() {
@@ -176,7 +176,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->method('newClient')
 			->will($this->returnValue($client));
 
-		$this->assertEquals(new DataResponse('http'), $this->getExternalShareController()->testRemote('owncloud.org'));
+		$this->assertEquals(new DataResponse('http'), $this->getExternalShareController()->testRemote('owncloud.com'));
 	}
 
 	public function testRemoteWithInvalidRemote() {
@@ -196,7 +196,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->method('newClient')
 			->will($this->returnValue($client));
 
-		$this->assertEquals(new DataResponse(false), $this->getExternalShareController()->testRemote('owncloud.org'));
+		$this->assertEquals(new DataResponse(false), $this->getExternalShareController()->testRemote('owncloud.com'));
 	}
 
 	public function testRemoteIsCleanedUp() {
@@ -210,8 +210,8 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->expects($this->any())
 			->method('get')
 			->withConsecutive(
-				['https://owncloud.org/ocs-provider/'],
-				['https://owncloud.org/ocs-provider/index.php']
+				['https://owncloud.com/ocs-provider/'],
+				['https://owncloud.com/ocs-provider/index.php']
 			)
 			->will($this->returnValue($response));
 
@@ -219,7 +219,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->expects($this->exactly(2))
 			->method('newClient')
 			->will($this->returnValue($client));
-		$response = $this->getExternalShareController()->testRemote('owncloud.org?app=files#anchor');
+		$response = $this->getExternalShareController()->testRemote('owncloud.com?app=files#anchor');
 		$this->assertEquals(new DataResponse('https'), $response);
 	}
 }

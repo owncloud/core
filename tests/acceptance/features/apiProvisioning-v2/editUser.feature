@@ -174,7 +174,7 @@ Feature: edit users
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the display name of user "another-subadmin" should be "Regular User"
-    And the email address of user "another-subadmin" should be "another-subadmin@owncloud.org"
+    And the email address of user "another-subadmin" should be "another-subadmin@owncloud.com"
     And the quota definition of user "another-subadmin" should be "default"
 
   Scenario: a normal user should not be able to edit another user's information

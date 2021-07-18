@@ -163,7 +163,7 @@ describe('OC.SetupChecks tests', function() {
 				JSON.stringify({
 					isUrandomAvailable: true,
 					serverHasInternetConnection: false,
-					memcacheDocs: 'https://doc.owncloud.org/server/go.php?to=admin-performance',
+					memcacheDocs: 'https://doc.owncloud.com/server/go.php?to=admin-performance',
 					forwardedForHeadersWorking: true,
 					isCorrectMemcachedPHPModuleInstalled: true,
 					hasPassedCodeIntegrityCheck: true,
@@ -176,7 +176,7 @@ describe('OC.SetupChecks tests', function() {
 						msg: 'This server has no working Internet connection. This means that some of the features like mounting external storage, notifications about updates or installation of third-party apps will not work. Accessing files remotely and sending of notification emails might not work, either. We suggest to enable Internet connection for this server if you want to have all features.',
 						type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 					}, {
-						msg: 'No memory cache has been configured. To enhance your performance please configure a memcache if available. Further information can be found in our <a target="_blank" rel="noreferrer" href="https://doc.owncloud.org/server/go.php?to=admin-performance">documentation</a>.',
+						msg: 'No memory cache has been configured. To enhance your performance please configure a memcache if available. Further information can be found in our <a target="_blank" rel="noreferrer" href="https://doc.owncloud.com/server/go.php?to=admin-performance">documentation</a>.',
 						type: OC.SetupChecks.MESSAGE_TYPE_INFO
 					}]);
 				done();
@@ -194,7 +194,7 @@ describe('OC.SetupChecks tests', function() {
 				JSON.stringify({
 					isUrandomAvailable: true,
 					serverHasInternetConnection: false,
-					memcacheDocs: 'https://doc.owncloud.org/server/go.php?to=admin-performance',
+					memcacheDocs: 'https://doc.owncloud.com/server/go.php?to=admin-performance',
 					forwardedForHeadersWorking: true,
 					isCorrectMemcachedPHPModuleInstalled: true,
 					hasPassedCodeIntegrityCheck: true,
@@ -208,7 +208,7 @@ describe('OC.SetupChecks tests', function() {
 						type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 					},
 					{
-						msg: 'No memory cache has been configured. To enhance your performance please configure a memcache if available. Further information can be found in our <a target="_blank" rel="noreferrer" href="https://doc.owncloud.org/server/go.php?to=admin-performance">documentation</a>.',
+						msg: 'No memory cache has been configured. To enhance your performance please configure a memcache if available. Further information can be found in our <a target="_blank" rel="noreferrer" href="https://doc.owncloud.com/server/go.php?to=admin-performance">documentation</a>.',
 						type: OC.SetupChecks.MESSAGE_TYPE_INFO
 					}]);
 				done();
@@ -254,7 +254,7 @@ describe('OC.SetupChecks tests', function() {
 				},
 				JSON.stringify({
 					isUrandomAvailable: false,
-					securityDocs: 'https://docs.owncloud.org/myDocs.html',
+					securityDocs: 'https://docs.owncloud.com/myDocs.html',
 					serverHasInternetConnection: true,
 					isMemcacheConfigured: true,
 					forwardedForHeadersWorking: true,
@@ -265,7 +265,7 @@ describe('OC.SetupChecks tests', function() {
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([{
-					msg: '/dev/urandom is not readable by PHP which is highly discouraged for security reasons. Further information can be found in our <a target="_blank" rel="noreferrer" href="https://docs.owncloud.org/myDocs.html">documentation</a>.',
+					msg: '/dev/urandom is not readable by PHP which is highly discouraged for security reasons. Further information can be found in our <a target="_blank" rel="noreferrer" href="https://docs.owncloud.com/myDocs.html">documentation</a>.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 				}]);
 				done();
@@ -282,7 +282,7 @@ describe('OC.SetupChecks tests', function() {
 				},
 				JSON.stringify({
 					isUrandomAvailable: true,
-					securityDocs: 'https://docs.owncloud.org/myDocs.html',
+					securityDocs: 'https://docs.owncloud.com/myDocs.html',
 					serverHasInternetConnection: true,
 					isMemcacheConfigured: true,
 					forwardedForHeadersWorking: true,
@@ -313,7 +313,7 @@ describe('OC.SetupChecks tests', function() {
 					serverHasInternetConnection: true,
 					isMemcacheConfigured: true,
 					forwardedForHeadersWorking: false,
-					reverseProxyDocs: 'https://docs.owncloud.org/foo/bar.html',
+					reverseProxyDocs: 'https://docs.owncloud.com/foo/bar.html',
 					isCorrectMemcachedPHPModuleInstalled: true,
 					hasPassedCodeIntegrityCheck: true,
 				})
@@ -321,7 +321,7 @@ describe('OC.SetupChecks tests', function() {
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([{
-					msg: 'The reverse proxy headers configuration is incorrect, or you are accessing ownCloud from a trusted proxy. If you are not accessing ownCloud from a trusted proxy, this is a security issue and can allow an attacker to spoof their IP address as visible to ownCloud. Further information can be found in our <a target="_blank" rel="noreferrer" href="https://docs.owncloud.org/foo/bar.html">documentation</a>.',
+					msg: 'The reverse proxy headers configuration is incorrect, or you are accessing ownCloud from a trusted proxy. If you are not accessing ownCloud from a trusted proxy, this is a security issue and can allow an attacker to spoof their IP address as visible to ownCloud. Further information can be found in our <a target="_blank" rel="noreferrer" href="https://docs.owncloud.com/foo/bar.html">documentation</a>.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 				}]);
 				done();
@@ -358,7 +358,7 @@ describe('OC.SetupChecks tests', function() {
 				},
 				JSON.stringify({
 					isUrandomAvailable: true,
-					securityDocs: 'https://docs.owncloud.org/myDocs.html',
+					securityDocs: 'https://docs.owncloud.com/myDocs.html',
 					serverHasInternetConnection: true,
 					isMemcacheConfigured: true,
 					forwardedForHeadersWorking: true,

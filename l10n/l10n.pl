@@ -137,7 +137,7 @@ if( $task eq 'read' ){
 			my $language = ( $file =~ /\.js$/ ? 'Javascript' : 'PHP');
 			my $joinexisting = ( -e $output ? '--join-existing' : '');
 			print "    Reading $file\n";
-			`xgettext --output="$output" $joinexisting $keywords --language=$language "$file" --add-comments=TRANSLATORS --from-code=UTF-8 --package-version="8.0.0" --package-name="ownCloud Core" --msgid-bugs-address="translations\@owncloud.org"`;
+			`xgettext --output="$output" $joinexisting $keywords --language=$language "$file" --add-comments=TRANSLATORS --from-code=UTF-8 --package-version="8.0.0" --package-name="ownCloud Core" --msgid-bugs-address="translations\@owncloud.com"`;
 		}
 		chdir( $whereami );
 	}

@@ -89,9 +89,9 @@ class DbHandlerTest extends TestCase {
 
 	public function dataTestAddServer() {
 		return [
-				['http://owncloud.org', 'http://owncloud.org', \sha1('owncloud.org')],
-				['https://owncloud.org', 'https://owncloud.org', \sha1('owncloud.org')],
-				['http://owncloud.org/', 'http://owncloud.org', \sha1('owncloud.org')],
+				['http://owncloud.com', 'http://owncloud.com', \sha1('owncloud.com')],
+				['https://owncloud.com', 'https://owncloud.com', \sha1('owncloud.com')],
+				['http://owncloud.com/', 'http://owncloud.com', \sha1('owncloud.com')],
 		];
 	}
 
@@ -284,11 +284,11 @@ class DbHandlerTest extends TestCase {
 
 	public function dataTestNormalizeUrl() {
 		return [
-			['owncloud.org', 'owncloud.org'],
-			['http://owncloud.org', 'owncloud.org'],
-			['https://owncloud.org', 'owncloud.org'],
-			['https://owncloud.org//mycloud', 'owncloud.org/mycloud'],
-			['https://owncloud.org/mycloud/', 'owncloud.org/mycloud'],
+			['owncloud.com', 'owncloud.com'],
+			['http://owncloud.com', 'owncloud.com'],
+			['https://owncloud.com', 'owncloud.com'],
+			['https://owncloud.com//mycloud', 'owncloud.com/mycloud'],
+			['https://owncloud.com/mycloud/', 'owncloud.com/mycloud'],
 		];
 	}
 
