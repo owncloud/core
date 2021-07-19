@@ -4367,7 +4367,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userGetsAllTheirFilesUsingTheWebdavApi($user, $path, $depth) {
+	public function userListsTheResourcesInPathWithDepthUsingTheWebdavApi($user, $path, $depth) {
 		$response = $this->listFolder(
 			$user,
 			$path,
@@ -4454,7 +4454,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function thePublicGetsAllFilesOnTheLastCreatedPublicLinkWithDepthUsingTheWebdavApi($depth) {
+	public function thePublicListsTheResourcesInTheLastCreatedPublicLinkWithDepthUsingTheWebdavApi($depth) {
 		$user = (string) $this->getLastShareData()->data->token;
 		$response = $this->listFolder(
 			$user,
