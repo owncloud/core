@@ -299,7 +299,6 @@ OC.L10N.register(
     "Desktop client" : "מחשב אישי",
     "Android app" : "יישום אנדרואיד",
     "iOS app" : "יישום אייפון",
-    "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "אם ברצונך לתמוך בפרויקט\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">ניתן להצטרך לפיתוח</a>\n\t\t\tאו\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">להפיץ את הבשורה</a>!",
     "Show First Run Wizard again" : "הצגת אשף ההפעלה הראשונית שוב",
     "White-listed Domains" : "רשימת שמות מתחם בטוחים",
     "No Domains." : "אין שמות מתחם.",

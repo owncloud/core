@@ -283,7 +283,6 @@ OC.L10N.register(
     "Desktop client" : "Client desktop",
     "Android app" : "Applicazione Android",
     "iOS app" : "Applicazione iOS",
-    "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "Se vuoi supportare il progetto\n\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">diventa uno sviluppatore</a>\n\t\to\n\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">diffondi il verbo</a>!",
     "Show First Run Wizard again" : "Mostra nuovamente la procedura di primo avvio",
     "White-listed Domains" : "Domini consentiti",
     "No Domains." : "Nessun dominio.",

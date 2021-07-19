@@ -286,7 +286,6 @@ OC.L10N.register(
     "Desktop client" : "Πελάτης σταθερού υπολογιστή",
     "Android app" : "Εφαρμογή Android",
     "iOS app" : "Εφαρμογή iOS",
-    "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "Εάν θέλετε να υποστηρίξετε το έργο\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">συμμετέχετε στην ανάπτυξη</a>\n\t\t\tή\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">συμμετέχετε στην διάδοση</a>!",
     "Show First Run Wizard again" : "Προβολή Οδηγού Πρώτης Εκτέλεσης ξανά",
     "White-listed Domains" : "Επιτρεπόμενοι τομείς",
     "No Domains." : "Κανένας τομέας.",

@@ -299,7 +299,6 @@ OC.L10N.register(
     "Desktop client" : "桌面客戶端",
     "Android app" : "Android 應用程式",
     "iOS app" : "iOS 應用程式",
-    "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "如果您想支持該項目\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">參與發展</a>\n\t\t\t或\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">傳播這個詞</a>!",
     "Show First Run Wizard again" : "再次顯示首次使用精靈",
     "White-listed Domains" : "白名單網域",
     "No Domains." : "沒有網域。",

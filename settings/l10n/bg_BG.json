@@ -227,7 +227,6 @@
     "Desktop client" : "Клиент за настолен компютър",
     "Android app" : "Андроид приложение",
     "iOS app" : "iOS приложение",
-    "If you want to support the project\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "Ако искате да подкрепите проекта\n\t\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">присъединете се към развитието</a>\n\t\t\tили\n\t\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">разпространи мълвата</a>!",
     "Show First Run Wizard again" : "Покажи Настройките за Първоначално Зареждане отново",
     "No Domains." : "Няма домейни.",
     "Domain" : "Домейн",
