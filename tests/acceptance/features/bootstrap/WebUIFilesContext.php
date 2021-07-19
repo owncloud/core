@@ -994,7 +994,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$expectedElements,
 			$currentUploadedElements,
 			__METHOD__
-			. " The elements expected to be listed as uploaded items on the webUI do not equal the uploaded elements visible in the webUI"
+			. " The elements expected to be listed as uploaded items on the webUI do not equal the uploaded elements visible on the webUI"
 			. "See the differences below:"
 		);
 	}
