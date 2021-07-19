@@ -168,9 +168,14 @@ Feature: list files
       | /simple-folder1/simple-folder2/welcome.txt                   |
       | /simple-folder1/simple-folder2/simple-folder3                |
       | /simple-folder1/simple-folder2/simple-folder3/simple-folder4 |
+
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | dav_version |
       | old         |
+
+    Examples:
+      | dav_version |
       | new         |
 
 
