@@ -280,11 +280,11 @@ class UserTest extends TestCase {
 	/**
 	 * @dataProvider providesAdminOrSubAdmin
 	 * @param $isAdmin
-	 * @param $isSubaDmin
+	 * @param $isSubAdmin
 	 * @param $expected
 	 * @param $implements
 	 */
-	public function testAdminSubadminCanChangeDisplayName($isAdmin, $isSubaDmin, $expected, $implements) {
+	public function testAdminSubadminCanChangeDisplayName($isAdmin, $isSubAdmin, $expected, $implements) {
 		$this->config->method('getSystemValue')
 			->with('allow_user_to_change_display_name')
 			->willReturn(false);
@@ -293,7 +293,7 @@ class UserTest extends TestCase {
 		$user->method('getUID')->willReturn('admin');
 
 		$subAdmin = $this->createMock(SubAdmin::class);
-		$subAdmin->method('isSubAdmin')->willReturn($isSubaDmin);
+		$subAdmin->method('isSubAdmin')->willReturn($isSubAdmin);
 
 		$this->sessionUser->method('getUser')
 			->willReturn($user);
