@@ -145,11 +145,11 @@ class TrashbinContext implements Context {
 	 *
 	 * @return array response
 	 */
-	public function listTrashbinFolder($user, $path, $asUser = null, $password = null, $depth="infinity") {
+	public function listTrashbinFolder($user, $path, $asUser = null, $password = null, $depth = "infinity") {
 		$asUser = $asUser ?? $user;
 		$path = $path ?? '/';
 		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
-		$depth = (string)$depth;
+		$depth = (string) $depth;
 		$response = WebDavHelper::listFolder(
 			$this->featureContext->getBaseUrl(),
 			$asUser,
@@ -187,7 +187,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @When user :user gets files on the trashbin path :path with depth :depth using the using the WebDAV API
+	 * @When user :user gets files in the trashbin path :path with depth :depth using the WebDAV API
 	 *
 	 * @param $user
 	 * @param $path
@@ -195,7 +195,7 @@ class TrashbinContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userGetsFilesOnTheTrashbinWithDepthUsingTheUsingTheWebdavApi($user, $path, $depth) {
+	public function userGetsFilesInTheTrashbinWithDepthUsingTheWebdavApi($user, $path, $depth) {
 		if ($path === "/" || $path ===  "") {
 			$this->listTrashbinFolder($user, $path, null, null, $depth);
 			return;
@@ -230,7 +230,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then the trashbin dav response should not contain these nodes
+	 * @Then the trashbin DAV response should not contain these nodes
 	 *
 	 * @param TableNode $table
 	 *
@@ -252,7 +252,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @Then the trashbin dav response should contain these nodes
+	 * @Then the trashbin DAV response should contain these nodes
 	 *
 	 * @param TableNode $table
 	 *

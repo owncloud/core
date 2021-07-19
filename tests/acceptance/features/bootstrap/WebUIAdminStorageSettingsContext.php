@@ -155,7 +155,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsUserAsTheApplicableUserForTheLastLocalStorageMountUsingTheUsingTheWebui(
+	public function theAdministratorAddsUserAsTheApplicableUserForTheLastLocalStorageMountUsingTheWebui(
 		$action,
 		$userOrGroup,
 		$user

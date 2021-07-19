@@ -4359,7 +4359,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :arg1 gets all their files on :path with depth :depth using the using the WebDAV API
+	 * @When user :arg1 gets all their files on :path with depth :depth using the WebDAV API
 	 *
 	 * @param $user
 	 * @param $path
@@ -4367,7 +4367,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userGetsAllTheirFilesUsingTheUsingTheWebdavApi($user, $path, $depth) {
+	public function userGetsAllTheirFilesUsingTheWebdavApi($user, $path, $depth) {
 		$response = $this->listFolder(
 			$user,
 			$path,
@@ -4378,7 +4378,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the last dav response for user :user should contain these nodes/elements
+	 * @Then the last DAV response for user :user should contain these nodes/elements
 	 *
 	 * @param $user
 	 * @param TableNode $table
@@ -4395,7 +4395,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the last dav response for user :user should not contain these nodes/elements
+	 * @Then the last DAV response for user :user should not contain these nodes/elements
 	 *
 	 * @param $user
 	 * @param TableNode $table
@@ -4412,7 +4412,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the last public link dav response should contain these nodes/elements
+	 * @Then the last public link DAV response should contain these nodes/elements
 	 *
 	 * @param TableNode $table
 	 *
@@ -4430,7 +4430,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the last public link dav response should not contain these nodes/elements
+	 * @Then the last public link DAV response should not contain these nodes/elements
 	 *
 	 * @param TableNode $table
 	 *
@@ -4448,13 +4448,13 @@ trait WebDav {
 	}
 
 	/**
-	 * @When the public gets all files on the last created public link with depth :depth using the using the WebDAV API
+	 * @When the public gets all files on the last created public link with depth :depth using the WebDAV API
 	 *
 	 * @param $depth
 	 *
 	 * @return void
 	 */
-	public function thePublicGetsAllFilesOnTheLastCreatedPublicLinkWithDepthUsingTheUsingTheWebdavApi($depth) {
+	public function thePublicGetsAllFilesOnTheLastCreatedPublicLinkWithDepthUsingTheWebdavApi($depth) {
 		$user = (string) $this->getLastShareData()->data->token;
 		$response = $this->listFolder(
 			$user,
