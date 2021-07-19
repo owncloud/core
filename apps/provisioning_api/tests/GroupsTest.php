@@ -446,6 +446,12 @@ class GroupsTest extends \Test\TestCase {
 			->method('getUser')
 			->willReturn($iUser);
 
+		$this->subAdminManager
+			->expects($this->once())
+			->method('isSubAdmin')
+			->with($iUser)
+			->willReturn(true);
+
 		$result = $this->api->addGroup([]);
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertTrue($result->succeeded());
@@ -479,6 +485,12 @@ class GroupsTest extends \Test\TestCase {
 			->expects($this->once())
 			->method('getUser')
 			->willReturn($iUser);
+
+		$this->subAdminManager
+			->expects($this->once())
+			->method('isSubAdmin')
+			->with($iUser)
+			->willReturn(true);
 
 		$result = $this->api->addGroup([]);
 		$this->assertInstanceOf('OC_OCS_Result', $result);

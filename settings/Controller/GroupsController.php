@@ -97,6 +97,8 @@ class GroupsController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 *
 	 * @param string $id
 	 * @return DataResponse
 	 */
@@ -130,6 +132,8 @@ class GroupsController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 *
 	 * @param string $id
 	 * @return DataResponse
 	 */

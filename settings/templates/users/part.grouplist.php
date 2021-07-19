@@ -1,14 +1,10 @@
 <ul id="usergrouplist" data-sort-groups="<?php p($_['sortGroups']); ?>">
 	<!-- Add new group -->
-	<?php if ($_['isAdmin']) {
-	?>
 	<li id="newgroup-init">
 		<a href="#">
 			<span><?php p($l->t('Add Group'))?></span>
 		</a>
 	</li>
-	<?php
-} ?>
 	<li id="newgroup-form" style="display: none">
 		<form>
 			<input type="text" id="newgroupname" placeholder="<?php p($l->t('Group')); ?>..." />
@@ -32,13 +28,13 @@
 	<!-- The Admin Group -->
 	<?php foreach ($_["adminGroup"] as $adminGroup): ?>
 		<li data-gid="admin" data-usercount="<?php if ($adminGroup['usercount'] > 0) {
-		p($adminGroup['usercount']);
-	} ?>" class="isgroup">
+	p($adminGroup['usercount']);
+} ?>" class="isgroup">
 			<a href="#"><span class="groupname"><?php p($l->t('Admins')); ?></span></a>
 			<span class="utils">
 				<span class="usercount"><?php if ($adminGroup['usercount'] > 0) {
-		p($adminGroup['usercount']);
-	} ?></span>
+	p($adminGroup['usercount']);
+} ?></span>
 			</span>
 		</li>
 	<?php endforeach; ?>
@@ -51,13 +47,11 @@
 			</a>
 			<span class="utils">
 				<span class="usercount"><?php if ($group['usercount'] > 0) {
-		p($group['usercount']);
-	} ?></span>
-				<?php if ($_['isAdmin']): ?>
+	p($group['usercount']);
+} ?></span>
 				<a href="#" class="action delete" original-title="<?php p($l->t('Delete'))?>">
 					<img src="<?php print_unescaped(image_path('core', 'actions/delete.svg')) ?>" />
 				</a>
-				<?php endif; ?>
 			</span>
 		</li>
 	<?php endforeach; ?>

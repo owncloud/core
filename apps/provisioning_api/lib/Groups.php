@@ -112,7 +112,7 @@ class Groups {
 		// Check subadmin has access to this group
 		if ($this->groupManager->isAdmin($user->getUID())
 		   || $isSubadminOfGroup) {
-			$users = $this->groupManager->get($groupId)->getUsers();
+			$users = $group->getUsers();
 			$users =  \array_map(function ($user) {
 				/** @var IUser $user */
 				return $user->getUID();
@@ -144,12 +144,25 @@ class Groups {
 		if ($user === null) {
 			return new OC_OCS_Result(null, 102);
 		}
-		// Only admin has got privilege to create group
-		if ($this->groupManager->isAdmin($user->getUID())) {
+
+		'@phan-var \OC\Group\Manager $this->groupManager';
+		$subAdminManager = $this->groupManager->getSubAdmin();
+
+		$isSubAdminOrAdmin = $subAdminManager->isSubAdmin($user);
+		$isAdmin = $this->groupManager->isAdmin($user->getUID());
+
+		if ($isSubAdminOrAdmin) {
 			$this->groupManager->createGroup($groupId);
+
+			// only if subadmin
+			if ($isSubAdminOrAdmin && !$isAdmin) {
+				$group = $this->groupManager->get($groupId);
+				if (!$subAdminManager->createSubAdmin($user, $group)) {
+					return new OC_OCS_Result(null, 103, 'Unknown error occurred');
+				}
+			}
 			return new OC_OCS_Result(null, 100);
 		}
-
 		return new OC_OCS_Result(null, 997);
 	}
 
