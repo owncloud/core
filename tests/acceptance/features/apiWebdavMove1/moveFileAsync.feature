@@ -254,7 +254,7 @@ Feature: move (rename) file
     #so we timout the request and chech the job-status
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToMove.txt"
     And the HTTP-Request-timeout is set to 5 seconds
-    And the MOVE dav requests are slowed down by 10 seconds
+    And the MOVE DAV requests are slowed down by 10 seconds
     When user "Alice" moves file "/fileToMove.txt" asynchronously to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "202"
     And the following headers should match these regular expressions for user "Alice"

@@ -3675,7 +3675,7 @@ class FeatureContext extends BehatVariablesContext {
 		$davPath = \rtrim($this->getFullDavFilesPath($targetUser), '/');
 
 		$foundPath = \end($foundPaths)['path'];
-		// strip dav path
+		// strip DAV path
 		return \substr($foundPath, \strlen($davPath) + 1);
 	}
 

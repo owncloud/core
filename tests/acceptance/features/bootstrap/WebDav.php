@@ -65,7 +65,7 @@ trait WebDav {
 	private $lastUploadDeleteTime = null;
 
 	/**
-	 * a variable that contains the dav path without "remote.php/(web)dav"
+	 * a variable that contains the DAV path without "remote.php/(web)dav"
 	 * when setting $this->davPath directly by usingDavPath()
 	 *
 	 * @var string
@@ -176,7 +176,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^using dav path "([^"]*)"$/
+	 * @Given /^using DAV path "([^"]*)"$/
 	 *
 	 * @param string $davPath
 	 *
@@ -243,7 +243,7 @@ trait WebDav {
 	}
 
 	/**
-	 * gives the dav path of a file including the subfolder of the webserver
+	 * gives the DAV path of a file including the subfolder of the webserver
 	 * e.g. when the server runs in `http://localhost/owncloud/`
 	 * this function will return `owncloud/remote.php/webdav/prueba.txt`
 	 *
@@ -272,22 +272,22 @@ trait WebDav {
 	}
 
 	/**
-	 * Select a suitable dav path version number.
+	 * Select a suitable DAV path version number.
 	 * Some endpoints have only existed since a certain point in time, so for
 	 * those make sure to return a DAV path version that works for that endpoint.
 	 * Otherwise return the currently selected DAV path version.
 	 *
-	 * @param string $for the category of endpoint that the dav path will be used for
+	 * @param string $for the category of endpoint that the DAV path will be used for
 	 *
 	 * @return int DAV path version (1 or 2) selected, or appropriate for the endpoint
 	 */
 	public function getDavPathVersion($for = null) {
 		if ($for === 'systemtags') {
-			// systemtags only exists since dav v2
+			// systemtags only exists since DAV v2
 			return 2;
 		}
 		if ($for === 'file_versions') {
-			// file_versions only exists since dav v2
+			// file_versions only exists since DAV v2
 			return 2;
 		}
 		if ($this->usingOldDavPath === true) {
@@ -298,12 +298,12 @@ trait WebDav {
 	}
 
 	/**
-	 * Select a suitable dav path.
+	 * Select a suitable DAV path.
 	 * Some endpoints have only existed since a certain point in time, so for
 	 * those make sure to return a DAV path that works for that endpoint.
 	 * Otherwise return the currently selected DAV path.
 	 *
-	 * @param string $for the category of endpoint that the dav path will be used for
+	 * @param string $for the category of endpoint that the DAV path will be used for
 	 *
 	 * @return string DAV path selected, or appropriate for the endpoint
 	 */
@@ -504,7 +504,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given the :method dav requests are slowed down by :seconds seconds
+	 * @Given the :method DAV requests are slowed down by :seconds seconds
 	 *
 	 * @param string $method
 	 * @param int $seconds
@@ -2082,7 +2082,7 @@ trait WebDav {
 			$noOfChunks,
 			"What does it mean to have $noOfChunks chunks?"
 		);
-		//use the chunking version that works with the set dav version
+		//use the chunking version that works with the set DAV version
 		if ($chunkingVersion === null) {
 			if ($this->usingOldDavPath) {
 				$chunkingVersion = "v1";
@@ -2162,7 +2162,7 @@ trait WebDav {
 	}
 
 	/**
-	 * Uploading with old/new dav and chunked/non-chunked.
+	 * Uploading with old/new DAV and chunked/non-chunked.
 	 *
 	 * @When user :user uploads file :source to filenames based on :destination with all mechanisms using the WebDAV API
 	 *
@@ -2188,7 +2188,7 @@ trait WebDav {
 	}
 
 	/**
-	 * Overwriting with old/new dav and chunked/non-chunked.
+	 * Overwriting with old/new DAV and chunked/non-chunked.
 	 *
 	 * @When user :user overwrites from file :source to file :destination with all mechanisms using the WebDAV API
 	 *
@@ -2410,7 +2410,7 @@ trait WebDav {
 	}
 
 	/**
-	 * Check that all the files uploaded with old/new dav and chunked/non-chunked exist.
+	 * Check that all the files uploaded with old/new DAV and chunked/non-chunked exist.
 	 *
 	 * @Then /^as "([^"]*)" the files uploaded to "([^"]*)" with all mechanisms should (not|)\s?exist$/
 	 *
@@ -3827,7 +3827,7 @@ trait WebDav {
 	}
 
 	/**
-	 * Move chunked new dav file to final file
+	 * Move chunked new DAV file to final file
 	 *
 	 * @param string $user user
 	 * @param string $id upload id
@@ -3892,7 +3892,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When an unauthenticated client connects to the dav endpoint using the WebDAV API
+	 * @When an unauthenticated client connects to the DAV endpoint using the WebDAV API
 	 *
 	 * @return void
 	 */
@@ -3906,7 +3906,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given an unauthenticated client has connected to the dav endpoint
+	 * @Given an unauthenticated client has connected to the DAV endpoint
 	 *
 	 * @return void
 	 */
@@ -4390,7 +4390,7 @@ trait WebDav {
 		foreach ($table->getHash() as $row) {
 			$path = $this->substituteInLineCodes($row['name']);
 			$res = $this->findEntryFromPropfindResponse($path, $user);
-			Assert::assertNotFalse($res, "expected $path to be in dav response but was not found");
+			Assert::assertNotFalse($res, "expected $path to be in DAV response but was not found");
 		}
 	}
 
@@ -4407,7 +4407,7 @@ trait WebDav {
 		foreach ($table->getHash() as $row) {
 			$path = $this->substituteInLineCodes($row['name']);
 			$res = $this->findEntryFromPropfindResponse($path, $user);
-			Assert::assertFalse($res, "expected $path to not be in dav response but was found");
+			Assert::assertFalse($res, "expected $path to not be in DAV response but was found");
 		}
 	}
 
@@ -4425,7 +4425,7 @@ trait WebDav {
 		foreach ($table->getHash() as $row) {
 			$path = $this->substituteInLineCodes($row['name']);
 			$res = $this->findEntryFromPropfindResponse($path, $user, $type);
-			Assert::assertNotFalse($res, "expected $path to be in dav response but was not found");
+			Assert::assertNotFalse($res, "expected $path to be in DAV response but was not found");
 		}
 	}
 
@@ -4443,7 +4443,7 @@ trait WebDav {
 		foreach ($table->getHash() as $row) {
 			$path = $this->substituteInLineCodes($row['name']);
 			$res = $this->findEntryFromPropfindResponse($path, $user, $type);
-			Assert::assertFalse($res, "expected $path to not be in dav response but was found");
+			Assert::assertFalse($res, "expected $path to not be in DAV response but was found");
 		}
 	}
 

@@ -10,7 +10,7 @@ Feature: refuse access
   @smokeTest
   Scenario Outline: Unauthenticated call
     Given using <dav_version> DAV path
-    When an unauthenticated client connects to the dav endpoint using the WebDAV API
+    When an unauthenticated client connects to the DAV endpoint using the WebDAV API
     Then the HTTP status code should be "401"
     And there should be no duplicate headers
     And the following headers should be set

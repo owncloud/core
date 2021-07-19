@@ -141,7 +141,7 @@ Feature: checksums
     Then as user "Alice" the webdav checksum of "/myChecksumFile.txt" via propfind should match "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 MD5:56e57920c3c8c727bfe7a5288cdf61c4 ADLER32:1048035a"
 
   @issue-ocis-reva-56
-  Scenario: Upload new dav chunked file where checksum matches
+  Scenario: Upload new DAV chunked file where checksum matches
     Given using new DAV path
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "Alice" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
@@ -150,7 +150,7 @@ Feature: checksums
     Then the HTTP status code should be "201"
 
   @issue-ocis-reva-56
-  Scenario: Upload new dav chunked file where checksum does not match
+  Scenario: Upload new DAV chunked file where checksum does not match
     Given using new DAV path
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "Alice" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
@@ -161,7 +161,7 @@ Feature: checksums
       | /myChunkedFile.txt |
 
   @issue-ocis-reva-56 @notToImplementOnOCIS
-  Scenario: Upload new dav chunked file using async MOVE where checksum matches
+  Scenario: Upload new DAV chunked file using async MOVE where checksum matches
     Given using new DAV path
     And the administrator has enabled async operations
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
@@ -177,7 +177,7 @@ Feature: checksums
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "BBBBBCCCCC"
 
   @issue-ocis-reva-56 @notToImplementOnOCIS
-  Scenario: Upload new dav chunked file using async MOVE where checksum does not match
+  Scenario: Upload new DAV chunked file using async MOVE where checksum does not match
     Given using new DAV path
     And the administrator has enabled async operations
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API
@@ -195,7 +195,7 @@ Feature: checksums
       | /myChunkedFile.txt |
 
   @issue-ocis-reva-56 @notToImplementOnOCIS
-  Scenario: Upload new dav chunked file using async MOVE where checksum does not match - retry with correct checksum
+  Scenario: Upload new DAV chunked file using async MOVE where checksum does not match - retry with correct checksum
     Given using new DAV path
     And the administrator has enabled async operations
     When user "Alice" creates a new chunking upload with id "chunking-42" using the WebDAV API

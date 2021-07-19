@@ -1017,7 +1017,7 @@ class WebDavPropertiesContext implements Context {
 	/**
 	 * @Then as user :username the last response should have the following properties
 	 *
-	 * only supports new dav version
+	 * only supports new DAV version
 	 *
 	 * @param string $username
 	 * @param TableNode $expectedPropTable with following columns:
