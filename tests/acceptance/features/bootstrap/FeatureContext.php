@@ -2786,6 +2786,14 @@ class FeatureContext extends BehatVariablesContext {
 					"getLastShareId"
 				],
 				"parameter" => []
+			],
+			[
+				"code" => "%last_share_token%",
+				"function" => [
+					$this,
+					"getLastSharetoken"
+				],
+				"parameter" => []
 			]
 		];
 		if ($user !== null) {
@@ -2831,6 +2839,10 @@ class FeatureContext extends BehatVariablesContext {
 		}
 
 		foreach ($substitutions as $substitution) {
+			if (strpos($value, $substitution['code']) === false) {
+				continue;
+			}
+
 			$replacement = \call_user_func_array(
 				$substitution["function"],
 				$substitution["parameter"]
@@ -3663,7 +3675,7 @@ class FeatureContext extends BehatVariablesContext {
 		$davPath = \rtrim($this->getFullDavFilesPath($targetUser), '/');
 
 		$foundPath = \end($foundPaths)['path'];
-		// strip dav path
+		// strip DAV path
 		return \substr($foundPath, \strlen($davPath) + 1);
 	}
 

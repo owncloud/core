@@ -65,7 +65,7 @@ trait WebDav {
 	private $lastUploadDeleteTime = null;
 
 	/**
-	 * a variable that contains the dav path without "remote.php/(web)dav"
+	 * a variable that contains the DAV path without "remote.php/(web)dav"
 	 * when setting $this->davPath directly by usingDavPath()
 	 *
 	 * @var string
@@ -176,7 +176,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^using dav path "([^"]*)"$/
+	 * @Given /^using DAV path "([^"]*)"$/
 	 *
 	 * @param string $davPath
 	 *
@@ -243,7 +243,7 @@ trait WebDav {
 	}
 
 	/**
-	 * gives the dav path of a file including the subfolder of the webserver
+	 * gives the DAV path of a file including the subfolder of the webserver
 	 * e.g. when the server runs in `http://localhost/owncloud/`
 	 * this function will return `owncloud/remote.php/webdav/prueba.txt`
 	 *
@@ -259,22 +259,35 @@ trait WebDav {
 	}
 
 	/**
-	 * Select a suitable dav path version number.
+	 * @param string $token
+	 * @param string $type
+	 *
+	 * @return string
+	 */
+	public function getPublicLinkDavPath($token, $type) {
+		$path = $this->getBasePath() . "/" .
+			WebDavHelper::getDavPath($token, $this->getDavPathVersion(), $type);
+		$path = WebDavHelper::sanitizeUrl($path);
+		return \ltrim($path, "/");
+	}
+
+	/**
+	 * Select a suitable DAV path version number.
 	 * Some endpoints have only existed since a certain point in time, so for
 	 * those make sure to return a DAV path version that works for that endpoint.
 	 * Otherwise return the currently selected DAV path version.
 	 *
-	 * @param string $for the category of endpoint that the dav path will be used for
+	 * @param string $for the category of endpoint that the DAV path will be used for
 	 *
 	 * @return int DAV path version (1 or 2) selected, or appropriate for the endpoint
 	 */
 	public function getDavPathVersion($for = null) {
 		if ($for === 'systemtags') {
-			// systemtags only exists since dav v2
+			// systemtags only exists since DAV v2
 			return 2;
 		}
 		if ($for === 'file_versions') {
-			// file_versions only exists since dav v2
+			// file_versions only exists since DAV v2
 			return 2;
 		}
 		if ($this->usingOldDavPath === true) {
@@ -285,12 +298,12 @@ trait WebDav {
 	}
 
 	/**
-	 * Select a suitable dav path.
+	 * Select a suitable DAV path.
 	 * Some endpoints have only existed since a certain point in time, so for
 	 * those make sure to return a DAV path that works for that endpoint.
 	 * Otherwise return the currently selected DAV path.
 	 *
-	 * @param string $for the category of endpoint that the dav path will be used for
+	 * @param string $for the category of endpoint that the DAV path will be used for
 	 *
 	 * @return string DAV path selected, or appropriate for the endpoint
 	 */
@@ -491,7 +504,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given the :method dav requests are slowed down by :seconds seconds
+	 * @Given the :method DAV requests are slowed down by :seconds seconds
 	 *
 	 * @param string $method
 	 * @param int $seconds
@@ -2069,7 +2082,7 @@ trait WebDav {
 			$noOfChunks,
 			"What does it mean to have $noOfChunks chunks?"
 		);
-		//use the chunking version that works with the set dav version
+		//use the chunking version that works with the set DAV version
 		if ($chunkingVersion === null) {
 			if ($this->usingOldDavPath) {
 				$chunkingVersion = "v1";
@@ -2149,7 +2162,7 @@ trait WebDav {
 	}
 
 	/**
-	 * Uploading with old/new dav and chunked/non-chunked.
+	 * Uploading with old/new DAV and chunked/non-chunked.
 	 *
 	 * @When user :user uploads file :source to filenames based on :destination with all mechanisms using the WebDAV API
 	 *
@@ -2175,7 +2188,7 @@ trait WebDav {
 	}
 
 	/**
-	 * Overwriting with old/new dav and chunked/non-chunked.
+	 * Overwriting with old/new DAV and chunked/non-chunked.
 	 *
 	 * @When user :user overwrites from file :source to file :destination with all mechanisms using the WebDAV API
 	 *
@@ -2397,7 +2410,7 @@ trait WebDav {
 	}
 
 	/**
-	 * Check that all the files uploaded with old/new dav and chunked/non-chunked exist.
+	 * Check that all the files uploaded with old/new DAV and chunked/non-chunked exist.
 	 *
 	 * @Then /^as "([^"]*)" the files uploaded to "([^"]*)" with all mechanisms should (not|)\s?exist$/
 	 *
@@ -2968,7 +2981,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has (deleted|unshared) the following (files|folders)$/
+	 * @Given /^user "([^"]*)" has (deleted|unshared) the following (files|folders|resources)$/
 	 *
 	 * @param string $user
 	 * @param string $deletedOrUnshared
@@ -3814,7 +3827,7 @@ trait WebDav {
 	}
 
 	/**
-	 * Move chunked new dav file to final file
+	 * Move chunked new DAV file to final file
 	 *
 	 * @param string $user user
 	 * @param string $id upload id
@@ -3879,7 +3892,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When an unauthenticated client connects to the dav endpoint using the WebDAV API
+	 * @When an unauthenticated client connects to the DAV endpoint using the WebDAV API
 	 *
 	 * @return void
 	 */
@@ -3893,7 +3906,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given an unauthenticated client has connected to the dav endpoint
+	 * @Given an unauthenticated client has connected to the DAV endpoint
 	 *
 	 * @return void
 	 */
@@ -4346,6 +4359,115 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :arg1 lists the resources in :path with depth :depth using the WebDAV API
+	 *
+	 * @param $user
+	 * @param $path
+	 * @param $depth
+	 *
+	 * @return void
+	 */
+	public function userListsTheResourcesInPathWithDepthUsingTheWebdavApi($user, $path, $depth) {
+		$response = $this->listFolder(
+			$user,
+			$path,
+			$depth
+		);
+		$this->setResponse($response);
+		$this->setResponseXml(HttpRequestHelper::parseResponseAsXml($this->response));
+	}
+
+	/**
+	 * @Then the last DAV response for user :user should contain these nodes/elements
+	 *
+	 * @param $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theLastDavResponseShouldContainTheseNodes($user, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["name"]);
+		foreach ($table->getHash() as $row) {
+			$path = $this->substituteInLineCodes($row['name']);
+			$res = $this->findEntryFromPropfindResponse($path, $user);
+			Assert::assertNotFalse($res, "expected $path to be in DAV response but was not found");
+		}
+	}
+
+	/**
+	 * @Then the last DAV response for user :user should not contain these nodes/elements
+	 *
+	 * @param $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theLastDavResponseShouldNotContainTheseNodes($user, TableNode $table) {
+		$this->verifyTableNodeColumns($table, ["name"]);
+		foreach ($table->getHash() as $row) {
+			$path = $this->substituteInLineCodes($row['name']);
+			$res = $this->findEntryFromPropfindResponse($path, $user);
+			Assert::assertFalse($res, "expected $path to not be in DAV response but was found");
+		}
+	}
+
+	/**
+	 * @Then the last public link DAV response should contain these nodes/elements
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theLastPublicDavResponseShouldContainTheseNodes(TableNode $table) {
+		$user = (string) $this->getLastShareData()->data->token;
+		$this->verifyTableNodeColumns($table, ["name"]);
+		$type = $this->usingOldDavPath ? "public-files" : "public-files-new";
+		foreach ($table->getHash() as $row) {
+			$path = $this->substituteInLineCodes($row['name']);
+			$res = $this->findEntryFromPropfindResponse($path, $user, $type);
+			Assert::assertNotFalse($res, "expected $path to be in DAV response but was not found");
+		}
+	}
+
+	/**
+	 * @Then the last public link DAV response should not contain these nodes/elements
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theLastPublicDavResponseShouldNotContainTheseNodes(TableNode $table) {
+		$user = (string) $this->getLastShareData()->data->token;
+		$this->verifyTableNodeColumns($table, ["name"]);
+		$type = $this->usingOldDavPath ? "public-files" : "public-files-new";
+		foreach ($table->getHash() as $row) {
+			$path = $this->substituteInLineCodes($row['name']);
+			$res = $this->findEntryFromPropfindResponse($path, $user, $type);
+			Assert::assertFalse($res, "expected $path to not be in DAV response but was found");
+		}
+	}
+
+	/**
+	 * @When the public lists the resources in the last created public link with depth :depth using the WebDAV API
+	 *
+	 * @param $depth
+	 *
+	 * @return void
+	 */
+	public function thePublicListsTheResourcesInTheLastCreatedPublicLinkWithDepthUsingTheWebdavApi($depth) {
+		$user = (string) $this->getLastShareData()->data->token;
+		$response = $this->listFolder(
+			$user,
+			'/',
+			$depth,
+			null,
+			$this->usingOldDavPath ? "public-files" : "public-files-new"
+		);
+		$this->setResponse($response);
+		$this->setResponseXml(HttpRequestHelper::parseResponseAsXml($this->response));
+	}
+
+	/**
 	 * @param string|null $user
 	 *
 	 * @return array
@@ -4372,6 +4494,7 @@ trait WebDav {
 	 *
 	 * @param string $entryNameToSearch
 	 * @param string|null $user
+	 * @param string $type
 	 *
 	 * @return string|array|boolean
 	 * string if $entryNameToSearch is given and is found
@@ -4380,7 +4503,8 @@ trait WebDav {
 	 */
 	public function findEntryFromPropfindResponse(
 		$entryNameToSearch = null,
-		$user = null
+		$user = null,
+		$type = "files"
 	) {
 		//if we are using that step the second time in a scenario e.g. 'But ... should not'
 		//then don't parse the result again, because the result in a ResponseInterface
@@ -4399,6 +4523,18 @@ trait WebDav {
 		// topWebDavPath should be something like /remote.php/webdav/ or
 		// /remote.php/dav/files/alice/
 		$topWebDavPath = "/" . $this->getFullDavFilesPath($user) . "/";
+
+		switch ($type) {
+			case "files":
+				break;
+			case "public-files":
+			case "public-files-old":
+			case "public-files-new":
+				$topWebDavPath = "/" . $this->getPublicLinkDavPath($user, $type) . "/";
+				break;
+			default:
+				throw new Exception("error");
+		}
 		Assert::assertIsArray(
 			$this->responseXml,
 			__METHOD__ . " responseXml for user $user is not an array"
@@ -4415,6 +4551,7 @@ trait WebDav {
 				$entryPath = $multistatusResult['value'][0]['value'];
 				$entryName = \str_replace($topWebDavPath, "", $entryPath);
 				$entryName = \rawurldecode($entryName);
+				$entryName = \trim($entryName, "/");
 				if ($trimmedEntryNameToSearch === $entryName) {
 					return $multistatusResult;
 				}

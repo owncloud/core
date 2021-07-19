@@ -100,7 +100,7 @@ Feature: upload file using new chunking
     Then the HTTP status code should be "404"
 
 
-  Scenario: Upload to new dav path using old way should fail
+  Scenario: Upload to new DAV path using old way should fail
     When user "Alice" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt" using the WebDAV API
     Then the HTTP status code should be "503"
 

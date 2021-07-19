@@ -1,5 +1,5 @@
 @cli @skipOnLDAP
-Feature: add a user using the using the occ command
+Feature: add a user using the occ command
 
   As an administrator
   I want to be able to add users via the command line
