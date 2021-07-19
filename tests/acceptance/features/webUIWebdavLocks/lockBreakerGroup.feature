@@ -1,6 +1,6 @@
 @webUI @insulated @disablePreviews
 Feature: Unlock locked files and folders
-  As a member of lock breaker group
+  As a member of a lock breaker group
   I would like to be able to unlock files and folders
   So that I can access them
 
@@ -9,7 +9,7 @@ Feature: Unlock locked files and folders
     Given group "grp1" has been created
     And the administrator has browsed to the admin general settings page
     When the administrator adds group "grp1" to the lock breakers groups using the webUI
-    Then group "grp1" should be listed in the lock breakers groups in the webUI
+    Then group "grp1" should be listed in the lock breakers groups on the webUI
     And group "grp1" should exist as a lock breaker group
 
 
@@ -20,7 +20,7 @@ Feature: Unlock locked files and folders
     And the administrator has browsed to the admin general settings page
     When the administrator adds group "grp1" to the lock breakers groups using the webUI
     And the administrator adds group "grp2" to the lock breakers groups using the webUI
-    Then following groups should be listed in the lock breakers groups in the webUI
+    Then the following groups should be listed in the lock breakers groups on the webUI
       | groups |
       | grp1   |
       | grp2   |
@@ -76,7 +76,7 @@ Feature: Unlock locked files and folders
     And user "Alice" has shared folder "simple-folder" with user "Brian"
     And user "Brian" has logged in using the webUI
     When the user opens folder "simple-folder" using the webUI
-    When the user unlocks the lock no 1 of file "lorem.txt" on the webUI
+    And the user unlocks the lock no 1 of file "lorem.txt" on the webUI
     And the user unlocks the lock no 1 of folder "sub-folder" on the webUI
     And the user reloads the current page of the webUI
     Then file "lorem.txt" should not be marked as locked on the webUI

@@ -171,7 +171,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then group :expectedGroup should be listed in the lock breakers groups in the webUI
+	 * @Then group :expectedGroup should be listed in the lock breakers groups on the webUI
 	 *
 	 * @param $expectedGroup
 	 *
@@ -187,7 +187,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @Then following groups should be listed in the lock breakers groups in the webUI
+	 * @Then the following groups should be listed in the lock breakers groups on the webUI
 	 *
 	 * @param TableNode $table
 	 *
