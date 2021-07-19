@@ -187,7 +187,7 @@ class TrashbinContext implements Context {
 	}
 
 	/**
-	 * @When user :user gets files in the trashbin path :path with depth :depth using the WebDAV API
+	 * @When user :user lists the resources in the trashbin path :path with depth :depth using the WebDAV API
 	 *
 	 * @param $user
 	 * @param $path

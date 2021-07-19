@@ -4359,7 +4359,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :arg1 gets all their files on :path with depth :depth using the WebDAV API
+	 * @When user :arg1 lists the resources in :path with depth :depth using the WebDAV API
 	 *
 	 * @param $user
 	 * @param $path
@@ -4448,7 +4448,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When the public gets all files on the last created public link with depth :depth using the WebDAV API
+	 * @When the public lists the resources in the last created public link with depth :depth using the WebDAV API
 	 *
 	 * @param $depth
 	 *
