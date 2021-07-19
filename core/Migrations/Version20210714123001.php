@@ -27,7 +27,6 @@ use OCP\Migration\ISchemaMigration;
  * Include an index in the cards_properties table
  */
 class Version20210714123001 implements ISchemaMigration {
-
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
