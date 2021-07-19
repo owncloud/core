@@ -1,0 +1,6 @@
+Enhancement: Allow subadmins to create and remove groups
+
+This allows subadmins the ability to create groups, so that they can assign users to those groups.
+This makes the subadmin feature much more concrete and useful for administration, without needing to use global admins accounts.
+
+https://github.com/owncloud/core/pull/39023
