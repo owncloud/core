@@ -22,12 +22,12 @@ Feature: Unlock locked files and folders
     And the administrator adds group "grp2" to the lock breakers groups using the webUI
     Then following groups should be listed in the lock breakers groups in the webUI
       | groups |
-      | grp1 |
-      | grp2 |
+      | grp1   |
+      | grp2   |
     And following groups should exist as lock breaker groups
       | groups |
-      | grp1 |
-      | grp2 |
+      | grp1   |
+      | grp2   |
 
 
   Scenario Outline: members from lock breaker groups can unlock a locked folder/file shared to them
@@ -92,8 +92,10 @@ Feature: Unlock locked files and folders
   Scenario Outline: user that isn't member of lock breakers group cannot unlock a file/folder shared to them
     Given group "grp1" has been created
     And parameter "lock-breaker-groups" of app "core" has been set to '["grp1"]'
-    And user "Alice" has been created with default attributes and without skeleton files
-    And user "Brian" has been created with default attributes and without skeleton files
+    And these users have been created without skeleton files:
+      | username |
+      | Alice    |
+      | Brian    |
     And user "Alice" has been added to group "grp1"
     And user "Alice" has created folder "FOLDER"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
@@ -106,16 +108,13 @@ Feature: Unlock locked files and folders
     And user "Brian" has logged in using the webUI
     When the user unlocks the lock no 1 of folder "FOLDER" on the webUI
     Then notifications should be displayed on the webUI with the text
-      | Could not unlock, please contact the lock owner Alice Hansen (alice@example.org) |
+      | Could not unlock, please contact the lock owner Alice |
     And the user unlocks the lock no 1 of file "lorem.txt" on the webUI
     And notifications should be displayed on the webUI with the text
-      | Could not unlock, please contact the lock owner Alice Hansen (alice@example.org) |
+      | Could not unlock, please contact the lock owner Alice |
     And the user reloads the current page of the webUI
     And file "lorem.txt" should be marked as locked on the webUI
     And folder "FOLDER" should be marked as locked on the webUI
-    When the administrator gets all the members of group "grp1" using the provisioning API
-    Then the users returned by the API should be
-      | Alice |
     Examples:
       | lockscope |
       | exclusive |
