@@ -278,10 +278,7 @@ class HttpRequestHelper {
 			$headers = [];
 		}
 		if ($xRequestId !== '') {
-			echo "createRequest: setting X-Request-ID header to '$xRequestId'";
 			$headers['X-Request-ID'] = $xRequestId;
-		} else {
-			echo "createRequest: X-Request-ID header was not set";
 		}
 		if (\is_array($body)) {
 			// when creating the client, it is possible to set 'form_params' and
