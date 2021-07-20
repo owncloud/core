@@ -1579,6 +1579,8 @@ def acceptance(ctx):
 
 								federationDbSuffix = 'fed'
 
+								environment['SEND_SCENARIO_LINE_REFERENCES'] = True
+
 								result = {
 									'kind': 'pipeline',
 									'type': 'docker',
