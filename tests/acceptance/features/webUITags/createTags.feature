@@ -27,11 +27,11 @@ Feature: Creation of tags for the files and folders
     And the user switches to the "tags" tab in the details panel using the webUI
     And the user adds a tag "Top Secret Uppercase" to the file using the webUI
     And the user adds a tag "confidential lowercase" to the file using the webUI
-    Then the following tags should be displayed in the tag list in the webUI
+    Then the following tags should be displayed in the tag list on the webUI
       | name                   |
       | Top Secret Uppercase   |
       | confidential lowercase |
-    And the following tags should be displayed in the tag input field in the webUI
+    And the following tags should be displayed in the tag input field on the webUI
       | name                   |
       | Top Secret Uppercase   |
       | confidential lowercase |
@@ -46,11 +46,11 @@ Feature: Creation of tags for the files and folders
     And the user switches to the "tags" tab in the details panel using the webUI
     And the user adds a tag "Top Secret" to the file using the webUI
     And the user adds a tag "top secret" to the file using the webUI
-    Then the following tags should be displayed in the tag list in the webUI
+    Then the following tags should be displayed in the tag list on the webUI
       | name       |
       | Top Secret |
       | top secret |
-    And the following tags should be displayed in the tag input field in the webUI
+    And the following tags should be displayed in the tag input field on the webUI
       | name       |
       | Top Secret |
       | top secret |

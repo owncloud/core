@@ -13,7 +13,7 @@ Feature: Control access to edit fullname of user through config file
     And the user browses to the personal general settings page
     And the user changes the full name to "my#very&weird?नेपालि%name" using the webUI
     And the user reloads the current page of the webUI
-    Then "my#very&weird?नेपालि%name" should be shown as the name of the current user on the WebUI
+    Then "my#very&weird?नेपालि%name" should be shown as the name of the current user on the webUI
     And the attributes of user "Alice" returned by the API should include
       | displayname | my#very&weird?नेपालि%name |
 

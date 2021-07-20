@@ -340,7 +340,7 @@ Feature: Share by public link
     And public link "Public Link" should be listed as share receiver via "simple-folder" on the webUI
 
   @skipOnOcV10.3
-  Scenario: sharing detail of items in the webUI shared by public links with empty name
+  Scenario: sharing detail of items on the webUI shared by public links with empty name
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
     And user "Alice" has created a public link share with settings

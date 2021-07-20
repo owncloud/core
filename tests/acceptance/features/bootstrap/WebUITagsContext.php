@@ -196,7 +196,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the following tags should be displayed in the tag list in the webUI$/
+	 * @Then /^the following tags should be displayed in the tag list on the webUI$/
 	 *
 	 * @param TableNode $tags
 	 *
@@ -210,7 +210,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the following tags should be displayed in the tag input field in the webUI$/
+	 * @Then /^the following tags should be displayed in the tag input field on the webUI$/
 	 *
 	 * @param TableNode $tags
 	 *

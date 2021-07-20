@@ -49,7 +49,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then :displayname should be shown as the name of the current user on the WebUI
+	 * @Then :displayname should be shown as the name of the current user on the webUI
 	 *
 	 * @param string $displayname
 	 *
@@ -65,7 +65,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the display name should (not|)\s?be visible on the WebUI$/
+	 * @Then /^the display name should (not|)\s?be visible on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 *
@@ -89,7 +89,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^(no|an) avatar should be shown for the current user on the WebUI$/
+	 * @Then /^(no|an) avatar should be shown for the current user on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 *
