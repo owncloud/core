@@ -147,3 +147,18 @@ Feature: rename folders
     When the user renames file "newFile" to "renamedFile" using the webUI
     Then file "renamedFile" should be listed on the webUI
     But file "newFile" should not be listed on the webUI
+
+
+  Scenario: Rename a folder with an emoji in the name
+    Given user "Alice" has created the following folders
+      | path           |
+      | game day video |
+      | skiing photos  |
+    And user "Alice" has logged in using the webUI
+    When the user renames folder "game day video" to "⛹ game day video" using the webUI
+    And the user renames folder "skiing photos" to "skiing photos ⛷" using the webUI
+    And the user reloads the current page of the webUI
+    Then folder "⛹ game day video" should be listed on the webUI
+    And folder "skiing photos ⛷" should be listed on the webUI
+
+

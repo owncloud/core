@@ -54,3 +54,20 @@ Feature: create folder
       | "'single'quotes"        |
       | "strängé नेपाली folder" |
       | "s,a,m,p,l,e-folder"    |
+
+
+  Scenario: Create folder with an emoji in the name
+    When the user creates a folder with the following name using the webUI
+      | name-parts        |
+      | ⛹ game day video |
+      | skiing photos ⛷  |
+    Then the following folder should be listed on the webUI
+      | name-parts        |
+      | ⛹ game day video |
+      | skiing photos ⛷  |
+    When the user reloads the current page of the webUI
+    Then the following folder should be listed on the webUI
+      | name-parts        |
+      | ⛹ game day video |
+      | skiing photos ⛷  |
+

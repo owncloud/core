@@ -73,3 +73,13 @@ Feature: move folders
       | "double" quotes | "double" quotes     |
       | question?       | question?           |
       | &and#hash       | &and#hash           |
+
+
+  Scenario: Move a folder with an emoji in the name into another folder
+    Given user "Alice" has created folder "skiing photos ⛷"
+    And user "Alice" has created folder "my album"
+    And the user has reloaded the current page of the webUI
+    When the user moves folder "skiing photos ⛷" into folder "my album" using the webUI
+    Then folder "skiing photos ⛷" should not be listed on the webUI
+    But folder "skiing photos ⛷" should be listed in folder "my album" on the webUI
+
