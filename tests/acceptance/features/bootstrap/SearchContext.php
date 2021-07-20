@@ -87,6 +87,7 @@ class SearchContext implements Context {
 			"REPORT",
 			"/",
 			null,
+			$this->featureContext->getStepLineRef(),
 			$body,
 			$this->featureContext->getDavPathVersion()
 		);

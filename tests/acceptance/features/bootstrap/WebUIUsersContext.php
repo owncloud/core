@@ -722,7 +722,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 				$this->featureContext->getBaseUrl(),
 				$this->featureContext->getAdminUsername(),
 				$this->featureContext->getAdminPassword(),
-				'core'
+				'core',
+				$this->featureContext->getStepLineRef()
 			);
 			$results = [];
 			foreach ($appConfigs as $appConfig) {
@@ -750,7 +751,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
-			$this->appParameterValues
+			$this->appParameterValues,
+			$this->featureContext->getStepLineRef()
 		);
 	}
 

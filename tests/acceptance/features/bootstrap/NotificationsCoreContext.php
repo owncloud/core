@@ -306,7 +306,8 @@ class NotificationsCoreContext implements Context {
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			"DELETE",
-			'/apps/testing/api/v1/notifications'
+			'/apps/testing/api/v1/notifications',
+			$this->featureContext->getStepLineRef()
 		);
 		Assert::assertEquals(
 			200,

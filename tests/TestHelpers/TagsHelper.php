@@ -40,6 +40,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $password
 	 * @param string $tagName
 	 * @param string $fileName
+	 * @param string $xRequestId
 	 * @param string|null $fileOwner
 	 * @param string|null $fileOwnerPassword
 	 * @param int $davPathVersionToUse (1|2)
@@ -55,6 +56,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$password,
 		$tagName,
 		$fileName,
+		$xRequestId = '',
 		$fileOwner = null,
 		$fileOwnerPassword = null,
 		$davPathVersionToUse = 2,
@@ -73,7 +75,8 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			$baseUrl,
 			$fileOwner,
 			$fileOwnerPassword,
-			$fileName
+			$fileName,
+			$xRequestId
 		);
 
 		try {
@@ -81,7 +84,8 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 				$baseUrl,
 				$taggingUser,
 				$password,
-				$tagName
+				$tagName,
+				$xRequestId
 			);
 		} catch (Exception $e) {
 			//the tag might be not accessible by the user
@@ -91,7 +95,8 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 					$baseUrl,
 					$adminUsername,
 					$adminPassword,
-					$tagName
+					$tagName,
+					$xRequestId
 				);
 			} else {
 				throw $e;
@@ -106,6 +111,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			"PUT",
 			$path,
 			null,
+			$xRequestId,
 			null,
 			$davPathVersionToUse,
 			"systemtags"
@@ -135,6 +141,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
+	 * @param string $xRequestId
 	 * @param bool $withGroups
 	 *
 	 * @return SimpleXMLElement
@@ -143,6 +150,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$baseUrl,
 		$user,
 		$password,
+		$xRequestId = '',
 		$withGroups = false
 	) {
 		$properties = [
@@ -161,6 +169,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			$password,
 			'/systemtags/',
 			$properties,
+			$xRequestId,
 			1,
 			"systemtags"
 		);
@@ -174,6 +183,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $tagDisplayName
+	 * @param string $xRequestId
 	 * @param bool $withGroups
 	 *
 	 * @return SimpleXMLElement
@@ -183,9 +193,16 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$tagDisplayName,
+		$xRequestId = '',
 		$withGroups = false
 	) {
-		$tagList = self::requestTagsForUser($baseUrl, $user, $password, $withGroups);
+		$tagList = self::requestTagsForUser(
+			$baseUrl,
+			$user,
+			$password,
+			$xRequestId,
+			$withGroups
+		);
 		$tagData = $tagList->xpath(
 			"//d:prop//oc:display-name[text() ='$tagDisplayName']/.."
 		);
@@ -203,6 +220,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $name
+	 * @param string $xRequestId
 	 * @param string $userVisible "true", "1" or "false", "0"
 	 * @param string $userAssignable "true", "1" or "false", "0"
 	 * @param string $userEditable "true", "1" or "false", "0"
@@ -217,6 +235,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$name,
+		$xRequestId = '',
 		$userVisible = "true",
 		$userAssignable = "true",
 		$userEditable = "false",
@@ -242,6 +261,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			"POST",
 			$tagsPath,
 			['Content-Type' => 'application/json',],
+			$xRequestId,
 			\json_encode($body),
 			$davPathVersionToUse,
 			"systemtags"
@@ -254,6 +274,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $user
 	 * @param string $password
 	 * @param int $tagID
+	 * @param string $xRequestId
 	 * @param int $davPathVersionToUse (1|2)
 	 *
 	 * @return ResponseInterface
@@ -263,6 +284,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$tagID,
+		$xRequestId = '',
 		$davPathVersionToUse = 1
 	) {
 		$tagsPath = '/systemtags/' . $tagID;
@@ -273,6 +295,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			"DELETE",
 			$tagsPath,
 			[],
+			$xRequestId,
 			null,
 			$davPathVersionToUse,
 			"systemtags"

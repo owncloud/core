@@ -758,7 +758,13 @@ trait Sharing {
 	) {
 		$password = $this->getActualPassword($password);
 		$headers = ['X-Requested-With' => 'XMLHttpRequest'];
-		$this->response = HttpRequestHelper::get($url, $user, $password, $headers);
+		$this->response = HttpRequestHelper::get(
+			$url,
+			$this->getStepLineRef(),
+			$user,
+			$password,
+			$headers
+		);
 		Assert::assertEquals(
 			200,
 			$this->response->getStatusCode(),
@@ -890,6 +896,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"PUT",
 			$this->getSharesEndpointPath("/$share_id"),
+			$this->getStepLineRef(),
 			$bodyRows,
 			$this->ocsApiVersion
 		);
@@ -986,6 +993,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			$path,
 			$shareType,
+			$this->getStepLineRef(),
 			$shareWith,
 			$publicUpload,
 			$sharePassword,
@@ -1298,6 +1306,7 @@ trait Sharing {
 			$this->getPasswordForUser($user1),
 			"GET",
 			$path,
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -1321,6 +1330,7 @@ trait Sharing {
 				$this->getPasswordForUser($user1),
 				"GET",
 				$path,
+				$this->getStepLineRef(),
 				[],
 				$this->ocsApiVersion
 			);
@@ -1561,6 +1571,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$path,
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -1584,6 +1595,7 @@ trait Sharing {
 				$this->getPasswordForUser($user),
 				"GET",
 				$path,
+				$this->getStepLineRef(),
 				[],
 				$this->ocsApiVersion
 			);
@@ -1912,6 +1924,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath(),
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -2046,6 +2059,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath(),
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -2084,6 +2098,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath("?share_types=" . $rawShareTypes),
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -2105,6 +2120,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath("?path=$path"),
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -2129,6 +2145,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath("?reshares=true&path=$path"),
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -2150,6 +2167,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath("?path=$path&subfiles=true"),
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -2579,6 +2597,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath("?format=json"),
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion,
 			$headers
@@ -2598,6 +2617,7 @@ trait Sharing {
 					$this->getPasswordForUser($user),
 					"DELETE",
 					$this->getSharesEndpointPath("/{$id}"),
+					$this->getStepLineRef(),
 					[],
 					$this->ocsApiVersion
 				);
@@ -2668,6 +2688,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$this->getSharesEndpointPath("?path=$path"),
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -3103,6 +3124,7 @@ trait Sharing {
 			$this->getPasswordForUser($user),
 			"GET",
 			$url,
+			$this->getStepLineRef(),
 			[],
 			$this->ocsApiVersion
 		);
@@ -3182,7 +3204,10 @@ trait Sharing {
 		$url = $this->getBaseUrl() .
 			"/index.php/apps/files_sharing/ajax/publicpreview.php" .
 			"?file=$fileName&t=$token";
-		$resp = HttpRequestHelper::get($url);
+		$resp = HttpRequestHelper::get(
+			$url,
+			$this->getStepLineRef()
+		);
 		$this->setResponse($resp);
 	}
 
@@ -3241,7 +3266,14 @@ trait Sharing {
 
 		$url = $this->getBaseUrl() . "/index.php/apps/files_sharing/external";
 
-		$response = HttpRequestHelper::post($url, $user, $userPassword, null, $body);
+		$response = HttpRequestHelper::post(
+			$url,
+			$this->getStepLineRef(),
+			$user,
+			$userPassword,
+			null,
+			$body
+		);
 		$this->setResponse($response);
 	}
 

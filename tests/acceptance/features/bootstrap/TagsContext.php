@@ -70,6 +70,7 @@ class TagsContext implements Context {
 			$this->featureContext->getActualUsername($user),
 			$this->featureContext->getPasswordForUser($user),
 			$name,
+			$this->featureContext->getStepLineRef(),
 			$userVisible,
 			$userAssignable,
 			$userEditable,
@@ -546,6 +547,7 @@ class TagsContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getActualUsername($user),
 			$this->featureContext->getPasswordForUser($user),
+			$this->featureContext->getStepLineRef(),
 			$withGroups
 		);
 	}
@@ -820,6 +822,7 @@ class TagsContext implements Context {
 			"/systemtags/$tagID",
 			$propertyName,
 			$propertyValue,
+			$this->featureContext->getStepLineRef(),
 			"oc='http://owncloud.org/ns'",
 			$this->featureContext->getDavPathVersion("systemtags"),
 			"systemtags"
@@ -1132,6 +1135,7 @@ class TagsContext implements Context {
 			$this->featureContext->getActualUsername($user),
 			$this->featureContext->getPasswordForUser($user),
 			$tagID,
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);
@@ -1226,6 +1230,7 @@ class TagsContext implements Context {
 			$this->featureContext->getPasswordForUser($taggingUser),
 			$tagName,
 			$fileName,
+			$this->featureContext->getStepLineRef(),
 			$fileOwner,
 			$this->featureContext->getPasswordForUser($fileOwner),
 			$this->featureContext->getDavPathVersion('systemtags'),
@@ -1266,6 +1271,7 @@ class TagsContext implements Context {
 			$this->featureContext->getPasswordForUser($user),
 			$fullPath,
 			$properties,
+			$this->featureContext->getStepLineRef(),
 			1,
 			'systemtags',
 			$this->featureContext->getDavPathVersion('systemtags')
@@ -1851,6 +1857,7 @@ class TagsContext implements Context {
 			"REPORT",
 			null,
 			null,
+			$this->featureContext->getStepLineRef(),
 			$body,
 			2
 		);
@@ -1936,6 +1943,7 @@ class TagsContext implements Context {
 				$this->featureContext->getAdminUsername(),
 				$this->featureContext->getAdminPassword(),
 				$tagID,
+				$this->featureContext->getStepLineRef(),
 				2
 			);
 		}

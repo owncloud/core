@@ -139,7 +139,13 @@ class PublicWebDavContext implements Context {
 			'X-Requested-With' => 'XMLHttpRequest'
 		];
 		$this->featureContext->setResponse(
-			HttpRequestHelper::delete($fullUrl, $userName, $password, $headers)
+			HttpRequestHelper::delete(
+				$fullUrl,
+				$this->featureContext->getStepLineRef(),
+				$userName,
+				$password,
+				$headers
+			)
 		);
 	}
 
@@ -185,7 +191,14 @@ class PublicWebDavContext implements Context {
 			'Destination' => $destination
 		];
 		$this->featureContext->setResponse(
-			HttpRequestHelper::sendRequest($fullUrl, "MOVE", $userName, $password, $headers)
+			HttpRequestHelper::sendRequest(
+				$fullUrl,
+				$this->featureContext->getStepLineRef(),
+				"MOVE",
+				$userName,
+				$password,
+				$headers
+			)
 		);
 	}
 
@@ -299,6 +312,7 @@ class PublicWebDavContext implements Context {
 		}
 		$response = HttpRequestHelper::get(
 			$fullUrl,
+			$this->featureContext->getStepLineRef(),
 			$userName,
 			$password,
 			$headers
@@ -364,6 +378,7 @@ class PublicWebDavContext implements Context {
 		$headers["Destination"] = $fullDestUrl;
 		$response = HttpRequestHelper::sendRequest(
 			$fullSourceUrl,
+			$this->featureContext->getStepLineRef(),
 			"COPY",
 			null,
 			null,
@@ -1250,6 +1265,7 @@ class PublicWebDavContext implements Context {
 		$this->featureContext->setResponse(
 			HttpRequestHelper::sendRequest(
 				$url,
+				$this->featureContext->getStepLineRef(),
 				'MKCOL',
 				$userName,
 				$password
@@ -1328,12 +1344,22 @@ class PublicWebDavContext implements Context {
 			$mtime = \implode(" ", $mtime);
 			Assert::assertStringContainsString(
 				$mtime,
-				\TestHelpers\WebDavHelper::getMtimeOfFileinPublicLinkShare($baseUrl, $fileName, $token)
+				WebDavHelper::getMtimeOfFileinPublicLinkShare(
+					$baseUrl,
+					$fileName,
+					$token,
+					$this->featureContext->getStepLineRef()
+				)
 			);
 		} else {
 			Assert::assertEquals(
 				$mtime,
-				\TestHelpers\WebDavHelper::getMtimeOfFileinPublicLinkShare($baseUrl, $fileName, $token)
+				WebDavHelper::getMtimeOfFileinPublicLinkShare(
+					$baseUrl,
+					$fileName,
+					$token,
+					$this->featureContext->getStepLineRef()
+				)
 			);
 		}
 	}
@@ -1356,7 +1382,12 @@ class PublicWebDavContext implements Context {
 		$baseUrl = $this->featureContext->getBaseUrl();
 		Assert::assertNotEquals(
 			$mtime,
-			\TestHelpers\WebDavHelper::getMtimeOfFileinPublicLinkShare($baseUrl, $fileName, $token)
+			WebDavHelper::getMtimeOfFileinPublicLinkShare(
+				$baseUrl,
+				$fileName,
+				$token,
+				$this->featureContext->getStepLineRef()
+			)
 		);
 	}
 
@@ -1407,6 +1438,7 @@ class PublicWebDavContext implements Context {
 		$headers = \array_merge($headers, $additionalHeaders);
 		$response = HttpRequestHelper::put(
 			$url,
+			$this->featureContext->getStepLineRef(),
 			$userName,
 			$password,
 			$headers,

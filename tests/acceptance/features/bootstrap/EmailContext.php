@@ -61,7 +61,11 @@ class EmailContext implements Context {
 			$expectedContent,
 			$sender
 		);
-		$emailBody = EmailHelper::getBodyOfLastEmail($this->localMailhogUrl, $address);
+		$emailBody = EmailHelper::getBodyOfLastEmail(
+			$this->localMailhogUrl,
+			$address,
+			$this->featureContext->getStepLineRef()
+		);
 		Assert::assertStringContainsString(
 			$expectedContent,
 			$emailBody,
@@ -126,7 +130,11 @@ class EmailContext implements Context {
 	public function theResetEmailSenderEmailAddressShouldBe($user, $senderAddress) {
 		$user = $this->featureContext->getActualUsername($user);
 		$receiverAddress = $this->featureContext->getEmailAddressForUser($user);
-		$actualSenderAddress = EmailHelper::getSenderOfEmail($this->localMailhogUrl, $receiverAddress);
+		$actualSenderAddress = EmailHelper::getSenderOfEmail(
+			$this->localMailhogUrl,
+			$receiverAddress,
+			$this->featureContext->getStepLineRef()
+		);
 		Assert::assertStringContainsString(
 			$senderAddress,
 			$actualSenderAddress,
@@ -146,7 +154,8 @@ class EmailContext implements Context {
 		Assert::assertFalse(
 			EmailHelper::emailReceived(
 				EmailHelper::getLocalMailhogUrl(),
-				$address
+				$address,
+				$this->featureContext->getStepLineRef()
 			),
 			"Email exists with email address: {$address} but was not expected to be."
 		);
@@ -174,7 +183,10 @@ class EmailContext implements Context {
 	 */
 	protected function clearMailHogMessages() {
 		try {
-			EmailHelper::deleteAllMessages($this->getLocalMailhogUrl());
+			EmailHelper::deleteAllMessages(
+				$this->getLocalMailhogUrl(),
+				$this->featureContext->getStepLineRef()
+			);
 		} catch (Exception $e) {
 			echo __METHOD__ .
 				" could not delete mailhog messages, is mailhog set up?\n" .

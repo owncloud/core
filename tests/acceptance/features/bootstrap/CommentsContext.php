@@ -445,6 +445,7 @@ class CommentsContext implements Context {
 			'REPORT',
 			$path,
 			[],
+			$this->featureContext->getStepLineRef(),
 			$body,
 			$this->featureContext->getDavPathVersion(),
 			"comments"

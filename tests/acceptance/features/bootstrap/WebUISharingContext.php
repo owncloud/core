@@ -909,7 +909,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			'core',
-			'user_additional_info_field'
+			'user_additional_info_field',
+			$this->featureContext->getStepLineRef()
 		);
 		if ($userOrGroup === "user") {
 			$userNameActual = $this->featureContext->getActualUsername($userName);
@@ -989,7 +990,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		if ($this->oldMinCharactersForAutocomplete === null) {
 			$oldMinCharactersForAutocomplete
 				= SetupHelper::getSystemConfigValue(
-					'user.search_min_length'
+					'user.search_min_length',
+					$this->featureContext->getStepLineRef()
 				);
 			$this->oldMinCharactersForAutocomplete = \trim(
 				$oldMinCharactersForAutocomplete
@@ -998,7 +1000,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$minCharacters = (int) $minCharacters;
 		SetupHelper::setSystemConfig(
 			'user.search_min_length',
-			$minCharacters
+			$minCharacters,
+			$this->featureContext->getStepLineRef()
 		);
 	}
 
@@ -1012,7 +1015,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		if ($this->oldFedSharingFallbackSetting === null) {
 			$oldFedSharingFallbackSetting
 				= SetupHelper::getSystemConfigValue(
-					'sharing.federation.allowHttpFallback'
+					'sharing.federation.allowHttpFallback',
+					$this->featureContext->getStepLineRef()
 				);
 			$this->oldFedSharingFallbackSetting = \trim(
 				$oldFedSharingFallbackSetting
@@ -1021,6 +1025,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		SetupHelper::setSystemConfig(
 			'sharing.federation.allowHttpFallback',
 			'true',
+			$this->featureContext->getStepLineRef(),
 			'boolean'
 		);
 	}
@@ -1998,7 +2003,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function thePublicDownloadsAllTheSharedDataUsingTheWebui() {
 		$url = $this->publicLinkFilesPage->getDownloadUrl();
-		return HttpRequestHelper::get($url);
+		return HttpRequestHelper::get(
+			$url,
+			$this->featureContext->getStepLineRef()
+		);
 	}
 
 	/**
@@ -2024,7 +2032,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theEmailAddressShouldHaveReceivedAnEmailContainingSharedPublicLink($address) {
 		$content = EmailHelper::getBodyOfLastEmail(
 			EmailHelper::getLocalMailhogUrl(),
-			$address
+			$address,
+			$this->featureContext->getStepLineRef()
 		);
 		$createdPublicLinks = $this->featureContext->getCreatedPublicLinks();
 		$lastCreatedPublicLink = \end($createdPublicLinks);
@@ -2110,22 +2119,28 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function tearDownScenario() {
 		//TODO make a function that can be used for different settings
 		if ($this->oldMinCharactersForAutocomplete === "") {
-			SetupHelper::deleteSystemConfig('user.search_min_length');
+			SetupHelper::deleteSystemConfig(
+				'user.search_min_length',
+				$this->featureContext->getStepLineRef()
+			);
 		} elseif ($this->oldMinCharactersForAutocomplete !== null) {
 			SetupHelper::setSystemConfig(
 				'user.search_min_length',
-				$this->oldMinCharactersForAutocomplete
+				$this->oldMinCharactersForAutocomplete,
+				$this->featureContext->getStepLineRef()
 			);
 		}
 
 		if ($this->oldFedSharingFallbackSetting === "") {
 			SetupHelper::deleteSystemConfig(
-				'sharing.federation.allowHttpFallback'
+				'sharing.federation.allowHttpFallback',
+				$this->featureContext->getStepLineRef()
 			);
 		} elseif ($this->oldFedSharingFallbackSetting !== null) {
 			SetupHelper::setSystemConfig(
 				'sharing.federation.allowHttpFallback',
 				$this->oldFedSharingFallbackSetting,
+				$this->featureContext->getStepLineRef(),
 				'boolean'
 			);
 		}

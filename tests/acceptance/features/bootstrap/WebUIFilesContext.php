@@ -2147,6 +2147,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->featureContext->getUserPassword($user),
 			$remoteFile,
 			$localFile,
+			$this->featureContext->getStepLineRef(),
 			$shouldBeSame
 		);
 	}
@@ -2185,6 +2186,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->featureContext->getAdminPassword(),
 			$remoteFile,
 			$fileInSkeletonFolder,
+			$this->featureContext->getStepLineRef(),
 			$shouldBeSame
 		);
 	}
@@ -2242,7 +2244,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->openedFileActionMenu = $this->selectedFileRow->openFileActionsMenu($session);
 		$url = $this->openedFileActionMenu->getDownloadUrlForFile();
 		$baseUrl = $this->featureContext->getBaseUrlWithoutPath();
-		$this->response = HttpRequestHelper::get($baseUrl . $url);
+		$this->response = HttpRequestHelper::get(
+			$baseUrl . $url,
+			$this->featureContext->getStepLineRef()
+		);
 		Assert::assertEquals(
 			200,
 			$this->response->getStatusCode()

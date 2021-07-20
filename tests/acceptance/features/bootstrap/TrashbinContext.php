@@ -62,6 +62,7 @@ class TrashbinContext implements Context {
 			'DELETE',
 			"/trash-bin/$user/",
 			[],
+			$this->featureContext->getStepLineRef(),
 			null,
 			2,
 			'trash-bin'
@@ -156,6 +157,7 @@ class TrashbinContext implements Context {
 			$password,
 			"/trash-bin/$user/$path",
 			$depth,
+			$this->featureContext->getStepLineRef(),
 			[
 				'oc:trashbin-original-filename',
 				'oc:trashbin-original-location',
@@ -302,6 +304,7 @@ class TrashbinContext implements Context {
 				'oc:trashbin-delete-timestamp',
 				'd:getlastmodified'
 			],
+			$this->featureContext->getStepLineRef(),
 			1,
 			'trash-bin',
 			2
