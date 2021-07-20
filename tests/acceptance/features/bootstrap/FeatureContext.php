@@ -196,6 +196,11 @@ class FeatureContext extends BehatVariablesContext {
 	private $stepLineRef = '';
 
 	/**
+	 * @var bool|null
+	 */
+	private $sendStepLineRef = null;
+
+	/**
 	 *
 	 *
 	 * @var boolean true if TEST_SERVER_FED_URL is defined
@@ -461,6 +466,16 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function isTestingWithLdap() {
 		return (\getenv("TEST_WITH_LDAP") === "true");
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function sendScenarioLineReferencesInXRequestId() {
+		if ($this->sendStepLineRef === null) {
+			$this->sendStepLineRef = (\getenv("SEND_SCENARIO_LINE_REFERENCES") === "true");
+		}
+		return $this->sendStepLineRef;
 	}
 
 	/**
@@ -871,6 +886,10 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getStepLineRef() {
+		if (!$this->sendStepLineRef) {
+			return '';
+		}
+
 		// If we are in BeforeScenario and possibly before any particular step
 		// is being executed, then stepLineRef might be empty. In that case
 		// return just the string for the scenario.
@@ -3200,7 +3219,12 @@ class FeatureContext extends BehatVariablesContext {
 		$featureFile = $scope->getFeature()->getFile();
 		$suiteName = $scope->getSuite()->getName();
 		$featureFileName = \basename($featureFile);
-		$this->scenarioString = $suiteName . '-' . \substr($featureFileName, 0, strpos($featureFileName, '.')) . '-s' . $scenarioLine;
+
+		if ($this->sendScenarioLineReferencesInXRequestId()) {
+			$this->scenarioString = $suiteName . '-' . \substr($featureFileName, 0, strpos($featureFileName, '.')) . '-s' . $scenarioLine;
+		} else {
+			$this->scenarioString = '';
+		}
 
 		// Initialize SetupHelper
 		SetupHelper::init(
@@ -3226,7 +3250,11 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function beforeEachStep(BeforeStepScope $scope) {
-		$this->stepLineRef = $this->scenarioString . '-l' . (string) $scope->getStep()->getLine();
+		if ($this->sendScenarioLineReferencesInXRequestId()) {
+			$this->stepLineRef = $this->scenarioString . '-l' . (string) $scope->getStep()->getLine();
+		} else {
+			$this->stepLineRef = '';
+		}
 	}
 
 	/**
