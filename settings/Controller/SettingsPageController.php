@@ -122,7 +122,7 @@ class SettingsPageController extends Controller {
 		$icon = $section->getIconName() . '.svg';
 		$appPath = \OC_App::getAppPath($section->getID());
 
-		if (\file_exists($appPath . '/img/' . $icon)) {
+		if ($appPath !== false && \file_exists($appPath . '/img/' . $icon)) {
 			$icon = $this->urlGenerator->imagePath($section->getID(), $icon);
 		} else {
 			$icon = $section->getIconName();
