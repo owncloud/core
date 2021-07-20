@@ -3201,7 +3201,6 @@ class FeatureContext extends BehatVariablesContext {
 		$suiteName = $scope->getSuite()->getName();
 		$featureFileName = \basename($featureFile);
 		$this->scenarioString = $suiteName . '-' . \substr($featureFileName, 0, strpos($featureFileName, '.')) . '-s' . $scenarioLine;
-		\var_dump($this->scenarioString);
 
 		// Initialize SetupHelper
 		SetupHelper::init(
@@ -3228,7 +3227,6 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function beforeEachStep(BeforeStepScope $scope) {
 		$this->stepLineRef = $this->scenarioString . '-l' . (string) $scope->getStep()->getLine();
-		\var_dump($this->stepLineRef);
 	}
 
 	/**
