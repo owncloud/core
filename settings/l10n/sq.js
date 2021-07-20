@@ -304,6 +304,7 @@ OC.L10N.register(
     "Desktop client" : "Klient desktopi",
     "Android app" : "Aplikacion për Android",
     "iOS app" : "Aplikacion për iOS",
+    "If you want to support the project\n\t\t\t<a href=\"https://owncloud.com/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">join development</a>\n\t\t\tor\n\t\t\t<a href=\"https://owncloud.com/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">spread the word</a>!" : "Nëse doni të përkrahni projektin\n\t\t\t<a href=\"https://owncloud.com/contribute\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">merrni pjesë në zhvillim</a>\n\t\t\tose\n\t\t\t<a href=\"https://owncloud.com/promote\"\n\t\t\ttarget=\"_blank\" rel=\"noreferrer\">përhapni fjalën</a>!",
     "Show First Run Wizard again" : "Shfaqe sërish Ndihmësin e Herës së Parë",
     "White-listed Domains" : "Përkatësi të Lejuara",
     "No Domains." : "S’ka Përkatësi.",
