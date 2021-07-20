@@ -118,6 +118,7 @@ class Capabilities implements ICapability {
 				$public['password']['enforced'] = $roPasswordEnforced || $rwPasswordEnforced || $woPasswordEnforced || $rwdPasswordEnforced;
 
 				$public['roles_api'] = true;
+				$public['can_create_public_link'] = true;
 
 				$public['expire_date'] = [];
 				$public['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no') === 'yes';
@@ -132,6 +133,12 @@ class Capabilities implements ICapability {
 				$public['multiple'] = true;
 				$public['supports_upload_only'] = true;
 				$public['defaultPublicLinkShareName'] = $this->l10n->t('Public link');
+
+				if ($this->sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled() &&
+					! $this->sharingAllowlist->isUserInPublicShareSharersGroupsAllowlist($this->userSession->getUser())
+				) {
+					$public['can_create_public_link'] = false;
+				}
 			}
 			$res["public"] = $public;
 
@@ -171,14 +178,6 @@ class Capabilities implements ICapability {
 				$res['can_share'] = false;
 			} else {
 				$res['can_share'] = true;
-			}
-
-			if ($this->sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled() &&
-				! $this->sharingAllowlist->isUserInPublicShareSharersGroupsAllowlist($this->userSession->getUser())
-			) {
-				$res['can_create_public_link'] = false;
-			} else {
-				$res['can_create_public_link'] = true;
 			}
 
 			$user_enumeration = [];

@@ -467,6 +467,12 @@ class Share20OcsController extends OCSController {
 				return new Result(null, 404, $this->l->t('Public link sharing is disabled by the administrator'));
 			}
 
+			if ($this->sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled() &&
+				!$this->sharingAllowlist->isUserInPublicShareSharersGroupsAllowlist($this->userSession->getUser())
+			) {
+				return new Result(null, 403, $this->l->t('Public link creation is only possible for certain groups'));
+			}
+
 			// legacy way, expecting that this won't be used together with "create-only" shares
 			$publicUpload = $this->request->getParam('publicUpload', null);
 			// a few permission checks
@@ -482,12 +488,6 @@ class Share20OcsController extends OCSController {
 					$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 					return new Result(null, 404, $this->l->t('Public upload is only possible for publicly shared folders'));
 				}
-			}
-
-			if ($this->sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled() &&
-				!$this->sharingAllowlist->isUserInPublicShareSharersGroupsAllowlist($this->userSession->getUser())
-			) {
-				return new Result(null, 403, $this->l->t('Public upload is only possible for certain groups'));
 			}
 
 			// convert to permissions

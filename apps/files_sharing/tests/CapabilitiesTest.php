@@ -158,7 +158,31 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 
 		$result = $this->getResults($map);
-		$this->assertTrue($result['can_create_public_link']);
+		$this->assertTrue($result['public']['can_create_public_link']);
+	}
+
+	public function testCannotCreatePublicLink() {
+		$this->userSession
+			->expects($this->once())
+			->method('getUser')
+			->willReturn($this->createMock(IUser::class));
+
+		$this->sharingAllowlist
+			->expects($this->once())
+			->method('isPublicShareSharersGroupsAllowlistEnabled')->willReturn(true);
+
+		$this->sharingAllowlist
+			->expects($this->once())
+			->method('isUserInPublicShareSharersGroupsAllowlist')
+			->willReturn(false);
+
+		$map = [
+			['core', 'shareapi_enabled', 'yes', 'yes'],
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+		];
+
+		$result = $this->getResults($map);
+		$this->assertFalse($result['public']['can_create_public_link']);
 	}
 
 	public function providesRolesCapability() {
