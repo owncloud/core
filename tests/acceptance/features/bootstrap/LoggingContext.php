@@ -560,23 +560,6 @@ class LoggingContext implements Context {
 	}
 
 	/**
-	 * Before Scenario for logging. Saves current log settings
-	 *
-	 * @BeforeScenario
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function setUpScenarioLogging() {
-		$logging = LoggingHelper::getLogInfo(
-			$this->featureContext->getStepLineRef()
-		);
-		$this->oldLogLevel = $logging["level"];
-		$this->oldLogBackend = $logging["backend"];
-		$this->oldLogTimezone = $logging["timezone"];
-	}
-
-	/**
 	 * After Scenario for logging. Sets back old log settings
 	 *
 	 * @AfterScenario
@@ -611,5 +594,22 @@ class LoggingContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
+	}
+
+	/**
+	 * Before Scenario for logging. Saves current log settings
+	 *
+	 * @BeforeScenario
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function setUpScenarioLogging() {
+		$logging = LoggingHelper::getLogInfo(
+			$this->featureContext->getStepLineRef()
+		);
+		$this->oldLogLevel = $logging["level"];
+		$this->oldLogBackend = $logging["backend"];
+		$this->oldLogTimezone = $logging["timezone"];
 	}
 }

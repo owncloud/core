@@ -871,6 +871,12 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getStepLineRef() {
+		// If we are in BeforeScenario and possibly before any particular step
+		// is being executed, then stepLineRef might be empty. In that case
+		// return just the string for the scenario.
+		if ($this->stepLineRef === '') {
+			return $this->scenarioString;
+		}
 		return $this->stepLineRef;
 	}
 
@@ -3116,6 +3122,7 @@ class FeatureContext extends BehatVariablesContext {
 			$password,
 			'POST',
 			"/cloud/user-sync/{$user}",
+			$this->getStepLineRef(),
 			[],
 			$this->getOcsApiVersion()
 		);
