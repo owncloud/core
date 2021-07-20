@@ -114,7 +114,7 @@ class ViewController extends Controller {
 		$content = '';
 		$appPath = \OC_App::getAppPath($appName);
 		$scriptPath = $appPath . '/' . $scriptName;
-		if (\file_exists($scriptPath)) {
+		if ($appPath !== false && \file_exists($scriptPath)) {
 			// TODO: sanitize path / script name ?
 			\ob_start();
 			include $scriptPath;

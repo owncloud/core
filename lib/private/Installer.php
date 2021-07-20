@@ -222,7 +222,7 @@ class Installer {
 		$info = self::checkAppsIntegrity($info, $extractDir, $path, $isShipped);
 
 		$currentDir = OC_App::getAppPath($info['id']);
-		if (\is_dir("$currentDir/.git")) {
+		if ($currentDir !== false && \is_dir("$currentDir/.git")) {
 			throw new AppAlreadyInstalledException("App <{$info['id']}> is a git clone - it will not be updated.");
 		}
 
@@ -529,7 +529,7 @@ class Installer {
 			$ms = new MigrationService($app, \OC::$server->getDatabaseConnection());
 			$ms->migrate();
 		} else {
-			if (\is_file($appPath.'/appinfo/database.xml')) {
+			if ($appPath !== false && \is_file($appPath.'/appinfo/database.xml')) {
 				\OC::$server->getLogger()->debug('Create app database from schema file');
 				OC_DB::createDbFromStructure($appPath . '/appinfo/database.xml');
 			}
