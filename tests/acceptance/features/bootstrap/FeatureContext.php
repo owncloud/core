@@ -2329,6 +2329,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminPassword(),
 			'POST',
 			"/apps/testing/api/v1/file",
+			$this->getStepLineRef(),
 			[
 				'file' => TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$destination",
 				'content' => $content
@@ -2352,6 +2353,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminPassword(),
 			'DELETE',
 			"/apps/testing/api/v1/file",
+			$this->getStepLineRef(),
 			['file' => LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$path"],
 			$this->getOcsApiVersion()
 		);
@@ -2504,7 +2506,8 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			'GET',
-			"/apps/testing/api/v1/file?file={$path}"
+			"/apps/testing/api/v1/file?file={$path}",
+			$this->getStepLineRef()
 		);
 		$this->setResponse($response);
 	}
@@ -2522,7 +2525,8 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			'GET',
-			"/apps/testing/api/v1/dir?dir={$path}"
+			"/apps/testing/api/v1/dir?dir={$path}",
+			$this->getStepLineRef()
 		);
 		$this->setResponse($response);
 	}
@@ -2971,6 +2975,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminPassword(),
 			'GET',
 			"/apps/testing/api/v1/app/{$appID}/{$key}",
+			$this->getStepLineRef(),
 			[],
 			$this->getOcsApiVersion()
 		);
@@ -3024,6 +3029,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminPassword(),
 			'GET',
 			"/apps/testing/api/v1/app/{$appID}",
+			$this->getStepLineRef(),
 			[],
 			$this->getOcsApiVersion()
 		);
@@ -3355,6 +3361,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminPassword(),
 			'delete',
 			"/apps/testing/api/v1/lockprovisioning",
+			$this->getStepLineRef(),
 			["global" => "true"]
 		);
 		Assert::assertEquals("200", $response->getStatusCode());
@@ -3575,6 +3582,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminPassword(),
 			'POST',
 			$baseUrl,
+			$this->getStepLineRef(),
 			['days' => $days],
 			$this->getOcsApiVersion()
 		);
@@ -3825,7 +3833,8 @@ class FeatureContext extends BehatVariablesContext {
 			$adminUser,
 			$this->getAdminPassword(),
 			'GET',
-			"/apps/testing/api/v1/trustedservers"
+			"/apps/testing/api/v1/trustedservers",
+			$this->getStepLineRef()
 		);
 		if ($response->getStatusCode() !== 200) {
 			throw new Exception("Could not get the list of trusted servers" . $response->getBody()->getContents());
