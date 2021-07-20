@@ -363,6 +363,7 @@ trait WebDav {
 			$method,
 			$path,
 			$headers,
+			$this->getStepLineRef(),
 			$body,
 			$davPathVersion,
 			$type,
@@ -476,7 +477,8 @@ trait WebDav {
 		}
 		if ($this->oldAsyncSetting === null) {
 			$oldAsyncSetting = SetupHelper::runOcc(
-				['config:system:get', 'dav.enable.async']
+				['config:system:get', 'dav.enable.async'],
+				$this->getStepLineRef()
 			)['stdOut'];
 			$this->oldAsyncSetting = \trim($oldAsyncSetting);
 		}
@@ -515,7 +517,8 @@ trait WebDav {
 	public function slowdownDavRequests($method, $seconds) {
 		if ($this->oldDavSlowdownSetting === null) {
 			$oldDavSlowdownSetting = SetupHelper::runOcc(
-				['config:system:get', 'dav.slowdown']
+				['config:system:get', 'dav.slowdown'],
+				$this->getStepLineRef()
 			)['stdOut'];
 			$this->oldDavSlowdownSetting = \trim($oldDavSlowdownSetting);
 		}
@@ -524,7 +527,8 @@ trait WebDav {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			"PUT",
-			"/apps/testing/api/v1/davslowdown/$method/$seconds"
+			"/apps/testing/api/v1/davslowdown/$method/$seconds",
+			$this->getStepLineRef()
 		);
 	}
 
@@ -1414,6 +1418,7 @@ trait WebDav {
 		$url = $this->getBaseUrl() . "/remote.php/dav/public-files/{$token}";
 		$this->response = HttpRequestHelper::sendRequest(
 			$url,
+			$this->getStepLineRef(),
 			"PROPFIND",
 			null,
 			null,
@@ -1438,7 +1443,8 @@ trait WebDav {
 			$user,
 			$password,
 			$resource,
-			[]
+			[],
+			$this->getStepLineRef()
 		);
 	}
 
@@ -1537,7 +1543,12 @@ trait WebDav {
 		$headerArray = $this->response->getHeader("OC-JobStatus-Location");
 		$url = $headerArray[0];
 		$url = $this->getBaseUrlWithoutPath() . $url;
-		$response = HttpRequestHelper::get($url, $user, $this->getPasswordForUser($user));
+		$response = HttpRequestHelper::get(
+			$url,
+			$this->getStepLineRef(),
+			$user,
+			$this->getPasswordForUser($user)
+		);
 		$contents = $response->getBody()->getContents();
 		$result = \json_decode($contents, true);
 		PHPUnit\Framework\Assert::assertNotNull($result, "'$contents' is not valid JSON");
@@ -1782,6 +1793,7 @@ trait WebDav {
 			$this->getPasswordForUser($user),
 			$path,
 			$folderDepth,
+			$this->getStepLineRef(),
 			$properties,
 			$type,
 			($this->usingOldDavPath) ? 1 : 2
@@ -2041,6 +2053,7 @@ trait WebDav {
 				$this->getUserPassword($user),
 				$source,
 				$destination,
+				$this->getStepLineRef(),
 				$headers,
 				($this->usingOldDavPath) ? 1 : 2,
 				$chunkingVersion,
@@ -2183,7 +2196,8 @@ trait WebDav {
 			$this->getActualUsername($user),
 			$this->getUserPassword($user),
 			$this->acceptanceTestsDirLocation() . $source,
-			$destination
+			$destination,
+			$this->getStepLineRef()
 		);
 	}
 
@@ -2210,6 +2224,7 @@ trait WebDav {
 			$this->getUserPassword($user),
 			$this->acceptanceTestsDirLocation() . $source,
 			$destination,
+			$this->getStepLineRef(),
 			true
 		);
 	}
@@ -2700,6 +2715,7 @@ trait WebDav {
 			$this->getPasswordForUser($user),
 			$this->acceptanceTestsDirLocation() . $source,
 			$destination,
+			$this->getStepLineRef(),
 			["X-OC-Mtime" => $mtime]
 		);
 	}
@@ -2725,7 +2741,13 @@ trait WebDav {
 		$mtime = $mtime->format('U');
 		Assert::assertEquals(
 			$mtime,
-			\TestHelpers\WebDavHelper::getMtimeOfResource($user, $password, $baseUrl, $resource)
+			WebDavHelper::getMtimeOfResource(
+				$user,
+				$password,
+				$baseUrl,
+				$resource,
+				$this->getStepLineRef()
+			)
 		);
 	}
 
@@ -2750,7 +2772,13 @@ trait WebDav {
 		$mtime = $mtime->format('U');
 		Assert::assertNotEquals(
 			$mtime,
-			\TestHelpers\WebDavHelper::getMtimeOfResource($user, $password, $baseUrl, $resource)
+			WebDavHelper::getMtimeOfResource(
+				$user,
+				$password,
+				$baseUrl,
+				$resource,
+				$this->getStepLineRef()
+			)
 		);
 	}
 
@@ -4153,7 +4181,8 @@ trait WebDav {
 				$this->getBaseUrl(),
 				$user,
 				$this->getPasswordForUser($user),
-				$path
+				$path,
+				$this->getStepLineRef()
 			);
 		} catch (Exception $e) {
 			return null;
@@ -4600,7 +4629,10 @@ trait WebDav {
 	 */
 	public function resetOldSettingsAfterScenario() {
 		if ($this->oldAsyncSetting === "") {
-			SetupHelper::runOcc(['config:system:delete', 'dav.enable.async']);
+			SetupHelper::runOcc(
+				['config:system:delete', 'dav.enable.async'],
+				$this->getStepLineRef()
+			);
 		} elseif ($this->oldAsyncSetting !== null) {
 			SetupHelper::runOcc(
 				[
@@ -4610,11 +4642,15 @@ trait WebDav {
 					'boolean',
 					'--value',
 					$this->oldAsyncSetting
-				]
+				],
+				$this->getStepLineRef()
 			);
 		}
 		if ($this->oldDavSlowdownSetting === "") {
-			SetupHelper::runOcc(['config:system:delete', 'dav.slowdown']);
+			SetupHelper::runOcc(
+				['config:system:delete', 'dav.slowdown'],
+				$this->getStepLineRef()
+			);
 		} elseif ($this->oldDavSlowdownSetting !== null) {
 			SetupHelper::runOcc(
 				[
@@ -4622,7 +4658,8 @@ trait WebDav {
 					'dav.slowdown',
 					'--value',
 					$this->oldDavSlowdownSetting
-				]
+				],
+				$this->getStepLineRef()
 			);
 		}
 	}

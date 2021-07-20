@@ -65,6 +65,7 @@ class TUSContext implements Context {
 					$user,
 					$this->featureContext->getDavPathVersion()
 				),
+				$this->featureContext->getStepLineRef(),
 				$user,
 				$password,
 				$headers->getRowsHash(),
@@ -112,6 +113,7 @@ class TUSContext implements Context {
 		$this->featureContext->setResponse(
 			HttpRequestHelper::sendRequest(
 				$this->resourceLocation,
+				$this->featureContext->getStepLineRef(),
 				'PATCH',
 				$user,
 				$password,

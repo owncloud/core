@@ -98,6 +98,7 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 * @param string $password
 	 * @param string $remoteFile
 	 * @param string $localFile
+	 * @param string $xRequestId
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
 	 *                           otherwise check that the file contents are different
 	 *
@@ -110,13 +111,15 @@ class WebDav extends \PHPUnit\Framework\Assert {
 		$password,
 		$remoteFile,
 		$localFile,
+		$xRequestId = '',
 		$shouldBeSame = true
 	) {
 		$result = DownloadHelper::download(
 			$baseUrl,
 			$username,
 			$password,
-			$remoteFile
+			$remoteFile,
+			$xRequestId
 		);
 
 		$localContent = \file_get_contents($localFile);
@@ -147,6 +150,7 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 * @param string $adminPassword
 	 * @param string $remoteFile
 	 * @param string $fileInSkeletonFolder
+	 * @param string $xRequestId
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
 	 *                           otherwise check that the file contents are different
 	 *
@@ -161,18 +165,21 @@ class WebDav extends \PHPUnit\Framework\Assert {
 		$adminPassword,
 		$remoteFile,
 		$fileInSkeletonFolder,
+		$xRequestId = '',
 		$shouldBeSame = true
 	) {
 		$result = DownloadHelper::download(
 			$baseUrl,
 			$username,
 			$password,
-			$remoteFile
+			$remoteFile,
+			$xRequestId
 		);
 		$downloadedContent = $result->getBody()->getContents();
 
 		$localContent = SetupHelper::readSkeletonFile(
 			$fileInSkeletonFolder,
+			$xRequestId,
 			$baseUrl,
 			$adminUsername,
 			$adminPassword

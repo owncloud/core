@@ -41,6 +41,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 *                                 "testing"
 	 * @param boolean $testingState the on|off state the parameter must be set to for the test
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
+	 * @param string $xRequestId
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return array of the original state of the capability set
@@ -55,6 +56,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$testingParameter,
 		$testingState,
 		$savedCapabilitiesXml,
+		$xRequestId = '',
 		$ocsApiVersion = 1
 	) {
 		$originalState = self::wasCapabilitySet(
@@ -74,6 +76,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$testingApp,
 			$testingParameter,
 			$testingState ? 'yes' : 'no',
+			$xRequestId,
 			$ocsApiVersion
 		);
 
@@ -93,6 +96,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 *                                 ['testingApp'] the "app" name as understood by "testing"
 	 *                                 ['testingParameter'] the parameter name as understood by "testing"
 	 *                                 ['testingState'] boolean|string that the parameter must be set to for the test
+	 * @param string $xRequestId
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return array of the original state of each capability set
@@ -102,6 +106,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$capabilitiesArray,
+		$xRequestId = '',
 		$ocsApiVersion = 1
 	) {
 		$appParameterValues = [];
@@ -131,6 +136,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$user,
 			$password,
 			$appParameterValues,
+			$xRequestId,
 			$ocsApiVersion
 		);
 	}
@@ -195,16 +201,23 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
+	 * @param string $xRequestId
 	 *
 	 * @return ResponseInterface
 	 */
-	public static function getCapabilities($baseUrl, $user, $password) {
+	public static function getCapabilities(
+		$baseUrl,
+		$user,
+		$password,
+		$xRequestId = ''
+	) {
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$user,
 			$password,
 			'GET',
 			'/cloud/capabilities',
+			$xRequestId,
 			null
 		);
 
@@ -235,6 +248,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $app
 	 * @param string $parameter
 	 * @param string $value
+	 * @param string $xRequestId
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return void
@@ -246,6 +260,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$app,
 		$parameter,
 		$value,
+		$xRequestId = '',
 		$ocsApiVersion = 2
 	) {
 		$body = ['value' => $value];
@@ -255,6 +270,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$password,
 			'post',
 			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			$xRequestId,
 			$body,
 			$ocsApiVersion
 		);
@@ -283,6 +299,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $user
 	 * @param string $password
 	 * @param array $appParameterValues 'appid' 'configkey' and 'value'
+	 * @param string $xRequestId
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return void
@@ -292,6 +309,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$appParameterValues,
+		$xRequestId = '',
 		$ocsApiVersion = 2
 	) {
 		if (\is_array($appParameterValues)) {
@@ -308,6 +326,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$password,
 			'post',
 			"/apps/testing/api/v1/apps",
+			$xRequestId,
 			$body,
 			$ocsApiVersion
 		);
@@ -337,6 +356,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $password
 	 * @param string $app
 	 * @param string $parameter
+	 * @param string $xRequestId
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return void
@@ -347,6 +367,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$password,
 		$app,
 		$parameter,
+		$xRequestId = '',
 		$ocsApiVersion = 2
 	) {
 		$body = [];
@@ -356,6 +377,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$password,
 			'delete',
 			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			$xRequestId,
 			$body,
 			$ocsApiVersion
 		);
@@ -384,6 +406,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $user
 	 * @param string $password
 	 * @param array $appParameterValues 'appid' and 'configkey' to delete
+	 * @param string $xRequestId
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return void
@@ -393,6 +416,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$appParameterValues,
+		$xRequestId = '',
 		$ocsApiVersion = 2
 	) {
 		$body = ['values' => $appParameterValues];
@@ -402,6 +426,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$password,
 			'delete',
 			"/apps/testing/api/v1/apps",
+			$xRequestId,
 			$body,
 			$ocsApiVersion
 		);
@@ -430,6 +455,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $app
+	 * @param string $xRequestId
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return array with 'configkey', 'value' and 'appid'
@@ -439,6 +465,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$user,
 		$password,
 		$app,
+		$xRequestId = '',
 		$ocsApiVersion = 2
 	) {
 		$response = OcsApiHelper::sendRequest(
@@ -447,6 +474,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$password,
 			'get',
 			"/apps/testing/api/v1/app/{$app}",
+			$xRequestId,
 			null,
 			$ocsApiVersion
 		);
@@ -480,6 +508,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $password
 	 * @param string $app
 	 * @param string $parameter
+	 * @param string $xRequestId
 	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return array with 'configkey', 'value' and 'appid'
@@ -490,6 +519,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 		$password,
 		$app,
 		$parameter,
+		$xRequestId = '',
 		$ocsApiVersion = 2
 	) {
 		$response = OcsApiHelper::sendRequest(
@@ -498,6 +528,7 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			$password,
 			'get',
 			"/apps/testing/api/v1/app/{$app}/{$parameter}",
+			$xRequestId,
 			null,
 			$ocsApiVersion
 		);

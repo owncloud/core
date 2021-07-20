@@ -42,6 +42,7 @@ class WebDavHelper {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $path
+	 * @param string $xRequestId
 	 *
 	 * @throws Exception
 	 * @return int
@@ -50,7 +51,8 @@ class WebDavHelper {
 		$baseUrl,
 		$user,
 		$password,
-		$path
+		$path,
+		$xRequestId = ''
 	) {
 		$body
 			= '<?xml version="1.0"?>
@@ -66,6 +68,7 @@ class WebDavHelper {
 			"PROPFIND",
 			$path,
 			null,
+			$xRequestId,
 			$body
 		);
 		\preg_match(
@@ -97,6 +100,7 @@ class WebDavHelper {
 	 *        string can contain namespace prefix,
 	 *        if no prefix is given 'd:' is used as prefix
 	 *        if associated array is used then the key will be used as namespace
+	 * @param string $xRequestId
 	 * @param int $folderDepth
 	 * @param string $type
 	 * @param int $davPathVersionToUse
@@ -111,6 +115,7 @@ class WebDavHelper {
 		$password,
 		$path,
 		$properties,
+		$xRequestId = '',
 		$folderDepth = 0,
 		$type = "files",
 		$davPathVersionToUse = 2
@@ -158,6 +163,7 @@ class WebDavHelper {
 			"PROPFIND",
 			$path,
 			$headers,
+			$xRequestId,
 			$body,
 			$davPathVersionToUse,
 			$type
@@ -171,6 +177,7 @@ class WebDavHelper {
 	 * @param string $path
 	 * @param string $propertyName
 	 * @param string $propertyValue
+	 * @param string $xRequestId
 	 * @param string $namespaceString string containing prefix and namespace
 	 *                                e.g "x1='http://whatever.org/ns'"
 	 * @param number $davPathVersionToUse
@@ -185,6 +192,7 @@ class WebDavHelper {
 		$path,
 		$propertyName,
 		$propertyValue,
+		$xRequestId = '',
 		$namespaceString = "oc='http://owncloud.org/ns'",
 		$davPathVersionToUse = 2,
 		$type="files"
@@ -211,6 +219,7 @@ class WebDavHelper {
 			"PROPPATCH",
 			$path,
 			[],
+			$xRequestId,
 			$body,
 			$davPathVersionToUse,
 			$type
@@ -258,6 +267,7 @@ class WebDavHelper {
 	 * @param string $password
 	 * @param string $path
 	 * @param array $propertiesArray
+	 * @param string $xRequestId
 	 * @param string $namespaceString
 	 * @param int $davPathVersionToUse
 	 * @param string $type
@@ -270,6 +280,7 @@ class WebDavHelper {
 		$password,
 		$path,
 		$propertiesArray,
+		$xRequestId = '',
 		$namespaceString = "oc='http://owncloud.org/ns'",
 		$davPathVersionToUse = 2,
 		$type="files"
@@ -301,6 +312,7 @@ class WebDavHelper {
 			"PROPPATCH",
 			$path,
 			[],
+			$xRequestId,
 			$body,
 			$davPathVersionToUse,
 			$type
@@ -315,6 +327,7 @@ class WebDavHelper {
 	 * @param string $password
 	 * @param string $path
 	 * @param int $folderDepth
+	 * @param string $xRequestId
 	 * @param string[] $properties
 	 * @param string $type
 	 * @param int $davPathVersionToUse
@@ -328,6 +341,7 @@ class WebDavHelper {
 		$password,
 		$path,
 		$folderDepth,
+		$xRequestId = '',
 		$properties = null,
 		$type = "files",
 		$davPathVersionToUse = 2
@@ -343,6 +357,7 @@ class WebDavHelper {
 			$password,
 			$path,
 			$properties,
+			$xRequestId,
 			$folderDepth,
 			$type,
 			$davPathVersionToUse
@@ -360,6 +375,7 @@ class WebDavHelper {
 	 * @param string $method PUT, GET, DELETE, etc.
 	 * @param string $path
 	 * @param array $headers
+	 * @param string $xRequestId
 	 * @param string|null|resource|StreamInterface $body
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type of request
@@ -381,6 +397,7 @@ class WebDavHelper {
 		$method,
 		$path,
 		$headers,
+		$xRequestId = '',
 		$body = null,
 		$davPathVersionToUse = 1,
 		$type = "files",
@@ -440,6 +457,7 @@ class WebDavHelper {
 		}
 		return HttpRequestHelper::sendRequest(
 			$fullUrl,
+			$xRequestId,
 			$method,
 			$user,
 			$password,
@@ -545,6 +563,7 @@ class WebDavHelper {
 	 * @param string $baseUrl
 	 * @param string $fileName
 	 * @param string $token
+	 * @param string $xRequestId
 	 * @param int $davVersionToUse
 	 *
 	 * @return string
@@ -554,7 +573,8 @@ class WebDavHelper {
 		$baseUrl,
 		$fileName,
 		$token,
-		$davVersionToUse=2
+		$xRequestId = '',
+		$davVersionToUse = 2
 	) {
 		$response = self::propfind(
 			$baseUrl,
@@ -562,6 +582,7 @@ class WebDavHelper {
 			null,
 			"/public-files/{$token}/{$fileName}",
 			['d:getlastmodified'],
+			$xRequestId,
 			1,
 			null,
 			$davVersionToUse
@@ -582,6 +603,7 @@ class WebDavHelper {
 	 * @param string $password
 	 * @param string $baseUrl
 	 * @param string $resource
+	 * @param string $xRequestId
 	 *
 	 * @return string
 	 * @throws Exception
@@ -590,14 +612,16 @@ class WebDavHelper {
 		$user,
 		$password,
 		$baseUrl,
-		$resource
+		$resource,
+		$xRequestId = ''
 	) {
 		$response = self::propfind(
 			$baseUrl,
 			$user,
 			$password,
 			$resource,
-			["getlastmodified"]
+			["getlastmodified"],
+			$xRequestId
 		);
 		$responseXmlObject = HttpRequestHelper::getResponseXml(
 			$response,

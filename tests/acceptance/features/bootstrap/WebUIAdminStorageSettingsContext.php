@@ -104,10 +104,14 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 		$serverRoot = SetupHelper::getServerRoot(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword()
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getStepLineRef()
 		);
 		$mountPath = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$mount";
-		SetupHelper::mkDirOnServer($mountPath);
+		SetupHelper::mkDirOnServer(
+			$mountPath,
+			$this->featureContext->getStepLineRef()
+		);
 		$dirLocation = $serverRoot . '/' . $mountPath;
 		$this->adminStorageSettingsPage->addLocalStorageMount(
 			$this->getSession(),

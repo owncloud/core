@@ -77,6 +77,7 @@ class LoggingContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getStepLineRef(),
 			$linesToRead
 		);
 		$lineNo = 0;
@@ -284,7 +285,8 @@ class LoggingContext implements Context {
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword()
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getStepLineRef()
 		);
 		$expectedLogEntries = $expectedLogEntries->getHash();
 		foreach ($logLines as $logLine) {
@@ -391,7 +393,8 @@ class LoggingContext implements Context {
 		$logLines = LoggingHelper::getLogFileContent(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword()
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getStepLineRef()
 		);
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
@@ -437,7 +440,10 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function owncloudLogLevelIsSetTo($logLevel) {
-		LoggingHelper::setLogLevel($logLevel);
+		LoggingHelper::setLogLevel(
+			$logLevel,
+			$this->featureContext->getStepLineRef()
+		);
 	}
 
 	/**
@@ -452,7 +458,12 @@ class LoggingContext implements Context {
 		$this->owncloudLogLevelIsSetTo($logLevel);
 		$logLevelArray = LoggingHelper::LOG_LEVEL_ARRAY;
 		$logLevelExpected = \array_search($logLevel, $logLevelArray);
-		$logLevelActual = \array_search(LoggingHelper::getLogLevel(), $logLevelArray);
+		$logLevelActual = \array_search(
+			LoggingHelper::getLogLevel(
+				$this->featureContext->getStepLineRef()
+			),
+			$logLevelArray
+		);
 		Assert::assertEquals(
 			$logLevelExpected,
 			$logLevelActual,
@@ -469,7 +480,10 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function owncloudLogBackendIsSetTo($backend) {
-		LoggingHelper::setLogBackend($backend);
+		LoggingHelper::setLogBackend(
+			$backend,
+			$this->featureContext->getStepLineRef()
+		);
 	}
 
 	/**
@@ -482,7 +496,9 @@ class LoggingContext implements Context {
 	 */
 	public function owncloudLogBackendHasBeenSetTo($expectedBackend) {
 		$this->owncloudLogBackendIsSetTo($expectedBackend);
-		$currentBackend = LoggingHelper::getLogBackend();
+		$currentBackend = LoggingHelper::getLogBackend(
+			$this->featureContext->getStepLineRef()
+		);
 		Assert::assertEquals(
 			$expectedBackend,
 			$currentBackend,
@@ -499,7 +515,10 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function owncloudLogTimezoneIsSetTo($timezone) {
-		LoggingHelper::setLogTimezone($timezone);
+		LoggingHelper::setLogTimezone(
+			$timezone,
+			$this->featureContext->getStepLineRef()
+		);
 	}
 
 	/**
@@ -512,7 +531,9 @@ class LoggingContext implements Context {
 	 */
 	public function owncloudLogTimezoneHasBeenSetTo($expectedTimezone) {
 		$this->owncloudLogTimezoneIsSetTo($expectedTimezone);
-		$currentTimezone = LoggingHelper::getLogTimezone();
+		$currentTimezone = LoggingHelper::getLogTimezone(
+			$this->featureContext->getStepLineRef()
+		);
 		Assert::assertEquals(
 			$expectedTimezone,
 			$currentTimezone,
@@ -533,7 +554,8 @@ class LoggingContext implements Context {
 		LoggingHelper::clearLogFile(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword()
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getStepLineRef()
 		);
 	}
 
@@ -546,7 +568,9 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function setUpScenarioLogging() {
-		$logging = LoggingHelper::getLogInfo();
+		$logging = LoggingHelper::getLogInfo(
+			$this->featureContext->getStepLineRef()
+		);
 		$this->oldLogLevel = $logging["level"];
 		$this->oldLogBackend = $logging["backend"];
 		$this->oldLogTimezone = $logging["timezone"];
@@ -561,7 +585,12 @@ class LoggingContext implements Context {
 	 * @throws \Exception
 	 */
 	public function tearDownScenarioLogging() {
-		LoggingHelper::restoreLoggingStatus($this->oldLogLevel, $this->oldLogBackend, $this->oldLogTimezone);
+		LoggingHelper::restoreLoggingStatus(
+			$this->oldLogLevel,
+			$this->oldLogBackend,
+			$this->oldLogTimezone,
+			$this->featureContext->getStepLineRef()
+		);
 	}
 
 	/**

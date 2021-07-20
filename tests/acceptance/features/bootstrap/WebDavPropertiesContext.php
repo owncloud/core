@@ -244,7 +244,8 @@ class WebDavPropertiesContext implements Context {
 				$username,
 				$this->featureContext->getPasswordForUser($username),
 				$path,
-				$properties
+				$properties,
+				$this->featureContext->getStepLineRef()
 			)
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
@@ -277,7 +278,8 @@ class WebDavPropertiesContext implements Context {
 				$this->featureContext->getActualUsername($user),
 				$this->featureContext->getUserPassword($user),
 				$path,
-				$properties
+				$properties,
+				$this->featureContext->getStepLineRef()
 			)
 		);
 	}
@@ -334,6 +336,7 @@ class WebDavPropertiesContext implements Context {
 			$path,
 			$propertyName,
 			$propertyValue,
+			$this->featureContext->getStepLineRef(),
 			$namespace,
 			$this->featureContext->getDavPathVersion()
 		);

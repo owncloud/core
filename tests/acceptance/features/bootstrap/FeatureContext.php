@@ -21,6 +21,7 @@
  *
  */
 
+use Behat\Behat\Hook\Scope\BeforeStepScope;
 use rdx\behatvars\BehatVariablesContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
@@ -175,6 +176,24 @@ class FeatureContext extends BehatVariablesContext {
 	 * @var string
 	 */
 	private $remoteBaseUrl = '';
+
+	/**
+	 * The suite name, feature name and scenario line number.
+	 * Example: apiComments-createComments-s24
+	 *
+	 * @var string
+	 */
+	private $scenarioString = '';
+
+	/**
+	 * A full unique reference to the step that is currently executing.
+	 * Example: apiComments-createComments-s24-l28
+	 * That is line 28, in the scenario at line 24, in the createComments feature
+	 * in the apiComments suite.
+	 *
+	 * @var string
+	 */
+	private $stepLineRef = '';
 
 	/**
 	 *
@@ -847,6 +866,15 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * returns the reference to the current line being executed.
+	 *
+	 * @return string
+	 */
+	public function getStepLineRef() {
+		return $this->stepLineRef;
+	}
+
+	/**
 	 * get the exit status of the last occ command
 	 * app acceptance tests that have their own step code may need to process this
 	 *
@@ -1118,12 +1146,23 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function setCSRFDotDisabled($setting) {
-		$oldCSRFSetting = SetupHelper::getSystemConfigValue('csrf.disabled');
+		$oldCSRFSetting = SetupHelper::getSystemConfigValue(
+			'csrf.disabled',
+			$this->getStepLineRef()
+		);
 
 		if ($setting === "") {
-			SetupHelper::deleteSystemConfig('csrf.disabled');
+			SetupHelper::deleteSystemConfig(
+				'csrf.disabled',
+				$this->getStepLineRef()
+			);
 		} elseif (($setting === 'true') || ($setting === 'false')) {
-			SetupHelper::setSystemConfig('csrf.disabled', $setting, 'boolean');
+			SetupHelper::setSystemConfig(
+				'csrf.disabled',
+				$setting,
+				$this->getStepLineRef(),
+				'boolean'
+			);
 		} else {
 			throw new \http\Exception\InvalidArgumentException(
 				'setting must be "true", "false" or ""'
@@ -1316,6 +1355,7 @@ class FeatureContext extends BehatVariablesContext {
 
 		$this->response = HttpRequestHelper::sendRequest(
 			$fullUrl,
+			$this->getStepLineRef(),
 			$verb,
 			$user,
 			$password,
@@ -1622,6 +1662,7 @@ class FeatureContext extends BehatVariablesContext {
 
 		$this->response = HttpRequestHelper::get(
 			$loginUrl,
+			$this->getStepLineRef(),
 			null,
 			null,
 			$this->guzzleClientHeaders,
@@ -1641,6 +1682,7 @@ class FeatureContext extends BehatVariablesContext {
 		];
 		$this->response = HttpRequestHelper::post(
 			$loginUrl,
+			$this->getStepLineRef(),
 			null,
 			null,
 			$this->guzzleClientHeaders,
@@ -1680,6 +1722,7 @@ class FeatureContext extends BehatVariablesContext {
 		$url = $this->substituteInLineCodes($url, $user);
 		$this->response = HttpRequestHelper::sendRequest(
 			$url,
+			$this->getStepLineRef(),
 			$method,
 			null,
 			null,
@@ -1727,6 +1770,7 @@ class FeatureContext extends BehatVariablesContext {
 		$url = $this->substituteInLineCodes($url, $user);
 		$this->response = HttpRequestHelper::sendRequest(
 			$url,
+			$this->getStepLineRef(),
 			$method,
 			null,
 			null,
@@ -1794,6 +1838,7 @@ class FeatureContext extends BehatVariablesContext {
 	public function mkDirOnServer($dirPathFromServerRoot) {
 		SetupHelper::mkDirOnServer(
 			$dirPathFromServerRoot,
+			$this->getStepLineRef(),
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword()
@@ -1814,6 +1859,7 @@ class FeatureContext extends BehatVariablesContext {
 		SetupHelper::createFileOnServer(
 			$filePathFromServerRoot,
 			$content,
+			$this->getStepLineRef(),
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword()
@@ -1847,6 +1893,7 @@ class FeatureContext extends BehatVariablesContext {
 	public function fileHasBeenDeletedInLocalStorage($filename) {
 		SetupHelper::deleteFileOnServer(
 			LOCAL_STORAGE_DIR_ON_REMOTE_SERVER . "/$filename",
+			$this->getStepLineRef(),
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword()
@@ -2343,6 +2390,7 @@ class FeatureContext extends BehatVariablesContext {
 
 		return HttpRequestHelper::get(
 			$fullUrl,
+			$this->getStepLineRef(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$this->guzzleClientHeaders,
@@ -2894,7 +2942,8 @@ class FeatureContext extends BehatVariablesContext {
 			$this->localServerRoot = SetupHelper::getServerRoot(
 				$this->getBaseUrl(),
 				$this->getAdminUsername(),
-				$this->getAdminPassword()
+				$this->getAdminPassword(),
+				$this->getStepLineRef()
 			);
 		}
 		return $this->localServerRoot;
@@ -3134,6 +3183,12 @@ class FeatureContext extends BehatVariablesContext {
 		$environment->registerContext($this->ocsContext);
 		$environment->registerContext($this->authContext);
 		$environment->registerContext($this->appConfigurationContext);
+		$scenarioLine = $scope->getScenario()->getLine();
+		$featureFile = $scope->getFeature()->getFile();
+		$suiteName = $scope->getSuite()->getName();
+		$featureFileName = \basename($featureFile);
+		$this->scenarioString = $suiteName . '-' . \substr($featureFileName, 0, strpos($featureFileName, '.')) . '-s' . $scenarioLine;
+		\var_dump($this->scenarioString);
 
 		// Initialize SetupHelper
 		SetupHelper::init(
@@ -3150,13 +3205,30 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * This will run before EVERY step.
+	 *
+	 * @BeforeStep
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function beforeEachStep(BeforeStepScope $scope) {
+		$this->stepLineRef = $this->scenarioString . '-l' . (string) $scope->getStep()->getLine();
+		\var_dump($this->stepLineRef);
+	}
+
+	/**
 	 * @BeforeScenario @local_storage
 	 *
 	 * @return void
 	 */
 	public function setupLocalStorageBefore() {
 		$storageName = "local_storage";
-		$result = SetupHelper::createLocalStorageMount($storageName);
+		$result = SetupHelper::createLocalStorageMount(
+			$storageName,
+			$this->getStepLineRef()
+		);
 		$storageId = $result['storageId'];
 		$this->addStorageId($storageName, $storageId);
 		SetupHelper::runOcc(
@@ -3165,7 +3237,8 @@ class FeatureContext extends BehatVariablesContext {
 				$storageId,
 				'enable_sharing',
 				'true'
-			]
+			],
+			$this->getStepLineRef()
 		);
 	}
 
@@ -3198,7 +3271,8 @@ class FeatureContext extends BehatVariablesContext {
 					'files_external:delete',
 					'-y',
 					$storageId
-				]
+				],
+				$this->getStepLineRef()
 			);
 		}
 		$this->storageIds = [];
@@ -3245,7 +3319,8 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function removeTemporaryStorageOnServerAfter() {
 		SetupHelper::rmDirOnServer(
-			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER
+			TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER,
+			$this->getStepLineRef()
 		);
 	}
 
@@ -3341,7 +3416,12 @@ class FeatureContext extends BehatVariablesContext {
 			);
 		}
 
-		HttpRequestHelper::post($fullUrl, $adminUsername, $adminPassword);
+		HttpRequestHelper::post(
+			$fullUrl,
+			'',
+			$adminUsername,
+			$adminPassword
+		);
 	}
 
 	/**
@@ -3509,7 +3589,8 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getBaseUrl(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
-			$capabilitiesArray
+			$capabilitiesArray,
+			$this->getStepLineRef()
 		);
 	}
 
@@ -3583,6 +3664,7 @@ class FeatureContext extends BehatVariablesContext {
 		}
 		$return = SetupHelper::runOcc(
 			$args,
+			$this->getStepLineRef(),
 			$adminUsername,
 			$adminPassword,
 			$baseUrl,
@@ -3801,6 +3883,7 @@ class FeatureContext extends BehatVariablesContext {
 					$this->resetAppConfigs();
 					$result = SetupHelper::runOcc(
 						['config:list', '--private'],
+						$this->getStepLineRef(),
 						$this->getAdminUsername(),
 						$this->getAdminPassword(),
 						$this->getBaseUrl(),
@@ -3845,6 +3928,7 @@ class FeatureContext extends BehatVariablesContext {
 		}
 		$result = SetupHelper::runOcc(
 			['config:list'],
+			$this->getStepLineRef(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$this->getBaseUrl(),
@@ -3901,6 +3985,7 @@ class FeatureContext extends BehatVariablesContext {
 		}
 		SetupHelper::runBulkOcc(
 			$commands,
+			$this->getStepLineRef(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$this->getBaseUrl()

@@ -187,7 +187,8 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 				$this->featureContext->getBaseUrl(),
 				$this->featureContext->getAdminUsername(),
 				$this->featureContext->getAdminPassword(),
-				'core'
+				'core',
+				$this->featureContext->getStepLineRef()
 			);
 			$results = [];
 			foreach ($appConfigs as $appConfig) {
@@ -198,7 +199,8 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			// Save the app configs
 			$this->appParameterValues = $results;
 			$this->logLevelValue = SetupHelper::getSystemConfigValue(
-				"loglevel"
+				"loglevel",
+				$this->featureContext->getStepLineRef()
 			);
 		}
 	}
@@ -210,7 +212,10 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theVersionOfOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
 		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersion();
-		$expectedVersion = SetupHelper::getSystemConfigValue('version');
+		$expectedVersion = SetupHelper::getSystemConfigValue(
+			'version',
+			$this->featureContext->getStepLineRef()
+		);
 		Assert::assertEquals(
 			\trim($expectedVersion),
 			$actualVersion,
@@ -228,7 +233,10 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 */
 	public function theVersionStringOfTheOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
 		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersionString();
-		$expectedVersion = SetupHelper::runOcc(['-V'])['stdOut'];
+		$expectedVersion = SetupHelper::runOcc(
+			['-V'],
+			$this->featureContext->getStepLineRef()
+		)['stdOut'];
 		Assert::assertStringEndsWith(
 			$actualVersion,
 			\trim($expectedVersion),
@@ -252,11 +260,13 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
-			$this->appParameterValues
+			$this->appParameterValues,
+			$this->featureContext->getStepLineRef()
 		);
 		SetupHelper::setSystemConfig(
 			"loglevel",
-			$this->logLevelValue
+			$this->logLevelValue,
+			$this->featureContext->getStepLineRef()
 		);
 	}
 }

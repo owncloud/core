@@ -145,12 +145,20 @@ class OcisHelper {
 	 * @param string $source
 	 * @param string $userId
 	 * @param string $password
+	 * @param string $xRequestId
 	 * @param string $destination
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function recurseUpload($baseUrl, $source, $userId, $password, $destination = '') {
+	public static function recurseUpload(
+		$baseUrl,
+		$source,
+		$userId,
+		$password,
+		$xRequestId = '',
+		$destination = ''
+	) {
 		if ($destination !== '') {
 			$response = WebDavHelper::makeDavRequest(
 				$baseUrl,
@@ -158,7 +166,8 @@ class OcisHelper {
 				$password,
 				"MKCOL",
 				$destination,
-				[]
+				[],
+				$xRequestId
 			);
 			if ($response->getStatusCode() !== 201) {
 				throw new \Exception("Could not create folder destination" . $response->getBody()->getContents());
@@ -176,6 +185,7 @@ class OcisHelper {
 						$sourcePath,
 						$userId,
 						$password,
+						$xRequestId,
 						$destinationPath
 					);
 				} else {
@@ -184,7 +194,8 @@ class OcisHelper {
 						$userId,
 						$password,
 						$sourcePath,
-						$destinationPath
+						$destinationPath,
+						$xRequestId
 					);
 					$responseStatus = $response->getStatusCode();
 					if ($responseStatus !== 201) {
@@ -279,12 +290,19 @@ class OcisHelper {
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
+	 * @param string $xRequestId
 	 *
 	 * @return void
 	 */
-	public static function createEOSStorageHome($baseUrl, $user, $password) {
+	public static function createEOSStorageHome(
+		$baseUrl,
+		$user,
+		$password,
+		$xRequestId = ''
+	) {
 		HttpRequestHelper::get(
 			$baseUrl . "/ocs/v2.php/apps/notifications/api/v1/notifications",
+			$xRequestId,
 			$user,
 			$password
 		);

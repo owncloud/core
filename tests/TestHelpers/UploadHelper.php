@@ -41,6 +41,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $password
 	 * @param string $source
 	 * @param string $destination
+	 * @param string $xRequestId
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param int    $chunkingVersion     (1|2|null)
@@ -55,6 +56,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		$password,
 		$source,
 		$destination,
+		$xRequestId = '',
 		$headers = [],
 		$davPathVersionToUse = 1,
 		$chunkingVersion = null,
@@ -71,6 +73,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				"PUT",
 				$destination,
 				$headers,
+				$xRequestId,
 				$data,
 				$davPathVersionToUse
 			);
@@ -92,6 +95,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				'MKCOL',
 				$v2ChunksDestination,
 				$headers,
+				$xRequestId,
 				null,
 				$davPathVersionToUse,
 				"uploads"
@@ -118,6 +122,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				"PUT",
 				$filename,
 				$headers,
+				$xRequestId,
 				$chunk,
 				$davPathVersionToUse,
 				$davRequestType
@@ -139,6 +144,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				'MOVE',
 				$source,
 				$headers,
+				$xRequestId,
 				null,
 				$davPathVersionToUse,
 				"uploads"
@@ -158,6 +164,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $password
 	 * @param string $source source file path
 	 * @param string $destination destination path on the server
+	 * @param string $xRequestId
 	 * @param bool $overwriteMode when false creates separate files to test uploading brand new files,
 	 *                            when true it just overwrites the same file over and over again with the same name
 	 *
@@ -169,6 +176,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		$password,
 		$source,
 		$destination,
+		$xRequestId = '',
 		$overwriteMode = false
 	) {
 		$responses = [];
@@ -199,6 +207,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 					$password,
 					$source,
 					$finalDestination,
+					$xRequestId,
 					[],
 					$davPathVersion,
 					$chunkingVersion,

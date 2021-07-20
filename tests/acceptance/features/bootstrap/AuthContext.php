@@ -590,6 +590,7 @@ class AuthContext implements Context {
 		$this->featureContext->setResponse(
 			HttpRequestHelper::sendRequest(
 				$fullUrl,
+				$this->featureContext->getStepLineRef(),
 				$method,
 				null,
 				null,
@@ -620,6 +621,7 @@ class AuthContext implements Context {
 		$this->featureContext->setResponse(
 			HttpRequestHelper::post(
 				$url,
+				$this->featureContext->getStepLineRef(),
 				null,
 				null,
 				$headers,
@@ -652,6 +654,7 @@ class AuthContext implements Context {
 		$this->featureContext->setResponse(
 			HttpRequestHelper::delete(
 				$url,
+				$this->featureContext->getStepLineRef(),
 				null,
 				null,
 				$headers,
@@ -704,7 +707,16 @@ class AuthContext implements Context {
 		);
 		$headers = ['Content-Type' => 'application/json'];
 		$url = $this->featureContext->getBaseUrl() . '/token/generate';
-		$this->featureContext->setResponse(HttpRequestHelper::post($url, null, null, $headers, $body));
+		$this->featureContext->setResponse(
+			HttpRequestHelper::post(
+				$url,
+				$this->featureContext->getStepLineRef(),
+				null,
+				null,
+				$headers,
+				$body
+			)
+		);
 		$this->featureContext->theHTTPStatusCodeShouldBe("200");
 		$this->clientToken
 			= \json_decode($this->featureContext->getResponse()->getBody()->getContents())->token;
@@ -973,6 +985,7 @@ class AuthContext implements Context {
 		$this->featureContext->setResponse(
 			HttpRequestHelper::get(
 				$loginUrl,
+				$this->featureContext->getStepLineRef(),
 				null,
 				null,
 				null,
@@ -993,6 +1006,7 @@ class AuthContext implements Context {
 		$this->featureContext->setResponse(
 			HttpRequestHelper::post(
 				$loginUrl,
+				$this->featureContext->getStepLineRef(),
 				null,
 				null,
 				null,
@@ -1034,6 +1048,7 @@ class AuthContext implements Context {
 		$occStatus = SetupHelper::setSystemConfig(
 			'token_auth_enforced',
 			$value,
+			$this->featureContext->getStepLineRef(),
 			'boolean'
 		);
 		if ($occStatus['code'] !== "0") {
@@ -1075,6 +1090,7 @@ class AuthContext implements Context {
 			}
 			SetupHelper::deleteSystemConfig(
 				'token_auth_enforced',
+				$this->featureContext->getStepLineRef(),
 				null,
 				$appTokenForOccCommand,
 				null,

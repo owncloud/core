@@ -134,6 +134,7 @@ class AppConfigurationContext implements Context {
 				$password,
 				'GET',
 				'/cloud/capabilities',
+				$this->featureContext->getStepLineRef(),
 				[],
 				$this->featureContext->getOcsApiVersion()
 			)
@@ -299,6 +300,7 @@ class AppConfigurationContext implements Context {
 			$app,
 			$parameter,
 			$value,
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getOcsApiVersion()
 		);
 	}
@@ -314,6 +316,7 @@ class AppConfigurationContext implements Context {
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$appParameterValues,
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getOcsApiVersion()
 		);
 	}
@@ -333,6 +336,7 @@ class AppConfigurationContext implements Context {
 			$this->featureContext->getAdminPassword(),
 			'POST',
 			"/apps/testing/api/v1/trustedservers",
+			$this->featureContext->getStepLineRef(),
 			['url' => $this->featureContext->substituteInLineCodes($url)]
 		);
 		$this->featureContext->setResponse($response);
@@ -445,6 +449,7 @@ class AppConfigurationContext implements Context {
 			$this->featureContext->getAdminPassword(),
 			'DELETE',
 			"/apps/testing/api/v1/trustedservers",
+			$this->featureContext->getStepLineRef(),
 			['url' => $this->featureContext->substituteInLineCodes($url)]
 		);
 		$this->featureContext->setResponse($response);
@@ -482,7 +487,8 @@ class AppConfigurationContext implements Context {
 			$adminUser,
 			$this->featureContext->getAdminPassword(),
 			'DELETE',
-			"/apps/testing/api/v1/trustedservers/all"
+			"/apps/testing/api/v1/trustedservers/all",
+			$this->featureContext->getStepLineRef()
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -533,6 +539,7 @@ class AppConfigurationContext implements Context {
 			$this->featureContext->getAdminPassword(),
 			'POST',
 			"/apps/testing/api/v1/expire-share/{$share_id}",
+			$this->featureContext->getStepLineRef(),
 			[],
 			$this->featureContext->getOcsApiVersion()
 		);
