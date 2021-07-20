@@ -1,0 +1,11 @@
+Bugfix: avoid potential open_basedir errors after upgrade to PHP 7.4.21
+
+PHP 7.4.21 checks open_basedir settings more exactly. Calls to file_exists can
+emit log messages like "file_exists(): open_basedir restriction in effect" that
+were not emitted by PHP 7.4.20.
+
+This change fixes an incorrect file_exists check. The open_basedir message will
+no longer be emitted in this case.
+
+https://github.com/owncloud/core/issues/39034
+https://github.com/owncloud/core/pull/39035
