@@ -39,6 +39,7 @@ Summary
 * Bugfix - Fix file locks for public shares: [#38922](https://github.com/owncloud/core/pull/38922)
 * Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
+* Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -340,6 +341,18 @@ Details
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 
    https://github.com/owncloud/core/pull/39013
+
+* Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
+
+   PHP 7.4.21 checks open_basedir settings more exactly. Calls to file_exists can emit log
+   messages like "file_exists(): open_basedir restriction in effect" that were not emitted by
+   PHP 7.4.20.
+
+   This change fixes an incorrect file_exists check. The open_basedir message will no longer be
+   emitted in this case.
+
+   https://github.com/owncloud/core/issues/39034
+   https://github.com/owncloud/core/pull/39035
 
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 
