@@ -1186,7 +1186,7 @@ class Share20OcsControllerTest extends TestCase {
 		$this->sharingAllowlist->method('isPublicShareSharersGroupsAllowlistEnabled')->willReturn(true);
 		$this->sharingAllowlist->method('isUserInPublicShareSharersGroupsAllowlist')->willReturn(false);
 
-		$expected = new Result(null, 403, 'Public upload is only possible for certain groups');
+		$expected = new Result(null, 403, 'Public link creation is only possible for certain groups');
 		$result = $this->ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());

@@ -39,7 +39,7 @@ Feature: public share sharers groups setting
       | path | fileToShare.txt |
     Then the OCS status code should be "403"
     And the HTTP status code should be "200"
-    And the OCS status message should be "Public upload is only possible for certain groups"
+    And the OCS status message should be "Public link creation is only possible for certain groups"
 
 
   Scenario: existing links can still be updated by sharers even if they are not present in public share sharers groups
@@ -110,4 +110,4 @@ Feature: public share sharers groups setting
       | path | fileToShare.txt |
     Then the OCS status code should be "403"
     And the HTTP status code should be "200"
-    And the OCS status message should be "Public upload is only possible for certain groups"
+    And the OCS status message should be "Public link creation is only possible for certain groups"
