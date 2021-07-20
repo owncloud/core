@@ -23,6 +23,7 @@ namespace OCA\Files_Sharing;
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
 use OCP\IL10N;
+use OCP\IUserSession;
 use OCP\Util\UserSearch;
 use OCP\Share\IManager;
 
@@ -43,20 +44,44 @@ class Capabilities implements ICapability {
 	 */
 	private $userSearch;
 
-	/** @var IL10N */
+	/**
+	 * @var IL10N
+	 */
 	private $l10n;
+
+	/**
+	 * @var SharingAllowlist
+	 */
+	private $sharingAllowlist;
+
+	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
 
 	/**
 	 * Capabilities constructor.
 	 *
 	 * @param IConfig $config
 	 * @param UserSearch $userSearch
+	 * @param IL10N $l10n
+	 * @param SharingAllowlist $sharingAllowlist
+	 * @param IUserSession $userSession
 	 */
-	public function __construct(IManager $shareManager, IConfig $config, UserSearch $userSearch, IL10N $l10n) {
+	public function __construct(
+		IManager $shareManager,
+		IConfig $config,
+		UserSearch $userSearch,
+		IL10N $l10n,
+		SharingAllowlist $sharingAllowlist,
+		IUserSession $userSession
+	) {
 		$this->shareManager = $shareManager;
 		$this->config = $config;
 		$this->userSearch = $userSearch;
 		$this->l10n = $l10n;
+		$this->sharingAllowlist = $sharingAllowlist;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -146,6 +171,14 @@ class Capabilities implements ICapability {
 				$res['can_share'] = false;
 			} else {
 				$res['can_share'] = true;
+			}
+
+			if ($this->sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled() &&
+				! $this->sharingAllowlist->isUserInPublicShareSharersGroupsAllowlist($this->userSession->getUser())
+			) {
+				$res['can_create_public_link'] = false;
+			} else {
+				$res['can_create_public_link'] = true;
 			}
 
 			$user_enumeration = [];
