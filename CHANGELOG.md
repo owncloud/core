@@ -3,7 +3,7 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.7.0...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.8.0...master
 
 Summary
 -------
@@ -50,7 +50,6 @@ Summary
 * Change - Update PHP minimum version to 7.2.5: [#38934](https://github.com/owncloud/core/pull/38934)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Update PHP dependencies: [#38891](https://github.com/owncloud/core/pull/38891)
-* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 * Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
@@ -58,7 +57,6 @@ Summary
 * Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
 * Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
 * Enhancement - Improve tab headers UI: [#38653](https://github.com/owncloud/core/pull/38653)
-* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 * Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
 * Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
@@ -475,20 +473,6 @@ Details
 
    https://github.com/owncloud/core/pull/38891
 
-* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
-
-   This adjustment provides a new way to add a public share to ownCloud. A new button will be
-   displayed where you can easily add the share to the current server without entering the string,
-   this requires less user input. Next to this button, a dropdown menu will be displayed, where you
-   can see the current server or change the server. Hitting change a server will now display a
-   prompt with a detailed explanation and more space to enter another server address.
-
-   https://github.com/owncloud/enterprise/issues/4393
-   https://github.com/owncloud/core/pull/38712
-   https://github.com/owncloud/core/pull/38928
-   https://github.com/owncloud/core/pull/38942
-   https://github.com/owncloud/core/pull/38948
-
 * Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
 
    This adjustment improves the overall look and feel of the login form. Furthermore, the
@@ -545,15 +529,6 @@ Details
    left-aligned.
 
    https://github.com/owncloud/core/pull/38653
-
-* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
-
-   With this change new config parameters has been introduced. Admins can now decide, based on
-   file extensions, directory names and size, if a resource should not be observed by the trashbin
-   and deleted immediately.
-
-   https://github.com/owncloud/core/pull/38704
-   https://github.com/owncloud/core/pull/38960
 
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 
@@ -709,6 +684,45 @@ Details
    case we should log the mount-count for easier debugging.
 
    https://github.com/owncloud/core/pull/39015
+
+Changelog for ownCloud Core [10.8.0] (2021-07-15)
+=======================================
+The following sections list the changes in ownCloud core 10.8.0 relevant to
+ownCloud admins and users.
+
+[10.8.0]: https://github.com/owncloud/core/compare/v10.7.0...v10.8.0
+
+Summary
+-------
+
+* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
+* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
+
+Details
+-------
+
+* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
+
+   This adjustment provides a new way to add a public share to ownCloud. A new button will be
+   displayed where you can easily add the share to the current server without entering the string,
+   this requires less user input. Next to this button, a dropdown menu will be displayed, where you
+   can see the current server or change the server. Hitting change a server will now display a
+   prompt with a detailed explanation and more space to enter another server address.
+
+   https://github.com/owncloud/enterprise/issues/4393
+   https://github.com/owncloud/core/pull/38712
+   https://github.com/owncloud/core/pull/38928
+   https://github.com/owncloud/core/pull/38942
+   https://github.com/owncloud/core/pull/38948
+
+* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
+
+   With this change new config parameters has been introduced. Admins can now decide, based on
+   file extensions, directory names and size, if a resource should not be observed by the trashbin
+   and deleted immediately.
+
+   https://github.com/owncloud/core/pull/38704
+   https://github.com/owncloud/core/pull/38960
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
