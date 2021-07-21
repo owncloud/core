@@ -1,0 +1,6 @@
+Change: Update PHP dependencies
+
+The following have been updated:
+- mikey179/vfsstream (v1.6.8 to v1.6.9)
+
+https://github.com/owncloud/core/pull/39030
