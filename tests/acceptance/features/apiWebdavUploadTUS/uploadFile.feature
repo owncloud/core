@@ -149,7 +149,7 @@ Feature: upload file
       | new         | "folder/file"           | Zm9sZGVyL2ZpbGU=             |
       | new         | "my\\file"              | bXkMaWxl                     |
 
-
+  @notToImplementOnOCIS @issue-ocis-1141
   Scenario Outline: upload a file using the resource URL of another user
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
