@@ -12,6 +12,7 @@ Summary
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
+* Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 
 Details
@@ -44,6 +45,12 @@ Details
 
    https://github.com/owncloud/core/issues/38957
    https://github.com/owncloud/core/pull/38962
+
+* Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
+
+   The following have been updated: - mikey179/vfsstream (v1.6.8 to v1.6.9)
+
+   https://github.com/owncloud/core/pull/39030
 
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 
