@@ -179,7 +179,7 @@ class FeatureContext extends BehatVariablesContext {
 
 	/**
 	 * The suite name, feature name and scenario line number.
-	 * Example: apiComments-createComments-s24
+	 * Example: apiComments/createComments.feature:24
 	 *
 	 * @var string
 	 */
@@ -187,7 +187,7 @@ class FeatureContext extends BehatVariablesContext {
 
 	/**
 	 * A full unique reference to the step that is currently executing.
-	 * Example: apiComments-createComments-s24-l28
+	 * Example: apiComments/createComments.feature:24-28
 	 * That is line 28, in the scenario at line 24, in the createComments feature
 	 * in the apiComments suite.
 	 *
@@ -3221,7 +3221,7 @@ class FeatureContext extends BehatVariablesContext {
 		$featureFileName = \basename($featureFile);
 
 		if ($this->sendScenarioLineReferencesInXRequestId()) {
-			$this->scenarioString = $suiteName . '-' . \substr($featureFileName, 0, strpos($featureFileName, '.')) . '-s' . $scenarioLine;
+			$this->scenarioString = $suiteName . '/' . $featureFileName . ':' . $scenarioLine;
 		} else {
 			$this->scenarioString = '';
 		}
@@ -3251,7 +3251,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function beforeEachStep(BeforeStepScope $scope) {
 		if ($this->sendScenarioLineReferencesInXRequestId()) {
-			$this->stepLineRef = $this->scenarioString . '-l' . (string) $scope->getStep()->getLine();
+			$this->stepLineRef = $this->scenarioString . '-' . (string) $scope->getStep()->getLine();
 		} else {
 			$this->stepLineRef = '';
 		}
