@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-57
+@api
 Feature: set file properties
   As a user
   I want to be able to set meta-information about files
