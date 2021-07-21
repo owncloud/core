@@ -155,7 +155,14 @@ class VerifyChecksums extends Command {
 			return;
 		}
 
-		if (!self::fileExistsOnDisk($file)) {
+		try {
+			$fileExistsOnDisk = self::fileExistsOnDisk($file);
+		} catch (StorageNotAvailableException $e) {
+			$output->writeln("Skipping $storageId/$path => Storage is not available", OutputInterface::VERBOSITY_VERBOSE);
+			return;
+		}
+
+		if (!$fileExistsOnDisk) {
 			$output->writeln("Skipping $storageId/$path => File is in file-cache but doesn't exist on storage/disk", OutputInterface::VERBOSITY_VERBOSE);
 			return;
 		}

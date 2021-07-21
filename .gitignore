@@ -125,7 +125,6 @@ vendor-bin/**/composer.lock
 
 # Tests - auto-generated files
 /data-autotest
-/tests/.phpunit.result.cache
 /tests/coverage*
 /tests/karma-coverage
 /tests/acceptance/server_tmp
@@ -138,7 +137,7 @@ vendor-bin/**/composer.lock
 clover.xml
 /tests/output
 .php-cs-fixer.cache
-
+.phpunit.result.cache
 # old php-cs-fixer v2 files
 .php_cs.cache
 .php_cs
