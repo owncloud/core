@@ -1,3 +1,9 @@
+dir = {
+    'base': '/drone',
+    'server': '/drone/src',
+    'federated': '/drone/federated',
+}
+
 config = {
 	'rocketchat': {
 		'channel': 'server',
@@ -324,7 +330,7 @@ def main(ctx):
 	after = afterPipelines(ctx)
 	dependsOn(afterCoverageTests + nonCoverageTests + stages, after)
 
-	return initial + before + coverageTests + afterCoverageTests + stages + after
+	return initial + before + coverageTests + afterCoverageTests + nonCoverageTests + stages + after
 
 def initialPipelines(ctx):
 	return dependencies(ctx)
@@ -413,7 +419,7 @@ def dependencies(ctx):
 				'type': 'docker',
 				'name': name,
 				'workspace' : {
-					'base': '/drone',
+					'base': dir['base'],
 					'path': 'src'
 				},
 				'steps':
@@ -485,7 +491,7 @@ def codestyle():
 				'type': 'docker',
 				'name': name,
 				'workspace' : {
-					'base': '/drone',
+					'base': dir['base'],
 					'path': 'src'
 				},
 				'steps':
@@ -543,7 +549,7 @@ def changelog(ctx):
 						],
 						'remote': 'https://github.com/%s' % (repo_slug),
 						'branch': ctx.build.source if ctx.build.event == 'pull_request' else 'master',
-						'path': '/drone/src',
+						'path': dir['server'],
 						'netrc_machine': 'github.com',
 						'netrc_username': {
 							'from_secret': 'github_username',
@@ -663,7 +669,7 @@ def phpstan():
 				'type': 'docker',
 				'name': name,
 				'workspace' : {
-					'base': '/drone',
+					'base': dir['base'],
 					'path': 'src'
 				},
 				'steps':
@@ -737,7 +743,7 @@ def phan():
 				'type': 'docker',
 				'name': name,
 				'workspace' : {
-					'base': '/drone',
+					'base': dir['base'],
 					'path': 'src'
 				},
 				'steps':
@@ -820,7 +826,7 @@ def litmus():
 				'type': 'docker',
 				'name': name,
 				'workspace' : {
-					'base': '/drone',
+					'base': dir['base'],
 					'path': 'src'
 				},
 				'steps':
@@ -917,7 +923,7 @@ def litmus():
 					],
 				'services':
 					databaseService(db) +
-					owncloudService(phpVersion, 'server', '/drone/src', params['useHttps']),
+					owncloudService(phpVersion, 'server', dir['server'], params['useHttps']),
 				'depends_on': [],
 				'trigger': {
 					'ref': [
@@ -987,7 +993,7 @@ def dav():
 					'type': 'docker',
 					'name': name,
 					'workspace' : {
-						'base': '/drone',
+						'base': dir['base'],
 						'path': 'src'
 					},
 					'steps':
@@ -1070,7 +1076,7 @@ def javascript(ctx, withCoverage):
 		'type': 'docker',
 		'name': 'test-javascript',
 		'workspace' : {
-			'base': '/drone',
+			'base': dir['base'],
 			'path': 'src'
 		},
 		'steps':
@@ -1261,7 +1267,7 @@ def phpTests(ctx, testType, withCoverage):
 						'type': 'docker',
 						'name': name,
 						'workspace' : {
-							'base': '/drone',
+							'base': dir['base'],
 							'path': 'src'
 						},
 						'steps':
@@ -1269,7 +1275,7 @@ def phpTests(ctx, testType, withCoverage):
 							composerInstall(phpVersion) +
 							yarnInstall(phpVersion) +
 							installServer(phpVersion, db, params['logLevel']) +
-							installExtraApps(phpVersion, extraAppsDict) +
+							installExtraApps(phpVersion, extraAppsDict, dir['server']) +
 							setupScality(phpVersion, needScality) +
 							params['extraSetup'] +
 							fixPermissions(phpVersion, False) +
@@ -1562,7 +1568,7 @@ def acceptance(ctx):
 								if params['testAgainstCoreTarball']:
 									pathOfServerUnderTest = '/drone/core'
 								else:
-									pathOfServerUnderTest = '/drone/src'
+									pathOfServerUnderTest = dir['server']
 
 								if (needObjectStore):
 									environment['OC_TEST_ON_OBJECTSTORE'] = '1'
@@ -1578,7 +1584,7 @@ def acceptance(ctx):
 									'type': 'docker',
 									'name': name,
 									'workspace' : {
-										'base': '/drone',
+										'base': dir['base'],
 										'path': 'src'
 									},
 									'steps':
@@ -1609,8 +1615,8 @@ def acceptance(ctx):
 											'pull': 'always',
 											'environment': environment,
 											'commands': params['extraCommandsBeforeTestRun'] + [
-												'touch /drone/saved-settings.sh',
-												'. /drone/saved-settings.sh',
+												'touch %s/saved-settings.sh' % dir['base'],
+												'. %s/saved-settings.sh' % dir['base'],
 												'%smake %s' % (suExecCommand, makeParameter)
 											]
 										}),
@@ -1626,7 +1632,7 @@ def acceptance(ctx):
 										params['extraServices'] +
 										owncloudService(phpVersion, 'server', pathOfServerUnderTest, params['useHttps']) +
 										((
-											owncloudService(params['federatedPhpVersion'], 'federated', '/drone/federated', params['useHttps']) +
+											owncloudService(params['federatedPhpVersion'], 'federated', dir["federated"], params['useHttps']) +
 											databaseServiceForFederation(federatedDb, federationDbSuffix)
 										) if params['federatedServerNeeded'] else []),
 									'depends_on': [],
@@ -1667,7 +1673,7 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 		'type': 'docker',
 		'name': 'sonar-analysis',
 		'workspace' : {
-			'base': '/drone',
+			'base': dir['base'],
 			'path': 'src'
 		},
 		'clone': {
@@ -1716,7 +1722,7 @@ def sonarAnalysis(ctx, phpVersion = '7.4'):
 					'git clone https://github.com/owncloud/files_primary_s3.git',
 					'cd files_primary_s3',
 					'composer install',
-					'cd /drone/src'
+					'cd %s' % dir['server']
 				]
 			},
 			{
@@ -1827,7 +1833,7 @@ def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
             "image": "owncloud/ubuntu:16.04",
             "pull": "always",
             "commands": [
-                'echo ":boom: Acceptance tests pipeline <strong>%s</strong> failed. The build has been cancelled.\\n\\n${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1\\n" >> /drone/src/comments.file' % alternateSuiteName,
+                'echo ":boom: Acceptance tests pipeline <strong>%s</strong> failed. The build has been cancelled.\\n\\n${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1\\n" >> %s/comments.file' % (alternateSuiteName, dir['server']),
             ],
             "when": {
                  "status": [
@@ -1850,7 +1856,7 @@ def githubComment(earlyFail):
             "image": "jmccann/drone-github-comment:1",
             "pull": "if-not-exists",
             "settings": {
-                "message_file": "/drone/src/comments.file",
+                "message_file": "%s/comments.file" % dir['server'],
             },
             "environment": {
                 "GITHUB_TOKEN": {
@@ -2065,14 +2071,14 @@ def cephService(cephS3):
 		}
 	}]
 
-def owncloudService(phpVersion, name = 'server', pathOfServerUnderTest = '/drone/src', ssl = True):
+def owncloudService(phpVersion, name, pathOfServerUnderTest, ssl):
 	if ssl:
 		environment = {
 			'APACHE_WEBROOT': pathOfServerUnderTest,
 			'APACHE_CONFIG_TEMPLATE': 'ssl',
 			'APACHE_SSL_CERT_CN': name,
-			'APACHE_SSL_CERT': '/drone/%s.crt' % name,
-			'APACHE_SSL_KEY': '/drone/%s.key' % name,
+			'APACHE_SSL_CERT': '%s/%s.crt' % (dir['base'], name),
+			'APACHE_SSL_KEY': '%s/%s.key' % (dir['base'], name),
 			'APACHE_LOGGING_PATH': '/dev/null',
 		}
 	else:
@@ -2175,8 +2181,8 @@ def cacheClearOnEventPush(phpVersion):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'commands': [
-			'rm -Rf /drone/src/.cache/composer',
-			'rm -Rf /drone/src/.cache/yarn',
+			'rm -Rf %s/.cache/composer' % dir['server'],
+			'rm -Rf %s/.cache/yarn' % dir['server'],
 		],
 		'when': {
 			'event': [
@@ -2255,7 +2261,7 @@ def composerInstall(phpVersion):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
-			'COMPOSER_HOME': '/drone/src/.cache/composer'
+			'COMPOSER_HOME': '%s/.cache/composer' % dir['server']
 		},
 		'commands': [
 			'make install-composer-deps'
@@ -2268,7 +2274,7 @@ def vendorbinCodestyle(phpVersion):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
-			'COMPOSER_HOME': '/drone/src/.cache/composer'
+			'COMPOSER_HOME': '%s/.cache/composer' % dir['server']
 		},
 		'commands': [
 			'make vendor-bin-codestyle'
@@ -2281,7 +2287,7 @@ def vendorbinCodesniffer(phpVersion):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
-			'COMPOSER_HOME': '/drone/src/.cache/composer'
+			'COMPOSER_HOME': '%s/.cache/composer' % dir['server']
 		},
 		'commands': [
 			'make vendor-bin-codesniffer'
@@ -2294,7 +2300,7 @@ def vendorbinPhan(phpVersion):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
-			'COMPOSER_HOME': '/drone/src/.cache/composer'
+			'COMPOSER_HOME': '%s/.cache/composer' % dir['server']
 		},
 		'commands': [
 			'make vendor-bin-phan'
@@ -2307,7 +2313,7 @@ def vendorbinPhpstan(phpVersion):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
-			'COMPOSER_HOME': '/drone/src/.cache/composer'
+			'COMPOSER_HOME': '%s/.cache/composer' % dir['server']
 		},
 		'commands': [
 			'make vendor-bin-phpstan'
@@ -2320,7 +2326,7 @@ def vendorbinBehat():
 		'image': 'owncloudci/php:7.4',
 		'pull': 'always',
 		'environment': {
-			'COMPOSER_HOME': '/drone/src/.cache/composer'
+			'COMPOSER_HOME': '%s/.cache/composer' % dir['server']
 		},
 		'commands': [
 			'make vendor-bin-behat'
@@ -2333,9 +2339,9 @@ def yarnInstall(phpVersion):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'environment': {
-			'NPM_CONFIG_CACHE': '/drone/src/.cache/npm',
-			'YARN_CACHE_FOLDER': '/drone/src/.cache/yarn',
-			'bower_storage__packages': '/drone/src/.cache/bower',
+			'NPM_CONFIG_CACHE': '%s/.cache/npm' % dir['server'],
+			'YARN_CACHE_FOLDER': '%s/.cache/yarn' % dir['server'],
+			'bower_storage__packages': '%s/.cache/bower' % dir['server'],
 		},
 		'commands': [
 			'make install-nodejs-deps'
@@ -2361,11 +2367,11 @@ def setupLocalStorage(phpVersion):
 			'OC_PASS': '123456',
 		},
 		'commands': [
-			'mkdir -p /drone/src/work/local_storage',
+			'mkdir -p %s/work/local_storage' % dir['server'],
 			'php occ app:enable files_external',
 			'php occ config:system:set files_external_allow_create_new_local --value=true',
 			'php occ config:app:set core enable_external_storage --value=yes',
-			'php occ files_external:create local_storage local null::null -c datadir=/drone/src/work/local_storage',
+			'php occ files_external:create local_storage local null::null -c datadir=%s/work/local_storage' % dir['server'],
 			'php occ user:add --password-from-env user1',
 		]
 	}]
@@ -2383,7 +2389,7 @@ def createShare(phpVersion):
 		]
 	}]
 
-def installExtraApps(phpVersion, extraApps, pathOfServerUnderTest = '/drone/src'):
+def installExtraApps(phpVersion, extraApps, pathOfServerUnderTest):
 	commandArray = []
 	for app, command in extraApps.items():
 		commandArray.append('ls %s/apps/%s || git clone https://github.com/owncloud/%s.git %s/apps/%s' % (pathOfServerUnderTest, app, app, pathOfServerUnderTest, app))
@@ -2443,7 +2449,8 @@ def installServer(phpVersion, db, logLevel = '2', ssl = False, federatedServerNe
 			'php occ a:l',
 			'php occ config:system:set trusted_domains 1 --value=server',
 		] + ([
-			'php occ config:system:set trusted_domains 2 --value=federated'
+			'php occ config:system:set trusted_domains 2 --value=federated',
+			'php occ config:system:set csrf.disabled --value=true'
 		] if federatedServerNeeded else []) + [
 		] + ([
 			'php occ config:system:set trusted_domains 3 --value=proxy'
@@ -2451,9 +2458,9 @@ def installServer(phpVersion, db, logLevel = '2', ssl = False, federatedServerNe
 			'php occ log:manage --level %s' % logLevel,
 			'php occ config:list',
 		] + ([
-			'php occ security:certificates:import /drone/server.crt',
+			'php occ security:certificates:import %s/server.crt' % dir['base'],
 		] if ssl else []) + ([
-			'php occ security:certificates:import /drone/federated.crt',
+			'php occ security:certificates:import %s/federated.crt' % dir['base'],
 		] if federatedServerNeeded and ssl else []) + [
 			'php occ security:certificates',
 		]
@@ -2481,7 +2488,7 @@ def installFederated(ctx, federatedServerVersion, db, dbSuffix = 'fed'):
 		dbType = 'oci'
 
 	installerSettings = {
-				'core_path': '/drone/federated',
+				'core_path': dir["federated"],
 				'db_type': dbType,
 				'db_name': database,
 				'db_host': host + dbSuffix,
@@ -2516,7 +2523,7 @@ def configureFederated(phpVersion, logLevel, protocol):
 		'image': 'owncloudci/php:%s' % phpVersion,
 		'pull': 'always',
 		'commands': [
-			'cd /drone/federated',
+			'cd %s' % dir["federated"],
 			'php occ a:l',
 			'php occ a:e testing',
 			'php occ a:l',
@@ -2524,9 +2531,9 @@ def configureFederated(phpVersion, logLevel, protocol):
 			'php occ config:system:set trusted_domains 2 --value=federated',
 			'php occ log:manage --level %s' % logLevel,
 			'php occ config:list',
-			'echo "export TEST_SERVER_FED_URL=%s://federated" > /drone/saved-settings.sh' % protocol,
-			'php occ security:certificates:import /drone/server.crt',
-			'php occ security:certificates:import /drone/federated.crt',
+			'echo "export TEST_SERVER_FED_URL=%s://federated" > %s/saved-settings.sh' % (protocol, dir['base']),
+			'php occ security:certificates:import %s/server.crt' % dir['base'],
+			'php occ security:certificates:import %s/federated.crt' % dir['base'],
 			'php occ security:certificates',
 		]
 	}
@@ -2541,8 +2548,8 @@ def setupCeph(phpVersion, cephS3):
 		'pull': 'always',
 		'commands': [
 			'wait-for-it -t 600 ceph:80',
-			'cd /drone/src/apps/files_primary_s3',
-			'cp tests/drone/ceph.config.php /drone/src/config',
+			'cd %s/apps/files_primary_s3' % dir['server'],
+			'cp tests/drone/ceph.config.php %s/config' % dir['server'],
 			'cd /var/www/owncloud/server',
 			'./apps/files_primary_s3/tests/drone/create-bucket.sh',
 		]
@@ -2566,14 +2573,14 @@ def setupScality(phpVersion, scalityS3):
 		'pull': 'always',
 		'commands': [
 			'wait-for-it -t 600 scality:8000',
-			'cp /drone/src/apps/files_primary_s3/tests/drone/%s /drone/src/config' % configFile,
+			'cp %s/apps/files_primary_s3/tests/drone/%s %s/config' % (dir['server'], configFile, dir['server']),
 			'php occ s3:create-bucket owncloud --accept-warning'
 		] + ([
 			'for I in $(seq 1 9); do php ./occ s3:create-bucket owncloud$I --accept-warning; done',
 		] if createExtraBuckets else [])
 	}]
 
-def fixPermissions(phpVersion, federatedServerNeeded, pathOfServerUnderTest = '/drone/src'):
+def fixPermissions(phpVersion, federatedServerNeeded, pathOfServerUnderTest = dir['server']):
 	return [{
 		'name': 'fix-permissions',
 		'image': 'owncloudci/php:%s' % phpVersion,
@@ -2581,7 +2588,7 @@ def fixPermissions(phpVersion, federatedServerNeeded, pathOfServerUnderTest = '/
 		'commands': [
 			'chown -R www-data %s' % pathOfServerUnderTest
 		] + ([
-			'chown -R www-data /drone/federated'
+			'chown -R www-data %s' % dir["federated"]
 		] if federatedServerNeeded else [])
 	}]
 
@@ -2695,9 +2702,9 @@ def installCoreFromTarball(version, db, logLevel = '2', ssl = False, federatedSe
 			'php occ log:manage --level %s' % logLevel,
 			'php occ config:list',
 		] + ([
-			'php occ security:certificates:import /drone/server.crt',
+			'php occ security:certificates:import %s/server.crt' % dir['base'],
 		] if ssl else []) + ([
-			'php occ security:certificates:import /drone/federated.crt',
+			'php occ security:certificates:import %s/federated.crt' % dir['base'],
 		] if federatedServerNeeded and ssl else []) + [
 			'php occ security:certificates',
 		]
@@ -2724,7 +2731,7 @@ def installFederatedFromTarball(federatedServerVersion, phpVersion, logLevel, pr
 			'pull': 'always',
 			'settings': {
 				'version': federatedServerVersion,
-				'core_path': '/drone/federated',
+				'core_path': dir["federated"],
 				'db_type': 'mysql',
 				'db_name': database,
 				'db_host': host + dbSuffix,
@@ -2737,8 +2744,8 @@ def installFederatedFromTarball(federatedServerVersion, phpVersion, logLevel, pr
 			'image': 'owncloudci/php:%s' % phpVersion,
 			'pull': 'always',
 			'commands': [
-				'echo "export TEST_SERVER_FED_URL=%s://federated" > /drone/saved-settings.sh' % protocol,
-				'cd /drone/federated',
+				'echo "export TEST_SERVER_FED_URL=%s://federated" > %s/saved-settings.sh' % (protocol, dir['base']),
+				'cd %s' % dir["federated"],
 				'php occ a:l',
 				'php occ a:e testing',
 				'php occ a:l',
@@ -2746,8 +2753,8 @@ def installFederatedFromTarball(federatedServerVersion, phpVersion, logLevel, pr
 				'php occ config:system:set trusted_domains 2 --value=federated',
 				'php occ log:manage --level %s' % logLevel,
 				'php occ config:list',
-				'php occ security:certificates:import /drone/server.crt',
-				'php occ security:certificates:import /drone/federated.crt',
+				'php occ security:certificates:import %s/server.crt' % dir['base'],
+				'php occ security:certificates:import %s/federated.crt' % dir['base'],
 				'php occ security:certificates',
 			]
 		}
@@ -2761,6 +2768,6 @@ def installTestRunner(ctx, phpVersion):
 		'commands': [
 			'mkdir /tmp/testrunner',
 			'git clone -b %s --depth=1 https://github.com/owncloud/core.git /tmp/testrunner' % ctx.build.source if ctx.build.event == 'pull_request' else 'master',
-			'rsync -aIX /tmp/testrunner/tests /drone/src/tests',
+			'rsync -aIX /tmp/testrunner/tests %s/tests' % dir['server'],
 		]
 	}]

@@ -3115,6 +3115,99 @@ trait Sharing {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $shareServer
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function saveLastSharedPublicLinkShare(
+		$user,
+		$shareServer,
+		$password = ""
+	) {
+		$user = $this->getActualUsername($user);
+		$userPassword = $this->getPasswordForUser($user);
+
+		$shareData = $this->getLastShareData();
+		$owner = (string) $shareData->data->uid_owner;
+		$name = $this->encodePath((string) $shareData->data->file_target);
+		$name = \trim($name, "/");
+		$ownerDisplayName = (string) $shareData->data->displayname_owner;
+		$token = (string) $shareData->data->token;
+
+		if (\strtolower($shareServer) == "remote") {
+			$remote = $this->getRemoteBaseUrl();
+		} else {
+			$remote = $this->getLocalBaseUrl();
+		}
+
+		$body['remote'] = $remote;
+		$body['token'] = $token;
+		$body['owner'] = $owner;
+		$body['ownerDisplayName'] = $ownerDisplayName;
+		$body['name'] = $name;
+		$body['password'] = $password;
+
+		Assert::assertNotNull(
+			$token,
+			__METHOD__ . " could not find any public share"
+		);
+
+		$url = $this->getBaseUrl() . "/index.php/apps/files_sharing/external";
+
+		$response = HttpRequestHelper::post($url, $user, $userPassword, null, $body);
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has added the public share created from server "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $shareServer
+	 *
+	 * @return void
+	 */
+	public function userHasAddedPublicShareCreatedByUser($user, $shareServer) {
+		$this->saveLastSharedPublicLinkShare($user, $shareServer);
+
+		$resBody = json_decode($this->response->getBody()->getContents());
+		$status = '';
+		$message = '';
+		if ($resBody) {
+			$status = $resBody->status;
+			$message = $resBody->data->message;
+		}
+
+		Assert::assertEquals(
+			200,
+			$this->response->getStatusCode(),
+			__METHOD__
+			. " Expected status code is '200' but got '"
+			. $this->response->getStatusCode()
+			. "'"
+		);
+		Assert::assertNotEquals(
+			'error',
+			$status,
+			__METHOD__
+			. "\nFailed to save public share.\n'$message'"
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" adds the public share created from server "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $shareServer
+	 *
+	 * @return void
+	 */
+	public function userAddsPublicShareCreatedByUser($user, $shareServer) {
+		$this->saveLastSharedPublicLinkShare($user, $shareServer);
+	}
+
+	/**
 	 * replace values from table
 	 *
 	 * @param string $field
