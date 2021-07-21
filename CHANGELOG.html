@@ -6,6 +6,57 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Do not allow empty system or app config keys: <a href="https://github.com/owncloud/core/pull/38996">#38996</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Allow subadministrators to add users to groups they manage: <a href="https://github.com/owncloud/core/pull/39013">#39013</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: <a href="https://github.com/owncloud/core/issues/39034">#39034</a></li>
+        <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></li>
+    </ul>
+    <h3 id="unreleased-details">Details</h3>
+    <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Do not allow empty system or app config keys: <a href="https://github.com/owncloud/core/pull/38996">#38996</a></p>
+            <p>It was possible to add empty config keys with the occ config:app:set or config:system:set
+   commands. That is no longer allowed.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38996<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Allow subadministrators to add users to groups they manage: <a href="https://github.com/owncloud/core/pull/39013">#39013</a></p>
+            <p>https://github.com/owncloud/core/pull/39013<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: <a href="https://github.com/owncloud/core/issues/39034">#39034</a></p>
+            <p>PHP 7.4.21 checks open_basedir settings more exactly. Calls to file_exists can emit log
+   messages like "file_exists(): open_basedir restriction in effect" that were not emitted by
+   PHP 7.4.20.This change fixes an incorrect file_exists check. The open_basedir message will no longer be
+   emitted in this case.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39034<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39035<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></p>
+            <p>https://github.com/owncloud/core/issues/38957<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38962<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></p>
+            <p>Due to wrong configuration or bugs it is possible that more than one mount is returned. In this
+   case we should log the mount-count for easier debugging.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39015<br></p>
+        </li>
+    </ul>
+    <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>
+    <p>The following sections list the changes in ownCloud core 10.8.0 relevant to ownCloud admins and users.</p>
+    <p>
+    <a href="https://github.com/owncloud/core/compare/v10.7.0...v10.8.0">Full list of changes in 10.8.0</a>
+    </p>
+    <h3 id="10.8.0-summary">Summary</h3>
+    <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Use trusted domains to compute the signature of signed urls: <a href="https://github.com/owncloud/core/pull/38465">#38465</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Handle exceptions with inaccesible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix mispositioned ui elements after leaving viewerMode: <a href="https://github.com/owncloud/core/issues/38547">#38547</a></li>
@@ -35,9 +86,6 @@
         <li class="type-bugfix changelog-item">Bugfix - Adjust position of the share autocomplete element: <a href="https://github.com/owncloud/core/pull/38831">#38831</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix docs link to federated sharing docs: <a href="https://github.com/owncloud/core/issues/38859">#38859</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix file locks for public shares: <a href="https://github.com/owncloud/core/pull/38922">#38922</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Do not allow empty system or app config keys: <a href="https://github.com/owncloud/core/pull/38996">#38996</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Allow subadministrators to add users to groups they manage: <a href="https://github.com/owncloud/core/pull/39013">#39013</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: <a href="https://github.com/owncloud/core/issues/39034">#39034</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38924">#38924</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38524">#38524</a></li>
         <li class="type-change changelog-item">Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: <a href="https://github.com/owncloud/core/pull/38647">#38647</a></li>
@@ -48,6 +96,7 @@
         <li class="type-change changelog-item">Change - Update PHP minimum version to 7.2.5: <a href="https://github.com/owncloud/core/pull/38934">#38934</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38891">#38891</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Improve public share federation user interface: <a href="https://github.com/owncloud/enterprise/issues/4393">#4393</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve login form: <a href="https://github.com/owncloud/core/pull/38506">#38506</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Automations in activity stream: <a href="https://github.com/owncloud/core/pull/38605">#38605</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add html template for calens: <a href="https://github.com/owncloud/core/pull/38616">#38616</a></li>
@@ -55,6 +104,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Use relative notification URLs: <a href="https://github.com/owncloud/core/pull/38639">#38639</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add excludeActions parameter to registerDefaultActions function: <a href="https://github.com/owncloud/core/pull/38643">#38643</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Improve tab headers UI: <a href="https://github.com/owncloud/core/pull/38653">#38653</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add trashbin skip list to config: <a href="https://github.com/owncloud/core/pull/38704">#38704</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Remove google+ share button from personal settings: <a href="https://github.com/owncloud/core/pull/38705">#38705</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Adjust the return type of the querybuilder's execute method: <a href="https://github.com/owncloud/core/pull/38714">#38714</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Communicate user profile picture capability: <a href="https://github.com/owncloud/core/pull/38722">#38722</a></li>
@@ -71,9 +121,8 @@
         <li class="type-enhancement changelog-item">Enhancement - Show notification if video playback is not possible on public share: <a href="https://github.com/owncloud/enterprise/issues/4632">#4632</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Trigger file scan after accepting a federated share: <a href="https://github.com/owncloud/core/pull/38880">#38880</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow to pass password on redis cluster connection: <a href="https://github.com/owncloud/core/pull/38917">#38917</a></li>
-        <li class="type-enhancement changelog-item">Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></li>
     </ul>
-    <h3 id="unreleased-details">Details</h3>
+    <h3 id="10.8.0-details">Details</h3>
     <ul class="details">
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Use trusted domains to compute the signature of signed urls: <a href="https://github.com/owncloud/core/pull/38465">#38465</a></p>
@@ -283,7 +332,7 @@
             </p>
             <p>https://github.com/owncloud/core/issues/38782<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/38785<br></p>
+            <p>https://github.com/owncloud/core/pull/38785<br>https://github.com/owncloud/core/pull/39005<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Include incoming and parent permissions in Share UI subfolder reshares: <a href="https://github.com/owncloud/core/pull/38788">#38788</a></p>
@@ -333,28 +382,6 @@
             <p>https://github.com/owncloud/core/issues/38912<br>https://github.com/owncloud/core/issues/36064<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38922<br></p>
-        </li>
-        <li class="type-bugfix changelog-item">
-            <p>Bugfix - Do not allow empty system or app config keys: <a href="https://github.com/owncloud/core/pull/38996">#38996</a></p>
-            <p>It was possible to add empty config keys with the occ config:app:set or config:system:set
-   commands. That is no longer allowed.
-            </p>
-            <p>https://github.com/owncloud/core/pull/38996<br></p>
-        </li>
-        <li class="type-bugfix changelog-item">
-            <p>Bugfix - Allow subadministrators to add users to groups they manage: <a href="https://github.com/owncloud/core/pull/39013">#39013</a></p>
-            <p>https://github.com/owncloud/core/pull/39013<br></p>
-        </li>
-        <li class="type-bugfix changelog-item">
-            <p>Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: <a href="https://github.com/owncloud/core/issues/39034">#39034</a></p>
-            <p>PHP 7.4.21 checks open_basedir settings more exactly. Calls to file_exists can emit log
-   messages like "file_exists(): open_basedir restriction in effect" that were not emitted by
-   PHP 7.4.20.This change fixes an incorrect file_exists check. The open_basedir message will no longer be
-   emitted in this case.
-            </p>
-            <p>https://github.com/owncloud/core/issues/39034<br>
-            </p>
-            <p>https://github.com/owncloud/core/pull/39035<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/38924">#38924</a></p>
@@ -448,6 +475,18 @@
             <p>https://github.com/owncloud/core/pull/38891<br></p>
         </li>
         <li class="type-enhancement changelog-item">
+            <p>Enhancement - Improve public share federation user interface: <a href="https://github.com/owncloud/enterprise/issues/4393">#4393</a></p>
+            <p>This adjustment provides a new way to add a public share to ownCloud. A new button will be
+   displayed where you can easily add the share to the current server without entering the string,
+   this requires less user input. Next to this button, a dropdown menu will be displayed, where you
+   can see the current server or change the server. Hitting change a server will now display a
+   prompt with a detailed explanation and more space to enter another server address.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4393<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38712<br>https://github.com/owncloud/core/pull/38928<br>https://github.com/owncloud/core/pull/38942<br>https://github.com/owncloud/core/pull/38948<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
             <p>Enhancement - Improve login form: <a href="https://github.com/owncloud/core/pull/38506">#38506</a></p>
             <p>This adjustment improves the overall look and feel of the login form. Furthermore, the
    placeholders have been replaced in favor of labels, the confirm button has been expunged from
@@ -462,7 +501,7 @@
             </p>
             <p>https://github.com/owncloud/enterprise/issues/4222<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/38605<br>https://github.com/owncloud/core/pull/38630<br></p>
+            <p>https://github.com/owncloud/core/pull/38605<br>https://github.com/owncloud/core/pull/38630<br>https://github.com/owncloud/core/pull/38970<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add html template for calens: <a href="https://github.com/owncloud/core/pull/38616">#38616</a></p>
@@ -503,6 +542,14 @@
    left-aligned.
             </p>
             <p>https://github.com/owncloud/core/pull/38653<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add trashbin skip list to config: <a href="https://github.com/owncloud/core/pull/38704">#38704</a></p>
+            <p>With this change new config parameters has been introduced. Admins can now decide, based on
+   file extensions, directory names and size, if a resource should not be observed by the trashbin
+   and deleted immediately.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38704<br>https://github.com/owncloud/core/pull/38960<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Remove google+ share button from personal settings: <a href="https://github.com/owncloud/core/pull/38705">#38705</a></p>
@@ -555,7 +602,7 @@
             </p>
             <p>https://github.com/owncloud/enterprise/issues/4577<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/38774<br></p>
+            <p>https://github.com/owncloud/core/pull/38774<br>https://github.com/owncloud/core/pull/38963<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add more properties to the REPORT result: <a href="https://github.com/owncloud/core/pull/38787">#38787</a></p>
@@ -644,46 +691,6 @@
             <p>https://github.com/owncloud/enterprise/issues/4658<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38917<br></p>
-        </li>
-        <li class="type-enhancement changelog-item">
-            <p>Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></p>
-            <p>Due to wrong configuration or bugs it is possible that more than one mount is returned. In this
-   case we should log the mount-count for easier debugging.
-            </p>
-            <p>https://github.com/owncloud/core/pull/39015<br></p>
-        </li>
-    </ul>
-    <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>
-    <p>The following sections list the changes in ownCloud core 10.8.0 relevant to ownCloud admins and users.</p>
-    <p>
-    <a href="https://github.com/owncloud/core/compare/v10.7.0...v10.8.0">Full list of changes in 10.8.0</a>
-    </p>
-    <h3 id="10.8.0-summary">Summary</h3>
-    <ul class="summary">
-        <li class="type-enhancement changelog-item">Enhancement - Improve public share federation user interface: <a href="https://github.com/owncloud/enterprise/issues/4393">#4393</a></li>
-        <li class="type-enhancement changelog-item">Enhancement - Add trashbin skip list to config: <a href="https://github.com/owncloud/core/pull/38704">#38704</a></li>
-    </ul>
-    <h3 id="10.8.0-details">Details</h3>
-    <ul class="details">
-        <li class="type-enhancement changelog-item">
-            <p>Enhancement - Improve public share federation user interface: <a href="https://github.com/owncloud/enterprise/issues/4393">#4393</a></p>
-            <p>This adjustment provides a new way to add a public share to ownCloud. A new button will be
-   displayed where you can easily add the share to the current server without entering the string,
-   this requires less user input. Next to this button, a dropdown menu will be displayed, where you
-   can see the current server or change the server. Hitting change a server will now display a
-   prompt with a detailed explanation and more space to enter another server address.
-            </p>
-            <p>https://github.com/owncloud/enterprise/issues/4393<br>
-            </p>
-            <p>https://github.com/owncloud/core/pull/38712<br>https://github.com/owncloud/core/pull/38928<br>https://github.com/owncloud/core/pull/38942<br>https://github.com/owncloud/core/pull/38948<br></p>
-        </li>
-        <li class="type-enhancement changelog-item">
-            <p>Enhancement - Add trashbin skip list to config: <a href="https://github.com/owncloud/core/pull/38704">#38704</a></p>
-            <p>With this change new config parameters has been introduced. Admins can now decide, based on
-   file extensions, directory names and size, if a resource should not be observed by the trashbin
-   and deleted immediately.
-            </p>
-            <p>https://github.com/owncloud/core/pull/38704<br>https://github.com/owncloud/core/pull/38960<br></p>
         </li>
     </ul>
     <h2 id="10.7.0" class="version"> Changelog for ownCloud Core [10.7.0] (2021-03-26)</h2>

@@ -8,6 +8,60 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
+* Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
+* Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
+* Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
+* Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
+
+Details
+-------
+
+* Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
+
+   It was possible to add empty config keys with the occ config:app:set or config:system:set
+   commands. That is no longer allowed.
+
+   https://github.com/owncloud/core/pull/38996
+
+* Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
+
+   https://github.com/owncloud/core/pull/39013
+
+* Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
+
+   PHP 7.4.21 checks open_basedir settings more exactly. Calls to file_exists can emit log
+   messages like "file_exists(): open_basedir restriction in effect" that were not emitted by
+   PHP 7.4.20.
+
+   This change fixes an incorrect file_exists check. The open_basedir message will no longer be
+   emitted in this case.
+
+   https://github.com/owncloud/core/issues/39034
+   https://github.com/owncloud/core/pull/39035
+
+* Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
+
+   https://github.com/owncloud/core/issues/38957
+   https://github.com/owncloud/core/pull/38962
+
+* Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
+
+   Due to wrong configuration or bugs it is possible that more than one mount is returned. In this
+   case we should log the mount-count for easier debugging.
+
+   https://github.com/owncloud/core/pull/39015
+
+Changelog for ownCloud Core [10.8.0] (2021-07-15)
+=======================================
+The following sections list the changes in ownCloud core 10.8.0 relevant to
+ownCloud admins and users.
+
+[10.8.0]: https://github.com/owncloud/core/compare/v10.7.0...v10.8.0
+
+Summary
+-------
+
 * Bugfix - Use trusted domains to compute the signature of signed urls: [#38465](https://github.com/owncloud/core/pull/38465)
 * Bugfix - Handle exceptions with inaccesible federated share: [#38474](https://github.com/owncloud/core/pull/38474)
 * Bugfix - Fix mispositioned ui elements after leaving viewerMode: [#38547](https://github.com/owncloud/core/issues/38547)
@@ -37,9 +91,6 @@ Summary
 * Bugfix - Adjust position of the share autocomplete element: [#38831](https://github.com/owncloud/core/pull/38831)
 * Bugfix - Fix docs link to federated sharing docs: [#38859](https://github.com/owncloud/core/issues/38859)
 * Bugfix - Fix file locks for public shares: [#38922](https://github.com/owncloud/core/pull/38922)
-* Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
-* Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
-* Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 * Change - Update PHP dependencies: [#38524](https://github.com/owncloud/core/pull/38524)
 * Change - Bump doctrine/dbal from 2.10.4 to 2.13.1: [#38647](https://github.com/owncloud/core/pull/38647)
@@ -50,6 +101,7 @@ Summary
 * Change - Update PHP minimum version to 7.2.5: [#38934](https://github.com/owncloud/core/pull/38934)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Update PHP dependencies: [#38891](https://github.com/owncloud/core/pull/38891)
+* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
 * Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
 * Enhancement - Automations in activity stream: [#38605](https://github.com/owncloud/core/pull/38605)
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
@@ -57,6 +109,7 @@ Summary
 * Enhancement - Use relative notification URLs: [#38639](https://github.com/owncloud/core/pull/38639)
 * Enhancement - Add excludeActions parameter to registerDefaultActions function: [#38643](https://github.com/owncloud/core/pull/38643)
 * Enhancement - Improve tab headers UI: [#38653](https://github.com/owncloud/core/pull/38653)
+* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 * Enhancement - Adjust the return type of the querybuilder's execute method: [#38714](https://github.com/owncloud/core/pull/38714)
 * Enhancement - Communicate user profile picture capability: [#38722](https://github.com/owncloud/core/pull/38722)
@@ -73,7 +126,6 @@ Summary
 * Enhancement - Show notification if video playback is not possible on public share: [#4632](https://github.com/owncloud/enterprise/issues/4632)
 * Enhancement - Trigger file scan after accepting a federated share: [#38880](https://github.com/owncloud/core/pull/38880)
 * Enhancement - Allow to pass password on redis cluster connection: [#38917](https://github.com/owncloud/core/pull/38917)
-* Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 
 Details
 -------
@@ -282,6 +334,7 @@ Details
 
    https://github.com/owncloud/core/issues/38782
    https://github.com/owncloud/core/pull/38785
+   https://github.com/owncloud/core/pull/39005
 
 * Bugfix - Include incoming and parent permissions in Share UI subfolder reshares: [#38788](https://github.com/owncloud/core/pull/38788)
 
@@ -328,29 +381,6 @@ Details
    https://github.com/owncloud/core/issues/38912
    https://github.com/owncloud/core/issues/36064
    https://github.com/owncloud/core/pull/38922
-
-* Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
-
-   It was possible to add empty config keys with the occ config:app:set or config:system:set
-   commands. That is no longer allowed.
-
-   https://github.com/owncloud/core/pull/38996
-
-* Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
-
-   https://github.com/owncloud/core/pull/39013
-
-* Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
-
-   PHP 7.4.21 checks open_basedir settings more exactly. Calls to file_exists can emit log
-   messages like "file_exists(): open_basedir restriction in effect" that were not emitted by
-   PHP 7.4.20.
-
-   This change fixes an incorrect file_exists check. The open_basedir message will no longer be
-   emitted in this case.
-
-   https://github.com/owncloud/core/issues/39034
-   https://github.com/owncloud/core/pull/39035
 
 * Change - Update Symfony components: [#38924](https://github.com/owncloud/core/pull/38924)
 
@@ -473,6 +503,20 @@ Details
 
    https://github.com/owncloud/core/pull/38891
 
+* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
+
+   This adjustment provides a new way to add a public share to ownCloud. A new button will be
+   displayed where you can easily add the share to the current server without entering the string,
+   this requires less user input. Next to this button, a dropdown menu will be displayed, where you
+   can see the current server or change the server. Hitting change a server will now display a
+   prompt with a detailed explanation and more space to enter another server address.
+
+   https://github.com/owncloud/enterprise/issues/4393
+   https://github.com/owncloud/core/pull/38712
+   https://github.com/owncloud/core/pull/38928
+   https://github.com/owncloud/core/pull/38942
+   https://github.com/owncloud/core/pull/38948
+
 * Enhancement - Improve login form: [#38506](https://github.com/owncloud/core/pull/38506)
 
    This adjustment improves the overall look and feel of the login form. Furthermore, the
@@ -491,6 +535,7 @@ Details
    https://github.com/owncloud/enterprise/issues/4222
    https://github.com/owncloud/core/pull/38605
    https://github.com/owncloud/core/pull/38630
+   https://github.com/owncloud/core/pull/38970
 
 * Enhancement - Add html template for calens: [#38616](https://github.com/owncloud/core/pull/38616)
 
@@ -529,6 +574,15 @@ Details
    left-aligned.
 
    https://github.com/owncloud/core/pull/38653
+
+* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
+
+   With this change new config parameters has been introduced. Admins can now decide, based on
+   file extensions, directory names and size, if a resource should not be observed by the trashbin
+   and deleted immediately.
+
+   https://github.com/owncloud/core/pull/38704
+   https://github.com/owncloud/core/pull/38960
 
 * Enhancement - Remove google+ share button from personal settings: [#38705](https://github.com/owncloud/core/pull/38705)
 
@@ -580,6 +634,7 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4577
    https://github.com/owncloud/core/pull/38774
+   https://github.com/owncloud/core/pull/38963
 
 * Enhancement - Add more properties to the REPORT result: [#38787](https://github.com/owncloud/core/pull/38787)
 
@@ -677,52 +732,6 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4658
    https://github.com/owncloud/core/pull/38917
-
-* Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
-
-   Due to wrong configuration or bugs it is possible that more than one mount is returned. In this
-   case we should log the mount-count for easier debugging.
-
-   https://github.com/owncloud/core/pull/39015
-
-Changelog for ownCloud Core [10.8.0] (2021-07-15)
-=======================================
-The following sections list the changes in ownCloud core 10.8.0 relevant to
-ownCloud admins and users.
-
-[10.8.0]: https://github.com/owncloud/core/compare/v10.7.0...v10.8.0
-
-Summary
--------
-
-* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
-* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
-
-Details
--------
-
-* Enhancement - Improve public share federation user interface: [#4393](https://github.com/owncloud/enterprise/issues/4393)
-
-   This adjustment provides a new way to add a public share to ownCloud. A new button will be
-   displayed where you can easily add the share to the current server without entering the string,
-   this requires less user input. Next to this button, a dropdown menu will be displayed, where you
-   can see the current server or change the server. Hitting change a server will now display a
-   prompt with a detailed explanation and more space to enter another server address.
-
-   https://github.com/owncloud/enterprise/issues/4393
-   https://github.com/owncloud/core/pull/38712
-   https://github.com/owncloud/core/pull/38928
-   https://github.com/owncloud/core/pull/38942
-   https://github.com/owncloud/core/pull/38948
-
-* Enhancement - Add trashbin skip list to config: [#38704](https://github.com/owncloud/core/pull/38704)
-
-   With this change new config parameters has been introduced. Admins can now decide, based on
-   file extensions, directory names and size, if a resource should not be observed by the trashbin
-   and deleted immediately.
-
-   https://github.com/owncloud/core/pull/38704
-   https://github.com/owncloud/core/pull/38960
 
 Changelog for ownCloud Core [10.7.0] (2021-03-26)
 =======================================
