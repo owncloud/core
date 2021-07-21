@@ -24,6 +24,7 @@
 
 namespace OC\Session;
 
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
@@ -61,6 +62,9 @@ class CryptoWrapper {
 	/** @var string  */
 	private $passphrase;
 
+	/** @var ITimeFactory */
+	private $timeFactory;
+
 	/**
 	 * @param IConfig $config
 	 * @param ICrypto $crypto
@@ -71,10 +75,12 @@ class CryptoWrapper {
 		IConfig $config,
 		ICrypto $crypto,
 		ISecureRandom $random,
-		IRequest $request
+		IRequest $request,
+		ITimeFactory $timeFactory
 	) {
 		$this->crypto = $crypto;
 		$this->random = $random;
+		$this->timeFactory = $timeFactory;
 
 		if ($request->getCookie(self::COOKIE_NAME) !== null) {
 			$this->passphrase = $request->getCookie(self::COOKIE_NAME);
@@ -88,12 +94,19 @@ class CryptoWrapper {
 					$webRoot = '/';
 				}
 
+				$sessionLifetime = $config->getSystemValue('session_lifetime', 0);
+				if ($sessionLifetime > 0) {
+					$sessionLifetime += $this->timeFactory->getTime();
+				} else {
+					$sessionLifetime = 0;
+				}
+
 				if (\version_compare(PHP_VERSION, '7.3.0') === -1) {
-					\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
+					\setcookie(self::COOKIE_NAME, $this->passphrase, $sessionLifetime, $webRoot, '', $secureCookie, true);
 				} else {
 					$samesite = $config->getSystemValue('http.cookie.samesite', 'Strict');
 					$options = [
-						"expires" => 0,
+						"expires" => $sessionLifetime,
 						"path" => $webRoot,
 						"domain" => '',
 						"secure" => $secureCookie,
