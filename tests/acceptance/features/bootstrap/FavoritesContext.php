@@ -212,6 +212,7 @@ class FavoritesContext implements Context {
 			"REPORT",
 			"/",
 			null,
+			$this->featureContext->getStepLineRef(),
 			$body,
 			$this->featureContext->getDavPathVersion()
 		);
@@ -333,6 +334,7 @@ class FavoritesContext implements Context {
 			$path,
 			'favorite',
 			$favOrUnfav,
+			$this->featureContext->getStepLineRef(),
 			"oc='http://owncloud.org/ns'",
 			$this->featureContext->getDavPathVersion()
 		);

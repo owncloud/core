@@ -279,7 +279,8 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	public function theUserFollowsTheEmailChangeConfirmationLinkEmail($emailAddress) {
 		$content = EmailHelper::getBodyOfLastEmail(
 			EmailHelper::getLocalMailhogUrl(),
-			$emailAddress
+			$emailAddress,
+			$this->featureContext->getStepLineRef()
 		);
 		$matches = [];
 		\preg_match(

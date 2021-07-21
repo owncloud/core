@@ -62,6 +62,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 			. '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
 		HttpRequestHelper::delete(
 			$davUrl,
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword()
 		);
@@ -89,6 +90,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 		$this->response = HttpRequestHelper::get(
 			$davUrl,
+			$this->featureContext->getStepLineRef(),
 			$user,
 			$this->featureContext->getPasswordForUser($user)
 		);
@@ -137,6 +139,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
   </d:mkcol>';
 		$this->response = HttpRequestHelper::sendRequest(
 			$davUrl,
+			$this->featureContext->getStepLineRef(),
 			'MKCOL',
 			$user,
 			$this->featureContext->getPasswordForUser($user),

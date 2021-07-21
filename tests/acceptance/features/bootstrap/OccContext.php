@@ -319,7 +319,10 @@ class OccContext implements Context {
 	 * @return void
 	 */
 	public function createLocalStorageMountUsingTheOccCommand($mount) {
-		$result = SetupHelper::createLocalStorageMount($mount);
+		$result = SetupHelper::createLocalStorageMount(
+			$mount,
+			$this->featureContext->getStepLineRef()
+		);
 		$storageId = $result['storageId'];
 		$this->featureContext->setResultOfOccCommand($result);
 		$this->featureContext->addStorageId($mount, $storageId);
@@ -2482,7 +2485,12 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function systemConfigKeyShouldHaveValue($key, $value) {
-		$config = \trim(SetupHelper::getSystemConfigValue($key));
+		$config = \trim(
+			SetupHelper::getSystemConfigValue(
+				$key,
+				$this->featureContext->getStepLineRef()
+			)
+		);
 		Assert::assertSame(
 			$value,
 			$config,
@@ -2522,7 +2530,10 @@ class OccContext implements Context {
 	 */
 	public function systemConfigKeyShouldNotExist($key) {
 		Assert::assertEmpty(
-			SetupHelper::getSystemConfig($key)['stdOut'],
+			SetupHelper::getSystemConfig(
+				$key,
+				$this->featureContext->getStepLineRef()
+			)['stdOut'],
 			"The system config key '$key' was not expected to exist"
 		);
 	}
@@ -2698,6 +2709,7 @@ class OccContext implements Context {
 				'enable_external_storage',
 				'--value=yes'
 			],
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
@@ -2709,6 +2721,7 @@ class OccContext implements Context {
 				'core',
 				'enable_external_storage',
 			],
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
@@ -2742,6 +2755,7 @@ class OccContext implements Context {
 				'shareapi_exclude_groups_list',
 				"--value='[$groups]'"
 			],
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
@@ -2753,6 +2767,7 @@ class OccContext implements Context {
 				'core',
 				'shareapi_exclude_groups_list'
 			],
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
@@ -2783,6 +2798,7 @@ class OccContext implements Context {
 				"shareapi_exclude_groups",
 				"--value=yes"
 			],
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
@@ -2794,6 +2810,7 @@ class OccContext implements Context {
 				"core",
 				"shareapi_exclude_groups"
 			],
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
@@ -2829,6 +2846,7 @@ class OccContext implements Context {
 				"enable_lock_file_action",
 				"--value=$value"
 			],
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
@@ -2840,6 +2858,7 @@ class OccContext implements Context {
 				"files",
 				"enable_lock_file_action"
 			],
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
@@ -2979,7 +2998,10 @@ class OccContext implements Context {
 	public function resetDAVTechPreview() {
 		if ($this->doTechPreview) {
 			if ($this->initialTechPreviewStatus === "") {
-				SetupHelper::deleteSystemConfig('dav.enable.tech_preview');
+				SetupHelper::deleteSystemConfig(
+					'dav.enable.tech_preview',
+					$this->featureContext->getStepLineRef()
+				);
 			} elseif ($this->initialTechPreviewStatus === 'true' && !$this->techPreviewEnabled) {
 				$this->enableDAVTechPreview();
 			} elseif ($this->initialTechPreviewStatus === 'false' && $this->techPreviewEnabled) {
@@ -3028,13 +3050,19 @@ class OccContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getOcPath()
 		);
-		$ocVersion = SetupHelper::getSystemConfigValue('version');
+		$ocVersion = SetupHelper::getSystemConfigValue(
+			'version',
+			$this->featureContext->getStepLineRef()
+		);
 		// dav.enable.tech_preview was used in some ownCloud versions before 10.4.0
 		// only set it on those versions of ownCloud
 		if (\version_compare($ocVersion, '10.4.0') === -1) {
 			$this->doTechPreview = true;
 			$techPreviewEnabled = \trim(
-				SetupHelper::getSystemConfigValue('dav.enable.tech_preview')
+				SetupHelper::getSystemConfigValue(
+					'dav.enable.tech_preview',
+					$this->featureContext->getStepLineRef()
+				)
 			);
 			$this->initialTechPreviewStatus = $techPreviewEnabled;
 			$this->techPreviewEnabled = $techPreviewEnabled === 'true';

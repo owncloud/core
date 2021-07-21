@@ -40,6 +40,7 @@ class DeleteHelper {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $fileName
+	 * @param string $xRequestId
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
@@ -52,6 +53,7 @@ class DeleteHelper {
 		$user,
 		$password,
 		$fileName,
+		$xRequestId = '',
 		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null,
@@ -64,6 +66,7 @@ class DeleteHelper {
 			"DELETE",
 			$fileName,
 			$headers,
+			$xRequestId,
 			null,
 			$davPathVersionToUse,
 			"files",

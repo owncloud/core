@@ -44,15 +44,22 @@ class LoggingHelper {
 	/**
 	 * returns the log file path local to the system ownCloud is running on
 	 *
+	 * @param string $xRequestId
+	 *
 	 * @throws \Exception
 	 * @return string
 	 */
-	public static function getLogFilePath() {
+	public static function getLogFilePath(
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we don't interact with the log file on reva or OCIS
 			return "";
 		}
-		$result = SetupHelper::runOcc(['log:owncloud']);
+		$result = SetupHelper::runOcc(
+			['log:owncloud'],
+			$xRequestId
+		);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get owncloud log file information" .
@@ -78,6 +85,7 @@ class LoggingHelper {
 	 * @param string $baseUrl
 	 * @param string $adminUsername
 	 * @param string $adminPassword
+	 * @param string $xRequestId
 	 * @param int $noOfLinesToRead
 	 *
 	 * @throws \Exception
@@ -87,6 +95,7 @@ class LoggingHelper {
 		$baseUrl,
 		$adminUsername,
 		$adminPassword,
+		$xRequestId = '',
 		$noOfLinesToRead = 0
 	) {
 		$result = OcsApiHelper::sendRequest(
@@ -94,7 +103,8 @@ class LoggingHelper {
 			$adminUsername,
 			$adminPassword,
 			"GET",
-			"/apps/testing/api/v1/logfile/$noOfLinesToRead"
+			"/apps/testing/api/v1/logfile/$noOfLinesToRead",
+			$xRequestId
 		);
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception(
@@ -107,14 +117,21 @@ class LoggingHelper {
 	/**
 	 * returns the currently set log level [debug, info, warning, error, fatal]
 	 *
+	 * @param string $xRequestId
+	 *
 	 * @throws \Exception
 	 * @return string
 	 */
-	public static function getLogLevel() {
+	public static function getLogLevel(
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return "debug";
 		}
-		$result = SetupHelper::runOcc(["log:manage"]);
+		$result = SetupHelper::runOcc(
+			["log:manage"],
+			$xRequestId
+		);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get log level " . $result ["stdOut"] . " " .
@@ -130,12 +147,16 @@ class LoggingHelper {
 	/**
 	 *
 	 * @param string $logLevel (debug|info|warning|error|fatal)
+	 * @param string $xRequestId
 	 *
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
 	 */
-	public static function setLogLevel($logLevel) {
+	public static function setLogLevel(
+		$logLevel,
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we can't manage log file settings on reva or OCIS
 			return;
@@ -143,7 +164,10 @@ class LoggingHelper {
 		if (!\in_array($logLevel, self::LOG_LEVEL_ARRAY)) {
 			throw new \InvalidArgumentException("invalid log level");
 		}
-		$result = SetupHelper::runOcc(["log:manage", "--level=$logLevel"]);
+		$result = SetupHelper::runOcc(
+			["log:manage", "--level=$logLevel"],
+			$xRequestId
+		);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not set log level " . $result ["stdOut"] . " " .
@@ -155,14 +179,21 @@ class LoggingHelper {
 	/**
 	 * returns the currently set logging backend (owncloud|syslog|errorlog)
 	 *
+	 * @param string $xRequestId
+	 *
 	 * @throws \Exception
 	 * @return string
 	 */
-	public static function getLogBackend() {
+	public static function getLogBackend(
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return "errorlog";
 		}
-		$result = SetupHelper::runOcc(["log:manage"]);
+		$result = SetupHelper::runOcc(
+			["log:manage"],
+			$xRequestId
+		);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get log backend " . $result ["stdOut"] . " " .
@@ -183,12 +214,16 @@ class LoggingHelper {
 	/**
 	 *
 	 * @param string $backend (owncloud|syslog|errorlog)
+	 * @param string $xRequestId
 	 *
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
 	 */
-	public static function setLogBackend($backend) {
+	public static function setLogBackend(
+		$backend,
+		$xRequestId = ''
+	) {
 		if (!\in_array($backend, ["owncloud", "syslog", "errorlog"])) {
 			throw new \InvalidArgumentException("invalid log backend");
 		}
@@ -196,7 +231,10 @@ class LoggingHelper {
 			// Currently we can't manage log file settings on reva or OCIS
 			return;
 		}
-		$result = SetupHelper::runOcc(["log:manage", "--backend=$backend"]);
+		$result = SetupHelper::runOcc(
+			["log:manage", "--backend=$backend"],
+			$xRequestId
+		);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not set log backend " . $result ["stdOut"] . " " .
@@ -208,14 +246,21 @@ class LoggingHelper {
 	/**
 	 * returns the currently set logging timezone
 	 *
+	 * @param string $xRequestId
+	 *
 	 * @throws \Exception
 	 * @return string
 	 */
-	public static function getLogTimezone() {
+	public static function getLogTimezone(
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return "UTC";
 		}
-		$result = SetupHelper::runOcc(["log:manage"]);
+		$result = SetupHelper::runOcc(
+			["log:manage"],
+			$xRequestId
+		);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get log timezone " . $result ["stdOut"] . " " .
@@ -236,16 +281,23 @@ class LoggingHelper {
 	/**
 	 *
 	 * @param string $timezone
+	 * @param string $xRequestId
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function setLogTimezone($timezone) {
+	public static function setLogTimezone(
+		$timezone,
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we can't manage log file settings on reva or OCIS
 			return;
 		}
-		$result = SetupHelper::runOcc(["log:manage", "--timezone=$timezone"]);
+		$result = SetupHelper::runOcc(
+			["log:manage", "--timezone=$timezone"],
+			$xRequestId
+		);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not set log timezone " . $result ["stdOut"] . " " .
@@ -259,11 +311,17 @@ class LoggingHelper {
 	 * @param string $baseUrl
 	 * @param string $adminUsername
 	 * @param string $adminPassword
+	 * @param string $xRequestId
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function clearLogFile($baseUrl, $adminUsername, $adminPassword) {
+	public static function clearLogFile(
+		$baseUrl,
+		$adminUsername,
+		$adminPassword,
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we don't interact with the log file on reva or OCIS
 			return;
@@ -273,7 +331,8 @@ class LoggingHelper {
 			$adminUsername,
 			$adminPassword,
 			"DELETE",
-			"/apps/testing/api/v1/logfile"
+			"/apps/testing/api/v1/logfile",
+			$xRequestId
 		);
 		if ($result->getStatusCode() !== 200) {
 			throw new \Exception("could not clear logfile");
@@ -285,11 +344,17 @@ class LoggingHelper {
 	 * @param string $logLevel
 	 * @param string $backend
 	 * @param string $timezone
+	 * @param string $xRequestId
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public static function restoreLoggingStatus($logLevel, $backend, $timezone) {
+	public static function restoreLoggingStatus(
+		$logLevel,
+		$backend,
+		$timezone,
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we don't interact with the log file on reva or OCIS
 			return;
@@ -314,7 +379,10 @@ class LoggingHelper {
 		}
 
 		if (\count($commands) > 1) {
-			$result = SetupHelper::runOcc($commands);
+			$result = SetupHelper::runOcc(
+				$commands,
+				$xRequestId
+			);
 			if ($result["code"] != 0) {
 				throw new \Exception(
 					"could not restore log status " . $result ["stdOut"] . " " .
@@ -327,10 +395,14 @@ class LoggingHelper {
 	/**
 	 * returns the currently set log level, backend and timezone
 	 *
+	 * @param string $xRequestId
+	 *
 	 * @return array|string[]
 	 * @throws \Exception
 	 */
-	public static function getLogInfo() {
+	public static function getLogInfo(
+		$xRequestId = ''
+	) {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return [
 				"level" => "debug",
@@ -338,7 +410,10 @@ class LoggingHelper {
 				"timezone" => "UTC"
 			];
 		}
-		$result = SetupHelper::runOcc(["log:manage"]);
+		$result = SetupHelper::runOcc(
+			["log:manage"],
+			$xRequestId
+		);
 		if ($result["code"] != 0) {
 			throw new \Exception(
 				"could not get log level " . $result ["stdOut"] . " " .

@@ -40,6 +40,7 @@ class DownloadHelper {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $fileName
+	 * @param string $xRequestId
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
@@ -51,6 +52,7 @@ class DownloadHelper {
 		$user,
 		$password,
 		$fileName,
+		$xRequestId = '',
 		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
@@ -62,6 +64,7 @@ class DownloadHelper {
 			"GET",
 			$fileName,
 			$headers,
+			$xRequestId,
 			null,
 			$davPathVersionToUse,
 			"files",

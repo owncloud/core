@@ -606,7 +606,8 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 		$this->featureContext = $environment->getContext('FeatureContext');
 		SetupHelper::runOcc(
-			['config:app:set files_sharing blacklisted_receiver_groups --value=']
+			['config:app:set files_sharing blacklisted_receiver_groups --value='],
+			$this->featureContext->getStepLineRef()
 		);
 	}
 }

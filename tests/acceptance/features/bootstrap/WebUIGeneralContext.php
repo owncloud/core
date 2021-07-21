@@ -263,6 +263,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$content = EmailHelper::getBodyOfEmail(
 			EmailHelper::getLocalMailhogUrl(),
 			$emailAddress,
+			$this->featureContext->getStepLineRef(),
 			$numEmails
 		);
 		$matches = [];
@@ -615,7 +616,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$capability['testingApp'],
 			$capability['testingParameter'],
 			$value,
-			$this->getSavedCapabilitiesXml()[$this->featureContext->getBaseUrl()]
+			$this->getSavedCapabilitiesXml()[$this->featureContext->getBaseUrl()],
+			$this->featureContext->getStepLineRef()
 		);
 		$this->addToSavedCapabilitiesChanges($change);
 	}
@@ -700,7 +702,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$response = AppConfigHelper::getCapabilities(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
-			$this->featureContext->getAdminPassword()
+			$this->featureContext->getAdminPassword(),
+			$this->featureContext->getStepLineRef()
 		);
 
 		$capabilitiesXml = AppConfigHelper::getCapabilitiesXml(
@@ -712,20 +715,23 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 		if ($this->oldCSRFSetting === null) {
 			$oldCSRFSetting = SetupHelper::getSystemConfigValue(
-				'csrf.disabled'
+				'csrf.disabled',
+				$this->featureContext->getStepLineRef()
 			);
 			$this->oldCSRFSetting = \trim($oldCSRFSetting);
 		}
 		SetupHelper::setSystemConfig(
 			'csrf.disabled',
 			'true',
+			$this->featureContext->getStepLineRef(),
 			'boolean'
 		);
 
 		//TODO make it smarter to be able also to work with other backends
 		if ($this->featureContext->isTestingWithLdap()) {
 			$result = SetupHelper::runOcc(
-				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"]
+				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"],
+				$this->featureContext->getStepLineRef()
 			);
 			if ((int) $result['code'] !== 0) {
 				throw new Exception(
@@ -751,13 +757,15 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			function ($server) {
 				if (!isset($this->oldPreviewSetting[$server])) {
 					$oldPreviewSetting = SetupHelper::getSystemConfigValue(
-						'enable_previews'
+						'enable_previews',
+						$this->featureContext->getStepLineRef()
 					);
 					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
 				}
 				SetupHelper::setSystemConfig(
 					'enable_previews',
 					'false',
+					$this->featureContext->getStepLineRef(),
 					'boolean'
 				);
 			}
@@ -781,13 +789,15 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			function ($server) {
 				if (!isset($this->oldPreviewSetting[$server])) {
 					$oldPreviewSetting = SetupHelper::getSystemConfigValue(
-						'enable_previews'
+						'enable_previews',
+						$this->featureContext->getStepLineRef()
 					);
 					$this->oldPreviewSetting[$server] = \trim($oldPreviewSetting);
 				}
 				SetupHelper::setSystemConfig(
 					'enable_previews',
 					'true',
+					$this->featureContext->getStepLineRef(),
 					'boolean'
 				);
 			}
@@ -817,7 +827,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
-			$this->savedCapabilitiesChanges
+			$this->savedCapabilitiesChanges,
+			$this->featureContext->getStepLineRef()
 		);
 
 		$this->featureContext->runFunctionOnEveryServer(
@@ -837,11 +848,15 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		);
 
 		if ($this->oldCSRFSetting === "") {
-			SetupHelper::deleteSystemConfig('csrf.disabled');
+			SetupHelper::deleteSystemConfig(
+				'csrf.disabled',
+				$this->featureContext->getStepLineRef()
+			);
 		} elseif ($this->oldCSRFSetting !== null) {
 			SetupHelper::setSystemConfig(
 				'csrf.disabled',
 				$this->oldCSRFSetting,
+				$this->featureContext->getStepLineRef(),
 				'boolean'
 			);
 		}

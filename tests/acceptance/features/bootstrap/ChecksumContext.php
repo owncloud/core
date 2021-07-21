@@ -171,6 +171,7 @@ class ChecksumContext implements Context {
 		$url = WebDavHelper::sanitizeUrl($url);
 		$response = HttpRequestHelper::sendRequest(
 			$url,
+			$this->featureContext->getStepLineRef(),
 			'PROPFIND',
 			$user,
 			$this->featureContext->getPasswordForUser($user),

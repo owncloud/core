@@ -42,6 +42,7 @@ class HttpRequestHelper {
 	/**
 	 *
 	 * @param string $url
+	 * @param string $xRequestId
 	 * @param string $method
 	 * @param string $user
 	 * @param string $password
@@ -59,6 +60,7 @@ class HttpRequestHelper {
 	 */
 	public static function sendRequest(
 		$url,
+		$xRequestId,
 		$method = 'GET',
 		$user = null,
 		$password = null,
@@ -85,6 +87,7 @@ class HttpRequestHelper {
 		 */
 		$request = self::createRequest(
 			$url,
+			$xRequestId,
 			$method,
 			$headers,
 			$body
@@ -255,6 +258,7 @@ class HttpRequestHelper {
 	 * This enables us to create multiple requests in advance so that we can send them to the server at once in parallel.
 	 *
 	 * @param string $url
+	 * @param string $xRequestId
 	 * @param string $method
 	 * @param array $headers ['X-MyHeader' => 'value']
 	 * @param string|array $body either the actual string to send in the body,
@@ -265,12 +269,16 @@ class HttpRequestHelper {
 	 */
 	public static function createRequest(
 		$url,
+		$xRequestId = '',
 		$method = 'GET',
 		$headers = null,
 		$body = null
 	) {
 		if ($headers === null) {
 			$headers = [];
+		}
+		if ($xRequestId !== '') {
+			$headers['X-Request-ID'] = $xRequestId;
 		}
 		if (\is_array($body)) {
 			// when creating the client, it is possible to set 'form_params' and
@@ -295,6 +303,7 @@ class HttpRequestHelper {
 	 * @see HttpRequestHelper::sendRequest()
 	 *
 	 * @param string $url
+	 * @param string $xRequestId
 	 * @param string $user
 	 * @param string $password
 	 * @param array $headers ['X-MyHeader' => 'value']
@@ -308,6 +317,7 @@ class HttpRequestHelper {
 	 */
 	public static function get(
 		$url,
+		$xRequestId,
 		$user = null,
 		$password = null,
 		$headers = null,
@@ -318,6 +328,7 @@ class HttpRequestHelper {
 	) {
 		return self::sendRequest(
 			$url,
+			$xRequestId,
 			'GET',
 			$user,
 			$password,
@@ -335,6 +346,7 @@ class HttpRequestHelper {
 	 * @see HttpRequestHelper::sendRequest()
 	 *
 	 * @param string $url
+	 * @param string $xRequestId
 	 * @param string $user
 	 * @param string $password
 	 * @param array $headers ['X-MyHeader' => 'value']
@@ -348,6 +360,7 @@ class HttpRequestHelper {
 	 */
 	public static function post(
 		$url,
+		$xRequestId,
 		$user = null,
 		$password = null,
 		$headers = null,
@@ -358,6 +371,7 @@ class HttpRequestHelper {
 	) {
 		return self::sendRequest(
 			$url,
+			$xRequestId,
 			'POST',
 			$user,
 			$password,
@@ -375,6 +389,7 @@ class HttpRequestHelper {
 	 * @see HttpRequestHelper::sendRequest()
 	 *
 	 * @param string $url
+	 * @param string $xRequestId
 	 * @param string $user
 	 * @param string $password
 	 * @param array $headers ['X-MyHeader' => 'value']
@@ -388,6 +403,7 @@ class HttpRequestHelper {
 	 */
 	public static function put(
 		$url,
+		$xRequestId,
 		$user = null,
 		$password = null,
 		$headers = null,
@@ -398,6 +414,7 @@ class HttpRequestHelper {
 	) {
 		return self::sendRequest(
 			$url,
+			$xRequestId,
 			'PUT',
 			$user,
 			$password,
@@ -415,6 +432,7 @@ class HttpRequestHelper {
 	 * @see HttpRequestHelper::sendRequest()
 	 *
 	 * @param string $url
+	 * @param string $xRequestId
 	 * @param string $user
 	 * @param string $password
 	 * @param array $headers ['X-MyHeader' => 'value']
@@ -428,6 +446,7 @@ class HttpRequestHelper {
 	 */
 	public static function delete(
 		$url,
+		$xRequestId,
 		$user = null,
 		$password = null,
 		$headers = null,
@@ -438,6 +457,7 @@ class HttpRequestHelper {
 	) {
 		return self::sendRequest(
 			$url,
+			$xRequestId,
 			'DELETE',
 			$user,
 			$password,

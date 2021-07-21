@@ -62,6 +62,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 			. '/remote.php/dav/calendars/admin/MyCalendar';
 		HttpRequestHelper::delete(
 			$davUrl,
+			$this->featureContext->getStepLineRef(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword()
 		);
@@ -89,6 +90,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 		$this->response = HttpRequestHelper::get(
 			$davUrl,
+			$this->featureContext->getStepLineRef(),
 			$user,
 			$this->featureContext->getPasswordForUser($user)
 		);
@@ -153,6 +155,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 		$this->response = HttpRequestHelper::sendRequest(
 			$davUrl,
+			$this->featureContext->getStepLineRef(),
 			"MKCALENDAR",
 			$user,
 			$this->featureContext->getPasswordForUser($user),

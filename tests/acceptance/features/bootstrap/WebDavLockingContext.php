@@ -101,6 +101,7 @@ class WebDavLockingContext implements Context {
 			"LOCK",
 			$file,
 			$headers,
+			$this->featureContext->getStepLineRef(),
 			$body,
 			$this->featureContext->getDavPathVersion(),
 			$type
@@ -328,6 +329,7 @@ class WebDavLockingContext implements Context {
 				"UNLOCK",
 				$itemToUnlock,
 				$headers,
+				$this->featureContext->getStepLineRef(),
 				null,
 				$this->featureContext->getDavPathVersion(),
 				$type
@@ -557,6 +559,7 @@ class WebDavLockingContext implements Context {
 			"PROPFIND",
 			$file,
 			null,
+			$this->featureContext->getStepLineRef(),
 			$body,
 			$this->featureContext->getDavPathVersion()
 		);
