@@ -1,0 +1,10 @@
+Bugfix: Scrollable Login screen
+
+Current login screen has an always visible scrollbar to prevent a "jumping" of the login form. 
+Certain constallations of notices and error messages can exceed the screens height which 
+will result in a horiztonal jump of the login form (when scrollbar is added). Until now this 
+was done via setting a height of 101% which made the scrollbar always visible - but also scrollable. 
+This fix makes the scrollbar visible any time but not scrollable if not needed.
+
+https://github.com/owncloud/core/issues/39043
+https://github.com/owncloud/core/pull/39052
