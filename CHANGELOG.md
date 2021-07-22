@@ -48,9 +48,11 @@ Details
 
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 
-   The following have been updated: - mikey179/vfsstream (v1.6.8 to v1.6.9)
+   The following have been updated: - doctrine/cache (2.0.3 to 2.1.1) - mikey179/vfsstream
+   (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.12.0)
 
    https://github.com/owncloud/core/pull/39030
+   https://github.com/owncloud/core/pull/39047
 
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 
