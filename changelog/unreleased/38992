@@ -1,4 +1,4 @@
-Enhancement: Allow oc_sessionPassphrase cookie to expire if config variable session_lifetime is explicitly defined
+Enhancement: Allow oc_sessionPassphrase cookie to expire with session_lifetime
 
 Before this PR the session cookie oc_sessionPassphrase has expiration time 0 regardless of the value of `session_lifetime` in config.php
 
