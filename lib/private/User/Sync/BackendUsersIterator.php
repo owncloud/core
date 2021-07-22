@@ -44,11 +44,11 @@ class BackendUsersIterator extends UsersIterator {
 	/** @var string search for the uid string in backend */
 	private $search;
 
-	/** @throws \Exception for the uid string in backend */
-	private $testConnection;
+	/** @var boolean check if backend encountered connections errors */
+	private $checkForConnectionErrors;
 
-	public function __construct(UserInterface $backend, $filterUID = '', $testConnection = false) {
-		$this->testConnection = $testConnection;
+	public function __construct(UserInterface $backend, $filterUID = '', $checkForConnectionErrors = false) {
+		$this->checkForConnectionErrors = $checkForConnectionErrors;
 		$this->backend = $backend;
 		$this->search = $filterUID;
 	}
@@ -57,8 +57,8 @@ class BackendUsersIterator extends UsersIterator {
 		parent::rewind();
 		$this->data = $this->backend->getUsers($this->search, self::LIMIT, 0);
 
-		if($this->testConnection && method_exists($this->backend,'testConnection')){
-			$this->backend->testConnection();
+		if($this->checkForConnectionErrors && method_exists($this->backend,'checkForConnectionErrors')){
+			$this->backend->checkForConnectionErrors();
 		}
 
 		$this->dataPos = 0;
@@ -75,8 +75,8 @@ class BackendUsersIterator extends UsersIterator {
 
 			$this->data = $this->backend->getUsers($this->search, self::LIMIT, $offset);
 
-			if($this->testConnection && method_exists($this->backend,'testConnection')){
-				$this->backend->testConnection();
+			if($this->checkForConnectionErrors && method_exists($this->backend,'testConnection')){
+				$this->backend->checkForConnectionErrors();
 			}
 
 			$this->dataPos = 0;
