@@ -44,7 +44,11 @@ class BackendUsersIterator extends UsersIterator {
 	/** @var string search for the uid string in backend */
 	private $search;
 
-	public function __construct(UserInterface $backend, $filterUID = '') {
+	/** @throws \Exception for the uid string in backend */
+	private $testConnection;
+
+	public function __construct(UserInterface $backend, $filterUID = '', $testConnection = false) {
+		$this->testConnection = $testConnection;
 		$this->backend = $backend;
 		$this->search = $filterUID;
 	}
@@ -52,6 +56,11 @@ class BackendUsersIterator extends UsersIterator {
 	public function rewind() {
 		parent::rewind();
 		$this->data = $this->backend->getUsers($this->search, self::LIMIT, 0);
+
+		if($this->testConnection && method_exists($this->backend,'testConnection')){
+			$this->backend->testConnection();
+		}
+
 		$this->dataPos = 0;
 		$this->endPos = \count($this->data);
 		$this->hasMoreData = $this->endPos >= self::LIMIT;
@@ -63,7 +72,13 @@ class BackendUsersIterator extends UsersIterator {
 		if ($this->hasMoreData && $this->dataPos >= $this->endPos) {
 			$this->page++;
 			$offset = $this->page * self::LIMIT;
+
 			$this->data = $this->backend->getUsers($this->search, self::LIMIT, $offset);
+
+			if($this->testConnection && method_exists($this->backend,'testConnection')){
+				$this->backend->testConnection();
+			}
+
 			$this->dataPos = 0;
 			$this->endPos = \count($this->data);
 			$this->hasMoreData = $this->endPos >= self::LIMIT;
