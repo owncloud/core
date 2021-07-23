@@ -73,7 +73,6 @@ class BackendUsersIterator extends UsersIterator {
 		if ($this->hasMoreData && $this->dataPos >= $this->endPos) {
 			$this->page++;
 			$offset = $this->page * self::LIMIT;
-
 			$this->data = $this->backend->getUsers($this->search, self::LIMIT, $offset);
 
 			// Used to detect LDAP errors, see https://github.com/owncloud/enterprise/issues/4642#issuecomment-885642746
