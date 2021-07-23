@@ -70,6 +70,7 @@ class CryptoWrapper {
 	 * @param ICrypto $crypto
 	 * @param ISecureRandom $random
 	 * @param IRequest $request
+	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
 		IConfig $config,
