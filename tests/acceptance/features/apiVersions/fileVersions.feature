@@ -18,12 +18,12 @@ Feature: dav-versions
     And the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "0" elements
     And the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "0" elements
 
-  @issue-ocis-reva-17 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking
+  @issue-ocis-reva-17 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload file and no version is available using new chunking
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "Alice" should contain "0" elements
 
-  @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking
+  @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload file and no version is available using async upload
     Given the administrator has enabled async operations
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 3 chunks with new chunking and using the WebDAV API
@@ -44,13 +44,13 @@ Feature: dav-versions
     And the version folder of file "/davtest.txt-newdav-regular" for user "Alice" should contain "1" element
     And the version folder of file "/davtest.txt-olddav-oldchunking" for user "Alice" should contain "1" element
 
-  @issue-ocis-reva-17 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking
+  @issue-ocis-reva-17 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload a file twice and versions are available using new chunking
     When user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     And user "Alice" uploads file "filesForUpload/davtest.txt" to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "Alice" should contain "1" element
 
-  @issue-ocis-reva-17 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking
+  @issue-ocis-reva-17 @issue-ocis-reva-56 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Upload a file twice and versions are available using async upload
     Given the administrator has enabled async operations
     When user "Alice" uploads file "filesForUpload/davtest.txt" asynchronously to "/davtest.txt" in 2 chunks with new chunking and using the WebDAV API
@@ -95,12 +95,12 @@ Feature: dav-versions
     Examples:
       | dav-path |
       | old      |
-    @notToImplementOnOCIS @newChunking
+    @notToImplementOnOCIS @newChunking @issue-ocis-1321
     Examples:
       | dav-path |
       | new      |
 
-  @skipOnStorage:ceph @files_primary_s3-issue-161 @notToImplementOnOCIS @newChunking
+  @skipOnStorage:ceph @files_primary_s3-issue-161 @notToImplementOnOCIS @newChunking @issue-ocis-1321
   @issue-ocis-reva-17 @issue-ocis-reva-56
   Scenario: Uploading a file asynchronously does create the correct version that can be restored
     Given the administrator has enabled async operations
