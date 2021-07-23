@@ -178,6 +178,23 @@ class PublicLinkTab extends OwncloudPage {
 	}
 
 	/**
+	 * return if create link share button is present or not
+	 *
+	 * @return bool
+	 */
+	public function isCreateLinkShareButtonPresent() {
+		$createLinkBtn = $this->publicLinkTabElement->find(
+			"xpath",
+			$this->createLinkBtnXpath
+		);
+		if ($createLinkBtn) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * Updates sharing popup as popup may change
 	 *
 	 * @param Session $session

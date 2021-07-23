@@ -23,6 +23,7 @@ namespace OCA\Files_Sharing;
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
 use OCP\IL10N;
+use OCP\IUserSession;
 use OCP\Util\UserSearch;
 use OCP\Share\IManager;
 
@@ -43,20 +44,44 @@ class Capabilities implements ICapability {
 	 */
 	private $userSearch;
 
-	/** @var IL10N */
+	/**
+	 * @var IL10N
+	 */
 	private $l10n;
+
+	/**
+	 * @var SharingAllowlist
+	 */
+	private $sharingAllowlist;
+
+	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
 
 	/**
 	 * Capabilities constructor.
 	 *
 	 * @param IConfig $config
 	 * @param UserSearch $userSearch
+	 * @param IL10N $l10n
+	 * @param SharingAllowlist $sharingAllowlist
+	 * @param IUserSession $userSession
 	 */
-	public function __construct(IManager $shareManager, IConfig $config, UserSearch $userSearch, IL10N $l10n) {
+	public function __construct(
+		IManager $shareManager,
+		IConfig $config,
+		UserSearch $userSearch,
+		IL10N $l10n,
+		SharingAllowlist $sharingAllowlist,
+		IUserSession $userSession
+	) {
 		$this->shareManager = $shareManager;
 		$this->config = $config;
 		$this->userSearch = $userSearch;
 		$this->l10n = $l10n;
+		$this->sharingAllowlist = $sharingAllowlist;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -93,6 +118,7 @@ class Capabilities implements ICapability {
 				$public['password']['enforced'] = $roPasswordEnforced || $rwPasswordEnforced || $woPasswordEnforced || $rwdPasswordEnforced;
 
 				$public['roles_api'] = true;
+				$public['can_create_public_link'] = true;
 
 				$public['expire_date'] = [];
 				$public['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no') === 'yes';
@@ -107,6 +133,12 @@ class Capabilities implements ICapability {
 				$public['multiple'] = true;
 				$public['supports_upload_only'] = true;
 				$public['defaultPublicLinkShareName'] = $this->l10n->t('Public link');
+
+				if ($this->sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled() &&
+					! $this->sharingAllowlist->isUserInPublicShareSharersGroupsAllowlist($this->userSession->getUser())
+				) {
+					$public['can_create_public_link'] = false;
+				}
 			}
 			$res["public"] = $public;
 

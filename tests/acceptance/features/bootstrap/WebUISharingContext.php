@@ -1760,6 +1760,18 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the public link with name :entryName should be in the public links list on the webUI
+	 *
+	 * @param string $entryName
+	 *
+	 * @return void
+	 */
+	public function thePublicLinkWithNameShouldBeInPublicLinksList(string $entryName) {
+		$isPresent = $this->sharingDialog->checkThatNameIsInPublicLinkList($this->getSession(), $entryName);
+		Assert::assertTrue($isPresent, "Expected " . $entryName . " in public link lists, but not found.");
+	}
+
+	/**
 	 * @Then the number of public links should be :count
 	 *
 	 * @param integer $count
@@ -2239,5 +2251,25 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theUserAcceptsThePendingRemoteSharesUsingTheWebui() {
 		$this->sharedWithYouPage->acceptPendingShare();
+	}
+
+	/**
+	 * @Then the user should not see the public link share tab on the webUI
+	 *
+	 * @return void
+	 */
+	public function userShouldNotBeAbleToCreateNewPublicLink() {
+		$is_visible = $this->sharingDialog->isPublicLinkTabVisible();
+		Assert::assertFalse($is_visible, "Public link tab is expected to be not present but found visible.");
+	}
+
+	/**
+	 * @Then the user should not see the create public link button on the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserShouldSeeCreatePublicLinkButtonOnTheWebui() {
+		$is_visible = $this->publicShareTab->isCreateLinkShareButtonPresent();
+		Assert::assertFalse($is_visible, "Create public link button is expected to be not present but found visible.");
 	}
 }
