@@ -73,7 +73,7 @@ class ExpireVersions extends Command {
 		$maxAge = $this->expiration->getMaxAgeAsTimestamp();
 		if (!$maxAge) {
 			$output->writeln("Auto expiration is configured - expiration will be handled automatically.");
-			return;
+			return 1;
 		}
 
 		$users = $input->getArgument('user_id');

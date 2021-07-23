@@ -65,15 +65,22 @@ class RemoveMember extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$groupName = $input->getArgument('group');
 		$group = $this->groupManager->get($groupName);
+		$errorFound = false;
 		if (!$group) {
 			$output->writeln('<error>Group "' . $groupName . '" does not exist</error>');
-			return 1;
+			$errorFound = true;
 		}
 
-		$members = $input->getOption('member');
+		if (!$errorFound) {
+			$members = $input->getOption('member');
 
-		if (!\count($members)) {
-			$output->writeln('<error>No members specified</error>');
+			if (!\count($members)) {
+				$output->writeln('<error>No members specified</error>');
+				$errorFound = true;
+			}
+		}
+
+		if ($errorFound) {
 			return 1;
 		}
 
@@ -95,9 +102,11 @@ class RemoveMember extends Command {
 		}
 
 		if ($memberExistsError) {
-			return 1;
+			$exitCode = 1;
+		} else {
+			$exitCode = 0;
 		}
 
-		return 0;
+		return $exitCode;
 	}
 }

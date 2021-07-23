@@ -72,7 +72,7 @@ class ExpireTrash extends Command {
 		$retentionEnabled = $this->trashExpiryManager->retentionEnabled();
 		if (!$retentionEnabled) {
 			$output->writeln("Auto expiration is configured - expiration will be handled automatically.");
-			return;
+			return 1;
 		}
 
 		$users = $input->getArgument('user_id');
