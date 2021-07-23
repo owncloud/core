@@ -2202,6 +2202,37 @@ trait WebDav {
 	}
 
 	/**
+	 * Uploading with old/new DAV and chunked/non-chunked.
+	 * Except do not do the new-DAV-new-chunking combination. That is not being
+	 * supported on all implementations.
+	 *
+	 * @When user :user uploads file :source to filenames based on :destination with all mechanisms except new chunking using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userUploadsAFileToWithAllMechanismsExceptNewChunking(
+		$user,
+		$source,
+		$destination
+	) {
+		$user = $this->getActualUsername($user);
+		$this->uploadResponses = UploadHelper::uploadWithAllMechanisms(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			$this->getUserPassword($user),
+			$this->acceptanceTestsDirLocation() . $source,
+			$destination,
+			$this->getStepLineRef(),
+			false,
+			'new'
+		);
+	}
+
+	/**
 	 * Overwriting with old/new DAV and chunked/non-chunked.
 	 *
 	 * @When user :user overwrites from file :source to file :destination with all mechanisms using the WebDAV API
@@ -2226,6 +2257,37 @@ trait WebDav {
 			$destination,
 			$this->getStepLineRef(),
 			true
+		);
+	}
+
+	/**
+	 * Overwriting with old/new DAV and chunked/non-chunked.
+	 * Except do not do the new-DAV-new-chunking combination. That is not being
+	 * supported on all implementations.
+	 *
+	 * @When user :user overwrites from file :source to file :destination with all mechanisms except new chunking using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userOverwritesAFileToWithAllMechanismsExceptNewChunking(
+		$user,
+		$source,
+		$destination
+	) {
+		$user = $this->getActualUsername($user);
+		$this->uploadResponses = UploadHelper::uploadWithAllMechanisms(
+			$this->getBaseUrl(),
+			$this->getActualUsername($user),
+			$this->getUserPassword($user),
+			$this->acceptanceTestsDirLocation() . $source,
+			$destination,
+			$this->getStepLineRef(),
+			true,
+			'new'
 		);
 	}
 
@@ -2432,6 +2494,7 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $destination
 	 * @param string $shouldOrNot
+	 * @param string $exceptChunkingType empty string or "old" or "new"
 	 *
 	 * @return void
 	 * @throws \Exception
@@ -2439,29 +2502,73 @@ trait WebDav {
 	public function filesUploadedToWithAllMechanismsShouldExist(
 		$user,
 		$destination,
-		$shouldOrNot
+		$shouldOrNot,
+		$exceptChunkingType = ''
 	) {
+		switch ($exceptChunkingType) {
+			case 'old':
+				$exceptChunkingSuffix = 'olddav-oldchunking';
+				break;
+			case 'new':
+				$exceptChunkingSuffix = 'newdav-newchunking';
+				break;
+			default:
+				$exceptChunkingSuffix = '';
+				break;
+		}
+
 		if ($shouldOrNot !== "not") {
 			foreach (['old', 'new'] as $davVersion) {
 				foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
-					$this->asFileOrFolderShouldExist(
-						$user,
-						'file',
-						"$destination-$suffix"
-					);
+					if ($suffix !== $exceptChunkingSuffix) {
+						$this->asFileOrFolderShouldExist(
+							$user,
+							'file',
+							"$destination-$suffix"
+						);
+					}
 				}
 			}
 		} else {
 			foreach (['old', 'new'] as $davVersion) {
 				foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
-					$this->asFileOrFolderShouldNotExist(
-						$user,
-						'file',
-						"$destination-$suffix"
-					);
+					if ($suffix !== $exceptChunkingSuffix) {
+						$this->asFileOrFolderShouldNotExist(
+							$user,
+							'file',
+							"$destination-$suffix"
+						);
+					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Check that all the files uploaded with old/new DAV and chunked/non-chunked exist.
+	 * Except do not check the new-DAV-new-chunking combination. That is not being
+	 * supported on all implementations.
+	 *
+	 * @Then /^as "([^"]*)" the files uploaded to "([^"]*)" with all mechanisms except new chunking should (not|)\s?exist$/
+	 *
+	 * @param string $user
+	 * @param string $destination
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function filesUploadedToWithAllMechanismsExceptNewChunkingShouldExist(
+		$user,
+		$destination,
+		$shouldOrNot
+	) {
+		$this->filesUploadedToWithAllMechanismsShouldExist(
+			$user,
+			$destination,
+			$shouldOrNot,
+			'new'
+		);
 	}
 
 	/**
