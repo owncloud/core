@@ -61,5 +61,6 @@ class ExecuteCommand extends Command {
 		$version = $input->getArgument('version');
 
 		$ms->executeStep($version);
+		return 0;
 	}
 }

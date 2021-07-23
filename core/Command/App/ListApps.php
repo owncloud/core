@@ -137,6 +137,7 @@ class ListApps extends Base {
 		}
 
 		$this->writeAppList($input, $output, $apps);
+		return 0;
 	}
 
 	/**

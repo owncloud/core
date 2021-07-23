@@ -71,7 +71,7 @@ class Verify extends Base {
 			$mount = $this->globalService->getStorage($mountId);
 		} catch (NotFoundException $e) {
 			$output->writeln('<error>Mount with id "' . $mountId . ' not found, check "occ files_external:list" to get available mounts"</error>');
-			return 404;
+			return 1;
 		}
 
 		$this->updateStorageStatus($mount, $configInput, $output);
@@ -81,6 +81,7 @@ class Verify extends Base {
 			'code' => $mount->getStatus(),
 			'message' => $mount->getStatusMessage()
 		]);
+		return 0;
 	}
 
 	private function manipulateStorageConfig(IStorageConfig $storage) {

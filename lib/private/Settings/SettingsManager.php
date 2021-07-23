@@ -226,6 +226,7 @@ class SettingsManager implements ISettingsManager {
 				new Section('additional', $this->l->t('Additional'), -10, 'more'),
 			];
 		}
+		return [];
 	}
 
 	/**
@@ -262,6 +263,7 @@ class SettingsManager implements ISettingsManager {
 				Quota::class
 			];
 		}
+		return [];
 	}
 
 	/**
@@ -378,7 +380,7 @@ class SettingsManager implements ISettingsManager {
 	 * Attempts to load a ISettings using the class name
 	 * @param string $className
 	 * @throws QueryException
-	 * @return ISettings
+	 * @return ISettings|false
 	 */
 	protected function loadPanel($className) {
 		try {
@@ -390,6 +392,7 @@ class SettingsManager implements ISettingsManager {
 					'Class: {class} not an instance of OCP\Settings\ISettings',
 					['class' => $className]
 				);
+				return false;
 			} else {
 				return $panel;
 			}
@@ -425,10 +428,11 @@ class SettingsManager implements ISettingsManager {
 			// Attempt to load the panel
 			try {
 				$panel = $this->loadPanel($panelClassName);
-				$section = $this->loadSection($type, $panel->getSectionID());
-				$this->panels[$type][$section->getID()][] = $panel;
-				$this->sections[$type][$section->getID()] = $section;
-				// Now try and initialise the ISection from the panel
+				if ($panel !== false) {
+					$section = $this->loadSection($type, $panel->getSectionID());
+					$this->panels[$type][$section->getID()][] = $panel;
+					$this->sections[$type][$section->getID()] = $section;
+				}
 			} catch (QueryException $e) {
 				// Just skip this panel, either its section or panel could not be loaded
 			}

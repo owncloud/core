@@ -52,7 +52,7 @@ class URLGenerator implements IURLGenerator {
 	private $router;
 	/** @var ITheme */
 	private $theme;
-	
+
 	/** @var EnvironmentHelper */
 	private $environmentHelper;
 
@@ -205,20 +205,21 @@ class URLGenerator implements IURLGenerator {
 			$file = $directory . $imageName;
 
 			if ($themeDirectory !== ''
-				&& $imagePath = $this->getImagePathOrFallback($this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
+				&& $this->getImagePathOrFallback($this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
 			) {
 				return $this->theme->getWebPath() . $file;
 			}
 
-			if ($imagePath = $this->getImagePathOrFallback($this->environmentHelper->getServerRoot() . $file)) {
+			if ($this->getImagePathOrFallback($this->environmentHelper->getServerRoot() . $file)) {
 				return $webRoot . $file;
 			}
 		}
+		return '';
 	}
 
 	/**
 	 * @param string $file
-	 * @return string
+	 * @return string|false
 	 */
 	private function getImagePathOrFallback($file) {
 		$fallback = \substr($file, 0, -3) . 'png';
@@ -228,6 +229,7 @@ class URLGenerator implements IURLGenerator {
 				return $location;
 			}
 		}
+		return false;
 	}
 
 	/**

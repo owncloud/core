@@ -62,6 +62,8 @@ class SyncBirthdayCalendar extends Command {
 	/**
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
+	 *
+	 * @return int 0 if everything went fine, or an exit code
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$user = $input->getArgument('user');
@@ -71,7 +73,7 @@ class SyncBirthdayCalendar extends Command {
 			}
 			$output->writeln("Start birthday calendar sync for $user");
 			$this->birthdayService->syncUser($user);
-			return;
+			return 0;
 		}
 		$output->writeln("Start birthday calendar sync for all users ...");
 		$p = new ProgressBar($output);
@@ -84,5 +86,6 @@ class SyncBirthdayCalendar extends Command {
 
 		$p->finish();
 		$output->writeln('');
+		return 0;
 	}
 }

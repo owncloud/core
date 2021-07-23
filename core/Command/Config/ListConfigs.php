@@ -100,6 +100,7 @@ class ListConfigs extends Base {
 		}
 
 		$this->writeArrayInOutputFormat($input, $output, $configs);
+		return 0;
 	}
 
 	/**

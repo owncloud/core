@@ -65,7 +65,7 @@ class Import extends Command {
 			$configs = $this->validateFileContent($content);
 		} catch (\UnexpectedValueException $e) {
 			$output->writeln('<error>' . $e->getMessage(). '</error>');
-			return;
+			return 1;
 		}
 
 		if (!empty($configs['system'])) {
@@ -85,6 +85,7 @@ class Import extends Command {
 		}
 
 		$output->writeln('<info>Config successfully imported from: ' . $importFile . '</info>');
+		return 0;
 	}
 
 	/**

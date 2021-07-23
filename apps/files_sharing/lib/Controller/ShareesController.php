@@ -375,7 +375,7 @@ class ShareesController extends OCSController {
 
 	/**
 	 * @param string $search
-	 * @return array possible sharees
+	 * @return void
 	 */
 	protected function getRemote($search) {
 		$this->result['remotes'] = [];

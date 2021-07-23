@@ -226,9 +226,9 @@ class DecryptAllTest extends TestCase {
 
 	public function providesConfirmVal() {
 		return [
-			['yes'],
-			['no'],
-			['foo']
+			['yes', 0],
+			['no', 0],
+			['foo', 2]
 		];
 	}
 
@@ -237,7 +237,7 @@ class DecryptAllTest extends TestCase {
 	 * @param $confirmVal
 	 */
 
-	public function testExecuteConfirm($confirmVal) {
+	public function testExecuteConfirm($confirmVal, $expectedExitCode) {
 		$instance = new DecryptAll(
 			$this->encryptionManager,
 			$this->appManager,
@@ -255,6 +255,9 @@ class DecryptAllTest extends TestCase {
 			->method('isEnabled')
 			->willReturn(true);
 
-		$this->assertNull($this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]));
+		$this->assertEquals(
+			$expectedExitCode,
+			$this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput])
+		);
 	}
 }

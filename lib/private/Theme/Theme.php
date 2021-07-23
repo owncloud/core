@@ -63,7 +63,6 @@ class Theme implements ITheme {
 
 	/**
 	 * @param string $baseDirectory
-	 * @return string
 	 */
 	public function setBaseDirectory($baseDirectory) {
 		$this->baseDirectory = $baseDirectory;

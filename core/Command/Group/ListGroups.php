@@ -22,6 +22,7 @@
 namespace OC\Core\Command\Group;
 
 use OC\Core\Command\Base;
+use OCP\IGroup;
 use OCP\IGroupManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -61,5 +62,6 @@ class ListGroups extends Base {
 			return $group->getGID();
 		}, $groups);
 		parent::writeArrayInOutputFormat($input, $output, $groups);
+		return 0;
 	}
 }

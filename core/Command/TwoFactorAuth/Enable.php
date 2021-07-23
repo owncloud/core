@@ -55,9 +55,10 @@ class Enable extends Base {
 		$user = $this->userManager->get($uid);
 		if ($user === null) {
 			$output->writeln("<error>Invalid UID</error>");
-			return;
+			return 1;
 		}
 		$this->manager->enableTwoFactorAuthentication($user);
 		$output->writeln("Two-factor authentication enabled for user $uid");
+		return 0;
 	}
 }

@@ -37,7 +37,7 @@ class ExpireTrash extends Command {
 	 * @var TrashExpiryManager
 	 */
 	private $trashExpiryManager;
-	
+
 	/**
 	 * @var IUserManager
 	 */
@@ -72,7 +72,7 @@ class ExpireTrash extends Command {
 		$retentionEnabled = $this->trashExpiryManager->retentionEnabled();
 		if (!$retentionEnabled) {
 			$output->writeln("Auto expiration is configured - expiration will be handled automatically.");
-			return;
+			return 1;
 		}
 
 		$users = $input->getArgument('user_id');
@@ -96,6 +96,7 @@ class ExpireTrash extends Command {
 			$p->finish();
 			$output->writeln('');
 		}
+		return 0;
 	}
 
 	public function expireTrashForUser(IUser $user) {

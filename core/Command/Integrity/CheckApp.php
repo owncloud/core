@@ -44,7 +44,7 @@ class CheckApp extends Base {
 		parent::__construct();
 		$this->checker = $checker;
 	}
-	
+
 	/**
 	 * {@inheritdoc }
 	 */
@@ -68,5 +68,6 @@ class CheckApp extends Base {
 		if (\count($result)>0) {
 			return 1;
 		}
+		return 0;
 	}
 }

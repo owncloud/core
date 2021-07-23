@@ -47,6 +47,7 @@ class CappedMemoryCache implements ICache, \ArrayAccess {
 	public function set($key, $value, $ttl = 0) {
 		$this->cache[$key] = $value;
 		$this->garbageCollect();
+		return true;
 	}
 
 	public function remove($key) {

@@ -60,7 +60,7 @@ class Delete extends Command {
 
 		if ($group->delete()) {
 			$output->writeln('<info>The specified group was deleted</info>');
-			return;
+			return 0;
 		}
 
 		$output->writeln('<error>The specified group could not be deleted. Please check the logs.</error>');
