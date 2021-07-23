@@ -219,7 +219,6 @@ class SyncBackend extends Command {
 
 		$output->writeln('');
 		$backendClass = \get_class($backend);
-
 		if ($input->getOption('seenOnly')) {
 			$output->writeln("Updating seen accounts from $backendClass ...");
 			$iterator = new SeenUsersIterator($this->accountMapper, $backendClass);

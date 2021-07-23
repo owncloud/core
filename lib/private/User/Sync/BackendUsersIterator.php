@@ -44,7 +44,7 @@ class BackendUsersIterator extends UsersIterator {
 	/** @var string search for the uid string in backend */
 	private $search;
 
-	/** @var boolean check if backend encountered connections errors */
+	/** @var boolean check if the backend encountered connection errors after each page */
 	private $checkForConnectionErrors;
 
 	public function __construct(UserInterface $backend, $filterUID = '', $checkForConnectionErrors = false) {
@@ -57,7 +57,8 @@ class BackendUsersIterator extends UsersIterator {
 		parent::rewind();
 		$this->data = $this->backend->getUsers($this->search, self::LIMIT, 0);
 
-		if($this->checkForConnectionErrors && method_exists($this->backend,'checkForConnectionErrors')){
+		// Used to detect LDAP errors, see https://github.com/owncloud/enterprise/issues/4642#issuecomment-885642746
+		if ($this->checkForConnectionErrors && method_exists($this->backend, 'checkForConnectionErrors')) {
 			$this->backend->checkForConnectionErrors();
 		}
 
@@ -75,7 +76,8 @@ class BackendUsersIterator extends UsersIterator {
 
 			$this->data = $this->backend->getUsers($this->search, self::LIMIT, $offset);
 
-			if($this->checkForConnectionErrors && method_exists($this->backend,'testConnection')){
+			// Used to detect LDAP errors, see https://github.com/owncloud/enterprise/issues/4642#issuecomment-885642746
+			if ($this->checkForConnectionErrors && method_exists($this->backend, 'checkForConnectionErrors')) {
 				$this->backend->checkForConnectionErrors();
 			}
 
