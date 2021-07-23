@@ -499,3 +499,122 @@ Feature: accept/decline shares coming from internal users
     When user "Alice" restores version index "1" of file "/toShareFile.txt" using the WebDAV API
     Then the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
     And the content of file "/Shares/toShareFile.txt" for user "Brian" should be "Test Content."
+
+
+  Scenario: a user receives multiple group shares for matching file and folder name
+    Given group "grp2" has been created
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Carol" has created folder "/PARENT"
+    And user "Alice" has created folder "/PaRent"
+    And user "Alice" has uploaded the following files with content "subfile, from alice to grp2"
+      | path               |
+      | /PARENT/parent.txt |
+      | /PaRent/parent.txt |
+    And user "Alice" has uploaded the following files with content "from alice to grp2"
+      | path        |
+      | /PARENT.txt |
+    And user "Carol" has uploaded the following files with content "subfile, from carol to grp1"
+      | path               |
+      | /PARENT/parent.txt |
+    And user "Carol" has uploaded the following files with content "from carol to grp1"
+      | path        |
+      | /PARENT.txt |
+      | /parent.txt |
+    When user "Alice" shares the following entries with group "grp2" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PaRent     |
+      | /PARENT.txt |
+    And user "Brian" accepts the following shares offered by user "Alice" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PaRent     |
+      | /PARENT.txt |
+    Then user "Brian" should see the following elements
+      | /PARENT/           |
+      | /Shares/PARENT/    |
+      | /Shares/PaRent/    |
+      | /Shares/PARENT.txt |
+    And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "subfile, from alice to grp2"
+    And the content of file "/Shares/PaRent/parent.txt" for user "Brian" should be "subfile, from alice to grp2"
+    And the content of file "/Shares/PARENT.txt" for user "Brian" should be "from alice to grp2"
+    When user "Carol" shares the following entries with group "grp2" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PARENT.txt |
+      | /parent.txt |
+    And user "Brian" accepts the following shares offered by user "Carol" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PARENT.txt |
+      | /parent.txt |
+    Then user "Brian" should see the following elements
+      | /PARENT/               |
+      | /Shares/PARENT/        |
+      | /Shares/PARENT (2)/    |
+      | /Shares/PaRent/        |
+      | /Shares/PARENT.txt     |
+      | /Shares/PARENT (2).txt |
+      | /Shares/parent.txt     |
+    And the content of file "/Shares/PARENT (2)/parent.txt" for user "Brian" should be "subfile, from carol to grp1"
+    And the content of file "/Shares/PARENT (2).txt" for user "Brian" should be "from carol to grp1"
+    And the content of file "/Shares/parent.txt" for user "Brian" should be "from carol to grp1"
+
+
+  Scenario: a group receives multiple shares from non-member for matching file and folder name
+    Given user "Brian" has been removed from group "grp1"
+    And user "Alice" has created folder "/PaRent"
+    And user "Carol" has created folder "/PARENT"
+    And user "Alice" has uploaded the following files with content "subfile, from alice to grp1"
+      | path               |
+      | /PARENT/parent.txt |
+      | /PaRent/parent.txt |
+    And user "Alice" has uploaded the following files with content "from alice to grp1"
+      | path        |
+      | /PARENT.txt |
+    And user "Brian" has uploaded the following files with content "subfile, from brian to grp1"
+      | path               |
+      | /PARENT/parent.txt |
+    And user "Brian" has uploaded the following files with content "from brian to grp1"
+      | path        |
+      | /PARENT.txt |
+      | /parent.txt |
+    When user "Alice" shares the following entries with group "grp1" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PaRent     |
+      | /PARENT.txt |
+    And user "Carol" accepts the following shares offered by user "Alice" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PaRent     |
+      | /PARENT.txt |
+    Then user "Carol" should see the following elements
+      | /PARENT/           |
+      | /Shares/PARENT/    |
+      | /Shares/PaRent/    |
+      | /Shares/PARENT.txt |
+    And the content of file "/Shares/PARENT/parent.txt" for user "Carol" should be "subfile, from alice to grp1"
+    And the content of file "/Shares/PARENT.txt" for user "Carol" should be "from alice to grp1"
+    When user "Brian" shares the following entries with group "grp1" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PARENT.txt |
+      | /parent.txt |
+    And user "Carol" accepts the following shares offered by user "Brian" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PARENT.txt |
+      | /parent.txt |
+    Then user "Carol" should see the following elements
+      | /PARENT/               |
+      | /Shares/PARENT/        |
+      | /Shares/PARENT (2)/    |
+      | /Shares/PaRent/        |
+      | /Shares/PARENT.txt     |
+      | /Shares/PARENT (2).txt |
+      | /Shares/parent.txt     |
+    And the content of file "/Shares/PARENT (2)/parent.txt" for user "Carol" should be "subfile, from brian to grp1"
+    And the content of file "/Shares/PARENT (2).txt" for user "Carol" should be "from brian to grp1"
+    
