@@ -173,7 +173,7 @@ Feature: Restore deleted files/folders
 
   @local_storage
   @skipOnEncryptionType:user-keys @encryption-issue-42
-  @skip_on_objectstore
+  @skip_on_objectstore @notToImplementOnOCIS @newChunking
   Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored with new chunking
     Given using new DAV path
     And the administrator has invoked occ command "files:scan --all"

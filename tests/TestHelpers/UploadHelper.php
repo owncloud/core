@@ -167,6 +167,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $xRequestId
 	 * @param bool $overwriteMode when false creates separate files to test uploading brand new files,
 	 *                            when true it just overwrites the same file over and over again with the same name
+	 * @param string $exceptChunkingType empty string or "old" or "new"
 	 *
 	 * @return array of ResponseInterface
 	 */
@@ -177,7 +178,8 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		$source,
 		$destination,
 		$xRequestId = '',
-		$overwriteMode = false
+		$overwriteMode = false,
+		$exceptChunkingType = ''
 	) {
 		$responses = [];
 		foreach ([1, 2] as $davPathVersion) {
@@ -187,7 +189,22 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 				$davHuman = 'new';
 			}
 
+			switch ($exceptChunkingType) {
+				case 'old':
+					$exceptChunkingVersion = 1;
+					break;
+				case 'new':
+					$exceptChunkingVersion = 2;
+					break;
+				default:
+					$exceptChunkingVersion = -1;
+					break;
+			}
+
 			foreach ([null, 1, 2] as $chunkingVersion) {
+				if ($chunkingVersion === $exceptChunkingVersion) {
+					continue;
+				}
 				$valid = WebDavHelper::isValidDavChunkingCombination(
 					$davPathVersion,
 					$chunkingVersion

@@ -7,98 +7,203 @@ Feature: quota
 
     # Owner
 
-  Scenario: Uploading a file as owner having enough quota
+  Scenario: Uploading a file as owner having enough quota (except new chunking)
     Given the quota of user "Alice" has been set to "10 MB"
-    When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
 
-  @smokeTest
-  Scenario: Uploading a file as owner having insufficient quota
-    Given the quota of user "Alice" has been set to "20 B"
-    When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms using the WebDAV API
-    Then the HTTP status code of all upload responses should be "507"
-    And as "Alice" the files uploaded to "/testquota.txt" with all mechanisms should not exist
+  @notToImplementOnOCIS @newChunking
+  Scenario: Uploading a file as owner having enough quota (new chunking)
+    Given the quota of user "Alice" has been set to "10 MB"
+    And using new DAV path
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be "201"
 
-  Scenario: Overwriting a file as owner having enough quota
+  @smokeTest
+  Scenario: Uploading a file as owner having insufficient quota (except new chunking)
+    Given the quota of user "Alice" has been set to "20 B"
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
+    Then the HTTP status code of all upload responses should be "507"
+    And as "Alice" the files uploaded to "/testquota.txt" with all mechanisms except new chunking should not exist
+
+  @smokeTest @notToImplementOnOCIS @newChunking
+  Scenario: Uploading a file as owner having insufficient quota (new chunking)
+    Given the quota of user "Alice" has been set to "20 B"
+    And using new DAV path
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be "507"
+    And as "Alice" file "/testquota.txt" should not exist
+
+
+  Scenario: Overwriting a file as owner having enough quota (except new chunking)
     Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "10 MB"
-    When user "Alice" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Alice" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
-  Scenario: Overwriting a file as owner having insufficient quota
+  @notToImplementOnOCIS @newChunking
+  Scenario: Overwriting a file as owner having enough quota (new chunking)
+    Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
+    And the quota of user "Alice" has been set to "10 MB"
+    And using new DAV path
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be between "201" and "204"
+
+
+  Scenario: Overwriting a file as owner having insufficient quota (except new chunking)
     Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And the quota of user "Alice" has been set to "20 B"
-    When user "Alice" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Alice" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
+    And the content of file "/testquota.txt" for user "Alice" should be "test"
+
+  @notToImplementOnOCIS @newChunking
+  Scenario: Overwriting a file as owner having insufficient quota (new chunking)
+    Given user "Alice" has uploaded file with content "test" to "/testquota.txt"
+    And the quota of user "Alice" has been set to "20 B"
+    And using new DAV path
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be "507"
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
 	# Received shared folder
 
   @files_sharing-app-required
-  Scenario: Uploading a file in received folder having enough quota
+  Scenario: Uploading a file in received folder having enough quota (except new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/testquota"
     And user "Alice" has shared folder "/testquota" with user "Brian" with permissions "all"
     And the quota of user "Brian" has been set to "20 B"
     And the quota of user "Alice" has been set to "10 MB"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "201"
 
+  @files_sharing-app-required @notToImplementOnOCIS @newChunking
+  Scenario: Uploading a file in received folder having enough quota (new chunking)
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/testquota"
+    And user "Alice" has shared folder "/testquota" with user "Brian" with permissions "all"
+    And the quota of user "Brian" has been set to "20 B"
+    And the quota of user "Alice" has been set to "10 MB"
+    And using new DAV path
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/testquota/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be "201"
+
   @files_sharing-app-required
-  Scenario: Uploading a file in received folder having insufficient quota
+  Scenario: Uploading a file in received folder having insufficient quota (except new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/testquota"
     And user "Alice" has shared folder "/testquota" with user "Brian" with permissions "all"
     And the quota of user "Brian" has been set to "10 MB"
     And the quota of user "Alice" has been set to "20 B"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/testquota/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
-    And as "Brian" the files uploaded to "/testquota.txt" with all mechanisms should not exist
+    And as "Brian" the files uploaded to "/testquota/testquota.txt" with all mechanisms except new chunking should not exist
+
+  @files_sharing-app-required @notToImplementOnOCIS @newChunking
+  Scenario: Uploading a file in a received folder having insufficient quota (new chunking)
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/testquota"
+    And user "Alice" has shared folder "/testquota" with user "Brian" with permissions "all"
+    And the quota of user "Brian" has been set to "10 MB"
+    And the quota of user "Alice" has been set to "20 B"
+    And using new DAV path
+    When user "Brian" uploads file "filesForUpload/davtest.txt" to "/testquota/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be "507"
+    And as "Brian" file "/testquota/testquota.txt" should not exist
 
   @files_sharing-app-required
-  Scenario: Overwriting a file in received folder having enough quota
+  Scenario: Overwriting a file in received folder having enough quota (except new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/testquota"
     And user "Alice" has uploaded file with content "test" to "/testquota/testquota.txt"
     And user "Alice" has shared folder "/testquota" with user "Brian" with permissions "all"
     And the quota of user "Brian" has been set to "20 B"
     And the quota of user "Alice" has been set to "10 MB"
-    When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
+  @files_sharing-app-required @notToImplementOnOCIS @newChunking
+  Scenario: Overwriting a file in received folder having enough quota (new chunking)
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/testquota"
+    And user "Alice" has uploaded file with content "test" to "/testquota/testquota.txt"
+    And user "Alice" has shared folder "/testquota" with user "Brian" with permissions "all"
+    And the quota of user "Brian" has been set to "20 B"
+    And the quota of user "Alice" has been set to "10 MB"
+    And using new DAV path
+    When user "Brian" uploads file "filesForUpload/davtest.txt" to "/testquota/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be between "201" and "204"
+
   @files_sharing-app-required
-  Scenario: Overwriting a file in received folder having insufficient quota
+  Scenario: Overwriting a file in received folder having insufficient quota (except new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/testquota"
     And user "Alice" has uploaded file with content "test" to "/testquota/testquota.txt"
     And user "Alice" has shared folder "/testquota" with user "Brian" with permissions "all"
     And the quota of user "Brian" has been set to "10 MB"
     And the quota of user "Alice" has been set to "20 B"
-    When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
+    And the content of file "/testquota/testquota.txt" for user "Alice" should be "test"
+
+  @files_sharing-app-required @notToImplementOnOCIS @newChunking
+  Scenario: Overwriting a file in received folder having insufficient quota (new chunking)
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "/testquota"
+    And user "Alice" has uploaded file with content "test" to "/testquota/testquota.txt"
+    And user "Alice" has shared folder "/testquota" with user "Brian" with permissions "all"
+    And the quota of user "Brian" has been set to "10 MB"
+    And the quota of user "Alice" has been set to "20 B"
+    And using new DAV path
+    When user "Brian" uploads file "filesForUpload/davtest.txt" to "/testquota/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be "507"
     And the content of file "/testquota/testquota.txt" for user "Alice" should be "test"
 
 	# Received shared file
 
   @files_sharing-app-required
-  Scenario: Overwriting a received file having enough quota
+  Scenario: Overwriting a received file having enough quota (except new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And user "Alice" has shared file "/testquota.txt" with user "Brian" with permissions "share,update,read"
     And the quota of user "Brian" has been set to "20 B"
     And the quota of user "Alice" has been set to "10 MB"
-    When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be between "201" and "204"
 
+  @files_sharing-app-required @notToImplementOnOCIS @newChunking
+  Scenario: Overwriting a received file having enough quota (new chunking)
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "test" to "/testquota.txt"
+    And user "Alice" has shared file "/testquota.txt" with user "Brian" with permissions "share,update,read"
+    And the quota of user "Brian" has been set to "20 B"
+    And the quota of user "Alice" has been set to "10 MB"
+    And using new DAV path
+    When user "Brian" uploads file "filesForUpload/davtest.txt" to "/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be between "201" and "204"
+
   @files_sharing-app-required
-  Scenario: Overwriting a received file having insufficient quota
+  Scenario: Overwriting a received file having insufficient quota (except new chunking)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "test" to "/testquota.txt"
     And user "Alice" has shared file "/testquota.txt" with user "Brian" with permissions "share,update,read"
     And the quota of user "Brian" has been set to "10 MB"
     And the quota of user "Alice" has been set to "20 B"
-    When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms using the WebDAV API
+    When user "Brian" overwrites from file "filesForUpload/textfile.txt" to file "/testquota.txt" with all mechanisms except new chunking using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
+    And the content of file "/testquota.txt" for user "Alice" should be "test"
+
+  @files_sharing-app-required @notToImplementOnOCIS @newChunking
+  Scenario: Overwriting a received file having insufficient quota (new chunking)
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "test" to "/testquota.txt"
+    And user "Alice" has shared file "/testquota.txt" with user "Brian" with permissions "share,update,read"
+    And the quota of user "Brian" has been set to "10 MB"
+    And the quota of user "Alice" has been set to "20 B"
+    And using new DAV path
+    When user "Brian" uploads file "filesForUpload/textfile.txt" to "/testquota.txt" in 2 chunks with new chunking and using the WebDAV API
+    Then the HTTP status code should be "507"
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
 
