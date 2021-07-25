@@ -104,6 +104,7 @@ OC.L10N.register(
     "Please specify a valid group" : "Ju lutemi, tregoni një grup të vlefshëm",
     "The group is blacklisted for sharing" : "Grupit i është bllokuar shkëmbimi",
     "Public link sharing is disabled by the administrator" : "Ndarja e lidhjeve publike është çaktivizuar nga përgjegjësi",
+    "Public link creation is only possible for certain groups" : "Krijimi i lidhjeve publike është i mundshëm vetëm për disa grupe të caktuara",
     "Public upload disabled by the administrator" : "Ngarkimi publik është çaktivizuar nga përgjegjësi",
     "Public upload is only possible for publicly shared folders" : "Ngarkimi publik është i mundshëm vetëm për dosje të ndara publikisht",
     "Sharing %s failed because the back end does not allow shares from type %s" : "Ndarja e %s dështoi, ngaqë pjesa përgjegjëse e shërbyesit nuk lejon ndarje prej llojit %s",
@@ -144,6 +145,7 @@ OC.L10N.register(
     "Nothing to configure." : "S’ka gjë për formësim.",
     "Group Sharing Blacklist" : "Listë Bllokimesh Grupesh Ndarjesh",
     "Exclude groups from receiving shares" : "Përjashto grupe nga marrje ndarjesh",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Për këto grupe nuk do të jetë e mundur të ndajnë me të tjerët. Anëtarët e grupit nuk janë të kufizuar të nisin ndarje dhe mund të marrin ndarje me grupe të tjerë te të cilët janë anëtarë, si zakonisht."
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Për këto grupe nuk do të jetë e mundur të ndajnë me të tjerët. Anëtarët e grupit nuk janë të kufizuar të nisin ndarje dhe mund të marrin ndarje me grupe të tjerë te të cilët janë anëtarë, si zakonisht.",
+    "Only certain groups are allowed to create public links" : "Vetëm disa grupeve u lejohet të krijojnë lidhje publike"
 },
 "nplurals=2; plural=(n != 1);");
