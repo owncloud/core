@@ -131,6 +131,7 @@ Feature: dav-versions
     Then the content of file "/davtest.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
     And as user "Alice" the webdav checksum of "/davtest.txt" via propfind should match "SHA1:acfa6b1565f9710d4d497c6035d5c069bd35a8e8 MD5:45a72715acdd5019c5be30bdbb75233e ADLER32:1ecd03df"
 
+
   Scenario: User cannot access meta folder of a file which is owned by somebody else
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "123" to "/davtest.txt"
@@ -138,7 +139,7 @@ Feature: dav-versions
     When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/<<FILEID>>"
     Then the HTTP status code should be "404"
 
-  @files_sharing-app-required
+  @files_sharing-app-required @notToImplementOnOCIS
   Scenario: User can access meta folder of a file which is owned by somebody else but shared with that user
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "123" to "/davtest.txt"
@@ -284,7 +285,7 @@ Feature: dav-versions
     And the content of file "/sharingfolder/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @issue-ocis-1289 @issue-ocis-1321
+  @files_sharing-app-required @issue-ocis-1289 @issue-ocis-1321 @notToImplementOnOCIS
   Scenario: sharer can restore a file inside a group shared folder modified by sharee
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Carol" has been created with default attributes and without skeleton files
@@ -355,7 +356,7 @@ Feature: dav-versions
       | old         | Brian |
       | new         | Brian |
 
-  @skipOnOcV10.3.0 @files_sharing-app-required @issue-ocis-1238
+  @skipOnOcV10.3.0 @files_sharing-app-required @issue-ocis-1238 @notToImplementOnOCIS
   Scenario: Receiver tries to get file versions of unshared file from the sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -365,7 +366,7 @@ Feature: dav-versions
     Then the HTTP status code should be "404"
     And the value of the item "//s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
-  @skipOnStorage:ceph @files_primary_s3-issue-161 @files_sharing-app-required
+  @skipOnStorage:ceph @files_primary_s3-issue-161 @files_sharing-app-required @notToImplementOnOCIS
   Scenario: Receiver tries get file versions of shared file from the sharer
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "textfile0" to "textfile0.txt"
@@ -377,10 +378,12 @@ Feature: dav-versions
     Then the HTTP status code should be "207"
     And the number of versions should be "3"
 
+
   Scenario: User cannot access meta folder of a file which does not exists
     Given user "Brian" has been created with default attributes and without skeleton files
     When user "Brian" sends HTTP method "PROPFIND" to URL "/remote.php/dav/meta/MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA=="
     Then the HTTP status code should be "404"
+
 
   Scenario Outline: User cannot access meta folder of a file with invalid fileid
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -392,6 +395,7 @@ Feature: dav-versions
       | MTI4NGQyMzgtYWE5Mi00MmNlLWJkYzQtMGIwMDAwMDA5MTU3OGNjZDI3NTEtOTBhNC00MGYyLWI5ZjMtNjFlZGY4NDQyMWY0     | 1284d238-aa92-42ce-bdc4-0b00000091578ccd2751-90a4-40f2-b9f3-61edf84421f4  | no = sign          |
       | c29tZS1yYW5kb20tZmlsZUlkPWFub3RoZXItcmFuZG9tLWZpbGVJZA==                                             | some-random-fileId=another-random-fileId                                  | some random string |
       | MTI4NGQyMzgtYWE5Mi00MmNlLWJkxzQtMGIwMDAwMDA5MTU2OjhjY2QyNzUxLTkwYTQtNDBmMi1iOWYzLTYxZWRmODQ0MjFmNA== | 1284d238-aa92-42ce-bd�4-0b0000009156:8ccd2751-90a4-40f2-b9f3-61edf84421f4 | with : and  � sign |
+
 
   Scenario: the version history is preserved when a file is renamed
     Given user "Alice" has uploaded file with content "old content" to "/textfile.txt"
@@ -412,6 +416,7 @@ Feature: dav-versions
     And user "Alice" gets the number of versions of file "/testFolder/textfile0.txt"
     Then the HTTP status code should be "207"
     And the number of versions should be "3"
+
 
   Scenario: Original file has version number 0
     Given user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"

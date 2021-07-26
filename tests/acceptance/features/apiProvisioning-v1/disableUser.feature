@@ -79,6 +79,7 @@ Feature: disable user
     And the HTTP status code should be "401"
     And user "another-admin" should be enabled
 
+
   Scenario: Admin can disable another admin user
     Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
@@ -99,6 +100,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "subadmin" should be disabled
 
+
   Scenario: Admin user cannot disable himself
     Given user "another-admin" has been created with default attributes and without skeleton files
     And user "another-admin" has been added to group "admin"
@@ -106,6 +108,7 @@ Feature: disable user
     Then the OCS status code should be "101"
     And the HTTP status code should be "200"
     And user "another-admin" should be enabled
+
 
   Scenario: disable an user with a regular user
     Given these users have been created with default attributes and small skeleton files:
@@ -135,11 +138,13 @@ Feature: disable user
     When user "Alice" sends HTTP method "GET" to URL "/index.php/apps/files"
     Then the HTTP status code should be "403"
 
+
   Scenario: Disabled user tries to download file
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" downloads file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
+
 
   Scenario: Disabled user tries to upload file
     Given user "Alice" has been created with default attributes and without skeleton files
@@ -147,11 +152,13 @@ Feature: disable user
     When user "Alice" uploads file with content "uploaded content" to "newTextFile.txt" using the WebDAV API
     Then the HTTP status code should be "401"
 
+
   Scenario: Disabled user tries to rename file
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" moves file "/textfile0.txt" to "/renamedTextfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
+
 
   Scenario: Disabled user tries to move file
     Given user "Alice" has been created with default attributes and small skeleton files
@@ -159,11 +166,13 @@ Feature: disable user
     When user "Alice" moves file "/textfile0.txt" to "/PARENT/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
 
+
   Scenario: Disabled user tries to delete file
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "401"
+
 
   Scenario: Disabled user tries to share a file
     Given user "Alice" has been created with default attributes and small skeleton files
@@ -172,6 +181,7 @@ Feature: disable user
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
     Then the HTTP status code should be "401"
 
+
   Scenario: Disabled user tries to share a folder
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
@@ -179,7 +189,8 @@ Feature: disable user
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     Then the HTTP status code should be "401"
 
-  Scenario: getting shares shared by disabled user
+
+  Scenario: getting shares shared by disabled user (to shares folder)
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and small skeleton files
@@ -190,7 +201,17 @@ Feature: disable user
     Then as "Brian" file "/Shares/textfile0.txt" should exist
     And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
-  Scenario: getting shares shared by disabled user in a group
+  @notToImplementOnOCIS
+  Scenario: getting shares shared by disabled user (to root)
+    Given user "Alice" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian"
+    When the administrator disables user "Alice" using the provisioning API
+    Then as "Brian" file "/textfile0.txt" should exist
+    And the content of file "/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
+
+
+  Scenario: getting shares shared by disabled user in a group (to shares folder)
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and small skeleton files
@@ -203,12 +224,25 @@ Feature: disable user
     Then as "Brian" folder "/Shares/PARENT" should exist
     And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
 
+  @notToImplementOnOCIS
+  Scenario: getting shares shared by disabled user in a group (to root)
+    Given user "Alice" has been created with default attributes and small skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And group "group0" has been created
+    And user "Brian" has been added to group "group0"
+    And user "Alice" has shared folder "/PARENT" with group "group0"
+    When the administrator disables user "Alice" using the provisioning API
+    Then as "Brian" folder "/PARENT" should exist
+    And the content of file "/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
+
+
   Scenario: Disabled user tries to create public link share
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has been disabled
     When user "Alice" creates a public link share using the sharing API with settings
       | path | textfile0.txt |
     Then the HTTP status code should be "401"
+
 
   Scenario Outline: getting public link share shared by disabled user using the new public WebDAV API
     Given user "Alice" has been created with default attributes and small skeleton files
@@ -221,6 +255,7 @@ Feature: disable user
       | dav_version |
       | old         |
       | new         |
+
 
   Scenario: Subadmin should be able to disable user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
@@ -236,6 +271,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "another-subadmin" should be disabled
 
+
   Scenario: Subadmin should not be able to disable another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -248,6 +284,7 @@ Feature: disable user
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "another-subadmin" should be enabled
+
 
   Scenario: normal user cannot disable himself
     Given these users have been created with default attributes and without skeleton files:
