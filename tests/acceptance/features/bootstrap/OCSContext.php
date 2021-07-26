@@ -616,9 +616,11 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function userSendsRequestToTheseEndpointsAboutUser($user, $method, $ofUser, TableNode $table) {
-		$this->sendRequestToTheseEndpointsAsNormalUser(
+		$this->userSendsRequestToTheseEndpointsWithBodyUsingPassword(
 			$user,
 			$method,
+			null,
+			$this->featureContext->getPasswordForUser($user),
 			$ofUser,
 			$table
 		);
