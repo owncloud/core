@@ -890,15 +890,21 @@ html.ie8 #controls .button.new {
 }
 
 .newFileMenu {
-	width: 140px;
+	min-width: 140px;
 	margin-left: -56px;
 	margin-top: 25px;
 	z-index: 1001;
+	right: initial;
 }
 
 .newFileMenu .menuitem {
 	white-space: nowrap;
 	overflow: hidden;
+	display: flex;
+}
+
+.newFileMenu .menuitem .icon{
+	margin-top: 7px;
 }
 
 .newFileMenu.popovermenu .menuitem,
@@ -923,12 +929,8 @@ html.ie8 #controls .button.new {
 	right: auto;
 }
 
-.newFileMenu .filenameform {
-	display: inline-block;
-}
-
-.newFileMenu .filenameform input {
-	width: 100px;
+.newFileMenu .action-menu button {
+	font-size: 11px;
 }
 
 #fileList .popovermenu .action {
