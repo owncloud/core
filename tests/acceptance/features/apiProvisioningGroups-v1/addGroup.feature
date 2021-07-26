@@ -150,6 +150,7 @@ Feature: add groups
     And group "brand-new-group" has been created
     And user "subadmin" has been made a subadmin of group "brand-new-group"
     When user "subadmin" tries to send a group creation request for group "another-new-group" using the provisioning API
-    Then the OCS status code should be "997"
-    And the HTTP status code should be "401"
-    And group "another-new-group" should not exist
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And group "another-new-group" should exist
+    And user "subadmin" should be a subadmin of group "another-new-group"
