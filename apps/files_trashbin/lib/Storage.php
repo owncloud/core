@@ -197,9 +197,7 @@ class Storage extends Wrapper {
 			if ($filesPath = $view->getRelativePath($normalized)) {
 				$filesPath = \trim($filesPath, '/');
 				$result = \OCA\Files_Trashbin\Trashbin::move2trash($filesPath);
-				// in cross-storage cases the file will be copied
-				// but not deleted, so we delete it here
-				if ($result) {
+				if ($result === null) {
 					\call_user_func_array([$this->storage, $method], [$path]);
 				}
 			} else {
