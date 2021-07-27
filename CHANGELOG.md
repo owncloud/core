@@ -13,6 +13,7 @@ Summary
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
+* Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 
@@ -50,10 +51,20 @@ Details
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 
    The following have been updated: - doctrine/cache (2.0.3 to 2.1.1) - mikey179/vfsstream
-   (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.12.0)
+   (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.12.0) - pear/archive_tar (1.4.13 to
+   1.4.14)
 
    https://github.com/owncloud/core/pull/39030
    https://github.com/owncloud/core/pull/39047
+   https://github.com/owncloud/core/pull/39065
+
+* Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
+
+   The following Symfony components have been updated to: - console 4.4.27 - event-dispatcher
+   4.4.27 - process 4.4.27 - routing 4.4.27 - translation 4.4.27
+
+   https://github.com/owncloud/core/pull/39061
+   https://symfony.com/blog/symfony-4-4-27-released
 
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 
