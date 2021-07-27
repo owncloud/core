@@ -786,6 +786,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUISharingContext:
+        - WebUINewFileMenuContext:
 
     webUIFavorites:
       paths:

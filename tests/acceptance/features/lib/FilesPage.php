@@ -120,6 +120,7 @@ class FilesPage extends FilesPageBasic {
 	 * @param Session $session
 	 * @param string $name
 	 * @param int $timeoutMsec
+	 * @param boolean $useCreateButton
 	 *
 	 * @return string name of the created file
 	 * @throws ElementNotFoundException|\Exception
@@ -127,12 +128,14 @@ class FilesPage extends FilesPageBasic {
 	public function createFolder(
 		Session $session,
 		$name = null,
-		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		$useCreateButton = false
 	) {
 		return $this->filesPageCRUDFunctions->createFolder(
 			$session,
 			$name,
-			$timeoutMsec
+			$timeoutMsec,
+			$useCreateButton,
 		);
 	}
 

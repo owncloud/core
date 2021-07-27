@@ -543,15 +543,48 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @param string $name
+	 * @When /^the user creates a folder with the (invalid|)\s?name ((?:'[^']*')|(?:"[^"]*")) using the webUI via create button$/
+	 * @Given /^the user has created a folder with the (invalid|)\s?name ((?:'[^']*')|(?:"[^"]*")) using the webUI via create button$/
+	 *
+	 * @param string $invalid contains "invalid"
+	 *                        if the folder creation is expected to fail
+	 * @param string $name enclosed in single or double quotes
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function createAFolder($name) {
+	public function theUserCreatesAFolderUsingTheWebUIViaCreateButton($invalid, $name) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$name = \trim($name, $name[0]);
+		try {
+			$this->createAFolder($name, true);
+			if ($invalid === "invalid") {
+				throw new Exception(
+					"folder '$name' should not have been created but was"
+				);
+			}
+		} catch (Exception $e) {
+			//do not throw the exception if we expect the folder creation to fail
+			if ($invalid !== "invalid"
+				|| $e->getMessage() !== "could not create folder '$name'"
+			) {
+				throw $e;
+			}
+		}
+	}
+
+	/**
+	 * @param string $name
+	 * @param boolean $useCreateButton
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function createAFolder($name, $useCreateButton = false) {
 		$session = $this->getSession();
 		$pageObject = $this->getCurrentPageObject();
-		$pageObject->createFolder($session, $name);
+		$pageObject->createFolder($session, $name, STANDARD_UI_WAIT_TIMEOUT_MILLISEC, $useCreateButton);
 		$pageObject->waitTillPageIsLoaded($session);
 	}
 

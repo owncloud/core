@@ -19,6 +19,26 @@ Feature: create folders
       | folder-!@#$%^&* ! |
       | नेपालि            |
 
+  @skipOnOcV10.6 @skipOnOcV10.7
+  Scenario Outline: Create a folder using the create button
+    When the user creates a folder with the name "<folder-name>" using the webUI via create button
+    Then folder "<folder-name>" should be listed on the webUI
+    When the user reloads the current page of the webUI
+    Then folder "<folder-name>" should be listed on the webUI
+    Examples:
+      | folder-name       |
+      | folder-!@#$%^&*( ! |
+
+  @skipOnOcV10.6 @skipOnOcV10.7
+  Scenario: Abort create folder using the cancel button
+    When the user opens the newFileMenu using the webUI
+    Then the newFileMenu should be displayed on the webUI
+    And the user clicks folder in the newFileMenu using the webUI
+    Then the newFileMenu filename form should be displayed on the webUI
+    And the user clicks cancel in newFileMenu filename form using the webUI
+    Then the newFileMenu filename form should not be displayed on the webUI
+
+
   @smokeTest @skipOnLDAP
   Scenario: Create a folder inside another folder
     When the user creates a folder with the name "top-folder" using the webUI
