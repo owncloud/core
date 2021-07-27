@@ -25,7 +25,7 @@ if ($_['mail_smtpmode'] == 'qmail') {
 	<h2 class="app-name has-documentation"><?php p($l->t('Email server'));?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info"
 	   title="<?php p($l->t('Open documentation'));?>"
-	   href="<?php p(link_to_docs('admin-email')); ?>"></a>
+	   href="<?php p(link_to_docs(\OCP\Constants::DOCS_ADMIN_EMAIL)); ?>"></a>
 	<?php if ($_['read-only']) : ?>
 		<p>
 			<?php p($l->t('The config file is read only. Please adjust your setup by editing the config file manually.')); ?>

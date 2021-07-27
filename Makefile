@@ -56,6 +56,8 @@ TEST_DATABASE=sqlite
 TEST_EXTERNAL_ENV=smb-silvershell
 TEST_PHP_SUITE=
 
+DOC_LINK_VERSION=
+
 # Acceptance test flags (for shells supporting autocompletion of makefiles, eg: zsh)
 TEST_SERVER_URL?=
 TEST_SERVER_FED_URL?=
@@ -133,6 +135,11 @@ help:
 	@echo -e "make test-php-style-fix\t\trun PHP code style checks and fix any issues found"
 	@echo -e "make update-php-license-header\tUpdate license headers"
 	@echo -e "make changelog\t\t\tGenerate the CHANGELOG.md file for testing"
+	@echo
+	@echo -e "make test-doc-links\t\tTest if the doc links are valid"
+	@echo
+	@echo It is also possible to specify the ownCloud version to look for in the docs:
+	@echo -e "make test-doc-links DOC_LINK_VERSION=10.7"
 
 
 #
@@ -260,6 +267,10 @@ docs: docs-js
 .PHONY: clean-docs
 clean-docs:
 	rm -Rf build/jsdocs
+
+.PHONY: test-doc-links
+test-doc-links: 
+	php tests/docs/DocLinksTest.php $(DOC_LINK_VERSION)
 
 #
 # Build distribution

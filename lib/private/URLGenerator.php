@@ -256,10 +256,11 @@ class URLGenerator implements IURLGenerator {
 
 	/**
 	 * @param string $key
+	 * @param string|null $ocVersion ownCloud version to look for in the docs. Defaults to the version of this onwCloud instance
 	 * @return string url to the online documentation
 	 */
-	public function linkToDocs($key) {
+	public function linkToDocs($key, $ocVersion = null) {
 		$theme = new OC_Defaults();
-		return $theme->buildDocLinkToKey($key);
+		return $theme->buildDocLinkToKey($key, $ocVersion);
 	}
 }

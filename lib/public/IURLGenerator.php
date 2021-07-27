@@ -85,8 +85,9 @@ interface IURLGenerator {
 
 	/**
 	 * @param string $key
+	 * @param string|null $ocVersion ownCloud version to look for in the docs. Defaults to the version of this onwCloud instance
 	 * @return string url to the online documentation
 	 * @since 8.0.0
 	 */
-	public function linkToDocs($key);
+	public function linkToDocs($key, $ocVersion = null);
 }
