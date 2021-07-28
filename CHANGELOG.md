@@ -17,6 +17,7 @@ Summary
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 * Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
+* Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
 
 Details
 -------
@@ -90,6 +91,16 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4671
    https://github.com/owncloud/core/pull/39026
+
+* Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
+
+   If the user hits the '+' button in the UI, a context menu will be shown, where the user is able to
+   choose for example 'Folder'. A form will show up to set the new folder name, the user needs to
+   confirm by hitting the enter key. This might not been understood by every user at the first
+   glance. Therefore, with this PR a create and cancel button has been added.
+
+   https://github.com/owncloud/enterprise/issues/4684
+   https://github.com/owncloud/core/pull/39056
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
