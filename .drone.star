@@ -382,68 +382,70 @@ def afterPipelines(ctx):
     ]
 
 def dependencies(ctx):
-    pipelines = []
+	return []
+	pipelines = []
 
-    if "dependencies" not in config:
-        return pipelines
+	if 'dependencies' not in config:
+		return pipelines
 
-    default = {
-        "phpVersions": ["7.2"],
-    }
+	default = {
+		'phpVersions': ['7.2'],
+	}
 
-    if "defaults" in config:
-        if "dependencies" in config["defaults"]:
-            for item in config["defaults"]["dependencies"]:
-                default[item] = config["defaults"]["dependencies"][item]
+	if 'defaults' in config:
+		if 'dependencies' in config['defaults']:
+			for item in config['defaults']['dependencies']:
+				default[item] = config['defaults']['dependencies'][item]
 
-    dependenciesConfig = config["dependencies"]
+	dependenciesConfig = config['dependencies']
 
-    if type(dependenciesConfig) == "bool":
-        if dependenciesConfig:
-            # the config has 'dependencies' true, so specify an empty dict that will get the defaults
-            dependenciesConfig = {}
-        else:
-            return pipelines
+	if type(dependenciesConfig) == "bool":
+		if dependenciesConfig:
+			# the config has 'dependencies' true, so specify an empty dict that will get the defaults
+			dependenciesConfig = {}
+		else:
+			return pipelines
 
-    if len(dependenciesConfig) == 0:
-        # 'dependencies' is an empty dict, so specify a single section that will get the defaults
-        dependenciesConfig = {"doDefault": {}}
+	if len(dependenciesConfig) == 0:
+		# 'dependencies' is an empty dict, so specify a single section that will get the defaults
+		dependenciesConfig = {'doDefault': {}}
 
-    for category, matrix in dependenciesConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
+	for category, matrix in dependenciesConfig.items():
+		params = {}
+		for item in default:
+			params[item] = matrix[item] if item in matrix else default[item]
 
-        for phpVersion in params["phpVersions"]:
-            name = "install-dependencies-php%s" % phpVersion
+		for phpVersion in params['phpVersions']:
+			name = 'install-dependencies-php%s' % phpVersion
 
-            result = {
-                "kind": "pipeline",
-                "type": "docker",
-                "name": name,
-                "workspace": {
-                    "base": dir["base"],
-                    "path": "src",
-                },
-                "steps": cacheRestore() +
-                         cacheClearOnEventPush(phpVersion) +
-                         composerInstall(phpVersion) +
-                         vendorbinCodestyle(phpVersion) +
-                         vendorbinCodesniffer(phpVersion) +
-                         vendorbinPhan(phpVersion) +
-                         vendorbinPhpstan(phpVersion) +
-                         vendorbinBehat() +
-                         yarnInstall(phpVersion) +
-                         cacheRebuildOnEventPush() +
-                         cacheFlushOnEventPush(),
-                "depends_on": [],
-                "trigger": {
-                    "ref": [
-                        "refs/pull/**",
-                        "refs/tags/**",
-                    ],
-                },
-            }
+			result = {
+				'kind': 'pipeline',
+				'type': 'docker',
+				'name': name,
+				'workspace' : {
+					'base': dir['base'],
+					'path': 'src'
+				},
+				'steps':
+					cacheRestore() +
+					cacheClearOnEventPush(phpVersion) +
+					composerInstall(phpVersion) +
+					vendorbinCodestyle(phpVersion) +
+					vendorbinCodesniffer(phpVersion) +
+					vendorbinPhan(phpVersion) +
+					vendorbinPhpstan(phpVersion) +
+					vendorbinBehat() +
+					yarnInstall(phpVersion) +
+					cacheRebuildOnEventPush() +
+					cacheFlushOnEventPush(),
+				'depends_on': [],
+				'trigger': {
+					'ref': [
+						'refs/pull/**',
+						'refs/tags/**'
+					]
+				}
+			}
 
             for branch in config["branches"]:
                 result["trigger"]["ref"].append("refs/heads/%s" % branch)
