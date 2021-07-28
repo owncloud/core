@@ -730,160 +730,163 @@ def phan():
     return pipelines
 
 def litmus():
-    pipelines = []
+	return []
+	pipelines = []
 
-    if "litmus" not in config:
-        return pipelines
+	if 'litmus' not in config:
+		return pipelines
 
-    default = {
-        "phpVersions": ["7.2", "7.3", "7.4"],
-        "logLevel": "2",
-        "useHttps": True,
-    }
+	default = {
+		'phpVersions': ['7.2', '7.3', '7.4'],
+		'logLevel': '2',
+		'useHttps': True,
+	}
 
-    if "defaults" in config:
-        if "litmus" in config["defaults"]:
-            for item in config["defaults"]["litmus"]:
-                default[item] = config["defaults"]["litmus"][item]
+	if 'defaults' in config:
+		if 'litmus' in config['defaults']:
+			for item in config['defaults']['litmus']:
+				default[item] = config['defaults']['litmus'][item]
 
-    litmusConfig = config["litmus"]
+	litmusConfig = config['litmus']
 
-    if type(litmusConfig) == "bool":
-        if litmusConfig:
-            # the config has 'litmus' true, so specify an empty dict that will get the defaults
-            litmusConfig = {}
-        else:
-            return pipelines
+	if type(litmusConfig) == "bool":
+		if litmusConfig:
+			# the config has 'litmus' true, so specify an empty dict that will get the defaults
+			litmusConfig = {}
+		else:
+			return pipelines
 
-    if len(litmusConfig) == 0:
-        # 'litmus' is an empty dict, so specify a single section that will get the defaults
-        litmusConfig = {"doDefault": {}}
+	if len(litmusConfig) == 0:
+		# 'litmus' is an empty dict, so specify a single section that will get the defaults
+		litmusConfig = {'doDefault': {}}
 
-    for category, matrix in litmusConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
+	for category, matrix in litmusConfig.items():
+		params = {}
+		for item in default:
+			params[item] = matrix[item] if item in matrix else default[item]
 
-        for phpVersion in params["phpVersions"]:
-            name = "litmus-php%s" % phpVersion
-            db = "mariadb:10.2"
-            image = "owncloud/litmus:latest"
-            environment = {
-                "LITMUS_PASSWORD": "admin",
-                "LITMUS_USERNAME": "admin",
-                "TESTS": "basic copymove props locks http",
-            }
-            litmusCommand = "/usr/local/bin/litmus-wrapper"
+		for phpVersion in params['phpVersions']:
+			name = 'litmus-php%s' % phpVersion
+			db = 'mariadb:10.2'
+			image = 'owncloud/litmus:latest'
+			environment = {
+				'LITMUS_PASSWORD': 'admin',
+				'LITMUS_USERNAME': 'admin',
+				'TESTS': 'basic copymove props locks http',
+			}
+			litmusCommand = '/usr/local/bin/litmus-wrapper'
 
-            result = {
-                "kind": "pipeline",
-                "type": "docker",
-                "name": name,
-                "workspace": {
-                    "base": dir["base"],
-                    "path": "src",
-                },
-                "steps": cacheRestore() +
-                         composerInstall(phpVersion) +
-                         yarnInstall(phpVersion) +
-                         installServer(phpVersion, db, params["logLevel"], params["useHttps"]) +
-                         setupLocalStorage(phpVersion) +
-                         fixPermissions(phpVersion, False) +
-                         createShare(phpVersion) +
-                         owncloudLog("server", "src") +
-                         [
-                             {
-                                 "name": "old-endpoint",
-                                 "image": image,
-                                 "pull": "always",
-                                 "environment": environment,
-                                 "commands": [
-                                     "source .env",
-                                     'export LITMUS_URL="https://server/remote.php/webdav"',
-                                     litmusCommand,
-                                 ],
-                             },
-                             {
-                                 "name": "new-endpoint",
-                                 "image": image,
-                                 "pull": "always",
-                                 "environment": environment,
-                                 "commands": [
-                                     "source .env",
-                                     'export LITMUS_URL="https://server/remote.php/dav/files/admin"',
-                                     litmusCommand,
-                                 ],
-                             },
-                             {
-                                 "name": "new-mount",
-                                 "image": image,
-                                 "pull": "always",
-                                 "environment": environment,
-                                 "commands": [
-                                     "source .env",
-                                     'export LITMUS_URL="https://server/remote.php/dav/files/admin/local_storage/"',
-                                     litmusCommand,
-                                 ],
-                             },
-                             {
-                                 "name": "old-mount",
-                                 "image": image,
-                                 "pull": "always",
-                                 "environment": environment,
-                                 "commands": [
-                                     "source .env",
-                                     'export LITMUS_URL="https://server/remote.php/webdav/local_storage/"',
-                                     litmusCommand,
-                                 ],
-                             },
-                             {
-                                 "name": "new-shared",
-                                 "image": image,
-                                 "pull": "always",
-                                 "environment": environment,
-                                 "commands": [
-                                     "source .env",
-                                     'export LITMUS_URL="https://server/remote.php/dav/files/admin/new_folder/"',
-                                     litmusCommand,
-                                 ],
-                             },
-                             {
-                                 "name": "old-shared",
-                                 "image": image,
-                                 "pull": "always",
-                                 "environment": environment,
-                                 "commands": [
-                                     "source .env",
-                                     'export LITMUS_URL="https://server/remote.php/webdav/new_folder/"',
-                                     litmusCommand,
-                                 ],
-                             },
-                             {
-                                 "name": "public-share",
-                                 "image": image,
-                                 "pull": "always",
-                                 "environment": {
-                                     "LITMUS_PASSWORD": "admin",
-                                     "LITMUS_USERNAME": "admin",
-                                     "TESTS": "basic copymove http",
-                                 },
-                                 "commands": [
-                                     "source .env",
-                                     "export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN",
-                                     litmusCommand,
-                                 ],
-                             },
-                         ],
-                "services": databaseService(db) +
-                            owncloudService(phpVersion, "server", dir["server"], params["useHttps"]),
-                "depends_on": [],
-                "trigger": {
-                    "ref": [
-                        "refs/pull/**",
-                        "refs/tags/**",
-                    ],
-                },
-            }
+			result = {
+				'kind': 'pipeline',
+				'type': 'docker',
+				'name': name,
+				'workspace' : {
+					'base': dir['base'],
+					'path': 'src'
+				},
+				'steps':
+					cacheRestore() +
+					composerInstall(phpVersion) +
+					yarnInstall(phpVersion) +
+					installServer(phpVersion, db, params['logLevel'], params['useHttps']) +
+					setupLocalStorage(phpVersion) +
+					fixPermissions(phpVersion, False) +
+					createShare(phpVersion) +
+					owncloudLog('server', 'src') +
+					[
+						{
+							'name': 'old-endpoint',
+							'image': image,
+							'pull': 'always',
+							'environment': environment,
+							'commands': [
+								'source .env',
+								'export LITMUS_URL="https://server/remote.php/webdav"',
+								litmusCommand,
+							]
+						},
+						{
+							'name': 'new-endpoint',
+							'image': image,
+							'pull': 'always',
+							'environment': environment,
+							'commands': [
+								'source .env',
+								'export LITMUS_URL="https://server/remote.php/dav/files/admin"',
+								litmusCommand,
+							]
+						},
+						{
+							'name': 'new-mount',
+							'image': image,
+							'pull': 'always',
+							'environment': environment,
+							'commands': [
+								'source .env',
+								'export LITMUS_URL="https://server/remote.php/dav/files/admin/local_storage/"',
+								litmusCommand,
+							]
+						},
+						{
+							'name': 'old-mount',
+							'image': image,
+							'pull': 'always',
+							'environment': environment,
+							'commands': [
+								'source .env',
+								'export LITMUS_URL="https://server/remote.php/webdav/local_storage/"',
+								litmusCommand,
+							]
+						},
+						{
+							'name': 'new-shared',
+							'image': image,
+							'pull': 'always',
+							'environment': environment,
+							'commands': [
+								'source .env',
+								'export LITMUS_URL="https://server/remote.php/dav/files/admin/new_folder/"',
+								litmusCommand,
+							]
+						},
+						{
+							'name': 'old-shared',
+							'image': image,
+							'pull': 'always',
+							'environment': environment,
+							'commands': [
+								'source .env',
+								'export LITMUS_URL="https://server/remote.php/webdav/new_folder/"',
+								litmusCommand,
+							]
+						},
+						{
+							'name': 'public-share',
+							'image': image,
+							'pull': 'always',
+							'environment': {
+								'LITMUS_PASSWORD': 'admin',
+								'LITMUS_USERNAME': 'admin',
+								'TESTS': 'basic copymove http',
+							},
+							'commands': [
+								'source .env',
+								'export LITMUS_URL=\'https://server/remote.php/dav/public-files/\'$PUBLIC_TOKEN',
+								litmusCommand,
+							]
+						},
+					],
+				'services':
+					databaseService(db) +
+					owncloudService(phpVersion, 'server', dir['server'], params['useHttps']),
+				'depends_on': [],
+				'trigger': {
+					'ref': [
+						'refs/pull/**',
+						'refs/tags/**'
+					]
+				}
+			}
 
             pipelines.append(result)
 
