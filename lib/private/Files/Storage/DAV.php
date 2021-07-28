@@ -692,7 +692,7 @@ class DAV extends Common {
 				return false;
 			}
 
-			$this->convertException($e, $path);
+			throw $e;
 		}
 		return false;
 	}
