@@ -41,12 +41,12 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send LOCK requests to webDav endpoints with 2 slashes
-    When the user "Alice" requests these endpoints with "LOCK" to get property "d:shared" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "LOCK" to get property "d:shared"
       | endpoint                                            |
       | /remote.php//dav/files/%username%/PARENT/parent.txt |
       | /remote.php//webdav/PARENT                          |
     Then the HTTP status code of responses on all endpoints should be "200"
-    When the user "Alice" requests these endpoints with "LOCK" to get property "d:shared" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "LOCK" to get property "d:shared"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -98,12 +98,12 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send PROPFIND requests to webDav endpoints with 2 slashes
-    When the user "Alice" requests these endpoints with "PROPFIND" to get property "d:href" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "PROPFIND" to get property "d:href"
       | endpoint                                            |
       | /remote.php//dav/files/%username%/PARENT/parent.txt |
       | /remote.php//webdav/PARENT                          |
     Then the HTTP status code of responses on all endpoints should be "207"
-    When the user "Alice" requests these endpoints with "PROPFIND" to get property "d:href" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "PROPFIND" to get property "d:href"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -112,12 +112,12 @@ Feature: current oC10 behavior for issue-34365
 
 
   Scenario: send PROPPATCH requests to webDav endpoints with 2 slashes
-    When the user "Alice" requests these endpoints with "PROPPATCH" to set property "d:getlastmodified" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "PROPPATCH" to set property "d:getlastmodified"
       | endpoint                                            |
       | /remote.php//dav/files/%username%/PARENT/parent.txt |
       | /remote.php//webdav/PARENT                          |
     Then the HTTP status code of responses on all endpoints should be "207"
-    When the user "Alice" requests these endpoints with "PROPPATCH" to set property "d:getlastmodified" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "PROPPATCH" to set property "d:getlastmodified"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |

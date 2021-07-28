@@ -11,7 +11,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send DELETE requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" about user "Alice"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -22,7 +22,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send GET requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "GET" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "GET" about user "Alice"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -33,7 +33,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send LOCK requests to webDav endpoints with 2 slashes
-    When the user "Alice" requests these endpoints with "LOCK" to get property "d:shared" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "LOCK" to get property "d:shared"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -44,7 +44,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send MKCOL requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "MKCOL" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "MKCOL" about user "Alice"
       | endpoint                                   |
       | //remote.php/webdav/PARENT1                |
       | /remote.php//webdav/PARENT2                |
@@ -56,7 +56,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send MOVE requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "MOVE" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "MOVE" about user "Alice"
       | endpoint                                             | destination                                          |
       | //remote.php/webdav/textfile0.txt                    | /remote.php/webdav/textfileZero.txt                  |
       | /remote.php//dav/files/%username%/textfile1.txt      | /remote.php/dav/files/%username%/textfileOne.txt     |
@@ -67,7 +67,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send POST requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "POST" including body "doesnotmatter" about user "Alice"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -78,7 +78,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send PROPFIND requests to webDav endpoints with 2 slashes
-    When the user "Alice" requests these endpoints with "PROPFIND" to get property "d:href" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "PROPFIND" to get property "d:href"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -89,7 +89,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send PROPPATCH requests to webDav endpoints with 2 slashes
-    When the user "Alice" requests these endpoints with "PROPPATCH" to set property "d:getlastmodified" with password "%regular%" about user "Alice"
+    When the user "Alice" requests these endpoints with "PROPPATCH" to set property "d:getlastmodified"
       | endpoint                                            |
       | //remote.php/webdav/textfile0.txt                   |
       | //remote.php//dav/files/%username%/textfile1.txt    |
@@ -100,7 +100,7 @@ Feature: make webdav request with special urls
 
 
   Scenario: send PUT requests to webDav endpoints with 2 slashes
-    When user "Alice" requests these endpoints with "PUT" including body "doesnotmatter" using password "%regular%" about user "Alice"
+    When user "Alice" requests these endpoints with "PUT" including body "doesnotmatter" about user "Alice"
       | endpoint                                             |
       | //remote.php/webdav/textfile0.txt                    |
       | /remote.php//webdav/textfile1.txt                    |

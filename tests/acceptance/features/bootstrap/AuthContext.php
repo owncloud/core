@@ -274,28 +274,26 @@ class AuthContext implements Context {
 	}
 
 	/**
-	 * @When /^the user "([^"]*)" requests these endpoints with "([^"]*)" to (?:get|set) property "([^"]*)" with password "([^"]*)" about user "([^"]*)"$/
+	 * @When /^the user "([^"]*)" requests these endpoints with "([^"]*)" to (?:get|set) property "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $method
 	 * @param string $property
-	 * @param string $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithPasswordWithProperty(
+	public function userRequestsEndpointsWithProperty(
 		string $user,
 		string $method,
 		string $property,
-		string $ofUser,
 		TableNode $table
 	):void {
 		$this->userRequestsEndpointsWithPassword(
 			$user,
 			$method,
-			$ofUser,
+			$this->featureContext->getPasswordForUser($user),
 			$table,
 			$property
 		);
