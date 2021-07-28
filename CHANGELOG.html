@@ -14,6 +14,7 @@
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39061">#39061</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add setting to limit public link share creation to certain groups: <a href="https://github.com/owncloud/enterprise/issues/3632">#3632</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add command to verify all available doc links: <a href="https://github.com/owncloud/core/pull/39026">#39026</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -76,6 +77,16 @@
    case we should log the mount-count for easier debugging.
             </p>
             <p>https://github.com/owncloud/core/pull/39015<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add command to verify all available doc links: <a href="https://github.com/owncloud/core/pull/39026">#39026</a></p>
+            <p>All available doc links can now be tested and verified via `make test-doc-links`. It is also
+   possible to specify the ownCloud version to look for in the docs via `make test-doc-links
+   DOC_LINK_VERSION=10.7`. It defaults to the ownCloud version of the current installation.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4671<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39026<br></p>
         </li>
     </ul>
     <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>

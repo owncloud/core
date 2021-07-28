@@ -16,6 +16,7 @@ Summary
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
+* Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
 
 Details
 -------
@@ -80,6 +81,15 @@ Details
    case we should log the mount-count for easier debugging.
 
    https://github.com/owncloud/core/pull/39015
+
+* Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
+
+   All available doc links can now be tested and verified via `make test-doc-links`. It is also
+   possible to specify the ownCloud version to look for in the docs via `make test-doc-links
+   DOC_LINK_VERSION=10.7`. It defaults to the ownCloud version of the current installation.
+
+   https://github.com/owncloud/enterprise/issues/4671
+   https://github.com/owncloud/core/pull/39026
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
