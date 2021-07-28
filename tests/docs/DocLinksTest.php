@@ -25,7 +25,7 @@ class TestDocLinksCommand extends Command {
 			->addArgument(
 				'version',
 				InputArgument::OPTIONAL,
-				'The ownCloud version to look for in the docs. Defaults to the latest version.'
+				'The ownCloud version to look for in the docs. Defaults to the current version of this ownCloud instance.'
 			);
 	}
 
