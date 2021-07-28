@@ -5,309 +5,307 @@ dir = {
 }
 
 config = {
-    "rocketchat": {
-        "channel": "server",
-        "from_secret": "public_rocketchat",
-    },
-    "branches": [
-        "master",
-    ],
-    "dependencies": True,
-    "codestyle": True,
-    "phpstan": True,
-    "phan": True,
-    "javascript": True,
-    "litmus": True,
-    "dav": True,
-    "phpunit": {
-        "mostDatabases": {
-            "phpVersions": [
-                "7.2",
-            ],
-            # Gather coverage for all databases except Oracle
-            "coverage": True,
-            "databases": [
-                "sqlite",
-                "mariadb:10.2",
-                "mariadb:10.3",
-                "mariadb:10.4",
-                "mariadb:10.5",
-                "mysql:5.5",
-                "mysql:5.7",
-                "mysql:8.0",
-                "postgres:9.4",
-                "postgres:10.3",
-            ],
-        },
-        "slowDatabases": {
-            "phpVersions": [
-                "7.2",
-            ],
-            # Oracle takes a long time to start and run
-            # So do not collect coverage for that
-            # This helps the SonarCloud analysis to be ready much more quickly
-            "coverage": False,
-            "databases": [
-                "oracle",
-            ],
-        },
-        "reducedDatabases": {
-            "phpVersions": [
-                "7.3",
-                "7.4",
-            ],
-            "databases": [
-                "sqlite",
-                "mariadb:10.2",
-            ],
-        },
-        "external-samba-windows": {
-            "phpVersions": [
-                "7.2",
-                "7.4",
-            ],
-            "databases": [
-                "sqlite",
-            ],
-            "externalTypes": [
-                "samba",
-                "windows",
-            ],
-            "coverage": True,
-            "extraCommandsBeforeTestRun": [
-                "ls -l /var/cache",
-                "mkdir /var/cache/samba",
-                "ls -l /var/cache",
-                "ls -l /var/cache/samba",
-            ],
-        },
-        "external-other": {
-            "phpVersions": [
-                "7.2",
-                "7.4",
-            ],
-            "databases": [
-                "sqlite",
-            ],
-            "externalTypes": [
-                "webdav",
-                "sftp",
-                "scality",
-                "owncloud",
-            ],
-            "coverage": True,
-        },
-    },
-    "acceptance": {
-        "api": {
-            "suites": [
-                "apiAuth",
-                "apiAuthOcs",
-                "apiAuthWebDav",
-                "apiCapabilities",
-                "apiComments",
-                "apiFavorites",
-                "apiMain",
-                "apiProvisioning-v1",
-                "apiProvisioning-v2",
-                "apiProvisioningGroups-v1",
-                "apiProvisioningGroups-v2",
-                "apiShareCreateSpecialToRoot1",
-                "apiShareCreateSpecialToShares1",
-                "apiShareCreateSpecialToRoot2",
-                "apiShareCreateSpecialToShares2",
-                "apiSharees",
-                "apiShareManagementToRoot",
-                "apiShareManagementToShares",
-                "apiShareManagementBasicToRoot",
-                "apiShareManagementBasicToShares",
-                "apiShareOperationsToRoot1",
-                "apiShareOperationsToRoot2",
-                "apiShareOperationsToShares1",
-                "apiShareOperationsToShares2",
-                "apiSharePublicLink1",
-                "apiSharePublicLink2",
-                "apiShareReshareToRoot1",
-                "apiShareReshareToShares1",
-                "apiShareReshareToRoot2",
-                "apiShareReshareToShares2",
-                "apiShareReshareToRoot3",
-                "apiShareReshareToShares3",
-                "apiShareUpdateToRoot",
-                "apiShareUpdateToShares",
-                "apiTags",
-                "apiTranslation",
-                "apiTrashbin",
-                "apiTrashbinRestore",
-                "apiVersions",
-                "apiWebdavEtagPropagation1",
-                "apiWebdavEtagPropagation2",
-                "apiWebdavLocks",
-                "apiWebdavLocks2",
-                "apiWebdavLocks3",
-                "apiWebdavLocksUnlock",
-                "apiWebdavMove1",
-                "apiWebdavMove2",
-                "apiWebdavOperations",
-                "apiWebdavPreviews",
-                "apiWebdavProperties1",
-                "apiWebdavProperties2",
-                "apiWebdavUpload1",
-                "apiWebdavUpload2",
-            ],
-        },
-        "apiNotifications": {
-            "suites": [
-                "apiSharingNotificationsToRoot",
-                "apiSharingNotificationsToShares",
-            ],
-            "extraApps": {
-                "notifications": 'if [ -f "composer.json" ]; then composer install; fi',
-            },
-        },
-        "apiFederation": {
-            "suites": [
-                "apiFederationToRoot1",
-                "apiFederationToRoot2",
-                "apiFederationToShares1",
-                "apiFederationToShares2",
-            ],
-            "federatedServerNeeded": True,
-            "federatedServerVersions": ["git", "latest", "10.6.0"],
-        },
-        "cli": {
-            "suites": [
-                "cliBackground",
-                "cliLocalStorage",
-                "cliMain",
-                "cliProvisioning",
-                "cliTrashbin",
-            ],
-            "emailNeeded": True,
-        },
-        "cliAppManagement": {
-            "suites": [
-                "cliAppManagement",
-            ],
-            "testingRemoteSystem": False,
-        },
-        "cliExternalStorage": {
-            "suites": [
-                "cliExternalStorage",
-            ],
-            "federatedServerNeeded": True,
-            "federatedServerVersions": ["git", "latest", "10.6.0"],
-        },
-        "webUI": {
-            "suites": {
-                "webUIAddUsers": "",
-                "webUIAdminSettings": "",
-                "webUIComments": "",
-                "webUICreateDelete": "",
-                "webUIFavorites": "",
-                "webUIFiles": "",
-                "webUILogin": "",
-                "webUIManageQuota": "",
-                "webUIManageUsersGroups": "webUIManageUsersGrps",
-                "webUIMoveFilesFolders": "webUIMoveFilesFolder",
-                "webUIPersonalSettings": "webUIPersonalSetting",
-                "webUIRenameFiles": "",
-                "webUIRenameFolders": "",
-                "webUIRestrictSharing": "",
-                "webUISettingsMenu": "",
-                "webUISharingAcceptShares": "webUISharingAcceptSh",
-                "webUISharingAutocompletion1": "webUISharingAutocomp1",
-                "webUISharingAutocompletion2": "webUISharingAutocomp2",
-                "webUISharingInternalGroups1": "webUISharingIntGroup1",
-                "webUISharingInternalGroups2": "webUISharingIntGroup2",
-                "webUISharingInternalUsers1": "webUISharingIntUsers1",
-                "webUISharingInternalUsers2": "webUISharingIntUsers2",
-                "webUISharingPublic1": "",
-                "webUISharingPublic2": "",
-                "webUITags": "",
-                "webUITrashbin": "",
-                "webUIUpload": "",
-                "webUIWebdavLockProtection": "webUIWebdavLockProt",
-                "webUIWebdavLocks": "",
-            },
-            "emailNeeded": True,
-            "useHttps": False,
-        },
-        "webUINotifications": {
-            "suites": {
-                "webUISharingNotifications": "webUISharingNotify",
-            },
-            "emailNeeded": True,
-            "useHttps": False,
-            "extraApps": {
-                "notifications": "composer install",
-            },
-        },
-        "webUIFileActionsMenu": {
-            "suites": {
-                "webUIFileActionsMenu": "",
-            },
-            "useHttps": False,
-            "extraApps": {
-                "files_texteditor": "make vendor",
-                "richdocuments": "make vendor",
-            },
-        },
-        "webUIFederation": {
-            "suites": {
-                "webUISharingExternal1": "webUISharingExt1",
-                "webUISharingExternal2": "webUISharingExt2",
-            },
-            "federatedServerNeeded": True,
-            "federatedServerVersions": ["git", "latest", "10.6.0"],
-        },
-        "webUIFirefox": {
-            "suites": {
-                "webUIFirefoxSmoketest": "webUIFfSmoke",
-            },
-            "browsers": [
-                "firefox",
-            ],
-            "emailNeeded": True,
-            "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 3,
-        },
-        "webUIProxy": {
-            "suites": {
-                "webUIProxySmoketest": "webUIProxySmoke",
-            },
-            "browsers": [
-                "chrome",
-            ],
-            "emailNeeded": True,
-            "proxyNeeded": True,
-            "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 3,
-        },
-        "apiProxy": {
-            "suites": {
-                "apiProxySmoketest": "apiProxySmoke",
-            },
-            "proxyNeeded": True,
-            "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required",
-            "runAllSuites": True,
-            "numberOfParts": 8,
-        },
-        "apiOnSqlite": {
-            "suites": {
-                "apiOnSqlite": "apiOnSqlite",
-            },
-            "databases": ["sqlite"],
-            "useHttps": False,
-            "filterTags": "@sqliteDB",
-            "runAllSuites": True,
-        },
-    },
+	'rocketchat': {
+		'channel': 'server',
+		'from_secret': 'public_rocketchat',
+	},
+
+	'branches': [
+		'master',
+	],
+
+	'dependencies': True,
+
+	'codestyle': True,
+
+	'phpstan': True,
+
+	'phan': True,
+
+	'javascript': True,
+
+	'litmus': True,
+
+	'dav': True,
+
+	'phpunit': {
+		'mostDatabases' : {
+			'phpVersions': [
+				'7.2',
+			],
+			# Gather coverage for all databases except Oracle
+			'coverage': True,
+			'databases': [
+				'sqlite',
+			],
+		},
+		'slowDatabases' : {
+			'phpVersions': [
+				'7.2',
+			],
+			# Oracle takes a long time to start and run
+			# So do not collect coverage for that
+			# This helps the SonarCloud analysis to be ready much more quickly
+			'coverage': False,
+			'databases': []
+		},
+		'reducedDatabases' : {
+			'phpVersions': [
+				'7.3',
+				'7.4',
+			],
+			'databases': [
+				'sqlite',
+			]
+		},
+		'external-samba-windows' : {
+			'phpVersions': [
+				'7.2',
+				'7.4',
+			],
+			'databases': [
+				'sqlite',
+			],
+			'externalTypes': [
+				'samba',
+				'windows',
+			],
+			'coverage': True,
+			'extraCommandsBeforeTestRun': [
+				'ls -l /var/cache',
+				'mkdir /var/cache/samba',
+				'ls -l /var/cache',
+				'ls -l /var/cache/samba',
+			]
+		},
+		'external-other' : {
+			'phpVersions': [
+				'7.2',
+				'7.4',
+			],
+			'databases': [
+				'sqlite',
+			],
+			'externalTypes': [
+				'webdav',
+				'sftp',
+				'scality',
+				'owncloud',
+			],
+			'coverage': True,
+		}
+	},
+
+	'acceptance': {
+		'api': {
+			'suites': [
+				'apiAuth',
+				'apiAuthOcs',
+				'apiAuthWebDav',
+				'apiCapabilities',
+				'apiComments',
+				'apiFavorites',
+				'apiMain',
+				'apiProvisioning-v1',
+				'apiProvisioning-v2',
+				'apiProvisioningGroups-v1',
+				'apiProvisioningGroups-v2',
+				'apiShareCreateSpecialToRoot1',
+				'apiShareCreateSpecialToShares1',
+				'apiShareCreateSpecialToRoot2',
+				'apiShareCreateSpecialToShares2',
+				'apiSharees',
+				'apiShareManagementToRoot',
+				'apiShareManagementToShares',
+				'apiShareManagementBasicToRoot',
+				'apiShareManagementBasicToShares',
+				'apiShareOperationsToRoot1',
+				'apiShareOperationsToRoot2',
+				'apiShareOperationsToShares1',
+				'apiShareOperationsToShares2',
+				'apiSharePublicLink1',
+				'apiSharePublicLink2',
+				'apiShareReshareToRoot1',
+				'apiShareReshareToShares1',
+				'apiShareReshareToRoot2',
+				'apiShareReshareToShares2',
+				'apiShareReshareToRoot3',
+				'apiShareReshareToShares3',
+				'apiShareUpdateToRoot',
+				'apiShareUpdateToShares',
+				'apiTags',
+				'apiTranslation',
+				'apiTrashbin',
+				'apiTrashbinRestore',
+				'apiVersions',
+				'apiWebdavEtagPropagation1',
+				'apiWebdavEtagPropagation2',
+				'apiWebdavLocks',
+				'apiWebdavLocks2',
+				'apiWebdavLocks3',
+				'apiWebdavLocksUnlock',
+				'apiWebdavMove1',
+				'apiWebdavMove2',
+				'apiWebdavOperations',
+				'apiWebdavPreviews',
+				'apiWebdavProperties1',
+				'apiWebdavProperties2',
+				'apiWebdavUpload1',
+				'apiWebdavUpload2',
+			],
+		},
+		'apiNotifications': {
+			'suites': [
+				'apiSharingNotificationsToRoot',
+				'apiSharingNotificationsToShares',
+			],
+			'extraApps': {
+				'notifications': 'if [ -f "composer.json" ]; then composer install; fi',
+			},
+		},
+		'apiFederation': {
+			'suites': [
+				'apiFederationToRoot1',
+				'apiFederationToRoot2',
+				'apiFederationToShares1',
+				'apiFederationToShares2',
+			],
+			'federatedServerNeeded': True,
+			'federatedServerVersions': ['git', 'latest', '10.6.0'],
+		},
+		'cli': {
+			'suites': [
+				'cliBackground',
+				'cliLocalStorage',
+				'cliMain',
+				'cliProvisioning',
+				'cliTrashbin',
+			],
+			'emailNeeded': True,
+		},
+		'cliAppManagement': {
+			'suites': [
+				'cliAppManagement',
+			],
+			'testingRemoteSystem': False,
+		},
+		'cliExternalStorage': {
+			'suites': [
+				'cliExternalStorage',
+			],
+			'federatedServerNeeded': True,
+			'federatedServerVersions': ['git', 'latest', '10.6.0'],
+		},
+		'webUI': {
+			'suites': {
+				'webUIAddUsers': '',
+				'webUIAdminSettings': '',
+				'webUIComments': '',
+				'webUICreateDelete': '',
+				'webUIFavorites': '',
+				'webUIFiles': '',
+				'webUILogin': '',
+				'webUIManageQuota': '',
+				'webUIManageUsersGroups': 'webUIManageUsersGrps',
+				'webUIMoveFilesFolders': 'webUIMoveFilesFolder',
+				'webUIPersonalSettings': 'webUIPersonalSetting',
+				'webUIRenameFiles': '',
+				'webUIRenameFolders': '',
+				'webUIRestrictSharing': '',
+				'webUISettingsMenu': '',
+				'webUISharingAcceptShares': 'webUISharingAcceptSh',
+				'webUISharingAutocompletion1': 'webUISharingAutocomp1',
+				'webUISharingAutocompletion2': 'webUISharingAutocomp2',
+				'webUISharingInternalGroups1': 'webUISharingIntGroup1',
+				'webUISharingInternalGroups2': 'webUISharingIntGroup2',
+				'webUISharingInternalUsers1': 'webUISharingIntUsers1',
+				'webUISharingInternalUsers2': 'webUISharingIntUsers2',
+				'webUISharingPublic1': '',
+				'webUISharingPublic2': '',
+				'webUITags': '',
+				'webUITrashbin': '',
+				'webUIUpload': '',
+				'webUIWebdavLockProtection': 'webUIWebdavLockProt',
+				'webUIWebdavLocks': '',
+			},
+			'emailNeeded': True,
+			'useHttps': False,
+		},
+		'webUINotifications': {
+			'suites': {
+				'webUISharingNotifications': 'webUISharingNotify',
+			},
+			'emailNeeded': True,
+			'useHttps': False,
+			'extraApps': {
+				'notifications': 'composer install',
+			},
+		},
+		'webUIFileActionsMenu': {
+			'suites': {
+				'webUIFileActionsMenu': '',
+			},
+			'useHttps': False,
+			'extraApps': {
+				'files_texteditor': 'make vendor',
+				'richdocuments': 'make vendor',
+			},
+		},
+		'webUIFederation': {
+			'suites': {
+				'webUISharingExternal1': 'webUISharingExt1',
+				'webUISharingExternal2': 'webUISharingExt2',
+			},
+			'federatedServerNeeded': True,
+			'federatedServerVersions': ['git', 'latest', '10.6.0'],
+		},
+		'webUIFirefox': {
+			'suites': {
+				'webUIFirefoxSmoketest': 'webUIFfSmoke',
+			},
+			'browsers': [
+				'firefox',
+			],
+			'emailNeeded': True,
+			'useHttps': False,
+			'filterTags': '@smokeTest&&~@notifications-app-required',
+			'runAllSuites': True,
+			'numberOfParts': 3,
+		},
+		'webUIProxy': {
+			'suites': {
+				'webUIProxySmoketest': 'webUIProxySmoke',
+			},
+			'browsers': [
+				'chrome',
+			],
+			'emailNeeded': True,
+			'proxyNeeded': True,
+			'useHttps': False,
+			'filterTags': '@smokeTest&&~@notifications-app-required',
+			'runAllSuites': True,
+			'numberOfParts': 3,
+		},
+		'apiProxy': {
+			'suites': {
+				'apiProxySmoketest': 'apiProxySmoke',
+			},
+			'proxyNeeded': True,
+			'useHttps': False,
+			'filterTags': '@smokeTest&&~@notifications-app-required',
+			'runAllSuites': True,
+			'numberOfParts': 8,
+		},
+		'apiOnSqlite': {
+			'suites': {
+				'apiOnSqlite': 'apiOnSqlite',
+			},
+			'databases': ['sqlite'],
+			'useHttps': False,
+			'filterTags': '@sqliteDB',
+			'runAllSuites': True,
+		}
+	}
 }
 
 def main(ctx):
@@ -385,9 +383,7 @@ def stagePipelines(ctx):
     return litmusPipelines + davPipelines + acceptancePipelines
 
 def afterCoveragePipelines(ctx):
-    return [
-        sonarAnalysis(ctx),
-    ]
+	return []
 
 def afterPipelines(ctx):
     return [
@@ -466,72 +462,22 @@ def dependencies(ctx):
     return pipelines
 
 def codestyle():
-    pipelines = []
+	return []
+	pipelines = []
 
-    if "codestyle" not in config:
-        return pipelines
+	if 'codestyle' not in config:
+		return pipelines
 
-    default = {
-        "phpVersions": ["7.4"],
-    }
+	default = {
+		'phpVersions': ['7.4'],
+	}
 
-    if "defaults" in config:
-        if "codestyle" in config["defaults"]:
-            for item in config["defaults"]["codestyle"]:
-                default[item] = config["defaults"]["codestyle"][item]
+	if 'defaults' in config:
+		if 'codestyle' in config['defaults']:
+			for item in config['defaults']['codestyle']:
+				default[item] = config['defaults']['codestyle'][item]
 
-    codestyleConfig = config["codestyle"]
-
-    if type(codestyleConfig) == "bool":
-        if codestyleConfig:
-            # the config has 'codestyle' true, so specify an empty dict that will get the defaults
-            codestyleConfig = {}
-        else:
-            return pipelines
-
-    if len(codestyleConfig) == 0:
-        # 'codestyle' is an empty dict, so specify a single section that will get the defaults
-        codestyleConfig = {"doDefault": {}}
-
-    for category, matrix in codestyleConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
-
-        for phpVersion in params["phpVersions"]:
-            name = "coding-standard-php%s" % phpVersion
-
-            result = {
-                "kind": "pipeline",
-                "type": "docker",
-                "name": name,
-                "workspace": {
-                    "base": dir["base"],
-                    "path": "src",
-                },
-                "steps": cacheRestore() +
-                         composerInstall(phpVersion) +
-                         vendorbinCodestyle(phpVersion) +
-                         vendorbinCodesniffer(phpVersion) +
-                         yarnInstall(phpVersion) +
-                         [
-                             {
-                                 "name": "php-style",
-                                 "image": "owncloudci/php:%s" % phpVersion,
-                                 "pull": "always",
-                                 "commands": [
-                                     "make test-php-style",
-                                 ],
-                             },
-                         ],
-                "depends_on": [],
-                "trigger": {
-                    "ref": [
-                        "refs/pull/**",
-                        "refs/tags/**",
-                    ],
-                },
-            }
+	codestyleConfig = config['codestyle']
 
             for branch in config["branches"]:
                 result["trigger"]["ref"].append("refs/heads/%s" % branch)
@@ -641,146 +587,150 @@ def changelog(ctx):
     return pipelines
 
 def phpstan():
-    pipelines = []
+	return []
+	pipelines = []
 
-    if "phpstan" not in config:
-        return pipelines
+	if 'phpstan' not in config:
+		return pipelines
 
-    default = {
-        "phpVersions": ["7.4"],
-        "logLevel": "2",
-    }
+	default = {
+		'phpVersions': ['7.4'],
+		'logLevel': '2',
+	}
 
-    if "defaults" in config:
-        if "phpstan" in config["defaults"]:
-            for item in config["defaults"]["phpstan"]:
-                default[item] = config["defaults"]["phpstan"][item]
+	if 'defaults' in config:
+		if 'phpstan' in config['defaults']:
+			for item in config['defaults']['phpstan']:
+				default[item] = config['defaults']['phpstan'][item]
 
-    phpstanConfig = config["phpstan"]
+	phpstanConfig = config['phpstan']
 
-    if type(phpstanConfig) == "bool":
-        if phpstanConfig:
-            # the config has 'phpstan' true, so specify an empty dict that will get the defaults
-            phpstanConfig = {}
-        else:
-            return pipelines
+	if type(phpstanConfig) == "bool":
+		if phpstanConfig:
+			# the config has 'phpstan' true, so specify an empty dict that will get the defaults
+			phpstanConfig = {}
+		else:
+			return pipelines
 
-    if len(phpstanConfig) == 0:
-        # 'phpstan' is an empty dict, so specify a single section that will get the defaults
-        phpstanConfig = {"doDefault": {}}
+	if len(phpstanConfig) == 0:
+		# 'phpstan' is an empty dict, so specify a single section that will get the defaults
+		phpstanConfig = {'doDefault': {}}
 
-    for category, matrix in phpstanConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
+	for category, matrix in phpstanConfig.items():
+		params = {}
+		for item in default:
+			params[item] = matrix[item] if item in matrix else default[item]
 
-        for phpVersion in params["phpVersions"]:
-            name = "phpstan-php%s" % phpVersion
+		for phpVersion in params['phpVersions']:
+			name = 'phpstan-php%s' % phpVersion
 
-            result = {
-                "kind": "pipeline",
-                "type": "docker",
-                "name": name,
-                "workspace": {
-                    "base": dir["base"],
-                    "path": "src",
-                },
-                "steps": cacheRestore() +
-                         composerInstall(phpVersion) +
-                         vendorbinPhpstan(phpVersion) +
-                         yarnInstall(phpVersion) +
-                         installServer(phpVersion, "sqlite", params["logLevel"]) +
-                         [
-                             {
-                                 "name": "php-phpstan",
-                                 "image": "owncloudci/php:%s" % phpVersion,
-                                 "pull": "always",
-                                 "commands": [
-                                     "make test-php-phpstan",
-                                 ],
-                             },
-                         ],
-                "depends_on": [],
-                "trigger": {
-                    "ref": [
-                        "refs/pull/**",
-                        "refs/tags/**",
-                    ],
-                },
-            }
+			result = {
+				'kind': 'pipeline',
+				'type': 'docker',
+				'name': name,
+				'workspace' : {
+					'base': dir['base'],
+					'path': 'src'
+				},
+				'steps':
+					cacheRestore() +
+					composerInstall(phpVersion) +
+					vendorbinPhpstan(phpVersion) +
+					yarnInstall(phpVersion) +
+					installServer(phpVersion, 'sqlite', params['logLevel']) +
+				[
+					{
+						'name': 'php-phpstan',
+						'image': 'owncloudci/php:%s' % phpVersion,
+						'pull': 'always',
+						'commands': [
+							'make test-php-phpstan'
+						]
+					}
+				],
+				'depends_on': [],
+				'trigger': {
+					'ref': [
+						'refs/pull/**',
+						'refs/tags/**'
+					]
+				}
+			}
 
             pipelines.append(result)
 
     return pipelines
 
 def phan():
-    pipelines = []
+	return []
+	pipelines = []
 
-    if "phan" not in config:
-        return pipelines
+	if 'phan' not in config:
+		return pipelines
 
-    default = {
-        "phpVersions": ["7.2", "7.3", "7.4"],
-        "logLevel": "2",
-    }
+	default = {
+		'phpVersions': ['7.2', '7.3', '7.4'],
+		'logLevel': '2',
+	}
 
-    if "defaults" in config:
-        if "phan" in config["defaults"]:
-            for item in config["defaults"]["phan"]:
-                default[item] = config["defaults"]["phan"][item]
+	if 'defaults' in config:
+		if 'phan' in config['defaults']:
+			for item in config['defaults']['phan']:
+				default[item] = config['defaults']['phan'][item]
 
-    phanConfig = config["phan"]
+	phanConfig = config['phan']
 
-    if type(phanConfig) == "bool":
-        if phanConfig:
-            # the config has 'phan' true, so specify an empty dict that will get the defaults
-            phanConfig = {}
-        else:
-            return pipelines
+	if type(phanConfig) == "bool":
+		if phanConfig:
+			# the config has 'phan' true, so specify an empty dict that will get the defaults
+			phanConfig = {}
+		else:
+			return pipelines
 
-    if len(phanConfig) == 0:
-        # 'phan' is an empty dict, so specify a single section that will get the defaults
-        phanConfig = {"doDefault": {}}
+	if len(phanConfig) == 0:
+		# 'phan' is an empty dict, so specify a single section that will get the defaults
+		phanConfig = {'doDefault': {}}
 
-    for category, matrix in phanConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
+	for category, matrix in phanConfig.items():
+		params = {}
+		for item in default:
+			params[item] = matrix[item] if item in matrix else default[item]
 
-        for phpVersion in params["phpVersions"]:
-            name = "phan-php%s" % phpVersion
+		for phpVersion in params['phpVersions']:
+			name = 'phan-php%s' % phpVersion
 
-            result = {
-                "kind": "pipeline",
-                "type": "docker",
-                "name": name,
-                "workspace": {
-                    "base": dir["base"],
-                    "path": "src",
-                },
-                "steps": cacheRestore() +
-                         composerInstall(phpVersion) +
-                         vendorbinPhan(phpVersion) +
-                         yarnInstall(phpVersion) +
-                         installServer(phpVersion, "sqlite", params["logLevel"]) +
-                         [
-                             {
-                                 "name": "phan",
-                                 "image": "owncloudci/php:%s" % phpVersion,
-                                 "pull": "always",
-                                 "commands": [
-                                     "make test-php-phan",
-                                 ],
-                             },
-                         ],
-                "depends_on": [],
-                "trigger": {
-                    "ref": [
-                        "refs/pull/**",
-                        "refs/tags/**",
-                    ],
-                },
-            }
+			result = {
+				'kind': 'pipeline',
+				'type': 'docker',
+				'name': name,
+				'workspace' : {
+					'base': dir['base'],
+					'path': 'src'
+				},
+				'steps':
+					cacheRestore() +
+					composerInstall(phpVersion) +
+					vendorbinPhan(phpVersion) +
+					yarnInstall(phpVersion) +
+					installServer(phpVersion, 'sqlite', params['logLevel']) +
+				[
+					{
+						'name': 'phan',
+						'image': 'owncloudci/php:%s' % phpVersion,
+						'pull': 'always',
+						'commands': [
+							'make test-php-phan'
+						]
+					}
+				],
+				'depends_on': [],
+				'trigger': {
+					'ref': [
+						'refs/pull/**',
+						'refs/tags/**'
+					]
+				}
+			}
 
             pipelines.append(result)
 
@@ -1037,101 +987,103 @@ def dav():
     return pipelines
 
 def javascript(ctx, withCoverage):
-    pipelines = []
+	return []
+	pipelines = []
 
-    if "javascript" not in config:
-        return pipelines
+	if 'javascript' not in config:
+		return pipelines
 
-    default = {
-        "coverage": True,
-        "logLevel": "2",
-        "phpVersion": "7.2",
-        "skip": False,
-    }
+	default = {
+		'coverage': True,
+		'logLevel': '2',
+		'phpVersion': '7.2',
+		'skip': False
+	}
 
-    if "defaults" in config:
-        if "javascript" in config["defaults"]:
-            for item in config["defaults"]["javascript"]:
-                default[item] = config["defaults"]["javascript"][item]
+	if 'defaults' in config:
+		if 'javascript' in config['defaults']:
+			for item in config['defaults']['javascript']:
+				default[item] = config['defaults']['javascript'][item]
 
-    matrix = config["javascript"]
+	matrix = config['javascript']
 
-    if type(matrix) == "bool":
-        if matrix:
-            # the config has 'javascript' true, so specify an empty dict that will get the defaults
-            matrix = {}
-        else:
-            return pipelines
+	if type(matrix) == "bool":
+		if matrix:
+			# the config has 'javascript' true, so specify an empty dict that will get the defaults
+			matrix = {}
+		else:
+			return pipelines
 
-    params = {}
-    for item in default:
-        params[item] = matrix[item] if item in matrix else default[item]
+	params = {}
+	for item in default:
+		params[item] = matrix[item] if item in matrix else default[item]
 
-    if params["skip"]:
-        return pipelines
+	if params['skip']:
+		return pipelines
 
-    # if we only want pipelines with coverage, and this pipeline does not do coverage, then do not include it
-    if withCoverage and not params["coverage"]:
-        return pipelines
+	# if we only want pipelines with coverage, and this pipeline does not do coverage, then do not include it
+	if withCoverage and not params['coverage']:
+		return pipelines
 
-    # if we only want pipelines without coverage, and this pipeline does coverage, then do not include it
-    if not withCoverage and params["coverage"]:
-        return pipelines
+	# if we only want pipelines without coverage, and this pipeline does coverage, then do not include it
+	if not withCoverage and params['coverage']:
+		return pipelines
 
-    result = {
-        "kind": "pipeline",
-        "type": "docker",
-        "name": "test-javascript",
-        "workspace": {
-            "base": dir["base"],
-            "path": "src",
-        },
-        "steps": cacheRestore() +
-                 composerInstall(params["phpVersion"]) +
-                 yarnInstall(params["phpVersion"]) +
-                 [
-                     {
-                         "name": "test-js",
-                         "image": "owncloudci/php:%s" % params["phpVersion"],
-                         "pull": "always",
-                         "commands": [
-                             "make test-js",
-                         ],
-                     },
-                 ],
-        "depends_on": [],
-        "trigger": {
-            "ref": [
-                "refs/pull/**",
-                "refs/tags/**",
-            ],
-        },
-    }
+	result = {
+		'kind': 'pipeline',
+		'type': 'docker',
+		'name': 'test-javascript',
+		'workspace' : {
+			'base': dir['base'],
+			'path': 'src'
+		},
+		'steps':
+			cacheRestore() +
+			composerInstall(params['phpVersion']) +
+			yarnInstall(params['phpVersion']) +
+		[
+			{
+				'name': 'test-js',
+				'image': 'owncloudci/php:%s' % params['phpVersion'],
+				'pull': 'always',
+				'commands': [
+					'make test-js'
+				]
+			}
+		],
+		'depends_on': [],
+		'trigger': {
+			'ref': [
+				'refs/pull/**',
+				'refs/tags/**'
+			]
+		}
+	}
 
-    if params["coverage"]:
-        result["steps"].append(
-            {
-                "name": "coverage-cache",
-                "image": "plugins/s3",
-                "pull": "always",
-                "settings": {
-                    "endpoint": {
-                        "from_secret": "cache_s3_endpoint",
-                    },
-                    "bucket": "cache",
-                    "source": "tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcov.info",
-                    "target": "%s/%s/coverage" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
-                    "path_style": True,
-                    "strip_prefix": "tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)",
-                    "access_key": {
-                        "from_secret": "cache_s3_access_key",
-                    },
-                    "secret_key": {
-                        "from_secret": "cache_s3_secret_key",
-                    },
-                },
-            },
-        )
+	if params['coverage']:
+		result['steps'].append(
+			{
+				'name': 'coverage-cache',
+				'image': 'plugins/s3',
+				'pull': 'always',
+				'settings': {
+					'endpoint': {
+						'from_secret': 'cache_s3_endpoint'
+					},
+					'bucket': 'cache',
+					'source': 'tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcov.info',
+					'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+					'path_style': True,
+					'strip_prefix': 'tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)',
+					'access_key': {
+						'from_secret': 'cache_s3_access_key'
+					},
+					'secret_key': {
+						'from_secret': 'cache_s3_secret_key'
+					}
+				}
+			}
+		)
 
     for branch in config["branches"]:
         result["trigger"]["ref"].append("refs/heads/%s" % branch)
