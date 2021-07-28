@@ -95,6 +95,30 @@ describe('OCA.Files.NewFileMenu', function() {
 			expect(createDirectoryStub.calledOnce).toEqual(true);
 			expect(createDirectoryStub.getCall(0).args[0]).toEqual('some folder');
 		});
+		it('shows create and cancel button', function() {
+			var $createBtn = menu.$el.find('.action-menu .create');
+			var $cancelBtn = menu.$el.find('.action-menu .cancel');
+
+			expect($createBtn.length).toEqual(1);
+			expect($cancelBtn.length).toEqual(1);
+		});
+		it('creates directory when clicking on create button', function() {
+			$input = menu.$el.find('form.filenameform input');
+			$input.val('some folder');
+
+			var $createBtn = menu.$el.find('.action-menu .create');
+			$createBtn.click();
+
+			expect(createDirectoryStub.calledOnce).toEqual(true);
+			expect(createDirectoryStub.getCall(0).args[0]).toEqual('some folder');
+		});
+		it('destroys from element when clicking on cancel button', function() {
+			var $cancelBtn = menu.$el.find('.action-menu .cancel');
+			$cancelBtn.click();
+			var $form = menu.$el.find('form');
+
+			expect($form.length).toEqual(0);
+		});
 	});
 	describe('custom entries', function() {
 		var oldPlugins;
