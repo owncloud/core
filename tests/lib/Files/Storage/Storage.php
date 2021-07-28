@@ -37,7 +37,7 @@ abstract class Storage extends \Test\TestCase {
 	 */
 	protected function wait() {
 		if ($this->waitDelay > 0) {
-			\sleep($this->waitDelay);
+			\usleep($this->waitDelay * 1000000);
 		}
 	}
 

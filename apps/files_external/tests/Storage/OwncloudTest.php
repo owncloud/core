@@ -45,6 +45,9 @@ class OwncloudTest extends \Test\Files\Storage\Storage {
 		if (! \is_array($this->config) or ! isset($this->config['owncloud']) or ! $this->config['owncloud']['run']) {
 			$this->markTestSkipped('ownCloud backend not configured');
 		}
+		if (isset($this->config['owncloud']['wait'])) {
+			$this->waitDelay = $this->config['owncloud']['wait'];
+		}
 		$this->config['owncloud']['root'] .= '/' . $id; //make sure we have an new empty folder to work in
 		$this->instance = new OwnCloud($this->config['owncloud']);
 		$this->instance->mkdir('/');
@@ -52,6 +55,7 @@ class OwncloudTest extends \Test\Files\Storage\Storage {
 
 	protected function tearDown(): void {
 		if ($this->instance) {
+			$this->wait();
 			$this->instance->rmdir('/');
 		}
 
