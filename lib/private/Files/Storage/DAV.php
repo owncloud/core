@@ -691,9 +691,11 @@ class DAV extends Common {
 			if ($e->getHttpStatus() === Http::STATUS_METHOD_NOT_ALLOWED && $method === 'MKCOL') {
 				return false;
 			}
-
+			var_dump($e->getResponse());
+			\fwrite(STDOUT, \json_encode($e->getResponse()));
 			throw $e;
 		}
+
 		return false;
 	}
 
