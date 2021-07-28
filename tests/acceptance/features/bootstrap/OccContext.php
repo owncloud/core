@@ -399,6 +399,32 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * Create a calendar for given user with given calendar name
+	 *
+	 * @param string $user
+	 * @param string $calendarName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function createCalendarForUserUsingOccCommand($user, $calendarName) {
+		$this->invokingTheCommand("dav:create-calendar $user $calendarName");
+	}
+
+	/**
+	 * Create an address book for given user with given address book name
+	 *
+	 * @param string $user
+	 * @param string $addressBookName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function createAnAddressBookForUserUsingOccCommand($user, $addressBookName) {
+		$this->invokingTheCommand("dav:create-addressbook $user $addressBookName");
+	}
+
+	/**
 	 * @return void
 	 * @throws Exception
 	 */
@@ -2432,6 +2458,34 @@ class OccContext implements Context {
 	 */
 	public function theAdministratorEmptiesTheTrashbinOfAllUsersUsingTheOccCommand() {
 		$this->emptyTrashBinOfUserUsingOccCommand('');
+	}
+
+	/**
+	 * @When the administrator creates a calendar for user :user with name :calendarName using the occ command
+	 *
+	 * @param string $user
+	 * @param string $calendarName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdminCreatesACalendarForUserUsingTheOccCommand($user, $calendarName) {
+		$user = $this->featureContext->getActualUsername($user);
+		$this->createCalendarForUserUsingOccCommand($user, $calendarName);
+	}
+
+	/**
+	 * @When the administrator creates an address book for user :user with name :addressBookName using the occ command
+	 *
+	 * @param string $user
+	 * @param string $addressBookName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdminCreatesAnAddressBookForUserUsingTheOccCommand($user, $addressBookName) {
+		$user = $this->featureContext->getActualUsername($user);
+		$this->createAnAddressBookForUserUsingOccCommand($user, $addressBookName);
 	}
 
 	/**
