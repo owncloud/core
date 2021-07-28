@@ -209,3 +209,19 @@ Feature: Search
     When the user searches for "strängéनेपाली" using the webUI
     Then file "strängéनेपालीloremfile.txt" should be listed on the webUI
     And file "strängéनेपालीloremfile.txt" with path "/strängé नेपाली folder" should be listed in the search results in the other folders section on the webUI
+
+
+  Scenario: search for file and folder with an emoji in the name
+    Given user "Alice" has created the following folders
+      | path              |
+      | my album          |
+      | ⛹ game day video |
+      | skiing photos ⛷  |
+    And user "Alice" has uploaded file with content "share photo with all" to "/my album/skiing photos list ⛷.txt"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
+    When the user searches for "skiing photos" using the webUI
+    Then folder "skiing photos ⛷" should be listed on the webUI
+    And file "skiing photos list ⛷.txt" with path "/my album" should be listed in the search results in the other folders section on the webUI
+    But folder "⛹ game day video" should not be listed on the webUI
+

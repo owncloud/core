@@ -245,3 +245,13 @@ Feature: rename files
     But file "randomfile.txt" should not be listed on the webUI
     And as "Alice" file "FOLDER_TO_SHARE/a-renamed-file.txt" should exist
     And as "Alice" file "FOLDER_TO_SHARE/randomfile.txt" should not exist
+
+
+  Scenario: Rename a file with an emoji in the name
+    Given user "Alice" has uploaded file with content "share photo with all" to "/skiing photos list.txt"
+    And user "Alice" has logged in using the webUI
+    When the user renames file "skiing photos list.txt" to "skiing ⛷ photos list.txt" using the webUI
+    Then file "skiing ⛷ photos list.txt" should be listed on the webUI
+    When the user reloads the current page of the webUI
+    Then file "skiing ⛷ photos list.txt" should be listed on the webUI
+
