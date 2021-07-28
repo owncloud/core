@@ -44,8 +44,16 @@ module.exports = function(config) {
 		*/
 		// other apps tests don't run yet... needs further research / clean up
 		return [
-			'files',
-			'files_trashbin',
+			{
+				name: 'files',
+				srcFiles: ['apps/files/js/*.js'],
+				testFiles: ['apps/files/tests/js/*.js']
+			},
+			{
+				name: 'files_trashbin',
+				srcFiles: ['apps/files_trashbin/js/*.js'],
+				testFiles: ['apps/files_trashbin/tests/js/*.js']
+			},
 			{
 				name: 'files_sharing',
 				srcFiles: [
