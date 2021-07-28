@@ -2133,6 +2133,8 @@ class FeatureContext extends BehatVariablesContext {
 			return $this->regularUserPassword;
 		} elseif ($username === 'sharee1') {
 			return $this->regularUserPassword;
+		} elseif ($username === 'sharee2') {
+			return $this->regularUserPassword;
 		}
 
 		// The user has not been created yet and is not one of the pre-known
@@ -2254,6 +2256,8 @@ class FeatureContext extends BehatVariablesContext {
 			return 'usergrp@example.org';
 		} elseif ($username === 'sharee1') {
 			return 'sharee1@example.org';
+		} elseif ($username === 'sharee2') {
+			return 'sharee2@example.org';
 		} else {
 			return null;
 		}

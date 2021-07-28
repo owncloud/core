@@ -595,7 +595,6 @@ Feature: sharees
     And the HTTP status code should be "<http-status>"
     And the "exact users" sharees returned should be empty
     And the "users" sharees returned should include
-      | Alice Hansen | 0 | Alice   |
       | Sharee One   | 0 | sharee1 |
       | Sharee Two   | 0 | sharee2 |
     And the "exact groups" sharees returned should be empty
@@ -691,7 +690,6 @@ Feature: sharees
     And the HTTP status code should be "<http-status>"
     And the "exact users" sharees returned should be empty
     And the "users" sharees returned should include
-      | Alice Hansen | 0 | Alice   |
       | Sharee One   | 0 | sharee1 |
       | Sharee Two   | 0 | sharee2 |
     And the "exact groups" sharees returned should be empty
