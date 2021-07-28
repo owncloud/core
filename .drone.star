@@ -1382,379 +1382,386 @@ def phpTests(ctx, testType, withCoverage):
     return pipelines
 
 def acceptance(ctx):
-    pipelines = []
+	return []
+	pipelines = []
 
-    if "acceptance" not in config:
-        return pipelines
+	if 'acceptance' not in config:
+		return pipelines
 
-    if type(config["acceptance"]) == "bool":
-        if not config["acceptance"]:
-            return pipelines
+	if type(config['acceptance']) == "bool":
+		if not config['acceptance']:
+			return pipelines
 
-    errorFound = False
+	errorFound = False
 
-    default = {
-        "federatedServerVersions": [""],
-        "browsers": ["chrome"],
-        "phpVersions": ["7.4"],
-        "databases": ["mariadb:10.2"],
-        "federatedPhpVersion": "7.2",
-        "federatedServerNeeded": False,
-        "federatedDb": "",
-        "filterTags": "",
-        "logLevel": "2",
-        "emailNeeded": False,
-        "ldapNeeded": False,
-        "proxyNeeded": False,
-        "cephS3": False,
-        "scalityS3": False,
-        "testingRemoteSystem": True,
-        "useHttps": True,
-        "replaceUsernames": False,
-        "extraSetup": [],
-        "extraServices": [],
-        "extraEnvironment": {"OC_LANGUAGE": "en-EN"},
-        "extraCommandsBeforeTestRun": [],
-        "extraApps": {},
-        "useBundledApp": False,
-        "includeKeyInMatrixName": False,
-        "runAllSuites": False,
-        "numberOfParts": 1,
-        "skip": False,
-        "debugSuites": [],
-        "skipExceptParts": [],
-        "testAgainstCoreTarball": False,
-        "coreTarball": "daily-master-qa",
-        "earlyFail": True,
-    }
+	default = {
+		'federatedServerVersions': [''],
+		'browsers': ['chrome'],
+		'phpVersions': ['7.4'],
+		'databases': ['mariadb:10.2'],
+		'federatedPhpVersion': '7.2',
+		'federatedServerNeeded': False,
+		'federatedDb': '',
+		'filterTags': '',
+		'logLevel': '2',
+		'emailNeeded': False,
+		'ldapNeeded': False,
+		'proxyNeeded': False,
+		'cephS3': False,
+		'scalityS3': False,
+		'testingRemoteSystem': True,
+		'useHttps': True,
+		'replaceUsernames': False,
+		'extraSetup': [],
+		'extraServices': [],
+		'extraEnvironment': {'OC_LANGUAGE':'en-EN'},
+		'extraCommandsBeforeTestRun': [],
+		'extraApps': {},
+		'useBundledApp': False,
+		'includeKeyInMatrixName': False,
+		'runAllSuites': False,
+		'numberOfParts': 1,
+		'skip': False,
+		'debugSuites': [],
+		'skipExceptParts': [],
+		'testAgainstCoreTarball': False,
+		'coreTarball': 'daily-master-qa',
+		'earlyFail': True,
+	}
 
-    if "defaults" in config:
-        if "acceptance" in config["defaults"]:
-            for item in config["defaults"]["acceptance"]:
-                default[item] = config["defaults"]["acceptance"][item]
+	if 'defaults' in config:
+		if 'acceptance' in config['defaults']:
+			for item in config['defaults']['acceptance']:
+				default[item] = config['defaults']['acceptance'][item]
 
-    for category, matrix in config["acceptance"].items():
-        if type(matrix["suites"]) == "list":
-            suites = {}
-            for suite in matrix["suites"]:
-                suites[suite] = suite
-        else:
-            suites = matrix["suites"]
+	for category, matrix in config['acceptance'].items():
+		if type(matrix['suites']) == "list":
+			suites = {}
+			for suite in matrix['suites']:
+				suites[suite] = suite
+		else:
+			suites = matrix['suites']
 
-        if "debugSuites" in matrix and len(matrix["debugSuites"]) != 0:
-            if type(matrix["debugSuites"]) == "list":
-                suites = {}
-                for suite in matrix["debugSuites"]:
-                    suites[suite] = suite
-            else:
-                suites = matrix["debugSuites"]
+		if 'debugSuites' in matrix and len(matrix['debugSuites']) != 0:
+			if type(matrix['debugSuites']) == "list":
+				suites = {}
+				for suite in matrix['debugSuites']:
+					suites[suite] = suite
+			else:
+				suites = matrix['debugSuites']
 
-        for suite, alternateSuiteName in suites.items():
-            isWebUI = suite.startswith("webUI")
-            isAPI = suite.startswith("api")
-            isCLI = suite.startswith("cli")
+		for suite, alternateSuiteName in suites.items():
+			isWebUI = suite.startswith('webUI')
+			isAPI = suite.startswith('api')
+			isCLI = suite.startswith('cli')
 
-            if (alternateSuiteName == ""):
-                alternateSuiteName = suite
+			if (alternateSuiteName == ''):
+				alternateSuiteName = suite
 
-            params = {}
-            for item in default:
-                params[item] = matrix[item] if item in matrix else default[item]
+			params = {}
+			for item in default:
+				params[item] = matrix[item] if item in matrix else default[item]
 
-            if params["skip"]:
-                continue
+			if params['skip']:
+				continue
 
-            if ("full-ci" in ctx.build.title.lower()):
-                params["earlyFail"] = False
+			if ("full-ci" in ctx.build.title.lower()):
+				params["earlyFail"] = False
 
-            if isAPI or isCLI:
-                params["browsers"] = [""]
+			if isAPI or isCLI:
+				params['browsers'] = ['']
 
-            needObjectStore = (params["cephS3"] != False) or (params["scalityS3"] != False)
+			needObjectStore = (params['cephS3'] != False) or (params['scalityS3'] != False)
 
-            extraAppsDict = {}
+			extraAppsDict = {}
 
-            if not params["testAgainstCoreTarball"]:
-                extraAppsDict["testing"] = "composer install"
+			if not params['testAgainstCoreTarball']:
+				extraAppsDict['testing'] = 'composer install'
 
-            if (needObjectStore):
-                # If we need S3 object storage, then install the 'files_primary_s3' app
-                extraAppsDict["files_primary_s3"] = "composer install"
+			if (needObjectStore):
+				# If we need S3 object storage, then install the 'files_primary_s3' app
+				extraAppsDict['files_primary_s3'] = 'composer install'
 
-            for app, command in params["extraApps"].items():
-                extraAppsDict[app] = command
+			for app, command in params['extraApps'].items():
+				extraAppsDict[app] = command
 
-            for federatedServerVersion in params["federatedServerVersions"]:
-                for browser in params["browsers"]:
-                    for phpVersion in params["phpVersions"]:
-                        for db in params["databases"]:
-                            for runPart in range(1, params["numberOfParts"] + 1):
-                                debugPartsEnabled = (len(params["skipExceptParts"]) != 0)
-                                if debugPartsEnabled and runPart not in params["skipExceptParts"]:
-                                    continue
+			for federatedServerVersion in params['federatedServerVersions']:
+				for browser in params['browsers']:
+					for phpVersion in params['phpVersions']:
+						for db in params['databases']:
+							for runPart in range(1, params['numberOfParts'] + 1):
+								debugPartsEnabled = (len(params['skipExceptParts']) != 0)
+								if debugPartsEnabled and runPart not in params['skipExceptParts']:
+									continue
 
-                                name = "unknown"
-                                federatedDb = db if params["federatedDb"] == "" else params["federatedDb"]
+								name = 'unknown'
+								federatedDb = db if params['federatedDb'] == '' else params['federatedDb']
 
-                                federatedDbName = getDbName(federatedDb)
+								federatedDbName = getDbName(federatedDb)
 
-                                if federatedDbName not in ["mariadb", "mysql"]:
-                                    # Do not try to run 2 sets of Oracle, Postgres etc databases
-                                    # When testing with these, let the federated server use mariadb
-                                    federatedDb = "mariadb:10.2"
+								if federatedDbName not in ['mariadb', 'mysql']:
+									# Do not try to run 2 sets of Oracle, Postgres etc databases
+									# When testing with these, let the federated server use mariadb
+									federatedDb = 'mariadb:10.2'
 
-                                if isWebUI or isAPI or isCLI:
-                                    browserString = "" if browser == "" else "-" + browser
-                                    keyString = "-" + category if params["includeKeyInMatrixName"] else ""
-                                    partString = "" if params["numberOfParts"] == 1 else "-%d-%d" % (params["numberOfParts"], runPart)
-                                    federatedServerVersionString = "-" + federatedServerVersion.replace("daily-", "").replace("-qa", "") if (federatedServerVersion != "") else ""
-                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersion)
-                                    maxLength = 50
-                                    nameLength = len(name)
-                                    if nameLength > maxLength:
-                                        print("Error: generated stage name of length", nameLength, "is not supported. The maximum length is " + str(maxLength) + ".", name)
-                                        errorFound = True
+								if isWebUI or isAPI or isCLI:
+									browserString = '' if browser == '' else '-' + browser
+									keyString = '-' + category if params['includeKeyInMatrixName'] else ''
+									partString = '' if params['numberOfParts'] == 1 else '-%d-%d' % (params['numberOfParts'], runPart)
+									federatedServerVersionString = '-' + federatedServerVersion.replace('daily-', '').replace('-qa', '') if (federatedServerVersion != '') else ''
+									name = '%s%s%s%s%s-%s-php%s' % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersion)
+									maxLength = 50
+									nameLength = len(name)
+									if nameLength > maxLength:
+										print("Error: generated stage name of length", nameLength, "is not supported. The maximum length is " + str(maxLength) + ".", name)
+										errorFound = True
 
-                                environment = {}
-                                for env in params["extraEnvironment"]:
-                                    environment[env] = params["extraEnvironment"][env]
+								environment = {}
+								for env in params['extraEnvironment']:
+									environment[env] = params['extraEnvironment'][env]
 
-                                if (params["useHttps"]):
-                                    protocol = "https"
-                                else:
-                                    protocol = "http"
+								if (params['useHttps']):
+									protocol = 'https'
+								else:
+									protocol = 'http'
 
-                                if (params["proxyNeeded"]):
-                                    serverUnderTest = "proxy"
-                                else:
-                                    serverUnderTest = "server"
+								if (params['proxyNeeded']):
+									serverUnderTest = 'proxy'
+								else:
+									serverUnderTest = 'server'
 
-                                environment["TEST_SERVER_URL"] = "%s://%s" % (protocol, serverUnderTest)
+								environment['TEST_SERVER_URL'] = '%s://%s' % (protocol, serverUnderTest)
 
-                                environment["BEHAT_FILTER_TAGS"] = params["filterTags"]
-                                environment["REPLACE_USERNAMES"] = params["replaceUsernames"]
+								environment['BEHAT_FILTER_TAGS'] = params['filterTags']
+								environment['REPLACE_USERNAMES'] = params['replaceUsernames']
 
-                                if (params["runAllSuites"] == False):
-                                    environment["BEHAT_SUITE"] = suite
-                                else:
-                                    environment["DIVIDE_INTO_NUM_PARTS"] = params["numberOfParts"]
-                                    environment["RUN_PART"] = runPart
+								if (params['runAllSuites'] == False):
+									environment['BEHAT_SUITE'] = suite
+								else:
+									environment['DIVIDE_INTO_NUM_PARTS'] = params['numberOfParts']
+									environment['RUN_PART'] = runPart
 
-                                if isWebUI:
-                                    environment["SELENIUM_HOST"] = "selenium"
-                                    environment["SELENIUM_PORT"] = "4444"
-                                    environment["BROWSER"] = browser
-                                    environment["PLATFORM"] = "Linux"
-                                    makeParameter = "test-acceptance-webui"
+								if isWebUI:
+									environment['SELENIUM_HOST'] = 'selenium'
+									environment['SELENIUM_PORT'] = '4444'
+									environment['BROWSER'] = browser
+									environment['PLATFORM'] = 'Linux'
+									makeParameter = 'test-acceptance-webui'
 
-                                if isAPI:
-                                    makeParameter = "test-acceptance-api"
+								if isAPI:
+									makeParameter = 'test-acceptance-api'
 
-                                if isCLI:
-                                    makeParameter = "test-acceptance-cli"
+								if isCLI:
+									makeParameter = 'test-acceptance-cli'
 
-                                if params["emailNeeded"]:
-                                    environment["MAILHOG_HOST"] = "email"
+								if params['emailNeeded']:
+									environment['MAILHOG_HOST'] = 'email'
 
-                                if params["ldapNeeded"]:
-                                    environment["TEST_WITH_LDAP"] = True
+								if params['ldapNeeded']:
+									environment['TEST_WITH_LDAP'] = True
 
-                                if params["testingRemoteSystem"]:
-                                    environment["TESTING_REMOTE_SYSTEM"] = True
-                                    suExecCommand = ""
-                                else:
-                                    environment["TESTING_REMOTE_SYSTEM"] = False
+								if params['testingRemoteSystem']:
+									environment['TESTING_REMOTE_SYSTEM'] = True
+									suExecCommand = ''
+								else:
+									environment['TESTING_REMOTE_SYSTEM'] = False
+									# The test suite (may/will) run local commands, rather than calling the testing app to do them
+									# Those commands need to be executed as www-data (which owns the files)
+									suExecCommand = 'su-exec www-data '
 
-                                    # The test suite (may/will) run local commands, rather than calling the testing app to do them
-                                    # Those commands need to be executed as www-data (which owns the files)
-                                    suExecCommand = "su-exec www-data "
+								if params['testAgainstCoreTarball']:
+									pathOfServerUnderTest = '/drone/core'
+								else:
+									pathOfServerUnderTest = dir['server']
 
-                                if params["testAgainstCoreTarball"]:
-                                    pathOfServerUnderTest = "/drone/core"
-                                else:
-                                    pathOfServerUnderTest = dir["server"]
+								if (needObjectStore):
+									environment['OC_TEST_ON_OBJECTSTORE'] = '1'
+									if (params['cephS3'] != False):
+										environment['S3_TYPE'] = 'ceph'
+									if (params['scalityS3'] != False):
+										environment['S3_TYPE'] = 'scality'
 
-                                if (needObjectStore):
-                                    environment["OC_TEST_ON_OBJECTSTORE"] = "1"
-                                    if (params["cephS3"] != False):
-                                        environment["S3_TYPE"] = "ceph"
-                                    if (params["scalityS3"] != False):
-                                        environment["S3_TYPE"] = "scality"
+								federationDbSuffix = 'fed'
 
-                                federationDbSuffix = "fed"
+								result = {
+									'kind': 'pipeline',
+									'type': 'docker',
+									'name': name,
+									'workspace' : {
+										'base': dir['base'],
+										'path': 'src'
+									},
+									'steps':
+										cacheRestore() +
+										composerInstall(phpVersion) +
+										vendorbinBehat() +
+										yarnInstall(phpVersion) +
+										((
+											installCoreFromTarball(params['coreTarball'], db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded'], pathOfServerUnderTest)
+										) if params['testAgainstCoreTarball'] else (
+											installServer(phpVersion, db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded'])
+										)) +
+										(
+											installAndConfigureFederated(ctx, federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, federatedDb, federationDbSuffix) +
+											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
+										) +
+										installExtraApps(phpVersion, extraAppsDict, pathOfServerUnderTest) +
+										setupCeph(phpVersion, params['cephS3']) +
+										setupScality(phpVersion, params['scalityS3']) +
+										params['extraSetup'] +
+										fixPermissions(phpVersion, params['federatedServerNeeded'], pathOfServerUnderTest) +
+										waitForServer(phpVersion, params['federatedServerNeeded']) +
+										owncloudLog('server', pathOfServerUnderTest) +
+									[
+										({
+											'name': 'acceptance-tests',
+											'image': 'owncloudci/php:%s' % phpVersion,
+											'pull': 'always',
+											'environment': environment,
+											'commands': params['extraCommandsBeforeTestRun'] + [
+												'touch %s/saved-settings.sh' % dir['base'],
+												'. %s/saved-settings.sh' % dir['base'],
+												'%smake %s' % (suExecCommand, makeParameter)
+											]
+										}),
+									] + buildGithubCommentForBuildStopped(name, params['earlyFail']) + githubComment(params['earlyFail']) + stopBuild(params['earlyFail']) ,
+									'services':
+										databaseService(db) +
+										browserService(browser) +
+										emailService(params['emailNeeded']) +
+										ldapService(params['ldapNeeded']) +
+										proxyService(params['proxyNeeded']) +
+										cephService(params['cephS3']) +
+										scalityService(params['scalityS3']) +
+										params['extraServices'] +
+										owncloudService(phpVersion, 'server', pathOfServerUnderTest, params['useHttps']) +
+										((
+											owncloudService(params['federatedPhpVersion'], 'federated', dir["federated"], params['useHttps']) +
+											databaseServiceForFederation(federatedDb, federationDbSuffix)
+										) if params['federatedServerNeeded'] else []),
+									'depends_on': [],
+									'trigger': {
+										'ref': [
+											'refs/pull/**',
+											'refs/tags/**'
+										]
+									}
+								}
 
-                                result = {
-                                    "kind": "pipeline",
-                                    "type": "docker",
-                                    "name": name,
-                                    "workspace": {
-                                        "base": dir["base"],
-                                        "path": "src",
-                                    },
-                                    "steps": cacheRestore() +
-                                             composerInstall(phpVersion) +
-                                             vendorbinBehat() +
-                                             yarnInstall(phpVersion) +
-                                             ((
-                                                 installCoreFromTarball(params["coreTarball"], db, params["logLevel"], params["useHttps"], params["federatedServerNeeded"], params["proxyNeeded"], pathOfServerUnderTest)
-                                             ) if params["testAgainstCoreTarball"] else (
-                                                 installServer(phpVersion, db, params["logLevel"], params["useHttps"], params["federatedServerNeeded"], params["proxyNeeded"])
-                                             )) +
-                                             (
-                                                 installAndConfigureFederated(ctx, federatedServerVersion, params["federatedPhpVersion"], params["logLevel"], protocol, federatedDb, federationDbSuffix) +
-                                                 owncloudLog("federated", "federated") if params["federatedServerNeeded"] else []
-                                             ) +
-                                             installExtraApps(phpVersion, extraAppsDict, pathOfServerUnderTest) +
-                                             setupCeph(phpVersion, params["cephS3"]) +
-                                             setupScality(phpVersion, params["scalityS3"]) +
-                                             params["extraSetup"] +
-                                             fixPermissions(phpVersion, params["federatedServerNeeded"], pathOfServerUnderTest) +
-                                             waitForServer(phpVersion, params["federatedServerNeeded"]) +
-                                             owncloudLog("server", pathOfServerUnderTest) +
-                                             [
-                                                 ({
-                                                     "name": "acceptance-tests",
-                                                     "image": "owncloudci/php:%s" % phpVersion,
-                                                     "pull": "always",
-                                                     "environment": environment,
-                                                     "commands": params["extraCommandsBeforeTestRun"] + [
-                                                         "touch %s/saved-settings.sh" % dir["base"],
-                                                         ". %s/saved-settings.sh" % dir["base"],
-                                                         "%smake %s" % (suExecCommand, makeParameter),
-                                                     ],
-                                                 }),
-                                             ] + buildGithubCommentForBuildStopped(name, params["earlyFail"]) + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
-                                    "services": databaseService(db) +
-                                                browserService(browser) +
-                                                emailService(params["emailNeeded"]) +
-                                                ldapService(params["ldapNeeded"]) +
-                                                proxyService(params["proxyNeeded"]) +
-                                                cephService(params["cephS3"]) +
-                                                scalityService(params["scalityS3"]) +
-                                                params["extraServices"] +
-                                                owncloudService(phpVersion, "server", pathOfServerUnderTest, params["useHttps"]) +
-                                                ((
-                                                    owncloudService(params["federatedPhpVersion"], "federated", dir["federated"], params["useHttps"]) +
-                                                    databaseServiceForFederation(federatedDb, federationDbSuffix)
-                                                ) if params["federatedServerNeeded"] else []),
-                                    "depends_on": [],
-                                    "trigger": {
-                                        "ref": [
-                                            "refs/pull/**",
-                                            "refs/tags/**",
-                                        ],
-                                    },
-                                }
+								pipelines.append(result)
 
-                                pipelines.append(result)
+	if errorFound:
+		return False
 
-    if errorFound:
-        return False
+	return pipelines
 
-    return pipelines
+def sonarAnalysis(ctx, phpVersion = '7.4'):
+	sonar_env = {
+			"SONAR_TOKEN": {
+				"from_secret": "sonar_token",
+			},
+			'SONAR_SCANNER_OPTS': '-Xdebug'
+		}
 
-def sonarAnalysis(ctx, phpVersion = "7.4"):
-    sonar_env = {
-        "SONAR_TOKEN": {
-            "from_secret": "sonar_token",
-        },
-        "SONAR_SCANNER_OPTS": "-Xdebug",
-    }
+	if ctx.build.event == "pull_request":
+		sonar_env.update({
+			"SONAR_PULL_REQUEST_BASE": "%s" % (ctx.build.target),
+			"SONAR_PULL_REQUEST_BRANCH": "%s" % (ctx.build.source),
+			"SONAR_PULL_REQUEST_KEY": "%s" % (ctx.build.ref.replace("refs/pull/", "").split("/")[0]),
+			})
 
-    if ctx.build.event == "pull_request":
-        sonar_env.update({
-            "SONAR_PULL_REQUEST_BASE": "%s" % (ctx.build.target),
-            "SONAR_PULL_REQUEST_BRANCH": "%s" % (ctx.build.source),
-            "SONAR_PULL_REQUEST_KEY": "%s" % (ctx.build.ref.replace("refs/pull/", "").split("/")[0]),
-        })
+	repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
 
-    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
+	result = {
+		'kind': 'pipeline',
+		'type': 'docker',
+		'name': 'sonar-analysis',
+		'workspace' : {
+			'base': dir['base'],
+			'path': 'src'
+		},
+		'clone': {
+			'disable': True, # Sonarcloud does not apply issues on already merged branch
+		},
+		'steps': [
+			{
+				"name": "clone",
+				"image": "owncloudci/alpine:latest",
+				"commands": [
+					"git clone https://github.com/%s.git ." % (repo_slug),
+					"git checkout $DRONE_COMMIT",
+				],
+			},
+		] +
+			cacheRestore() +
+			composerInstall(phpVersion) +
+			yarnInstall(phpVersion) +
+			installServer(phpVersion, 'sqlite') +
+		[
+			{
+				'name': 'sync-from-cache',
+				'image': 'minio/mc:RELEASE.2020-12-10T01-26-17Z',
+				'pull': 'always',
+				'environment': {
+					'MC_HOST_cache': {
+						'from_secret': 'cache_s3_connection_url'
+					},
+				},
+				'commands': [
+					'mkdir -p results',
+					'mc mirror cache/cache/%s/%s/coverage results/' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+				]
+			},
+			{
+				'name': 'setup-before-sonarcloud',
+				'image': 'owncloudci/php:%s' % phpVersion,
+				'pull': 'always',
+				'commands': [
+					'pwd',
+					'ls -l',
+					'ls -l results',
+					'ls -l apps',
+					'ls -l config',
+					'cd apps',
+					'git clone https://github.com/owncloud/files_primary_s3.git',
+					'cd files_primary_s3',
+					'composer install',
+					'cd %s' % dir['server']
+				]
+			},
+			{
+				'name': 'sonarcloud',
+				'image': 'sonarsource/sonar-scanner-cli',
+				'pull': 'always',
+				'environment': sonar_env,
+			},
+			{
+				'name': 'purge-cache',
+				'image': 'minio/mc:RELEASE.2020-12-10T01-26-17Z',
+				'environment': {
+					'MC_HOST_cache': {
+						'from_secret': 'cache_s3_connection_url'
+					}
+				},
+				'commands': [
+					'mc rm --recursive --force cache/cache/%s/%s' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
+				]
+			},
+		],
+		'depends_on': [],
+		'trigger': {
+			'ref': [
+				'refs/heads/master',
+				'refs/pull/**',
+				'refs/tags/**'
+			]
+		}
+	}
 
-    result = {
-        "kind": "pipeline",
-        "type": "docker",
-        "name": "sonar-analysis",
-        "workspace": {
-            "base": dir["base"],
-            "path": "src",
-        },
-        "clone": {
-            "disable": True,  # Sonarcloud does not apply issues on already merged branch
-        },
-        "steps": [
-                     {
-                         "name": "clone",
-                         "image": "owncloudci/alpine:latest",
-                         "commands": [
-                             "git clone https://github.com/%s.git ." % (repo_slug),
-                             "git checkout $DRONE_COMMIT",
-                         ],
-                     },
-                 ] +
-                 cacheRestore() +
-                 composerInstall(phpVersion) +
-                 yarnInstall(phpVersion) +
-                 installServer(phpVersion, "sqlite") +
-                 [
-                     {
-                         "name": "sync-from-cache",
-                         "image": "minio/mc:RELEASE.2020-12-10T01-26-17Z",
-                         "pull": "always",
-                         "environment": {
-                             "MC_HOST_cache": {
-                                 "from_secret": "cache_s3_connection_url",
-                             },
-                         },
-                         "commands": [
-                             "mkdir -p results",
-                             "mc mirror cache/cache/%s/%s/coverage results/" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
-                         ],
-                     },
-                     {
-                         "name": "setup-before-sonarcloud",
-                         "image": "owncloudci/php:%s" % phpVersion,
-                         "pull": "always",
-                         "commands": [
-                             "pwd",
-                             "ls -l",
-                             "ls -l results",
-                             "ls -l apps",
-                             "ls -l config",
-                             "cd apps",
-                             "git clone https://github.com/owncloud/files_primary_s3.git",
-                             "cd files_primary_s3",
-                             "composer install",
-                             "cd %s" % dir["server"],
-                         ],
-                     },
-                     {
-                         "name": "sonarcloud",
-                         "image": "sonarsource/sonar-scanner-cli",
-                         "pull": "always",
-                         "environment": sonar_env,
-                     },
-                     {
-                         "name": "purge-cache",
-                         "image": "minio/mc:RELEASE.2020-12-10T01-26-17Z",
-                         "environment": {
-                             "MC_HOST_cache": {
-                                 "from_secret": "cache_s3_connection_url",
-                             },
-                         },
-                         "commands": [
-                             "mc rm --recursive --force cache/cache/%s/%s" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
-                         ],
-                     },
-                 ],
-        "depends_on": [],
-        "trigger": {
-            "ref": [
-                "refs/heads/master",
-                "refs/pull/**",
-                "refs/tags/**",
-            ],
-        },
-    }
+	for branch in config['branches']:
+		result['trigger']['ref'].append('refs/heads/%s' % branch)
+
+	return result
 
     for branch in config["branches"]:
         result["trigger"]["ref"].append("refs/heads/%s" % branch)
