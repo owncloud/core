@@ -677,11 +677,24 @@ class DAV extends Common {
 	 */
 	private function simpleResponse($method, $path, $body, $expected) {
 		$path = $this->cleanPath($path);
-		// client request is in \OC\HTTP\Client
-		/* @phan-suppress-next-line PhanUndeclaredMethod */
-		$response = $this->client->request($method, $this->encodePath($path), $body);
-		return isset($response['statusCode']) && $response['statusCode'] == $expected;
-		
+		try {
+			// client request is in \OC\HTTP\Client
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
+			$response = $this->client->request($method, $this->encodePath($path), $body);
+			return isset($response['statusCode']) && $response['statusCode'] == $expected;
+		} catch (ClientHttpException $e) {
+			if ($e->getHttpStatus() === Http::STATUS_NOT_FOUND && $method === 'DELETE') {
+				$this->statCache->clear($path . '/');
+				$this->statCache->set($path, false);
+				return false;
+			}
+			if ($e->getHttpStatus() === Http::STATUS_METHOD_NOT_ALLOWED && $method === 'MKCOL') {
+				return false;
+			}
+
+			$this->convertException($e, $path);
+		}
+		return false;
 	}
 
 	/**
