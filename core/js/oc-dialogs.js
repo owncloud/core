@@ -785,10 +785,15 @@ var OCdialogs = {
 				});
 				if (entry.type === 'file') {
 					var urlSpec = {
-						file: dir + '/' + entry.name
+						file: dir + '/' + entry.name,
+						x: 32,
+						y: 32,
+						forceIcon: 0,
+						preview: 1,
 					};
-					var previewUrl = OC.generateUrl('/core/preview.png?') + $.param(urlSpec);
-					$li.find('img').attr('src', previewUrl);
+
+					var previewURL = OC.linkToRemoteBase('dav') + '/files/' + OC.getCurrentUser().uid + dir + '/' + entry.name + '?' + $.param(urlSpec);
+					$li.find('img').attr('src', previewURL);
 				}
 				else {
 					$li.find('img').attr('src', OC.Util.replaceSVGIcon(entry.icon));
