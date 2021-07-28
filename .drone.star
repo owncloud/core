@@ -349,7 +349,7 @@ def main(ctx):
     return initial + before + coverageTests + afterCoverageTests + nonCoverageTests + stages + after
 
 def initialPipelines(ctx):
-    return dependencies(ctx)
+    return dependencies(ctx) + checkStarlark()
 
 def beforePipelines(ctx):
     return codestyle() + changelog(ctx) + phpstan() + phan()
@@ -2769,4 +2769,41 @@ def installTestRunner(ctx, phpVersion):
             "git clone -b %s --depth=1 https://github.com/owncloud/core.git /tmp/testrunner" % ctx.build.source if ctx.build.event == "pull_request" else "master",
             "rsync -aIX /tmp/testrunner/tests %s/tests" % dir["server"],
         ],
+    }]
+
+def checkStarlark():
+    return [{
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "check-starlark",
+        "steps": [
+            {
+                "name": "format-check-starlark",
+                "image": "owncloudci/bazel-buildifier",
+                "pull": "always",
+                "commands": [
+                    "buildifier --mode=check .drone.star",
+                ],
+            },
+            {
+                "name": "show-diff",
+                "image": "owncloudci/bazel-buildifier",
+                "pull": "always",
+                "commands": [
+                    "buildifier --mode=fix .drone.star",
+                    "git diff",
+                ],
+                "when": {
+                    "status": [
+                        "failure",
+                    ],
+                },
+            },
+        ],
+        "depends_on": [],
+        "trigger": {
+            "ref": [
+                "refs/pull/**",
+            ],
+        },
     }]
