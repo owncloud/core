@@ -16,7 +16,7 @@ script('settings', 'panels/setupchecks');
 		?>
 		<li>
 			<?php p($l->t('php does not seem to be setup properly to query system environment variables. The test with getenv("PATH") only returns an empty response.')); ?><br>
-			<?php print_unescaped($l->t('Please check the <a target="_blank" rel="noreferrer" href="%s">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm.', link_to_docs('admin-php-fpm'))); ?>
+			<?php print_unescaped($l->t('Please check the <a target="_blank" rel="noreferrer" href="%s">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm.', link_to_docs(\OCP\Constants::DOCS_ADMIN_PHP_FPM))); ?>
 		</li>
 	<?php
 	}
@@ -65,13 +65,13 @@ script('settings', 'panels/setupchecks');
 	if ($_['fileLockingType'] === 'none') {
 		?>
 		<li>
-			<?php print_unescaped($l->t('Transactional file locking is disabled, this might lead to issues with race conditions. Enable \'filelocking.enabled\' in config.php to avoid these problems. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
+			<?php print_unescaped($l->t('Transactional file locking is disabled, this might lead to issues with race conditions. Enable \'filelocking.enabled\' in config.php to avoid these problems. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs(\OCP\Constants::DOCS_ADMIN_TRANSACTIONAL_LOCKING))); ?>
 		</li>
 		<?php
 	} elseif ($_['fileLockingType'] === 'db') {
 		?>
 		<li>
-			<?php print_unescaped($l->t('Transactional file locking should be configured to use memory-based locking, not the default slow database-based locking. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
+			<?php print_unescaped($l->t('Transactional file locking should be configured to use memory-based locking, not the default slow database-based locking. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs(\OCP\Constants::DOCS_ADMIN_TRANSACTIONAL_LOCKING))); ?>
 		</li>
 		<?php
 	}
@@ -105,7 +105,7 @@ script('settings', 'panels/setupchecks');
 		<li>
 			<?php p($l->t('SQLite is used as database. For larger installations we recommend to switch to a different database backend.')); ?><br>
 			<?php p($l->t('Especially when using the desktop client for file syncing the use of SQLite is discouraged.')); ?><br>
-			<?php print_unescaped($l->t('To migrate to another database use the command line tool: \'occ db:convert-type\', or see the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a>.', link_to_docs('admin-db-conversion'))); ?>
+			<?php print_unescaped($l->t('To migrate to another database use the command line tool: \'occ db:convert-type\', or see the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a>.', link_to_docs(\OCP\Constants::DOCS_ADMIN_DB_CONVERSION))); ?>
 		</li>
 
 		<?php
@@ -148,7 +148,7 @@ script('settings', 'panels/setupchecks');
 		<ul class="warnings hidden"></ul>
 		<ul class="info hidden"></ul>
 		<p class="hint hidden">
-			<?php print_unescaped($l->t('Please double check the <a target="_blank" rel="noreferrer" href="%s">installation guides ↗</a>, and check for any errors or warnings in the <a href="#log-section">log</a>.', link_to_docs('admin-install'))); ?>
+			<?php print_unescaped($l->t('Please double check the <a target="_blank" rel="noreferrer" href="%s">installation guides ↗</a>, and check for any errors or warnings in the <a href="#log-section">log</a>.', link_to_docs(\OCP\Constants::DOCS_ADMIN_INSTALL))); ?>
 		</p>
 	</div>
 	<div id="security-warning-state">

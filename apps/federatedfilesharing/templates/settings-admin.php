@@ -8,7 +8,7 @@ script('federatedfilesharing', 'settings-admin');
 	<h2 class="app-name has-documentation"><?php p($l->t('Federated Cloud Sharing'));?></h2>
 	<a target="_blank" rel="noreferrer" class="icon-info"
 		title="<?php p($l->t('Open documentation'));?>"
-		href="<?php p(link_to_docs('admin-sharing-federated')); ?>"></a>
+		href="<?php p(link_to_docs(\OCP\Constants::DOCS_ADMIN_SHARING_FEDERATED)); ?>"></a>
 
 	<p>
 		<input type="checkbox" name="cronjob_scan_external_enabled" id="cronjobScanExternalEnabled" class="checkbox"

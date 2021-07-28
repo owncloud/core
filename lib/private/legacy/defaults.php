@@ -285,12 +285,20 @@ class OC_Defaults {
 
 	/**
 	 * @param string $key
+	 * @param string|null $ocVersion ownCloud version to look for in the docs. Defaults to the version of this onwCloud instance
 	 */
-	public function buildDocLinkToKey($key) {
+	public function buildDocLinkToKey($key, $ocVersion = null) {
 		if ($this->themeExist('buildDocLinkToKey')) {
 			return $this->theme->buildDocLinkToKey($key);
 		}
-		return $this->getDocBaseUrl() . '/server/' . $this->defaultDocVersion . '/go.php?to=' . $key;
+
+		if ($ocVersion) {
+			$version = $ocVersion;
+		} else {
+			$version = $this->defaultDocVersion;
+		}
+
+		return $this->getDocBaseUrl() . '/server/' . $version . '/go.php?to=' . $key;
 	}
 
 	/**
