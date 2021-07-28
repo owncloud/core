@@ -35,9 +35,7 @@ config = {
 			],
 			# Gather coverage for all databases except Oracle
 			'coverage': True,
-			'databases': [
-				'sqlite',
-			],
+			'databases': [],
 		},
 		'slowDatabases' : {
 			'phpVersions': [
@@ -63,9 +61,7 @@ config = {
 				'7.2',
 				'7.4',
 			],
-			'databases': [
-				'sqlite',
-			],
+			'databases': [],
 			'externalTypes': [
 				'samba',
 				'windows',
@@ -87,9 +83,6 @@ config = {
 				'sqlite',
 			],
 			'externalTypes': [
-				'webdav',
-				'sftp',
-				'scality',
 				'owncloud',
 			],
 			'coverage': True,
@@ -897,94 +890,97 @@ def litmus():
     return pipelines
 
 def dav():
-    pipelines = []
+	return []
+	pipelines = []
 
-    if "dav" not in config:
-        return pipelines
+	if 'dav' not in config:
+		return pipelines
 
-    default = {
-        "phpVersions": ["7.2", "7.3", "7.4"],
-        "logLevel": "2",
-    }
+	default = {
+		'phpVersions': ['7.2', '7.3', '7.4'],
+		'logLevel': '2'
+	}
 
-    if "defaults" in config:
-        if "dav" in config["defaults"]:
-            for item in config["defaults"]["dav"]:
-                default[item] = config["defaults"]["dav"][item]
+	if 'defaults' in config:
+		if 'dav' in config['defaults']:
+			for item in config['defaults']['dav']:
+				default[item] = config['defaults']['dav'][item]
 
-    davConfig = config["dav"]
+	davConfig = config['dav']
 
-    if type(davConfig) == "bool":
-        if davConfig:
-            # the config has 'dav' true, so specify an empty dict that will get the defaults
-            davConfig = {}
-        else:
-            return pipelines
+	if type(davConfig) == "bool":
+		if davConfig:
+			# the config has 'dav' true, so specify an empty dict that will get the defaults
+			davConfig = {}
+		else:
+			return pipelines
 
-    if len(davConfig) == 0:
-        # 'dav' is an empty dict, so specify a single section that will get the defaults
-        davConfig = {"doDefault": {}}
+	if len(davConfig) == 0:
+		# 'dav' is an empty dict, so specify a single section that will get the defaults
+		davConfig = {'doDefault': {}}
 
-    for category, matrix in davConfig.items():
-        params = {}
-        for item in default:
-            params[item] = matrix[item] if item in matrix else default[item]
+	for category, matrix in davConfig.items():
+		params = {}
+		for item in default:
+			params[item] = matrix[item] if item in matrix else default[item]
 
-        for phpVersion in params["phpVersions"]:
-            for davType in ["caldav-new", "caldav-old", "carddav-new", "carddav-old"]:
-                name = "%s-php%s" % (davType, phpVersion)
-                db = "mariadb:10.2"
+		for phpVersion in params['phpVersions']:
+			for davType in ['caldav-new', 'caldav-old', 'carddav-new', 'carddav-old']:
+				name = '%s-php%s' % (davType, phpVersion)
+				db = 'mariadb:10.2'
 
-                if (davType == "caldav-new"):
-                    scriptPath = "apps/dav/tests/ci/caldav"
+				if (davType == 'caldav-new'):
+					scriptPath = 'apps/dav/tests/ci/caldav'
 
-                if (davType == "caldav-old"):
-                    scriptPath = "apps/dav/tests/ci/caldav-old-endpoint"
+				if (davType == 'caldav-old'):
+					scriptPath = 'apps/dav/tests/ci/caldav-old-endpoint'
 
-                if (davType == "carddav-new"):
-                    scriptPath = "apps/dav/tests/ci/carddav"
+				if (davType == 'carddav-new'):
+					scriptPath = 'apps/dav/tests/ci/carddav'
 
-                if (davType == "carddav-old"):
-                    scriptPath = "apps/dav/tests/ci/carddav-old-endpoint"
+				if (davType == 'carddav-old'):
+					scriptPath = 'apps/dav/tests/ci/carddav-old-endpoint'
 
-                result = {
-                    "kind": "pipeline",
-                    "type": "docker",
-                    "name": name,
-                    "workspace": {
-                        "base": dir["base"],
-                        "path": "src",
-                    },
-                    "steps": cacheRestore() +
-                             composerInstall(phpVersion) +
-                             yarnInstall(phpVersion) +
-                             installServer(phpVersion, db, params["logLevel"]) +
-                             davInstall(phpVersion, scriptPath) +
-                             fixPermissions(phpVersion, False) +
-                             owncloudLog("server", "src") +
-                             [
-                                 {
-                                     "name": "dav-test",
-                                     "image": "owncloudci/php:%s" % phpVersion,
-                                     "pull": "always",
-                                     "commands": [
-                                         "bash %s/script.sh" % scriptPath,
-                                     ],
-                                 },
-                             ],
-                    "services": databaseService(db),
-                    "depends_on": [],
-                    "trigger": {
-                        "ref": [
-                            "refs/pull/**",
-                            "refs/tags/**",
-                        ],
-                    },
-                }
+				result = {
+					'kind': 'pipeline',
+					'type': 'docker',
+					'name': name,
+					'workspace' : {
+						'base': dir['base'],
+						'path': 'src'
+					},
+					'steps':
+						cacheRestore() +
+						composerInstall(phpVersion) +
+						yarnInstall(phpVersion) +
+						installServer(phpVersion, db, params['logLevel']) +
+						davInstall(phpVersion, scriptPath) +
+						fixPermissions(phpVersion, False) +
+						owncloudLog('server', 'src') +
+						[
+							{
+								'name': 'dav-test',
+								'image': 'owncloudci/php:%s' % phpVersion,
+								'pull': 'always',
+								'commands': [
+									'bash %s/script.sh' % scriptPath,
+								]
+							},
+						],
+					'services':
+						databaseService(db),
+					'depends_on': [],
+					'trigger': {
+						'ref': [
+							'refs/pull/**',
+							'refs/tags/**'
+						]
+					}
+				}
 
-                pipelines.append(result)
+				pipelines.append(result)
 
-    return pipelines
+	return pipelines
 
 def javascript(ctx, withCoverage):
 	return []
