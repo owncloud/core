@@ -55,7 +55,6 @@ class OwncloudTest extends \Test\Files\Storage\Storage {
 
 	protected function tearDown(): void {
 		if ($this->instance) {
-			$this->wait();
 			$this->instance->rmdir('/');
 		}
 
