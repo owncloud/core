@@ -6,6 +6,6 @@ return [
 		'user'=>'test',
 		'password'=>'test',
 		'root'=>'',
-		'wait'=> 0.2,
+		'wait'=> 0,
 	]
 ];
