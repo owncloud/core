@@ -13,6 +13,7 @@
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39030">#39030</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39061">#39061</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add setting to limit public link share creation to certain groups: <a href="https://github.com/owncloud/enterprise/issues/3632">#3632</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: <a href="https://github.com/owncloud/core/issues/38991">#38991</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add command to verify all available doc links: <a href="https://github.com/owncloud/core/pull/39026">#39026</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Show create and cancel buttons in the 'New file menu': <a href="https://github.com/owncloud/core/pull/39056">#39056</a></li>
@@ -71,6 +72,18 @@
             <p>https://github.com/owncloud/enterprise/issues/3632<br>
             </p>
             <p>https://github.com/owncloud/core/pull/38980<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: <a href="https://github.com/owncloud/core/issues/38991">#38991</a></p>
+            <p>Before this PR the session cookie oc_sessionPassphrase has expiration time 0 regardless of
+   the value of `session_lifetime` in config.phpNow the behavior will be that after setting `session_lifetime` in config.php will make
+   oc_sessionPassphrase cookie to expire in that period of time invalidating the current
+   session and forcing a log out. In the other hand, if session_lifetime is not defined or 0,
+   oc_sessionPassphrase will assume its original value before this PR of 0.
+            </p>
+            <p>https://github.com/owncloud/core/issues/38991<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/38992<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></p>

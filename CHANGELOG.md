@@ -15,6 +15,7 @@ Summary
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
+* Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: [#38991](https://github.com/owncloud/core/issues/38991)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 * Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
 * Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
@@ -75,6 +76,19 @@ Details
 
    https://github.com/owncloud/enterprise/issues/3632
    https://github.com/owncloud/core/pull/38980
+
+* Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: [#38991](https://github.com/owncloud/core/issues/38991)
+
+   Before this PR the session cookie oc_sessionPassphrase has expiration time 0 regardless of
+   the value of `session_lifetime` in config.php
+
+   Now the behavior will be that after setting `session_lifetime` in config.php will make
+   oc_sessionPassphrase cookie to expire in that period of time invalidating the current
+   session and forcing a log out. In the other hand, if session_lifetime is not defined or 0,
+   oc_sessionPassphrase will assume its original value before this PR of 0.
+
+   https://github.com/owncloud/core/issues/38991
+   https://github.com/owncloud/core/pull/38992
 
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 
