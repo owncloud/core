@@ -69,7 +69,7 @@ config = {
                 "7.4",
             ],
             "databases": [
-                "sqlite",
+                "postgres",
             ],
             "externalTypes": [
                 "owncloud",
