@@ -2605,7 +2605,7 @@ def owncloudDockerService(ocDockerService):
     if not ocDockerService:
         return []
 
-    db = 'postgres'
+    db = "postgres"
 
     return [
         {
@@ -2622,7 +2622,7 @@ def owncloudDockerService(ocDockerService):
                 "OWNCLOUD_REDIS_HOST": "redis",
                 "OWNCLOUD_DB_TYPE": getDbType(db),
                 "OWNCLOUD_DB_NAME": getDbUsername(db),
-                "OWNCLOUD_DB_USERNAME": getDbUsername(db)
+                "OWNCLOUD_DB_USERNAME": getDbUsername(db),
                 "OWNCLOUD_DB_PASSWORD": getDbPassword(db),
                 "OWNCLOUD_DB_HOST": getDbName(db),
             },
