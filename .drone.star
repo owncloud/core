@@ -2625,8 +2625,7 @@ def owncloudDockerService(ocDockerService):
                 "OWNCLOUD_DB_HOST": "mariadb",
             },
         },
-        databaseService('mysql'),
-    ]
+    ] + databaseService('mysql')
 
 def redisService(redisService):
     if not redisService:
