@@ -2605,6 +2605,8 @@ def owncloudDockerService(ocDockerService):
     if not ocDockerService:
         return []
 
+    db = 'postgres'
+
     return [
         {
             "name": "oc-server",
@@ -2618,14 +2620,14 @@ def owncloudDockerService(ocDockerService):
                 "HTTP_PORT": "8080",
                 "OWNCLOUD_REDIS_ENABLED": "true",
                 "OWNCLOUD_REDIS_HOST": "redis",
-                "OWNCLOUD_DB_TYPE": "mysql",
-                "OWNCLOUD_DB_NAME": "owncloud",
-                "OWNCLOUD_DB_USERNAME": "owncloud",
-                "OWNCLOUD_DB_PASSWORD": "owncloud",
-                "OWNCLOUD_DB_HOST": "mariadb",
+                "OWNCLOUD_DB_TYPE": getDbType(db),
+                "OWNCLOUD_DB_NAME": getDbUsername(db),
+                "OWNCLOUD_DB_USERNAME": getDbUsername(db)
+                "OWNCLOUD_DB_PASSWORD": getDbPassword(db),
+                "OWNCLOUD_DB_HOST": getDbName(db),
             },
         },
-    ] + databaseService('mysql')
+    ] + databaseService(db)
 
 def redisService(redisService):
     if not redisService:
