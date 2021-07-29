@@ -5,298 +5,288 @@ dir = {
 }
 
 config = {
-	'rocketchat': {
-		'channel': 'server',
-		'from_secret': 'public_rocketchat',
-	},
-
-	'branches': [
-		'master',
-	],
-
-	'dependencies': True,
-
-	'codestyle': True,
-
-	'phpstan': True,
-
-	'phan': True,
-
-	'javascript': True,
-
-	'litmus': True,
-
-	'dav': True,
-
-	'phpunit': {
-		'mostDatabases' : {
-			'phpVersions': [
-				'7.2',
-			],
-			# Gather coverage for all databases except Oracle
-			'coverage': True,
-			'databases': [],
-		},
-		'slowDatabases' : {
-			'phpVersions': [
-				'7.2',
-			],
-			# Oracle takes a long time to start and run
-			# So do not collect coverage for that
-			# This helps the SonarCloud analysis to be ready much more quickly
-			'coverage': False,
-			'databases': []
-		},
-		'reducedDatabases' : {
-			'phpVersions': [
-				'7.3',
-				'7.4',
-			],
-			'databases': []
-		},
-		'external-samba-windows' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [],
-			'externalTypes': [
-				'samba',
-				'windows',
-			],
-			'coverage': True,
-			'extraCommandsBeforeTestRun': [
-				'ls -l /var/cache',
-				'mkdir /var/cache/samba',
-				'ls -l /var/cache',
-				'ls -l /var/cache/samba',
-			]
-		},
-		'external-other' : {
-			'phpVersions': [
-				'7.2',
-				'7.4',
-			],
-			'databases': [
-				'sqlite',
-			],
-			'externalTypes': [
-				'owncloud',
-			],
-			'coverage': True,
-		}
-	},
-
-	'acceptance': {
-		'api': {
-			'suites': [
-				'apiAuth',
-				'apiAuthOcs',
-				'apiAuthWebDav',
-				'apiCapabilities',
-				'apiComments',
-				'apiFavorites',
-				'apiMain',
-				'apiProvisioning-v1',
-				'apiProvisioning-v2',
-				'apiProvisioningGroups-v1',
-				'apiProvisioningGroups-v2',
-				'apiShareCreateSpecialToRoot1',
-				'apiShareCreateSpecialToShares1',
-				'apiShareCreateSpecialToRoot2',
-				'apiShareCreateSpecialToShares2',
-				'apiSharees',
-				'apiShareManagementToRoot',
-				'apiShareManagementToShares',
-				'apiShareManagementBasicToRoot',
-				'apiShareManagementBasicToShares',
-				'apiShareOperationsToRoot1',
-				'apiShareOperationsToRoot2',
-				'apiShareOperationsToShares1',
-				'apiShareOperationsToShares2',
-				'apiSharePublicLink1',
-				'apiSharePublicLink2',
-				'apiShareReshareToRoot1',
-				'apiShareReshareToShares1',
-				'apiShareReshareToRoot2',
-				'apiShareReshareToShares2',
-				'apiShareReshareToRoot3',
-				'apiShareReshareToShares3',
-				'apiShareUpdateToRoot',
-				'apiShareUpdateToShares',
-				'apiTags',
-				'apiTranslation',
-				'apiTrashbin',
-				'apiTrashbinRestore',
-				'apiVersions',
-				'apiWebdavEtagPropagation1',
-				'apiWebdavEtagPropagation2',
-				'apiWebdavLocks',
-				'apiWebdavLocks2',
-				'apiWebdavLocks3',
-				'apiWebdavLocksUnlock',
-				'apiWebdavMove1',
-				'apiWebdavMove2',
-				'apiWebdavOperations',
-				'apiWebdavPreviews',
-				'apiWebdavProperties1',
-				'apiWebdavProperties2',
-				'apiWebdavUpload1',
-				'apiWebdavUpload2',
-			],
-		},
-		'apiNotifications': {
-			'suites': [
-				'apiSharingNotificationsToRoot',
-				'apiSharingNotificationsToShares',
-			],
-			'extraApps': {
-				'notifications': 'if [ -f "composer.json" ]; then composer install; fi',
-			},
-		},
-		'apiFederation': {
-			'suites': [
-				'apiFederationToRoot1',
-				'apiFederationToRoot2',
-				'apiFederationToShares1',
-				'apiFederationToShares2',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.6.0'],
-		},
-		'cli': {
-			'suites': [
-				'cliBackground',
-				'cliLocalStorage',
-				'cliMain',
-				'cliProvisioning',
-				'cliTrashbin',
-			],
-			'emailNeeded': True,
-		},
-		'cliAppManagement': {
-			'suites': [
-				'cliAppManagement',
-			],
-			'testingRemoteSystem': False,
-		},
-		'cliExternalStorage': {
-			'suites': [
-				'cliExternalStorage',
-			],
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.6.0'],
-		},
-		'webUI': {
-			'suites': {
-				'webUIAddUsers': '',
-				'webUIAdminSettings': '',
-				'webUIComments': '',
-				'webUICreateDelete': '',
-				'webUIFavorites': '',
-				'webUIFiles': '',
-				'webUILogin': '',
-				'webUIManageQuota': '',
-				'webUIManageUsersGroups': 'webUIManageUsersGrps',
-				'webUIMoveFilesFolders': 'webUIMoveFilesFolder',
-				'webUIPersonalSettings': 'webUIPersonalSetting',
-				'webUIRenameFiles': '',
-				'webUIRenameFolders': '',
-				'webUIRestrictSharing': '',
-				'webUISettingsMenu': '',
-				'webUISharingAcceptShares': 'webUISharingAcceptSh',
-				'webUISharingAutocompletion1': 'webUISharingAutocomp1',
-				'webUISharingAutocompletion2': 'webUISharingAutocomp2',
-				'webUISharingInternalGroups1': 'webUISharingIntGroup1',
-				'webUISharingInternalGroups2': 'webUISharingIntGroup2',
-				'webUISharingInternalUsers1': 'webUISharingIntUsers1',
-				'webUISharingInternalUsers2': 'webUISharingIntUsers2',
-				'webUISharingPublic1': '',
-				'webUISharingPublic2': '',
-				'webUITags': '',
-				'webUITrashbin': '',
-				'webUIUpload': '',
-				'webUIWebdavLockProtection': 'webUIWebdavLockProt',
-				'webUIWebdavLocks': '',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-		},
-		'webUINotifications': {
-			'suites': {
-				'webUISharingNotifications': 'webUISharingNotify',
-			},
-			'emailNeeded': True,
-			'useHttps': False,
-			'extraApps': {
-				'notifications': 'composer install',
-			},
-		},
-		'webUIFileActionsMenu': {
-			'suites': {
-				'webUIFileActionsMenu': '',
-			},
-			'useHttps': False,
-			'extraApps': {
-				'files_texteditor': 'make vendor',
-				'richdocuments': 'make vendor',
-			},
-		},
-		'webUIFederation': {
-			'suites': {
-				'webUISharingExternal1': 'webUISharingExt1',
-				'webUISharingExternal2': 'webUISharingExt2',
-			},
-			'federatedServerNeeded': True,
-			'federatedServerVersions': ['git', 'latest', '10.6.0'],
-		},
-		'webUIFirefox': {
-			'suites': {
-				'webUIFirefoxSmoketest': 'webUIFfSmoke',
-			},
-			'browsers': [
-				'firefox',
-			],
-			'emailNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'webUIProxy': {
-			'suites': {
-				'webUIProxySmoketest': 'webUIProxySmoke',
-			},
-			'browsers': [
-				'chrome',
-			],
-			'emailNeeded': True,
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 3,
-		},
-		'apiProxy': {
-			'suites': {
-				'apiProxySmoketest': 'apiProxySmoke',
-			},
-			'proxyNeeded': True,
-			'useHttps': False,
-			'filterTags': '@smokeTest&&~@notifications-app-required',
-			'runAllSuites': True,
-			'numberOfParts': 8,
-		},
-		'apiOnSqlite': {
-			'suites': {
-				'apiOnSqlite': 'apiOnSqlite',
-			},
-			'databases': ['sqlite'],
-			'useHttps': False,
-			'filterTags': '@sqliteDB',
-			'runAllSuites': True,
-		}
-	}
+    "rocketchat": {
+        "channel": "server",
+        "from_secret": "public_rocketchat",
+    },
+    "branches": [
+        "master",
+    ],
+    "dependencies": True,
+    "codestyle": True,
+    "phpstan": True,
+    "phan": True,
+    "javascript": True,
+    "litmus": True,
+    "dav": True,
+    "phpunit": {
+        "mostDatabases": {
+            "phpVersions": [
+                "7.2",
+            ],
+            # Gather coverage for all databases except Oracle
+            "coverage": True,
+            "databases": [],
+        },
+        "slowDatabases": {
+            "phpVersions": [
+                "7.2",
+            ],
+            # Oracle takes a long time to start and run
+            # So do not collect coverage for that
+            # This helps the SonarCloud analysis to be ready much more quickly
+            "coverage": False,
+            "databases": [],
+        },
+        "reducedDatabases": {
+            "phpVersions": [
+                "7.3",
+                "7.4",
+            ],
+            "databases": [],
+        },
+        "external-samba-windows": {
+            "phpVersions": [
+                "7.2",
+                "7.4",
+            ],
+            "databases": [],
+            "externalTypes": [
+                "samba",
+                "windows",
+            ],
+            "coverage": True,
+            "extraCommandsBeforeTestRun": [
+                "ls -l /var/cache",
+                "mkdir /var/cache/samba",
+                "ls -l /var/cache",
+                "ls -l /var/cache/samba",
+            ],
+        },
+        "external-other": {
+            "phpVersions": [
+                "7.2",
+                "7.4",
+            ],
+            "databases": [
+                "sqlite",
+            ],
+            "externalTypes": [
+                "owncloud",
+            ],
+            "coverage": True,
+        },
+    },
+    "acceptance": {
+        "api": {
+            "suites": [
+                "apiAuth",
+                "apiAuthOcs",
+                "apiAuthWebDav",
+                "apiCapabilities",
+                "apiComments",
+                "apiFavorites",
+                "apiMain",
+                "apiProvisioning-v1",
+                "apiProvisioning-v2",
+                "apiProvisioningGroups-v1",
+                "apiProvisioningGroups-v2",
+                "apiShareCreateSpecialToRoot1",
+                "apiShareCreateSpecialToShares1",
+                "apiShareCreateSpecialToRoot2",
+                "apiShareCreateSpecialToShares2",
+                "apiSharees",
+                "apiShareManagementToRoot",
+                "apiShareManagementToShares",
+                "apiShareManagementBasicToRoot",
+                "apiShareManagementBasicToShares",
+                "apiShareOperationsToRoot1",
+                "apiShareOperationsToRoot2",
+                "apiShareOperationsToShares1",
+                "apiShareOperationsToShares2",
+                "apiSharePublicLink1",
+                "apiSharePublicLink2",
+                "apiShareReshareToRoot1",
+                "apiShareReshareToShares1",
+                "apiShareReshareToRoot2",
+                "apiShareReshareToShares2",
+                "apiShareReshareToRoot3",
+                "apiShareReshareToShares3",
+                "apiShareUpdateToRoot",
+                "apiShareUpdateToShares",
+                "apiTags",
+                "apiTranslation",
+                "apiTrashbin",
+                "apiTrashbinRestore",
+                "apiVersions",
+                "apiWebdavEtagPropagation1",
+                "apiWebdavEtagPropagation2",
+                "apiWebdavLocks",
+                "apiWebdavLocks2",
+                "apiWebdavLocks3",
+                "apiWebdavLocksUnlock",
+                "apiWebdavMove1",
+                "apiWebdavMove2",
+                "apiWebdavOperations",
+                "apiWebdavPreviews",
+                "apiWebdavProperties1",
+                "apiWebdavProperties2",
+                "apiWebdavUpload1",
+                "apiWebdavUpload2",
+            ],
+        },
+        "apiNotifications": {
+            "suites": [
+                "apiSharingNotificationsToRoot",
+                "apiSharingNotificationsToShares",
+            ],
+            "extraApps": {
+                "notifications": 'if [ -f "composer.json" ]; then composer install; fi',
+            },
+        },
+        "apiFederation": {
+            "suites": [
+                "apiFederationToRoot1",
+                "apiFederationToRoot2",
+                "apiFederationToShares1",
+                "apiFederationToShares2",
+            ],
+            "federatedServerNeeded": True,
+            "federatedServerVersions": ["git", "latest", "10.6.0"],
+        },
+        "cli": {
+            "suites": [
+                "cliBackground",
+                "cliLocalStorage",
+                "cliMain",
+                "cliProvisioning",
+                "cliTrashbin",
+            ],
+            "emailNeeded": True,
+        },
+        "cliAppManagement": {
+            "suites": [
+                "cliAppManagement",
+            ],
+            "testingRemoteSystem": False,
+        },
+        "cliExternalStorage": {
+            "suites": [
+                "cliExternalStorage",
+            ],
+            "federatedServerNeeded": True,
+            "federatedServerVersions": ["git", "latest", "10.6.0"],
+        },
+        "webUI": {
+            "suites": {
+                "webUIAddUsers": "",
+                "webUIAdminSettings": "",
+                "webUIComments": "",
+                "webUICreateDelete": "",
+                "webUIFavorites": "",
+                "webUIFiles": "",
+                "webUILogin": "",
+                "webUIManageQuota": "",
+                "webUIManageUsersGroups": "webUIManageUsersGrps",
+                "webUIMoveFilesFolders": "webUIMoveFilesFolder",
+                "webUIPersonalSettings": "webUIPersonalSetting",
+                "webUIRenameFiles": "",
+                "webUIRenameFolders": "",
+                "webUIRestrictSharing": "",
+                "webUISettingsMenu": "",
+                "webUISharingAcceptShares": "webUISharingAcceptSh",
+                "webUISharingAutocompletion1": "webUISharingAutocomp1",
+                "webUISharingAutocompletion2": "webUISharingAutocomp2",
+                "webUISharingInternalGroups1": "webUISharingIntGroup1",
+                "webUISharingInternalGroups2": "webUISharingIntGroup2",
+                "webUISharingInternalUsers1": "webUISharingIntUsers1",
+                "webUISharingInternalUsers2": "webUISharingIntUsers2",
+                "webUISharingPublic1": "",
+                "webUISharingPublic2": "",
+                "webUITags": "",
+                "webUITrashbin": "",
+                "webUIUpload": "",
+                "webUIWebdavLockProtection": "webUIWebdavLockProt",
+                "webUIWebdavLocks": "",
+            },
+            "emailNeeded": True,
+            "useHttps": False,
+        },
+        "webUINotifications": {
+            "suites": {
+                "webUISharingNotifications": "webUISharingNotify",
+            },
+            "emailNeeded": True,
+            "useHttps": False,
+            "extraApps": {
+                "notifications": "composer install",
+            },
+        },
+        "webUIFileActionsMenu": {
+            "suites": {
+                "webUIFileActionsMenu": "",
+            },
+            "useHttps": False,
+            "extraApps": {
+                "files_texteditor": "make vendor",
+                "richdocuments": "make vendor",
+            },
+        },
+        "webUIFederation": {
+            "suites": {
+                "webUISharingExternal1": "webUISharingExt1",
+                "webUISharingExternal2": "webUISharingExt2",
+            },
+            "federatedServerNeeded": True,
+            "federatedServerVersions": ["git", "latest", "10.6.0"],
+        },
+        "webUIFirefox": {
+            "suites": {
+                "webUIFirefoxSmoketest": "webUIFfSmoke",
+            },
+            "browsers": [
+                "firefox",
+            ],
+            "emailNeeded": True,
+            "useHttps": False,
+            "filterTags": "@smokeTest&&~@notifications-app-required",
+            "runAllSuites": True,
+            "numberOfParts": 3,
+        },
+        "webUIProxy": {
+            "suites": {
+                "webUIProxySmoketest": "webUIProxySmoke",
+            },
+            "browsers": [
+                "chrome",
+            ],
+            "emailNeeded": True,
+            "proxyNeeded": True,
+            "useHttps": False,
+            "filterTags": "@smokeTest&&~@notifications-app-required",
+            "runAllSuites": True,
+            "numberOfParts": 3,
+        },
+        "apiProxy": {
+            "suites": {
+                "apiProxySmoketest": "apiProxySmoke",
+            },
+            "proxyNeeded": True,
+            "useHttps": False,
+            "filterTags": "@smokeTest&&~@notifications-app-required",
+            "runAllSuites": True,
+            "numberOfParts": 8,
+        },
+        "apiOnSqlite": {
+            "suites": {
+                "apiOnSqlite": "apiOnSqlite",
+            },
+            "databases": ["sqlite"],
+            "useHttps": False,
+            "filterTags": "@sqliteDB",
+            "runAllSuites": True,
+        },
+    },
 }
 
 def main(ctx):
@@ -374,7 +364,7 @@ def stagePipelines(ctx):
     return litmusPipelines + davPipelines + acceptancePipelines
 
 def afterCoveragePipelines(ctx):
-	return []
+    return []
 
 def afterPipelines(ctx):
     return [
@@ -382,70 +372,69 @@ def afterPipelines(ctx):
     ]
 
 def dependencies(ctx):
-	return []
-	pipelines = []
+    return []
+    pipelines = []
 
-	if 'dependencies' not in config:
-		return pipelines
+    if "dependencies" not in config:
+        return pipelines
 
-	default = {
-		'phpVersions': ['7.2'],
-	}
+    default = {
+        "phpVersions": ["7.2"],
+    }
 
-	if 'defaults' in config:
-		if 'dependencies' in config['defaults']:
-			for item in config['defaults']['dependencies']:
-				default[item] = config['defaults']['dependencies'][item]
+    if "defaults" in config:
+        if "dependencies" in config["defaults"]:
+            for item in config["defaults"]["dependencies"]:
+                default[item] = config["defaults"]["dependencies"][item]
 
-	dependenciesConfig = config['dependencies']
+    dependenciesConfig = config["dependencies"]
 
-	if type(dependenciesConfig) == "bool":
-		if dependenciesConfig:
-			# the config has 'dependencies' true, so specify an empty dict that will get the defaults
-			dependenciesConfig = {}
-		else:
-			return pipelines
+    if type(dependenciesConfig) == "bool":
+        if dependenciesConfig:
+            # the config has 'dependencies' true, so specify an empty dict that will get the defaults
+            dependenciesConfig = {}
+        else:
+            return pipelines
 
-	if len(dependenciesConfig) == 0:
-		# 'dependencies' is an empty dict, so specify a single section that will get the defaults
-		dependenciesConfig = {'doDefault': {}}
+    if len(dependenciesConfig) == 0:
+        # 'dependencies' is an empty dict, so specify a single section that will get the defaults
+        dependenciesConfig = {"doDefault": {}}
 
-	for category, matrix in dependenciesConfig.items():
-		params = {}
-		for item in default:
-			params[item] = matrix[item] if item in matrix else default[item]
+    for category, matrix in dependenciesConfig.items():
+        params = {}
+        for item in default:
+            params[item] = matrix[item] if item in matrix else default[item]
 
-		for phpVersion in params['phpVersions']:
-			name = 'install-dependencies-php%s' % phpVersion
+        for phpVersion in params["phpVersions"]:
+            name = "install-dependencies-php%s" % phpVersion
 
-			result = {
-				'kind': 'pipeline',
-				'type': 'docker',
-				'name': name,
-				'workspace' : {
-					'base': dir['base'],
-					'path': 'src'
-				},
-				'steps':
-					cacheRestore() +
-					cacheClearOnEventPush(phpVersion) +
-					composerInstall(phpVersion) +
-					vendorbinCodestyle(phpVersion) +
-					vendorbinCodesniffer(phpVersion) +
-					vendorbinPhan(phpVersion) +
-					vendorbinPhpstan(phpVersion) +
-					vendorbinBehat() +
-					yarnInstall(phpVersion) +
-					cacheRebuildOnEventPush() +
-					cacheFlushOnEventPush(),
-				'depends_on': [],
-				'trigger': {
-					'ref': [
-						'refs/pull/**',
-						'refs/tags/**'
-					]
-				}
-			}
+            result = {
+                "kind": "pipeline",
+                "type": "docker",
+                "name": name,
+                "workspace": {
+                    "base": dir["base"],
+                    "path": "src",
+                },
+                "steps": cacheRestore() +
+                         cacheClearOnEventPush(phpVersion) +
+                         composerInstall(phpVersion) +
+                         vendorbinCodestyle(phpVersion) +
+                         vendorbinCodesniffer(phpVersion) +
+                         vendorbinPhan(phpVersion) +
+                         vendorbinPhpstan(phpVersion) +
+                         vendorbinBehat() +
+                         yarnInstall(phpVersion) +
+                         cacheRebuildOnEventPush() +
+                         cacheFlushOnEventPush(),
+                "depends_on": [],
+                "trigger": {
+                    "ref": [
+                        "refs/pull/**",
+                        "refs/tags/**",
+                    ],
+                },
+            }
 
             for branch in config["branches"]:
                 result["trigger"]["ref"].append("refs/heads/%s" % branch)
@@ -455,22 +444,73 @@ def dependencies(ctx):
     return pipelines
 
 def codestyle():
-	return []
-	pipelines = []
+    return []
+    pipelines = []
 
-	if 'codestyle' not in config:
-		return pipelines
+    if "codestyle" not in config:
+        return pipelines
 
-	default = {
-		'phpVersions': ['7.4'],
-	}
+    default = {
+        "phpVersions": ["7.4"],
+    }
 
-	if 'defaults' in config:
-		if 'codestyle' in config['defaults']:
-			for item in config['defaults']['codestyle']:
-				default[item] = config['defaults']['codestyle'][item]
+    if "defaults" in config:
+        if "codestyle" in config["defaults"]:
+            for item in config["defaults"]["codestyle"]:
+                default[item] = config["defaults"]["codestyle"][item]
 
-	codestyleConfig = config['codestyle']
+    codestyleConfig = config["codestyle"]
+
+    if type(codestyleConfig) == "bool":
+        if codestyleConfig:
+            # the config has 'codestyle' true, so specify an empty dict that will get the defaults
+            codestyleConfig = {}
+        else:
+            return pipelines
+
+    if len(codestyleConfig) == 0:
+        # 'codestyle' is an empty dict, so specify a single section that will get the defaults
+        codestyleConfig = {"doDefault": {}}
+
+    for category, matrix in codestyleConfig.items():
+        params = {}
+        for item in default:
+            params[item] = matrix[item] if item in matrix else default[item]
+
+        for phpVersion in params["phpVersions"]:
+            name = "coding-standard-php%s" % phpVersion
+
+            result = {
+                "kind": "pipeline",
+                "type": "docker",
+                "name": name,
+                "workspace": {
+                    "base": dir["base"],
+                    "path": "src",
+                },
+                "steps": cacheRestore() +
+                         composerInstall(phpVersion) +
+                         vendorbinCodestyle(phpVersion) +
+                         vendorbinCodesniffer(phpVersion) +
+                         yarnInstall(phpVersion) +
+                         [
+                             {
+                                 "name": "php-style",
+                                 "image": "owncloudci/php:%s" % phpVersion,
+                                 "pull": "always",
+                                 "commands": [
+                                     "make test-php-style",
+                                 ],
+                             },
+                         ],
+                "depends_on": [],
+                "trigger": {
+                    "ref": [
+                        "refs/pull/**",
+                        "refs/tags/**",
+                    ],
+                },
+            }
 
             for branch in config["branches"]:
                 result["trigger"]["ref"].append("refs/heads/%s" % branch)
@@ -480,611 +520,603 @@ def codestyle():
     return pipelines
 
 def changelog(ctx):
-	return []
-	repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
-	pipelines = []
+    return []
+    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
+    pipelines = []
 
-	result = {
-		'kind': 'pipeline',
-		'type': 'docker',
-		'name': 'changelog',
-		'clone': {
-			'disable': True,
-		},
-		'steps':
-			[
-				{
-					'name': 'clone',
-					'image': 'plugins/git-action:1',
-					'pull': 'always',
-					'settings': {
-						'actions': [
-							'clone',
-						],
-						'remote': 'https://github.com/%s' % (repo_slug),
-						'branch': ctx.build.source if ctx.build.event == 'pull_request' else 'master',
-						'path': dir['server'],
-						'netrc_machine': 'github.com',
-						'netrc_username': {
-							'from_secret': 'github_username',
-						},
-						'netrc_password': {
-							'from_secret': 'github_token',
-						},
-					},
-				},
-				{
-					'name': 'generate',
-					'image': 'toolhippie/calens:latest',
-					'pull': 'always',
-					'commands': [
-						'calens >| CHANGELOG.md',
-						'calens -t changelog/CHANGELOG-html.tmpl >| CHANGELOG.html',
-					],
-				},
-				{
-					'name': 'diff',
-					'image': 'owncloudci/alpine:latest',
-					'pull': 'always',
-					'commands': [
-						'git diff',
-					],
-				},
-				{
-					'name': 'output',
-					'image': 'toolhippie/calens:latest',
-					'pull': 'always',
-					'commands': [
-						'cat CHANGELOG.md',
-					],
-				},
-				{
-					'name': 'publish',
-					'image': 'plugins/git-action:1',
-					'pull': 'always',
-					'settings': {
-						'actions': [
-							'commit',
-							'push',
-						],
-						'message': 'Automated changelog update [skip ci]',
-						'branch': 'master',
-						'author_email': 'devops@owncloud.com',
-						'author_name': 'ownClouders',
-						'netrc_machine': 'github.com',
-						'netrc_username': {
-							'from_secret': 'github_username',
-						},
-						'netrc_password': {
-							'from_secret': 'github_token',
-						},
-					},
-					'when': {
-						'ref': {
-							'exclude': [
-								'refs/pull/**',
-							],
-						},
-					},
-				},
-			],
-		'depends_on': [],
-		'trigger': {
-			'ref': [
-				'refs/heads/master',
-				'refs/pull/**',
-			],
-		},
-	}
+    result = {
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "changelog",
+        "clone": {
+            "disable": True,
+        },
+        "steps": [
+            {
+                "name": "clone",
+                "image": "plugins/git-action:1",
+                "pull": "always",
+                "settings": {
+                    "actions": [
+                        "clone",
+                    ],
+                    "remote": "https://github.com/%s" % (repo_slug),
+                    "branch": ctx.build.source if ctx.build.event == "pull_request" else "master",
+                    "path": dir["server"],
+                    "netrc_machine": "github.com",
+                    "netrc_username": {
+                        "from_secret": "github_username",
+                    },
+                    "netrc_password": {
+                        "from_secret": "github_token",
+                    },
+                },
+            },
+            {
+                "name": "generate",
+                "image": "toolhippie/calens:latest",
+                "pull": "always",
+                "commands": [
+                    "calens >| CHANGELOG.md",
+                    "calens -t changelog/CHANGELOG-html.tmpl >| CHANGELOG.html",
+                ],
+            },
+            {
+                "name": "diff",
+                "image": "owncloudci/alpine:latest",
+                "pull": "always",
+                "commands": [
+                    "git diff",
+                ],
+            },
+            {
+                "name": "output",
+                "image": "toolhippie/calens:latest",
+                "pull": "always",
+                "commands": [
+                    "cat CHANGELOG.md",
+                ],
+            },
+            {
+                "name": "publish",
+                "image": "plugins/git-action:1",
+                "pull": "always",
+                "settings": {
+                    "actions": [
+                        "commit",
+                        "push",
+                    ],
+                    "message": "Automated changelog update [skip ci]",
+                    "branch": "master",
+                    "author_email": "devops@owncloud.com",
+                    "author_name": "ownClouders",
+                    "netrc_machine": "github.com",
+                    "netrc_username": {
+                        "from_secret": "github_username",
+                    },
+                    "netrc_password": {
+                        "from_secret": "github_token",
+                    },
+                },
+                "when": {
+                    "ref": {
+                        "exclude": [
+                            "refs/pull/**",
+                        ],
+                    },
+                },
+            },
+        ],
+        "depends_on": [],
+        "trigger": {
+            "ref": [
+                "refs/heads/master",
+                "refs/pull/**",
+            ],
+        },
+    }
 
     pipelines.append(result)
 
     return pipelines
 
 def phpstan():
-	return []
-	pipelines = []
+    return []
+    pipelines = []
 
-	if 'phpstan' not in config:
-		return pipelines
+    if "phpstan" not in config:
+        return pipelines
 
-	default = {
-		'phpVersions': ['7.4'],
-		'logLevel': '2',
-	}
+    default = {
+        "phpVersions": ["7.4"],
+        "logLevel": "2",
+    }
 
-	if 'defaults' in config:
-		if 'phpstan' in config['defaults']:
-			for item in config['defaults']['phpstan']:
-				default[item] = config['defaults']['phpstan'][item]
+    if "defaults" in config:
+        if "phpstan" in config["defaults"]:
+            for item in config["defaults"]["phpstan"]:
+                default[item] = config["defaults"]["phpstan"][item]
 
-	phpstanConfig = config['phpstan']
+    phpstanConfig = config["phpstan"]
 
-	if type(phpstanConfig) == "bool":
-		if phpstanConfig:
-			# the config has 'phpstan' true, so specify an empty dict that will get the defaults
-			phpstanConfig = {}
-		else:
-			return pipelines
+    if type(phpstanConfig) == "bool":
+        if phpstanConfig:
+            # the config has 'phpstan' true, so specify an empty dict that will get the defaults
+            phpstanConfig = {}
+        else:
+            return pipelines
 
-	if len(phpstanConfig) == 0:
-		# 'phpstan' is an empty dict, so specify a single section that will get the defaults
-		phpstanConfig = {'doDefault': {}}
+    if len(phpstanConfig) == 0:
+        # 'phpstan' is an empty dict, so specify a single section that will get the defaults
+        phpstanConfig = {"doDefault": {}}
 
-	for category, matrix in phpstanConfig.items():
-		params = {}
-		for item in default:
-			params[item] = matrix[item] if item in matrix else default[item]
+    for category, matrix in phpstanConfig.items():
+        params = {}
+        for item in default:
+            params[item] = matrix[item] if item in matrix else default[item]
 
-		for phpVersion in params['phpVersions']:
-			name = 'phpstan-php%s' % phpVersion
+        for phpVersion in params["phpVersions"]:
+            name = "phpstan-php%s" % phpVersion
 
-			result = {
-				'kind': 'pipeline',
-				'type': 'docker',
-				'name': name,
-				'workspace' : {
-					'base': dir['base'],
-					'path': 'src'
-				},
-				'steps':
-					cacheRestore() +
-					composerInstall(phpVersion) +
-					vendorbinPhpstan(phpVersion) +
-					yarnInstall(phpVersion) +
-					installServer(phpVersion, 'sqlite', params['logLevel']) +
-				[
-					{
-						'name': 'php-phpstan',
-						'image': 'owncloudci/php:%s' % phpVersion,
-						'pull': 'always',
-						'commands': [
-							'make test-php-phpstan'
-						]
-					}
-				],
-				'depends_on': [],
-				'trigger': {
-					'ref': [
-						'refs/pull/**',
-						'refs/tags/**'
-					]
-				}
-			}
+            result = {
+                "kind": "pipeline",
+                "type": "docker",
+                "name": name,
+                "workspace": {
+                    "base": dir["base"],
+                    "path": "src",
+                },
+                "steps": cacheRestore() +
+                         composerInstall(phpVersion) +
+                         vendorbinPhpstan(phpVersion) +
+                         yarnInstall(phpVersion) +
+                         installServer(phpVersion, "sqlite", params["logLevel"]) +
+                         [
+                             {
+                                 "name": "php-phpstan",
+                                 "image": "owncloudci/php:%s" % phpVersion,
+                                 "pull": "always",
+                                 "commands": [
+                                     "make test-php-phpstan",
+                                 ],
+                             },
+                         ],
+                "depends_on": [],
+                "trigger": {
+                    "ref": [
+                        "refs/pull/**",
+                        "refs/tags/**",
+                    ],
+                },
+            }
 
             pipelines.append(result)
 
     return pipelines
 
 def phan():
-	return []
-	pipelines = []
+    return []
+    pipelines = []
 
-	if 'phan' not in config:
-		return pipelines
+    if "phan" not in config:
+        return pipelines
 
-	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
-		'logLevel': '2',
-	}
+    default = {
+        "phpVersions": ["7.2", "7.3", "7.4"],
+        "logLevel": "2",
+    }
 
-	if 'defaults' in config:
-		if 'phan' in config['defaults']:
-			for item in config['defaults']['phan']:
-				default[item] = config['defaults']['phan'][item]
+    if "defaults" in config:
+        if "phan" in config["defaults"]:
+            for item in config["defaults"]["phan"]:
+                default[item] = config["defaults"]["phan"][item]
 
-	phanConfig = config['phan']
+    phanConfig = config["phan"]
 
-	if type(phanConfig) == "bool":
-		if phanConfig:
-			# the config has 'phan' true, so specify an empty dict that will get the defaults
-			phanConfig = {}
-		else:
-			return pipelines
+    if type(phanConfig) == "bool":
+        if phanConfig:
+            # the config has 'phan' true, so specify an empty dict that will get the defaults
+            phanConfig = {}
+        else:
+            return pipelines
 
-	if len(phanConfig) == 0:
-		# 'phan' is an empty dict, so specify a single section that will get the defaults
-		phanConfig = {'doDefault': {}}
+    if len(phanConfig) == 0:
+        # 'phan' is an empty dict, so specify a single section that will get the defaults
+        phanConfig = {"doDefault": {}}
 
-	for category, matrix in phanConfig.items():
-		params = {}
-		for item in default:
-			params[item] = matrix[item] if item in matrix else default[item]
+    for category, matrix in phanConfig.items():
+        params = {}
+        for item in default:
+            params[item] = matrix[item] if item in matrix else default[item]
 
-		for phpVersion in params['phpVersions']:
-			name = 'phan-php%s' % phpVersion
+        for phpVersion in params["phpVersions"]:
+            name = "phan-php%s" % phpVersion
 
-			result = {
-				'kind': 'pipeline',
-				'type': 'docker',
-				'name': name,
-				'workspace' : {
-					'base': dir['base'],
-					'path': 'src'
-				},
-				'steps':
-					cacheRestore() +
-					composerInstall(phpVersion) +
-					vendorbinPhan(phpVersion) +
-					yarnInstall(phpVersion) +
-					installServer(phpVersion, 'sqlite', params['logLevel']) +
-				[
-					{
-						'name': 'phan',
-						'image': 'owncloudci/php:%s' % phpVersion,
-						'pull': 'always',
-						'commands': [
-							'make test-php-phan'
-						]
-					}
-				],
-				'depends_on': [],
-				'trigger': {
-					'ref': [
-						'refs/pull/**',
-						'refs/tags/**'
-					]
-				}
-			}
+            result = {
+                "kind": "pipeline",
+                "type": "docker",
+                "name": name,
+                "workspace": {
+                    "base": dir["base"],
+                    "path": "src",
+                },
+                "steps": cacheRestore() +
+                         composerInstall(phpVersion) +
+                         vendorbinPhan(phpVersion) +
+                         yarnInstall(phpVersion) +
+                         installServer(phpVersion, "sqlite", params["logLevel"]) +
+                         [
+                             {
+                                 "name": "phan",
+                                 "image": "owncloudci/php:%s" % phpVersion,
+                                 "pull": "always",
+                                 "commands": [
+                                     "make test-php-phan",
+                                 ],
+                             },
+                         ],
+                "depends_on": [],
+                "trigger": {
+                    "ref": [
+                        "refs/pull/**",
+                        "refs/tags/**",
+                    ],
+                },
+            }
 
             pipelines.append(result)
 
     return pipelines
 
 def litmus():
-	return []
-	pipelines = []
+    return []
+    pipelines = []
 
-	if 'litmus' not in config:
-		return pipelines
+    if "litmus" not in config:
+        return pipelines
 
-	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
-		'logLevel': '2',
-		'useHttps': True,
-	}
+    default = {
+        "phpVersions": ["7.2", "7.3", "7.4"],
+        "logLevel": "2",
+        "useHttps": True,
+    }
 
-	if 'defaults' in config:
-		if 'litmus' in config['defaults']:
-			for item in config['defaults']['litmus']:
-				default[item] = config['defaults']['litmus'][item]
+    if "defaults" in config:
+        if "litmus" in config["defaults"]:
+            for item in config["defaults"]["litmus"]:
+                default[item] = config["defaults"]["litmus"][item]
 
-	litmusConfig = config['litmus']
+    litmusConfig = config["litmus"]
 
-	if type(litmusConfig) == "bool":
-		if litmusConfig:
-			# the config has 'litmus' true, so specify an empty dict that will get the defaults
-			litmusConfig = {}
-		else:
-			return pipelines
+    if type(litmusConfig) == "bool":
+        if litmusConfig:
+            # the config has 'litmus' true, so specify an empty dict that will get the defaults
+            litmusConfig = {}
+        else:
+            return pipelines
 
-	if len(litmusConfig) == 0:
-		# 'litmus' is an empty dict, so specify a single section that will get the defaults
-		litmusConfig = {'doDefault': {}}
+    if len(litmusConfig) == 0:
+        # 'litmus' is an empty dict, so specify a single section that will get the defaults
+        litmusConfig = {"doDefault": {}}
 
-	for category, matrix in litmusConfig.items():
-		params = {}
-		for item in default:
-			params[item] = matrix[item] if item in matrix else default[item]
+    for category, matrix in litmusConfig.items():
+        params = {}
+        for item in default:
+            params[item] = matrix[item] if item in matrix else default[item]
 
-		for phpVersion in params['phpVersions']:
-			name = 'litmus-php%s' % phpVersion
-			db = 'mariadb:10.2'
-			image = 'owncloud/litmus:latest'
-			environment = {
-				'LITMUS_PASSWORD': 'admin',
-				'LITMUS_USERNAME': 'admin',
-				'TESTS': 'basic copymove props locks http',
-			}
-			litmusCommand = '/usr/local/bin/litmus-wrapper'
+        for phpVersion in params["phpVersions"]:
+            name = "litmus-php%s" % phpVersion
+            db = "mariadb:10.2"
+            image = "owncloud/litmus:latest"
+            environment = {
+                "LITMUS_PASSWORD": "admin",
+                "LITMUS_USERNAME": "admin",
+                "TESTS": "basic copymove props locks http",
+            }
+            litmusCommand = "/usr/local/bin/litmus-wrapper"
 
-			result = {
-				'kind': 'pipeline',
-				'type': 'docker',
-				'name': name,
-				'workspace' : {
-					'base': dir['base'],
-					'path': 'src'
-				},
-				'steps':
-					cacheRestore() +
-					composerInstall(phpVersion) +
-					yarnInstall(phpVersion) +
-					installServer(phpVersion, db, params['logLevel'], params['useHttps']) +
-					setupLocalStorage(phpVersion) +
-					fixPermissions(phpVersion, False) +
-					createShare(phpVersion) +
-					owncloudLog('server', 'src') +
-					[
-						{
-							'name': 'old-endpoint',
-							'image': image,
-							'pull': 'always',
-							'environment': environment,
-							'commands': [
-								'source .env',
-								'export LITMUS_URL="https://server/remote.php/webdav"',
-								litmusCommand,
-							]
-						},
-						{
-							'name': 'new-endpoint',
-							'image': image,
-							'pull': 'always',
-							'environment': environment,
-							'commands': [
-								'source .env',
-								'export LITMUS_URL="https://server/remote.php/dav/files/admin"',
-								litmusCommand,
-							]
-						},
-						{
-							'name': 'new-mount',
-							'image': image,
-							'pull': 'always',
-							'environment': environment,
-							'commands': [
-								'source .env',
-								'export LITMUS_URL="https://server/remote.php/dav/files/admin/local_storage/"',
-								litmusCommand,
-							]
-						},
-						{
-							'name': 'old-mount',
-							'image': image,
-							'pull': 'always',
-							'environment': environment,
-							'commands': [
-								'source .env',
-								'export LITMUS_URL="https://server/remote.php/webdav/local_storage/"',
-								litmusCommand,
-							]
-						},
-						{
-							'name': 'new-shared',
-							'image': image,
-							'pull': 'always',
-							'environment': environment,
-							'commands': [
-								'source .env',
-								'export LITMUS_URL="https://server/remote.php/dav/files/admin/new_folder/"',
-								litmusCommand,
-							]
-						},
-						{
-							'name': 'old-shared',
-							'image': image,
-							'pull': 'always',
-							'environment': environment,
-							'commands': [
-								'source .env',
-								'export LITMUS_URL="https://server/remote.php/webdav/new_folder/"',
-								litmusCommand,
-							]
-						},
-						{
-							'name': 'public-share',
-							'image': image,
-							'pull': 'always',
-							'environment': {
-								'LITMUS_PASSWORD': 'admin',
-								'LITMUS_USERNAME': 'admin',
-								'TESTS': 'basic copymove http',
-							},
-							'commands': [
-								'source .env',
-								'export LITMUS_URL=\'https://server/remote.php/dav/public-files/\'$PUBLIC_TOKEN',
-								litmusCommand,
-							]
-						},
-					],
-				'services':
-					databaseService(db) +
-					owncloudService(phpVersion, 'server', dir['server'], params['useHttps']),
-				'depends_on': [],
-				'trigger': {
-					'ref': [
-						'refs/pull/**',
-						'refs/tags/**'
-					]
-				}
-			}
+            result = {
+                "kind": "pipeline",
+                "type": "docker",
+                "name": name,
+                "workspace": {
+                    "base": dir["base"],
+                    "path": "src",
+                },
+                "steps": cacheRestore() +
+                         composerInstall(phpVersion) +
+                         yarnInstall(phpVersion) +
+                         installServer(phpVersion, db, params["logLevel"], params["useHttps"]) +
+                         setupLocalStorage(phpVersion) +
+                         fixPermissions(phpVersion, False) +
+                         createShare(phpVersion) +
+                         owncloudLog("server", "src") +
+                         [
+                             {
+                                 "name": "old-endpoint",
+                                 "image": image,
+                                 "pull": "always",
+                                 "environment": environment,
+                                 "commands": [
+                                     "source .env",
+                                     'export LITMUS_URL="https://server/remote.php/webdav"',
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "new-endpoint",
+                                 "image": image,
+                                 "pull": "always",
+                                 "environment": environment,
+                                 "commands": [
+                                     "source .env",
+                                     'export LITMUS_URL="https://server/remote.php/dav/files/admin"',
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "new-mount",
+                                 "image": image,
+                                 "pull": "always",
+                                 "environment": environment,
+                                 "commands": [
+                                     "source .env",
+                                     'export LITMUS_URL="https://server/remote.php/dav/files/admin/local_storage/"',
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "old-mount",
+                                 "image": image,
+                                 "pull": "always",
+                                 "environment": environment,
+                                 "commands": [
+                                     "source .env",
+                                     'export LITMUS_URL="https://server/remote.php/webdav/local_storage/"',
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "new-shared",
+                                 "image": image,
+                                 "pull": "always",
+                                 "environment": environment,
+                                 "commands": [
+                                     "source .env",
+                                     'export LITMUS_URL="https://server/remote.php/dav/files/admin/new_folder/"',
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "old-shared",
+                                 "image": image,
+                                 "pull": "always",
+                                 "environment": environment,
+                                 "commands": [
+                                     "source .env",
+                                     'export LITMUS_URL="https://server/remote.php/webdav/new_folder/"',
+                                     litmusCommand,
+                                 ],
+                             },
+                             {
+                                 "name": "public-share",
+                                 "image": image,
+                                 "pull": "always",
+                                 "environment": {
+                                     "LITMUS_PASSWORD": "admin",
+                                     "LITMUS_USERNAME": "admin",
+                                     "TESTS": "basic copymove http",
+                                 },
+                                 "commands": [
+                                     "source .env",
+                                     "export LITMUS_URL='https://server/remote.php/dav/public-files/'$PUBLIC_TOKEN",
+                                     litmusCommand,
+                                 ],
+                             },
+                         ],
+                "services": databaseService(db) +
+                            owncloudService(phpVersion, "server", dir["server"], params["useHttps"]),
+                "depends_on": [],
+                "trigger": {
+                    "ref": [
+                        "refs/pull/**",
+                        "refs/tags/**",
+                    ],
+                },
+            }
 
             pipelines.append(result)
 
     return pipelines
 
 def dav():
-	return []
-	pipelines = []
+    return []
+    pipelines = []
 
-	if 'dav' not in config:
-		return pipelines
+    if "dav" not in config:
+        return pipelines
 
-	default = {
-		'phpVersions': ['7.2', '7.3', '7.4'],
-		'logLevel': '2'
-	}
+    default = {
+        "phpVersions": ["7.2", "7.3", "7.4"],
+        "logLevel": "2",
+    }
 
-	if 'defaults' in config:
-		if 'dav' in config['defaults']:
-			for item in config['defaults']['dav']:
-				default[item] = config['defaults']['dav'][item]
+    if "defaults" in config:
+        if "dav" in config["defaults"]:
+            for item in config["defaults"]["dav"]:
+                default[item] = config["defaults"]["dav"][item]
 
-	davConfig = config['dav']
+    davConfig = config["dav"]
 
-	if type(davConfig) == "bool":
-		if davConfig:
-			# the config has 'dav' true, so specify an empty dict that will get the defaults
-			davConfig = {}
-		else:
-			return pipelines
+    if type(davConfig) == "bool":
+        if davConfig:
+            # the config has 'dav' true, so specify an empty dict that will get the defaults
+            davConfig = {}
+        else:
+            return pipelines
 
-	if len(davConfig) == 0:
-		# 'dav' is an empty dict, so specify a single section that will get the defaults
-		davConfig = {'doDefault': {}}
+    if len(davConfig) == 0:
+        # 'dav' is an empty dict, so specify a single section that will get the defaults
+        davConfig = {"doDefault": {}}
 
-	for category, matrix in davConfig.items():
-		params = {}
-		for item in default:
-			params[item] = matrix[item] if item in matrix else default[item]
+    for category, matrix in davConfig.items():
+        params = {}
+        for item in default:
+            params[item] = matrix[item] if item in matrix else default[item]
 
-		for phpVersion in params['phpVersions']:
-			for davType in ['caldav-new', 'caldav-old', 'carddav-new', 'carddav-old']:
-				name = '%s-php%s' % (davType, phpVersion)
-				db = 'mariadb:10.2'
+        for phpVersion in params["phpVersions"]:
+            for davType in ["caldav-new", "caldav-old", "carddav-new", "carddav-old"]:
+                name = "%s-php%s" % (davType, phpVersion)
+                db = "mariadb:10.2"
 
-				if (davType == 'caldav-new'):
-					scriptPath = 'apps/dav/tests/ci/caldav'
+                if (davType == "caldav-new"):
+                    scriptPath = "apps/dav/tests/ci/caldav"
 
-				if (davType == 'caldav-old'):
-					scriptPath = 'apps/dav/tests/ci/caldav-old-endpoint'
+                if (davType == "caldav-old"):
+                    scriptPath = "apps/dav/tests/ci/caldav-old-endpoint"
 
-				if (davType == 'carddav-new'):
-					scriptPath = 'apps/dav/tests/ci/carddav'
+                if (davType == "carddav-new"):
+                    scriptPath = "apps/dav/tests/ci/carddav"
 
-				if (davType == 'carddav-old'):
-					scriptPath = 'apps/dav/tests/ci/carddav-old-endpoint'
+                if (davType == "carddav-old"):
+                    scriptPath = "apps/dav/tests/ci/carddav-old-endpoint"
 
-				result = {
-					'kind': 'pipeline',
-					'type': 'docker',
-					'name': name,
-					'workspace' : {
-						'base': dir['base'],
-						'path': 'src'
-					},
-					'steps':
-						cacheRestore() +
-						composerInstall(phpVersion) +
-						yarnInstall(phpVersion) +
-						installServer(phpVersion, db, params['logLevel']) +
-						davInstall(phpVersion, scriptPath) +
-						fixPermissions(phpVersion, False) +
-						owncloudLog('server', 'src') +
-						[
-							{
-								'name': 'dav-test',
-								'image': 'owncloudci/php:%s' % phpVersion,
-								'pull': 'always',
-								'commands': [
-									'bash %s/script.sh' % scriptPath,
-								]
-							},
-						],
-					'services':
-						databaseService(db),
-					'depends_on': [],
-					'trigger': {
-						'ref': [
-							'refs/pull/**',
-							'refs/tags/**'
-						]
-					}
-				}
+                result = {
+                    "kind": "pipeline",
+                    "type": "docker",
+                    "name": name,
+                    "workspace": {
+                        "base": dir["base"],
+                        "path": "src",
+                    },
+                    "steps": cacheRestore() +
+                             composerInstall(phpVersion) +
+                             yarnInstall(phpVersion) +
+                             installServer(phpVersion, db, params["logLevel"]) +
+                             davInstall(phpVersion, scriptPath) +
+                             fixPermissions(phpVersion, False) +
+                             owncloudLog("server", "src") +
+                             [
+                                 {
+                                     "name": "dav-test",
+                                     "image": "owncloudci/php:%s" % phpVersion,
+                                     "pull": "always",
+                                     "commands": [
+                                         "bash %s/script.sh" % scriptPath,
+                                     ],
+                                 },
+                             ],
+                    "services": databaseService(db),
+                    "depends_on": [],
+                    "trigger": {
+                        "ref": [
+                            "refs/pull/**",
+                            "refs/tags/**",
+                        ],
+                    },
+                }
 
-				pipelines.append(result)
+                pipelines.append(result)
 
-	return pipelines
+    return pipelines
 
 def javascript(ctx, withCoverage):
-	return []
-	pipelines = []
+    return []
+    pipelines = []
 
-	if 'javascript' not in config:
-		return pipelines
+    if "javascript" not in config:
+        return pipelines
 
-	default = {
-		'coverage': True,
-		'logLevel': '2',
-		'phpVersion': '7.2',
-		'skip': False
-	}
+    default = {
+        "coverage": True,
+        "logLevel": "2",
+        "phpVersion": "7.2",
+        "skip": False,
+    }
 
-	if 'defaults' in config:
-		if 'javascript' in config['defaults']:
-			for item in config['defaults']['javascript']:
-				default[item] = config['defaults']['javascript'][item]
+    if "defaults" in config:
+        if "javascript" in config["defaults"]:
+            for item in config["defaults"]["javascript"]:
+                default[item] = config["defaults"]["javascript"][item]
 
-	matrix = config['javascript']
+    matrix = config["javascript"]
 
-	if type(matrix) == "bool":
-		if matrix:
-			# the config has 'javascript' true, so specify an empty dict that will get the defaults
-			matrix = {}
-		else:
-			return pipelines
+    if type(matrix) == "bool":
+        if matrix:
+            # the config has 'javascript' true, so specify an empty dict that will get the defaults
+            matrix = {}
+        else:
+            return pipelines
 
-	params = {}
-	for item in default:
-		params[item] = matrix[item] if item in matrix else default[item]
+    params = {}
+    for item in default:
+        params[item] = matrix[item] if item in matrix else default[item]
 
-	if params['skip']:
-		return pipelines
+    if params["skip"]:
+        return pipelines
 
-	# if we only want pipelines with coverage, and this pipeline does not do coverage, then do not include it
-	if withCoverage and not params['coverage']:
-		return pipelines
+    # if we only want pipelines with coverage, and this pipeline does not do coverage, then do not include it
+    if withCoverage and not params["coverage"]:
+        return pipelines
 
-	# if we only want pipelines without coverage, and this pipeline does coverage, then do not include it
-	if not withCoverage and params['coverage']:
-		return pipelines
+    # if we only want pipelines without coverage, and this pipeline does coverage, then do not include it
+    if not withCoverage and params["coverage"]:
+        return pipelines
 
-	result = {
-		'kind': 'pipeline',
-		'type': 'docker',
-		'name': 'test-javascript',
-		'workspace' : {
-			'base': dir['base'],
-			'path': 'src'
-		},
-		'steps':
-			cacheRestore() +
-			composerInstall(params['phpVersion']) +
-			yarnInstall(params['phpVersion']) +
-		[
-			{
-				'name': 'test-js',
-				'image': 'owncloudci/php:%s' % params['phpVersion'],
-				'pull': 'always',
-				'commands': [
-					'make test-js'
-				]
-			}
-		],
-		'depends_on': [],
-		'trigger': {
-			'ref': [
-				'refs/pull/**',
-				'refs/tags/**'
-			]
-		}
-	}
+    result = {
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "test-javascript",
+        "workspace": {
+            "base": dir["base"],
+            "path": "src",
+        },
+        "steps": cacheRestore() +
+                 composerInstall(params["phpVersion"]) +
+                 yarnInstall(params["phpVersion"]) +
+                 [
+                     {
+                         "name": "test-js",
+                         "image": "owncloudci/php:%s" % params["phpVersion"],
+                         "pull": "always",
+                         "commands": [
+                             "make test-js",
+                         ],
+                     },
+                 ],
+        "depends_on": [],
+        "trigger": {
+            "ref": [
+                "refs/pull/**",
+                "refs/tags/**",
+            ],
+        },
+    }
 
-	if params['coverage']:
-		result['steps'].append(
-			{
-				'name': 'coverage-cache',
-				'image': 'plugins/s3',
-				'pull': 'always',
-				'settings': {
-					'endpoint': {
-						'from_secret': 'cache_s3_endpoint'
-					},
-					'bucket': 'cache',
-					'source': 'tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcov.info',
-					'target': '%s/%s/coverage' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
-					'path_style': True,
-					'strip_prefix': 'tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)',
-					'access_key': {
-						'from_secret': 'cache_s3_access_key'
-					},
-					'secret_key': {
-						'from_secret': 'cache_s3_secret_key'
-					}
-				}
-			}
-		)
+    if params["coverage"]:
+        result["steps"].append(
+            {
+                "name": "coverage-cache",
+                "image": "plugins/s3",
+                "pull": "always",
+                "settings": {
+                    "endpoint": {
+                        "from_secret": "cache_s3_endpoint",
+                    },
+                    "bucket": "cache",
+                    "source": "tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)/lcov.info",
+                    "target": "%s/%s/coverage" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
+                    "path_style": True,
+                    "strip_prefix": "tests/output/coverage/PhantomJS 2.1.1 (Linux 0.0.0)",
+                    "access_key": {
+                        "from_secret": "cache_s3_access_key",
+                    },
+                    "secret_key": {
+                        "from_secret": "cache_s3_secret_key",
+                    },
+                },
+            },
+        )
 
     for branch in config["branches"]:
         result["trigger"]["ref"].append("refs/heads/%s" % branch)
@@ -1335,386 +1367,380 @@ def phpTests(ctx, testType, withCoverage):
     return pipelines
 
 def acceptance(ctx):
-	return []
-	pipelines = []
+    return []
+    pipelines = []
 
-	if 'acceptance' not in config:
-		return pipelines
+    if "acceptance" not in config:
+        return pipelines
 
-	if type(config['acceptance']) == "bool":
-		if not config['acceptance']:
-			return pipelines
+    if type(config["acceptance"]) == "bool":
+        if not config["acceptance"]:
+            return pipelines
 
-	errorFound = False
+    errorFound = False
 
-	default = {
-		'federatedServerVersions': [''],
-		'browsers': ['chrome'],
-		'phpVersions': ['7.4'],
-		'databases': ['mariadb:10.2'],
-		'federatedPhpVersion': '7.2',
-		'federatedServerNeeded': False,
-		'federatedDb': '',
-		'filterTags': '',
-		'logLevel': '2',
-		'emailNeeded': False,
-		'ldapNeeded': False,
-		'proxyNeeded': False,
-		'cephS3': False,
-		'scalityS3': False,
-		'testingRemoteSystem': True,
-		'useHttps': True,
-		'replaceUsernames': False,
-		'extraSetup': [],
-		'extraServices': [],
-		'extraEnvironment': {'OC_LANGUAGE':'en-EN'},
-		'extraCommandsBeforeTestRun': [],
-		'extraApps': {},
-		'useBundledApp': False,
-		'includeKeyInMatrixName': False,
-		'runAllSuites': False,
-		'numberOfParts': 1,
-		'skip': False,
-		'debugSuites': [],
-		'skipExceptParts': [],
-		'testAgainstCoreTarball': False,
-		'coreTarball': 'daily-master-qa',
-		'earlyFail': True,
-	}
+    default = {
+        "federatedServerVersions": [""],
+        "browsers": ["chrome"],
+        "phpVersions": ["7.4"],
+        "databases": ["mariadb:10.2"],
+        "federatedPhpVersion": "7.2",
+        "federatedServerNeeded": False,
+        "federatedDb": "",
+        "filterTags": "",
+        "logLevel": "2",
+        "emailNeeded": False,
+        "ldapNeeded": False,
+        "proxyNeeded": False,
+        "cephS3": False,
+        "scalityS3": False,
+        "testingRemoteSystem": True,
+        "useHttps": True,
+        "replaceUsernames": False,
+        "extraSetup": [],
+        "extraServices": [],
+        "extraEnvironment": {"OC_LANGUAGE": "en-EN"},
+        "extraCommandsBeforeTestRun": [],
+        "extraApps": {},
+        "useBundledApp": False,
+        "includeKeyInMatrixName": False,
+        "runAllSuites": False,
+        "numberOfParts": 1,
+        "skip": False,
+        "debugSuites": [],
+        "skipExceptParts": [],
+        "testAgainstCoreTarball": False,
+        "coreTarball": "daily-master-qa",
+        "earlyFail": True,
+    }
 
-	if 'defaults' in config:
-		if 'acceptance' in config['defaults']:
-			for item in config['defaults']['acceptance']:
-				default[item] = config['defaults']['acceptance'][item]
+    if "defaults" in config:
+        if "acceptance" in config["defaults"]:
+            for item in config["defaults"]["acceptance"]:
+                default[item] = config["defaults"]["acceptance"][item]
 
-	for category, matrix in config['acceptance'].items():
-		if type(matrix['suites']) == "list":
-			suites = {}
-			for suite in matrix['suites']:
-				suites[suite] = suite
-		else:
-			suites = matrix['suites']
+    for category, matrix in config["acceptance"].items():
+        if type(matrix["suites"]) == "list":
+            suites = {}
+            for suite in matrix["suites"]:
+                suites[suite] = suite
+        else:
+            suites = matrix["suites"]
 
-		if 'debugSuites' in matrix and len(matrix['debugSuites']) != 0:
-			if type(matrix['debugSuites']) == "list":
-				suites = {}
-				for suite in matrix['debugSuites']:
-					suites[suite] = suite
-			else:
-				suites = matrix['debugSuites']
+        if "debugSuites" in matrix and len(matrix["debugSuites"]) != 0:
+            if type(matrix["debugSuites"]) == "list":
+                suites = {}
+                for suite in matrix["debugSuites"]:
+                    suites[suite] = suite
+            else:
+                suites = matrix["debugSuites"]
 
-		for suite, alternateSuiteName in suites.items():
-			isWebUI = suite.startswith('webUI')
-			isAPI = suite.startswith('api')
-			isCLI = suite.startswith('cli')
+        for suite, alternateSuiteName in suites.items():
+            isWebUI = suite.startswith("webUI")
+            isAPI = suite.startswith("api")
+            isCLI = suite.startswith("cli")
 
-			if (alternateSuiteName == ''):
-				alternateSuiteName = suite
+            if (alternateSuiteName == ""):
+                alternateSuiteName = suite
 
-			params = {}
-			for item in default:
-				params[item] = matrix[item] if item in matrix else default[item]
+            params = {}
+            for item in default:
+                params[item] = matrix[item] if item in matrix else default[item]
 
-			if params['skip']:
-				continue
+            if params["skip"]:
+                continue
 
-			if ("full-ci" in ctx.build.title.lower()):
-				params["earlyFail"] = False
+            if ("full-ci" in ctx.build.title.lower()):
+                params["earlyFail"] = False
 
-			if isAPI or isCLI:
-				params['browsers'] = ['']
+            if isAPI or isCLI:
+                params["browsers"] = [""]
 
-			needObjectStore = (params['cephS3'] != False) or (params['scalityS3'] != False)
+            needObjectStore = (params["cephS3"] != False) or (params["scalityS3"] != False)
 
-			extraAppsDict = {}
+            extraAppsDict = {}
 
-			if not params['testAgainstCoreTarball']:
-				extraAppsDict['testing'] = 'composer install'
+            if not params["testAgainstCoreTarball"]:
+                extraAppsDict["testing"] = "composer install"
 
-			if (needObjectStore):
-				# If we need S3 object storage, then install the 'files_primary_s3' app
-				extraAppsDict['files_primary_s3'] = 'composer install'
+            if (needObjectStore):
+                # If we need S3 object storage, then install the 'files_primary_s3' app
+                extraAppsDict["files_primary_s3"] = "composer install"
 
-			for app, command in params['extraApps'].items():
-				extraAppsDict[app] = command
+            for app, command in params["extraApps"].items():
+                extraAppsDict[app] = command
 
-			for federatedServerVersion in params['federatedServerVersions']:
-				for browser in params['browsers']:
-					for phpVersion in params['phpVersions']:
-						for db in params['databases']:
-							for runPart in range(1, params['numberOfParts'] + 1):
-								debugPartsEnabled = (len(params['skipExceptParts']) != 0)
-								if debugPartsEnabled and runPart not in params['skipExceptParts']:
-									continue
+            for federatedServerVersion in params["federatedServerVersions"]:
+                for browser in params["browsers"]:
+                    for phpVersion in params["phpVersions"]:
+                        for db in params["databases"]:
+                            for runPart in range(1, params["numberOfParts"] + 1):
+                                debugPartsEnabled = (len(params["skipExceptParts"]) != 0)
+                                if debugPartsEnabled and runPart not in params["skipExceptParts"]:
+                                    continue
 
-								name = 'unknown'
-								federatedDb = db if params['federatedDb'] == '' else params['federatedDb']
+                                name = "unknown"
+                                federatedDb = db if params["federatedDb"] == "" else params["federatedDb"]
 
-								federatedDbName = getDbName(federatedDb)
+                                federatedDbName = getDbName(federatedDb)
 
-								if federatedDbName not in ['mariadb', 'mysql']:
-									# Do not try to run 2 sets of Oracle, Postgres etc databases
-									# When testing with these, let the federated server use mariadb
-									federatedDb = 'mariadb:10.2'
+                                if federatedDbName not in ["mariadb", "mysql"]:
+                                    # Do not try to run 2 sets of Oracle, Postgres etc databases
+                                    # When testing with these, let the federated server use mariadb
+                                    federatedDb = "mariadb:10.2"
 
-								if isWebUI or isAPI or isCLI:
-									browserString = '' if browser == '' else '-' + browser
-									keyString = '-' + category if params['includeKeyInMatrixName'] else ''
-									partString = '' if params['numberOfParts'] == 1 else '-%d-%d' % (params['numberOfParts'], runPart)
-									federatedServerVersionString = '-' + federatedServerVersion.replace('daily-', '').replace('-qa', '') if (federatedServerVersion != '') else ''
-									name = '%s%s%s%s%s-%s-php%s' % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersion)
-									maxLength = 50
-									nameLength = len(name)
-									if nameLength > maxLength:
-										print("Error: generated stage name of length", nameLength, "is not supported. The maximum length is " + str(maxLength) + ".", name)
-										errorFound = True
+                                if isWebUI or isAPI or isCLI:
+                                    browserString = "" if browser == "" else "-" + browser
+                                    keyString = "-" + category if params["includeKeyInMatrixName"] else ""
+                                    partString = "" if params["numberOfParts"] == 1 else "-%d-%d" % (params["numberOfParts"], runPart)
+                                    federatedServerVersionString = "-" + federatedServerVersion.replace("daily-", "").replace("-qa", "") if (federatedServerVersion != "") else ""
+                                    name = "%s%s%s%s%s-%s-php%s" % (alternateSuiteName, keyString, partString, federatedServerVersionString, browserString, getShortDbNameAndVersion(db), phpVersion)
+                                    maxLength = 50
+                                    nameLength = len(name)
+                                    if nameLength > maxLength:
+                                        print("Error: generated stage name of length", nameLength, "is not supported. The maximum length is " + str(maxLength) + ".", name)
+                                        errorFound = True
 
-								environment = {}
-								for env in params['extraEnvironment']:
-									environment[env] = params['extraEnvironment'][env]
+                                environment = {}
+                                for env in params["extraEnvironment"]:
+                                    environment[env] = params["extraEnvironment"][env]
 
-								if (params['useHttps']):
-									protocol = 'https'
-								else:
-									protocol = 'http'
+                                if (params["useHttps"]):
+                                    protocol = "https"
+                                else:
+                                    protocol = "http"
 
-								if (params['proxyNeeded']):
-									serverUnderTest = 'proxy'
-								else:
-									serverUnderTest = 'server'
+                                if (params["proxyNeeded"]):
+                                    serverUnderTest = "proxy"
+                                else:
+                                    serverUnderTest = "server"
 
-								environment['TEST_SERVER_URL'] = '%s://%s' % (protocol, serverUnderTest)
+                                environment["TEST_SERVER_URL"] = "%s://%s" % (protocol, serverUnderTest)
 
-								environment['BEHAT_FILTER_TAGS'] = params['filterTags']
-								environment['REPLACE_USERNAMES'] = params['replaceUsernames']
+                                environment["BEHAT_FILTER_TAGS"] = params["filterTags"]
+                                environment["REPLACE_USERNAMES"] = params["replaceUsernames"]
 
-								if (params['runAllSuites'] == False):
-									environment['BEHAT_SUITE'] = suite
-								else:
-									environment['DIVIDE_INTO_NUM_PARTS'] = params['numberOfParts']
-									environment['RUN_PART'] = runPart
+                                if (params["runAllSuites"] == False):
+                                    environment["BEHAT_SUITE"] = suite
+                                else:
+                                    environment["DIVIDE_INTO_NUM_PARTS"] = params["numberOfParts"]
+                                    environment["RUN_PART"] = runPart
 
-								if isWebUI:
-									environment['SELENIUM_HOST'] = 'selenium'
-									environment['SELENIUM_PORT'] = '4444'
-									environment['BROWSER'] = browser
-									environment['PLATFORM'] = 'Linux'
-									makeParameter = 'test-acceptance-webui'
+                                if isWebUI:
+                                    environment["SELENIUM_HOST"] = "selenium"
+                                    environment["SELENIUM_PORT"] = "4444"
+                                    environment["BROWSER"] = browser
+                                    environment["PLATFORM"] = "Linux"
+                                    makeParameter = "test-acceptance-webui"
 
-								if isAPI:
-									makeParameter = 'test-acceptance-api'
+                                if isAPI:
+                                    makeParameter = "test-acceptance-api"
 
-								if isCLI:
-									makeParameter = 'test-acceptance-cli'
+                                if isCLI:
+                                    makeParameter = "test-acceptance-cli"
 
-								if params['emailNeeded']:
-									environment['MAILHOG_HOST'] = 'email'
+                                if params["emailNeeded"]:
+                                    environment["MAILHOG_HOST"] = "email"
 
-								if params['ldapNeeded']:
-									environment['TEST_WITH_LDAP'] = True
+                                if params["ldapNeeded"]:
+                                    environment["TEST_WITH_LDAP"] = True
 
-								if params['testingRemoteSystem']:
-									environment['TESTING_REMOTE_SYSTEM'] = True
-									suExecCommand = ''
-								else:
-									environment['TESTING_REMOTE_SYSTEM'] = False
-									# The test suite (may/will) run local commands, rather than calling the testing app to do them
-									# Those commands need to be executed as www-data (which owns the files)
-									suExecCommand = 'su-exec www-data '
+                                if params["testingRemoteSystem"]:
+                                    environment["TESTING_REMOTE_SYSTEM"] = True
+                                    suExecCommand = ""
+                                else:
+                                    environment["TESTING_REMOTE_SYSTEM"] = False
 
-								if params['testAgainstCoreTarball']:
-									pathOfServerUnderTest = '/drone/core'
-								else:
-									pathOfServerUnderTest = dir['server']
+                                    # The test suite (may/will) run local commands, rather than calling the testing app to do them
+                                    # Those commands need to be executed as www-data (which owns the files)
+                                    suExecCommand = "su-exec www-data "
 
-								if (needObjectStore):
-									environment['OC_TEST_ON_OBJECTSTORE'] = '1'
-									if (params['cephS3'] != False):
-										environment['S3_TYPE'] = 'ceph'
-									if (params['scalityS3'] != False):
-										environment['S3_TYPE'] = 'scality'
+                                if params["testAgainstCoreTarball"]:
+                                    pathOfServerUnderTest = "/drone/core"
+                                else:
+                                    pathOfServerUnderTest = dir["server"]
 
-								federationDbSuffix = 'fed'
+                                if (needObjectStore):
+                                    environment["OC_TEST_ON_OBJECTSTORE"] = "1"
+                                    if (params["cephS3"] != False):
+                                        environment["S3_TYPE"] = "ceph"
+                                    if (params["scalityS3"] != False):
+                                        environment["S3_TYPE"] = "scality"
 
-								result = {
-									'kind': 'pipeline',
-									'type': 'docker',
-									'name': name,
-									'workspace' : {
-										'base': dir['base'],
-										'path': 'src'
-									},
-									'steps':
-										cacheRestore() +
-										composerInstall(phpVersion) +
-										vendorbinBehat() +
-										yarnInstall(phpVersion) +
-										((
-											installCoreFromTarball(params['coreTarball'], db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded'], pathOfServerUnderTest)
-										) if params['testAgainstCoreTarball'] else (
-											installServer(phpVersion, db, params['logLevel'], params['useHttps'], params['federatedServerNeeded'], params['proxyNeeded'])
-										)) +
-										(
-											installAndConfigureFederated(ctx, federatedServerVersion, params['federatedPhpVersion'], params['logLevel'], protocol, federatedDb, federationDbSuffix) +
-											owncloudLog('federated', 'federated') if params['federatedServerNeeded'] else []
-										) +
-										installExtraApps(phpVersion, extraAppsDict, pathOfServerUnderTest) +
-										setupCeph(phpVersion, params['cephS3']) +
-										setupScality(phpVersion, params['scalityS3']) +
-										params['extraSetup'] +
-										fixPermissions(phpVersion, params['federatedServerNeeded'], pathOfServerUnderTest) +
-										waitForServer(phpVersion, params['federatedServerNeeded']) +
-										owncloudLog('server', pathOfServerUnderTest) +
-									[
-										({
-											'name': 'acceptance-tests',
-											'image': 'owncloudci/php:%s' % phpVersion,
-											'pull': 'always',
-											'environment': environment,
-											'commands': params['extraCommandsBeforeTestRun'] + [
-												'touch %s/saved-settings.sh' % dir['base'],
-												'. %s/saved-settings.sh' % dir['base'],
-												'%smake %s' % (suExecCommand, makeParameter)
-											]
-										}),
-									] + buildGithubCommentForBuildStopped(name, params['earlyFail']) + githubComment(params['earlyFail']) + stopBuild(params['earlyFail']) ,
-									'services':
-										databaseService(db) +
-										browserService(browser) +
-										emailService(params['emailNeeded']) +
-										ldapService(params['ldapNeeded']) +
-										proxyService(params['proxyNeeded']) +
-										cephService(params['cephS3']) +
-										scalityService(params['scalityS3']) +
-										params['extraServices'] +
-										owncloudService(phpVersion, 'server', pathOfServerUnderTest, params['useHttps']) +
-										((
-											owncloudService(params['federatedPhpVersion'], 'federated', dir["federated"], params['useHttps']) +
-											databaseServiceForFederation(federatedDb, federationDbSuffix)
-										) if params['federatedServerNeeded'] else []),
-									'depends_on': [],
-									'trigger': {
-										'ref': [
-											'refs/pull/**',
-											'refs/tags/**'
-										]
-									}
-								}
+                                federationDbSuffix = "fed"
 
-								pipelines.append(result)
+                                result = {
+                                    "kind": "pipeline",
+                                    "type": "docker",
+                                    "name": name,
+                                    "workspace": {
+                                        "base": dir["base"],
+                                        "path": "src",
+                                    },
+                                    "steps": cacheRestore() +
+                                             composerInstall(phpVersion) +
+                                             vendorbinBehat() +
+                                             yarnInstall(phpVersion) +
+                                             ((
+                                                 installCoreFromTarball(params["coreTarball"], db, params["logLevel"], params["useHttps"], params["federatedServerNeeded"], params["proxyNeeded"], pathOfServerUnderTest)
+                                             ) if params["testAgainstCoreTarball"] else (
+                                                 installServer(phpVersion, db, params["logLevel"], params["useHttps"], params["federatedServerNeeded"], params["proxyNeeded"])
+                                             )) +
+                                             (
+                                                 installAndConfigureFederated(ctx, federatedServerVersion, params["federatedPhpVersion"], params["logLevel"], protocol, federatedDb, federationDbSuffix) +
+                                                 owncloudLog("federated", "federated") if params["federatedServerNeeded"] else []
+                                             ) +
+                                             installExtraApps(phpVersion, extraAppsDict, pathOfServerUnderTest) +
+                                             setupCeph(phpVersion, params["cephS3"]) +
+                                             setupScality(phpVersion, params["scalityS3"]) +
+                                             params["extraSetup"] +
+                                             fixPermissions(phpVersion, params["federatedServerNeeded"], pathOfServerUnderTest) +
+                                             waitForServer(phpVersion, params["federatedServerNeeded"]) +
+                                             owncloudLog("server", pathOfServerUnderTest) +
+                                             [
+                                                 ({
+                                                     "name": "acceptance-tests",
+                                                     "image": "owncloudci/php:%s" % phpVersion,
+                                                     "pull": "always",
+                                                     "environment": environment,
+                                                     "commands": params["extraCommandsBeforeTestRun"] + [
+                                                         "touch %s/saved-settings.sh" % dir["base"],
+                                                         ". %s/saved-settings.sh" % dir["base"],
+                                                         "%smake %s" % (suExecCommand, makeParameter),
+                                                     ],
+                                                 }),
+                                             ] + buildGithubCommentForBuildStopped(name, params["earlyFail"]) + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
+                                    "services": databaseService(db) +
+                                                browserService(browser) +
+                                                emailService(params["emailNeeded"]) +
+                                                ldapService(params["ldapNeeded"]) +
+                                                proxyService(params["proxyNeeded"]) +
+                                                cephService(params["cephS3"]) +
+                                                scalityService(params["scalityS3"]) +
+                                                params["extraServices"] +
+                                                owncloudService(phpVersion, "server", pathOfServerUnderTest, params["useHttps"]) +
+                                                ((
+                                                    owncloudService(params["federatedPhpVersion"], "federated", dir["federated"], params["useHttps"]) +
+                                                    databaseServiceForFederation(federatedDb, federationDbSuffix)
+                                                ) if params["federatedServerNeeded"] else []),
+                                    "depends_on": [],
+                                    "trigger": {
+                                        "ref": [
+                                            "refs/pull/**",
+                                            "refs/tags/**",
+                                        ],
+                                    },
+                                }
 
-	if errorFound:
-		return False
+                                pipelines.append(result)
 
-	return pipelines
+    if errorFound:
+        return False
 
-def sonarAnalysis(ctx, phpVersion = '7.4'):
-	sonar_env = {
-			"SONAR_TOKEN": {
-				"from_secret": "sonar_token",
-			},
-			'SONAR_SCANNER_OPTS': '-Xdebug'
-		}
+    return pipelines
 
-	if ctx.build.event == "pull_request":
-		sonar_env.update({
-			"SONAR_PULL_REQUEST_BASE": "%s" % (ctx.build.target),
-			"SONAR_PULL_REQUEST_BRANCH": "%s" % (ctx.build.source),
-			"SONAR_PULL_REQUEST_KEY": "%s" % (ctx.build.ref.replace("refs/pull/", "").split("/")[0]),
-			})
+def sonarAnalysis(ctx, phpVersion = "7.4"):
+    sonar_env = {
+        "SONAR_TOKEN": {
+            "from_secret": "sonar_token",
+        },
+        "SONAR_SCANNER_OPTS": "-Xdebug",
+    }
 
-	repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
+    if ctx.build.event == "pull_request":
+        sonar_env.update({
+            "SONAR_PULL_REQUEST_BASE": "%s" % (ctx.build.target),
+            "SONAR_PULL_REQUEST_BRANCH": "%s" % (ctx.build.source),
+            "SONAR_PULL_REQUEST_KEY": "%s" % (ctx.build.ref.replace("refs/pull/", "").split("/")[0]),
+        })
 
-	result = {
-		'kind': 'pipeline',
-		'type': 'docker',
-		'name': 'sonar-analysis',
-		'workspace' : {
-			'base': dir['base'],
-			'path': 'src'
-		},
-		'clone': {
-			'disable': True, # Sonarcloud does not apply issues on already merged branch
-		},
-		'steps': [
-			{
-				"name": "clone",
-				"image": "owncloudci/alpine:latest",
-				"commands": [
-					"git clone https://github.com/%s.git ." % (repo_slug),
-					"git checkout $DRONE_COMMIT",
-				],
-			},
-		] +
-			cacheRestore() +
-			composerInstall(phpVersion) +
-			yarnInstall(phpVersion) +
-			installServer(phpVersion, 'sqlite') +
-		[
-			{
-				'name': 'sync-from-cache',
-				'image': 'minio/mc:RELEASE.2020-12-10T01-26-17Z',
-				'pull': 'always',
-				'environment': {
-					'MC_HOST_cache': {
-						'from_secret': 'cache_s3_connection_url'
-					},
-				},
-				'commands': [
-					'mkdir -p results',
-					'mc mirror cache/cache/%s/%s/coverage results/' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
-				]
-			},
-			{
-				'name': 'setup-before-sonarcloud',
-				'image': 'owncloudci/php:%s' % phpVersion,
-				'pull': 'always',
-				'commands': [
-					'pwd',
-					'ls -l',
-					'ls -l results',
-					'ls -l apps',
-					'ls -l config',
-					'cd apps',
-					'git clone https://github.com/owncloud/files_primary_s3.git',
-					'cd files_primary_s3',
-					'composer install',
-					'cd %s' % dir['server']
-				]
-			},
-			{
-				'name': 'sonarcloud',
-				'image': 'sonarsource/sonar-scanner-cli',
-				'pull': 'always',
-				'environment': sonar_env,
-			},
-			{
-				'name': 'purge-cache',
-				'image': 'minio/mc:RELEASE.2020-12-10T01-26-17Z',
-				'environment': {
-					'MC_HOST_cache': {
-						'from_secret': 'cache_s3_connection_url'
-					}
-				},
-				'commands': [
-					'mc rm --recursive --force cache/cache/%s/%s' % (ctx.repo.slug, ctx.build.commit + '-${DRONE_BUILD_NUMBER}'),
-				]
-			},
-		],
-		'depends_on': [],
-		'trigger': {
-			'ref': [
-				'refs/heads/master',
-				'refs/pull/**',
-				'refs/tags/**'
-			]
-		}
-	}
+    repo_slug = ctx.build.source_repo if ctx.build.source_repo else ctx.repo.slug
 
-	for branch in config['branches']:
-		result['trigger']['ref'].append('refs/heads/%s' % branch)
-
-	return result
+    result = {
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "sonar-analysis",
+        "workspace": {
+            "base": dir["base"],
+            "path": "src",
+        },
+        "clone": {
+            "disable": True,  # Sonarcloud does not apply issues on already merged branch
+        },
+        "steps": [
+                     {
+                         "name": "clone",
+                         "image": "owncloudci/alpine:latest",
+                         "commands": [
+                             "git clone https://github.com/%s.git ." % (repo_slug),
+                             "git checkout $DRONE_COMMIT",
+                         ],
+                     },
+                 ] +
+                 cacheRestore() +
+                 composerInstall(phpVersion) +
+                 yarnInstall(phpVersion) +
+                 installServer(phpVersion, "sqlite") +
+                 [
+                     {
+                         "name": "sync-from-cache",
+                         "image": "minio/mc:RELEASE.2020-12-10T01-26-17Z",
+                         "pull": "always",
+                         "environment": {
+                             "MC_HOST_cache": {
+                                 "from_secret": "cache_s3_connection_url",
+                             },
+                         },
+                         "commands": [
+                             "mkdir -p results",
+                             "mc mirror cache/cache/%s/%s/coverage results/" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
+                         ],
+                     },
+                     {
+                         "name": "setup-before-sonarcloud",
+                         "image": "owncloudci/php:%s" % phpVersion,
+                         "pull": "always",
+                         "commands": [
+                             "pwd",
+                             "ls -l",
+                             "ls -l results",
+                             "ls -l apps",
+                             "ls -l config",
+                             "cd apps",
+                             "git clone https://github.com/owncloud/files_primary_s3.git",
+                             "cd files_primary_s3",
+                             "composer install",
+                             "cd %s" % dir["server"],
+                         ],
+                     },
+                     {
+                         "name": "sonarcloud",
+                         "image": "sonarsource/sonar-scanner-cli",
+                         "pull": "always",
+                         "environment": sonar_env,
+                     },
+                     {
+                         "name": "purge-cache",
+                         "image": "minio/mc:RELEASE.2020-12-10T01-26-17Z",
+                         "environment": {
+                             "MC_HOST_cache": {
+                                 "from_secret": "cache_s3_connection_url",
+                             },
+                         },
+                         "commands": [
+                             "mc rm --recursive --force cache/cache/%s/%s" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
+                         ],
+                     },
+                 ],
+        "depends_on": [],
+        "trigger": {
+            "ref": [
+                "refs/heads/master",
+                "refs/pull/**",
+                "refs/tags/**",
+            ],
+        },
+    }
 
     for branch in config["branches"]:
         result["trigger"]["ref"].append("refs/heads/%s" % branch)
