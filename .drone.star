@@ -2605,25 +2605,28 @@ def owncloudDockerService(ocDockerService):
     if not ocDockerService:
         return []
 
-    return [{
-        "name": "oc-server",
-        "image": "owncloud/server",
-        "pull": "always",
-        "environment": {
-            "OWNCLOUD_VERSION": "latest",
-            "OWNCLOUD_DOMAIN": "oc-server",
-            "OWNCLOUD_ADMIN_USERNAME": "admin",
-            "OWNCLOUD_ADMIN_PASSWORD": "admin",
-            "HTTP_PORT": "8080",
-            "OWNCLOUD_REDIS_ENABLED": "true",
-            "OWNCLOUD_REDIS_HOST": "redis",
-            "OWNCLOUD_DB_TYPE": "mysql",
-            "OWNCLOUD_DB_NAME": "owncloud",
-            "OWNCLOUD_DB_USERNAME": "owncloud",
-            "OWNCLOUD_DB_PASSWORD": "owncloud",
-            "OWNCLOUD_DB_HOST": "mariadb",
+    return [
+        {
+            "name": "oc-server",
+            "image": "owncloud/server",
+            "pull": "always",
+            "environment": {
+                "OWNCLOUD_VERSION": "latest",
+                "OWNCLOUD_DOMAIN": "oc-server",
+                "OWNCLOUD_ADMIN_USERNAME": "admin",
+                "OWNCLOUD_ADMIN_PASSWORD": "admin",
+                "HTTP_PORT": "8080",
+                "OWNCLOUD_REDIS_ENABLED": "true",
+                "OWNCLOUD_REDIS_HOST": "redis",
+                "OWNCLOUD_DB_TYPE": "mysql",
+                "OWNCLOUD_DB_NAME": "owncloud",
+                "OWNCLOUD_DB_USERNAME": "owncloud",
+                "OWNCLOUD_DB_PASSWORD": "owncloud",
+                "OWNCLOUD_DB_HOST": "mariadb",
+            },
         },
-    }]
+        databaseService('mysql'),
+    ]
 
 def redisService(redisService):
     if not redisService:
