@@ -2619,20 +2619,29 @@ def owncloudDockerService(ocDockerService):
     if not ocDockerService:
         return []
 
-    return [{
-        "name": "oc-server",
-        "image": "owncloud/server",
-        "pull": "always",
-        "environment": {
-            "OWNCLOUD_VERSION": "10.7",
-            "OWNCLOUD_DOMAIN": "oc-server",
-            "OWNCLOUD_ADMIN_USERNAME": "admin",
-            "OWNCLOUD_ADMIN_PASSWORD": "admin",
-            "HTTP_PORT": "8080",
-            "OWNCLOUD_REDIS_ENABLED": "true",
-            "OWNCLOUD_REDIS_HOST": "redis",
+    db = "postgres"
+
+    return [
+        {
+            "name": "oc-server",
+            "image": "owncloud/server",
+            "pull": "always",
+            "environment": {
+                "OWNCLOUD_VERSION": "latest",
+                "OWNCLOUD_DOMAIN": "oc-server",
+                "OWNCLOUD_ADMIN_USERNAME": "admin",
+                "OWNCLOUD_ADMIN_PASSWORD": "admin",
+                "HTTP_PORT": "8080",
+                "OWNCLOUD_REDIS_ENABLED": "true",
+                "OWNCLOUD_REDIS_HOST": "redis",
+                "OWNCLOUD_DB_TYPE": getDbType(db),
+                "OWNCLOUD_DB_NAME": getDbUsername(db),
+                "OWNCLOUD_DB_USERNAME": getDbUsername(db),
+                "OWNCLOUD_DB_PASSWORD": getDbPassword(db),
+                "OWNCLOUD_DB_HOST": getDbName(db),
+            },
         },
-    }]
+    ] + databaseService(db)
 
 def redisService(redisService):
     if not redisService:
