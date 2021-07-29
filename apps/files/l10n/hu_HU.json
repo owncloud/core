@@ -76,6 +76,8 @@
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privát hivatkozás: Csak azok használhatják, akik hozzáférhetnek a fájlokhoz/mappákhoz. Használja az állandó hivatkozást maga, vagy rendelje hozzá más fájlokhoz a megosztáson belül ",
     "Folder" : "Mappa",
     "New folder" : "Új mappa",
+    "Cancel" : "Mégsee",
+    "Create" : "Létrehozás",
     "{newname} already exists" : "{newname} már létezik",
     "Upload" : "Feltöltés",
     "An error occurred while trying to update the tags" : "Hiba történt, miközben megpróbálta frissíteni a címkéket",

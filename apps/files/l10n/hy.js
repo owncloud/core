@@ -37,6 +37,8 @@ OC.L10N.register(
     "_%n byte_::_%n bytes_" : ["%n բայտ","%n բայտ"],
     "Folder" : "Պանակ",
     "New folder" : "Նոր պանակ",
+    "Cancel" : "Չեղարկել",
+    "Create" : "Ստեղծել",
     "{newname} already exists" : "{newname} գոյություն ունի",
     "Upload" : "Բեռնել",
     "You created %1$s" : "Դու ստեղծեցիր %1$s",

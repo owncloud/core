@@ -69,6 +69,8 @@ OC.L10N.register(
     "Favorite" : "Mėgiamas",
     "Folder" : "Katalogas",
     "New folder" : "Naujas aplankas",
+    "Cancel" : "Atšaukti",
+    "Create" : "Sukurti",
     "{newname} already exists" : "{newname} jau egzistuoja",
     "Upload" : "Įkelti",
     "An error occurred while trying to update the tags" : "Bandant atnaujinti žymes įvyko klaida",

@@ -7,6 +7,7 @@ OC.L10N.register(
     "Files" : "Archivos",
     "Details" : "detalles",
     "New folder" : "Nuevo directorio",
+    "Cancel" : "Cancelar",
     "Upload" : "Subir",
     "A new file or folder has been <strong>created</strong>" : "Un nuevo archivo o carpeta ha sido <strong>creado</strong>",
     "A file or folder has been <strong>changed</strong>" : "Un archivo o carpeta ha sido <strong>cambiado</strong>",

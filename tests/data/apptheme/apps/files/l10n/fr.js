@@ -94,6 +94,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Lien privé : seules les personnes ayant accès à ce fichier/dossier peuvent l'utiliser. Utilisez le en tant que lien permanent pour vous-même ou pour désigner des fichiers dans les partages aux autres utilisateurs.",
     "Folder" : "Dossier",
     "New folder" : "Nouveau dossier",
+    "Cancel" : "Annuler",
+    "Create" : "Créer",
     "{newname} already exists" : "{newname} existe déjà",
     "Upload" : "Chargement",
     "An error occurred while trying to update the tags" : "Une erreur est survenue lors de la mise à jour des étiquettes",

@@ -74,6 +74,8 @@ OC.L10N.register(
     "Favorite" : "Suosikki",
     "Folder" : "Kansio",
     "New folder" : "Uusi kansio",
+    "Cancel" : "Peruuta",
+    "Create" : "Luo",
     "{newname} already exists" : "{newname} on jo olemassa",
     "Upload" : "Lähetä",
     "An error occurred while trying to update the tags" : "Tunnisteiden päivitystä yrittäessä tapahtui virhe",

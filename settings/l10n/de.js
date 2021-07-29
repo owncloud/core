@@ -317,7 +317,7 @@ OC.L10N.register(
     "png or jpg, max. 20 MB" : "png oder jpg, max. 20MB",
     "Picture provided by original account" : "Bild von Original- Konto zur Verfügung gestellt",
     "Cancel" : "Abbrechen",
-    "Choose as profile picture" : "Wähle ein Profilbild",
+    "Choose as profile picture" : "Als Profilbild verwenden",
     "Full name" : "Vollständiger Name",
     "No display name set" : "Kein Anzeigename angegeben",
     "Email" : "E-Mail",

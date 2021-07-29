@@ -101,6 +101,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Enlace privado: Solo las personas con acceso al archivo/carpeta pueden usarlo. Utilízalo como enlace permanente para ti o para dirigir a otros a archivos dentro de compartidos.",
     "Folder" : "Carpeta",
     "New folder" : "Nueva carpeta",
+    "Cancel" : "Cancelar",
+    "Create" : "Crear",
     "{newname} already exists" : "{newname} ya existe",
     "Upload" : "Subir",
     "An error occurred while trying to update the tags" : "Se produjo un error al tratar de actualizar las etiquetas",

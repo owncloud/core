@@ -12,6 +12,7 @@ OC.L10N.register(
     "Name" : "Name",
     "New" : "Neu",
     "New folder" : "Neuer Ordner",
+    "Cancel" : "Abbrechen",
     "Upload" : "Hochladen",
     "Settings" : "Einstellungen",
     "WebDAV" : "WebDAV"

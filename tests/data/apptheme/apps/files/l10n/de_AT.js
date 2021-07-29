@@ -11,6 +11,7 @@ OC.L10N.register(
     "group" : "Gruppe",
     "Name" : "Name",
     "New folder" : "Neuer Ordner",
+    "Cancel" : "Abbrechen",
     "Upload" : "Hochladen",
     "A new file or folder has been <strong>created</strong>" : "Eine neue Datei oder ein neuer Ordner wurde <strong>erstellt</strong>",
     "A file or folder has been <strong>changed</strong>" : "Eine Datei oder ein Ordner hat sich <strong>geändert</strong>",

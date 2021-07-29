@@ -22,6 +22,8 @@ OC.L10N.register(
     "File name cannot be empty." : "ឈ្មោះ​ឯកសារ​មិន​អាច​នៅ​ទទេ​បាន​ឡើយ។",
     "Folder" : "ថត",
     "New folder" : "ថត​ថ្មី",
+    "Cancel" : "បោះបង់",
+    "Create" : "បង្កើត",
     "Upload" : "ផ្ទុក​ឡើង",
     "You created %1$s" : "អ្នក​បាន​បង្កើត %1$s",
     "%2$s created %1$s" : "%2$s បាន​បង្កើត %1$s",

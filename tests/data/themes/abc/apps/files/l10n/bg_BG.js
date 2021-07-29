@@ -92,6 +92,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Частна връзка: Само хората, които имат достъп до файла/папката, могат да я използват. Използвайте я като постоянна връзка за себе си или насочете другите към файлове които са споделени.",
     "Folder" : "Папка",
     "New folder" : "Нова папка",
+    "Cancel" : "Отказ",
+    "Create" : "Създаване",
     "{newname} already exists" : "{newname} вече съществува",
     "Upload" : "Качване",
     "An error occurred while trying to update the tags" : "Настъпи грешка при опита за промяна на бележките",

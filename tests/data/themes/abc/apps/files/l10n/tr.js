@@ -93,6 +93,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Özel bağlantı: Yalnızca dosyaya/klasöre erişimi olan kişiler kullanabilir. Bunu kendiniz için kalıcı bir bağlantı olarak veya başkalarını paylaşımlardaki dosyalara yönlendirmek için kullanın",
     "Folder" : "Klasör",
     "New folder" : "Yeni klasör",
+    "Cancel" : "İptal",
+    "Create" : "Oluştur",
     "{newname} already exists" : "{newname} zaten mevcut",
     "Upload" : "Yükle",
     "An error occurred while trying to update the tags" : "Etiketler güncellenmeye çalışılırken bir hata oluştu",

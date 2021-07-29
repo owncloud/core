@@ -18,6 +18,8 @@ OC.L10N.register(
     "New" : "新增",
     "Folder" : "資料夾",
     "New folder" : "新資料夾",
+    "Cancel" : "取消",
+    "Create" : "新增",
     "Upload" : "上戴",
     "A new file or folder has been <strong>created</strong>" : "新檔案或資料夾已被 <strong> 新增 </strong>",
     "A file or folder has been <strong>changed</strong>" : "檔案或資料夾已被 <strong> 變成 </strong>",

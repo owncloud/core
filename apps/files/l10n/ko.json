@@ -76,6 +76,8 @@
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "개인 링크: 파일이나 폴더에 접근할 수 있는 사람만 사용할 수 있습니다. 나 자신을 위한 고유 링크 및 다른 사람들에게 공유한 파일 주소를 알려 줄 때 사용할 수 있습니다",
     "Folder" : "폴더",
     "New folder" : "새 폴더",
+    "Cancel" : "취소",
+    "Create" : "만들기",
     "{newname} already exists" : "{newname} 항목이 이미 존재함",
     "Upload" : "업로드",
     "An error occurred while trying to update the tags" : "태그를 업데이트하는 중 오류 발생",

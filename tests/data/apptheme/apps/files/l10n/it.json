@@ -90,6 +90,8 @@
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Collegamento Privato: Solo le persone che hanno accesso a questo file/cartella possono utilizzarlo.\nUtilizzalo come un collegamento permanente per te. Oppure, dentro una condivisione, per puntare a quei file.",
     "Folder" : "Cartella",
     "New folder" : "Nuova cartella",
+    "Cancel" : "Annulla",
+    "Create" : "Crea",
     "{newname} already exists" : "{newname} esiste già",
     "Upload" : "Carica",
     "An error occurred while trying to update the tags" : "Si è verificato un errore durante il tentativo di aggiornare le etichette",

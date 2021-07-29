@@ -49,6 +49,8 @@ OC.L10N.register(
     "Favorite" : "Gogokoa",
     "Folder" : "Karpeta",
     "New folder" : "Karpeta berria",
+    "Cancel" : "Ezeztatu",
+    "Create" : "Sortu",
     "Upload" : "Igo",
     "A new file or folder has been <strong>created</strong>" : "Fitxategi edo karpeta berri bat <strong>sortu da</strong>",
     "A file or folder has been <strong>changed</strong>" : "Fitxategi edo karpeta bat <strong>aldatu da</strong>",

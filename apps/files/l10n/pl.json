@@ -94,6 +94,8 @@
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Prywatny link: Tylko użytkownicy, którzy mają przyznany dostęp do folderów lub plików mogą z niego skorzystać. Użyj go jako linka bezpośredniego dla siebie lub jako odnośnik dla użytkowników, którym udostępniasz.",
     "Folder" : "Folder",
     "New folder" : "Nowy folder",
+    "Cancel" : "Anuluj",
+    "Create" : "Utwórz",
     "{newname} already exists" : "{newname} już istnieje",
     "Upload" : "Wyślij",
     "An error occurred while trying to update the tags" : "Wystąpił błąd podczas aktualizacji tagów",

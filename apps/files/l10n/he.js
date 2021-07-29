@@ -97,6 +97,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "קישור פרטי: רק אנשים שיש להם גישה לקובץ/ספריה יכולים להשתמש בו. ניתן להשתמש בו כקישור קבע לעצמך או להפנות אחרים לקבצים השייכים לשיתוף",
     "Folder" : "תיקייה",
     "New folder" : "תיקייה חדשה",
+    "Cancel" : "ביטול",
+    "Create" : "יצירה",
     "{newname} already exists" : "{newname} כבר קיים",
     "Upload" : "העלאה",
     "An error occurred while trying to update the tags" : "שגיאה אירעה בזמן עדכון התגיות",

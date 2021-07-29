@@ -61,6 +61,8 @@ OC.L10N.register(
     "Favorite" : "Favorato",
     "Folder" : "Dosierujo",
     "New folder" : "Nova dosierujo",
+    "Cancel" : "Nuligi",
+    "Create" : "Krei",
     "{newname} already exists" : "{newname} jam ekzistas",
     "Upload" : "Alŝuti",
     "An error occurred while trying to update the tags" : "Eraris provo ĝisdatigi la etikedojn",

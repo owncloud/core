@@ -70,6 +70,8 @@ OC.L10N.register(
     "Favorite" : "Priljubljene",
     "Folder" : "Mapa",
     "New folder" : "Nova mapa",
+    "Cancel" : "Prekliči",
+    "Create" : "Ustvari",
     "{newname} already exists" : "{newname} že obstaja",
     "Upload" : "Pošlji",
     "An error occurred while trying to update the tags" : "Prišlo je do napake med posodabljanjem oznak",

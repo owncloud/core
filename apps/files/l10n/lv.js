@@ -78,6 +78,8 @@ OC.L10N.register(
     "Favorite" : "Iecienītais",
     "Folder" : "Mape",
     "New folder" : "Jauna mape",
+    "Cancel" : "Atcelt",
+    "Create" : "Izveidot",
     "{newname} already exists" : "{newname} jau eksistē",
     "Upload" : "Augšupielādēt",
     "An error occurred while trying to update the tags" : "Atjaunojot atzīmes notika kļūda",

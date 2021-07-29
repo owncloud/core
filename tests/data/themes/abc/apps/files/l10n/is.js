@@ -91,6 +91,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Einkatengilll: Aðeins fólk sem hefur aðgang að skránni/möppunni getur notað hann. Notaðu hann sem varanlegan tengil fyrir sjálfan þig eða til að beina öðrum á skrár innan sameigna.",
     "Folder" : "Mappa",
     "New folder" : "Ný mappa",
+    "Cancel" : "Hætta við",
+    "Create" : "Búa til",
     "{newname} already exists" : "{newname} er þegar til",
     "Upload" : "Senda inn",
     "An error occurred while trying to update the tags" : "Villa kom upp við að reyna að uppfæra merkin",

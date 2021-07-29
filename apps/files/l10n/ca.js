@@ -50,6 +50,8 @@ OC.L10N.register(
     "Favorite" : "Preferits",
     "Folder" : "Carpeta",
     "New folder" : "Carpeta nova",
+    "Cancel" : "Cancel·lar",
+    "Create" : "Crea",
     "Upload" : "Puja",
     "An error occurred while trying to update the tags" : "S'ha produït un error en tractar d'actualitzar les etiquetes",
     "A new file or folder has been <strong>created</strong>" : "S'ha <strong>creat</strong> un nou fitxer o una nova carpeta",

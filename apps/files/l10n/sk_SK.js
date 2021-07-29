@@ -61,6 +61,8 @@ OC.L10N.register(
     "Favorite" : "Obľúbené",
     "Folder" : "Priečinok",
     "New folder" : "Nový priečinok",
+    "Cancel" : "Zrušiť",
+    "Create" : "Vytvoriť",
     "{newname} already exists" : "{newname} už existuje",
     "Upload" : "Nahrať",
     "An error occurred while trying to update the tags" : "Pri pokuse o aktualizáciu štítkov došlo k chybe",

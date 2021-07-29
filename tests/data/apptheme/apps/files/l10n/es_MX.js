@@ -63,6 +63,8 @@ OC.L10N.register(
     "Favorite" : "Favorito",
     "Folder" : "Carpeta",
     "New folder" : "Nueva carpeta",
+    "Cancel" : "Cancelar",
+    "Create" : "Crear",
     "{newname} already exists" : "{newname} ya existe",
     "Upload" : "Subir archivo",
     "An error occurred while trying to update the tags" : "Se produjo un error al intentar actualizar las etiquetas",

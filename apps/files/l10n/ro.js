@@ -59,6 +59,8 @@ OC.L10N.register(
     "Favorite" : "Favorit",
     "Folder" : "Dosar",
     "New folder" : "Un nou dosar",
+    "Cancel" : "Anulează",
+    "Create" : "Creează",
     "{newname} already exists" : "{newname} există deja",
     "Upload" : "Încărcă",
     "An error occurred while trying to update the tags" : "A apărut o eroare în timpul actualizării etichetelor",

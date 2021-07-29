@@ -65,6 +65,8 @@ OC.L10N.register(
     "Favorite" : "Favoritu",
     "Folder" : "Carpeta",
     "New folder" : "Nueva carpeta",
+    "Cancel" : "Encaboxar",
+    "Create" : "Crear",
     "{newname} already exists" : "{newname} yá existe",
     "Upload" : "Xubir",
     "An error occurred while trying to update the tags" : "Hebo un fallu mientres s'intentaba actualizar les etiquetes",

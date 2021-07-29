@@ -49,6 +49,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privaatskakel: Slegs mense wat toegang tot die lêer/vouer het kan dit gebruik. Gebruik dit vir uself as permanente skakel of om ander na lêer binne delings te rig.",
     "Folder" : "Omslag",
     "New folder" : "Nuwe vouer",
+    "Cancel" : "Kanselleer",
+    "Create" : "Skep",
     "{newname} already exists" : "{newname} bestaan reeds",
     "Upload" : "Laai Op",
     "You created %1$s" : "U het %1$s geskep",

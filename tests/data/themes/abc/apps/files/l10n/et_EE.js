@@ -64,6 +64,8 @@ OC.L10N.register(
     "Favorite" : "Lemmik",
     "Folder" : "Kaust",
     "New folder" : "Uus kaust",
+    "Cancel" : "Loobu",
+    "Create" : "Lisa",
     "{newname} already exists" : "{newname} on juba olemas",
     "Upload" : "Lae üles",
     "An error occurred while trying to update the tags" : "Siltide uuendamisel tekkis tõrge",

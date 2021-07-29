@@ -39,6 +39,8 @@ OC.L10N.register(
     "Favorite" : "Favorit",
     "Folder" : "Direktorij",
     "New folder" : "Novi direktorij",
+    "Cancel" : "Odustani",
+    "Create" : "Kreiraj",
     "Upload" : "Učitaj",
     "Upload (max. %s)" : "Učitaj (max. %s)",
     "Settings" : "Postavke",

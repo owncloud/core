@@ -59,6 +59,8 @@ OC.L10N.register(
     "Favorite" : "Ưu thích",
     "Folder" : "Thư mục",
     "New folder" : "Tạo thư mục",
+    "Cancel" : "Hủy",
+    "Create" : "Tạo",
     "Upload" : "Tải lên",
     "Settings" : "Cài đặt",
     "Show hidden files" : "Hiện tập các tin ẩn",

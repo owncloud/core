@@ -21,6 +21,7 @@
     "Your storage is full, files can not be updated or synced anymore!" : "Mae eich storfa'n llawn, ni ellir diweddaru a chydweddu ffeiliau mwyach!",
     "Your storage is almost full ({usedSpacePercent}%)" : "Mae eich storfa bron a bod yn llawn ({usedSpacePercent}%)",
     "Folder" : "Plygell",
+    "Cancel" : "Diddymu",
     "Upload" : "Llwytho i fyny",
     "Settings" : "Gosodiadau",
     "Upload too large" : "Maint llwytho i fyny'n rhy fawr",

@@ -8,6 +8,7 @@ OC.L10N.register(
     "Select" : "دیاریکردنی",
     "Name" : "ناو",
     "Folder" : "بوخچه",
+    "Cancel" : "لابردن",
     "Upload" : "بارکردن",
     "Settings" : "ڕێکخستنه‌کان"
 },

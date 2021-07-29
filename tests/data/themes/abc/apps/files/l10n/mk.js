@@ -91,6 +91,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Приватен линк: Само луѓето кои имаат пристап до датотеката/папката можат да го користат. Користете го како врска за себе или да го пратите на друг за да ги прикажете сите споделени податоци",
     "Folder" : "Папка",
     "New folder" : "Нова папка",
+    "Cancel" : "Откажи",
+    "Create" : "Создај",
     "{newname} already exists" : "{newname} веќе постои",
     "Upload" : "Подигни",
     "An error occurred while trying to update the tags" : "Се случи грешка додека се обидувавте да ги освежите таговите",

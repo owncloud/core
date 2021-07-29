@@ -10,6 +10,7 @@ OC.L10N.register(
     "Files" : "ਫਾਇਲਾਂ",
     "Details" : "ਵੇਰਵ",
     "New folder" : "ਨਵਾਂ ਫੋਲਡਰ",
+    "Cancel" : "ਰੱਦ ਕਰੋ",
     "Upload" : "ਅੱਪਲੋਡ",
     "Settings" : "ਸੈਟਿੰਗ"
 },

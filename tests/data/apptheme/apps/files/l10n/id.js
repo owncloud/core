@@ -69,6 +69,8 @@ OC.L10N.register(
     "Favorite" : "Favorit",
     "Folder" : "Folder",
     "New folder" : "Map baru",
+    "Cancel" : "Batal",
+    "Create" : "Buat",
     "{newname} already exists" : "{newname} sudah ada",
     "Upload" : "Unggah",
     "An error occurred while trying to update the tags" : "Terjadi kesalahan saat mencoba untuk memperbarui label",

@@ -45,6 +45,8 @@ OC.L10N.register(
     "Favorite" : "Favorit",
     "Folder" : "Mapa",
     "New folder" : "Nova mapa",
+    "Cancel" : "Odustani",
+    "Create" : "Kreirajte",
     "Upload" : "Učitavanje",
     "A new file or folder has been <strong>created</strong>" : "Nova datoteka ili nova mapa su <strong>kreirani</strong>",
     "A file or folder has been <strong>changed</strong>" : "Datoteka ili mapa su <strong>promijenjeni</strong>",

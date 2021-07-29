@@ -8,6 +8,7 @@ OC.L10N.register(
     "Files" : "फाइलें ",
     "Details" : "विवरण ",
     "New folder" : "नया फ़ोल्डर",
+    "Cancel" : "रद्द करें ",
     "Upload" : "अपलोड ",
     "Settings" : "सेटिंग्स"
 },

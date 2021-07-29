@@ -51,6 +51,8 @@ OC.L10N.register(
     "Favorite" : "Омиљени",
     "Folder" : "фасцикла",
     "New folder" : "Нова фасцикла",
+    "Cancel" : "Откажи",
+    "Create" : "Направи",
     "{newname} already exists" : "{newname} већ постоји",
     "Upload" : "Отпреми",
     "An error occurred while trying to update the tags" : "Дошло је до грешке при покушају ажурирања ознака",

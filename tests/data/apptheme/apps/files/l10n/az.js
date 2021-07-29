@@ -50,6 +50,8 @@ OC.L10N.register(
     "Favorite" : "İstəkli",
     "Folder" : "Qovluq",
     "New folder" : "Yeni qovluq",
+    "Cancel" : "Dayandır",
+    "Create" : "Yarat",
     "{newname} already exists" : "{newname} artıq mövcuddur",
     "Upload" : "Serverə yüklə",
     "An error occurred while trying to update the tags" : "Qeydlərin yenilənməsi müddətində səhv baş verdi ",

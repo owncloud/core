@@ -53,6 +53,8 @@ OC.L10N.register(
     "Favorite" : "Улюблений",
     "Folder" : "Тека",
     "New folder" : "Нова тека",
+    "Cancel" : "Скасувати",
+    "Create" : "Створити",
     "Upload" : "Вивантажити",
     "An error occurred while trying to update the tags" : "Виникла помилка при спробі оновити мітки",
     "A new file or folder has been <strong>created</strong>" : "Новий файл або теку було <strong>створено</strong>",

@@ -45,6 +45,8 @@ OC.L10N.register(
     "Favorite" : "Favorito",
     "Folder" : "Carpeta",
     "New folder" : "Nueva Carpeta",
+    "Cancel" : "Cancelar",
+    "Create" : "Crear",
     "Upload" : "Subir",
     "A new file or folder has been <strong>created</strong>" : "Un archivo o carpeta ha sido <strong>creado</strong>",
     "A file or folder has been <strong>changed</strong>" : "Un archivo o carpeta ha sido <strong>modificado</strong>",

@@ -71,6 +71,8 @@
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privátní odkaz: Mohou použít jen osoby, které mají přístup k souboru/složce. Používejte jako trvalý odkaz pro sebe nebo ostatní v rámci sdílení",
     "Folder" : "Adresář",
     "New folder" : "Nový adresář",
+    "Cancel" : "Zrušit",
+    "Create" : "Vytvořit",
     "{newname} already exists" : "{newname} již existuje",
     "Upload" : "Odeslat",
     "An error occurred while trying to update the tags" : "Při pokusu o úpravu tagů nastala chyba",

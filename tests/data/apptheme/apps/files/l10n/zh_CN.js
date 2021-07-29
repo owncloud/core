@@ -91,6 +91,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "私人链接：只有有权访问该文件/文件夹的人才可以使用它。将其作为给您自己或者其他人分享文件的永久链接。",
     "Folder" : "文件夹",
     "New folder" : "增加文件夹",
+    "Cancel" : "取消",
+    "Create" : "创建",
     "{newname} already exists" : "{newname} 已经存在",
     "Upload" : "上传",
     "An error occurred while trying to update the tags" : "更新标签时出错",

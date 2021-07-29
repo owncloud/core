@@ -69,6 +69,8 @@ OC.L10N.register(
     "Favorite" : "Favorit",
     "Folder" : "Dorsièr",
     "New folder" : "Novèl dorsièr",
+    "Cancel" : "Anullar",
+    "Create" : "Crear",
     "{newname} already exists" : "{new_name} existís ja",
     "Upload" : "Cargament",
     "An error occurred while trying to update the tags" : "Una error s'es produsida al moment de la mesa a jorn de las etiquetas",

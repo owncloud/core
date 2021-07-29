@@ -10,6 +10,7 @@ OC.L10N.register(
     "Files" : "فائلیں",
     "group" : "مجموعہ",
     "Name" : "اسم",
+    "Cancel" : "منسوخ کریں",
     "Settings" : "ترتیبات"
 },
 "nplurals=2; plural=(n != 1);");

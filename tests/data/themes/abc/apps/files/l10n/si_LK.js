@@ -18,6 +18,8 @@ OC.L10N.register(
     "Modified" : "වෙනස් කළ",
     "New" : "නව",
     "Folder" : "ෆෝල්ඩරය",
+    "Cancel" : "අවලංගු",
+    "Create" : "තනන්න",
     "Upload" : "උඩුගත කරන්න",
     "A new file or folder has been <strong>created</strong>" : "නව ගොනුවක් හෝ බහාලුමක් <strong> නිර්මාණය කර ඇත</ strong> ",
     "A file or folder has been <strong>changed</strong>" : "ගොනුවක් හෝ ෆෝල්ඩරයක් <strong>වෙනස්</strong> වී ඇත",

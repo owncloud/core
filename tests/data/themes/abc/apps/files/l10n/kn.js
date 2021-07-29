@@ -31,6 +31,8 @@ OC.L10N.register(
     "Favorite" : "ಅಚ್ಚುಮೆಚ್ಚಿನ",
     "Folder" : "ಕಡತಕೋಶ",
     "New folder" : "ಹೊಸ ಕಡತಕೋಶ",
+    "Cancel" : "﻿ರದ್ದು",
+    "Create" : "ಸೃಷ್ಟಿಸಿ",
     "Upload" : "ವರ್ಗಾಯಿಸಿ",
     "Upload (max. %s)" : "ವರ್ಗಾವಣೆ (ಗರಿಷ್ಠ %s)",
     "Settings" : "ಆಯ್ಕೆ",

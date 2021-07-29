@@ -78,6 +78,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privat länk: Bara de som har tillgång till filen/mappen kan använda den. Använd den som en permanent länk för dig själv eller peka andra till filer inuti delningar",
     "Folder" : "Mapp",
     "New folder" : "Ny mapp",
+    "Cancel" : "Avbryt",
+    "Create" : "Skapa",
     "{newname} already exists" : "{newname}  finns redan",
     "Upload" : "Ladda upp",
     "An error occurred while trying to update the tags" : "Ett fel uppstod när uppdatera taggarna",

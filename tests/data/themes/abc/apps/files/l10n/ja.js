@@ -78,6 +78,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "プライベートリンク: ファイルやフォルダーにアクセスできる権限のあるユーザーのみ利用できます。自分用のパーマネントリンクや、共有している他のユーザーにピンポイントに指定することができます。",
     "Folder" : "フォルダー",
     "New folder" : "新しいフォルダー",
+    "Cancel" : "キャンセル",
+    "Create" : "作成",
     "{newname} already exists" : "{newname} はすでに存在します",
     "Upload" : "アップロード",
     "An error occurred while trying to update the tags" : "タグを更新する際にエラーが発生しました",

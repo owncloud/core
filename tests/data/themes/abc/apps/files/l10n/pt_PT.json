@@ -71,6 +71,8 @@
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Hiperligação privada: Apenas as pessoas que têm acesso ao ficheiro ou pasta podem utiliza-los. Use-a como uma hiperligação para rederecionar pessoas a ficheiros dentro de partilhas.",
     "Folder" : "Pasta",
     "New folder" : "Nova pasta",
+    "Cancel" : "Cancelar",
+    "Create" : "Criar",
     "{newname} already exists" : "{newname} já existe",
     "Upload" : "Enviar",
     "An error occurred while trying to update the tags" : "Ocorreu um erro ao tentar atualizar as etiquetas",

@@ -94,6 +94,8 @@
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "رابط خاص: يمكن فقط للأشخاص الذين لهم حق الوصول إلى الملف/المجلد استخدامه. استخدمه كرابط دائم لنفسك أو لتوجيه الآخرين إلى الملفات داخل المشاركات",
     "Folder" : "مجلد",
     "New folder" : "مجلد جديد",
+    "Cancel" : "إلغاء",
+    "Create" : "إنشاء",
     "{newname} already exists" : "{newname} موجود بالفعل",
     "Upload" : "تحميل",
     "An error occurred while trying to update the tags" : "حدث خطأ أثناء محاولة تحديث العلامات",

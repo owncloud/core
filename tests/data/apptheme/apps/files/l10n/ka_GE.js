@@ -27,6 +27,8 @@ OC.L10N.register(
     "Favorite" : "ფავორიტი",
     "Folder" : "საქაღალდე",
     "New folder" : "ახალი ფოლდერი",
+    "Cancel" : "უარყოფა",
+    "Create" : "შექმნა",
     "Upload" : "ატვირთვა",
     "Settings" : "პარამეტრები",
     "WebDAV" : "WebDAV",

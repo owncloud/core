@@ -75,6 +75,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privat link: Kun personer, der har adgang til filen/mappen kan bruge dette. Brug det som et permanent link for dig selv eller til at dirigere andre til delte filer",
     "Folder" : "Mappe",
     "New folder" : "Ny Mappe",
+    "Cancel" : "Annullér",
+    "Create" : "Ny",
     "{newname} already exists" : "{newname} eksistere allerede",
     "Upload" : "Upload",
     "An error occurred while trying to update the tags" : "Der opstod en fejl under forsøg på at opdatere mærkerne",

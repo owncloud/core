@@ -27,6 +27,8 @@ OC.L10N.register(
     "File name cannot be empty." : "Den Numm vum Fichier kann net eidel sinn.",
     "Folder" : "Dossier",
     "New folder" : "Neien Dossier",
+    "Cancel" : "Ofbriechen",
+    "Create" : "Erstellen",
     "Upload" : "Eroplueden",
     "Upload (max. %s)" : "Eroplueden (max. %s)",
     "Settings" : "Astellungen",

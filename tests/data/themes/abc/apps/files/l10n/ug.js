@@ -23,6 +23,8 @@ OC.L10N.register(
     "Favorite" : "يىغقۇچ",
     "Folder" : "قىسقۇچ",
     "New folder" : "يېڭى قىسقۇچ",
+    "Cancel" : "ۋاز كەچ",
+    "Create" : "قۇر",
     "Upload" : "يۈكلە",
     "Settings" : "تەڭشەكلەر",
     "WebDAV" : "WebDAV",

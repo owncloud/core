@@ -20,6 +20,8 @@ OC.L10N.register(
     "File name cannot be empty." : "Le nomine de file non pote esser vacue.",
     "Folder" : "Dossier",
     "New folder" : "Nove dossier",
+    "Cancel" : "Cancellar",
+    "Create" : "Crear",
     "Upload" : "Incargar",
     "A new file or folder has been <strong>created</strong>" : "Un nove file o dossier ha essite <strong>create</strong>",
     "A file or folder has been <strong>changed</strong>" : "Un nove file o dossier ha essite <strong>modificate</strong>",

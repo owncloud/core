@@ -97,6 +97,8 @@ OC.L10N.register(
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Ligazón privada: Só as persoas que teñen acceso ao ficheiro/cartafol poden empregalo. Úseo como ligazón permanente para vostede ou para dirixir a outros a ficheiros compartidos.",
     "Folder" : "Cartafol",
     "New folder" : "Novo cartafol",
+    "Cancel" : "Cancelar",
+    "Create" : "Crear",
     "{newname} already exists" : " {new_name} xa existe",
     "Upload" : "Enviar",
     "An error occurred while trying to update the tags" : "Produciuse un erro ao tentar actualizar as etiquetas",

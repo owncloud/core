@@ -23,6 +23,8 @@ OC.L10N.register(
     "New" : "புதிய",
     "Favorite" : "விருப்பமான",
     "Folder" : "கோப்புறை",
+    "Cancel" : "இரத்து செய்க",
+    "Create" : "உருவாக்குக",
     "Upload" : "பதிவேற்றுக",
     "Settings" : "அமைப்புகள்",
     "Upload too large" : "பதிவேற்றல் மிகப்பெரியது",
