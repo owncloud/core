@@ -1,11 +1,17 @@
 Change: Update Symfony components
 
 The following Symfony components have been updated to:
-- console 4.4.27
+- console 4.4.29
 - event-dispatcher 4.4.27
 - process 4.4.27
 - routing 4.4.27
 - translation 4.4.27
 
+The following Symfony polyfill components have been updated to:
+- symfony/polyfill-mbstring v1.23.1
+- symfony/polyfill-php80 v1.23.1
+
 https://symfony.com/blog/symfony-4-4-27-released
 https://github.com/owncloud/core/pull/39061
+https://symfony.com/blog/symfony-4-4-29-released
+https://github.com/owncloud/core/pull/39079
