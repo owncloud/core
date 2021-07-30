@@ -72,11 +72,16 @@ Details
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
-   The following Symfony components have been updated to: - console 4.4.27 - event-dispatcher
+   The following Symfony components have been updated to: - console 4.4.29 - event-dispatcher
    4.4.27 - process 4.4.27 - routing 4.4.27 - translation 4.4.27
 
+   The following Symfony polyfill components have been updated to: -
+   symfony/polyfill-mbstring v1.23.1 - symfony/polyfill-php80 v1.23.1
+
    https://github.com/owncloud/core/pull/39061
+   https://github.com/owncloud/core/pull/39079
    https://symfony.com/blog/symfony-4-4-27-released
+   https://symfony.com/blog/symfony-4-4-29-released
 
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 
