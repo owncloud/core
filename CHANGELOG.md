@@ -11,6 +11,7 @@ Summary
 * Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
+* Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
@@ -45,6 +46,14 @@ Details
 
    https://github.com/owncloud/core/issues/39034
    https://github.com/owncloud/core/pull/39035
+
+* Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
+
+   Before this PR, image previews was not shown anymore in Settings->Personal->Profile
+   picture->Select from Files, as well the UI was cropped. This has been fixed with this PR.
+
+   https://github.com/owncloud/enterprise/issues/4689
+   https://github.com/owncloud/core/pull/39067
 
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 
