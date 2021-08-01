@@ -335,6 +335,7 @@
     "Password changed successfully" : "密碼已經成功變更",
     "New password" : "新密碼",
     "Confirm Password" : "確認密碼",
+    "Confirm password" : "確認密碼",
     "Reset password" : "重設密碼",
     "Personal note from the sender: <br> %s." : "發件人的個人備註：<br>%s",
     "This ownCloud instance is currently in single user mode." : "這個 ownCloud 伺服器目前運作於單一使用者模式",
