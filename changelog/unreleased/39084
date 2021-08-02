@@ -1,0 +1,6 @@
+Bugfix: Avoid potential file_get_contents errors with mp3 Preview
+
+This change fixes the path creation for the mp3 preview.
+
+https://github.com/owncloud/core/issues/34900
+https://github.com/owncloud/core/pull/39084
