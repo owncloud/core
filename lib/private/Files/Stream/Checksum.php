@@ -213,6 +213,18 @@ class Checksum extends Wrapper {
 			return self::$checksums[$path];
 		}
 
+		// check the md5 in case only the filename was hashed
+		// this was introduced in 10.9
+		$pathParts = \pathinfo($path);
+
+		$hashedNameToCheck = \md5($pathParts['basename']);
+		if (isset($pathParts['dirname']) && $pathParts['dirname'] !== '.') {
+			$hashedNameToCheck = $pathParts['dirname'] . '/' . $hashedNameToCheck;
+		}
+		if (isset(self::$checksums[$hashedNameToCheck])) {
+			return self::$checksums[$hashedNameToCheck];
+		}
+
 		// check the md5($path) in case "part_file_in_storage" is set to false
 		// see apps/dav/lib/Connector/Sabre/File.php getPartFileBasePath  (around line 305)
 		// strip initial dir, usually "files" from "files/dir1/dir2"
