@@ -1227,6 +1227,19 @@ OC.Uploader.prototype = _.extend({
 						// not enough space
 						OC.Notification.show(t('files', 'Not enough free space'), {type: 'error'});
 						self.cancelUploads();
+					} else if (status === 400) {
+						var message = '';
+						if (upload) {
+							var response = upload.getResponse();
+							message = response.message;
+						}
+
+						// file name too long
+						if (message === 'File name is too long') {
+							message = t('files', 'File name is too long');
+						}
+
+						OC.Notification.show(t('files', message), {type: 'error'});
 					} else {
 						// HTTP connection problem or other error
 						var message = '';

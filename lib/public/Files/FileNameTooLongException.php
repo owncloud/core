@@ -36,4 +36,15 @@ namespace OCP\Files;
  * @since 8.1.0
  */
 class FileNameTooLongException extends InvalidPathException {
+
+	/**
+	 * @since 8.1.0
+	 * @param string $message [optional] The Exception message to throw.
+	 * @param int $code [optional] The Exception code.
+	 * @param \Throwable $previous [optional] The previous throwable used for the exception chaining.
+	 */
+	public function __construct($message = '', int $code = 0, \Throwable $previous = null) {
+		$message = $message ? $message: 'File name is too long';
+		parent::__construct($message, $code, $previous);
+	}
 }

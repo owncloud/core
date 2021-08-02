@@ -37,6 +37,7 @@ use OC\AppFramework\Http\Request;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Storage;
 use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
+use OCA\DAV\Connector\Sabre\Exception\FileNameTooLong;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
 use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
@@ -45,6 +46,7 @@ use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\EntityTooLargeException;
 use OCP\Files\FileContentNotAllowedException;
+use OCP\Files\FileNameTooLongException;
 use OCP\Files\ForbiddenException;
 use OCP\Files\InvalidContentException;
 use OCP\Files\InvalidPathException;
@@ -192,6 +194,8 @@ class File extends Node implements IFile, IFileNode {
 			}
 
 			$target = $partStorage->fopen($internalPartPath, 'wb');
+			$partStorage->verifyPath($internalPartPath, ltrim($partFilePath, '/'));
+
 			if (!\is_resource($target)) {
 				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
@@ -671,6 +675,9 @@ class File extends Node implements IFile, IFileNode {
 		if ($e instanceof InvalidContentException) {
 			// the file content is not permitted
 			throw new UnsupportedMediaType($e->getMessage(), 0, $e);
+		}
+		if ($e instanceof FileNameTooLongException) {
+			throw new FileNameTooLong($e->getMessage(), 0, $e);
 		}
 		if ($e instanceof InvalidPathException) {
 			// the path for the file was not valid
