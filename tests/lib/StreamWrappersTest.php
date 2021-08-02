@@ -63,7 +63,7 @@ class StreamWrappersTest extends \Test\TestCase {
 		$this->assertFileEquals($sourceFile, $file);
 		\unlink($file);
 		\clearstatcache();
-		$this->assertFileNotExists($file);
+		$this->assertFileDoesNotExist($file);
 
 		//test callback
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile('.txt');

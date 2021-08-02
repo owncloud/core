@@ -128,7 +128,7 @@ class LoggingContext implements Context {
 							$message
 						);
 					} elseif ($comparingMode === 'matching') {
-						Assert::assertRegExp(
+						Assert::assertMatchesRegularExpression(
 							$expectedLogEntry[$attribute],
 							$logEntry[$attribute],
 							$message

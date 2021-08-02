@@ -59,11 +59,11 @@ class StaticStreamTest extends \Test\TestCase {
 	}
 
 	public function testUnlink() {
-		$this->assertFileNotExists('static://foo');
+		$this->assertFileDoesNotExist('static://foo');
 		\file_put_contents('static://foo', $this->sourceText);
 		$this->assertFileExists('static://foo');
 		\unlink('static://foo');
 		\clearstatcache();
-		$this->assertFileNotExists('static://foo');
+		$this->assertFileDoesNotExist('static://foo');
 	}
 }

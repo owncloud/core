@@ -34,7 +34,7 @@ class OwncloudTest extends TestCase {
 		$config = \OC::$server->getConfig();
 		$this->restore_logfile = $config->getSystemValue("logfile");
 		$this->restore_logdateformat = $config->getSystemValue('logdateformat');
-		
+
 		$config->setSystemValue("logfile", $config->getSystemValue('datadirectory') . "/logtest");
 		Owncloud::init();
 	}
@@ -53,7 +53,7 @@ class OwncloudTest extends TestCase {
 		Owncloud::init();
 		parent::tearDown();
 	}
-	
+
 	public function testMicrosecondsLogTimestamp() {
 		$config = \OC::$server->getConfig();
 		# delete old logfile
@@ -62,15 +62,15 @@ class OwncloudTest extends TestCase {
 		# set format & write log line
 		$config->setSystemValue('logdateformat', 'u');
 		Owncloud::write('test', 'message', \OCP\Util::ERROR);
-		
+
 		# read log line
 		$handle = @\fopen($config->getSystemValue('logfile'), 'r');
 		$line = \fread($handle, 1000);
 		\fclose($handle);
-		
+
 		# check timestamp has microseconds part
 		$values = (array) \json_decode($line);
 		$microseconds = $values['time'];
-		$this->assertRegExp('/^\d{6}$/', $microseconds);
+		$this->assertMatchesRegularExpression('/^\d{6}$/', $microseconds);
 	}
 }
