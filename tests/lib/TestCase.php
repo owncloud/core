@@ -33,6 +33,7 @@ use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\Security\ISecureRandom;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use PHPUnit\Util\Test as TestUtil;
 
 abstract class TestCase extends BaseTestCase {
 	/** @var \OC\Command\QueueBus */
@@ -451,7 +452,10 @@ abstract class TestCase extends BaseTestCase {
 		if (\getenv('CI') !== false) {
 			return true;
 		}
-		$annotations = $this->getAnnotations();
+		$annotations = TestUtil::parseTestMethodAnnotations(
+			static::class,
+			$this->getName()
+		);
 		if (isset($annotations['class']['group']) && \in_array('DB', $annotations['class']['group'])) {
 			return true;
 		}
