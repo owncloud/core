@@ -1,6 +1,6 @@
 Enhancement: Show appropriate error message if uploaded file name too long
 
-While uploading a file, the internal file name could be longer as the original
+While uploading a file, the internal file name could be longer than the original
 file name due to chunking. This PR verifies the file name of the chunks and
 shows an appropriate error message, if too long.
 
