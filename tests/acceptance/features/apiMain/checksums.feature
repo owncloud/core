@@ -259,7 +259,7 @@ Feature: checksums
       | new         |
 
   ## Validation Plugin or Old Endpoint Specific
-  @issue-ocis-reva-17
+  @issue-ocis-reva-17 @notToImplementOnOCIS
   Scenario: Uploading an old method chunked file with checksum should fail using new DAV path
     Given using new DAV path
     When user "Alice" uploads chunk file "1" of "3" with "AAAAA" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e" using the WebDAV API
