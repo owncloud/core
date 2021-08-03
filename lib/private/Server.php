@@ -218,7 +218,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new Encryption\Keys\Storage(
 				$view,
 				$util,
-				$c->getUserSession()
+				$c->getUserSession(),
+				$c->getMountManager()
 			);
 		});
 		$this->registerService('TagMapper', function (Server $c) {

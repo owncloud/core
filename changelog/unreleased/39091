@@ -1,0 +1,7 @@
+Change: Allow storage implementations to have their own encryption key storage
+
+The default encryption key storage location is not suitable for all storage
+implementations because e.g. the storage is not linked to a user.
+This is required for files_spaces.
+
+https://github.com/owncloud/core/pull/39091
