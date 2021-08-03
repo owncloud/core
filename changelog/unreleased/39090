@@ -1,0 +1,6 @@
+Change: Clarify days parameter of the occ dav:cleanup-chunks command
+
+The days parameter is the minimum age of uploads to cleanup. This has been
+clarified in the command help.
+
+https://github.com/owncloud/core/pull/39090
