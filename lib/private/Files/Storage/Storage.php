@@ -115,4 +115,6 @@ interface Storage extends \OCP\Files\Storage {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($path, $type, ILockingProvider $provider);
+
+	public function getEncryptionFileKeyDirectory(string $encryptionModuleId, string $path): ?string;
 }

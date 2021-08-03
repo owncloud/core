@@ -28,6 +28,7 @@ use OC\Encryption\Util;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\Encryption\Keys\IStorage;
+use OCP\Files\Mount\IMountManager;
 use OCP\IUserSession;
 use OC\User\NoUserException;
 
@@ -58,13 +59,17 @@ class Storage implements IStorage {
 
 	/** @var string */
 	private $currentUser = null;
+	/**
+	 * @var IMountManager
+	 */
+	private $mountManager;
 
 	/**
 	 * @param View $view view
 	 * @param Util $util encryption util class
 	 * @param IUserSession $session user session
 	 */
-	public function __construct(View $view, Util $util, IUserSession $session) {
+	public function __construct(View $view, Util $util, IUserSession $session, IMountManager $mountManager) {
 		$this->view = $view;
 		$this->util = $util;
 
@@ -75,6 +80,7 @@ class Storage implements IStorage {
 		if ($session !== null && $session->getUser() !== null) {
 			$this->currentUser = $session->getUser()->getUID();
 		}
+		$this->mountManager = $mountManager;
 	}
 
 	/**
@@ -274,6 +280,13 @@ class Storage implements IStorage {
 	 * @return string
 	 */
 	private function getFileKeyDir($encryptionModuleId, $path) {
+		# ask the storage implementation for the key storage
+		$mount = $this->mountManager->find($path);
+		$keyPath = $mount ? $mount->getStorage()->getEncryptionFileKeyDirectory($encryptionModuleId, $mount->getInternalPath($path)) : null;
+		if ($keyPath) {
+			return $keyPath;
+		}
+
 		list($owner, $filename) = $this->util->getUidAndFilename($path);
 
 		// in case of system wide mount points the keys are stored directly in the data directory
