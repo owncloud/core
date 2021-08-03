@@ -13,6 +13,7 @@ Summary
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
+* Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
@@ -59,6 +60,13 @@ Details
 
    https://github.com/owncloud/core/issues/38957
    https://github.com/owncloud/core/pull/38962
+
+* Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
+
+   The days parameter is the minimum age of uploads to cleanup. This has been clarified in the
+   command help.
+
+   https://github.com/owncloud/core/pull/39090
 
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 
