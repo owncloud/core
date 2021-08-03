@@ -4,21 +4,6 @@ Feature: previews of files downloaded through the webdav API
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnOcis @issue-ocis-2069
-  Scenario Outline: download different sizes of previews of file
-    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
-    When user "Alice" downloads the preview of "/parent.txt" with width <width> and height <height> using the WebDAV API
-    Then the HTTP status code should be "200"
-    And the downloaded image should be <width> pixels wide and <height> pixels high
-    Examples:
-      | width | height |
-      | 1     | 1      |
-      | 32    | 32     |
-      | 1024  | 1024   |
-      | 1     | 1024   |
-      | 1024  | 1      |
-
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-188
   Scenario Outline: download previews with invalid width
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "Alice" downloads the preview of "/parent.txt" with width "<width>" and height "32" using the WebDAV API
@@ -35,7 +20,7 @@ Feature: previews of files downloaded through the webdav API
       | A     |
       | %2F   |
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-188
+
   Scenario Outline: download previews with invalid height
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When user "Alice" downloads the preview of "/parent.txt" with width "32" and height "<height>" using the WebDAV API
@@ -112,7 +97,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixels wide and "32" pixels high
 
-  @issue-ocis-2071 @skipOnOcis
+
   Scenario: download previews of other users files
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
@@ -121,7 +106,7 @@ Feature: previews of files downloaded through the webdav API
     And the value of the item "/d:error/s:message" in the response about user "Alice" should be "File not found: parent.txt in '%username%'"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-2064
+
   Scenario: download previews of folders
     Given user "Alice" has created folder "subfolder"
     When user "Alice" downloads the preview of "/subfolder/" with width "32" and height "32" using the WebDAV API
@@ -136,7 +121,7 @@ Feature: previews of files downloaded through the webdav API
     And the value of the item "/d:error/s:message" in the response about user "Alice" should be "File with name parent.txt could not be located"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
-  @issue-ocis-192 @issue-ocis-2070 @skipOnOcis
+
   Scenario: Download file previews when it is disabled by the administrator
     Given the administrator has updated system config key "enable_previews" with value "false" and type "boolean"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
@@ -144,7 +129,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "404"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
-  @issue-ocis-2070 @skipOnOcis
+
   Scenario: unset maximum size of previews
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     And the administrator has updated system config key "preview_max_x" with value "null"
@@ -153,7 +138,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "404"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
-  @issue-ocis-2070 @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcis
+
   Scenario: set maximum size of previews
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     When the administrator updates system config key "preview_max_x" with value "null" using the occ command
@@ -163,7 +148,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "400"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\BadRequest"
 
-  @issue-ocis-2070 @skipOnOcis
+
   Scenario Outline: download previews of different size smaller than the maximum size set
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     And the administrator has updated system config key "preview_max_x" with value "32"
@@ -178,7 +163,7 @@ Feature: previews of files downloaded through the webdav API
       | 32    | 12     | 200       |
       | 12    | 32     | 200       |
 
-  @issue-ocis-2070 @skipOnOcis
+
   Scenario Outline: download previews of different size larger than the maximum size set
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     And the administrator has updated system config key "preview_max_x" with value "32"
