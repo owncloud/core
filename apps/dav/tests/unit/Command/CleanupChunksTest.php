@@ -56,7 +56,7 @@ class CleanupChunksTest extends TestCase {
 	 */
 	public function testCommandInput($inputDays, $expectedDays) {
 		$this->commandTester->execute([
-			'age-in-days' => $inputDays
+			'minimum-age-in-days' => $inputDays
 		]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertStringContainsString(
