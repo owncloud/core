@@ -12,6 +12,7 @@ Summary
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
+* Bugfix - Hash chunk(v2) filename: [#39088](https://github.com/owncloud/core/pull/39088)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
@@ -55,6 +56,16 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4689
    https://github.com/owncloud/core/pull/39067
+
+* Bugfix - Hash chunk(v2) filename: [#39088](https://github.com/owncloud/core/pull/39088)
+
+   Before this PR, while uploading a file, chunks(v2) were created with filename consist of
+   original filename plus chunk suffix. This could lead to a too long filename error. With this PR
+   the chunk filenames consist of md5 hash and chunk suffix, which decreases the filename and
+   prevents a too long filename error.
+
+   https://github.com/owncloud/enterprise/issues/4692
+   https://github.com/owncloud/core/pull/39088
 
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 
