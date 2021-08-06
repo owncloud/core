@@ -104,6 +104,7 @@ OC.L10N.register(
     "Please specify a valid group" : "Por favor especifique um grupo válido",
     "The group is blacklisted for sharing" : "O grupo está na lista negra para compartilhamento",
     "Public link sharing is disabled by the administrator" : "Link de compartilhamento público foi desativado pelo administrador",
+    "Public link creation is only possible for certain groups" : "A criação de linques públicos só é possível para determinados grupos ",
     "Public upload disabled by the administrator" : "Envio público foi desativado pelo administrador",
     "Public upload is only possible for publicly shared folders" : "Envio pública só é possível para pastas compartilhadas publicamente",
     "Sharing %s failed because the back end does not allow shares from type %s" : "O compartilhando %s falhou porque o backend não permite ações de tipo %s",
@@ -144,6 +145,7 @@ OC.L10N.register(
     "Nothing to configure." : "Nada para configurar.",
     "Group Sharing Blacklist" : "Lista negra de Compartilhamento de Grupos",
     "Exclude groups from receiving shares" : "Excluir grupos de receber compartilhamentos",
-    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Esses grupos não estarão disponíveis para compartilhar. Os membros do grupo não estão restritos a iniciar ações e podem receber ações de outros grupos dos quais são membros, como de costume."
+    "These groups will not be available to share with. Members of the group are not restricted in initiating shares and can receive shares with other groups they are a member of as usual." : "Esses grupos não estarão disponíveis para compartilhar. Os membros do grupo não estão restritos a iniciar ações e podem receber ações de outros grupos dos quais são membros, como de costume.",
+    "Only certain groups are allowed to create public links" : "Apenas alguns grupos têm permissão para criar linques públicos "
 },
 "nplurals=2; plural=(n > 1);");
