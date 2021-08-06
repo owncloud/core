@@ -1,0 +1,9 @@
+Bugfix: Close open menus if click is on an iFrame
+
+Before this PR click events was caught by iFrames due to this circumstances
+for example the settings menu was never closed while clicking inside the
+files_pdfviewer viewer. With this PR a new event has been added and closes the
+menu.
+
+https://github.com/owncloud/core/issues/39093
+https://github.com/owncloud/core/pull/39094
