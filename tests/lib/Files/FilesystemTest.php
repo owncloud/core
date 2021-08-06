@@ -562,4 +562,23 @@ class FilesystemTest extends TestCase {
 		\OC::$server->getMountProviderCollection()->registerProvider($mountProvider);
 		$this->assertEquals('/foo/bar/', Filesystem::getMountPoint('/foo/bar'));
 	}
+
+	public function getHashedFileNamePaths() {
+		return [
+			['/test/test.txt', '/test/dd18bf3a8e0a2a3e53e2661c7fb53534'],
+			['test/test.txt', 'test/dd18bf3a8e0a2a3e53e2661c7fb53534'],
+			['/test.txt', '/dd18bf3a8e0a2a3e53e2661c7fb53534'],
+			['test.txt', 'dd18bf3a8e0a2a3e53e2661c7fb53534'],
+		];
+	}
+
+	/**
+	 * @dataProvider getHashedFileNamePaths
+	 *
+	 * @param string $path
+	 * @param string $expected
+	 */
+	public function testHashFileName($path, $expected) {
+		$this->assertEquals($expected, Filesystem::hashFileName($path));
+	}
 }

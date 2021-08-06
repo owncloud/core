@@ -1091,7 +1091,14 @@ class Filesystem {
 	}
 
 	/**
-	 * Hash the file name in a given path while preserving the rest of it
+	 * Hash the file name in a given path while preserving the rest of it.
+	 * This method is used in combination with file chunking to prevent the
+	 * file name from exceeding its limit.
+	 *
+	 * Examples:
+	 * /files/test.txt -> /files/dd18bf3a8e0a2a3e53e2661c7fb53534
+	 * files/test.txt -> files/dd18bf3a8e0a2a3e53e2661c7fb53534
+	 * /test.txt -> /dd18bf3a8e0a2a3e53e2661c7fb53534
 	 *
 	 * @param string $path
 	 * @return string
