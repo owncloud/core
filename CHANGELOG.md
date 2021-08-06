@@ -13,6 +13,7 @@ Summary
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
 * Bugfix - Hash chunk(v2) filename: [#39088](https://github.com/owncloud/core/pull/39088)
+* Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
@@ -66,6 +67,15 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4692
    https://github.com/owncloud/core/pull/39088
+
+* Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
+
+   Before this PR click events was caught by iFrames due to this circumstances for example the
+   settings menu was never closed while clicking inside the files_pdfviewer viewer. With this PR
+   a new event has been added and closes the menu.
+
+   https://github.com/owncloud/core/issues/39093
+   https://github.com/owncloud/core/pull/39094
 
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 
