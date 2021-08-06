@@ -1552,6 +1552,15 @@ function initCore() {
 
 	OC.registerMenu($('#expand'), $('#expanddiv'));
 
+	/**
+	 * This event gets fired, if your focused element is for example the navbar
+	 * and you click on an iframe.
+	 * So we can close the open menus, for example the #settings menu
+	 */
+	$(window).on('blur.closemenus',function(){
+		OC.hideMenus();
+	});
+
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function (event) {
 		var $el = $(event.target);
