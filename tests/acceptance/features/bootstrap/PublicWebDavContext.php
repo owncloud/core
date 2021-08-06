@@ -548,25 +548,28 @@ class PublicWebDavContext implements Context {
 	/**
 	 * @param string $filename target file name
 	 * @param string $body content to upload
+	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 */
-	public function publiclyOverwritingContent($filename, $body = 'test') {
-		$this->publicUploadContent($filename, '', $body, false);
+	public function publiclyOverwritingContent($filename, $body = 'test', $publicWebDAVAPIVersion='old') {
+		$this->publicUploadContent($filename, '', $body, false, [], $publicWebDAVAPIVersion);
 	}
 
 	/**
-	 * @When the public overwrites file :filename with content :body using the old WebDAV API
+	 * @When the public overwrites file :filename with content :body using the :type WebDAV API
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
+	 * @param string $publicWebDAVAPIVersion
 	 *
 	 * @return void
 	 */
-	public function thePublicOverwritesFileWithContentUsingOldWebDavApi($filename, $body = 'test') {
+	public function thePublicOverwritesFileWithContentUsingWebDavApi($filename, $body = 'test', $publicWebDAVAPIVersion = 'old') {
 		$this->publiclyOverwritingContent(
 			$filename,
-			$body
+			$body,
+			$publicWebDAVAPIVersion
 		);
 	}
 
