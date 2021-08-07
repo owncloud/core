@@ -313,6 +313,7 @@
     "Use the following link to reset your password: {link}" : "Gebruik de volgende link om uw wachtwoord te resetten: {link}",
     "Password changed successfully" : "Wachtwoord succesvol gewijzigd",
     "New password" : "Nieuw wachtwoord",
+    "Confirm Password" : "Wachtwoord bevestigen",
     "Reset password" : "Reset wachtwoord",
     "This ownCloud instance is currently in single user mode." : "Deze ownCloud werkt momenteel in enkele gebruiker modus.",
     "This means only administrators can use the instance." : "Dat betekent dat alleen beheerders deze installatie kunnen gebruiken.",
