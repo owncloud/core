@@ -254,6 +254,54 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the (?:subadmin|administrator) should (not|)\s?be able\s? to see password field in new user form on the webUI$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function subadminShouldBeAbleToSeePasswordFieldInNewUserForm($shouldOrNot) {
+		$expected = true;
+		$expectedMsg = "The password field of new user was expected to be visible in new user form, but is not visible.";
+		if ($shouldOrNot == "not") {
+			$expected = false;
+			$expectedMsg = "The password field of new user was expected to be not visible in new user form, but is visible.";
+		}
+
+		$isVisible = $this->usersPage->isPasswordFieldOfNewUserVisible();
+		Assert::assertEquals(
+			$expected,
+			$isVisible,
+			__METHOD__
+			. "\n" . $expectedMsg
+		);
+	}
+
+	/**
+	 * @Then /^the (?:subadmin|administrator) should (not|)\s?be able\s? to see email field in new user form on the webUI$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function subadminShouldBeAbleToSeeEmailFieldInNewUserForm($shouldOrNot) {
+		$expected = true;
+		$expectedMsg = "The email field of new user was expected to be visible in new user form, but is not visible.";
+		if ($shouldOrNot == "not") {
+			$expected = false;
+			$expectedMsg = "The email field of new user was expected to be not visible in new user form, but is visible.";
+		}
+
+		$isVisible = $this->usersPage->isEmailFieldOfNewUserVisible();
+		Assert::assertEquals(
+			$expected,
+			$isVisible,
+			__METHOD__
+			. "\n" . $expectedMsg
+		);
+	}
+
+	/**
 	 * @Then the user should see an error message saying :message
 	 *
 	 * @param string $message
@@ -473,6 +521,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^the administrator (enables|disables) the setting "([^"]*)" in the User Management page using the webUI$/
+	 * @Given /^the administrator has (enabled|disabled) the setting "([^"]*)" in the User Management page using the webUI$/
 	 *
 	 * @param string $action
 	 * @param string $setting
@@ -480,7 +529,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function enableOrDisableSettings($action, $setting) {
-		$value = $action === 'enables' ? true : false;
+		$value = ($action === 'enables' || $action === 'enabled') ? true : false;
 		$this->usersPage->setSetting($setting, $value);
 	}
 
