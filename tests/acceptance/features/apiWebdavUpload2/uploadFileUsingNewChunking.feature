@@ -168,3 +168,21 @@ Feature: upload file using new chunking
       | file-name |
       | &#?       |
       | TIÄFÜ     |
+
+
+  Scenario: Upload chunked file with new chunking with lengthy filenames
+    Given the owncloud log level has been set to debug
+    And the owncloud log has been cleared
+    When user "Alice" uploads the following chunks to "हजार नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-012345.txt" with new chunking and using the WebDAV API
+      | number | content                   |
+      | 1      | AAAAAAAAAAAAAAAAAAAAAAAAA |
+      | 2      | BBBBBBBBBBBBBBBBBBBBBBBBB |
+      | 3      | CCCCCCCCCCCCCCCCCCCCCCCCC |
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions for user "Alice"
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
+    And as "Alice" file "हजार नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-012345.txt" should exist
+    And the content of file "हजार नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-012345.txt" for user "Alice" should be "AAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCC"
+    And the log file should not contain any log-entries containing these attributes:
+      | app |
+      | dav |
