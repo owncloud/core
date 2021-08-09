@@ -731,3 +731,145 @@ Feature: accept/decline shares coming from internal users
     When user "Alice" restores version index "1" of file "/toShareFile.txt" using the WebDAV API
     Then the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
     And the content of file "/toShareFile.txt" for user "Brian" should be "Test Content."
+
+
+  Scenario: a user receives multiple group shares for matching file and folder name
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And group "grp2" has been created
+    And user "Alice" has been added to group "grp2"
+    And user "Brian" has been added to group "grp2"
+    And user "Alice" has created folder "/PaRent"
+    And user "Alice" has uploaded the following files with content "subfile, from alice to grp2"
+      | path               |
+      | /PARENT/parent.txt |
+      | /PaRent/parent.txt |
+    And user "Alice" has uploaded the following files with content "from alice to grp2"
+      | path        |
+      | /PARENT.txt |
+    And user "Carol" has uploaded the following files with content "subfile, from carol to grp1"
+      | path               |
+      | /PARENT/parent.txt |
+    And user "Carol" has uploaded the following files with content "from carol to grp1"
+      | path        |
+      | /PARENT.txt |
+      | /parent.txt |
+    When user "Alice" shares the following entries with group "grp2" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PaRent     |
+      | /PARENT.txt |
+    And user "Carol" shares the following entries with group "grp2" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PARENT.txt |
+      | /parent.txt |
+    And user "Brian" accepts the following shares offered by user "Alice" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PaRent     |
+      | /PARENT.txt |
+    And user "Brian" accepts the following shares offered by user "Carol" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PARENT.txt |
+      | /parent.txt |
+    Then user "Brian" should see the following elements
+      | /PARENT/        |
+      | /PARENT (2)/    |
+      | /PARENT (3)/    |
+      | /PaRent/        |
+      | /PARENT.txt     |
+      | /PARENT (2).txt |
+      | /parent.txt     |
+    And the content of file "/PARENT (2)/parent.txt" for user "Brian" should be "subfile, from alice to grp2"
+    And the content of file "/PARENT (3)/parent.txt" for user "Brian" should be "subfile, from carol to grp1"
+    And the content of file "/PARENT.txt" for user "Brian" should be "from alice to grp2"
+    And the content of file "/PARENT (2).txt" for user "Brian" should be "from carol to grp1"
+    And the content of file "/parent.txt" for user "Brian" should be "from carol to grp1"
+
+
+  Scenario: a group receives multiple shares from non-member for matching file and folder name
+    Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
+    And user "Brian" has been removed from group "grp1"
+    And user "Alice" has created folder "/PaRent"
+    And user "Alice" has uploaded the following files with content "subfile, from alice to grp1"
+      | path               |
+      | /PARENT/parent.txt |
+      | /PaRent/parent.txt |
+    And user "Alice" has uploaded the following files with content "from alice to grp1"
+      | path        |
+      | /PARENT.txt |
+    And user "Brian" has uploaded the following files with content "subfile, from brian to grp1"
+      | path               |
+      | /PARENT/parent.txt |
+    And user "Brian" has uploaded the following files with content "from brian to grp1"
+      | path        |
+      | /PARENT.txt |
+      | /parent.txt |
+    When user "Alice" shares the following entries with group "grp1" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PaRent     |
+      | /PARENT.txt |
+    And user "Brian" shares the following entries with group "grp1" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PARENT.txt |
+      | /parent.txt |
+    And user "Carol" accepts the following shares offered by user "Alice" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PaRent     |
+      | /PARENT.txt |
+    And user "Carol" accepts the following shares offered by user "Brian" using the sharing API
+      | path        |
+      | /PARENT     |
+      | /PARENT.txt |
+      | /parent.txt |
+    Then user "Carol" should see the following elements
+      | /PARENT/        |
+      | /PARENT (2)/    |
+      | /PARENT (3)/    |
+      | /PaRent/        |
+      | /PARENT.txt     |
+      | /PARENT (2).txt |
+      | /parent.txt     |
+    And the content of file "/PARENT (2)/parent.txt" for user "Carol" should be "subfile, from alice to grp1"
+    And the content of file "/PARENT (3)/parent.txt" for user "Carol" should be "subfile, from brian to grp1"
+    And the content of file "/PARENT.txt" for user "Carol" should be "from alice to grp1"
+    And the content of file "/PARENT (2).txt" for user "Carol" should be "from brian to grp1"
+
+
+  Scenario:  user receives a share and uploads a file with the identical name
+    Given user "Alice" has uploaded file with content "from alice" to "/message.txt"
+    And user "Alice" has shared file "/message.txt" with user "Carol"
+    And user "Carol" has accepted share "/message.txt" offered by user "Alice"
+    When user "Carol" declines share "/message.txt" offered by user "Alice" using the sharing API
+    And user "Carol" uploads file with content "carol file" to "/message.txt" using the WebDAV API
+    Then user "Carol" should see the following elements
+      | /message.txt |
+    And the content of file "/message.txt" for user "Carol" should be "carol file"
+    When user "Carol" accepts share "/message.txt" offered by user "Alice" using the sharing API
+    Then user "Carol" should see the following elements
+      | /message.txt     |
+      | /message (2).txt |
+    And the content of file "/message (2).txt" for user "Carol" should be "from alice"
+
+
+  Scenario:  user receives a share and creates a folder with the identical name
+    Given user "Alice" has created folder "/PaRent"
+    And user "Alice" has uploaded file with content "from alice" to "/PaRent/message.txt"
+    And user "Alice" has shared folder "/PaRent" with user "Carol"
+    And user "Carol" has accepted share "/PaRent" offered by user "Alice"
+    When user "Carol" declines share "/PaRent" offered by user "Alice" using the sharing API
+    And user "Carol" creates folder "/PaRent" using the WebDAV API
+    And user "Carol" uploads file with content "carol file" to "/PaRent/message.txt" using the WebDAV API
+    Then user "Carol" should see the following elements
+      | /PaRent/ |
+    And the content of file "/PaRent/message.txt" for user "Carol" should be "carol file"
+    When user "Carol" accepts share "/PaRent" offered by user "Alice" using the sharing API
+    Then user "Carol" should see the following elements
+      | /PaRent/     |
+      | /PaRent (2)/ |
+    And the content of file "/PaRent (2)/message.txt" for user "Carol" should be "from alice"
+    
