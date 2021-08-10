@@ -100,6 +100,7 @@ Feature: upload file using old chunking
       | @a#8a=b?c=d |
       | ?abc=oc #   |
 
+  @skipOnOcV10 @issue-36115
   Scenario: Upload chunked file with old chunking with lengthy filenames
     Given the owncloud log level has been set to debug
     And the owncloud log has been cleared
@@ -110,7 +111,7 @@ Feature: upload file using old chunking
       | 3      | CCCCCCCCCCCCCCCCCCCCCCCCC |
     Then the HTTP status code should be "201"
     And the following headers should match these regular expressions for user "Alice"
-      | ETag | /^[a-f0-9:\.]{1,32}$/ |
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And as "Alice" file "नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-12345678910.txt" should exist
     And the content of file "नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-नेपालि-file-नाम-12345678910.txt" for user "Alice" should be "AAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCCCCCCC"
     And the log file should not contain any log-entries containing these attributes:
