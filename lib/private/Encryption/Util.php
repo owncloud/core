@@ -73,6 +73,9 @@ class Util {
 	/** @var array paths excluded from encryption */
 	protected $excludedPaths;
 
+	/** @var array paths excluded full paths from encryption */
+	protected $excludedFullPaths;
+
 	/** @var \OC\Group\Manager $manager */
 	protected $groupManager;
 
@@ -104,6 +107,9 @@ class Util {
 		$this->excludedPaths[] = 'avatars';
 		$this->excludedPaths[] = 'avatar.png';
 		$this->excludedPaths[] = 'avatar.jpg';
+
+		// TODO: find a sophisticated solution
+		$this->excludedFullPaths[] = '/files_spaces/*/encryption*';
 	}
 
 	/**
@@ -353,6 +359,12 @@ class Util {
 				return true;
 			}
 
+			foreach ($this->excludedFullPaths as $excludedFullPathPath) {
+				if (fnmatch($excludedFullPathPath, $path)
+				) {
+					return true;
+				}
+			}
 			//detect system wide folders
 			if (\in_array($root[1], $this->excludedPaths)) {
 				return true;
