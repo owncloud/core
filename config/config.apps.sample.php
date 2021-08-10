@@ -414,7 +414,7 @@ $CONFIG = [
  *
  * Possible keys: `wnd.logging.enable` BOOL
  *
- * Possible keys: `wnd.storage.testForHiddenMount` BOOL
+ * Possible keys: `wnd.fileInfo.parseAttrs.mode` STRING
  *
  * Possible keys: `wnd.in_memory_notifier.enable` BOOL
  *
@@ -427,6 +427,8 @@ $CONFIG = [
  * Possible keys: `wnd.activity.sendToSharees` BOOL
  *
  * Possible keys: `wnd.groupmembership.checkUserFirst` BOOL
+ *
+ * *Note* With WND 2.1.0, key `wnd.storage.testForHiddenMount` is obsolete and has been removed completely
  */
 
 /**
@@ -443,14 +445,25 @@ $CONFIG = [
 'wnd.logging.enable' => false,
 
 /**
- * Check for visible target mount folders when connecting
- * Ensure that the connectivity check verifies the mount point is visible.
- * This means the target folder is NOT hidden.
- * Setting this option to false can speed up the connectivity check by skipping
- * this step. It will be the admin's responsibility to ensure the mount
- * point is visible. This setting will affect all the WND mount points.
+ * The way file attributes for folders and files will be handled
+ * There are 3 possible values: "none", "stat" and "getxattr":
+ *
+ * - "stat". This is the default if the option is missing or has an invalid value
+ *   This means that the file attributes will be evaluated only for files, NOT for folders
+ *   Folders will be shown even if the "hidden" file attribute * is set.
+ *
+ * - "none". This means that the file attributes won't be evaluated in any case. Both
+ *   hidden files and folders will be shown, and you can write on read-only files
+ *   (the action is available in ownCloud, but it will fail in the SMB server).
+ *
+ * - "getxattr". This means that file attributes will be evaluated always. However, due to
+ *   problems in recent libsmbclient versions (4.11+, it might be earlier) it will cause
+ *   malfunctions in ownCloud; permissions are wrongly evaluated. So far, this mode works
+ *   with libsmbclient 4.7 but not with 4.11+ (not tested with any version in between).
+ *
+ * Note that the ACLs (if active) will be evaluated and applied on top of this mechanism.
  */
-'wnd.storage.testForHiddenMount' => true,
+'wnd.fileInfo.parseAttrs.mode' => stat,
 
 /**
  * Enable or disable the WND in-memory notifier for password changes
