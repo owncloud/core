@@ -130,6 +130,37 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
+	 * @Then as user :user a new calendar with name :calendar should be present in the WebDAV API Response
+	 *
+	 * @param string $user
+	 * @param string $calendar
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userCalendarShouldBePresentInTheWebdavApiResponse($user, $calendar) {
+		$user = $this->featureContext->getActualUsername($user);
+		$normalizedUser = $this->featureContext->normalizeUsername($user);
+		$calendar = $this->featureContext->substituteInLineCodes(
+			$calendar,
+			$normalizedUser
+		);
+		$davUrl = $this->featureContext->getBaseUrl()
+			. "/remote.php/dav/calendars/$calendar";
+
+		$this->response = HttpRequestHelper::get(
+			$davUrl,
+			$this->featureContext->getStepLineRef(),
+			$user,
+			$this->featureContext->getPasswordForUser($user)
+		);
+		$this->featureContext->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
+		$this->theCalDavHttpStatusCodeShouldBe("200");
+	}
+
+	/**
 	 * @Given user :user has successfully created a calendar named :name
 	 *
 	 * @param string $user

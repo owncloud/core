@@ -113,6 +113,37 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
+	 * @Then as user :user a new address book with name :addressBook should be present in the WebDAV API Response
+	 *
+	 * @param string $user
+	 * @param string $addressBook
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userAddressBookShouldBePresentInTheWebdavApiResponse($user, $addressBook) {
+		$user = $this->featureContext->getActualUsername($user);
+		$normalizedUser = $this->featureContext->normalizeUsername($user);
+		$addressBook = $this->featureContext->substituteInLineCodes(
+			$addressBook,
+			$normalizedUser
+		);
+		$davUrl = $this->featureContext->getBaseUrl()
+			. "/remote.php/dav/addressbooks/users/$addressBook";
+
+		$this->response = HttpRequestHelper::get(
+			$davUrl,
+			$this->featureContext->getStepLineRef(),
+			$user,
+			$this->featureContext->getPasswordForUser($user)
+		);
+		$this->featureContext->setResponseXml(
+			HttpRequestHelper::parseResponseAsXml($this->response)
+		);
+		$this->theCardDavHttpStatusCodeShouldBe(200);
+	}
+
+	/**
 	 * @Given user :user has successfully created an address book named :addressBook
 	 *
 	 * @param string $user

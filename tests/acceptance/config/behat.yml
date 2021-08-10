@@ -718,6 +718,8 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - CalDavContext:
+        - CardDavContext:
         - TransferOwnershipContext:
         - FederationContext:
         - WebDavPropertiesContext:
