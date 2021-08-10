@@ -10,6 +10,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Allow subadministrators to add users to groups they manage: <a href="https://github.com/owncloud/core/pull/39013">#39013</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: <a href="https://github.com/owncloud/core/issues/39034">#39034</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Show previews in profile picture setting, select from files: <a href="https://github.com/owncloud/core/pull/39067">#39067</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Do not try to delete the folder twice: <a href="https://github.com/owncloud/core/pull/39070">#39070</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Hash chunk(v2) filename: <a href="https://github.com/owncloud/core/pull/39088">#39088</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Close open menus if click is on an iFrame: <a href="https://github.com/owncloud/core/issues/39093">#39093</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
@@ -54,6 +55,16 @@
             <p>https://github.com/owncloud/enterprise/issues/4689<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39067<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Do not try to delete the folder twice: <a href="https://github.com/owncloud/core/pull/39070">#39070</a></p>
+            <p>Previously, when a folder was moved to the trashbin from an external storage, the usual action
+   was to copy the contents to the trashbin and then remove them from the source, and additionally
+   another remove operation on the source was triggered. This second delete request was
+   performed but the result was ignored, and the storages didn't log anything.With this change, this second delete request won't happen. The behaviour is still the same:
+   copy to the trashbin and then remove from the source.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39070<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Hash chunk(v2) filename: <a href="https://github.com/owncloud/core/pull/39088">#39088</a></p>

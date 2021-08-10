@@ -12,6 +12,7 @@ Summary
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
+* Bugfix - Do not try to delete the folder twice: [#39070](https://github.com/owncloud/core/pull/39070)
 * Bugfix - Hash chunk(v2) filename: [#39088](https://github.com/owncloud/core/pull/39088)
 * Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -57,6 +58,18 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4689
    https://github.com/owncloud/core/pull/39067
+
+* Bugfix - Do not try to delete the folder twice: [#39070](https://github.com/owncloud/core/pull/39070)
+
+   Previously, when a folder was moved to the trashbin from an external storage, the usual action
+   was to copy the contents to the trashbin and then remove them from the source, and additionally
+   another remove operation on the source was triggered. This second delete request was
+   performed but the result was ignored, and the storages didn't log anything.
+
+   With this change, this second delete request won't happen. The behaviour is still the same:
+   copy to the trashbin and then remove from the source.
+
+   https://github.com/owncloud/core/pull/39070
 
 * Bugfix - Hash chunk(v2) filename: [#39088](https://github.com/owncloud/core/pull/39088)
 
