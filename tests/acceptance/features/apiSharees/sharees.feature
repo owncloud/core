@@ -32,6 +32,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+
   Scenario Outline: Search without exact match not-exact casing
     Given using OCS API version "<ocs-api-version>"
     When user "Alice" gets the sharees using the sharing API with parameters
@@ -53,6 +54,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search only with group members - denied
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
@@ -98,6 +100,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search only with group members - no group as non-member
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
@@ -118,6 +121,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search only with membership groups - denied
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -137,6 +141,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search only with membership groups - denied but users match
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -157,6 +162,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search only with membership groups - allowed
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -177,6 +183,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search only with membership groups - allowed including users
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -198,6 +205,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search without exact match no iteration allowed
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
@@ -217,6 +225,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search with exact match no iteration allowed
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
@@ -237,6 +246,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Search with exact match group no iteration allowed
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
@@ -257,6 +267,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Try to search for users and groups when in a group that is excluded from sharing (could match both users and groups)
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
@@ -277,6 +288,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Try to search for users and groups when in a group that is excluded from sharing (exact match to a user)
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
@@ -297,6 +309,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Try to search for users and groups when in a group that is excluded from sharing (exact match to a group)
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
@@ -317,6 +330,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+
   Scenario Outline: Search with exact match
     Given using OCS API version "<ocs-api-version>"
     When user "Alice" gets the sharees using the sharing API with parameters
@@ -335,6 +349,7 @@ Feature: sharees
       | ocs-api-version | ocs-status | http-status |
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
+
 
   Scenario Outline: Search with exact match not-exact casing
     Given using OCS API version "<ocs-api-version>"
@@ -355,6 +370,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+
   Scenario Outline: Search with exact match not-exact casing group
     Given using OCS API version "<ocs-api-version>"
     When user "Alice" gets the sharees using the sharing API with parameters
@@ -373,6 +389,7 @@ Feature: sharees
       | ocs-api-version | ocs-status | http-status |
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
+
 
   Scenario Outline: Search with "self"
     Given using OCS API version "<ocs-api-version>"
@@ -393,6 +410,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+
   Scenario Outline: Remote sharee for files
     Given using OCS API version "<ocs-api-version>"
     When user "Alice" gets the sharees using the sharing API with parameters
@@ -412,6 +430,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+
   Scenario Outline: Remote sharee for calendars not allowed
     Given using OCS API version "<ocs-api-version>"
     When user "Alice" gets the sharees using the sharing API with parameters
@@ -430,6 +449,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Group sharees not returned when group sharing is disabled
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
@@ -475,6 +495,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Enumerate only group members - accept exact match from non-member groups
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
@@ -495,6 +516,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
+  @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Enumerate only group members - only show partial results from member groups
     Given using OCS API version "<ocs-api-version>"
     And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
@@ -515,7 +537,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @skipOnLDAP
+  @skipOnLDAP @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: Enumerate only group members - only accept exact group match from non-memberships
     Given using OCS API version "<ocs-api-version>"
     And group "ShareeGroupNonMember" has been created
@@ -536,6 +558,7 @@ Feature: sharees
       | ocs-api-version | ocs-status | http-status |
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
+
 
   Scenario Outline: Search without exact match such that the search string matches the user getting the sharees
     Given user "sharee2" has been created with default attributes and without skeleton files
@@ -560,7 +583,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @skipOnOcV10
+  @skipOnOcV10 @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: empty search for sharees when search min length is set to 0
     Given the administrator has updated system config key "user.search_min_length" with value "0"
     And user "sharee2" has been created with default attributes and without skeleton files
@@ -586,7 +609,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @skipOnOcV10.5 @skipOnOcV10.6.0
+  @skipOnOcV10.5 @skipOnOcV10.6.0 @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: empty search for sharees when search min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
     And user "sharee2" has been created with default attributes and without skeleton files
@@ -657,7 +680,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @skipOnOcV10
+  @skipOnOcV10 @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: search for sharees without search when min length is set to 0
     Given the administrator has updated system config key "user.search_min_length" with value "0"
     And user "sharee2" has been created with default attributes and without skeleton files
@@ -682,7 +705,7 @@ Feature: sharees
       | 1               | 100        | 200         |
       | 2               | 200        | 200         |
 
-  @skipOnOcV10.5 @skipOnOcV10.6.0
+  @skipOnOcV10.5 @skipOnOcV10.6.0 @notToImplementOnOCIS @issue-ocis-1317 @issue-ocis-1328
   Scenario Outline: search for sharees without search when min length is set to 2
     Given the administrator has updated system config key "user.search_min_length" with value "2"
     And user "sharee2" has been created with default attributes and without skeleton files
