@@ -360,8 +360,7 @@ class Util {
 			}
 
 			foreach ($this->excludedFullPaths as $excludedFullPathPath) {
-				if (fnmatch($excludedFullPathPath, $path)
-				) {
+				if (\fnmatch($excludedFullPathPath, $normalizedPath)) {
 					return true;
 				}
 			}
