@@ -32,14 +32,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
     @issue-ocis-reva-12
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @smokeTest @notToImplementOnOCIS @issue-ocis-2079
   Scenario Outline: Creating a new public link share of a file with password using the old public WebDAV API
@@ -132,14 +132,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
     @issue-ocis-reva-292
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
 
   Scenario Outline: Creating a new public link share of a folder using the default permissions only grants read access and can be accessed with no password or any password using the public WebDAV API
@@ -171,14 +171,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
     @issue-ocis-reva-12
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
 
   Scenario Outline: Creating a new public link share of a folder, with a password and accessing using the public WebDAV API
@@ -211,14 +211,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
     @issue-ocis-reva-292
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @smokeTest @issue-ocis-reva-294
   Scenario Outline: Getting the share information of public link share from the OCS API does not expose sensitive information
@@ -284,14 +284,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
     @issue-ocis-reva-41
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @issue-36442 @skipOnOcV10
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload disabled globally
@@ -312,14 +312,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079 @issue-36442 @skipOnOcV10
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
     @issue-36442 @skipOnOcV10
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @issue-36442 @skipOnOcV10
   Scenario Outline: Creating a public link share with create permissions defaults to read permissions when public upload is disabled globally and accessing using the public WebDAV api
@@ -340,14 +340,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
     @issue-ocis-reva-41
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @issue-36442 @skipOnOcV10
   Scenario Outline: Updating a public link share with read+create permissions defaults to read permissions when public upload is disabled globally and accessing using the public WebDAV API
@@ -370,14 +370,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
     @issue-ocis-reva-41
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @issue-36442 @skipOnOcV10
   Scenario Outline: Creating a public link share with read+create permissions defaults to read permissions when public upload is disabled globally and accessing  using the public WebDAV API
@@ -400,22 +400,22 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permission                | webdav_api_version |
-      | 1               | 100             | 200              | create                    | old       |
-      | 2               | 200             | 200              | create                    | old       |
-      | 1               | 100             | 200              | create,read,update        | old       |
-      | 2               | 200             | 200              | create,read,update        | old       |
-      | 1               | 100             | 200              | read,create,update,delete | old       |
-      | 2               | 200             | 200              | read,create,update,delete | old       |
+      | 1               | 100             | 200              | create                    | old                |
+      | 2               | 200             | 200              | create                    | old                |
+      | 1               | 100             | 200              | create,read,update        | old                |
+      | 2               | 200             | 200              | create,read,update        | old                |
+      | 1               | 100             | 200              | read,create,update,delete | old                |
+      | 2               | 200             | 200              | read,create,update,delete | old                |
 
 
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | permission                | webdav_api_version |
-      | 1               | 100             | 200              | create                    | new       |
-      | 2               | 200             | 200              | create                    | new       |
-      | 1               | 100             | 200              | create,read,update        | new       |
-      | 2               | 200             | 200              | create,read,update        | new       |
-      | 1               | 100             | 200              | read,create,update,delete | new       |
-      | 2               | 200             | 200              | read,create,update,delete | new       |
+      | 1               | 100             | 200              | create                    | new                |
+      | 2               | 200             | 200              | create                    | new                |
+      | 1               | 100             | 200              | create,read,update        | new                |
+      | 2               | 200             | 200              | create,read,update        | new                |
+      | 1               | 100             | 200              | read,create,update,delete | new                |
+      | 2               | 200             | 200              | read,create,update,delete | new                |
 
   @issue-ocis-reva-41
   Scenario Outline: Creating a link share with read+update+create permissions defaults to read permissions when public upload is disabled globally and accessing using the public webDAV API
@@ -436,14 +436,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
 
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @issue-ocis-reva-41
   Scenario Outline: Creating a link share with update permissions defaults to read permissions when public upload disabled globally
@@ -479,14 +479,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
 
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
 
   Scenario Outline: Creating a link share with upload permissions keeps it using the public WebDAV API
@@ -506,14 +506,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
 
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @issue-ocis-reva-283 @notToImplementOnOCIS
   Scenario Outline: Do not allow public sharing of the root on ownCloud10
@@ -554,14 +554,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
 
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
 
   Scenario Outline: user creates a public link share of a file with file name longer than 64 chars using the public WebDAV API
@@ -576,14 +576,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
 
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
 
   Scenario Outline: user creates a public link share of a folder with folder name longer than 64 chars and access using the public WebDAV API
@@ -600,14 +600,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | old       |
-      | 2               | 200             | old       |
+      | 1               | 100             | old                |
+      | 2               | 200             | old                |
 
 
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
-      | 1               | 100             | new       |
-      | 2               | 200             | new       |
+      | 1               | 100             | new                |
+      | 2               | 200             | new                |
 
   @issue-ocis-reva-41
   Scenario Outline: Create a public link with default expiration date set and max expiration date enforced and access using the public WebDAV API
@@ -643,14 +643,14 @@ Feature: create a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | webdav_api_version |
-      | 1               | 100             | 200              | old       |
-      | 2               | 200             | 200              | old       |
+      | 1               | 100             | 200              | old                |
+      | 2               | 200             | 200              | old                |
 
 
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code | webdav_api_version |
-      | 1               | 100             | 200              | new       |
-      | 2               | 200             | 200              | new       |
+      | 1               | 100             | 200              | new                |
+      | 2               | 200             | 200              | new                |
 
   @issue-ocis-reva-199
   Scenario Outline: Delete a folder that has been publicly shared and try to access using the public WebDAV API
@@ -662,7 +662,7 @@ Feature: create a public link share
     When user "Alice" deletes folder "PARENT" using the WebDAV API
     And the public download of file "/parent.txt" from inside the last public shared folder using the <webdav_api_version> public WebDAV API should fail with HTTP status code "404"
 
-  @notToImplementOnOCIS @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | webdav_api_version |
       | old                |
@@ -754,3 +754,32 @@ Feature: create a public link share
     Then as "Alice" file "/testFolder/file.txt" should exist
     And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
     And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
+
+
+  Scenario Outline: Set multiple expiration dates, the expired date shouldn't affect the future expiration date
+    Given using OCS API version "<ocs_api_version>"
+    And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    When user "Alice" creates a public link share using the sharing API with settings
+      | path               | /textfile0.txt |
+      | name               | link1          |
+      | expireDateAsString | 2050-09-12     |
+    And user "Alice" creates a public link share using the sharing API with settings
+      | path               | /textfile0.txt |
+      | name               | link2          |
+      | expireDateAsString | 2050-08-13     |
+    And the administrator expires the last created share using the testing API
+    Then the HTTP status code should be "<http_status_code>"
+    When user "Alice" gets all the shares from the file "textfile0.txt" using the sharing API
+    Then the HTTP status code should be "<http_status_code>"
+    And the OCS status code should be "<ocs_status_code>"
+    And the fields of the last response should not include
+      | name       | link2      |
+      | expiration | 2050-08-13 |
+    But the fields of the last response to user "Alice" should include
+      | name       | link1      |
+      | expiration | 2050-09-12 |
+    Examples:
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
