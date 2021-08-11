@@ -763,22 +763,21 @@ Feature: create a public link share
     When user "Alice" creates a public link share using the sharing API with settings
       | path               | /textfile0.txt |
       | name               | link1          |
-      | expireDateAsString | 2050-09-12     |
+      | expireDateAsString | +6 days        |
     And user "Alice" creates a public link share using the sharing API with settings
       | path               | /textfile0.txt |
       | name               | link2          |
-      | expireDateAsString | 2050-08-13     |
+      | expireDateAsString | +5 days        |
     And the administrator expires the last created share using the testing API
     Then the HTTP status code should be "<http_status_code>"
     When user "Alice" gets all the shares from the file "textfile0.txt" using the sharing API
     Then the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "<ocs_status_code>"
-    And the fields of the last response should not include
-      | name       | link2      |
-      | expiration | 2050-08-13 |
-    But the fields of the last response to user "Alice" should include
-      | name       | link1      |
-      | expiration | 2050-09-12 |
+    And the fields of the last response to user "Alice" should include
+      | name       | link1   |
+      | expiration | +6 days |
+    But the fields of the last response should not include
+      | name | link2 |
     Examples:
       | ocs_api_version | ocs_status_code | http_status_code |
       | 1               | 100             | 200              |
