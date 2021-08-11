@@ -128,10 +128,11 @@ class RequestHandlerController extends OCSController {
 			}
 			// FIXME this should be a method in the user management instead
 			\OCP\Util::writeLog('federatedfilesharing', 'shareWith before, ' . $shareWith, \OCP\Util::DEBUG);
+			$handled = false;
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
 				'preLoginNameUsedAsUserName',
-				['uid' => &$shareWith]
+				['uid' => &$shareWith, 'hasBeenHandled' => &$handled]
 			);
 			\OCP\Util::writeLog('federatedfilesharing', 'shareWith after, ' . $shareWith, \OCP\Util::DEBUG);
 			if (!$this->userManager->userExists($shareWith)) {

@@ -155,10 +155,11 @@ class Address {
 	protected function translateUid($uid) {
 		// FIXME this should be a method in the user management instead
 		// Move to a helper instead of C&P meanwhile?
+		$handled = false;
 		\OCP\Util::emitHook(
 			'\OCA\Files_Sharing\API\Server2Server',
 			'preLoginNameUsedAsUserName',
-			['uid' => &$uid]
+			['uid' => &$uid, 'hasBeenHandled' => &$handled]
 		);
 		return $uid;
 	}

@@ -354,6 +354,10 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 			throw new \Exception('key uid is expected to be set in $param');
 		}
 
+		if (isset($param['hasBeenHandled']) && $param['hasBeenHandled']) {
+			return;
+		}
+
 		$backends = \OC::$server->getUserManager()->getBackends();
 		foreach ($backends as $backend) {
 			if ($backend instanceof Database) {
@@ -361,6 +365,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 				$uid = $backend->loginName2UserName($param['uid']);
 				if ($uid !== false) {
 					$param['uid'] = $uid;
+					$param['hasBeenHandled'] = true;
 					return;
 				}
 			}
