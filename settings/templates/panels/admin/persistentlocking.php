@@ -21,6 +21,6 @@ script('settings', 'panels/persistentlocking');
 		   value="1" <?php if ($_['manualFileLockOnClientsEnabled'] === 'yes') {
 	print_unescaped('checked="checked"');
 } ?> />
-	<label for="manualFileLockOnClientsEnabled"><?php p($l->t('Enable manual file locking on clients'));?></label>
+	<label for="manualFileLockOnClientsEnabled"><?php p($l->t('Enable manual file locking in the web interface'));?></label>
 	<br/>
 </div>
