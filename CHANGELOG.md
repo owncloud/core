@@ -15,6 +15,7 @@ Summary
 * Bugfix - Do not try to delete the folder twice: [#39070](https://github.com/owncloud/core/pull/39070)
 * Bugfix - Hash chunk(v2) filename: [#39088](https://github.com/owncloud/core/pull/39088)
 * Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
+* Bugfix - Clarify the description of the manual file locking option: [#39106](https://github.com/owncloud/core/pull/39106)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
@@ -89,6 +90,14 @@ Details
 
    https://github.com/owncloud/core/issues/39093
    https://github.com/owncloud/core/pull/39094
+
+* Bugfix - Clarify the description of the manual file locking option: [#39106](https://github.com/owncloud/core/pull/39106)
+
+   The administrator can enable manual file locking in the admin settings. That enables manual
+   file locking on the web interface, not on all clients. The text has been changed to describe this
+   correctly.
+
+   https://github.com/owncloud/core/pull/39106
 
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 
