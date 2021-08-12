@@ -1084,6 +1084,13 @@ class Encryption extends Wrapper {
 	 */
 	protected function isVersion($path) {
 		$normalized = Filesystem::normalizePath($path);
+
+		// handle versions for spaces
+		$parts = \explode('/', $normalized);
+		if ($parts[1] === 'files_spaces' && $parts[3] === 'versions') {
+			return true;
+		}
+
 		return \substr($normalized, 0, \strlen('/files_versions/')) === '/files_versions/';
 	}
 }
