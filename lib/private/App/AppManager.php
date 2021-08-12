@@ -511,7 +511,11 @@ class AppManager implements IAppManager {
 		];
 
 		// cache results for a day
-		$this->appInfo->set($appId, $data, 86400);
+		$appIdData = $this->appInfo->get($appId);
+		if ($appIdData === null || version_compare($appIdData['info']['version'], $info['version']) === -1) {
+			// if no data is cached for the appId or the new one has a higher version, update cache
+			$this->appInfo->set($appId, $data, 86400);
+		}
 		$this->appInfo->set($file, $data, 86400);
 
 		return $info;
