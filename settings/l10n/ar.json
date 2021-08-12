@@ -263,7 +263,6 @@
     "Manual File Locking" : "قفل الملفات بشكل يدوي",
     "Default timeout for the locks if not specified (in seconds)" : "المهلة الافتراضية للأقفال في حال لم يقع تحديدها (بالثواني)",
     "Maximum timeout for the locks (in seconds)" : "المهلة القصوى للأقفال (بالثواني)",
-    "Enable manual file locking on clients" : "تفعيل قفل الملفات يدويًا على العملاء",
     "Security & setup warnings" : "تحذيرات الأمان والضبط",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "لا يبدو أنه تم إعداد php بشكل صحيح للاستعلام عن متغيرات بيئة النظام. ويُرجع الاختبار مع getenv(\"PATH\") استجابة فارغة فقط.",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "يُرجى فحص <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">مستندات التثبيت ↗</a> للاطلاع على ملاحظات تكوين php وتكوين php للخادم، لا سيما عند استخدام php-fpm.",

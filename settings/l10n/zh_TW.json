@@ -268,7 +268,6 @@
     "Manual File Locking" : "手動檔案鎖定",
     "Default timeout for the locks if not specified (in seconds)" : "未指定鎖的默認超時（以秒為單位）",
     "Maximum timeout for the locks (in seconds)" : "鎖的最大超時時間（以秒為單位）",
-    "Enable manual file locking on clients" : "在客戶端上啟用手動檔案鎖定",
     "Security & setup warnings" : "安全及設定警告",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "PHP 看起來沒有設定完成，無法正確取得系統環境變數，getenv(\"PATH\") 回傳資料為空值",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "請您參考 <a target=\\\"_blank\\\" href=\\\"%s\\\">安裝文件手冊 ↗</a> 來確認php的設定值以及伺服器端的php設定，特別是當您使用php-fpm。",

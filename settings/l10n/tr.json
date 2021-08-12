@@ -263,7 +263,6 @@
     "Manual File Locking" : "Elle Dosya Kilitleme",
     "Default timeout for the locks if not specified (in seconds)" : "Belirtilmemişse kilitler için varsayılan zaman aşımı (saniye cinsinden)",
     "Maximum timeout for the locks (in seconds)" : "Kilitler için maksimum zaman aşımı (saniye cinsinden)",
-    "Enable manual file locking on clients" : "İstemcilerde elle dosya kilitlemeyi etkinleştirin",
     "Security & setup warnings" : "Güvenlik ve kurulum uyarıları",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "PHP sistem değişkenleri sorgusuna uygun olarak ayarlanmamış görünüyor. getenv(\"PATH\") komutu sadece boş bir cevap döndürüyor.",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "Lütfen php yapılandırma notları ve özellikler php-fpm kullanırken sunucu php yapılandırması için <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">kurulum belgelendirmesine ↗</a> bakın.",

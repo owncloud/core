@@ -266,7 +266,6 @@ OC.L10N.register(
     "Manual File Locking" : "Bloqueo manual de ficheiros",
     "Default timeout for the locks if not specified (in seconds)" : "Tempo de espera predeterminado dos bloqueos se non se especifica (en segundos)",
     "Maximum timeout for the locks (in seconds)" : "Tempo máximo de espera para os bloqueos (en segundos)",
-    "Enable manual file locking on clients" : "Activar o bloqueo manual de ficheiros nos clientes",
     "Security & setup warnings" : "Avisos de seguridade e configuración",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "Semella que PHP non está configurado correctamente para consultar as variábeis de contorno do sistema. A proba con getenv(\"PATH\") só devolve unha resposta baleira.",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "Revise a <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentación de instalación ↗</a> para as notas de configuración PHP e a configuración PHP do seu servidor, especialmente cando se está a empregar php-fpm",

@@ -261,7 +261,6 @@
     "Manual File Locking" : "Manuelles Sperren von Dateien",
     "Default timeout for the locks if not specified (in seconds)" : "Standard-Timeout für die Sperre, falls nicht angegeben (in Sekunden)",
     "Maximum timeout for the locks (in seconds)" : "Maximaler-Timeout für die Sperre von Dateien",
-    "Enable manual file locking on clients" : "Manuelle Dateisperre auf Clients aktivieren",
     "Security & setup warnings" : "Sicherheits- & Einrichtungswarnungen",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "PHP scheint zur Abfrage von Systemumgebungsvariablen nicht richtig eingerichtet zu sein. Der Test mit getenv (\"PATH\") liefert nur eine leere Antwort zurück.",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "Bitte schau in der <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">Installationsdokumentation ↗</a>auf Hinweise zur PHP-Konfiguration, sowie die PHP-Konfiguration Deines Servers, insbesondere dann, wenn Du PHP-FPM einsetzt.",

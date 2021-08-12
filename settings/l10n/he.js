@@ -265,7 +265,6 @@ OC.L10N.register(
     "Manual File Locking" : "נעילת קובץ ידנית",
     "Default timeout for the locks if not specified (in seconds)" : "זמן ברירת מחדל לנעילה אם לא הוגדר (בשניות)",
     "Maximum timeout for the locks (in seconds)" : "זמן מרבי לנעילה (בשניות)",
-    "Enable manual file locking on clients" : "מאפשר נעילת קובץ ידנית ללקוחות",
     "Security & setup warnings" : "הזהרות אבטחה והתקנה",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response.",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "יש לבדוק את <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">הגדרות ההתקנה ↗</a> אחר הערות תצורת php ותצורת php של השרת שלך, בעיקר כשמשתמשים ב- php-fpm.",

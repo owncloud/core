@@ -269,7 +269,6 @@ OC.L10N.register(
     "Manual File Locking" : "ล็อคไฟล์ด้วยตนเอง",
     "Default timeout for the locks if not specified (in seconds)" : "ค่าหมดเวลาเริ่มต้นสำหรับล็อคกรณีไม่ได้ระบุ (วินาที)",
     "Maximum timeout for the locks (in seconds)" : "การหมดเวลาสูงสุดสำหรับการล็อค (วินาที)",
-    "Enable manual file locking on clients" : "เปิดใช้งานการล็อกไฟล์ด้วยตนเองบนไคลเอนต์",
     "Security & setup warnings" : "คำเตือนความปลอดภัยและการติดตั้ง",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "ไม่ได้ติดตั้งphp อย่างถูกต้องค้นหาตัวแปรสภาพแวดล้อมของระบบการทดสอบกับ getenv(\"PATH\") ส่งกลับเฉพาะการตอบสนองที่ว่างเปล่า",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "กรุณาตรวจสอบ <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">เอกสารการติดตั้ง </a> สำหรับบันทึกการตั้งค่าและการกำหนดค่าของ PHP เซิร์ฟเวอร์ของคุณโดยเฉพาะอย่างยิ่งเมื่อใช้ PHP-FPM",
