@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e5492603749e3e30ec4154c351de78e",
+    "content-hash": "e86161bd032c750f32547e75866674f3",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -265,52 +265,6 @@
                 "source": "https://github.com/DeepDiver1975/PHPZipStreamer/tree/master"
             },
             "time": "2020-07-21T07:45:14+00:00"
-        },
-        {
-            "name": "deepdiver1975/tarstreamer",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/owncloud/TarStreamer.git",
-                "reference": "ad48505d1ab54a8e94e6b1cc5297bbed72e956de"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/ad48505d1ab54a8e94e6b1cc5297bbed72e956de",
-                "reference": "ad48505d1ab54a8e94e6b1cc5297bbed72e956de",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "pear/archive_tar": "~1.4",
-                "pear/pear-core-minimal": "v1.10.10",
-                "phpunit/phpunit": "^7.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ownCloud\\TarStreamer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A library for dynamically streaming dynamic tar files without the need to have the complete file stored on the server.",
-            "homepage": "https://github.com/owncloud/TarStreamer",
-            "keywords": [
-                "archive",
-                "php",
-                "stream",
-                "tar"
-            ],
-            "support": {
-                "issues": "https://github.com/owncloud/TarStreamer/issues",
-                "source": "https://github.com/owncloud/TarStreamer/tree/master"
-            },
-            "time": "2020-01-08T09:55:35+00:00"
         },
         {
             "name": "dg/composer-cleaner",
@@ -1835,6 +1789,52 @@
                 "source": "https://github.com/opis/closure/tree/3.6.2"
             },
             "time": "2021-04-09T13:42:10+00:00"
+        },
+        {
+            "name": "owncloud/tarstreamer",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/owncloud/TarStreamer.git",
+                "reference": "ad48505d1ab54a8e94e6b1cc5297bbed72e956de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/owncloud/TarStreamer/zipball/ad48505d1ab54a8e94e6b1cc5297bbed72e956de",
+                "reference": "ad48505d1ab54a8e94e6b1cc5297bbed72e956de",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "pear/archive_tar": "~1.4",
+                "pear/pear-core-minimal": "v1.10.10",
+                "phpunit/phpunit": "^7.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ownCloud\\TarStreamer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A library for dynamically streaming dynamic tar files without the need to have the complete file stored on the server.",
+            "homepage": "https://github.com/owncloud/TarStreamer",
+            "keywords": [
+                "archive",
+                "php",
+                "stream",
+                "tar"
+            ],
+            "support": {
+                "issues": "https://github.com/owncloud/TarStreamer/issues",
+                "source": "https://github.com/owncloud/TarStreamer/tree/master"
+            },
+            "time": "2020-01-08T09:55:35+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",
