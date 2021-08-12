@@ -2872,7 +2872,7 @@ trait Sharing {
 		$offeredBy = $this->getActualUsername($offeredBy);
 
 		$dataResponded = $this->getAllSharesSharedWithUser($user);
-		$shareId = null;
+		$shareIds = [];
 		foreach ($dataResponded as $shareElement) {
 			$shareFolder = \trim(
 				SetupHelper::getSystemConfigValue('share_folder', $this->getStepLineRef())
@@ -2906,28 +2906,29 @@ trait Sharing {
 				&& (string) $shareElement['uid_owner'] === $offeredBy
 				&& (string) $shareElement['path'] === $share
 			) {
-				$shareId = (string) $shareElement['id'];
-				break;
+				array_push($shareIds, (string) $shareElement['id']);
 			}
 		}
-		Assert::assertNotNull(
-			$shareId,
+		Assert::assertNotEmpty(
+			$shareIds,
 			__METHOD__ . " could not find share $share, offered by $offeredBy to $user"
 		);
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
-			"/shares/pending/$shareId";
-		if (\substr($action, 0, 7) === "decline") {
-			$httpRequestMethod = "DELETE";
-		} elseif (\substr($action, 0, 6) === "accept") {
-			$httpRequestMethod = "POST";
-		}
+		foreach($shareIds as $shareId) {
+			$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
+				"/shares/pending/$shareId";
+			if (\substr($action, 0, 7) === "decline") {
+				$httpRequestMethod = "DELETE";
+			} elseif (\substr($action, 0, 6) === "accept") {
+				$httpRequestMethod = "POST";
+			}
 
-		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
-			$user,
-			$httpRequestMethod,
-			$url,
-			null
-		);
+			$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
+				$user,
+				$httpRequestMethod,
+				$url,
+				null
+			);
+		}
 	}
 
 	/**
