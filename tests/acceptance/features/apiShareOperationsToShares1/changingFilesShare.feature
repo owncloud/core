@@ -24,7 +24,7 @@ Feature: sharing
       | old              |
       | new              |
 
-  @smokeTest @files_trashbin-app-required
+  @smokeTest @files_trashbin-app-required @notToImplementOnOCIS
   Scenario Outline: moving a file out of a share as recipient creates a backup for the owner
     Given using <dav-path-version> DAV path
     And user "Alice" has created folder "/shared"
@@ -42,7 +42,7 @@ Feature: sharing
       | old              |
       | new              |
 
-  @files_trashbin-app-required
+  @files_trashbin-app-required @notToImplementOnOCIS
   Scenario Outline: moving a folder out of a share as recipient creates a backup for the owner
     Given using <dav-path-version> DAV path
     And user "Alice" has created folder "/shared"

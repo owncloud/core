@@ -29,8 +29,8 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-ocis-1289
-  Scenario Outline: keep group permissions in sync
+  @issue-ocis-1289 @notToImplementOnOCIS
+  Scenario Outline: keep group permissions in sync when the share is moved to another folder by the receiver and then the sharer updates the permissions
     Given using OCS API version "<ocs_api_version>"
     And user "Brian" has been created with default attributes and without skeleton files
     And group "grp1" has been created
@@ -62,6 +62,41 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+
+  @issue-ocis-1289
+  Scenario Outline: keep group permissions in sync when the share is renamed by the receiver and then the permissions are updated by sharer
+    Given using OCS API version "<ocs_api_version>"
+    And user "Brian" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
+    And user "Alice" has shared file "textfile0.txt" with group "grp1"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
+    And user "Brian" has moved file "/Shares/textfile0.txt" to "/Shares/textfile_new.txt"
+    When user "Alice" updates the last share using the sharing API with
+      | permissions | read |
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
+      | id                | A_STRING              |
+      | item_type         | file                  |
+      | item_source       | A_STRING              |
+      | share_type        | group                 |
+      | file_source       | A_STRING              |
+      | file_target       | /Shares/textfile0.txt |
+      | permissions       | read                  |
+      | stime             | A_NUMBER              |
+      | storage           | A_STRING              |
+      | mail_send         | 0                     |
+      | uid_owner         | %username%            |
+      | displayname_owner | %displayname%         |
+      | mimetype          | text/plain            |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
 
   Scenario Outline: Cannot set permissions to zero
     Given using OCS API version "<ocs_api_version>"
@@ -233,6 +268,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
 
   Scenario Outline: Increasing permissions is allowed for owner
     Given using OCS API version "<ocs_api_version>"
