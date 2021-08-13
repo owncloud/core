@@ -755,7 +755,7 @@ Feature: create a public link share
     And as "Alice" the mtime of the file "testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
     And the mtime of file "file.txt" in the last shared public link using the WebDAV API should be "Thu, 08 Aug 2019 04:18:13 GMT"
 
-
+  @notToImplementOnOCIS
   Scenario Outline: Set multiple expiration dates, the expired date shouldn't affect the future expiration date
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_enforce_expire_date" of app "core" has been set to "yes"
