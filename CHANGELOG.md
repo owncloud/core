@@ -20,6 +20,7 @@ Summary
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
+* Enhancement - Special user groups can break persistent locks: [#38222](https://github.com/owncloud/core/pull/38222)
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 * Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: [#38991](https://github.com/owncloud/core/issues/38991)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
@@ -133,6 +134,13 @@ Details
    https://github.com/owncloud/core/pull/39079
    https://symfony.com/blog/symfony-4-4-27-released
    https://symfony.com/blog/symfony-4-4-29-released
+
+* Enhancement - Special user groups can break persistent locks: [#38222](https://github.com/owncloud/core/pull/38222)
+
+   Not only the owner of a lock can unlock a resource but the lock breaker groups are allowed to break
+   locks as well.
+
+   https://github.com/owncloud/core/pull/38222
 
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 
