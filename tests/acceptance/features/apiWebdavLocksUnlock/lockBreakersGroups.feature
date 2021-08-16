@@ -1,4 +1,4 @@
-@api
+@api @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: UNLOCK locked items
 
   Background:
