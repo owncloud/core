@@ -60,6 +60,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 
 	protected $logLevelId = 'loglevel';
 
+	protected $lockBreakerXpath = '//div[@id="persistentlocking"]/p[@id="lock-breakers"]/div//li[contains(@class, "select2-search-field")]';
+	protected $lockBreakerGroups = '//div[@id="persistentlocking"]/p[@id="lock-breakers"]/div//li[contains(@class, "select2-search-choice")]';
+
 	protected $ownCloudVersionXpath = '//td[text() = "version"]/following-sibling::td';
 	protected $ownCloudVersionStringXpath = '//td[text() = "versionstring"]/following-sibling::td';
 
@@ -299,5 +302,42 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 			$this->ownCloudVersionStringXpath,
 			$timeout_msec
 		);
+	}
+
+	/**
+	 * add group to lock breakers group
+	 *
+	 * @param Session $session
+	 * @param string $groupName
+	 *
+	 * @return void
+	 */
+	public function addGroupLockBreakersGroup(
+		Session $session,
+		$groupName
+	) {
+		$this->getPage('AdminSharingSettingsPage')->addGroupToInputField($groupName, $this->lockBreakerXpath);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * get lock breakers group
+	 *
+	 * @return array
+	 */
+	public function getLockBreakersGroups() {
+		$this->waitTillElementIsNotNull($this->lockBreakerGroups);
+		$groupList = $this->findAll("xpath", $this->lockBreakerGroups);
+		$this->assertElementNotNull(
+			$groupList,
+			__METHOD__ .
+			" xpath $this->lockBreakerGroups " .
+			"could not find xpath for lock breaker groups"
+		);
+
+		foreach ($groupList as $group) {
+			$groups[] = $this->getTrimmedText($group);
+		}
+		return $groups;
 	}
 }

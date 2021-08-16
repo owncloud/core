@@ -40,7 +40,7 @@ class AppConfigurationContext implements Context {
 	private $featureContext;
 
 	/**
-	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)"$/
+	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $parameter
 	 * @param string $app
@@ -53,6 +53,9 @@ class AppConfigurationContext implements Context {
 		$app,
 		$value
 	) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$value = \trim($value, $value[0]);
 		$this->modifyAppConfig($app, $parameter, $value);
 	}
 
@@ -72,7 +75,7 @@ class AppConfigurationContext implements Context {
 			return;
 		}
 		$value = \trim($value, $value[0]);
-		$this->adminSetsServerParameterToUsingAPI($parameter, $app, $value);
+		$this->modifyAppConfig($app, $parameter, $value);
 	}
 
 	/**
