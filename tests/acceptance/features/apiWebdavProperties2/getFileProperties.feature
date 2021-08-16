@@ -232,15 +232,21 @@ Feature: get file properties
       | old         |
       | new         |
 
-  @issue-ocis-reva-163
+
   Scenario Outline: Do a PROPFIND to a non-existing URL
     When user "Alice" requests "<url>" with "PROPFIND" using basic auth
     Then the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message>"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
+    @skipOnOcis
     Examples:
       | url                                  | message                                      |
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |
       | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |
+    @skipOnOcV10
+    Examples:
+      | url                                  | message                                  |
+      | /remote.php/dav/files/does-not-exist | Resource /users/does-not-exist not found |
+      | /remote.php/dav/does-not-exist       | File not found in root                   |
 
   @issue-ocis-reva-217
   Scenario: add, receive multiple custom meta properties to a file
