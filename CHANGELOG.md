@@ -116,11 +116,12 @@ Details
 
    The following have been updated: - doctrine/cache (2.0.3 to 2.1.1) - mikey179/vfsstream
    (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.12.0) - pear/archive_tar (1.4.13 to
-   1.4.14)
+   1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.10)
 
    https://github.com/owncloud/core/pull/39030
    https://github.com/owncloud/core/pull/39047
    https://github.com/owncloud/core/pull/39065
+   https://github.com/owncloud/core/pull/39116
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
