@@ -328,6 +328,41 @@ class TransferOwnershipTest extends TestCase {
 		$this->assertCount($expectedTargetShareCount, $targetShares);
 	}
 
+	public function testTransferUserFolderToNewUser() {
+		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
+		$input = [
+			'source-user' => $this->sourceUser->getUID(),
+			'destination-user' => $this->unloggedUser->getUID(),
+			'--destination-use-user-folder' => ' '
+		];
+		$this->commandTester->execute($input);
+		$this->assertSame(0, $this->commandTester->getStatusCode());
+		$output = $this->commandTester->getDisplay();
+
+		$this->assertStringContainsString('Transferring files to unlogged-user', $output);
+		$sourceShares = $this->shareManager->getSharesBy($this->sourceUser->getUID(), Share::SHARE_TYPE_USER);
+		$targetShares = $this->shareManager->getSharesBy($this->unloggedUser->getUID(), Share::SHARE_TYPE_USER);
+		$this->assertCount(1, $sourceShares);
+		$this->assertCount(4, $targetShares);
+	}
+
+	public function testTransferUserFolderToExistingUserError() {
+		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
+		$input = [
+			'source-user' => $this->sourceUser->getUID(),
+			'destination-user' => $this->targetUser->getUID(),
+			'--destination-use-user-folder' => ' '
+		];
+		$this->commandTester->execute($input);
+
+		# assert failed
+		$this->assertSame(1, $this->commandTester->getStatusCode());
+
+		# check output
+		$output = $this->commandTester->getDisplay();
+		$this->assertStringContainsString('Cannot use top-level user folder as destination folder if user already logged in', $output);
+	}
+
 	public function testTransferAllFilesToUnlogged() {
 		$this->encryptionManager->method('isReadyForUser')->willReturn(true);
 		$input = [
