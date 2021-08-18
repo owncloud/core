@@ -271,6 +271,8 @@ OC.L10N.register(
     "Default timeout for the locks if not specified (in seconds)" : "Mbarim kohe parazgjedhje për kyçje, nëse s’është specifikuar (në sekonda)",
     "Maximum timeout for the locks (in seconds)" : "Maksimum mbarimi kohe (në sekonda)",
     "Enable manual file locking in the web interface" : "Aktivizoni kyçje kartelash dorazi që nga ndërfaqja web",
+    "Allow users in the following groups to unlock files they have access to:" : "Lejoni përdorues në grupet vijuese të shkyçin kartela te të cilat kanë hyrje:",
+    "Users in these groups can unlock files even if they are not the owner of the lock." : "Përdoruesit në këto grupe mund të shkyçin kartela edhe nëse s’janë autori i kyçjes.",
     "Security & setup warnings" : "Sinjalizime sigurie & rregullimi",
     "php does not seem to be setup properly to query system environment variables. The test with getenv(\"PATH\") only returns an empty response." : "PHP-ja nuk duket të jetë rregulluar si duhet për të kërkuar ndryshore mjedisi sistemi. Testi me getenv(\"PATH\") kthen vetëm një përgjigje të zbrazët.",
     "Please check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm." : "Ju lutemi, kontrolloni <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentimin e instalimit ↗</a> për shënime rreth formësimit të PHP-së dhe formësimin e PHP-së në shërbyesin tuaj, veçanërisht kur përdoret using php-fpm.",
