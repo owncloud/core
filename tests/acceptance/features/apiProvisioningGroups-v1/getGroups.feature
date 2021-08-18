@@ -71,7 +71,7 @@ Feature: get groups
       | sysusers          |
       | sailing-lovers    |
 
-
+  @notToImplementOnOCIS
   Scenario: subadmin gets all the groups
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created

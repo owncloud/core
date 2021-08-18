@@ -127,7 +127,7 @@ Feature: edit users
     And the attributes of user "brand-new-user" returned by the API should include
       | quota definition | default |
     And the quota definition of user "brand-new-user" should be "default"
-
+  @notToImplementOnOCIS
   Scenario: the administrator can edit user information with admin permissions
     Given these users have been created with default attributes and without skeleton files:
       | username            |
@@ -139,7 +139,7 @@ Feature: edit users
     Then the display name of user "another-admin" should be "Anne Brown"
     And the email address of user "another-admin" should be "another-admin@example.com"
     And the quota definition of user "another-admin" should be "12 MB"
-
+  @notToImplementOnOCIS
   Scenario: a subadmin should be able to edit user information with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -155,7 +155,7 @@ Feature: edit users
     Then the display name of user "another-subadmin" should be "Anne Brown"
     And the email address of user "another-subadmin" should be "brand-new-user@example.com"
     And the quota definition of user "another-subadmin" should be "12 MB"
-
+  @notToImplementOnOCIS
     Scenario: a subadmin should not be able to edit user information of another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

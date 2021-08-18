@@ -155,7 +155,7 @@ Feature: add user
       | 123      |
       | -123     |
       | 0.0      |
-
+  @notToImplementOnOCIS
   Scenario: subadmin should not be able to create a user
     Given user "brand-new-user" has been deleted
     And user "subadmin" has been created with default attributes and without skeleton files
@@ -174,7 +174,7 @@ Feature: add user
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "brand-new-user" should not exist
-
+  @notToImplementOnOCIS
   Scenario: subadmin should be able to create a new user into their group
     Given user "brand-new-user" has been deleted
     And user "subadmin" has been created with default attributes and without skeleton files
@@ -185,7 +185,7 @@ Feature: add user
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "brand-new-user" should exist
-
+  @notToImplementOnOCIS
   Scenario: subadmin should not be able to create a new user into other group
     Given user "brand-new-user" has been deleted
     And user "subadmin" has been created with default attributes and without skeleton files

@@ -52,7 +52,7 @@ Feature: get user groups
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: subadmin tries to get other groups of a user in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |

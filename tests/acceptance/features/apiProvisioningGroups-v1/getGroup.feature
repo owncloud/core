@@ -51,7 +51,7 @@ Feature: get group
       | CASE-SENSITIVE-GROUP | Case-Sensitive-Group |
       | CASE-SENSITIVE-GROUP | case-sensitive-group |
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: subadmin gets users in a group they are responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -68,7 +68,7 @@ Feature: get group
     And the users returned by the API should be
       | Alice |
       | Brian |
-
+  @notToImplementOnOCIS
   Scenario: subadmin tries to get users in a group they are not responsible for
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created

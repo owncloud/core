@@ -47,7 +47,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "Alice" should be disabled
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @notToImplementOnOCIS
   Scenario: Subadmin should not be able to disable an user not in their group
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -63,7 +63,7 @@ Feature: disable user
     And the HTTP status code should be "401"
     And user "Alice" should be enabled
 
-  @issue-31276 @skipOnOcV10
+  @issue-31276 @skipOnOcV10 @notToImplementOnOCIS
   Scenario: Subadmins should not be able to disable users that have admin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username      |
@@ -253,7 +253,7 @@ Feature: disable user
       | old         |
       | new         |
 
-
+  @notToImplementOnOCIS
   Scenario: Subadmin should be able to disable user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -268,7 +268,7 @@ Feature: disable user
     And the HTTP status code should be "200"
     And user "another-subadmin" should be disabled
 
-
+  @notToImplementOnOCIS
   Scenario: Subadmin should not be able to disable another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |

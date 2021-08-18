@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP
+@api @provisioning_api-app-required @skipOnLDAP @notToImplementOnOCIS
 Feature: create a subadmin
   As an admin
   I want to be able to make a user the subadmin of a group
@@ -47,9 +47,9 @@ Feature: create a subadmin
 
   Scenario: normal user should not be able to make another user a subadmin
     Given these users have been created with default attributes and without skeleton files:
-      | username       |
-      | Alice          |
-      | Brian          |
+      | username |
+      | Alice    |
+      | Brian    |
     And group "group101" has been created
     When user "Alice" makes user "Brian" a subadmin of group "group101" using the provisioning API
     Then the OCS status code should be "997"

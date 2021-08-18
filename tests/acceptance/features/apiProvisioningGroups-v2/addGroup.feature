@@ -118,7 +118,7 @@ Feature: add groups
 
   # A group name must not end in "/subadmins" because that would create ambiguity
   # with the endpoint for getting the subadmins of a group
-  @issue-31015 @skipOnOcV10
+  @issue-31015 @skipOnOcV10 @notToImplementOnOCIS
   Scenario: admin tries to create a group with name ending in "/subadmins"
     Given group "brand-new-group" has been created
     When the administrator tries to send a group creation request for group "priv/subadmins" using the provisioning API
@@ -140,7 +140,7 @@ Feature: add groups
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And group "brand-new-group" should not exist
-
+  @notToImplementOnOCIS
   Scenario: subadmin tries to create a group
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created

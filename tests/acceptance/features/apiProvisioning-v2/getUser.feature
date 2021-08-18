@@ -141,7 +141,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
-
+  @notToImplementOnOCIS
   Scenario: admin gets information of a user with admin permissions
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname    |
@@ -152,7 +152,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Admin Alice"
     And the quota definition returned by the API should be "default"
-
+  @notToImplementOnOCIS
   Scenario: a subadmin should be able to get information of a user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -167,7 +167,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Regular User"
     And the quota definition returned by the API should be "default"
-
+  @notToImplementOnOCIS
   Scenario: a subadmin should not be able to get information of another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
