@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
+* Bugfix - Update and upgrade words are inconsistent on the web UI: [#39028](https://github.com/owncloud/core/issues/39028)
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
 * Bugfix - Do not try to delete the folder twice: [#39070](https://github.com/owncloud/core/pull/39070)
@@ -40,6 +41,14 @@ Details
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 
    https://github.com/owncloud/core/pull/39013
+
+* Bugfix - Update and upgrade words are inconsistent on the web UI: [#39028](https://github.com/owncloud/core/issues/39028)
+
+   The words about "upgrade needed" on the web UI sometimes used "update". The upgrade messages
+   now consistently use the word "upgrade", which matches with the occ upgrade command.
+
+   https://github.com/owncloud/core/issues/39028
+   https://github.com/owncloud/core/pull/39032
 
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 
