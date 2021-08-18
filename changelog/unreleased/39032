@@ -1,0 +1,8 @@
+Bugfix: Update and upgrade words are inconsistent on the web UI
+
+The words about "upgrade needed" on the web UI sometimes used "update".
+The upgrade messages now consistently use the word "upgrade", which matches
+with the occ upgrade command.
+
+https://github.com/owncloud/core/issues/39028
+https://github.com/owncloud/core/pull/39032
