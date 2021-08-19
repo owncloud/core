@@ -314,9 +314,6 @@ OC.L10N.register(
     "Start update" : "Start forbetring",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "For å unngå tidsavbrot på store førekomstar, bruk fyljande kommando frå mappe med installasjon:",
     "Detailed logs" : "Detaljert logg",
-    "Update needed" : "Forbetring trengs",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Din instans har mange filer og/enn brukarar. For å sikre god oppgradering ver venleg å bruk kommandolinje oppdatering (occ upgrade).",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatisk oppgradering er skrudd av i config.php. For å oppgradere ver venleg å bruke kommando linje oppdatering (occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "For hjelp, sjå <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentasjon</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Denne %s førekomst er i forbetrings modus som kan ta ei stund.",
     "This page will refresh itself when the %s instance is available again." : "Denne sida vil lastast på ny når %s førekomsten er tilgjengeleg att."

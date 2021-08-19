@@ -276,7 +276,6 @@ OC.L10N.register(
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Assegureu-vos que heu fet una còpia de seguretat de la base de dades, del fitxer de configuració i de la carpeta de dades abans de continuar.",
     "Start update" : "Inicia l'actualització",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Per evitar que s'esgoti el temps d'espera en instalacions grans, pots en el seu lloc fer córrer la següent comanda en el directori d'instalació. ",
-    "Update needed" : "Actualització necessària",
     "This %s instance is currently in maintenance mode, which may take a while." : "Aquesta instància %s està actualment en manteniment i podria trigar una estona.",
     "This page will refresh itself when the %s instance is available again." : "Aquesta pàgina s'actualitzarà automàticament quan la instància %s estigui disponible de nou."
 },

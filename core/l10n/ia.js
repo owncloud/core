@@ -285,7 +285,6 @@ OC.L10N.register(
     "Start update" : "Initiar actualisation",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "In vice de isto, pro evitar tempores limite con installationes major, tu pote executar le sequente commando ab tu directorio de installation:",
     "Detailed logs" : "Registros detaliate",
-    "Update needed" : "Actualisation necessari",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Pro adjuta, vide le  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Iste installation de %s es actualmente in modo de mantenentia, lo que pote prender un certe tempore.",
     "This page will refresh itself when the %s instance is available again." : "Iste pagina se refrescara quando le installation de %s es disponibile de novo."

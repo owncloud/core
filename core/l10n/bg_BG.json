@@ -345,9 +345,6 @@
     "Start update" : "Започване на обновяването",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "За да избегнете изчакване с по-големи инсталации можете да изпълните следната команда от вашата инсталационна директория:",
     "Detailed logs" : "Подробни доклади",
-    "Update needed" : "Нужно е обновяване",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Излгежда, че вашата система може да съдържа много файлове и/или потребители. За да сте сигурни че процеса по обновяваше ще протече без проблеми, моля използвате обновяване през конзолен ред (occ upgrade).",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Автоматичното актуализиране е деактивирано в config.php. За да надстроите инстанцията си, моля използвайте командата в командния ред (occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "За помощ, разгледайте <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацията</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "В момента този %s се обновява, а това може да отнеме време.",
     "This page will refresh itself when the %s instance is available again." : "Тази страница ще се опресни автоматично, когато %s е отново на линия."

@@ -338,9 +338,6 @@
     "Start update" : "A frissítés megkezdése",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Nagyobb telepítések esetén úgy kerülhetők el az időtúllépések, hogy inkább a következő parancsot adja ki a telepítési alkönyvtárban:",
     "Detailed logs" : "Részletezett naplók",
-    "Update needed" : "Frissítés szükséges",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Úgy néz ki, hogy a kiszolgáló talán sok fájlt és/vagy felhasználót szolgál ki. Ahhoz, hogy a frissítés simán végbemenjen, kérjük, hogy használja a parancssor-ból a frissítőt  (occ upgrade). ",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Az automatikus frissítés ki van kapcsolva a config.php -ban. A frissítéshez, használja a parancssori frissítőt (occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Segítségért keresse fel a <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentációt</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Ez a %s folyamat éppen karbantartó üzemmódban van, ami eltarthat egy darabig.",
     "This page will refresh itself when the %s instance is available again." : "Ez az oldal frissíteni fogja magát amint a(z) %s példány ismét elérhető."

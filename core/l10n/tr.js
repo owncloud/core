@@ -349,9 +349,6 @@ OC.L10N.register(
     "Start update" : "Güncellemeyi başlat",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Daha büyük kurulumlarda zaman aşımlarının önüne geçmek için, kurulum dizininizden aşağıdaki komutu da çalıştırabilirsiniz:",
     "Detailed logs" : "Ayrıntılı günlükler",
-    "Update needed" : "Güncelleme gerekli",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Görünüşe göre örneğiniz çok sayıda dosya ve/veya kullanıcı barındırıyor. Sorunsuz bir güncellemeden emin olmak için, lütfen komut satırı güncelleyicisini (occ upgrade) kullanın.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Otomatik güncelleme config.php üzerinde kapalı. Örneğinizi güncellemek için lütfen komut satırı güncelleyicisini (occ upgrade) kullanın.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Yardım için  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">belgelendirmemize</a> bakabilirsiniz.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Bu %s örneği şu anda bakım kipinde, bu biraz zaman alabilir.",
     "This page will refresh itself when the %s instance is available again." : "Bu sayfa, %s örneği tekrar kullanılabilir olduğunda kendini yenileyecektir."

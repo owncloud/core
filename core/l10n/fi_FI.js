@@ -321,8 +321,6 @@ OC.L10N.register(
     "Start update" : "Käynnistä päivitys",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Välttääksesi aikakatkaisuja suurikokoisten asennusten kanssa, voit suorittaa vaihtoehtoisesti seuraavan komennon asennushakemistossa:",
     "Detailed logs" : "Yksityiskohtainen loki",
-    "Update needed" : "Päivitys vaaditaan",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automaattiset päivitykset on poistettu käytöstä config.php:ssä. Päivittääksesi asennuksesi, ole hyvä ja käytä päivittäjää komentoriviltä (occ upgrade)",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Apua saat <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentaatiosta</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Tämä %s-instanssi on parhaillaan huoltotilassa, huollossa saattaa kestää hetki.",
     "This page will refresh itself when the %s instance is available again." : "Tämä sivu päivittää itsensä, kun %s on jälleen käytettävissä."

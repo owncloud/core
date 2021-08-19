@@ -358,9 +358,6 @@
     "Start update" : "Aktualisierung starten",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Zur Vermeidung von Zeitüberschreitungen bei größeren Installationen kannst Du stattdessen den folgenden Befehl in Deinem Installationsverzeichnis ausführen:",
     "Detailed logs" : "Detaillierte Fehlermeldungen",
-    "Update needed" : "Update wird benötigt",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Es scheint, dass diese Installation viele Dateien und / oder Benutzer verwaltet. Um einen reibungslosen Upgrade-Prozess sicherzustellen, bitte die Kommandozeile benutzen (php occ upgrade).",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatische Aktualisierung ist in der Konfiguration deaktiviert. Zur Aktualisierung der Instanz bitte die Kommandozeile benutzen (php occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Für weitere Hilfe bitte in die <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">Dokumentation</a> schauen.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Diese %s-Instanz befindet sich gerade im Wartungsmodus, was eine Weile dauern kann.",
     "This page will refresh itself when the %s instance is available again." : "Diese Seite aktualisiert sich automatisch, wenn die %s-Instanz wieder verfügbar ist."

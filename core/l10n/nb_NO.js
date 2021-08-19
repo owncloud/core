@@ -335,9 +335,6 @@ OC.L10N.register(
     "Start update" : "Start oppdatering",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "For å unngå tidsavbrudd ved store installasjoner, kan du i stedet kjøre følgende kommando fra installasjonsmappen:",
     "Detailed logs" : "Detaljerte logger",
-    "Update needed" : "Oppdatering kreves",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Det ser ut som instansen inneholder mange filer og/eller brukere. Bruk kommandolinje-oppdatering (occ upgrade) for å sikre en smidig oppgradering.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatisk oppdatering er deaktivert i config.php. Bruk kommandolinje-oppdatering (occ upgrade) for å oppgradere instansen.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "For hjelp, se  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentasjonen</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Denne %s-instansen er for øyeblikket i vedlikeholdsmodus, noe som kan vare en stund.",
     "This page will refresh itself when the %s instance is available again." : "Denne siden vil bli lastet på nytt når %s-instansen er tilgjengelig igjen."

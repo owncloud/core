@@ -228,7 +228,6 @@ OC.L10N.register(
     "This means only administrators can use the instance." : "Tai reiškia, kad tik administratorius gali naudotis sistema.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Susisiekite su savo sistemos administratoriumi jei šis pranešimas nedingsta arba jei jis pasirodė netikėtai.",
     "Thank you for your patience." : "Dėkojame už jūsų kantrumą.",
-    "Cancel login" : "Atšaukti prisijungimą",
-    "Update needed" : "Reikalingas atnaujinimas"
+    "Cancel login" : "Atšaukti prisijungimą"
 },
 "nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 : n % 1 != 0 ? 2: 3);");

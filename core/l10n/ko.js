@@ -328,9 +328,6 @@ OC.L10N.register(
     "Start update" : "업데이트 시작",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "큰 파일을 설치하는 경우 시간이 초과될 수 있으므로, 설치 디렉터리에서 다음 명령을 실행하셔도 됩니다:",
     "Detailed logs" : "자세한 로그",
-    "Update needed" : "업데이트 필요",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "인스턴스에 너무 많은 파일이나 사용자가 있는 것 같습니다. 업그레이드를 순조롭게 진행하려면 명령행 업데이트 도구(occ upgrade)를 사용하십시오.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "config.php에서 자동 업데이트가 비활성화되어 있습니다. 인스턴스를 업그레이드하려면 명령줄 업데이트(occ upgrade)를 사용하십시오.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "도움말을 보려면 <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">문서</a>를 참조하십시오.",
     "This %s instance is currently in maintenance mode, which may take a while." : "이 %s 인스턴스는 현재 점검 모드입니다. 시간이 걸릴 수도 있습니다.",
     "This page will refresh itself when the %s instance is available again." : "%s 인스턴스를 다시 사용할 수 있으면 자동으로 새로 고칩니다."

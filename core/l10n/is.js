@@ -344,9 +344,6 @@ OC.L10N.register(
     "Start update" : "Hefja uppfærslu",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Til að forðast að falla á tímamörkum með stærri uppsetningar, getur þú í staðinn keyrt eftirfarandi skipun úr uppsetningarmöppunni:",
     "Detailed logs" : "Ítarlegir annálar",
-    "Update needed" : "Þarfnast uppfærslu",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Það lítur út fyrir að tilvikið þitt hýsi mjög margar skrár og/eða notendur. Til að uppfærslan gangi sem best fyrir sig, ættirðu að nota uppfærslutólið af skipanalínu (occ upgrade).",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Sjálfvirkar uppfærslur eru gerðar óvirkar í config.php. Til að uppfæra tilvikið þitt ættirðu að nota uppfærslutólið af skipanalínu (occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Til að fá hjálp er best að skoða fyrst  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">hjálparskjölin</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Þetta %s tilvik er nú í viðhaldsham, sem getur tekið smá stund.",
     "This page will refresh itself when the %s instance is available again." : "Þessi síða mun uppfæra sig þegar %s er í boði á ný."

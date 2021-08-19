@@ -347,9 +347,6 @@ OC.L10N.register(
     "Start update" : "开始更新",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "为进行避免较大的安装时超时，你可以在你的安装目录下运行下面的命令：",
     "Detailed logs" : "详细日志",
-    "Update needed" : "需要更新",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "您的实例可能包含较多文件和/或用户，为保证更新过程流畅，请使用命令行更新工具 (occ upgrade)。",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "自动更新在 config.php 中被禁用，请使用命令行更新工具 (occ upgrade) 升级您的实例。",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "获取更多帮助，请查看  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">文档</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "该 %s 实例当前处于维护模式，这将进行一些时间。",
     "This page will refresh itself when the %s instance is available again." : "当实例 %s 再次可用时这个页面将刷新。"

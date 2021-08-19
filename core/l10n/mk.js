@@ -341,9 +341,6 @@ OC.L10N.register(
     "Start update" : "Започни ја надградбата",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "За да избегнете тајмаут со поголеми инсталации, можете да ја извршите следната команда од инсталациониот директориум:",
     "Detailed logs" : "Детални логови",
-    "Update needed" : "Потребно е ажурирање",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Изгледа дека вашата инстанца може да биде хост на многу датотеки и/или корисници. За да обезбедите непречен процес на надградба, ве молиме користете ја командната линија  за ажурирање (occ upgrade).",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Автоматското ажурирање е оневозможено во config.php. За да ја надградите вашата инстанца, ве молиме користете го ажурирањето на командната линија (occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "За помош, видете ја <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацијата</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Оваа %s истанца е моментално во режим на одржување, што може да потрае некое време.",
     "This page will refresh itself when the %s instance is available again." : "This page will refresh itself when the %s instance is available again."

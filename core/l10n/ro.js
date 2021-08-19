@@ -248,7 +248,6 @@ OC.L10N.register(
     "The theme %s has been disabled." : "Tema %s a fost dezactivată.",
     "Start update" : "Începe actualizarea",
     "Detailed logs" : "Loguri detaliate",
-    "Update needed" : "E necesară actualizarea",
     "This %s instance is currently in maintenance mode, which may take a while." : "Instanța %s este acum în modul de mentenanță, ceea ce ar putea dura o vreme.",
     "This page will refresh itself when the %s instance is available again." : "Această pagină se va reîmprospăta atunci când %s instance e disponibil din nou."
 },

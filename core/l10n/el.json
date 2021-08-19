@@ -346,9 +346,6 @@
     "Start update" : "Έναρξη ενημέρωσης",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Για να αποφύγετε τη λήξη χρόνου με μεγαλύτερες εγκαταστάσεις, μπορείτε αντί αυτού να εκτελέσετε την ακόλουθη εντολή στον κατάλογο εγκατάστασης:",
     "Detailed logs" : "Λεπτομερές ιστορικό",
-    "Update needed" : "Απαιτείται ενημέρωση",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Φαίνεται ότι η εγκατάστασή σας ενδέχεται να φιλοξενεί πολλά αρχεία ή/και χρήστες. Για να εξασφαλίσετε μια ομαλή διαδικασία αναβάθμισης, παρακαλούμε χρησιμοποιήστε το πρόγραμμα ενημέρωσης μέσω γραμμής εντολών (occ upgrade).",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Η αυτόματη ενημέρωση είναι απενεργοποιημένη στο config.php. Για να αναβαθμίσετε την εγκατάστασή σας, παρακαλούμε χρησιμοποιήστε το πρόγραμμα ενημέρωσης μέσω γραμμής εντολών (occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Για βοήθεια, δείτε στην  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">τεκμηρίωση</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Αυτή %s η εγκατάσταση είναι σε κατάσταση συντήρησης, η οποία μπορεί να διαρκέσει κάποιο χρόνο.",
     "This page will refresh itself when the %s instance is available again." : "Αυτή η σελίδα θα ανανεωθεί από μόνη της όταν η %s εγκατάσταση είναι διαθέσιμη ξανά."

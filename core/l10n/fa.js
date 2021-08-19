@@ -316,9 +316,6 @@ OC.L10N.register(
     "Start update" : "اغاز به روز رسانی",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "برای جلوگیری از وقفه ها در راه اندازی های طولانی تر، به جای آن شما می توانید دستور زیر را از مسیر نصب خود اجرا کنید:",
     "Detailed logs" : "log های مفصل",
-    "Update needed" : "به روز رسانی مورد نیاز است",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "به نظر می رسد نمونه شما ممکن است میزبان بسیاری از پرونده ها و/یا کاربران باشد. برای اطمینان از یک روند ارتقا نرم، لطفا از به روز رسان خط فرمان استفاده کنید (ارتقاء occ).",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "به روز رسانی خودکار در config.php غیرفعال است. برای ارتقاء نمونه خود، لطفا از به روز رسان خط فرمان استفاده کنید (ارتقاء occ).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "برای کمک، <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a> را مشاهده کنید.",
     "This %s instance is currently in maintenance mode, which may take a while." : "این نمونه %s اکنون در حالت تعمیر است، که ممکن است زمانی طول بکشد.",
     "This page will refresh itself when the %s instance is available again." : "این صفحه زمانی که نمونه %s مجددا موجود باشد خود را refresh می کند."

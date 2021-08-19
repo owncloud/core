@@ -222,7 +222,6 @@ OC.L10N.register(
     "%s will be updated to version %s" : "%s tiks atjaunināta(s) uz %s versiju",
     "These apps will be updated:" : "Šīs lietotnes tiks atjauninātas:",
     "Start update" : "Sākt atjaunināšanu",
-    "Update needed" : "Nepieciešams atjauninājums",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Lai saņemtu palīdzību, skatiet <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentāciju</a>.",
     "This page will refresh itself when the %s instance is available again." : "Šī lapa tiks pārlādēta, kad %s instance atkal būs pieejama."
 },

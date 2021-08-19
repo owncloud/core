@@ -354,8 +354,6 @@ OC.L10N.register(
     "Start update" : "Rozpocznij aktualizację",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Aby uniknąć timeout-ów przy większych instalacjach, możesz zamiast tego uruchomić następującą komendę w katalogu Twojej instalacji:",
     "Detailed logs" : "Szczegółowe logi",
-    "Update needed" : "Wymagana aktualizacja",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatyczna aktualizacja jest wyłączona w config.php. Aby zaktualizować instalację proszę użyć aplikacją aktualizującą w linii poleceń (occ upgrade).",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Aby uzyskać pomoc, zajrzyj do <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentacji</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Ta %s instancja jest obecnie w trybie serwisowym, co może potrwać chwilę.",
     "This page will refresh itself when the %s instance is available again." : "Strona odświeży się gdy instancja %s będzie ponownie dostępna."

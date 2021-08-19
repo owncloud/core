@@ -360,9 +360,6 @@ OC.L10N.register(
     "Start update" : "開始升級",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "在大型安裝上，為了避免升級請求逾時，你也可以在安裝目錄執行下列指令：",
     "Detailed logs" : "詳細記錄",
-    "Update needed" : "需要更新",
-    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "看來您的實體可能託管許多文件和/或用戶。 為確保順利進行升級，請使用命令行更新程序處理（occ升級）。",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "config.php中已停用自動更新。 要升級您的實體，請使用命令行更新程序（occ升級）",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "需要幫助？請看<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">說明文件</a>。",
     "This %s instance is currently in maintenance mode, which may take a while." : "這個 %s 安裝目前處於維護模式，需要一段時間恢復。",
     "This page will refresh itself when the %s instance is available again." : "%s 安裝恢復可用之後，本頁會自動重新整理"
