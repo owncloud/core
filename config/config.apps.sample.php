@@ -414,7 +414,7 @@ $CONFIG = [
  *
  * Possible keys: `wnd.logging.enable` BOOL
  *
- * Possible keys: `wnd.storage.testForHiddenMount` BOOL
+ * Possible keys: `wnd.fileInfo.parseAttrs.mode` STRING
  *
  * Possible keys: `wnd.in_memory_notifier.enable` BOOL
  *
@@ -427,10 +427,12 @@ $CONFIG = [
  * Possible keys: `wnd.activity.sendToSharees` BOOL
  *
  * Possible keys: `wnd.groupmembership.checkUserFirst` BOOL
+ *
+ * *Note* With WND 2.1.0, key `wnd.storage.testForHiddenMount` is obsolete and has been removed completely.
  */
 
 /**
- * Mandatory listener reconnect to the database
+ * Mandatory Listener Reconnect to the Database
  * The listener will reconnect to the DB after given seconds. This will
  * prevent the listener to crash if the connection to the DB is closed after
  * being idle for a long time.
@@ -438,22 +440,33 @@ $CONFIG = [
 'wnd.listen.reconnectAfterTime' => 28800,
 
 /**
- * Enable additional debug logging for the WND app
+ * Enable Additional Debug Logging for the WND App
  */
 'wnd.logging.enable' => false,
 
 /**
- * Check for visible target mount folders when connecting
- * Ensure that the connectivity check verifies the mount point is visible.
- * This means the target folder is NOT hidden.
- * Setting this option to false can speed up the connectivity check by skipping
- * this step. It will be the admin's responsibility to ensure the mount
- * point is visible. This setting will affect all the WND mount points.
+ * The Way File Attributes for Folders and Files will be Handled
+ * There are 3 possible values: "none", "stat" and "getxattr":
+ *
+ * - "stat". This is the default if the option is missing or has an invalid value.
+ *   This means that the file attributes will be evaluated only for files, NOT for folders.
+ *   Folders will be shown even if the "hidden" file attribute is set.
+ *
+ * - "none". This means that the file attributes won't be evaluated in any case. Both
+ *   hidden files and folders will be shown, and you can write on read-only files
+ *   (the action is available in ownCloud, but it will fail in the SMB server).
+ *
+ * - "getxattr". This means that file attributes will always be evaluated. However, due to
+ *   problems in recent libsmbclient versions (4.11+, it might be earlier) it will cause
+ *   malfunctions in ownCloud; permissions are wrongly evaluated. So far, this mode works
+ *   with libsmbclient 4.7 but not with 4.11+ (not tested with any version in between).
+ *
+ * Note that the ACLs (if active) will be evaluated and applied on top of this mechanism.
  */
-'wnd.storage.testForHiddenMount' => true,
+'wnd.fileInfo.parseAttrs.mode' => stat,
 
 /**
- * Enable or disable the WND in-memory notifier for password changes
+ * Enable or Disable the WND In-Memory Notifier for Password Changes
  * Having this feature enabled implies that whenever a WND process detects a
  * wrong password in the storage - maybe the password has changed in the
  * backend - all WND storages that are in-memory will be notified in order to reset
@@ -467,7 +480,7 @@ $CONFIG = [
 'wnd.in_memory_notifier.enable' => true,
 
 /**
- * Maximum number of items for the cache used by the WND permission managers
+ * Maximum Number of Items for the Cache Used by the WND Permission Managers
  * A higher number implies that more items are allowed, increasing the memory usage.
  * Real memory usage per item varies because it depends on the path being cached.
  * Note that this is an in-memory cache used per request.
@@ -477,7 +490,7 @@ $CONFIG = [
 'wnd.permissionmanager.cache.size' => 512,
 
 /**
- * TTL for the WND2 caching wrapper
+ * TTL for the WND2 Caching Wrapper
  * Time to Live (TTL) in seconds to be used to cache information for the WND2 (collaborative)
  * cache wrapper implementation. The value will be used by all WND2 storages. Although the
  * cache isn't exactly per user but per storage id, consider the cache to be per user, because
@@ -489,7 +502,7 @@ $CONFIG = [
 'wnd2.cachewrapper.ttl' => 1800,  // 30 minutes
 
 /**
- * Enable to push WND events to the activity app
+ * Enable to Push WND Events to the Activity App
  * Register WND as extension into the Activity app in order to send information about what
  * the `wnd:process-queue` command is doing. The activity sent will be based on what
  * the `wnd:process-queue` detects, and the activity will be sent to each affected user. There
@@ -501,7 +514,7 @@ $CONFIG = [
 'wnd.activity.registerExtension' => false,
 
 /**
- * Enable to send WND activity notifications to sharees
+ * Enable to Send WND Activity Notifications to Sharees
  * The `wnd:process-queue` command will also send activity notifications to the sharees
  * if a WND file or folder is shared (or accessible via a share). It's REQUIRED that the
  * `wnd.activity.registerExtension` flag is set to true (see above), otherwise this flag will
@@ -510,7 +523,7 @@ $CONFIG = [
 'wnd.activity.sendToSharees' => false,
 
 /**
- * Make the group membership component assume that the ACL contains a user
+ * Make the Group Membership Component Assume that the ACL Contains a User
  * The WND app doesn't know about the users or groups associated with ACLs. This
  * means that an ACL containing "admin" might refer to a user called "admin" or a
  * group called "admin". By default, the group membership component considers the ACLs to
@@ -535,7 +548,7 @@ $CONFIG = [
  */
 
 /**
- * Provide advanced management of file tagging
+ * Provide Advanced Management of File Tagging
  * Enables admins to specify rules and conditions (file size, file mimetype, group membership and more)
  * to automatically assign tags to uploaded files. Values: `tagbased` (default) or `userbased`.
  */
