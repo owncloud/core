@@ -95,7 +95,7 @@ Feature: delete groups
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And group "brand-new-group" should exist
-
+  @notToImplementOnOCIS
   Scenario: subadmin of the group tries to delete the group
     Given user "subadmin" has been created with default attributes and without skeleton files
     And group "brand-new-group" has been created

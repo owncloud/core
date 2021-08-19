@@ -183,7 +183,7 @@ Feature: remove a user from a group
     And the HTTP status code should be "200"
     And the API should not return any data
 
-  @smokeTest
+  @smokeTest @notToImplementOnOCIS
   Scenario: a subadmin can remove users from groups the subadmin is responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -196,7 +196,7 @@ Feature: remove a user from a group
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "brand-new-user" should not belong to group "brand-new-group"
-
+  @notToImplementOnOCIS
   Scenario: a subadmin cannot remove users from groups the subadmin is not responsible for
     Given these users have been created with default attributes and without skeleton files:
       | username         |

@@ -63,7 +63,7 @@ Feature: delete users
     Then the OCS status code should be "401"
     And the HTTP status code should be "401"
     And user "Brian" should exist
-
+  @notToImplementOnOCIS
   Scenario: administrator deletes another admin user
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -73,7 +73,7 @@ Feature: delete users
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "another-admin" should not exist
-
+  @notToImplementOnOCIS
   Scenario: subadmin deletes a user with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -87,7 +87,7 @@ Feature: delete users
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And user "another-subadmin" should not exist
-
+  @notToImplementOnOCIS
   Scenario: subadmin should not be able to delete another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
@@ -100,7 +100,7 @@ Feature: delete users
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "another-subadmin" should exist
-
+  @notToImplementOnOCIS
   Scenario: subadmin should not be able to delete a user with admin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
@@ -114,7 +114,7 @@ Feature: delete users
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And user "another-admin" should exist
-
+  @notToImplementOnOCIS
   Scenario: subadmin should not be able to delete a user not in their group
     Given these users have been created with default attributes and without skeleton files:
       | username       |
