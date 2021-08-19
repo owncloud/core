@@ -1521,16 +1521,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.1.4",
+            "version": "1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "f3ad69181b8afed2c9edf7be5a2918144ff4ea32"
+                "reference": "18634df356bfd4119fe3d6156bdb990c414c14ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/f3ad69181b8afed2c9edf7be5a2918144ff4ea32",
-                "reference": "f3ad69181b8afed2c9edf7be5a2918144ff4ea32",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/18634df356bfd4119fe3d6156bdb990c414c14ea",
+                "reference": "18634df356bfd4119fe3d6156bdb990c414c14ea",
                 "shasum": ""
             },
             "require": {
@@ -1603,7 +1603,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/1.1.4"
+                "source": "https://github.com/thephpleague/flysystem/tree/1.1.5"
             },
             "funding": [
                 {
@@ -1611,7 +1611,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-06-23T21:56:05+00:00"
+            "time": "2021-08-17T13:49:42+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -2508,16 +2508,16 @@
         },
         {
             "name": "punic/punic",
-            "version": "3.6.0",
+            "version": "3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/punic/punic.git",
-                "reference": "09e770d16d080d499233e6d8ee9c4225bca2e68b"
+                "reference": "046917d7bb931ab944c0995898608491820fcdf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/punic/punic/zipball/09e770d16d080d499233e6d8ee9c4225bca2e68b",
-                "reference": "09e770d16d080d499233e6d8ee9c4225bca2e68b",
+                "url": "https://api.github.com/repos/punic/punic/zipball/046917d7bb931ab944c0995898608491820fcdf9",
+                "reference": "046917d7bb931ab944c0995898608491820fcdf9",
                 "shasum": ""
             },
             "require": {
@@ -2579,7 +2579,7 @@
             ],
             "support": {
                 "issues": "https://github.com/punic/punic/issues",
-                "source": "https://github.com/punic/punic/tree/3.6.0"
+                "source": "https://github.com/punic/punic/tree/3.6.1"
             },
             "funding": [
                 {
@@ -2591,7 +2591,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-23T13:27:07+00:00"
+            "time": "2021-08-18T16:25:23+00:00"
         },
         {
             "name": "react/promise",
