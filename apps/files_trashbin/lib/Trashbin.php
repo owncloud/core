@@ -406,7 +406,7 @@ class Trashbin {
 				}
 				if (!$forceCopy) {
 					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
-					self::move($rootView, $owner . '/files_versions/' . $ownerPath . 'json', $user . '/files_trashbin/versions/' . $filename . '.json' . '.d' . $timestamp);
+					self::move($rootView, $owner . '/files_versions/' . $ownerPath . '.json', $user . '/files_trashbin/versions/' . $filename . '.json' . '.d' . $timestamp);
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
 				foreach ($versions as $v) {
