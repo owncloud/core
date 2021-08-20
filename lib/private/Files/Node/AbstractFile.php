@@ -68,7 +68,7 @@ class AbstractFile extends AbstractNode implements \OCP\Files\File {
 		return FileInfo::TYPE_FILE;
 	}
 
-  public function getUsername() {
-    return "";
-  }
+	public function getUsername() {
+		return "";
+	}
 }
