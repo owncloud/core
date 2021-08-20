@@ -83,10 +83,6 @@ class Storage {
 	private static $application;
 
 	/**
-	 * @var IUserSession $userSession
-	 */
-
-	/**
 	 * get the UID of the owner of the file and the path to the file relative to
 	 * owners files folder
 	 *
@@ -193,11 +189,9 @@ class Storage {
 
 			$filename = \ltrim($filename, '/');
 
-
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
 			$sourceFileInfo = $users_view->getFileInfo("files/$filename");
-
 
 			$versionFileName = "files_versions/$filename.v$mtime";
 			if ($users_view->copy("files/$filename", $versionFileName)) {
@@ -208,9 +202,9 @@ class Storage {
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
 
-				$metadata = array(\OC\Share\Constants::CREATED_BY_USER_METADATA => \OC::$server->getUserSession()->getUser()->getUserName());
-				$metadataJsonObject = json_encode($metadata);
-				$users_view->file_put_contents($versionFileName . '.json', json_encode($metadataJsonObject));
+				$metadata = [\OC\Share\Constants::CREATED_BY_USER_METADATA => \OC::$server->getUserSession()->getUser()->getUserName()];
+				$metadataJsonObject = \json_encode($metadata);
+				$users_view->file_put_contents($versionFileName . '.json', \json_encode($metadataJsonObject));
 			}
 		}
 	}
@@ -479,8 +473,8 @@ class Storage {
 						$jsonMetadataFile = $dir . '/' . $entryName . '.json';
 						if ($view->file_exists($jsonMetadataFile)) {
 							$metaDataFileContents = $view->file_get_contents($jsonMetadataFile);
-							if ($decoded = json_decode($metaDataFileContents, true)) {
-								if (!is_null($decoded['username'])) {
+							if ($decoded = \json_decode($metaDataFileContents, true)) {
+								if ($decoded['username'] !== null) {
 									$versions[$key]['username'] = $decoded['username'];
 								}
 							}

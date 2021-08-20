@@ -34,7 +34,6 @@ class MetaPlugin extends ServerPlugin {
 	public const PATH_FOR_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}meta-path-for-user';
 	const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}metaversioneditedby';
 
-
 	/**
 	 * Reference to main server object
 	 *
@@ -99,9 +98,9 @@ class MetaPlugin extends ServerPlugin {
 				$file = \current($files);
 				return $baseFolder->getRelativePath($file->getPath());
 			});
-		} elseif ($node instanceof MetaFile){
+		} elseif ($node instanceof MetaFile) {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
-        return $node->getUsername() ?? "Not available";
+				return $node->getUsername() ?? "Not available";
 			});
 		}
 	}
