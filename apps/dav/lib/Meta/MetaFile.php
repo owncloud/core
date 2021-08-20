@@ -127,7 +127,10 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 		return $this->file;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getUsername() {
-	  return $this->file->getUsername();
-  }
+		return $this->file->getUsername();
+	}
 }
