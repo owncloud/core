@@ -81,7 +81,7 @@ class File extends Node implements FilesFile {
 		return $this->storage->hash($type, $this->path, $raw);
 	}
 
-  public function getUsername() {
-    return "";
-  }
+	public function getUsername() {
+		return "";
+	}
 }
