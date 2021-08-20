@@ -129,7 +129,7 @@ Feature: get user groups
     And the groups returned by the API should be
       | users |
 
-
+  @notToImplementOnOCIS
   Scenario: normal user gets his/her groups
     Given these users have been created with default attributes and without skeleton files:
       | username |
@@ -144,3 +144,20 @@ Feature: get user groups
     And the groups returned by the API should be
       | group1 |
       | group2 |
+
+  @skipOnOcV10
+  Scenario: normal user gets his/her groups in ocis
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | Alice    |
+    And group "group1" has been created
+    And group "group2" has been created
+    And user "Alice" has been added to group "group1"
+    And user "Alice" has been added to group "group2"
+    When user "Alice" gets all the groups of user "Alice" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the groups returned by the API should be
+      | group1 |
+      | group2 |
+      | users  |
