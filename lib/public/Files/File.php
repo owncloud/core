@@ -98,6 +98,7 @@ interface File extends Node {
 
 	/**
 	 * @return string
+   * @since 9.0.0
 	 */
 	public function getUsername();
 }
