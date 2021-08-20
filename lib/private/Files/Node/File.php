@@ -169,4 +169,8 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 		}
 		return $preview->getPreview();
 	}
+
+  public function getUsername() {
+    return "";
+  }
 }
