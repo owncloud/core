@@ -28,6 +28,7 @@ use OCP\Files\ForbiddenException;
 use OCP\Files\IProvidesAdditionalHeaders;
 use OC\Preview;
 use OCA\Files_Sharing\SharedStorage;
+use OCP\Files\IProvidesVersionAuthor;
 use OCP\Files\IRootFolder;
 use OCP\Files\IPreviewNode;
 use OCP\Files\Storage\IVersionedStorage;
@@ -40,7 +41,7 @@ use OCP\IImage;
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders {
+class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor {
 
 	/** @var string */
 	private $versionId;
@@ -54,6 +55,16 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	private $root;
 	/** @var array */
 	private $versionInfo;
+
+	/**
+	 * @var string
+	 **/
+	private $editedBy = "";
+
+	/**
+	 * @var string
+	 **/
+	private $createdBy = "";
 
 	/**
 	 * MetaFileVersionNode constructor.
@@ -77,8 +88,30 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 		$this->storage = $storage;
 		$this->internalPath = $internalPath;
 		$this->root = $root;
+
+		if (isset($version['edited_by'])) {
+			$this->editedBy = $version['edited_by'];
+		}
+
+		if (isset($version['created_by'])) {
+			$this->createdBy = $version['created_by'];
+		}
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getEditedBy() {
+		return $this->editedBy;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCreatedBy() {
+		return $this->createdBy;
+	}
+	
 	/**
 	 * @inheritdoc
 	 */
