@@ -96,9 +96,8 @@ interface File extends Node {
 	 */
 	public function getChecksum();
 
-  /**
-   * @return string
-   */
-  public function getUsername();
-
+	/**
+	 * @return string
+	 */
+	public function getUsername();
 }
