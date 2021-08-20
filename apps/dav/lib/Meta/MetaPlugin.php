@@ -32,7 +32,7 @@ class MetaPlugin extends ServerPlugin {
 	// namespace
 	public const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	public const PATH_FOR_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}meta-path-for-user';
-	const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}metaversioneditedby';
+	public const VERSION_EDITED_BY_PROPERTYNAME = '{http://owncloud.org/ns}metaversioneditedby';
 
 	/**
 	 * Reference to main server object

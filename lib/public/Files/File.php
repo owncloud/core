@@ -95,4 +95,10 @@ interface File extends Node {
 	 * @throws NotFoundException
 	 */
 	public function getChecksum();
+
+  /**
+   * @return string
+   */
+  public function getUsername();
+
 }
