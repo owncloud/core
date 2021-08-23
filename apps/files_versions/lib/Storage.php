@@ -321,10 +321,13 @@ class Storage {
 					'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version']
 				);
 				// move each version json file that holds the name of the user that've made an edit
-				$rootView->$operation(
-					'/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json',
-					'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json'
-				);
+				$sourceMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json';
+				if ($rootView->file_exists($sourceMetaDataFile)) {
+					$rootView->$operation(
+						$sourceMetaDataFile,
+						'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json'
+					);
+				}
 			}
 		}
 
