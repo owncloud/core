@@ -202,12 +202,12 @@ class Storage {
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
 
-        $user = \OC::$server->getUserSession()->getUser();
-        if(!is_null($user)) {
-          $metadata = [\OC\Share\Constants::CREATED_BY_USER_METADATA => $user->getUserName()];
-          $metadataJsonObject = \json_encode($metadata);
-          $users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
-        }
+				$user = \OC::$server->getUserSession()->getUser();
+				if ($user !== null) {
+					$metadata = [\OC\Share\Constants::CREATED_BY_USER_METADATA => $user->getUserName()];
+					$metadataJsonObject = \json_encode($metadata);
+					$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
+				}
 			}
 		}
 	}
