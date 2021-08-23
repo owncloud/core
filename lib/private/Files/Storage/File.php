@@ -80,8 +80,4 @@ class File extends Node implements FilesFile {
 	public function hash($type, $raw = false) {
 		return $this->storage->hash($type, $this->path, $raw);
 	}
-
-	public function getUsername() {
-		return "";
-	}
 }

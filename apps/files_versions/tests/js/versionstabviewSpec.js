@@ -80,13 +80,13 @@ describe('OCA.Versions.VersionsTabView', function() {
 			var $item = $versions.eq(0);
 			expect($item.find('.downloadVersion').attr('href')).toEqual(version1.getDownloadUrl());
 			expect($item.find('.versiondate').text()).toEqual('seconds ago');
-			expect($item.find('.size').text()).toEqual('< 1 KB');
+			expect($item.find('.size').eq(0).text()).toEqual('< 1 KB');
 			expect($item.find('.revertVersion').length).toEqual(1);
 
 			$item = $versions.eq(1);
 			expect($item.find('.downloadVersion').attr('href')).toEqual(version2.getDownloadUrl());
 			expect($item.find('.versiondate').text()).toEqual('2 days ago');
-			expect($item.find('.size').text()).toEqual('< 1 KB');
+			expect($item.find('.size').eq(0).text()).toEqual('< 1 KB');
 			expect($item.find('.revertVersion').length).toEqual(1);
 		});
 
