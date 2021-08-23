@@ -3651,7 +3651,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	private function createTheGroup($group, $method = null) {
+	public function createTheGroup($group, $method = null) {
 		//guess yourself
 		if ($method === null && $this->isTestingWithLdap()) {
 			$method = "ldap";
