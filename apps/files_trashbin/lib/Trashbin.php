@@ -399,37 +399,37 @@ class Trashbin {
 			$rootView = new View('/');
 
 			if ($rootView->is_dir($owner . '/files_versions/' . $ownerPath)) {
-        $metadataFilename = $owner . '/files_versions/' . $ownerPath . '.json';
-        $metadataFileExists = $rootView->file_exists($metadataFilename);
+				$metadataFilename = $owner . '/files_versions/' . $ownerPath . '.json';
+				$metadataFileExists = $rootView->file_exists($metadataFilename);
 
-        if ($owner !== $user || $forceCopy) {
+				if ($owner !== $user || $forceCopy) {
 					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $rootView);
-					if($metadataFileExists) {
-            self::copy_recursive($metadataFilename, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.json' . '.d' . $timestamp, $rootView);
-          }
+					if ($metadataFileExists) {
+						self::copy_recursive($metadataFilename, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.json' . '.d' . $timestamp, $rootView);
+					}
 				}
 				if (!$forceCopy) {
 					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
-					if($metadataFileExists) {
-            self::move($rootView, $metadataFilename, $user . '/files_trashbin/versions/' . $filename . '.json' . '.d' . $timestamp);
-          }
+					if ($metadataFileExists) {
+						self::move($rootView, $metadataFilename, $user . '/files_trashbin/versions/' . $filename . '.json' . '.d' . $timestamp);
+					}
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
 				foreach ($versions as $v) {
-          $metaVersionFile = $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json';
-          $metaVersionExists = $rootView->file_exists($metaVersionFile);
+					$metaVersionFile = $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json';
+					$metaVersionExists = $rootView->file_exists($metaVersionFile);
 
-          if ($owner !== $user || $forceCopy) {
+					if ($owner !== $user || $forceCopy) {
 						self::copy($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $owner . '/files_trashbin/versions/' . $v['name'] . '.v' . $v['version'] . '.d' . $timestamp);
-						if($metaVersionExists) {
-              self::move($rootView, $metaVersionFile, $owner . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
-            }
+						if ($metaVersionExists) {
+							self::move($rootView, $metaVersionFile, $owner . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
+						}
 					}
 					if (!$forceCopy) {
 						self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.d' . $timestamp);
-						if($metaVersionExists) {
-              self::move($rootView, $metaVersionFile, $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
-            }
+						if ($metaVersionExists) {
+							self::move($rootView, $metaVersionFile, $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
+						}
 					}
 				}
 			}
