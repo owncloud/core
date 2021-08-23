@@ -1,6 +1,7 @@
 OC.L10N.register(
     "systemtags",
     {
+    "Tags" : "Oznake",
     "Name" : "Ime",
     "Size" : "Veličina",
     "Modified" : "Izmijenjeno"
