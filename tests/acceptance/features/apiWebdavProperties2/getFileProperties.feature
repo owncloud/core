@@ -235,18 +235,20 @@ Feature: get file properties
 
   Scenario Outline: Do a PROPFIND to a non-existing URL
     When user "Alice" requests "<url>" with "PROPFIND" using basic auth
-    Then the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message>"
+    Then the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message1>" or "<message2>"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
-    @skipOnOcis
-    Examples:
-      | url                                  | message                                      |
-      | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |
-      | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |
+
     @skipOnOcV10
     Examples:
-      | url                                  | message                                  |
-      | /remote.php/dav/files/does-not-exist | Resource /users/does-not-exist not found |
-      | /remote.php/dav/does-not-exist       | File not found in root                   |
+      | url                                  | message1                                 | message2                              |
+      | /remote.php/dav/files/does-not-exist | Resource /users/does-not-exist not found | Resource /oc/does-not-exist not found |
+      | /remote.php/dav/does-not-exist       | File not found in root                   |                                       |
+
+    @skipOnOcis
+    Examples:
+      | url                                  | message1                                     | message2 |
+      | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |          |
+      | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |          |
 
   @issue-ocis-reva-217
   Scenario: add, receive multiple custom meta properties to a file

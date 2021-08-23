@@ -682,6 +682,54 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @Then the value of the item :xpath in the response about user :user should be :value1 or :value2
+	 *
+	 * @param string $xpath
+	 * @param string|null $user
+	 * @param string $expectedValue1
+	 * @param string $expectedValue2
+	 *
+	 * @return bool
+	 * @throws \Exception
+	 */
+	public function assertValueOfItemInResponseAboutUserIsEitherOr($xpath, $user, $expectedValue1, $expectedValue2) {
+		if (!$expectedValue2) {
+			$expectedValue2 = $expectedValue1;
+		}
+		$resXml = $this->featureContext->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml(
+				$this->featureContext->getResponse(),
+				__METHOD__
+			);
+		}
+		$xmlPart = $resXml->xpath($xpath);
+		Assert::assertTrue(
+			isset($xmlPart[0]),
+			"Cannot find item with xpath \"$xpath\""
+		);
+		$value = $xmlPart[0]->__toString();
+		$user = $this->featureContext->getActualUsername($user);
+		$expectedValue1 = $this->featureContext->substituteInLineCodes(
+			$expectedValue1,
+			$user
+		);
+
+		$expectedValue2 = $this->featureContext->substituteInLineCodes(
+			$expectedValue2,
+			$user
+		);
+
+		// The expected value can contain /%base_path%/ which can be empty some time
+		// This will result in urls such as //remote.php, so replace that
+		$expectedValue1 = preg_replace("/\/\/remote\.php/i", "/remote.php", $expectedValue1);
+		$expectedValue2 = preg_replace("/\/\/remote\.php/i", "/remote.php", $expectedValue2);
+		$expectedValues = [$expectedValue1, $expectedValue2];
+		$isExpectedValueInMessage = \in_array($value, $expectedValues);
+		Assert::assertTrue($isExpectedValueInMessage, "The actual value \"$value\" is not one of the expected values: \"$expectedValue1\" or \"$expectedValue2\"");
+	}
+
+	/**
 	 * @Then the value of the item :xpath in the response should match :value
 	 *
 	 * @param string $xpath
