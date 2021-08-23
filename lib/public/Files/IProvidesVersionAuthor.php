@@ -32,7 +32,7 @@ interface IProvidesVersionAuthor {
 	/**
 	 * Returns the author's username
 	 * @return string
-	 * @since 10.0.9
+	 * @since 10.9.0
 	 */
 	public function getUsername();
 }
