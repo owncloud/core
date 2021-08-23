@@ -306,7 +306,7 @@ class StorageTest extends TestCase {
 		$this->userView->file_put_contents('test.txt', 'v1');
 
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/');
-		$this->assertCount(1, $results);
+		$this->assertCount(2, $results);
 
 		$this->userView->unlink('test.txt');
 
@@ -336,7 +336,7 @@ class StorageTest extends TestCase {
 		$this->userView->file_put_contents('folder/inside.txt', 'v1');
 
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
-		$this->assertCount(1, $results);
+		$this->assertCount(2, $results);
 
 		$this->userView->rmdir('folder');
 
@@ -374,7 +374,7 @@ class StorageTest extends TestCase {
 		$this->userView->file_put_contents('share/test.txt', 'v2');
 
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/');
-		$this->assertCount(1, $results);
+		$this->assertCount(2, $results);
 
 		$recipientUser = $this->getUniqueId('recipient_');
 		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
@@ -500,7 +500,7 @@ class StorageTest extends TestCase {
 		$this->assertCount(0, $results);
 
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/');
-		$this->assertCount(1, $results);
+		$this->assertCount(2, $results);
 
 		// move to another storage
 		$this->userView->rename('test.txt', 'substorage/test.txt');
@@ -583,7 +583,7 @@ class StorageTest extends TestCase {
 		$this->userView->file_put_contents('share/sub/testsub.txt', 'v2');
 
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/');
-		$this->assertCount(2, $results);
+		$this->assertCount(3, $results);
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/sub');
 		$this->assertCount(1, $results);
 
@@ -672,7 +672,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($storage->file_exists('files/test.txt'));
 		$this->assertTrue($cache->inCache('files/test.txt'));
 
-		// file should not be in the trashbin
+		// file should not be in the  trashbin
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
 		$this->assertCount(0, $results);
 	}
