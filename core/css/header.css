@@ -81,10 +81,10 @@
 #header .logo {
 	background-image: url('../img/logo.svg');
 	background-repeat: no-repeat;
-	background-size: 220px;
+	background-size: contain;
 	background-position: center center;
 	width: 252px;
-	height: 120px;
+	height: 142px;
 	margin: 0 auto;
 }
 
