@@ -671,7 +671,6 @@ class StorageTest extends TestCase {
 		$this->assertFalse($this->userView->unlink('test.txt'));
 		$this->assertTrue($storage->file_exists('files/test.txt'));
 		$this->assertTrue($cache->inCache('files/test.txt'));
-
 		// file should not be in the  trashbin
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
 		$this->assertCount(0, $results);
