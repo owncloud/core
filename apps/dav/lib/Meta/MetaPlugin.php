@@ -101,7 +101,7 @@ class MetaPlugin extends ServerPlugin {
 			});
 		} elseif ($node instanceof MetaFile) {
 			$propFind->handle(self::VERSION_EDITED_BY_PROPERTYNAME, function () use ($node) {
-				return $node->getUsername() ?? "Not available";
+				return $node->getUsername();
 			});
 		}
 	}
