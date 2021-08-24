@@ -1,0 +1,8 @@
+Feature: Save and display the author of a file version
+
+The author attribute will be saved and shown in the version list grid for each new file version.
+This will allow the users to see who performed the changes on a specific file and when.
+Also, the author attribute will retain on renaming, copying, and deletion/restoration of the file.
+
+https://github.com/owncloud/enterprise/issues/4518
+https://github.com/owncloud/core/pull/39126
