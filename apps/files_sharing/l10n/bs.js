@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_sharing",
     {
+    "Shared by link" : "Podijeljeno putem linka",
     "Cancel" : "Odustani",
     "Add" : "Dodaj",
     "Share" : "Dijeli",

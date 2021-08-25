@@ -19,6 +19,7 @@ OC.L10N.register(
     "Disconnect storage" : "Diskonektuj pohranu",
     "Unshare" : "Prestani  dijeliti",
     "Files" : "Datoteke",
+    "Details" : "Detalji",
     "Select" : "Izaberi",
     "Pending" : "Na čekanju",
     "Unable to determine date" : "Nemoguće odrediti datum",
