@@ -190,6 +190,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	));
 	$application->add(new OC\Core\Command\User\Setting(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
 	$application->add(new OC\Core\Command\User\Modify(\OC::$server->getUserManager(), \OC::$server->getMailer()));
+	$application->add(new OC\Core\Command\User\MoveHome(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\SyncBackend(\OC::$server->getAccountMapper(), \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));
 
 	$application->add(new OC\Core\Command\Group\Add(\OC::$server->getGroupManager()));

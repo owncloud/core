@@ -339,6 +339,10 @@ class User implements IUser {
 		return $this->account->getHome();
 	}
 
+	public function setHome(string $newLocation) {
+		$this->account->setHome($newLocation);
+	}
+
 	/**
 	 * Get the name of the backend class the user is connected with
 	 *
