@@ -190,8 +190,8 @@ Feature: sharing
     And as "Alice" folder "/Shares/folder1/folder2" should not exist
     And as "Carol" folder "/Shares/folder2" should exist
 
-  @toFixOnOCIS @issue-ocis-2133
-  Scenario: Share ownership change after moving a shared file to another share
+
+  Scenario Outline: Share ownership change after moving a shared file to another share
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -211,7 +211,7 @@ Feature: sharing
       | item_source       | A_STRING             |
       | share_type        | user                 |
       | file_source       | A_STRING             |
-      | file_target       | /Shares/Carol-folder |
+      | file_target       | <path>               |
       | permissions       | all                  |
       | stime             | A_NUMBER             |
       | storage           | A_STRING             |
@@ -221,6 +221,15 @@ Feature: sharing
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/Alice-folder/folder2" should not exist
     And as "Carol" folder "/Carol-folder/folder2" should exist
+    @skipOnOcis
+    Examples:
+      | path                 |
+      | /Shares/Carol-folder |
+
+    @skipOnOcV10 @issue-2442
+    Examples:
+      | path          |
+      | /Carol-folder |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @toFixOnOCIS @toFixOnOcV10 @issue-ocis-reva-349 @issue-ocis-reva-350 @issue-ocis-reva-352 @issue-37653
   #after fixing all the issues merge this scenario with the one below

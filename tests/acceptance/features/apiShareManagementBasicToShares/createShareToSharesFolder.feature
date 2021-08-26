@@ -484,10 +484,10 @@ Feature: sharing
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with group "grp1" should include
-      | share_with  | grp1                  |
-      | file_target | /Shares/textfile0.txt |
-      | path        | /textfile0.txt        |
-      | uid_owner   | %username%            |
+      | share_with  | grp1           |
+      | file_target | <path>         |
+      | path        | /textfile0.txt |
+      | uid_owner   | %username%     |
     When user "Brian" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     And user "Carol" accepts share "/textfile0.txt" offered by user "Alice" using the sharing API
     Then as "Brian" file "/Shares/textfile0.txt" should exist
@@ -499,10 +499,17 @@ Feature: sharing
     And file "/textfile0.txt" should not be included as path in the response
     And as "Brian" file "/Shares/textfile0.txt" should not exist
     And as "Carol" file "/Shares/textfile0.txt" should not exist
+    @skipOnOcis
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | path                  |
+      | 1               | 100             | /Shares/textfile0.txt |
+      | 2               | 200             | /Shares/textfile0.txt |
+    @skipOnOcV10 @issue-2441
+    Examples:
+      | ocs_api_version | ocs_status_code | path           |
+      | 1               | 100             | /textfile0.txt |
+      | 2               | 200             | /textfile0.txt |
+
 
   @skipOnFilesClassifier @issue-files-classifier-291 @issue-ocis-2146
   Scenario: Share a file by multiple channels and download from sub-folder and direct file share
