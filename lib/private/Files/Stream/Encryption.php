@@ -116,7 +116,8 @@ class Encryption extends Wrapper {
 			'encryptionStorage',
 			'headerSize',
 			'signed',
-			'sourceFileOfRename'
+			'sourceFileOfRename',
+			'fileEncryptionVersion'
 		];
 	}
 
@@ -160,7 +161,8 @@ class Encryption extends Wrapper {
 		$unencryptedSize,
 		$headerSize,
 		$signed,
-		$sourceFileOfRename = null,
+		$sourceFileOfRename,
+		$fileEncryptionVersion,
 		$wrapper =  'OC\Files\Stream\Encryption'
 	) {
 		$context = \stream_context_create([
@@ -179,7 +181,8 @@ class Encryption extends Wrapper {
 				'encryptionStorage' => $encStorage,
 				'headerSize' => $headerSize,
 				'signed' => $signed,
-				'sourceFileOfRename' => $sourceFileOfRename
+				'sourceFileOfRename' => $sourceFileOfRename,
+				'fileEncryptionVersion' => $fileEncryptionVersion
 			]
 		]);
 
@@ -259,7 +262,7 @@ class Encryption extends Wrapper {
 		}
 
 		$accessList = $this->file->getAccessList($sharePath);
-		$this->newHeader = $this->encryptionModule->begin($this->fullPath, $this->uid, $mode, $this->header, $accessList, $context['sourceFileOfRename']);
+		$this->newHeader = $this->encryptionModule->begin($this->fullPath, $this->uid, $mode, $this->header, $accessList, $context['sourceFileOfRename'], $context['fileEncryptionVersion'] ?? null);
 		$this->unencryptedBlockSize = $this->encryptionModule->getUnencryptedBlockSize($this->signed);
 		
 		if (
