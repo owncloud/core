@@ -66,7 +66,7 @@ interface IEncryptionModule {
 	 *                       or if no additional data is needed return a empty array
 	 * @since 8.1.0
 	 */
-	public function begin($path, $user, $mode, array $header, array $accessList, $sourceFileOfRename);
+	public function begin($path, $user, $mode, array $header, array $accessList, $sourceFileOfRename, $fileEncryptionVersion);
 
 	/**
 	 * last chunk received. This is the place where you can perform some final

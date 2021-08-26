@@ -40,10 +40,11 @@ use OCP\Encryption\IManager;
 use OCP\Encryption\Keys\IStorage;
 use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage;
+use OCP\Files\Storage\IVersionedStorage;
 use OCP\ILogger;
 use OCP\Files\Cache\ICacheEntry;
 
-class Encryption extends Wrapper {
+class Encryption extends Wrapper implements Storage\IVersionedStorage {
 	use LocalTempFileTrait;
 
 	/** @var string */
@@ -350,9 +351,7 @@ class Encryption extends Wrapper {
 		// need to stream copy file by file in case we copy between a encrypted
 		// and a unencrypted storage
 		$this->unlink($path2);
-		$result = $this->copyFromStorage($this, $path1, $path2);
-
-		return $result;
+		return $this->copyFromStorage($this, $path1, $path2);
 	}
 
 	/**
@@ -491,7 +490,8 @@ class Encryption extends Wrapper {
 					$unencryptedSize,
 					$headerSize,
 					$signed,
-					$sourceFileOfRename
+					$sourceFileOfRename,
+					null # TODO: maybe fill it?
 				);
 				unset($this->sourcePath[$path]);
 
@@ -602,7 +602,7 @@ class Encryption extends Wrapper {
 		\fclose($stream);
 
 		// we have to decrypt the last chunk to get it actual size
-		$encryptionModule->begin($this->getFullPath($path), $this->uid, 'r', $header, [], null);
+		$encryptionModule->begin($this->getFullPath($path), $this->uid, 'r', $header, [], null, null);
 		$decryptedLastChunk = $encryptionModule->decrypt($lastChunkContentEncrypted, $lastChunkNr . 'end');
 		$decryptedLastChunk .= $encryptionModule->end($this->getFullPath($path), $lastChunkNr . 'end');
 
@@ -1086,5 +1086,90 @@ class Encryption extends Wrapper {
 	protected function isVersion($path) {
 		$normalized = Filesystem::normalizePath($path);
 		return \substr($normalized, 0, \strlen('/files_versions/')) === '/files_versions/';
+	}
+
+	public function getVersions($internalPath) {
+		if ($this->storage instanceof IVersionedStorage) {
+			return $this->storage->getVersions($internalPath);
+		}
+		return null;
+	}
+
+	public function getVersion($internalPath, $versionId) {
+		if ($this->storage instanceof IVersionedStorage) {
+			return $this->storage->getVersion($internalPath, $versionId);
+		}
+		return null;
+	}
+
+	public function getContentOfVersion($internalPath, $versionId) {
+		if ($this->storage instanceof IVersionedStorage) {
+			# encryption is not enabled -> nothing to do
+			$encryptionEnabled = $this->encryptionManager->isEnabled();
+			if (!$encryptionEnabled) {
+				return $this->storage->getContentOfVersion($internalPath, $versionId);
+			}
+
+			$stream = $this->storage->getContentOfVersion($internalPath, $versionId);
+			$header = $this->getHeader($stream);
+			if (empty($header)) {
+				return $stream;
+			}
+			$signed = (isset($header['signed']) && $header['signed'] === 'true') ? true : false;
+			$path = $internalPath;
+			# getFullPath returns wrong information here .....
+			$fullPath = $this->getFullPath($path);
+			$encryptionModuleId = $this->util->getEncryptionModuleId($header);
+			$encryptionModule = $this->encryptionManager->getEncryptionModule($encryptionModuleId);
+
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
+			$size = $this->storage->filesize($internalPath);
+			$unencryptedSize = $size;
+			$fileEncryptionVersion = null;
+			$info = $this->storage->getVersion($internalPath, $versionId);
+
+			if ($info['size']) {
+				$unencryptedSize = $info['size'];
+			}
+			if ($info['encryptedVersion']) {
+				$fileEncryptionVersion = $info['encryptedVersion'];
+			}
+			$headerSize = $this->getHeaderSize($stream);
+
+			return \OC\Files\Stream\Encryption::wrap(
+				$stream,
+				$path,
+				$fullPath,
+				$header,
+				$this->uid,
+				$encryptionModule,
+				$this->storage,
+				$this,
+				$this->util,
+				$this->fileHelper,
+				'rb',
+				$size,
+				$unencryptedSize,
+				$headerSize,
+				$signed,
+				null,
+				$fileEncryptionVersion
+			);
+		}
+		return null;
+	}
+
+	public function restoreVersion($internalPath, $versionId) {
+		if ($this->storage instanceof IVersionedStorage) {
+			return $this->storage->restoreVersion($internalPath, $versionId);
+		}
+		return null;
+	}
+
+	public function saveVersion($internalPath) {
+		if ($this->storage instanceof IVersionedStorage) {
+			return $this->storage->saveVersion($internalPath);
+		}
+		return null;
 	}
 }

@@ -123,7 +123,6 @@ class Controller {
 				$keyStorage,
 				$crypt,
 				\OC::$server->getConfig(),
-				\OC::$server->getUserSession(),
 				/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 				new \OCA\Encryption\Session(\OC::$server->getSession()),
 				\OC::$server->getLogger(),

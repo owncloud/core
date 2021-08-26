@@ -67,6 +67,8 @@ class EncryptionTest extends TestCase {
 			$size,
 			$unencryptedSize,
 			8192,
+			null,
+			null,
 			$wrapper
 		);
 	}
