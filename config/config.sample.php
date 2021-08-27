@@ -1492,6 +1492,16 @@ $CONFIG = [
 'minimum.supported.desktop.version' => '2.3.3',
 
 /**
+ * Define the suggested poll interval for clients
+ * Specifies how often clients should poll the server for changes.
+ * The value is in milliseconds. The value is not enforced.
+ * Clients may use this value to decide how frequently to check the server for
+ * changes.
+ *
+ */
+'pollinterval' => 30000,
+
+/**
  * Define whether to include external storage in quota calculation
  * EXPERIMENTAL: option whether to include external storage in quota
  * calculation, defaults to false.
