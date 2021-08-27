@@ -1138,7 +1138,7 @@ def javascript(ctx, withCoverage):
                  [
                      {
                          "name": "test-js",
-                         "image": "owncloudci/nodejs:%s" % params["nodeJsVersion"],
+                         "image": "owncloudci/php:7.4",
                          "pull": "always",
                          "commands": [
                              "make test-js",
