@@ -280,9 +280,6 @@ class AvatarControllerTest extends TestCase {
 		$copyRes = \copy(\OC::$SERVERROOT.'/tests/data/testimage.jpg', $fileName);
 		$this->assertTrue($copyRes);
 
-		//Create file in cache
-		$this->cache->expects($this->once())->method('get')->willReturn(\file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.jpg'));
-
 		//Create request return
 		$reqRet = ['error' => [0], 'tmp_name' => [$fileName], 'size' => [\filesize(\OC::$SERVERROOT.'/tests/data/testimage.jpg')]];
 		$this->request->expects($this->once())->method('getUploadedFile')->willReturn($reqRet);
@@ -318,9 +315,6 @@ class AvatarControllerTest extends TestCase {
 		$copyRes = \copy(\OC::$SERVERROOT.'/tests/data/testimage.gif', $fileName);
 		$this->assertTrue($copyRes);
 
-		//Create file in cache
-		$this->cache->expects($this->once())->method('get')->willReturn(\file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.gif'));
-
 		//Create request return
 		$reqRet = ['error' => [0], 'tmp_name' => [$fileName], 'size' => [\filesize(\OC::$SERVERROOT.'/tests/data/testimage.gif')]];
 		$this->request->expects($this->once())->method('getUploadedFile')->willReturn($reqRet);
@@ -341,7 +335,9 @@ class AvatarControllerTest extends TestCase {
 		$userFolder = $this->createMock(Folder::class);
 		$file = $this->getMockBuilder('OCP\Files\File')
 			->disableOriginalConstructor()->getMock();
-		$file->expects($this->any())->method('getContent')->willReturn(\file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.jpg'));
+		$filePath = \OC::$SERVERROOT.'/tests/data/testimage.jpg';
+		$handle = \fopen($filePath, 'r');
+		$file->expects($this->any())->method('fopen')->willReturn($handle);
 		$userFolder->expects($this->once())->method('get')->willReturn($file);
 
 		$this->rootFolder->expects($this->once())->method('getUserFolder')->willReturn($userFolder);
@@ -383,7 +379,9 @@ class AvatarControllerTest extends TestCase {
 		$userFolder = $this->createMock(Folder::class);
 		$file = $this->getMockBuilder('OCP\Files\File')
 			->disableOriginalConstructor()->getMock();
-		$file->expects($this->any())->method('getContent')->willReturn(\file_get_contents(\OC::$SERVERROOT.'/tests/data/testimage.jpg'));
+		$filePath = \OC::$SERVERROOT.'/tests/data/testimage.jpg';
+		$handle = \fopen($filePath, 'r');
+		$file->expects($this->any())->method('fopen')->willReturn($handle);
 		$userFolder->expects($this->once())->method('get')->willReturn($file);
 		$this->rootFolder->expects($this->once())->method('getUserFolder')->willReturn($userFolder);
 

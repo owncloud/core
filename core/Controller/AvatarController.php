@@ -159,6 +159,7 @@ class AvatarController extends Controller {
 	public function postAvatar($path) {
 		$userId = $this->userSession->getUser()->getUID();
 		$files = $this->request->getUploadedFile('files');
+		$tmpImage = null;
 
 		$headers = [];
 		if ($this->request->isUserAgent([Request::USER_AGENT_IE_8])) {
@@ -179,7 +180,7 @@ class AvatarController extends Controller {
 					$headers
 				);
 			}
-			$content = $node->getContent();
+			$handle = $node->fopen('r');
 		} elseif ($files !== null) {
 			if (
 				$files['error'][0] === 0 &&
@@ -193,9 +194,8 @@ class AvatarController extends Controller {
 						$headers
 					);
 				}
-				$this->cache->set('avatar_upload', \file_get_contents($files['tmp_name'][0]), 7200);
-				$content = $this->cache->get('avatar_upload');
-				\unlink($files['tmp_name'][0]);
+				$tmpImage = $files['tmp_name'][0];
+				$handle = \fopen($tmpImage, 'r');
 			} else {
 				return new DataResponse(
 					['data' => ['message' => $this->l->t('Invalid file provided')]],
@@ -214,8 +214,16 @@ class AvatarController extends Controller {
 
 		try {
 			$image = new \OC_Image();
-			$image->loadFromData($content);
+			$image->load($handle);
 			$image->fixOrientation();
+
+			if (\is_resource($handle)) {
+				\fclose($handle);
+			}
+
+			if ($tmpImage) {
+				\unlink($tmpImage);
+			}
 
 			if ($image->valid()) {
 				$mimeType = $image->mimeType();
@@ -241,6 +249,12 @@ class AvatarController extends Controller {
 				);
 			}
 		} catch (\Exception $e) {
+			if (\is_resource($handle)) {
+				\fclose($handle);
+			}
+			if ($tmpImage) {
+				\unlink($tmpImage);
+			}
 			$this->logger->logException($e, ['app' => 'core']);
 			return new DataResponse(['data' => ['message' => $this->l->t('An error occurred. Please contact your admin.')]], Http::STATUS_OK, $headers);
 		}
