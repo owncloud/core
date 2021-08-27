@@ -1091,7 +1091,6 @@ def javascript(ctx, withCoverage):
         "nodeJsVersion": "14",
         "coverage": True,
         "logLevel": "2",
-        "phpVersion": "7.2",
         "skip": False,
     }
 
@@ -1133,7 +1132,6 @@ def javascript(ctx, withCoverage):
             "path": "src",
         },
         "steps": cacheRestore() +
-                 composerInstall(params["phpVersion"]) +
                  yarnInstall(params["nodeJsVersion"]) +
                  [
                      {
