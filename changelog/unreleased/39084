@@ -1,0 +1,7 @@
+Bugfix: Fix preview generation for mp3 files
+
+This change fixes the preview generation for mp3 files.
+
+https://github.com/owncloud/core/issues/34900
+https://github.com/owncloud/core/pull/39084
+
