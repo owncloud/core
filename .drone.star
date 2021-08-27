@@ -474,7 +474,6 @@ def codestyle():
 
     default = {
         "phpVersions": ["7.4"],
-        "nodeJsVersion": "14",
     }
 
     if "defaults" in config:
@@ -515,7 +514,6 @@ def codestyle():
                          composerInstall(phpVersion) +
                          vendorbinCodestyle(phpVersion) +
                          vendorbinCodesniffer(phpVersion) +
-                         yarnInstall(params["nodeJsVersion"]) +
                          [
                              {
                                  "name": "php-style",
@@ -699,7 +697,6 @@ def phpstan():
 
     default = {
         "phpVersions": ["7.4"],
-        "nodeJsVersion": "14",
         "logLevel": "2",
     }
 
@@ -740,7 +737,6 @@ def phpstan():
                 "steps": cacheRestore() +
                          composerInstall(phpVersion) +
                          vendorbinPhpstan(phpVersion) +
-                         yarnInstall(params["nodeJsVersion"]) +
                          installServer(phpVersion, "sqlite", params["logLevel"]) +
                          [
                              {
@@ -773,7 +769,6 @@ def phan():
 
     default = {
         "phpVersions": ["7.2", "7.3", "7.4"],
-        "nodeJsVersion": "14",
         "logLevel": "2",
     }
 
@@ -814,7 +809,6 @@ def phan():
                 "steps": cacheRestore() +
                          composerInstall(phpVersion) +
                          vendorbinPhan(phpVersion) +
-                         yarnInstall(params["nodeJsVersion"]) +
                          installServer(phpVersion, "sqlite", params["logLevel"]) +
                          [
                              {
@@ -847,7 +841,6 @@ def litmus():
 
     default = {
         "phpVersions": ["7.2", "7.3", "7.4"],
-        "nodeJsVersion": "14",
         "logLevel": "2",
         "useHttps": True,
     }
@@ -896,7 +889,6 @@ def litmus():
                 },
                 "steps": cacheRestore() +
                          composerInstall(phpVersion) +
-                         yarnInstall(params["nodeJsVersion"]) +
                          installServer(phpVersion, db, params["logLevel"], params["useHttps"]) +
                          setupLocalStorage(phpVersion) +
                          fixPermissions(phpVersion, False) +
@@ -1008,7 +1000,6 @@ def dav():
 
     default = {
         "phpVersions": ["7.2", "7.3", "7.4"],
-        "nodeJsVersion": "14",
         "logLevel": "2",
     }
 
@@ -1062,7 +1053,6 @@ def dav():
                     },
                     "steps": cacheRestore() +
                              composerInstall(phpVersion) +
-                             yarnInstall(params["nodeJsVersion"]) +
                              installServer(phpVersion, db, params["logLevel"]) +
                              davInstall(phpVersion, scriptPath) +
                              fixPermissions(phpVersion, False) +
@@ -1204,7 +1194,6 @@ def phpTests(ctx, testType, withCoverage):
 
     default = {
         "phpVersions": ["7.2", "7.3", "7.4"],
-        "nodeJsVersion": "14",
         "databases": [
             "sqlite",
             "mariadb:10.2",
@@ -1334,7 +1323,6 @@ def phpTests(ctx, testType, withCoverage):
                         },
                         "steps": cacheRestore() +
                                  composerInstall(phpVersion) +
-                                 yarnInstall(params["nodeJsVersion"]) +
                                  installServer(phpVersion, db, params["logLevel"]) +
                                  installExtraApps(phpVersion, extraAppsDict, dir["server"]) +
                                  setupScality(phpVersion, needScality) +
