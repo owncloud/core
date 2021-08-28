@@ -337,6 +337,7 @@ OC.L10N.register(
     "Password changed successfully" : "เปลี่ยนรหัสผ่านเรียบร้อยแล้ว",
     "New password" : "รหัสผ่านใหม่",
     "Confirm Password" : "ยืนยันรหัสผ่าน",
+    "Confirm password" : "ยืนยันรหัสผ่าน",
     "Reset password" : "เปลี่ยนรหัสผ่านใหม่",
     "Personal note from the sender: <br> %s." : "บันทึกส่วนบุคคลจากผู้ส่ง: <br>%s",
     "This ownCloud instance is currently in single user mode." : "ขณะนี้ ownCloud อยู่ในโหมดผู้ใช้คนเดียว",

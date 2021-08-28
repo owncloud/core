@@ -234,6 +234,7 @@ OC.L10N.register(
     "Enterprise license key" : "License key แบบ Enterprise",
     "Enter a new license:" : "กรอก License key:",
     "Save" : "บันทึก",
+    "Remove current license key" : "ลบ License key ปัจจุบัน",
     "Everything (fatal issues, errors, warnings, info, debug)" : "ทุกอย่าง (ปัญหาร้ายแรง ข้อผิดพลาด คำเตือน ข้อมูล การแก้ปัญหา)",
     "Info, warnings, errors and fatal issues" : "ข้อมูล คำเตือน ข้อผิดพลาดและปัญหาร้ายแรง",
     "Warnings, errors and fatal issues" : "คำเตือนข้อผิดพลาดและปัญหาที่ร้ายแรง",
