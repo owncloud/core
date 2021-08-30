@@ -45,7 +45,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -57,7 +57,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @return void
 	 */
-	public function afterScenario() {
+	public function afterScenario():void {
 		$davUrl = $this->featureContext->getBaseUrl()
 			. '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
 		HttpRequestHelper::delete(
@@ -76,9 +76,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $ofUser
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userRequestsAddressBookUsingTheAPI($user, $addressBook, $ofUser) {
+	public function userRequestsAddressBookUsingTheAPI(string $user, string $addressBook, string $ofUser):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$normalizedUser = \strtolower($this->featureContext->getActualUsername($ofUser));
 		$addressBook = $this->featureContext->substituteInLineCodes(
@@ -106,8 +106,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $ofUser
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorRequestsAddressBookUsingTheNewWebdavApi($addressBook, $ofUser) {
+	public function theAdministratorRequestsAddressBookUsingTheNewWebdavApi(string $addressBook, string $ofUser):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->userRequestsAddressBookUsingTheAPI($admin, $addressBook, $ofUser);
 	}
@@ -119,9 +120,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $addressBook
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userAddressBookShouldBePresentInTheWebdavApiResponse($user, $addressBook) {
+	public function userAddressBookShouldBePresentInTheWebdavApiResponse(string $user, string $addressBook):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$normalizedUser = $this->featureContext->normalizeUsername($user);
 		$addressBook = $this->featureContext->substituteInLineCodes(
@@ -150,9 +151,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $addressBook
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasCreatedAnAddressBookNamed($user, $addressBook) {
+	public function userHasCreatedAnAddressBookNamed(string $user, string $addressBook):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/addressbooks/users/$user/$addressBook";
@@ -189,8 +190,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $addressBook
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorHasSuccessfullyCreatedAnAddressBookNamed($addressBook) {
+	public function theAdministratorHasSuccessfullyCreatedAnAddressBookNamed(string $addressBook):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->userHasCreatedAnAddressBookNamed($admin, $addressBook);
 	}
@@ -201,9 +203,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @param int $code
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theCardDavHttpStatusCodeShouldBe($code) {
+	public function theCardDavHttpStatusCodeShouldBe(int $code):void {
 		$actualStatusCode = $this->response->getStatusCode();
 		Assert::assertEquals(
 			(int) $code,
