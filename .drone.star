@@ -1136,7 +1136,7 @@ def javascript(ctx, withCoverage):
                  [
                      {
                          "name": "test-js",
-                         "image": "owncloudci/php:7.4",
+                         "image": "owncloudci/nodejs:%s" % params["nodeJsVersion"],
                          "pull": "always",
                          "commands": [
                              "make test-js",
@@ -2556,7 +2556,7 @@ def installFederated(ctx, federatedServerVersion, db, dbSuffix = "fed"):
 
     return {
         "name": "install-federated",
-        "image": "owncloudci/core",
+        "image": "owncloudci/core:nodejs14",
         "pull": "always",
         "settings": installerSettings,
     }
@@ -2724,7 +2724,7 @@ def installCoreFromTarball(version, db, logLevel = "2", ssl = False, federatedSe
 
     return [{
         "name": "install-tarball",
-        "image": "owncloudci/core",
+        "image": "owncloudci/core:nodejs14",
         "pull": "always",
         "settings": {
             "version": version,
@@ -2779,7 +2779,7 @@ def installFederatedFromTarball(federatedServerVersion, phpVersion, logLevel, pr
     return [
         {
             "name": "install-federated",
-            "image": "owncloudci/core",
+            "image": "owncloudci/core:nodejs14",
             "pull": "always",
             "settings": {
                 "version": federatedServerVersion,
