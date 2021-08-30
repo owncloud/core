@@ -15,7 +15,7 @@
 		'<input class="systemTagsInputField" type="hidden" name="tags" value=""/>';
 
 	var RESULT_TEMPLATE =
-		'<span class="systemtags-item{{#if isNew}} new-item{{/if}}" data-id="{{id}}">' +
+		'<div class="systemtags-item{{#if isNew}} new-item{{/if}}" data-id="{{id}}">' +
 		'    <span class="checkmark icon icon-checkmark"></span>' +
 		'{{#if isAdmin}}' +
 		'    <span class="label">{{{tagMarkup}}}</span>' +
@@ -23,12 +23,12 @@
 		'    <span class="label">{{name}}</span>' +
 		'{{/if}}' +
 		'{{#allowActions}}' +
-		'    <span class="systemtags-actions">' +
+		'    <div class="systemtags-actions">' +
 		'        <a href="#" class="rename icon icon-rename" title="{{renameTooltip}}"></a>' +
 		'        <a href="#" class="delete icon icon-delete" title="{{deleteTooltip}}"></a>' +
-		'    </span>' +
+		'    </div>' +
 		'{{/allowActions}}' +
-		'</span>';
+		'</div>';
 
 	var SELECTION_TEMPLATE =
 		'{{#if isAdmin}}' +
