@@ -367,7 +367,7 @@ class OC_Image implements \OCP\IImage {
 			return;
 		}
 
-		if (!\is_resource($file) && !\is_readable($this->file)) {
+		if (!\is_resource($file) && !\is_readable($file)) {
 			$this->logger->debug('OC_Image->loadExifData() No readable file or path set.', ['app' => 'core']);
 			return;
 		}

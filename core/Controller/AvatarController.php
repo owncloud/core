@@ -217,14 +217,6 @@ class AvatarController extends Controller {
 			$image->load($handle);
 			$image->fixOrientation();
 
-			if (\is_resource($handle)) {
-				\fclose($handle);
-			}
-
-			if ($tmpImage) {
-				\unlink($tmpImage);
-			}
-
 			if ($image->valid()) {
 				$mimeType = $image->mimeType();
 				if ($mimeType !== 'image/jpeg' && $mimeType !== 'image/png') {
@@ -249,14 +241,15 @@ class AvatarController extends Controller {
 				);
 			}
 		} catch (\Exception $e) {
+			$this->logger->logException($e, ['app' => 'core']);
+			return new DataResponse(['data' => ['message' => $this->l->t('An error occurred. Please contact your admin.')]], Http::STATUS_OK, $headers);
+		} finally {
 			if (\is_resource($handle)) {
 				\fclose($handle);
 			}
 			if ($tmpImage) {
 				\unlink($tmpImage);
 			}
-			$this->logger->logException($e, ['app' => 'core']);
-			return new DataResponse(['data' => ['message' => $this->l->t('An error occurred. Please contact your admin.')]], Http::STATUS_OK, $headers);
 		}
 	}
 
