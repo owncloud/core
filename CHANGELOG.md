@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Do not try to login via auth module if the user is disabled: [#36257](https://github.com/owncloud/core/pull/36257)
 * Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 * Bugfix - Update and upgrade words are inconsistent on the web UI: [#39028](https://github.com/owncloud/core/issues/39028)
@@ -31,6 +32,15 @@ Summary
 
 Details
 -------
+
+* Bugfix - Do not try to login via auth module if the user is disabled: [#36257](https://github.com/owncloud/core/pull/36257)
+
+   Trying to login via an auth module (such as OAuth2) created a new session token even if the user
+   was disabled. This was causing errors to appear in the logs because the new session token
+   created after enabling the user was in use. Now, a disabled user won't create that session
+   token.
+
+   https://github.com/owncloud/core/pull/36257
 
 * Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
 

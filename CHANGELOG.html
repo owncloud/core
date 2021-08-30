@@ -6,6 +6,7 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Do not try to login via auth module if the user is disabled: <a href="https://github.com/owncloud/core/pull/36257">#36257</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Do not allow empty system or app config keys: <a href="https://github.com/owncloud/core/pull/38996">#38996</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow subadministrators to add users to groups they manage: <a href="https://github.com/owncloud/core/pull/39013">#39013</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Update and upgrade words are inconsistent on the web UI: <a href="https://github.com/owncloud/core/issues/39028">#39028</a></li>
@@ -29,6 +30,15 @@
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Do not try to login via auth module if the user is disabled: <a href="https://github.com/owncloud/core/pull/36257">#36257</a></p>
+            <p>Trying to login via an auth module (such as OAuth2) created a new session token even if the user
+   was disabled. This was causing errors to appear in the logs because the new session token
+   created after enabling the user was in use. Now, a disabled user won't create that session
+   token.
+            </p>
+            <p>https://github.com/owncloud/core/pull/36257<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Do not allow empty system or app config keys: <a href="https://github.com/owncloud/core/pull/38996">#38996</a></p>
             <p>It was possible to add empty config keys with the occ config:app:set or config:system:set
