@@ -1,0 +1,9 @@
+Change: Remove misleading tag edit/trash actions
+
+This PR's removes the edit/delete actions from the tag selection list.
+While those actions are only visible to the admin it is still a very misleading 
+way since users think they remove a tag from a file but instead delete it completely. 
+This can have bad consequences, for example breaking retention policies.
+
+https://github.com/owncloud/core/issues/39147
+https://github.com/owncloud/core/pull/39148

@@ -22,12 +22,6 @@
 		'{{else}}' +
 		'    <span class="label">{{name}}</span>' +
 		'{{/if}}' +
-		'{{#allowActions}}' +
-		'    <span class="systemtags-actions">' +
-		'        <a href="#" class="rename icon icon-rename" title="{{renameTooltip}}"></a>' +
-		'        <a href="#" class="delete icon icon-delete" title="{{deleteTooltip}}"></a>' +
-		'    </span>' +
-		'{{/allowActions}}' +
 		'</span>';
 
 	var SELECTION_TEMPLATE =
