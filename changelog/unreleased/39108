@@ -1,0 +1,15 @@
+Bugfix: Update appinfo cache only if the app version is newer
+
+Previously, in case there were multiple copies of the same app with different
+versions, the information being cached was the latest one found based on the
+locations defined in the config.php file, which might not be the one from the
+latest app version. This might be a problem in some scenarios specially checking
+the version of the app. Note that the code used was the one from the latest app
+version found.
+
+Now, the information cached is always from the latest version found. In the
+weird case that both versions are the same, the information from the first one
+will be kept. This shouldn't be a problem because the information is expected
+to be the same.
+
+https://github.com/owncloud/core/pull/39108
