@@ -19,6 +19,7 @@ Summary
 * Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
 * Bugfix - Clarify the description of the manual file locking option: [#39106](https://github.com/owncloud/core/pull/39106)
 * Bugfix - Fix logo size on login screen: [#39129](https://github.com/owncloud/core/pull/39129)
+* Bugfix - Image orientation: [#39140](https://github.com/owncloud/core/pull/39140)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
@@ -126,6 +127,15 @@ Details
    dynamically logo resize css rule.
 
    https://github.com/owncloud/core/pull/39129
+
+* Bugfix - Image orientation: [#39140](https://github.com/owncloud/core/pull/39140)
+
+   Fix the retrieval an image's exif information to ensure it's rotated correctly in thumbnails
+   and preview.
+
+   https://github.com/owncloud/core/issues/39114
+   https://github.com/owncloud/enterprise/issues/4666
+   https://github.com/owncloud/core/pull/39140
 
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 
