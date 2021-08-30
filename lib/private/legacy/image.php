@@ -56,6 +56,8 @@ class OC_Image implements \OCP\IImage {
 	private $fileInfo;
 	/** @var \OCP\ILogger */
 	private $logger;
+	/** @var array|false */
+	private $exifData;
 
 	/**
 	 * Get mime type for an image file.
@@ -347,33 +349,30 @@ class OC_Image implements \OCP\IImage {
 	 * (I'm open for suggestions on better method name ;)
 	 * Get the orientation based on EXIF data.
 	 *
-	 * @return int The orientation or -1 if no EXIF data is available.
+	 * @return int The orientation or -1 if no EXIF orientation data is available.
 	 */
 	public function getOrientation() {
-		if ($this->imageType !== IMAGETYPE_JPEG) {
-			$this->logger->debug('OC_Image->fixOrientation() Image is not a JPEG.', ['app' => 'core']);
-			return -1;
-		}
+		return $this->exifData['Orientation'] ?? -1;
+	}
+
+	/**
+	 * Loads EXIF data of a given image.
+	 * Only supported when the image is loaded via path or handle.
+	 *
+	 * @param resource|string $file
+	 */
+	private function loadExifData($file) {
 		if (!\is_callable('exif_read_data')) {
-			$this->logger->debug('OC_Image->fixOrientation() Exif module not enabled.', ['app' => 'core']);
-			return -1;
+			$this->logger->debug('OC_Image->loadExifData() Exif module not enabled.', ['app' => 'core']);
+			return;
 		}
-		if (!$this->valid()) {
-			$this->logger->debug('OC_Image->fixOrientation() No image loaded.', ['app' => 'core']);
-			return -1;
+
+		if (!\is_resource($file) && !\is_readable($file)) {
+			$this->logger->debug('OC_Image->loadExifData() No readable file or path set.', ['app' => 'core']);
+			return;
 		}
-		if ($this->filePath === null || !\is_readable($this->filePath)) {
-			$this->logger->debug('OC_Image->fixOrientation() No readable file path set.', ['app' => 'core']);
-			return -1;
-		}
-		$exif = @\exif_read_data($this->filePath, 'IFD0');
-		if (!$exif) {
-			return -1;
-		}
-		if (!isset($exif['Orientation'])) {
-			return -1;
-		}
-		return $exif['Orientation'];
+
+		$this->exifData = @\exif_read_data($file, 'IFD0');
 	}
 
 	/**
@@ -481,6 +480,7 @@ class OC_Image implements \OCP\IImage {
 	public function loadFromFileHandle($handle) {
 		$contents = \stream_get_contents($handle);
 		if ($this->loadFromData($contents)) {
+			$this->loadExifData($handle);
 			return $this->resource;
 		}
 		return false;
@@ -576,6 +576,7 @@ class OC_Image implements \OCP\IImage {
 				break;
 		}
 		if ($this->valid()) {
+			$this->loadExifData($imagePath);
 			$this->imageType = $iType;
 			$this->mimeType = \image_type_to_mime_type($iType);
 			$this->filePath = $imagePath;
