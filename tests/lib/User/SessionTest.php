@@ -1701,6 +1701,7 @@ class SessionTest extends TestCase {
 		$throwingModule = $this->createMock(IAuthModule::class);
 		$throwingModule->expects($this->any())->method('auth')->willThrowException(new \Exception('Invalid token'));
 		$user1 = $this->createMock(IUser::class);
+		$user1->expects($this->any())->method('isEnabled')->willReturn('true');
 		$user1->expects($this->any())->method('getUID')->willReturn('user1');
 		$user1Module = $this->createMock(IAuthModule::class);
 		$user1Module->expects($this->any())->method('auth')->willReturn($user1);

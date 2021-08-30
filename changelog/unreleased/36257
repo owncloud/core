@@ -1,0 +1,8 @@
+Bugfix: Do not try to login via auth module if the user is disabled
+
+Trying to login via an auth module (such as OAuth2) created a new session
+token even if the user was disabled. This was causing errors to appear in the logs
+because the new session token created after enabling the user was in use.
+Now, a disabled user won't create that session token.
+
+https://github.com/owncloud/core/pull/36257
