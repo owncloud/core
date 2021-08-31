@@ -65,7 +65,7 @@ class DetailsDialog extends OwncloudPage {
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
-	private $tagEditInputXpath = "//input[@id='view11-rename-input']";
+	private $tagEditInputXpath = "//input[@id='view12-rename-input']";
 
 	private $commentXpath = "//ul[@class='comments']//div[@class='message' and contains(., '%s')]";
 	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";

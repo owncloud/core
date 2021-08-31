@@ -402,6 +402,7 @@ class HooksTest extends \Test\TestCase {
 		$expected['array']['oc_appconfig']['files_sharing'] = [
 			'publicShareSharersGroupsAllowlist' => [],
 			'publicShareSharersGroupsAllowlistEnabled' => false,
+			'showPublicLinkQuickAction' => false,
 		];
 
 		$this->assertEquals($expected, $this->hooks->extendJsConfig([]));

@@ -186,6 +186,25 @@
 
 			return defaultExpireDateRemote;
 		},
+
+		/**
+		 * @returns {boolean}
+		 */
+		isPublicSharingBlockedByAllowlist: function () {
+			var allowlistEnabled = oc_appconfig.files_sharing.publicShareSharersGroupsAllowlistEnabled;
+			var allowlistGroups = oc_appconfig.files_sharing.publicShareSharersGroupsAllowlist;
+
+			if (allowlistEnabled === true && allowlistGroups.length) {
+				var userGroups = OC.getCurrentUser().groups;
+				for (var i = 0; i < userGroups.length; i++) {
+					if (allowlistGroups.indexOf(userGroups[i]) >= 0) {
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		}
 	});
 
 

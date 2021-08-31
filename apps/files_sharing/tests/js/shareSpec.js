@@ -11,6 +11,8 @@
 describe('OCA.Sharing.Util tests', function() {
 	var fileList;
 	var testFiles;
+	var oldCoreConfig;
+	var oldSharingConfig;
 
 	function getImageUrl($el) {
 		// might be slightly different cross-browser
@@ -23,6 +25,11 @@ describe('OCA.Sharing.Util tests', function() {
 	}
 
 	beforeEach(function() {
+		oldCoreConfig = _.extend({}, oc_appconfig.core);
+		oldSharingConfig = OC.appConfig.files_sharing;
+		oc_appconfig.core = oc_appconfig.core || {};
+		OC.appConfig.files_sharing = OC.appConfig.files_sharing || {};
+
 		var $content = $('<div id="content"></div>');
 		$('#testArea').append($content);
 		// dummy file list
@@ -58,6 +65,8 @@ describe('OCA.Sharing.Util tests', function() {
 		}];
 	});
 	afterEach(function() {
+		oc_appconfig.core = oldCoreConfig;
+		OC.appConfig.files_sharing = oldSharingConfig;
 		delete OCA.Sharing.sharesLoaded;
 		delete OC.Share.droppedDown;
 		fileList.destroy();
@@ -546,6 +555,85 @@ describe('OCA.Sharing.Util tests', function() {
 					OC.Share.SHARE_TYPE_REMOTE,
 				]
 			});
+		});
+	});
+
+	describe('public link quick action', function() {
+		var currentUserStub;
+
+		beforeEach(function() {
+			$('#testArea').append('<input id="allowShareWithLink" type="hidden" value="yes">');
+
+			fileList.destroy();
+			fileList = new OCA.Files.FileList(
+				$('#listContainer'), {
+					id: 'files',
+					fileActions: new OCA.Files.FileActions()
+				}
+			);
+
+			currentUserStub = sinon.stub(OC, 'getCurrentUser');
+			currentUserStub.returns({
+				uid: 'admin',
+				displayName: 'admin',
+				groups: ['admin'],
+			});
+		});
+		afterEach(function() {
+			currentUserStub.restore();
+			OC.appConfig.files_sharing.showPublicLinkQuickAction = false;
+			oc_appconfig.core.enforceLinkPasswordReadOnly = false;
+			$('#allowShareWithLink').val('yes');
+		});
+		it('renders the quick action', function() {
+			OC.appConfig.files_sharing.showPublicLinkQuickAction = true;
+			oc_appconfig.core.enforceLinkPasswordReadOnly = false;
+			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlistEnabled = true;
+			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlist = ['admin'];
+
+			OCA.Sharing.Util.attach(fileList);
+			fileList.setFiles(testFiles);
+
+			var $quickAction = $('.action-create-public-link');
+			expect($quickAction.length).toEqual(1);
+
+			$quickAction.click();
+		});
+		it('does not render the quick action because of config', function() {
+			OC.appConfig.files_sharing.showPublicLinkQuickAction = false;
+			oc_appconfig.core.enforceLinkPasswordReadOnly = false;
+
+			OCA.Sharing.Util.attach(fileList);
+			fileList.setFiles(testFiles);
+
+			expect($('.action-create-public-link').length).toEqual(0);
+		});
+		it('does not render the quick action because of password enforcement', function() {
+			OC.appConfig.files_sharing.showPublicLinkQuickAction = true;
+			oc_appconfig.core.enforceLinkPasswordReadOnly = true;
+
+			OCA.Sharing.Util.attach(fileList);
+			fileList.setFiles(testFiles);
+			expect($('.action-create-public-link').length).toEqual(0);
+		});
+		it('does not render the quick action because public link sharing disabled', function() {
+			OC.appConfig.files_sharing.showPublicLinkQuickAction = true;
+			oc_appconfig.core.enforceLinkPasswordReadOnly = false;
+			$('#allowShareWithLink').val('no');
+
+			OCA.Sharing.Util.attach(fileList);
+			fileList.setFiles(testFiles);
+			expect($('.action-create-public-link').length).toEqual(0);
+		});
+		it('does not render the quick action because of allow list', function() {
+			OC.appConfig.files_sharing.showPublicLinkQuickAction = true;
+			oc_appconfig.core.enforceLinkPasswordReadOnly = false;
+			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlistEnabled = true;
+			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlist = ['allowedGroup'];
+
+			OCA.Sharing.Util.attach(fileList);
+			fileList.setFiles(testFiles);
+			expect($('.action-create-public-link').length).toEqual(0);
 		});
 	});
 	

@@ -1228,6 +1228,16 @@ $CONFIG = [
 'sharing.federation.allowHttpFallback' => false,
 
 /**
+ * Show a quick action for the public link creation
+ * Set this to true to display a quick action for creating public links
+ * in the filelist. A public link created this way will be read-only per default.
+ *
+ * Note: if enforced password protection for read-only links is enabled, the
+ * quick action will not be displayed!
+ */
+'sharing.showPublicLinkQuickAction' => false,
+
+/**
  * All other configuration options
  */
 

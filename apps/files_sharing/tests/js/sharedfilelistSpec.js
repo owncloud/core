@@ -9,9 +9,12 @@
  */
 
 describe('OCA.Sharing.FileList tests', function() {
-	var testFiles, alertStub, notificationStub, fileList;
+	var testFiles, alertStub, notificationStub, fileList, oldConfig;
 
 	beforeEach(function() {
+		oldConfig = OC.appConfig.files_sharing;
+		OC.appConfig.files_sharing = _.extend({}, OC.appConfig.files_sharing);
+
 		alertStub = sinon.stub(OC.dialogs, 'alert');
 		notificationStub = sinon.stub(OC.Notification, 'show');
 
@@ -55,6 +58,7 @@ describe('OCA.Sharing.FileList tests', function() {
 		OC.Plugins.register('OCA.Files.FileList', OCA.Files.TagsPlugin);
 	});
 	afterEach(function() {
+		OC.appConfig.files_sharing = oldConfig;
 		testFiles = undefined;
 		fileList.destroy();
 		fileList = undefined;
