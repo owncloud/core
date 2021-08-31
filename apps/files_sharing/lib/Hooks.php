@@ -291,6 +291,7 @@ class Hooks {
 		$array['array']['oc_appconfig']['files_sharing'] = [
 			'publicShareSharersGroupsAllowlist' => $sharingAllowlist->getPublicShareSharersGroupsAllowlist(),
 			'publicShareSharersGroupsAllowlistEnabled' => $sharingAllowlist->isPublicShareSharersGroupsAllowlistEnabled(),
+			'showPublicLinkQuickAction' => \OC::$server->getConfig()->getSystemValue('sharing.showPublicLinkQuickAction', false),
 		];
 
 		return $array;

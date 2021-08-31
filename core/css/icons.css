@@ -273,6 +273,14 @@ img.icon-loading-small-dark, object.icon-loading-small-dark, video.icon-loading-
 	background-image: url('../img/actions/public-white.svg');
 }
 
+.icon-public-create {
+	background-image: url('../img/actions/public-create.svg');
+}
+
+.icon-public-create-white {
+	background-image: url('../img/actions/public-create-white.svg');
+}
+
 .icon-rename {
 	background-image: url('../img/actions/rename.svg');
 }

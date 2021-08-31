@@ -39,10 +39,9 @@
 			});
 
 			var baseLinkShareViewRender = view.linkShareView.render;
-
 			view.render = function () {
 				baseRenderCall.call(view);
-				if (that.isPublicSharingBlockedByAllowlist() && !shareCollectionModel.length) {
+				if (view.configModel.isPublicSharingBlockedByAllowlist() && !shareCollectionModel.length) {
 					view.$el.find('.subtab-publicshare').remove();
 				}
 			};
@@ -50,7 +49,7 @@
 			view.linkShareView.render = function () {
 				baseLinkShareViewRender.call(view.linkShareView);
 
-				if (that.isPublicSharingBlockedByAllowlist()) {
+				if (view.configModel.isPublicSharingBlockedByAllowlist()) {
 					view.linkShareView.$el.find('.addLink').remove();
 					view.$el.find('.empty-message').remove();
 				}
@@ -74,28 +73,6 @@
 
 			};
 		},
-
-		isPublicSharingBlockedByAllowlist: function () {
-			var allowlistEnabled = oc_appconfig.files_sharing.publicShareSharersGroupsAllowlistEnabled;
-			var allowlistGroups = oc_appconfig.files_sharing.publicShareSharersGroupsAllowlist;
-
-
-			if (allowlistEnabled === true &&
-				allowlistGroups.length
-			) {
-				var userGroups = OC.getCurrentUser().groups;
-
-				for (var i = 0; i < userGroups.length; i++) {
-					if (allowlistGroups.indexOf(userGroups[i]) >= 0) {
-						return false;
-					}
-				}
-
-				return true;
-			}
-
-			return false;
-		}
 	};
 })();
 

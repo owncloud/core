@@ -15,6 +15,11 @@
 		PROPERTY_OWNER_DISPLAY_NAME:	'{' + OC.Files.Client.NS_OWNCLOUD + '}owner-display-name'
 	});
 
+	var TEMPLATE_PUBLIC_LINK_ACTION =
+		'<a class="action action-create-public-link permanent" title="{{tooltip}}">' +
+		'	<span class="icon icon-public-create" />' +
+		'</a>';
+
 	if (!OCA.Sharing) {
 		OCA.Sharing = {};
 	}
@@ -38,6 +43,7 @@
 			if (fileList.id === 'trashbin' || fileList.id === 'files.public') {
 				return;
 			}
+			var self = this;
 			var fileActions = fileList.fileActions;
 			var oldCreateRow = fileList._createRow;
 			fileList._createRow = function(fileData) {
@@ -206,6 +212,37 @@
 				fileList._setShareTreeUserGroupView();
 			});
 			fileList.registerTabView(shareTab);
+
+			var shareConfig = new OC.Share.ShareConfigModel();
+
+			var showPublicLinkQuickAction = OC.appConfig.files_sharing.showPublicLinkQuickAction
+				&& shareConfig.isShareWithLinkAllowed()
+				&& !shareConfig.isPublicSharingBlockedByAllowlist()
+				&& !oc_appconfig.core.enforceLinkPasswordReadOnly;
+
+			if (showPublicLinkQuickAction) {
+				fileActions.registerAction({
+					name: 'public-link-action',
+					displayName: t('core', 'Create public link'),
+					mime: 'all',
+					permissions: OC.PERMISSION_READ,
+					type: OCA.Files.FileActions.TYPE_INLINE,
+					render: function(actionSpec, isDefault, context) {
+						var permissions = parseInt(context.$file.attr('data-permissions'), 10);
+
+						if ((permissions & OC.PERMISSION_SHARE) !== 0) {
+							var $actionLink = $(self.renderPublicLinkAction());
+							context.$file.find('a.name>span.fileactions').append($actionLink);
+							return $actionLink;
+						}
+
+						return null;
+					},
+					actionHandler: function(fileName, context) {
+						return self._handlePublicLinkQuickAction(context.fileInfoModel, shareTab, shareConfig);
+					}
+				});
+			}
 		},
 
 		/**
@@ -269,6 +306,103 @@
 				text += ', +' + (count - maxRecipients);
 			}
 			return text;
+		},
+
+		renderPublicLinkAction: function () {
+			if (!this._template) {
+				this._template = Handlebars.compile(TEMPLATE_PUBLIC_LINK_ACTION);
+			}
+			return this._template({
+				'tooltip': t('files_sharing', 'Create and copy public link')
+			});
+		},
+
+		_handlePublicLinkQuickAction: function(fileInfoModel, shareTab, shareConfig) {
+			var self = this;
+			var shareDialog = shareTab._dialog;
+			var linkShareView;
+			var initNewShareLinkView = true;
+
+			var attributes = {
+				permissions: OC.PERMISSION_READ,
+				expireDate: shareConfig.getDefaultExpirationDateString(),
+				shareType: OC.Share.SHARE_TYPE_LINK,
+				itemType: fileInfoModel.isDirectory() ? 'folder' : 'file',
+				itemSource: fileInfoModel.get('id'),
+			};
+
+			var shareModel = new OC.Share.ShareModel(attributes);
+
+			var shareItemModel = new OC.Share.ShareItemModel({
+				itemType: fileInfoModel.isDirectory() ? 'folder' : 'file',
+				itemSource: fileInfoModel.get('id'),
+				possiblePermissions: fileInfoModel.get('sharePermissions')
+			}, {
+				configModel: shareConfig,
+				fileInfoModel: fileInfoModel
+			});
+
+			shareItemModel.fetch().then(function() {
+				// check if share link view for current file is already open
+				if (shareDialog && shareDialog.linkShareView) {
+					linkShareView = shareDialog.linkShareView;
+
+					if (
+						linkShareView.fileInfoModel
+						&& shareItemModel.fileInfoModel
+						&& linkShareView.fileInfoModel.get('id') === shareItemModel.fileInfoModel.get('id')
+					) {
+						initNewShareLinkView = false;
+					}
+				}
+
+				if (initNewShareLinkView) {
+					var linkCollection = shareItemModel.getLinkSharesCollection();
+					linkShareView = new OC.Share.ShareDialogLinkListView({
+						collection: linkCollection,
+						itemModel: shareItemModel
+					});
+				}
+
+				attributes.name = linkShareView._generateName();
+				attributes.path = fileInfoModel.get('path') + '/' + fileInfoModel.get('name');
+
+				shareModel.save(attributes, {
+					attrs: attributes,
+					success: function(newFileInfoModel) {
+						linkShareView.collection.add(shareModel);
+						fileInfoModel.set({
+							'shareTypes': [newFileInfoModel.get('shareType')]
+						});
+
+						var link = shareModel.getLink();
+						self._copyToClipboard(link);
+
+						OC.Notification.show(t(
+							'files_sharing',
+							'A new public link with download & view permissions has been created and copied to the clipboard.'
+						));
+					},
+					error: function () {
+						OC.Notification.show(t(
+							'files_sharing',
+							'The public link could not be created. Please contact the administrator for help.'),
+							{ type: 'error' }
+						);
+					}
+				});
+			});
+		},
+
+		_copyToClipboard: function(text) {
+			// Clipboard.js apparently does not work for file actions, so we have
+			// to do it the "old" way.
+			var dummy = document.createElement("textarea");
+			document.body.appendChild(dummy);
+			dummy.value = text;
+			dummy.select();
+			document.execCommand("copy");
+			document.body.removeChild(dummy);
 		}
 	};
 })();
