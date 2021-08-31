@@ -85,7 +85,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	private $currentServer = null;
 
 	/**
-	 * @var string the original capabilities in XML format
+	 * @var array the original capabilities in XML format
 	 */
 	private $savedCapabilitiesXml;
 
@@ -167,7 +167,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setCurrentPageObject(OwncloudPage $pageObject) {
+	public function setCurrentPageObject(OwncloudPage $pageObject):void {
 		$this->currentPageObject = $pageObject;
 	}
 
@@ -175,14 +175,14 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return OwncloudPage
 	 */
-	public function getCurrentPageObject() {
+	public function getCurrentPageObject():?OwncloudPage {
 		return $this->currentPageObject;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getCurrentServer() {
+	public function getCurrentServer():?string {
 		return $this->currentServer;
 	}
 
@@ -191,7 +191,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setCurrentServer($currentServer) {
+	public function setCurrentServer(string $currentServer):void {
 		$this->currentServer = $currentServer;
 	}
 
@@ -200,9 +200,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @Given the administrator has logged in using the webUI
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function adminLogsInUsingTheWebUI() {
+	public function adminLogsInUsingTheWebUI():void {
 		$this->loginPage->open();
 		$this->loginAs(
 			$this->featureContext->getAdminUsername(),
@@ -216,9 +216,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $target
 	 *
 	 * @return OwncloudPage
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function loginAs($username, $password, $target = 'FilesPage') {
+	public function loginAs(string $username, string $password, string $target = 'FilesPage'):OwncloudPage {
 		$username = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getActualPassword($password);
 		$session = $this->getSession();
@@ -238,9 +238,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @Given the user/administrator has logged out of the webUI
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserLogsOutOfTheWebUI() {
+	public function theUserLogsOutOfTheWebUI():void {
 		$session = $this->getSession();
 		$settingsMenu = $this->owncloudPage->openSettingsMenu($session);
 		$settingsMenu->logout();
@@ -259,7 +259,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return string
 	 */
-	public function getLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+	public function getLinkFromEmail(string $emailAddress, string $regexSearch, string $errorMessage, int $numEmails = 1):string {
 		$content = EmailHelper::getBodyOfEmail(
 			EmailHelper::getLocalMailhogUrl(),
 			$emailAddress,
@@ -281,7 +281,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function followLinkFromEmail($emailAddress, $regexSearch, $errorMessage, $numEmails = 1) {
+	public function followLinkFromEmail(string $emailAddress, string $regexSearch, string $errorMessage, int $numEmails = 1):void {
 		$link = $this->getLinkFromEmail(
 			$emailAddress,
 			$regexSearch,
@@ -296,7 +296,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function noNotificationShouldBeDisplayedOnTheWebUI() {
+	public function noNotificationShouldBeDisplayedOnTheWebUI():void {
 		try {
 			$notificationText = $this->owncloudPage->getNotificationText();
 			Assert::assertEquals(
@@ -317,8 +317,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function aNotificationShouldBeDisplayedOnTheWebUIWithTheText(
-		$notificationText
-	) {
+		string $notificationText
+	):void {
 		Assert::assertEquals(
 			$notificationText,
 			$this->owncloudPage->getNotificationText(),
@@ -337,12 +337,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param TableNode $table of expected notification text
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function notificationsShouldBeDisplayedOnTheWebUIWithTheText(
-		$matching,
+		string $matching,
 		TableNode $table
-	) {
+	):void {
 		$this->featureContext->verifyTableNodeColumnsCount($table, 1);
 		$expectedNotifications = $table->getRows();
 		$numExpectedNotifications = \count($expectedNotifications);
@@ -389,7 +389,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function dialogsShouldBeDisplayedOnTheWebUI(
 		$count = null,
 		TableNode $table = null
-	) {
+	):void {
 		$dialogs = $this->owncloudPage->getOcDialogs();
 		//check if the correct number of dialogs are open
 		if ($count !== null) {
@@ -455,7 +455,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
+	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle(string $title):void {
 		$title = $this->featureContext->substituteInLineCodes($title);
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
 		// Just check that the actual title starts with the expected title.
@@ -477,7 +477,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserShouldBeRedirectedToGeneralErrorPage($title) {
+	public function theUserShouldBeRedirectedToGeneralErrorPage(string $title):void {
 		$title = $this->featureContext->substituteInLineCodes($title);
 		$this->generalErrorPage->waitTillPageIsLoaded($this->getSession());
 		// Just check that the actual title starts with the expected title.
@@ -499,7 +499,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function anErrorShouldBeDisplayedOnTheGeneralErrorPage($error) {
+	public function anErrorShouldBeDisplayedOnTheGeneralErrorPage(string $error):void {
 		Assert::assertEquals(
 			$error,
 			$this->generalErrorPage->getErrorMessage(),
@@ -517,7 +517,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserShouldBeRedirectedToGeneralExceptionPage($title) {
+	public function theUserShouldBeRedirectedToGeneralExceptionPage(string $title):void {
 		$title = $this->featureContext->substituteInLineCodes($title);
 		$this->generalExceptionPage->waitTillPageIsLoaded($this->getSession());
 		// Just check that the actual title starts with the expected title.
@@ -539,7 +539,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function anErrorShouldBeDisplayedOnTheGeneralExceptionPageWithTitle($title) {
+	public function anErrorShouldBeDisplayedOnTheGeneralExceptionPageWithTitle(string $title):void {
 		Assert::assertEquals(
 			$title,
 			$this->generalExceptionPage->getExceptionTitle(),
@@ -557,7 +557,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function anErrorShouldBeDisplayedOnTheGeneralErrorPageContaining($message) {
+	public function anErrorShouldBeDisplayedOnTheGeneralErrorPageContaining(string $message):void {
 		Assert::assertStringContainsString(
 			$message,
 			$this->generalExceptionPage->getExceptionMessage(),
@@ -577,7 +577,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function adminSwitchesSettingInSection($value, $setting, $section) {
+	public function adminSwitchesSettingInSection(string $value, string $setting, string $section):void {
 		if ($value === "enables") {
 			$value = "enabled";
 		} elseif ($value === "disables") {
@@ -595,7 +595,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function settingInSectionHasBeen($setting, $section, $value) {
+	public function settingInSectionHasBeen(string $setting, string $section, string $value):void {
 		if ($value === "enabled") {
 			$value = true;
 		} elseif ($value === "disabled") {
@@ -628,9 +628,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @Given the user/administrator has reloaded the current page of the webUI
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserReloadsTheCurrentPageOfTheWebUI() {
+	public function theUserReloadsTheCurrentPageOfTheWebUI():void {
 		$this->getSession()->reload();
 		$pageObject = $this->getCurrentPageObject();
 		if ($pageObject === null) {
@@ -642,9 +642,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * returns the saved capabilities as XML
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function getSavedCapabilitiesXml() {
+	public function getSavedCapabilitiesXml():array {
 		return $this->savedCapabilitiesXml;
 	}
 
@@ -660,7 +660,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function addToSavedCapabilitiesChanges($change) {
+	public function addToSavedCapabilitiesChanges(array $change):void {
 		if (\sizeof($change) > 0) {
 			$this->savedCapabilitiesChanges = \array_merge(
 				$this->savedCapabilitiesChanges,
@@ -675,9 +675,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -750,9 +750,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @BeforeScenario @webUI&&@disablePreviews
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function disablePreviewBeforeScenario() {
+	public function disablePreviewBeforeScenario():void {
 		$this->featureContext->runFunctionOnEveryServer(
 			function ($server) {
 				if (!isset($this->oldPreviewSetting[$server])) {
@@ -782,9 +782,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @BeforeScenario @webUI&&@enablePreviews
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function enablePreviewBeforeScenario() {
+	public function enablePreviewBeforeScenario():void {
 		$this->featureContext->runFunctionOnEveryServer(
 			function ($server) {
 				if (!isset($this->oldPreviewSetting[$server])) {
@@ -807,7 +807,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * @return string
 	 */
-	public function getSessionId() {
+	public function getSessionId():string {
 		$url = $this->getSession()->getDriver()->getWebDriverSession()->getUrl();
 		$parts = \explode('/', $url);
 		$sessionId = \array_pop($parts);
@@ -820,9 +820,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @AfterScenario @webUI
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function tearDownSuite() {
+	public function tearDownSuite():void {
 		AppConfigHelper::modifyAppConfigs(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -871,7 +871,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function reportResult(AfterScenarioScope $afterScenarioScope) {
+	public function reportResult(AfterScenarioScope $afterScenarioScope):void {
 		if ($afterScenarioScope->getTestResult()->isPassed()) {
 			$passOrFail = "pass";
 			$passed = "true";

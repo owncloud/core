@@ -45,7 +45,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -57,7 +57,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @return void
 	 */
-	public function afterScenario() {
+	public function afterScenario():void {
 		$davUrl = $this->featureContext->getBaseUrl()
 			. '/remote.php/dav/calendars/admin/MyCalendar';
 		HttpRequestHelper::delete(
@@ -77,7 +77,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @return void
 	 */
-	public function userRequestsCalendarUsingTheAPI($user, $calendar, $ofUser) {
+	public function userRequestsCalendarUsingTheAPI(string $user, string $calendar, string $ofUser):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$normalizedUser = $this->featureContext->normalizeUsername($ofUser);
@@ -107,7 +107,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorRequestsCalendarUsingTheNewWebdavApi($calendar, $ofUser) {
+	public function theAdministratorRequestsCalendarUsingTheNewWebdavApi(string $calendar, string $ofUser):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->userRequestsCalendarUsingTheAPI($admin, $calendar, $ofUser);
 	}
@@ -118,9 +118,9 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $expectedStatus
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theCalDavHttpStatusCodeShouldBe($expectedStatus) {
+	public function theCalDavHttpStatusCodeShouldBe(string $expectedStatus):void {
 		$actualStatus = $this->response->getStatusCode();
 		Assert::assertEquals(
 			(int) $expectedStatus,
@@ -136,9 +136,9 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $calendar
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userCalendarShouldBePresentInTheWebdavApiResponse($user, $calendar) {
+	public function userCalendarShouldBePresentInTheWebdavApiResponse(string $user, string $calendar):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$normalizedUser = $this->featureContext->normalizeUsername($user);
 		$calendar = $this->featureContext->substituteInLineCodes(
@@ -167,9 +167,9 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasCreatedACalendarNamed($user, $name) {
+	public function userHasCreatedACalendarNamed(string $user, string $name):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$davUrl = $this->featureContext->getBaseUrl()
 			. "/remote.php/dav/calendars/$user/$name";
@@ -205,8 +205,9 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $name
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorHasSuccessfullyCreatedACalendarNamed($name) {
+	public function theAdministratorHasSuccessfullyCreatedACalendarNamed(string $name):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->userHasCreatedACalendarNamed($admin, $name);
 	}
