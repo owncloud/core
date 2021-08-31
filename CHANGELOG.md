@@ -30,6 +30,7 @@ Summary
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 * Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
 * Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
+* Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
 
 Details
 -------
@@ -230,6 +231,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4684
    https://github.com/owncloud/core/pull/39056
+
+* Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
+
+   This feature introduces a quick action in the filelist for creating read-only public links. It
+   can be enabled via 'sharing.showPublicLinkQuickAction' in the config.php.
+
+   https://github.com/owncloud/enterprise/issues/4718
+   https://github.com/owncloud/core/pull/39130
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
