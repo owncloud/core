@@ -37,6 +37,7 @@ OC.L10N.register(
     "Storage type" : "Tipo de almacenamiento",
     "Scope" : "Alcance",
     "Enable encryption" : "Activar encriptación",
+    "Never" : "Nunca",
     "External Storage" : "Almacenamiento externo",
     "Folder name" : "Nombre de la carpeta",
     "Authentication" : "Autenticación",
