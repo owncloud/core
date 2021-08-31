@@ -2896,7 +2896,10 @@
 			var $trs = this.$fileList.find('tr');
 			do {
 				_.each($trs, filterRows);
-				if (visibleCount < total) {
+
+				// prerender the file list until all items are found.
+				// skip this with an empty filter to keep the pagination.
+				if (visibleCount < total && filter !== '') {
 					$trs = this._nextPage(false);
 				}
 			} while (visibleCount < total && $trs.length > 0);
