@@ -20,6 +20,7 @@ Summary
 * Bugfix - Clarify the description of the manual file locking option: [#39106](https://github.com/owncloud/core/pull/39106)
 * Bugfix - Fix logo size on login screen: [#39129](https://github.com/owncloud/core/pull/39129)
 * Bugfix - Image orientation: [#39140](https://github.com/owncloud/core/pull/39140)
+* Bugfix - Fix display of tag selection in sidebar: [#39146](https://github.com/owncloud/core/pull/39146)
 * Bugfix - Keep pagination active with empty search queries: [#39155](https://github.com/owncloud/core/pull/39155)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
@@ -138,6 +139,14 @@ Details
    https://github.com/owncloud/core/issues/39114
    https://github.com/owncloud/enterprise/issues/4666
    https://github.com/owncloud/core/pull/39140
+
+* Bugfix - Fix display of tag selection in sidebar: [#39146](https://github.com/owncloud/core/pull/39146)
+
+   This PR add small CSS fixes to the Tags selection dialogue: - Fixed grey tag space if clear icon
+   (x) is not displayed - Align checkmark in selection list vertically - Use correct HTML elements
+   (div instead of span)
+
+   https://github.com/owncloud/core/pull/39146
 
 * Bugfix - Keep pagination active with empty search queries: [#39155](https://github.com/owncloud/core/pull/39155)
 
