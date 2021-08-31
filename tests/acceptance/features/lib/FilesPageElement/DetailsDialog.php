@@ -60,8 +60,8 @@ class DetailsDialog extends OwncloudPage {
 	private $tagsSuggestDropDownXpath = "//div[contains(@class, 'systemtags-select2-dropdown') and contains(@id, 'select2-drop')]";
 
 	private $tagsResultFromDropdownXpath = "//li[contains(@class, 'select2-result')]";
-	private $tagEditButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'rename')]";
-	private $tagDeleteButtonInTagXpath = "//span[@class='systemtags-actions']//a[contains(@class, 'delete')]";
+	private $tagEditButtonInTagXpath = "//div[@class='systemtags-actions']//a[contains(@class, 'rename')]";
+	private $tagDeleteButtonInTagXpath = "//div[@class='systemtags-actions']//a[contains(@class, 'delete')]";
 	private $tagsDropDownResultXpath = "//div[contains(@class, 'systemtags-select2-dropdown')]" .
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
