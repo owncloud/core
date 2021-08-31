@@ -164,16 +164,18 @@ Details
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
-   The following Symfony components have been updated to: - console 4.4.29 - event-dispatcher
-   4.4.27 - process 4.4.27 - routing 4.4.27 - translation 4.4.27
+   The following Symfony components have been updated to: - console 4.4.30 - event-dispatcher
+   4.4.30 - process 4.4.30 - routing 4.4.30 - translation 4.4.30
 
    The following Symfony polyfill components have been updated to: -
    symfony/polyfill-mbstring v1.23.1 - symfony/polyfill-php80 v1.23.1
 
    https://github.com/owncloud/core/pull/39061
    https://github.com/owncloud/core/pull/39079
+   https://github.com/owncloud/core/pull/39153
    https://symfony.com/blog/symfony-4-4-27-released
    https://symfony.com/blog/symfony-4-4-29-released
+   https://symfony.com/blog/symfony-4-4-30-released
 
 * Enhancement - Special user groups can break persistent locks: [#38222](https://github.com/owncloud/core/pull/38222)
 
