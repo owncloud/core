@@ -238,9 +238,9 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 		});
 		describe('tag actions', function() {
 			var opts;
+			var confirmDialogStub;
 
 			beforeEach(function() {
-
 				opts = select2Stub.getCall(0).args[0];
 
 				view.collection.add([
@@ -248,7 +248,14 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 				]);
 
 				$dropdown.append(opts.formatResult(view.collection.get('1').toJSON()));
+				confirmDialogStub = sinon.stub(OC.dialogs, 'confirm');
 
+				var deferred = $.Deferred();
+				confirmDialogStub.returns(deferred.promise());
+				deferred.resolve();
+			});
+			afterEach(function() {
+				confirmDialogStub.restore();
 			});
 			it('displays rename form when clicking rename', function() {
 				$dropdown.find('.rename').mouseup();
@@ -274,6 +281,9 @@ describe('OC.SystemTags.SystemTagsInputField tests', function() {
 				// delete button appears in tag actions
 				expect($dropdown.find('.delete').length).toEqual(1);
 				$dropdown.find('.delete').mouseup();
+
+				confirmDialogStub.yield(true);
+				expect(confirmDialogStub.calledOnce).toEqual(true);
 
 				expect(destroyStub.calledOnce).toEqual(true);
 				expect(destroyStub.calledOn(view.collection.get('1')));
