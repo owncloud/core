@@ -18,7 +18,7 @@
 	<!-- Everyone -->
 	<li id="everyonegroup" data-gid="_everyone" data-usercount="" class="isgroup">
 		<a href="#">
-			<span class="groupname">
+			<span class="groupname" title="<?php p($l->t('Everyone')); ?>">
 				<?php p($l->t('Everyone')); ?>
 			</span>
 		</a>
@@ -34,7 +34,8 @@
 		<li data-gid="admin" data-usercount="<?php if ($adminGroup['usercount'] > 0) {
 		p($adminGroup['usercount']);
 	} ?>" class="isgroup">
-			<a href="#"><span class="groupname"><?php p($l->t('Admins')); ?></span></a>
+			<a href="#"><span class="groupname" title="<?php p($l->t('Admins')); ?>">
+					<?php p($l->t('Admins')); ?></span></a>
 			<span class="utils">
 				<span class="usercount"><?php if ($adminGroup['usercount'] > 0) {
 		p($adminGroup['usercount']);
@@ -47,7 +48,7 @@
 	<?php foreach ($_["groups"] as $group): ?>
 		<li data-gid="<?php p($group['name']) ?>" data-usercount="<?php p($group['usercount']) ?>" class="isgroup">
 			<a href="#" class="dorename">
-				<span class="groupname"><?php p($group['name']); ?></span>
+				<span class="groupname" title="<?php p($group['name']); ?>"><?php p($group['name']); ?></span>
 			</a>
 			<span class="utils">
 				<span class="usercount"><?php if ($group['usercount'] > 0) {
