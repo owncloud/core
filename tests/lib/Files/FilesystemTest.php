@@ -581,4 +581,26 @@ class FilesystemTest extends TestCase {
 	public function testHashFileName($path, $expected) {
 		$this->assertEquals($expected, Filesystem::hashFileName($path));
 	}
+
+	public function testCreatePartFilePath() {
+		$path = '/test/test.txt';
+		$transferId = \rand();
+		$expectedPartFilePath = "/test/dd18bf3a8e0a2a3e53e2661c7fb53534.ocTransferId$transferId.part";
+		$this->assertEquals($expectedPartFilePath, Filesystem::createPartFilePath($path, $transferId));
+	}
+
+	public function testgetPartFileMetaData() {
+		$path = '/test/test.txt';
+		$partFilePath = Filesystem::createPartFilePath($path);
+
+		$partFileName = \basename($partFilePath);
+		$partFileMetaData = Filesystem::getPartFileMetaData($partFileName);
+
+		$this->assertEquals([
+			'path' => $partFilePath,
+			'originalRoot' => Filesystem::getRoot(),
+			'originalPath' => $path,
+			'originalName' => \basename($path),
+		], $partFileMetaData);
+	}
 }

@@ -222,7 +222,6 @@ class Checksum extends Wrapper {
 		}
 
 		// check the md5($path) in case "part_file_in_storage" is set to false
-		// see apps/dav/lib/Connector/Sabre/File.php getPartFileBasePath  (around line 305)
 		// strip initial dir, usually "files" from "files/dir1/dir2"
 		$pathPieces = \explode('/', $path, 2);
 		if (\count($pathPieces) !== 2) {

@@ -6,5 +6,9 @@ This could lead to a too long filename error.
 With this PR the chunk filenames consist of md5 hash and chunk suffix, which
 decreases the filename and prevents a too long filename error.
 
+The implementation also provides a way to retrieve meta data of a
+part file. This way, the original file path or name can be fetched.
+
 https://github.com/owncloud/core/pull/39088
+https://github.com/owncloud/core/pull/39131
 https://github.com/owncloud/enterprise/issues/4692

@@ -170,7 +170,7 @@ class File extends Node implements IFile, IFileNode {
 
 		if ($usePartFile) {
 			// mark file as partial while uploading (ignored by the scanner)
-			$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . \rand() . '.part';
+			$partFilePath = Filesystem::createPartFilePath($this->path);
 		} else {
 			// upload file directly as the final path
 			$partFilePath = $this->path;
@@ -300,15 +300,6 @@ class File extends Node implements IFile, IFileNode {
 			\OC::$server->getEventDispatcher()->dispatch('file.afterupdate', $afterEvent);
 		}
 		return '"' . $this->info->getEtag() . '"';
-	}
-
-	private function getPartFileBasePath($path) {
-		$partFileInStorage = \OC::$server->getConfig()->getSystemValue('part_file_in_storage', true);
-		if ($partFileInStorage) {
-			return Filesystem::hashFileName($path);
-		} else {
-			return \md5($path); // will place it in the root of the view with a unique name
-		}
 	}
 
 	/**
@@ -530,7 +521,7 @@ class File extends Node implements IFile, IFileNode {
 
 				if ($usePartFile) {
 					// we first assembly the target file as a part file
-					$partFile = $this->getPartFileBasePath($path . '/' . $info['name']) . '.ocTransferId' . $info['transferid'] . '.part';
+					$partFile = Filesystem::createPartFilePath($path . '/' . $info['name'], $info['transferid']);
 					/** @var \OC\Files\Storage\Storage $targetStorage */
 					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
 

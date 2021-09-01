@@ -211,6 +211,9 @@ class Filesystem {
 	/** @var bool */
 	private static $logWarningWhenAddingStorageWrapper = true;
 
+	/** @var array */
+	private static $partFileMetaData = [];
+
 	/**
 	 * @param bool $shouldLog
 	 * @return bool previous value
@@ -1113,5 +1116,58 @@ class Filesystem {
 		}
 
 		return $hashedFileName;
+	}
+
+	/**
+	 * Create the path to a part file. It consists of the hashed file path
+	 * or name (depending on part_file_in_storage) and a transferId. E.g.
+	 * /files/098f6bcd4621d373cade4e832627b4f6.ocTransferId2111130212.part
+	 *
+	 * This method also saves some meta data for the duration of the request.
+	 * This data can be retrieved by passing the hashed file name
+	 * to getPartFileMetaData().
+	 *
+	 * @param string $path path to the original file
+	 * @param string|null $transferId generates a random string if not given
+	 * @return string hashed file path or name
+	 */
+	public static function createPartFilePath($path, $transferId = null) {
+		if (!$transferId) {
+			$transferId = \rand();
+		}
+
+		// if part_file_in_storage is false, we will hash the whole file path
+		// as the part file is then always stored in the user's root directory.
+		$partFileInStorage = \OC::$server->getConfig()->getSystemValue('part_file_in_storage', true);
+		if ($partFileInStorage) {
+			$hashedPath = self::hashFileName($path);
+		} else {
+			$hashedPath = \md5($path);
+		}
+
+		$partFilePath = "$hashedPath.ocTransferId$transferId.part";
+		$partFileName = \basename($partFilePath);
+		self::$partFileMetaData[$partFileName] = [
+			'path' => $partFilePath,
+			'originalRoot' => self::getRoot(),
+			'originalPath' => $path,
+			'originalName' => \basename($path),
+		];
+
+		return $partFilePath;
+	}
+
+	/**
+	 * Retrieve the meta data of a part file by its hashed part file name. This way
+	 * you can also retrieve the original file path and name.
+	 *
+	 * This presumes that createPartFilePath() was called before during this
+	 * request cycle.
+	 *
+	 * @param string $partFileName e.g. 098f6bcd4621d373cade4e832627b4f6.ocTransferId2111130212.part
+	 * @return array|null the found meta data as array or null if none found
+	 */
+	public static function getPartFileMetaData($partFileName) {
+		return self::$partFileMetaData[$partFileName] ?? null;
 	}
 }
