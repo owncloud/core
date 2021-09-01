@@ -110,6 +110,15 @@
 	padding-bottom: 5px;
 }
 
+#shareTreeUserGroupList .shareTree-item-name {
+	max-width: 256px;
+}
+
+#shareTreeUserGroupList .shareTree-item-path {
+	margin-left: auto;
+	margin-right: 8px;
+}
+
 .shareTree-item * {
 	cursor: pointer;
 }

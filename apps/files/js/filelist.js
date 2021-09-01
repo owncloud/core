@@ -1962,7 +1962,7 @@
 					}
 
 					var $path = $('<span>',   { class : 'shareTree-item-path', text : t('files', 'via') + " " + folder.name });
-					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith });
+					var $name = $('<strong>', { class : 'shareTree-item-name', text : shareWith, title: shareWith });
 					var $icon = $('<div>',    { class : 'shareTree-item-avatar' });
 
 					if (oc_config.enable_avatars) {
@@ -1976,6 +1976,8 @@
 							console.error(e);
 						});
 					});
+
+					$name.tooltip({placement: 'bottom'});
 				});
 			});
 		},
