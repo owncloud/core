@@ -968,6 +968,7 @@ trait Sharing {
 	 * @param string|int|string[]|int[] $permissions
 	 * @param string $linkName
 	 * @param string $expireDate
+	 * @param string $sharingApp
 	 *
 	 * @return void
 	 */
@@ -980,7 +981,8 @@ trait Sharing {
 		$sharePassword = null,
 		$permissions = null,
 		$linkName = null,
-		$expireDate = null
+		$expireDate = null,
+		string $sharingApp = 'files_sharing'
 	) {
 		$userActual = $this->getActualUsername($user);
 		if (\is_string($permissions) && !\is_numeric($permissions)) {
@@ -1001,7 +1003,8 @@ trait Sharing {
 			$linkName,
 			$expireDate,
 			$this->ocsApiVersion,
-			$this->sharingApiVersion
+			$this->sharingApiVersion,
+			$sharingApp
 		);
 		// In case of HTTP status code 204, there is no content in response payload body.
 		if ($this->response->getStatusCode() === 204) {
