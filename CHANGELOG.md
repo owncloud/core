@@ -33,6 +33,7 @@ Summary
 * Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
 * Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
+* Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 
 Details
 -------
@@ -258,6 +259,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4718
    https://github.com/owncloud/core/pull/39130
+
+* Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
+
+   This feature introduces confirmation dialog while deleting a tag to prevent unwanted
+   data-loss
+
+   https://github.com/owncloud/core/issues/39157
+   https://github.com/owncloud/core/pull/39158
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
