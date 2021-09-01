@@ -66,6 +66,8 @@ class DetailsDialog extends OwncloudPage {
 	"//ul[@class='select2-results']" .
 	"//span[@class='label']";
 	private $tagEditInputXpath = "//input[@id='view12-rename-input']";
+	protected $tagDeleteConfirmButtonXpath
+		= ".//div[contains(@class, 'oc-dialog-buttonrow twobuttons') and not(ancestor::div[contains(@style, 'display: none')])]//button[text()='Yes']";
 
 	private $commentXpath = "//ul[@class='comments']//div[@class='message' and contains(., '%s')]";
 	private $commentInputXpath = "//form[@class='newCommentForm']//textarea[@class='message']";
@@ -518,6 +520,16 @@ class DetailsDialog extends OwncloudPage {
 				);
 				$deleteBtn->focus();
 				$deleteBtn->click();
+
+				$deleteConfirmBtn = $this->find("xpath", $this->tagDeleteConfirmButtonXpath);
+				$this->assertElementNotNull(
+					$deleteConfirmBtn,
+					__METHOD__ .
+					" xpath: $this->tagDeleteConfirmButtonXpath" .
+					" could not find confirmation button"
+				);
+				$deleteConfirmBtn->focus();
+				$deleteConfirmBtn->click();
 			}
 		}
 	}

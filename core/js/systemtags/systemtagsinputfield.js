@@ -15,7 +15,7 @@
 		'<input class="systemTagsInputField" type="hidden" name="tags" value=""/>';
 
 	var RESULT_TEMPLATE =
-		'<div class="systemtags-item{{#if isNew}} new-item{{/if}}" data-id="{{id}}">' +
+		'<div class="systemtags-item{{#if isNew}} new-item{{/if}}" data-id="{{id}}" data-name="{{name}}">' +
 		'    <span class="checkmark icon icon-checkmark"></span>' +
 		'{{#if isAdmin}}' +
 		'    <span class="label">{{{tagMarkup}}}</span>' +
@@ -176,13 +176,34 @@
 		 *
 		 * @param {Object} ev event
 		 */
-		_onClickDeleteTag: function(ev) {
+		_onClickDeleteTag: function (ev) {
+			var self = this;
 			var $item = $(ev.target).closest('.systemtags-item');
 			var tagId = $item.attr('data-id');
-			this.collection.get(tagId).destroy();
-			$item.closest('.select2-result').remove();
-			// TODO: spinner
-			return false;
+			var tagName = $item.attr('data-name');
+
+			ev.stopPropagation();
+			OC.dialogs.confirm(
+				t(
+					'core',
+					'Do you really want to remove the tag "{tagName}" and unassign it from all files and folders ?',
+					{tagName: tagName}
+				),
+				t('core', 'Remove tag'),
+				function (result) {
+					if (result === true) {
+						self.collection.get(tagId).destroy();
+						$item.closest('.select2-result').remove();
+					}
+
+					self.$tagsField.select2('open');
+				},
+				true
+			).then(function () {
+				// We need to do close the dropdown temporary otherwise select2 will overlay the dialog
+				self.$tagsField.select2('close');
+
+			});
 		},
 
 		_addToSelect2Selection: function(selection) {

@@ -1,0 +1,7 @@
+Enhancement: Confirmation dialog for deleting tags
+
+This feature introduces confirmation dialog while deleting a tag
+to prevent unwanted data-loss
+
+https://github.com/owncloud/core/issues/39157
+https://github.com/owncloud/core/pull/39158
