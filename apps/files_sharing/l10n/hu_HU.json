@@ -31,6 +31,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Nem található ownCloud telepítés (7 vagy nagyobb verzió) itt  {remote}",
     "Invalid ownCloud url" : "Érvénytelen ownCloud webcím",
     "Share" : "Megosztás",
+    "Create public link" : "Publikus hivatkozás létrehozása",
     "Declined" : "Elutasított",
     "Pending" : "Folyamatban",
     "Shared by" : "Megosztotta Önnel",

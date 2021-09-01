@@ -27,6 +27,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "هیچ نصبinstallation (7 or higher) در  {remote} پیدا نشد.",
     "Invalid ownCloud url" : "آدرس نمونه ownCloud  غیر معتبر است",
     "Share" : "اشتراک گذاری",
+    "Create public link" : "ساخت لینک عمومی",
     "No expiration date set" : "تاریخ انقضا تعیین نشده است.",
     "Pending" : "در انتظار",
     "Shared by" : "اشتراک گذاشته شده به وسیله",

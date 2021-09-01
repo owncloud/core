@@ -33,6 +33,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Δεν βρέθηκε εγκατάσταση ownCloud (7 ή νεώτερη) στο {remote}",
     "Invalid ownCloud url" : "Μη έγκυρη url ownCloud",
     "Share" : "Διαμοιρασμός",
+    "Create public link" : "Δημιουργία δημόσιου συνδέσμου",
     "No expiration date set" : "Δεν καθορίστηκε ημερομηνία λήξης",
     "Declined" : "Απορρίφθηκε",
     "Pending" : "Εκκρεμεί",

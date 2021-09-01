@@ -36,6 +36,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "ไม่มีการติดตั้ง ownCloud (7 หรือสูงกว่า) พบได้ที่ {remote}",
     "Invalid ownCloud url" : "URL ownCloud ไม่ถูกต้อง",
     "Share" : "แชร์",
+    "Create public link" : "สร้างลิงก์สาธารณะ",
     "No expiration date set" : "ไม่กำหนดวันหมดอายุ",
     "Declined" : "ปฏิเสธ",
     "Pending" : "อยู่ระหว่างดำเนินการ",

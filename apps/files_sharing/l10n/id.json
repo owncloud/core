@@ -24,6 +24,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Tidak ditemukan instalasi ownCloud (7 atau lebih tinggi) pada {remote}",
     "Invalid ownCloud url" : "URL ownCloud tidak sah",
     "Share" : "Bagikan",
+    "Create public link" : "Buat tautan publik",
     "Declined" : "Tolak",
     "Pending" : "Tertunda",
     "Shared by" : "Dibagikan oleh",

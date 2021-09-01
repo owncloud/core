@@ -5,6 +5,7 @@ OC.L10N.register(
     "Cancel" : "Kanseleer",
     "Add" : "Voeg Toe",
     "Share" : "Deel",
+    "Create public link" : "Skep openbare skakel",
     "Pending" : "Hangend",
     "Sharing" : "Deling",
     "Public link" : "Openbare skakel",

@@ -21,6 +21,7 @@ OC.L10N.register(
     "Add" : "Afegeix",
     "Invalid ownCloud url" : "La url d'ownCloud no és vàlida",
     "Share" : "Compartir",
+    "Create public link" : "Crear un enllaç públic",
     "Declined" : "Denegat",
     "Pending" : "Pendent",
     "Shared by" : "Compartit per",

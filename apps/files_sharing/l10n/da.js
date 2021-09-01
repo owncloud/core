@@ -30,6 +30,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Der er ingen ownCloud-installation (7 eller højere) på {remote}",
     "Invalid ownCloud url" : "Ugyldig ownCloud-URL",
     "Share" : "Del",
+    "Create public link" : "opret offentligt link",
     "No expiration date set" : "Der er ikke sat nogen udløbsdato",
     "Declined" : "Afvist",
     "Pending" : "Afventer",

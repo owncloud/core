@@ -33,6 +33,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "未发现 {remote} 安装有ownCloud (7 或更高版本)",
     "Invalid ownCloud url" : "无效的 ownCloud 网址",
     "Share" : "共享",
+    "Create public link" : "创建公共链接",
     "No expiration date set" : "过期时间未设置",
     "Declined" : "拒绝",
     "Pending" : "等待",

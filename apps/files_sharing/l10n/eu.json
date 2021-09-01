@@ -26,6 +26,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Ez da ownClouden instalaziorik (7 edo haundiago) aurkitu {remote}n",
     "Invalid ownCloud url" : "ownCloud url baliogabea",
     "Share" : "Partekatu",
+    "Create public link" : "Esteka publikoa sortu",
     "No expiration date set" : "Ez da iraungitze datarik ezarri",
     "Declined" : "Ez onartua",
     "Pending" : "Zain",

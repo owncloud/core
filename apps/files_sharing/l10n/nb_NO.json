@@ -31,6 +31,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Ingen ownCloud-installasjon (7 eller høyere) funnet på {remote}",
     "Invalid ownCloud url" : "Ugyldig ownCloud url",
     "Share" : "Delt ressurs",
+    "Create public link" : "Opprett offentlig lenke",
     "No expiration date set" : "Utløpsdato ikke satt",
     "Declined" : "Avvist",
     "Pending" : "Venter",

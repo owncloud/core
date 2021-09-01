@@ -32,6 +32,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Engin ownCloud uppsetning (útgáfa 7 eða nýrri) fannst á {remote}",
     "Invalid ownCloud url" : "Ógild ownCloud-slóð",
     "Share" : "Deila",
+    "Create public link" : "Búa til opinberan tengil",
     "No expiration date set" : "Engin dagsetning fyrir gildistíma er sett",
     "Declined" : "Hafnað",
     "Pending" : "Í bið",

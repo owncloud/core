@@ -25,6 +25,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Nav atrasta neviena ownCloud (7. vai augstāka) instalācija {remote}",
     "Invalid ownCloud url" : "Nederīga ownCloud saite",
     "Share" : "Dalīties",
+    "Create public link" : "Izveidot koplietojamu saiti",
     "Declined" : "Noraidīts",
     "Pending" : "Gaida savu kārtu",
     "Shared by" : "Dalījās",

@@ -36,6 +36,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "На удаленном ресурсе {remote} не установлен ownCloud версии 7 или выше",
     "Invalid ownCloud url" : "Неверный адрес ownCloud",
     "Share" : "Общий доступ",
+    "Create public link" : "Создать общедоступную ссылку",
     "No expiration date set" : "Не установлен срок действия",
     "Declined" : "Отклонено",
     "Pending" : "Ожидается",

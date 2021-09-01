@@ -33,6 +33,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Nessuna installazione di ownCloud (7 o superiore) trovata su {remote}",
     "Invalid ownCloud url" : "URL di ownCloud non valido",
     "Share" : "Condividi",
+    "Create public link" : "Crea collegamento pubblico",
     "No expiration date set" : "Nessuna data di scadenza impostata",
     "Declined" : "Rifiutato",
     "Pending" : "In corso",

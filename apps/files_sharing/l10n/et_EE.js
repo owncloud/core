@@ -29,6 +29,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Saidilt {remote} ei leitud ownCloudi (7 või uuem) ",
     "Invalid ownCloud url" : "Vigane ownCloud url",
     "Share" : "Jaga",
+    "Create public link" : "Loo avalik link",
     "No expiration date set" : "Aegumise kuupäeva pole määratud",
     "Declined" : "Tagasi lükatud",
     "Pending" : "Ootel",

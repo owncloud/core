@@ -25,6 +25,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Nerastas ownCloud (7 ar aukštesnė versiją) {remote} serveryje.",
     "Invalid ownCloud url" : "Neteisinga ownCloud nuoroda",
     "Share" : "Dalintis",
+    "Create public link" : "Sukurti viešą nuorodą",
     "Declined" : "Atmesta",
     "Pending" : "Laukiantis",
     "Shared by" : "Dalinasi",

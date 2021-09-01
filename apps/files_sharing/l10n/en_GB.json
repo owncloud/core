@@ -31,6 +31,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "No ownCloud installation (7 or higher) found at {remote}",
     "Invalid ownCloud url" : "Invalid ownCloud URL",
     "Share" : "Share",
+    "Create public link" : "Create public link",
     "No expiration date set" : "No expiration date set",
     "Declined" : "Declined",
     "Pending" : "Pending",

@@ -31,6 +31,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "沒有在 {remote} 找到 ownCloud (本版7 或 更新版)",
     "Invalid ownCloud url" : "無效的 ownCloud URL",
     "Share" : "分享",
+    "Create public link" : "建立公開連結",
     "No expiration date set" : "沒有設定到期日",
     "Declined" : "已拒絕",
     "Pending" : "等候中",

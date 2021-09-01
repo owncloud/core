@@ -26,6 +26,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Немає установленого OwnCloud (7 або вище), можна знайти на {remote}",
     "Invalid ownCloud url" : "Невірний ownCloud URL",
     "Share" : "Поділитися",
+    "Create public link" : "Створити публічне посилання",
     "Pending" : "Очікування",
     "Shared by" : "Опубліковано",
     "Sharing" : "Спільний доступ",

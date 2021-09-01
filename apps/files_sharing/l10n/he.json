@@ -31,6 +31,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "לא נמצאה התקנת ownCloud (גרסה 7 ומעלה) ב- {remote}",
     "Invalid ownCloud url" : "נתיב ownCloud לא חוקי",
     "Share" : "שיתוף",
+    "Create public link" : "יצירת קישור ציבורי",
     "No expiration date set" : "לא הוגדר תאריך תפוגה",
     "Declined" : "נדחה",
     "Pending" : "ממתין",

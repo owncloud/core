@@ -27,6 +27,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "ownCloud-asennusta (versiota 7 tai uudempaa) ei löytynyt osoitteesta {remote}",
     "Invalid ownCloud url" : "Virheellinen ownCloud-osoite",
     "Share" : "Jaa",
+    "Create public link" : "Luo julkinen linkki",
     "No expiration date set" : "Vanhenemispäivää ei ole asetettu",
     "Declined" : "Torjuttu",
     "Pending" : "Odottaa",

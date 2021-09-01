@@ -36,6 +36,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Te {remote} s’u gjet instalim ownCloud (7 ose më sipër)",
     "Invalid ownCloud url" : "URL ownCloud e pavlefshme",
     "Share" : "Ndaje me të tjerë",
+    "Create public link" : "Krijoni lidhje publike",
     "No expiration date set" : "S’ka të caktuar datë skadimi",
     "Declined" : "Hedhur Poshtë",
     "Pending" : "Në pritje",

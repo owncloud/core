@@ -30,6 +30,7 @@
     "No ownCloud installation (7 or higher) found at {remote}" : "Nie znaleziono instalacji ownCloud (w wersji 7 lub nowszej) na {remote}",
     "Invalid ownCloud url" : "Błędny adres URL",
     "Share" : "Udostępnij",
+    "Create public link" : "Utwórz link publiczny",
     "No expiration date set" : "Data wygaśnięcia nie została ustawiona",
     "Declined" : "Nie zaakceptowane",
     "Pending" : "Oczekujące",

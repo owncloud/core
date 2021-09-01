@@ -32,6 +32,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "{remote}에 ownCloud 7 이상이 설치되어 있지 않음",
     "Invalid ownCloud url" : "잘못된 ownCloud URL",
     "Share" : "공유",
+    "Create public link" : "공개 링크 만들기",
     "No expiration date set" : "만료 날짜가 설정되지 않았음",
     "Declined" : "거절됨",
     "Pending" : "대기 중",

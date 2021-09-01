@@ -20,6 +20,7 @@ OC.L10N.register(
     "Add" : "Legg til",
     "Invalid ownCloud url" : "Ugyldig ownClud url",
     "Share" : "Del",
+    "Create public link" : "Opprett offentleg lenke",
     "No expiration date set" : "Ingen dato for utløp er sett",
     "Declined" : "Avvist",
     "Pending" : "Under vegs",
