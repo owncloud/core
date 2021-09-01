@@ -34,6 +34,7 @@ Summary
 * Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
+* Enhancement - Add tooltips for group names in user settings and sharing overview: [#4695](https://github.com/owncloud/enterprise/issues/4695)
 
 Details
 -------
@@ -267,6 +268,11 @@ Details
 
    https://github.com/owncloud/core/issues/39157
    https://github.com/owncloud/core/pull/39158
+
+* Enhancement - Add tooltips for group names in user settings and sharing overview: [#4695](https://github.com/owncloud/enterprise/issues/4695)
+
+   https://github.com/owncloud/enterprise/issues/4695
+   https://github.com/owncloud/core/pull/39160
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
