@@ -49,7 +49,7 @@ class MSOFBAPlugin extends ServerPlugin {
 
 		$request = $this->server->httpRequest;
 
-		# only user agent microsoft office is ot interest
+		# only user agent microsoft office is of interest
 		if (!$request->hasHeader('User-Agent')) {
 			return;
 		}
