@@ -818,7 +818,6 @@ OC.Uploader.prototype = _.extend({
 	checkExistingFiles: function (selection, callbacks) {
 		var fileList = this.fileList;
 		var conflicts = [];
-
 		// only keep non-conflicting uploads
 		selection.uploads = _.filter(selection.uploads, function(upload) {
 			var file = upload.getFile();
@@ -998,7 +997,6 @@ OC.Uploader.prototype = _.extend({
 				 */
 				add: function(e, data) {
 					self.log('add', e, data);
-					console.log(data.targetDir);
 					var that = $(this), freeSpace;
 
 					var upload = new OC.FileUpload(self, data);
