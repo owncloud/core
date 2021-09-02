@@ -55,7 +55,7 @@
         "sabre/dav": "^4.1",
         "sabre/http": "^5.1",
         "deepdiver/zipstreamer": "^2.0",
-        "symfony/translation": "^4.4",
+        "symfony/translation": "^5.3",
         "laminas/laminas-inputfilter": "^2.10",
         "laminas/laminas-servicemanager": "^3.4",
         "laminas/laminas-validator": "^2.13",
