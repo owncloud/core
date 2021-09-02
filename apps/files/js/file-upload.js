@@ -822,8 +822,9 @@ OC.Uploader.prototype = _.extend({
 		// only keep non-conflicting uploads
 		selection.uploads = _.filter(selection.uploads, function(upload) {
 			var file = upload.getFile();
-			if (file.relativePath || upload.getTargetFolder() !== '/') {
-				// can't check in subfolder contents
+			var targetUploadFolder = upload.getTargetFolder();
+			if (file.relativePath || (targetUploadFolder && targetUploadFolder !== '/')) {
+				// can't check in subfolder contents, let backend handle this
 				return true;
 			}
 			if (!fileList) {
@@ -997,6 +998,7 @@ OC.Uploader.prototype = _.extend({
 				 */
 				add: function(e, data) {
 					self.log('add', e, data);
+					console.log(data.targetDir);
 					var that = $(this), freeSpace;
 
 					var upload = new OC.FileUpload(self, data);
