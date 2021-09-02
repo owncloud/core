@@ -22,6 +22,7 @@ Summary
 * Bugfix - Image orientation: [#39140](https://github.com/owncloud/core/pull/39140)
 * Bugfix - Fix display of tag selection in sidebar: [#39146](https://github.com/owncloud/core/pull/39146)
 * Bugfix - Keep pagination active with empty search queries: [#39155](https://github.com/owncloud/core/pull/39155)
+* Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
@@ -158,6 +159,15 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4615
    https://github.com/owncloud/core/pull/39155
+
+* Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
+
+   Support for security fixes for PHP 7.2 ended in Dec 2020 ownCloud core no longer supports PHP
+   7.2. Ensure that you are using PHP 7.3 or 7.4. PHP 7.4 is recommended.
+
+   https://github.com/owncloud/core/issues/39134
+   https://github.com/owncloud/core/pull/38697
+   https://www.php.net/supported-versions.php
 
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 
