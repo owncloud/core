@@ -260,6 +260,7 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4718
    https://github.com/owncloud/core/pull/39130
+   https://github.com/owncloud/core/pull/39163
 
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 
