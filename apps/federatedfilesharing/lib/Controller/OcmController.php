@@ -196,7 +196,7 @@ class OcmController extends Controller {
 				|| !isset($protocol['options']['sharedSecret'])
 			) {
 				throw new BadRequestException(
-					'server can not add remote share, missing parameter'
+					'server can not add federated share, missing parameter'
 				);
 			}
 			if (!\OCP\Util::isValidFileName($name)) {
@@ -247,7 +247,7 @@ class OcmController extends Controller {
 			);
 		} catch (\Exception $e) {
 			$this->logger->error(
-				"server can not add remote share, {$e->getMessage()}",
+				"server can not add federated share, {$e->getMessage()}",
 				['app' => 'federatefilesharing']
 			);
 			return new JSONResponse(
@@ -287,7 +287,7 @@ class OcmController extends Controller {
 		try {
 			if (!\is_array($notification)) {
 				throw new BadRequestException(
-					'server can not add remote share, missing parameter'
+					'server can not add federated share, missing parameter'
 				);
 			}
 

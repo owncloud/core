@@ -66,7 +66,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  Scenario Outline: Remote sharee can see the pending share
+  Scenario Outline: Federated sharee can see the pending share
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
@@ -90,7 +90,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  Scenario Outline: Remote sharee requests information of only one share
+  Scenario Outline: Federated sharee requests information of only one share
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
@@ -118,7 +118,7 @@ Feature: federated
       | 2               | 200        |
 
   @skipOnOcV10.3 @skipOnOcV10.4.0 @skipOnOcV10.4.1
-  Scenario Outline: Remote sharee requests information of only one share before accepting it
+  Scenario Outline: Federated sharee requests information of only one share before accepting it
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
@@ -142,7 +142,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  Scenario Outline: sending a GET request to a pending remote share is not valid
+  Scenario Outline: sending a GET request to a pending federated share is not valid
     Given using OCS API version "<ocs-api-version>"
     When user "Brian" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/pending/12"
     Then the HTTP status code should be "405"
@@ -152,7 +152,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  Scenario Outline: sending a GET request to a not existing remote share
+  Scenario Outline: sending a GET request to a not existing federated share
     Given using OCS API version "<ocs-api-version>"
     When user "Brian" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/9999999999"
     Then the OCS status code should be "<ocs-status>"
@@ -162,7 +162,7 @@ Feature: federated
       | 1               | 404        | 200         |
       | 2               | 404        | 404         |
 
-  Scenario Outline: accept a pending remote share
+  Scenario Outline: accept a pending federated share
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
@@ -308,7 +308,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  Scenario Outline: Remote sharee deletes an accepted federated share
+  Scenario Outline: Federated sharee deletes an accepted federated share
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
@@ -330,7 +330,7 @@ Feature: federated
       | 2               | 200        |
 
   @issue-31276 @skipOnOcV10
-  Scenario Outline: Remote sharee tries to delete an accepted federated share sending wrong password
+  Scenario Outline: Federated sharee tries to delete an accepted federated share sending wrong password
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
@@ -362,7 +362,7 @@ Feature: federated
       | 1               |
       | 2               |
 
-  Scenario Outline: Remote sharee deletes a pending federated share
+  Scenario Outline: Federated sharee deletes a pending federated share
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
@@ -383,7 +383,7 @@ Feature: federated
       | 2               | 200        |
 
   @issue-31276 @skipOnOcV10
-  Scenario Outline: Remote sharee tries to delete a pending federated share sending wrong password
+  Scenario Outline: Federated sharee tries to delete a pending federated share sending wrong password
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" from server "REMOTE" has shared "/textfile0.txt" with user "Brian" from server "LOCAL"
@@ -456,7 +456,7 @@ Feature: federated
     When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/Shares/PARENT/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
 
-  Scenario Outline: share of a folder to a remote user who already has a folder with the same name
+  Scenario Outline: share of a folder to a federated user who already has a folder with the same name
     Given using server "REMOTE"
     And user "Alice" has created folder "/zzzfolder"
     And user "Alice" has created folder "zzzfolder/Alice"
@@ -485,7 +485,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  Scenario Outline: share of a file to the remote user who already has a file with the same name
+  Scenario Outline: share of a file to the federated user who already has a file with the same name
     Given using server "REMOTE"
     And user "Alice" has uploaded file with content "remote content" to "/randomfile.txt"
     And using server "LOCAL"
@@ -516,7 +516,7 @@ Feature: federated
       | 2               | 200        |
 
   @issue-35154
-  Scenario: receive a local share that has the same name as a previously received remote share
+  Scenario: receive a local share that has the same name as a previously received federated share
     Given using server "REMOTE"
     And user "Alice" has created folder "/zzzfolder"
     And user "Alice" has created folder "zzzfolder/remote"
@@ -540,7 +540,7 @@ Feature: federated
     And the content of file "/Shares/randomfile.txt" for user "Carol" on server "LOCAL" should be "remote content"
     And the content of file "/Shares/randomfile (2).txt" for user "Carol" on server "LOCAL" should be "local content"
 
-  Scenario: receive a remote share that has the same name as a previously received local share
+  Scenario: receive a federated share that has the same name as a previously received local share
     Given using server "REMOTE"
     And user "Alice" has created folder "/zzzfolder"
     And user "Alice" has created folder "zzzfolder/remote"

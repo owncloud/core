@@ -471,12 +471,12 @@
 
 			if (this.configModel.get('allowGroupSharing')) {
 				if (this.configModel.get('isRemoteShareAllowed')) {
-					sharePlaceholder = t('core', 'Share with users, groups or remote users…');
+					sharePlaceholder = t('core', 'Share with users, groups or federated users…');
 				} else {
 					sharePlaceholder = t('core', 'Share with users or groups…')
 				}
 			} else if (this.configModel.get('isRemoteShareAllowed')) {
-					sharePlaceholder = t('core', 'Share with users or remote users…');
+					sharePlaceholder = t('core', 'Share with users or federated users…');
 			}
 
 			return sharePlaceholder;

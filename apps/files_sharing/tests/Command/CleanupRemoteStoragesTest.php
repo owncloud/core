@@ -178,7 +178,7 @@ class CleanupRemoteStoragesTest extends TestCase {
 		$output
 			->expects($this->at($at++))
 			->method('writeln')
-			->with('5 remote share(s) exist');
+			->with('5 federated share(s) exist');
 
 		$this->command->execute($input, $output);
 

@@ -185,7 +185,7 @@ trait Provisioning {
 					$this->createdRemoteUsers[$normalizedUsername]['displayname'] = $displayName;
 				} else {
 					throw new \Exception(
-						__METHOD__ . " tried to remember display name '$displayName' for non-existent remote user '$user'"
+						__METHOD__ . " tried to remember display name '$displayName' for non-existent federated user '$user'"
 					);
 				}
 			}
@@ -217,7 +217,7 @@ trait Provisioning {
 					$this->createdRemoteUsers[$normalizedUsername]['email'] = $emailAddress;
 				} else {
 					throw new \Exception(
-						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent remote user '$user'"
+						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent federated user '$user'"
 					);
 				}
 			}

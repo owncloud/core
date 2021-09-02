@@ -22,7 +22,7 @@ Feature: Save public shares created by oC users
       | permissions | read    |
     And the public has accessed the last created public link using the webUI
     When the public adds the public link to "%local_server%" as user "Brian" using the webUI
-    And the user accepts the offered remote shares using the webUI
+    And the user accepts the offered federated shares using the webUI
     Then folder "PARENT" should be listed on the webUI
     When the user opens folder "PARENT" using the webUI
     Then file "lorem.txt" should be listed on the webUI
@@ -46,7 +46,7 @@ Feature: Save public shares created by oC users
       | permissions | read    |
     And the public has accessed the last created public link using the webUI
     When the public adds the public link to "%remote_server%" as user "Brian" using the webUI
-    And the user accepts the offered remote shares using the webUI
+    And the user accepts the offered federated shares using the webUI
     Then folder "PARENT" should be listed on the webUI
     When the user opens folder "PARENT" using the webUI
     Then file "lorem.txt" should be listed on the webUI

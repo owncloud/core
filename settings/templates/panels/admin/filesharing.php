@@ -145,24 +145,24 @@
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') {
 	p('hidden');
 }?>">
-		<input type="checkbox" name="shareapi_default_expire_date_remote_share" id="shareapiDefaultExpireDateRemoteShare" class="checkbox"
-					   value="1" <?php if ($_['shareDefaultExpireDateSetRemoteShare'] === 'yes') {
+		<input type="checkbox" name="shareapi_default_expire_date_remote_share" id="shareapiDefaultExpireDateFederatedShare" class="checkbox"
+					   value="1" <?php if ($_['shareDefaultExpireDateSetFederatedShare'] === 'yes') {
 	print_unescaped('checked="checked"');
 } ?> />
-		<label for="shareapiDefaultExpireDateRemoteShare"><?php p($l->t('Set default expiration date for remote shares'));?></label><br/>
-		<span id="setDefaultExpireDateRemoteShare" class="indent <?php if ($_['shareDefaultExpireDateSetRemoteShare'] === 'no' || $_['shareAPIEnabled'] === 'no') {
+		<label for="shareapiDefaultExpireDateFederatedShare"><?php p($l->t('Set default expiration date for federated shares'));?></label><br/>
+		<span id="setDefaultExpireDateFederatedShare" class="indent <?php if ($_['shareDefaultExpireDateSetFederatedShare'] === 'no' || $_['shareAPIEnabled'] === 'no') {
 	p('hidden');
 }?>">
 			<?php p($l->t('Expire after ')); ?>
-			<input type="number" name='shareapi_expire_after_n_days_remote_share' id="shareapiExpireAfterNDaysRemoteShare" min="0" placeholder="<?php p('7')?>"
-				   value='<?php p($_['shareExpireAfterNDaysRemoteShare']) ?>' />
+			<input type="number" name='shareapi_expire_after_n_days_remote_share' id="shareapiExpireAfterNDaysFederatedShare" min="0" placeholder="<?php p('7')?>"
+				   value='<?php p($_['shareExpireAfterNDaysFederatedShare']) ?>' />
 			<?php p($l->t('days')); ?><br/>
-			<?php if ($_['shareEnforceExpireDateRemoteShare'] === 'yes'): ?>
-				<input type="checkbox" name="shareapi_enforce_expire_date_remote_share" id="shareapiEnforceExpireDateRemoteShare" class="checkbox" value="1" checked="checked" />
+			<?php if ($_['shareEnforceExpireDateFederatedShare'] === 'yes'): ?>
+				<input type="checkbox" name="shareapi_enforce_expire_date_remote_share" id="shareapiEnforceExpireDateFederatedShare" class="checkbox" value="1" checked="checked" />
 			<?php else: ?>
-				<input type="checkbox" name="shareapi_enforce_expire_date_remote_share" id="shareapiEnforceExpireDateRemoteShare" class="checkbox" value="1" />
+				<input type="checkbox" name="shareapi_enforce_expire_date_remote_share" id="shareapiEnforceExpireDateFederatedShare" class="checkbox" value="1" />
 			<?php endif; ?>
-			<label class="indent" for="shareapiEnforceExpireDateRemoteShare"><?php p($l->t('Enforce as maximum expiration date'));?></label><br/>
+			<label class="indent" for="shareapiEnforceExpireDateFederatedShare"><?php p($l->t('Enforce as maximum expiration date'));?></label><br/>
 		</span>
 	</p>
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') {

@@ -61,7 +61,7 @@ describe('OC.Share tests', function() {
 			it('displays the local share owner as is', function() {
 				checkOwner('User One', 'User One', null);
 			});
-			it('displays the user name part of a remote share owner', function() {
+			it('displays the user name part of a federated share owner', function() {
 				checkOwner(
 					'User One@someserver.com',
 					'User One@…',
@@ -78,7 +78,7 @@ describe('OC.Share tests', function() {
 					'User One@someserver.com'
 				);
 			});
-			it('displays the user name part with domain of a remote share owner', function() {
+			it('displays the user name part with domain of a federated share owner', function() {
 				checkOwner(
 					'User One@example.com@someserver.com',
 					'User One@example.com',
@@ -196,7 +196,7 @@ describe('OC.Share tests', function() {
 					'User One@someserver.com'
 				);
 			});
-			it('displays the user name part with domain of a remote share owner', function() {
+			it('displays the user name part with domain of a federated share owner', function() {
 				checkRecipients(
 					'User One@example.com@someserver.com',
 					'Shared with User One@example.com',

@@ -23,7 +23,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
   Scenario: declining a federation share on the webUI
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
     And the user has reloaded the current page of the webUI
-    When the user declines the offered remote shares using the webUI
+    When the user declines the offered federated shares using the webUI
     Then file "lorem (2).txt" should not be listed on the webUI
     And file "lorem (2).txt" should not be listed in the shared-with-you page on the webUI
 
@@ -46,7 +46,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And the user has browsed to the personal sharing settings page
-    When the user disables automatically accepting remote shares from trusted servers
+    When the user disables automatically accepting federated shares from trusted servers
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Alice" from server "LOCAL" using the sharing API
     Then user "Alice" should not see the following elements
       | /lorem (2).txt |
@@ -61,7 +61,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And the user has browsed to the personal sharing settings page
-    When the user disables automatically accepting remote shares from trusted servers
+    When the user disables automatically accepting federated shares from trusted servers
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Brian" from server "LOCAL" using the sharing API
     Then user "Brian" should see the following elements
       | /lorem (2).txt |
@@ -81,8 +81,8 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "yes"
     And parameter "autoAddServers" of app "federation" has been set to "0"
     And the user has browsed to the personal sharing settings page
-    When the user disables automatically accepting remote shares from trusted servers
-    And the user enables automatically accepting remote shares from trusted servers
+    When the user disables automatically accepting federated shares from trusted servers
+    And the user enables automatically accepting federated shares from trusted servers
     And user "Alice" from server "REMOTE" shares "/lorem.txt" with user "Alice" from server "LOCAL" using the sharing API
     Then user "Alice" should see the following elements
       | /lorem (2).txt |
@@ -92,10 +92,10 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Given user "Alice" from server "REMOTE" has shared "/lorem.txt" with user "Alice" from server "LOCAL"
     When the user browses to the shared-with-you page
     And the user closes the federation sharing dialog
-    And the user accepts the pending remote share using the webUI
+    And the user accepts the pending federated share using the webUI
     Then file "lorem (2).txt" should be listed in the shared-with-you page on the webUI
 
-  Scenario: Federated share from Local user to remote user
+  Scenario: Federated share from Local user to federated user
     Given user "Alice" from server "LOCAL" has shared "/lorem.txt" with user "Alice" from server "REMOTE"
     And user "Alice" from server "REMOTE" has accepted the last pending share
     When the user browses to the shared-with-others page

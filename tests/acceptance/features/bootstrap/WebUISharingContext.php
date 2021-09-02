@@ -966,12 +966,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user accepts the offered remote shares using the webUI
-	 * @Given the user has accepted the offered remote shares
+	 * @When the user accepts the offered federated shares using the webUI
+	 * @Given the user has accepted the offered federated shares
 	 *
 	 * @return void
 	 */
-	public function theUserAcceptsTheOfferedRemoteShares() {
+	public function theUserAcceptsTheOfferedFederatedShares() {
 		foreach (\array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
 			$ocDialog->accept($this->getSession());
 		}
@@ -1031,12 +1031,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user declines the offered remote shares using the webUI
-	 * @Given the user has declined the offered remote shares
+	 * @When the user declines the offered federated shares using the webUI
+	 * @Given the user has declined the offered federated shares
 	 *
 	 * @return void
 	 */
-	public function theUserDeclinesTheOfferedRemoteShares() {
+	public function theUserDeclinesTheOfferedFederatedShares() {
 		foreach (\array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
 			$ocDialog->clickButton($this->getSession(), 'Cancel');
 		}
@@ -2245,11 +2245,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user accepts the pending remote share using the webUI
+	 * @When the user accepts the pending federated share using the webUI
 	 *
 	 * @return void
 	 */
-	public function theUserAcceptsThePendingRemoteSharesUsingTheWebui() {
+	public function theUserAcceptsThePendingFederatedShareUsingTheWebui() {
 		$this->sharedWithYouPage->acceptPendingShare();
 	}
 

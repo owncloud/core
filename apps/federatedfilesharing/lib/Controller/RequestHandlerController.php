@@ -166,7 +166,7 @@ class RequestHandlerController extends OCSController {
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog(
 				'federatedfilesharing',
-				'server can not add remote share, ' . $e->getMessage(),
+				'server can not add federated share, ' . $e->getMessage(),
 				\OCP\Util::ERROR
 			);
 			return new Result(

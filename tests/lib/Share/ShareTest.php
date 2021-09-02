@@ -1455,7 +1455,7 @@ class ShareTest extends \Test\TestCase {
 		//Try share again
 		try {
 			\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, 'foo@localhost', \OCP\Constants::PERMISSION_READ);
-			$this->fail('Identical remote shares are not allowed');
+			$this->fail('Identical federated shares are not allowed');
 		} catch (\Exception $e) {
 			$this->assertEquals('Sharing test.txt failed, because this item is already shared with foo@localhost', $e->getMessage());
 		}
