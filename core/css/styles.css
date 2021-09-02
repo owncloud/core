@@ -391,7 +391,7 @@ a.two-factor-cancel {
 	justify-content: center;
 	flex-direction: column;
 	max-width: 300px;
-	margin: 32px auto 1.2rem;
+	margin: 32px auto;
 }
 
 .loading-spinner {
@@ -653,6 +653,7 @@ a.two-factor-cancel {
 form#alternative-logins {
 	border-top: 1px solid rgba(255,255,255,0.8);
 	padding-top: 16px;
+	max-width: 300px;
 }
 #alternative-logins ul {text-align: center;}
 #alternative-logins legend { margin-bottom:16px; }
