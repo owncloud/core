@@ -44,6 +44,7 @@ class TrashbinPage extends FilesPageBasic {
 	protected $emptyContentXpath = ".//div[@id='app-content-trashbin']//div[@id='emptycontent']";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='delete-selected']";
 	protected $restoreAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='undelete']";
+	protected $restoreAllSelectedMobileBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='undelete mobile button']";
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_trash']";
 	protected $filePathInRowXpath = "//span[@class='nametext extra-data']";
 	/**
@@ -117,6 +118,22 @@ class TrashbinPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException
 	 */
 	public function findRestoreAllSelectedFilesBtn() {
+		$mobileResolution = getenv("MOBILE_RESOLUTION");
+		// checking if MOBILE_RESOLUTION is set
+		if (!empty($mobileResolution)) {
+			// using different xpath for restore button in mobile resolution
+			$restoreAllSelectedBtn = $this->find(
+				"xpath",
+				$this->restoreAllSelectedMobileBtnXpath
+			);
+			$this->assertElementNotNull(
+				$restoreAllSelectedBtn,
+				__METHOD__ .
+				" xpath $this->restoreAllSelectedMobileBtnXpath " .
+				"could not find button to restore all selected files"
+			);
+			return $restoreAllSelectedBtn;
+		}
 		$restoreAllSelectedBtn = $this->find(
 			"xpath",
 			$this->restoreAllSelectedBtnXpath

@@ -899,7 +899,6 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
-        - OccContext:
         - WebUIFilesContext:
         - WebUIGeneralContext:
         - WebUILoginContext:

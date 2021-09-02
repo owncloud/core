@@ -10,7 +10,7 @@ Feature: Hide file/folders
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
-  @smokeTest
+  @smokeTest @mobileResolutionTest
   Scenario: create a hidden folder
     When the user creates a folder with the name ".xyz" using the webUI
     Then folder ".xyz" should not be listed on the webUI

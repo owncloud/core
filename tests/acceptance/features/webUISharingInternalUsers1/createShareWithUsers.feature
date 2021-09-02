@@ -4,7 +4,7 @@ Feature: Sharing files and folders with internal users
   I want to share files and folders with other users
   So that those users can access the files and folders
 
-  @smokeTest
+  @smokeTest @mobileResolutionTest
   Scenario: share a file & folder with another internal user
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Brian" has been created with default attributes and without skeleton files

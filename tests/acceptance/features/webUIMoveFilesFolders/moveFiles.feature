@@ -15,7 +15,7 @@ Feature: move files
     When the user renames file "data.zip" to "simple-folder/data.zip" using the webUI
     Then near file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: move a file into a folder
     Given user "Alice" has created folder "simple-empty-folder"
     And user "Alice" has created folder "strängé नेपाली folder empty"
@@ -60,7 +60,7 @@ Feature: move files
       | Could not move "strängé filename (duplicate #2 &).txt", target exists |
     And file "strängé filename (duplicate #2 &).txt" should be listed on the webUI
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: Move multiple files at once
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "lorem.txt"
     And user "Alice" has logged in using the webUI

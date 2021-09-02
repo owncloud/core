@@ -7,7 +7,7 @@ Feature: Share by public link
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: simple sharing by public link
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file with content "test" to "/simple-folder/lorem.txt"

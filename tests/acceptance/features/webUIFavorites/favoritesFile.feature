@@ -8,7 +8,7 @@ Feature: Mark file as favorite
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: mark a file as favorite and list it in favorites page
     Given user "Alice" has uploaded file "filesForUpload/data.zip" to "/data.zip"
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"

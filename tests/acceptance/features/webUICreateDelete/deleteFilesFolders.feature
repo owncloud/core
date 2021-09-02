@@ -9,7 +9,7 @@ Feature: deleting files and folders
       | username |
       | Alice    |
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: Delete files & folders one by one and check its existence after page reload
     Given user "Alice" has created folder "simple-folder"
     And user "Alice" has created folder "strängé नेपाली folder"
@@ -74,7 +74,7 @@ Feature: deleting files and folders
       | question?       |
       | &and#hash       |
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   @skipOnEncryption @encryption-issue-74
   Scenario: Delete multiple files at once
     Given user "Alice" has created folder "simple-folder"

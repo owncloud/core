@@ -8,7 +8,7 @@ Feature: Reshare by public link
     Given user "Alice" has been created with default attributes and without skeleton files
     And user "Brian" has been created with default attributes and without skeleton files
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: resharing by public link of a received shared folder
     Given user "Alice" has created folder "/simple-folder"
     And user "Alice" has uploaded file with content "test" to "/simple-folder/randomfile.txt"
