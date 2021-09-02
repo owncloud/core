@@ -381,13 +381,13 @@
 						OC.Notification.show(t(
 							'files_sharing',
 							'A new public link with download & view permissions has been created and copied to the clipboard.'
-						));
+						), { timeout: 7 });
 					},
 					error: function () {
 						OC.Notification.show(t(
 							'files_sharing',
 							'The public link could not be created. Please contact the administrator for help.'),
-							{ type: 'error' }
+							{ type: 'error', timeout: 7 }
 						);
 					}
 				});
