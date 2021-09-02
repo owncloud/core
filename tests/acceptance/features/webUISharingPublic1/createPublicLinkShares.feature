@@ -296,3 +296,32 @@ Feature: Share by public link
       | 123      |
       | -123     |
       | 0.0      |
+
+  @skipOnOcV10.8.0
+  Scenario: read only public link quick action works when enabled
+    Given the administrator has "enabled" public link quick action
+    And user "Alice" has created folder "/simple-folder"
+    And user "Alice" has uploaded file with content "test" to "/simple-folder/lorem.txt"
+    And user "Alice" has logged in using the webUI
+    When the user browses to the files page
+    Then the public link quick action button should be displayed for folder "simple-folder" on the webUI
+    When the user creates a read only public link for folder "simple-folder" using the quick action button
+    And the public accesses the last created public link using the webUI
+    Then file "lorem.txt" should be listed on the webUI
+
+  @skipOnOcV10.8.0
+  Scenario: read only public link quick action does not work when disabled
+    Given the administrator has "disabled" public link quick action
+    And user "Alice" has created folder "/simple-folder"
+    And user "Alice" has logged in using the webUI
+    When the user browses to the files page
+    Then the public link quick action button should not be displayed for folder "simple-folder" on the webUI
+
+  @skipOnOcV10.8.0
+  Scenario: quick action is not displayed when password is enforced in read only link
+    Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
+    And the administrator has "enabled" public link quick action
+    And user "Alice" has created folder "/simple-folder"
+    And user "Alice" has logged in using the webUI
+    When the user browses to the files page
+    Then the public link quick action button should not be displayed for folder "simple-folder" on the webUI

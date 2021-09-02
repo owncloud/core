@@ -46,6 +46,7 @@ class FilesPage extends FilesPageBasic {
 	protected $uploadCreatePermissionDeniedMessageSelector = ".notCreatable.notPublic";
 	protected $sharingDialogXpath = "//h3[@data-original-title='%s']/ancestor::div[@id='app-sidebar']//div[@id='shareTabView']";
 	protected $closeOCDialogXpath = "//div/a[@class='oc-dialog-close']";
+	protected $publicLinkQuickActionXpath = "//td[contains(@class, 'filename')]//span[@class ='nametext' and .='%s']/following-sibling::span//a[contains(@class, 'action-create-public-link')]";
 
 	/**
 	 *
@@ -490,5 +491,37 @@ class FilesPage extends FilesPageBasic {
 			"could not find OC-dialog close icon."
 		);
 		$closeIcon->click();
+	}
+
+	/**
+	 * check if public link quick action is visible
+	 *
+	 * @param string $name
+	 *
+	 * @return boolean
+	 */
+	public function isPublicLinkQuickActionVisible(string $name):bool {
+		$quickActionXpathLocator = \sprintf($this->publicLinkQuickActionXpath, $name);
+		$quickActionButton = $this->find("xpath", $quickActionXpathLocator);
+		return !($quickActionButton === null);
+	}
+
+	/**
+	 * create read only public share link using quick action
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function clickOnPublicShareQuickAction(string $name):void {
+		$quickActionXpathLocator = \sprintf($this->publicLinkQuickActionXpath, $name);
+		$folder = $this->find("xpath", $quickActionXpathLocator);
+		$this->assertElementNotNull(
+			$folder,
+			__METHOD__
+			. " xpath $quickActionXpathLocator could not be found for folder "
+			. $name
+		);
+		$folder->click();
 	}
 }
