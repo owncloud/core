@@ -23,6 +23,7 @@ Summary
 * Bugfix - Fix display of tag selection in sidebar: [#39146](https://github.com/owncloud/core/pull/39146)
 * Bugfix - Keep pagination active with empty search queries: [#39155](https://github.com/owncloud/core/pull/39155)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
+* Change - Use "federated" rather than ""remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
@@ -168,6 +169,16 @@ Details
    https://github.com/owncloud/core/issues/39134
    https://github.com/owncloud/core/pull/38697
    https://www.php.net/supported-versions.php
+
+* Change - Use "federated" rather than ""remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
+
+   Shares from one ownCloud to another ownCloud were referred to in some places as remote shares
+   and in other places as federated shares. References to remote shares in error messages and on
+   the user interface have been changed to references to federated shares. All user-facing text
+   now calls these federated shares.
+
+   https://github.com/owncloud/core/issues/38871
+   https://github.com/owncloud/core/pull/38877
 
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 
