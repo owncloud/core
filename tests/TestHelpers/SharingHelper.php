@@ -82,6 +82,7 @@ class SharingHelper {
 	 *                                in the format 'YYYY-MM-DD'.
 	 * @param int $ocsApiVersion
 	 * @param int $sharingApiVersion
+	 * @param string $sharingApp
 	 *
 	 * @throws \InvalidArgumentException
 	 * @return ResponseInterface
@@ -100,7 +101,8 @@ class SharingHelper {
 		$linkName = null,
 		$expireDate = null,
 		$ocsApiVersion = 1,
-		$sharingApiVersion = 1
+		$sharingApiVersion = 1,
+		string $sharingApp = 'files_sharing'
 	) {
 		$fd = [];
 		foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
@@ -131,7 +133,8 @@ class SharingHelper {
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
-		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
+		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/{$sharingApp}/api/v{$sharingApiVersion}/shares";
+
 		$fd['path'] = $path;
 		$fd['shareType'] = self::getShareType($shareType);
 
