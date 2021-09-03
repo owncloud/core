@@ -305,7 +305,8 @@ class File extends Node implements IFile, IFileNode {
 	private function getPartFileBasePath($path) {
 		$partFileInStorage = \OC::$server->getConfig()->getSystemValue('part_file_in_storage', true);
 		if ($partFileInStorage) {
-			return Filesystem::hashFileName($path);
+			$pathParts = \pathinfo($path);
+			return Filesystem::normalizePath($pathParts['dirname'].'/'.\md5($pathParts['basename']));
 		} else {
 			return \md5($path); // will place it in the root of the view with a unique name
 		}

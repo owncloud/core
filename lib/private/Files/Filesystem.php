@@ -1089,22 +1089,4 @@ class Filesystem {
 	public static function getETag($path) {
 		return self::$defaultInstance->getETag($path);
 	}
-
-	/**
-	 * Hash the file name in a given path while preserving the rest of it
-	 *
-	 * @param string $path
-	 * @return string
-	 */
-	public static function hashFileName($path) {
-		$pathParts = \pathinfo($path);
-		$hashedFileName = \md5($pathParts['basename']);
-
-		if (isset($pathParts['dirname']) && $pathParts['dirname'] !== '.') {
-			$dirname = \rtrim($pathParts['dirname'], '/');
-			$hashedFileName = $dirname . '/' . $hashedFileName;
-		}
-
-		return $hashedFileName;
-	}
 }
