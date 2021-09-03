@@ -821,8 +821,7 @@ OC.Uploader.prototype = _.extend({
 		// only keep non-conflicting uploads
 		selection.uploads = _.filter(selection.uploads, function(upload) {
 			var file = upload.getFile();
-			var targetUploadFolder = upload.getTargetFolder();
-			if (file.relativePath || (targetUploadFolder && targetUploadFolder !== '/')) {
+			if (file.relativePath) {
 				// can't check in subfolder contents, let backend handle this
 				return true;
 			}
@@ -830,6 +829,14 @@ OC.Uploader.prototype = _.extend({
 				// no list to check against
 				return true;
 			}
+
+			var currentDirectory = fileList.getCurrentDirectory();
+			var targetFolder = upload.getTargetFolder();
+			// let backend handle the conflict check if files are dragged into another folder
+			if (targetFolder && currentDirectory && currentDirectory !== targetFolder) {
+				return true;
+			}
+
 			var fileInfo = fileList.findFile(file.name);
 			if (fileInfo) {
 				var sharePermission = parseInt($("#sharePermission").val());
