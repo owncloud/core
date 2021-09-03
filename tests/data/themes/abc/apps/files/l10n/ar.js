@@ -42,7 +42,6 @@ OC.L10N.register(
     "Invalid path" : "مسار غير صالح",
     "This operation is forbidden" : "هذه العملية محظورة",
     "group" : "مجموعة",
-    "Remote share" : "مشاركة عن بُعد",
     "via" : "عبر",
     "Could not move \"{file}\", target exists" : "تعذّر نقل \"{file}\"، الهدف موجود",
     "Could not move \"{file}\" because either the file or the target are locked." : "لا يمكن نقل \"{file}\" بسبب قفل إمّا الملف وإمّا الهدف.",

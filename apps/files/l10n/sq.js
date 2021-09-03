@@ -47,7 +47,6 @@ OC.L10N.register(
     "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "Drejtoria e përbashkët \"{dir}\" s’është e passhme, hiqeni pjesën, ose lidhuni me të zotin, që ta rindajë me të tjerët.",
     "Directory \"{dir}\" not found" : "S’u gjet drejtori \"{dir}\"",
     "group" : "grup",
-    "Remote share" : "Ndarje e largët",
     "via" : "përmes",
     "Could not move \"{file}\", target exists" : "S’u lëviz dot \"{file}\", objektivi ekziston",
     "Could not move \"{file}\" because either the file or the target are locked." : "S’u lëviz dot \"{file}\", ngaqë ose kartela vetë, ose vendmbërritja është e kyçur.",

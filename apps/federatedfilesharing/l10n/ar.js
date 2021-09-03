@@ -22,7 +22,6 @@ OC.L10N.register(
     "Periodically synchronize outdated federated shares for active users" : "مزامنة المشاركات الموحدة القديمة بشكل دوري للمستخدمين النشطين",
     "Allow users on this server to send shares to other servers" : "السماح للمستخدمين على هذا الخادم بإرسال المشاركات إلى الخوادم الأخرى",
     "Allow users on this server to receive shares from other servers" : "السماح للمستخدمين على هذا الخادم باستقبال المشاركات من الخوادم الأخرى",
-    "Automatically accept remote shares from trusted servers" : "قبول المشاركات البعيدة من الخوادم الموثوقة تلقائيًا",
     "Federated Cloud" : "السحابة الموحدة",
     "Your Federated Cloud ID:" : "معرف السحابة الموحدة:",
     "Share it:" : "شاركه:",

@@ -43,7 +43,6 @@ OC.L10N.register(
     "Invalid path" : "Niewłaściwa ścieżka",
     "This operation is forbidden" : "Ta operacja jest niedozwolona",
     "group" : "grupa",
-    "Remote share" : "Zdalny zasób",
     "via" : "przez",
     "Could not move \"{file}\", target exists" : "Nie można było przenieść „{file}” – plik o takiej nazwie już istnieje",
     "Could not move \"{file}\" because either the file or the target are locked." : "Nie można przenieść \"{file}\" ponieważ plik lub cel są zablokowane.",

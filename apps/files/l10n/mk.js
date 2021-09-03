@@ -42,7 +42,6 @@ OC.L10N.register(
     "Invalid path" : "Грешна патека",
     "This operation is forbidden" : "Операцијата не е дозволена",
     "group" : "група",
-    "Remote share" : "Оддалечено споделување",
     "Could not move \"{file}\", target exists" : "Не може да се премести \"{file}\", веќе постои",
     "Could not move \"{file}\" because either the file or the target are locked." : "Неможе да се премести \"{file}\" бидејќи датотеката или директориумот моментално е заклучен.",
     "Could not move \"{file}\": {message}" : "Неможе да се премести \"{file}\": {message}",

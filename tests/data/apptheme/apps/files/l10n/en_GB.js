@@ -42,7 +42,6 @@ OC.L10N.register(
     "Invalid path" : "Invalid path",
     "This operation is forbidden" : "This operation is forbidden",
     "group" : "group",
-    "Remote share" : "Remote share",
     "via" : "via",
     "Could not move \"{file}\", target exists" : "Could not move \"{file}\", target exists",
     "Could not move \"{file}\" because either the file or the target are locked." : "Could not move \"{file}\" because either the file or the target are locked.",

@@ -41,7 +41,6 @@ OC.L10N.register(
     "Invalid path" : "Ongeldig pad",
     "This operation is forbidden" : "Deze taak is verboden",
     "group" : "groep",
-    "Remote share" : "Externe share",
     "Could not move \"{file}\", target exists" : "Kon \"{file}\" niet verplaatsen, doel bestaat al",
     "Could not move \"{file}\": {message}" : "Kan \"{file}\" niet verplaatsen: {message}",
     "Could not move \"{file}\"" : "Kon \"{file}\" niet verplaatsen",

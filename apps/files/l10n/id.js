@@ -35,7 +35,6 @@ OC.L10N.register(
     "Invalid path" : "Jalur lokasi salah.",
     "This operation is forbidden" : "Operasi ini dilarang",
     "group" : "grup",
-    "Remote share" : "Berbagi remote",
     "Could not move \"{file}\", target exists" : "Tidak dapat memindahkan \"{file}\", berkas tujuan sudah ada",
     "Could not move \"{file}\"" : "Tidak dapat memindahkan \"{file}\"",
     "{newName} already exists" : "{newName} sudah ada",

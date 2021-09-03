@@ -20,7 +20,6 @@ OC.L10N.register(
     "Pending" : "মুলতুবি",
     "Invalid path" : "পথটি সঠিক নয়",
     "group" : "দল",
-    "Remote share" : "দুরবর্তী ভাগাভাগি",
     "Name" : "রাম",
     "Size" : "আকার",
     "Modified" : "পরিবর্তিত",

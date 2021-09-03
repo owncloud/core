@@ -24,7 +24,6 @@ OC.L10N.register(
     "Periodically synchronize outdated federated shares for active users" : "Sincronizar periodicamente compartilhamentos federados desatualizados para usuários ativos",
     "Allow users on this server to send shares to other servers" : "Permitir que os usuários deste servidor enviem compartilhamentos para outros servidores",
     "Allow users on this server to receive shares from other servers" : "Permitir que os usuários nesse servidor recebam compartilhamentos de outros servidores",
-    "Automatically accept remote shares from trusted servers" : "Aceitar automaticamente compartilhamentos remotos de servidores confiáveis",
     "Federated Cloud" : "Nuvem Federada",
     "Your Federated Cloud ID:" : "Sua ID na Nuvem Federada:",
     "Share it:" : "Compartilhe:",

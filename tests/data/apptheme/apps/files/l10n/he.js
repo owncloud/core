@@ -43,7 +43,6 @@ OC.L10N.register(
     "Invalid path" : "נתיב לא חוקי",
     "This operation is forbidden" : "פעולה זו אסורה",
     "group" : "קבוצה",
-    "Remote share" : "שיתוף חיצוני",
     "via" : "באמצעות",
     "Could not move \"{file}\", target exists" : "לא ניתן להעביר \"{file}\", קובץ מטרה קיים",
     "Could not move \"{file}\" because either the file or the target are locked." : "לא ניתן להעביר את הקובץ \"{file}\" כיוון שאו שהקובץ או תיקיית המטרה נעולים.",

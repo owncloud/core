@@ -21,7 +21,6 @@ OC.L10N.register(
     "Open documentation" : "打开文档",
     "Allow users on this server to send shares to other servers" : "允许用户分享文件给其他服务器上的用户",
     "Allow users on this server to receive shares from other servers" : "允许用户从其他服务器接收分享",
-    "Automatically accept remote shares from trusted servers" : "自动从信任的服务器接受远程共享",
     "Federated Cloud" : "联合云",
     "Your Federated Cloud ID:" : "你的联合云ID：",
     "Share it:" : "分享它：",

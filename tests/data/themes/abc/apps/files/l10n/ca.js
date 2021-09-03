@@ -29,7 +29,6 @@ OC.L10N.register(
     "Invalid path" : "El camí no és vàlid",
     "This operation is forbidden" : "Operació prohibida",
     "group" : "grup",
-    "Remote share" : "Compartició remota",
     "Name" : "Nom",
     "Size" : "Mida",
     "Modified" : "Modificat",

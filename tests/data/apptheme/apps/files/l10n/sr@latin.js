@@ -25,7 +25,6 @@ OC.L10N.register(
     "Unable to determine date" : "Ne mogu da odredim datum",
     "Invalid path" : "Neispravna putanja",
     "group" : "grupa",
-    "Remote share" : "Udaljeni deljeni resurs",
     "Name" : "Naziv",
     "Size" : "Veličina",
     "Modified" : "Izmenjen",

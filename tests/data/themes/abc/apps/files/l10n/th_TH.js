@@ -47,7 +47,6 @@ OC.L10N.register(
     "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "แชร์ไดเร็กทอรี \"{dir}\" ไม่พร้อมใช้งาน ให้ลองลบการแชร์หรือติดต่อเจ้าของแชร์เพื่อสร้างแชร์ใหม่",
     "Directory \"{dir}\" not found" : "ไม่พบไดเร็กทอรี่ \"{dir}\"",
     "group" : "กลุ่มผู้ใช้งาน",
-    "Remote share" : "รีโมทแชร์",
     "via" : "ผ่านทาง",
     "Could not move \"{file}\", target exists" : "ไม่สามารถย้ายไฟล์ \"{file}\" ไม่มีไฟล์นั้นอยู่",
     "Could not move \"{file}\" because either the file or the target are locked." : "ไม่สามารถย้ายไฟล์ \"{fileName}\" นี้เพราะถูกถูกล็อคอยู่",

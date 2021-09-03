@@ -42,7 +42,6 @@ OC.L10N.register(
     "Invalid path" : "Geçersiz yol",
     "This operation is forbidden" : "Bu işlem yasak",
     "group" : "grup",
-    "Remote share" : "Uzak paylaşım",
     "via" : "ile",
     "Could not move \"{file}\", target exists" : "\"{file}\" taşınamadı, hedef mevcut",
     "Could not move \"{file}\" because either the file or the target are locked." : "Dosya veya hedef kilitli olduğu için \"{file}\" taşınamadı.",

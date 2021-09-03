@@ -44,7 +44,6 @@ OC.L10N.register(
     "Directory \"{dir}\" is unavailable, please contact the administrator" : "Le dossier \"{dir}\" est indisponible, veuillez contacter l'administrateur",
     "Directory \"{dir}\" not found" : "Dossier \"{dir}\" introuvable",
     "group" : "groupe",
-    "Remote share" : "Partage distant",
     "via" : "via",
     "Could not move \"{file}\", target exists" : "Impossible de déplacer \"{file}\", la cible existe",
     "Could not move \"{file}\" because either the file or the target are locked." : "N'a pu déplacer \"{file}\" parce que le fichier ou la cible sont verrouillés.",

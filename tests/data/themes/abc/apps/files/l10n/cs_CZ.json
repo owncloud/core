@@ -35,7 +35,6 @@
     "Invalid path" : "Chybná cesta",
     "This operation is forbidden" : "Tato operace je zakázána",
     "group" : "skupina",
-    "Remote share" : "Vzdálené úložiště",
     "Could not move \"{file}\", target exists" : "Nelze přesunout \"{file}\", cíl existuje",
     "Could not move \"{file}\"" : "Nelze přesunout \"{file}\"",
     "{newName} already exists" : "{newName} již existuje",

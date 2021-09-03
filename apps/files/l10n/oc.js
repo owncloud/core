@@ -35,7 +35,6 @@ OC.L10N.register(
     "Invalid path" : "Camin invalid",
     "This operation is forbidden" : "L'operacion es interdicha",
     "group" : "grop",
-    "Remote share" : "Partiment distant",
     "Could not move \"{file}\", target exists" : "Impossible de desplaçar \"{file}\", la cibla existís",
     "Could not move \"{file}\"" : "Impossible de desplaçar \"{file}\"",
     "{newName} already exists" : "{newName} existís ja",

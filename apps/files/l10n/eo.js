@@ -28,7 +28,6 @@ OC.L10N.register(
     "Invalid path" : "Nevalida vojo",
     "This operation is forbidden" : "Ĉi tiu operacio malpermesatas",
     "group" : "grupo",
-    "Remote share" : "Fora kunhavo",
     "Could not move \"{file}\", target exists" : "Ne eblas movi “{file}”-n, celo jam ekzistas",
     "Could not move \"{file}\"" : "Ne eblas movi “{file}”-n",
     "{newName} already exists" : "{newName} jam ekzistas",

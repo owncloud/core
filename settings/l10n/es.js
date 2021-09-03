@@ -210,7 +210,6 @@ OC.L10N.register(
     "Allow users to share file via social media" : "Permitir a los usuarios compartir archivo por redes sociales",
     "Set default expiration date for user shares" : "Establecer la fecha de caducidad predeterminada para las comparticiones de usuario",
     "Set default expiration date for group shares" : "Establecer la fecha de caducidad predeterminada para las comparticiones de grupo",
-    "Set default expiration date for remote shares" : "Establecer la fecha de vencimiento predeterminada para los recursos compartidos remotos",
     "Automatically accept new incoming local user shares" : "Aceptar automáticamente nuevos compartidos de los usuarios locales.",
     "Allow resharing" : "Permitir recompartición",
     "Allow sharing with groups" : "Permitir compartir con grupos",

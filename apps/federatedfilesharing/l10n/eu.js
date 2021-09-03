@@ -21,7 +21,6 @@ OC.L10N.register(
     "Open documentation" : "Ireki dokumentazioa",
     "Allow users on this server to send shares to other servers" : "Baimendu zerbitzari honetako erabiltzaileak beste zerbitzariekin partekatzera",
     "Allow users on this server to receive shares from other servers" : "Baimendu zerbitzari honetako erabiltzaileak beste zerbitzarietatik partekatutakoak jasotzen",
-    "Automatically accept remote shares from trusted servers" : "Automatikoki urrutiko partekatzeak onartu zerbitzari fidagarriengandik",
     "Federated Cloud" : "Hodei Federatua",
     "Your Federated Cloud ID:" : "Zure Hode Federatu IDa:",
     "Share it:" : "Partekatu:",

@@ -32,7 +32,6 @@ OC.L10N.register(
     "Invalid path" : "Neplatná cesta",
     "This operation is forbidden" : "Táto operácia je zakázaná",
     "group" : "skupina",
-    "Remote share" : "Vzdialené úložisko",
     "Could not move \"{file}\", target exists" : "Nie je možné presunúť „{file}“, cieľ už existuje",
     "Could not move \"{file}\"" : "Nie je možné presunúť „{file}“",
     "{newName} already exists" : "{newName} už existuje",

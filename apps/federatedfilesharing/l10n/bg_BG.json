@@ -19,7 +19,6 @@
     "Open documentation" : "Отвори документацията",
     "Allow users on this server to send shares to other servers" : "Позволи на потребители от този сървър да споделят папки  с други сървъри",
     "Allow users on this server to receive shares from other servers" : "Позволи на потребители на този сървър да получават споделени папки от други сървъри",
-    "Automatically accept remote shares from trusted servers" : "Автоматично приемане на отдалечени споделяния от надеждни сървъри",
     "Federated Cloud" : "Федеративен облак",
     "Your Federated Cloud ID:" : "Вашето ID за федеративен облак:",
     "Share it:" : "Сподели:",

@@ -40,7 +40,6 @@
     "Invalid path" : "Ógild slóð",
     "This operation is forbidden" : "Þessi aðgerð er bönnuð",
     "group" : "hópur",
-    "Remote share" : "Fjartengd sameign",
     "Could not move \"{file}\", target exists" : "Gat ekki fært \"{file}\", markskrá er til",
     "Could not move \"{file}\" because either the file or the target are locked." : "Gat ekki fært \"{file}\" því annað hvort skráin eða markskráin eru læstar.",
     "Could not move \"{file}\": {message}" : "Gat ekki fært \"{file}\": {message}",

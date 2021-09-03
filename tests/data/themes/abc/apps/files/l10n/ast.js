@@ -31,7 +31,6 @@ OC.L10N.register(
     "Invalid path" : "Camín inválidu",
     "This operation is forbidden" : "La operación ta prohibida",
     "group" : "grupu",
-    "Remote share" : "Compartición remota",
     "Could not move \"{file}\", target exists" : "Nun pudo movese \"{file}\", destín yá esiste",
     "Could not move \"{file}\"" : "Nun pudo movese \"{file}\"",
     "{newName} already exists" : "{newName} yá esiste",

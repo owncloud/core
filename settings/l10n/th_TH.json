@@ -208,7 +208,6 @@
     "Allow users to share file via social media" : "อนุญาตให้ผู้ใช้แชร์ไฟล์ผ่านทางสื่อออนไลน์ เช่น Facebook Twitter ฯลฯ",
     "Set default expiration date for user shares" : "กำหนดวันหมดอายุเริ่มต้นสำหรับการแชร์ผู้ใช้",
     "Set default expiration date for group shares" : "กำหนดวันหมดอายุเริ่มต้นสำหรับการแชร์กลุ่ม",
-    "Set default expiration date for remote shares" : "กำหนดวันหมดอายุเริ่มต้นสำหรับการแชร์รีโมท",
     "Automatically accept new incoming local user shares" : "ยอมรับแชร์ที่เข้ามาใหม่จากในเครื่องโดยอัตโนมัติ",
     "Allow resharing" : "อนุญาตให้แชร์ข้อมูลซ้ำได้หลายครั้ง",
     "Allow sharing with groups" : "อนุญาตให้แชร์กับกลุ่ม",

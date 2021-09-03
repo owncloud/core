@@ -45,7 +45,6 @@
     "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "已分享的資料夾 \"{dir}\" 可用的移除分享或聯繫它的所有者以分享。",
     "Directory \"{dir}\" not found" : "資料夾 \"{dir}\" 未找到",
     "group" : "群組",
-    "Remote share" : "遠端分享",
     "via" : "經由",
     "Could not move \"{file}\", target exists" : "無法移動 \"{file}\"，目標已經存在",
     "Could not move \"{file}\" because either the file or the target are locked." : "無法移動 \"{file}\"，因為檔案或目標已鎖定。",

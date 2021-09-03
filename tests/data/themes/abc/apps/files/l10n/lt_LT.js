@@ -36,7 +36,6 @@ OC.L10N.register(
     "Invalid path" : "Netinkamas kelias",
     "This operation is forbidden" : "Ši operacija yra uždrausta",
     "group" : "grupė",
-    "Remote share" : "Nutolęs dalinimasis",
     "Could not move \"{file}\", target exists" : "Nepavyko perkelti \"{file}\", toks jau egzistuoja",
     "Could not move \"{file}\"" : "Nepavyko perkelti \"{file}\"",
     "{newName} already exists" : "{newName} jau egzistuoja",

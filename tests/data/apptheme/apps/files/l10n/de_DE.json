@@ -45,7 +45,6 @@
     "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "Das geteilte Verzeichnis \"{dir}\" ist nicht verfügbar, entfernen sie den Share oder bitten sie den Besitzer es erneut zu teilen.",
     "Directory \"{dir}\" not found" : "Verzeichnis \"{dir}\" nicht gefunden",
     "group" : "Gruppe",
-    "Remote share" : "Entfernte Freigabe",
     "via" : "via",
     "Could not move \"{file}\", target exists" : "Die Datei konnte nicht verschoben werden \"{file}\", da die Datei im Zielordner bereits existiert",
     "Could not move \"{file}\" because either the file or the target are locked." : "Die Datei \"{file}\" konnte nicht verschoben werden, weil die Datei oder das Ziel gesperrt sind.",

@@ -34,7 +34,6 @@
     "Invalid path" : "Caminho inválido",
     "This operation is forbidden" : "Esta operação é proibida",
     "group" : "grupo",
-    "Remote share" : "Partilha remota",
     "Could not move \"{file}\", target exists" : "Não foi possível mover \"{file}\", destino já existe",
     "Could not move \"{file}\"" : "Não foi possivel mover o ficheiro \"{file}\"",
     "{newName} already exists" : "{newName} já existe",

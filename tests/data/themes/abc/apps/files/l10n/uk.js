@@ -32,7 +32,6 @@ OC.L10N.register(
     "Invalid path" : "Невірний шлях",
     "This operation is forbidden" : "Ця операція заборонена",
     "group" : "група",
-    "Remote share" : "Віддалена загальна тека",
     "Could not move \"{file}\", target exists" : "Не вдалося перемістити \"{file}\", такий файл вже існує",
     "Could not move \"{file}\"" : "Не вдалося перемістити \"{file}\"",
     "Name" : "Ім'я",

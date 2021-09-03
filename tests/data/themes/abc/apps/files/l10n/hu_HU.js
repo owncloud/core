@@ -40,7 +40,6 @@ OC.L10N.register(
     "Invalid path" : "Érvénytelen útvonal",
     "This operation is forbidden" : "Tiltott művelet",
     "group" : "csoport",
-    "Remote share" : "Távoli megosztás",
     "Could not move \"{file}\", target exists" : "{file} fájl nem áthelyezhető, mert a cél már létezik",
     "Could not move \"{file}\"" : "{file} fájl nem áthelyezhető",
     "{newName} already exists" : "{newName} már létezik",

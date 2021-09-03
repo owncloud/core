@@ -30,7 +30,6 @@ OC.L10N.register(
     "Invalid path" : "Baliogabeko bidea",
     "This operation is forbidden" : "Eragiketa hau debekatuta dago",
     "group" : "taldea",
-    "Remote share" : "Urrutiko parte hartzea",
     "Could not move \"{file}\"" : "Ezin da mugitu \"{file}\"",
     "Name" : "Izena",
     "Size" : "Tamaina",

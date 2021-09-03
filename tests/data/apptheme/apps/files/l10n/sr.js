@@ -28,7 +28,6 @@ OC.L10N.register(
     "Invalid path" : "Неисправна путања",
     "This operation is forbidden" : "Ова радња је забрањена",
     "group" : "група",
-    "Remote share" : "Удаљено дељење",
     "Name" : "Назив",
     "Size" : "Величина",
     "Modified" : "Измењен",

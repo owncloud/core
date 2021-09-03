@@ -40,7 +40,6 @@ OC.L10N.register(
     "Invalid path" : "Nederīgs ceļš",
     "This operation is forbidden" : "Šī darbība ir aizliegta",
     "group" : "grupa",
-    "Remote share" : "Attālinātā koplietotne",
     "Could not move \"{file}\", target exists" : "\"{file}\" nevarēja pārvietot, fails jau eksistē",
     "Could not move \"{file}\": {message}" : "Neizdevās pārvietot \"{file}\": {message}",
     "Could not move \"{file}\"" : "Neizdevās pārvietot \"{file}\"",

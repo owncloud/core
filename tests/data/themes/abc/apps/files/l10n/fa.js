@@ -40,7 +40,6 @@ OC.L10N.register(
     "Invalid path" : "مسیر اشتباه",
     "This operation is forbidden" : "این عملیات غیرمجاز است",
     "group" : "گروه",
-    "Remote share" : "اشتراک از راه دور",
     "Could not move \"{file}\", target exists" : "نمی توان \"{file}\" را جابجا کرد، هدفی وجود دارد",
     "Could not move \"{file}\"" : "نمی توان \"{file}\" را جابجا کرد",
     "{newName} already exists" : "{newName} اکنون وجود دارد",

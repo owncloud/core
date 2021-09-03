@@ -21,7 +21,6 @@ OC.L10N.register(
     "Open documentation" : "Open documentation",
     "Allow users on this server to send shares to other servers" : "Allow users on this server to send shares to other servers",
     "Allow users on this server to receive shares from other servers" : "Allow users on this server to receive shares from other servers",
-    "Automatically accept remote shares from trusted servers" : "Automatically accept remote shares from trusted servers",
     "Federated Cloud" : "Federated Cloud",
     "Your Federated Cloud ID:" : "Your Federated Cloud ID:",
     "Share it:" : "Share it:",

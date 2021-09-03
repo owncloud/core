@@ -27,7 +27,6 @@ OC.L10N.register(
     "Invalid path" : "Yalnış ünvan",
     "This operation is forbidden" : "Bu əməliyyat qadağandır",
     "group" : "qrup",
-    "Remote share" : "Uzaq yayımlanma",
     "Name" : "Ad",
     "Size" : "Həcm",
     "Modified" : "Dəyişdirildi",

@@ -206,7 +206,6 @@ OC.L10N.register(
     "Allow users to share file via social media" : "Kullanıcıların sosyal medya aracılığıyla dosya paylaşmasına izin ver",
     "Set default expiration date for user shares" : "Kullanıcı paylaşımları için öntanımlu son kullanma tarihi belirle",
     "Set default expiration date for group shares" : "Grup paylaşımları için öntanımlu son kullanma tarihi belirle",
-    "Set default expiration date for remote shares" : "Uzak paylaşımlar için varsayılan sona erme tarihini ayarlayın",
     "Automatically accept new incoming local user shares" : "Yeni gelen yerel kullanıcı paylaşımlarını otomatik olarak kabul et",
     "Allow resharing" : "Yeniden paylaşıma izin ver",
     "Allow sharing with groups" : "Grouplar ile paylaşıma izin ver",

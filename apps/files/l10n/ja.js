@@ -40,7 +40,6 @@ OC.L10N.register(
     "Invalid path" : "無効なパス",
     "This operation is forbidden" : "この操作は禁止されています",
     "group" : "グループ",
-    "Remote share" : "リモート共有",
     "Could not move \"{file}\", target exists" : "ターゲットが存在するため，ファイル \"{file}\"を移動できませんでした",
     "Could not move \"{file}\": {message}" : "\"{file}\"を移動できませんでした: {message}",
     "Could not move \"{file}\"" : "\"{file}\" を移動できませんでした",

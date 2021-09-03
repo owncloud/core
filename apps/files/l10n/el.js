@@ -42,7 +42,6 @@ OC.L10N.register(
     "Invalid path" : "Μη έγκυρη διαδρομή",
     "This operation is forbidden" : "Αυτή η ενέργεια δεν επιτρέπεται",
     "group" : "ομάδα",
-    "Remote share" : "Απομακρυσμένος κοινόχρηστος φάκελος",
     "via" : "μέσω",
     "Could not move \"{file}\", target exists" : "Αδυναμία μετακίνησης του \"{file}\", υπάρχει ήδη αρχείο με αυτό το όνομα",
     "Could not move \"{file}\" because either the file or the target are locked." : "Δεν ήταν δυνατή η μετακίνηση του αρχείου \"{file}\", επειδή είτε το αρχείο είτε ο στόχος είναι κλειδωμένα.",

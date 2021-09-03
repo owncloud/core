@@ -21,7 +21,6 @@ OC.L10N.register(
     "Open documentation" : "Belgelendirmeyi aç",
     "Allow users on this server to send shares to other servers" : "Bu sunucudaki kullanıcıların diğer sunuculara paylaşım göndermelerine izin ver",
     "Allow users on this server to receive shares from other servers" : "Bu sunucudaki kullanıcıların diğer sunuculardan paylaşım almalarına izin ver",
-    "Automatically accept remote shares from trusted servers" : "Güvenilir sunuculardan gelen uzak paylaşımları otomatik olarak kabul et",
     "Federated Cloud" : "Birleşmiş Bulut",
     "Your Federated Cloud ID:" : "Birleşmiş Bulut Kimliğiniz:",
     "Share it:" : "Paylaşın:",

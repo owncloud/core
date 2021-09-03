@@ -42,7 +42,6 @@ OC.L10N.register(
     "Invalid path" : "Ungültiger Pfad",
     "This operation is forbidden" : "Diese Operation ist nicht erlaubt",
     "group" : "Gruppe",
-    "Remote share" : "Externe Freigabe",
     "via" : "via",
     "Could not move \"{file}\", target exists" : "\"{file}\" konnte nicht verschoben werden: Ziel existiert bereits",
     "Could not move \"{file}\" because either the file or the target are locked." : "Die Datei \"{file}\" konnte nicht verschoben werden, weil die Datei oder das Ziel gesperrt ist.",

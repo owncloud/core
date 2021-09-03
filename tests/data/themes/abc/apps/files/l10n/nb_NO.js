@@ -40,7 +40,6 @@ OC.L10N.register(
     "Invalid path" : "Individuell sti",
     "This operation is forbidden" : "Operasjonen er forbudt",
     "group" : "gruppe",
-    "Remote share" : "Ekstern deling",
     "Could not move \"{file}\", target exists" : "Klarte ikke å flytte \"{file}\", målfilen finnes",
     "Could not move \"{file}\": {message}" : "Kunne ikke flytte \"{file}\": {message}",
     "Could not move \"{file}\"" : "Klarte ikke å flytte \"{file}\"",

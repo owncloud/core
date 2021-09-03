@@ -22,7 +22,6 @@ OC.L10N.register(
     "Periodically synchronize outdated federated shares for active users" : "תקופתית מסנכרן שיתופים מאוגדים ישנים למשתמשים פעילים",
     "Allow users on this server to send shares to other servers" : "מאפשר למשתמשים בשרת זה לשלוח שיתופים לשרתים אחרים",
     "Allow users on this server to receive shares from other servers" : "מאפשר למשתמשים בשרת זה לקבל שיתופים משרתים אחרים",
-    "Automatically accept remote shares from trusted servers" : "אישור אוטומטי לשיתוף מרוחק משרתים מהימנים",
     "Federated Cloud" : "ענן מאוגד",
     "Your Federated Cloud ID:" : "מספר זיהוי הענן המאוגד שלך:",
     "Share it:" : "שיתוף שלו:",

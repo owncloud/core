@@ -42,7 +42,6 @@ OC.L10N.register(
     "Invalid path" : "Невалиден път",
     "This operation is forbidden" : "Операцията е забранена",
     "group" : "група",
-    "Remote share" : "Прикачена Папка",
     "via" : "чрез",
     "Could not move \"{file}\", target exists" : "Неуспешно преместване на  \"{file}\", крайната местоположение вече съществува",
     "Could not move \"{file}\" because either the file or the target are locked." : "Не можа да се премести \"{file}\" защото или файлът, или целта са заключени.",

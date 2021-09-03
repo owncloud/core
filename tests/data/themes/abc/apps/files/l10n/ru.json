@@ -45,7 +45,6 @@
     "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "Общий каталог \"{dir}\" недоступен, удалите доступ или свяжитесь с его владельцем, чтобы он заново предоставил доступ.",
     "Directory \"{dir}\" not found" : "Каталог \"{dir}\" не найден",
     "group" : "группа",
-    "Remote share" : "Удаленный общий ресурс",
     "via" : "через",
     "Could not move \"{file}\", target exists" : "Невозможно переместить \"{file}\", цель отсутствует",
     "Could not move \"{file}\" because either the file or the target are locked." : "Не удалось переместить \"{file}\" так как или файл, или место назначения заблокированы.",

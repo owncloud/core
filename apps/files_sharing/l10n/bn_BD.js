@@ -2,11 +2,9 @@ OC.L10N.register(
     "files_sharing",
     {
     "Server to server sharing is not enabled on this server" : "এই সার্ভারে সার্ভার হতে সার্ভারে ভাগাভাগি কার্যকর নয়",
-    "Couldn't add remote share" : "দুরবর্তী ভাগাভাগি যোগ করা গেলনা",
     "Shared with you" : "আপনার সাথে ভাগাভাগি করেছেন",
     "Shared by link" : "লিঙ্কের মাধ্যমে ভাগাভাগিকৃত",
     "Uploading..." : "আপলোড করা হচ্ছে..........",
-    "Remote share" : "দুরবর্তী ভাগাভাগি",
     "Cancel" : "বাতিল",
     "Add" : "যোগ কর",
     "Invalid ownCloud url" : "অবৈধ ওউনক্লাউড url",

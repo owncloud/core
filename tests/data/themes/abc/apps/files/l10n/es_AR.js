@@ -28,7 +28,6 @@ OC.L10N.register(
     "Invalid path" : "Ruta no válida",
     "This operation is forbidden" : "Esta operación está prohibida",
     "group" : "grupo",
-    "Remote share" : "Recurso compartido remoto",
     "Name" : "Nombre",
     "Size" : "Tamaño",
     "Modified" : "Modificado",
