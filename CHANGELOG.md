@@ -22,6 +22,7 @@ Summary
 * Bugfix - Image orientation: [#39140](https://github.com/owncloud/core/pull/39140)
 * Bugfix - Fix display of tag selection in sidebar: [#39146](https://github.com/owncloud/core/pull/39146)
 * Bugfix - Keep pagination active with empty search queries: [#39155](https://github.com/owncloud/core/pull/39155)
+* Bugfix - File conflict dialog when dragging a file into a folder: [#39162](https://github.com/owncloud/core/pull/39162)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than ""remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -160,6 +161,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4615
    https://github.com/owncloud/core/pull/39155
+
+* Bugfix - File conflict dialog when dragging a file into a folder: [#39162](https://github.com/owncloud/core/pull/39162)
+
+   When dragging a file into a folder, while another file with an identical name exists in the
+   parent directory, the UI falsely showed a conflict dialog alert. This has been fixed.
+
+   https://github.com/owncloud/core/issues/39133
+   https://github.com/owncloud/core/pull/39162
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
