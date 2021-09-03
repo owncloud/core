@@ -169,6 +169,7 @@ Details
 
    https://github.com/owncloud/core/issues/39133
    https://github.com/owncloud/core/pull/39162
+   https://github.com/owncloud/core/pull/39170
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
