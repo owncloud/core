@@ -821,8 +821,9 @@ OC.Uploader.prototype = _.extend({
 		// only keep non-conflicting uploads
 		selection.uploads = _.filter(selection.uploads, function(upload) {
 			var file = upload.getFile();
-			if (file.relativePath) {
-				// can't check in subfolder contents
+			var targetUploadFolder = upload.getTargetFolder();
+			if (file.relativePath || (targetUploadFolder && targetUploadFolder !== '/')) {
+				// can't check in subfolder contents, let backend handle this
 				return true;
 			}
 			if (!fileList) {
