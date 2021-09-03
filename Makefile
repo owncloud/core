@@ -325,6 +325,7 @@ clean-dist:
 # Build qa distribution
 #
 $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
+	cd $(NODE_PREFIX) && $(YARN) run clean-modules
 	rm -Rf $@; mkdir -p $@/config
 	cp -RL $(core_all_src) $@
 	cp -Rf $(core_test_dirs) $@
