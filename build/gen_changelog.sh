@@ -2,7 +2,12 @@
 
 COMMIT_RANGE="$1"
 
-REPO=`git remote -v | grep -m 1 "(push)" | sed -e "s/.*github.com[:/]\(.*\)\.git.*/\1/"`
+# accept any of
+#	"git@github.com:owncloud/windows_network_drive (push)"
+#	"git@github.com:owncloud/windows_network_drive.git (push)"
+#	"https://github.com/owncloud/windows_network_drive.git (push)"
+# to produce "owncloud/windows_network_drive"
+REPO=$(git remote -v | grep -m 1 "(push)" | sed -e 's@.*github.com[:/]@@' -e 's@\(.git\)\? .*@@')
 BASE_URL="https://github.com/$REPO/issues/"
 
 if test -z "$1"; then
