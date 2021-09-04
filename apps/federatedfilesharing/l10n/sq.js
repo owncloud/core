@@ -24,6 +24,7 @@ OC.L10N.register(
     "Periodically synchronize outdated federated shares for active users" : "Njëkohëso periodikisht ndarje të federuara të vjetruara për përdorues aktivë",
     "Allow users on this server to send shares to other servers" : "Lejoju përdoruesve në këtë shërbyes të dërgojnë ndarje në shërbyes të tjerë",
     "Allow users on this server to receive shares from other servers" : "Lejoju përdoruesve në këtë shërbyes të marrin ndarje nga shërbyes të tjerë",
+    "Automatically accept federated shares from trusted servers" : "Prano vetvetiu ndarje të federuarish prej shërbyesish të besuar",
     "Federated Cloud" : "Re e Federuar",
     "Your Federated Cloud ID:" : "ID-ja juaj për Re të Federuar:",
     "Share it:" : "Ndajeni:",
