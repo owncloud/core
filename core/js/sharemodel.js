@@ -76,7 +76,6 @@
 			delete data.storage_id;
 			delete data.mimetype;
 			delete data.parent;
-
 			return data;
 		},
 
