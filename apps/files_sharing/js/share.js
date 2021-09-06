@@ -332,8 +332,8 @@
 				name: t('files_sharing', 'Public quick link'),
 				attributes: [
 					{
-						key: 'isQuickLink',
 						scope: 'files_sharing',
+						key: 'isQuickLink',
 						value: true,
 					}
 				],
