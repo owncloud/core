@@ -1566,7 +1566,6 @@ class FileTest extends TestCase {
 		$file = new File($view, $info);
 
 		$file->get();
-		$file->get();
 	}
 
 	/**
