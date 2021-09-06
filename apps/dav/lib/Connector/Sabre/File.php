@@ -38,6 +38,7 @@ use OC\Files\Filesystem;
 use OC\Files\Storage\Storage;
 use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
+use OCA\DAV\Connector\Sabre\Exception\FileNameTooLong;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
 use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
 use OCA\DAV\Files\IFileNode;
@@ -45,6 +46,7 @@ use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\EntityTooLargeException;
 use OCP\Files\FileContentNotAllowedException;
+use OCP\Files\FileNameTooLongException;
 use OCP\Files\ForbiddenException;
 use OCP\Files\InvalidContentException;
 use OCP\Files\InvalidPathException;
@@ -189,6 +191,11 @@ class File extends Node implements IFile, IFileNode {
 					$partStorage->unlink($internalPartPath);
 				}
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+			}
+
+			// check if the part file name is too long
+			if ($usePartFile) {
+				$partStorage->verifyPath($internalPartPath, \basename($internalPartPath));
 			}
 
 			$target = $partStorage->fopen($internalPartPath, 'wb');
@@ -671,6 +678,9 @@ class File extends Node implements IFile, IFileNode {
 		if ($e instanceof InvalidContentException) {
 			// the file content is not permitted
 			throw new UnsupportedMediaType($e->getMessage(), 0, $e);
+		}
+		if ($e instanceof FileNameTooLongException) {
+			throw new FileNameTooLong($e->getMessage(), 0, $e);
 		}
 		if ($e instanceof InvalidPathException) {
 			// the path for the file was not valid

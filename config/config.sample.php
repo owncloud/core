@@ -1498,6 +1498,9 @@ $CONFIG = [
  * same storage as the upload target. Setting this to false will store the part
  * files in the root of the users folder which might be required to work with certain
  * external storage setups that have limited rename capabilities.
+ *
+ * Note that setting this to false causes issues with the following apps: Encryption,
+ * Document classification, Anti-Virus and Ransomware Protection.
  */
 'part_file_in_storage' => true,
 
