@@ -560,6 +560,9 @@ describe('OCA.Sharing.Util tests', function() {
 
 	describe('public link quick action', function() {
 		var currentUserStub;
+		var fetchStub;
+		var linkCollectionStub;
+		var fetchDeferred;
 
 		beforeEach(function() {
 			$('#testArea').append('<input id="allowShareWithLink" type="hidden" value="yes">');
@@ -578,18 +581,52 @@ describe('OCA.Sharing.Util tests', function() {
 				displayName: 'admin',
 				groups: ['admin'],
 			});
+
+			fetchDeferred = new $.Deferred();
+			fetchStub = sinon.stub(OC.Share.ShareItemModel.prototype, 'fetch').returns(fetchDeferred.promise());
+
+			var collection = new OC.Share.SharesCollection();
+			collection.add(
+				{
+					displayname_owner: 'admin',
+					expiration: '2017-10-12 00:00:00',
+					share_type: OC.Share.SHARE_TYPE_LINK,
+					uid_owner: 'admin',
+					attributes: [],
+				}
+			);
+			linkCollectionStub = sinon.stub(OC.Share.ShareItemModel.prototype, 'getLinkSharesCollection').returns(collection);
 		});
 		afterEach(function() {
 			currentUserStub.restore();
+			fetchStub.restore();
+			linkCollectionStub.restore();
+
 			OC.appConfig.files_sharing.showPublicLinkQuickAction = false;
 			oc_appconfig.core.enforceLinkPasswordReadOnly = false;
 			$('#allowShareWithLink').val('yes');
 		});
+		function makeOcsResponse(data) {
+			return [{
+				ocs: {
+					data: data
+				}
+			}];
+		}
 		it('renders the quick action', function() {
 			OC.appConfig.files_sharing.showPublicLinkQuickAction = true;
 			oc_appconfig.core.enforceLinkPasswordReadOnly = false;
 			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlistEnabled = true;
 			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlist = ['admin'];
+
+			fetchDeferred.resolve(makeOcsResponse([
+				{
+					displayname_owner: 'admin',
+					expiration: '2017-10-12 00:00:00',
+					share_type: OC.Share.SHARE_TYPE_LINK,
+					uid_owner: 'admin',
+				}
+			]));
 
 			OCA.Sharing.Util.attach(fileList);
 			fileList.setFiles(testFiles);
