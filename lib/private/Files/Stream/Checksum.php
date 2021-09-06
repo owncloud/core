@@ -24,7 +24,6 @@ namespace OC\Files\Stream;
 
 use Icewind\Streams\Wrapper;
 use OC\Cache\CappedMemoryCache;
-use OC\Files\Filesystem;
 
 /**
  * Computes the checksum of the wrapped stream. The checksum can be retrieved with
@@ -212,13 +211,6 @@ class Checksum extends Wrapper {
 	public static function getChecksums($path) {
 		if (isset(self::$checksums[$path])) {
 			return self::$checksums[$path];
-		}
-
-		// check the hash in case only the filename was hashed
-		// this was introduced in 10.9
-		$hashedNameToCheck = Filesystem::hashFileName($path);
-		if (isset(self::$checksums[$hashedNameToCheck])) {
-			return self::$checksums[$hashedNameToCheck];
 		}
 
 		// check the md5($path) in case "part_file_in_storage" is set to false

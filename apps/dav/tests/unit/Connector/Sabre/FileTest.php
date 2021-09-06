@@ -29,6 +29,7 @@ use OC\Files\Filesystem;
 use OC\Files\Storage\Local;
 use OC\Files\View;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
+use OCA\DAV\Connector\Sabre\Exception\FileNameTooLong;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\File;
 use OCP\Constants;
@@ -463,10 +464,20 @@ class FileTest extends TestCase {
 		return $result;
 	}
 
+	public function partFileInStorage() {
+		return [
+			[true], [false]
+		];
+	}
+
 	/**
 	 * Test putting a single file
+	 *
+	 * @dataProvider partFileInStorage
 	 */
-	public function testPutSingleFile() {
+	public function testPutSingleFile($partFileInStorage) {
+		\OC::$server->getConfig()->setSystemValue('part_file_in_storage', $partFileInStorage);
+
 		$calledAfterEvent = [];
 		\OC::$server->getEventDispatcher()->addListener('file.aftercreate', function ($event) use (&$calledAfterEvent) {
 			$calledAfterEvent[] = 'file.aftercreate';
@@ -476,6 +487,7 @@ class FileTest extends TestCase {
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
 		$this->assertArrayHasKey('path', $calledAfterEvent[1]);
 		$this->assertEquals('file.aftercreate', $calledAfterEvent[0]);
+		\OC::$server->getConfig()->setSystemValue('part_file_in_storage', true);
 	}
 
 	/**
@@ -1554,5 +1566,49 @@ class FileTest extends TestCase {
 		$file = new File($view, $info);
 
 		$file->get();
+	}
+
+	/**
+	 * Test putting a file with which the generated part file name
+	 * will exceed the file name character limit.
+	 */
+	public function testPutTooLongPartFileName() {
+		$path = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren.txt';
+		$view = Filesystem::getView();
+		$viewRoot = '/' . $this->user . '/files';
+
+		$info = new FileInfo(
+			$viewRoot . '/' . \ltrim($path, '/'),
+			$this->getMockStorage(),
+			null,
+			['permissions' => Constants::PERMISSION_ALL],
+			null
+		);
+
+		/** @var File | \PHPUnit\Framework\MockObject\MockObject $file */
+		$file = $this->getMockBuilder(File::class)
+			->setConstructorArgs([$view, $info, null])
+			->setMethods(['header'])
+			->getMock();
+
+		list($storage) = $view->resolvePath("/$path");
+		$usePartFile = $storage->usePartFile();
+
+		if ($usePartFile) {
+			$this->expectException(FileNameTooLong::class);
+		}
+
+		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
+		$file->put($this->getStream('test data'));
+		$view->unlockFile($path, ILockingProvider::LOCK_SHARED);
+
+		$this->assertFalse(
+			$this->isFileLocked($view, $path, ILockingProvider::LOCK_SHARED),
+			'File unlocked after put'
+		);
+		$this->assertFalse(
+			$this->isFileLocked($view, $path, ILockingProvider::LOCK_EXCLUSIVE),
+			'File unlocked after put'
+		);
 	}
 }
