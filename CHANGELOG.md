@@ -17,6 +17,7 @@ Summary
 * Bugfix - Do not try to delete the folder twice: [#39070](https://github.com/owncloud/core/pull/39070)
 * Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
 * Bugfix - Clarify the description of the manual file locking option: [#39106](https://github.com/owncloud/core/pull/39106)
+* Bugfix - Update appinfo cache only if the app version is newer: [#39108](https://github.com/owncloud/core/pull/39108)
 * Bugfix - Fix logo size on login screen: [#39129](https://github.com/owncloud/core/pull/39129)
 * Bugfix - Image orientation: [#39140](https://github.com/owncloud/core/pull/39140)
 * Bugfix - Fix display of tag selection in sidebar: [#39146](https://github.com/owncloud/core/pull/39146)
@@ -118,6 +119,20 @@ Details
    correctly.
 
    https://github.com/owncloud/core/pull/39106
+
+* Bugfix - Update appinfo cache only if the app version is newer: [#39108](https://github.com/owncloud/core/pull/39108)
+
+   Previously, in case there were multiple copies of the same app with different versions, the
+   information being cached was the latest one found based on the locations defined in the
+   config.php file, which might not be the one from the latest app version. This might be a problem
+   in some scenarios specially checking the version of the app. Note that the code used was the one
+   from the latest app version found.
+
+   Now, the information cached is always from the latest version found. In the weird case that both
+   versions are the same, the information from the first one will be kept. This shouldn't be a
+   problem because the information is expected to be the same.
+
+   https://github.com/owncloud/core/pull/39108
 
 * Bugfix - Fix logo size on login screen: [#39129](https://github.com/owncloud/core/pull/39129)
 
