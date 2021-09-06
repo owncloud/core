@@ -15,7 +15,6 @@ Summary
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
 * Bugfix - Do not try to delete the folder twice: [#39070](https://github.com/owncloud/core/pull/39070)
-* Bugfix - Hash chunk(v2) filename: [#39088](https://github.com/owncloud/core/pull/39088)
 * Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
 * Bugfix - Clarify the description of the manual file locking option: [#39106](https://github.com/owncloud/core/pull/39106)
 * Bugfix - Fix logo size on login screen: [#39129](https://github.com/owncloud/core/pull/39129)
@@ -23,6 +22,7 @@ Summary
 * Bugfix - Fix display of tag selection in sidebar: [#39146](https://github.com/owncloud/core/pull/39146)
 * Bugfix - Keep pagination active with empty search queries: [#39155](https://github.com/owncloud/core/pull/39155)
 * Bugfix - File conflict dialog when dragging a file into a folder: [#39162](https://github.com/owncloud/core/pull/39162)
+* Bugfix - Return proper error if part file name is too long: [#39168](https://github.com/owncloud/core/pull/39168)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than ""remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -102,16 +102,6 @@ Details
 
    https://github.com/owncloud/core/pull/39070
 
-* Bugfix - Hash chunk(v2) filename: [#39088](https://github.com/owncloud/core/pull/39088)
-
-   Before this PR, while uploading a file, chunks(v2) were created with filename consist of
-   original filename plus chunk suffix. This could lead to a too long filename error. With this PR
-   the chunk filenames consist of md5 hash and chunk suffix, which decreases the filename and
-   prevents a too long filename error.
-
-   https://github.com/owncloud/enterprise/issues/4692
-   https://github.com/owncloud/core/pull/39088
-
 * Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
 
    Before this PR click events was caught by iFrames due to this circumstances for example the
@@ -170,6 +160,11 @@ Details
    https://github.com/owncloud/core/issues/39133
    https://github.com/owncloud/core/pull/39162
    https://github.com/owncloud/core/pull/39170
+
+* Bugfix - Return proper error if part file name is too long: [#39168](https://github.com/owncloud/core/pull/39168)
+
+   https://github.com/owncloud/enterprise/issues/4692
+   https://github.com/owncloud/core/pull/39168
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
