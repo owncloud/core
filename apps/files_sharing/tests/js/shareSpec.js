@@ -560,9 +560,11 @@ describe('OCA.Sharing.Util tests', function() {
 
 	describe('public link quick action', function() {
 		var currentUserStub;
+		var notificationStub;
 		var fetchStub;
 		var linkCollectionStub;
 		var fetchDeferred;
+		var collection;
 
 		beforeEach(function() {
 			$('#testArea').append('<input id="allowShareWithLink" type="hidden" value="yes">');
@@ -582,10 +584,12 @@ describe('OCA.Sharing.Util tests', function() {
 				groups: ['admin'],
 			});
 
+			notificationStub = sinon.stub(OC.Notification, 'show');
+
 			fetchDeferred = new $.Deferred();
 			fetchStub = sinon.stub(OC.Share.ShareItemModel.prototype, 'fetch').returns(fetchDeferred.promise());
 
-			var collection = new OC.Share.SharesCollection();
+			collection = new OC.Share.SharesCollection();
 			collection.add(
 				{
 					displayname_owner: 'admin',
@@ -599,6 +603,7 @@ describe('OCA.Sharing.Util tests', function() {
 		});
 		afterEach(function() {
 			currentUserStub.restore();
+			notificationStub.restore();
 			fetchStub.restore();
 			linkCollectionStub.restore();
 
@@ -619,14 +624,34 @@ describe('OCA.Sharing.Util tests', function() {
 			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlistEnabled = true;
 			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlist = ['admin'];
 
-			fetchDeferred.resolve(makeOcsResponse([
-				{
-					displayname_owner: 'admin',
-					expiration: '2017-10-12 00:00:00',
-					share_type: OC.Share.SHARE_TYPE_LINK,
-					uid_owner: 'admin',
-				}
-			]));
+			fetchDeferred.resolve(makeOcsResponse([]));
+
+			OCA.Sharing.Util.attach(fileList);
+			fileList.setFiles(testFiles);
+
+			var $quickAction = $('.action-create-public-link');
+
+			$quickAction.click();
+		});
+		it('copies the quick link to clipboard', function() {
+			OC.appConfig.files_sharing.showPublicLinkQuickAction = true;
+			oc_appconfig.core.enforceLinkPasswordReadOnly = false;
+			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlistEnabled = true;
+			oc_appconfig.files_sharing.publicShareSharersGroupsAllowlist = ['admin'];
+
+			fetchDeferred.resolve(makeOcsResponse([]));
+
+			collection.add({
+				displayname_owner: 'admin',
+				expiration: '2020-10-12 00:00:00',
+				share_type: OC.Share.SHARE_TYPE_LINK,
+				uid_owner: 'admin',
+				attributes: [{
+					scope: 'files_sharing',
+					key: 'isQuickLink',
+					value: true,
+				}]
+			});
 
 			OCA.Sharing.Util.attach(fileList);
 			fileList.setFiles(testFiles);
@@ -635,6 +660,11 @@ describe('OCA.Sharing.Util tests', function() {
 			expect($quickAction.length).toEqual(1);
 
 			$quickAction.click();
+
+			expect(notificationStub).toHaveBeenCalledWith(
+				'Public link has been copied to the clipboard.',
+				{timeout: 7}
+			);
 		});
 		it('does not render the quick action because of config', function() {
 			OC.appConfig.files_sharing.showPublicLinkQuickAction = false;
