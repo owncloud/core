@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Page\ExternalStoragePage;
 use Page\FavoritesPage;
 use Page\FilesPage;
 use Page\FilesPageBasic;
@@ -105,6 +106,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private $openedFileActionMenu;
 
 	/**
+	 *
+	 * @var ExternalStoragePage
+	 */
+	private $externalStoragePage;
+
+	/**
 	 * Table of all files and folders that should have been deleted, stored so
 	 * that other steps can use the list to check if the deletion happened correctly
 	 * table headings: must be: |name|
@@ -168,6 +175,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param SharedByLinkPage $sharedByLinkPage
 	 * @param SharedWithOthersPage $sharedWithOthersPage
 	 * @param GeneralExceptionPage $generalExceptionPage
+	 * @param ExternalStoragePage $externalStoragePage
 	 *
 	 * @return void
 	 */
@@ -180,7 +188,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		TagsPage $tagsPage,
 		SharedByLinkPage $sharedByLinkPage,
 		SharedWithOthersPage $sharedWithOthersPage,
-		GeneralExceptionPage $generalExceptionPage
+		GeneralExceptionPage $generalExceptionPage,
+		ExternalStoragePage $externalStoragePage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
@@ -191,6 +200,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->sharedByLinkPage = $sharedByLinkPage;
 		$this->sharedWithOthersPage = $sharedWithOthersPage;
 		$this->generalExceptionPage = $generalExceptionPage;
+		$this->externalStoragePage = $externalStoragePage;
 	}
 
 	/**
@@ -280,6 +290,17 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$pageObject->waitTillPageIsLoaded($this->getSession());
 			$this->webUIGeneralContext->setCurrentPageObject($pageObject);
 		}
+	}
+
+	/**
+	 * @When the user browses to the external storage page
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	public function userBrowsesToTheExternalStoragePage():void {
+		$this->theUserBrowsesToThePage($this->externalStoragePage);
 	}
 
 	/**
@@ -1310,8 +1331,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the user opens (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
-	 * @Given /^the user has opened (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
+	 * @When /^the user opens (trashbin|external-storage|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
+	 * @Given /^the user has opened (trashbin|external-storage|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) (expecting to fail|)\s?using the webUI$/
 	 *
 	 * @param string $typeOfFilesPage
 	 * @param string $fileOrFolder
@@ -1383,6 +1404,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$failed = false;
 		foreach ($breadCrumbsForOpenFile as $breadCrumb) {
 			$pageObject->openFile($breadCrumb, $this->getSession());
+			if ($typeOfFilesPage === "external-storage") {
+				$this->webUIGeneralContext->setCurrentPageObject($this->filesPage);
+				$pageObject = $this->getCurrentPageObject();
+			}
 			try {
 				$pageObject->waitTillPageIsLoaded($this->getSession());
 			} catch (Exception $e) {
@@ -1680,7 +1705,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(files page|trashbin|favorites page|shared-with-you page|external-storage page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
@@ -1709,7 +1734,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				'no table of file name parts passed to theFollowingFileFolderShouldBeListed'
 			);
 		}
-
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		if ($folder !== "") {
