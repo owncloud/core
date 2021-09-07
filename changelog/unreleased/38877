@@ -1,4 +1,4 @@
-Change: Use "federated" rather than ""remote" for shares
+Change: Use "federated" rather than "remote" for shares
 
 Shares from one ownCloud to another ownCloud were referred to in some places as
 remote shares and in other places as federated shares. References to remote
