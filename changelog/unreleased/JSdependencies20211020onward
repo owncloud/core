@@ -1,0 +1,6 @@
+Change: Update JavaScript dependencies
+
+The following have been updated:
+- karma (4.4.1 to 6.3.4)
+
+https://github.com/owncloud/core/pull/39144
