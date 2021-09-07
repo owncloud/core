@@ -402,6 +402,8 @@ class Session implements IUserSession, Emitter {
 
 	protected function isTwoFactorEnforced($username) {
 		$handled = false;
+		// the $handled var will be sent as reference so the listeners can use it as a flag
+		// in order to know if the event has been processed already or not.
 		Util::emitHook(
 			'\OCA\Files_Sharing\API\Server2Server',
 			'preLoginNameUsedAsUserName',

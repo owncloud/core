@@ -304,6 +304,8 @@ class Helper extends \OC\Share\Constants {
 			// FIXME this should be a method in the user management instead
 			$user1Handled = false;
 			$user2Handled = false;
+			// the $user1Handled and $user2Handled vars will be sent as reference so the listeners
+			// can use it as a flag in order to know if the event has been processed already or not.
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
 				'preLoginNameUsedAsUserName',

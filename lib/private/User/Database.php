@@ -355,6 +355,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		}
 
 		if (isset($param['hasBeenHandled']) && $param['hasBeenHandled']) {
+			// if the event has been handled already, ignore it
 			return;
 		}
 
@@ -365,7 +366,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 				$uid = $backend->loginName2UserName($param['uid']);
 				if ($uid !== false) {
 					$param['uid'] = $uid;
-					$param['hasBeenHandled'] = true;
+					$param['hasBeenHandled'] = true;  // mark the event as handled
 					return;
 				}
 			}

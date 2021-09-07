@@ -129,6 +129,8 @@ class RequestHandlerController extends OCSController {
 			// FIXME this should be a method in the user management instead
 			\OCP\Util::writeLog('federatedfilesharing', 'shareWith before, ' . $shareWith, \OCP\Util::DEBUG);
 			$handled = false;
+			// the $handled var will be sent as reference so the listeners can use it as a flag
+			// in order to know if the event has been processed already or not.
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
 				'preLoginNameUsedAsUserName',
