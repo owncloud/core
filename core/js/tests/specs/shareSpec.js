@@ -100,8 +100,7 @@ describe('OC.Share tests', function() {
 		describe('displaying the folder icon', function() {
 			function checkIcon(expectedImage) {
 				var imageUrl = OC.TestUtil.getImageUrl($file.find('.filename .thumbnail'));
-				expectedIcon = OC.TestUtil.buildAbsoluteUrl(OC.imagePath('core', expectedImage));
-				expect(imageUrl).toEqual(expectedIcon);
+				expect(imageUrl).toEqual(OC.imagePath('core', expectedImage));
 			}
 
 			it('shows a plain folder icon for non-shared folders', function() {

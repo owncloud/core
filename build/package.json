@@ -43,11 +43,10 @@
     "jsdoc": "~3.6.2",
     "karma": "^4.1.0",
     "karma-coverage": "*",
+    "karma-firefox-launcher": "^2.1.1",
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
-    "karma-phantomjs-launcher": "*",
-    "phantomjs-prebuilt": "*",
     "sinon": "^7.3.2"
   },
   "engines": {

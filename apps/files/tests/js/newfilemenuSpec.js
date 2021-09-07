@@ -107,7 +107,7 @@ describe('OCA.Files.NewFileMenu', function() {
 			$input.val('some folder');
 
 			var $createBtn = menu.$el.find('.action-menu .create');
-			$createBtn.click();
+			$createBtn.submit();
 
 			expect(createDirectoryStub.calledOnce).toEqual(true);
 			expect(createDirectoryStub.getCall(0).args[0]).toEqual('some folder');
