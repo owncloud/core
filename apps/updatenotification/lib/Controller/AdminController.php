@@ -94,6 +94,10 @@ class AdminController extends Controller implements ISettings {
 	}
 
 	public function getPanel() {
+		if($this->config->getSystemValue('upgrade.disable-web', false) === true){
+			return false;
+		}
+
 		return $this->displayPanel();
 	}
 
