@@ -38,6 +38,8 @@ OC.L10N.register(
     "Share" : "Ndaje me të tjerë",
     "Create public link" : "Krijoni lidhje publike",
     "Create and copy public link" : "Krijo dhe kopjo lidhje publike",
+    "Public quick link" : "Lidhje e shpejtë publike",
+    "Public link has been copied to the clipboard." : "Lidhja publike u kopjua në të papastër.",
     "A new public link with download & view permissions has been created and copied to the clipboard." : "Është krijuar dhe kopjuar në të papastër një lidhje e re publike me leje shkarkimi & parjeje.",
     "The public link could not be created. Please contact the administrator for help." : "Lidhja publike s’u krijua dot. Ju lutemi, për ndihmë, lidhuni me përgjegjësin.",
     "No expiration date set" : "S’ka të caktuar datë skadimi",
