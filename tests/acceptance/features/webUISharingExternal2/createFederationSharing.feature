@@ -19,6 +19,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And parameter "auto_accept_trusted" of app "federatedfilesharing" has been set to "no"
 
+
   Scenario: test the single steps of sharing a folder to a remote server
     Given user "Alice" has logged in using the webUI
     When the user shares folder "simple-folder" with federated user "Alice" with displayname "%username%@%remote_server_without_scheme%" using the webUI
@@ -30,6 +31,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And as "Alice" file "/simple-folder (2)/lorem.txt" should exist
     And as "Alice" folder "/simple-empty-folder (2)" should exist
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: test the single steps of receiving a federation share
     Given using server "REMOTE"
     And these users have been created with default attributes and without skeleton files:
@@ -57,7 +59,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     And folder "simple-folder (2)" should be listed in the shared-with-you page on the webUI
     And folder "simple-empty-folder (2)" should be listed in the shared-with-you page on the webUI
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator inside folder shared using federated sharing
     Given user "Alice" has created folder "/simple-folder/sub-folder"
     And user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
@@ -67,7 +69,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | lorem.txt  |
       | sub-folder |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator for file uploaded inside folder shared using federated sharing
     Given user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
     And user "Alice" has logged in using the webUI
@@ -76,7 +78,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then the following resources should have share indicators on the webUI
       | new-lorem.txt |
 
-  @skipOnOcV10.3
+
   Scenario: sharing indicator for folder created inside folder shared using federated sharing
     Given user "Alice" from server "LOCAL" has shared "/simple-folder" with user "Alice" from server "REMOTE"
     And user "Alice" has logged in using the webUI
@@ -85,7 +87,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then the following resources should have share indicators on the webUI
       | sub-folder |
 
-  @skipOnOcV10.3
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: sharing details inside folder shared using federated sharing
     Given user "Alice" has created folder "/simple-folder/sub-folder"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/simple-folder/textfile.txt"
@@ -97,7 +99,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     When the user opens the share dialog for file "textfile.txt"
     Then federated user "Alice" with displayname "%username%@%remote_server% (Federated share)" should be listed as share receiver via "simple-folder" on the webUI
 
-  @skipOnOcV10.3
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: sharing details of items inside a shared folder shared with local user and federated user
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/simple-folder/sub-folder"
@@ -110,7 +112,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
     Then federated user "Alice" with displayname "%username%@%remote_server% (Federated share)" should be listed as share receiver via "simple-folder" on the webUI
     And user "Brian" with displayname "%displayname%" should be listed as share receiver via "sub-folder" on the webUI
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario: expiration date is disabled for federation sharing, sharer checks the expiration date of a federation share
     Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "no"
     And user "Alice" from server "LOCAL" has shared "lorem.txt" with user "Alice" from server "REMOTE"
@@ -124,7 +126,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | expiration |            |
       | uid_owner  | Alice      |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario: expiration date is enabled for federation sharing, sharer checks the expiration date of a federation share
     Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
@@ -139,7 +141,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | expiration | +7 days    |
       | uid_owner  | Alice      |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario Outline: expiration date is enforced for federation sharing, user shares file
     Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
@@ -159,7 +161,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | 3        | +3 days |
       | 0        | today   |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario: expiration date is enforced for federation sharing, user shares and tries to change expiration date more than allowed
     Given parameter "shareapi_default_expire_date_remote_share" of app "core" has been set to "yes"
     And parameter "shareapi_enforce_expire_date_remote_share" of app "core" has been set to "yes"
@@ -176,7 +178,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | expiration | +3 days    |
       | uid_owner  | Alice      |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario: expiration date is enforced for federated sharing, user receives a share with expiration date and reshares with expiration date less than the original with a local user
     Given user "Brian" has been created with default attributes and without skeleton files
     And using server "REMOTE"
@@ -197,7 +199,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | expiration | +10 days       |
       | uid_owner  | Alice          |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario: expiration date is enforced for federated sharing, user receives a share with expiration date and reshares with expiration date less than the original with another federated user
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files
@@ -217,7 +219,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | expiration | +4 days        |
       | uid_owner  | Alice          |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario: expiration date is enforced for federated sharer, local receiver reshares received file with another local user
     Given user "Brian" has been created with default attributes and without skeleton files
     And using server "REMOTE"
@@ -237,7 +239,7 @@ Feature: Federation Sharing - sharing with users on other cloud storages
       | expiration |                |
       | uid_owner  | Alice          |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+
   Scenario: expiration date is enforced for federated sharer, local receiver reshares received file with another federated user
     Given using server "REMOTE"
     And user "Brian" has been created with default attributes and without skeleton files

@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @systemtags-app-required @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6.0
+@webUI @insulated @disablePreviews @systemtags-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: Edit tags for files and folders
   As a user
   I want to edit tags for files/folders
