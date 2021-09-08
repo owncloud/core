@@ -640,8 +640,9 @@ class Session implements IUserSession, Emitter {
 			&& $uidAndBackend[0] !== ''
 			&& $uidAndBackend[0] !== null
 			&& $uidAndBackend[1] instanceof UserInterface
+			&& $uidAndBackend[1]->userExists($uidAndBackend[0])
 		) {
-			list($uid, $backend) = $uidAndBackend;
+			[$uid, $backend] = $uidAndBackend;
 		} elseif (\is_string($uidAndBackend)) {
 			$uid = $uidAndBackend;
 			if ($apacheBackend instanceof UserInterface) {
