@@ -31,6 +31,7 @@ Summary
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 * Enhancement - Special user groups can break persistent locks: [#38222](https://github.com/owncloud/core/pull/38222)
+* Enhancement - Add support for MSOFBA: [#38838](https://github.com/owncloud/core/pull/38838)
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 * Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: [#38991](https://github.com/owncloud/core/issues/38991)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
@@ -246,6 +247,13 @@ Details
    locks as well.
 
    https://github.com/owncloud/core/pull/38222
+
+* Enhancement - Add support for MSOFBA: [#38838](https://github.com/owncloud/core/pull/38838)
+
+   WebDAV endpoint now supports Microsoft Office Form Based Authentication (MSOFBA)
+
+   https://github.com/owncloud/core/pull/38838
+   https://docs.microsoft.com/en-us/openspecs/sharepoint_protocols/ms-ofba/30c7bbe9-b284-421f-b866-4e7ed4866027
 
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 
