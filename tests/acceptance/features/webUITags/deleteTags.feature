@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @systemtags-app-required @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10.6.0
+@webUI @insulated @disablePreviews @systemtags-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: Deletion of existing tags from files and folders
   As a user
   I want to delete tags from files and folders
@@ -95,4 +95,3 @@ Feature: Deletion of existing tags from files and folders
     And file "/randomfile.txt" should have the following tags for user "Alice"
       | name     | type   |
       | some-tag | normal |
-
