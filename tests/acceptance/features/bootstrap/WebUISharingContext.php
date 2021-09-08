@@ -752,6 +752,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user creates a read only public link for file/folder :name using the quick action button
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserCreatesAReadOnlyPublicLinkForFolderUsingTheQuickActionButton(string $name):void {
+		$linkName = $this->createReadOnlyPublicShareLinkUsingQuickAction($name);
+		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
+		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+	}
+
+	/**
 	 * @When the user creates a new public link for file/folder :name using the webUI with
 	 * @Given the user has created a new public link for file/folder :name using the webUI with
 	 *
@@ -1040,6 +1054,23 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		foreach (\array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
 			$ocDialog->clickButton($this->getSession(), 'Cancel');
 		}
+	}
+
+	/**
+	 * @Given the administrator has :action public link quick action
+	 *
+	 * @param string $action
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function enablePublicLinkQuickAction(string $action):void {
+		SetupHelper::setSystemConfig(
+			'sharing.showPublicLinkQuickAction',
+			($action === "enabled") ? 'true' : 'false',
+			$this->featureContext->getStepLineRef(),
+			'boolean'
+		);
 	}
 
 	/**
@@ -1504,6 +1535,38 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the public link quick action button should be displayed for folder/file :name on the webUI
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function publicLinkQuickActionShouldBeDisplayedOnTheWebui(string $name):void {
+		$isDisplayed = $this->filesPage->isPublicLinkQuickActionVisible($name);
+		Assert::assertTrue(
+			$isDisplayed,
+			"Public link quick action was expected to be displayed but is not"
+		);
+	}
+
+	/**
+	 * @Then the public link quick action button should not be displayed for folder/file :name on the webUI
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function publicLinkQuickActionShouldNotBeDisplayedOnTheWebui(string $name):void {
+		$isDisplayed = $this->filesPage->isPublicLinkQuickActionVisible($name);
+		Assert::assertFalse(
+			$isDisplayed,
+			"Public link quick action was not expected to be displayed but is"
+		);
+	}
+
+	/**
 	 * @Then user :username should not be listed in the autocomplete list on the webUI
 	 *
 	 * @param string $username
@@ -1957,6 +2020,31 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		} else {
 			$linkName = $this->publicShareTab->createLink($this->getSession());
 		}
+		return $linkName;
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return string
+	 * @throws Exception
+	 */
+	public function createReadOnlyPublicShareLinkUsingQuickAction(string $name):string {
+		$this->filesPage->waitTillPageIsloaded($this->getSession());
+		$this->filesPage->clickOnPublicShareQuickAction($name);
+		try {
+			$this->filesPage->closeDetailsDialog();
+		} catch (ElementNotFoundException $e) {
+			//if there is no dialog open and we try to close it
+			//an exception will be thrown, but we do not care
+		}
+		$session = $this->getSession();
+		$sharingDialog = $this->filesPage->openSharingDialog(
+			$name,
+			$session
+		);
+		$this->publicShareTab = $sharingDialog->openPublicShareTab($session);
+		$linkName = $this->publicShareTab->getNameOfFirstPublicLink($session);
 		return $linkName;
 	}
 

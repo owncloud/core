@@ -383,4 +383,19 @@ class PublicLinkTab extends OwncloudPage {
 		}
 		return $namesArray;
 	}
+
+	/**
+	 * @param Session $session
+	 *
+	 * @return string
+	 */
+	public function getNameOfFirstPublicLink(Session $session):string {
+		$publicLinkTitles = $this->getListedPublicLinksNames();
+		$entryName = null;
+		foreach ($publicLinkTitles as $publicLinkTitle) {
+			$entryName = $publicLinkTitle;
+			break;
+		}
+		return $entryName;
+	}
 }
