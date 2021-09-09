@@ -22,6 +22,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Keep pagination active with empty search queries: <a href="https://github.com/owncloud/core/pull/39155">#39155</a></li>
         <li class="type-bugfix changelog-item">Bugfix - File conflict dialog when dragging a file into a folder: <a href="https://github.com/owncloud/core/pull/39162">#39162</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Return proper error if part file name is too long: <a href="https://github.com/owncloud/core/pull/39168">#39168</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Set file name to download.zip while downloading the whole user directory: <a href="https://github.com/owncloud/core/pull/39198">#39198</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
@@ -179,6 +180,16 @@
             <p>https://github.com/owncloud/enterprise/issues/4692<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39168<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Set file name to download.zip while downloading the whole user directory: <a href="https://github.com/owncloud/core/pull/39198">#39198</a></p>
+            <p>Before this PR, selecting all files and folders in the webUI and clicking the download button,
+   resulted in a file downloaded with the name ".zip". With this PR the file name is now
+   "download.zip".
+            </p>
+            <p>https://github.com/owncloud/core/issues/39187<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39198<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></p>
