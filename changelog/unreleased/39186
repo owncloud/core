@@ -1,0 +1,7 @@
+Bugfix: Don't show exact search results with empty sharee search query
+
+When setting user.search_min_length to 0 and using an empty query to
+search for sharees, there won't be any exact search results.
+
+https://github.com/owncloud/core/issues/38501
+https://github.com/owncloud/core/pull/39186

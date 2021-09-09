@@ -687,6 +687,10 @@ class ShareesTest extends TestCase {
 			}
 		}
 
+		if ($searchTerm === '') {
+			$exactExpected = [];
+		}
+
 		$this->invokePrivate($this->sharees, 'getUsers', [$searchTerm]);
 		$result = $this->invokePrivate($this->sharees, 'result');
 
