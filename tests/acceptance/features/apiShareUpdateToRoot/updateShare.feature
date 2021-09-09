@@ -275,7 +275,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcV10 @issue-37217
+
   Scenario Outline: user cannot concurrently update the role and date in an existing share after the system maximum expiry date has been reduced
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
@@ -292,7 +292,7 @@ Feature: sharing
     When the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "10"
     And user "Alice" updates the last share using the sharing API with
       | permissions | read |
-      | expireDate  | +28  |
+      | expireDate  | +28 days |
     Then the OCS status message should be "Cannot set expiration date more than 10 days in the future"
     And the HTTP status code should be "<http_status_code>"
     And the OCS status code should be "404"
