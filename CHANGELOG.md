@@ -226,8 +226,10 @@ Details
 
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 
-   The following have been updated: - doctrine/cache (2.0.3 to 2.1.1) - league/flysystem (1.1.4
-   to 1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.12.0) -
+   The following have been updated: - doctrine/cache (2.0.3 to 2.1.1) - laminas/laminas-stdlib
+   (3.5.0 to 3.6.0) - laminas/laminas-validator (2.14.5 to 2.15.0) -
+   laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0) - league/flysystem (1.1.4 to
+   1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.12.0) -
    pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.10) - punic/punic
    (3.6.0 to 3.6.1)
 
@@ -236,6 +238,7 @@ Details
    https://github.com/owncloud/core/pull/39065
    https://github.com/owncloud/core/pull/39116
    https://github.com/owncloud/core/pull/39124
+   https://github.com/owncloud/core/pull/39201
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
@@ -264,6 +267,7 @@ Details
    WebDAV endpoint now supports Microsoft Office Form Based Authentication (MSOFBA)
 
    https://github.com/owncloud/core/pull/38838
+   https://github.com/owncloud/core/pull/39204
    https://docs.microsoft.com/en-us/openspecs/sharepoint_protocols/ms-ofba/30c7bbe9-b284-421f-b866-4e7ed4866027
 
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
