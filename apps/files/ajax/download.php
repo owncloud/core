@@ -38,7 +38,12 @@ $dir = isset($_GET['dir']) ? $_GET['dir']: '';
 
 // in case we get only a single file
 if (!\is_array($files_list)) {
-	$files_list = [$files_list];
+	// in case we get the whole user directory
+	if ($files_list !== '') {
+		$files_list = [$files_list];
+	} else {
+		$files_list = [];
+	}
 } else {
 	$files_list = \array_map(function ($file) {
 		return $file;
