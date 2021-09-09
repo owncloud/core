@@ -5,6 +5,6 @@ will now return proper and unified API responses. Adding create
 permissions while public uploading is disabled globally will always
 return a 403 response.
 
-https://github.com/owncloud/core/pull/39187
+https://github.com/owncloud/core/pull/39194
 https://github.com/owncloud/core/issues/36442
 https://github.com/owncloud/core/issues/36443
