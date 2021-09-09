@@ -40,6 +40,7 @@ Summary
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 * Enhancement - Add tooltips for group names in user settings and sharing overview: [#4695](https://github.com/owncloud/enterprise/issues/4695)
+* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/compare/issues/39183)
 
 Details
 -------
@@ -324,6 +325,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4695
    https://github.com/owncloud/core/pull/39160
+
+* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/compare/issues/39183)
+
+   With this PR the update section in Settings->Admin->General will be not shown if setting
+   'upgrade.disable-web' is set to true.
+
+   https://github.com/owncloud/core/compare/issues/39183
+   https://github.com/owncloud/core/issues/39183
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
