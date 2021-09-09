@@ -24,6 +24,7 @@ Summary
 * Bugfix - Keep pagination active with empty search queries: [#39155](https://github.com/owncloud/core/pull/39155)
 * Bugfix - File conflict dialog when dragging a file into a folder: [#39162](https://github.com/owncloud/core/pull/39162)
 * Bugfix - Return proper error if part file name is too long: [#39168](https://github.com/owncloud/core/pull/39168)
+* Bugfix - Don't show exact search results with empty sharee search query: [#38501](https://github.com/owncloud/core/issues/38501)
 * Bugfix - Set file name to download.zip while downloading the whole user directory: [#39198](https://github.com/owncloud/core/pull/39198)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -183,6 +184,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4692
    https://github.com/owncloud/core/pull/39168
+
+* Bugfix - Don't show exact search results with empty sharee search query: [#38501](https://github.com/owncloud/core/issues/38501)
+
+   When setting user.search_min_length to 0 and using an empty query to search for sharees, there
+   won't be any exact search results.
+
+   https://github.com/owncloud/core/issues/38501
+   https://github.com/owncloud/core/pull/39186
 
 * Bugfix - Set file name to download.zip while downloading the whole user directory: [#39198](https://github.com/owncloud/core/pull/39198)
 
