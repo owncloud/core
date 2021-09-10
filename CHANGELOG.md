@@ -27,6 +27,7 @@ Summary
 * Bugfix - Don't show exact search results with empty sharee search query: [#38501](https://github.com/owncloud/core/issues/38501)
 * Bugfix - Set file name to download.zip while downloading the whole user directory: [#39198](https://github.com/owncloud/core/pull/39198)
 * Bugfix - Preview rendering for sharees: [#39202](https://github.com/owncloud/core/pull/39202)
+* Bugfix - Add permission check when restoring from trashbin: [#39210](https://github.com/owncloud/core/pull/39210)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -213,6 +214,14 @@ Details
    https://github.com/owncloud/core/issues/39202
    https://github.com/owncloud/core/issues/31855
    https://github.com/owncloud/core/pull/39202
+
+* Bugfix - Add permission check when restoring from trashbin: [#39210](https://github.com/owncloud/core/pull/39210)
+
+   This fixes an issue where a user was able to restore a file or folder into a read-only shared
+   folder.
+
+   https://github.com/owncloud/core/issues/35900
+   https://github.com/owncloud/core/pull/39210
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
