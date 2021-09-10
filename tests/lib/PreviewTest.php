@@ -28,6 +28,9 @@ use OC\Files\View;
 use OC\Preview;
 use OC\PreviewManager;
 use OC\Server;
+use OCA\Files_Sharing\SharedMount;
+use OCP\Files\File;
+use OCP\IUser;
 use Test\Traits\MountProviderTrait;
 use Test\Traits\UserTrait;
 
@@ -1060,5 +1063,49 @@ class PreviewTest extends TestCase {
 		$preview->getPreview();
 
 		$this->assertEquals('thumbnails/' . $file->getId() . '/64-64.png', $preview->isCached());
+	}
+
+	public function testPreviewReGenerationForSharee() {
+		$x = 50;
+		$y = 50;
+		$shareeeUserId = $this->getUniqueID();
+		$this->createUser($shareeeUserId, 'pass');
+
+		// Create preview for share owner and sharee
+		$file = \OC::$server->getUserFolder(self::TEST_PREVIEW_USER1)->get('testimage.jpg');
+		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $file, $x, $y);
+		$preview->getPreview();
+		$preview = new Preview($shareeeUserId, 'files/', $file, $x, $y);
+		$shareePreview = $preview->getPreview();
+
+		// Update file for share owner
+		$newFileContent = \file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.png');
+		$shareOwnerView = new View('/' . self::TEST_PREVIEW_USER1 . '/');
+		$shareOwnerView->file_put_contents($file->getInternalPath(), $newFileContent);
+
+		// Re-generate new preview for share owner
+		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $file, $x, $y);
+		$preview->deletePreview();
+		$preview->getPreview();
+
+		/** @var SharedMount|\PHPUnit\Framework\MockObject\MockObject */
+		$mountMock = $this->getMockBuilder(SharedMount::class)->disableOriginalConstructor()->getMock();
+
+		/** @var IUser|\PHPUnit\Framework\MockObject\MockObject */
+		$ownerMock = $this->getMockBuilder(IUser::class)->getMock();
+		$ownerMock->expects($this->any())->method('getUID')->willReturn($shareeeUserId);
+
+		/** @var \OCP\Files\Node|\PHPUnit\Framework\MockObject\MockObject */
+		$fileMock = $this->getMockBuilder(File::class)->getMock();
+		$fileMock->expects($this->any())->method('getId')->willReturn($file->getId());
+		$fileMock->expects($this->any())->method('getMountPoint')->willReturn($mountMock);
+		$fileMock->expects($this->any())->method('getOwner')->willReturn($ownerMock);
+
+		// Get preview for sharee -> should be re-generated although it already exists
+		$preview = new Preview(self::TEST_PREVIEW_USER1, 'files/', $fileMock, $x, $y);
+		$updatedShareePreview = $preview->getPreview();
+
+		$this->assertNotFalse($updatedShareePreview);
+		$this->assertNotSame($shareePreview->mimeType(), $updatedShareePreview->mimeType());
 	}
 }
