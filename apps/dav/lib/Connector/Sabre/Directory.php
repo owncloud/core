@@ -413,6 +413,10 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	public function moveInto($targetName, $fullSourcePath, INode $sourceNode) {
 		if (!$sourceNode instanceof Node) {
 			if ($sourceNode instanceof ITrashBinNode) {
+				if (!$this->fileView->isCreatable($this->getPath())) {
+					throw new SabreForbidden('Destination directory is not writable');
+				}
+
 				return $sourceNode->restore($this->path . '/' . $targetName);
 			}
 			// it's a file of another kind, like FutureFile
