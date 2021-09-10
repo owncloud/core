@@ -768,22 +768,26 @@ class Preview {
 			if ($this->preview) {
 				$mount = $fileInfo->getMountPoint();
 
-				// Updating a shared file will always re-generate the thumnail for the
+				// Updating a shared file will always re-generate the preview for the
 				// share owner, but not its sharees. Therefore we need to check if the
-				// current cached thumbnail is different from the share owner's one.
+				// current cached preview is different from the share owner's one.
 				if ($mount instanceof SharedMount) {
 					$owner = $fileInfo->getOwner();
 					$ownerView = new View($owner->getUID() . '/' . $cached);
-					$ownerThumbnail = $ownerView->getFileInfo('');
+					$ownerPreview = $ownerView->getFileInfo('');
 
-					if ($ownerThumbnail) {
-						$currentThumbnail = $this->userView->getFileInfo($cached);
+					if ($ownerPreview) {
+						$currentPreview = $this->userView->getFileInfo($cached);
 
 						// Different checksums mean we need to re-generate the thumbnail
 						// to match with the share owner's one.
-						if ($ownerThumbnail->getChecksum() != $currentThumbnail->getChecksum()) {
+						if ($ownerPreview->getChecksum() !== $currentPreview->getChecksum()) {
 							$this->preview = null;
 						}
+					} else {
+						// Owner preview gets deleted when a sharee edits a file.
+						// Re-generate preview for the sharee in this case.
+						$this->preview = null;
 					}
 				}
 			}
