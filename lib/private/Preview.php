@@ -33,6 +33,7 @@ namespace OC;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OCA\Files_Sharing\SharedMount;
 use OCP\Files\FileInfo;
 use OCP\Files\Folder;
 use OCP\Files\Node;
@@ -763,6 +764,33 @@ class Preview {
 		$cached = $this->isCached();
 		if ($cached) {
 			$this->getCachedPreview($cached);
+
+			if ($this->preview) {
+				$mount = $fileInfo->getMountPoint();
+
+				// Updating a shared file will always re-generate the preview for the
+				// share owner, but not its sharees. Therefore we need to check if the
+				// current cached preview is different from the share owner's one.
+				if ($mount instanceof SharedMount) {
+					$owner = $fileInfo->getOwner();
+					$ownerView = new View($owner->getUID() . '/' . $cached);
+					$ownerPreview = $ownerView->getFileInfo('');
+
+					if ($ownerPreview) {
+						$currentPreview = $this->userView->getFileInfo($cached);
+
+						// Different checksums mean we need to re-generate the thumbnail
+						// to match with the share owner's one.
+						if ($ownerPreview->getChecksum() !== $currentPreview->getChecksum()) {
+							$this->preview = null;
+						}
+					} else {
+						// Owner preview gets deleted when a sharee edits a file.
+						// Re-generate preview for the sharee in this case.
+						$this->preview = null;
+					}
+				}
+			}
 		}
 
 		if ($this->preview === null) {

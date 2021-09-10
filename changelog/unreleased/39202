@@ -1,0 +1,9 @@
+Bugfix: Preview rendering for sharees
+
+Previous to this fix, the previews of updated shared files did
+not change for sharees. Those previews now get re-generated if
+the content of the files changed.
+
+https://github.com/owncloud/core/pull/39202
+https://github.com/owncloud/core/issues/39202
+https://github.com/owncloud/core/issues/31855
