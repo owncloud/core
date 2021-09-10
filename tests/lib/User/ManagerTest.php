@@ -394,7 +394,8 @@ class ManagerTest extends TestCase {
 			['.htaccess'],
 			['.ocdata'],
 			['owncloud.db'],
-			['owncloud.log']
+			['owncloud.log'],
+			['index.html'],
 		];
 	}
 
