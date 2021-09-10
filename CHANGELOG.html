@@ -37,6 +37,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add command to verify all available doc links: <a href="https://github.com/owncloud/core/pull/39026">#39026</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Show create and cancel buttons in the 'New file menu': <a href="https://github.com/owncloud/core/pull/39056">#39056</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Extend transfer ownership cmd with option to transfer entire user: <a href="https://github.com/owncloud/core/pull/39118">#39118</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Quick action for creating public links: <a href="https://github.com/owncloud/enterprise/issues/4718">#4718</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Confirmation dialog for deleting tags: <a href="https://github.com/owncloud/core/issues/39157">#39157</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add tooltips for group names in user settings and sharing overview: <a href="https://github.com/owncloud/enterprise/issues/4695">#4695</a></li>
@@ -317,6 +318,16 @@
             <p>https://github.com/owncloud/enterprise/issues/4684<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39056<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Extend transfer ownership cmd with option to transfer entire user: <a href="https://github.com/owncloud/core/pull/39118">#39118</a></p>
+            <p>Command occ files:transfer-ownership now includes flag --destination-use-user-folder
+   &lt;user-id&gt; that allows to transfer all user files and shares to destination user that has
+   never logged in. This is helpful in situation when users need to be migrated to new accounts.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4686<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39118<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Quick action for creating public links: <a href="https://github.com/owncloud/enterprise/issues/4718">#4718</a></p>

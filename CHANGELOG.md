@@ -39,6 +39,7 @@ Summary
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
 * Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
 * Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
+* Enhancement - Extend transfer ownership cmd with option to transfer entire user: [#39118](https://github.com/owncloud/core/pull/39118)
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 * Enhancement - Add tooltips for group names in user settings and sharing overview: [#4695](https://github.com/owncloud/enterprise/issues/4695)
@@ -325,6 +326,15 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4684
    https://github.com/owncloud/core/pull/39056
+
+* Enhancement - Extend transfer ownership cmd with option to transfer entire user: [#39118](https://github.com/owncloud/core/pull/39118)
+
+   Command occ files:transfer-ownership now includes flag --destination-use-user-folder
+   <user-id> that allows to transfer all user files and shares to destination user that has never
+   logged in. This is helpful in situation when users need to be migrated to new accounts.
+
+   https://github.com/owncloud/enterprise/issues/4686
+   https://github.com/owncloud/core/pull/39118
 
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
 
