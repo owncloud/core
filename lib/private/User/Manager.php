@@ -375,11 +375,12 @@ class Manager extends PublicEmitter implements IUserManager {
 				'.htaccess',
 				'.ocdata',
 				'owncloud.db',
-				'owncloud.log'
+				'owncloud.log',
+				'index.html'
 			];
 
 			if (\in_array(\strtolower($uid), $invalidUids)) {
-				throw new \Exception($l->t("The special username $uid is not allowed"));
+				throw new \Exception($l->t("The special username %s is not allowed", $uid));
 			}
 
 			// No empty password
