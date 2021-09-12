@@ -25,6 +25,7 @@ use OC\Files\Meta\MetaFileVersionNode;
 use OCA\DAV\Files\ICopySource;
 use OCA\DAV\Files\IProvidesAdditionalHeaders;
 use OCA\DAV\Files\IFileNode;
+use OCP\Files\IProvidesVersionAuthor;
 use OCP\Files\Node;
 use Sabre\DAV\File;
 
@@ -130,9 +131,9 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	/**
 	 * @return string
 	 */
-	public function getUsername() {
-		if ($this->file instanceof \OCP\Files\IProvidesVersionAuthor) {
-			return $this->file->getUsername();
+	public function getVersionAuthor() {
+		if ($this->file instanceof IProvidesVersionAuthor) {
+			return $this->file->getCreatedBy() ?: $this->file->getEditedBy();
 		}
 		return '';
 	}

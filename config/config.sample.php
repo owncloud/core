@@ -1266,6 +1266,11 @@ $CONFIG = [
 'sharing.showPublicLinkQuickAction' => false,
 
 /**
+ * Save and display version of uploaded and edited files.
+ */
+'file_storage.save_version' => false,
+
+/**
  * All other configuration options
  */
 

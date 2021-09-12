@@ -14,7 +14,7 @@
 
 	_.extend(OC.Files.Client, {
 		PROPERTY_FILEID:	'{' + OC.Files.Client.NS_OWNCLOUD + '}id',
-		PROPERTY_VERSION_EDITED_BY:	'{' + OC.Files.Client.NS_OWNCLOUD + '}metaversioneditedby',
+		PROPERTY_VERSION_EDITED_BY:	'{' + OC.Files.Client.NS_OWNCLOUD + '}meta-version-edited-by',
 	});
 
 	/**
@@ -24,7 +24,7 @@
 		sync: OC.Backbone.davSync,
 
 		davProperties: {
-			'metaversioneditedby':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY,
+			'meta-version-edited-by':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY,
 			'id':	OC.Files.Client.PROPERTY_FILEID,
 			'getlastmodified': OC.Files.Client.PROPERTY_GETLASTMODIFIED,
 			'getcontentlength': OC.Files.Client.PROPERTY_GETCONTENTLENGTH,
@@ -64,7 +64,7 @@
 					timestamp: moment(new Date(version.getlastmodified)).format('X'),
 					size: version.getcontentlength,
 					mimetype: version.getcontenttype,
-					editedBy: version.metaversioneditedby,
+					editedBy: version['meta-version-edited-by'],
 					fileId: fileId
 				};
 			});

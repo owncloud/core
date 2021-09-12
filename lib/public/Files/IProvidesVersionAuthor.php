@@ -2,7 +2,7 @@
 /**
  * @author Illia Pushnov <illia.pushnov@gmail.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2021, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,9 +30,16 @@ namespace OCP\Files;
  */
 interface IProvidesVersionAuthor {
 	/**
-	 * Returns the author's username
+	 * Returns the version author's username
 	 * @return string
 	 * @since 10.9.0
 	 */
-	public function getUsername();
+	public function getEditedBy();
+
+  /**
+   * Returns the file author's username
+   * @return string
+   * @since 10.9.0
+   */
+	public function getCreatedBy();
 }

@@ -36,6 +36,7 @@ class Hooks {
 	public static function connectHooks() {
 		// Listen to write signals
 		\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');
+    \OCP\Util::connectHook('OC_Filesystem', 'post_create', 'OCA\Files_Versions\Hooks', 'post_write_hook');
 		// Listen to delete and rename signals
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', 'OCA\Files_Versions\Hooks', 'remove_hook');
 		\OCP\Util::connectHook('OC_Filesystem', 'delete', 'OCA\Files_Versions\Hooks', 'pre_remove_hook');
@@ -59,6 +60,18 @@ class Hooks {
 			}
 		}
 	}
+
+  /**
+   * listen to post-write event.
+   */
+	public static function post_write_hook($params) {
+    if (\OCP\App::isEnabled('files_versions')) {
+      $path = $params[\OC\Files\Filesystem::signal_param_path];
+      if ($path<>'') {
+        Storage::store($path);
+      }
+    }
+  }
 
 	/**
 	 * Erase versions of deleted file
