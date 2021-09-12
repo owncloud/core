@@ -202,15 +202,18 @@ class Storage {
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
 
-				$user = \OC::$server->getUserSession()->getUser();
-				if ($user !== null) {
-				  $existingVersion = self::getVersions($uid, $filename);
-				  $metaDataKey = sizeof($existingVersion) > 1 ? \OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME
-            : \OC\Share\Constants::CREATED_BY_USER_METADATA;
-					$metadata = [$metaDataKey => $user->getDisplayName()];
-					$metadataJsonObject = \json_encode($metadata);
-					$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
-				}
+        $config = \OC::$server->getConfig();
+        if ($config->getSystemValue('file_storage.save_version', false) === true) {
+          $user = \OC::$server->getUserSession()->getUser();
+          if ($user !== null) {
+            $existingVersion = self::getVersions($uid, $filename);
+            $metaDataKey = sizeof($existingVersion) > 1 ? \OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME
+              : \OC\Share\Constants::CREATED_BY_USER_METADATA;
+            $metadata = [$metaDataKey => $user->getDisplayName()];
+            $metadataJsonObject = \json_encode($metadata);
+            $users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
+          }
+        }
 			}
 		}
 	}
