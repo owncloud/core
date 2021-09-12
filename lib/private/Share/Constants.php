@@ -62,5 +62,5 @@ class Constants {
 	protected static $backendTypes = [];
 	protected static $isResharingAllowed;
 
-	public const CREATED_BY_USER_METADATA = "{http://owncloud.org/ns}createdbyuser";
+	public const CREATED_BY_USER_METADATA = "{http://owncloud.org/ns}created-by-user";
 }

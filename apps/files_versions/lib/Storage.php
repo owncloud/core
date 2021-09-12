@@ -204,7 +204,10 @@ class Storage {
 
 				$user = \OC::$server->getUserSession()->getUser();
 				if ($user !== null) {
-					$metadata = [\OC\Share\Constants::CREATED_BY_USER_METADATA => $user->getUserName()];
+				  $existingVersion = self::getVersions($uid, $filename);
+				  $metaDataKey = sizeof($existingVersion) > 1 ? \OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME
+            : \OC\Share\Constants::CREATED_BY_USER_METADATA;
+					$metadata = [$metaDataKey => $user->getDisplayName()];
 					$metadataJsonObject = \json_encode($metadata);
 					$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
 				}
@@ -424,7 +427,6 @@ class Storage {
 
 		return ($result !== false);
 	}
-
 	/**
 	 * get a list of all available versions of a file in descending chronological order
 	 *
@@ -480,9 +482,12 @@ class Storage {
 						if ($view->file_exists($jsonMetadataFile)) {
 							$metaDataFileContents = $view->file_get_contents($jsonMetadataFile);
 							if ($decoded = \json_decode($metaDataFileContents, true)) {
-								if ($decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA] !== null) {
-									$versions[$key]['username'] = $decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA];
+								if (!is_null($decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA])) {
+									$versions[$key]['created_by'] = $decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA];
 								}
+                else if ($decoded[\OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME] !== null) {
+                  $versions[$key]['edited_by'] = $decoded[\OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+                }
 							}
 						}
 					}
