@@ -25,8 +25,10 @@
 
 namespace OC\Core\Command\User;
 
+use OC\Files\FileInfo;
 use OC\Helper\UserTypeHelper;
 use OCP\IUser;
+use OCP\User;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -99,7 +101,13 @@ class Report extends Command {
 
 	private function countUserDirectories() {
 		$dataview = new \OC\Files\View('/');
-		$userDirectories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
+		$directories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
+
+		// don't count in invalid directories for example 'avatars'.
+		$userDirectories = \array_filter($directories, function (FileInfo $directory) {
+			return !\in_array($directory->getName(), User::DIRECTORIES_THAT_ARE_NOT_USERS);
+		});
+
 		return \count($userDirectories);
 	}
 }
