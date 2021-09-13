@@ -110,7 +110,7 @@ class Report extends Command {
 		$dataview = new \OC\Files\View('/');
 		$directories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
 
-		$userDirectories = array_filter($directories, function (FileInfo $directory) {
+		$userDirectories = \array_filter($directories, function (FileInfo $directory) {
 			return !\in_array($directory->getName(), $this->directoryIngoreList);
 		});
 
