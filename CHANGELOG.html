@@ -26,6 +26,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Set file name to download.zip while downloading the whole user directory: <a href="https://github.com/owncloud/core/pull/39198">#39198</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Preview rendering for sharees: <a href="https://github.com/owncloud/core/pull/39202">#39202</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add permission check when restoring from trashbin: <a href="https://github.com/owncloud/core/pull/39210">#39210</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Don't count non-user folder in occ user:report command: <a href="https://github.com/owncloud/core/pull/39223">#39223</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
@@ -222,6 +223,14 @@
             <p>https://github.com/owncloud/core/issues/35900<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39210<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Don't count non-user folder in occ user:report command: <a href="https://github.com/owncloud/core/pull/39223">#39223</a></p>
+            <p>Before this PR several folders, for example 'avatars', have been counted as user folders via
+   the occ user:report command. With this PR a list of folders has been added which should not be
+   counted as user folders. The user directory count is now correct.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39223<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></p>

@@ -28,6 +28,7 @@ Summary
 * Bugfix - Set file name to download.zip while downloading the whole user directory: [#39198](https://github.com/owncloud/core/pull/39198)
 * Bugfix - Preview rendering for sharees: [#39202](https://github.com/owncloud/core/pull/39202)
 * Bugfix - Add permission check when restoring from trashbin: [#39210](https://github.com/owncloud/core/pull/39210)
+* Bugfix - Don't count non-user folder in occ user:report command: [#39223](https://github.com/owncloud/core/pull/39223)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -222,6 +223,14 @@ Details
 
    https://github.com/owncloud/core/issues/35900
    https://github.com/owncloud/core/pull/39210
+
+* Bugfix - Don't count non-user folder in occ user:report command: [#39223](https://github.com/owncloud/core/pull/39223)
+
+   Before this PR several folders, for example 'avatars', have been counted as user folders via
+   the occ user:report command. With this PR a list of folders has been added which should not be
+   counted as user folders. The user directory count is now correct.
+
+   https://github.com/owncloud/core/pull/39223
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
