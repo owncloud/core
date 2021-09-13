@@ -103,9 +103,9 @@ class Report extends Command {
 		$dataview = new \OC\Files\View('/');
 		$directories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
 
-		// don't count in invalid uids for example 'avatars' folder.
-		$userDirectories = array_filter($directories, function (FileInfo $directory) {
-			return !\in_array($directory->getName(), User::USER_INVALID_UIDS);
+		// don't count in invalid directories for example 'avatars'.
+		$userDirectories = \array_filter($directories, function (FileInfo $directory) {
+			return !\in_array($directory->getName(), User::DIRECTORIES_THAT_ARE_NOT_USERS);
 		});
 
 		return \count($userDirectories);

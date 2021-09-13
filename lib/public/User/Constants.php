@@ -37,11 +37,22 @@ class Constants {
 		self::USER_TYPE_GUEST => 'guest',
 	];
 
-	public const USER_INVALID_UIDS = [
+	/**
+	 * @var array
+	 * These directories can exist in the data directory along with user folders, and are not valid usernames
+	 **/
+	public const DIRECTORIES_THAT_ARE_NOT_USERS = [
 		'avatars',
 		'meta',
 		'files_external',
 		'files_encryption',
+	];
+
+	/**
+	 * @var array
+	 * These files can exist in the data directory along with user folders, and are not valid usernames
+	 **/
+	public const FILES_THAT_ARE_NOT_USERS = [
 		'.htaccess',
 		'.ocdata',
 		'owncloud.db',
