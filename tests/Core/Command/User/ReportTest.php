@@ -33,7 +33,7 @@ use Test\TestCase;
 use Test\Traits\UserTrait;
 
 /**
- * Class AddTest
+ * Class ReportTest
  *
  * @group DB
  */
