@@ -74,4 +74,13 @@ table #headerSize, #headerDate, .filesize, .modified, .date {
 	padding-right: 14px;
 }
 
+/* hide text of the share accept action mobile */
+#fileList .action-accept span:last-child {
+		display: none !important;
+}
+
+/* hide text of the share reject action mobile */
+#fileList .action-reject span:last-child {
+		display: none !important;
+}
 }
