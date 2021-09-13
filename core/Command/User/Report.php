@@ -28,6 +28,7 @@ namespace OC\Core\Command\User;
 use OC\Files\FileInfo;
 use OC\Helper\UserTypeHelper;
 use OCP\IUser;
+use OCP\User;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,14 +41,6 @@ class Report extends Command {
 
 	/** @var UserTypeHelper */
 	protected $userTypeHelper;
-
-	/** @var array */
-	private $directoryIngoreList = [
-		'avatars',
-		'meta',
-		'files_external',
-		'files_encryption',
-	];
 
 	/**
 	 * @param IUserManager $userManager
@@ -110,8 +103,9 @@ class Report extends Command {
 		$dataview = new \OC\Files\View('/');
 		$directories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
 
+		// don't count in invalid uids for example 'avatars' folder.
 		$userDirectories = array_filter($directories, function (FileInfo $directory) {
-			return !\in_array($directory->getName(), $this->directoryIngoreList);
+			return !\in_array($directory->getName(), User::USER_INVALID_UIDS);
 		});
 
 		return \count($userDirectories);

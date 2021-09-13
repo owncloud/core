@@ -367,19 +367,7 @@ class Manager extends PublicEmitter implements IUserManager {
 				throw new \Exception($l->t('The username can not be longer than 64 characters'));
 			}
 
-			$invalidUids = [
-				'avatars',
-				'meta',
-				'files_external',
-				'files_encryption',
-				'.htaccess',
-				'.ocdata',
-				'owncloud.db',
-				'owncloud.log',
-				'index.html'
-			];
-
-			if (\in_array(\strtolower($uid), $invalidUids)) {
+			if (\in_array(\strtolower($uid), \OCP\User::USER_INVALID_UIDS)) {
 				throw new \Exception($l->t("The special username %s is not allowed", $uid));
 			}
 

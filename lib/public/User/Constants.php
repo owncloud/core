@@ -36,4 +36,16 @@ class Constants {
 		self::USER_TYPE_USER => 'user',
 		self::USER_TYPE_GUEST => 'guest',
 	];
+
+	public const USER_INVALID_UIDS = [
+		'avatars',
+		'meta',
+		'files_external',
+		'files_encryption',
+		'.htaccess',
+		'.ocdata',
+		'owncloud.db',
+		'owncloud.log',
+		'index.html'
+	];
 }
