@@ -25,6 +25,7 @@
 
 namespace OC\Core\Command\User;
 
+use OC\Files\FileInfo;
 use OC\Helper\UserTypeHelper;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -39,6 +40,14 @@ class Report extends Command {
 
 	/** @var UserTypeHelper */
 	protected $userTypeHelper;
+
+	/** @var array */
+	private $directoryIngoreList = [
+		'avatars',
+		'meta',
+		'files_external',
+		'files_encryption',
+	];
 
 	/**
 	 * @param IUserManager $userManager
@@ -99,7 +108,12 @@ class Report extends Command {
 
 	private function countUserDirectories() {
 		$dataview = new \OC\Files\View('/');
-		$userDirectories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
+		$directories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
+
+		$userDirectories = array_filter($directories, function (FileInfo $directory) {
+			return !in_array($directory->getName(), $this->directoryIngoreList);
+		});
+
 		return \count($userDirectories);
 	}
 }
