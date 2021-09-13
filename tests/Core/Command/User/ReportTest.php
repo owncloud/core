@@ -26,7 +26,9 @@ use OC\Core\Command\User\Report;
 use OC\Files\Storage\Storage;
 use OC\Files\View;
 use OC\Helper\UserTypeHelper;
-use OC\User\User;
+use OCP\IUserManager;
+use OCP\User;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
@@ -43,25 +45,39 @@ class ReportTest extends TestCase {
 	/** @var CommandTester */
 	private $commandTester;
 
+	/** @var IUserManager | MockObject */
+	private $userManager;
+
+	/** @var UserTypeHelper | MockObject */
+	private $userTypeHelper;
+
 	protected function setUp(): void {
 		parent::setUp();
+		$userTypeHelper = $this->getMockBuilder('OC\Helper\UserTypeHelper')->disableOriginalConstructor()->getMock();
+		$this->userTypeHelper = $userTypeHelper;
 
-		$userTypeHelper = new UserTypeHelper();
-		$command = new Report(\OC::$server->getUserManager(), $userTypeHelper);
+		$userManager = $this->getMockBuilder('OCP\IUserManager')->disableOriginalConstructor()->getMock();
+		$this->userManager = $userManager;
+
+		$command = new Report($userManager, $userTypeHelper);
 		$command->setApplication(new Application());
 		$this->commandTester = new CommandTester($command);
-		$this->createUser('user1');
-		$this->createUser('user2');
-		$this->loginAsUser('user1');
 
 		$view = new View('');
 		list($storage) = $view->resolvePath('');
 		/** @var $storage Storage */
 
-		$storage->mkdir('avatars');
+		foreach (User\Constants::DIRECTORIES_THAT_ARE_NOT_USERS as $nonUserFolder) {
+			$storage->mkdir($nonUserFolder);
+		}
+		$storage->mkdir('user1');
 	}
 
 	public function testCommandInput() {
+		$this->userManager->expects($this->once())->method('countUsers')->willReturn([
+			\OC\User\Database::class => 5,
+		]);
+
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 
@@ -69,11 +85,11 @@ class ReportTest extends TestCase {
 +------------------+---+
 | User Report      |   |
 +------------------+---+
-| OC\User\Database | 2 |
+| OC\User\Database | 5 |
 |                  |   |
 | guest users      | 0 |
 |                  |   |
-| total users      | 2 |
+| total users      | 5 |
 |                  |   |
 | user directories | 1 |
 +------------------+---+
