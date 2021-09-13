@@ -36,10 +36,10 @@ interface IProvidesVersionAuthor {
 	 */
 	public function getEditedBy();
 
-  /**
-   * Returns the file author's username
-   * @return string
-   * @since 10.9.0
-   */
+	/**
+	 * Returns the file author's username
+	 * @return string
+	 * @since 10.9.0
+	 */
 	public function getCreatedBy();
 }
