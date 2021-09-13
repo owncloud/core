@@ -1,0 +1,8 @@
+Bugfix: don't count non-user folder in occ user:report command
+
+Before this PR several folders, for example 'avatars', have been counted as user
+folders via the occ user:report command.
+With this PR a list of folders has been added which should not be counted as user folders.
+The user directory count is now correct.
+
+https://github.com/owncloud/core/pull/39223
