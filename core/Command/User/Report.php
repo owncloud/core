@@ -111,7 +111,7 @@ class Report extends Command {
 		$directories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
 
 		$userDirectories = array_filter($directories, function (FileInfo $directory) {
-			return !in_array($directory->getName(), $this->directoryIngoreList);
+			return !\in_array($directory->getName(), $this->directoryIngoreList);
 		});
 
 		return \count($userDirectories);
