@@ -83,4 +83,13 @@ table #headerSize, #headerDate, .filesize, .modified, .date {
 #fileList .action-reject span:last-child {
 	display: none !important;
 }
+
+/**
+* expand spacing between download and delete action mobile
+* to avoid unwanted delete due to miss-tapping
+**/
+#filestable .selectedActions a.delete-selected {
+		margin-left: 50px;
+}
+
 }

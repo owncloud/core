@@ -693,7 +693,7 @@ a.action > img {
 }
 
 .selectedActions a.delete-selected {
-	padding-right: 15px;
+	margin-left: 15px;
 }
 
 .selectedActions a.hidden {
