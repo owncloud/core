@@ -158,6 +158,10 @@ class DeletedUser implements IUser {
 		throw new \Exception("Not Implemented", 1);
 	}
 
+	public function setHome(string $newLocation) {
+		throw new \Exception("Not Implemented", 1);
+	}
+
 	public function getBackendClassName() {
 		throw new \Exception("Not Implemented", 1);
 	}

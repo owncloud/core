@@ -122,6 +122,14 @@ interface IUser {
 	public function getHome();
 
 	/**
+	 * set the users home folder to mount
+	 *
+	 * @return void
+	 * @since 10.9.0
+	 */
+	public function setHome(string $newLocation);
+
+	/**
 	 * Get the name of the backend class the user is connected with
 	 *
 	 * @return string

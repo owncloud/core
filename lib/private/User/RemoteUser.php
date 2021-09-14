@@ -110,6 +110,9 @@ class RemoteUser implements IUser {
 		return '';
 	}
 
+	public function setHome(string $newLocation) {
+	}
+
 	/**
 	 * @inheritdoc
 	 */
