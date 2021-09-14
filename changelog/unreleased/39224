@@ -1,0 +1,9 @@
+Enhancement: Hide accept and decline share text on mobile view
+
+Before this PR within the "Shared with you" files list, a text for accept
+and decline was shown next to the associated icon.
+These texts were using excessive space in the mobile view and might
+leave the "State" column not completely visible.
+This has been fixed with this PR through hiding those unnecessary texts.
+
+https://github.com/owncloud/core/pull/39224
