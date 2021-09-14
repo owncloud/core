@@ -47,6 +47,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Add tooltips for group names in user settings and sharing overview: <a href="https://github.com/owncloud/enterprise/issues/4695">#4695</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: <a href="https://github.com/owncloud/core/compare/issues/39183">#39183</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Hide accept and decline share text on mobile view: <a href="https://github.com/owncloud/core/pull/39224">#39224</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add option to hide the upload estimation in WebUI: <a href="https://github.com/owncloud/core/pull/39228">#39228</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -409,6 +410,15 @@
    hiding those unnecessary texts.
             </p>
             <p>https://github.com/owncloud/core/pull/39224<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add option to hide the upload estimation in WebUI: <a href="https://github.com/owncloud/core/pull/39228">#39228</a></p>
+            <p>The upload estimation can now be hidden when setting `hide_upload_estimation` to "yes" via
+   occ command: occ config:app:set files hide_upload_estimation --value="yes"
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4743<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39228<br></p>
         </li>
     </ul>
     <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>
