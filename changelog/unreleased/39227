@@ -1,0 +1,4 @@
+Bugfix: Show missing delete button in file list on mobile view
+
+https://github.com/owncloud/core/issues/39221
+https://github.com/owncloud/core/pull/39227

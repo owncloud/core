@@ -83,4 +83,9 @@ table #headerSize, #headerDate, .filesize, .modified, .date {
 #fileList .action-reject span:last-child {
 	display: none !important;
 }
+
+.selectedActions a.delete-selected.mobile {
+	display: inline;
 }
+}
+
