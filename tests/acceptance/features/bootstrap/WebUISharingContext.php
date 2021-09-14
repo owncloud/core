@@ -760,8 +760,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theUserCreatesAReadOnlyPublicLinkForFolderUsingTheQuickActionButton(string $name):void {
-		$linkName = $this->createReadOnlyPublicShareLinkUsingQuickAction($name);
-		$linkUrl = $this->publicShareTab->getLinkUrl($linkName);
+		$this->createReadOnlyPublicShareLinkUsingQuickAction($name);
+		$linkTab = $this->sharingDialog->openPublicShareTab($this->getSession());
+		$linkName =  $linkTab->getNameOfFirstPublicLink($this->getSession());
+		$linkUrl = $linkTab->getLinkUrl($linkName);
 		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
 	}
 
@@ -2026,26 +2028,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	/**
 	 * @param string $name
 	 *
-	 * @return string
+	 * @return void
 	 * @throws Exception
 	 */
-	public function createReadOnlyPublicShareLinkUsingQuickAction(string $name):string {
-		$this->filesPage->waitTillPageIsloaded($this->getSession());
+	public function createReadOnlyPublicShareLinkUsingQuickAction(string $name):void {
 		$this->filesPage->clickOnPublicShareQuickAction($name);
-		try {
-			$this->filesPage->closeDetailsDialog();
-		} catch (ElementNotFoundException $e) {
-			//if there is no dialog open and we try to close it
-			//an exception will be thrown, but we do not care
-		}
-		$session = $this->getSession();
-		$sharingDialog = $this->filesPage->openSharingDialog(
-			$name,
-			$session
-		);
-		$this->publicShareTab = $sharingDialog->openPublicShareTab($session);
-		$linkName = $this->publicShareTab->getNameOfFirstPublicLink($session);
-		return $linkName;
+		$this->theUserOpensTheShareDialogForFileFolder($name);
 	}
 
 	/**
