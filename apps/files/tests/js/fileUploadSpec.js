@@ -28,6 +28,10 @@ describe('OC.Upload tests', function() {
 	var getFolderContentsStub;
 
 	beforeEach(function() {
+		oc_appconfig = oc_appconfig || {};
+		oc_appconfig.files = oc_appconfig.files || {};
+		oc_appconfig.files.hide_upload_estimation = false;
+
 		testFile = {
 			name: 'test.txt',
 			size: 5000, // 5 KB
