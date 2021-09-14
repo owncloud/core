@@ -1338,12 +1338,16 @@ OC.Uploader.prototype = _.extend({
 							filledBufferSize++;
 						}
 					}
-					var smoothRemainingSeconds = (bufferTotal / filledBufferSize);
-					var h = moment.duration(smoothRemainingSeconds, "seconds").humanize();
+
+					if (!oc_appconfig.files.hide_upload_estimation) {
+						var smoothRemainingSeconds = (bufferTotal / filledBufferSize);
+						var h = moment.duration(smoothRemainingSeconds, "seconds").humanize();
+						self.$uploadprogressbar.find('.label .mobile').text(h);
+						self.$uploadprogressbar.find('.label .desktop').text(h);
+					}
+
 					self.$uploadprogressbar.attr('data-loaded', data.loaded);
 					self.$uploadprogressbar.attr('data-total', data.total);
-					self.$uploadprogressbar.find('.label .mobile').text(h);
-					self.$uploadprogressbar.find('.label .desktop').text(h);
 					self.$uploadprogressbar.attr('original-title',
 						t('files', '{loadedSize} of {totalSize} ({bitrate})' , {
 							loadedSize: humanFileSize(data.loaded),

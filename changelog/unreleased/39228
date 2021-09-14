@@ -1,0 +1,8 @@
+Enhancement: Add option to hide the upload estimation in WebUI
+
+The upload estimation can now be hidden when setting
+`hide_upload_estimation` to "yes" via occ command:
+occ config:app:set files hide_upload_estimation --value="yes"
+
+https://github.com/owncloud/core/pull/39228
+https://github.com/owncloud/enterprise/issues/4743

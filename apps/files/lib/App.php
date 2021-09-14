@@ -49,12 +49,14 @@ class App {
 		$uploadStallTimeout = (int)($config->getAppValue('files', 'upload_stall_timeout', 60)); // in seconds
 		$uploadStallRetries = (int)($config->getAppValue('files', 'upload_stall_retries', 100));
 		$enableLockFileAction = (boolean)($config->getAppValue('files', 'enable_lock_file_action', 'no') === 'yes');
+		$hideUploadEstimation = (boolean)($config->getAppValue('files', 'hide_upload_estimation', 'no') === 'yes');
 
 		$array['array']['oc_appconfig']['files'] = [
 			'max_chunk_size' => $maxChunkSize,
 			'upload_stall_timeout' => $uploadStallTimeout,
 			'upload_stall_retries' => $uploadStallRetries,
-			'enable_lock_file_action' => $enableLockFileAction
+			'enable_lock_file_action' => $enableLockFileAction,
+			'hide_upload_estimation' => $hideUploadEstimation
 		];
 	}
 }
