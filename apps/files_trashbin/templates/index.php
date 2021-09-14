@@ -33,6 +33,10 @@
 							<span class="icon icon-history"></span>
 							<span><?php p($l->t('Restore'))?></span>
 						</a>
+							<a href="" class="delete-selected mobile">
+							<span><?php p($l->t('Delete'))?></span>
+							<span class="icon icon-delete"></span>
+						</a>
 					</span>
 				</div>
 			</th>
