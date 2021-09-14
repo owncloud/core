@@ -143,6 +143,7 @@
     "Username contains whitespace at the beginning or at the end" : "O nome de usuário contém espaço em branco no início ou no fim",
     "The username must be at least 3 characters long" : "O nome de usuário deve ter pelo menos 3 caracteres",
     "The username can not be longer than 64 characters" : "O nome de usuário não pode ter mais de 64 caracteres",
+    "The special username %s is not allowed" : "O nome de usuário especial %s não é permitido",
     "A valid password must be provided" : "Forneça uma senha válida",
     "The username is already being used" : "Este nome de usuário já está sendo usado",
     "Login canceled by app" : "Login cancelado pelo aplicativo",

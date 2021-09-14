@@ -47,6 +47,7 @@ OC.L10N.register(
     "Shared directory \"{dir}\" is not available, remove the share or contact it's owner to reshare." : "O diretório compartilhado \"{dir}\" não está disponível, remova o compartilhamento ou entre em contato com seu proprietário para compartilhar de novo.",
     "Directory \"{dir}\" not found" : "Diretório \"{dir}\" não encontrado",
     "group" : "grupo",
+    "Federated share" : "Compartilhamento federado",
     "via" : "via",
     "Could not move \"{file}\", target exists" : "Não foi possível mover o \"{file}\", o alvo já existe",
     "Could not move \"{file}\" because either the file or the target are locked." : "Não foi possível mover o arquivo \"{file}\" porque o arquivo ou o destino está bloqueado.",
