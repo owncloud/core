@@ -48,6 +48,7 @@ Summary
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 * Enhancement - Add tooltips for group names in user settings and sharing overview: [#4695](https://github.com/owncloud/enterprise/issues/4695)
 * Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/compare/issues/39183)
+* Enhancement - Hide accept and decline share text on mobile view: [#39224](https://github.com/owncloud/core/pull/39224)
 
 Details
 -------
@@ -404,6 +405,15 @@ Details
 
    https://github.com/owncloud/core/compare/issues/39183
    https://github.com/owncloud/core/issues/39183
+
+* Enhancement - Hide accept and decline share text on mobile view: [#39224](https://github.com/owncloud/core/pull/39224)
+
+   Before this PR within the "Shared with you" files list, a text for accept and decline was shown
+   next to the associated icon. These texts were using excessive space in the mobile view and might
+   leave the "State" column not completely visible. This has been fixed with this PR through
+   hiding those unnecessary texts.
+
+   https://github.com/owncloud/core/pull/39224
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
