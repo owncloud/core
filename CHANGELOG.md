@@ -45,6 +45,7 @@ Summary
 * Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
 * Enhancement - Extend transfer ownership cmd with option to transfer entire user: [#39118](https://github.com/owncloud/core/pull/39118)
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
+* Enhancement - Add console command to move a user's home folder: [#39136](https://github.com/owncloud/core/pull/39136)
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 * Enhancement - Add tooltips for group names in user settings and sharing overview: [#4695](https://github.com/owncloud/enterprise/issues/4695)
 * Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/compare/issues/39183)
@@ -386,6 +387,12 @@ Details
    https://github.com/owncloud/core/pull/39130
    https://github.com/owncloud/core/pull/39163
    https://github.com/owncloud/core/pull/39167
+
+* Enhancement - Add console command to move a user's home folder: [#39136](https://github.com/owncloud/core/pull/39136)
+
+   Occ user:move-home <user_id> <new_location>
+
+   https://github.com/owncloud/core/pull/39136
 
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 
