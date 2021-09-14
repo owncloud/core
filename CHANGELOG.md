@@ -317,6 +317,7 @@ Details
 
    https://github.com/owncloud/core/pull/38838
    https://github.com/owncloud/core/pull/39204
+   https://github.com/owncloud/core/pull/39218
    https://docs.microsoft.com/en-us/openspecs/sharepoint_protocols/ms-ofba/30c7bbe9-b284-421f-b866-4e7ed4866027
 
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
