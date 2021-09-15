@@ -1,0 +1,6 @@
+Enhancement: Allow skeletondirectory to be an empty string
+
+skeletondirectory can now be set to an empty string in config.php to indicate
+that no skeleton is required.
+
+https://github.com/owncloud/core/pull/39230
