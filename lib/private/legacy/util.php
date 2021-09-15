@@ -382,6 +382,11 @@ class OC_Util {
 	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
 		$skeletonDirectory = \OC::$server->getConfig()->getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
 
+		// An empty setting for skeletondirectory means that no skeleton is required.
+		if ($skeletonDirectory === '') {
+			return;
+		}
+
 		if (!\is_dir($skeletonDirectory)) {
 			throw new \OC\HintException('The skeleton folder '.$skeletonDirectory.' is not accessible');
 		}
