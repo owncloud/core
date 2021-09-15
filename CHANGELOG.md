@@ -54,6 +54,7 @@ Summary
 * Enhancement - Add option to hide the upload estimation in WebUI: [#39228](https://github.com/owncloud/core/pull/39228)
 * Enhancement - Allow skeletondirectory to be an empty string: [#39230](https://github.com/owncloud/core/pull/39230)
 * Enhancement - Improve mobile view for "Shared by link" file list: [#39232](https://github.com/owncloud/core/pull/39232)
+* Enhancement - Use icons + buttons instead of text for file actions in mobile view: [#39233](https://github.com/owncloud/core/pull/39233)
 
 Details
 -------
@@ -453,6 +454,15 @@ Details
    space.
 
    https://github.com/owncloud/core/pull/39232
+
+* Enhancement - Use icons + buttons instead of text for file actions in mobile view: [#39233](https://github.com/owncloud/core/pull/39233)
+
+   Before this PR, as files were selected in the files list, actions was shown with icon and text,
+   for example: 'Download' and 'Delete'. This uses much space and UI glitches are possible due to
+   limited screen size. With this PR we now show buttons with the associated icons without any
+   text.
+
+   https://github.com/owncloud/core/pull/39233
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
