@@ -463,7 +463,7 @@ $CONFIG = [
  *
  * Note that the ACLs (if active) will be evaluated and applied on top of this mechanism.
  */
-'wnd.fileInfo.parseAttrs.mode' => stat,
+'wnd.fileInfo.parseAttrs.mode' => 'stat',
 
 /**
  * Enable or Disable the WND In-Memory Notifier for Password Changes
@@ -474,7 +474,7 @@ $CONFIG = [
  * The intention is to prevent a potential password lockout for the user in the backend.
  * As with PHP lower than 7.4, this feature can take a lot of memory resources.
  * This is because WND keeps the storage access and its caches in-memory.
- * With PHP 7.4 or above, the memory usage has been reduced a significantly.
+ * With PHP 7.4 or above, the memory usage has been reduced significantly.
  * Alternatively, you can disable this feature completely.
  */
 'wnd.in_memory_notifier.enable' => true,
