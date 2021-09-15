@@ -36,7 +36,7 @@ use OCP\Files\External\IStorageConfig;
  * such as \OCP\IDB for database operations. This allows an authentication
  * mechanism to perform advanced operations based on provided information.
  *
- * An authenication scheme defines the parameter interface, common to the
+ * An authentication scheme defines the parameter interface, common to the
  * storage implementation, the backend and the authentication mechanism.
  * A storage implementation expects parameters according to the authentication
  * scheme, which are provided from the authentication mechanism.

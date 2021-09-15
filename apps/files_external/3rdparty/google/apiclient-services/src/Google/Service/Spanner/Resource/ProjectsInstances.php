@@ -200,7 +200,7 @@ class Google_Service_Spanner_Resource_ProjectsInstances extends Google_Service_R
   }
   /**
    * Returns permissions that the caller has on the specified instance resource.
-   * Attempting this RPC on a non-existent Cloud Spanner instance resource will
+   * Attempting this RPC on a nonexistent Cloud Spanner instance resource will
    * result in a NOT_FOUND error if the user has `spanner.instances.list`
    * permission on the containing Google Cloud Project. Otherwise returns an empty
    * set of permissions. (instances.testIamPermissions)

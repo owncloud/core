@@ -243,7 +243,7 @@ class RepairInvalidSharesTest extends TestCase {
 			]))->execute();
 		$validChild = $this->getLastShareId();
 
-		// share with non-existing parent
+		// share with nonexistent parent
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
 			->values(\array_merge($shareValues, [

@@ -168,7 +168,7 @@ interface ISystemTagManager {
 	 *
 	 * @param ISystemTag $tag
 	 * @param IUser $user
-	 * @return bool, true if user of group can use staic tags, else false
+	 * @return bool, true if user of group can use static tags, else false
 	 * @since 10.0.11
 	 */
 	public function canUserUseStaticTagInGroup(ISystemTag $tag, Iuser $user);

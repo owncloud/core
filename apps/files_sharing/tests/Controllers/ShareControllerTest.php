@@ -332,7 +332,7 @@ class ShareControllerTest extends \Test\TestCase {
 			->with('invalidtoken')
 			->will($this->throwException(new ShareNotFound()));
 
-		// Test without a not existing token
+		// Test without a nonexistent token
 		$response = $this->shareController->showShare('invalidtoken');
 		$expectedResponse =  new NotFoundResponse();
 		$this->assertEquals($expectedResponse, $response);
@@ -353,7 +353,7 @@ class ShareControllerTest extends \Test\TestCase {
 			->with('files_sharing.sharecontroller.authenticate', ['token' => 'validtoken'])
 			->willReturn('redirect');
 
-		// Test without a not existing token
+		// Test without a nonexistent token
 		$response = $this->shareController->showShare('validtoken');
 		$expectedResponse = new RedirectResponse('redirect');
 		$this->assertEquals($expectedResponse, $response);

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Sergio Bertolin <sbertlin@owncloud.com>
+ * @author Sergio Bertolin <sbertolin@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0

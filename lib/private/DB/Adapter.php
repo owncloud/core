@@ -147,7 +147,7 @@ class Adapter {
 					$qbu->andWhere(
 						$qbu->expr()->eq(
 							// needs to cast to char in order to compare with char
-							$qbu->createFunction('to_char(`'.$key.'`)'), // TODO does this handle empty strings on oracle correclty
+							$qbu->createFunction('to_char(`'.$key.'`)'), // TODO does this handle empty strings on oracle correctly
 							$qbu->expr()->literal($input[$key])
 						)
 					);

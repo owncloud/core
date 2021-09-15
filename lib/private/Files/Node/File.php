@@ -32,10 +32,10 @@ use OCP\IImage;
 
 class File extends Node implements \OCP\Files\File, IPreviewNode {
 	/**
-	 * Creates a Folder that represents a non-existing path
+	 * Creates a Folder that represents a nonexistent path
 	 *
 	 * @param string $path path
-	 * @return string non-existing node class
+	 * @return string nonexistent node class
 	 */
 	protected function createNonExistingNode($path) {
 		return new NonExistingFile($this->root, $this->view, $path);

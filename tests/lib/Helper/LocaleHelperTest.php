@@ -47,7 +47,7 @@ class LocaleHelperTest extends TestCase {
 			[
 				[ 'hi', 'ro', 'php', 'de', 'java' ],
 				'en',
-				// en was omited in the available lang list above. it will have
+				// en was omitted in the available lang list above. it will have
 				// no translation and will not be available for selection
 				[
 					'code' => 'en',

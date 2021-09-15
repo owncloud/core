@@ -43,7 +43,7 @@ Feature: share with groups, group names are case-sensitive
       | 2               | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             |
 
   @skipOnLDAP @issue-ldap-250
-  Scenario Outline: group names are case-sensitive, sharing with non-existent groups with different upper and lower case names
+  Scenario Outline: group names are case-sensitive, sharing with nonexistent groups with different upper and lower case names
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
       | username |

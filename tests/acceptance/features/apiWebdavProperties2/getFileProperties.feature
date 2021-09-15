@@ -233,7 +233,7 @@ Feature: get file properties
       | new         |
 
 
-  Scenario Outline: Do a PROPFIND to a non-existing URL
+  Scenario Outline: Do a PROPFIND to a nonexistent URL
     When user "Alice" requests "<url>" with "PROPFIND" using basic auth
     Then the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message1>" or "<message2>"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"

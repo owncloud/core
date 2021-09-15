@@ -713,7 +713,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $appName
 	 * @param string $xRequestId
 	 *
-	 * @return bool true if enabled, false if disabled or not existing
+	 * @return bool true if enabled, false if disabled or nonexistent
 	 */
 	public static function isAppEnabled(
 		$appName,

@@ -292,7 +292,7 @@ class MigrationTest extends TestCase {
 		}
 
 		/*
-		 * The link share is flattend but has an owner to avoid invisible shares
+		 * The link share is flattened but has an owner to avoid invisible shares
 		 * see: https://github.com/owncloud/core/pull/22317
 		 */
 		$this->assertSame('owner2', $result[9]['uid_owner']);

@@ -35,7 +35,7 @@ use OCP\IUserManager;
 use OC\Cache\CappedMemoryCache;
 
 /**
- * Cache mounts points per user in the cache so we can easilly look them up
+ * Cache mounts points per user in the cache so we can easily look them up
  */
 class UserMountCache implements IUserMountCache {
 	/**

@@ -62,7 +62,7 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
-  Scenario Outline: Move a folder into a not existing one
+  Scenario Outline: Move a folder into a nonexistent one
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
     When user "Alice" moves folder "/testshare" to "/not-existing/testshare" using the WebDAV API

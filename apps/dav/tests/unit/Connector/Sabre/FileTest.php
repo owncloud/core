@@ -429,7 +429,7 @@ class FileTest extends TestCase {
 	 * @param string $path path to put the file into
 	 * @param string $viewRoot root to use for the view
 	 *
-	 * @return null|string of the PUT operaiton which is usually the etag
+	 * @return null|string of the PUT operation which is usually the etag
 	 */
 	private function doPut($path, $viewRoot = null, \OC\AppFramework\Http\Request $request = null) {
 		$view = Filesystem::getView();

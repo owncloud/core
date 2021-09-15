@@ -174,7 +174,7 @@ class ContactsManagerTest extends \Test\TestCase {
 		$this->assertNull($result);
 	}
 
-	public function testCreateOrUpdateNOAdressbook() {
+	public function testCreateOrUpdateNOAddressbook() {
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();

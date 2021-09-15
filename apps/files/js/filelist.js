@@ -1824,7 +1824,7 @@
 				return Promise.reject('getDirShareInfo(). param must be typeof string and can not be empty!');
 			}
 
-			// avoiding a unnessesary API calls
+			// avoiding a unnecessary API calls
 			if (typeof this._shareTreeCache[dir] !== 'undefined' || dir === '/') {
 				return Promise.resolve();
 			}
@@ -1900,7 +1900,7 @@
 			return this.getPathShareInfo(dir).then(function () {
 				var breadcrumbs = dir.split('/');
 
-				// Diff keys in shareTreeCache agains the current dir
+				// Diff keys in shareTreeCache against the current dir
 				// removing deeper nested shares
 				var cache = _.omit(self._shareTreeCache, function(value, key) {
 					var diffs = _.difference(key.split('/'), breadcrumbs);

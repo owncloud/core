@@ -124,6 +124,6 @@ if ($_['mail_smtpmode'] == 'qmail') {
 	<?php endif; ?>
 	<br />
 	<em><?php p($l->t('Test email settings')); ?></em>
-	<input type="submit" name="sendtestemail" id="sendtestemail" value="<?php p($l->t('Send email')); ?>"/>
+	<input type="submit" name="sendtestmail" id="sendtestmail" value="<?php p($l->t('Send email')); ?>"/>
 	<span id="sendtestmail_msg" class="msg"></span>
 </div>

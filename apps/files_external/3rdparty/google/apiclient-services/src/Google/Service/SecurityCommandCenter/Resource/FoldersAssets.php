@@ -101,7 +101,7 @@ class Google_Service_SecurityCommandCenter_Resource_FoldersAssets extends Google
    * `resource_properties.size = 100` is a valid filter string. Use a partial
    * match on the empty string to filter based on a property existing:
    * `resource_properties.my_property : ""` Use a negated partial match on the
-   * empty string to filter based on a property not existing:
+   * empty string to filter based on a property nonexistent:
    * `-resource_properties.my_property : ""`
    * @opt_param string orderBy Expression that defines what fields and order to
    * use for sorting. The string value should follow SQL syntax: comma separated

@@ -362,7 +362,7 @@ class AllConfigTest extends \Test\TestCase {
 		$this->assertEquals([
 			'userFetch1' => 'value1',
 			'userFetch4' => 'value4'
-		], $value, 'userFetch9 is an non-existent user and should not be shown.');
+		], $value, 'userFetch9 is an nonexistent user and should not be shown.');
 
 		// cleanup
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*preferences`');

@@ -116,7 +116,7 @@ describe('MimeType tests', function() {
 				expect(OC.MimeType._mimeTypeIcons['dir-shared']).toEqual(res);
 			});
 
-			it('test if alaiases are converted correctly', function() {
+			it('test if aliases are converted correctly', function() {
 				var res = OC.MimeType.getIconUrl('app/foobar');
 				expect(res).toEqual(OC.getRootPath() + '/core/img/filetypes/foo-bar.svg');
 				expect(OC.MimeType._mimeTypeIcons['foo/bar']).toEqual(res);
@@ -138,7 +138,7 @@ describe('MimeType tests', function() {
 				OC.currentTheme.name = _themeFolder;
 			});
 
-			it('test if theme path is used if a theme icon is availble', function() {
+			it('test if theme path is used if a theme icon is available', function() {
 				var res = OC.MimeType.getIconUrl('dir');
 				expect(res).toEqual(OC.getRootPath() + '/themes/abc/core/img/filetypes/folder.svg');
 			});

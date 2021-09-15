@@ -62,7 +62,7 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 	$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application();
 	$federatedShareProvider = $federatedSharingApp->getFederatedShareProvider();
 	if ($federatedShareProvider->isOutgoingServer2serverShareEnabled() === false && !$isAjax) {
-		// this is what is thrown when trying to access a non-existing share
+		// this is what is thrown when trying to access a nonexistent share
 		throw new \Sabre\DAV\Exception\NotAuthenticated();
 	}
 

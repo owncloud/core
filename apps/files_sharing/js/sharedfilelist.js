@@ -491,7 +491,7 @@
 					);
 					delete data.recipientsCount;
 					if (self._sharedWithUser) {
-						// only for outgoing shres
+						// only for outgoing shares
 						delete data.shareTypes;
 					} else {
 						data.shareTypes = _.keys(data.shareTypes);

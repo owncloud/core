@@ -130,9 +130,9 @@ class AdminController extends Controller implements ISettings {
 		
 		$changeLogUrl = null;
 		if ($isNewVersionAvailable === true) {
-			$varsionParts = \explode(' ', $newVersionString);
-			if (\count($varsionParts) >= 2) {
-				$versionParts = \explode('.', $varsionParts[1]); // remove the 'ownCloud' prefix
+			$versionParts = \explode(' ', $newVersionString);
+			if (\count($versionParts) >= 2) {
+				$versionParts = \explode('.', $versionParts[1]); // remove the 'ownCloud' prefix
 				$changeLogUrl = 'https://owncloud.com/changelog/server/#' . \implode('.', $versionParts);
 			}
 		}

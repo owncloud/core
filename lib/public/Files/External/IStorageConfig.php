@@ -136,7 +136,7 @@ interface IStorageConfig extends \JsonSerializable {
 	public function getPriority();
 
 	/**
-	 * Sets the mount priotity
+	 * Sets the mount priority
 	 *
 	 * @param int $priority priority
 	 * @since 10.0

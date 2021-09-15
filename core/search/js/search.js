@@ -322,7 +322,7 @@
 					}
 				} else {
 					/**
-			 		* Search begins 500 millisoconds after the user stops typing
+			 		* Search begins 500 milliseconds after the user stops typing
 			 		*/
 					clearTimeout(timeout);
 					timeout = setTimeout(function () {

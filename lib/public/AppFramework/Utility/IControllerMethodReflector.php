@@ -47,7 +47,7 @@ interface IControllerMethodReflector {
 	 * @param string $parameter the parameter whose type comments should be
 	 * parsed
 	 * @return string|null type in the type parameters (@param int $something)
-	 * would return int or null if not existing
+	 * would return int or null if nonexistent
 	 * @since 8.0.0
 	 */
 	public function getType($parameter);

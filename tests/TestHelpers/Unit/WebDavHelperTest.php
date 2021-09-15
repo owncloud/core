@@ -220,7 +220,7 @@ class WebDavHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testSantizationOnDefault($unsanitizedUrl, $expectedUrl) {
+	public function testSanitizationOnDefault($unsanitizedUrl, $expectedUrl) {
 		$sanitizedUrl = WebDavHelper::sanitizeUrl($unsanitizedUrl);
 		$this->assertEquals($expectedUrl, $sanitizedUrl);
 	}

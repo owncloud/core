@@ -171,7 +171,7 @@
     <li>Avoid password manager autocomplete on user administration <a href="https://github.com/owncloud/core/pull/35931" target="_blank" rel="noopener">#35931</a></li>
     <li>Changing config settings produced duplicate emitted events <a href="https://github.com/owncloud/core/pull/35875" target="_blank" rel="noopener">#35875</a></li>
     <li>Properly return StorageNotAvailable on network failures with external storages <a href="https://github.com/owncloud/core/pull/35707" target="_blank" rel="noopener">#35707</a></li>
-    <li>Improved error message when trying to share with a non-existing federated user <a href="https://github.com/owncloud/core/pull/35542" target="_blank" rel="noopener">#35542</a></li>
+    <li>Improved error message when trying to share with a nonexistent federated user <a href="https://github.com/owncloud/core/pull/35542" target="_blank" rel="noopener">#35542</a></li>
     <li>Allow selection of UI errors during web-installation <a href="https://github.com/owncloud/core/pull/35681" target="_blank" rel="noopener">#35681</a></li>
     <li>Added missing events for webdav copy operations on new endpoint <a href="https://github.com/owncloud/core/pull/35604" target="_blank" rel="noopener">#35604</a></li>
     <li>Double-appearing address book entries when shared with groups <a href="https://github.com/owncloud/core/pull/35603" target="_blank" rel="noopener">#35603</a></li>
@@ -180,11 +180,11 @@
     <li>Issues with sqlite to mysql migration with <code>db:convert-type</code> <a href="https://github.com/owncloud/core/pull/35390" target="_blank" rel="noopener">#35390</a></li>
     <li>Upload issues with mismatching checksums <a href="https://github.com/owncloud/core/pull/35294" target="_blank" rel="noopener">#35294</a></li>
     <li>Improved memory handling for trashbin expiry background job <a href="https://github.com/owncloud/core/pull/35708" target="_blank" rel="noopener">#35708</a></li>
-    <li>Proper handling of objecstorage S3 issues on object upload for <code>files_primary_s3</code> <a href="https://github.com/owncloud/core/pull/35389" target="_blank" rel="noopener">core#35389</a> <a href="https://github.com/owncloud/files_primary_s3/pull/212" target="_blank" rel="noopener">files_primary_s3#212</a></li>
+    <li>Proper handling of objectstorage S3 issues on object upload for <code>files_primary_s3</code> <a href="https://github.com/owncloud/core/pull/35389" target="_blank" rel="noopener">core#35389</a> <a href="https://github.com/owncloud/files_primary_s3/pull/212" target="_blank" rel="noopener">files_primary_s3#212</a></li>
     <li>Respect default application configuration when using TwoFactor Authentication <a href="https://github.com/owncloud/core/pull/36031" target="_blank" rel="noopener">#36031</a></li>
     <li>Improved mobile view for file drop links <a href="https://github.com/owncloud/core/pull/34803" target="_blank" rel="noopener">#34803</a></li>
     <li>Ignore case of userid in occ <code>files:scan</code> command <a href="https://github.com/owncloud/core/pull/35324" target="_blank" rel="noopener">#35324</a></li>
-    <li>Properly handle errors from remote server when declining a non-existing federated share <a href="https://github.com/owncloud/core/pull/35321" target="_blank" rel="noopener">#35321</a></li>
+    <li>Properly handle errors from remote server when declining a nonexistent federated share <a href="https://github.com/owncloud/core/pull/35321" target="_blank" rel="noopener">#35321</a></li>
     <li>UI issues on setup page when mobile devices where used <a href="https://github.com/owncloud/core/pull/35347" target="_blank" rel="noopener">#35347</a></li>
     <li>Direct access to sharing tab for long file listings <a href="https://github.com/owncloud/core/pull/35306" target="_blank" rel="noopener">#35306</a></li>
     <li>Improved OCM compliance on providerId and remoteId fields <a href="https://github.com/owncloud/core/pull/35122" target="_blank" rel="noopener">#35122</a></li>
@@ -648,7 +648,7 @@
     <li>Fix enabling of users by group admins in the web UI - <a href="https://github.com/owncloud/core/issues/31489" target="_blank" rel="noopener">#31489</a></li>
     <li>Fix AccountMapper to return an object or throw an exception - <a href="https://github.com/owncloud/core/issues/31445" target="_blank" rel="noopener">#31445</a></li>
     <li>Proper handling of exceptions in UserManager - <a href="https://github.com/owncloud/core/issues/31446" target="_blank" rel="noopener">#31446</a></li>
-    <li>Properly cache non-existing user in UserManager - <a href="https://github.com/owncloud/core/issues/31446" target="_blank" rel="noopener">#31446</a></li>
+    <li>Properly cache nonexistent user in UserManager - <a href="https://github.com/owncloud/core/issues/31446" target="_blank" rel="noopener">#31446</a></li>
     <li>Update verify checksums console output to flow more naturally - <a href="https://github.com/owncloud/core/issues/31449" target="_blank" rel="noopener">#31449</a></li>
     <li>Subadmin shouldn't be able to add users to their groups via API - <a href="https://github.com/owncloud/core/issues/31337" target="_blank" rel="noopener">#31337</a></li>
     <li>Catch duplicate inserts in token table - <a href="https://github.com/owncloud/core/pull/31460" target="_blank" rel="noopener">#31460</a> <a href="https://github.com/owncloud/core/issues/31794" target="_blank" rel="noopener">#31794</a> <a href="https://github.com/owncloud/core/pull/32041" target="_blank" rel="noopener">#32041</a></li>
@@ -738,7 +738,7 @@
     <li>Properly align three button dialogs - <a href="https://github.com/owncloud/core/issues/31147" target="_blank" rel="noopener">#31147</a></li>
     <li>Many documentation improvements in config.sample.php - <a href="https://github.com/owncloud/core/issues/31114" target="_blank" rel="noopener">#31114</a> <a href="https://github.com/owncloud/core/issues/31127" target="_blank" rel="noopener">#31127</a> <a href="https://github.com/owncloud/core/issues/31128" target="_blank" rel="noopener">#31128</a> <a href="https://github.com/owncloud/core/issues/31068" target="_blank" rel="noopener">#31068</a> <a href="https://github.com/owncloud/core/issues/31173" target="_blank" rel="noopener">#31173</a> <a href="https://github.com/owncloud/core/pull/31182" target="_blank" rel="noopener">#31182</a></li>
     <li>Fix some documentation paths in config.sample.php - <a href="https://github.com/owncloud/core/issues/30431" target="_blank" rel="noopener">#30431</a></li>
-    <li>Fix App Framework ApiContoller initialization to fix thumbnail access - <a href="https://github.com/owncloud/core/issues/31104" target="_blank" rel="noopener">#31104</a> <a href="https://github.com/owncloud/core/pull/31183" target="_blank" rel="noopener">#31183</a></li>
+    <li>Fix App Framework ApiController initialization to fix thumbnail access - <a href="https://github.com/owncloud/core/issues/31104" target="_blank" rel="noopener">#31104</a> <a href="https://github.com/owncloud/core/pull/31183" target="_blank" rel="noopener">#31183</a></li>
     <li>Check apache auth on login form - <a href="https://github.com/owncloud/core/issues/31074" target="_blank" rel="noopener">#31074</a></li>
     <li>Check basic auth credentials periodically after a timeout instead of … - <a href="https://github.com/owncloud/core/issues/31076" target="_blank" rel="noopener">#31076</a></li>
     <li>Email autocomplete in link share dialog will not return local/federated users any more, only contacts - <a href="https://github.com/owncloud/core/issues/30998" target="_blank" rel="noopener">#30998</a></li>
@@ -862,7 +862,7 @@
     <li>Now using upsert instead of insertIfNotExists for file cache updates, fixes concurrency issues - <a href="https://github.com/owncloud/core/issues/29934" target="_blank" rel="noopener">#29934</a></li>
     <li>Only set CORS headers on Webdav endpoint when Origin header is specified - <a href="https://github.com/owncloud/core/issues/29874" target="_blank" rel="noopener">#29874</a></li>
     <li>Ignore broken/dead symlinks on filescan - <a href="https://github.com/owncloud/core/issues/28959" target="_blank" rel="noopener">#28959</a></li>
-    <li>Improve performance by caching non-existing accounts - <a href="https://github.com/owncloud/core/issues/29866" target="_blank" rel="noopener">#29866</a></li>
+    <li>Improve performance by caching nonexistent accounts - <a href="https://github.com/owncloud/core/issues/29866" target="_blank" rel="noopener">#29866</a></li>
     <li>Fix template location order by searching the enabled theme app first - <a href="https://github.com/owncloud/core/issues/29867" target="_blank" rel="noopener">#29867</a></li>
     <li>Actually log message instead of {$message} - <a href="https://github.com/owncloud/core/issues/29844" target="_blank" rel="noopener">#29844</a></li>
     <li>Improved performance on new DAV endpoint by skipping querying parent nodes - <a href="https://github.com/owncloud/core/issues/29834" target="_blank" rel="noopener">#29834</a></li>
@@ -968,7 +968,7 @@
     <li>Fix the missing argument to DecryptAll - <a href="https://github.com/owncloud/core/issues/29371" target="_blank" rel="noopener">#29371</a></li>
     <li>Skip copying skeleton files if skeleton dir is not accessible - <a href="https://github.com/owncloud/core/issues/29379" target="_blank" rel="noopener">#29379</a></li>
     <li>Use chunked DB query when preloading directory content for DAV properties - <a href="https://github.com/owncloud/core/issues/29416" target="_blank" rel="noopener">#29416</a></li>
-    <li>Fix failure when checking integrity signature for non-existing files - <a href="https://github.com/owncloud/core/issues/29433" target="_blank" rel="noopener">#29433</a></li>
+    <li>Fix failure when checking integrity signature for nonexistent files - <a href="https://github.com/owncloud/core/issues/29433" target="_blank" rel="noopener">#29433</a></li>
     <li>Prevent uploading of part files through WebDav - <a href="https://github.com/owncloud/core/issues/29432" target="_blank" rel="noopener">#29432</a></li>
     <li>Only trigger &quot;changeUser&quot; event if account object really changed - <a href="https://github.com/owncloud/core/issues/29429" target="_blank" rel="noopener">#29429</a></li>
     <li>Only load app type once in app manager classes - <a href="https://github.com/owncloud/core/issues/29428" target="_blank" rel="noopener">#29428</a></li>
@@ -1029,7 +1029,7 @@
     <li>Prevent certificate manager to access FS too early, fixes 8.2 to 10 migration issue - <a href="https://github.com/owncloud/core/pull/28668" target="_blank" rel="noopener">#28668</a></li>
     <li>Clustering: Better support of read only config file and apps folder - <a href="https://github.com/owncloud/core/issues/28594" target="_blank" rel="noopener">#28594</a> <a href="https://github.com/owncloud/core/issues/28601" target="_blank" rel="noopener">#28601</a></li>
     <li>Only use IndexIgnore in htaccess if mod_autoindex.c is enabled/loaded - <a href="https://github.com/owncloud/core/issues/28591" target="_blank" rel="noopener">#28591</a></li>
-    <li>Fix app enable of not existing app - <a href="https://github.com/owncloud/core/issues/28317" target="_blank" rel="noopener">#28317</a></li>
+    <li>Fix app enable of nonexistent app - <a href="https://github.com/owncloud/core/issues/28317" target="_blank" rel="noopener">#28317</a></li>
     <li>Keep redirect information when logging in with wrong password - <a href="https://github.com/owncloud/core/issues/28511" target="_blank" rel="noopener">#28511</a></li>
     <li>Use SwiftMailer antiflood plugin to reconnect after multiple emails sent - <a href="https://github.com/owncloud/core/issues/28180" target="_blank" rel="noopener">#28180</a></li>
     <li>Theme is now properly loaded when displaying full page error messages - <a href="https://github.com/owncloud/core/pull/28622" target="_blank" rel="noopener">#28622</a></li>
@@ -1054,9 +1054,9 @@
 </ul>
 <h4>Performance</h4>
 <ul>
-    <li>Optimize upload - don't fetch info of non-existing file - <a href="https://github.com/owncloud/core/issues/28704" target="_blank" rel="noopener">#28704</a></li>
+    <li>Optimize upload - don't fetch info of nonexistent file - <a href="https://github.com/owncloud/core/issues/28704" target="_blank" rel="noopener">#28704</a></li>
     <li>Optimize upload - don't check if file exists if already known - <a href="https://github.com/owncloud/core/issues/28704" target="_blank" rel="noopener">#28704</a></li>
-    <li>Optimize upload - do not fetch metadata for part file during checksuming - <a href="https://github.com/owncloud/core/issues/28633" target="_blank" rel="noopener">#28633</a></li>
+    <li>Optimize upload - do not fetch metadata for part file during checksumming - <a href="https://github.com/owncloud/core/issues/28633" target="_blank" rel="noopener">#28633</a></li>
     <li>Optimize shares retrieval logic with complex scenarios - <a href="https://github.com/owncloud/core/issues/28524" target="_blank" rel="noopener">#28524</a></li>
     <li>Optimize query logger - <a href="https://github.com/owncloud/core/issues/28220" target="_blank" rel="noopener">#28220</a></li>
     <li>Remove initial scanning overhead to speed up federated shares with lots of entries - <a href="https://github.com/owncloud/core/issues/28604" target="_blank" rel="noopener">#28604</a></li>
@@ -1069,7 +1069,7 @@
     <li>Don't trigger hooks for every new dav chunk, only for final file - <a href="https://github.com/owncloud/core/issues/28817" target="_blank" rel="noopener">#28817</a></li>
     <li>Prevent creating file cache inconsistencies when moving a subtree in or out of a share - <a href="https://github.com/owncloud/core/issues/28219" target="_blank" rel="noopener">#28219</a></li>
     <li>Add check for empty result in storage memcache - <a href="https://github.com/owncloud/core/issues/28548" target="_blank" rel="noopener">#28548</a></li>
-    <li>Fix error message when accessing of non-existing file on external storage - <a href="https://github.com/owncloud/core/issues/28613" target="_blank" rel="noopener">#28613</a></li>
+    <li>Fix error message when accessing a nonexistent file on external storage - <a href="https://github.com/owncloud/core/issues/28613" target="_blank" rel="noopener">#28613</a></li>
     <li>Fixed OAuth frontend logic when connecting to external storage - <a href="https://github.com/owncloud/core/issues/28496" target="_blank" rel="noopener">#28496</a> <a href="https://github.com/owncloud/core/issues/28400" target="_blank" rel="noopener">#28400</a></li>
     <li>Fix quota handling on new Webdav endpoint (affects desktop client 2.2+) - <a href="https://github.com/owncloud/core/issues/28261" target="_blank" rel="noopener">#28261</a></li>
     <li>Fix mounting Webdav as drive in Windows 10 - <a href="https://github.com/owncloud/core/issues/28243" target="_blank" rel="noopener">#28243</a></li>

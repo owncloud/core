@@ -429,7 +429,7 @@
         _initProgressListener: function (options) {
             var that = this,
                 xhr = options.xhr ? options.xhr() : $.ajaxSettings.xhr();
-            // Accesss to the native XHR object is required to add event listeners
+            // Access to the native XHR object is required to add event listeners
             // for the upload progress event:
             if (xhr.upload) {
                 $(xhr.upload).bind('progress', function (e) {

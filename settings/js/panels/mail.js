@@ -42,7 +42,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#sendtestemail').click(function (event) {
+	$('#sendtestmail').click(function (event) {
 		event.preventDefault();
 		OC.msg.startAction('#sendtestmail_msg', t('settings', 'Sending...'));
 		$.post(OC.generateUrl('/settings/admin/mailtest'), '', function (data) {

@@ -109,8 +109,8 @@ class BackendTest extends TestCase {
 
 		$result1 = $backend->getParents($fileinfo3['fileid'], self::TEST_FILES_SHARING_API_USER3);
 		$this->assertCount(1, $result1);
-		$elemet = \reset($result1);
-		$this->assertSame('files' . $this->folder . $this->subfolder . $this->subsubfolder, $elemet['path']);
-		$this->assertSame(\ltrim($this->subsubfolder, '/'), $elemet['collection']['path']);
+		$element = \reset($result1);
+		$this->assertSame('files' . $this->folder . $this->subfolder . $this->subsubfolder, $element['path']);
+		$this->assertSame(\ltrim($this->subsubfolder, '/'), $element['collection']['path']);
 	}
 }

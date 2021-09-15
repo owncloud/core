@@ -47,7 +47,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	protected $authRequiredCheckboxId = 'mail_smtpauth';
 	protected $serverAddressFieldId = 'mail_smtphost';
 	protected $serverPortFieldId = 'mail_smtpport';
-	protected $sendTestEmailBtnId = 'sendtestemail';
+	protected $sendTestEmailBtnId = 'sendtestmail';
 
 	protected $imprintUrlFieldId = 'legal_imprint';
 	protected $privacyPolicyUrlFieldId = 'legal_privacy_policy';

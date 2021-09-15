@@ -150,7 +150,7 @@ describe('OC.Share tests', function() {
 			});
 		});
 
-		describe('displaying the recipoients', function() {
+		describe('displaying the recipients', function() {
 			function checkRecipients(input, output, title) {
 				var $action;
 

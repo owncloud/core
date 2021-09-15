@@ -341,10 +341,10 @@ Feature: sharing
     And as "Brian" file "/Shares/<sharer_folder>/<receiver_file>" should exist
     When user "Alice" shares folder "<group_folder>" with group "grp1" with permissions "share,read,change" using the sharing API
     And user "Carol" accepts share "/<group_folder>" offered by user "Alice" using the sharing API
-    And user "Carol" moves folder "/Shares/<group_folder>/fileInside" to "/Shares/<group_folder>/<reciever_file>" using the WebDAV API
+    And user "Carol" moves folder "/Shares/<group_folder>/fileInside" to "/Shares/<group_folder>/<receiver_file>" using the WebDAV API
     Then the HTTP status code should be "201"
-    And as "Alice" file "<group_folder>/<reciever_file>" should exist
-    And as "Carol" file "/Shares/<group_folder>/<reciever_file>" should exist
+    And as "Alice" file "<group_folder>/<receiver_file>" should exist
+    And as "Carol" file "/Shares/<group_folder>/<receiver_file>" should exist
     Examples:
       | sharer_folder | group_folder    | receiver_file  |
       | ?abc=oc #     | ?abc=oc g%rp#   | # oc?test=oc&a |

@@ -48,7 +48,7 @@ abstract class BackendTestCase extends \Test\TestCase {
 	}
 
 	public function testAddRemove() {
-		//get the number of groups we start with, in case there are exising groups
+		//get the number of groups we start with, in case there are existing groups
 		$startCount=\count($this->backend->getUsers());
 
 		$name1=$this->getUser();

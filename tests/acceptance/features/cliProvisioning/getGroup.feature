@@ -33,7 +33,7 @@ Feature: get group
       | uid            | display name |
       | brand-new-user | Anne Brown   |
 
-  Scenario: admin tries to get users in a non-existent group
+  Scenario: admin tries to get users in a nonexistent group
     Given group "brand-new-group" has been created
     When the administrator gets the users in group "nonexistentgroup" in JSON format using the occ command
     Then the command should have failed with exit code 1

@@ -584,7 +584,7 @@ interfaces.
 * Bug: `Guzzle\Log\MessageFormatter` now properly writes "total_time" and "connect_time" values
 * Bug: Cloning an EntityEnclosingRequest now clones the EntityBody too
 * Bug: Fixed an undefined index error when parsing nested JSON responses with a sentAs parameter that reference a
-  non-existent key
+  nonexistent key
 * Bug: All __call() method arguments are now required (helps with mocking frameworks)
 * Deprecating Response::getRequest() and now using a shallow clone of a request object to remove a circular reference
   to help with refcount based garbage collection of resources created by sending a request

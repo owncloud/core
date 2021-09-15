@@ -177,7 +177,7 @@ trait Provisioning {
 					$this->createdUsers[$normalizedUsername]['displayname'] = $displayName;
 				} else {
 					throw new \Exception(
-						__METHOD__ . " tried to remember display name '$displayName' for non-existent local user '$user'"
+						__METHOD__ . " tried to remember display name '$displayName' for nonexistent local user '$user'"
 					);
 				}
 			} elseif ($this->currentServer === 'REMOTE') {
@@ -185,7 +185,7 @@ trait Provisioning {
 					$this->createdRemoteUsers[$normalizedUsername]['displayname'] = $displayName;
 				} else {
 					throw new \Exception(
-						__METHOD__ . " tried to remember display name '$displayName' for non-existent federated user '$user'"
+						__METHOD__ . " tried to remember display name '$displayName' for nonexistent federated user '$user'"
 					);
 				}
 			}
@@ -209,7 +209,7 @@ trait Provisioning {
 					$this->createdUsers[$normalizedUsername]['email'] = $emailAddress;
 				} else {
 					throw new \Exception(
-						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent local user '$user'"
+						__METHOD__ . " tried to remember email address '$emailAddress' for nonexistent local user '$user'"
 					);
 				}
 			} elseif ($this->currentServer === 'REMOTE') {
@@ -217,7 +217,7 @@ trait Provisioning {
 					$this->createdRemoteUsers[$normalizedUsername]['email'] = $emailAddress;
 				} else {
 					throw new \Exception(
-						__METHOD__ . " tried to remember email address '$emailAddress' for non-existent federated user '$user'"
+						__METHOD__ . " tried to remember email address '$emailAddress' for nonexistent federated user '$user'"
 					);
 				}
 			}

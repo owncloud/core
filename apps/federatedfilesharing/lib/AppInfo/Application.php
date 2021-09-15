@@ -270,7 +270,7 @@ class Application extends App {
 					);
 				} catch (ServerException $e) {
 					// ownCloud lower than 10.2 responded with Internal Server Error
-					// on declining non-existing share. It can't be caught outside the closure
+					// on declining nonexistent share. It can't be caught outside the closure
 					if ($e->getCode() !== Http::STATUS_INTERNAL_SERVER_ERROR) {
 						throw $e;
 					}

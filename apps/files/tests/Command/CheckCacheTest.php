@@ -59,7 +59,7 @@ class CheckCacheTest extends TestCase {
 
 		$this->commandTester->execute([
 			'uid' => 'testUser1',
-			'target-file' => 'non-existing.txt'
+			'target-file' => 'nonexistent.txt'
 		]);
 		$this->assertSame(CheckCache::ERROR_MISSING_FILE, $this->commandTester->getStatusCode());
 	}

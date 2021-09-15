@@ -44,7 +44,7 @@ Feature: get user
     And the display name returned by the API should be "Brand New User"
     And the quota definition returned by the API should be "default"
 
-  Scenario: admin tries to get a not existing user
+  Scenario: admin tries to get a nonexistent user
     When the administrator retrieves the information of user "not-a-user" using the provisioning API
     Then the OCS status code should be "998"
     And the HTTP status code should be "200"

@@ -272,7 +272,7 @@ class StorageConfig implements IStorageConfig {
 	}
 
 	/**
-	 * Sets the mount priotity
+	 * Sets the mount priority
 	 *
 	 * @param int $priority priority
 	 */

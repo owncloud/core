@@ -474,15 +474,15 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testSaveUpdate() {
-		$calledBeforeUpdateEevnt = [];
-		$calledAfterUpdateEevnt = [];
-		\OC::$server->getEventDispatcher()->addListener('comment.beforeupdate', function (GenericEvent $event) use (&$calledBeforeUpdateEevnt) {
-			$calledBeforeUpdateEevnt[] = 'comment.beforeupdate';
-			$calledBeforeUpdateEevnt[] = $event;
+		$calledBeforeUpdateEvent = [];
+		$calledAfterUpdateEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('comment.beforeupdate', function (GenericEvent $event) use (&$calledBeforeUpdateEvent) {
+			$calledBeforeUpdateEvent[] = 'comment.beforeupdate';
+			$calledBeforeUpdateEvent[] = $event;
 		});
-		\OC::$server->getEventDispatcher()->addListener('comment.afterupdate', function (GenericEvent $event) use (&$calledAfterUpdateEevnt) {
-			$calledAfterUpdateEevnt[] = 'comment.afterupdate';
-			$calledAfterUpdateEevnt[] = $event;
+		\OC::$server->getEventDispatcher()->addListener('comment.afterupdate', function (GenericEvent $event) use (&$calledAfterUpdateEvent) {
+			$calledAfterUpdateEvent[] = 'comment.afterupdate';
+			$calledAfterUpdateEvent[] = $event;
 		});
 		$manager = $this->getManager();
 		$comment = new \OC\Comments\Comment();
@@ -500,16 +500,16 @@ class ManagerTest extends TestCase {
 		$loadedComment = $manager->get($comment->getId());
 		$this->assertSame($comment->getMessage(), $loadedComment->getMessage());
 
-		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdateEevnt[1]);
-		$this->assertInstanceOf(GenericEvent::class, $calledBeforeUpdateEevnt[1]);
-		$this->assertEquals('comment.beforeupdate', $calledBeforeUpdateEevnt[0]);
-		$this->assertEquals('comment.afterupdate', $calledAfterUpdateEevnt[0]);
-		$this->assertArrayHasKey('objectId', $calledAfterUpdateEevnt[1]);
-		$this->assertArrayHasKey('commentId', $calledAfterUpdateEevnt[1]);
-		$this->assertArrayHasKey('message', $calledAfterUpdateEevnt[1]);
-		$this->assertArrayHasKey('objectId', $calledBeforeUpdateEevnt[1]);
-		$this->assertArrayHasKey('commentId', $calledBeforeUpdateEevnt[1]);
-		$this->assertArrayHasKey('message', $calledBeforeUpdateEevnt[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdateEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeUpdateEvent[1]);
+		$this->assertEquals('comment.beforeupdate', $calledBeforeUpdateEvent[0]);
+		$this->assertEquals('comment.afterupdate', $calledAfterUpdateEvent[0]);
+		$this->assertArrayHasKey('objectId', $calledAfterUpdateEvent[1]);
+		$this->assertArrayHasKey('commentId', $calledAfterUpdateEvent[1]);
+		$this->assertArrayHasKey('message', $calledAfterUpdateEvent[1]);
+		$this->assertArrayHasKey('objectId', $calledBeforeUpdateEvent[1]);
+		$this->assertArrayHasKey('commentId', $calledBeforeUpdateEvent[1]);
+		$this->assertArrayHasKey('message', $calledBeforeUpdateEvent[1]);
 	}
 
 	/**

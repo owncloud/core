@@ -83,7 +83,7 @@ class ControllerMethodReflector implements IControllerMethodReflector {
 	 * @param string $parameter the parameter whose type comments should be
 	 * parsed
 	 * @return string|null type in the type parameters (@param int $something)
-	 * would return int or null if not existing
+	 * would return int or null if nonexistent
 	 */
 	public function getType($parameter) {
 		if (\array_key_exists($parameter, $this->types)) {

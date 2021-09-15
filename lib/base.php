@@ -136,7 +136,7 @@ class OC {
 
 		OC::$SUBURI = \str_replace("\\", "/", \substr(\realpath($_SERVER["SCRIPT_FILENAME"]), \strlen(OC::$SERVERROOT)));
 		/**
-		 * FIXME: The following lines are required because we can't yet instantiiate
+		 * FIXME: The following lines are required because we can't yet instantiate
 		 *        \OC::$server->getRequest() since \OC::$server does not yet exist.
 		 */
 		$params = [

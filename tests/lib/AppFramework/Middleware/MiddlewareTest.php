@@ -85,7 +85,7 @@ class MiddlewareTest extends \Test\TestCase {
 		$this->assertEquals($this->response, $response);
 	}
 
-	public function testBeforeOutputReturnOutputhenUnhandled() {
+	public function testBeforeOutputReturnOutputThenUnhandled() {
 		$output = $this->middleware->beforeOutput($this->controller, null, 'test');
 
 		$this->assertEquals('test', $output);

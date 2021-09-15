@@ -11,7 +11,7 @@ Feature: get user
     Then the command should have been successful
     And the display name returned by the occ command should be "Anne Brown"
 
-  Scenario: admin tries to get a not existing user
+  Scenario: admin tries to get a nonexistent user
     Given user "nonexistentuser" has been deleted
     When the administrator retrieves the information of user "nonexistentuser" in JSON format using the occ command
     Then the command should have been successful

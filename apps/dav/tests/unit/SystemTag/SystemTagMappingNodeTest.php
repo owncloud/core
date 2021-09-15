@@ -166,7 +166,7 @@ class SystemTagMappingNodeTest extends \Test\TestCase {
 
 	/**
 	 */
-	public function testeDeteteTagNotAllowedStaticTag() {
+	public function testDeleteTagNotAllowedStaticTag() {
 		$this->expectException(\Sabre\DAV\Exception\Forbidden::class);
 
 		$tag = new SystemTag(1, 'Test', true, true, false);

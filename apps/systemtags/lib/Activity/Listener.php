@@ -142,7 +142,7 @@ class Listener {
 		try {
 			$tags = $this->tagManager->getTagsByIds($tagIds);
 		} catch (TagNotFoundException $e) {
-			// User assigned/unassigned a non-existing tag, ignore...
+			// User assigned/unassigned a nonexistent tag, ignore...
 			return;
 		}
 

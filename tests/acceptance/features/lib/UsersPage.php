@@ -840,7 +840,7 @@ class UsersPage extends OwncloudPage {
 	 * @param Session $session
 	 * @param string $user
 	 * @param string $group
-	 * @param boolean $add Boolean value to specify wether to add or remove user from the group
+	 * @param boolean $add Boolean value to specify whether to add or remove user from the group
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException

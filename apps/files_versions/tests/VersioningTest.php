@@ -220,7 +220,7 @@ class VersioningTest extends TestCase {
 					["version" => 4999997, "path" => "keep", "size" => 1],
 					["version" => 4999995, "path" => "keep", "size" => 1],
 					["version" => 4999994, "path" => "delete", "size" => 1],
-					//next slice (60sec) starts at 4999990 keep one version every 10 secons
+					//next slice (60sec) starts at 4999990 keep one version every 10 seconds
 					["version" => 4999988, "path" => "keep", "size" => 1],
 					["version" => 4999978, "path" => "keep", "size" => 1],
 					["version" => 4999975, "path" => "delete", "size" => 1],
@@ -248,7 +248,7 @@ class VersioningTest extends TestCase {
 					["version" => 4777201, "path" => "delete", "size" => 1],
 					["version" => 4777501, "path" => "delete", "size" => 1],
 					["version" => 4740000, "path" => "keep", "size" => 1],
-					// final slice starts at 2408000 keep one version every 604800 secons
+					// final slice starts at 2408000 keep one version every 604800 seconds
 					["version" => 2408000, "path" => "keep", "size" => 1],
 					["version" => 1803201, "path" => "delete", "size" => 1],
 					["version" => 1803200, "path" => "keep", "size" => 1],
@@ -262,7 +262,7 @@ class VersioningTest extends TestCase {
 			[
 				[
 					// first slice (10sec) keep one version every 2 seconds
-					// next slice (60sec) starts at 4999990 keep one version every 10 secons
+					// next slice (60sec) starts at 4999990 keep one version every 10 seconds
 					// next slice (3600sec) start at 4999940 keep one version every 60 seconds
 					// next slice (86400sec) start at 4996400 keep one version every 3600 seconds
 					["version" => 4996400, "path" => "keep", "size" => 1],
@@ -280,7 +280,7 @@ class VersioningTest extends TestCase {
 					["version" => 4777201, "path" => "delete", "size" => 1],
 					["version" => 4777501, "path" => "delete", "size" => 1],
 					["version" => 4740000, "path" => "keep", "size" => 1],
-					// final slice starts at 2408000 keep one version every 604800 secons
+					// final slice starts at 2408000 keep one version every 604800 seconds
 					["version" => 2408000, "path" => "keep", "size" => 1],
 					["version" => 1803201, "path" => "delete", "size" => 1],
 					["version" => 1803200, "path" => "keep", "size" => 1],
@@ -299,7 +299,7 @@ class VersioningTest extends TestCase {
 					["version" => 4999997, "path" => "keep", "size" => 1],
 					["version" => 4999995, "path" => "keep", "size" => 1],
 					["version" => 4999994, "path" => "delete", "size" => 1],
-					//next slice (60sec) starts at 4999990 keep one version every 10 secons
+					//next slice (60sec) starts at 4999990 keep one version every 10 seconds
 					["version" => 4999988, "path" => "keep", "size" => 1],
 					["version" => 4999978, "path" => "keep", "size" => 1],
 					//next slice (3600sec) start at 4999940 keep one version every 60 seconds
@@ -313,7 +313,7 @@ class VersioningTest extends TestCase {
 					["version" => 4777201, "path" => "delete", "size" => 1],
 					["version" => 4777501, "path" => "delete", "size" => 1],
 					["version" => 4740000, "path" => "keep", "size" => 1],
-					// final slice starts at 2408000 keep one version every 604800 secons
+					// final slice starts at 2408000 keep one version every 604800 seconds
 					["version" => 2408000, "path" => "keep", "size" => 1],
 					["version" => 1803201, "path" => "delete", "size" => 1],
 					["version" => 1803200, "path" => "keep", "size" => 1],

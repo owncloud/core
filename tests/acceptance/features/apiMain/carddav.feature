@@ -5,7 +5,7 @@ Feature: carddav
     Given user "Alice" has been created with default attributes and without skeleton files
 
   @carddav
-  Scenario: Accessing a not existing addressbook of another user
+  Scenario: Accessing a nonexistent addressbook of another user
     When the administrator requests address book "%username%/MyAddressbook" of user "Alice" using the new WebDAV API
     Then the CardDAV HTTP status code should be "404"
     And the CardDAV exception should be "Sabre\DAV\Exception\NotFound"
@@ -20,7 +20,7 @@ Feature: carddav
     And the CardDAV message should be "Addressbook with name 'MyAddressbook' could not be found"
 
   @carddav
-  Scenario: Accessing a not existing addressbook of myself
+  Scenario: Accessing a nonexistent addressbook of myself
     When user "Alice" requests address book "%username%/MyAddressbook" of user "admin" using the new WebDAV API
     Then the CardDAV HTTP status code should be "404"
     And the CardDAV exception should be "Sabre\DAV\Exception\NotFound"

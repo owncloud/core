@@ -1,7 +1,7 @@
 @api @skipOnOcV10
 Feature: upload file
   As a user
-  I want to try uploading files to a non-existent folder
+  I want to try uploading files to a nonexistent folder
   So that I can check if the uploading works in such case
 
   Background:
@@ -9,7 +9,7 @@ Feature: upload file
     And the administrator has set the default folder for received shares to "Shares"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  Scenario Outline: attempt to upload a file into a non-existent folder inside shares
+  Scenario Outline: attempt to upload a file into a nonexistent folder inside shares
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
     Then as "Alice" folder "/Shares/FOLDER/" should not exist
@@ -20,7 +20,7 @@ Feature: upload file
       | new         |
 
 
-  Scenario Outline: attempt to upload a file into a non-existent folder
+  Scenario Outline: attempt to upload a file into a nonexistent folder
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "/nonExistentFolder/textfile.txt" using the TUS protocol on the WebDAV API
     Then as "Alice" folder "/nonExistentFolder" should not exist
@@ -31,7 +31,7 @@ Feature: upload file
       | new         |
 
 
-  Scenario Outline: attempt to upload a file into a non-existent folder within correctly received share
+  Scenario Outline: attempt to upload a file into a nonexistent folder within correctly received share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/FOLDER"
@@ -46,7 +46,7 @@ Feature: upload file
       | new         |
 
 
-  Scenario Outline: attempt to upload a file into a non-existent folder within correctly received read only share
+  Scenario Outline: attempt to upload a file into a nonexistent folder within correctly received read only share
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/FOLDER"

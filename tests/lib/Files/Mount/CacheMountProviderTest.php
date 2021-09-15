@@ -29,7 +29,7 @@ use OC\Files\Mount\MountPoint;
 
 class CacheMountProviderTest extends \Test\TestCase {
 
-	/** @var CacheMountPorivder */
+	/** @var CacheMountProvider */
 	protected $provider;
 
 	/** @var IConfig|\PHPUnit\Framework\MockObject\MockObject */

@@ -234,7 +234,7 @@ class Storage extends Wrapper {
 	}
 
 	/**
-	 * Setup the storate wrapper callback
+	 * Setup the storage wrapper callback
 	 */
 	public static function setupStorage() {
 		\OC\Files\Filesystem::addStorageWrapper('oc_trashbin', function ($mountPoint, $storage) {

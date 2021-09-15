@@ -266,7 +266,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		}
 
 		//Now run the repair step and verify there are no more
-		// orpahan shares are no more
+		// orphan shares are no more
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->run($outputMock);
 

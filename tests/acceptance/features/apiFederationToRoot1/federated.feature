@@ -149,7 +149,7 @@ Feature: federated
       | 1               |
       | 2               |
 
-  Scenario Outline: sending a GET request to a not existing federated share
+  Scenario Outline: sending a GET request to a nonexistent federated share
     Given using OCS API version "<ocs-api-version>"
     When user "Brian" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/9999999999"
     Then the OCS status code should be "<ocs-status>"

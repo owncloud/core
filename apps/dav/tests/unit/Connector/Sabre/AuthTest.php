@@ -503,7 +503,7 @@ class AuthTest extends TestCase {
 
 	/**
 	 */
-	public function testAutenticateWithLoggedInUserButLoginExceptionThrown() {
+	public function testAuthenticateWithLoggedInUserButLoginExceptionThrown() {
 		$this->expectException(\Sabre\DAV\Exception\NotAuthenticated::class);
 
 		/** @var RequestInterface | MockObject $request */

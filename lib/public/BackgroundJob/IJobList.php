@@ -35,7 +35,7 @@ interface IJobList {
 	 * Add a job to the list
 	 *
 	 * @param \OCP\BackgroundJob\IJob|string $job
-	 * @param mixed $argument The argument to be passed to $job->run() when the job is exectured
+	 * @param mixed $argument The argument to be passed to $job->run() when the job is executed
 	 * @since 7.0.0
 	 */
 	public function add($job, $argument = null);

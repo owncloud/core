@@ -251,7 +251,7 @@ Feature: move (rename) file
   Scenario: Moving and overwriting a file with lazyops
     #need to slowdown the request for longer than the timeout
     #when doing LazyOps the server does not close the connection
-    #so we timout the request and chech the job-status
+    #so we timeout the request and check the job-status
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "fileToMove.txt"
     And the HTTP-Request-timeout is set to 5 seconds
     And the MOVE DAV requests are slowed down by 10 seconds

@@ -1557,7 +1557,7 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
 
-	public function testGetUsersGroupsSelfTargetted() {
+	public function testGetUsersGroupsSelfTargeted() {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
 			->expects($this->once())
