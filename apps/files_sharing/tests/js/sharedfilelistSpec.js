@@ -614,7 +614,9 @@ describe('OCA.Sharing.FileList tests', function() {
 			fileList.reload();
 
 			var expirationDateInADay = moment()
-				.add(1, 'days').format('YYYY-MM-DD HH:mm:ss');
+				.set({"hour": 0, "minute": 0, "second": 0})
+				.add(1, 'days')
+				.format('YYYY-MM-DD HH:mm:ss');
 
 			/* jshint camelcase: false */
 			ocsResponse = {

@@ -93,7 +93,7 @@
 			if (this._linksOnly) {
 				var expirationTimestamp = 0;
 				if(fileData.shares && fileData.shares[0].expiration !== null) {
-					expirationTimestamp = moment(fileData.shares[0].expiration).valueOf();
+					expirationTimestamp = moment(fileData.shares[0].expiration).endOf('day').valueOf();
 				}
 				$tr.attr('data-expiration', expirationTimestamp);
 
