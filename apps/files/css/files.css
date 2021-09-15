@@ -696,11 +696,9 @@ a.action > img {
 	padding-right: 15px;
 }
 
-.selectedActions a.delete-selected.mobile {
-	display: none;
-	padding-right: 5px;
-}
-
+.selectedActions a.delete-selected.mobile.button,
+.selectedActions a.download.mobile.button,
+.selectedActions a.undelete.mobile.button,
 .selectedActions a.hidden {
 	display: none;
 }

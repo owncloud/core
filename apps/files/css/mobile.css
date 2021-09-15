@@ -84,8 +84,26 @@ table #headerSize, #headerDate, #headerExpiration, .filesize, .modified, .date {
 	display: none !important;
 }
 
-.selectedActions a.delete-selected.mobile {
-	display: inline;
+/* hide common selected file actions mobile */
+.selectedActions a.download,
+.selectedActions a.delete-selected,
+.selectedActions a.undelete {
+	display: none;
 }
+
+/* show mobile selected file actions mobile */
+.selectedActions a.delete-selected.mobile.button,
+.selectedActions a.undelete.mobile.button,
+.selectedActions a.download.mobile.button {
+	display: inline;
+	padding: 5px;
+	font-size: 13px;
+	margin-left: 5px;
+}
+
+.selectedActions a:last-child {
+	margin-right: 5px;
+}
+
 }
 
