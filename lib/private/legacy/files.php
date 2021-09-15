@@ -111,7 +111,11 @@ class OC_Files {
 		}
 
 		try {
-			if (\count($listOfFiles) === 1) {
+			if(\count($listOfFiles) === 0){
+				$filename = $dir;
+				$getType = self::ZIP_DIR;
+			}
+			else if (\count($listOfFiles) === 1) {
 				$filename = "{$dir}/{$listOfFiles[0]}";
 				if (!$view->is_dir($filename)) {
 					self::getSingleFile($view, $dir, $listOfFiles[0], $params === null ? [] : $params);
