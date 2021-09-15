@@ -1,0 +1,8 @@
+Enhancement: Use icons + buttons instead of text for file actions in mobile view
+
+Before this PR, as files were selected in the files list, actions was shown with
+icon and text, for example: 'Download' and 'Delete'.
+This uses much space and UI glitches are possible due to limited screen size.
+With this PR we now show buttons with the associated icons without any text.
+
+https://github.com/owncloud/core/pull/39233
