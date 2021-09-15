@@ -37,6 +37,7 @@ use OCP\Files\ForbiddenException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
 use OCP\IRequest;
+use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\IFile;
@@ -165,6 +166,25 @@ class FilesPlugin extends ServerPlugin {
 			}
 		});
 		$this->server->on('beforeMove', [$this, 'checkMove']);
+		$this->server->on('validateTokens', [$this, 'validateTokens'], 0);
+	}
+
+	/**
+	 * This methods gets called before the validateTokens-method
+	 * in the sabre implementation due to its higher priority.
+	 *
+	 * @param RequestInterface $request
+	 * @param mixed $conditions
+	 * @throws BadRequest
+	 */
+	public function validateTokens($request, &$conditions) {
+		$method = $request->getMethod();
+
+		// Move- and copy-methods need a destination header to be validated.
+		// The validateTokens-method in the sabre implementation does not check this...
+		if (\in_array($method, ['MOVE', 'COPY']) && !$request->getHeader('Destination')) {
+			throw new BadRequest('The destination header was not supplied');
+		}
 	}
 
 	/**
