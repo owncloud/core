@@ -31,6 +31,7 @@ Summary
 * Bugfix - Don't count non-user folder in occ user:report command: [#39223](https://github.com/owncloud/core/pull/39223)
 * Bugfix - Show missing delete button in file list on mobile view: [#39221](https://github.com/owncloud/core/issues/39221)
 * Bugfix - Return proper error when destination header is missing: [#39235](https://github.com/owncloud/core/pull/39235)
+* Bugfix - Show the correct expiring date in 'Shared by link' files list: [#39238](https://github.com/owncloud/core/pull/39238)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -215,6 +216,7 @@ Details
 
    https://github.com/owncloud/core/issues/39187
    https://github.com/owncloud/core/pull/39198
+   https://github.com/owncloud/core/pull/39239
 
 * Bugfix - Preview rendering for sharees: [#39202](https://github.com/owncloud/core/pull/39202)
 
@@ -253,6 +255,14 @@ Details
 
    https://github.com/owncloud/core/issues/38898
    https://github.com/owncloud/core/pull/39235
+
+* Bugfix - Show the correct expiring date in 'Shared by link' files list: [#39238](https://github.com/owncloud/core/pull/39238)
+
+   Before this PR the "Expiration date" column did not respect that shares expiration is set to the
+   end of date and showing wrong values. This has been fixed with this PR
+
+   https://github.com/owncloud/core/issues/39234
+   https://github.com/owncloud/core/pull/39238
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 

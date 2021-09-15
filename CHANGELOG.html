@@ -29,6 +29,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Don't count non-user folder in occ user:report command: <a href="https://github.com/owncloud/core/pull/39223">#39223</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Show missing delete button in file list on mobile view: <a href="https://github.com/owncloud/core/issues/39221">#39221</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Return proper error when destination header is missing: <a href="https://github.com/owncloud/core/pull/39235">#39235</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Show the correct expiring date in 'Shared by link' files list: <a href="https://github.com/owncloud/core/pull/39238">#39238</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
@@ -213,7 +214,7 @@
             </p>
             <p>https://github.com/owncloud/core/issues/39187<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/39198<br></p>
+            <p>https://github.com/owncloud/core/pull/39198<br>https://github.com/owncloud/core/pull/39239<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Preview rendering for sharees: <a href="https://github.com/owncloud/core/pull/39202">#39202</a></p>
@@ -255,6 +256,15 @@
             <p>https://github.com/owncloud/core/issues/38898<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39235<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Show the correct expiring date in 'Shared by link' files list: <a href="https://github.com/owncloud/core/pull/39238">#39238</a></p>
+            <p>Before this PR the "Expiration date" column did not respect that shares expiration is set to the
+   end of date and showing wrong values. This has been fixed with this PR
+            </p>
+            <p>https://github.com/owncloud/core/issues/39234<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39238<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></p>
