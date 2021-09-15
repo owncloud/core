@@ -53,6 +53,7 @@ Summary
 * Enhancement - Hide accept and decline share text on mobile view: [#39224](https://github.com/owncloud/core/pull/39224)
 * Enhancement - Add option to hide the upload estimation in WebUI: [#39228](https://github.com/owncloud/core/pull/39228)
 * Enhancement - Allow skeletondirectory to be an empty string: [#39230](https://github.com/owncloud/core/pull/39230)
+* Enhancement - Improve mobile view for "Shared by link" file list: [#39232](https://github.com/owncloud/core/pull/39232)
 
 Details
 -------
@@ -445,6 +446,13 @@ Details
    is required.
 
    https://github.com/owncloud/core/pull/39230
+
+* Enhancement - Improve mobile view for "Shared by link" file list: [#39232](https://github.com/owncloud/core/pull/39232)
+
+   With this PR, the "Expiration date" column won't be displayed in mobile view anymore to gather
+   space.
+
+   https://github.com/owncloud/core/pull/39232
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
