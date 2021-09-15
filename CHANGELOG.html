@@ -28,6 +28,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Add permission check when restoring from trashbin: <a href="https://github.com/owncloud/core/pull/39210">#39210</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Don't count non-user folder in occ user:report command: <a href="https://github.com/owncloud/core/pull/39223">#39223</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Show missing delete button in file list on mobile view: <a href="https://github.com/owncloud/core/issues/39221">#39221</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Return proper error when destination header is missing: <a href="https://github.com/owncloud/core/pull/39235">#39235</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
@@ -245,6 +246,15 @@
             <p>https://github.com/owncloud/core/issues/39221<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39227<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Return proper error when destination header is missing: <a href="https://github.com/owncloud/core/pull/39235">#39235</a></p>
+            <p>Move- and copy-requests without destination header now give a proper error response: "The
+   destination header was not supplied"
+            </p>
+            <p>https://github.com/owncloud/core/issues/38898<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39235<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></p>

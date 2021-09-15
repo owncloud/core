@@ -30,6 +30,7 @@ Summary
 * Bugfix - Add permission check when restoring from trashbin: [#39210](https://github.com/owncloud/core/pull/39210)
 * Bugfix - Don't count non-user folder in occ user:report command: [#39223](https://github.com/owncloud/core/pull/39223)
 * Bugfix - Show missing delete button in file list on mobile view: [#39221](https://github.com/owncloud/core/issues/39221)
+* Bugfix - Return proper error when destination header is missing: [#39235](https://github.com/owncloud/core/pull/39235)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -244,6 +245,14 @@ Details
 
    https://github.com/owncloud/core/issues/39221
    https://github.com/owncloud/core/pull/39227
+
+* Bugfix - Return proper error when destination header is missing: [#39235](https://github.com/owncloud/core/pull/39235)
+
+   Move- and copy-requests without destination header now give a proper error response: "The
+   destination header was not supplied"
+
+   https://github.com/owncloud/core/issues/38898
+   https://github.com/owncloud/core/pull/39235
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
