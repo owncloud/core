@@ -55,6 +55,7 @@ Summary
 * Enhancement - Allow skeletondirectory to be an empty string: [#39230](https://github.com/owncloud/core/pull/39230)
 * Enhancement - Improve mobile view for "Shared by link" file list: [#39232](https://github.com/owncloud/core/pull/39232)
 * Enhancement - Use icons + buttons instead of text for file actions in mobile view: [#39233](https://github.com/owncloud/core/pull/39233)
+* Enhancement - Hide restore text in deleted files list on mobile device: [#39236](https://github.com/owncloud/core/pull/39236)
 
 Details
 -------
@@ -463,6 +464,13 @@ Details
    text.
 
    https://github.com/owncloud/core/pull/39233
+
+* Enhancement - Hide restore text in deleted files list on mobile device: [#39236](https://github.com/owncloud/core/pull/39236)
+
+   With this PR restore text next to the associated icon will be hidden to grant space for the file
+   and folder names.
+
+   https://github.com/owncloud/core/pull/39236
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
