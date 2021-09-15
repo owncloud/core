@@ -20,7 +20,7 @@ Feature: enable user
   Scenario: admin enables an user with special characters in the username
     Given these users have been created without skeleton files:
       | username | email               |
-      | a@-+_.b  | a.b@example.com     |
+      | a%b@-+_.b  | a.b@example.com     |
       | a space  | a.space@example.com |
     And the following users have been disabled
       | username |

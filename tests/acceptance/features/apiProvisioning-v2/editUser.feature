@@ -26,7 +26,7 @@ Feature: edit users
     And the email address of user "<username>" should be "a-different-email@example.com"
     Examples:
       | username | email               |
-      | a@-+_.b  | a.b@example.com     |
+      | a%b@-+_.b  | a.b@example.com     |
       | a space  | a.space@example.com |
 
   @smokeTest

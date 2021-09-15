@@ -31,7 +31,7 @@ Feature: get user
     And the quota definition returned by the API should be "default"
     Examples:
       | username | displayname  | email               |
-      | a@-+_.b  | A weird b    | a.b@example.com     |
+      | a%b@-+_.b  | A weird b    | a.b@example.com     |
       | a space  | A Space Name | a.space@example.com |
 
   Scenario: admin gets an existing user, providing uppercase username in the URL
