@@ -101,7 +101,6 @@ class OC_Files {
 	 */
 	public static function get($dir, $files, $params = null) {
 		$view = \OC\Files\Filesystem::getView();
-		$getType = self::FILE;
 
 		if (!\is_array($files)) {
 			// "files" contains a string with a filename
@@ -111,7 +110,15 @@ class OC_Files {
 		}
 
 		try {
-			if (\count($listOfFiles) === 1) {
+			/*
+			 * $listOfFiles might be an empty array,
+			 * for example if the client requests to download a whole folder
+			 * and does not supply individual files.
+			 */
+			if (\count($listOfFiles) === 0) {
+				$filename = $dir;
+				$getType = self::ZIP_DIR;
+			} elseif (\count($listOfFiles) === 1) {
 				$filename = "{$dir}/{$listOfFiles[0]}";
 				if (!$view->is_dir($filename)) {
 					self::getSingleFile($view, $dir, $listOfFiles[0], $params === null ? [] : $params);
