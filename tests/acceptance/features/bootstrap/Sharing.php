@@ -29,6 +29,7 @@ use TestHelpers\OcsApiHelper;
 use TestHelpers\OcisHelper;
 use TestHelpers\SharingHelper;
 use TestHelpers\HttpRequestHelper;
+use TestHelpers\SetupHelper;
 use TestHelpers\TranslationHelper;
 
 /**
@@ -2872,6 +2873,15 @@ trait Sharing {
 		$dataResponded = $this->getAllSharesSharedWithUser($user);
 		$shareId = null;
 		foreach ($dataResponded as $shareElement) {
+			$shareFolder = \trim(
+				SetupHelper::getSystemConfigValue('share_folder', $this->getStepLineRef())
+			);
+
+			// Add share folder to share path if given
+			if ($shareFolder && !(strpos($share, "/$shareFolder") === 0)) {
+				$share = '/' . $shareFolder . $share;
+			}
+
 			if ((string) $shareElement['uid_owner'] === $offeredBy
 				&& (string) $shareElement['path'] === $share
 			) {

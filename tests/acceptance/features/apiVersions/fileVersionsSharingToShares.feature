@@ -158,7 +158,7 @@ Feature: dav-versions
     And the content of file "/sharefile.txt" for user "Alice" should be "old content"
     And the content of file "/received/sharefile.txt" for user "Brian" should be "old content"
 
-  @files_sharing-app-required @issue-38027 @skipOnOcV10 @notToImplementOnOCIS
+  @files_sharing-app-required @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/sharingfolder"

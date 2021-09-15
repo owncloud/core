@@ -54,15 +54,12 @@ Feature: favorite
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
-    And user "Brian" has favorited element "/Shares/PARENT/parent.txt"
-    When user "Brian" moves file "/Shares/PARENT/parent.txt" to "/taken_out.txt" using the WebDAV API
-    Then as user "Brian" file "/taken_out.txt" should be favorited
     Examples:
       | dav_version |
       | old         |
       | new         |
 
-  @issue-38027 @skipOnOcV10
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
