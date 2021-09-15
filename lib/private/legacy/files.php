@@ -111,6 +111,11 @@ class OC_Files {
 		}
 
 		try {
+			/*
+			 * $listOfFiles might be an empty array,
+			 * for example if the client requests to download a whole folder
+			 * and does not supply individual files.
+			 */
 			if (\count($listOfFiles) === 0) {
 				$filename = $dir;
 				$getType = self::ZIP_DIR;
