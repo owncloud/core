@@ -734,8 +734,7 @@ class TrashbinContext implements Context {
 					'trash-bin'
 				);
 				$this->featureContext->setResponse($response);
-				// this gives empty response in ocis and the oc10 behavior is also not correct
-				// https://github.com/owncloud/core/issues/38898
+				// this gives empty response in ocis
 				try {
 					$responseXml = HttpRequestHelper::getResponseXml(
 						$response,
