@@ -101,7 +101,6 @@ class OC_Files {
 	 */
 	public static function get($dir, $files, $params = null) {
 		$view = \OC\Files\Filesystem::getView();
-		$getType = self::FILE;
 
 		if (!\is_array($files)) {
 			// "files" contains a string with a filename
