@@ -52,6 +52,7 @@ Summary
 * Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/compare/issues/39183)
 * Enhancement - Hide accept and decline share text on mobile view: [#39224](https://github.com/owncloud/core/pull/39224)
 * Enhancement - Add option to hide the upload estimation in WebUI: [#39228](https://github.com/owncloud/core/pull/39228)
+* Enhancement - Allow skeletondirectory to be an empty string: [#39230](https://github.com/owncloud/core/pull/39230)
 
 Details
 -------
@@ -437,6 +438,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4743
    https://github.com/owncloud/core/pull/39228
+
+* Enhancement - Allow skeletondirectory to be an empty string: [#39230](https://github.com/owncloud/core/pull/39230)
+
+   Skeletondirectory can now be set to an empty string in config.php to indicate that no skeleton
+   is required.
+
+   https://github.com/owncloud/core/pull/39230
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
