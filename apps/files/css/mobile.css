@@ -105,5 +105,10 @@ table #headerSize, #headerDate, #headerExpiration, .filesize, .modified, .date {
 	margin-right: 5px;
 }
 
+/* hide restore text in deleted files list mobile */
+#fileList a.action.action-restore.permanent span:nth-child(2){
+	display: none !important;
+}
+
 }
 

@@ -1,0 +1,6 @@
+Enhancement: Hide restore text in deleted files list on mobile device
+
+With this PR restore text next to the associated icon will be hidden to
+grant space for the file and folder names.
+
+https://github.com/owncloud/core/pull/39236
