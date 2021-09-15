@@ -617,12 +617,19 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $body, $ofUser, TableNode $table) {
+		$header = [];
+		if ($method === 'MOVE' || $method === 'COPY') {
+			$header['Destination'] = '/path/to/destination';
+		}
+
 		$this->sendRequestToTheseEndpointsAsNormalUser(
 			$user,
 			$method,
 			$ofUser,
 			$table,
-			$body
+			$body,
+			null,
+			$header,
 		);
 	}
 
@@ -656,6 +663,7 @@ class OCSContext implements Context {
 	 * @param TableNode $table
 	 * @param string|null $body
 	 * @param string|null $property
+	 * @param Array|null $header
 	 *
 	 * @return void
 	 * @throws Exception
@@ -666,7 +674,8 @@ class OCSContext implements Context {
 		$ofUser,
 		$table,
 		$body = null,
-		$property = null
+		$property = null,
+		$header = null
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
@@ -686,7 +695,8 @@ class OCSContext implements Context {
 				$row['endpoint'],
 				$method,
 				$this->featureContext->getPasswordForUser($user),
-				$body
+				$body,
+				$header
 			);
 			$this->featureContext->pushToLastStatusCodesArrays();
 		}

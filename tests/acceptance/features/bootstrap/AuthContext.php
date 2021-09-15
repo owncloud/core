@@ -320,12 +320,19 @@ class AuthContext implements Context {
 		$ofUser,
 		TableNode $table
 	) {
+		$header = [];
+		if ($method === 'MOVE' || $method === 'COPY') {
+			$header['Destination'] = '/path/to/destination';
+		}
+
 		$this->requestEndpointsWithBasicAuthAndGeneratedPassword(
 			$user,
 			$method,
 			$ofUser,
 			$table,
-			$body
+			$body,
+			null,
+			$header,
 		);
 	}
 
@@ -336,6 +343,7 @@ class AuthContext implements Context {
 	 * @param TableNode $table endpoints table
 	 * @param string|null $body body for request
 	 * @param string|null $property property to get
+	 * @param Array|null $header request header
 	 *
 	 * @return void
 	 * @throws Exception
@@ -346,7 +354,8 @@ class AuthContext implements Context {
 		$ofUser,
 		TableNode $table,
 		$body = null,
-		$property = null
+		$property = null,
+		$header = null
 	) {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
@@ -364,7 +373,7 @@ class AuthContext implements Context {
 				$row['endpoint'],
 				$ofUser
 			);
-			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body);
+			$this->userRequestsURLWithUsingBasicAuth($user, $row['endpoint'], $method, $this->appToken, $body, $header);
 			$this->featureContext->pushToLastStatusCodesArrays();
 		}
 	}
