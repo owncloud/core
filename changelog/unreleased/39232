@@ -1,0 +1,6 @@
+Enhancement: Improve mobile view for "Shared by link" file list
+
+With this PR, the "Expiration date" column won't be displayed in mobile view
+anymore to gather space.
+
+https://github.com/owncloud/core/pull/39232
