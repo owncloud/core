@@ -31,8 +31,13 @@ Feature: get user
     And the quota definition returned by the API should be "default"
     Examples:
       | username | displayname  | email               |
-      | a%b@-+_.b  | A weird b    | a.b@example.com     |
+      | a@-+_.b  | A weird b    | a.b@example.com     |
       | a space  | A Space Name | a.space@example.com |
+
+    @skipOnOcV10
+    Examples:
+      | username | displayname  | email           |
+      | a%b      | A percent b  | a.b@example.com |
 
   Scenario: admin gets an existing user, providing uppercase username in the URL
     Given these users have been created with default attributes and without skeleton files:

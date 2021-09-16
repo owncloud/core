@@ -26,8 +26,13 @@ Feature: edit users
     And the email address of user "<username>" should be "a-different-email@example.com"
     Examples:
       | username | email               |
-      | a%b@-+_.b  | a.b@example.com     |
+      | a@-+_.b  | a.b@example.com     |
       | a space  | a.space@example.com |
+
+    @skipOnOcV10
+    Examples:
+      | username | email           |
+      | a%b      | a.b@example.com |
 
   @smokeTest
   Scenario: the administrator can edit a user display (the API allows editing the "display name" by using the key word "display")
