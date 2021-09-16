@@ -110,33 +110,43 @@
 		},
 
 		setMessage: function(message) {
-			$('#update-progress-message').html(message);
+			var parsedMessage = this.parseMessage(message);
+			$('#update-progress-message').html(parsedMessage);
 			$('#update-progress-detailed')
 				.append($('<span>'))
-				.append(message)
+				.append(parsedMessage)
 				.append($('<br>'));
 		},
 
 		setPermanentMessage: function(message) {
-			$('#update-progress-message').html(message);
+			var parsedMessage = this.parseMessage(message);
+			$('#update-progress-message').html(parsedMessage);
 			$('#update-progress-message-warnings')
 				.show()
-				.append($('<ul>').append(message));
+				.append($('<ul>').append(parsedMessage));
 			$('#update-progress-detailed')
 				.append($('<span>'))
-				.append(message)
+				.append(parsedMessage)
 				.append($('<br>'));
 		},
-		
+
 		setErrorMessage: function (message) {
+			var parsedMessage = this.parseMessage(message);
 			$('#update-progress-message-error')
 				.show()
-				.html(message);
+				.html(parsedMessage);
 			$('#update-progress-detailed')
 				.append($('<span>'))
-				.append(message)
+				.append(parsedMessage)
 				.append($('<br>'));
-		}
+		},
+
+		parseMessage: function (message) {
+			// generate a tags from urls
+			var urlRegex = /(https?:\/\/[^\s]+)/g;
+			return message.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
+		},
+
 	};
 
 })();
