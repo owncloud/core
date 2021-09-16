@@ -38,8 +38,8 @@ Feature: independent locks
     And user "Alice" has created folder "notlocked/toShare"
     And user "Alice" has shared folder "locked/toShare" with user "Brian"
     And user "Alice" has shared folder "notlocked/toShare" with user "Brian"
-    And user "Brian" has accepted share "/toShare" offered by user "Alice"
-    And user "Brian" has accepted share "/toShare" offered by user "Alice"
+    And user "Brian" has accepted the first pending share "/toShare" offered by user "Alice"
+    And user "Brian" has accepted the next pending share "/toShare" offered by user "Alice"
     When user "Brian" locks folder "/Shares/toShare" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/toShare (2)/file.txt"

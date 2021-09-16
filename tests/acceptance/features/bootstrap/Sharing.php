@@ -2862,11 +2862,12 @@ trait Sharing {
 	 * @param string $action
 	 * @param string $share
 	 * @param string $offeredBy
+	 * @param string $state specify 'accepted', 'pending', 'rejected' or 'declined' to only consider shares in that state
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userReactsToShareOfferedBy($user, $action, $share, $offeredBy) {
+	public function userReactsToShareOfferedBy($user, $action, $share, $offeredBy, $state = '') {
 		$user = $this->getActualUsername($user);
 		$offeredBy = $this->getActualUsername($offeredBy);
 
@@ -2880,13 +2881,29 @@ trait Sharing {
 			if ($shareFolder) {
 				$shareFolder = \ltrim($shareFolder, '/');
 			}
-			
+
 			// Add share folder to share path if given
 			if ($shareFolder && !(strpos($share, "/$shareFolder") === 0)) {
 				$share = '/' . $shareFolder . $share;
 			}
 
-			if ((string) $shareElement['uid_owner'] === $offeredBy
+			// SharingHelper::SHARE_STATES has the mapping between the words for share states
+			// like "accepted", "pending",... and the integer constants 0, 1,... that are in
+			// the "state" field of the share data.
+			if ($state === '') {
+				// Any share state is OK
+				$matchesShareState = true;
+			} else {
+				$requiredStateCode = SharingHelper::SHARE_STATES[$state];
+				if ($shareElement['state'] === $requiredStateCode) {
+					$matchesShareState = true;
+				} else {
+					$matchesShareState = false;
+				}
+			}
+
+			if ($matchesShareState
+				&& (string) $shareElement['uid_owner'] === $offeredBy
 				&& (string) $shareElement['path'] === $share
 			) {
 				$shareId = (string) $shareElement['id'];
@@ -2991,6 +3008,38 @@ trait Sharing {
 		$this->theHTTPStatusCodeShouldBe(
 			200,
 			__METHOD__ . " could not $actionText share $share to $user by $offeredBy"
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" accepts the (?:first|next|) pending share "([^"]*)" offered by user "([^"]*)" using the sharing API$/
+	 *
+	 * @param string $user
+	 * @param string $share
+	 * @param string $offeredBy
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userAcceptsThePendingShareOfferedBy($user, $share, $offeredBy) {
+		$this->userReactsToShareOfferedBy($user, 'accepts', $share, $offeredBy, 'pending');
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has accepted the (?:first|next|) pending share "([^"]*)" offered by user "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $share
+	 * @param string $offeredBy
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasAcceptedThePendingShareOfferedBy($user, $share, $offeredBy) {
+		$this->userAcceptsThePendingShareOfferedBy($user, $share, $offeredBy);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			__METHOD__ . " could not accept the pending share $share to $user by $offeredBy"
 		);
 	}
 
