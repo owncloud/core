@@ -16,6 +16,7 @@ Summary
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
 * Bugfix - Do not try to delete the folder twice: [#39070](https://github.com/owncloud/core/pull/39070)
 * Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
+* Bugfix - Prevent unneeded call to LDAP during login with local users: [#39105](https://github.com/owncloud/core/pull/39105)
 * Bugfix - Clarify the description of the manual file locking option: [#39106](https://github.com/owncloud/core/pull/39106)
 * Bugfix - Update appinfo cache only if the app version is newer: [#39108](https://github.com/owncloud/core/pull/39108)
 * Bugfix - Fix logo size on login screen: [#39129](https://github.com/owncloud/core/pull/39129)
@@ -130,6 +131,17 @@ Details
 
    https://github.com/owncloud/core/issues/39093
    https://github.com/owncloud/core/pull/39094
+
+* Bugfix - Prevent unneeded call to LDAP during login with local users: [#39105](https://github.com/owncloud/core/pull/39105)
+
+   Previously, when the user_ldap app was enabled, any login with a local user would check the LDAP
+   server for that user even though it shouldn't be needed.
+
+   Now, such call won't happen if it has been handled by a different component. In particular,
+   login with a local user won't trigger that request to LDAP.
+
+   https://github.com/owncloud/core/pull/39105
+   https://github.com/owncloud/user_ldap/pull/675
 
 * Bugfix - Clarify the description of the manual file locking option: [#39106](https://github.com/owncloud/core/pull/39106)
 

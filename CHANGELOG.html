@@ -14,6 +14,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Show previews in profile picture setting, select from files: <a href="https://github.com/owncloud/core/pull/39067">#39067</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Do not try to delete the folder twice: <a href="https://github.com/owncloud/core/pull/39070">#39070</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Close open menus if click is on an iFrame: <a href="https://github.com/owncloud/core/issues/39093">#39093</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent unneeded call to LDAP during login with local users: <a href="https://github.com/owncloud/core/pull/39105">#39105</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Clarify the description of the manual file locking option: <a href="https://github.com/owncloud/core/pull/39106">#39106</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Update appinfo cache only if the app version is newer: <a href="https://github.com/owncloud/core/pull/39108">#39108</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix logo size on login screen: <a href="https://github.com/owncloud/core/pull/39129">#39129</a></li>
@@ -127,6 +128,14 @@
             <p>https://github.com/owncloud/core/issues/39093<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39094<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent unneeded call to LDAP during login with local users: <a href="https://github.com/owncloud/core/pull/39105">#39105</a></p>
+            <p>Previously, when the user_ldap app was enabled, any login with a local user would check the LDAP
+   server for that user even though it shouldn't be needed.Now, such call won't happen if it has been handled by a different component. In particular,
+   login with a local user won't trigger that request to LDAP.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39105<br>https://github.com/owncloud/user_ldap/pull/675<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Clarify the description of the manual file locking option: <a href="https://github.com/owncloud/core/pull/39106">#39106</a></p>
