@@ -550,7 +550,7 @@ Feature: sharing
     And user "Brian" has accepted share "/userZeroFolder" offered by user "Alice"
     And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
     When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share" using the sharing API
-    And user "Carol" accepts share "/userZeroFolder/userOneFolder" offered by user "Brian" using the sharing API
+    And user "Carol" accepts share "/userOneFolder" offered by user "Brian" using the sharing API
     And user "Carol" shares folder "/Shares/userOneFolder" with user "Brian" using the sharing API
     Then the HTTP status code should be "200"
 #    Then the HTTP status code should be "405"
@@ -568,7 +568,7 @@ Feature: sharing
     And user "Brian" has accepted share "/userZeroFolder" offered by user "Alice"
     And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
     When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share" using the sharing API
-    And user "Carol" accepts share "/userZeroFolder/userOneFolder" offered by user "Brian" using the sharing API
+    And user "Carol" accepts share "/userOneFolder" offered by user "Brian" using the sharing API
     And user "Carol" shares folder "/Shares/userOneFolder" with user "Alice" using the sharing API
     Then the HTTP status code should be "200"
 #    Then the HTTP status code should be "405"
@@ -589,7 +589,7 @@ Feature: sharing
     And user "Carol" has accepted share "/userZeroFolder" offered by user "Alice"
     And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
     When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "David" with permissions "read, share" using the sharing API
-    And user "David" accepts share "/userZeroFolder/userOneFolder" offered by user "Brian" using the sharing API
+    And user "David" accepts share "/userOneFolder" offered by user "Brian" using the sharing API
     And user "David" shares folder "/Shares/userOneFolder" with user "Carol" using the sharing API
     Then the HTTP status code should be "200"
 #    Then the HTTP status code should be "405"

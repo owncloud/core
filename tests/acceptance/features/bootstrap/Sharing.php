@@ -2877,6 +2877,10 @@ trait Sharing {
 				SetupHelper::getSystemConfigValue('share_folder', $this->getStepLineRef())
 			);
 
+			if ($shareFolder) {
+				$shareFolder = \ltrim($shareFolder, '/');
+			}
+			
 			// Add share folder to share path if given
 			if ($shareFolder && !(strpos($share, "/$shareFolder") === 0)) {
 				$share = '/' . $shareFolder . $share;

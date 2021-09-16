@@ -210,7 +210,7 @@ Feature: sharing
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
-    And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Alice"
+    And user "Brian" has accepted share "/parent.txt" offered by user "Alice"
     When user "Alice" gets all the shares inside the folder "PARENT" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"

@@ -170,7 +170,7 @@ Feature: sharing
     And user "Alice" has shared folder "/folder1" with user "Brian" with permissions "all"
     And user "Brian" has accepted share "/folder1" offered by user "Alice"
     And user "Brian" has shared folder "/Shares/folder1/folder2" with user "Carol" with permissions "all"
-    And user "Carol" has accepted share "/folder1/folder2" offered by user "Brian"
+    And user "Carol" has accepted share "/folder2" offered by user "Brian"
     When user "Brian" moves folder "/Shares/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
     And user "Brian" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Brian" sharing with user "Carol" should include

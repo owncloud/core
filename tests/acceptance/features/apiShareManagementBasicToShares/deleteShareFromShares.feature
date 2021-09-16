@@ -48,7 +48,7 @@ Feature: sharing
     And user "Alice" has created folder "/common"
     And user "Alice" has created folder "/common/sub"
     And user "Alice" has shared folder "/common/sub" with user "Brian"
-    And user "Brian" has accepted share "/common/sub" offered by user "Alice"
+    And user "Brian" has accepted share "/sub" offered by user "Alice"
     When user "Alice" deletes folder "/common" using the WebDAV API
     Then the HTTP status code should be "204"
     And as "Brian" folder "/Shares/sub" should not exist
@@ -96,7 +96,7 @@ Feature: sharing
     And user "Carol" has created folder "PARENT"
     And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
     And user "Carol" has shared file "/PARENT/parent.txt" with group "grp1"
-    And user "Brian" has accepted share "/PARENT/parent.txt" offered by user "Carol"
+    And user "Brian" has accepted share "/parent.txt" offered by user "Carol"
     And user "Carol" has stored etag of element "/PARENT"
     And user "Brian" has stored etag of element "/"
     And user "Brian" has stored etag of element "/Shares"
@@ -152,8 +152,8 @@ Feature: sharing
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared entry "<entry_to_share>" with group "grp1"
-    And user "Brian" has accepted share "<entry_to_share>" offered by user "Alice"
-    And user "Carol" has accepted share "<entry_to_share>" offered by user "Alice"
+    And user "Brian" has accepted share "<received_entry>" offered by user "Alice"
+    And user "Carol" has accepted share "<received_entry>" offered by user "Alice"
     When user "Brian" deletes the last share using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
@@ -172,7 +172,7 @@ Feature: sharing
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared entry "<entry_to_share>" with user "Brian"
-    And user "Brian" has accepted share "<entry_to_share>" offered by user "Alice"
+    And user "Brian" has accepted share "<received_entry>" offered by user "Alice"
     When user "Brian" deletes the last share using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"

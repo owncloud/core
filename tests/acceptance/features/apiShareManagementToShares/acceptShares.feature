@@ -44,9 +44,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the pending state
-      | path           |
-      | /PARENT/       |
-      | /textfile0.txt |
+      | path                  |
+      | /Shares/PARENT/       |
+      | /Shares/textfile0.txt |
     And user "Carol" should see the following elements
       | /FOLDER/       |
       | /PARENT/       |
@@ -56,9 +56,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Carol" that these shares are in the pending state
-      | path           |
-      | /PARENT/       |
-      | /textfile0.txt |
+      | path                  |
+      | /Shares/PARENT/       |
+      | /Shares/textfile0.txt |
 
   Scenario: share a file & folder with another internal user when auto accept is disabled
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
@@ -74,9 +74,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the pending state
-      | path           |
-      | /PARENT/       |
-      | /textfile0.txt |
+      | path                  |
+      | /Shares/PARENT/       |
+      | /Shares/textfile0.txt |
 
   @smokeTest @issue-ocis-2131
   Scenario: accept a pending share
@@ -199,9 +199,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
-      | path           |
-      | /PARENT/       |
-      | /textfile0.txt |
+      | path                  |
+      | /Shares/PARENT/       |
+      | /Shares/textfile0.txt |
 
   @smokeTest @issue-ocis-2128
   Scenario: decline an accepted share
@@ -220,9 +220,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
-      | path           |
-      | /PARENT/       |
-      | /textfile0.txt |
+      | path                  |
+      | /Shares/PARENT/       |
+      | /Shares/textfile0.txt |
 
   Scenario: deleting shares in pending state
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -245,9 +245,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Carol" that these shares are in the pending state
-      | path           |
-      | /PARENT/       |
-      | /textfile0.txt |
+      | path                  |
+      | /Shares/PARENT/       |
+      | /Shares/textfile0.txt |
     But user "Brian" should see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
@@ -284,8 +284,8 @@ Feature: accept/decline shares coming from internal users
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the sharing API should report to user "Brian" that these shares are in the pending state
-      | path     |
-      | /PARENT/ |
+      | path            |
+      | /Shares/PARENT/ |
     And the sharing API should report that no shares are shared with user "Alice"
 
   Scenario: user accepts file that was initially accepted from another user and then declined
@@ -298,7 +298,7 @@ Feature: accept/decline shares coming from internal users
     When user "Carol" declines share "/Shares/testfile (2).txt" offered by user "Alice" using the sharing API
     And user "Brian" shares file "/testfile.txt" with user "Carol" using the sharing API
     And user "Carol" accepts share "/testfile.txt" offered by user "Brian" using the sharing API
-    And user "Carol" accepts share "/testfile.txt" offered by user "Alice" using the sharing API
+    And user "Carol" accepts share "/testfile (2).txt" offered by user "Alice" using the sharing API
     Then the sharing API should report to user "Carol" that these shares are in the accepted state
       | path                         |
       | /Shares/testfile (2).txt     |
@@ -318,13 +318,13 @@ Feature: accept/decline shares coming from internal users
     When user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
     And user "Alice" declines share "/Shares/PARENT (2)" offered by user "Brian" using the sharing API
     And user "Alice" accepts share "/PARENT" offered by user "Carol" using the sharing API
-    And user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
+    And user "Alice" accepts share "/PARENT (2)" offered by user "Brian" using the sharing API
     And user "Alice" declines share "/Shares/PARENT (2)" offered by user "Carol" using the sharing API
     And user "Alice" declines share "/Shares/PARENT (2) (2)" offered by user "Brian" using the sharing API
     And user "David" shares folder "/PARENT" with user "Alice" using the sharing API
     And user "Alice" accepts share "/PARENT" offered by user "David" using the sharing API
-    And user "Alice" accepts share "/PARENT" offered by user "Carol" using the sharing API
-    And user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
+    And user "Alice" accepts share "/PARENT (2)" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/PARENT (2) (2)" offered by user "Brian" using the sharing API
     Then the sharing API should report to user "Alice" that these shares are in the accepted state
       | path                        | uid_owner |
       | /Shares/PARENT (2)/         | David     |
@@ -483,8 +483,8 @@ Feature: accept/decline shares coming from internal users
     When user "Brian" deletes file "/Shares/PARENT" using the WebDAV API
     Then the HTTP status code should be "204"
     And the sharing API should report to user "Brian" that these shares are in the declined state
-      | path                 |
-      | /PARENT              |
+      | path                        |
+      | /Shares/PARENT              |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

@@ -29,7 +29,7 @@ Feature: local-storage
       | mimetype               | text/plain                     |
       | storage_id             | ANY_VALUE                      |
       | share_type             | user                           |
-    When user "Brian" accepts share "/local_storage/filetoshare.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/filetoshare.txt" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" file "/Shares/filetoshare.txt" should exist

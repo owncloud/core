@@ -14,7 +14,7 @@ Feature: local-storage
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
     And user "Alice" has shared file "/local_storage/filetoshare.txt" with user "Brian"
-    And user "Brian" has accepted share "/local_storage/filetoshare.txt" offered by user "Alice"
+    And user "Brian" has accepted share "/filetoshare.txt" offered by user "Alice"
     When user "Brian" moves file "/Shares/filetoshare.txt" to "/Shares/newFile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "/Shares/newFile.txt" should exist
@@ -31,7 +31,7 @@ Feature: local-storage
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/local_storage/foo"
     And user "Alice" has shared folder "/local_storage/foo" with user "Brian"
-    And user "Brian" has accepted share "/local_storage/foo" offered by user "Alice"
+    And user "Brian" has accepted share "/foo" offered by user "Alice"
     When user "Brian" moves folder "/Shares/foo" to "/Shares/newFolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" folder "/Shares/newFolder" should exist
@@ -52,7 +52,7 @@ Feature: local-storage
     And user "Alice" has created folder "/local_storage/foo/folder2"
     And user "Alice" has created folder "/local_storage/foo/folder2/subfolder"
     And user "Alice" has shared folder "/local_storage/foo" with user "Brian"
-    And user "Brian" has accepted share "/local_storage/foo" offered by user "Alice"
+    And user "Brian" has accepted share "/foo" offered by user "Alice"
     When user "Brian" moves folder "/Shares/foo" to "/Shares/newFolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" folder "/Shares/newFolder" should exist
@@ -76,7 +76,7 @@ Feature: local-storage
     And user "Brian" has been added to group "grp1"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
     And user "Alice" has shared file "/local_storage/filetoshare.txt" with group "grp1"
-    And user "Brian" has accepted share "/local_storage/filetoshare.txt" offered by user "Alice"
+    And user "Brian" has accepted share "/filetoshare.txt" offered by user "Alice"
     When user "Brian" moves file "/Shares/filetoshare.txt" to "/Shares/newFile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "/Shares/newFile.txt" should exist

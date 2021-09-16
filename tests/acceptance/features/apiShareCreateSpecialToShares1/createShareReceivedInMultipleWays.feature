@@ -63,7 +63,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "Brian" accepts share "/PARENT/CHILD" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "/CHILD" offered by user "Alice" using the sharing API
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
@@ -86,7 +86,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Alice" shares folder "/test/sub" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Brian" accepts share "/test/sub" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/sub" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" folder "/Shares/sub" should exist
@@ -106,7 +106,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Alice" shares folder "/test/sub" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Brian" accepts share "/test/sub" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "/sub" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" folder "/Shares/sub" should exist
@@ -237,12 +237,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to create folder "/Shares/child1/fo3"
     And as "Alice" folder "/Shares/child1" should exist
     And user "Alice" should not be able to create folder "/Shares/child1/fo3"
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10 @issue-2440
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
       | /child1 |
@@ -269,12 +264,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
     And as "Alice" file "/Shares/child1/child2/rename.txt" should exist
     And user "Alice" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10 @issue-2440
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
       | /child1 |
@@ -301,12 +291,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to delete folder "/Shares/child1/child2"
     And as "Alice" folder "/Shares/child1" should exist
     And user "Alice" should not be able to delete folder "/Shares/child1/child2"
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10 @issue-2440
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
       | /child1 |
@@ -332,12 +317,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "/Shares/child1" should exist
     And as "Alice" folder "/Shares/child1" should exist
     And as "Alice" folder "/Shares/parent" should exist
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
@@ -364,12 +344,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to create folder "/Shares/parent/fo3"
     And as "Alice" folder "/Shares/parent" should exist
     And user "Alice" should not be able to create folder "/Shares/parent/fo3"
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
@@ -396,12 +371,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
     And as "Alice" file "/Shares/parent/child1/child2/rename.txt" should exist
     And user "Alice" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10 @issue-ocis-2440
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |
@@ -428,12 +398,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to delete folder "/Shares/parent/child1"
     And as "Alice" folder "/Shares/parent" should exist
     And user "Alice" should not be able to delete folder "/Shares/parent/child1"
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10 @issue-ocis-2440
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2440
     Examples:
       | path    |
       | /child1 |
@@ -459,12 +424,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "/Shares/parent" should exist
     And as "Alice" folder "/Shares/parent" should exist
     And as "Alice" folder "/Shares/child1" should exist
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |
@@ -500,12 +460,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Brian" should not be able to create folder "/Shares/child1/child2/fo2"
     And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
     And user "Brian" should not be able to share folder "/Shares/child1" with group "grp3" with permissions "read" using the sharing API
-    @skipOnOcis
-    Examples:
-      | path           |
-      | /parent/child1 |
-
-    @skipOnOcV10
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
       | /child1 |

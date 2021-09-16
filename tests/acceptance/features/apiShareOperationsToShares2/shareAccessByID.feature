@@ -116,8 +116,8 @@ Feature: share access by ID
     And user "Brian" should not see the following elements
       | /Shares/textfile0.txt |
     And the sharing API should report to user "Brian" that these shares are in the declined state
-      | path           |
-      | /textfile0.txt |
+      | path                  |
+      | /Shares/textfile0.txt |
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |

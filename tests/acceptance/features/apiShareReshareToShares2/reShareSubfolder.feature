@@ -20,7 +20,7 @@ Feature: a subfolder of a received share can be reshared
     When user "Brian" shares folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Carol" accepts share "/TMP/SUB" offered by user "Brian" using the sharing API
+    When user "Carol" accepts share "/SUB" offered by user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" folder "/Shares/SUB" should exist
@@ -95,7 +95,7 @@ Feature: a subfolder of a received share can be reshared
     And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
     And user "Brian" has accepted share "/TMP" offered by user "Alice"
     And user "Brian" has shared folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,create,update,read"
-    And user "Carol" has accepted share "/TMP/SUB" offered by user "Brian"
+    And user "Carol" has accepted share "/SUB" offered by user "Brian"
     When user "Brian" updates the last share using the sharing API with
       | permissions | share,read |
     Then the OCS status code should be "<ocs_status_code>"
@@ -118,7 +118,7 @@ Feature: a subfolder of a received share can be reshared
     And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
     And user "Brian" has accepted share "/TMP" offered by user "Alice"
     And user "Brian" has shared folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,read"
-    And user "Carol" has accepted share "/TMP/SUB" offered by user "Brian"
+    And user "Carol" has accepted share "/SUB" offered by user "Brian"
     When user "Brian" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
@@ -141,7 +141,7 @@ Feature: a subfolder of a received share can be reshared
     And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,read"
     And user "Brian" has accepted share "/TMP" offered by user "Alice"
     And user "Brian" has shared folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,read"
-    And user "Carol" has accepted share "/TMP/SUB" offered by user "Brian"
+    And user "Carol" has accepted share "/SUB" offered by user "Brian"
     When user "Brian" updates the last share using the sharing API with
       | permissions | all |
     Then the OCS status code should be "404"
