@@ -302,15 +302,19 @@ class Helper extends \OC\Share\Constants {
 
 		if (\rtrim($normalizedServer1, '/') === \rtrim($normalizedServer2, '/')) {
 			// FIXME this should be a method in the user management instead
+			$user1Handled = false;
+			$user2Handled = false;
+			// the $user1Handled and $user2Handled vars will be sent as reference so the listeners
+			// can use it as a flag in order to know if the event has been processed already or not.
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
 				'preLoginNameUsedAsUserName',
-				['uid' => &$user1]
+				['uid' => &$user1, 'hasBeenHandled' => &$user1Handled]
 			);
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
 				'preLoginNameUsedAsUserName',
-				['uid' => &$user2]
+				['uid' => &$user2, 'hasBeenHandled' => &$user2Handled]
 			);
 
 			if ($user1 === $user2) {
