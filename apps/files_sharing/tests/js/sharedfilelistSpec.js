@@ -613,9 +613,14 @@ describe('OCA.Sharing.FileList tests', function() {
 
 			fileList.reload();
 
+			// overwrite current date to prevent timezone conflicts
+			moment.now = function () {
+				return +new Date(2021, 1, 1, 13, 0);
+			};
+
 			var expirationDateInADay = moment()
-				.set({"hour": 0, "minute": 0, "second": 0})
 				.add(1, 'days')
+				.set({"hour": 0, "minute": 0, "second": 0})
 				.format('YYYY-MM-DD HH:mm:ss');
 
 			/* jshint camelcase: false */
@@ -659,6 +664,11 @@ describe('OCA.Sharing.FileList tests', function() {
 						displayname_owner: 'User One2'
 					}]
 				}
+			};
+		});
+		afterEach(function (){
+			moment.now = function () {
+				return +new Date();
 			};
 		});
 		it('render only link shares', function() {

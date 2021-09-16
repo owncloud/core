@@ -5,4 +5,5 @@ expiration is set to the end of date and showing wrong values.
 This has been fixed with this PR
 
 https://github.com/owncloud/core/pull/39238
+https://github.com/owncloud/core/pull/39246
 https://github.com/owncloud/core/issues/39234
