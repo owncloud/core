@@ -5,7 +5,9 @@ SCRIPTPATH=`dirname $SCRIPT`
 
 cd "$SCRIPTPATH"
 if [ ! -f CalDAVTester/testcaldav.py ]; then
-    git clone https://github.com/apple/ccs-caldavtester.git CalDAVTester
+    git clone https://github.com/claudep/ccs-caldavtester.git CalDAVTester
+    cd CalDAVTester
+    git checkout python3
 fi
 if [ ! -f pycalendar/setup.py ]; then
     git clone https://github.com/apple/ccs-pycalendar.git pycalendar
