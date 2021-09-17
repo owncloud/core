@@ -27,7 +27,7 @@ Feature: accept/decline shares coming from internal users
     And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
 
   @smokeTest
-  Scenario: share a file & folder with another internal group when auto accept is disabled
+  Scenario Outline: share a file & folder with another internal group when auto accept is disabled
     Given user "Carol" has created folder "FOLDER"
     And user "Carol" has created folder "PARENT"
     And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
@@ -44,9 +44,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the pending state
-      | path                  |
-      | /Shares/PARENT/       |
-      | /Shares/textfile0.txt |
+      | path                   |
+      | <pending_share_path_1> |
+      | <pending_share_path_2> |
     And user "Carol" should see the following elements
       | /FOLDER/       |
       | /PARENT/       |
@@ -56,11 +56,21 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Carol" that these shares are in the pending state
-      | path                  |
-      | /Shares/PARENT/       |
-      | /Shares/textfile0.txt |
+      | path                   |
+      | <pending_share_path_1> |
+      | <pending_share_path_2> |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path_1 | pending_share_path_2  |
+      | /Shares/PARENT/      | /Shares/textfile0.txt |
 
-  Scenario: share a file & folder with another internal user when auto accept is disabled
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path_1 | pending_share_path_2 |
+      | /PARENT/             | /textfile0.txt       |
+
+
+  Scenario Outline: share a file & folder with another internal user when auto accept is disabled
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
     Then the OCS status code should be "100"
@@ -74,9 +84,18 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the pending state
-      | path                  |
-      | /Shares/PARENT/       |
-      | /Shares/textfile0.txt |
+      | path                   |
+      | <pending_share_path_1> |
+      | <pending_share_path_2> |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path_1 | pending_share_path_2  |
+      | /Shares/PARENT/      | /Shares/textfile0.txt |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path_1 | pending_share_path_2 |
+      | /PARENT/             | /textfile0.txt       |
 
   @smokeTest @issue-ocis-2131
   Scenario: accept a pending share
@@ -183,7 +202,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/shared/ |
 
   @smokeTest
-  Scenario: declines a pending share
+  Scenario Outline: declines a pending share
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When user "Brian" declines share "/PARENT" offered by user "Alice" using the sharing API
@@ -199,12 +218,22 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
-      | path                  |
-      | /Shares/PARENT/       |
-      | /Shares/textfile0.txt |
+      | path                    |
+      | <declined_share_path_1> |
+      | <declined_share_path_2> |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | declined_share_path_1 | declined_share_path_2 |
+      | /Shares/PARENT/       | /Shares/textfile0.txt |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | declined_share_path_1 | declined_share_path_2 |
+      | /PARENT/              | /textfile0.txt        |
+
 
   @smokeTest @issue-ocis-2128
-  Scenario: decline an accepted share
+  Scenario Outline: decline an accepted share
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
@@ -220,9 +249,19 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Brian" that these shares are in the declined state
-      | path                  |
-      | /Shares/PARENT/       |
-      | /Shares/textfile0.txt |
+      | path                    |
+      | <declined_share_path_1> |
+      | <declined_share_path_2> |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | declined_share_path_1 | declined_share_path_2 |
+      | /Shares/PARENT/       | /Shares/textfile0.txt |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | declined_share_path_1 | declined_share_path_2 |
+      | /PARENT/              | /textfile0.txt        |
+
 
   Scenario: deleting shares in pending state
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -231,7 +270,7 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the sharing API should report that no shares are shared with user "Brian"
 
-  Scenario: only one user in a group accepts a share
+  Scenario Outline: only one user in a group accepts a share
     Given user "Alice" has shared folder "/PARENT" with group "grp1"
     And user "Alice" has shared file "/textfile0.txt" with group "grp1"
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
@@ -245,9 +284,9 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/parent.txt |
       | /Shares/textfile0.txt     |
     And the sharing API should report to user "Carol" that these shares are in the pending state
-      | path                  |
-      | /Shares/PARENT/       |
-      | /Shares/textfile0.txt |
+      | path                   |
+      | <pending_share_path_1> |
+      | <pending_share_path_2> |
     But user "Brian" should see the following elements
       | /Shares/PARENT/           |
       | /Shares/PARENT/parent.txt |
@@ -256,6 +295,16 @@ Feature: accept/decline shares coming from internal users
       | path                  |
       | /Shares/PARENT/       |
       | /Shares/textfile0.txt |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path_1 | pending_share_path_2  |
+      | /Shares/PARENT/      | /Shares/textfile0.txt |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path_1 | pending_share_path_2 |
+      | /PARENT/             | /textfile0.txt       |
+
 
   @issue-ocis-2131
   Scenario: receive two shares with identical names from different users, accept one by one
@@ -279,16 +328,26 @@ Feature: accept/decline shares coming from internal users
       | /Shares/shared/     |
       | /Shares/shared (2)/ |
 
-  Scenario: share with a group that you are part of yourself
+  Scenario Outline: share with a group that you are part of yourself
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the sharing API should report to user "Brian" that these shares are in the pending state
-      | path            |
-      | /Shares/PARENT/ |
+      | path                 |
+      | <pending_share_path> |
     And the sharing API should report that no shares are shared with user "Alice"
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path |
+      | /Shares/PARENT/    |
 
-  Scenario: user accepts file that was initially accepted from another user and then declined
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path |
+      | /PARENT/           |
+
+
+  Scenario Outline: user accepts file that was initially accepted from another user and then declined
     Given user "Alice" has uploaded file with content "First file" to "/testfile.txt"
     And user "Brian" has uploaded file with content "Second file" to "/testfile.txt"
     And user "Carol" has created folder "Shares"
@@ -298,7 +357,7 @@ Feature: accept/decline shares coming from internal users
     When user "Carol" declines share "/Shares/testfile (2).txt" offered by user "Alice" using the sharing API
     And user "Brian" shares file "/testfile.txt" with user "Carol" using the sharing API
     And user "Carol" accepts share "/testfile.txt" offered by user "Brian" using the sharing API
-    And user "Carol" accepts share "/testfile (2).txt" offered by user "Alice" using the sharing API
+    And user "Carol" accepts share "<accepted_share_path>" offered by user "Alice" using the sharing API
     Then the sharing API should report to user "Carol" that these shares are in the accepted state
       | path                         |
       | /Shares/testfile (2).txt     |
@@ -306,8 +365,18 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/testfile.txt" for user "Carol" should be "Third file"
     And the content of file "/Shares/testfile (2).txt" for user "Carol" should be "Second file"
     And the content of file "/Shares/testfile (2) (2).txt" for user "Carol" should be "First file"
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | accepted_share_path |
+      | /testfile (2).txt   |
 
-  Scenario: user accepts shares received from multiple users with the same name when auto-accept share is disabled
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | accepted_share_path |
+      | /testfile.txt       |
+
+
+  Scenario Outline: user accepts shares received from multiple users with the same name when auto-accept share is disabled
     Given user "David" has been created with default attributes and without skeleton files
     And user "David" has created folder "PARENT"
     And user "Brian" has shared folder "/PARENT" with user "Alice"
@@ -318,18 +387,28 @@ Feature: accept/decline shares coming from internal users
     When user "Alice" accepts share "/PARENT" offered by user "Brian" using the sharing API
     And user "Alice" declines share "/Shares/PARENT (2)" offered by user "Brian" using the sharing API
     And user "Alice" accepts share "/PARENT" offered by user "Carol" using the sharing API
-    And user "Alice" accepts share "/PARENT (2)" offered by user "Brian" using the sharing API
+    And user "Alice" accepts share "<accepted_share_path_1>" offered by user "Brian" using the sharing API
     And user "Alice" declines share "/Shares/PARENT (2)" offered by user "Carol" using the sharing API
     And user "Alice" declines share "/Shares/PARENT (2) (2)" offered by user "Brian" using the sharing API
     And user "David" shares folder "/PARENT" with user "Alice" using the sharing API
     And user "Alice" accepts share "/PARENT" offered by user "David" using the sharing API
-    And user "Alice" accepts share "/PARENT (2)" offered by user "Carol" using the sharing API
-    And user "Alice" accepts share "/PARENT (2) (2)" offered by user "Brian" using the sharing API
+    And user "Alice" accepts share "<accepted_share_path_1>" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "<accepted_share_path_2>" offered by user "Brian" using the sharing API
     Then the sharing API should report to user "Alice" that these shares are in the accepted state
       | path                        | uid_owner |
       | /Shares/PARENT (2)/         | David     |
       | /Shares/PARENT (2) (2)/     | Carol     |
       | /Shares/PARENT (2) (2) (2)/ | Brian     |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | accepted_share_path_1 | accepted_share_path_2 |
+      | /PARENT (2)           | /PARENT (2) (2)       |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | accepted_share_path_1 | accepted_share_path_2 |
+      | /PARENT               | /PARENT               |
+
 
   Scenario: user shares folder with matching folder-name for both user involved in sharing
     Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
@@ -483,12 +562,20 @@ Feature: accept/decline shares coming from internal users
     When user "Brian" deletes file "/Shares/PARENT" using the WebDAV API
     Then the HTTP status code should be "204"
     And the sharing API should report to user "Brian" that these shares are in the declined state
-      | path                        |
-      | /Shares/PARENT              |
+      | path                  |
+      | <declined_share_path> |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | declined_share_path |
+      | 1               | 100             | /Shares/PARENT      |
+      | 2               | 200             | /Shares/PARENT      |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | declined_share_path |
+      | 1               | 100             | /PARENT             |
+      | 2               | 200             | /PARENT             |
+
 
   @issue-ocis-765
   Scenario: shares exist after restoring already shared file to a previous version

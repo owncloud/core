@@ -43,16 +43,25 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario: orphaned shares
+  Scenario Outline: orphaned shares
     Given using OCS API version "1"
     And user "Alice" has created folder "/common"
     And user "Alice" has created folder "/common/sub"
     And user "Alice" has shared folder "/common/sub" with user "Brian"
-    And user "Brian" has accepted share "/sub" offered by user "Alice"
+    And user "Brian" has accepted share "<pending_share_path>" offered by user "Alice"
     When user "Alice" deletes folder "/common" using the WebDAV API
     Then the HTTP status code should be "204"
     And as "Brian" folder "/Shares/sub" should not exist
     And as "Brian" folder "/sub" should not exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path |
+      | /sub               |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path |
+      | /common/sub        |
 
   @smokeTest @files_trashbin-app-required
   Scenario: deleting a file out of a share as recipient creates a backup for the owner
@@ -86,7 +95,7 @@ Feature: sharing
     And as "Brian" file "/sub/shared_file.txt" should exist in the trashbin
 
   @smokeTest
-  Scenario: unshare from self
+  Scenario Outline: unshare from self
     And group "grp1" has been created
     And these users have been created with default attributes and without skeleton files:
       | username |
@@ -96,7 +105,7 @@ Feature: sharing
     And user "Carol" has created folder "PARENT"
     And user "Carol" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
     And user "Carol" has shared file "/PARENT/parent.txt" with group "grp1"
-    And user "Brian" has accepted share "/parent.txt" offered by user "Carol"
+    And user "Brian" has accepted share "<pending_share_path>" offered by user "Carol"
     And user "Carol" has stored etag of element "/PARENT"
     And user "Brian" has stored etag of element "/"
     And user "Brian" has stored etag of element "/Shares"
@@ -105,6 +114,16 @@ Feature: sharing
     And the etag of element "/" of user "Brian" should have changed
     And the etag of element "/Shares" of user "Brian" should have changed
     And the etag of element "/PARENT" of user "Carol" should not have changed
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path |
+      | /parent.txt        |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path |
+      | /PARENT/parent.txt |
+
 
   Scenario: sharee of a read-only share folder tries to delete the shared folder
     Given using OCS API version "1"
@@ -152,38 +171,56 @@ Feature: sharing
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared entry "<entry_to_share>" with group "grp1"
-    And user "Brian" has accepted share "<received_entry>" offered by user "Alice"
-    And user "Carol" has accepted share "<received_entry>" offered by user "Alice"
+    And user "Brian" has accepted share "<pending_entry>" offered by user "Alice"
+    And user "Carol" has accepted share "<pending_entry>" offered by user "Alice"
     When user "Brian" deletes the last share using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Alice" entry "<entry_to_share>" should exist
     And as "Brian" entry "<received_entry>" should exist
     And as "Carol" entry "<received_entry>" should exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | entry_to_share          | ocs_api_version | http_status_code | received_entry          |
-      | /shared/shared_file.txt | 1               | 200              | /Shares/shared_file.txt |
-      | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt |
-      | /shared                 | 1               | 200              | /Shares/shared          |
-      | /shared                 | 2               | 404              | /Shares/shared          |
+      | entry_to_share          | ocs_api_version | http_status_code | received_entry          | pending_entry           |
+      | /shared/shared_file.txt | 1               | 200              | /Shares/shared_file.txt | /Shares/shared_file.txt |
+      | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt | /Shares/shared_file.txt |
+      | /shared                 | 1               | 200              | /Shares/shared          | /Shares/shared          |
+      | /shared                 | 2               | 404              | /Shares/shared          | /Shares/shared          |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | entry_to_share          | ocs_api_version | http_status_code | received_entry          | pending_entry           |
+      | /shared/shared_file.txt | 1               | 200              | /Shares/shared_file.txt | /shared/shared_file.txt |
+      | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt | /shared/shared_file.txt |
+      | /shared                 | 1               | 200              | /Shares/shared          | /shared                 |
+      | /shared                 | 2               | 404              | /Shares/shared          | /shared                 |
 
   Scenario Outline: An individual share recipient tries to delete the share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/shared"
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared entry "<entry_to_share>" with user "Brian"
-    And user "Brian" has accepted share "<received_entry>" offered by user "Alice"
+    And user "Brian" has accepted share "<pending_entry>" offered by user "Alice"
     When user "Brian" deletes the last share using the sharing API
     Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     And as "Alice" entry "<entry_to_share>" should exist
     And as "Brian" entry "<received_entry>" should exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | entry_to_share          | ocs_api_version | http_status_code | received_entry          |
-      | /shared/shared_file.txt | 1               | 200              | /Shares/shared_file.txt |
-      | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt |
-      | /shared                 | 1               | 200              | /Shares/shared          |
-      | /shared                 | 2               | 404              | /Shares/shared          |
+      | entry_to_share          | ocs_api_version | http_status_code | received_entry          | pending_entry           |
+      | /shared/shared_file.txt | 1               | 200              | /Shares/shared_file.txt | /Shares/shared_file.txt |
+      | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt | /Shares/shared_file.txt |
+      | /shared                 | 1               | 200              | /Shares/shared          | /Shares/shared          |
+      | /shared                 | 2               | 404              | /Shares/shared          | /Shares/shared          |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | entry_to_share          | ocs_api_version | http_status_code | received_entry          | pending_entry           |
+      | /shared/shared_file.txt | 1               | 200              | /Shares/shared_file.txt | /shared/shared_file.txt |
+      | /shared/shared_file.txt | 2               | 404              | /Shares/shared_file.txt | /shared/shared_file.txt |
+      | /shared                 | 1               | 200              | /Shares/shared          | /shared                 |
+      | /shared                 | 2               | 404              | /Shares/shared          | /shared                 |
 
   @issue-ocis-720
   Scenario Outline: request PROPFIND after sharer deletes the collaborator

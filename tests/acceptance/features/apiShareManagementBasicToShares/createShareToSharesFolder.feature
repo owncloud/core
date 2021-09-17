@@ -540,7 +540,7 @@ Feature: sharing
     And the content of file "/common/sub/textfile0.txt" for user "Alice" should be "BLABLABLA" plus end-of-line
 
   @issue-enterprise-3896 @issue-ocis-2201
-  Scenario: sharing back to resharer is allowed
+  Scenario Outline: sharing back to resharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -550,15 +550,24 @@ Feature: sharing
     And user "Brian" has accepted share "/userZeroFolder" offered by user "Alice"
     And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
     When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share" using the sharing API
-    And user "Carol" accepts share "/userOneFolder" offered by user "Brian" using the sharing API
+    And user "Carol" accepts share "<pending_share_path>" offered by user "Brian" using the sharing API
     And user "Carol" shares folder "/Shares/userOneFolder" with user "Brian" using the sharing API
     Then the HTTP status code should be "200"
 #    Then the HTTP status code should be "405"
     And the sharing API should report to user "Brian" that no shares are in the pending state
     And as "Brian" folder "/Shares/userOneFolder" should not exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path |
+      | /userOneFolder     |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path            |
+      | /userZeroFolder/userOneFolder |
 
   @issue-enterprise-3896 @issue-ocis-2201
-  Scenario: sharing back to original sharer is allowed
+  Scenario Outline: sharing back to original sharer is allowed
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -568,15 +577,24 @@ Feature: sharing
     And user "Brian" has accepted share "/userZeroFolder" offered by user "Alice"
     And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
     When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share" using the sharing API
-    And user "Carol" accepts share "/userOneFolder" offered by user "Brian" using the sharing API
+    And user "Carol" accepts share "<pending_share_path>" offered by user "Brian" using the sharing API
     And user "Carol" shares folder "/Shares/userOneFolder" with user "Alice" using the sharing API
     Then the HTTP status code should be "200"
 #    Then the HTTP status code should be "405"
     And the sharing API should report to user "Alice" that no shares are in the pending state
     And as "Alice" folder "/Shares/userOneFolder" should not exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path |
+      | /userOneFolder     |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path            |
+      | /userZeroFolder/userOneFolder |
 
   @issue-enterprise-3896 @issue-ocis-2201
-  Scenario: sharing a subfolder to a user that already received parent folder share
+  Scenario Outline: sharing a subfolder to a user that already received parent folder share
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -589,12 +607,21 @@ Feature: sharing
     And user "Carol" has accepted share "/userZeroFolder" offered by user "Alice"
     And user "Brian" has created folder "/Shares/userZeroFolder/userOneFolder"
     When user "Brian" shares folder "/Shares/userZeroFolder/userOneFolder" with user "David" with permissions "read, share" using the sharing API
-    And user "David" accepts share "/userOneFolder" offered by user "Brian" using the sharing API
+    And user "David" accepts share "<pending_share_path>" offered by user "Brian" using the sharing API
     And user "David" shares folder "/Shares/userOneFolder" with user "Carol" using the sharing API
     Then the HTTP status code should be "200"
 #    Then the HTTP status code should be "405"
     And the sharing API should report to user "Carol" that no shares are in the pending state
     And as "Carol" folder "/Shares/userOneFolder" should not exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | pending_share_path |
+      | /userOneFolder     |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | pending_share_path            |
+      | /userZeroFolder/userOneFolder |
 
   @smokeTest
   Scenario Outline: Creating a share of a renamed file

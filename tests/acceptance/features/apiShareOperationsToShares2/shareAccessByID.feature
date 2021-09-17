@@ -117,11 +117,18 @@ Feature: share access by ID
       | /Shares/textfile0.txt |
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path                  |
-      | /Shares/textfile0.txt |
+      | <declined_share_path> |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | declined_share_path   |
+      | 1               | 100             | /Shares/textfile0.txt |
+      | 2               | 200             | /Shares/textfile0.txt |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | declined_share_path |
+      | 1               | 100             | /textfile0.txt      |
+      | 2               | 200             | /textfile0.txt      |
 
 
   Scenario Outline: decline a share using a invalid share Id

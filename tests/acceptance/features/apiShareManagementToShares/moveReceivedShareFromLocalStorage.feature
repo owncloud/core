@@ -14,34 +14,49 @@ Feature: local-storage
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
     And user "Alice" has shared file "/local_storage/filetoshare.txt" with user "Brian"
-    And user "Brian" has accepted share "/filetoshare.txt" offered by user "Alice"
+    And user "Brian" has accepted share "<pending_share_path>" offered by user "Alice"
     When user "Brian" moves file "/Shares/filetoshare.txt" to "/Shares/newFile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "/Shares/newFile.txt" should exist
     But as "Brian" file "/Shares/filetoshare.txt" should not exist
     And as "Alice" file "/local_storage/filetoshare.txt" should exist
     But as "Alice" file "/local_storage/newFile.txt" should not exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | pending_share_path |
+      | 1               | /filetoshare.txt   |
+      | 2               | /filetoshare.txt   |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | pending_share_path             |
+      | 1               | /local_storage/filetoshare.txt |
+      | 2               | /local_storage/filetoshare.txt |
 
 
   Scenario Outline: receiver renames a received folder share from local storage
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/local_storage/foo"
     And user "Alice" has shared folder "/local_storage/foo" with user "Brian"
-    And user "Brian" has accepted share "/foo" offered by user "Alice"
+    And user "Brian" has accepted share "<pending_share_path>" offered by user "Alice"
     When user "Brian" moves folder "/Shares/foo" to "/Shares/newFolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" folder "/Shares/newFolder" should exist
     But as "Brian" folder "/Shares/foo" should not exist
     And as "Alice" folder "/local_storage/foo" should exist
     But as "Alice" folder "/local_storage/newFolder" should not exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | pending_share_path |
+      | 1               | /foo               |
+      | 2               | /foo               |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | pending_share_path |
+      | 1               | /local_storage/foo |
+      | 2               | /local_storage/foo |
+
 
   @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: sub-folders,file inside a renamed received folder shared from local storage are accessible
@@ -52,7 +67,7 @@ Feature: local-storage
     And user "Alice" has created folder "/local_storage/foo/folder2"
     And user "Alice" has created folder "/local_storage/foo/folder2/subfolder"
     And user "Alice" has shared folder "/local_storage/foo" with user "Brian"
-    And user "Brian" has accepted share "/foo" offered by user "Alice"
+    And user "Brian" has accepted share "<pending_share_path>" offered by user "Alice"
     When user "Brian" moves folder "/Shares/foo" to "/Shares/newFolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" folder "/Shares/newFolder" should exist
@@ -63,10 +78,18 @@ Feature: local-storage
     But as "Brian" folder "/Shares/foo" should not exist
     And as "Alice" folder "/local_storage/foo" should exist
     But as "Alice" folder "/local_storage/newFolder" should not exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | pending_share_path |
+      | 1               | /foo               |
+      | 2               | /foo               |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | pending_share_path |
+      | 1               | /local_storage/foo |
+      | 2               | /local_storage/foo |
+
 
   @skipOnEncryptionType:user-keys @encryption-issue-181
   Scenario Outline: receiver renames a received file share from local storage in group sharing
@@ -76,14 +99,21 @@ Feature: local-storage
     And user "Brian" has been added to group "grp1"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/local_storage/filetoshare.txt"
     And user "Alice" has shared file "/local_storage/filetoshare.txt" with group "grp1"
-    And user "Brian" has accepted share "/filetoshare.txt" offered by user "Alice"
+    And user "Brian" has accepted share "<pending_share_path>" offered by user "Alice"
     When user "Brian" moves file "/Shares/filetoshare.txt" to "/Shares/newFile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "/Shares/newFile.txt" should exist
     But as "Brian" file "/Shares/filetoshare.txt" should not exist
     And as "Alice" file "/local_storage/filetoshare.txt" should exist
     But as "Alice" file "/local_storage/newFile.txt" should not exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | pending_share_path |
+      | 1               | /filetoshare.txt   |
+      | 2               | /filetoshare.txt   |
+
+   @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | pending_share_path             |
+      | 1               | /local_storage/filetoshare.txt |
+      | 2               | /local_storage/filetoshare.txt |

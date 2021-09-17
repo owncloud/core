@@ -20,15 +20,23 @@ Feature: a subfolder of a received share can be reshared
     When user "Brian" shares folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,read" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Carol" accepts share "/SUB" offered by user "Brian" using the sharing API
+    When user "Carol" accepts share "<pending_sub_share_path>" offered by user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Carol" folder "/Shares/SUB" should exist
     And as "Brian" folder "/Shares/TMP/SUB" should exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | pending_sub_share_path |
+      | 1               | 100             | /SUB                   |
+      | 2               | 200             | /SUB                   |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | pending_sub_share_path |
+      | 1               | 100             | /TMP/SUB               |
+      | 2               | 200             | /TMP/SUB               |
+
 
   Scenario Outline: User is not allowed to reshare a sub-folder with more permissions
     Given using OCS API version "<ocs_api_version>"
@@ -95,7 +103,7 @@ Feature: a subfolder of a received share can be reshared
     And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
     And user "Brian" has accepted share "/TMP" offered by user "Alice"
     And user "Brian" has shared folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,create,update,read"
-    And user "Carol" has accepted share "/SUB" offered by user "Brian"
+    And user "Carol" has accepted share "<pending_sub_share_path>" offered by user "Brian"
     When user "Brian" updates the last share using the sharing API with
       | permissions | share,read |
     Then the OCS status code should be "<ocs_status_code>"
@@ -104,10 +112,18 @@ Feature: a subfolder of a received share can be reshared
     But user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/Shares/SUB/textfile.txt"
     And as "Brian" folder "/Shares/TMP/SUB" should exist
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/Shares/TMP/SUB/textfile.txt"
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | pending_sub_share_path |
+      | 1               | 100             | /SUB                   |
+      | 2               | 200             | /SUB                   |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | pending_sub_share_path |
+      | 1               | 100             | /TMP/SUB               |
+      | 2               | 200             | /TMP/SUB               |
+
 
   @issue-ocis-2214
   Scenario Outline: User is allowed to update reshare of a sub-folder to the maximum allowed permissions
@@ -118,7 +134,7 @@ Feature: a subfolder of a received share can be reshared
     And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,create,update,read"
     And user "Brian" has accepted share "/TMP" offered by user "Alice"
     And user "Brian" has shared folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,read"
-    And user "Carol" has accepted share "/SUB" offered by user "Brian"
+    And user "Carol" has accepted share "<pending_sub_share_path>" offered by user "Brian"
     When user "Brian" updates the last share using the sharing API with
       | permissions | share,create,update,read |
     Then the OCS status code should be "<ocs_status_code>"
@@ -127,10 +143,18 @@ Feature: a subfolder of a received share can be reshared
     And user "Carol" should be able to upload file "filesForUpload/textfile.txt" to "/Shares/SUB/textfile.txt"
     And as "Brian" folder "/Shares/TMP/SUB" should exist
     And user "Brian" should be able to upload file "filesForUpload/textfile.txt" to "/Shares/TMP/SUB/textfile.txt"
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | pending_sub_share_path |
+      | 1               | 100             | /SUB                   |
+      | 2               | 200             | /SUB                   |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | pending_sub_share_path |
+      | 1               | 100             | /TMP/SUB               |
+      | 2               | 200             | /TMP/SUB               |
+
 
   @issue-ocis-2214
   Scenario Outline: User is not allowed to update reshare of a sub-folder with more permissions
@@ -141,7 +165,7 @@ Feature: a subfolder of a received share can be reshared
     And user "Alice" has shared folder "/TMP" with user "Brian" with permissions "share,read"
     And user "Brian" has accepted share "/TMP" offered by user "Alice"
     And user "Brian" has shared folder "/Shares/TMP/SUB" with user "Carol" with permissions "share,read"
-    And user "Carol" has accepted share "/SUB" offered by user "Brian"
+    And user "Carol" has accepted share "<pending_sub_share_path>" offered by user "Brian"
     When user "Brian" updates the last share using the sharing API with
       | permissions | all |
     Then the OCS status code should be "404"
@@ -150,7 +174,14 @@ Feature: a subfolder of a received share can be reshared
     But user "Carol" should not be able to upload file "filesForUpload/textfile.txt" to "/Shares/SUB/textfile.txt"
     And as "Brian" folder "/Shares/TMP/SUB" should exist
     But user "Brian" should not be able to upload file "filesForUpload/textfile.txt" to "/Shares/TMP/SUB/textfile.txt"
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | http_status_code |
-      | 1               | 200              |
-      | 2               | 404              |
+      | ocs_api_version | http_status_code | pending_sub_share_path |
+      | 1               | 200              | /SUB                   |
+      | 2               | 404              | /SUB                   |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | http_status_code | pending_sub_share_path |
+      | 1               | 200              | /TMP/SUB               |
+      | 2               | 404              | /TMP/SUB               |

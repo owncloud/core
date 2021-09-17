@@ -63,7 +63,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Brian" accepts share "/PARENT" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    And user "Brian" accepts share "/CHILD" offered by user "Alice" using the sharing API
+    And user "Brian" accepts share "<pending_sub_share_path>" offered by user "Alice" using the sharing API
     And the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And user "Brian" should see the following elements
@@ -71,10 +71,17 @@ Feature: share resources where the sharee receives the share in multiple ways
       | /Shares/PARENT/parent.txt |
       | /Shares/CHILD/            |
       | /Shares/CHILD/child.txt   |
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | pending_sub_share_path |
+      | 1               | 100             | /CHILD                 |
+      | 2               | 200             | /CHILD                 |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | pending_sub_share_path |
+      | 1               | 100             | /PARENT/CHILD          |
+      | 2               | 200             | /PARENT/CHILD          |
 
   @issue-ocis-2021
   Scenario Outline: sharing subfolder when parent already shared
@@ -86,14 +93,21 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Alice" shares folder "/test/sub" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Brian" accepts share "/sub" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "<pending_share_path>" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" folder "/Shares/sub" should exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | pending_share_path |
+      | 1               | 100             | /sub               |
+      | 2               | 200             | /sub               |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | pending_share_path |
+      | 1               | 100             | /test/sub          |
+      | 2               | 200             | /test/sub          |
 
   @issue-ocis-2021
   Scenario Outline: sharing subfolder when parent already shared with group of sharer
@@ -106,14 +120,21 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Alice" shares folder "/test/sub" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
-    When user "Brian" accepts share "/sub" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "<pending_share_path>" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" folder "/Shares/sub" should exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | pending_share_path |
+      | 1               | 100             | /sub               |
+      | 2               | 200             | /sub               |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | pending_share_path |
+      | 1               | 100             | /test/sub          |
+      | 2               | 200             | /test/sub          |
 
 
   Scenario Outline: multiple users share a file with the same name but different permissions to a user
@@ -242,6 +263,11 @@ Feature: share resources where the sharee receives the share in multiple ways
       | path    |
       | /child1 |
 
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |
+
 
   Scenario Outline: Sharing parent folder to user with all permissions and its child folder to group with read permission then check rename operation
     Given group "grp1" has been created
@@ -268,6 +294,11 @@ Feature: share resources where the sharee receives the share in multiple ways
     Examples:
       | path    |
       | /child1 |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to user with all permissions and its child folder to group with read permission then check delete operation
@@ -296,6 +327,11 @@ Feature: share resources where the sharee receives the share in multiple ways
       | path    |
       | /child1 |
 
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |
+
 
   Scenario Outline: Sharing parent folder to user with all permissions and its child folder to group with read permission then check reshare operation
     Given group "grp1" has been created
@@ -321,6 +357,11 @@ Feature: share resources where the sharee receives the share in multiple ways
     Examples:
       | path    |
       | /child1 |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to group with read permission and its child folder to user with all permissions then check create operation
@@ -349,6 +390,11 @@ Feature: share resources where the sharee receives the share in multiple ways
       | path    |
       | /child1 |
 
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |
+
 
   Scenario Outline: Sharing parent folder to group with read permission and its child folder to user with all permissions then check rename operation
     Given group "grp1" has been created
@@ -375,6 +421,11 @@ Feature: share resources where the sharee receives the share in multiple ways
     Examples:
       | path    |
       | /child1 |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to group with read permission and its child folder to user with all permissions then check delete operation
@@ -403,6 +454,11 @@ Feature: share resources where the sharee receives the share in multiple ways
       | path    |
       | /child1 |
 
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |
+
 
   Scenario Outline: Sharing parent folder to group with read permission and its child folder to user with all permissions then check reshare operation
     Given group "grp1" has been created
@@ -428,6 +484,11 @@ Feature: share resources where the sharee receives the share in multiple ways
     Examples:
       | path    |
       | /child1 |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |
 
 
   Scenario Outline: Sharing parent folder to one group with all permissions and its child folder to another group with read permission
@@ -464,3 +525,8 @@ Feature: share resources where the sharee receives the share in multiple ways
     Examples:
       | path    |
       | /child1 |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | path           |
+      | /parent/child1 |

@@ -29,7 +29,7 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: locking a received share does not lock other shares that had the same name on the sharer side (shares from the same user)
     Given using <dav-path> DAV path
     And user "Alice" has created folder "locked/"

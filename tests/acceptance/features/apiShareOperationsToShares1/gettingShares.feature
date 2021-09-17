@@ -210,12 +210,19 @@ Feature: sharing
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
     And user "Alice" has shared file "PARENT/parent.txt" with user "Brian"
-    And user "Brian" has accepted share "/parent.txt" offered by user "Alice"
+    And user "Brian" has accepted share "<pending_share_path>" offered by user "Alice"
     When user "Alice" gets all the shares inside the folder "PARENT" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And file "/Shares/parent.txt" should be included in the response
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | pending_share_path |
+      | 1               | 100             | /parent.txt        |
+      | 2               | 200             | /parent.txt        |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | pending_share_path |
+      | 1               | 100             | /PARENT/parent.txt |
+      | 2               | 200             | /PARENT/parent.txt |
