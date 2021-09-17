@@ -2362,6 +2362,56 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the user selects folder/file :folder using the webUI
+	 *
+	 * @param string $folder
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserSelectsFolderUsingTheWebui(string $folder):void {
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->waitTillPageIsLoaded($this->getSession());
+		$pageObject->selectFolder($folder);
+	}
+
+	/**
+	 * @When the user clicks the download button on the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserDownloadsFolderUsingTheDownloadButtonOnTheWebui():void {
+		$this->filesPage->userDownloadsResource();
+	}
+
+	/**
+	 * @Then folder/file :expectedFolder should be downloaded
+	 *
+	 * @param string $expectedFolder
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function folderShouldBeDownloaded(string $expectedFolder):void {
+		$session = $this->getSession();
+		$session->visit("chrome://downloads/");
+
+		// get the name of recently downloaded folder from downloads list in chrome, google download has shadow-root dom
+		// that can't be accessed directly through php so JS is needed, this checks only the first element of the downloads list
+		sleep(5);
+		$folder = $session->evaluateScript("document.querySelector('downloads-manager').shadowRoot.querySelector('#downloadsList').querySelector('downloads-item').shadowRoot.querySelector('#content #details #title-area a').innerText");
+
+		// if the same folder gets downloaded more than once a number is added in the name i.e simple-folder(2).zip following line
+		// removes the number and bracket so that only simple-folder.zip remains
+		$output = trim(preg_replace('/\s*\([^)]+\)+/', "", $folder));
+		$actualFolder = explode(" ", $output);
+
+		if (!\in_array($expectedFolder, $actualFolder)) {
+			Assert::fail("could not find folder ' $expectedFolder' in downloads");
+		}
+	}
+
+	/**
 	 * @Then the details dialog should be visible on the webUI
 	 *
 	 * @return void

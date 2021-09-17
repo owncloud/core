@@ -47,6 +47,8 @@ class FilesPage extends FilesPageBasic {
 	protected $sharingDialogXpath = "//h3[@data-original-title='%s']/ancestor::div[@id='app-sidebar']//div[@id='shareTabView']";
 	protected $closeOCDialogXpath = "//div/a[@class='oc-dialog-close']";
 	protected $publicLinkQuickActionXpath = "//td[contains(@class, 'filename')]//span[@class ='nametext' and .='%s']/following-sibling::span//a[contains(@class, 'action-create-public-link')]";
+	protected $selectResourceXpath = "//span[@class='nametext' and .='%s']/parent::a/preceding-sibling::label";
+	protected $downloadButtonXpath = "//span[@id='selectedActionsList']//a[@class='download']";
 
 	/**
 	 *
@@ -523,5 +525,28 @@ class FilesPage extends FilesPageBasic {
 			. $name
 		);
 		$folder->click();
+	}
+
+	/**
+	 * Select folder
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function selectFolder(string $name):void {
+		$selectFolderXpathLocator = \sprintf($this->selectResourceXpath, $name);
+		$folder = $this->find("xpath", $selectFolderXpathLocator);
+		$folder->click();
+	}
+
+	/**
+	 * download resource
+	 *
+	 * @return void
+	 */
+	public function userDownloadsResource() {
+		$download = $this->find("xpath", $this->downloadButtonXpath);
+		$download->click();
 	}
 }
