@@ -25,7 +25,7 @@ namespace TestHelpers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -109,9 +109,14 @@ class HttpRequestHelper {
 			self::debugRequest($request, $user, $password);
 		}
 
+		// The exceptions that might happen here include:
+		// ConnectException - in that case there is no response. Don't catch the exception.
+		// RequestException - if there is something in the response then pass it back.
+		//                    otherwise re-throw the exception.
+		// GuzzleException - something else unexpected happened. Don't catch the exception.
 		try {
 			$response = $client->send($request);
-		} catch (GuzzleException $ex) {
+		} catch (RequestException $ex) {
 			$response = $ex->getResponse();
 
 			//if the response was null for some reason do not return it but re-throw
