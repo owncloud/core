@@ -54,7 +54,7 @@ class AppManagementContext implements Context {
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 * @throws Exception
 	 */
-	public function setAppsPaths($appsPaths) {
+	public function setAppsPaths(array $appsPaths):array {
 		return SetupHelper::setSystemConfig(
 			'apps_paths',
 			\json_encode($appsPaths),
@@ -71,7 +71,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setAppDirectories(TableNode $table) {
+	public function setAppDirectories(TableNode $table):void {
 		$appsPathsConfigs = \json_decode(
 			SetupHelper::getSystemConfig(
 				"apps_paths",
@@ -109,7 +109,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function putAppInDir($appId, $version, $dir) {
+	public function putAppInDir(string $appId, string $version, string $dir):void {
 		$ocVersion = SetupHelper::getSystemConfigValue(
 			'version',
 			$this->featureContext->getStepLineRef()
@@ -160,7 +160,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function appHasBeenPutInDir($appId, $version, $dir) {
+	public function appHasBeenPutInDir(string $appId, string $version, string $dir):void {
 		$this->putAppInDir($appId, $version, $dir);
 		$check = SetupHelper::runOcc(
 			['app:list', '--output json'],
@@ -184,7 +184,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminGetsPathForApp($appId) {
+	public function adminGetsPathForApp(string $appId):void {
 		$this->featureContext->runOcc(
 			['app:getpath', $appId, '--no-ansi']
 		);
@@ -206,7 +206,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminListsTheApps() {
+	public function adminListsTheApps():void {
 		$this->featureContext->runOcc(
 			['app:list', '--no-ansi']
 		);
@@ -218,7 +218,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminListsTheEnabledApps() {
+	public function adminListsTheEnabledApps():void {
 		$this->featureContext->runOcc(
 			['app:list', '--enabled', '--no-ansi']
 		);
@@ -230,7 +230,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminListsTheDisabledApps() {
+	public function adminListsTheDisabledApps():void {
 		$this->featureContext->runOcc(
 			['app:list', '--disabled', '--no-ansi']
 		);
@@ -242,7 +242,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminListsTheEnabledAndDisabledApps() {
+	public function adminListsTheEnabledAndDisabledApps():void {
 		$this->featureContext->runOcc(
 			['app:list', '--enabled', '--disabled', '--no-ansi']
 		);
@@ -256,12 +256,13 @@ class AppManagementContext implements Context {
 	 * @param string $appPath
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function appWithVersionAndPathShouldHaveBeenListedInTheEnabledAppsSection(
 		$appId,
 		$appVersion,
 		$appPath
-	) {
+	):void {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$expectedStartOfOutput = "Enabled:";
 		Assert::assertEquals(
@@ -288,12 +289,13 @@ class AppManagementContext implements Context {
 	 * @param string $appPath
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function appWithVersionAndPathShouldHaveBeenListedInTheDisabledAppsSection(
-		$appId,
-		$appVersion,
-		$appPath
-	) {
+		string $appId,
+		string $appVersion,
+		string $appPath
+	):void {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
 		Assert::assertNotFalse(
@@ -315,7 +317,7 @@ class AppManagementContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function appShouldHaveBeenListedInTheDisabledAppsSection($appId) {
+	public function appShouldHaveBeenListedInTheDisabledAppsSection(string $appId):void {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
 		Assert::assertNotFalse(
@@ -335,7 +337,7 @@ class AppManagementContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theEnabledAppsSectionShouldNotExist() {
+	public function theEnabledAppsSectionShouldNotExist():void {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertFalse(
 			\strpos($commandOutput, "Enabled:"),
@@ -348,7 +350,7 @@ class AppManagementContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theDisabledAppsSectionShouldNotExist() {
+	public function theDisabledAppsSectionShouldNotExist():void {
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertFalse(
 			\strpos($commandOutput, "Disabled:"),
@@ -365,7 +367,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function appPathIs($appId, $dir) {
+	public function appPathIs(string $appId, string $dir):void {
 		Assert::assertEquals(
 			$this->featureContext->getServerRoot() . "/$dir/$appId",
 			\trim($this->cmdOutput),
@@ -383,7 +385,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function assertInstalledVersionOfAppIs($appId, $version) {
+	public function assertInstalledVersionOfAppIs(string $appId, string $version):void {
 		$cmdOutput = SetupHelper::runOcc(
 			['config:app:get', $appId, 'installed_version', '--no-ansi'],
 			$this->featureContext->getStepLineRef()
@@ -406,7 +408,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function prepareParameters(BeforeScenarioScope $scope) {
+	public function prepareParameters(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -433,7 +435,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function undoChangingParameters() {
+	public function undoChangingParameters():void {
 		if ($this->oldAppsPaths === null) {
 			SetupHelper::deleteSystemConfig(
 				'apps_paths',
@@ -452,7 +454,7 @@ class AppManagementContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteCreatedApps() {
+	public function deleteCreatedApps():void {
 		$configJson = SetupHelper::runOcc(
 			['config:list'],
 			$this->featureContext->getStepLineRef()

@@ -49,10 +49,10 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 */
 	public function adminSetsServerParameterToUsingAPI(
-		$parameter,
-		$app,
-		$value
-	) {
+		string $parameter,
+		string $app,
+		string $value
+	):void {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$value = \trim($value, $value[0]);
@@ -68,7 +68,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function serverParameterHasBeenSetTo($parameter, $app, $value) {
+	public function serverParameterHasBeenSetTo(string $parameter, string $app, string $value):void {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		if (\TestHelpers\OcisHelper::isTestingOnOcisOrReva()) {
@@ -87,12 +87,13 @@ class AppConfigurationContext implements Context {
 	 * @param string $expectedValue
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theCapabilitiesSettingOfAppParameterShouldBe(
-		$capabilitiesApp,
-		$capabilitiesPath,
-		$expectedValue
-	) {
+		string $capabilitiesApp,
+		string $capabilitiesPath,
+		string $expectedValue
+	):void {
 		$this->theAdministratorGetsCapabilitiesCheckResponse();
 		$actualValue = $this->getAppParameter($capabilitiesApp, $capabilitiesPath);
 
@@ -110,14 +111,12 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return string
 	 */
-	public function getAppParameter($capabilitiesApp, $capabilitiesPath) {
-		$answeredValue = $this->getParameterValueFromXml(
+	public function getAppParameter(string $capabilitiesApp, string $capabilitiesPath):string {
+		return $this->getParameterValueFromXml(
 			$this->getCapabilitiesXml(__METHOD__),
 			$capabilitiesApp,
 			$capabilitiesPath
 		);
-
-		return (string) $answeredValue;
 	}
 
 	/**
@@ -127,7 +126,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userGetsCapabilities($username) {
+	public function userGetsCapabilities(string $username):void {
 		$user = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getPasswordForUser($user);
 		$this->featureContext->setResponse(
@@ -152,7 +151,7 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userGetsCapabilitiesCheckResponse($username) {
+	public function userGetsCapabilitiesCheckResponse(string $username):void {
 		$this->userGetsCapabilities($username);
 		$statusCode = $this->featureContext->getResponse()->getStatusCode();
 		if ($statusCode !== 200) {
@@ -168,7 +167,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserGetsCapabilities() {
+	public function theUserGetsCapabilities():void {
 		$this->userGetsCapabilities($this->featureContext->getCurrentUser());
 	}
 
@@ -178,7 +177,7 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUserGetsCapabilitiesCheckResponse() {
+	public function theUserGetsCapabilitiesCheckResponse():void {
 		$this->userGetsCapabilitiesCheckResponse($this->featureContext->getCurrentUser());
 	}
 
@@ -187,7 +186,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsCapabilities() {
+	public function theAdministratorGetsCapabilities():void {
 		$this->userGetsCapabilities($this->featureContext->getAdminUsername());
 	}
 
@@ -197,16 +196,16 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorGetsCapabilitiesCheckResponse() {
+	public function theAdministratorGetsCapabilitiesCheckResponse():void {
 		$this->userGetsCapabilitiesCheckResponse($this->featureContext->getAdminUsername());
 	}
 
 	/**
 	 * @param string $exceptionText text to put at the front of exception messages
 	 *
-	 * @return string latest retrieved capabilities in XML format
+	 * @return SimpleXMLElement latest retrieved capabilities in XML format
 	 */
-	public function getCapabilitiesXml($exceptionText = '') {
+	public function getCapabilitiesXml(string $exceptionText = ''): SimpleXMLElement {
 		if ($exceptionText === '') {
 			$exceptionText = __METHOD__;
 		}
@@ -214,17 +213,17 @@ class AppConfigurationContext implements Context {
 	}
 
 	/**
-	 * @param string $xml of the capabilities
+	 * @param SimpleXMLElement $xml of the capabilities
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
 	 *
 	 * @return string
 	 */
 	public function getParameterValueFromXml(
-		$xml,
-		$capabilitiesApp,
-		$capabilitiesPath
-	) {
+		SimpleXMLElement $xml,
+		string $capabilitiesApp,
+		string $capabilitiesPath
+	):string {
 		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 		foreach ($path_to_element as $element) {
@@ -254,10 +253,10 @@ class AppConfigurationContext implements Context {
 	 * @return boolean
 	 */
 	public function parameterValueExistsInXml(
-		$xml,
-		$capabilitiesApp,
-		$capabilitiesPath
-	) {
+		string $xml,
+		string $capabilitiesApp,
+		string $capabilitiesPath
+	):bool {
 		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 
@@ -295,7 +294,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function modifyAppConfig($app, $parameter, $value) {
+	public function modifyAppConfig(string $app, string $parameter, string $value):void {
 		AppConfigHelper::modifyAppConfig(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -313,7 +312,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function modifyAppConfigs($appParameterValues) {
+	public function modifyAppConfigs(array $appParameterValues):void {
 		AppConfigHelper::modifyAppConfigs(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -331,7 +330,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url) {
+	public function theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi(string $url):void {
 		$adminUser = $this->featureContext->getAdminUsername();
 		$response = OcsApiHelper::sendRequest(
 			$this->featureContext->getBaseUrl(),
@@ -352,7 +351,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return string
 	 */
-	private function getUrlStringForMessage($url) {
+	private function getUrlStringForMessage(string $url):string {
 		$text = $url;
 		$expectedUrl = $this->featureContext->substituteInLineCodes($url);
 		if ($expectedUrl !== $url) {
@@ -366,7 +365,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return string
 	 */
-	private function getNotTrustedServerMessage($url) {
+	private function getNotTrustedServerMessage(string $url):string {
 		return
 			"URL "
 			. $this->getUrlStringForMessage($url)
@@ -381,7 +380,7 @@ class AppConfigurationContext implements Context {
 	 * @return  void
 	 * @throws Exception
 	 */
-	public function urlShouldBeATrustedServer($url) {
+	public function urlShouldBeATrustedServer(string $url):void {
 		$trustedServers = $this->featureContext->getTrustedServers();
 		foreach ($trustedServers as $server => $id) {
 			if ($server === $this->featureContext->substituteInLineCodes($url)) {
@@ -399,7 +398,7 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theTrustedServerListShouldIncludeTheseUrls(TableNode $table) {
+	public function theTrustedServerListShouldIncludeTheseUrls(TableNode $table):void {
 		$trustedServers = $this->featureContext->getTrustedServers();
 		$expected = $table->getColumnsHash();
 
@@ -425,7 +424,7 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasAddedUrlAsTrustedServer($url) {
+	public function theAdministratorHasAddedUrlAsTrustedServer(string $url):void {
 		$this->theAdministratorAddsUrlAsTrustedServerUsingTheTestingApi($url);
 		$status = $this->featureContext->getResponse()->getStatusCode();
 		if ($status !== 201) {
@@ -444,7 +443,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDeletesUrlFromTrustedServersUsingTheTestingApi($url) {
+	public function theAdministratorDeletesUrlFromTrustedServersUsingTheTestingApi(string $url):void {
 		$adminUser = $this->featureContext->getAdminUsername();
 		$response = OcsApiHelper::sendRequest(
 			$this->featureContext->getBaseUrl(),
@@ -466,7 +465,7 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function urlShouldNotBeATrustedServer($url) {
+	public function urlShouldNotBeATrustedServer(string $url):void {
 		$trustedServers = $this->featureContext->getTrustedServers();
 		foreach ($trustedServers as $server => $id) {
 			if ($server === $this->featureContext->substituteInLineCodes($url)) {
@@ -483,7 +482,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDeletesAllTrustedServersUsingTheTestingApi() {
+	public function theAdministratorDeletesAllTrustedServersUsingTheTestingApi():void {
 		$adminUser = $this->featureContext->getAdminUsername();
 		$response = OcsApiHelper::sendRequest(
 			$this->featureContext->getBaseUrl(),
@@ -502,7 +501,7 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theTrustedServerListIsCleared() {
+	public function theTrustedServerListIsCleared():void {
 		$this->theAdministratorDeletesAllTrustedServersUsingTheTestingApi();
 		$statusCode = $this->featureContext->getResponse()->getStatusCode();
 		if ($statusCode !== 204) {
@@ -520,7 +519,7 @@ class AppConfigurationContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theTrustedServerListShouldBeEmpty() {
+	public function theTrustedServerListShouldBeEmpty():void {
 		$trustedServers = $this->featureContext->getTrustedServers();
 		Assert::assertEmpty(
 			$trustedServers,
@@ -533,7 +532,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function expireLastCreatedUserShare() {
+	public function expireLastCreatedUserShare():void {
 		$adminUser = $this->featureContext->getAdminUsername();
 		$share_id = $this->featureContext->getLastShareId();
 		$response = OcsApiHelper::sendRequest(
@@ -554,7 +553,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasExpiredTheLastCreatedShare() {
+	public function theAdministratorHasExpiredTheLastCreatedShare():void {
 		$this->expireLastCreatedUserShare();
 		Assert::assertSame(
 			200,
@@ -568,7 +567,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorExpiresTheLastCreatedShare() {
+	public function theAdministratorExpiresTheLastCreatedShare():void {
 		$this->expireLastCreatedUserShare();
 	}
 
@@ -579,7 +578,7 @@ class AppConfigurationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
