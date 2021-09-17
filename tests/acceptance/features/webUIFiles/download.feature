@@ -42,7 +42,7 @@ Feature: Download resource
     When the user selects folder "simple-folder" using the webUI
     And the user selects folder "simple-folder1" using the webUI
     And the user selects folder "simple-folder2" using the webUI
-    And the user selects folder "simple-folder" using the webUI
+    And the user selects file "textfile0.txt" using the webUI
     And the user clicks the download button on the webUI
     Then folder "download.zip" should be downloaded
 
