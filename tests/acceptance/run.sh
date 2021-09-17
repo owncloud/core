@@ -1078,12 +1078,19 @@ fi
 # @skipOnOcV10
 
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:get version"
-OWNCLOUD_VERSION=`echo ${REMOTE_OCC_STDOUT} | cut -d"." -f1-3`
-BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION}'&&'${BEHAT_FILTER_TAGS}
-OWNCLOUD_VERSION=`echo ${OWNCLOUD_VERSION} | cut -d"." -f1-2`
-BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION}'&&'${BEHAT_FILTER_TAGS}
-OWNCLOUD_VERSION=`echo ${OWNCLOUD_VERSION} | cut -d"." -f1`
-BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION}'&&'${BEHAT_FILTER_TAGS}
+OWNCLOUD_VERSION_THREE_DIGIT=`echo ${REMOTE_OCC_STDOUT} | cut -d"." -f1-3`
+BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION_THREE_DIGIT}'&&'${BEHAT_FILTER_TAGS}
+OWNCLOUD_VERSION_TWO_DIGIT=`echo ${OWNCLOUD_VERSION_THREE_DIGIT} | cut -d"." -f1-2`
+BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION_TWO_DIGIT}'&&'${BEHAT_FILTER_TAGS}
+OWNCLOUD_VERSION_ONE_DIGIT=`echo ${OWNCLOUD_VERSION_TWO_DIGIT} | cut -d"." -f1`
+BEHAT_FILTER_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION_ONE_DIGIT}'&&'${BEHAT_FILTER_TAGS}
+
+function version { echo "$@" | awk -F. '{ printf("%d%03d%03d\n", $1,$2,$3); }'; }
+
+# Skip tests for OC versions greater than 10.8.0
+if [ $(version $OWNCLOUD_VERSION_THREE_DIGIT) -gt $(version "10.8.0") ]; then
+    BEHAT_FILTER_TAGS='~@skipOnAllVersionsGreaterThanOcV10.8.0&&'${BEHAT_FILTER_TAGS}
+fi
 
 if [ -n "${TEST_SERVER_FED_URL}" ]
 then
