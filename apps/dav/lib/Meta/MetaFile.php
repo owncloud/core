@@ -131,6 +131,9 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	 * @return string
 	 */
 	public function getUsername() {
-		return $this->file->getUsername();
+		if ($this->file instanceof \OCP\Files\IProvidesVersionAuthor) {
+			return $this->file->getUsername();
+		}
+		return '';
 	}
 }

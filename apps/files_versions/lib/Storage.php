@@ -202,9 +202,12 @@ class Storage {
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
 
-				$metadata = [\OC\Share\Constants::CREATED_BY_USER_METADATA => \OC::$server->getUserSession()->getUser()->getUserName()];
-				$metadataJsonObject = \json_encode($metadata);
-				$users_view->file_put_contents($versionFileName . '.json', \json_encode($metadataJsonObject));
+        $user = \OC::$server->getUserSession()->getUser();
+        if(!is_null($user)) {
+          $metadata = [\OC\Share\Constants::CREATED_BY_USER_METADATA => $user->getUserName()];
+          $metadataJsonObject = \json_encode($metadata);
+          $users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
+        }
 			}
 		}
 	}
@@ -474,8 +477,8 @@ class Storage {
 						if ($view->file_exists($jsonMetadataFile)) {
 							$metaDataFileContents = $view->file_get_contents($jsonMetadataFile);
 							if ($decoded = \json_decode($metaDataFileContents, true)) {
-								if ($decoded['username'] !== null) {
-									$versions[$key]['username'] = $decoded['username'];
+								if ($decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA] !== null) {
+									$versions[$key]['username'] = $decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA];
 								}
 							}
 						}
