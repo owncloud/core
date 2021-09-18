@@ -31,6 +31,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Show missing delete button in file list on mobile view: <a href="https://github.com/owncloud/core/issues/39221">#39221</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Return proper error when destination header is missing: <a href="https://github.com/owncloud/core/pull/39235">#39235</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Show the correct expiring date in 'Shared by link' files list: <a href="https://github.com/owncloud/core/pull/39238">#39238</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Spelling errors: <a href="https://github.com/owncloud/core/pull/39252">#39252</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
@@ -276,6 +277,12 @@
             </p>
             <p>https://github.com/owncloud/core/pull/39238<br>https://github.com/owncloud/core/pull/39246<br></p>
         </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Spelling errors: <a href="https://github.com/owncloud/core/pull/39252">#39252</a></p>
+            <p>Various spelling errors have been corrected in messages.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39252<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></p>
             <p>Support for security fixes for PHP 7.2 ended in Dec 2020 ownCloud core no longer supports PHP
@@ -516,7 +523,7 @@
     <h3 id="10.8.0-summary">Summary</h3>
     <ul class="summary">
         <li class="type-bugfix changelog-item">Bugfix - Use trusted domains to compute the signature of signed urls: <a href="https://github.com/owncloud/core/pull/38465">#38465</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Handle exceptions with inaccessible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Handle exceptions with inaccesible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix mispositioned ui elements after leaving viewerMode: <a href="https://github.com/owncloud/core/issues/38547">#38547</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix move operation from encrypted storage to unencrypted storage: <a href="https://github.com/owncloud/core/pull/38567">#38567</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Creating self group-reshare should not not share to self: <a href="https://github.com/owncloud/core/pull/38581">#38581</a></li>
@@ -591,9 +598,9 @@
             <p>https://github.com/owncloud/core/pull/38465<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Handle exceptions with inaccessible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></p>
+            <p>Bugfix - Handle exceptions with inaccesible federated share: <a href="https://github.com/owncloud/core/pull/38474">#38474</a></p>
             <p>In a scenario federation share storage is inaccessible and returns connection timeouts,
-   federated share storage now does not return not found but storage not available. Additionally
+   federated share storage now does not return not found but storage not available. Additionaly
    logging and notifications handling has been improved.
             </p>
             <p>https://github.com/owncloud/enterprise/issues/4311<br>
@@ -1198,7 +1205,7 @@
         <li class="type-enhancement changelog-item">Enhancement - New config parameter to define the encrypted file format: <a href="https://github.com/owncloud/core/pull/38337">#38337</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Display error/success message while changing the log level: <a href="https://github.com/owncloud/core/pull/38340">#38340</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Implement pre-signed download urls for public links: <a href="https://github.com/owncloud/core/pull/38376">#38376</a></li>
-        <li class="type-enhancement changelog-item">Enhancement - Allow force set DB platforms: <a href="https://github.com/owncloud/core/pull/38379">#38379</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Allow force set DB patforms: <a href="https://github.com/owncloud/core/pull/38379">#38379</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Added additional connection parameters to redis config: <a href="https://github.com/owncloud/core/pull/38386">#38386</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Hide federated user suggestions if system users are found: <a href="https://github.com/owncloud/core/pull/38389">#38389</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Indicate existing guest-user as a guest in the share tab: <a href="https://github.com/owncloud/core/pull/38440">#38440</a></li>
@@ -1474,7 +1481,7 @@
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Allow mounting a subfolder from Google Drive: <a href="https://github.com/owncloud/core/pull/38161">#38161</a></p>
             <p>You can now define a subfolder from your Google Drive when mounting. This gives the ability to:
-   subfolder = empty (like you have it without this enhancement) subfolder = name subfolder =
+   subfolder = empty (like you have it without this enhancment) subfolder = name subfolder =
    name/$user When using encryption, only the subfolder when used gets encrypted.
             </p>
             <p>https://github.com/owncloud/core/pull/38161<br>https://github.com/owncloud/core/pull/38192<br></p>
@@ -1498,7 +1505,7 @@
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Improve the UX in the external storage settings page: <a href="https://github.com/owncloud/core/pull/38288">#38288</a></p>
             <p>When a user adds or edits an external storage, the user will see a notification if the storage has
-   been added or an error occurred. When a user hovers over the status indicator, the user will see a
+   been added or an error occured. When a user hovers over the status indicator, the user will see a
    pointer cursor, this clarifies that a click will result in a config (re-)check.
             </p>
             <p>https://github.com/owncloud/core/pull/38288<br></p>
@@ -1543,7 +1550,7 @@
             <p>https://github.com/owncloud/core/pull/38376<br>https://github.com/owncloud/core/pull/38532<br></p>
         </li>
         <li class="type-enhancement changelog-item">
-            <p>Enhancement - Allow force set DB platforms: <a href="https://github.com/owncloud/core/pull/38379">#38379</a></p>
+            <p>Enhancement - Allow force set DB patforms: <a href="https://github.com/owncloud/core/pull/38379">#38379</a></p>
             <p>A new 'db.platform' option added to config.php. It allows using a specific database platform
    and do not rely on autodetection.
             </p>
@@ -1895,7 +1902,7 @@
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Clean the user's preferences only if they exist during user sync: <a href="https://github.com/owncloud/core/pull/37947">#37947</a></p>
             <p>Previously, the user's preferences were cleaned during the user:sync command. This was done
-   regardless of the preferences existence, which was causing the
+   regardless of the preferences existance, which was causing the
    "userpreference.afterDeleteValue" event to be triggered always, and then, as consequence,
    the admin_audit app was logging those events. Basically, this bug was causing a log flood by the
    admin_audit app even if those preferences weren't there in the first place.Now we check first if those preferences exist before attempting to delete them. If they exist,
@@ -2457,7 +2464,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Use relative path in shared_with_email activity: <a href="https://github.com/owncloud/core/pull/37555">#37555</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Show error message at Settings Personal CORS: <a href="https://github.com/owncloud/core/pull/37560">#37560</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Handle exceptions for deleted share nodes while transfering ownership: <a href="https://github.com/owncloud/enterprise/issues/4023">#4023</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: <a href="https://github.com/owncloud/core/pull/37625">#37625</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Return HTTP 404 for upload attempt to nonexistent public folders: <a href="https://github.com/owncloud/core/pull/37625">#37625</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix for centering the credential fields on IE11: <a href="https://github.com/owncloud/core/pull/37693">#37693</a></li>
         <li class="type-change changelog-item">Change - Disallow various special usernames: <a href="https://github.com/owncloud/core/issues/32547">#32547</a></li>
         <li class="type-change changelog-item">Change - Support PHP 7.4: <a href="https://github.com/owncloud/core/issues/36509">#36509</a></li>
@@ -2742,9 +2749,9 @@
             <p>https://github.com/owncloud/core/pull/37568<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Return HTTP 404 for upload attempt to non-existing public folders: <a href="https://github.com/owncloud/core/pull/37625">#37625</a></p>
+            <p>Bugfix - Return HTTP 404 for upload attempt to nonexistent public folders: <a href="https://github.com/owncloud/core/pull/37625">#37625</a></p>
             <p>Public files WebDAV API has been fixed to return HTTP status code 404 for upload attempt to
-   non-existing public folders.
+   nonexistent public folders.
             </p>
             <p>https://github.com/owncloud/core/issues/36055<br>
             </p>
@@ -3108,7 +3115,7 @@
         <li class="type-change changelog-item">Change - Update symfony/polyfill (1.14.1 => 1.15.0): <a href="https://github.com/owncloud/core/pull/37174">#37174</a></li>
         <li class="type-change changelog-item">Change - Update laminas/laminas-zendframework-bridge (1.0.1 => 1.0.2): <a href="https://github.com/owncloud/core/pull/37174">#37174</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components to 4.4.6: <a href="https://github.com/owncloud/core/pull/37176">#37176</a></li>
-        <li class="type-change changelog-item">Change - Update Laminas dependencies: <a href="https://github.com/owncloud/core/pull/37188">#37188</a></li>
+        <li class="type-change changelog-item">Change - Update Laminas dependecies: <a href="https://github.com/owncloud/core/pull/37188">#37188</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components to 4.4.7: <a href="https://github.com/owncloud/core/pull/37193">#37193</a></li>
         <li class="type-change changelog-item">Change - Update laminas/laminas-validator from 2.13.3 to 2.13.4: <a href="https://github.com/owncloud/core/pull/37199">#37199</a></li>
         <li class="type-change changelog-item">Change - Update laminas/laminas-zendframework-bridge (1.0.2 => 1.0.3): <a href="https://github.com/owncloud/core/pull/37214">#37214</a></li>
@@ -3394,7 +3401,7 @@
             <p>https://symfony.com/blog/symfony-4-4-6-released<br></p>
         </li>
         <li class="type-change changelog-item">
-            <p>Change - Update Laminas dependencies: <a href="https://github.com/owncloud/core/pull/37188">#37188</a></p>
+            <p>Change - Update Laminas dependecies: <a href="https://github.com/owncloud/core/pull/37188">#37188</a></p>
             <p>Bump laminas/laminas-validator from 2.13.2 to 2.13.3 Bump laminas/laminas-filter from
    2.9.3 to 2.9.4
             </p>
@@ -3453,7 +3460,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Stream_read not returning requested length for encrypted remote storage: <a href="https://github.com/owncloud/core/issues/34599">#34599</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Receive multiple users for user sync command: <a href="https://github.com/owncloud/core/pull/36576">#36576</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix null for empty path on Oracle: <a href="https://github.com/owncloud/core/pull/36610">#36610</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Do not dispatch DeclineShare event for non-existing shares: <a href="https://github.com/owncloud/core/pull/36759">#36759</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Do not dispatch DeclineShare event for nonexistent shares: <a href="https://github.com/owncloud/core/pull/36759">#36759</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Remove part files when upload is cancelled for all public links: <a href="https://github.com/owncloud/core/pull/36761">#36761</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Return correct file size in the public files webdav API: <a href="https://github.com/owncloud/core/issues/36741">#36741</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix one-time password (OTP) verify button width: <a href="https://github.com/owncloud/core/pull/36807">#36807</a></li>
@@ -3612,7 +3619,7 @@
             <p>https://github.com/owncloud/core/pull/36610<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Do not dispatch DeclineShare event for non-existing shares: <a href="https://github.com/owncloud/core/pull/36759">#36759</a></p>
+            <p>Bugfix - Do not dispatch DeclineShare event for nonexistent shares: <a href="https://github.com/owncloud/core/pull/36759">#36759</a></p>
             <p>DeclineShare event was dispatched even when the share had been not found in oc_share_external
    table. It caused sending unshare notification to the empty hostname.
             </p>
@@ -4084,7 +4091,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix user search problem happening after user deletion: <a href="https://github.com/owncloud/core/pull/36431">#36431</a></li>
         <li class="type-bugfix changelog-item">Bugfix - The authentication header can also hold an empty string: <a href="https://github.com/owncloud/core/pull/36465">#36465</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Remove query and/or anchor part in remote url: <a href="https://github.com/owncloud/core/pull/36487">#36487</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Occ system:cron only shows progress bar if option is set: <a href="https://github.com/owncloud/core/issues/36298">#36298</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Occ system:cron only shows progess bar if option is set: <a href="https://github.com/owncloud/core/issues/36298">#36298</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components to 3.4.32: <a href="https://github.com/owncloud/core/pull/36244">#36244</a></li>
         <li class="type-change changelog-item">Change - Update phpspec/prophecy (1.8.1 => 1.9.0): <a href="https://github.com/owncloud/core/pull/36253">#36253</a></li>
         <li class="type-change changelog-item">Change - Update zendframework/zend-validator (2.12.0 => 2.12.1): <a href="https://github.com/owncloud/core/pull/36274">#36274</a></li>
@@ -4247,8 +4254,8 @@
             <p>https://github.com/owncloud/core/pull/36487<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Occ system:cron only shows progress bar if option is set: <a href="https://github.com/owncloud/core/issues/36298">#36298</a></p>
-            <p>Occ system:cron will only output the progress bar if the newly introduced option --progress is
+            <p>Bugfix - Occ system:cron only shows progess bar if option is set: <a href="https://github.com/owncloud/core/issues/36298">#36298</a></p>
+            <p>Occ system:cron will only output the progess bar if the newly introduced option --progress is
    set. When being executed from crontab occ system::cron shall only print out in case of error.
             </p>
             <p>https://github.com/owncloud/core/issues/36298<br>
@@ -4474,7 +4481,7 @@
     <li>Avoid password manager autocomplete on user administration <a href="https://github.com/owncloud/core/pull/35931" target="_blank" rel="noopener">#35931</a></li>
     <li>Changing config settings produced duplicate emitted events <a href="https://github.com/owncloud/core/pull/35875" target="_blank" rel="noopener">#35875</a></li>
     <li>Properly return StorageNotAvailable on network failures with external storages <a href="https://github.com/owncloud/core/pull/35707" target="_blank" rel="noopener">#35707</a></li>
-    <li>Improved error message when trying to share with a non-existing federated user <a href="https://github.com/owncloud/core/pull/35542" target="_blank" rel="noopener">#35542</a></li>
+    <li>Improved error message when trying to share with a nonexistent federated user <a href="https://github.com/owncloud/core/pull/35542" target="_blank" rel="noopener">#35542</a></li>
     <li>Allow selection of UI errors during web-installation <a href="https://github.com/owncloud/core/pull/35681" target="_blank" rel="noopener">#35681</a></li>
     <li>Added missing events for webdav copy operations on new endpoint <a href="https://github.com/owncloud/core/pull/35604" target="_blank" rel="noopener">#35604</a></li>
     <li>Double-appearing address book entries when shared with groups <a href="https://github.com/owncloud/core/pull/35603" target="_blank" rel="noopener">#35603</a></li>
@@ -4487,7 +4494,7 @@
     <li>Respect default application configuration when using TwoFactor Authentication <a href="https://github.com/owncloud/core/pull/36031" target="_blank" rel="noopener">#36031</a></li>
     <li>Improved mobile view for file drop links <a href="https://github.com/owncloud/core/pull/34803" target="_blank" rel="noopener">#34803</a></li>
     <li>Ignore case of userid in occ <code>files:scan</code> command <a href="https://github.com/owncloud/core/pull/35324" target="_blank" rel="noopener">#35324</a></li>
-    <li>Properly handle errors from remote server when declining a non-existing federated share <a href="https://github.com/owncloud/core/pull/35321" target="_blank" rel="noopener">#35321</a></li>
+    <li>Properly handle errors from remote server when declining a nonexistent federated share <a href="https://github.com/owncloud/core/pull/35321" target="_blank" rel="noopener">#35321</a></li>
     <li>UI issues on setup page when mobile devices where used <a href="https://github.com/owncloud/core/pull/35347" target="_blank" rel="noopener">#35347</a></li>
     <li>Direct access to sharing tab for long file listings <a href="https://github.com/owncloud/core/pull/35306" target="_blank" rel="noopener">#35306</a></li>
     <li>Improved OCM compliance on providerId and remoteId fields <a href="https://github.com/owncloud/core/pull/35122" target="_blank" rel="noopener">#35122</a></li>
@@ -4951,7 +4958,7 @@
     <li>Fix enabling of users by group admins in the web UI - <a href="https://github.com/owncloud/core/issues/31489" target="_blank" rel="noopener">#31489</a></li>
     <li>Fix AccountMapper to return an object or throw an exception - <a href="https://github.com/owncloud/core/issues/31445" target="_blank" rel="noopener">#31445</a></li>
     <li>Proper handling of exceptions in UserManager - <a href="https://github.com/owncloud/core/issues/31446" target="_blank" rel="noopener">#31446</a></li>
-    <li>Properly cache non-existing user in UserManager - <a href="https://github.com/owncloud/core/issues/31446" target="_blank" rel="noopener">#31446</a></li>
+    <li>Properly cache nonexistent user in UserManager - <a href="https://github.com/owncloud/core/issues/31446" target="_blank" rel="noopener">#31446</a></li>
     <li>Update verify checksums console output to flow more naturally - <a href="https://github.com/owncloud/core/issues/31449" target="_blank" rel="noopener">#31449</a></li>
     <li>Subadmin shouldn't be able to add users to their groups via API - <a href="https://github.com/owncloud/core/issues/31337" target="_blank" rel="noopener">#31337</a></li>
     <li>Catch duplicate inserts in token table - <a href="https://github.com/owncloud/core/pull/31460" target="_blank" rel="noopener">#31460</a> <a href="https://github.com/owncloud/core/issues/31794" target="_blank" rel="noopener">#31794</a> <a href="https://github.com/owncloud/core/pull/32041" target="_blank" rel="noopener">#32041</a></li>
@@ -5165,7 +5172,7 @@
     <li>Now using upsert instead of insertIfNotExists for file cache updates, fixes concurrency issues - <a href="https://github.com/owncloud/core/issues/29934" target="_blank" rel="noopener">#29934</a></li>
     <li>Only set CORS headers on Webdav endpoint when Origin header is specified - <a href="https://github.com/owncloud/core/issues/29874" target="_blank" rel="noopener">#29874</a></li>
     <li>Ignore broken/dead symlinks on filescan - <a href="https://github.com/owncloud/core/issues/28959" target="_blank" rel="noopener">#28959</a></li>
-    <li>Improve performance by caching non-existing accounts - <a href="https://github.com/owncloud/core/issues/29866" target="_blank" rel="noopener">#29866</a></li>
+    <li>Improve performance by caching nonexistent accounts - <a href="https://github.com/owncloud/core/issues/29866" target="_blank" rel="noopener">#29866</a></li>
     <li>Fix template location order by searching the enabled theme app first - <a href="https://github.com/owncloud/core/issues/29867" target="_blank" rel="noopener">#29867</a></li>
     <li>Actually log message instead of {$message} - <a href="https://github.com/owncloud/core/issues/29844" target="_blank" rel="noopener">#29844</a></li>
     <li>Improved performance on new DAV endpoint by skipping querying parent nodes - <a href="https://github.com/owncloud/core/issues/29834" target="_blank" rel="noopener">#29834</a></li>
@@ -5271,7 +5278,7 @@
     <li>Fix the missing argument to DecryptAll - <a href="https://github.com/owncloud/core/issues/29371" target="_blank" rel="noopener">#29371</a></li>
     <li>Skip copying skeleton files if skeleton dir is not accessible - <a href="https://github.com/owncloud/core/issues/29379" target="_blank" rel="noopener">#29379</a></li>
     <li>Use chunked DB query when preloading directory content for DAV properties - <a href="https://github.com/owncloud/core/issues/29416" target="_blank" rel="noopener">#29416</a></li>
-    <li>Fix failure when checking integrity signature for non-existing files - <a href="https://github.com/owncloud/core/issues/29433" target="_blank" rel="noopener">#29433</a></li>
+    <li>Fix failure when checking integrity signature for nonexistent files - <a href="https://github.com/owncloud/core/issues/29433" target="_blank" rel="noopener">#29433</a></li>
     <li>Prevent uploading of part files through WebDav - <a href="https://github.com/owncloud/core/issues/29432" target="_blank" rel="noopener">#29432</a></li>
     <li>Only trigger &quot;changeUser&quot; event if account object really changed - <a href="https://github.com/owncloud/core/issues/29429" target="_blank" rel="noopener">#29429</a></li>
     <li>Only load app type once in app manager classes - <a href="https://github.com/owncloud/core/issues/29428" target="_blank" rel="noopener">#29428</a></li>
@@ -5357,7 +5364,7 @@
 </ul>
 <h4>Performance</h4>
 <ul>
-    <li>Optimize upload - don't fetch info of non-existing file - <a href="https://github.com/owncloud/core/issues/28704" target="_blank" rel="noopener">#28704</a></li>
+    <li>Optimize upload - don't fetch info of nonexistent file - <a href="https://github.com/owncloud/core/issues/28704" target="_blank" rel="noopener">#28704</a></li>
     <li>Optimize upload - don't check if file exists if already known - <a href="https://github.com/owncloud/core/issues/28704" target="_blank" rel="noopener">#28704</a></li>
     <li>Optimize upload - do not fetch metadata for part file during checksumming - <a href="https://github.com/owncloud/core/issues/28633" target="_blank" rel="noopener">#28633</a></li>
     <li>Optimize shares retrieval logic with complex scenarios - <a href="https://github.com/owncloud/core/issues/28524" target="_blank" rel="noopener">#28524</a></li>
@@ -5372,7 +5379,7 @@
     <li>Don't trigger hooks for every new dav chunk, only for final file - <a href="https://github.com/owncloud/core/issues/28817" target="_blank" rel="noopener">#28817</a></li>
     <li>Prevent creating file cache inconsistencies when moving a subtree in or out of a share - <a href="https://github.com/owncloud/core/issues/28219" target="_blank" rel="noopener">#28219</a></li>
     <li>Add check for empty result in storage memcache - <a href="https://github.com/owncloud/core/issues/28548" target="_blank" rel="noopener">#28548</a></li>
-    <li>Fix error message when accessing of non-existing file on external storage - <a href="https://github.com/owncloud/core/issues/28613" target="_blank" rel="noopener">#28613</a></li>
+    <li>Fix error message when accessing a nonexistent file on external storage - <a href="https://github.com/owncloud/core/issues/28613" target="_blank" rel="noopener">#28613</a></li>
     <li>Fixed OAuth frontend logic when connecting to external storage - <a href="https://github.com/owncloud/core/issues/28496" target="_blank" rel="noopener">#28496</a> <a href="https://github.com/owncloud/core/issues/28400" target="_blank" rel="noopener">#28400</a></li>
     <li>Fix quota handling on new Webdav endpoint (affects desktop client 2.2+) - <a href="https://github.com/owncloud/core/issues/28261" target="_blank" rel="noopener">#28261</a></li>
     <li>Fix mounting Webdav as drive in Windows 10 - <a href="https://github.com/owncloud/core/issues/28243" target="_blank" rel="noopener">#28243</a></li>
