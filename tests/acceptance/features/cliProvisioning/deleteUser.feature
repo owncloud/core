@@ -22,7 +22,7 @@ Feature: delete users
     And the command output should contain the text "User with uid '%username%', display name '%displayname%', email '' was deleted" about user "brand-new-user"
     And user "brand-new-user" should not exist
 
-  Scenario: admin tries to delete a non-existing user
+  Scenario: admin tries to delete a nonexistent user
     Given user "brand-new-user" has been deleted
     When the administrator deletes user "brand-new-user" using the occ command
     Then the command should have failed with exit code 1

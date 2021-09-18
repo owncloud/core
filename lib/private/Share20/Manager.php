@@ -359,7 +359,7 @@ class Manager implements IManager {
 		/*
 		 * If share node is also share ($share is reshare),
 		 * compute permissions based on all incoming reshares for this node. As reshares are by design
-		 * just additional shares from owner (initated by share_initiator) we do not have knowledge
+		 * just additional shares from owner (initiated by share_initiator) we do not have knowledge
 		 * of which is "parent" share. Thus we need to visit all incoming shares to cover cases like
 		 * e.g. reshare with cross-membership groups on multiple levels
 		 */

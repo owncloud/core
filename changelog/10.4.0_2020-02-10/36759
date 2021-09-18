@@ -1,4 +1,4 @@
-Bugfix: Do not dispatch DeclineShare event for non-existing shares
+Bugfix: Do not dispatch DeclineShare event for nonexistent shares
 
 DeclineShare event was dispatched even when the share had been not found in oc_share_external table.
 It caused sending unshare notification to the empty hostname.

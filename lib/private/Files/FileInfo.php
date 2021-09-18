@@ -318,7 +318,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	/**
 	 * Add a cache entry which is the child of this folder
 	 *
-	 * Sets the size, etag and size to for cross-storage childs
+	 * Sets the size, etag and size to for cross-storage children
 	 *
 	 * @param array $data cache entry for the child
 	 * @param string $entryPath full path of the child entry
@@ -331,7 +331,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 		if (isset($data['etag'])) {
 			// prefix the etag with the relative path of the subentry to propagate etag on mount moves
 			$relativeEntryPath = \substr($entryPath, \strlen($this->getPath()));
-			// attach the permissions to propagate etag on permision changes of submounts
+			// attach the permissions to propagate etag on permission changes of submounts
 			$permissions = isset($data['permissions']) ? $data['permissions'] : 0;
 			$this->childEtags[] = $relativeEntryPath . '/' . $data['etag'] . $permissions;
 		}

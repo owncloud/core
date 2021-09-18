@@ -290,7 +290,7 @@ class SystemTagManagerTest extends TestCase {
 	public function testGetNonExistingTag() {
 		$this->expectException(\OCP\SystemTag\TagNotFoundException::class);
 
-		$this->tagManager->getTag('nonexist', false, false);
+		$this->tagManager->getTag('nonexistent', false, false);
 	}
 
 	/**

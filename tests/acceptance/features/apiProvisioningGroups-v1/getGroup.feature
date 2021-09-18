@@ -30,7 +30,7 @@ Feature: get group
     And the HTTP status code should be "200"
     And the list of users returned by the API should be empty
 
-  Scenario: admin tries to get users in a non-existent group
+  Scenario: admin tries to get users in a nonexistent group
     Given group "brand-new-group" has been created
     When the administrator gets all the members of group "nonexistentgroup" using the provisioning API
     Then the OCS status code should be "998"

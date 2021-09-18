@@ -44,7 +44,7 @@ Feature: files checksum command
     Then the command output should contain the text 'Path "/%username%/files/dev/null" not found' about user "Alice"
     And the command should have failed with exit code 2
 
-  Scenario: Administrator tries to verify the checksum of files in a certain path of a not existing user
+  Scenario: Administrator tries to verify the checksum of files in a certain path of a nonexistent user
     When the administrator invokes occ command "files:checksum:verify --user=%username% --path=/dev/null" for user "does-not-exist"
     Then the command output should contain the text 'User "%username%" does not exist' about user "does-not-exist"
     And the command should have failed with exit code 2

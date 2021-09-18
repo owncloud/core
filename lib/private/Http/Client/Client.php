@@ -69,7 +69,7 @@ class Client implements IClient {
 			$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath());
 		} else {
 			// If the instance is not yet setup we need to use the static path as
-			// $this->certificateManager->getAbsoluteBundlePath() tries to instantiiate
+			// $this->certificateManager->getAbsoluteBundlePath() tries to instantiate
 			// a view
 			if ($this->config->getSystemValue('installed', false) && !\OCP\Util::needUpgrade()) {
 				$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath(null));

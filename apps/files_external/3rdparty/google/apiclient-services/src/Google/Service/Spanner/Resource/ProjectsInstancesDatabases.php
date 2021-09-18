@@ -204,7 +204,7 @@ class Google_Service_Spanner_Resource_ProjectsInstancesDatabases extends Google_
   }
   /**
    * Returns permissions that the caller has on the specified database or backup
-   * resource. Attempting this RPC on a non-existent Cloud Spanner database will
+   * resource. Attempting this RPC on a nonexistent Cloud Spanner database will
    * result in a NOT_FOUND error if the user has `spanner.databases.list`
    * permission on the containing Cloud Spanner instance. Otherwise returns an
    * empty set of permissions. Calling this method on a backup that does not exist

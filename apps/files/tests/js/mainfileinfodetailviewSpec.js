@@ -100,7 +100,7 @@ describe('OCA.Files.MainFileInfoDetailView tests', function() {
 			// still loading
 			expect(view.$el.find('.thumbnail').hasClass('icon-loading')).toEqual(true);
 
-			// preview loading failed, no prview
+			// preview loading failed, no preview
 			previewArgs[0].error();
 
 			// loading stopped, the mimetype icon gets displayed

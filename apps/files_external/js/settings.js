@@ -1253,7 +1253,7 @@ MountConfigListView.prototype = _.extend({
 					}
 
 					if (result.status === StorageConfig.Status.ERROR) {
-						OC.Notification.show(t('files_external', 'An error occured while adding the external storage, please check the logs or contact the administrator'),
+						OC.Notification.show(t('files_external', 'An error occurred while adding the external storage, please check the logs or contact the administrator'),
 							{ type: "error", timeout: 7 });
 					}
 
@@ -1267,7 +1267,7 @@ MountConfigListView.prototype = _.extend({
 				if (concurrentTimer === undefined
 					|| $tr.data('save-timer') === concurrentTimer
 				) {
-					OC.Notification.show(t('files_external', 'An error occured while adding the external storage please check the logs'),
+					OC.Notification.show(t('files_external', 'An error occurred while adding the external storage please check the logs'),
 					{ type: "error", timeout: 7 });
 					self.updateStatus($tr, StorageConfig.Status.ERROR);
 				}

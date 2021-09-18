@@ -292,7 +292,7 @@ class ScannerTest extends \Test\TestCase {
 		$this->assertTrue($this->cache->inCache('folder/bar.txt'));
 		$oldFolderId = $this->cache->getId('folder');
 
-		// delete the folder without removing the childs
+		// delete the folder without removing the children
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 		\OC_DB::executeAudited($sql, [$oldFolderId]);
 
@@ -316,7 +316,7 @@ class ScannerTest extends \Test\TestCase {
 		$this->assertTrue($this->cache->inCache('folder/bar.txt'));
 		$oldFolderId = $this->cache->getId('folder');
 
-		// delete the folder without removing the childs
+		// delete the folder without removing the children
 		$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 		\OC_DB::executeAudited($sql, [$oldFolderId]);
 

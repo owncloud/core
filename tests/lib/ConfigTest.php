@@ -119,7 +119,7 @@ class ConfigTest extends TestCase {
 	public function testSetValues() {
 		$this->assertStringEqualsFile($this->configFile, self::TESTCONTENT);
 
-		// Changing configs to existing values and deleting non-existing once
+		// Changing configs to existing values and deleting nonexistent configs
 		// should not rewrite the config.php
 		$this->config->setValues([
 			'foo'			=> 'bar',

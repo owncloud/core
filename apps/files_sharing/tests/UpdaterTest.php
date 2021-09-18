@@ -122,7 +122,7 @@ class UpdaterTest extends TestCase {
 		$this->assertFalse($rootView->file_exists('files_trashbin/files/localFolder.d' . $timestamp . '/' . $this->folder));
 
 		//cleanup
-		$rootView->deleteAll('files_trashin');
+		$rootView->deleteAll('files_trashbin');
 
 		if ($status === false) {
 			\OC_App::disable('files_trashbin');

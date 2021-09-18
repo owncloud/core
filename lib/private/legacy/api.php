@@ -580,7 +580,7 @@ class OC_API {
 	}
 
 	/**
-	 * Called when a not existing OCS endpoint has been called
+	 * Called when a nonexistent OCS endpoint has been called
 	 */
 	public static function notFound() {
 		$format = \OC::$server->getRequest()->getParam('format', 'xml');

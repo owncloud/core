@@ -243,14 +243,14 @@ Feature: capabilities
       | files_sharing | can_share       | 1     |
 
   #feature added in #32414 released in 10.0.10
-  Scenario: getting async capabilites when async operations are enabled
+  Scenario: getting async capabilities when async operations are enabled
     Given the administrator has enabled async operations
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain
       | capability | path_to_element | value |
       | async      |                 | 1.0   |
 
-  Scenario: getting async capabilites when async operations are disabled
+  Scenario: getting async capabilities when async operations are disabled
     Given the administrator has disabled async operations
     When the administrator retrieves the capabilities using the capabilities API
     Then the capabilities should contain

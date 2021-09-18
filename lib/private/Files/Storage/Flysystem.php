@@ -45,7 +45,7 @@ abstract class Flysystem extends Common {
 	protected $root = '';
 
 	/**
-	 * Initialize the storage backend with a flyssytem adapter
+	 * Initialize the storage backend with a flysystem adapter
 	 *
 	 * @param \League\Flysystem\AdapterInterface $adapter
 	 */

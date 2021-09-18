@@ -108,7 +108,7 @@ class ActivityHelperTest extends \Test\TestCase {
 		$favorites = [
 			$fav1->getId(),
 			$fav2->getId(),
-			$fav2->getId() + 999, // non-existing
+			$fav2->getId() + 999, // nonexistent
 		];
 
 		$this->tags->method('getFavorites')->willReturn($favorites);
@@ -129,7 +129,7 @@ class ActivityHelperTest extends \Test\TestCase {
 		$aFolder = $userFolder->newFolder('x');
 
 		$favorites = [
-			// non-existing
+			// nonexistent
 			$aFolder->getId() + 999,
 		];
 

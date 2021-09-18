@@ -2,7 +2,7 @@
 Feature: security certificates
   As an admin
   I want to be able to manage the ownCloud security certificates
-  So that I can ensure the proper encrpytion mechanism
+  So that I can ensure the proper encryption mechanism
 
   Scenario: Import a security certificate
     Given the administrator has copied file "tests/data/certificates/goodCertificate.crt" to "goodCertificate.crt" in temporary storage on the system under test

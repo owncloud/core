@@ -107,7 +107,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	public function nodeExists($path) {
 		$path = \trim($path, '/');
 		if (isset($this->cache[$path]) && $this->cache[$path] === false) {
-			// Node is not existing, as it was explicitely set in the cache
+			// Node is nonexistent, as it was explicitly set in the cache
 			// Next call to getNodeForPath will create cache instance and unset the cached value
 			return false;
 		}

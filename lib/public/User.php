@@ -85,7 +85,7 @@ class User extends \OCP\User\Constants {
 	 * @param string $search search pattern
 	 * @param int|null $limit
 	 * @param int|null $offset
-	 * @return array an array of all display names (value) and the correspondig uids (key)
+	 * @return array an array of all display names (value) and the corresponding uids (key)
 	 * @deprecated 8.1.0 use method searchDisplayName() of \OCP\IUserManager - \OC::$server->getUserManager()
 	 * @since 5.0.0
 	 */

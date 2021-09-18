@@ -392,7 +392,7 @@ class Manager implements ICommentsManager {
 				->setParameter('type', $objectType)
 				->setParameter('object_ids', $objectIdChunk, IQueryBuilder::PARAM_STR_ARRAY);
 
-			// For those found object_id, find all records from oc_comments which are not existing in oc_comments_read_markers or
+			// For those found object_id, find all records from oc_comments which are nonexistent in oc_comments_read_markers or
 			// if matched, its timestamp is lower then the one in oc_comments_read_markers
 			// This query will find all unread comments for user oc_comments_read_markers.user_id $user
 			$qbSup->select('object_id')

@@ -225,7 +225,7 @@ class TransferOwnershipContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		//the entry in the folder should not exist
 		//but the last received transfer folder itself should exist
-		//that would help against snakeoil tests if testing a non-existing folder
+		//that would help against snakeoil tests if testing a nonexistent folder
 		$this->featureContext->asFileOrFolderShouldExist(
 			$user,
 			$entry,

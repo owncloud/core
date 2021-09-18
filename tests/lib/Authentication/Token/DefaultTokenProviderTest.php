@@ -235,7 +235,7 @@ class DefaultTokenProviderTest extends TestCase {
 		$this->tokenProvider->invalidateToken('token7');
 	}
 
-	public function testInvaildateTokenById() {
+	public function testInvalidateTokenById() {
 		$id = 123;
 		$user = $this->createMock('\OCP\IUser');
 

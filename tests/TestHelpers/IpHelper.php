@@ -283,7 +283,7 @@ class IpHelper {
 	 * @throws InvalidArgumentException
 	 * @return string IPv6 address
 	 */
-	private static function routeableIpv6Address() {
+	private static function routableIpv6Address() {
 		foreach (self::systemIpv6Addresses() as $ipv6Address) {
 			if (($ipv6Address !== self::IPV6_LOOPBACK_ADDRESS)
 				&& (\strpos($ipv6Address, self::IPV6_LINK_LOCAL_ADDRESS_TOP) !== 0)
@@ -293,7 +293,7 @@ class IpHelper {
 		}
 
 		throw new \InvalidArgumentException(
-			"routeableIpv6Address: No IP address found"
+			"routableIpv6Address: No IP address found"
 		);
 	}
 
@@ -311,7 +311,7 @@ class IpHelper {
 			case 'ipv4':
 				return self::routableIpv4Address();
 			case 'ipv6':
-				return self::routeableIpv6Address();
+				return self::routableIpv6Address();
 		}
 
 		throw new \InvalidArgumentException(
@@ -339,8 +339,8 @@ class IpHelper {
 	 *
 	 * @return string IPv6 local subnet base address
 	 */
-	private static function routeableIpv6AddressSubnet($cidr) {
-		return self::ipv6AddressSubnet(self::routeableIpv6Address(), $cidr);
+	private static function routableIpv6AddressSubnet($cidr) {
+		return self::ipv6AddressSubnet(self::routableIpv6Address(), $cidr);
 	}
 
 	/**
@@ -358,7 +358,7 @@ class IpHelper {
 			case 'ipv4':
 				return self::routableIpv4AddressSubnet($cidr);
 			case 'ipv6':
-				return self::routeableIpv6AddressSubnet($cidr);
+				return self::routableIpv6AddressSubnet($cidr);
 		}
 
 		throw new \InvalidArgumentException(

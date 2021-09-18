@@ -152,7 +152,7 @@ class SimpleContainerTest extends \Test\TestCase {
 		$this->assertInstanceOf(ClassEmptyConstructor::class, $object);
 	}
 
-	public function testRegisterAliasParamter() {
+	public function testRegisterAliasParameter() {
 		$this->container->registerParameter('test', 'abc');
 		$this->container->registerAlias('test1', 'test');
 		$this->assertEquals('abc', $this->container->query('test1'));

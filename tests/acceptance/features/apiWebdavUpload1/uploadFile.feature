@@ -101,12 +101,12 @@ Feature: upload file
       | new         | /?fi=le&%#2 . txt | # %ab ab?=ed |
 
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
-  Scenario Outline: attempt to upload a file into a non-existent folder
+  Scenario Outline: attempt to upload a file into a nonexistent folder
     Given using <dav_version> DAV path
-    When user "Alice" uploads file with content "uploaded content" to "non-existent-folder/new-file.txt" using the WebDAV API
+    When user "Alice" uploads file with content "uploaded content" to "nonexistent-folder/new-file.txt" using the WebDAV API
     Then the HTTP status code should be "409"
-    And as "Alice" folder "non-existent-folder" should not exist
-    And as "Alice" file "non-existent-folder/new-file.txt" should not exist
+    And as "Alice" folder "nonexistent-folder" should not exist
+    And as "Alice" file "nonexistent-folder/new-file.txt" should not exist
     Examples:
       | dav_version |
       | old         |

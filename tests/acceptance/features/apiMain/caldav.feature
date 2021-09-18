@@ -5,7 +5,7 @@ Feature: caldav
     Given user "Alice" has been created with default attributes and without skeleton files
 
   @caldav
-  Scenario: Accessing a not existing calendar of another user
+  Scenario: Accessing a nonexistent calendar of another user
     When the administrator requests calendar "%username%/MyCalendar" of user "Alice" using the new WebDAV API
     Then the CalDAV HTTP status code should be "404"
     And the CalDAV exception should be "Sabre\DAV\Exception\NotFound"
@@ -20,7 +20,7 @@ Feature: caldav
     And the CalDAV message should be "Node with name 'MyCalendar' could not be found"
 
   @caldav
-  Scenario: Accessing a not existing calendar of myself
+  Scenario: Accessing a nonexistent calendar of myself
     When user "Alice" requests calendar "%username%/MyCalendar" of user "admin" using the new WebDAV API
     Then the CalDAV HTTP status code should be "404"
     And the CalDAV exception should be "Sabre\DAV\Exception\NotFound"

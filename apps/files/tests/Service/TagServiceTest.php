@@ -113,7 +113,7 @@ class TagServiceTest extends \Test\TestCase {
 		$this->assertEquals([], $tags->getIdsForTag($tag1));
 		$this->assertEquals([], $tags->getIdsForTag($tag2));
 
-		// non-existing file
+		// nonexistent file
 		$caught = false;
 		try {
 			$this->tagService->updateFileTags('subdir/unexist.txt', [$tag1]);

@@ -324,7 +324,7 @@
 			/**
 			 * Static tags are shown if the user belongs to group which is
 			 * whitelisted in the tag. Else the tag is not seen. If the tag
-			 * is visible, then no edit options are availbe to users. Admin user
+			 * is visible, then no edit options are available to users. Admin user
 			 * is the only exception here. Admin user can edit, delete, assign or
 			 * unassign the tag.
 			 *

@@ -161,7 +161,7 @@ class AvatarControllerTest extends TestCase {
 	}
 
 	/**
-	 * Fetch the avatar of a non-existing user
+	 * Fetch the avatar of a nonexistent user
 	 */
 	public function testGetAvatarNoUser() {
 		$this->avatarManager

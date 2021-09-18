@@ -166,7 +166,7 @@ class Detection implements IMimeTypeDetector {
 		/**
 		 * 1. Exactly 4 indexes to match ( check the regex grouping above preg_match )
 		 * 2. Check if the filename has '.so'
-		 * 3. Check if the filname has extension after '.so', say .so.1. or .so.
+		 * 3. Check if the filename has extension after '.so', say .so.1. or .so.
 		 * That is anything like '.so.*'. This match is made in the 4th index.
 		 * No extension after '.so' is considered to be shared object file
 		 */

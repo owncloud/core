@@ -10,7 +10,7 @@
 *
 *	@special-thanks					Michel Gratton
 *
-*	@licens							MIT License - http://www.opensource.org/licenses/mit-license.php
+*	@license							MIT License - http://www.opensource.org/licenses/mit-license.php
 */
 (function($){
      $.fn.extend({

@@ -114,7 +114,7 @@
 
 		var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
 
-		// Classic formulla to check the brigtness for our eye
+		// Classic formula to check the brightness for our eye
 		// If too bright, lower the sat
 		var bright = Math.sqrt( 0.299 * Math.pow(rgb[0], 2) + 0.587 * Math.pow(rgb[1], 2) + 0.114 * Math.pow(rgb[2], 2) );
 		if (bright >= 200) {

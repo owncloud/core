@@ -2806,7 +2806,7 @@ class DefaultShareProviderTest extends TestCase {
 			'user1',
 			'file',
 			42,
-			'mytaret',
+			'mytarget',
 			31,
 			null,
 			null
@@ -2845,7 +2845,7 @@ class DefaultShareProviderTest extends TestCase {
 			'user1',
 			'file',
 			42,
-			'mytaret',
+			'mytarget',
 			31,
 			null,
 			null

@@ -1308,7 +1308,7 @@ class Share extends Constants {
 		};
 		$sanitizeItem = function ($item) {
 			$item['id'] = (int)$item['id'];
-			$item['premissions'] = (int)$item['permissions'];
+			$item['permissions'] = (int)$item['permissions'];
 			return $item;
 		};
 
@@ -1440,7 +1440,7 @@ class Share extends Constants {
 				}
 				$result->closeCursor();
 
-				// Add permssions for all USERGROUP shares of this item
+				// Add permissions for all USERGROUP shares of this item
 				if (!empty($ids)) {
 					$ids = $intArrayToLiteralArray($ids, $qb->expr());
 
@@ -2759,7 +2759,7 @@ class Share extends Constants {
 	/**
 	 * construct select statement
 	 * @param int $format
-	 * @param boolean $fileDependent ist it a file/folder share or a generla share
+	 * @param boolean $fileDependent ist it a file/folder share or a general share
 	 * @param string $uidOwner
 	 * @return string select statement
 	 */

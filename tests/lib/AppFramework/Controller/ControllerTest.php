@@ -153,7 +153,7 @@ class ControllerTest extends TestCase {
 
 	/**
 	 */
-	public function testFormatResonseInvalidFormat() {
+	public function testFormatResponseInvalidFormat() {
 		$this->expectException(\DomainException::class);
 
 		$this->controller->buildResponse(null, 'test');

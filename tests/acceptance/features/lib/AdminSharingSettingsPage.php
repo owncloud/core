@@ -477,7 +477,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * enforce mamixum expiration date for group share
+	 * enforce maximum expiration date for group share
 	 *
 	 * @param Session $session
 	 *
@@ -493,7 +493,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	}
 
 	/**
-	 * enforce mamixum expiration date for federated share
+	 * enforce maximum expiration date for federated share
 	 *
 	 * @param Session $session
 	 *

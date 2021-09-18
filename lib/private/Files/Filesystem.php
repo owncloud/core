@@ -434,7 +434,7 @@ class Filesystem {
 		$mountConfigManager = \OC::$server->getMountProviderCollection();
 		'@phan-var \OC\Files\Config\MountProviderCollection $mountConfigManager';
 
-		// home mounts are handled seperate since we need to ensure this is mounted before we call the other mount providers
+		// home mounts are handled separate since we need to ensure this is mounted before we call the other mount providers
 		$homeMount = $mountConfigManager->getHomeMountForUser($userObject);
 
 		self::getMountManager()->addMount($homeMount);
@@ -602,7 +602,7 @@ class Filesystem {
 	}
 
 	/**
-	 * depriciated, replaced by isForbiddenFileOrDir
+	 * deprecated, replaced by isForbiddenFileOrDir
 	 * @param string $filename
 	 * @return boolean
 	 */
@@ -703,7 +703,7 @@ class Filesystem {
 	* Check if the directory path / file name contains a Blacklisted or Excluded name as defined in config.
 	* config.php parameter arrays can contain file names to be blacklisted or directory names to be excluded
 	* Blacklist ... files that may harm the owncloud environment like a foreign `.htaccess` file or other unwanted files
-	* Excluded  ... directories that are excluded from beeing further processed, like snapshot directories
+	* Excluded  ... directories that are excluded from being further processed, like snapshot directories
 	* The parameter $excluded and the query with can be redesigned if filesystem.php will get
 	* a constructor where it is then possible to define the excluded directory names for unit tests.
 	 *

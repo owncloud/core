@@ -187,14 +187,14 @@ class NotificationTest extends TestCase {
 	 * @dataProvider dataSetObject
 	 * @param string $type
 	 * @param int|string $id
-	 * @param string $exptectedId
+	 * @param string $expectedId
 	 */
-	public function testSetObject($type, $id, $exptectedId) {
+	public function testSetObject($type, $id, $expectedId) {
 		$this->assertSame('', $this->notification->getObjectType());
 		$this->assertSame('', $this->notification->getObjectId());
 		$this->assertSame($this->notification, $this->notification->setObject($type, $id));
 		$this->assertSame($type, $this->notification->getObjectType());
-		$this->assertSame($exptectedId, $this->notification->getObjectId());
+		$this->assertSame($expectedId, $this->notification->getObjectId());
 	}
 
 	public function dataSetObjectTypeInvalid() {

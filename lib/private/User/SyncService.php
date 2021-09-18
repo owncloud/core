@@ -248,10 +248,10 @@ class SyncService {
 	 */
 	private function syncHome(Account $a, UserInterface $backend) {
 		// Fallback for backends that dont yet use the new interfaces
-		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
+		$providesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
 		$uid = $a->getUserId();
 		// Log when the backend returns a string that is a different home to the current value
-		if ($proividesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
+		if ($providesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
 			$existing = $a->getHome();
 			$backendHome = $backend->getHome($uid);
 			$class = \get_class($backend);
@@ -263,7 +263,7 @@ class SyncService {
 		// Otherwise it could change on a sync and result in a new user folder being created
 		if ($a->getHome() === '') {
 			$home = false;
-			if ($proividesHome) {
+			if ($providesHome) {
 				$home = $backend->getHome($uid);
 			}
 			if (!\is_string($home) || $home[0] !== '/') {

@@ -265,12 +265,12 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$dbConfigService->addApplicable($id, DBConfigService::APPLICABLE_TYPE_USER, 'user1');
 
 		$this->assertTrue($this->service->deleteAllMountsForUser($user1));
-		$storarge1Result1 = $userMountCache->getMountsForStorageId(10);
-		$storarge1Result2 = $userMountCache->getMountsForStorageId(12);
-		$this->assertCount(0, $storarge1Result1);
-		$this->assertCount(1, $storarge1Result2);
-		$this->assertEquals(12, $storarge1Result2[0]->getStorageId());
-		$this->assertEquals('/bar/', $storarge1Result2[0]->getMountPoint());
+		$storage1Result1 = $userMountCache->getMountsForStorageId(10);
+		$storage1Result2 = $userMountCache->getMountsForStorageId(12);
+		$this->assertCount(0, $storage1Result1);
+		$this->assertCount(1, $storage1Result2);
+		$this->assertEquals(12, $storage1Result2[0]->getStorageId());
+		$this->assertEquals('/bar/', $storage1Result2[0]->getMountPoint());
 		$this->assertNull($dbConfigService->getMountById($id));
 	}
 }

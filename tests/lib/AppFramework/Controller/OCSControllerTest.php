@@ -169,7 +169,7 @@ class OCSControllerTest extends TestCase {
 				],
 				'statuscode' => 400]
 			],
-			'ocs-resuls' => [new Result([
+			'ocs-results' => [new Result([
 				'test' => 'hi'
 			], 400, 'OK')]
 		];

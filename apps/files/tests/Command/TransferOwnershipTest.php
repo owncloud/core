@@ -281,7 +281,7 @@ class TransferOwnershipTest extends TestCase {
 		$targetShares = $this->shareManager->getSharesBy($this->targetUser->getUID(), Share::SHARE_TYPE_USER);
 
 		// only reshare should be there on source user file
-		// (as it could not be transfered due to lack of ownership)
+		// (as it could not be transferred due to lack of ownership)
 		$this->assertEquals($sourceShares[0]->getShareOwner(), $this->shareSender->getUID());
 		$this->assertEquals($sourceShares[0]->getSharedWith(), $this->shareReceiver->getUID());
 		$this->assertEquals($sourceShares[0]->getSharedBy(), $this->sourceUser->getUID());

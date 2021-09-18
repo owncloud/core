@@ -237,7 +237,7 @@ class CorsControllerTest extends TestCase {
 
 		// The argument for removing domain is the ID of the white-listed domain
 		// and not the domain itself
-		$response = $this->corsController->removeDomain('non-existing.domain');
+		$response = $this->corsController->removeDomain('nonexistent.domain');
 
 		$expectedResponse = new JSONResponse(['domains' => ['http://www.test.com']]);
 

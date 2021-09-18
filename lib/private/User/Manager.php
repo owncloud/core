@@ -205,7 +205,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 		} catch (MultipleObjectsReturnedException $ex) {
 			$this->logger->error(
-				"More than one user found for $uid, treating as not existing.",
+				"More than one user found for $uid, treating as nonexistent.",
 				['app' => __CLASS__]
 			);
 			$this->cachedUsers->set($uid, null);

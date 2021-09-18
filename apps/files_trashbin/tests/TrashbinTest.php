@@ -471,7 +471,7 @@ class TrashbinTest extends TestCase {
 	}
 
 	/**
-	 * Test restoring a non-existing file from trashbin, returns false
+	 * Test restoring a nonexistent file from trashbin, returns false
 	 */
 	public function testRestoreUnexistingFile() {
 		$this->assertFalse(

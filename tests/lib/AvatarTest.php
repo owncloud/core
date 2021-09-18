@@ -127,7 +127,7 @@ class AvatarTest extends \Test\TestCase {
 		$this->assertFalse($this->avatar->exists());
 	}
 
-	public function testExiststJPG() {
+	public function testExistsJPG() {
 		$this->storage->method('file_exists')
 			->will($this->returnValueMap([
 				['avatars/d4/1d/8cd98f00b204e9800998ecf8427e/avatar.jpg', true],

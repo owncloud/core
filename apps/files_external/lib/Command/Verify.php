@@ -58,7 +58,7 @@ class Verify extends Base {
 				'config',
 				'c',
 				InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-				'Additional config option to set before checking in key=value pairs, required for certain auth backends such as login credentails'
+				'Additional config option to set before checking in key=value pairs, required for certain auth backends such as login credentials'
 			);
 		parent::configure();
 	}

@@ -170,7 +170,7 @@ class AccountMapperTest extends TestCase {
 	public function findUserIdsDataProvider() {
 		return [
 			[self::class, null, null, ['TestFind1','TestFind2','TestFind3','TestFind4']],
-			['not existing backend', null, null, []],
+			['nonexistent backend', null, null, []],
 			[self::class, 1, null, ['TestFind1']],
 			[self::class, 2, 2, ['TestFind3', 'TestFind4']],
 			[self::class, 1, 3, ['TestFind4']],
@@ -190,7 +190,7 @@ class AccountMapperTest extends TestCase {
 	public function findUserIdsLoggedInDataProvider() {
 		return [
 			[self::class, null, null, ['TestFind2','TestFind4']],
-			['not existing backend', null, null, []],
+			['nonexistent backend', null, null, []],
 			[self::class, 1, null, ['TestFind2']],
 			[self::class, 1, 1, ['TestFind4']],
 		];

@@ -93,7 +93,7 @@ class RepairSubSharesTest extends TestCase {
 		$usersinsharetable = ['admin', 'user1', 'user2', 'user2'];
 		foreach ($usersinsharetable as $user) {
 			//start with a simple insert query and alter later based on users.
-			$inserValues = [
+			$insertValues = [
 				'uid_owner' => $qb->expr()->literal('admin'),
 				'uid_initiator' => $qb->expr()->literal('admin'),
 				'item_type' => $qb->expr()->literal('folder'),
@@ -108,17 +108,17 @@ class RepairSubSharesTest extends TestCase {
 
 			$userIndex = \array_search($user, $usersinsharetable, true);
 			if ($userIndex === 0) {
-				$inserValues['share_type'] = $qb->expr()->literal(1);
-				$inserValues['share_with'] = $qb->expr()->literal($groupName);
+				$insertValues['share_type'] = $qb->expr()->literal(1);
+				$insertValues['share_with'] = $qb->expr()->literal($groupName);
 				$user = $groupName;
 			} else {
-				$inserValues['share_type'] = $qb->expr()->literal(2);
-				$inserValues['share_with'] = $qb->expr()->literal($user);
-				$inserValues['parent'] = $qb->expr()->literal(1);
+				$insertValues['share_type'] = $qb->expr()->literal(2);
+				$insertValues['share_with'] = $qb->expr()->literal($user);
+				$insertValues['parent'] = $qb->expr()->literal(1);
 			}
 
 			$qb->insert('share')
-				->values($inserValues)
+				->values($insertValues)
 				->execute();
 			$getAllIdsPerUser[$user][] = ['id' => $this->getLastSharedId(), 'share_with' => $user];
 		}

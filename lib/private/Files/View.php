@@ -2249,7 +2249,7 @@ class View {
 	}
 
 	/**
-	 * Creates parent non-existing folders
+	 * Creates any nonexistent parent folders
 	 *
 	 * @param string $filePath
 	 * @return bool

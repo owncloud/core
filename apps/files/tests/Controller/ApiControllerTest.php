@@ -147,7 +147,7 @@ class ApiControllerTest extends TestCase {
 		$this->assertEquals($expected, $this->apiController->getThumbnail(0, 0, ''));
 	}
 
-	public function testGetThumbnailInvaidImage() {
+	public function testGetThumbnailInvalidImage() {
 		$this->preview->expects($this->once())
 			->method('createPreview')
 			->with('files/unknown.jpg', 10, 10, true)

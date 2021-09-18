@@ -370,17 +370,17 @@ class DecryptAllTest extends TestCase {
 		$idbConnection = $this->createMock(IDBConnection::class);
 		$iqueryBuilder = $this->createMock(IQueryBuilder::class);
 		$iexpressionBuilder = $this->createMock(IExpressionBuilder::class);
-		$resultStatment = $this->createMock(Statement::class);
-		$resultStatment->expects($this->at(0))
+		$resultStatement = $this->createMock(Statement::class);
+		$resultStatement->expects($this->at(0))
 			->method('fetch')
 			->willReturn(['count' => '1']);
-		$resultStatment->expects($this->at(1))
+		$resultStatement->expects($this->at(1))
 			->method('fetch')
 			->willReturn($user1);
-		$resultStatment->expects($this->at(2))
+		$resultStatement->expects($this->at(2))
 			->method('fetch')
 			->willReturn($user1);
-		$resultStatment->expects($this->any())
+		$resultStatement->expects($this->any())
 			->method('closeCursor')
 			->willReturn(true);
 		$iexpressionBuilder->expects($this->any())
@@ -400,7 +400,7 @@ class DecryptAllTest extends TestCase {
 			->willReturn($iexpressionBuilder);
 		$iqueryBuilder->expects($this->any())
 			->method('execute')
-			->willReturn($resultStatment);
+			->willReturn($resultStatement);
 		$idbConnection->expects($this->any())
 			->method('getQueryBuilder')
 			->willReturn($iqueryBuilder);

@@ -39,7 +39,7 @@
 namespace OCP;
 
 /**
- * This class provides access to the internal database system. Use this class exlusively if you want to access databases
+ * This class provides access to the internal database system. Use this class exclusively if you want to access databases
  * @deprecated 8.1.0 use methods of \OCP\IDBConnection - \OC::$server->getDatabaseConnection()
  * @since 4.5.0
  */

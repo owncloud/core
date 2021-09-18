@@ -29,7 +29,7 @@ use OC\Files\Mount\MountPoint;
 
 class PreviewsMountProviderTest extends \Test\TestCase {
 
-	/** @var PreviewsMountPorivder */
+	/** @var PreviewsMountProvider */
 	protected $provider;
 
 	/** @var IConfig|\PHPUnit\Framework\MockObject\MockObject */

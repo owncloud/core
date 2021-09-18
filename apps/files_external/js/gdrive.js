@@ -27,7 +27,7 @@ $(document).ready(function() {
 			 * ------- OAUTH2 Events ----------
 			 *
 			 * The files_external_{backendId} app's CUSTOM JS should handle the OAuth2 events itself
-			 * instead on relying on the core for the implemention. These two functions
+			 * instead on relying on the core for the implementation. These two functions
 			 * [1] OCA.External.Settings.OAuth2.getAuthUrl, [2] OCA.External.Settings.OAuth2.verifyCode
 			 * abstract away the details of sending the request to backend for getting the AuthURL or
 			 * verifying the code, mounting the storage config etc

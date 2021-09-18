@@ -131,15 +131,15 @@ class CacheTest extends TestCase {
 			}
 		}
 
-		$file4 = $folder.'/unkownSize';
-		$fileData['unkownSize'] = ['size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file'];
-		$this->cache->put($file4, $fileData['unkownSize']);
+		$file4 = $folder.'/unknownSize';
+		$fileData['unknownSize'] = ['size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file'];
+		$this->cache->put($file4, $fileData['unknownSize']);
 
 		// -2 = IScanner::SIZE_SHALLOW_SCANNED
 		$this->assertEquals(-2, $this->cache->calculateFolderSize($folder));
 
-		$fileData['unkownSize'] = ['size' => 5, 'mtime' => 25, 'mimetype' => 'foo/file'];
-		$this->cache->put($file4, $fileData['unkownSize']);
+		$fileData['unknownSize'] = ['size' => 5, 'mtime' => 25, 'mimetype' => 'foo/file'];
+		$this->cache->put($file4, $fileData['unknownSize']);
 
 		$this->assertEquals(1025, $this->cache->calculateFolderSize($folder));
 
@@ -205,15 +205,15 @@ class CacheTest extends TestCase {
 			$data = $fileData[$cachedData['name']];
 		}
 
-		$file4 = 'folder/unkownSize';
-		$fileData['unkownSize'] = ['size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file'];
-		$this->cache->put($file4, $fileData['unkownSize']);
+		$file4 = 'folder/unknownSize';
+		$fileData['unknownSize'] = ['size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file'];
+		$this->cache->put($file4, $fileData['unknownSize']);
 
 		// -2 = IScanner::SIZE_SHALLOW_SCANNED
 		$this->assertEquals(-2, $this->cache->calculateFolderSize($file1));
 
-		$fileData['unkownSize'] = ['size' => 5, 'mtime' => 25, 'mimetype' => 'foo/file'];
-		$this->cache->put($file4, $fileData['unkownSize']);
+		$fileData['unknownSize'] = ['size' => 5, 'mtime' => 25, 'mimetype' => 'foo/file'];
+		$this->cache->put($file4, $fileData['unknownSize']);
 
 		$this->assertEquals(1025, $this->cache->calculateFolderSize($file1));
 		// direct cache entry retrieval returns the original values
@@ -664,20 +664,20 @@ class CacheTest extends TestCase {
 		$folderData = ['size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory'];
 		$this->cache->put($name, $folderData);
 		$this->cache->put('other', $folderData);
-		$childs = ['asd', 'bar', 'foo', 'sub/folder'];
+		$children = ['asd', 'bar', 'foo', 'sub/folder'];
 		$this->cache->put($name . '/sub', $folderData);
 		$this->cache->put('other/sub', $folderData);
-		foreach ($childs as $child) {
+		foreach ($children as $child) {
 			$this->cache->put($name . '/' . $child, $data);
 			$this->cache->put('other/' . $child, $data);
 			$this->assertTrue($this->cache->inCache($name . '/' . $child));
 		}
 		$this->cache->move($name, $name . 'asd');
-		foreach ($childs as $child) {
+		foreach ($children as $child) {
 			$this->assertTrue($this->cache->inCache($name . 'asd/' . $child));
 			$this->assertTrue($this->cache->inCache('other/' . $child));
 		}
-		foreach ($childs as $child) {
+		foreach ($children as $child) {
 			$this->cache->remove($name . 'asd/' . $child);
 			$this->assertFalse($this->cache->inCache($name . 'asd/' . $child));
 			$this->assertTrue($this->cache->inCache('other/' . $child));

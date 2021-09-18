@@ -33,7 +33,7 @@ class CapabilitiesManagerTest extends TestCase {
 	}
 
 	/**
-	 * Test a valid capabilitie
+	 * Test a valid capability
 	 */
 	public function testValidCapability() {
 		$manager = new \OC\CapabilitiesManager();

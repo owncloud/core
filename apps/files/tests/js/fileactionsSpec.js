@@ -58,7 +58,7 @@ describe('OCA.Files.FileActions tests', function() {
 		fileActions.setDefault('all', 'Testdefault');
 		fileList = new OCA.Files.FileList($body, {
 			fileActions: fileActions,
-			// removes the "Details" action to not intefere with tests
+			// removes the "Details" action to not interfere with tests
 			detailsViewEnabled: false
 		});
 	});

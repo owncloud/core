@@ -305,7 +305,7 @@ class Local extends Common {
 	public function free_space($path) {
 		$sourcePath = $this->getSourcePath($path);
 		// using !is_dir because $sourcePath might be a part file or
-		// non-existing file, so we'd still want to use the parent dir
+		// nonexistent file, so we'd still want to use the parent dir
 		// in such cases
 		if (!\is_dir($sourcePath)) {
 			// disk_free_space doesn't work on files

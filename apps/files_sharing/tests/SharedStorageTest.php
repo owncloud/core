@@ -324,8 +324,8 @@ class SharedStorageTest extends TestCase {
 		$handle = $user2View->fopen($this->folder . '/test-create.txt', 'w');
 		$this->assertFalse($handle);
 
-		// rename part file not allowed to non-existing file
-		$this->assertFalse($user2View->rename($this->folder . '/test.txt.part', $this->folder . '/nonexist.txt'));
+		// rename part file not allowed to nonexistent file
+		$this->assertFalse($user2View->rename($this->folder . '/test.txt.part', $this->folder . '/nonexistent.txt'));
 
 		// rename part file allowed to target existing file
 		$this->assertTrue($user2View->rename($this->folder . '/test.txt.part', $this->folder . '/existing.txt'));

@@ -704,7 +704,7 @@ class File extends Node implements IFile, IFileNode {
 
 	/**
 	 * Set $algo to get a specific checksum, leave null to get all checksums
-	 * (space seperated)
+	 * (space separated)
 	 * @param null $algo
 	 * @return string
 	 */

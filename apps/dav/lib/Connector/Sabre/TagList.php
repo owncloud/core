@@ -61,7 +61,7 @@ class TagList implements Element {
 	/**
 	 * The deserialize method is called during xml parsing.
 	 *
-	 * This method is called statictly, this is because in theory this method
+	 * This method is called statically, this is because in theory this method
 	 * may be used as a type of constructor, or factory method.
 	 *
 	 * Often you want to return an instance of the current class, but you are
@@ -100,7 +100,7 @@ class TagList implements Element {
 	 * Use the $writer argument to write its own xml serialization.
 	 *
 	 * An important note: do _not_ create a parent element. Any element
-	 * implementing XmlSerializble should only ever write what's considered
+	 * implementing XmlSerializable should only ever write what's considered
 	 * its 'inner xml'.
 	 *
 	 * The parent of the current element is responsible for writing a

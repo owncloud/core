@@ -342,7 +342,7 @@ BEHAT_TAGS='@webUI&&'${BEHAT_TAGS}
 
 if [ "${BROWSER}" == "firefox" ]
 then
-	# set screen resolution so that hopefully dragable elements will be visible
+	# set screen resolution so that hopefully draggable elements will be visible
 	# FF gives problems if the destination element is not visible
 	EXTRA_CAPABILITIES='"screenResolution":"1920x1080",'
 

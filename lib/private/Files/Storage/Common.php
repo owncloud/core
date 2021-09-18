@@ -131,7 +131,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	public function isUpdatable($path) {
 		// at least check whether it exists
 		// subclasses might want to implement this more thoroughly
-		// a non-existing file/folder isn't updatable
+		// a nonexistent file/folder isn't updatable
 		return $this->file_exists($path);
 	}
 

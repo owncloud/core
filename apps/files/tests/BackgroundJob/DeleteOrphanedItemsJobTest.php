@@ -82,7 +82,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 				'systemtagid' => $query->createNamedParameter(1337, IQueryBuilder::PARAM_INT),
 			])->execute();
 
-		// Non-existing file
+		// nonexistent file
 		$query = $this->connection->getQueryBuilder();
 		$query->insert('systemtag_object_mapping')
 			->values([
@@ -131,7 +131,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 				'categoryid' => $query->createNamedParameter(1337, IQueryBuilder::PARAM_INT),
 			])->execute();
 
-		// Non-existing file
+		// nonexistent file
 		$query = $this->connection->getQueryBuilder();
 		$query->insert('vcategory_to_object')
 			->values([
@@ -181,7 +181,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 				'actor_type' => $query->createNamedParameter('users'),
 			])->execute();
 
-		// Non-existing file
+		// nonexistent file
 		$query = $this->connection->getQueryBuilder();
 		$query->insert('comments')
 			->values([
@@ -231,7 +231,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 				'user_id' => $query->createNamedParameter('Alice', IQueryBuilder::PARAM_INT),
 			])->execute();
 
-		// Non-existing file
+		// nonexistent file
 		$query = $this->connection->getQueryBuilder();
 		$query->insert('comments_read_markers')
 			->values([

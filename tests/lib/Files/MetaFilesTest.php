@@ -162,7 +162,7 @@ class MetaFilesTest extends TestCase {
 		$info = $this->createFile();
 
 		$metaRoot = \OC::$server->getRootFolder();
-		// get non-existing
+		// get nonexistent
 		$metaRoot->get($info->getId() + 100);
 	}
 }

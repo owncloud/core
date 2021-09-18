@@ -29,7 +29,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * Creates a new Connectivity Test. After you create a test, the reachability
    * analysis is performed as part of the long running operation, which completes
    * when the analysis completes. If the endpoint specifications in
-   * `ConnectivityTest` are invalid (for example, containing non-existent
+   * `ConnectivityTest` are invalid (for example, containing nonexistent
    * resources in the network, or you don't have read permissions to the network
    * configurations of listed projects), then the reachability result returns a
    * value of `UNKNOWN`. If the endpoint specifications in `ConnectivityTest` are
@@ -145,7 +145,7 @@ class Google_Service_NetworkManagement_Resource_ProjectsLocationsNetworkmanageme
    * operation, which completes when the analysis completes. The Reachability
    * state in the test resource is updated with the new result. If the endpoint
    * specifications in `ConnectivityTest` are invalid (for example, they contain
-   * non-existent resources in the network, or the user does not have read
+   * nonexistent resources in the network, or the user does not have read
    * permissions to the network configurations of listed projects), then the
    * reachability result returns a value of UNKNOWN. If the endpoint
    * specifications in `ConnectivityTest` are incomplete, the reachability result

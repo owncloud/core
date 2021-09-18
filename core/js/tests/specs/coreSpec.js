@@ -343,10 +343,10 @@ describe('Core base tests', function() {
 				unicode: '汉字'
 			})).toEqual('unicode=%E6%B1%89%E5%AD%97');
 			expect(OC.buildQueryString({
-				b: 'spaace value',
+				b: 'space value',
 				'space key': 'normalvalue',
 				'slash/this': 'amp&ersand'
-			})).toEqual('b=spaace%20value&space%20key=normalvalue&slash%2Fthis=amp%26ersand');
+			})).toEqual('b=space%20value&space%20key=normalvalue&slash%2Fthis=amp%26ersand');
 		});
 		it('Encodes data types and empty values', function() {
 			expect(OC.buildQueryString({
@@ -499,9 +499,9 @@ describe('Core base tests', function() {
 		it('Decodes special characters', function() {
 			var query = OC.parseQueryString('unicode=%E6%B1%89%E5%AD%97');
 			expect(query).toEqual({unicode: '汉字'});
-			query = OC.parseQueryString('b=spaace%20value&space%20key=normalvalue&slash%2Fthis=amp%26ersand');
+			query = OC.parseQueryString('b=space%20value&space%20key=normalvalue&slash%2Fthis=amp%26ersand');
 			expect(query).toEqual({
-				b: 'spaace value',
+				b: 'space value',
 				'space key': 'normalvalue',
 				'slash/this': 'amp&ersand'
 			});

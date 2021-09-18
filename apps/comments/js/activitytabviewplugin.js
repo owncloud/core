@@ -16,7 +16,7 @@
 		 *
 		 * @param {OCA.Activity.ActivityModel} model for this activity
 		 * @param {jQuery} $el jQuery handle for this activity
-		 * @param {string} view The view that displayes this activity
+		 * @param {string} view The view that displays this activity
 		 */
 		prepareModelForDisplay: function (model, $el, view) {
 			if (model.get('app') !== 'comments' || model.get('type') !== 'comments') {

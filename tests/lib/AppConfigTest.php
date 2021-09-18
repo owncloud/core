@@ -176,10 +176,10 @@ class AppConfigTest extends TestCase {
 		$value = $config->getValue('testapp', 'installed_version');
 		$this->assertConfigKey('testapp', 'installed_version', $value);
 
-		$value = $config->getValue('testapp', 'nonexistant');
+		$value = $config->getValue('testapp', 'nonexistent');
 		$this->assertNull($value);
 
-		$value = $config->getValue('testapp', 'nonexistant', 'default');
+		$value = $config->getValue('testapp', 'nonexistent', 'default');
 		$this->assertEquals('default', $value);
 	}
 
@@ -187,8 +187,8 @@ class AppConfigTest extends TestCase {
 		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
 
 		$this->assertTrue($config->hasKey('testapp', 'installed_version'));
-		$this->assertFalse($config->hasKey('testapp', 'nonexistant'));
-		$this->assertFalse($config->hasKey('nonexistant', 'nonexistant'));
+		$this->assertFalse($config->hasKey('testapp', 'nonexistent'));
+		$this->assertFalse($config->hasKey('nonexistent', 'nonexistent'));
 	}
 
 	public function testSetValueUpdate() {

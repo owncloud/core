@@ -43,7 +43,7 @@ use OC\AppFramework\Routing\RouteConfig;
 class App {
 
 	/**
-	 * Turns an app id into a namespace by convetion. The id is split at the
+	 * Turns an app id into a namespace. The id is split at the
 	 * underscores, all parts are camelcased and reassembled. e.g.:
 	 * some_app_id -> OCA\SomeAppId
 	 * @param string $appId the app id
