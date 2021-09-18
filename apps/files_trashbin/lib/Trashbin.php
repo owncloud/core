@@ -274,8 +274,7 @@ class Trashbin {
 	 * move file to the trash bin
 	 *
 	 * @param string $file_path path to the deleted file/directory relative to the files root directory
-	 * @return bool|null true if the file is moved, false if there is an error, null if there
-	 * isn't any trashbin available
+	 * @return bool
 	 */
 	public static function move2trash($file_path) {
 		// get the user for which the filesystem is setup
@@ -299,8 +298,8 @@ class Trashbin {
 			// trashbin not usable for user (ex: guest), switch to owner only
 			$user = $owner;
 			if (!self::setUpTrash($owner)) {
-				// nothing to do as no trash is available anywhere
-				return null;
+				// nothing to do as no trash is available anywheree
+				return true;
 			}
 		}
 		if ($owner !== $user) {
@@ -400,35 +399,23 @@ class Trashbin {
 			$rootView = new View('/');
 
 			if ($rootView->is_dir($owner . '/files_versions/' . $ownerPath)) {
-				$metadataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . '.json');
-
 				if ($owner !== $user || $forceCopy) {
 					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $rootView);
-					if ($metadataFileExists) {
-						self::copy_recursive($owner . '/files_versions/' . $ownerPath . '.json', $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.json' . '.d' . $timestamp, $rootView);
-					}
+					self::copy_recursive($owner . '/files_versions/' . $ownerPath . '.json', $owner . '/files_trashbin/versions/' . \basename($ownerPath) . 'json' . '.d' . $timestamp, $rootView);
 				}
 				if (!$forceCopy) {
 					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
-					if ($metadataFileExists) {
-						self::move($rootView, $owner . '/files_versions/' . $ownerPath . '.json', $user . '/files_trashbin/versions/' . $filename . '.json' . '.d' . $timestamp);
-					}
+					self::move($rootView, $owner . '/files_versions/' . $ownerPath . 'json', $user . '/files_trashbin/versions/' . $filename . 'json' . '.d' . $timestamp);
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
 				foreach ($versions as $v) {
-					$metaVersionExists = $rootView->file_exists($owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json');
-
 					if ($owner !== $user || $forceCopy) {
 						self::copy($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $owner . '/files_trashbin/versions/' . $v['name'] . '.v' . $v['version'] . '.d' . $timestamp);
-						if ($metaVersionExists) {
-							self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json', $owner . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
-						}
+						self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json', $owner . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
 					}
 					if (!$forceCopy) {
 						self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.d' . $timestamp);
-						if ($metaVersionExists) {
-							self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json', $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
-						}
+						self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json', $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
 					}
 				}
 			}
@@ -800,7 +787,7 @@ class Trashbin {
 	 * recursive copy to copy a whole directory
 	 *
 	 * @param string $source source path, relative to the users files directory
-	 * @param string $destination destination path relative to the users root directory
+	 * @param string $destination destination path relative to the users root directoy
 	 * @param View $view file view for the users root directory
 	 * @return int
 	 * @throws Exceptions\CopyRecursiveException

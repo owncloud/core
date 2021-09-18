@@ -41,7 +41,7 @@ use OCP\IImage;
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor {
+class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders {
 
 	/** @var string */
 	private $versionId;
@@ -56,15 +56,11 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	/** @var array */
 	private $versionInfo;
 
-	/**
-	 * @var string
-   **/
-	private $editedBy = "";
+  /**
+   * @var string
+   */
 
-	/**
-	 * @var string
-	 **/
-	private $createdBy = "";
+	private $username = "";
 
 	/**
 	 * MetaFileVersionNode constructor.
@@ -89,29 +85,15 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 		$this->internalPath = $internalPath;
 		$this->root = $root;
 
-		if (isset($version['edited_by'])) {
-			$this->editedBy = $version['edited_by'];
-		}
-
-		if (isset($version['created_by'])) {
-			$this->createdBy = $version['created_by'];
+		if(isset($version['username'])) {
+		  $this->username = $version['username'];
 		}
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getEditedBy() {
-		return $this->editedBy;
-	}
 
-	/**
-	 * @return string
-	 */
-	public function getCreatedBy() {
-		return $this->createdBy;
-	}
-	
+	public function getUsername() {
+	  return $this->username;
+  }
 	/**
 	 * @inheritdoc
 	 */

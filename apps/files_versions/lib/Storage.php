@@ -51,8 +51,8 @@ use OCP\Lock\ILockingProvider;
 use OCP\User;
 
 class Storage {
-	public const DEFAULTENABLED=true;
-	public const DEFAULTMAXSIZE=50; // unit: percentage; 50% of available disk space/quota
+	public const DEFAULTENABLED = true;
+	public const DEFAULTMAXSIZE = 50; // unit: percentage; 50% of available disk space/quota
 	public const VERSIONS_ROOT = 'files_versions/';
 
 	public const DELETE_TRIGGER_MASTER_REMOVED = 0;
@@ -81,6 +81,10 @@ class Storage {
 
 	/** @var \OCA\Files_Versions\AppInfo\Application */
 	private static $application;
+
+	/**
+	 * @var IUserSession $userSession
+	 */
 
 	/**
 	 * get the UID of the owner of the file and the path to the file relative to
@@ -189,9 +193,11 @@ class Storage {
 
 			$filename = \ltrim($filename, '/');
 
+
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
 			$sourceFileInfo = $users_view->getFileInfo("files/$filename");
+
 
 			$versionFileName = "files_versions/$filename.v$mtime";
 			if ($users_view->copy("files/$filename", $versionFileName)) {
@@ -202,18 +208,9 @@ class Storage {
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
 
-				$config = \OC::$server->getConfig();
-				if ($config->getSystemValue('file_storage.save_version', false) === true) {
-					$user = \OC::$server->getUserSession()->getUser();
-					if ($user !== null) {
-						$existingVersion = self::getVersions($uid, $filename);
-						$metaDataKey = sizeof($existingVersion) > 1 ? \OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME
-			  : \OC\Share\Constants::CREATED_BY_USER_METADATA;
-						$metadata = [$metaDataKey => $user->getDisplayName()];
-						$metadataJsonObject = \json_encode($metadata);
-						$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
-					}
-				}
+				$metadata = array(\OC\Share\Constants::CREATED_BY_USER_METADATA => \OC::$server->getUserSession()->getUser()->getUserName());
+				$metadataJsonObject = json_encode($metadata);
+				$users_view->file_put_contents($versionFileName . '.json', json_encode($metadataJsonObject));
 			}
 		}
 	}
@@ -327,13 +324,10 @@ class Storage {
 					'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version']
 				);
 				// move each version json file that holds the name of the user that've made an edit
-				$sourceMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json';
-				if ($rootView->file_exists($sourceMetaDataFile)) {
-					$rootView->$operation(
-						$sourceMetaDataFile,
-						'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json'
-					);
-				}
+				$rootView->$operation(
+					'/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json',
+					'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json'
+				);
 			}
 		}
 
@@ -430,6 +424,7 @@ class Storage {
 
 		return ($result !== false);
 	}
+
 	/**
 	 * get a list of all available versions of a file in descending chronological order
 	 *
@@ -484,11 +479,9 @@ class Storage {
 						$jsonMetadataFile = $dir . '/' . $entryName . '.json';
 						if ($view->file_exists($jsonMetadataFile)) {
 							$metaDataFileContents = $view->file_get_contents($jsonMetadataFile);
-							if ($decoded = \json_decode($metaDataFileContents, true)) {
-								if ($decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA] !== null) {
-									$versions[$key]['created_by'] = $decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA];
-								} elseif ($decoded[\OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME] !== null) {
-									$versions[$key]['edited_by'] = $decoded[\OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+							if ($decoded = json_decode($metaDataFileContents, true)) {
+								if (!is_null($decoded['username'])) {
+									$versions[$key]['username'] = $decoded['username'];
 								}
 							}
 						}
