@@ -24,7 +24,11 @@
 		sync: OC.Backbone.davSync,
 
 		davProperties: {
+<<<<<<< HEAD
 			'meta-version-edited-by':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY,
+=======
+			'metaversioneditedby':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY,
+>>>>>>> 640386028e (add mock of version metadata)
 			'id':	OC.Files.Client.PROPERTY_FILEID,
 			'getlastmodified': OC.Files.Client.PROPERTY_GETLASTMODIFIED,
 			'getcontentlength': OC.Files.Client.PROPERTY_GETCONTENTLENGTH,
@@ -64,7 +68,11 @@
 					timestamp: moment(new Date(version.getlastmodified)).format('X'),
 					size: version.getcontentlength,
 					mimetype: version.getcontenttype,
+<<<<<<< HEAD
 					editedBy: version['meta-version-edited-by'],
+=======
+					editedBy: version.metaversioneditedby,
+>>>>>>> 640386028e (add mock of version metadata)
 					fileId: fileId
 				};
 			});
