@@ -275,7 +275,6 @@ OC.L10N.register(
     "The Read-Only config has been enabled. This prevents setting some configurations via the web-interface. Furthermore, the file needs to be made writable manually for every update." : "「唯讀設定檔」已經啟用，這樣可以防止來自網頁端的設定操作，每次需要更改設定時，都需要手動將設定檔暫時改為可讀寫。",
     "PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible." : "PHP 已經設定成「剪除 inline doc block」模式，這將會使幾個核心應用程式無法使用",
     "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "這大概是由快取或是加速器像是 Zend OPcache, eAccelerator 造成的",
-    "Your database does not run with \"READ COMMITED\" transaction isolation level. This can cause problems when multiple actions are executed in parallel." : "您的資料庫未與“ READ COMMITTED”事務隔離層級運行。 當並行執行多個動作時，這可能會導致問題。",
     "%1$s below version %2$s is installed, for stability and performance reasons we recommend updating to a newer %1$s version." : "%1$s以下版本%2$s已安裝，出於穩定性和效能的原因，我們建議更新到新版本%1$s版本",
     "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." : "未偵測到 PHP 模組 'fileinfo'。我們強烈建議啟用這個模組以取得最好的 mime-type 支援。",
     "Transactional file locking is disabled, this might lead to issues with race conditions. Enable 'filelocking.enabled' in config.php to avoid these problems. See the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation ↗</a> for more information." : "事務型文件鎖定的功能已經取消，這可能會造成競態條件，請在 config.php 中啟用 'filelocking.enabled' 以避免出現這樣的問題，請參考<a target=\\\"_blank\\\" href=\\\"%s\\\">文件手冊 ↗</a> 來了解更多的資訊。",
