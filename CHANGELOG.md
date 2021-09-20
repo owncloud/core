@@ -35,6 +35,7 @@ Summary
 * Bugfix - Show the correct expiring date in 'Shared by link' files list: [#39238](https://github.com/owncloud/core/pull/39238)
 * Bugfix - Hide share owner file path for share receiver: [#39241](https://github.com/owncloud/core/pull/39241)
 * Bugfix - Spelling errors: [#39252](https://github.com/owncloud/core/pull/39252)
+* Bugfix - Simplify set password text for new passwords: [#39257](https://github.com/owncloud/core/pull/39257)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -293,6 +294,10 @@ Details
    Various spelling errors have been corrected in messages.
 
    https://github.com/owncloud/core/pull/39252
+
+* Bugfix - Simplify set password text for new passwords: [#39257](https://github.com/owncloud/core/pull/39257)
+
+   https://github.com/owncloud/core/pull/39257
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
