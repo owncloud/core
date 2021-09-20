@@ -44,7 +44,7 @@ script('settings', 'setpassword');
 		<span id="message"></span>
 		<label id="error-message" class="warning" style="display:none"></label>
 		<button type="submit" id="submit">
-			<span><?php p($l->t('Please set your password')); ?></span>
+			<span><?php p($l->t('Set password')); ?></span>
 			<div class="loading-spinner"><div></div><div></div><div></div><div></div></div>
 		</button>
 	</div>

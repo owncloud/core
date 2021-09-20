@@ -26,7 +26,7 @@ describe('OCA.UserManagement.SetPassword tests', function () {
 			' />' +
 			'<span id="message"></span>' +
 			'</p>' +
-			'<input type="submit" id="submit" value="Please set your password"' +
+			'<input type="submit" id="submit" value="Set password"' +
 			'</fieldset>' +
 			'</form>'
 		);
