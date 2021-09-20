@@ -33,6 +33,7 @@ Summary
 * Bugfix - Show missing delete button in file list on mobile view: [#39221](https://github.com/owncloud/core/issues/39221)
 * Bugfix - Return proper error when destination header is missing: [#39235](https://github.com/owncloud/core/pull/39235)
 * Bugfix - Show the correct expiring date in 'Shared by link' files list: [#39238](https://github.com/owncloud/core/pull/39238)
+* Bugfix - Hide share owner file path for share receiver: [#39241](https://github.com/owncloud/core/pull/39241)
 * Bugfix - Spelling errors: [#39252](https://github.com/owncloud/core/pull/39252)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -278,6 +279,14 @@ Details
    https://github.com/owncloud/core/issues/39234
    https://github.com/owncloud/core/pull/39238
    https://github.com/owncloud/core/pull/39246
+
+* Bugfix - Hide share owner file path for share receiver: [#39241](https://github.com/owncloud/core/pull/39241)
+
+   This fixes an issue where a share receiver could see the share owner's full file path before
+   accepting the share.
+
+   https://github.com/owncloud/core/issues/38027
+   https://github.com/owncloud/core/pull/39241
 
 * Bugfix - Spelling errors: [#39252](https://github.com/owncloud/core/pull/39252)
 
