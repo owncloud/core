@@ -21,6 +21,7 @@ namespace Test\Files\Storage;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OC\User\User;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use Test\TestCase;
 
@@ -61,6 +62,11 @@ class LockingTests extends TestCase {
 				'token' => '123-456-789'
 			]);
 		}
+
+		if (\OC::$server->getUserManager()->get('locking-user') instanceof User) {
+			\OC::$server->getUserManager()->get('locking-user')->delete();
+		}
+
 		parent::tearDown();
 	}
 

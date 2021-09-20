@@ -26,6 +26,7 @@
 namespace OC\Core\Command\User;
 
 use OC\Files\FileInfo;
+use OC\Files\View;
 use OC\Helper\UserTypeHelper;
 use OCP\IUser;
 use OCP\User;
@@ -100,14 +101,16 @@ class Report extends Command {
 	}
 
 	private function countUserDirectories() {
-		$dataview = new \OC\Files\View('/');
-		$directories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
+		$userDirCount = 0;
 
-		// don't count in invalid directories for example 'avatars'.
-		$userDirectories = \array_filter($directories, function (FileInfo $directory) {
-			return !\in_array($directory->getName(), User::DIRECTORIES_THAT_ARE_NOT_USERS);
+		$this->userManager->callForSeenUsers(function (IUser $user) use (&$userDirCount) {
+			$homePath = $user->getHome();
+
+			if (\is_dir($homePath)) {
+				$userDirCount++;
+			}
 		});
 
-		return \count($userDirectories);
+		return $userDirCount;
 	}
 }
