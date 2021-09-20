@@ -9,7 +9,7 @@ Feature: get user
     And the administrator has changed the display name of user "brand-new-user" to "Anne Brown"
     When the administrator retrieves the information of user "brand-new-user" in JSON format using the occ command
     Then the command should have been successful
-    And the display name returned by the occ command should be "Anne Brown"
+    And the first display name returned by the occ command should be "Anne Brown"
 
   Scenario: admin tries to get a nonexistent user
     Given user "nonexistentuser" has been deleted

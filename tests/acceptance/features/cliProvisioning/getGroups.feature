@@ -31,3 +31,22 @@ Feature: get groups
       | case-sensitive-group |
       | Case-Sensitive-Group |
       | CASE-SENSITIVE-GROUP |
+
+  Scenario Outline: admin gets all the groups containing some sub-string
+    Given group "brand-new" has been created
+    And group "brand-new-group" has been created
+    And group "brand-new-thing" has been created
+    And group "some-other-name" has been created
+    When the administrator gets the groups containing "<group-to-list>" in the group name in JSON format using the occ command
+    Then the command should have been successful
+    And the groups returned by the occ command should be
+      | group           |
+      | brand-new       |
+      | brand-new-group |
+      | brand-new-thing |
+    Examples:
+      | group-to-list |
+      | brand-new     |
+      | brand         |
+      | b             |
+      | new           |

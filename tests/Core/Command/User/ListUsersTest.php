@@ -64,6 +64,8 @@ class ListUsersTest extends TestCase {
 		return [
 			[[], ['testlistuser']],
 			[['search-pattern' => 'testlist'], ['testlistuser']],
+			[['search-pattern' => 't'], ['testlistuser']],
+			[['search-pattern' => 'li'], ['testlistuser']],
 			[['--attributes' => [
 				'uid', 'displayname', 'email', 'quota', 'enabled', 'lastlogin',
 				'home', 'backend', 'cloudid', 'searchterms'

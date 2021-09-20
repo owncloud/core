@@ -57,6 +57,8 @@ class ListGroupsTest extends TestCase {
 	public function inputProvider() {
 		return [
 			[['search-pattern' => 'group'], 'group1'],
+			[['search-pattern' => 'g'], 'group1'],
+			[['search-pattern' => 'up'], 'group1'],
 		];
 	}
 }

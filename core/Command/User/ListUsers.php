@@ -91,7 +91,7 @@ class ListUsers extends Base {
 		$attributes = \array_map('mb_strtolower', $input->getOption('attributes'));
 		$useKey = \count($attributes) > 1
 			|| $input->getOption('output') !== self::OUTPUT_FORMAT_PLAIN;
-		$users = $this->userManager->search($userNameSubString);
+		$users = $this->userManager->search($userNameSubString, null, null, true);
 		$users = \array_map(function (IUser $user) use ($output, $attributes, $useKey) {
 			if ($output->isVerbose()) {
 				// include all attributes

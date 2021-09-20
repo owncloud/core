@@ -279,12 +279,13 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $pattern
 	 * @param int $limit
 	 * @param int $offset
+	 * @param bool $alwaysReturnAllMatches
 	 * @return \OC\User\User[]
 	 */
-	public function search($pattern, $limit = null, $offset = null) {
+	public function search($pattern, $limit = null, $offset = null, $alwaysReturnAllMatches = false) {
 		$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
 		$users = [];
-		if ($this->userSearch->isSearchable($pattern)) {
+		if ($alwaysReturnAllMatches || $this->userSearch->isSearchable($pattern)) {
 			foreach ($accounts as $account) {
 				$user = $this->getUserObject($account);
 				$users[$user->getUID()] = $user;
