@@ -29,7 +29,7 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: locking a received share does not lock other shares that had the same name on the sharer side (shares from the same user)
     Given using <dav-path> DAV path
     And user "Alice" has created folder "locked/"
@@ -38,8 +38,8 @@ Feature: independent locks
     And user "Alice" has created folder "notlocked/toShare"
     And user "Alice" has shared folder "locked/toShare" with user "Brian"
     And user "Alice" has shared folder "notlocked/toShare" with user "Brian"
-    And user "Brian" has accepted share "/locked/toShare" offered by user "Alice"
-    And user "Brian" has accepted share "/notlocked/toShare" offered by user "Alice"
+    And user "Brian" has accepted the first pending share "/toShare" offered by user "Alice"
+    And user "Brian" has accepted the next pending share "/toShare" offered by user "Alice"
     When user "Brian" locks folder "/Shares/toShare" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
     Then user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/toShare (2)/file.txt"

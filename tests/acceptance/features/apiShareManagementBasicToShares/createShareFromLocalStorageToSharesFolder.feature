@@ -29,14 +29,21 @@ Feature: local-storage
       | mimetype               | text/plain                     |
       | storage_id             | ANY_VALUE                      |
       | share_type             | user                           |
-    When user "Brian" accepts share "/local_storage/filetoshare.txt" offered by user "Alice" using the sharing API
+    When user "Brian" accepts share "<pending_share_path>" offered by user "Alice" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And as "Brian" file "/Shares/filetoshare.txt" should exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | ocs_api_version | ocs_status_code | pending_share_path  |
+      | 1               | 100             | /filetoshare.txt    |
+      | 2               | 200             | /filetoshare.txt    |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | ocs_api_version | ocs_status_code | pending_share_path             |
+      | 1               | 100             | /local_storage/filetoshare.txt |
+      | 2               | 200             | /local_storage/filetoshare.txt |
 
 
   Scenario Outline: Share a folder inside a local external storage

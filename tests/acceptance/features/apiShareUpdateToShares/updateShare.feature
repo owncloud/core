@@ -159,7 +159,7 @@ Feature: sharing
       | 2               | 400              | create,delete |
 
   @skipOnFilesClassifier @issue-files-classifier-291 @toFixOnOCIS @issue-ocis-2201
-  Scenario: Share ownership change after moving a shared file outside of an outer share
+  Scenario Outline: Share ownership change after moving a shared file outside of an outer share
     Given these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
@@ -170,7 +170,7 @@ Feature: sharing
     And user "Alice" has shared folder "/folder1" with user "Brian" with permissions "all"
     And user "Brian" has accepted share "/folder1" offered by user "Alice"
     And user "Brian" has shared folder "/Shares/folder1/folder2" with user "Carol" with permissions "all"
-    And user "Carol" has accepted share "/folder1/folder2" offered by user "Brian"
+    And user "Carol" has accepted share "<folder2_share_path>" offered by user "Brian"
     When user "Brian" moves folder "/Shares/folder1/folder2" to "/moved-out/folder2" using the WebDAV API
     And user "Brian" gets the info of the last share using the sharing API
     Then the fields of the last response to user "Brian" sharing with user "Carol" should include
@@ -189,6 +189,15 @@ Feature: sharing
       | mimetype          | httpd/unix-directory |
     And as "Alice" folder "/Shares/folder1/folder2" should not exist
     And as "Carol" folder "/Shares/folder2" should exist
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    Examples:
+      | folder2_share_path |
+      | /folder2           |
+
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    Examples:
+      | folder2_share_path |
+      | /folder1/folder2   |
 
 
   Scenario Outline: Share ownership change after moving a shared file to another share

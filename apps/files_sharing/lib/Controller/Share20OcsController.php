@@ -214,7 +214,15 @@ class Share20OcsController extends OCSController {
 			throw new NotFoundException();
 		}
 
-		$result['path'] = $userFolder->getRelativePath($shareNode->getPath());
+		// An incoming share that has not been accepted yet would show the
+		// share owner's internal path. Use the target path instead.
+		if ($received && $share->getState() !== Share::STATE_ACCEPTED) {
+			$sharePath = $share->getTarget();
+		} else {
+			$sharePath = $userFolder->getRelativePath($shareNode->getPath());
+		}
+
+		$result['path'] = $sharePath;
 		$result['mimetype'] = $shareNode->getMimeType();
 		$result['storage_id'] = $shareNode->getStorage()->getId();
 		$result['storage'] = $shareNode->getStorage()->getCache()->getNumericStorageId();
