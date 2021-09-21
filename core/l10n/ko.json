@@ -16,6 +16,8 @@
     "%s password changed successfully" : "%s 암호가 성공적으로 변경됨",
     "%s password reset" : "%s 암호 재설정",
     "Couldn't send reset email. Please contact your administrator." : "재설정 메일을 보낼 수 없습니다. 관리자에게 문의하십시오.",
+    "Download / View" : "다운로드 / 보기",
+    "Download / View / Edit" : "다운로드 / 보기 / 편집",
     "Upload only" : "업로드만",
     "Preparing update" : "업데이트 준비 중",
     "[%d / %d]: %s" : "[%d / %d]: %s",

@@ -337,7 +337,7 @@
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "激活链接已过期。点击下面的按钮获取新的激活链接以完成注册。",
     "Resend activation link" : "重发送激活链接",
     "Confirm Password" : "确认密码",
-    "Please set your password" : "请设置你的密码",
+    "Set password" : "设置密码",
     "Personal" : "个人",
     "Admin" : "管理",
     "Activation link was sent to an email address, if one was configured." : "如果设置过电子邮件地址，激活链接已通过电子邮件发送。",

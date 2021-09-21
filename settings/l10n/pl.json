@@ -303,7 +303,7 @@
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Link aktywacyjny jest już nieaktualny . Kliknij w przycisk poniżej aby poprosić o niego jeszcze raz i dokończyć rejestrację.",
     "Resend activation link" : "Powtórne wysłanie linka aktywacyjnego.",
     "Confirm Password" : "Potwierdź hasło.",
-    "Please set your password" : "Proszę ustawić swoje hasło",
+    "Set password" : "Ustaw hasło",
     "Personal" : "Osobiste",
     "Admin" : "Administrator",
     "Activation link was sent to an email address, if one was configured." : "Link aktywacyjny został wysłany na adres e-mail, jeśli został on skonfigurowany.",

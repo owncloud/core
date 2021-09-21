@@ -254,6 +254,7 @@ OC.L10N.register(
     "Username" : "Nome d'usuariu",
     "Done" : "Fechu",
     "Version" : "Versión",
+    "Set password" : "Afitar contraseña",
     "Personal" : "Personal",
     "Admin" : "Almin",
     "Settings" : "Axustes",

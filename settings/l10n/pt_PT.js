@@ -288,6 +288,7 @@ OC.L10N.register(
     "Username" : "Nome de utilizador",
     "Done" : "Concluído",
     "Version" : "Versão",
+    "Set password" : "Defina a senha",
     "Personal" : "Pessoal",
     "Admin" : "Administração",
     "Settings" : "Definições",

@@ -353,7 +353,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Der Aktivierungslink ist abgelaufen. Klicken Sie den Knopf unten um einen neuen anzufordern und die Registrierung abzuschliessen. ",
     "Resend activation link" : "Aktivierungslink erneut versenden.",
     "Confirm Password" : "Passwort bestätigen",
-    "Please set your password" : "Passwort setzen",
+    "Set password" : "Passwort setzen",
     "Personal" : "Persönlich",
     "Admin" : "Administrator",
     "Currently no settings are available in this category" : "Momentan sind keine Einstellungen in dieser Kategorie verfügbar",

@@ -346,7 +346,7 @@
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "انتهت صلاحية رابط التفعيل. انقر فوق الزر أدناه لطلب رابط جديد وأكمل التسجيل.",
     "Resend activation link" : "إعادة إرسال رابط التفعيل",
     "Confirm Password" : "تأكيد كلمة المرور",
-    "Please set your password" : "يُرجى تعيين كلمة المرور الخاصة بك",
+    "Set password" : "تعيين كلمة المرور",
     "Personal" : "شخصي",
     "Admin" : "المسؤول",
     "Currently no settings are available in this category" : "لا تتوفر أي إعدادات حاليًا في هذه الفئة",

@@ -285,7 +285,7 @@ OC.L10N.register(
     "Version" : "Verzió",
     "Resend activation link" : "Aktiválási link újraküldése",
     "Confirm Password" : "Jelszó megerősítése",
-    "Please set your password" : "Kérjük állítsa be jelszavát",
+    "Set password" : "Jelszó beállítása",
     "Personal" : "Személyes",
     "Admin" : "Adminsztráció",
     "Settings" : "Beállítások",

@@ -198,7 +198,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Aktibazio lotura iraungi da. Klik egin azpiko botoian berriz eskatzeko eta bete erregistroa.",
     "Resend activation link" : "Aktibazio lotura birbidali",
     "Confirm Password" : "Pasahitza baieztatu",
-    "Please set your password" : "Zure pasahitza ezarri mesedez",
+    "Set password" : "Ezarri pasahitza",
     "Personal" : "Pertsonala",
     "Admin" : "Admin",
     "Activation link was sent to an email address, if one was configured." : "Posta helbidea ezarrita egotekotan, aktibazio mezua bidali zen bertara.",

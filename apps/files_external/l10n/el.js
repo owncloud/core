@@ -89,6 +89,7 @@ OC.L10N.register(
     "Storage type" : "Τύπος αποθηκευτικού χώρου",
     "Scope" : "Εύρος",
     "Enable encryption" : "Ενεργοποίηση κρυπτογράφησης",
+    "Set read-only" : "Ορισμός μόνο για ανάγνωση",
     "Enable previews" : "Ενεργοποίηση προεπισκοπήσεων",
     "Enable sharing" : "Ενεργοποίηση διαμοιρασμού",
     "Check for changes" : "Έλεγχος για αλλαγές",

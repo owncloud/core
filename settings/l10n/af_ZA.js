@@ -189,6 +189,7 @@ OC.L10N.register(
     "Username" : "Gebruikersnaam",
     "Done" : "Gereed",
     "Version" : "Weergawe",
+    "Set password" : "Stel wagwoord",
     "Personal" : "Persoonlik",
     "Admin" : "Admin",
     "Settings" : "Instellings",

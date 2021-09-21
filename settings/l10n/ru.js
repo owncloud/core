@@ -357,7 +357,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Ссылка активации устарела. Нажмите кнопку ниже, чтобы запросить новую ссылку и завершить регистрацию.",
     "Resend activation link" : "Заново отправить ссылку активации",
     "Confirm Password" : "Подтвердите пароль",
-    "Please set your password" : "Пожалуйста, установите ваш пароль",
+    "Set password" : "Установить пароль",
     "Personal" : "Личное",
     "Admin" : "Администрирование",
     "Currently no settings are available in this category" : "В этой категории сейчас нет доступных настроек",

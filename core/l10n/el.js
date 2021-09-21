@@ -223,6 +223,7 @@ OC.L10N.register(
     "Share with users…" : "Διαμοιρασμός με χρήστες…",
     "Share with users or groups…" : "Διαμοιρασμός με χρήστες ή ομάδες…",
     "Error removing share" : "Σφάλμα αφαίρεσης κοινόχρηστου",
+    "Unknown Share" : "Άγνωστο κοινόχρηστο",
     "Non-existing tag #{tag}" : "Η ετικέτα #{tag} δεν υπάρχει",
     "restricted" : "περιορισμένο",
     "invisible" : "αόρατο",

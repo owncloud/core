@@ -193,7 +193,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Aktivizācijas saites termiņš ir beidzies. Noklikšķiniet uz pogas zemāk, lai pieprasītu jaunu saiti un pabeigtu reģistrāciju.",
     "Resend activation link" : "Sūtīt vēlreiz aktivizācijas saiti",
     "Confirm Password" : "Atkārtot Paroli",
-    "Please set your password" : "Lūdzu, iestatiet savu paroli",
+    "Set password" : "Iestatīt paroli",
     "Personal" : "Personīgi",
     "Admin" : "Administratori",
     "Settings" : "Iestatījumi",

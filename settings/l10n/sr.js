@@ -206,6 +206,7 @@ OC.L10N.register(
     "Username" : "Корисничко име",
     "Done" : "Завршено",
     "Version" : "Верзија",
+    "Set password" : "Постави лозинку",
     "Personal" : "Лично",
     "Admin" : "Администрација",
     "Settings" : "Поставке",

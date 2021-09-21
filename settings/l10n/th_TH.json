@@ -351,7 +351,7 @@
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "ลิงก์การเปิดใช้งานหมดอายุแล้ว คลิกที่ปุ่มด้านล่างเพื่อส่งคำขอใหม่และกรอกข้อมูลลงทะเบียนผู้ใช้",
     "Resend activation link" : "ส่งลิงก์การเปิดใช้งานใหม่อีกครั้ง",
     "Confirm Password" : "ยืนยันรหัสผ่าน",
-    "Please set your password" : "โปรดตั้งรหัสผ่านของคุณ",
+    "Set password" : "ตั้งรหัสผ่าน",
     "Personal" : "ส่วนตัว",
     "Admin" : "ผู้ดูแล",
     "Currently no settings are available in this category" : "ยังไม่มีการตั้งค่าใดๆ ในหมวดหมู่นี้",

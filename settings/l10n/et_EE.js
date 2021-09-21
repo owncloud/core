@@ -223,7 +223,7 @@ OC.L10N.register(
     "Version" : "Versioon",
     "Resend activation link" : "Saada aktiveerimise link uuesti",
     "Confirm Password" : "Kinnita parool",
-    "Please set your password" : "Palun määra oma parool",
+    "Set password" : "Määra parool",
     "Personal" : "Isiklik",
     "Admin" : "Admin",
     "Settings" : "Seaded",

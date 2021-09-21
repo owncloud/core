@@ -35,6 +35,7 @@ OC.L10N.register(
     "Change password" : "Izmeni lozinku",
     "Name" : "naziv",
     "Username" : "Korisničko ime",
+    "Set password" : "Postavi lozinku",
     "Personal" : "Lično",
     "Admin" : "Adninistracija",
     "Settings" : "Podešavanja",

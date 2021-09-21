@@ -359,7 +359,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Lidhja e aktivizimit ka skaduar. Klikoni butonin më poshtë për të kërkuar një të re dhe të plotësoni regjistrimin.",
     "Resend activation link" : "Ridërgo lidhje aktivizimi",
     "Confirm Password" : "Ripohoni Fjalëkalimin",
-    "Please set your password" : "Ju lutemi, caktoni fjalëkalimin tuaj",
+    "Set password" : "Caktoni fjalëkalimin",
     "Personal" : "Personale",
     "Admin" : "Përgjegjës",
     "Currently no settings are available in this category" : "Aktualisht s’ka rregullime të passhme në këtë kategori",

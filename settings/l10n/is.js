@@ -322,7 +322,7 @@ OC.L10N.register(
     "Done" : "Lokið",
     "Version" : "Útgáfa",
     "Confirm Password" : "Staðfestu lykilorðið",
-    "Please set your password" : "Stilltu lykilorðið þitt",
+    "Set password" : "Skrá lykilorð",
     "Personal" : "Einka",
     "Admin" : "Stjórnun",
     "Settings" : "Stillingar",

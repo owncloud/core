@@ -322,6 +322,7 @@ OC.L10N.register(
     "Done" : "완료",
     "Version" : "버전",
     "Confirm Password" : "암호 확인",
+    "Set password" : "암호 설정",
     "Personal" : "개인",
     "Admin" : "관리자",
     "Settings" : "설정",

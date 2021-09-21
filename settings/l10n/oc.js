@@ -218,6 +218,7 @@ OC.L10N.register(
     "Name" : "Nom",
     "Username" : "Nom d'utilizaire",
     "Version" : "Version",
+    "Set password" : "Definir lo senhal",
     "Personal" : "Personal",
     "Admin" : "Administracion",
     "Settings" : "Paramètres",

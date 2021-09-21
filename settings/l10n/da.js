@@ -285,6 +285,7 @@ OC.L10N.register(
     "Username" : "Brugernavn",
     "Done" : "Færdig",
     "Version" : "Version",
+    "Set password" : "Angiv kodeord",
     "Personal" : "Personligt",
     "Admin" : "Admin",
     "Settings" : "Indstillinger",

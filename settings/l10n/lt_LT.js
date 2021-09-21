@@ -181,6 +181,7 @@ OC.L10N.register(
     "Username" : "Prisijungimo vardas",
     "Done" : "Atlikta",
     "Version" : "Versija",
+    "Set password" : "Uždėti slaptažodį",
     "Personal" : "Asmeniniai",
     "Admin" : "Administravimas",
     "Settings" : "Parinktys",

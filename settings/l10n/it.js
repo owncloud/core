@@ -334,7 +334,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Il link di attivazione è scaduto. Clicca il pulsante sotto per richiederne uno nuovo e completare la registrazione.",
     "Resend activation link" : "Invia nuovamente il collegamento di attivazione",
     "Confirm Password" : "Conferma la tua password",
-    "Please set your password" : "Imposta la tua password",
+    "Set password" : "imposta la password",
     "Personal" : "Personale",
     "Admin" : "Admin",
     "Activation link was sent to an email address, if one was configured." : "Il link di attivazione è stato inviato ad un indirizzo email, se ne è stato configurato uno.",

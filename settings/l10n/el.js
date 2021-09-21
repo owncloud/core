@@ -337,7 +337,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Ο σύνδεσμος ενεργοποίησης έχει λήξει. Κάντε κλικ στο παρακάτω κουμπί για να ζητήσετε νέο και να ολοκληρώσετε την εγγραφή.",
     "Resend activation link" : "Επανάληψη αποστολής συνδέσμου ενεργοποίησης",
     "Confirm Password" : "Επιβεβαίωση συνθηματικού",
-    "Please set your password" : "Παρακαλούμε ορίστε το συνθηματικό σας",
+    "Set password" : "Ορισμός κωδικού πρόσβασης",
     "Personal" : "Προσωπικά",
     "Admin" : "Διαχειριστής",
     "Currently no settings are available in this category" : "Προς το παρόν δεν υπάρχουν διαθέσιμες ρυθμίσεις σε αυτήν την κατηγορία",

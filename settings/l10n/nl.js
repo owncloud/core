@@ -307,7 +307,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "De activeringslink is verlopen. Klik op onderstaande knop om een nieuwe aan te vragen en zo de registratie te voltooien.",
     "Resend activation link" : "Activatielink opnieuw versturen",
     "Confirm Password" : "Wachtwoord bevestigen",
-    "Please set your password" : "Stel uw wachtwoord in",
+    "Set password" : "Instellen wachtwoord",
     "Personal" : "Persoonlijk",
     "Admin" : "Beheerder",
     "Activation link was sent to an email address, if one was configured." : "Activatielink is verstuurd naar het geconfigureerde mailadres.",

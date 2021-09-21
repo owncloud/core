@@ -330,6 +330,7 @@ OC.L10N.register(
     "Password / Token" : "Password / Token",
     "Done" : "Ferdig",
     "Version" : "Versjon",
+    "Set password" : "Sett passord",
     "Personal" : "Personlig",
     "Admin" : "Admin",
     "Settings" : "Innstillinger",

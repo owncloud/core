@@ -348,7 +348,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "פג תוקפו של קישור ההפעלה. חש ללחוץ על הכפתור מטה כדי לבקש קישור חדש ולהשלים את ההרשמה.",
     "Resend activation link" : "שליחה מחדש של קישור ההפעלה",
     "Confirm Password" : "אימות הסיסמא",
-    "Please set your password" : "יש להגדיר את הסיסמא בבקשה",
+    "Set password" : "הגדרת סיסמא",
     "Personal" : "אישי",
     "Admin" : "ניהול",
     "Currently no settings are available in this category" : "כרגע אין הגדרות זמינות לקטגוריה זו",

@@ -322,7 +322,7 @@ OC.L10N.register(
     "The activation link has expired. Click the button below to request a new one and complete the registration." : "Odkazu pro aktivaci vypršela platnost. Kliknutím na tlačítko níže požádejte o nový a dokončete registraci.",
     "Resend activation link" : "Znovu odeslat odkaz pro aktivaci",
     "Confirm Password" : "Potvrdit heslo",
-    "Please set your password" : "Prosím nastavte si heslo",
+    "Set password" : "Nastavit heslo",
     "Personal" : "Osobní",
     "Admin" : "Administrace",
     "Activation link was sent to an email address, if one was configured." : "Odkaz pro aktivaci byl odeslán na emailovou adresu, pokud byla nastavena.",

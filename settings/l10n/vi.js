@@ -123,6 +123,7 @@ OC.L10N.register(
     "Username" : "Tên đăng nhập",
     "Done" : "Xong",
     "Version" : "Phiên bản",
+    "Set password" : "Đặt mật khẩu",
     "Personal" : "Cá nhân",
     "Admin" : "Quản trị",
     "Settings" : "Thiết lập",
