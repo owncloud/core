@@ -74,7 +74,12 @@ class ReportTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 
-		$expectedOutput = <<<EOS
+		$view = new View('');
+		$storage = $view->getMount('/')->getStorage();
+		$isLocalStorage = $storage->isLocal();
+
+		if ($isLocalStorage) {
+			$expectedOutput = <<<EOS
 +------------------+---+
 | User Report      |   |
 +------------------+---+
@@ -88,6 +93,22 @@ class ReportTest extends TestCase {
 +------------------+---+
 
 EOS;
+		} else {
+			$expectedOutput = <<<EOS
++------------------+---+
+| User Report      |   |
++------------------+---+
+| OC\User\Database | 1 |
+|                  |   |
+| guest users      | 0 |
+|                  |   |
+| total users      | 1 |
+|                  |   |
+| user directories | 0 |
++------------------+---+
+
+EOS;
+		}
 
 		$this->assertEquals($expectedOutput, $output);
 	}
