@@ -2,7 +2,7 @@ only: issues
 # Number of days of inactivity before an issue becomes stale
 daysUntilStale: 180
 # Number of days of inactivity before a stale issue is closed
-daysUntilClose: 30
+daysUntilClose: 10
 # Issues with these labels will never be considered stale
 exemptLabels:
   - "Type:Bug"
