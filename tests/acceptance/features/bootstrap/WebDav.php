@@ -4270,11 +4270,34 @@ trait WebDav {
 	 * @return void
 	 */
 	public function imageDimensionsShouldBe($width, $height) {
-		$size = \getimagesizefromstring($this->response->getBody()->getContents());
+		if ($this->responseBodyContents === null) {
+			$this->responseBodyContents = $this->response->getBody()->getContents();
+		}
+		$size = \getimagesizefromstring($this->responseBodyContents);
 		Assert::assertNotFalse($size, "could not get size of image");
 		Assert::assertEquals($width, $size[0], "width not as expected");
 		Assert::assertEquals($height, $size[1], "height not as expected");
 	}
+
+	/**
+	 * @Then /^the downloaded hexadecimal image content should be "([^"]*)"$/
+	 *
+	 * @param $hexadecimalContent
+	 *
+	 * @return void
+	 */
+	public function imageContentShouldBe($hexadecimalContent) {
+		if ($this->responseBodyContents === null) {
+			$this->responseBodyContents = $this->response->getBody()->getContents();
+		}
+		echo $this->responseBodyContents;
+		Assert::assertEquals(
+			$hexadecimalContent,
+			\bin2hex($this->responseBodyContents),
+			"content not as expected"
+		);
+	}
+
 	/**
 	 * @param string $user
 	 * @param string $path
