@@ -37,7 +37,7 @@ class GroupList extends OwncloudPage {
 	 * @var NodeElement of this element
 	 */
 	protected $groupListElement;
-	protected $allGroupsXpath = "//li[@class='isgroup']";
+	protected $allGroupsXpath = "//li[@class='isgroup']//span[@class='groupname']";
 	protected $groupLiXpath = "//li[@data-gid=%s]";
 	protected $deleteBtnXpath = "//a[@class='action delete']";
 	protected $addGroupXpath = '//span[text()[normalize-space()="Add Group"]]';

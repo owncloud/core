@@ -21,25 +21,25 @@
 			<span class="groupname" title="<?php p($l->t('Everyone')); ?>">
 				<?php p($l->t('Everyone')); ?>
 			</span>
+			<span class="usercount tag" id="everyonecount">
+			</span>
 		</a>
 		<span class="utils">
-			<span class="usercount" id="everyonecount">
-
-			</span>
 		</span>
 	</li>
 
 	<!-- The Admin Group -->
 	<?php foreach ($_["adminGroup"] as $adminGroup): ?>
-		<li data-gid="admin" data-usercount="<?php if ($adminGroup['usercount'] > 0) {
-		p($adminGroup['usercount']);
-	} ?>" class="isgroup">
-			<a href="#"><span class="groupname" title="<?php p($l->t('Admins')); ?>">
-					<?php p($l->t('Admins')); ?></span></a>
+		<li data-gid="admin" data-usercount="<?php p($adminGroup['usercount']); ?>" class="isgroup">
+			<a href="#">
+				<span class="groupname" title="<?php p($l->t('Admins')); ?>">
+					<?php p($l->t('Admins')); ?>
+				</span>
+				<span class="usercount tag">
+					<?php p($adminGroup['usercount']); ?>
+				</span>
+			</a>
 			<span class="utils">
-				<span class="usercount"><?php if ($adminGroup['usercount'] > 0) {
-		p($adminGroup['usercount']);
-	} ?></span>
 			</span>
 		</li>
 	<?php endforeach; ?>
@@ -48,13 +48,15 @@
 	<?php foreach ($_["groups"] as $group): ?>
 		<li data-gid="<?php p($group['name']) ?>" data-usercount="<?php p($group['usercount']) ?>" class="isgroup">
 			<a href="#" class="dorename">
-				<span class="groupname" title="<?php p($group['name']); ?>"><?php p($group['name']); ?></span>
+				<span class="groupname" title="<?php p($group['name']); ?>">
+					<?php p($group['name']); ?>
+				</span>
+				<span class="usercount tag">
+						<?php p($group['usercount']); ?>
+				</span>
 			</a>
 			<span class="utils">
-				<span class="usercount"><?php if ($group['usercount'] > 0) {
-		p($group['usercount']);
-	} ?></span>
-				<?php if ($_['isAdmin']): ?>
+					<?php if ($_['isAdmin']): ?>
 				<a href="#" class="action delete" original-title="<?php p($l->t('Delete'))?>">
 					<img src="<?php print_unescaped(image_path('core', 'actions/delete.svg')) ?>" />
 				</a>

@@ -907,19 +907,4 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			. "but got '$actualCount' users instead."
 		);
 	}
-
-	/**
-	 * @Then the user count of group :group should not be displayed on the webUI
-	 *
-	 * @param string $group
-	 *
-	 * @return void
-	 */
-	public function theUserCountOfGroupShouldNotBeDisplayedOnTheWebui($group) {
-		$count = $this->usersPage->getUserCountOfGroup($group);
-		Assert::assertNull(
-			$count,
-			"Failed asserting that user count of group $group is not displayed"
-		);
-	}
 }
