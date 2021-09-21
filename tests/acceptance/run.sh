@@ -675,12 +675,6 @@ function teardown() {
 		${OCC} app:disable testing
 	fi
 
-	# Upload log file for later analysis
-	if [ ${#UNEXPECTED_FAILED_SCENARIOS[@]} -gt 0 ] && [ -n "${REPORTING_WEBDAV_USER}" ] && [ -n "${REPORTING_WEBDAV_PWD}" ] && [ -n "${REPORTING_WEBDAV_URL}" ]
-	then
-		curl -u ${REPORTING_WEBDAV_USER}:${REPORTING_WEBDAV_PWD} -T ${TEST_LOG_FILE} ${REPORTING_WEBDAV_URL}/"${TRAVIS_JOB_NUMBER}"_`date "+%F_%T"`.log
-	fi
-
 	if [ "${OC_TEST_ALT_HOME}" = "1" ]
 	then
 		env_alt_home_clear
@@ -1156,19 +1150,13 @@ then
 else
 	BROWSER_TEXT="on browser '${BROWSER}' "
 
-	# If we are running on Travis, use the Travis details as the name
-	if [ -n "${TRAVIS_REPO_SLUG}" ]
+	# If we are running in some automated CI, use the provided details
+	if [ -n "${CI_REPO}" ]
 	then
-		CAPABILITIES_NAME_TEXT="${TRAVIS_REPO_SLUG} - ${TRAVIS_JOB_NUMBER}"
+		CAPABILITIES_NAME_TEXT="${CI_REPO} - ${CI_BRANCH}"
 	else
-		# If we are running in some automated CI, use the provided details
-		if [ -n "${CI_REPO}" ]
-		then
-			CAPABILITIES_NAME_TEXT="${CI_REPO} - ${CI_BRANCH}"
-		else
-			# Otherwise this is a non-CI run, probably a local developer run
-			CAPABILITIES_NAME_TEXT="ownCloud non-CI"
-		fi
+		# Otherwise this is a non-CI run, probably a local developer run
+		CAPABILITIES_NAME_TEXT="ownCloud non-CI"
 	fi
 
 	# If SauceLabs credentials have been passed, then use them
