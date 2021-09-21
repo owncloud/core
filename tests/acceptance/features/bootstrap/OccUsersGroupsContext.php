@@ -501,6 +501,20 @@ class OccUsersGroupsContext implements Context {
 	}
 
 	/**
+	 * @When the administrator gets the groups containing :substring in the group name in JSON format using the occ command
+	 *
+	 * @param string $subString
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorGetsTheGroupsContainingInJsonUsingTheOccCommand(string $subString) {
+		$this->occContext->invokingTheCommand(
+			"group:list $subString --output=json"
+		);
+	}
+
+	/**
 	 * @When the administrator removes user :username from group :group using the occ command
 	 *
 	 * @param string $username
@@ -578,7 +592,7 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theUsersReturnedByTheOccCommandShouldBe(TableNode $useridTable) {
-		$this->featureContext->verifyTableNodeColumns($useridTable, ['uid', 'display name']);
+		$this->featureContext->verifyTableNodeColumns($useridTable, ['uid']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUsers = \json_decode($lastOutput, true);
 		$result = [];
@@ -688,16 +702,28 @@ class OccUsersGroupsContext implements Context {
 	}
 
 	/**
-	 * @Then the display name returned by the occ command should be :displayName
+	 * @Then /^the (first|second|third) display name returned by the occ command should be "([^"]*)"$/
 	 *
+	 * @param string $place
 	 * @param string $displayName
 	 *
 	 * @return void
 	 */
-	public function theDisplayNameReturnedByTheOccCommandShouldBe($displayName) {
+	public function theDisplayNameReturnedByTheOccCommandShouldBe($place, $displayName) {
+		switch ($place) {
+			case "first":
+				$index = 0;
+				break;
+			case "second":
+				$index = 1;
+				break;
+			case "third":
+				$index = 2;
+				break;
+		}
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUser = \json_decode($lastOutput, true);
-		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[0];
+		$lastOutputDisplayName = \array_column($lastOutputUser, 'displayName')[$index];
 		Assert::assertEquals(
 			$displayName,
 			$lastOutputDisplayName,

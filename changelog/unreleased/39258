@@ -1,0 +1,7 @@
+Bugfix: Allow user:list and group:list to filter on short strings
+
+The occ user:list and group:list commands can now be used to list users and
+groups that match a short string, regardless of the setting of user.search_min_length
+
+https://github.com/owncloud/core/pull/39258
+https://github.com/owncloud/core/issues/31117

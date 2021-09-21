@@ -17,9 +17,9 @@ Feature: get group
     When the administrator gets the users in group "brand-new-group" in JSON format using the occ command
     Then the command should have been successful
     And the users returned by the occ command should be
-      | uid            | display name |
-      | brand-new-user | Anne Brown   |
-      | 123            | 123          |
+      | uid            |
+      | brand-new-user |
+      | 123            |
 
   Scenario: admin gets user in the group who is disabled
     Given user "brand-new-user" has been created with default attributes and small skeleton files
@@ -30,8 +30,8 @@ Feature: get group
     When the administrator gets the users in group "brand-new-group" in JSON format using the occ command
     Then the command should have been successful
     And the users returned by the occ command should be
-      | uid            | display name |
-      | brand-new-user | Anne Brown   |
+      | uid            |
+      | brand-new-user |
 
   Scenario: admin tries to get users in a nonexistent group
     Given group "brand-new-group" has been created

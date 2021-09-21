@@ -151,7 +151,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 		$this->backends = [];
 		$this->clearCaches();
 	}
-	
+
 	protected function clearCaches() {
 		$this->cachedGroups = [];
 		$this->cachedUserGroups = [];
@@ -236,11 +236,12 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @param int|null $limit limit
 	 * @param int|null $offset offset
 	 * @param string|null $scope scope string
+	 * @param bool $alwaysReturnAllMatches
 	 * @return \OC\Group\Group[] groups
 	 */
-	public function search($search, $limit = null, $offset = null, $scope = null) {
+	public function search($search, $limit = null, $offset = null, $scope = null, $alwaysReturnAllMatches = false) {
 		$groups = [];
-		if ($this->userSearch->isSearchable($search)) {
+		if ($alwaysReturnAllMatches || $this->userSearch->isSearchable($search)) {
 			foreach ($this->backends as $backend) {
 				if (!$backend->isVisibleForScope($scope)) {
 					// skip backend
