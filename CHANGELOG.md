@@ -36,6 +36,7 @@ Summary
 * Bugfix - Hide share owner file path for share receiver: [#39241](https://github.com/owncloud/core/pull/39241)
 * Bugfix - Spelling errors: [#39252](https://github.com/owncloud/core/pull/39252)
 * Bugfix - Simplify set password text for new passwords: [#39257](https://github.com/owncloud/core/pull/39257)
+* Bugfix - Allow user:list and group:list to filter on short strings: [#39258](https://github.com/owncloud/core/pull/39258)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -298,6 +299,14 @@ Details
 * Bugfix - Simplify set password text for new passwords: [#39257](https://github.com/owncloud/core/pull/39257)
 
    https://github.com/owncloud/core/pull/39257
+
+* Bugfix - Allow user:list and group:list to filter on short strings: [#39258](https://github.com/owncloud/core/pull/39258)
+
+   The occ user:list and group:list commands can now be used to list users and groups that match a
+   short string, regardless of the setting of user.search_min_length
+
+   https://github.com/owncloud/core/issues/31117
+   https://github.com/owncloud/core/pull/39258
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
