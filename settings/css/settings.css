@@ -198,32 +198,43 @@ table.nostyle td {
 }
 
 .isgroup .groupname {
-	width: 85%;
-	display: block;
+	max-width: 80%;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	float: left;
 }
 .isgroup.active .groupname {
-	width: 65%;
+	max-width: 80%;
 }
 
-.usercount { float: left; margin: 5px; }
-li.active span.utils .delete {
+li.active span.utils .delete,
+li:hover span.utils .delete {
 	float: left; position: relative; opacity: 0.5;
 	top: -7px; left: 7px; width: 44px; height: 44px;
 }
-li.active .rename {
+
+li.active span.utils .rename,
+li:hover span.utils .rename {
 	padding: 8px 14px 20px 14px;
 	top: 0px; position: absolute; width: 16px; height: 16px;
 	opacity: 0.5;
 	display: inline-block !important;
 }
-li.active span.utils .delete img { margin: 14px; }
-li.active .rename { opacity: 0.5; }
-li.active span.utils .delete:hover, li.active .rename:hover { opacity: 1; }
+
+li.active span.utils .delete img,
+li:hover span.utils .delete img { margin: 14px; }
+
+li.active .rename,
+li:hover .rename { opacity: 0.5; }
+
+li:hover span.utils .delete:hover, li.active .rename:hover { opacity: 1; }
+
 span.utils .delete, .rename { display: none; }
+
 #app-navigation ul li.active > span.utils .delete,
-#app-navigation ul li.active > span.utils .rename { display: block; }
+#app-navigation ul li:hover > span.utils .delete,
+#app-navigation ul li:hover > span.utils .delete,
+#app-navigation ul li:hover > span.utils .rename { display: block; }
 #usersearchform {
 	position: absolute;
 	top: 2px;
@@ -750,4 +761,24 @@ div.app-settings .section {
 
 .action.resendInvitationEmail img {
 	vertical-align: text-bottom;
+}
+
+.usercount {
+	margin-left: 5px;
+}
+
+.usercount.tag {
+	display: inline-block;
+	padding: .25em .4em;
+	font-size: 90%;
+	font-weight: 700;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25rem;
+	color: #fff;
+	background-color: #041e42;
+	cursor: pointer;
+	clear: both;
 }

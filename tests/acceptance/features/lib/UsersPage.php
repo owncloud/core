@@ -104,7 +104,7 @@ class UsersPage extends OwncloudPage {
 	protected $groupLabelInInputXpath = ".//ul[@class='multiselectoptions down']/li/label[@title='%s']";
 	protected $groupInputXpath = ".//ul[@class='multiselectoptions down']/li/input[@id='%s']";
 	protected $activeDropDownXpath = "//div[@class='multiselect button active down']";
-	protected $groupUserCountXpath = "//li[@data-gid='%s']//span[@class='usercount']";
+	protected $groupUserCountXpath = "//li[@data-gid='%s']//span[@class='usercount tag']";
 
 	/**
 	 * @param string $username

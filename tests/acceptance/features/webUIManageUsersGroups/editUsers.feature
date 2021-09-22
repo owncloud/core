@@ -127,6 +127,6 @@ Feature: edit users
     And the administrator removes user "Brian" from group "grp1" using the webUI
     Then the user count of group "grp1" should display 1 users on the webUI
     When the administrator removes user "Carol" from group "grp1" using the webUI
-    Then the user count of group "grp1" should not be displayed on the webUI
+    Then the user count of group "grp1" should display 0 users on the webUI
     When the administrator reloads the users page
-    Then the user count of group "grp1" should not be displayed on the webUI
+    Then the user count of group "grp1" should display 0 users on the webUI

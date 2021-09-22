@@ -700,9 +700,13 @@ var UserList = {
 			type: 'GET',
 			url: OC.generateUrl('/settings/groups/available'),
 		}).then(function (result) {
+			var that = this;
+
 			if (result.data) {
+				this.availableGroups = [];
 				$.each(result.data.assignableGroups, function(i, group) {
 					assignableGroups.add(group);
+					that.availableGroups.push(group);
 				});
 				$.each(result.data.removableGroups, function(i, group) {
 					removableGroups.add(group);
