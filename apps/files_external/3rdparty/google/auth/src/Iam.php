@@ -20,6 +20,7 @@ namespace Google\Auth;
 use Google\Auth\HttpHandler\HttpClientCache;
 use Google\Auth\HttpHandler\HttpHandlerFactory;
 use GuzzleHttp\Psr7;
+use GuzzleHttp\Psr7\Utils;
 
 /**
  * Tools for using the IAM API.
@@ -88,7 +89,7 @@ class Iam
             'POST',
             $uri,
             $headers,
-            Psr7\stream_for(json_encode($body))
+            Utils::streamFor(json_encode($body))
         );
 
         $res = $httpHandler($request);

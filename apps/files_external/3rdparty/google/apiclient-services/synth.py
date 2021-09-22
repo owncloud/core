@@ -70,7 +70,7 @@ def generate_service(disco: str):
     shell.run(f"mkdir -p {output_dir}".split(), cwd=repository / "generator")
     shell.run(command.split(), cwd=repository, hide_output=False)
 
-    s.copy(output_dir, f"src/Google/Service")
+    s.copy(output_dir, f"src")
 
 def all_discoveries(skip=None, prefer=None):
     """Returns a map of API IDs to Discovery document filenames.

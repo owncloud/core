@@ -48,9 +48,6 @@ class DynamoDbHandler extends AbstractProcessingHandler
      */
     protected $marshaler;
 
-    /**
-     * @param int|string $level
-     */
     public function __construct(DynamoDbClient $client, string $table, $level = Logger::DEBUG, bool $bubble = true)
     {
         /** @phpstan-ignore-next-line */
@@ -68,7 +65,7 @@ class DynamoDbHandler extends AbstractProcessingHandler
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function write(array $record): void
     {
@@ -86,6 +83,10 @@ class DynamoDbHandler extends AbstractProcessingHandler
         ]);
     }
 
+    /**
+     * @param  mixed[] $record
+     * @return mixed[]
+     */
     protected function filterEmptyFields(array $record): array
     {
         return array_filter($record, function ($value) {
@@ -94,7 +95,7 @@ class DynamoDbHandler extends AbstractProcessingHandler
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getDefaultFormatter(): FormatterInterface
     {

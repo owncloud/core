@@ -111,4 +111,12 @@ class PrimeField extends FiniteField
     {
         return Integer::getModulo($this->instanceID)->getLength();
     }
+
+    /**
+     *  Destructor
+     */
+    public function __destruct()
+    {
+        Integer::cleanupCache($this->instanceID);
+    }
 }

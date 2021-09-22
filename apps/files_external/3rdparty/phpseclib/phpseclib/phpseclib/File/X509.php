@@ -627,7 +627,6 @@ class X509
             for ($i = 0; $i < count($extensions); $i++) {
                 $id = $extensions[$i]['extnId'];
                 $value = &$extensions[$i]['extnValue'];
-                $decoded = ASN1::decodeBER($value);
                 /* [extnValue] contains the DER encoding of an ASN.1 value
                    corresponding to the extension type identified by extnID */
                 $map = $this->getMapping($id);
@@ -635,6 +634,7 @@ class X509
                     $decoder = $id == 'id-ce-nameConstraints' ?
                         [static::class, 'decodeNameConstraintIP'] :
                         [static::class, 'decodeIP'];
+                    $decoded = ASN1::decodeBER($value);
                     $mapped = ASN1::asn1map($decoded[0], $map, ['iPAddress' => $decoder]);
                     $value = $mapped === false ? $decoded[0] : $mapped;
 
@@ -2203,8 +2203,10 @@ class X509
         $key = $keyinfo['subjectPublicKey'];
 
         switch ($keyinfo['algorithm']['algorithm']) {
+            case 'id-RSASSA-PSS':
+                return RSA::loadFormat('PSS', $key);
             case 'rsaEncryption':
-                return RSA::loadFormat('PKCS8', $key);
+                return RSA::loadFormat('PKCS8', $key)->withPadding(RSA::SIGNATURE_PKCS1);
             case 'id-ecPublicKey':
             case 'id-Ed25519':
             case 'id-Ed448':

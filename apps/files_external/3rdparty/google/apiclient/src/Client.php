@@ -49,7 +49,7 @@ use LogicException;
  */
 class Client
 {
-  const LIBVER = "2.9.1";
+  const LIBVER = "2.11.0";
   const USER_AGENT_SUFFIX = "google-api-php-client/";
   const OAUTH2_REVOKE_URI = 'https://oauth2.googleapis.com/revoke';
   const OAUTH2_TOKEN_URI = 'https://oauth2.googleapis.com/token';
@@ -856,7 +856,7 @@ class Client
    * @param $request RequestInterface|\Google\Http\Batch
    * @param string $expectedClass
    * @throws \Google\Exception
-   * @return object of the type of the expected class or Psr\Http\Message\ResponseInterface.
+   * @return mixed|$expectedClass|ResponseInterface
    */
   public function execute(RequestInterface $request, $expectedClass = null)
   {

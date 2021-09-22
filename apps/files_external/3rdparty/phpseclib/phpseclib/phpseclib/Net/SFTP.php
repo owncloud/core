@@ -479,7 +479,10 @@ class SFTP extends SSH2
 
         $this->channel_status[self::CHANNEL] = NET_SSH2_MSG_CHANNEL_OPEN;
 
-        $this->get_channel_packet(self::CHANNEL, true);
+        $response = $this->get_channel_packet(self::CHANNEL, true);
+        if ($response === true && $this->isTimeout()) {
+            return false;
+        }
 
         $packet = Strings::packSSH2(
             'CNsbs',
@@ -517,6 +520,8 @@ class SFTP extends SSH2
             if ($response === false) {
                 return false;
             }
+        } else if ($response === true && $this->isTimeout()) {
+            return false;
         }
 
         $this->channel_status[self::CHANNEL] = NET_SSH2_MSG_CHANNEL_DATA;
@@ -2940,7 +2945,7 @@ class SFTP extends SSH2
         while (strlen($this->packet_buffer) < 4) {
             $temp = $this->get_channel_packet(self::CHANNEL, true);
             if ($temp === true) {
-                if ($this->channel_status[NET_SFTP_CHANNEL] === NET_SSH2_MSG_CHANNEL_CLOSE) {
+                if ($this->channel_status[self::CHANNEL] === NET_SSH2_MSG_CHANNEL_CLOSE) {
                     $this->channel_close = true;
                 }
                 $this->packet_type = false;
@@ -2959,7 +2964,7 @@ class SFTP extends SSH2
         $tempLength-= strlen($this->packet_buffer);
 
         // 256 * 1024 is what SFTP_MAX_MSG_LENGTH is set to in OpenSSH's sftp-common.h
-        if ($tempLength > 256 * 1024) {
+        if (!$this->use_request_id && $tempLength > 256 * 1024) {
             throw new \RuntimeException('Invalid Size');
         }
 
@@ -3101,7 +3106,7 @@ class SFTP extends SSH2
      *
      * @access public
      */
-    function enableDatePreservation()
+    public function enableDatePreservation()
     {
         $this->preserveTime = true;
     }
@@ -3111,7 +3116,7 @@ class SFTP extends SSH2
      *
      * @access public
      */
-    function disableDatePreservation()
+    public function disableDatePreservation()
     {
         $this->preserveTime = false;
     }
