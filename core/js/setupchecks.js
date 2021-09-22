@@ -272,8 +272,10 @@
 			var messages = [];
 
 			if (xhr.status === 200) {
-				var oc_defaults = oc_defaults || {};
-				var docPlaceholderUrl = oc_defaults.docPlaceholderUrl || '';
+				var docPlaceholderUrl = '';
+				if (oc_defaults && oc_defaults.docPlaceholderUrl) {
+					docPlaceholderUrl = oc_defaults.docPlaceholderUrl;
+				}
 
 				if(OC.getProtocol() === 'https') {
 					// Extract the value of 'Strict-Transport-Security'
