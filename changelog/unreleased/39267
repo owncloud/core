@@ -1,0 +1,4 @@
+Bugfix: Fix doc placeholder URL in "general"-settings
+
+https://github.com/owncloud/core/pull/39267
+https://github.com/owncloud/core/issues/27666
