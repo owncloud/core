@@ -1,0 +1,7 @@
+Bugfix: Setting 0 as user display name
+
+Setting the display name of a user to 0 was allowed before,
+but the UI showed the UID instead. This has been fixed.
+
+https://github.com/owncloud/core/pull/39272
+https://github.com/owncloud/core/issues/30657
