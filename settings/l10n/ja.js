@@ -314,6 +314,7 @@ OC.L10N.register(
     "Done" : "完了",
     "Version" : "バージョン",
     "Confirm Password" : "パスワードの確認",
+    "Set password" : "パスワードを設定",
     "Personal" : "個人",
     "Admin" : "管理",
     "Settings" : "設定",
