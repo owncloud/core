@@ -65,6 +65,7 @@ Summary
 * Enhancement - Improve mobile view for "Shared by link" file list: [#39232](https://github.com/owncloud/core/pull/39232)
 * Enhancement - Use icons + buttons instead of text for file actions in mobile view: [#39233](https://github.com/owncloud/core/pull/39233)
 * Enhancement - Hide restore text in deleted files list on mobile device: [#39236](https://github.com/owncloud/core/pull/39236)
+* Enhancement - Redesign group list in the user settings view: [#39262](https://github.com/owncloud/core/pull/39262)
 
 Details
 -------
@@ -549,6 +550,19 @@ Details
    and folder names.
 
    https://github.com/owncloud/core/pull/39236
+
+* Enhancement - Redesign group list in the user settings view: [#39262](https://github.com/owncloud/core/pull/39262)
+
+   Before this PR, the group list settings were confusing as the user needs to click on a group first
+   before the trash bin icon appears to delete a group. As well the user count was nondescript. With
+   this PR, a redesign takes care of those issues and also fixes the problem that while deleting a
+   group in the group list, it was still available in the user group list. Furthermore, after
+   deleting a group, the user will be redirected to the 'Everyone' group summary view. Also fixes
+   an issue where the 'active'-class on a newly created group was duplicated.
+
+   https://github.com/owncloud/core/issues/36273
+   https://github.com/owncloud/core/issues/29057
+   https://github.com/owncloud/core/pull/39262
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================

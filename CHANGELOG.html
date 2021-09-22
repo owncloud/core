@@ -63,6 +63,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Improve mobile view for "Shared by link" file list: <a href="https://github.com/owncloud/core/pull/39232">#39232</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Use icons + buttons instead of text for file actions in mobile view: <a href="https://github.com/owncloud/core/pull/39233">#39233</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Hide restore text in deleted files list on mobile device: <a href="https://github.com/owncloud/core/pull/39236">#39236</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Redesign group list in the user settings view: <a href="https://github.com/owncloud/core/pull/39262">#39262</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -545,6 +546,19 @@
    and folder names.
             </p>
             <p>https://github.com/owncloud/core/pull/39236<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Redesign group list in the user settings view: <a href="https://github.com/owncloud/core/pull/39262">#39262</a></p>
+            <p>Before this PR, the group list settings were confusing as the user needs to click on a group first
+   before the trash bin icon appears to delete a group. As well the user count was nondescript. With
+   this PR, a redesign takes care of those issues and also fixes the problem that while deleting a
+   group in the group list, it was still available in the user group list. Furthermore, after
+   deleting a group, the user will be redirected to the 'Everyone' group summary view. Also fixes
+   an issue where the 'active'-class on a newly created group was duplicated.
+            </p>
+            <p>https://github.com/owncloud/core/issues/36273<br>https://github.com/owncloud/core/issues/29057<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39262<br></p>
         </li>
     </ul>
     <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>
