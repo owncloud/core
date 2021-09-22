@@ -59,9 +59,10 @@ class TXT implements IProvider2 {
 		\imagecolorallocate($image, 255, 255, 255);
 		$textColor = \imagecolorallocate($image, 0, 0, 0);
 
-		$fontFile  = __DIR__;
-		$fontFile .= '/../../../core';
-		$fontFile .= '/fonts/OpenSans-Regular.ttf';
+		/**
+		 * We cut the string to 10 chars, to process font detection faster
+		 */
+		$fontFile = $this->getFontFile(\mb_substr($content, 0, 10));
 
 		$canUseTTF = \function_exists('imagettftext');
 
@@ -93,5 +94,107 @@ class TXT implements IProvider2 {
 	 */
 	public function isAvailable(FileInfo $file) {
 		return $file->getSize() > 0;
+	}
+
+	/**
+	 * Determine which font will be used
+	 *
+	 * @param string $text
+	 * @return string
+	 */
+	public function getFontFile(string $text): string {
+		$fontFileDir  = __DIR__;
+		$fontFileDir .= '/../../../core/fonts/';
+
+		/**
+		 * Note: Since chinese and japanese share letters it might be possible
+		 * that the language will be mistaken.
+		 *
+		 * While using different charsets, the preview might not be rendered
+		 * correctly
+		 */
+
+		if ($this->isChinese($text)) {
+			return $fontFileDir.'NotoSansCJKsc/NotoSansMonoCJKsc-Regular.otf';
+		}
+
+		if ($this->isJapanese($text)) {
+			return $fontFileDir.'NotoSansCJKjp/NotoSansMonoCJKjp-Regular.otf';
+		}
+
+		if ($this->isKorean($text)) {
+			return $fontFileDir.'NotoSansCJKkr/NotoSansMonoCJKkr-Regular.otf';
+		}
+
+		if ($this->isDevanagari($text)) {
+			return $fontFileDir.'NotoSansDevanagari/NotoSansDevanagari-Regular.ttf';
+		}
+
+		if ($this->isArabic($text)) {
+			return $fontFileDir.'NotoSansArabic/NotoSansArabic-Regular.ttf';
+		}
+
+		return $fontFileDir.'NotoSans/NotoSans-Regular.ttf';
+	}
+
+	/**
+	 * Detect whether string contains Chinese letters
+	 *
+	 * @param string $text
+	 * @return bool
+	 */
+	public function isChinese(string $text): bool {
+		return preg_match("/\p{Han}+/u", $text);
+	}
+
+	/**
+	 * Detect whether string contains Japanese letters
+	 *
+	 * https://jrgraphix.net/r/Unicode/3040-309F is Hiragana characters
+	 * https://jrgraphix.net/r/Unicode/30A0-30FF is Katakana characters
+	 * https://jrgraphix.net/r/Unicode/4E00-9FFF has CJK Unified Ideographs
+	 *
+	 * @param string $text
+	 * @return bool
+	 */
+	public function isJapanese(string $text): bool {
+		return preg_match('/[\x{4E00}-\x{9FBF}\x{3040}-\x{309F}\x{30A0}-\x{30FF}]/u', $text);
+	}
+
+	/**
+	 * Detect whether string contains Korean letters
+	 *
+	 * https://jrgraphix.net/r/Unicode/3130-318F is Hangul Compatibility Jamo
+	 * https://jrgraphix.net/r/Unicode/AC00-D7AF is Hangul Syllables
+	 *
+	 * @param string $text
+	 * @return bool
+	 */
+	public function isKorean(string $text): bool {
+		return preg_match('/[\x{3130}-\x{318F}\x{AC00}-\x{D7AF}]/u', $text);
+	}
+
+	/**
+	 * Detect whether string contains Devanagari letters (Hindi, Nepali and similar)
+	 *
+	 * https://jrgraphix.net/r/Unicode/0900-097F is the Devanagari characters
+	 *
+	 * @param string $text
+	 * @return bool
+	 */
+	public function isDevanagari(string $text): bool {
+		return preg_match('/[\x{0900}-\x{097F}]/u', $text);
+	}
+
+	/**
+	 * Detect whether string contains Arabic letters
+	 *
+	 * https://jrgraphix.net/r/Unicode/0600-06FF is Arabic
+	 *
+	 * @param string $text
+	 * @return bool
+	 */
+	public function isArabic($subject) {
+		return (preg_match('/[\x{0600}-\x{06FF}]/u', $subject) > 0);
 	}
 }
