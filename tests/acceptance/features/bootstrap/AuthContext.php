@@ -62,7 +62,7 @@ class AuthContext implements Context {
 	/**
 	 * @return string
 	 */
-	public function getTokenAuthHasBeenSetTo() {
+	public function getTokenAuthHasBeenSetTo():string {
 		return $this->tokenAuthHasBeenSetTo;
 	}
 
@@ -72,7 +72,7 @@ class AuthContext implements Context {
 	 *
 	 * @return string client token
 	 */
-	public function getClientToken() {
+	public function getClientToken():string {
 		return $this->clientToken;
 	}
 
@@ -82,7 +82,7 @@ class AuthContext implements Context {
 	 *
 	 * @return string app token
 	 */
-	public function getAppToken() {
+	public function getAppToken():string {
 		return $this->appToken;
 	}
 
@@ -92,7 +92,7 @@ class AuthContext implements Context {
 	 *
 	 * @return array app tokens
 	 */
-	public function getAppTokens() {
+	public function getAppTokens():array {
 		return $this->appTokens;
 	}
 
@@ -103,7 +103,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -129,7 +129,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRequestsURLWith($url, $method) {
+	public function userRequestsURLWith(string $url, string $method):void {
 		$this->sendRequest($url, $method);
 	}
 
@@ -141,7 +141,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasRequestedURLWith($url, $method) {
+	public function userHasRequestedURLWith(string $url, string $method):void {
 		$this->sendRequest($url, $method);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -156,7 +156,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function verifyStatusCode($ocsCode, $httpCode, $endPoint) {
+	public function verifyStatusCode(string $ocsCode, string $httpCode, string $endPoint):void {
 		if ($ocsCode !== null) {
 			$this->featureContext->ocsContext->theOCSStatusCodeShouldBe(
 				$ocsCode,
@@ -180,7 +180,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithBodyAndNoAuthThenStatusCodeAboutUser($method, $body, $ofUser, TableNode $table) {
+	public function userRequestsEndpointsWithBodyAndNoAuthThenStatusCodeAboutUser(string $method, string $body, string $ofUser, TableNode $table):void {
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastOCSStatusCodesArray();
@@ -204,7 +204,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithNoAuthentication($method, TableNode $table) {
+	public function userRequestsEndpointsWithNoAuthentication(string $method, TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
@@ -224,7 +224,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithBasicAuth($user, $method, TableNode $table) {
+	public function userRequestsEndpointsWithBasicAuth(string $user, string $method, TableNode $table):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userRequestsEndpointsWithPassword($user, $method, null, $table);
 	}
@@ -240,7 +240,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithBasicAuthAndGeneratedPassword($user, $method, $ofUser, TableNode $table) {
+	public function userRequestsEndpointsWithBasicAuthAndGeneratedPassword(string $user, string $method, string $ofUser, TableNode $table):void {
 		$this->requestEndpointsWithBasicAuthAndGeneratedPassword($user, $method, $ofUser, $table);
 	}
 
@@ -257,12 +257,12 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBasicAuthAndGeneratedPasswordWithProperty(
-		$user,
-		$method,
-		$property,
-		$ofUser,
+		string $user,
+		string $method,
+		string $property,
+		string $ofUser,
 		TableNode $table
-	) {
+	):void {
 		$this->requestEndpointsWithBasicAuthAndGeneratedPassword(
 			$user,
 			$method,
@@ -286,12 +286,12 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithPasswordWithProperty(
-		$user,
-		$method,
-		$property,
-		$ofUser,
+		string $user,
+		string $method,
+		string $property,
+		string $ofUser,
 		TableNode $table
-	) {
+	):void {
 		$this->userRequestsEndpointsWithPassword(
 			$user,
 			$method,
@@ -314,12 +314,12 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function userRequestsEndpointsWithBasicAuthAndGeneratedPasswordWithBody(
-		$user,
-		$method,
-		$body,
-		$ofUser,
+		string $user,
+		string $method,
+		string $body,
+		string $ofUser,
 		TableNode $table
-	) {
+	):void {
 		$header = [];
 		if ($method === 'MOVE' || $method === 'COPY') {
 			$header['Destination'] = '/path/to/destination';
@@ -349,14 +349,14 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function requestEndpointsWithBasicAuthAndGeneratedPassword(
-		$user,
-		$method,
-		$ofUser,
+		string $user,
+		string $method,
+		string $ofUser,
 		TableNode $table,
-		$body = null,
-		$property = null,
-		$header = null
-	) {
+		?string $body = null,
+		?string $property = null,
+		?array $header = null
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = \strtolower($this->featureContext->getActualUsername($ofUser));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
@@ -383,14 +383,20 @@ class AuthContext implements Context {
 	 *
 	 * @param string $user
 	 * @param string $method
-	 * @param string $password
+	 * @param string|null $password
 	 * @param TableNode $table
-	 * @param string $property
+	 * @param string|null $property
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsWithPassword($user, $method, $password, TableNode $table, $property = null) {
+	public function userRequestsEndpointsWithPassword(
+		string $user,
+		string $method,
+		?string $password,
+		TableNode $table,
+		?string $property = null
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->emptyLastOCSStatusCodesArray();
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
@@ -414,29 +420,29 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminRequestsEndpoint($method, TableNode $table) {
+	public function adminRequestsEndpoint(string $method, TableNode $table):void {
 		$this->adminRequestsEndpointsWithBodyWithPassword($method, null, null, null, $table);
 	}
 
 	/**
 	 * @When the administrator requests these endpoints with :method with body :body using password :password about user :ofUser
 	 *
-	 * @param string $method
-	 * @param string $body
-	 * @param string $password
-	 * @param string $ofUser
+	 * @param string|null $method
+	 * @param string|null $body
+	 * @param string|null $password
+	 * @param string|null $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function adminRequestsEndpointsWithBodyWithPassword(
-		$method,
-		$body,
-		$password,
-		$ofUser,
+		?string $method,
+		?string $body,
+		?string $password,
+		?string $ofUser,
 		TableNode $table
-	) {
+	):void {
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
@@ -469,11 +475,11 @@ class AuthContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminRequestsEndpointsWithPassword(
-		$method,
-		$password,
-		$ofUser,
+		string $method,
+		string $password,
+		string $ofUser,
 		TableNode $table
-	) {
+	):void {
 		$this->adminRequestsEndpointsWithBodyWithPassword($method, null, $password, $ofUser, $table);
 	}
 
@@ -487,7 +493,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth($user, $method, TableNode $table) {
+	public function whenUserWithNewClientTokenRequestsForEndpointUsingBasicTokenAuth(string $user, string $method, TableNode $table):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
@@ -507,7 +513,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsTheseEndpointsUsingNewBrowserSession($method, TableNode $table) {
+	public function userRequestsTheseEndpointsUsingNewBrowserSession(string $method, TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		$this->featureContext->emptyLastOCSStatusCodesArray();
@@ -527,7 +533,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsUsingTheGeneratedAppPasswordThenStatusCodeAboutUser($method, $user, TableNode $table) {
+	public function userRequestsEndpointsUsingTheGeneratedAppPasswordThenStatusCodeAboutUser(string $method, string $user, TableNode $table):void {
 		$user = \strtolower($this->featureContext->getActualUsername($user));
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
@@ -551,7 +557,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsEndpointsUsingTheGeneratedAppPassword($method, TableNode $table) {
+	public function userRequestsEndpointsUsingTheGeneratedAppPassword(string $method, TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
 		$this->featureContext->emptyLastHTTPStatusCodesArray();
 		$this->featureContext->emptyLastOCSStatusCodesArray();
@@ -566,19 +572,19 @@ class AuthContext implements Context {
 	 * @param string $method
 	 * @param string|null $authHeader
 	 * @param bool $useCookies
-	 * @param string $body
-	 * @param array $headers
+	 * @param string|null $body
+	 * @param array|null $headers
 	 *
 	 * @return void
 	 */
 	public function sendRequest(
-		$url,
-		$method,
-		$authHeader = null,
-		$useCookies = false,
-		$body = null,
-		$headers = []
-	) {
+		string $url,
+		string $method,
+		?string $authHeader = null,
+		bool $useCookies = false,
+		?string $body = null,
+		?array $headers = []
+	):void {
 		// reset responseXml
 		$this->featureContext->setResponseXml([]);
 
@@ -618,7 +624,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userGeneratesNewAppPasswordNamed($name) {
+	public function userGeneratesNewAppPasswordNamed(string $name):void {
 		$url = $this->featureContext->getBaseUrl() . '/index.php/settings/personal/authtokens';
 		$body = ['name' => $name];
 		$headers = [
@@ -652,7 +658,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userDeletesAppPasswordNamed($name) {
+	public function userDeletesAppPasswordNamed(string $name):void {
 		$url = $this->featureContext->getBaseUrl() . '/index.php/settings/personal/authtokens/' . $this->appTokens[$name]["id"];
 		$headers = [
 			'Content-Type' => 'application/x-www-form-urlencoded',
@@ -681,7 +687,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function aNewAppPasswordHasBeenGenerated($name) {
+	public function aNewAppPasswordHasBeenGenerated(string $name):void {
 		$this->userGeneratesNewAppPasswordNamed($name);
 		$this->featureContext->theHTTPStatusCodeShouldBe(200);
 	}
@@ -693,7 +699,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function aNewAppPasswordHasBeenDeleted($name) {
+	public function aNewAppPasswordHasBeenDeleted(string $name):void {
 		$this->userDeletesAppPasswordNamed($name);
 		$this->featureContext->theHTTPStatusCodeShouldBe(200);
 	}
@@ -706,7 +712,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function aNewClientTokenHasBeenGenerated($user) {
+	public function aNewClientTokenHasBeenGenerated(string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$body = \json_encode(
 			[
@@ -737,7 +743,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function aNewClientTokenForTheAdministratorHasBeenGenerated() {
+	public function aNewClientTokenForTheAdministratorHasBeenGenerated():void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->aNewClientTokenHasBeenGenerated($admin);
 	}
@@ -748,14 +754,20 @@ class AuthContext implements Context {
 	 * @param string $user
 	 * @param string $url
 	 * @param string $method
-	 * @param string $password
-	 * @param string $body
-	 * @param Array $header
+	 * @param string|null $password
+	 * @param string|null $body
+	 * @param array|null $header
 	 *
 	 * @return void
-	 * @throws Exception
 	 */
-	public function userRequestsURLWithUsingBasicAuth($user, $url, $method, $password = null, $body = null, $header = null) {
+	public function userRequestsURLWithUsingBasicAuth(
+		string $user,
+		string $url,
+		string $method,
+		?string $password = null,
+		?string $body = null,
+		?array $header = null
+	):void {
 		$userRenamed = $this->featureContext->getActualUsername($user);
 		$url = $this->featureContext->substituteInLineCodes(
 			$url,
@@ -787,7 +799,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsURLWithUsingBasicAuthAndDepthHeader($user, $url, $method, TableNode $headersTable) {
+	public function userRequestsURLWithUsingBasicAuthAndDepthHeader(string $user, string $url, string $method, TableNode $headersTable):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$authString = "$user:" . $this->featureContext->getPasswordForUser($user);
 		$url = $this->featureContext->substituteInLineCodes(
@@ -818,19 +830,18 @@ class AuthContext implements Context {
 	 * @param string $user
 	 * @param string $url
 	 * @param string $method
-	 * @param string $password
-	 * @param string $body
+	 * @param string|null $password
+	 * @param string|null $body
 	 *
 	 * @return void
-	 * @throws Exception
 	 */
 	public function userHasRequestedURLWithUsingBasicAuth(
-		$user,
-		$url,
-		$method,
-		$password = null,
-		$body = null
-	) {
+		string $user,
+		string $url,
+		string $method,
+		?string $password = null,
+		?string $body = null
+	):void {
 		$this->userRequestsURLWithUsingBasicAuth(
 			$user,
 			$url,
@@ -846,12 +857,11 @@ class AuthContext implements Context {
 	 *
 	 * @param string $url
 	 * @param string $method
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
-	 * @throws Exception
 	 */
-	public function administratorRequestsURLWithUsingBasicAuth($url, $method, $password = null) {
+	public function administratorRequestsURLWithUsingBasicAuth(string $url, string $method, ?string $password = null):void {
 		$this->userRequestsURLWithUsingBasicAuth(
 			$this->featureContext->getAdminUsername(),
 			$url,
@@ -869,7 +879,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRequestsURLWithUsingBasicTokenAuth($user, $url, $method) {
+	public function userRequestsURLWithUsingBasicTokenAuth(string $user, string $url, string $method):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->sendRequest(
 			$url,
@@ -887,7 +897,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasRequestedURLWithUsingBasicTokenAuth($user, $url, $method) {
+	public function userHasRequestedURLWithUsingBasicTokenAuth(string $user, string $url, string $method):void {
 		$this->userRequestsURLWithUsingBasicTokenAuth($user, $url, $method);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -900,7 +910,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRequestsURLWithUsingAClientToken($url, $method) {
+	public function userRequestsURLWithUsingAClientToken(string $url, string $method):void {
 		$this->sendRequest($url, $method, 'token ' . $this->clientToken);
 	}
 
@@ -912,7 +922,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasRequestedURLWithUsingAClientToken($url, $method) {
+	public function userHasRequestedURLWithUsingAClientToken(string $url, string $method):void {
 		$this->userRequestsURLWithUsingAClientToken($url, $method);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -925,7 +935,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRequestsURLWithUsingAppPassword($url, $method) {
+	public function userRequestsURLWithUsingAppPassword(string $url, string $method):void {
 		$this->sendRequest($url, $method, 'token ' . $this->appToken);
 	}
 
@@ -938,7 +948,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserRequestsWithUsingAppPasswordNamed($url, $method, $tokenName) {
+	public function theUserRequestsWithUsingAppPasswordNamed(string $url, string $method, string $tokenName):void {
 		$this->sendRequest($url, $method, 'token ' . $this->appTokens[$tokenName]['token']);
 	}
 
@@ -950,7 +960,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasRequestedURLWithUsingAppPassword($url, $method) {
+	public function userHasRequestedURLWithUsingAppPassword(string $url, string $method):void {
 		$this->userRequestsURLWithUsingAppPassword($url, $method);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -963,7 +973,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRequestsURLWithBrowserSession($url, $method) {
+	public function userRequestsURLWithBrowserSession(string $url, string $method):void {
 		$this->sendRequest($url, $method, null, true);
 	}
 
@@ -975,7 +985,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasRequestedURLWithBrowserSession($url, $method) {
+	public function userHasRequestedURLWithBrowserSession(string $url, string $method):void {
 		$this->userRequestsURLWithBrowserSession($url, $method);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -987,7 +997,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function aNewBrowserSessionForHasBeenStarted($user) {
+	public function aNewBrowserSessionForHasBeenStarted(string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$loginUrl = $this->featureContext->getBaseUrl() . '/index.php/login';
 		// Request a new session and extract CSRF token
@@ -1033,7 +1043,7 @@ class AuthContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function aNewBrowserSessionForTheAdministratorHasBeenStarted() {
+	public function aNewBrowserSessionForTheAdministratorHasBeenStarted():void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->aNewBrowserSessionForHasBeenStarted($admin);
 	}
@@ -1047,7 +1057,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function tokenAuthHasBeenEnforced($hasOrNot) {
+	public function tokenAuthHasBeenEnforced(string $hasOrNot):void {
 		$enforce = (($hasOrNot !== "not") && ($hasOrNot !== "does not enforce"));
 		if ($enforce) {
 			$value = 'true';
@@ -1073,7 +1083,7 @@ class AuthContext implements Context {
 	 *
 	 * @return string
 	 */
-	public function generateAuthTokenForAdmin() {
+	public function generateAuthTokenForAdmin():string {
 		$this->aNewBrowserSessionForHasBeenStarted($this->featureContext->getAdminUsername());
 		$this->userGeneratesNewAppPasswordNamed('acceptance-test ' . \microtime());
 		return $this->appToken;
@@ -1087,7 +1097,7 @@ class AuthContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteTokenAuthEnforcedAfterScenario() {
+	public function deleteTokenAuthEnforcedAfterScenario():void {
 		if ($this->tokenAuthHasBeenSet) {
 			if ($this->tokenAuthHasBeenSetTo === 'true') {
 				// Because token auth is enforced, we have to use a token

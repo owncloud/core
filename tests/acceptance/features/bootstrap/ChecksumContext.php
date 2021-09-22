@@ -49,11 +49,11 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsFileToWithChecksumUsingTheAPI(
-		$user,
-		$source,
-		$destination,
-		$checksum
-	) {
+		string $user,
+		string  $source,
+		string  $destination,
+		string  $checksum
+	):void {
 		$file = \file_get_contents(
 			$this->featureContext->acceptanceTestsDirLocation() . $source
 		);
@@ -79,11 +79,11 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userHasUploadedFileToWithChecksumUsingTheAPI(
-		$user,
-		$source,
-		$destination,
-		$checksum
-	) {
+		string $user,
+		string $source,
+		string $destination,
+		string $checksum
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsFileToWithChecksumUsingTheAPI(
 			$user,
@@ -105,11 +105,11 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsFileWithContentAndChecksumToUsingTheAPI(
-		$user,
-		$content,
-		$checksum,
-		$destination
-	) {
+		string $user,
+		string $content,
+		string $checksum,
+		string $destination
+	):void {
 		$response = $this->featureContext->makeDavRequest(
 			$user,
 			'PUT',
@@ -132,11 +132,11 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userHasUploadedFileWithContentAndChecksumToUsingTheAPI(
-		$user,
-		$content,
-		$checksum,
-		$destination
-	) {
+		string $user,
+		string $content,
+		string $checksum,
+		string $destination
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userUploadsFileWithContentAndChecksumToUsingTheAPI(
 			$user,
@@ -155,7 +155,7 @@ class ChecksumContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRequestsTheChecksumOfViaPropfind($user, $path) {
+	public function userRequestsTheChecksumOfViaPropfind(string $user, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$body = '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
@@ -187,9 +187,9 @@ class ChecksumContext implements Context {
 	 * @param string $checksum
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theWebdavChecksumShouldMatch($checksum) {
+	public function theWebdavChecksumShouldMatch(string $checksum):void {
 		$service = new Sabre\Xml\Service();
 		$parsed = $service->parse(
 			$this->featureContext->getResponse()->getBody()->getContents()
@@ -215,8 +215,9 @@ class ChecksumContext implements Context {
 	 * @param string $checksum
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theWebdavChecksumOfViaPropfindShouldMatch($user, $path, $checksum) {
+	public function theWebdavChecksumOfViaPropfindShouldMatch(string $user, string $path, string $checksum):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userRequestsTheChecksumOfViaPropfind($user, $path);
 		$this->theWebdavChecksumShouldMatch($checksum);
@@ -228,9 +229,9 @@ class ChecksumContext implements Context {
 	 * @param string $checksum
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theHeaderChecksumShouldMatch($checksum) {
+	public function theHeaderChecksumShouldMatch(string $checksum):void {
 		$headerChecksums
 			= $this->featureContext->getResponse()->getHeader('OC-Checksum');
 
@@ -264,9 +265,9 @@ class ChecksumContext implements Context {
 	 * @Then the webdav checksum should be empty
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theWebdavChecksumShouldBeEmpty() {
+	public function theWebdavChecksumShouldBeEmpty():void {
 		$service = new Sabre\Xml\Service();
 		$parsed = $service->parse(
 			$this->featureContext->getResponse()->getBody()->getContents()
@@ -289,9 +290,9 @@ class ChecksumContext implements Context {
 	 * @Then the OC-Checksum header should not be there
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theOcChecksumHeaderShouldNotBeThere() {
+	public function theOcChecksumHeaderShouldNotBeThere():void {
 		$isHeader = $this->featureContext->getResponse()->hasHeader('OC-Checksum');
 		Assert::assertFalse(
 			$isHeader,
@@ -313,13 +314,13 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userUploadsChunkFileOfWithToWithChecksum(
-		$user,
-		$num,
-		$total,
-		$data,
-		$destination,
-		$checksum
-	) {
+		string $user,
+		int $num,
+		int $total,
+		string $data,
+		string $destination,
+		string $checksum
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$num -= 1;
 		$file = "$destination-chunking-42-$total-$num";
@@ -347,13 +348,13 @@ class ChecksumContext implements Context {
 	 * @return void
 	 */
 	public function userHasUploadedChunkFileOfWithToWithChecksum(
-		$user,
-		$num,
-		$total,
-		$data,
-		$destination,
-		$checksum
-	) {
+		string $user,
+		int $num,
+		int $total,
+		string $data,
+		string $destination,
+		string $checksum
+	):void {
 		$this->userUploadsChunkFileOfWithToWithChecksum(
 			$user,
 			$num,
@@ -375,7 +376,7 @@ class ChecksumContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
