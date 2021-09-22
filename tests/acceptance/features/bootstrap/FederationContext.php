@@ -85,7 +85,7 @@ class FederationContext implements Context {
 	 * @param string $sharerPath
 	 * @param string $shareeUser
 	 * @param string $shareeServer "LOCAL" or "REMOTE"
-	 * @param int|null $permissions
+	 * @param string|null $permissions
 	 * @param string|null $expireDate
 	 *
 	 * @return void
@@ -96,7 +96,7 @@ class FederationContext implements Context {
 		string $sharerPath,
 		string $shareeUser,
 		string $shareeServer,
-		?int $permissions = null,
+		?string $permissions = null,
 		?string $expireDate = null
 	):void {
 		$sharerUser = $this->featureContext->getActualUsername($sharerUser);
@@ -204,7 +204,7 @@ class FederationContext implements Context {
 	 * @param string $sharerPath
 	 * @param string $shareeUser
 	 * @param string $shareeServer "LOCAL" or "REMOTE"
-	 * @param int|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 * @throws Exception
@@ -215,7 +215,7 @@ class FederationContext implements Context {
 		string $sharerPath,
 		string $shareeUser,
 		string $shareeServer,
-		?int $permissions = null
+		?string $permissions = null
 	) {
 		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
 			$sharerUser,
@@ -280,6 +280,7 @@ class FederationContext implements Context {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRetrievesInformationOfLastFederatedShare(string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
