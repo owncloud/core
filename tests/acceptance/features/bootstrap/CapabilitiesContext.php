@@ -46,8 +46,9 @@ class CapabilitiesContext implements Context {
 	 * @param TableNode|null $formData
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function checkCapabilitiesResponse(TableNode $formData) {
+	public function checkCapabilitiesResponse(TableNode $formData):void {
 		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml(__METHOD__);
 		$assertedSomething = false;
 
@@ -80,11 +81,12 @@ class CapabilitiesContext implements Context {
 	 * @param string $value
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theCapabilityOfFilesSharingAppShouldBe(
-		$pathToElement,
-		$value
-	) {
+		string $pathToElement,
+		string $value
+	):void {
 		$this->featureContext->appConfigurationContext->userGetsCapabilitiesCheckResponse(
 			$this->featureContext->getCurrentUser()
 		);
@@ -108,7 +110,7 @@ class CapabilitiesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theCapabilitiesShouldNotContain(TableNode $formData) {
+	public function theCapabilitiesShouldNotContain(TableNode $formData):void {
 		$capabilitiesXML = $this->featureContext->appConfigurationContext->getCapabilitiesXml(__METHOD__);
 		$assertedSomething = false;
 
@@ -140,7 +142,7 @@ class CapabilitiesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
