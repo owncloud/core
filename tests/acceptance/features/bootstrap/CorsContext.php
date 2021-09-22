@@ -47,7 +47,7 @@ class CorsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function addDomainToPrivateCORSLists($user, $domain) {
+	public function addDomainToPrivateCORSLists(string $user, string $domain):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->runOcc(
 			[
@@ -117,8 +117,9 @@ class CorsContext implements Context {
 	 * @param string $domain
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function adminAddDomainToPrivateCORSLists($domain) {
+	public function adminAddDomainToPrivateCORSLists(string $domain):void {
 		$this->addDomainToPrivateCORSLists(
 			$this->featureContext->getAdminUsername(),
 			$domain
@@ -135,7 +136,7 @@ class CorsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -146,8 +147,9 @@ class CorsContext implements Context {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function resetAdminCors() {
+	public function resetAdminCors():void {
 		if ($this->originalAdminCorsDomains !== null) {
 			if ($this->originalAdminCorsDomains !== "") {
 				$this->featureContext->runOcc(

@@ -47,7 +47,7 @@ class EncryptionContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function recreateMasterKeyUsingOccCommand() {
+	public function recreateMasterKeyUsingOccCommand():void {
 		$this->featureContext->runOcc(['encryption:recreate-master-key', '-y']);
 	}
 
@@ -55,9 +55,9 @@ class EncryptionContext implements Context {
 	 * @When the administrator successfully recreates the encryption masterkey using the occ command
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function adminRecreatesMasterKeyUsingOccCommand() {
+	public function adminRecreatesMasterKeyUsingOccCommand():void {
 		$this->recreateMasterKeyUsingOccCommand();
 	}
 
@@ -65,9 +65,9 @@ class EncryptionContext implements Context {
 	 * @Given the administrator has successfully recreated the encryption masterkey
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function adminHasRecreatedMasterKeyUsingOccCommand() {
+	public function adminHasRecreatedMasterKeyUsingOccCommand():void {
 		$this->recreateMasterKeyUsingOccCommand();
 		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
@@ -76,20 +76,20 @@ class EncryptionContext implements Context {
 	 * @Given encryption has been enabled
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function encryptionHasBeenEnabled() {
+	public function encryptionHasBeenEnabled():void {
 		$this->featureContext->runOcc(['encryption:enable']);
 		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
-	 * @param $encryptionType
+	 * @param string $encryptionType
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function setEncryptionTypeUsingTheOccCommand($encryptionType) {
+	public function setEncryptionTypeUsingTheOccCommand(string $encryptionType):void {
 		$this->featureContext->runOcc(
 			["encryption:select-encryption-type", $encryptionType, "-y"]
 		);
@@ -101,9 +101,9 @@ class EncryptionContext implements Context {
 	 * @param string $encryptionType
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorSetsEncryptionTypeToUsingTheOccCommand($encryptionType) {
+	public function theAdministratorSetsEncryptionTypeToUsingTheOccCommand(string $encryptionType):void {
 		$this->setEncryptionTypeUsingTheOccCommand($encryptionType);
 	}
 
@@ -113,9 +113,9 @@ class EncryptionContext implements Context {
 	 * @param string $encryptionType
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorHasSetEncryptionTypeToUsingTheOccCommand($encryptionType) {
+	public function theAdministratorHasSetEncryptionTypeToUsingTheOccCommand(string $encryptionType):void {
 		$this->setEncryptionTypeUsingTheOccCommand($encryptionType);
 		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
@@ -124,7 +124,7 @@ class EncryptionContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function encryptAllDataUsingTheOccCommand() {
+	public function encryptAllDataUsingTheOccCommand():void {
 		$this->featureContext->runOcc(["encryption:encrypt-all", "-y"]);
 	}
 
@@ -132,9 +132,9 @@ class EncryptionContext implements Context {
 	 * @When the administrator encrypts all data using the occ command
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorEncryptsAllDataUsingTheOccCommand() {
+	public function theAdministratorEncryptsAllDataUsingTheOccCommand():void {
 		$this->encryptAllDataUsingTheOccCommand();
 	}
 
@@ -142,9 +142,9 @@ class EncryptionContext implements Context {
 	 * @Given the administrator has encrypted all the data
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorHasEncryptedAllDataUsingTheOccCommand() {
+	public function theAdministratorHasEncryptedAllDataUsingTheOccCommand():void {
 		$this->encryptAllDataUsingTheOccCommand();
 		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
@@ -155,8 +155,9 @@ class EncryptionContext implements Context {
 	 * @param string $recoveryKey
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorDecryptsUserKeysBasedEncryptionWithKey($recoveryKey) {
+	public function theAdministratorDecryptsUserKeysBasedEncryptionWithKey(string $recoveryKey):void {
 		$this->occContext->invokingTheCommandWithEnvVariable(
 			"encryption:decrypt-all -m recovery -c yes",
 			'OC_RECOVERY_PASSWORD',
@@ -172,7 +173,7 @@ class EncryptionContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function fileOfUserShouldNotBeEncrypted($fileName, $username) {
+	public function fileOfUserShouldNotBeEncrypted(string $fileName, string $username):void {
 		$fileName = \ltrim($fileName, "/");
 		$filePath = "data/$username/files/$fileName";
 		$this->featureContext->readFileInServerRoot($filePath);
@@ -202,8 +203,9 @@ class EncryptionContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function fileOfUserShouldBeEncrypted($fileName, $username) {
+	public function fileOfUserShouldBeEncrypted(string $fileName, string $username):void {
 		$fileName = \ltrim($fileName, "/");
 		$filePath = "data/$username/files/$fileName";
 		$this->featureContext->readFileInServerRoot($filePath);
@@ -231,7 +233,7 @@ class EncryptionContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

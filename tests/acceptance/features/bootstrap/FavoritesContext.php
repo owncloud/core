@@ -46,12 +46,12 @@ class FavoritesContext implements Context {
 	private $webDavPropertiesContext;
 
 	/**
-	 * @param $user
-	 * @param $path
+	 * @param string$user
+	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function userFavoritesElement($user, $path) {
+	public function userFavoritesElement(string $user, string $path):void {
 		$response = $this->changeFavStateOfAnElement(
 			$user,
 			$path,
@@ -68,7 +68,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userFavoritesElementUsingWebDavApi($user, $path) {
+	public function userFavoritesElementUsingWebDavApi(string $user, string $path):void {
 		$this->userFavoritesElement($user, $path);
 	}
 
@@ -80,7 +80,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasFavoritedElementUsingWebDavApi($user, $path) {
+	public function userHasFavoritedElementUsingWebDavApi(string $user, string $path):void {
 		$this->userFavoritesElement($user, $path);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -92,7 +92,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserFavoritesElement($path) {
+	public function theUserFavoritesElement(string $path):void {
 		$this->userFavoritesElement(
 			$this->featureContext->getCurrentUser(),
 			$path
@@ -106,7 +106,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserHasFavoritedElement($path) {
+	public function theUserHasFavoritedElement(string $path):void {
 		$this->userFavoritesElement(
 			$this->featureContext->getCurrentUser(),
 			$path
@@ -123,7 +123,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userUnfavoritesElement($user, $path) {
+	public function userUnfavoritesElement(string $user, string $path):void {
 		$response = $this->changeFavStateOfAnElement(
 			$user,
 			$path,
@@ -140,7 +140,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userUnfavoritesElementUsingWebDavApi($user, $path) {
+	public function userUnfavoritesElementUsingWebDavApi(string $user, string $path):void {
 		$this->userUnfavoritesElement($user, $path);
 	}
 
@@ -152,7 +152,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasUnfavoritedElementUsingWebDavApi($user, $path) {
+	public function userHasUnfavoritedElementUsingWebDavApi(string $user, string $path):void {
 		$this->userUnfavoritesElement($user, $path);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -167,10 +167,10 @@ class FavoritesContext implements Context {
 	 * @return void
 	 */
 	public function checkFavoritedElements(
-		$user,
-		$shouldOrNot,
-		$expectedElements
-	) {
+		string $user,
+		string $shouldOrNot,
+		TableNode $expectedElements
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userListsFavorites($user, null);
 		$this->featureContext->propfindResultShouldContainEntries(
@@ -184,11 +184,11 @@ class FavoritesContext implements Context {
 	 * @When /^user "([^"]*)" lists the favorites and limits the result to ([\d*]) elements using the WebDAV API$/
 	 *
 	 * @param string $user
-	 * @param int $limit
+	 * @param int|null $limit
 	 *
 	 * @return void
 	 */
-	public function userListsFavorites($user, $limit = null) {
+	public function userListsFavorites(string $user, ?int $limit = null):void {
 		$renamedUser = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$password = $this->featureContext->getPasswordForUser($user);
@@ -220,11 +220,11 @@ class FavoritesContext implements Context {
 	}
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function theUserUnfavoritesElement($path) {
+	public function theUserUnfavoritesElement(string $path):void {
 		$this->userUnfavoritesElement(
 			$this->featureContext->getCurrentUser(),
 			$path
@@ -238,7 +238,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserUnfavoritesElementUsingWebDavApi($path) {
+	public function theUserUnfavoritesElementUsingWebDavApi(string $path):void {
 		$this->theUserUnfavoritesElement($path);
 	}
 
@@ -249,7 +249,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserHasUnfavoritedElementUsingWebDavApi($path) {
+	public function theUserHasUnfavoritedElementUsingWebDavApi(string $path):void {
 		$this->theUserUnfavoritesElement($path);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -263,7 +263,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function asUserFileOrFolderShouldBeFavorited($user, $path, $expectedValue = 1) {
+	public function asUserFileOrFolderShouldBeFavorited(string $user, string $path, int $expectedValue = 1):void {
 		$property = "oc:favorite";
 		$this->webDavPropertiesContext->asUserFolderShouldContainAPropertyWithValue(
 			$user,
@@ -281,7 +281,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function asUserFileShouldNotBeFavorited($user, $path) {
+	public function asUserFileShouldNotBeFavorited(string $user, string $path):void {
 		$this->asUserFileOrFolderShouldBeFavorited($user, $path, 0);
 	}
 
@@ -293,7 +293,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function asTheUserFileOrFolderShouldBeFavorited($path, $expectedValue = 1) {
+	public function asTheUserFileOrFolderShouldBeFavorited(string $path, int $expectedValue = 1):void {
 		$this->asUserFileOrFolderShouldBeFavorited(
 			$this->featureContext->getCurrentUser(),
 			$path,
@@ -308,7 +308,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function asTheUserFileOrFolderShouldNotBeFavorited($path) {
+	public function asTheUserFileOrFolderShouldNotBeFavorited(string $path):void {
 		$this->asTheUserFileOrFolderShouldBeFavorited($path, 0);
 	}
 
@@ -317,15 +317,15 @@ class FavoritesContext implements Context {
 	 *
 	 * @param string $user
 	 * @param string $path
-	 * @param int $favOrUnfav 1 = favorite, 0 = unfavorite
+	 * @param int|null $favOrUnfav 1 = favorite, 0 = unfavorite
 	 *
 	 * @return ResponseInterface
 	 */
 	public function changeFavStateOfAnElement(
-		$user,
-		$path,
-		$favOrUnfav
-	) {
+		string $user,
+		string $path,
+		?int $favOrUnfav
+	):ResponseInterface {
 		$renamedUser = $this->featureContext->getActualUsername($user);
 		return WebDavHelper::proppatch(
 			$this->featureContext->getBaseUrl(),
@@ -350,7 +350,7 @@ class FavoritesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

@@ -58,7 +58,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userCommentsWithContentOnEntry($user, $content, $path) {
+	public function userCommentsWithContentOnEntry(string $user, string $content, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
@@ -93,7 +93,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userHasCommentedWithContentOnEntry($user, $content, $path) {
+	public function userHasCommentedWithContentOnEntry(string $user, string $content, string $path):void {
 		$this->userCommentsWithContentOnEntry($user, $content, $path);
 		$this->featureContext->theHTTPStatusCodeShouldBe("201");
 	}
@@ -106,7 +106,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserCommentsWithContentOnEntry($content, $path) {
+	public function theUserCommentsWithContentOnEntry(string $content, string $path):void {
 		$this->userCommentsWithContentOnEntry(
 			$this->featureContext->getCurrentUser(),
 			$content,
@@ -122,7 +122,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserHasCommentedWithContentOnEntry($content, $path) {
+	public function theUserHasCommentedWithContentOnEntry(string $content, string $path):void {
 		$this->theUserCommentsWithContentOnEntry($content, $path);
 		$this->featureContext->theHTTPStatusCodeShouldBe("201");
 	}
@@ -135,8 +135,9 @@ class CommentsContext implements Context {
 	 * @param TableNode $expectedElements
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function checkComments($user, $path, $expectedElements) {
+	public function checkComments(string $user, string $path, TableNode $expectedElements):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
@@ -181,8 +182,9 @@ class CommentsContext implements Context {
 	 * @param TableNode $expectedElements
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function checkCommentForCurrentUser($path, $expectedElements) {
+	public function checkCommentForCurrentUser(string $path, TableNode $expectedElements):void {
 		$this->checkComments(
 			$this->featureContext->getCurrentUser(),
 			$path,
@@ -199,7 +201,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function checkNumberOfComments($user, $numberOfComments, $path) {
+	public function checkNumberOfComments(string $user, string $numberOfComments, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
@@ -227,7 +229,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function checkNumberOfCommentsForCurrentUser($numberOfComments, $path) {
+	public function checkNumberOfCommentsForCurrentUser(string $numberOfComments, string $path):void {
 		$this->checkNumberOfComments(
 			$this->featureContext->getCurrentUser(),
 			$numberOfComments,
@@ -242,7 +244,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function deleteComment($user, $fileId, $commentId) {
+	public function deleteComment(string $user, string $fileId, string $commentId):void {
 		$commentsPath = "/comments/files/$fileId/$commentId";
 		$response = $this->featureContext->makeDavRequest(
 			$user,
@@ -259,12 +261,11 @@ class CommentsContext implements Context {
 	 * @When user :user deletes the last created comment using the WebDAV API
 	 * @When the user deletes the last created comment using the WebDAV API
 	 *
-	 * @param string $user | null
+	 * @param string|null $user | null
 	 *
 	 * @return void
-	 * @throws \Exception
 	 */
-	public function userDeletesLastComment($user = null) {
+	public function userDeletesLastComment(?string $user = null):void {
 		if ($user === null) {
 			$user = $this->featureContext->getCurrentUser();
 		}
@@ -276,12 +277,12 @@ class CommentsContext implements Context {
 	 * @Given user :user has deleted the last created comment
 	 * @Given the user has deleted the last created comment
 	 *
-	 * @param string $user | null
+	 * @param string|null $user | null
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasDeletedLastComment($user = null) {
+	public function userHasDeletedLastComment(string $user = null):void {
 		$this->userDeletesLastComment($user);
 		$this->featureContext->theHTTPStatusCodeShouldBe("204");
 	}
@@ -293,9 +294,9 @@ class CommentsContext implements Context {
 	 * @param string $value
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theResponseShouldContainAPropertyWithValue($key, $value) {
+	public function theResponseShouldContainAPropertyWithValue(string $key, string $value):void {
 		$response = $this->featureContext->getResponse();
 		$keys = $response[0]['value'][2]['value'][0]['value'];
 		$found = false;
@@ -318,9 +319,9 @@ class CommentsContext implements Context {
 	 * @param int $number
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theResponseShouldContainOnlyComments($number) {
+	public function theResponseShouldContainOnlyComments(int $number):void {
 		$response = $this->featureContext->getResponse();
 		Assert::assertEquals(
 			(int) $number,
@@ -338,7 +339,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function editAComment($user, $content, $fileId, $commentId) {
+	public function editAComment(string $user, string $content, string $fileId, string $commentId):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$commentsPath = "/comments/files/$fileId/$commentId";
 		$response = $this->featureContext->makeDavRequest(
@@ -366,9 +367,9 @@ class CommentsContext implements Context {
 	 * @param string $content
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userEditsLastCreatedComment($user, $content) {
+	public function userEditsLastCreatedComment(string $user, string $content):void {
 		$this->editAComment(
 			$user,
 			$content,
@@ -384,9 +385,9 @@ class CommentsContext implements Context {
 	 * @param string $content
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasEditedLastCreatedComment($user, $content) {
+	public function userHasEditedLastCreatedComment(string $user, string $content):void {
 		$this->userEditsLastCreatedComment($user, $content);
 		$this->featureContext->theHTTPStatusCodeShouldBe("207");
 	}
@@ -397,9 +398,9 @@ class CommentsContext implements Context {
 	 * @param string $content
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserEditsLastCreatedComment($content) {
+	public function theUserEditsLastCreatedComment(string $content):void {
 		$this->editAComment(
 			$this->featureContext->getCurrentUser(),
 			$content,
@@ -414,9 +415,9 @@ class CommentsContext implements Context {
 	 * @param string $content
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserHasEditedLastCreatedComment($content) {
+	public function theUserHasEditedLastCreatedComment(string $content):void {
 		$this->theUserEditsLastCreatedComment($content);
 		$this->featureContext->theHTTPStatusCodeShouldBe("207");
 	}
@@ -427,12 +428,12 @@ class CommentsContext implements Context {
 	 * @param string $user
 	 * @param string $path
 	 * @param string $properties properties which needs to be included in the report
-	 * @param string $exceptionText text to put at the front of exception messages
+	 * @param string|null $exceptionText text to put at the front of exception messages
 	 *
 	 * @return SimpleXMLElement
-	 *
+	 * @throws Exception
 	 */
-	public function reportElementComments($user, $path, $properties, $exceptionText = '') {
+	public function reportElementComments(string $user, string $path, string $properties, ?string $exceptionText = ''):SimpleXMLElement {
 		$body = '<?xml version="1.0" encoding="utf-8" ?>
 							 <oc:filter-comments xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
 									' . $properties . '
@@ -456,11 +457,12 @@ class CommentsContext implements Context {
 	/**
 	 * @param string $user
 	 * @param string $path
-	 * @param string $exceptionText text to put at the front of exception messages
+	 * @param string|null $exceptionText text to put at the front of exception messages
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path, $exceptionText = '') {
+	public function getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi(string $user, string $path, ?string $exceptionText = '') {
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$commentsPath = "/comments/files/$fileId/";
 		$this->featureContext->setResponseXmlObject(
@@ -480,8 +482,9 @@ class CommentsContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($user, $path) {
+	public function userGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi(string $user, string $path):void {
 		$this->getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi(
 			$user,
 			$path,
@@ -495,8 +498,9 @@ class CommentsContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theUserGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi($path) {
+	public function theUserGetsAllInfoOfCommentsOfFolderUsingTheWebdavReportApi(string $path):void {
 		$this->getAllInfoOfCommentsOfFolderUsingTheWebdavReportApi(
 			$this->featureContext->getCurrentUser(),
 			$path,
@@ -514,7 +518,7 @@ class CommentsContext implements Context {
 	 *
 	 * @throws Exception
 	 */
-	public function followingPropertiesShouldBeListed($user, $expectedProperties) {
+	public function followingPropertiesShouldBeListed(string $user, TableNode $expectedProperties):void {
 		$this->featureContext->verifyTableNodeColumns(
 			$expectedProperties,
 			["propertyName", "propertyValue"]
@@ -558,7 +562,7 @@ class CommentsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

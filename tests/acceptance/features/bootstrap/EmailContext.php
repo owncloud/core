@@ -43,7 +43,7 @@ class EmailContext implements Context {
 	/**
 	 * @return string
 	 */
-	public function getLocalMailhogUrl() {
+	public function getLocalMailhogUrl():string {
 		return $this->localMailhogUrl;
 	}
 
@@ -55,7 +55,7 @@ class EmailContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function assertThatEmailContains($address, PyStringNode $content, $sender = null) {
+	public function assertThatEmailContains(string $address, PyStringNode $content, ?string $sender = null):void {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
 		$expectedContent = $this->featureContext->substituteInLineCodes(
 			$expectedContent,
@@ -82,9 +82,9 @@ class EmailContext implements Context {
 	 * @param PyStringNode $content
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserShouldHaveReceivedAnEmailFromUserWithBodyContaining($user, $sender, PyStringNode $content) {
+	public function theUserShouldHaveReceivedAnEmailFromUserWithBodyContaining(string $user, string $sender, PyStringNode $content):void {
 		$address = $this->featureContext->getEmailAddressForUser($user);
 		$this->assertThatEmailContains($address, $content, $sender);
 	}
@@ -97,9 +97,9 @@ class EmailContext implements Context {
 	 * @param string|null $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining($address, $content, $user = null) {
+	public function emailAddressShouldHaveReceivedAnEmailWithBodyContaining(string $address, PyStringNode $content, ?string $user = null):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->assertThatEmailContains($address, $content, $user);
 	}
@@ -111,9 +111,9 @@ class EmailContext implements Context {
 	 * @param PyStringNode $content
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserShouldHaveReceivedAnEmailWithBodyContaining($user, PyStringNode $content) {
+	public function theUserShouldHaveReceivedAnEmailWithBodyContaining(string $user, PyStringNode $content):void {
 		$address = $this->featureContext->getEmailAddressForUser($user);
 		$this->assertThatEmailContains($address, $content);
 	}
@@ -127,7 +127,7 @@ class EmailContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theResetEmailSenderEmailAddressShouldBe($user, $senderAddress) {
+	public function theResetEmailSenderEmailAddressShouldBe(string $user, string $senderAddress):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$receiverAddress = $this->featureContext->getEmailAddressForUser($user);
 		$actualSenderAddress = EmailHelper::getSenderOfEmail(
@@ -148,9 +148,9 @@ class EmailContext implements Context {
 	 * @param string $address
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function assertThatEmailDoesntExistWithTheAddress($address) {
+	public function assertThatEmailDoesntExistWithTheAddress(string $address):void {
 		Assert::assertFalse(
 			EmailHelper::emailReceived(
 				EmailHelper::getLocalMailhogUrl(),
@@ -168,7 +168,7 @@ class EmailContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -181,7 +181,7 @@ class EmailContext implements Context {
 	 *
 	 * @return void
 	 */
-	protected function clearMailHogMessages() {
+	protected function clearMailHogMessages():void {
 		try {
 			EmailHelper::deleteAllMessages(
 				$this->getLocalMailhogUrl(),
