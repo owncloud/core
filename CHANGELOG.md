@@ -37,6 +37,7 @@ Summary
 * Bugfix - Spelling errors: [#39252](https://github.com/owncloud/core/pull/39252)
 * Bugfix - Simplify set password text for new passwords: [#39257](https://github.com/owncloud/core/pull/39257)
 * Bugfix - Allow user:list and group:list to filter on short strings: [#39258](https://github.com/owncloud/core/pull/39258)
+* Bugfix - Fix doc placeholder URL in "general"-settings: [#39267](https://github.com/owncloud/core/pull/39267)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -307,6 +308,11 @@ Details
 
    https://github.com/owncloud/core/issues/31117
    https://github.com/owncloud/core/pull/39258
+
+* Bugfix - Fix doc placeholder URL in "general"-settings: [#39267](https://github.com/owncloud/core/pull/39267)
+
+   https://github.com/owncloud/core/issues/27666
+   https://github.com/owncloud/core/pull/39267
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
