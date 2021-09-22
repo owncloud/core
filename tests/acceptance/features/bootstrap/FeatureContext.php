@@ -218,6 +218,11 @@ class FeatureContext extends BehatVariablesContext {
 	private $response = null;
 
 	/**
+	 * @var string
+	 */
+	private $responseBodyContents = null;
+
+	/**
 	 * @var CookieJar
 	 */
 	private $cookieJar;

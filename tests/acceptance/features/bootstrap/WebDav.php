@@ -4270,11 +4270,52 @@ trait WebDav {
 	 * @return void
 	 */
 	public function imageDimensionsShouldBe($width, $height) {
-		$size = \getimagesizefromstring($this->response->getBody()->getContents());
+		if ($this->responseBodyContents === null) {
+			$this->responseBodyContents = $this->response->getBody()->getContents();
+		}
+		$size = \getimagesizefromstring($this->responseBodyContents);
 		Assert::assertNotFalse($size, "could not get size of image");
 		Assert::assertEquals($width, $size[0], "width not as expected");
 		Assert::assertEquals($height, $size[1], "height not as expected");
 	}
+
+	/**
+	 * @Given user :user has downloaded the preview of :path with width :width and height :height
+	 *
+	 * @param $user
+	 * @param $path
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function userDownloadsThePreviewOfWithWidthAndHeight($user, $path, $width, $height):void {
+		$this->downloadPreviewOfFiles($user, $path, $width, $height);
+		$this->theHTTPStatusCodeShouldBe(200);
+		$this->imageDimensionsShouldBe($width, $height);
+	}
+
+	/**
+	 * @Then as user :user the preview of :path with width :width and height :height should have been changed
+	 *
+	 * @param $user
+	 * @param $path
+	 * @param $width
+	 * @param $height
+	 *
+	 * @return void
+	 */
+	public function asUserThePreviewOfPathWithHeightAndWidthShouldHaveBeenChanged($user, $path, $width, $height):void {
+		$this->downloadPreviewOfFiles($user, $path, $width, $height);
+		$this->theHTTPStatusCodeShouldBe(200);
+		$newResponseBodyContents = $this->response->getBody()->getContents();
+		Assert::assertNotEquals(
+			$newResponseBodyContents,
+			$this->responseBodyContents,
+			__METHOD__ . " previous and current previews content is same but expected to be different",
+		);
+	}
+
 	/**
 	 * @param string $user
 	 * @param string $path
