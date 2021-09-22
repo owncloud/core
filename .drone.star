@@ -13,7 +13,6 @@ config = {
         "master",
     ],
     "dependencies": True,
-    "codestyle": True,
     "acceptance": {
         "webUI": {
             "suites": {
