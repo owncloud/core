@@ -59,13 +59,13 @@ class FederationContext implements Context {
 	 * @return void
 	 */
 	public function userFromServerSharesWithUserFromServerUsingTheSharingAPI(
-		$sharerUser,
-		$sharerServer,
-		$sharerPath,
-		$shareeUser,
-		$shareeServer,
-		$expireDate = null
-	) {
+		string $sharerUser,
+		string $sharerServer,
+		string $sharerPath,
+		string $shareeUser,
+		string $shareeServer,
+		?string $expireDate = null
+	):void {
 		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
 			$sharerUser,
 			$sharerServer,
@@ -91,14 +91,14 @@ class FederationContext implements Context {
 	 * @return void
 	 */
 	public function userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
-		$sharerUser,
-		$sharerServer,
-		$sharerPath,
-		$shareeUser,
-		$shareeServer,
-		$permissions = null,
-		$expireDate = null
-	) {
+		string $sharerUser,
+		string $sharerServer,
+		string $sharerPath,
+		string $shareeUser,
+		string $shareeServer,
+		?int $permissions = null,
+		?string $expireDate = null
+	):void {
 		$sharerUser = $this->featureContext->getActualUsername($sharerUser);
 		$shareeUser = $this->featureContext->getActualUsername($shareeUser);
 		if ($shareeServer == "REMOTE") {
@@ -133,14 +133,15 @@ class FederationContext implements Context {
 	 * @param string $shareeServer "LOCAL" or "REMOTE"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userFromServerHasSharedWithUserFromServer(
-		$sharerUser,
-		$sharerServer,
-		$sharerPath,
-		$shareeUser,
-		$shareeServer
-	) {
+		string $sharerUser,
+		string $sharerServer,
+		string $sharerPath,
+		string $shareeUser,
+		string $shareeServer
+	):void {
 		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPI(
 			$sharerUser,
 			$sharerServer,
@@ -167,6 +168,7 @@ class FederationContext implements Context {
 	 * @param string $expireDate
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userFromServerHasSharedWithUserFromServerWithExpiry(
 		string $sharerUser,
@@ -175,7 +177,7 @@ class FederationContext implements Context {
 		string $shareeUser,
 		string $shareeServer,
 		string $expireDate
-	) {
+	):void {
 		$expireDate = \date('Y-m-d', \strtotime($expireDate));
 		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPI(
 			$sharerUser,
@@ -202,17 +204,18 @@ class FederationContext implements Context {
 	 * @param string $sharerPath
 	 * @param string $shareeUser
 	 * @param string $shareeServer "LOCAL" or "REMOTE"
-	 * @param int $permissions
+	 * @param int|null $permissions
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userFromServerHasSharedWithUserFromServerWithPermissions(
-		$sharerUser,
-		$sharerServer,
-		$sharerPath,
-		$shareeUser,
-		$shareeServer,
-		$permissions = null
+		string $sharerUser,
+		string $sharerServer,
+		string $sharerPath,
+		string $shareeUser,
+		string $shareeServer,
+		?int $permissions = null
 	) {
 		$this->userFromServerSharesWithUserFromServerUsingTheSharingAPIWithPermissions(
 			$sharerUser,
@@ -237,8 +240,9 @@ class FederationContext implements Context {
 	 * @param string $server
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userFromServerAcceptsLastPendingShareUsingTheSharingAPI($user, $server) {
+	public function userFromServerAcceptsLastPendingShareUsingTheSharingAPI(string $user, string $server):void {
 		$previous = $this->featureContext->usingServer($server);
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
 		$share_id = SharingHelper::getLastShareIdFromResponse(
@@ -260,8 +264,9 @@ class FederationContext implements Context {
 	 * @param string $server
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userFromServerHasAcceptedLastPendingShare($user, $server) {
+	public function userFromServerHasAcceptedLastPendingShare(string $user, string $server):void {
 		$this->userFromServerAcceptsLastPendingShareUsingTheSharingAPI(
 			$user,
 			$server
@@ -276,7 +281,7 @@ class FederationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRetrievesInformationOfLastFederatedShare($user) {
+	public function userRetrievesInformationOfLastFederatedShare(string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->userGetsTheListOfFederatedCloudShares($user);
 		$share_id = SharingHelper::getLastShareIdFromResponse(
@@ -297,7 +302,7 @@ class FederationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userShouldHaveNoLastPendingFederatedCloudShare($user) {
+	public function userShouldHaveNoLastPendingFederatedCloudShare(string $user):void {
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
 		$responseXml = $this->featureContext->getResponseXml(null, __METHOD__);
 		$xmlPart = $responseXml->xpath("//data/element[last()]/id");
@@ -314,8 +319,9 @@ class FederationContext implements Context {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userRetrievesInformationOfLastPendingFederatedShare($user) {
+	public function userRetrievesInformationOfLastPendingFederatedShare(string $user):void {
 		$this->userGetsTheListOfPendingFederatedCloudShares($user);
 		$share_id = SharingHelper::getLastShareIdFromResponse(
 			$this->featureContext->getResponseXml(null, __METHOD__)
@@ -335,7 +341,7 @@ class FederationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userGetsTheListOfPendingFederatedCloudShares($user) {
+	public function userGetsTheListOfPendingFederatedCloudShares(string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$url = "/apps/files_sharing/api/v1/remote_shares/pending";
 		$this->featureContext->asUser($user);
@@ -354,7 +360,7 @@ class FederationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userGetsTheListOfFederatedCloudShares($user) {
+	public function userGetsTheListOfFederatedCloudShares(string $user):void {
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			'GET',
@@ -369,15 +375,16 @@ class FederationContext implements Context {
 	 *
 	 * @param string $user
 	 * @param string $shareType "pending" or empty string
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userDeletesLastFederatedCloudShare(
-		$user,
-		$shareType,
-		$password = null
-	) {
+		string $user,
+		string $shareType,
+		?string $password = null
+	):void {
 		if ($shareType === "pending") {
 			$this->userGetsTheListOfPendingFederatedCloudShares($user);
 		} else {
@@ -408,7 +415,7 @@ class FederationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRequestsSharedSecretUsingTheFederationApi($user) {
+	public function userRequestsSharedSecretUsingTheFederationApi(string $user):void {
 		$url = '/apps/federation/api/v1/request-shared-secret';
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
@@ -428,7 +435,7 @@ class FederationContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
