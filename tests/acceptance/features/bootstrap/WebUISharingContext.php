@@ -769,6 +769,23 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given the user has created a read only public link for file/folder :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserHasCreatedAReadOnlyPublicLinkForFolder(string $name):void {
+		$this->createReadOnlyPublicShareLinkUsingQuickAction($name);
+		$this->theUserOpensTheShareDialogForFileFolder($name);
+		$linkTab = $this->sharingDialog->openPublicShareTab($this->getSession());
+		$linkName = $linkTab->getNameOfFirstPublicLink($this->getSession());
+		$linkUrl = $linkTab->getLinkUrl($linkName);
+		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
+	}
+
+	/**
 	 * @When the user creates a new public link for file/folder :name using the webUI with
 	 * @Given the user has created a new public link for file/folder :name using the webUI with
 	 *
