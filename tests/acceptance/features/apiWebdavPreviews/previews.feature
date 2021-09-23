@@ -154,14 +154,14 @@ Feature: previews of files downloaded through the webdav API
     And the administrator has updated system config key "preview_max_x" with value "32"
     And the administrator has updated system config key "preview_max_y" with value "32"
     When user "Alice" downloads the preview of "/parent.txt" with width "<width>" and height "<height>" using the WebDAV API
-    Then the HTTP status code should be "<http-code>"
+    Then the HTTP status code should be "200"
     And the downloaded image should be "<width>" pixels wide and "<height>" pixels high
     Examples:
-      | width | height | http-code |
-      | 32    | 32     | 200       |
-      | 12    | 12     | 200       |
-      | 32    | 12     | 200       |
-      | 12    | 32     | 200       |
+      | width | height |
+      | 32    | 32     |
+      | 12    | 12     |
+      | 32    | 12     |
+      | 12    | 32     |
 
 
   Scenario Outline: download previews of different size larger than the maximum size set
@@ -169,9 +169,37 @@ Feature: previews of files downloaded through the webdav API
     And the administrator has updated system config key "preview_max_x" with value "32"
     And the administrator has updated system config key "preview_max_y" with value "32"
     When user "Alice" downloads the preview of "/parent.txt" with width "<width>" and height "<height>" using the WebDAV API
-    Then the HTTP status code should be "<http-code>"
+    Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixels wide and "32" pixels high
     Examples:
-      | width | height | http-code |
-      | 64    | 64     | 200       |
-      | 2048  | 2048   | 200       |
+      | width | height |
+      | 64    | 64     |
+      | 2048  | 2048   |
+
+
+  Scenario: preview content changes with the change in file content
+    Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    And user "Alice" has downloaded the preview of "/parent.txt" with width "32" and height "32"
+    When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
+    Then as user "Alice" the preview of "/parent.txt" with width "32" and height "32" should have been changed
+
+
+  Scenario: when owner updates a shared file, previews for sharee are also updated
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    And user "Alice" has shared file "/parent.txt" with user "Brian"
+    And user "Brian" has downloaded the preview of "/parent.txt" with width "32" and height "32"
+    When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
+    Then as user "Brian" the preview of "/parent.txt" with width "32" and height "32" should have been changed
+
+
+  Scenario: when owner updates a shared file, previews for sharee are also updated (to shared folder)
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
+    And user "Alice" has shared file "/parent.txt" with user "Brian"
+    And user "Brian" has accepted share "/parent.txt" offered by user "Alice"
+    And user "Brian" has downloaded the preview of "/Shares/parent.txt" with width "32" and height "32"
+    When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
+    Then as user "Brian" the preview of "/Shares/parent.txt" with width "32" and height "32" should have been changed
