@@ -166,7 +166,7 @@ class User implements IUser {
 	 */
 	public function getDisplayName() {
 		$displayName = $this->account->getDisplayName();
-		if (empty($displayName)) {
+		if (\strlen($displayName) === 0) {
 			$displayName = $this->getUID();
 		}
 		return $displayName;

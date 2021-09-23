@@ -168,7 +168,11 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	 */
 	public function getDisplayName($uid) {
 		$this->loadUser($uid);
-		return empty($this->cache[$uid]['displayname']) ? $uid : $this->cache[$uid]['displayname'];
+		if (\strlen($this->cache[$uid]['displayname']) === 0) {
+			return $uid;
+		}
+
+		return $this->cache[$uid]['displayname'];
 	}
 
 	/**
