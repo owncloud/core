@@ -1,0 +1,12 @@
+Bugfix: Command occ 'user:report' might not count 'user directories' correctly
+
+Before this PR the underlying function of 'user:report' just looked up in the
+'datadirectory' set in 'config.php'.
+This implies that user directories which are symlinks or even not in the
+'datadirectory', have not been taken into account.
+With this PR we check if the user's home path exists and increase the
+'user directories' count.
+
+https://github.com/owncloud/core/pull/39254
+https://github.com/owncloud/enterprise/issues/4742
+

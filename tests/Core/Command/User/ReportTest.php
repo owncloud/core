@@ -23,16 +23,13 @@
 namespace Tests\Core\Command\User;
 
 use OC\Core\Command\User\Report;
-use OC\Files\Storage\Storage;
 use OC\Files\View;
 use OC\Helper\UserTypeHelper;
 use OCP\IUserManager;
-use OCP\User;
-use PHPUnit\Framework\MockObject\MockObject;
+use OCP\User\Constants;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
-use Test\Traits\UserTrait;
 
 /**
  * Class ReportTest
@@ -40,23 +37,17 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class ReportTest extends TestCase {
-	use UserTrait;
-
 	/** @var CommandTester */
 	private $commandTester;
 
-	/** @var IUserManager | MockObject */
+	/** @var IUserManager */
 	private $userManager;
-
-	/** @var UserTypeHelper | MockObject */
-	private $userTypeHelper;
 
 	protected function setUp(): void {
 		parent::setUp();
-		$userTypeHelper = $this->getMockBuilder('OC\Helper\UserTypeHelper')->disableOriginalConstructor()->getMock();
-		$this->userTypeHelper = $userTypeHelper;
+		$userTypeHelper = new UserTypeHelper();
 
-		$userManager = $this->getMockBuilder('OCP\IUserManager')->disableOriginalConstructor()->getMock();
+		$userManager = \OC::$server->getUserManager();
 		$this->userManager = $userManager;
 
 		$command = new Report($userManager, $userTypeHelper);
@@ -67,34 +58,57 @@ class ReportTest extends TestCase {
 		list($storage) = $view->resolvePath('');
 		/** @var $storage Storage */
 
-		foreach (User\Constants::DIRECTORIES_THAT_ARE_NOT_USERS as $nonUserFolder) {
+		/**
+		 * Create some folders in the 'datadirectory'
+		 * which should not be counted as user directories
+		 */
+		foreach (Constants::DIRECTORIES_THAT_ARE_NOT_USERS as $nonUserFolder) {
 			$storage->mkdir($nonUserFolder);
 		}
-		$storage->mkdir('user1');
+
+		// Login to create user directory
+		$this->loginAsUser('admin');
 	}
 
 	public function testCommandInput() {
-		$this->userManager->expects($this->once())->method('countUsers')->willReturn([
-			\OC\User\Database::class => 5,
-		]);
-
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 
-		$expectedOutput = <<<EOS
+		$view = new View('');
+		$storage = $view->getMount('/')->getStorage();
+		$isLocalStorage = $storage->isLocal();
+
+		if ($isLocalStorage) {
+			$expectedOutput = <<<EOS
 +------------------+---+
 | User Report      |   |
 +------------------+---+
-| OC\User\Database | 5 |
+| OC\User\Database | 1 |
 |                  |   |
 | guest users      | 0 |
 |                  |   |
-| total users      | 5 |
+| total users      | 1 |
 |                  |   |
 | user directories | 1 |
 +------------------+---+
 
 EOS;
+		} else {
+			$expectedOutput = <<<EOS
++------------------+---+
+| User Report      |   |
++------------------+---+
+| OC\User\Database | 1 |
+|                  |   |
+| guest users      | 0 |
+|                  |   |
+| total users      | 1 |
+|                  |   |
+| user directories | 0 |
++------------------+---+
+
+EOS;
+		}
 
 		$this->assertEquals($expectedOutput, $output);
 	}

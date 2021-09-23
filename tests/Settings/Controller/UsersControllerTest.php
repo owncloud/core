@@ -1898,6 +1898,8 @@ class UsersControllerTest extends \Test\TestCase {
 		} else {
 			$this->assertEquals(new Http\JSONResponse(), $response);
 		}
+
+		\OC::$server->getUserManager()->get($userName)->delete();
 	}
 
 	public function setDataForSendMail() {
