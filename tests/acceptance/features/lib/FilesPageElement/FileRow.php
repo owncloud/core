@@ -203,6 +203,7 @@ class FileRow extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function openSharingDialog(Session $session) {
+		$this->waitForAjaxCallsToStartAndFinish($session);
 		$this->findSharingButton()->click();
 		$this->waitTillElementIsNull($this->loadingIndicatorXpath);
 		/**
