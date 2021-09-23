@@ -35,6 +35,7 @@ Summary
 * Bugfix - Show the correct expiring date in 'Shared by link' files list: [#39238](https://github.com/owncloud/core/pull/39238)
 * Bugfix - Hide share owner file path for share receiver: [#39241](https://github.com/owncloud/core/pull/39241)
 * Bugfix - Spelling errors: [#39252](https://github.com/owncloud/core/pull/39252)
+* Bugfix - Command occ 'user:report' might not count 'user directories' correctly: [#39254](https://github.com/owncloud/core/pull/39254)
 * Bugfix - Simplify set password text for new passwords: [#39257](https://github.com/owncloud/core/pull/39257)
 * Bugfix - Allow user:list and group:list to filter on short strings: [#39258](https://github.com/owncloud/core/pull/39258)
 * Bugfix - Fix doc placeholder URL in "general"-settings: [#39267](https://github.com/owncloud/core/pull/39267)
@@ -299,6 +300,16 @@ Details
    Various spelling errors have been corrected in messages.
 
    https://github.com/owncloud/core/pull/39252
+
+* Bugfix - Command occ 'user:report' might not count 'user directories' correctly: [#39254](https://github.com/owncloud/core/pull/39254)
+
+   Before this PR the underlying function of 'user:report' just looked up in the 'datadirectory'
+   set in 'config.php'. This implies that user directories which are symlinks or even not in the
+   'datadirectory', have not been taken into account. With this PR we check if the user's home path
+   exists and increase the 'user directories' count.
+
+   https://github.com/owncloud/enterprise/issues/4742
+   https://github.com/owncloud/core/pull/39254
 
 * Bugfix - Simplify set password text for new passwords: [#39257](https://github.com/owncloud/core/pull/39257)
 

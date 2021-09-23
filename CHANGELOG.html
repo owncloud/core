@@ -33,6 +33,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Show the correct expiring date in 'Shared by link' files list: <a href="https://github.com/owncloud/core/pull/39238">#39238</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Hide share owner file path for share receiver: <a href="https://github.com/owncloud/core/pull/39241">#39241</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Spelling errors: <a href="https://github.com/owncloud/core/pull/39252">#39252</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Command occ 'user:report' might not count 'user directories' correctly: <a href="https://github.com/owncloud/core/pull/39254">#39254</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Simplify set password text for new passwords: <a href="https://github.com/owncloud/core/pull/39257">#39257</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow user:list and group:list to filter on short strings: <a href="https://github.com/owncloud/core/pull/39258">#39258</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix doc placeholder URL in "general"-settings: <a href="https://github.com/owncloud/core/pull/39267">#39267</a></li>
@@ -298,6 +299,17 @@
             <p>Various spelling errors have been corrected in messages.
             </p>
             <p>https://github.com/owncloud/core/pull/39252<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Command occ 'user:report' might not count 'user directories' correctly: <a href="https://github.com/owncloud/core/pull/39254">#39254</a></p>
+            <p>Before this PR the underlying function of 'user:report' just looked up in the 'datadirectory'
+   set in 'config.php'. This implies that user directories which are symlinks or even not in the
+   'datadirectory', have not been taken into account. With this PR we check if the user's home path
+   exists and increase the 'user directories' count.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4742<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39254<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Simplify set password text for new passwords: <a href="https://github.com/owncloud/core/pull/39257">#39257</a></p>
