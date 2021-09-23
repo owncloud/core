@@ -869,7 +869,7 @@ def litmus():
 
         for phpVersion in params["phpVersions"]:
             name = "litmus-php%s" % phpVersion
-            db = "mariadb:10.2"
+            db = "mariadb:10.5"
             image = "owncloud/litmus:latest"
             environment = {
                 "LITMUS_PASSWORD": "admin",
@@ -1028,7 +1028,7 @@ def dav():
         for phpVersion in params["phpVersions"]:
             for davType in ["caldav-new", "caldav-old", "carddav-new", "carddav-old"]:
                 name = "%s-php%s" % (davType, phpVersion)
-                db = "mariadb:10.2"
+                db = "mariadb:10.5"
 
                 if (davType == "caldav-new"):
                     scriptPath = "apps/dav/tests/ci/caldav"
@@ -1440,7 +1440,7 @@ def acceptance(ctx):
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
         "nodeJsVersion": "14",
-        "databases": ["mariadb:10.2"],
+        "databases": ["mariadb:10.5"],
         "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
         "federatedDb": "",
