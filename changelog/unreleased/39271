@@ -1,0 +1,7 @@
+Enhancement: Previews for text files including non-latin characters
+
+Generate and display previews for text files that include non-latin
+characters like Chinese, Japanese, Korean and Arabic.
+
+https://github.com/owncloud/core/pull/39271
+https://github.com/owncloud/core/issues/16229
