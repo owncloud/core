@@ -67,6 +67,7 @@ Summary
 * Enhancement - Use icons + buttons instead of text for file actions in mobile view: [#39233](https://github.com/owncloud/core/pull/39233)
 * Enhancement - Hide restore text in deleted files list on mobile device: [#39236](https://github.com/owncloud/core/pull/39236)
 * Enhancement - Redesign group list in the user settings view: [#39262](https://github.com/owncloud/core/pull/39262)
+* Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
 
 Details
 -------
@@ -572,6 +573,14 @@ Details
    https://github.com/owncloud/core/issues/36273
    https://github.com/owncloud/core/issues/29057
    https://github.com/owncloud/core/pull/39262
+
+* Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
+
+   Generate and display previews for text files that include non-latin characters like Chinese,
+   Japanese, Korean and Arabic.
+
+   https://github.com/owncloud/core/issues/16229
+   https://github.com/owncloud/core/pull/39271
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
