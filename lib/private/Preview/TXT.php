@@ -28,8 +28,14 @@ namespace OC\Preview;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
+use OC\Utf8Analyzer;
 
 class TXT implements IProvider2 {
+	private $utf8Analyzer;
+
+	public function __construct() {
+		$this->utf8Analyzer = new Utf8Analyzer();
+	}
 	/**
 	 * {@inheritDoc}
 	 */
@@ -42,7 +48,7 @@ class TXT implements IProvider2 {
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$stream = $file->fopen('r');
-		$content = \stream_get_contents($stream, 3000);
+		$content = \stream_get_contents($stream, 2048);
 		\fclose($stream);
 
 		//don't create previews of empty text files
@@ -50,33 +56,48 @@ class TXT implements IProvider2 {
 			return false;
 		}
 
-		$lines = \preg_split("/\r\n|\n|\r/", $content);
+		$analyzerOpts = [
+			'count' => true,
+			'lines' => true,
+		];
+		$info = $this->utf8Analyzer->analyzeString($content, $analyzerOpts);
 
-		$fontSize = ($maxX) ? (int) ((5 / 32) * $maxX) : 5; //5px
-		$lineSize = \ceil($fontSize * 1.25);
+		$fontSizePixels = ($maxX) ? (int) ((4 / 32) * $maxX) : 4;  //4px
+		$fontSizePoints = $fontSizePixels * 0.75;  // 3pt = 4px
+		$lineSize = \ceil($fontSizePixels * 1.25);
 
 		$image = \imagecreate($maxX, $maxY);
 		\imagecolorallocate($image, 255, 255, 255);
 		$textColor = \imagecolorallocate($image, 0, 0, 0);
 
-		/**
-		 * We cut the string to 10 chars, to process font detection faster
-		 */
-		$fontFile = $this->getFontFile(\mb_substr($content, 0, 10));
-
 		$canUseTTF = \function_exists('imagettftext');
+		if ($canUseTTF) {
+			$fontFile = $this->getFontFile($info);
+		}
 
-		foreach ($lines as $index => $line) {
+		foreach ($info['lines']['lines'] as $index => $line) {
 			$index = $index + 1;
 
 			$x = (int) 1;
 			$y = (int) ($index * $lineSize);
 
 			if ($canUseTTF === true) {
-				\imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontFile, $line);
+				$charsInLine = \count($line);
+				$initialNChars = ceil($maxX / $fontSizePixels);  // initial estimation for the number of chars we want to draw
+				$nChars = 0;
+				do {
+					$nChars += $initialNChars;
+					$printLine = \implode('', \array_slice($line, 0, $nChars));
+					// check the bounding box, it might be smaller than the initial estimation, so it
+					// might be possible to fit more chars in the image
+					$bbox = \imagettfbbox($fontSizePoints, 0, $fontFile, $printLine);
+					$bboxWidth = $bbox[2] - $bbox[0];
+				} while ($bboxWidth < $maxX && $nChars < $charsInLine);
+				\imagettftext($image, $fontSizePoints, 0, $x, $y, $textColor, $fontFile, $printLine);
 			} else {
 				$y -= $fontSize;
-				\imagestring($image, 1, $x, $y, $line, $textColor);
+				$printLine = \implode('', \array_slice($line, 0, $nChars));
+				\imagestring($image, 1, $x, $y, $printLine, $textColor);
 			}
 
 			if (($index * $lineSize) >= $maxY) {
@@ -99,102 +120,54 @@ class TXT implements IProvider2 {
 	/**
 	 * Determine which font will be used
 	 *
-	 * @param string $text
-	 * @return string
+	 * @param array $info the information coming from the utf8Analyzer. Information of the
+	 * "count" processor of the utf8Analyzer is required.
+	 * @return string the chosen font file
 	 */
-	public function getFontFile(string $text): string {
+	private function getFontFile(array $info): string {
 		$fontFileDir  = __DIR__;
 		$fontFileDir .= '/../../../core/fonts/';
 
-		/**
-		 * Note: Since chinese and japanese share letters it might be possible
-		 * that the language will be mistaken.
-		 *
-		 * While using different charsets, the preview might not be rendered
-		 * correctly
-		 */
+		$fontSet = [
+			'Han' => 'NotoSansCJKsc/NotoSansMonoCJKsc-Regular.otf',  // chinese
+			'Hiragana' => 'NotoSansCJKjp/NotoSansMonoCJKjp-Regular.otf',  // japanese
+			'Katakana' => 'NotoSansCJKjp/NotoSansMonoCJKjp-Regular.otf',  // japanese
+			'Hangul' => 'NotoSansCJKkr/NotoSansMonoCJKkr-Regular.otf',  // korean
+			'Devanagari' => 'NotoSansDevanagari/NotoSansDevanagari-Regular.ttf',  // devanagari
+			'Arabic' => 'NotoSansArabic/NotoSansArabic-Regular.ttf',  // arabic
+		];
 
-		if ($this->isChinese($text)) {
-			return $fontFileDir.'NotoSansCJKsc/NotoSansMonoCJKsc-Regular.otf';
+		$countInfo = $info['count'];
+		\uasort($countInfo, function ($a, $b) {
+			if ($a === $b) {
+				return 0;
+			}
+			return ($a < $b) ? 1 : -1;
+		});
+		// Information is ordered by counted chars, from highest number of counted chars to lowest.
+		foreach ($countInfo as $key => $value) {
+			if (!isset($fontSet[$key])) {
+				continue;  // we don't have a specific font for it, so check the next
+			}
+
+			if ($key === 'Han') {
+				if (isset($countInfo['Hiragana']) || isset($countInfo['Katakana'])) {
+					// if there are Hiragana or Katakana chars, prioritize japanese instead of chinese
+					// (font is the same for Hiragana and Katakana)
+					$font = $fontSet['Hiragana'];
+				} else {
+					$font = $fontSet['Han'];
+				}
+			} else {
+				$font = $fontSet[$key];
+			}
+
+			break;  // we're only interested in the most used script. Once we've chosen a font, we're done
 		}
 
-		if ($this->isJapanese($text)) {
-			return $fontFileDir.'NotoSansCJKjp/NotoSansMonoCJKjp-Regular.otf';
-		}
-
-		if ($this->isKorean($text)) {
-			return $fontFileDir.'NotoSansCJKkr/NotoSansMonoCJKkr-Regular.otf';
-		}
-
-		if ($this->isDevanagari($text)) {
-			return $fontFileDir.'NotoSansDevanagari/NotoSansDevanagari-Regular.ttf';
-		}
-
-		if ($this->isArabic($text)) {
-			return $fontFileDir.'NotoSansArabic/NotoSansArabic-Regular.ttf';
-		}
-
-		return $fontFileDir.'NotoSans/NotoSans-Regular.ttf';
-	}
-
-	/**
-	 * Detect whether string contains Chinese letters
-	 *
-	 * @param string $text
-	 * @return bool
-	 */
-	public function isChinese(string $text): bool {
-		return preg_match("/\p{Han}+/u", $text);
-	}
-
-	/**
-	 * Detect whether string contains Japanese letters
-	 *
-	 * https://jrgraphix.net/r/Unicode/3040-309F is Hiragana characters
-	 * https://jrgraphix.net/r/Unicode/30A0-30FF is Katakana characters
-	 * https://jrgraphix.net/r/Unicode/4E00-9FFF has CJK Unified Ideographs
-	 *
-	 * @param string $text
-	 * @return bool
-	 */
-	public function isJapanese(string $text): bool {
-		return preg_match('/[\x{4E00}-\x{9FBF}\x{3040}-\x{309F}\x{30A0}-\x{30FF}]/u', $text);
-	}
-
-	/**
-	 * Detect whether string contains Korean letters
-	 *
-	 * https://jrgraphix.net/r/Unicode/3130-318F is Hangul Compatibility Jamo
-	 * https://jrgraphix.net/r/Unicode/AC00-D7AF is Hangul Syllables
-	 *
-	 * @param string $text
-	 * @return bool
-	 */
-	public function isKorean(string $text): bool {
-		return preg_match('/[\x{3130}-\x{318F}\x{AC00}-\x{D7AF}]/u', $text);
-	}
-
-	/**
-	 * Detect whether string contains Devanagari letters (Hindi, Nepali and similar)
-	 *
-	 * https://jrgraphix.net/r/Unicode/0900-097F is the Devanagari characters
-	 *
-	 * @param string $text
-	 * @return bool
-	 */
-	public function isDevanagari(string $text): bool {
-		return preg_match('/[\x{0900}-\x{097F}]/u', $text);
-	}
-
-	/**
-	 * Detect whether string contains Arabic letters
-	 *
-	 * https://jrgraphix.net/r/Unicode/0600-06FF is Arabic
-	 *
-	 * @param string $text
-	 * @return bool
-	 */
-	public function isArabic($subject) {
-		return (preg_match('/[\x{0600}-\x{06FF}]/u', $subject) > 0);
+		// we might not have chosen a font yet (latin or greek text, for example), so use a
+		// default one
+		$finalFont = $font ?? 'NotoSans/NotoSans-Regular.ttf';
+		return "{$fontFileDir}{$finalFont}";
 	}
 }
