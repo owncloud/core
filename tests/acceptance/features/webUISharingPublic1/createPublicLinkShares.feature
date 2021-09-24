@@ -326,7 +326,6 @@ Feature: Share by public link
     When the user browses to the files page
     Then the public link quick action button should not be displayed for folder "simple-folder" on the webUI
 
-
   @skipOnOcV10.8.0
   Scenario: no new public quick link is created for a resource with already a public quick link
     Given the administrator has "enabled" public link quick action
@@ -334,19 +333,16 @@ Feature: Share by public link
     And user "Alice" has uploaded file with content "test" to "/simple-folder/lorem.txt"
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
-    And the user has created a read only public link for folder "simple-folder"
+    And the user has created a read only public link for folder "simple-folder" using the webUI
     When the user creates a read only public link for folder "simple-folder" using the quick action button
-    And the number of public links should be 1
+    Then the number of public links should be 1
 
   @skipOnOcV10.8.0
   Scenario: no new public quick link is created for a resource with already a public quick link (after a login)
     Given the administrator has "enabled" public link quick action
     And user "Alice" has created folder "/simple-folder"
-    And user "Alice" has uploaded file with content "test" to "/simple-folder/lorem.txt"
+    And user "Alice" has created a read only public link for folder "simple-folder"
     And user "Alice" has logged in using the webUI
-    And the user has browsed to the files page
-    And the user has created a read only public link for folder "simple-folder"
-    When the user re-logs in as "Alice" using the webUI
     And the user browses to the files page
     When the user creates a read only public link for folder "simple-folder" using the quick action button
-    And the number of public links should be 1
+    Then the number of public links should be 1

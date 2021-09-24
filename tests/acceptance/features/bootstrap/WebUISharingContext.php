@@ -753,6 +753,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user creates a read only public link for file/folder :name using the quick action button
+	 * @Given the user has created a read only public link for file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
@@ -760,23 +761,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theUserCreatesAReadOnlyPublicLinkForFolderUsingTheQuickActionButton(string $name):void {
-		$this->createReadOnlyPublicShareLinkUsingQuickAction($name);
-		$this->theUserOpensTheShareDialogForFileFolder($name);
-		$linkTab = $this->sharingDialog->openPublicShareTab($this->getSession());
-		$linkName = $linkTab->getNameOfFirstPublicLink($this->getSession());
-		$linkUrl = $linkTab->getLinkUrl($linkName);
-		$this->featureContext->addToListOfCreatedPublicLinks($linkName, $linkUrl);
-	}
-
-	/**
-	 * @Given the user has created a read only public link for file/folder :name
-	 *
-	 * @param string $name
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theUserHasCreatedAReadOnlyPublicLinkForFolder(string $name):void {
 		$this->createReadOnlyPublicShareLinkUsingQuickAction($name);
 		$this->theUserOpensTheShareDialogForFileFolder($name);
 		$linkTab = $this->sharingDialog->openPublicShareTab($this->getSession());
