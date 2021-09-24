@@ -173,6 +173,7 @@ config = {
                 "apiFederationToShares2",
             ],
             "federatedServerNeeded": True,
+            "federatedDb": "mariadb:10.5",
             "federatedServerVersions": ["git", "latest", "10.7.0"],
         },
         "cli": {
@@ -196,6 +197,7 @@ config = {
                 "cliExternalStorage",
             ],
             "federatedServerNeeded": True,
+            "federatedDb": "mariadb:10.5",
             "federatedServerVersions": ["git", "latest", "10.7.0"],
         },
         "webUI": {
@@ -259,6 +261,7 @@ config = {
                 "webUISharingExternal2": "webUISharingExt2",
             },
             "federatedServerNeeded": True,
+            "federatedDb": "mariadb:10.5",
             "federatedServerVersions": ["git", "latest", "10.7.0"],
         },
         "webUIFirefox": {
