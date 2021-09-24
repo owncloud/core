@@ -59,7 +59,7 @@ Feature: accept/decline shares coming from internal users
       | path                   |
       | <pending_share_path_1> |
       | <pending_share_path_2> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2540
     Examples:
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
@@ -87,7 +87,7 @@ Feature: accept/decline shares coming from internal users
       | path                   |
       | <pending_share_path_1> |
       | <pending_share_path_2> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2540
     Examples:
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
@@ -221,7 +221,7 @@ Feature: accept/decline shares coming from internal users
       | path                    |
       | <declined_share_path_1> |
       | <declined_share_path_2> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2540
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
@@ -252,7 +252,7 @@ Feature: accept/decline shares coming from internal users
       | path                    |
       | <declined_share_path_1> |
       | <declined_share_path_2> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2540
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
@@ -295,7 +295,7 @@ Feature: accept/decline shares coming from internal users
       | path                  |
       | /Shares/PARENT/       |
       | /Shares/textfile0.txt |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2540
     Examples:
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
@@ -321,7 +321,7 @@ Feature: accept/decline shares coming from internal users
     And the OCS status code should be "100"
     And the HTTP status code should be "200"
     And user "Carol" should see the following elements
-      | /Shares/shared/Brian/       |
+      | /Shares/shared/Brian/     |
       | /Shares/shared (2)/Alice/ |
     And the sharing API should report to user "Carol" that these shares are in the accepted state
       | path                |
@@ -336,7 +336,7 @@ Feature: accept/decline shares coming from internal users
       | path                 |
       | <pending_share_path> |
     And the sharing API should report that no shares are shared with user "Alice"
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2540
     Examples:
       | pending_share_path |
       | /Shares/PARENT/    |
@@ -564,7 +564,7 @@ Feature: accept/decline shares coming from internal users
     And the sharing API should report to user "Brian" that these shares are in the declined state
       | path                  |
       | <declined_share_path> |
-    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+    @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2540
     Examples:
       | ocs_api_version | ocs_status_code | declined_share_path |
       | 1               | 100             | /Shares/PARENT      |
@@ -704,4 +704,3 @@ Feature: accept/decline shares coming from internal users
       | /Shares/parent.txt     |
     And the content of file "/Shares/PARENT (2)/parent.txt" for user "Carol" should be "subfile, from brian to grp1"
     And the content of file "/Shares/PARENT (2).txt" for user "Carol" should be "from brian to grp1"
-    
