@@ -68,7 +68,7 @@ class Collation implements IRepairStep {
 			$output->info("Change collation for $table ...");
 			if ($characterSet === 'utf8mb4') {
 				// need to set row compression first
-				$query = $this->connection->prepare('ALTER TABLE `' . $table . '` ROW_FORMAT=COMPRESSED;');
+				$query = $this->connection->prepare('ALTER TABLE `' . $table .'`;');
 				$query->execute();
 			}
 			$query = $this->connection->prepare('ALTER TABLE `' . $table . '` CONVERT TO CHARACTER SET ' . $characterSet . ' COLLATE ' . $characterSet . '_bin;');
