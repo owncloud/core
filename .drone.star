@@ -1546,7 +1546,7 @@ def acceptance(ctx):
                                 if federatedDbName not in ["mariadb", "mysql"]:
                                     # Do not try to run 2 sets of Oracle, Postgres etc databases
                                     # When testing with these, let the federated server use mariadb
-                                    federatedDb = "mariadb:10.6"
+                                    federatedDb = "mariadb:10.5"
 
                                 if isWebUI or isAPI or isCLI:
                                     browserString = "" if browser == "" else "-" + browser
