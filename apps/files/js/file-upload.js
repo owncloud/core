@@ -213,6 +213,15 @@ OC.FileUpload.prototype = {
 		var data = this.data;
 		var file = this.getFile();
 
+		/**
+		 * isDirectory indicates an empty directory, so we just check if it
+		 * already exists and create one if not.
+		 * Afterward, we exit the function, since no data needs to be uploaded.
+		 */
+		if(file.isDirectory){
+			return this.uploader.ensureFolderExists(OC.joinPaths(this._targetFolder, file.fullPath));
+		}
+
 		// it was a folder upload, so make sure the parent directory exists already
 		var folderPromise;
 		if (file.relativePath) {

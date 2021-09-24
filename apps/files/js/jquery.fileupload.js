@@ -1079,7 +1079,14 @@
             } else {
                 paramNameSet = paramName;
             }
-            data.originalFiles = files;
+
+            data.originalFiles = [];
+            $.each(files, function (file){
+                if(!file.isDirectory){
+                    data.originalFiles.push(file);
+                }
+            });
+
             $.each(fileSet || files, function (index, element) {
                 var newData = $.extend({}, data);
                 newData.files = fileSet ? element : [element];
@@ -1150,7 +1157,12 @@
                         entries,
                         path + entry.name + '/'
                     ).done(function (files) {
-                        dfd.resolve(files);
+                        // Create a record for an empty folder
+                        if(!files.length && entry.isDirectory){
+                            dfd.resolve(entry);
+                        }else{
+                            dfd.resolve(files);
+                        }
                     }).fail(errorHandler);
                 },
                 readEntries = function () {
