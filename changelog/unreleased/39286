@@ -1,0 +1,10 @@
+Enhancement: Add support for MariaDB 10.6
+
+With this change support for MariaDB 10.6 has been added.
+If it is a fresh ownCloud installation, MariaDB 10.6 can be used right away.
+For upgrading from an older version the command 'occ db:restore-default-row-format'
+has been introduced to remove the deprecated row_format 'compressed' from the
+ownCloud database tables and set it to the default value.
+
+https://github.com/owncloud/core/pull/39286
+https://github.com/owncloud/core/issues/39283
