@@ -1,0 +1,4 @@
+Bugfix: Fix malformed error message while accepting a share is not possible
+
+https://github.com/owncloud/core/pull/39287
+https://github.com/owncloud/core/issues/36181
