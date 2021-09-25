@@ -40,6 +40,7 @@ Summary
 * Bugfix - Allow user:list and group:list to filter on short strings: [#39258](https://github.com/owncloud/core/pull/39258)
 * Bugfix - Fix doc placeholder URL in "general"-settings: [#39267](https://github.com/owncloud/core/pull/39267)
 * Bugfix - Setting 0 as user display name: [#39272](https://github.com/owncloud/core/pull/39272)
+* Bugfix - Fix malformed error message while accepting a share is not possible: [#39287](https://github.com/owncloud/core/pull/39287)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -335,6 +336,11 @@ Details
 
    https://github.com/owncloud/core/issues/30657
    https://github.com/owncloud/core/pull/39272
+
+* Bugfix - Fix malformed error message while accepting a share is not possible: [#39287](https://github.com/owncloud/core/pull/39287)
+
+   https://github.com/owncloud/core/issues/36181
+   https://github.com/owncloud/core/pull/39287
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
