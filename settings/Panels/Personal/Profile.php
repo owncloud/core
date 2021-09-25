@@ -101,6 +101,7 @@ class Profile implements ISettings {
 		$tmpl->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
 		$tmpl->assign('avatarChangeSupported', $this->userSession->getUser()->canChangeAvatar());
 		$tmpl->assign('displayNameChangeSupported', $this->userSession->getUser()->canChangeDisplayName());
+		$tmpl->assign('mailAddressChangeSupported', $this->userSession->getUser()->canChangeMailAddress());
 		$tmpl->assign('passwordChangeSupported', $this->userSession->getUser()->canChangePassword());
 		$groups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
 		\sort($groups);

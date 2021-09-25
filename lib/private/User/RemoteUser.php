@@ -144,6 +144,13 @@ class RemoteUser implements IUser {
 	/**
 	 * @inheritdoc
 	 */
+	public function canChangeMailAddress() {
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function isEnabled() {
 		return true;
 	}

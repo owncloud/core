@@ -59,9 +59,9 @@ if ($_['displayNameChangeSupported']) {
 ?>
 
 <?php
-if ($_['displayNameChangeSupported']) {
+if ($_['mailAddressChangeSupported']) {
 	?>
-<form id="lostpassword" class="section" autocapitalize="none">
+<form id="emailform" class="section" autocapitalize="none">
 	<h2>
 		<label for="email"><?php p($l->t('Email')); ?></label>
 	</h2>
@@ -79,7 +79,7 @@ if ($_['displayNameChangeSupported']) {
 <?php
 } else {
 		?>
-<div id="lostpassword" class="section">
+<div id="emailform" class="section">
 	<h2><?php echo $l->t('Email'); ?></h2>
 	<span><?php if (isset($_['email'][0])) {
 			p($_['email']);
