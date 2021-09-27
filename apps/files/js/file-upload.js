@@ -214,11 +214,10 @@ OC.FileUpload.prototype = {
 		var file = this.getFile();
 
 		/**
-		 * isDirectory indicates an empty directory, so we just check if it
-		 * already exists and create one if not.
-		 * Afterward, we exit the function, since no data needs to be uploaded.
+		 * If the variable file is a directory, we just create it and return.
+		 * Files being handled separately
 		 */
-		if(file.isDirectory){
+		if (file.isDirectory){
 			return this.uploader.ensureFolderExists(OC.joinPaths(this._targetFolder, file.fullPath));
 		}
 
