@@ -41,6 +41,7 @@ Summary
 * Bugfix - Fix doc placeholder URL in "general"-settings: [#39267](https://github.com/owncloud/core/pull/39267)
 * Bugfix - Setting 0 as user display name: [#39272](https://github.com/owncloud/core/pull/39272)
 * Bugfix - Fix malformed error message while accepting a share is not possible: [#39287](https://github.com/owncloud/core/pull/39287)
+* Bugfix - Use original UID when setting the share receiver: [#39293](https://github.com/owncloud/core/pull/39293)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -342,6 +343,14 @@ Details
 
    https://github.com/owncloud/core/issues/36181
    https://github.com/owncloud/core/pull/39287
+
+* Bugfix - Use original UID when setting the share receiver: [#39293](https://github.com/owncloud/core/pull/39293)
+
+   This fixes an issue where a share reciever was not set properly when passing the username with an
+   incorrect casing. As usernames are case insensitive in general, this is more consistent now.
+
+   https://github.com/owncloud/core/issues/26273
+   https://github.com/owncloud/core/pull/39293
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
