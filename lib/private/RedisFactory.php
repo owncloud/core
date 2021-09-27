@@ -22,6 +22,8 @@
 
 namespace OC;
 
+use OCP\ILogger;
+
 class RedisFactory {
 	/** @var \Redis | \RedisCluster */
 	private $instance;
@@ -32,13 +34,18 @@ class RedisFactory {
 	/** @var  SystemConfig */
 	private $config;
 
+	/** @var  ILogger */
+	private $logger;
+
 	/**
 	 * RedisFactory constructor.
 	 *
 	 * @param SystemConfig $config
+	 * @param ILogger $logger
 	 */
-	public function __construct(SystemConfig $config) {
+	public function __construct(SystemConfig $config, ILogger $logger) {
 		$this->config = $config;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -122,9 +129,17 @@ class RedisFactory {
 			$this->instance = new \Redis();
 
 			if ($connectionParameters && $isConnectionParametersSupported) {
-				@$this->instance->connect($host, $port, $timeout, null, 0, 0, $connectionParameters);  // @phan-suppress-current-line PhanParamTooManyInternal
+				try {
+					$this->instance->connect($host, $port, $timeout, null, 0, 0, $connectionParameters);  // @phan-suppress-current-line PhanParamTooManyInternal
+				} catch (\Exception $e) {
+					$this->logger->error('Unable to connect to redis', ['exception' => $e]);
+				}
 			} else {
-				@$this->instance->connect($host, $port, $timeout);
+				try {
+					$this->instance->connect($host, $port, $timeout);
+				} catch (\Exception $e) {
+					$this->logger->error('Unable to connect to redis', ['exception' => $e]);
+				}
 			}
 
 			if (isset($config['password']) && $config['password'] !== '') {

@@ -1,0 +1,4 @@
+Bugfix: Keep occ command alive if redis is down or misconfigured
+
+https://github.com/owncloud/core/pull/39294
+https://github.com/owncloud/core/issues/35637

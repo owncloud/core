@@ -476,7 +476,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 		$this->registerService('RedisFactory', function (Server $c) {
 			$systemConfig = $c->getSystemConfig();
-			return new RedisFactory($systemConfig);
+			$logger = $c->getLogger();
+			return new RedisFactory($systemConfig, $logger);
 		});
 		$this->registerService('ActivityManager', function (Server $c) {
 			return new \OC\Activity\Manager(
