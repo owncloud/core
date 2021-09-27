@@ -436,12 +436,17 @@ class Share20OcsController extends OCSController {
 			if ($globalAutoAccept) {
 				$userAutoAccept = $this->config->getUserValue($shareWith, 'files_sharing', 'auto_accept_share', 'yes') === 'yes';
 			}
-			// Valid user is required to share
-			if (!\is_string($shareWith) || !$this->userManager->userExists($shareWith)) {
+
+			// Valid user is required to share. Fetch the user to retrieve
+			// the username later for setSharedWith().
+			$user = $this->userManager->get($shareWith);
+			if (!$user) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new Result(null, 404, $this->l->t('Please specify a valid user'));
 			}
-			$share->setSharedWith($shareWith);
+
+			// Fetch the UID to match exactly with the user (case sensitive).
+			$share->setSharedWith($user->getUID());
 			$share->setPermissions($permissions);
 			if ($userAutoAccept) {
 				$share->setState(Share::STATE_ACCEPTED);

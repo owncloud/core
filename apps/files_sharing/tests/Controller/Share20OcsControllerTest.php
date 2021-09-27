@@ -103,6 +103,8 @@ class Share20OcsControllerTest extends TestCase {
 	private $sharingAllowlist;
 	/** @var IConfig */
 	private $config;
+	/** @var IUser */
+	private $sharee;
 
 	protected function setUp(): void {
 		$this->shareManager = $this->getMockBuilder(IManager::class)
@@ -126,7 +128,8 @@ class Share20OcsControllerTest extends TestCase {
 		$this->userSession = $this->createMock(IUserSession::class);
 		$this->userSession->method('getUser')->willReturn($this->currentUser);
 
-		$this->userManager->method('userExists')->willReturn(true);
+		$this->sharee = $this->createMock(IUser::class);
+		$this->sharee->method('getUID')->willReturn('validUser');
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -773,6 +776,8 @@ class Share20OcsControllerTest extends TestCase {
 			->method('lock')
 			->with(ILockingProvider::LOCK_SHARED);
 
+		$this->userManager->method('get')->willReturn(null);
+
 		$expected = new Result(null, 404, 'Please specify a valid user');
 
 		$result = $this->ocs->createShare();
@@ -869,7 +874,7 @@ class Share20OcsControllerTest extends TestCase {
 				->with('valid-path')
 				->willReturn($path);
 
-		$this->userManager->method('userExists')->with('validUser')->willReturn(true);
+		$this->userManager->method('get')->willReturn($this->sharee);
 
 		$path->expects($this->once())
 			->method('lock')
@@ -1637,7 +1642,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with('valid-path')
 			->willReturn($path);
 
-		$this->userManager->method('userExists')->with('validUser')->willReturn(true);
+		$this->userManager->method('get')->willReturn($this->sharee);
 
 		$this->shareManager
 			->expects($this->once())
@@ -3719,7 +3724,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with('valid-path')
 			->willReturn($path);
 
-		$this->userManager->method('userExists')->with('validUser')->willReturn(true);
+		$this->userManager->method('get')->willReturn($this->sharee);
 
 		$path->expects($this->once())
 			->method('lock')
@@ -3829,7 +3834,7 @@ class Share20OcsControllerTest extends TestCase {
 			->with('valid-path')
 			->willReturn($path);
 
-		$this->userManager->method('userExists')->with('validUser')->willReturn(true);
+		$this->userManager->method('get')->willReturn($this->sharee);
 
 		$path->expects($this->once())
 			->method('lock')
