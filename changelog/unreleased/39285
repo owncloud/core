@@ -1,0 +1,12 @@
+Enhancement: Allow empty folder uploads via webUI
+
+Before this change, drag and drop of an empty folder did not work, there was no
+response in the webUI.
+While uploading a folder with a text file and an empty folder,
+the folder with the text file was created but the empty folder wasn't.
+
+These empty folder upload scenarios work now.
+
+https://github.com/owncloud/core/pull/39285
+https://github.com/owncloud/core/issues/32235
+https://github.com/owncloud/enterprise/issues/3117

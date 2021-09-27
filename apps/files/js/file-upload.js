@@ -213,6 +213,14 @@ OC.FileUpload.prototype = {
 		var data = this.data;
 		var file = this.getFile();
 
+		/**
+		 * If the variable file is a directory, we just create it and return.
+		 * Files being handled separately
+		 */
+		if (file.isDirectory){
+			return this.uploader.ensureFolderExists(OC.joinPaths(this._targetFolder, file.fullPath));
+		}
+
 		// it was a folder upload, so make sure the parent directory exists already
 		var folderPromise;
 		if (file.relativePath) {
