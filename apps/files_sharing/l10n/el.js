@@ -21,6 +21,7 @@ OC.L10N.register(
     "An error occurred while updating share state: {message}" : "Παρουσιάστηκε σφάλμα κατά την ενημέρωση της κατάστασης του κοινόχρηστου: {message}",
     "Accept Share" : "Αποδοχή κοινόχρηστου φακέλου",
     "Decline Share" : "Απόρριψη κοινόχρηστου φακέλου",
+    "Federated share" : "Κοινόχρηστο Federated",
     "Cancel" : "Aκύρωση",
     "You can upload into this folder" : "Μπορείτε να μεταφορτώσετε σε αυτόν τον φάκελο",
     "Add" : "Προσθήκη",
