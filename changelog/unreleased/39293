@@ -1,0 +1,8 @@
+Bugfix: Use original UID when setting the share receiver
+
+This fixes an issue where a share reciever was not set properly
+when passing the username with an incorrect casing. As usernames
+are case insensitive in general, this is more consistent now.
+
+https://github.com/owncloud/core/pull/39293
+https://github.com/owncloud/core/issues/26273

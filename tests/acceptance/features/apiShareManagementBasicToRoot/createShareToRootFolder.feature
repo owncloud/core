@@ -325,7 +325,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @issue-35484
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: share with user when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -335,16 +335,14 @@ Feature: sharing
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "BRIAN" should include
-      | share_with  | %username%        |
+      | share_with  | brian             |
       | file_target | /randomfile.txt   |
       | path        | /randomfile.txt   |
       | permissions | share,read,update |
       | uid_owner   | %username%        |
-    #And user "brian" should see the following elements
-    #  | /randomfile.txt |
-    #And the content of file "randomfile.txt" for user "brian" should be "Random data"
-    And user "brian" should not see the following elements if the upper and lower case username are different
-      | /randomfile.txt |
+    And user "brian" should see the following elements
+     | /randomfile.txt |
+    And the content of file "randomfile.txt" for user "brian" should be "Random data"
 
   @skipOnLDAP
   Scenario: creating a new share with user of a group when username contains capital letters
