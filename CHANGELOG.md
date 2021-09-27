@@ -70,6 +70,7 @@ Summary
 * Enhancement - Hide restore text in deleted files list on mobile device: [#39236](https://github.com/owncloud/core/pull/39236)
 * Enhancement - Redesign group list in the user settings view: [#39262](https://github.com/owncloud/core/pull/39262)
 * Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
+* Enhancement - Allow empty folder uploads via webUI: [#39285](https://github.com/owncloud/core/pull/39285)
 
 Details
 -------
@@ -598,6 +599,18 @@ Details
 
    https://github.com/owncloud/core/issues/16229
    https://github.com/owncloud/core/pull/39271
+
+* Enhancement - Allow empty folder uploads via webUI: [#39285](https://github.com/owncloud/core/pull/39285)
+
+   Before this change, drag and drop of an empty folder did not work, there was no response in the
+   webUI. While uploading a folder with a text file and an empty folder, the folder with the text
+   file was created but the empty folder wasn't.
+
+   These empty folder upload scenarios work now.
+
+   https://github.com/owncloud/core/issues/32235
+   https://github.com/owncloud/enterprise/issues/3117
+   https://github.com/owncloud/core/pull/39285
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
