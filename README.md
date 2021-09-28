@@ -28,6 +28,8 @@ https://owncloud.com/contribute/
 ## Support
 Learn about the different ways you can get support for ownCloud: https://owncloud.com/support/
 
+Trigger CI
+
 ## Get in touch
 * :clipboard: [Forum](https://central.owncloud.com)
 * :hash: [IRC channel](https://web.libera.chat/?channels=#owncloud)
