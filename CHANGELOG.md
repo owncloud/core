@@ -74,6 +74,7 @@ Summary
 * Enhancement - Redesign group list in the user settings view: [#39262](https://github.com/owncloud/core/pull/39262)
 * Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
 * Enhancement - Allow empty folder uploads via webUI: [#39285](https://github.com/owncloud/core/pull/39285)
+* Enhancement - Change user casing log level to "debug": [#39299](https://github.com/owncloud/core/pull/39299)
 
 Details
 -------
@@ -637,6 +638,11 @@ Details
    https://github.com/owncloud/core/issues/32235
    https://github.com/owncloud/enterprise/issues/3117
    https://github.com/owncloud/core/pull/39285
+
+* Enhancement - Change user casing log level to "debug": [#39299](https://github.com/owncloud/core/pull/39299)
+
+   https://github.com/owncloud/core/issues/36139
+   https://github.com/owncloud/core/pull/39299
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
