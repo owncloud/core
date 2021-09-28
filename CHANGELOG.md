@@ -43,6 +43,7 @@ Summary
 * Bugfix - Fix malformed error message while accepting a share is not possible: [#39287](https://github.com/owncloud/core/pull/39287)
 * Bugfix - Don't show empty brackets in lock owner information if mail not set: [#39292](https://github.com/owncloud/core/pull/39292)
 * Bugfix - Use original UID when setting the share receiver: [#39293](https://github.com/owncloud/core/pull/39293)
+* Bugfix - Versions for files named "0": [#39300](https://github.com/owncloud/core/pull/39300)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -357,6 +358,13 @@ Details
 
    https://github.com/owncloud/core/issues/26273
    https://github.com/owncloud/core/pull/39293
+
+* Bugfix - Versions for files named "0": [#39300](https://github.com/owncloud/core/pull/39300)
+
+   This fixes an issue where files named "0" were missing their versions in the WebUI.
+
+   https://github.com/owncloud/core/issues/36000
+   https://github.com/owncloud/core/pull/39300
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
