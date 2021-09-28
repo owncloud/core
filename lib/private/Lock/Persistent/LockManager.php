@@ -78,8 +78,9 @@ class LockManager {
 			$user = $this->userSession->getUser();
 			if ($user !== null) {
 				$owner = $user->getDisplayName();
-				if ($user->getEMailAddress() !== null) {
-					$owner .= " ({$user->getEMailAddress()})";
+				$userEmail = $user->getEMailAddress();
+				if ($userEmail !== null && $userEmail !== '') {
+					$owner .= " ({$userEmail})";
 				}
 			}
 		}

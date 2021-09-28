@@ -48,6 +48,8 @@ class LockManagerTest extends TestCase {
 	private $timeFactory;
 	/** @var IConfig */
 	private $config;
+	/** @var IUser | \PHPUnit\Framework\MockObject\MockObject */
+	private $user;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -58,13 +60,12 @@ class LockManagerTest extends TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->manager = new LockManager($this->lockMapper, $this->userSession, $this->timeFactory, $this->config);
 
-		$user = $this->createMock(IUser::class);
-		$user->method('getDisplayName')->willReturn('Alice');
-		$user->method('getEmailAddress')->willReturn('alice@example.net');
-		$user->method('getAccountId')->willReturn(999);
+		$this->user = $this->createMock(IUser::class);
+		$this->user->method('getDisplayName')->willReturn('Alice');
+		$this->user->method('getAccountId')->willReturn(999);
 
 		$this->userSession->method('isLoggedIn')->willReturn(true);
-		$this->userSession->method('getUser')->willReturn($user);
+		$this->userSession->method('getUser')->willReturn($this->user);
 
 		$this->timeFactory->method('getTime')->willReturn(123456);
 	}
@@ -118,6 +119,41 @@ class LockManagerTest extends TestCase {
 				$this->assertNull($lock->getPath());
 				$this->assertEquals(0, $lock->getDepth());
 				$this->assertEquals(ILock::LOCK_SCOPE_EXCLUSIVE, $lock->getScope());
+				$this->assertEquals('Alice', $lock->getOwner());
+				$this->assertEquals(999, $lock->getOwnerAccountId());
+				$this->assertEquals(123456, $lock->getCreatedAt());
+			});
+
+		$lock = $this->manager->lock(6, '/foo/bar', 123, [
+			'token' => 'qwertzuiopü',
+			'scope' => ILock::LOCK_SCOPE_EXCLUSIVE
+		]);
+
+		$this->assertNotNull($lock);
+		$this->assertEquals('Alice', $lock->getOwner());
+	}
+
+	public function testLockInsertWithEmail() {
+		$this->user->method('getEmailAddress')->willReturn('alice@example.net');
+
+		$this->config->method('getAppValue')
+			->willReturnMap([
+				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_DEFAULT],
+				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, LockManager::LOCK_TIMEOUT_MAX],
+			]);
+
+		$this->lockMapper->method('getLocksByPath')->willReturn([]);
+		$this->lockMapper->expects($this->once())
+			->method('insert')
+			->willReturnCallback(function (Lock $lock) {
+				$this->assertEquals(30 * 60, $lock->getTimeout());
+				$this->assertEquals('qwertzuiopü', $lock->getToken());
+				$this->assertEquals(\md5('qwertzuiopü'), $lock->getTokenHash());
+				$this->assertEquals(123, $lock->getFileId());
+				// path is not set on insert - only set on query
+				$this->assertNull($lock->getPath());
+				$this->assertEquals(0, $lock->getDepth());
+				$this->assertEquals(ILock::LOCK_SCOPE_EXCLUSIVE, $lock->getScope());
 				$this->assertEquals('Alice (alice@example.net)', $lock->getOwner());
 				$this->assertEquals(999, $lock->getOwnerAccountId());
 				$this->assertEquals(123456, $lock->getCreatedAt());
@@ -130,6 +166,41 @@ class LockManagerTest extends TestCase {
 
 		$this->assertNotNull($lock);
 		$this->assertEquals('Alice (alice@example.net)', $lock->getOwner());
+	}
+
+	public function testLockInsertWithEmailIsEmptyString() {
+		$this->user->method('getEmailAddress')->willReturn('');
+
+		$this->config->method('getAppValue')
+			->willReturnMap([
+				['core', 'lock_timeout_default', LockManager::LOCK_TIMEOUT_DEFAULT, LockManager::LOCK_TIMEOUT_DEFAULT],
+				['core', 'lock_timeout_max', LockManager::LOCK_TIMEOUT_MAX, LockManager::LOCK_TIMEOUT_MAX],
+			]);
+
+		$this->lockMapper->method('getLocksByPath')->willReturn([]);
+		$this->lockMapper->expects($this->once())
+			->method('insert')
+			->willReturnCallback(function (Lock $lock) {
+				$this->assertEquals(30 * 60, $lock->getTimeout());
+				$this->assertEquals('qwertzuiopü', $lock->getToken());
+				$this->assertEquals(\md5('qwertzuiopü'), $lock->getTokenHash());
+				$this->assertEquals(123, $lock->getFileId());
+				// path is not set on insert - only set on query
+				$this->assertNull($lock->getPath());
+				$this->assertEquals(0, $lock->getDepth());
+				$this->assertEquals(ILock::LOCK_SCOPE_EXCLUSIVE, $lock->getScope());
+				$this->assertEquals('Alice', $lock->getOwner());
+				$this->assertEquals(999, $lock->getOwnerAccountId());
+				$this->assertEquals(123456, $lock->getCreatedAt());
+			});
+
+		$lock = $this->manager->lock(6, '/foo/bar', 123, [
+			'token' => 'qwertzuiopü',
+			'scope' => ILock::LOCK_SCOPE_EXCLUSIVE
+		]);
+
+		$this->assertNotNull($lock);
+		$this->assertEquals('Alice', $lock->getOwner());
 	}
 
 	public function testLockUpdate() {

@@ -1,0 +1,4 @@
+Bugfix: Don't show empty brackets in lock owner information if mail not set
+
+https://github.com/owncloud/core/pull/39292
+https://github.com/owncloud/core/issues/37878
