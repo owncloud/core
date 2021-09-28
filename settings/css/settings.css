@@ -615,6 +615,10 @@ table.grid td.date {
 	width: 40px;
 }
 
+#mail_to_address {
+	width: 197px;
+}
+
 .cronlog {
 	margin-left: 10px;
 }

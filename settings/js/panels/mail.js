@@ -1,5 +1,26 @@
-$(document).ready(function() {
+var MailTestUtil;
 
+(function () {
+	MailTestUtil = {
+		sendTestMail: function (mailToAddress) {
+		if (mailToAddress === '') {
+			OC.Notification.showTemporary('Please provide an test receiver email');
+			return;
+		}
+
+		OC.msg.startAction('#sendtestmail_msg', t('settings', 'Sending...'));
+		$.post(OC.generateUrl('/settings/admin/mailtest'),
+			{
+				'mail_to_address': mailToAddress
+			},
+			function (data) {
+				OC.msg.finishedAction('#sendtestmail_msg', data);
+			});
+	}
+	};
+})();
+
+$(document).ready(function() {
 	$('#mail_smtpauth').change(function () {
 		if (!this.checked) {
 			$('#mail_credentials').addClass('hidden');
@@ -44,10 +65,8 @@ $(document).ready(function() {
 
 	$('#sendtestmail').click(function (event) {
 		event.preventDefault();
-		OC.msg.startAction('#sendtestmail_msg', t('settings', 'Sending...'));
-		$.post(OC.generateUrl('/settings/admin/mailtest'), '', function (data) {
-			OC.msg.finishedAction('#sendtestmail_msg', data);
-		});
+		var mailToAddress = $("#mail_to_address").val().trim();
+		MailTestUtil.sendTestMail(mailToAddress);
 	});
 
 });
