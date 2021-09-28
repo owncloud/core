@@ -42,7 +42,7 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
-  @skipOnOcis-OC-Storage @issue-product-280
+  @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as share receiver uploading a file inside a received shared folder should update etags for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path
@@ -66,7 +66,7 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
-  @skipOnOcis-OC-Storage @issue-product-280
+  @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as sharer uploading a file inside a shared folder should update etags for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path
@@ -90,7 +90,7 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as share receiver overwriting a file inside a received shared folder should update etags for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path
@@ -115,7 +115,7 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as sharer overwriting a file inside a shared folder should update etags for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And using <dav_version> DAV path

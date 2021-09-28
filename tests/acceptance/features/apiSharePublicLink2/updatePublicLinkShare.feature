@@ -320,13 +320,13 @@ Feature: update a public link share
     And the HTTP status code should be "<http_status_code>"
     And uploading a file should not work using the <webdav_api_version> public WebDAV API
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | http_status_code | webdav_api_version |
       | 1               | 200              | old                |
       | 2               | 404              | old                |
 
-    @issue-ocis-reva-11
+    @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | http_status_code | webdav_api_version |
       | 1               | 200              | new                |
@@ -350,13 +350,13 @@ Feature: update a public link share
     And the HTTP status code should be "200"
     And uploading a file should work using the <webdav_api_version> public WebDAV API
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
       | 1               | 100             | old                |
       | 2               | 200             | old                |
 
-    @issue-ocis-reva-11
+    @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
       | 1               | 100             | new                |
@@ -380,13 +380,13 @@ Feature: update a public link share
     And the HTTP status code should be "<http_status_code>"
     And uploading a file should not work using the <webdav_api_version> public WebDAV API
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | http_status_code | webdav_api_version |
       | 1               | 200              | old                |
       | 2               | 404              | old                |
 
-    @issue-ocis-reva-11
+    @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | http_status_code | webdav_api_version |
       | 1               | 200              | new                |
@@ -410,13 +410,13 @@ Feature: update a public link share
     And the HTTP status code should be "200"
     And uploading a file should work using the <webdav_api_version> public WebDAV API
 
-    @notToImplementOnOCIS @issue-ocis-2079
+    @notToImplementOnOCIS @issue-ocis-2079 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
       | 1               | 100             | old                |
       | 2               | 200             | old                |
 
-    @issue-ocis-reva-11
+    @issue-ocis-reva-11 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | webdav_api_version |
       | 1               | 100             | new                |

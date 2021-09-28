@@ -1,4 +1,4 @@
-@api @notToImplementOnOCIS
+@api @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: checksums
 
   Background:

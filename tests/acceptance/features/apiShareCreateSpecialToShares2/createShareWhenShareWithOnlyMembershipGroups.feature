@@ -6,6 +6,7 @@ Feature: cannot share resources outside the group when share with membership gro
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and without skeleton files
 
+
   Scenario Outline: sharer should not be able to share a folder to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -26,6 +27,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: sharer should be able to share a folder to a user who is not member of sharer group when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -46,6 +48,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: sharer should be able to share a folder to a group which he/she is member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -67,6 +70,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
+
   Scenario Outline: sharer should not be able to share a file to a group which he/she is not member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -87,6 +91,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | 1               | 403             | 200              |
       | 2               | 403             | 403              |
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: sharer should be able to share a file to a group which he/she is member of when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
@@ -108,6 +113,7 @@ Feature: cannot share resources outside the group when share with membership gro
       | 1               | 100             | 200              |
       | 2               | 200             | 200              |
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: sharer should be able to share a file to a user who is not a member of sharer group when share with only member group is enabled
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"

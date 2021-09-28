@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1328 @issue-ocis-1250
+@api @files_sharing-app-required @issue-ocis-1328 @issue-ocis-1250 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: a default expiration date can be specified for shares with users or groups
 
   Background:

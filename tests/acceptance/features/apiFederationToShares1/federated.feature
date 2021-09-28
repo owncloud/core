@@ -66,6 +66,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
+
   Scenario Outline: Federated sharee can see the pending share
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
@@ -89,6 +90,7 @@ Feature: federated
       | ocs-api-version | ocs-status |
       | 1               | 100        |
       | 2               | 200        |
+
 
   Scenario Outline: Federated sharee requests information of only one share
     Given using server "REMOTE"
@@ -142,6 +144,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
+
   Scenario Outline: sending a GET request to a pending federated share is not valid
     Given using OCS API version "<ocs-api-version>"
     When user "Brian" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/pending/12"
@@ -152,6 +155,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
+
   Scenario Outline: sending a GET request to a nonexistent federated share
     Given using OCS API version "<ocs-api-version>"
     When user "Brian" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/9999999999"
@@ -161,6 +165,7 @@ Feature: federated
       | ocs-api-version | ocs-status | http-status |
       | 1               | 404        | 200         |
       | 2               | 404        | 404         |
+
 
   Scenario Outline: accept a pending federated share
     Given using server "REMOTE"
@@ -174,6 +179,7 @@ Feature: federated
       | ocs-api-version | ocs-status |
       | 1               | 100        |
       | 2               | 200        |
+
 
   Scenario Outline: Reshare a federated shared file
     Given using server "REMOTE"
@@ -210,6 +216,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
+
   Scenario Outline: Overwrite a federated shared file as recipient - local server shares - remote server receives
     Given user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Brian" from server "LOCAL" has shared "/textfile0.txt" with user "Alice" from server "REMOTE"
@@ -223,6 +230,7 @@ Feature: federated
       | ocs-api-version | ocs-status |
       | 1               | 100        |
       | 2               | 200        |
+
 
   Scenario Outline: Overwrite a federated shared file as recipient - remote server shares - local server receives
     Given using server "REMOTE"
@@ -239,6 +247,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
+
   Scenario Outline: Overwrite a file in a federated shared folder as recipient - local server shares - remote server receives
     Given user "Brian" has created folder "PARENT"
     And user "Brian" from server "LOCAL" has shared "/PARENT" with user "Alice" from server "REMOTE"
@@ -252,6 +261,7 @@ Feature: federated
       | ocs-api-version | ocs-status |
       | 1               | 100        |
       | 2               | 200        |
+
 
   Scenario Outline: Overwrite a file in a federated shared folder as recipient - remote server shares - local server receives
     Given using server "REMOTE"
@@ -267,6 +277,7 @@ Feature: federated
       | ocs-api-version | ocs-status |
       | 1               | 100        |
       | 2               | 200        |
+
 
   Scenario Outline: Overwrite a federated shared file as recipient using old chunking
     Given using server "REMOTE"
@@ -288,6 +299,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
+
   Scenario Outline: Overwrite a file in a federated shared folder as recipient using old chunking
     Given using server "REMOTE"
     And user "Alice" has created folder "PARENT"
@@ -307,6 +319,7 @@ Feature: federated
       | ocs-api-version | ocs-status |
       | 1               | 100        |
       | 2               | 200        |
+
 
   Scenario Outline: Federated sharee deletes an accepted federated share
     Given using server "REMOTE"
@@ -362,6 +375,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: Federated sharee deletes a pending federated share
     Given using server "REMOTE"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
@@ -412,6 +426,7 @@ Feature: federated
       | 1               |
       | 2               |
 
+
   Scenario Outline: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
     Given using server "LOCAL"
     And using OCS API version "<ocs-api-version>"
@@ -456,6 +471,7 @@ Feature: federated
     When user "Brian" uploads file "filesForUpload/textfile.txt" to filenames based on "/Shares/PARENT/testquota.txt" with all mechanisms using the WebDAV API
     Then the HTTP status code of all upload responses should be "507"
 
+
   Scenario Outline: share of a folder to a federated user who already has a folder with the same name
     Given using server "REMOTE"
     And user "Alice" has created folder "/zzzfolder"
@@ -484,6 +500,7 @@ Feature: federated
       | ocs-api-version | ocs-status |
       | 1               | 100        |
       | 2               | 200        |
+
 
   Scenario Outline: share of a file to the federated user who already has a file with the same name
     Given using server "REMOTE"
@@ -515,7 +532,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @issue-35154
+  @issue-35154 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: receive a local share that has the same name as a previously received federated share
     Given using server "REMOTE"
     And user "Alice" has created folder "/zzzfolder"
@@ -540,6 +557,7 @@ Feature: federated
     And the content of file "/Shares/randomfile.txt" for user "Carol" on server "LOCAL" should be "remote content"
     And the content of file "/Shares/randomfile (2).txt" for user "Carol" on server "LOCAL" should be "local content"
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: receive a federated share that has the same name as a previously received local share
     Given using server "REMOTE"
     And user "Alice" has created folder "/zzzfolder"

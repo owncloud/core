@@ -9,7 +9,7 @@ Feature: share access by ID
       | Alice    |
       | Brian    |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: Get a share with a valid share ID
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt"
@@ -124,7 +124,7 @@ Feature: share access by ID
       | 1               | 100             | /Shares/textfile0.txt |
       | 2               | 200             | /Shares/textfile0.txt |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | declined_share_path |
       | 1               | 100             | /textfile0.txt      |

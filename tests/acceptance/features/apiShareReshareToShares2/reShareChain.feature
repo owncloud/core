@@ -30,7 +30,7 @@ Feature: resharing can be done on a reshared resource
       | /textfile0_shared.txt |
       | /textfile0_shared.txt |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | pending_share_path |
       | /textfile0.txt     |

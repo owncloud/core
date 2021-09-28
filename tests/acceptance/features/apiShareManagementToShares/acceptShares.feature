@@ -97,7 +97,7 @@ Feature: accept/decline shares coming from internal users
       | pending_share_path_1 | pending_share_path_2 |
       | /PARENT/             | /textfile0.txt       |
 
-  @smokeTest @issue-ocis-2131
+  @smokeTest @issue-ocis-2131 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: accept a pending share
     Given user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
@@ -139,7 +139,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT        |
       | /Shares/textfile0.txt |
 
-  @notToImplementOnOCIS
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: accept a pending share when there is a default folder for received shares
     Given the administrator has set the default folder for received shares to "<share_folder>"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
@@ -189,6 +189,7 @@ Feature: accept/decline shares coming from internal users
       | ReceivedShares      | /ReceivedShares     | PARENT               | textfile0.txt          |
       | /My/Received/Shares | /My/Received/Shares | PARENT               | textfile0.txt          |
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: accept an accepted share
     Given user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "/shared" with user "Brian"
@@ -226,11 +227,10 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT/              | /textfile0.txt        |
-
 
   @smokeTest @issue-ocis-2128
   Scenario Outline: decline an accepted share
@@ -257,7 +257,7 @@ Feature: accept/decline shares coming from internal users
       | declined_share_path_1 | declined_share_path_2 |
       | /Shares/PARENT/       | /Shares/textfile0.txt |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | declined_share_path_1 | declined_share_path_2 |
       | /PARENT/              | /textfile0.txt        |
@@ -269,6 +269,7 @@ Feature: accept/decline shares coming from internal users
     When user "Alice" deletes folder "/PARENT" using the WebDAV API
     And user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the sharing API should report that no shares are shared with user "Brian"
+
 
   Scenario Outline: only one user in a group accepts a share
     Given user "Alice" has shared folder "/PARENT" with group "grp1"
@@ -300,13 +301,13 @@ Feature: accept/decline shares coming from internal users
       | pending_share_path_1 | pending_share_path_2  |
       | /Shares/PARENT/      | /Shares/textfile0.txt |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | pending_share_path_1 | pending_share_path_2 |
       | /PARENT/             | /textfile0.txt       |
 
 
-  @issue-ocis-2131
+  @issue-ocis-2131 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: receive two shares with identical names from different users, accept one by one
     Given user "Alice" has created folder "/shared"
     And user "Alice" has created folder "/shared/Alice"
@@ -327,6 +328,7 @@ Feature: accept/decline shares coming from internal users
       | path                |
       | /Shares/shared/     |
       | /Shares/shared (2)/ |
+
 
   Scenario Outline: share with a group that you are part of yourself
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -370,7 +372,7 @@ Feature: accept/decline shares coming from internal users
       | accepted_share_path |
       | /testfile (2).txt   |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | accepted_share_path |
       | /testfile.txt       |
@@ -404,7 +406,7 @@ Feature: accept/decline shares coming from internal users
       | accepted_share_path_1 | accepted_share_path_2 |
       | /PARENT (2)           | /PARENT (2) (2)       |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | accepted_share_path_1 | accepted_share_path_2 |
       | /PARENT               | /PARENT               |
@@ -432,6 +434,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT/abc.txt" for user "Brian" should be "uploaded content"
     And the content of file "/Shares/FOLDER/abc.txt" for user "Brian" should be "uploaded content"
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: user shares folder in a group with matching folder-name for every users involved
     Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
@@ -470,6 +473,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT/abc.txt" for user "Carol" should be "uploaded content"
     And the content of file "/Shares/FOLDER/abc.txt" for user "Carol" should be "uploaded content"
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: user shares files in a group with matching file-names for every users involved in sharing
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
     And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "textfile1.txt"
@@ -494,6 +498,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/textfile0.txt |
       | /Shares/textfile1.txt |
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: user shares resource with matching resource-name with another user when auto accept is disabled
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
     And user "Alice" shares file "/textfile0.txt" with user "Brian" using the sharing API
@@ -513,6 +518,7 @@ Feature: accept/decline shares coming from internal users
       | /Shares/PARENT/       |
       | /Shares/textfile0.txt |
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: user shares file in a group with matching filename when auto accept is disabled
     Given user "Carol" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     When user "Alice" shares file "/textfile0.txt" with group "grp1" using the sharing API
@@ -535,7 +541,7 @@ Feature: accept/decline shares coming from internal users
       | /textfile0.txt        |
       | /Shares/textfile0.txt |
 
-  @skipOnLDAP
+  @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: user shares folder with matching folder name a user before that user has logged in
     Given these users have been created with small skeleton files but not initialized:
       | username |
@@ -570,14 +576,14 @@ Feature: accept/decline shares coming from internal users
       | 1               | 100             | /Shares/PARENT      |
       | 2               | 200             | /Shares/PARENT      |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | declined_share_path |
       | 1               | 100             | /PARENT             |
       | 2               | 200             | /PARENT             |
 
 
-  @issue-ocis-765
+  @issue-ocis-765 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: shares exist after restoring already shared file to a previous version
     And user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
     And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"
@@ -587,7 +593,7 @@ Feature: accept/decline shares coming from internal users
     Then the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
     And the content of file "/Shares/toShareFile.txt" for user "Brian" should be "Test Content."
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: a user receives multiple group shares for matching file and folder name
     Given group "grp2" has been created
     And user "Alice" has been added to group "grp2"
@@ -648,7 +654,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT (2).txt" for user "Brian" should be "from carol to grp1"
     And the content of file "/Shares/parent.txt" for user "Brian" should be "from carol to grp1"
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: a group receives multiple shares from non-member for matching file and folder name
     Given user "Brian" has been removed from group "grp1"
     And user "Alice" has created folder "/PaRent"

@@ -118,7 +118,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as share receiver renaming a file inside a folder changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -146,7 +146,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as sharer renaming a file inside a folder changes its etag for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -174,7 +174,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-  @skipOnOcis-OC-Storage @issue-product-280
+  @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as sharer moving a file from one folder to an other changes the etags of both folders for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -209,7 +209,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as share receiver moving a file from one folder to an other changes the etags of both folders for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -244,7 +244,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-  @skipOnOcis-OC-Storage @issue-product-280
+  @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as sharer moving a folder from one folder to an other changes the etags of both folders for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"
@@ -279,7 +279,7 @@ Feature: propagation of etags when moving files or folders
       | old         |
       | new         |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as share receiver moving a folder from one folder to an other changes the etags of both folders for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "Shares"

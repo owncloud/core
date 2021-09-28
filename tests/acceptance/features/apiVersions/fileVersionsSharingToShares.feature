@@ -1,4 +1,4 @@
-@api @files_versions-app-required @issue-ocis-reva-275
+@api @files_versions-app-required @issue-ocis-reva-275 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 
 Feature: dav-versions
 

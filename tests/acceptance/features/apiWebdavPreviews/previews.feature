@@ -76,7 +76,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixels wide and "32" pixels high
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: download previews of shared files (to shares folder)
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -183,7 +183,7 @@ Feature: previews of files downloaded through the webdav API
     When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
     Then as user "Alice" the preview of "/parent.txt" with width "32" and height "32" should have been changed
 
-  @notToImplementOnOCIS
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: when owner updates a shared file, previews for sharee are also updated
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
@@ -192,7 +192,7 @@ Feature: previews of files downloaded through the webdav API
     When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
     Then as user "Brian" the preview of "/parent.txt" with width "32" and height "32" should have been changed
 
-  @issue-ocis-2538
+  @issue-ocis-2538 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: when owner updates a shared file, previews for sharee are also updated (to shared folder)
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled

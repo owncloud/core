@@ -1,4 +1,4 @@
-@api @issue-ocis-reva-172 @files_sharing-app-required
+@api @issue-ocis-reva-172 @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: UNLOCK locked items (sharing)
 
   Background:
@@ -30,7 +30,7 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis  
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /PARENT/parent.txt |
@@ -99,7 +99,7 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis  
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /PARENT/parent.txt |
@@ -126,7 +126,7 @@ Feature: UNLOCK locked items (sharing)
       | new      | shared     | /parent.txt        |
       | new      | exclusive  | /parent.txt        |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis  
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
     Examples:
       | dav-path | lock-scope | pending_share_path |
       | old      | shared     | /PARENT/parent.txt |
