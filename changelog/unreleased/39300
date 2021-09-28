@@ -1,0 +1,7 @@
+Bugfix: Versions for files named "0"
+
+This fixes an issue where files named "0" were missing their
+versions in the WebUI.
+
+https://github.com/owncloud/core/pull/39300
+https://github.com/owncloud/core/issues/36000

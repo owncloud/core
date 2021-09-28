@@ -564,37 +564,52 @@ class VersioningTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Copied));
 	}
 
+	public function getVersionsProvider() {
+		return [
+			['/test.txt'],
+			['/subfolder/test.txt'],
+			['/subfolder/0'],
+			['/0'],
+		];
+	}
+
 	/**
 	 * test if we find all versions and if the versions array contain
 	 * the correct 'path' and 'name'
+	 *
+	 * @dataProvider getVersionsProvider
+	 * @param string $filepath
 	 */
-	public function testGetVersions() {
+	public function testGetVersions($filepath) {
 		$t1 = \time();
 		// second version is two weeks older, this way we make sure that no
 		// version will be expired
 		$t2 = $t1 - 60 * 60 * 24 * 14;
 
-		// create some versions
-		$v1 = $this->versionsRootOfUser1 . '/subfolder/test.txt.v' . $t1;
-		$v2 = $this->versionsRootOfUser1 . '/subfolder/test.txt.v' . $t2;
+		$fileName = \basename($filepath);
+		$parent = \dirname($filepath);
 
-		$this->rootView->mkdir($this->versionsRootOfUser1 . '/subfolder/');
+		// create some versions
+		$v1 = $this->versionsRootOfUser1 . $filepath . '.v' . $t1;
+		$v2 = $this->versionsRootOfUser1 . $filepath . '.v' . $t2;
+
+		$this->rootView->mkdir($this->versionsRootOfUser1 . $parent);
 
 		$this->rootView->file_put_contents($v1, 'version1');
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		// execute copy hook of versions app
-		$versions = \OCA\Files_Versions\Storage::getVersions($this->user1, '/subfolder/test.txt');
+		$versions = \OCA\Files_Versions\Storage::getVersions($this->user1, $filepath);
 
 		$this->assertCount(2, $versions);
 
 		foreach ($versions as $version) {
-			$this->assertSame('/subfolder/test.txt', $version['path']);
-			$this->assertSame('test.txt', $version['name']);
+			$this->assertSame($filepath, $version['path']);
+			$this->assertSame($fileName, $version['name']);
 		}
 
 		//cleanup
-		$this->rootView->deleteAll($this->versionsRootOfUser1 . '/subfolder');
+		$this->rootView->deleteAll($this->versionsRootOfUser1 . $parent);
 	}
 
 	/**

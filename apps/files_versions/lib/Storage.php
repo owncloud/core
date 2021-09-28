@@ -416,7 +416,7 @@ class Storage {
 	 */
 	public static function getVersions($uid, $filename) {
 		$versions = [];
-		if (empty($filename)) {
+		if ($filename === null || $filename === '') {
 			return $versions;
 		}
 		// fetch for old versions
