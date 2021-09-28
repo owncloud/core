@@ -2913,7 +2913,7 @@ trait Sharing {
 			$shareIds,
 			__METHOD__ . " could not find share $share, offered by $offeredBy to $user"
 		);
-		foreach($shareIds as $shareId) {
+		foreach ($shareIds as $shareId) {
 			$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
 				"/shares/pending/$shareId";
 			if (\substr($action, 0, 7) === "decline") {
