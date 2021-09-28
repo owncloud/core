@@ -220,7 +220,7 @@ Feature: quota
     Then the HTTP status code should be "201"
     And as "Alice" folder "testQuota" should exist
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: user cannot create file on shared folder by a user with zero quota
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -235,7 +235,7 @@ Feature: quota
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
     And as "Brian" file "/shareFolder/newTextFile.txt" should not exist
 
-  @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: share receiver with 0 quota should not be able to move file from shared folder to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -249,7 +249,7 @@ Feature: quota
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: sharer should be able to upload to a folder shared with user having zero quota
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
@@ -265,7 +265,7 @@ Feature: quota
     And the content of file "/testquota.txt" for user "Alice" should be "test"
     And as "Brian" file "/Shares/testquota" should not exist
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: share receiver with 0 quota should be able to upload on shared folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled

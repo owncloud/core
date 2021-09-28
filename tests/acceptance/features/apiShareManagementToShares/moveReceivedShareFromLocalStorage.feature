@@ -27,7 +27,7 @@ Feature: local-storage
       | 1               | /filetoshare.txt   |
       | 2               | /filetoshare.txt   |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | pending_share_path             |
       | 1               | /local_storage/filetoshare.txt |
@@ -51,7 +51,7 @@ Feature: local-storage
       | 1               | /foo               |
       | 2               | /foo               |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | pending_share_path |
       | 1               | /local_storage/foo |
@@ -84,7 +84,7 @@ Feature: local-storage
       | 1               | /foo               |
       | 2               | /foo               |
 
-    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+    @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | pending_share_path |
       | 1               | /local_storage/foo |
@@ -112,7 +112,7 @@ Feature: local-storage
       | 1               | /filetoshare.txt   |
       | 2               | /filetoshare.txt   |
 
-   @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis
+   @skipOnAllVersionsGreaterThanOcV10.8.0 @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | pending_share_path             |
       | 1               | /local_storage/filetoshare.txt |

@@ -1,4 +1,4 @@
-@api @files_versions-app-required @issue-36228 @notToImplementOnOCIS
+@api @files_versions-app-required @issue-36228 @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 
 Feature: dav-versions
 

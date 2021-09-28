@@ -62,6 +62,7 @@ Feature: accept/decline shares coming from internal users
       | change      |
       | all         |
 
+
   Scenario Outline: share a file & folder with another internal user when auto accept is enabled and there is a default folder for received shares
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
     And the administrator has set the default folder for received shares to "<share_folder>"
@@ -87,6 +88,7 @@ Feature: accept/decline shares coming from internal users
       | /ReceivedShares     | /ReceivedShares     | PARENT               | textfile0.txt          |
       | ReceivedShares      | /ReceivedShares     | PARENT               | textfile0.txt          |
       | /My/Received/Shares | /My/Received/Shares | PARENT               | textfile0.txt          |
+
 
   Scenario Outline: share a file & folder with internal group with different permissions when auto accept is enabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
@@ -403,6 +405,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT/       |
       | /textfile0.txt |
 
+
   Scenario: share a file & folder with another internal user when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "Alice" shares folder "/PARENT" with user "Brian" using the sharing API
@@ -463,6 +466,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: accept a pending share when there is a default folder for received shares
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And the administrator has set the default folder for received shares to "<share_folder>"
@@ -510,6 +514,7 @@ Feature: accept/decline shares coming from internal users
       | /ReceivedShares     | /ReceivedShares     | PARENT               | textfile0.txt          |
       | ReceivedShares      | /ReceivedShares     | PARENT               | textfile0.txt          |
       | /My/Received/Shares | /My/Received/Shares | PARENT               | textfile0.txt          |
+
 
   Scenario: accept an accepted share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -585,6 +590,7 @@ Feature: accept/decline shares coming from internal users
     And user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the sharing API should report that no shares are shared with user "Brian"
 
+
   Scenario: only one user in a group accepts a share
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has shared folder "/PARENT" with group "grp1"
@@ -610,6 +616,7 @@ Feature: accept/decline shares coming from internal users
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
 
+
   Scenario: receive two shares with identical names from different users, accept one by one
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     And user "Alice" has created folder "/shared"
@@ -630,6 +637,7 @@ Feature: accept/decline shares coming from internal users
       | /shared/     |
       | /shared (2)/ |
 
+
   Scenario: share with a group that you are part of yourself
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
     When user "Alice" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -639,6 +647,7 @@ Feature: accept/decline shares coming from internal users
       | path     |
       | /PARENT/ |
     And the sharing API should report that no shares are shared with user "Alice"
+
 
   Scenario Outline: user accepts file that was initially accepted from another user and then declined
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -721,6 +730,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/PARENT (2)/abc.txt" for user "Brian" should be "uploaded content"
     And the content of file "/FOLDER (2)/abc.txt" for user "Brian" should be "uploaded content"
 
+
   Scenario: user shares folder in a group with matching folder-name for every users involved
     Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
@@ -753,6 +763,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/PARENT (2)/abc.txt" for user "Carol" should be "uploaded content"
     And the content of file "/FOLDER (2)/abc.txt" for user "Carol" should be "uploaded content"
 
+
   Scenario: user shares files in a group with matching file-names for every users involved in sharing
     Given user "Alice" has uploaded file with content "ownCloud text file 1" to "/textfile1.txt"
     And user "Brian" has uploaded file with content "ownCloud text file 1" to "/textfile1.txt"
@@ -771,6 +782,7 @@ Feature: accept/decline shares coming from internal users
       | /textfile1.txt       |
       | /textfile0 (2).txt |
       | /textfile1 (2).txt |
+
 
   Scenario: user shares resource with matching resource-name with another user when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -791,6 +803,7 @@ Feature: accept/decline shares coming from internal users
       | /textfile0.txt       |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
+
 
   Scenario: user shares file in a group with matching filename when auto accept is disabled
     Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -982,4 +995,3 @@ Feature: accept/decline shares coming from internal users
       | /PaRent/     |
       | /PaRent (2)/ |
     And the content of file "/PaRent (2)/message.txt" for user "Carol" should be "from alice"
-    

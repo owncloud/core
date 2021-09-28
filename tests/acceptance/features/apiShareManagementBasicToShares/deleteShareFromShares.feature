@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1328 @issue-ocis-1289
+@api @files_sharing-app-required @issue-ocis-1328 @issue-ocis-1289 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: sharing
 
   Background:

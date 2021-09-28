@@ -627,7 +627,7 @@ Feature: federated
       | 1               | 200              |
       | 2               | 404              |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: User modifies expiration date for federated reshare of a file with another server with default expiration date
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files
@@ -650,7 +650,7 @@ Feature: federated
       | 1               | 100        |
       | 2               | 200        |
 
-  @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5.0
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: User modifies expiration date more than the default for federated reshare of a file
     Given using OCS API version "<ocs_api_version>"
     And user "Carol" has been created with default attributes and without skeleton files

@@ -8,7 +8,7 @@ Feature: admin general settings
     Given the administrator has changed their own email address to "admin@owncloud.com"
     And the administrator has browsed to the admin general settings page
 
-  @smokeTest
+  @smokeTest @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: administrator sets email server settings
     When the administrator sets the following email server settings using the webUI
       | setting                 | value          |
