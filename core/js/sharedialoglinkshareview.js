@@ -366,7 +366,7 @@
 				})
 			}
 
-			if (this.model.get('encryptedPassword')) {
+			if (this.model.get('encryptedPassword') && !this.linkPasswordRequired()) {
 				buttons.push({
 					classes: 'removePassword',
 					text: t('core', 'Remove password'),
@@ -391,6 +391,24 @@
 				self.$dialog.html(self.$el);
 				self.$el.find('input:first').focus();
 			});
+		},
+
+		linkPasswordRequired: function() {
+			if (this.model.get('permissions') === OC.PERMISSION_CREATE) {
+				return oc_appconfig.core.enforceLinkPasswordWriteOnly;
+			}
+
+			if (this.model.get('permissions') === OC.PERMISSION_READ) {
+				return oc_appconfig.core.enforceLinkPasswordReadOnly;
+			}
+
+			if (this.model.get('permissions') === (OC.PERMISSION_READ | OC.PERMISSION_CREATE)) {
+				return oc_appconfig.core.enforceLinkPasswordReadWrite;
+			}
+
+			if (this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE)) {
+				return oc_appconfig.core.enforceLinkPasswordReadWriteDelete;
+			}
 		}
 
 });
