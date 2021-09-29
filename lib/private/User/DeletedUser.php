@@ -178,6 +178,10 @@ class DeletedUser implements IUser {
 		return false;
 	}
 
+	public function canChangeMailAddress() {
+		return false;
+	}
+
 	public function isEnabled() {
 		return false;
 	}

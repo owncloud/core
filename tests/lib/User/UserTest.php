@@ -268,6 +268,13 @@ class UserTest extends TestCase {
 		];
 	}
 
+	public function providesChangeMailAddress() {
+		return [
+			[true, true],
+			[false, false]
+		];
+	}
+
 	public function providesAdminOrSubAdmin() {
 		return [
 			[false, false, false, false],
@@ -362,6 +369,35 @@ class UserTest extends TestCase {
 		}
 
 		$this->assertEquals($expected, $user->setDisplayName('Foo'));
+	}
+
+	/**
+	 * @dataProvider providesChangeMailAddress
+	 */
+	public function testCanChangeMailAddress($configValue, $expected) {
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with('allow_user_to_change_mail_address')
+			->willReturn($configValue);
+
+		$account = $this->getMockBuilder(Account::class)
+			->getMock();
+
+		$user = new User(
+			$account,
+			$this->accountMapper,
+			null,
+			$this->config,
+			null,
+			null,
+			null,
+			$this->sessionUser
+		);
+
+		$this->sessionUser->method('getUser')
+			->willReturn($user);
+
+		$this->assertEquals($expected, $user->canChangeMailAddress());
 	}
 
 	public function provideNullorFalseData() {

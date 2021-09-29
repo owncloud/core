@@ -61,7 +61,7 @@ class ProfileTest extends \Test\TestCase {
 	public function testGetPanel() {
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->once())->method('getEMailAddress')->will($this->returnValue('test@example.com'));
-		$this->userSession->expects($this->exactly(7))->method('getUser')->will($this->returnValue($user));
+		$this->userSession->expects($this->exactly(8))->method('getUser')->will($this->returnValue($user));
 		$this->groupManager->expects($this->once())->method('getUserGroupIds')->will($this->returnValue(['group1', 'group2']));
 		$this->lfactory->expects($this->once())->method('findLanguage')->will($this->returnValue('en'));
 		$this->config->expects($this->once())->method('getUserValue')->will($this->returnValue(''));

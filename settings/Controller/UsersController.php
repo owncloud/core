@@ -929,7 +929,7 @@ class UsersController extends Controller {
 
 		// this is the only permission a backend provides and is also used
 		// for the permission of setting a email address
-		if (!$user->canChangeDisplayName()) {
+		if (!$user->canChangeMailAddress()) {
 			return new DataResponse(
 				[
 					'status' => 'error',
@@ -1062,7 +1062,7 @@ class UsersController extends Controller {
 			return new DataResponse([
 				'status' => 'error',
 				'data' => [
-					'message' => $this->l10n->t('Authentication error'),
+					'message' => $this->l10n->t('Unable to change display name'),
 				],
 			]);
 		}

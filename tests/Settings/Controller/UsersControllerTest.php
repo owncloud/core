@@ -1960,7 +1960,7 @@ class UsersControllerTest extends \Test\TestCase {
 
 		$iUser = $this->createMock(IUser::class);
 		$iUser->expects($this->once())
-			->method('canChangeDisplayName')
+			->method('canChangeMailAddress')
 			->willReturn(true);
 		$userManager->method('get')->willReturn($iUser);
 		$iUser->method('getUID')->willReturn($id);
@@ -2011,10 +2011,10 @@ class UsersControllerTest extends \Test\TestCase {
 	 * @param string $mailAddress
 	 * @param bool $isValid
 	 * @param bool $expectsUpdate
-	 * @param bool $canChangeDisplayName
+	 * @param bool $chanChangeMailAddress
 	 * @param bool $responseCode
 	 */
-	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $canChangeDisplayName, $responseCode) {
+	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $chanChangeMailAddress, $responseCode) {
 		$this->container['IsAdmin'] = true;
 
 		$user = $this->getMockBuilder('\OC\User\User')
@@ -2029,8 +2029,8 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('foo@local'));
 		$user
 			->expects($this->any())
-			->method('canChangeDisplayName')
-			->will($this->returnValue($canChangeDisplayName));
+			->method('canChangeMailAddress')
+			->will($this->returnValue($chanChangeMailAddress));
 		$user
 			->expects($this->any())
 			->method('setEMailAddress')
@@ -2050,7 +2050,7 @@ class UsersControllerTest extends \Test\TestCase {
 
 		if ($isValid) {
 			$user->expects($this->atLeastOnce())
-				->method('canChangeDisplayName')
+				->method('canChangeMailAddress')
 				->willReturn(true);
 		}
 
@@ -2195,7 +2195,7 @@ class UsersControllerTest extends \Test\TestCase {
 			[
 				'status' => 'error',
 				'data' => [
-					'message' => 'Authentication error',
+					'message' => 'Unable to change display name',
 				],
 			]
 		);
@@ -2292,7 +2292,7 @@ class UsersControllerTest extends \Test\TestCase {
 				[
 					'status' => 'error',
 					'data' => [
-						'message' => 'Authentication error',
+						'message' => 'Unable to change display name',
 					],
 				]
 			);

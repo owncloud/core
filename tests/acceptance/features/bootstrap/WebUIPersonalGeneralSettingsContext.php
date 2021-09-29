@@ -220,6 +220,23 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
+	 * @Then the user should not be able to change the email address using the webUI
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserShouldNotBeAbleToChangeTheEmailAddressUsingTheWebui() {
+		try {
+			$this->personalGeneralSettingsPage->changeEmailAddress(
+				"somebody@example.com",
+				$this->getSession()
+			);
+			Assert::fail("changing the email address was possible, but should not be");
+		} catch (SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException $e) {
+		}
+	}
+
+	/**
 	 * @Then the owncloud version should be displayed on the personal general settings page on the webUI
 	 *
 	 * @return void

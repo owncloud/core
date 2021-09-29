@@ -411,6 +411,26 @@ class User implements IUser {
 	}
 
 	/**
+	 * check if the backend supports changing email addresses
+	 *
+	 * @return bool
+	 */
+	public function canChangeMailAddress() {
+		if ($this->userSession instanceof IUserSession) {
+			$user = $this->userSession->getUser();
+			if (
+				($this->config->getSystemValue('allow_user_to_change_mail_address') === false) &&
+				(($user !== null) && (!$this->groupManager->isAdmin($user->getUID()))) &&
+				(($user !== null) && (!$this->groupManager->getSubAdmin()->isSubAdmin($user)))
+			) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * check if the user is enabled
 	 *
 	 * @return bool

@@ -137,6 +137,10 @@ class DeletedUserTest extends TestCase {
 		$this->assertFalse($this->deletedUser->canChangeDisplayName());
 	}
 
+	public function testCanChangeMailAddress() {
+		$this->assertFalse($this->deletedUser->canChangeMailAddress());
+	}
+
 	public function testIsEnabled() {
 		$this->assertFalse($this->deletedUser->isEnabled());
 	}
