@@ -41,6 +41,7 @@ Summary
 * Bugfix - Fix doc placeholder URL in "general"-settings: [#39267](https://github.com/owncloud/core/pull/39267)
 * Bugfix - Setting 0 as user display name: [#39272](https://github.com/owncloud/core/pull/39272)
 * Bugfix - Fix malformed error message while accepting a share is not possible: [#39287](https://github.com/owncloud/core/pull/39287)
+* Bugfix - Decouple change email from 'allow_user_to_change_display_name' setting: [#39288](https://github.com/owncloud/core/pull/39288)
 * Bugfix - Don't show empty brackets in lock owner information if mail not set: [#39292](https://github.com/owncloud/core/pull/39292)
 * Bugfix - Use original UID when setting the share receiver: [#39293](https://github.com/owncloud/core/pull/39293)
 * Bugfix - Versions for files named "0": [#39300](https://github.com/owncloud/core/pull/39300)
@@ -347,6 +348,19 @@ Details
 
    https://github.com/owncloud/core/issues/36181
    https://github.com/owncloud/core/pull/39287
+
+* Bugfix - Decouple change email from 'allow_user_to_change_display_name' setting: [#39288](https://github.com/owncloud/core/pull/39288)
+
+   Before this change, with setting 'allow_user_to_change_display_name' false, the user was
+   not able to change the mail address in Settings->Personal->General via the webUI.
+
+   With this change, the setting 'allow_user_to_change_mail_address' has been introduced and
+   change mail address has been decoupled from setting `allow_user_to_change_display_name`.
+
+   'allow_user_to_change_mail_address' must be set explicitly to false, to take effect.
+
+   https://github.com/owncloud/core/issues/35103
+   https://github.com/owncloud/core/pull/39288
 
 * Bugfix - Don't show empty brackets in lock owner information if mail not set: [#39292](https://github.com/owncloud/core/pull/39292)
 
