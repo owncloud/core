@@ -5,6 +5,7 @@
     "Please select tags to filter by" : "Παρακαλούμε επιλέξτε ετικέτες προς φιλτράρισμα",
     "No files found for the selected tags" : "Δεν βρέθηκαν αρχεία για τις επιλεγμένες ετικέτες",
     "<strong>System tags</strong> for a file have been modified" : "<strong>Οι ετικέτες συστήματος</strong> για ένα αρχείο έχουν τροποποιηθεί",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "Η ετικέτα συστήματος %3$s έχει ανατεθεί στον %2$s λόγω κανόνα αυτοματισμού",
     "You assigned system tag %3$s" : "Αναθέσατε την ετικέτα συστήματος %3$s",
     "%1$s assigned system tag %3$s" : "%1$s ανατέθηκε η ετικέτα συστήματος %3$s",
     "You unassigned system tag %3$s" : "Αναιρέσατε την ανάθεση ετικέτας συστήματος %3$s",
