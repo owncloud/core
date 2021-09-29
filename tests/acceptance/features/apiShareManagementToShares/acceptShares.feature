@@ -411,7 +411,7 @@ Feature: accept/decline shares coming from internal users
       | accepted_share_path_1 | accepted_share_path_2 |
       | /PARENT               | /PARENT               |
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: user shares folder with matching folder-name for both user involved in sharing
     Given user "Alice" has uploaded file with content "uploaded content" to "/PARENT/abc.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "/FOLDER/abc.txt"
