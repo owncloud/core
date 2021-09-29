@@ -841,11 +841,12 @@ class UsersPage extends OwncloudPage {
 	 * @param string $user
 	 * @param string $group
 	 * @param boolean $add Boolean value to specify whether to add or remove user from the group
+	 * @param boolean $failIfElementNotFound If true then fail if an element(s) is not found. Otherwise just return early.
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function addOrRemoveUserToGroup(Session $session, $user, $group, $add = true) {
+	public function addOrRemoveUserToGroup(Session $session, $user, $group, $add = true, $failIfElementNotFound = true) {
 		$userTr = $this->findUserInTable($user);
 		$groupsField = $userTr->find('xpath', $this->groupsFieldXpath);
 		$userGroupsInput = $groupsField->find("xpath", $this->userGroupsInputXpath);
@@ -856,22 +857,32 @@ class UsersPage extends OwncloudPage {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$groupLabel = $groupsField->find('xpath', \sprintf($this->groupLabelInInputXpath, $group));
 		if ($groupLabel === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->groupLabelInInputXpath " .
-				"could not find groups input for user $user"
-			);
+			if ($failIfElementNotFound) {
+				throw new ElementNotFoundException(
+					__METHOD__ .
+					" xpath $this->groupLabelInInputXpath " .
+					"could not find groups input for user $user"
+				);
+			} else {
+				// The caller just wanted us to try, and not throw an exception.
+				return;
+			}
 		}
 		$groupInput = $groupsField->find(
 			'xpath',
 			\sprintf($this->groupInputXpath, $groupLabel->getAttribute('for'))
 		);
 		if ($groupInput === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->groupInputXpath " .
-				"could not find input for group $group"
-			);
+			if ($failIfElementNotFound) {
+				throw new ElementNotFoundException(
+					__METHOD__ .
+					" xpath $this->groupInputXpath " .
+					"could not find input for group $group"
+				);
+			} else {
+				// The caller just wanted us to try, and not throw an exception.
+				return;
+			}
 		}
 		$status = $groupInput->getValue() === "on";
 		// while adding to group only click if the checkbox is not already selected
@@ -882,12 +893,18 @@ class UsersPage extends OwncloudPage {
 			$this->waitForAjaxCallsToStartAndFinish($session);
 		}
 		$activeDropDown = $this->find('xpath', $this->activeDropDownXpath);
-		$this->assertElementNotNull(
-			$activeDropDown,
-			__METHOD__ .
-			" xpath $this->activeDropDownXpath " .
-			"could not find any active drop down"
-		);
+		if ($activeDropDown === null) {
+			if ($failIfElementNotFound) {
+				throw new ElementNotFoundException(
+					__METHOD__ .
+					" xpath $this->activeDropDownXpath " .
+					"could not find any active drop down"
+				);
+			} else {
+				// The caller just wanted us to try, and not throw an exception.
+				return;
+			}
+		}
 		$activeDropDown->click();
 	}
 
