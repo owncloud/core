@@ -289,6 +289,10 @@ span.usersLastLoginTooltip { white-space: nowrap; }
 	display: inline;
 }
 
+#newuser .groups li.creator {
+	cursor: pointer;
+}
+
 #newuser .groupsListContainer.hidden,
 #userlist .groupsListContainer.hidden {
 	display: none;
