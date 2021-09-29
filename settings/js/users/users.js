@@ -959,13 +959,15 @@ $(document).ready(function () {
 		var username = $('#newusername').val();
 		var password = $('#newuserpassword').val();
 		var email = $('#newemail').val();
+		var setPassword = $('#CheckBoxPasswordOnUserCreate').is(':checked');
+
 		if ($.trim(username) === '') {
 			OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
 				message: t('settings', 'A valid username must be provided')
 			}));
 			return false;
 		}
-		if ($('#CheckBoxPasswordOnUserCreate').is(':checked')) {
+		if (setPassword === true) {
 			if ($.trim(password) === '') {
 				OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
 					message: t('settings', 'A valid password must be provided')
@@ -974,65 +976,70 @@ $(document).ready(function () {
 			}
 		} else {
 			if ($.trim(email) === '') {
-				OC.Notification.showTemporary( t('settings', 'Error creating user: {message}', {
+				OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
 					message: t('settings', 'A valid email must be provided')
 				}));
 				return false;
 			}
 		}
 
-		var promise = $.Deferred().resolve().promise();
+		var groups = $('#newuser .groups').data('groups') || [];
 
-		promise.then(function() {
-			var groups = $('#newuser .groups').data('groups') || [];
-			$.post(
-				OC.generateUrl('/settings/users/users'),
-				{
-					username: username,
-					password: password,
-					groups: groups,
-					email: email
-				},
-				function (result) {
-					if (result.groups) {
-						for (var i in result.groups) {
-							var gid = result.groups[i];
-							if(UserList.availableGroups.indexOf(gid) === -1) {
-								UserList.availableGroups.push(gid);
-							}
-							$li = GroupList.getGroupLI(gid);
-							userCount = GroupList.getUserCount($li);
-							GroupList.setUserCount($li, userCount + 1);
+		var data = {
+			username: username,
+			groups: groups,
+		};
+
+		if (setPassword === true) {
+			data.password = password;
+			data.email = '';
+		} else {
+			data.password = '';
+			data.email = email;
+		}
+
+		$.post(
+			OC.generateUrl('/settings/users/users'),
+			data,
+			function (result) {
+				if (result.groups) {
+					for (var i in result.groups) {
+						var gid = result.groups[i];
+						if (UserList.availableGroups.indexOf(gid) === -1) {
+							UserList.availableGroups.push(gid);
 						}
+						$li = GroupList.getGroupLI(gid);
+						userCount = GroupList.getUserCount($li);
+						GroupList.setUserCount($li, userCount + 1);
 					}
-					if(!UserList.has(username)) {
-						UserList.add(result, true);
-					}
-					$('#newusername').focus();
-					GroupList.incEveryoneCount();
-				}).fail(function(result) {
-					OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
-						message: result.responseJSON.message
-					}, undefined, {escape: false}));
-				}).success(function(){
-					$('#newuser').get(0).reset();
-				});
+				}
+				if (!UserList.has(username)) {
+					UserList.add(result, true);
+				}
+				$('#newusername').focus();
+				GroupList.incEveryoneCount();
+			}).fail(function (result) {
+			OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
+				message: result.responseJSON.message
+			}, undefined, {escape: false}));
+		}).success(function () {
+			$('#newuser').get(0).reset();
 		});
 	});
 
-        if ($('#CheckboxIsEnabled').is(':checked')) {
-                $("#userlist .enabled").show();
-        }
-        // Option to display/hide the "Enabled" column
-        $('#CheckboxIsEnabled').click(function() {
-                if ($('#CheckboxIsEnabled').is(':checked')) {
-                        $("#userlist .enabled").show();
-                        OC.AppConfig.setValue('core', 'umgmt_show_is_enabled', 'true');
-                } else {
-                        $("#userlist .enabled").hide();
-                        OC.AppConfig.setValue('core', 'umgmt_show_is_enabled', 'false');
-                }
-        });
+	if ($('#CheckboxIsEnabled').is(':checked')) {
+		$("#userlist .enabled").show();
+	}
+	// Option to display/hide the "Enabled" column
+	$('#CheckboxIsEnabled').click(function () {
+		if ($('#CheckboxIsEnabled').is(':checked')) {
+			$("#userlist .enabled").show();
+			OC.AppConfig.setValue('core', 'umgmt_show_is_enabled', 'true');
+		} else {
+			$("#userlist .enabled").hide();
+			OC.AppConfig.setValue('core', 'umgmt_show_is_enabled', 'false');
+		}
+	});
 
 
 	if ($('#CheckboxStorageLocation').is(':checked')) {
