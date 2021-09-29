@@ -59,7 +59,7 @@ class IpContext implements Context {
 	/**
 	 * @return string|null
 	 */
-	public function getSourceIpAddress() {
+	public function getSourceIpAddress():?string {
 		return $this->sourceIpAddress;
 	}
 
@@ -69,7 +69,7 @@ class IpContext implements Context {
 	 *
 	 * @return string
 	 */
-	public function getBaseUrlForSourceIp() {
+	public function getBaseUrlForSourceIp():string {
 		// Lazy init so we know that featureContext has been setup
 		// by the time we need it here.
 		if ($this->baseUrlForSourceIp === null) {
@@ -81,7 +81,7 @@ class IpContext implements Context {
 	/**
 	 * @return array
 	 */
-	public function getGuzzleClientHeaders() {
+	public function getGuzzleClientHeaders():array {
 		return $this->guzzleClientHeaders;
 	}
 
@@ -90,7 +90,7 @@ class IpContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setGuzzleClientHeaders($guzzleClientHeaders) {
+	public function setGuzzleClientHeaders(array $guzzleClientHeaders):void {
 		$this->guzzleClientHeaders = $guzzleClientHeaders;
 	}
 
@@ -99,7 +99,7 @@ class IpContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function addGuzzleClientHeaders($guzzleClientHeaders) {
+	public function addGuzzleClientHeaders(array $guzzleClientHeaders):void {
 		$this->guzzleClientHeaders = \array_merge(
 			$this->guzzleClientHeaders,
 			$guzzleClientHeaders
@@ -115,9 +115,9 @@ class IpContext implements Context {
 	 * @return void
 	 */
 	public function theClientAccessesTheServerFromAddress(
-		$networkScope,
-		$ipAddressFamily
-	) {
+		string $networkScope,
+		string $ipAddressFamily
+	):void {
 		$this->theClientAccessesTheServerFromIpAddress(
 			IpHelper::ipAddress($networkScope, $ipAddressFamily)
 		);
@@ -130,7 +130,7 @@ class IpContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theClientAccessesTheServerFromIpAddress($sourceIpAddress) {
+	public function theClientAccessesTheServerFromIpAddress(string $sourceIpAddress):void {
 		$this->sourceIpAddress = $sourceIpAddress;
 
 		if (\filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
@@ -152,8 +152,8 @@ class IpContext implements Context {
 	 * @return void
 	 */
 	public function theClientAccessesTheServerFromIpAddressUsingXForwardedForHeader(
-		$sourceIpAddress
-	) {
+		string $sourceIpAddress
+	):void {
 		$this->addGuzzleClientHeaders(["X-Forwarded-For" => $sourceIpAddress]);
 		$this->featureContext->addGuzzleClientHeaders(["X-Forwarded-For" => $sourceIpAddress]);
 	}
@@ -168,7 +168,7 @@ class IpContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenarioGetIpUrls(BeforeScenarioScope $scope) {
+	public function setUpScenarioGetIpUrls(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

@@ -43,7 +43,7 @@ class FilesVersionsContext implements Context {
 	 *
 	 * @return string
 	 */
-	private function getVersionsPathForFileId(string $fileId) {
+	private function getVersionsPathForFileId(string $fileId):string {
 		return "/meta/$fileId/v";
 	}
 
@@ -57,7 +57,7 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userTriesToGetFileVersions($user, $file, $fileOwner) {
+	public function userTriesToGetFileVersions(string $user, string $file, string $fileOwner):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
 		$fileId = $this->featureContext->getFileIdForPath($fileOwner, $file);
@@ -82,7 +82,7 @@ class FilesVersionsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userGetsFileVersions($user, $file) {
+	public function userGetsFileVersions(string $user, string $file):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $file);
 		$response = $this->featureContext->makeDavRequest(
@@ -106,8 +106,9 @@ class FilesVersionsContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
+	public function userRestoresVersionIndexOfFile(string $user, int $versionIndex, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$responseXml = $this->listVersionFolder($user, $fileId, 1);
@@ -135,12 +136,13 @@ class FilesVersionsContext implements Context {
 	 * @param int $count
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theVersionFolderOfFileShouldContainElements(
-		$path,
-		$user,
-		$count
-	) {
+		string $path,
+		string $user,
+		int $count
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		Assert::assertNotNull($fileId, "file $path not found");
@@ -155,12 +157,13 @@ class FilesVersionsContext implements Context {
 	 * @param int $count
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theVersionFolderOfFileIdShouldContainElements(
-		$fileId,
-		$user,
-		$count
-	) {
+		string $fileId,
+		string $user,
+		int $count
+	):void {
 		$responseXml = $this->listVersionFolder($user, $fileId, 1);
 		$xmlPart = $responseXml->xpath("//d:prop/d:getetag");
 		Assert::assertEquals(
@@ -179,13 +182,14 @@ class FilesVersionsContext implements Context {
 	 * @param int $length
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theContentLengthOfFileForUserInVersionsFolderIs(
-		$path,
-		$index,
-		$user,
-		$length
-	) {
+		string $path,
+		int $index,
+		string $user,
+		int $length
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$responseXml = $this->listVersionFolder(
@@ -211,8 +215,9 @@ class FilesVersionsContext implements Context {
 	 * @param string $index
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function downloadVersion(string $user, string $path, string $index) {
+	public function downloadVersion(string $user, string $path, string $index):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
 		$index = (int)$index;
@@ -246,13 +251,14 @@ class FilesVersionsContext implements Context {
 	 * @param string[]|null $properties
 	 *
 	 * @return SimpleXMLElement
+	 * @throws Exception
 	 */
 	public function listVersionFolder(
 		string $user,
 		string $fileId,
 		int $folderDepth,
-		array $properties = null
-	) {
+		?array $properties = null
+	):SimpleXMLElement {
 		if (!$properties) {
 			$properties = [
 				'getetag'
@@ -270,11 +276,10 @@ class FilesVersionsContext implements Context {
 			$folderDepth,
 			"versions"
 		);
-		$responseXml = HttpRequestHelper::getResponseXml(
+		return HttpRequestHelper::getResponseXml(
 			$response,
 			__METHOD__
 		);
-		return $responseXml;
 	}
 
 	/**
@@ -287,7 +292,7 @@ class FilesVersionsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

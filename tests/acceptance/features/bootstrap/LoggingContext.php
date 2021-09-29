@@ -51,20 +51,20 @@ class LoggingContext implements Context {
 	 * @Then /^the last lines of the log file should contain log-entries (with|containing|matching) these attributes:$/
 	 *
 	 * @param string $comparingMode
-	 * @param string|int $ignoredLines
-	 * @param TableNode $expectedLogEntries table with headings that correspond
-	 *                                      to the json keys in the log entry
-	 *                                      e.g.
-	 *                                      |user|app|method|message|
+	 * @param int $ignoredLines
+	 * @param TableNode|null $expectedLogEntries table with headings that correspond
+	 *                                           to the json keys in the log entry
+	 *                                           e.g.
+	 *                                           |user|app|method|message|
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-		$comparingMode,
-		$ignoredLines = 0,
-		TableNode $expectedLogEntries = null
-	) {
+		string    $comparingMode,
+		int       $ignoredLines = 0,
+		?TableNode $expectedLogEntries = null
+	):void {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we don't interact with the log file on reva or OCIS
 			// So skip processing this test step.
@@ -84,7 +84,7 @@ class LoggingContext implements Context {
 		foreach ($expectedLogEntries as $expectedLogEntry) {
 			$logEntry = \json_decode($logLines[$lineNo], true);
 			if ($logEntry === null) {
-				throw new \Exception("the log line :\n{$logLines[$lineNo]} is not valid JSON");
+				throw new Exception("the log line :\n{$logLines[$lineNo]} is not valid JSON");
 			}
 
 			foreach (\array_keys($expectedLogEntry) as $attribute) {
@@ -152,17 +152,18 @@ class LoggingContext implements Context {
 	 *
 	 * @Then /^the last lines of the log file, ignoring the last (\d+) lines, should contain log-entries (with|containing|matching) these attributes:$/
 	 *
-	 * @param string|int $ignoredLines
+	 * @param int $ignoredLines
 	 * @param string $comparingMode
 	 * @param TableNode $expectedLogEntries
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theLastLinesOfTheLogFileIgnoringSomeShouldContainEntries(
-		$ignoredLines,
-		$comparingMode,
+		int       $ignoredLines,
+		string    $comparingMode,
 		TableNode $expectedLogEntries
-	) {
+	):void {
 		$this->theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
 			$comparingMode,
 			$ignoredLines,
@@ -179,11 +180,12 @@ class LoggingContext implements Context {
 	 * @param TableNode $expectedLogEntries
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theLastLinesOfTheLogFileIgnoringLastShouldContainEntries(
-		$comparingMode,
+		string    $comparingMode,
 		TableNode $expectedLogEntries
-	) {
+	):void {
 		$this->theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
 			$comparingMode,
 			1,
@@ -202,12 +204,12 @@ class LoggingContext implements Context {
 	 *                                      |user|app|method|message|
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
 	 */
 	public function logFileShouldContainEntriesMatching(
 		TableNode $expectedLogEntries
-	) {
+	):void {
 		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
 			true,
 			$expectedLogEntries
@@ -222,12 +224,12 @@ class LoggingContext implements Context {
 	 * @param TableNode $expectedLogEntries
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 * @see assertLogFileContainsAtLeastOneEntryMatchingTable()
 	 */
 	public function logFileShouldContainEntriesMatchingRegularExpression(
 		TableNode $expectedLogEntries
-	) {
+	):void {
 		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
 			true,
 			$expectedLogEntries,
@@ -241,11 +243,11 @@ class LoggingContext implements Context {
 	 * @param TableNode $expectedLogEntries
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function logFileShouldNotContainAnyTheEntriesMatchingTheRegularExpression(
 		TableNode $expectedLogEntries
-	) {
+	):void {
 		$this->assertLogFileContainsAtLeastOneEntryMatchingTable(
 			false,
 			$expectedLogEntries,
@@ -270,13 +272,13 @@ class LoggingContext implements Context {
 	 *                              to be regular expressions
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	private function assertLogFileContainsAtLeastOneEntryMatchingTable(
-		$shouldOrNot,
+		bool      $shouldOrNot,
 		TableNode $expectedLogEntries,
-		$regexCompare = false
-	) {
+		bool $regexCompare
+	):void {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we don't interact with the log file on reva or OCIS
 			// So skip processing this test step.
@@ -292,7 +294,7 @@ class LoggingContext implements Context {
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
 			if ($logEntry === null) {
-				throw new \Exception("the log line :\n{$logLine} is not valid JSON");
+				throw new Exception("the log line :\n{$logLine} is not valid JSON");
 			}
 			//reindex the array, we might have deleted entries
 			$expectedLogEntries = \array_values($expectedLogEntries);
@@ -379,12 +381,12 @@ class LoggingContext implements Context {
 	 *                                                |user|app|method|message|
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
 		$withOrContaining,
 		TableNode $logEntriesExpectedNotToExist
-	) {
+	):void {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we don't interact with the log file on reva or OCIS
 			// So skip processing this test step.
@@ -399,7 +401,7 @@ class LoggingContext implements Context {
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
 			if ($logEntry === null) {
-				throw new \Exception("the log line :\n$logLine is not valid JSON");
+				throw new Exception("the log line :\n$logLine is not valid JSON");
 			}
 			foreach ($logEntriesExpectedNotToExist as $logEntryExpectedNotToExist) {
 				$match = true; // start by assuming the worst, we match the unwanted log entry
@@ -437,9 +439,9 @@ class LoggingContext implements Context {
 	 * @param string $logLevel (debug|info|warning|error|fatal)
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function owncloudLogLevelIsSetTo($logLevel) {
+	public function owncloudLogLevelIsSetTo(string $logLevel):void {
 		LoggingHelper::setLogLevel(
 			$logLevel,
 			$this->featureContext->getStepLineRef()
@@ -452,9 +454,9 @@ class LoggingContext implements Context {
 	 * @param string $logLevel (debug|info|warning|error|fatal)
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function owncloudLogLevelHasBeenSetTo($logLevel) {
+	public function owncloudLogLevelHasBeenSetTo(string $logLevel):void {
 		$this->owncloudLogLevelIsSetTo($logLevel);
 		$logLevelArray = LoggingHelper::LOG_LEVEL_ARRAY;
 		$logLevelExpected = \array_search($logLevel, $logLevelArray);
@@ -477,9 +479,9 @@ class LoggingContext implements Context {
 	 * @param string $backend (owncloud|syslog|errorlog)
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function owncloudLogBackendIsSetTo($backend) {
+	public function owncloudLogBackendIsSetTo(string $backend):void {
 		LoggingHelper::setLogBackend(
 			$backend,
 			$this->featureContext->getStepLineRef()
@@ -492,9 +494,9 @@ class LoggingContext implements Context {
 	 * @param string $expectedBackend (owncloud|syslog|errorlog)
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function owncloudLogBackendHasBeenSetTo($expectedBackend) {
+	public function owncloudLogBackendHasBeenSetTo(string $expectedBackend):void {
 		$this->owncloudLogBackendIsSetTo($expectedBackend);
 		$currentBackend = LoggingHelper::getLogBackend(
 			$this->featureContext->getStepLineRef()
@@ -512,9 +514,9 @@ class LoggingContext implements Context {
 	 * @param string $timezone
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function owncloudLogTimezoneIsSetTo($timezone) {
+	public function owncloudLogTimezoneIsSetTo(string $timezone):void {
 		LoggingHelper::setLogTimezone(
 			$timezone,
 			$this->featureContext->getStepLineRef()
@@ -527,9 +529,9 @@ class LoggingContext implements Context {
 	 * @param string $expectedTimezone
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function owncloudLogTimezoneHasBeenSetTo($expectedTimezone) {
+	public function owncloudLogTimezoneHasBeenSetTo(string $expectedTimezone):void {
 		$this->owncloudLogTimezoneIsSetTo($expectedTimezone);
 		$currentTimezone = LoggingHelper::getLogTimezone(
 			$this->featureContext->getStepLineRef()
@@ -548,9 +550,9 @@ class LoggingContext implements Context {
 	 * checks for the httpRequest is done inside clearLogFile function
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theOwncloudLogIsCleared() {
+	public function theOwncloudLogIsCleared():void {
 		LoggingHelper::clearLogFile(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -565,9 +567,9 @@ class LoggingContext implements Context {
 	 * @AfterScenario
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function tearDownScenarioLogging() {
+	public function tearDownScenarioLogging():void {
 		LoggingHelper::restoreLoggingStatus(
 			$this->oldLogLevel,
 			$this->oldLogBackend,
@@ -583,7 +585,7 @@ class LoggingContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -602,9 +604,9 @@ class LoggingContext implements Context {
 	 * @BeforeScenario
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function setUpScenarioLogging() {
+	public function setUpScenarioLogging():void {
 		$logging = LoggingHelper::getLogInfo(
 			$this->featureContext->getStepLineRef()
 		);
