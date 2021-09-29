@@ -75,6 +75,7 @@ Summary
 * Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
 * Enhancement - Allow empty folder uploads via webUI: [#39285](https://github.com/owncloud/core/pull/39285)
 * Enhancement - Change user casing log level to "debug": [#39299](https://github.com/owncloud/core/pull/39299)
+* Enhancement - Hide the "Remove Password" button on public links: [#39302](https://github.com/owncloud/core/pull/39302)
 
 Details
 -------
@@ -643,6 +644,14 @@ Details
 
    https://github.com/owncloud/core/issues/36139
    https://github.com/owncloud/core/pull/39299
+
+* Enhancement - Hide the "Remove Password" button on public links: [#39302](https://github.com/owncloud/core/pull/39302)
+
+   This change hides the "Remove Password" button when editing a public link if a password in
+   mandatory.
+
+   https://github.com/owncloud/core/issues/35684
+   https://github.com/owncloud/core/pull/39302
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
