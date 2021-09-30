@@ -75,6 +75,7 @@ Summary
 * Enhancement - Redesign group list in the user settings view: [#39262](https://github.com/owncloud/core/pull/39262)
 * Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
 * Enhancement - Allow empty folder uploads via webUI: [#39285](https://github.com/owncloud/core/pull/39285)
+* Enhancement - Add test receiver mail in Email Settings Admin Panel: [#39297](https://github.com/owncloud/core/pull/39297)
 * Enhancement - Change user casing log level to "debug": [#39299](https://github.com/owncloud/core/pull/39299)
 * Enhancement - Hide the "Remove Password" button on public links: [#39302](https://github.com/owncloud/core/pull/39302)
 
@@ -654,6 +655,16 @@ Details
    https://github.com/owncloud/core/issues/32235
    https://github.com/owncloud/enterprise/issues/3117
    https://github.com/owncloud/core/pull/39285
+
+* Enhancement - Add test receiver mail in Email Settings Admin Panel: [#39297](https://github.com/owncloud/core/pull/39297)
+
+   With this change the admin needs to provide a test receiver mail address while sending test
+   mails in the Email Settings Admin Panel. This has the advantage that the admin does not need to go
+   back to user settings and set the own mail address. The user's own email will be set as
+   preselected value if set.
+
+   https://github.com/owncloud/core/issues/33018
+   https://github.com/owncloud/core/pull/39297
 
 * Enhancement - Change user casing log level to "debug": [#39299](https://github.com/owncloud/core/pull/39299)
 
