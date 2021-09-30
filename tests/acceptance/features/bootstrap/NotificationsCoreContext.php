@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
@@ -57,21 +58,21 @@ class NotificationsCoreContext implements Context {
 	/**
 	 * @return array[]
 	 */
-	public function getNotificationIds() {
+	public function getNotificationIds():array {
 		return $this->notificationIds;
 	}
 
 	/**
 	 * @return array[]
 	 */
-	public function getLastNotificationIds() {
+	public function getLastNotificationIds():array {
 		return \end($this->notificationIds);
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getDeletedNotification() {
+	public function getDeletedNotification():int {
 		return $this->deletedNotification;
 	}
 
@@ -80,7 +81,7 @@ class NotificationsCoreContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setDeletedNotification($deletedNotification) {
+	public function setDeletedNotification(int $deletedNotification):void {
 		$this->deletedNotification = $deletedNotification;
 	}
 
@@ -91,7 +92,7 @@ class NotificationsCoreContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function checkNumNotifications($numNotifications) {
+	public function checkNumNotifications(int $numNotifications):void {
 		$notifications = $this->getArrayOfNotificationsResponded(
 			$this->featureContext->getResponse()
 		);
@@ -122,7 +123,7 @@ class NotificationsCoreContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userNumNotifications($user, $numNotifications, $missingLast) {
+	public function userNumNotifications(string $user, int $numNotifications, string $missingLast):void {
 		$user = $this->featureContext->getActualUsername($user);
 
 		$this->ocsContext->userSendsToOcsApiEndpoint(
@@ -170,15 +171,16 @@ class NotificationsCoreContext implements Context {
 	 *
 	 * @param string $notification first|last
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode $formData
+	 * @param TableNode $formData
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function matchNotificationPlain(
-		$notification,
-		$user,
-		$formData
-	) {
+		string $notification,
+		string $user,
+		TableNode $formData
+	):void {
 		$this->matchNotification(
 			$notification,
 			$user,
@@ -194,15 +196,15 @@ class NotificationsCoreContext implements Context {
 	 * @param string $notification first|last
 	 * @param string $user
 	 * @param string $aboutUser
-	 * @param \Behat\Gherkin\Node\TableNode $formData
+	 * @param TableNode $formData
 	 *
 	 * @return void
 	 */
 	public function matchNotificationRegularExpression(
-		$notification,
-		$user,
-		$aboutUser,
-		$formData
+		string $notification,
+		string $user,
+		string $aboutUser,
+		TableNode $formData
 	) {
 		$this->matchNotification(
 			$notification,
@@ -218,17 +220,18 @@ class NotificationsCoreContext implements Context {
 	 * @param string $user
 	 * @param string $aboutUser
 	 * @param bool $regex
-	 * @param \Behat\Gherkin\Node\TableNode $formData
+	 * @param TableNode $formData
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function matchNotification(
-		$notification,
-		$user,
-		$aboutUser,
-		$regex,
-		$formData
-	) {
+		string $notification,
+		string $user,
+		string $aboutUser,
+		bool   $regex,
+		TableNode $formData
+	):void {
 		$lastNotifications = $this->getLastNotificationIds();
 		if ($notification === 'first') {
 			$notificationId = \reset($lastNotifications);
@@ -289,7 +292,7 @@ class NotificationsCoreContext implements Context {
 	 *
 	 * @return array
 	 */
-	public function getArrayOfNotificationsResponded(ResponseInterface $resp) {
+	public function getArrayOfNotificationsResponded(ResponseInterface $resp):array {
 		$jsonResponse = \json_decode($resp->getBody()->getContents(), 1);
 		return $jsonResponse['ocs']['data'];
 	}
@@ -299,6 +302,7 @@ class NotificationsCoreContext implements Context {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function clearNotifications() {
 		$response = OcsApiHelper::sendRequest(
@@ -329,8 +333,9 @@ class NotificationsCoreContext implements Context {
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
