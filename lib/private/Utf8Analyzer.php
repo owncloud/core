@@ -1,6 +1,7 @@
 <?php
 /**
  *
+ * @author Juan Pablo Villafáñez Ramos <jvillafanez@owncloud.com>
  * @copyright Copyright (c) 2021, ownCloud GmbH
  * @license AGPL-3.0
  *
@@ -170,10 +171,9 @@ class Utf8Analyzer {
 	 * pointer position
 	 *
 	 * @param resource $stream the opened stream to be analized
-	 * @param array $processors a map containing the processor name and whether it should be
-	 * activated or not. Known names are "count", "details" and "lines". You can use something
-	 * like ["count" => true, "lines" => true] to activate only the "count" and "lines"
-	 * processor. Processors that aren't listed won't be used and won't appear in the result
+	 * @param array $processors a list containing the processor names to be used.
+	 * Known names are "count", "details" and "lines". Processors that aren't in the list
+	 * won't be used and won't appear in the result
 	 * @param int $maxBytes the maximum number of bytes to read. Some additional bytes might
 	 * be read to fit a complete utf8 character
 	 * @return array a map as described above. Note that a processor that hasn't been activated
@@ -184,59 +184,40 @@ class Utf8Analyzer {
 	public function analyzeStream($stream, array $processors = [], int $maxBytes = PHP_INT_MAX) {
 		$byteCount = 0;
 		$map = [];
-		foreach ($processors as $name => $active) {
-			if ($active) {
-				$map[$name] = [];
-			}
+		$processorActions = [
+			'count' => 'processCountChars',
+			'details' => 'processDetails',
+			'lines' => 'processLines'
+		];
+		foreach ($processors as $name) {
+			$map[$name] = [];
 		}
 
 		while ($byteCount < $maxBytes && !\feof($stream)) {
 			$lowerBytePos = $byteCount;
-			$byte = \fread($stream, 1);
-			if ($byte === '') {
+
+			$mbRead = $this->readMbChar($stream);
+			if ($mbRead === false) {
 				break;
 			}
+			$str = $mbRead[0];
+			$byteCount += $mbRead[1];
 
-			$byteInt = \ord($byte);
-			if ($this->inRange($byteInt, '1b')) {
-				$str = $byte;
-				$byteCount += 1;
-			} elseif ($this->inRange($byteInt, '2b')) {
-				// we need to read another byte
-				$str = $byte . \fread($stream, 1);
-				$byteCount += 2;
-			} elseif ($this->inRange($byteInt, '3b')) {
-				// we need to read 2 more bytes
-				$str = $byte . \fread($stream, 2);
-				$byteCount += 3;
-			} elseif ($this->inRange($byteInt, '4b')) {
-				// we need to read 3 more bytes
-				$str = $byte . \fread($stream, 3);
-				$byteCount += 4;
-			} else {
-				// not in a valid range. Likely something broke. Consider it as an isolated byte
-				$str = $byte;
-				$byteCount += 1;
-			}
 			$upperBytePos = $byteCount - 1;
 
 			$unicodePoint = \mb_ord($str);
 			$index = $this->searchInUnicode($unicodePoint);
 
-			$range = [$lowerBytePos, $upperBytePos];
-			$uniData = [
-				'rangePos' => $index,
-				'uniCodePoint' => $unicodePoint,
+			$params = [
+				'range' => [$lowerBytePos, $upperBytePos],
+				'str' => $str,
+				'unicodeRangePos' => $index,
+				'unicodePoint' => $unicodePoint
 			];
 
-			if (isset($map['count'])) {
-				$this->processCountChars($range, $str, $uniData, $map['count']);
-			}
-			if (isset($map['details'])) {
-				$this->processDetails($range, $str, $uniData, $map['details']);
-			}
-			if (isset($map['lines'])) {
-				$this->processLines($range, $str, $uniData, $map['lines']);
+			foreach ($processors as $processor) {
+				$actionMethod = $processorActions[$processor];
+				$this->$actionMethod($params, $map[$processor]);
 			}
 		}
 		return $map;
@@ -247,10 +228,9 @@ class Utf8Analyzer {
 	 * a string.
 	 * @see analyzeStream
 	 * @param string $data the string to be analyzed. The whole string will be checked
-	 * @param array $processors a map containing the processor name and whether it should be
-	 * activated or not. Known names are "count", "details" and "lines". You can use something
-	 * like ["count" => true, "lines" => true] to activate only the "count" and "lines"
-	 * processor. Processors that aren't listed won't be used and won't appear in the result
+	 * @param array $processors a list containing the processor names to be used.
+	 * Known names are "count", "details" and "lines". Processors that aren't in the list
+	 * won't be used and won't appear in the result
 	 * @return array a map as described above (see analyzeStream).
 	 * */
 	public function analyzeString(string $data, array $processors = []) {
@@ -260,6 +240,40 @@ class Utf8Analyzer {
 		$result = $this->analyzeStream($stream, $processors);
 		\fclose($stream);
 		return $result;
+	}
+
+	/**
+	 * Read a multibyte char from the stream. The stream is assumed to be utf8-encoded
+	 * The function returns an array with the first element being the multibyte char and the
+	 * second element the number of bytes read from the stream. [$str, $bytesRead]
+	 * It will return false if there is no char to be read
+	 */
+	private function readMbChar($stream) {
+		$byte = \fread($stream, 1);
+		if ($byte === '') {
+			return false;
+		}
+
+		$byteInt = \ord($byte);
+		if ($this->inRange($byteInt, '4b')) {
+			// we need to read 3 more bytes
+			$str = $byte . \fread($stream, 3);
+			$byteCount = 4;
+		} elseif ($this->inRange($byteInt, '3b')) {
+			// we need to read 2 more bytes
+			$str = $byte . \fread($stream, 2);
+			$byteCount = 3;
+		} elseif ($this->inRange($byteInt, '2b')) {
+			// we need to read another byte
+			$str = $byte . \fread($stream, 1);
+			$byteCount = 2;
+		} else {
+			// either not in a valid range (something broke) or in "1b" range.
+			// in any case, use 1 byte
+			$str = $byte;
+			$byteCount = 1;
+		}
+		return [$str, $byteCount];
 	}
 
 	/**
@@ -296,20 +310,17 @@ class Utf8Analyzer {
 	/**
 	 * Return a map containing the scripts found and the number of chars per script, such as
 	 * ["Han" => 57, "Katakana" => 6, "Common" => 34]
-	 * @param array $range byte range for the unicode char in the stream.
-	 * [0] -> lower range
-	 * [1] -> upper range
-	 * @param string $str the bytes representing the unicode char, as string
-	 * @param array $uniData additional unicode data:
-	 * - "rangePos" the index inside the unicodeRanges array where the char is placed. Mainly
-	 * in order to avoid multiple searches for the same char
-	 * - "uniCodePoint" the unicode code point of the char, as integer
+	 * @param array $params a map with information about the character to be processed:
+	 * - "range" -> the byte range used by the char, as 2 integers [$lowerRange, $upperRange]
+	 * - "str" -> the string representing the multibyte char
+	 * - "unicodeRangePos" -> the index inside the unicodeRanges array where the char is placed
+	 * - "unicodePoint" -> the unicode code point of the char, as integer
 	 * @param array $data an array to place the result. The same array will be reused in
 	 * multiple calls, until the stream is processed.
 	 */
-	private function processCountChars(array $range, string $str, array $uniData, array &$data) {
-		if ($uniData['rangePos'] !== null) {
-			$mapIndex = $this->unicodeRanges[$uniData['rangePos']]['script'];
+	private function processCountChars(array $params, array &$data) {
+		if ($params['unicodeRangePos'] !== null) {
+			$mapIndex = $this->unicodeRanges[$params['unicodeRangePos']]['script'];
 		} else {
 			$mapIndex = '_unknown';
 		}
@@ -330,18 +341,18 @@ class Utf8Analyzer {
 	 *  .....
 	 * ]
 	 */
-	private function processDetails(array $range, string $str, array $uniData, array &$data) {
-		if ($uniData['rangePos'] !== null) {
-			$mapIndex = $this->unicodeRanges[$uniData['rangePos']]['script'];
+	private function processDetails(array $params, array &$data) {
+		if ($params['unicodeRangePos'] !== null) {
+			$mapIndex = $this->unicodeRanges[$params['unicodeRangePos']]['script'];
 		} else {
 			$mapIndex = '_unknown';
 		}
 
 		$data[] = [
-			'range' => "{$range[0]}-{$range[1]}",
-			'str' => $str,
-			'unicode' => $uniData['uniCodePoint'],
-			'unicodeHex' => \dechex($uniData['uniCodePoint']),
+			'range' => "{$params['range'][0]}-{$params['range'][1]}",
+			'str' => $params['str'],
+			'unicode' => $params['unicodePoint'],
+			'unicodeHex' => \dechex($params['unicodePoint']),
 			'script' => $mapIndex,
 		];
 	}
@@ -361,7 +372,7 @@ class Utf8Analyzer {
 	 *  ]
 	 * ]
 	 */
-	private function processLines(array $range, string $str, array $uniData, array &$data) {
+	private function processLines(array $params, array &$data) {
 		static $lastProcessedChar = null;
 
 		if (!isset($data['linesNumber'])) {
@@ -376,7 +387,7 @@ class Utf8Analyzer {
 			$data['lines'][$lineIndex] = [];
 		}
 
-		switch ($str) {
+		switch ($params['str']) {
 			case "\n":
 				if ($lastProcessedChar !== "\r") {
 					$data['linesNumber']++;
@@ -388,9 +399,9 @@ class Utf8Analyzer {
 				}
 				break;
 			default:
-				$data['lines'][$lineIndex][] = $str;
+				$data['lines'][$lineIndex][] = $params['str'];
 		}
 
-		$lastProcessedChar = $str;
+		$lastProcessedChar = $params['str'];
 	}
 }

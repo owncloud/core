@@ -45,6 +45,9 @@ class TXT implements IProvider2 {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * Note that the thumbnail might show "squared characters" if multiple scripts (Arabic,
+	 * Japanese, etc) are present in the text that will be shown in the preview.
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$stream = $file->fopen('r');
@@ -56,10 +59,7 @@ class TXT implements IProvider2 {
 			return false;
 		}
 
-		$analyzerOpts = [
-			'count' => true,
-			'lines' => true,
-		];
+		$analyzerOpts = ['count', 'lines'];
 		$info = $this->utf8Analyzer->analyzeString($content, $analyzerOpts);
 
 		$fontSizePixels = ($maxX) ? (int) ((4 / 32) * $maxX) : 4;  //4px
@@ -72,6 +72,9 @@ class TXT implements IProvider2 {
 
 		$canUseTTF = \function_exists('imagettftext');
 		if ($canUseTTF) {
+			// FIXME: We'll only use a font based on the characters detected. In case the characters
+			// contain multiple scripts (Arabic, Japanese, etc), not all characters will be shown
+			// in the preview.
 			$fontFile = $this->getFontFile($info);
 		}
 
@@ -95,7 +98,7 @@ class TXT implements IProvider2 {
 				} while ($bboxWidth < $maxX && $nChars < $charsInLine);
 				\imagettftext($image, $fontSizePoints, 0, $x, $y, $textColor, $fontFile, $printLine);
 			} else {
-				$y -= $fontSize;
+				$y -= $fontSizePixels;
 				$printLine = \implode('', \array_slice($line, 0, $nChars));
 				\imagestring($image, 1, $x, $y, $printLine, $textColor);
 			}
