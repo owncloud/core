@@ -111,7 +111,38 @@ OC.FileUpload.prototype = {
 		if (this._newName) {
 			return this._newName;
 		}
-		return this.getFile().name;
+
+		var fileName = this.getFile().name;
+		return this.sanitizeFileName(fileName);
+	},
+
+	/**
+	 * Return the sanitized file name.
+	 *
+	 * @return {String} file name
+	 */
+	sanitizeFileName: function(fileName) {
+		return fileName.trim();
+	},
+
+	/**
+	 * Return the sanitized path.
+	 *
+	 * @return {String} path
+	 */
+	sanitizePath: function(path) {
+		if(!path){
+			return path;
+		}
+
+		var pathSegments = path.split('/');
+		var sanitizedPathSegments = [];
+
+		for (var i = 0; i < pathSegments.length; i++) {
+			sanitizedPathSegments.push(pathSegments[i].trim());
+		}
+
+		return sanitizedPathSegments.join('/');
 	},
 
 	getLastModified: function() {
@@ -140,7 +171,9 @@ OC.FileUpload.prototype = {
 	 * @return {String} full path
 	 */
 	getFullPath: function() {
-		return OC.joinPaths(this._targetFolder, this.getFile().relativePath || '');
+		var relativePath = this.getFile().relativePath;
+		var sanitizedRelativePath =  this.sanitizePath(relativePath);
+		return OC.joinPaths(this._targetFolder, sanitizedRelativePath || '');
 	},
 
 	/**
@@ -186,7 +219,7 @@ OC.FileUpload.prototype = {
 	 * Multiple calls will increment the appended number.
 	 */
 	autoRename: function() {
-		var name = this.getFile().name;
+		var name = this.sanitizeFileName(this.getFile().name);
 		if (!this._renameAttempt) {
 			this._renameAttempt = 1;
 		}
@@ -218,7 +251,7 @@ OC.FileUpload.prototype = {
 		 * Files being handled separately
 		 */
 		if (file.isDirectory){
-			return this.uploader.ensureFolderExists(OC.joinPaths(this._targetFolder, file.fullPath));
+			return this.uploader.ensureFolderExists(OC.joinPaths(this._targetFolder, this.sanitizePath(file.fullPath)));
 		}
 
 		// it was a folder upload, so make sure the parent directory exists already
@@ -824,6 +857,7 @@ OC.Uploader.prototype = _.extend({
 	 * @param {function} callbacks.onCancel
 	 */
 	checkExistingFiles: function (selection, callbacks) {
+		var self = this;
 		var fileList = this.fileList;
 		var conflicts = [];
 		// only keep non-conflicting uploads
@@ -845,7 +879,7 @@ OC.Uploader.prototype = _.extend({
 				return true;
 			}
 
-			var fileInfo = fileList.findFile(file.name);
+			var fileInfo = fileList.findFile(self.sanitizeFileName(file.name));
 			if (fileInfo) {
 				var sharePermission = parseInt($("#sharePermission").val());
 				if (sharePermission === (OC.PERMISSION_READ | OC.PERMISSION_CREATE)) {
@@ -879,6 +913,15 @@ OC.Uploader.prototype = _.extend({
 		// if the folder was concurrently modified, these will get added
 		// to the already visible dialog, if applicable
 		callbacks.onNoConflicts(selection);
+	},
+
+	/**
+	 * Return the sanitized file name.
+	 *
+	 * @return {String} file name
+	 */
+	sanitizeFileName: function(fileName) {
+		return fileName.trim();
 	},
 
 	_hideProgressBar: function() {

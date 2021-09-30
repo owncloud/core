@@ -51,7 +51,7 @@ Feature: rename files
       | from_name                               | to_name                               |
       | "strängé filename (duplicate #2 &).txt" | "strängé filename (duplicate #3).txt" |
       | "'single'quotes.txt"                    | "single-quotes.txt"                   |
-      | "?quot=OC&OC2 #OC%  3   "               | "sin#gle-qu&%%%%otes=.txt "           |
+      | "?quot=OC&OC2 #OC%  3   "               | "sin#gle-qu&%%%%otes=.txt"            |
       | "s,a,m,p,l,e.txt"                       | "sample,1.txt"                        |
 
   @smokeTest @skipOnLDAP
@@ -80,11 +80,11 @@ Feature: rename files
     And user "Alice" has logged in using the webUI
     When the user renames file "randomfile.txt" to " space at start" using the webUI
     And the user reloads the current page of the webUI
-    Then file " space at start" should be listed on the webUI
-    When the user renames file " space at start" to "space at end " using the webUI
+    Then file "space at start" should be listed on the webUI
+    When the user renames file "space at start" to "space at end " using the webUI
     And the user reloads the current page of the webUI
-    Then file "space at end " should be listed on the webUI
-    When the user renames file "space at end " to "space at end .txt" using the webUI
+    Then file "space at end" should be listed on the webUI
+    When the user renames file "space at end" to "space at end .txt" using the webUI
     And the user reloads the current page of the webUI
     Then file "space at end .txt" should be listed on the webUI
     When the user renames file "space at end .txt" to "space at end. lis" using the webUI
@@ -92,10 +92,10 @@ Feature: rename files
     Then file "space at end. lis" should be listed on the webUI
     When the user renames file "space at end. lis" to "space at end.log " using the webUI
     And the user reloads the current page of the webUI
-    Then file "space at end.log " should be listed on the webUI
-    When the user renames file "space at end.log " to "  multiple   space    all     over   .  dat  " using the webUI
+    Then file "space at end.log" should be listed on the webUI
+    When the user renames file "space at end.log" to "  multiple   space    all     over   .  dat  " using the webUI
     And the user reloads the current page of the webUI
-    Then file "  multiple   space    all     over   .  dat  " should be listed on the webUI
+    Then file "multiple   space    all     over   .  dat" should be listed on the webUI
 
   Scenario: Rename a file using both double and single quotes
     Given user "Alice" has uploaded file with content "some content" to "/randomfile.txt"

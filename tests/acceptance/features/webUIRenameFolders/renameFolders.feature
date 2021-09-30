@@ -53,13 +53,13 @@ Feature: rename folders
     And user "Alice" has logged in using the webUI
     When the user renames folder "a-folder" to " space at start" using the webUI
     And the user reloads the current page of the webUI
-    Then folder " space at start" should be listed on the webUI
-    When the user renames folder " space at start" to "space at end " using the webUI
+    Then folder "space at start" should be listed on the webUI
+    When the user renames folder "space at start" to "space at end " using the webUI
     And the user reloads the current page of the webUI
-    Then folder "space at end " should be listed on the webUI
-    When the user renames folder "space at end " to "  multiple   spaces    all     over   " using the webUI
+    Then folder "space at end" should be listed on the webUI
+    When the user renames folder "space at end" to "   multiple   spaces    all     over   " using the webUI
     And the user reloads the current page of the webUI
-    Then folder "  multiple   spaces    all     over   " should be listed on the webUI
+    Then folder "multiple   spaces    all     over" should be listed on the webUI
 
   Scenario: Rename a folder using both double and single quotes
     Given user "Alice" has created folder "a-folder"

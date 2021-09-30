@@ -152,7 +152,7 @@
 
 			var lastPos;
 			var checkInput = function () {
-				var filename = $input.val();
+				var filename = $input.val().trim();
 				try {
 					if (!Files.isFileNameValid(filename)) {
 						// Files.isFileNameValid(filename) throws an exception itself
@@ -205,7 +205,7 @@
 				event.preventDefault();
 
 				if (checkInput()) {
-					var newname = $input.val();
+					var newname = $input.val().trim();
 
 					/* Find the right actionHandler that should be called.
 					 * Actions is retrieved by using `actionSpec.id` */

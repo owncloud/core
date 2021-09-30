@@ -2345,7 +2345,7 @@
 			}
 			input.selectRange(0, len);
 			var checkInput = function () {
-				var filename = input.val();
+				var filename = input.val().trim();
 				if (filename !== oldName) {
 					// Files.isFileNameValid(filename) throws an exception itself
 					OCA.Files.Files.isFileNameValid(filename);
@@ -2378,7 +2378,7 @@
 				}
 
 				try {
-					var newName = input.val();
+					var newName = input.val().trim();
 					input.tooltip('hide');
 					form.remove();
 
