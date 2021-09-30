@@ -123,6 +123,14 @@ if ($_['mail_smtpmode'] == 'qmail') {
 		</form>
 	<?php endif; ?>
 	<br />
+	<form class="mail_settings">
+		<p>
+			<label for="mail_to_address"><?php p($l->t('Test receiver email')); ?></label>
+			<input type="text" name='mail_to_address' id="mail_to_address" placeholder="mail@example.com"
+				   value='<?php p($_['mail_user_email']) ?>' />
+		</p>
+	</form>
+	<br />
 	<em><?php p($l->t('Test email settings')); ?></em>
 	<input type="submit" name="sendtestmail" id="sendtestmail" value="<?php p($l->t('Send email')); ?>"/>
 	<span id="sendtestmail_msg" class="msg"></span>

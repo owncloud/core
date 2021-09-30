@@ -1,0 +1,10 @@
+Enhancement: Add test receiver mail in Email Settings Admin Panel
+
+With this change the admin needs to provide a test receiver mail address while
+sending test mails in the Email Settings Admin Panel.
+This has the advantage that the admin does not need to go back to user settings
+and set the own mail address.
+The user's own email will be set as preselected value if set.
+
+https://github.com/owncloud/core/pull/39297
+https://github.com/owncloud/core/issues/33018

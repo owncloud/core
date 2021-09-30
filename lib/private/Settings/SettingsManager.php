@@ -301,7 +301,7 @@ class SettingsManager implements ISettingsManager {
 			Encryption::class => new Encryption(),
 			FileSharing::class => new FileSharing($this->config, $this->helper, $this->lfactory),
 			Logging::class => new Logging($this->config, $this->urlGenerator, $this->helper),
-			Mail::class => new Mail($this->config, $this->helper),
+			Mail::class => new Mail($this->config, $this->helper, $this->userSession),
 			PersistentLocking::class => new PersistentLocking($this->config),
 			SecurityWarning::class => new SecurityWarning(
 				$this->l,
