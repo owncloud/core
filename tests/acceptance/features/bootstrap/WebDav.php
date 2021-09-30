@@ -4280,6 +4280,19 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the downloaded preview content should match with :preview fixtures preview content
+	 *
+	 * @param string $filename relative path from fixtures directory
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theDownloadedPreviewContentShouldMatchWithFixturesPreviewContentFor(string $filename):void {
+		$expectedPreview = \file_get_contents(__DIR__ . "/../../fixtures/" . $filename);
+		Assert::assertEquals($expectedPreview, $this->responseBodyContents);
+	}
+
+	/**
 	 * @Given user :user has downloaded the preview of :path with width :width and height :height
 	 *
 	 * @param $user
