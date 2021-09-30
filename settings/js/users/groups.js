@@ -25,19 +25,22 @@ var GroupList;
 		},
 
 		addGroup: function (gid, usercount) {
-			var $li = this.$userGroupList.find('.isgroup:last-child').clone();
-			$li
-				.data('gid', gid)
-				.attr('data-gid', gid)
-				.removeClass('active')
-				.find('.groupname').text(gid);
+			var $li = $(
+				'<li class="isgroup" data-gid="' + gid + '" data-usercount="0">' +
+				'	<a href="#" class="dorename">' +
+				'		<span class="groupname">' + gid + '</span>' +
+				'		<span class="usercount tag"></span>' +
+				'	</a>' +
+				'	<span class="utils">' +
+				'		<a href="#" class="action delete" original-title="' + t('settings', 'Delete') + '">' +
+				'			<img src="' + OC.imagePath('core', 'actions/delete') + '"/>' +
+				'		</a>' +
+				'	</span>' +
+				'</li>');
+
 			GroupList.setUserCount($li, usercount);
-
-			$li.find('.groupname').attr('title', gid);
 			$li.appendTo(this.$userGroupList);
-
 			GroupList.sortGroups();
-
 			return $li;
 		},
 
