@@ -50,8 +50,9 @@ class OccAppManagementContext implements Context {
 	 * @param string $appName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorDisablesAppUsingTheOccCommand($appName) {
+	public function theAdministratorDisablesAppUsingTheOccCommand(string $appName):void {
 		$this->occContext->invokingTheCommand(
 			"app:disable $appName"
 		);
@@ -63,8 +64,9 @@ class OccAppManagementContext implements Context {
 	 * @param string $appName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorEnablesAppUsingTheOccCommand($appName) {
+	public function theAdministratorEnablesAppUsingTheOccCommand(string $appName):void {
 		$this->occContext->invokingTheCommand(
 			"app:enable $appName"
 		);
@@ -76,8 +78,9 @@ class OccAppManagementContext implements Context {
 	 * @param string $appName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function administratorGetsTheAppInfoOfApp($appName) {
+	public function administratorGetsTheAppInfoOfApp(string $appName):void {
 		$this->occContext->invokingTheCommand(
 			"config:list $appName"
 		);
@@ -87,8 +90,9 @@ class OccAppManagementContext implements Context {
 	 * @When the administrator gets the list of apps using the occ command
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorGetsTheListOfAppsUsingTheOccCommand() {
+	public function theAdministratorGetsTheListOfAppsUsingTheOccCommand():void {
 		$this->occContext->invokingTheCommand(
 			"config:list"
 		);
@@ -100,8 +104,9 @@ class OccAppManagementContext implements Context {
 	 * @param string $appName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorChecksTheLocationOfTheAppUsingTheOccCommand($appName) {
+	public function theAdministratorChecksTheLocationOfTheAppUsingTheOccCommand(string $appName):void {
 		$this->occContext->invokingTheCommand(
 			"app:getpath $appName"
 		);
@@ -114,7 +119,7 @@ class OccAppManagementContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAppNameReturnedByTheOccCommandShouldBe($appName) {
+	public function theAppNameReturnedByTheOccCommandShouldBe(string $appName):void {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
 		Assert::assertEquals(
@@ -131,9 +136,9 @@ class OccAppManagementContext implements Context {
 	 * @param string $appName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function thePathReturnedByTheOccCommandShouldBeInsideOneOfTheAppsPathInTheConfig($appName) {
+	public function thePathReturnedByTheOccCommandShouldBeInsideOneOfTheAppsPathInTheConfig(string $appName):void {
 		$appPath = $this->featureContext->getStdOutOfOccCommand();
 
 		$this->occContext->invokingTheCommand("config:list");
@@ -168,7 +173,7 @@ class OccAppManagementContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAppEnabledStatusShouldBe($appName, $appStatus) {
+	public function theAppEnabledStatusShouldBe(string $appName, string $appStatus):void {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputArray = \json_decode($lastOutput, true);
 		$actualAppEnabledStatus = $lastOutputArray['apps'][$appName]['enabled'];
@@ -185,8 +190,9 @@ class OccAppManagementContext implements Context {
 	 * @param TableNode $appListTable table with apps name with no header
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAppsReturnedByTheOccCommandShouldInclude(TableNode $appListTable) {
+	public function theAppsReturnedByTheOccCommandShouldInclude(TableNode $appListTable):void {
 		$this->featureContext->verifyTableNodeColumnsCount($appListTable, 1);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputApps = \array_keys(\json_decode($lastOutput, true)['apps']);
@@ -215,7 +221,7 @@ class OccAppManagementContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
