@@ -633,6 +633,7 @@ Details
    https://github.com/owncloud/core/issues/36273
    https://github.com/owncloud/core/issues/29057
    https://github.com/owncloud/core/pull/39262
+   https://github.com/owncloud/core/pull/39307
 
 * Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
 
