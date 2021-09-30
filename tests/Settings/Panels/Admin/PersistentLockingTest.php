@@ -60,7 +60,7 @@ class PersistentLockingTest extends TestCase {
 
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		// applied modifiers "m" for multiline and "s" to include newlines in the dot char
-		self::assertRegExp('/input[[:space:]].*name="lock_timeout_default"[[:space:]].*value="44"/ms', $templateHtml);
-		self::assertRegExp('/input[[:space:]].*name="lock_timeout_max"[[:space:]].*value="9999"/ms', $templateHtml);
+		self::assertMatchesRegularExpression('/input[[:space:]].*name="lock_timeout_default"[[:space:]].*value="44"/ms', $templateHtml);
+		self::assertMatchesRegularExpression('/input[[:space:]].*name="lock_timeout_max"[[:space:]].*value="9999"/ms', $templateHtml);
 	}
 }
