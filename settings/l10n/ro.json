@@ -27,6 +27,7 @@
     "Unable to change mail address" : "Nu s-a putut schimba adresa email",
     "Email has been changed successfully." : "Adresa email a fost schimbată cu succes.",
     "No email was sent because you already sent one recently. Please try again later." : "Nu a fost trimis niciun e-mail deoarece ai trimis deja unul recent. Te rugăm să încerci din nou mai târziu.",
+    "Unable to change display name" : "Imposibil de schimbat numele afişat.",
     "Your full name has been changed." : "Numele tău complet a fost schimbat.",
     "Unable to change full name" : "Nu s-a putut schimba numele complet",
     "%s email address confirm" : "confirmare adresă e-mail %s",

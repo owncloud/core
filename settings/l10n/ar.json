@@ -42,6 +42,7 @@
     "Email has been changed successfully." : "تم تغيير البريد الإلكتروني بنجاح.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "تم إرسال رسالة بريد إلكتروني إلى هذا العنوان للتأكيد. وإلى أن يتم التحقق من صحة البريد الإلكتروني، لن يتم تعيين هذا العنوان.",
     "No email was sent because you already sent one recently. Please try again later." : "لم يتم إرسال أي رسالة بريد إلكتروني لأنك أرسلت رسالة مؤخرًا. يُرجى إعادة المحاولة فيما بعد.",
+    "Unable to change display name" : "تعذر تغيير اسم الحساب",
     "Your full name has been changed." : "تم تغيير اسمك الكامل.",
     "Unable to change full name" : "لا يمكن تغيير الاسم الكامل",
     "%s email address confirm" : "تأكيد عنوان البريد الإلكتروني %s",

@@ -2,6 +2,7 @@ OC.L10N.register(
     "settings",
     {
     "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
+    "Unable to change display name" : "كۆرسىتىدىغان ئىسىمنى ئۆزگەرتكىلى بولمايدۇ",
     "Create" : "قۇر",
     "Delete" : "ئۆچۈر",
     "Share" : "ھەمبەھىر",

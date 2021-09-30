@@ -43,6 +43,7 @@
     "Email has been changed successfully." : "Η ηλεκτρονική διεύθυνση άλλαξε επιτυχώς.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Έχει αποσταλεί ένα μήνυμα στη διεύθυνση αυτή για επιβεβαίωση. Μέχρι την επαλήθευση του μηνύματος ηλεκτρονικού ταχυδρομείου, αυτή η διεύθυνση δεν θα ρυθμιστεί.",
     "No email was sent because you already sent one recently. Please try again later." : "Δεν στάλθηκε μήνυμα διότι έχει σταλεί ένα πρόσφατα. Παρακαλούμε προσπαθήστε αργότερα.",
+    "Unable to change display name" : "Δεν είναι δυνατή η αλλαγή του ονόματος εμφάνισης",
     "Your full name has been changed." : "Το πλήρες όνομά σας άλλαξε.",
     "Unable to change full name" : "Αδυναμία αλλαγής του πλήρους ονόματός σας",
     "%s email address confirm" : "%s η διεύθυνση αλληλογραφίας επιβεβαιώθηκε",

@@ -27,6 +27,7 @@ OC.L10N.register(
     "Invalid user" : "Virheellinen käyttäjä",
     "Unable to change mail address" : "Sähköpostiosoitteen vaihtaminen ei onnistunut",
     "Email has been changed successfully." : "Sähköpostiosoite vaihdettiin onnistuneesti.",
+    "Unable to change display name" : "Näyttönimen muuttaminen epäonnistui",
     "Your full name has been changed." : "Koko nimesi on muutettu.",
     "Unable to change full name" : "Koko nimen muuttaminen epäonnistui",
     "%s email address confirm" : "%s sähköpostiosoite vahvistus",

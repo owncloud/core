@@ -45,6 +45,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "Email-i u ndryshua me sukses.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Te kjo adresë është dërguar një email ripohimi. Kjo adresë nuk do të caktohet pa u verifikuar email-i.",
     "No email was sent because you already sent one recently. Please try again later." : "S’u dërgua email, ngaqë keni dërguar një të tillë tani së fundi. Ju lutemi, riprovoni më vonë.",
+    "Unable to change display name" : "Nuk është e mundur të ndryshohet emri i shfaqur",
     "Your full name has been changed." : "Emri juaj i plotë u ndryshua.",
     "Unable to change full name" : "S’arrihet të ndryshohet emri i plotë",
     "%s email address confirm" : "Ripohim adrese email %s",

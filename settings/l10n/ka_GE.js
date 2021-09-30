@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Authentication error" : "ავთენტიფიკაციის შეცდომა",
     "Email sent" : "იმეილი გაიგზავნა",
+    "Unable to change display name" : "დისფლეის სახელის შეცვლა ვერ მოხერხდა",
     "Create" : "შექმნა",
     "Delete" : "წაშლა",
     "Share" : "გაზიარება",

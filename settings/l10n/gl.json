@@ -43,6 +43,7 @@
     "Email has been changed successfully." : "O correo foi cambiado satisfactoriamente.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Enviouse unha mensaxe a este enderezo de correo para confirmalo. Ata que non se verifique o correo, non se estabelecerá o enderezo. ",
     "No email was sent because you already sent one recently. Please try again later." : "Non foi enviado ningún correo porque xe enviou un recentemente. Tenteo de novo máis tarde.",
+    "Unable to change display name" : "Non é posíbel cambiar o nome visíbel",
     "Your full name has been changed." : "O seu nome completo foi cambiado",
     "Unable to change full name" : "Non é posíbel cambiar o nome completo",
     "%s email address confirm" : "%s enderezo do correo de confirmación",

@@ -30,6 +30,7 @@
     "Unable to change mail address" : "تغییر آدرس ایمیل امکان‌پذیر نیست",
     "Email has been changed successfully." : "ایمیل با موفقیت تغییر کرد.",
     "No email was sent because you already sent one recently. Please try again later." : "هیچ ایمیلی ارسال نشد زیرا شما اخیرا ایمیلی ارسال کردید. لطفا بعدا تلاش کنید.",
+    "Unable to change display name" : "امکان تغییر نام نمایشی شما وجود ندارد",
     "Your full name has been changed." : "نام کامل شما تغییر یافت",
     "Unable to change full name" : "امکان تغییر نام کامل وجود ندارد",
     "%s email address confirm" : "%s تایید آدرس ایمیل",

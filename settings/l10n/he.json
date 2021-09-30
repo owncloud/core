@@ -42,6 +42,7 @@
     "Email has been changed successfully." : "כתובת הדואר האלקטרוני שונתה בהצלחה.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "נשלחה הודעת דוא״ל לכתובת הזו לטובת אימות. עד לאימות הדוא״ל הכתובת הזאת לא תוגדר.",
     "No email was sent because you already sent one recently. Please try again later." : "לא נשלח דואר אלקטרוני כיוון שכבר שלחת דואר אלקטרוני לא מכבר. יש לנסות שוב מאוחר יותר",
+    "Unable to change display name" : "לא ניתן לשנות את שם התצוגה",
     "Your full name has been changed." : "השם המלא שלך הוחלף",
     "Unable to change full name" : "לא ניתן לשנות שם מלא",
     "%s email address confirm" : "כתובת דואר אלקטרוני %s אומתה",

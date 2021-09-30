@@ -9,6 +9,7 @@ OC.L10N.register(
     "Couldn't send reset email. Please contact your administrator." : "Kunne ikkje senda e-post for nullstilling, kontakt administratoren.",
     "Saved" : "Lagra",
     "Email sent" : "E-post sendt",
+    "Unable to change display name" : "Klarte ikkje endra visingsnamnet",
     "Create" : "Lag",
     "Delete" : "Slett",
     "Share" : "Del",

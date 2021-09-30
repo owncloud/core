@@ -28,6 +28,7 @@
     "Invalid user" : "Neveljavni podatki uporabnika",
     "Unable to change mail address" : "Ni mogoče spremeniti naslova elektronske pošte.",
     "Email has been changed successfully." : "Elektronski naslov je uspešno spremenjen.",
+    "Unable to change display name" : "Prikazanega imena ni mogoče spremeniti.",
     "Your full name has been changed." : "Vaše polno ime je spremenjeno.",
     "Unable to change full name" : "Ni mogoče spremeniti polnega imena",
     "Unable to enable/disable user." : "Ni mogoče omogočiti/onemogočiti dostopa uporabnika.",

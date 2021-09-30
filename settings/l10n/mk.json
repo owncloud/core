@@ -39,6 +39,7 @@
     "Email has been changed successfully." : "Email адресата е успошно променета",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Email порака е испратена за потврда. Додека не се потврди валидноста на адресата истата нема да биде поставена.",
     "No email was sent because you already sent one recently. Please try again later." : "Не е испратена Email порака бидејќи неодамна беше една испратена. Ве молиме обидете се повторно покасно.",
+    "Unable to change display name" : "Не можам да го сменам прикажанато име",
     "Your full name has been changed." : "Вашето име и презиме е променето.",
     "Unable to change full name" : "Не можам да го променам името и презимето",
     "%s email address confirm" : "Email адресата %sе потврдена.",

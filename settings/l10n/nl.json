@@ -38,6 +38,7 @@
     "Email has been changed successfully." : "E-mailadres succesvol gewijzigd.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Er is een mail gestuurd aan dit adres ter confirmatie. Totdat het mailadres is geverifieerd is het niet permanent ingesteld.",
     "No email was sent because you already sent one recently. Please try again later." : "Er is geen e-mailbericht verstuurd, omdat u onlangs al een mailtje verstuurde. Probeer het later opnieuw,",
+    "Unable to change display name" : "Kon de weergavenaam niet wijzigen",
     "Your full name has been changed." : "Uw volledige naam is gewijzigd.",
     "Unable to change full name" : "Kan de volledige naam niet wijzigen",
     "%s email address confirm" : "%s e-mailadres bevestigen",

@@ -43,6 +43,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "Email has been changed successfully.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "An email has been sent to this address for confirmation. Until the email is verified this address will not be set.",
     "No email was sent because you already sent one recently. Please try again later." : "No email was sent because you already sent one recently. Please try again later.",
+    "Unable to change display name" : "Unable to change display name",
     "Your full name has been changed." : "Your full name has been changed.",
     "Unable to change full name" : "Unable to change full name",
     "%s email address confirm" : "%s email address confirm",

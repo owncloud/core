@@ -24,6 +24,7 @@
     "Forbidden" : "Förbjuden",
     "Invalid user" : "Ogiltig användare",
     "Unable to change mail address" : "Kan inte ändra e-postadress",
+    "Unable to change display name" : "Kan inte ändra visningsnamn",
     "Your full name has been changed." : "Hela ditt namn har ändrats",
     "Unable to change full name" : "Kunde inte ändra hela namnet",
     "%s email address confirm" : "%s e-postadress att bekräfta",

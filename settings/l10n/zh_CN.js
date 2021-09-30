@@ -43,6 +43,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "已成功修改邮箱地址",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "已发送一封邮件到该地址以确认。电邮被验证前此地址无法使用",
     "No email was sent because you already sent one recently. Please try again later." : "由于您最近已发送电子邮件，因此没有发送电子邮件。 请稍后再试。",
+    "Unable to change display name" : "无法修改显示名称",
     "Your full name has been changed." : "您的全名已修改。",
     "Unable to change full name" : "无法修改全名",
     "%s email address confirm" : "%s 电子邮件地址确认",

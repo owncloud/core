@@ -45,6 +45,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "Адрес почты изменён успешно.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Для подтверждения на данный адрес было отправлено письмо. Пока это письмо не будет подтверждено, данный адрес не будет установлен.",
     "No email was sent because you already sent one recently. Please try again later." : "Сообщение электронной почты не выслано, так как вы недавно уже высылали одно. Пожалуйста, попробуйте ещё раз позднее.",
+    "Unable to change display name" : "Невозможно изменить отображаемое имя",
     "Your full name has been changed." : "Ваше полное имя было изменено.",
     "Unable to change full name" : "Невозможно изменить полное имя",
     "%s email address confirm" : "Подтверждение адреса почты для %s",

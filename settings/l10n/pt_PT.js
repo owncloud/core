@@ -33,6 +33,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "O endereço de correio eletrónico foi alterado com sucesso.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Foi enviada uma mensagem para este endereço para confirmação. Até que o correio eletrónico seja verificado, este endereço não será definido.",
     "No email was sent because you already sent one recently. Please try again later." : "Não foi enviada nenhuma mensagem porque já foi enviada uma recentemente. Por favor, tente novamente mais tarde.",
+    "Unable to change display name" : "Não foi possível alterar o nome",
     "Your full name has been changed." : "O seu nome completo foi alterado.",
     "Unable to change full name" : "Não é possível alterar o nome completo",
     "%s email address confirm" : "Confirmação de endereço de correio eletrónico de %s",

@@ -41,6 +41,7 @@
     "Email has been changed successfully." : "Pomyślnie zmieniono adres email.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Na podany adres została wysłana wiadomość potwierdzająca. Do czasu weryfikacji adresu email, nie będzie on ustawiony.",
     "No email was sent because you already sent one recently. Please try again later." : "Nie wysłano maila, ponieważ niedawno był wysłany. Proszę spróbować później.",
+    "Unable to change display name" : "Nie można zmienić wyświetlanej nazwy",
     "Your full name has been changed." : "Twoja pełna nazwa została zmieniona.",
     "Unable to change full name" : "Nie można zmienić pełnej nazwy",
     "%s email address confirm" : "%s adres email potwierdzony.",

@@ -43,6 +43,7 @@
     "Email has been changed successfully." : "E-Mail Adresse wurde erfolgreich geändert.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Eine E-Mail ist an diese Adresse zur Bestätigung gesendet worden. Bis diese Email bestätigt wurde, wird diese Adresse nicht verwendet.",
     "No email was sent because you already sent one recently. Please try again later." : "Es wurde keine E-Mail versendet, da bereits eine E-Mail versendet wurde. Bitte später noch einmal versuchen.",
+    "Unable to change display name" : "Das Ändern des Anzeigenamens ist nicht möglich",
     "Your full name has been changed." : "Ihr vollständiger Name ist geändert worden.",
     "Unable to change full name" : "Der vollständige Name konnte nicht geändert werden",
     "%s email address confirm" : "%s E-Mail Adressbestätigung",

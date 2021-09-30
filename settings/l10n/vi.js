@@ -12,6 +12,7 @@ OC.L10N.register(
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Đã xảy ra sự cố khi gửi email. Hãy sửa lại cài đặt của bạn.(Lỗi: %s)",
     "Email sent" : "Email đã được gửi",
     "You need to set your user email before being able to send test emails." : "Bạn cần đặt email người dùng của mình trước khi có gửi email thử nghiệm.",
+    "Unable to change display name" : "Không thể thay đổi tên hiển thị",
     "Your full name has been changed." : "Họ và tên đã được thay đổi.",
     "Unable to change full name" : "Họ và tên không thể đổi ",
     "Create" : "Tạo",

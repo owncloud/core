@@ -42,6 +42,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "Email byl úspěšně změněn.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Na tuto adresu byl odeslán email s potvrzením. Až do ověření emailu nebude tato adresa nastavena.",
     "No email was sent because you already sent one recently. Please try again later." : "Email byl již nedávno odeslán. Prosím zkuste to znovu později.",
+    "Unable to change display name" : "Nelze změnit zobrazované jméno",
     "Your full name has been changed." : "Vaše celé jméno bylo změněno.",
     "Unable to change full name" : "Nelze změnit celé jméno",
     "%s email address confirm" : "%s potvrzení emailové adresy",

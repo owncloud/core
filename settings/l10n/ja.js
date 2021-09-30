@@ -36,6 +36,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "メールアドレスが正常に変更されました。",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "設定したメールアドレスに確認のためのメールを送りました。\nメールアドレスが承認されるまでこのアドレスは設定されません。",
     "No email was sent because you already sent one recently. Please try again later." : "最近、既に同様のメールを送信しているため、メールは送られませんでした。",
+    "Unable to change display name" : "表示名を変更できません",
     "Your full name has been changed." : "名前を変更しました。",
     "Unable to change full name" : "名前を変更できません",
     "%s email address confirm" : "%s確認用のメールアドレス",

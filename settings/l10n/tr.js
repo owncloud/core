@@ -44,6 +44,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "E-posta başarıyla değiştirildi.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Onay için bu adrese bir e-posta gönderildi. E-posta doğrulanana kadar bu adres ayarlanmayacak.",
     "No email was sent because you already sent one recently. Please try again later." : "Daha önce bir tane gönderdiğiniz için e-posta gönderilmedi. Lütfen daha sonra tekrar deneyiniz.",
+    "Unable to change display name" : "Ekran adı değiştirilemiyor",
     "Your full name has been changed." : "Tam adınız değiştirildi.",
     "Unable to change full name" : "Tam ad değiştirilirken hata",
     "%s email address confirm" : "%s e-posta adresini onayla",

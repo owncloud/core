@@ -43,6 +43,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "Berhasil mengubah surel.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Surel konfirmasi telah dikirim ke alamat ini. Hingga surel tersebut disahkan alamat ini belum dapat ditetapkan.",
     "No email was sent because you already sent one recently. Please try again later." : "Tidak ada surel terkirim karena Anda sudah mengirim sebelumnya. Silakan coba lagi nanti.",
+    "Unable to change display name" : "Tidak dapat mengubah nama tampilan",
     "Your full name has been changed." : "Nama lengkap Anda telah diubah",
     "Unable to change full name" : "Tidak dapat mengubah nama lengkap",
     "%s email address confirm" : "%s alamat surel konfirmasi",

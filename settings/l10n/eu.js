@@ -37,6 +37,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "Helbide elektronikoa behar bezala aldatu da",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Baieztatzeko helburua duen mezu elektroniko bat bidali da helbide honetara. Mezua egiaztatu arte helbidea ez da ezarriko.",
     "No email was sent because you already sent one recently. Please try again later." : "Ez da mezu elektronikorik bidali dagoeneko zuk duela gutxi bat bidali zenuelako. Saia zaitez beranduago, mesedez.",
+    "Unable to change display name" : "Ezin izan da bistaratze izena aldatu",
     "Your full name has been changed." : "Zure izena aldatu egin da.",
     "Unable to change full name" : "Ezin izan da izena aldatu",
     "%s email address confirm" : "%s posta helbideak baieztatua",

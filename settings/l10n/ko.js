@@ -43,6 +43,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "이메일이 성공적으로 변경됨",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "주소 확인을 위한 이메일이 전송되었습니다. 주소가 확인될 때까지 이메일을 사용하지 않을 것입니다.",
     "No email was sent because you already sent one recently. Please try again later." : "이미 이메일을 보냈기 때문에 이메일을 보내지 않았습니다. 나중에 다시 시도하십시오.",
+    "Unable to change display name" : "표시 이름을 변경할 수 없음",
     "Your full name has been changed." : "전체 이름이 변경되었습니다.",
     "Unable to change full name" : "전체 이름을 변경할 수 없음",
     "%s email address confirm" : "%s 이메일 주소 확인",

@@ -33,6 +33,7 @@ OC.L10N.register(
     "Unable to change mail address" : "Nepavyko pakeisti el. pašto adreso",
     "Email has been changed successfully." : "El. pašto adresas sėkmingai pakeistas.",
     "No email was sent because you already sent one recently. Please try again later." : "Paštas neišsiųstas nes jau buvo siųstas. Bandykite vėliau.",
+    "Unable to change display name" : "Nepavyksta pakeisti rodomą vardą",
     "Your full name has been changed." : "Pilnas vardas pakeistas.",
     "Unable to change full name" : "Nepavyko pakeisti pilno vardo",
     "%s email address confirm" : "%sel. pašto adresas patvirtinimui",

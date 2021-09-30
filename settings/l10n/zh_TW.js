@@ -45,6 +45,7 @@ OC.L10N.register(
     "Email has been changed successfully." : "電子郵件已經成功變更",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "電子郵件已經發送到該地址進行確認。 在驗證電子郵件之前，不會設置此地址。",
     "No email was sent because you already sent one recently. Please try again later." : "沒有發送電子郵件，因為您最近已經發送了一封電子郵件。 請稍後再試。",
+    "Unable to change display name" : "無法更改顯示名稱",
     "Your full name has been changed." : "您的全名已變更",
     "Unable to change full name" : "無法變更全名",
     "%s email address confirm" : "%s電子郵件地址已經被確認",

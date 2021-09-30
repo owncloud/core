@@ -33,6 +33,7 @@
     "Email has been changed successfully." : "Az email cím megváltoztatása sikeres volt.",
     "An email has been sent to this address for confirmation. Until the email is verified this address will not be set." : "Erre a címre e-mailt küldtek megerősítés céljából. Amíg az e-mailt nem ellenőrizzük, ez a cím nem lesz beállítva.",
     "No email was sent because you already sent one recently. Please try again later." : "Nem küldtünk e-mailt, mert már nemrégiben küldtél. Kérlek, próbáld újra később.",
+    "Unable to change display name" : "Nem sikerült megváltoztatni a megjelenítési nevet",
     "Your full name has been changed." : "Az Ön teljes nevét módosítottuk.",
     "Unable to change full name" : "Nem sikerült megváltoztatni a teljes nevét",
     "%s email address confirm" : "%se-mail cím megerősítése",

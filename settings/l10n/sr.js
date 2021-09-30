@@ -24,6 +24,7 @@ OC.L10N.register(
     "Forbidden" : "Забрањено",
     "Invalid user" : "Неисправан корисник",
     "Unable to change mail address" : "Не могу да изменим е-адресу",
+    "Unable to change display name" : "Не могу да променим име за приказ",
     "Your full name has been changed." : "Ваше пуно име је промењено.",
     "Unable to change full name" : "Не могу да променим пуно име",
     "Create" : "Направи",
