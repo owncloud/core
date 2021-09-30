@@ -181,14 +181,17 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('isAdmin')
 			->will($this->returnValue(true));
 
-		$this->tagMapper->expects($this->at(0))
+		$this->tagMapper
+			->expects($this->exactly(2))
 			->method('getObjectIdsForTags')
-			->with('123', 'files')
-			->will($this->returnValue(['111', '222']));
-		$this->tagMapper->expects($this->at(1))
-			->method('getObjectIdsForTags')
-			->with('456', 'files')
-			->will($this->returnValue(['111', '222', '333']));
+			->withConsecutive(
+				['123', 'files'],
+				['456', 'files'],
+			)
+			->willReturnOnConsecutiveCalls(
+				['111', '222'],
+				['111', '222', '333'],
+			);
 
 		$reportTargetNode = $this->createMock(\OCA\DAV\Connector\Sabre\Directory::class);
 		$response = $this->createMock(\Sabre\HTTP\ResponseInterface::class);
@@ -219,14 +222,17 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$filesNode2->method('getSize')->willReturn(1024);
 		$filesNode2->method('isReadable')->willReturn(true);
 
-		$this->userFolder->expects($this->at(0))
+		$this->userFolder
+			->expects($this->exactly(2))
 			->method('getById')
-			->with('111')
-			->will($this->returnValue([$filesNode1]));
-		$this->userFolder->expects($this->at(1))
-			->method('getById')
-			->with('222')
-			->will($this->returnValue([$filesNode2]));
+			->withConsecutive(
+				['111'],
+				['222'],
+			)
+			->willReturnOnConsecutiveCalls(
+				[$filesNode1],
+				[$filesNode2],
+			);
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
@@ -305,18 +311,19 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->will($this->returnValue($reportTargetNode));
 
 		// getById must only be called for the required nodes
-		$this->userFolder->expects($this->at(0))
+		$this->userFolder
+			->expects($this->exactly(3))
 			->method('getById')
-			->with(1002)
-			->willReturn([$filesNodes[1002]]);
-		$this->userFolder->expects($this->at(1))
-			->method('getById')
-			->with(1003)
-			->willReturn([$filesNodes[1003]]);
-		$this->userFolder->expects($this->at(2))
-			->method('getById')
-			->with(1004)
-			->willReturn([$filesNodes[1004]]);
+			->withConsecutive(
+				[1002],
+				[1003],
+				[1004],
+			)
+			->willReturnOnConsecutiveCalls(
+				[$filesNodes[1002]],
+				[$filesNodes[1003]],
+				[$filesNodes[1004]],
+			);
 
 		$this->server->expects($this->any())
 			->method('getRequestUri')
@@ -364,14 +371,17 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('getPath')
 			->will($this->returnValue('/'));
 
-		$this->userFolder->expects($this->at(0))
+		$this->userFolder
+			->expects($this->exactly(2))
 			->method('getById')
-			->with('111')
-			->will($this->returnValue([$filesNode1]));
-		$this->userFolder->expects($this->at(1))
-			->method('getById')
-			->with('222')
-			->will($this->returnValue([$filesNode2]));
+			->withConsecutive(
+				['111'],
+				['222'],
+			)
+			->willReturnOnConsecutiveCalls(
+				[$filesNode1],
+				[$filesNode2],
+			);
 
 		/** @var \OCA\DAV\Connector\Sabre\Directory|\PHPUnit\Framework\MockObject\MockObject $reportTargetNode */
 		$result = $this->plugin->findNodesByFileIds($reportTargetNode, ['111', '222']);
@@ -409,19 +419,22 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->userFolder->expects($this->at(0))
+		$this->userFolder->expects($this->once())
 			->method('get')
 			->with('/sub1/sub2')
 			->will($this->returnValue($subNode));
 
-		$subNode->expects($this->at(0))
+		$subNode
+			->expects($this->exactly(2))
 			->method('getById')
-			->with('111')
-			->will($this->returnValue([$filesNode1]));
-		$subNode->expects($this->at(1))
-			->method('getById')
-			->with('222')
-			->will($this->returnValue([$filesNode2]));
+			->withConsecutive(
+				['111'],
+				['222'],
+			)
+			->willReturnOnConsecutiveCalls(
+				[$filesNode1],
+				[$filesNode2],
+			);
 
 		/** @var \OCA\DAV\Connector\Sabre\Directory|\PHPUnit\Framework\MockObject\MockObject $reportTargetNode */
 		$result = $this->plugin->findNodesByFileIds($reportTargetNode, ['111', '222']);
@@ -578,14 +591,17 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$this->tagManager->expects($this->never())
 			->method('getTagsByIds');
 
-		$this->tagMapper->expects($this->at(0))
+		$this->tagMapper
+			->expects($this->exactly(2))
 			->method('getObjectIdsForTags')
-			->with('123')
-			->will($this->returnValue(['111', '222']));
-		$this->tagMapper->expects($this->at(1))
-			->method('getObjectIdsForTags')
-			->with('456')
-			->will($this->returnValue(['222', '333']));
+			->withConsecutive(
+				['123'],
+				['456'],
+			)
+			->willReturnOnConsecutiveCalls(
+				['111', '222'],
+				['222', '333'],
+			);
 
 		$rules = [
 			'systemtag' => ['123', '456'],
@@ -659,14 +675,17 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->with(['123', '456'])
 			->will($this->returnValue([$tag1, $tag2]));
 
-		$this->tagMapper->expects($this->at(0))
+		$this->tagMapper
+			->expects($this->exactly(2))
 			->method('getObjectIdsForTags')
-			->with('123')
-			->will($this->returnValue(['111', '222']));
-		$this->tagMapper->expects($this->at(1))
-			->method('getObjectIdsForTags')
-			->with('456')
-			->will($this->returnValue(['222', '333']));
+			->withConsecutive(
+				['123'],
+				['456'],
+			)
+			->willReturnOnConsecutiveCalls(
+				['111', '222'],
+				['222', '333'],
+			);
 
 		$rules = [
 			'systemtag' => ['123', '456'],

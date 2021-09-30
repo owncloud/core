@@ -97,12 +97,13 @@ class SessionCredentialsTest extends \Test\TestCase {
 			->with('encrypted_stuff')
 			->willReturn('{"user":"user1","password":"pw"}');
 
-		$storageConfig->expects($this->at(0))
+		$storageConfig
+			->expects($this->exactly(2))
 			->method('setBackendOption')
-			->with('user', $expectedLogin);
-		$storageConfig->expects($this->at(1))
-			->method('setBackendOption')
-			->with('password', 'pw');
+			->withConsecutive(
+				['user', $expectedLogin],
+				['password', 'pw'],
+			);
 
 		$this->authMech->manipulateStorageConfig($storageConfig, $user);
 	}

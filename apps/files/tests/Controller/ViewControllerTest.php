@@ -425,7 +425,7 @@ class ViewControllerTest extends TestCase {
 			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolder));
 
-		$baseFolder->expects($this->at(0))
+		$baseFolder->expects($this->once())
 			->method('getById')
 			->with(123)
 			->will($this->returnValue([]));
@@ -458,7 +458,7 @@ class ViewControllerTest extends TestCase {
 			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolder));
 
-		$baseFolder->expects($this->at(0))
+		$baseFolder->expects($this->once())
 			->method('getById')
 			->with(123)
 			->will($this->returnValue([]));
@@ -483,7 +483,7 @@ class ViewControllerTest extends TestCase {
 			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolder));
 
-		$baseFolder->expects($this->at(0))
+		$baseFolder->expects($this->once())
 			->method('getById')
 			->with(123)
 			->will($this->returnValue([]));

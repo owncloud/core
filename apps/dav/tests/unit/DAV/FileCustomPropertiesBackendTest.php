@@ -204,15 +204,17 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	 * Test that propFind on a missing file soft fails
 	 */
 	public function testPropFindMissingFileSoftFail() {
-		$this->tree->expects($this->at(0))
+		$this->tree
+			->expects($this->exactly(2))
 			->method('getNodeForPath')
-			->with('/dummypath')
-			->will($this->throwException(new \Sabre\DAV\Exception\NotFound()));
-
-		$this->tree->expects($this->at(1))
-			->method('getNodeForPath')
-			->with('/dummypath')
-			->will($this->throwException(new \Sabre\DAV\Exception\ServiceUnavailable()));
+			->withConsecutive(
+				['/dummypath'],
+				['/dummypath'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$this->throwException(new \Sabre\DAV\Exception\NotFound()),
+				$this->throwException(new \Sabre\DAV\Exception\ServiceUnavailable()),
+			);
 
 		$propFind = new PropFind(
 			'/dummypath',
@@ -296,25 +298,21 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			->method('getChildren')
 			->will($this->returnValue([$nodeSub]));
 
-		$this->tree->expects($this->at(0))
+		$this->tree
+			->expects($this->exactly(4))
 			->method('getNodeForPath')
-			->with('/dummypath')
-			->will($this->returnValue($rootNode));
-
-		$this->tree->expects($this->at(1))
-			->method('getNodeForPath')
-			->with('/dummypath/test.txt')
-			->will($this->returnValue($nodeSub));
-
-		$this->tree->expects($this->at(2))
-			->method('getNodeForPath')
-			->with('/dummypath')
-			->will($this->returnValue($rootNode));
-
-		$this->tree->expects($this->at(3))
-			->method('getNodeForPath')
-			->with('/dummypath/test.txt')
-			->will($this->returnValue($nodeSub));
+			->withConsecutive(
+				['/dummypath'],
+				['/dummypath/test.txt'],
+				['/dummypath'],
+				['/dummypath/test.txt'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$rootNode,
+				$nodeSub,
+				$rootNode,
+				$nodeSub,
+			);
 
 		$this->applyDefaultProps('/dummypath');
 		$this->applyDefaultProps('/dummypath/test.txt');

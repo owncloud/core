@@ -132,15 +132,16 @@ class CertificateControllerTest extends \Test\TestCase {
 			->will($this->returnValue($certificate));
 
 		$this->l10n
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('l')
-			->with('date', new \DateTime('@1429099555'))
-			->will($this->returnValue('Valid From as String'));
-		$this->l10n
-			->expects($this->at(1))
-			->method('l')
-			->with('date', new \DateTime('@1529099555'))
-			->will($this->returnValue('Valid Till as String'));
+			->withConsecutive(
+				['date', new \DateTime('@1429099555')],
+				['date', new \DateTime('@1529099555')],
+			)
+			->willReturnOnConsecutiveCalls(
+				'Valid From as String',
+				'Valid Till as String',
+			);
 
 		$expected = new DataResponse([
 			'name' => 'Name',

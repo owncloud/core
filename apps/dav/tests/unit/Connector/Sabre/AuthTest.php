@@ -597,7 +597,7 @@ class AuthTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$server->httpRequest
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getHeader')
 			->with('Authorization')
 			->willReturn('basic dXNlcm5hbWU6cGFzc3dvcmQ=');
@@ -631,7 +631,7 @@ class AuthTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$server->httpRequest
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getHeader')
 			->with('Authorization')
 			->willReturn('basic dXNlcm5hbWU6cGFzc3dvcmQ=');

@@ -92,8 +92,6 @@ class SyncServiceTest extends TestCase {
 		$mapper = $this->createMock(AccountMapper::class);
 		// Create a mapper which supports providing a home
 		$backend = $this->createMock(UserInterface::class);
-		$config = $this->createMock(IConfig::class);
-		$logger = $this->createMock(ILogger::class);
 		$account = $this->createMock(Account::class);
 
 		$backendUids = ['thisuserhasntbeenseenbefore'];
@@ -103,10 +101,16 @@ class SyncServiceTest extends TestCase {
 		$this->mapper->expects($this->once())->method('getByUid')->with($backendUids[0])->willThrowException(new DoesNotExistException('entity not found'));
 
 		// Lets provide some config for the user
-		$this->config->expects($this->at(0))->method('getUserKeys')->with($backendUids[0], 'core')->willReturn([]);
-		$this->config->expects($this->at(1))->method('getUserKeys')->with($backendUids[0], 'login')->willReturn([]);
-		$this->config->expects($this->at(2))->method('getUserKeys')->with($backendUids[0], 'settings')->willReturn([]);
-		$this->config->expects($this->at(3))->method('getUserKeys')->with($backendUids[0], 'files')->willReturn([]);
+		$this->config
+			->expects($this->exactly(4))
+			->method('getUserKeys')
+			->withConsecutive(
+				[$backendUids[0], 'core'],
+				[$backendUids[0], 'login'],
+				[$backendUids[0], 'settings'],
+				[$backendUids[0], 'files'],
+			)
+			->willReturnOnConsecutiveCalls([], [], [], []);
 
 		// Pretend we dont update anything
 		$account->expects($this->any())->method('getUpdatedFields')->willReturn([]);
@@ -138,7 +142,7 @@ class SyncServiceTest extends TestCase {
 		$this->mapper->expects($this->once())->method('getByUid')->with($backendUids[0])->willThrowException(new MultipleObjectsReturnedException('Trigger error'));
 
 		// Should log an error in the log and log the exception
-		$this->logger->expects($this->at(0))->method('logException');
+		$this->logger->expects($this->once())->method('logException');
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$s->run($backend, new BackendUsersIterator($backend));

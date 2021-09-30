@@ -219,9 +219,11 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// test report command first
 		$this->repair->setCountOnly(true);
-		$outputMock->expects($this->at(0))
+		$outputMock
 			->method('warning')
-			->with($this->logicalAnd($this->stringContains('with invalid path values'), $this->stringContains($sourceStorageId)));
+			->withConsecutive(
+				[$this->logicalAnd($this->stringContains('with invalid path values'), $this->stringContains($sourceStorageId))],
+			);
 		$this->repair->run($outputMock);
 		$this->repair->setCountOnly(false);
 
@@ -563,9 +565,11 @@ class RepairMismatchFileCachePathTest extends TestCase {
 			->willReturn('10.0.3');
 
 		$this->repair->setCountOnly(true);
-		$outputMock->expects($this->at(0))
+		$outputMock
 			->method('warning')
-			->with($this->logicalAnd($this->stringContains('parent id does not point'), $this->stringContains($storageId)));
+			->withConsecutive(
+				[$this->logicalAnd($this->stringContains('parent id does not point'), $this->stringContains($storageId))],
+			);
 		$this->repair->run($outputMock);
 		$this->repair->setCountOnly(false);
 		$this->repair->run($outputMock);

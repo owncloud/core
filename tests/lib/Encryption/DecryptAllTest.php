@@ -304,12 +304,13 @@ class DecryptAllTest extends TestCase {
 					$this->invokePrivate($instance, 'decryptUsersFiles', ['user1', $progress, '']);
 					$this->invokePrivate($instance, 'decryptUsersFiles', ['user2', $progress, '']);
 				}));
-			$instance->expects($this->at(0))
+			$instance
+				->expects($this->exactly(2))
 				->method('decryptUsersFiles')
-				->with('user1');
-			$instance->expects($this->at(1))
-				->method('decryptUsersFiles')
-				->with('user2');
+				->withConsecutive(
+					['user1'],
+					['user2'],
+				);
 			\OC::$server->getConfig()->setAppValue('encryption', 'userSpecificKey', '0');
 		} else {
 			\OC::$server->getConfig()->setAppValue('encryption', 'userSpecificKey', '1');
@@ -371,15 +372,14 @@ class DecryptAllTest extends TestCase {
 		$iqueryBuilder = $this->createMock(IQueryBuilder::class);
 		$iexpressionBuilder = $this->createMock(IExpressionBuilder::class);
 		$resultStatement = $this->createMock(Statement::class);
-		$resultStatement->expects($this->at(0))
+		$resultStatement
+			->expects($this->any())
 			->method('fetch')
-			->willReturn(['count' => '1']);
-		$resultStatement->expects($this->at(1))
-			->method('fetch')
-			->willReturn($user1);
-		$resultStatement->expects($this->at(2))
-			->method('fetch')
-			->willReturn($user1);
+			->willReturnOnConsecutiveCalls(
+				['count' => '1'],
+				$user1,
+				$user1,
+			);
 		$resultStatement->expects($this->any())
 			->method('closeCursor')
 			->willReturn(true);
@@ -490,19 +490,31 @@ class DecryptAllTest extends TestCase {
 			->setMethods(['decryptFile'])
 			->getMock();
 
-		$this->view->expects($this->at(0))->method('getDirectoryContent')
-			->with('/user1/files')->willReturn(
-				[
-					new FileInfo('path', $storage, 'intPath', ['name' => 'foo', 'type'=>'dir'], null),
-					new FileInfo('path', $storage, 'intPath', ['name' => 'bar', 'type'=>'file', 'encrypted'=>true], null)
-				]
-			);
-
 		if ($decryptBehavior !== 'skip') {
-			$this->view->expects($this->at(3))->method('getDirectoryContent')
-				->with('/user1/files/foo')->willReturn(
+			$this->view
+				->expects($this->exactly(2))
+				->method('getDirectoryContent')
+				->withConsecutive(
+					['/user1/files'],
+					['/user1/files/foo'],
+				)
+				->willReturnOnConsecutiveCalls(
+					[
+						new FileInfo('path', $storage, 'intPath', ['name' => 'foo', 'type'=>'dir'], null),
+						new FileInfo('path', $storage, 'intPath', ['name' => 'bar', 'type'=>'file', 'encrypted'=>true], null)
+					],
 					[
 						new FileInfo('path', $storage, 'intPath', ['name' => 'subfile', 'type'=>'file', 'encrypted'=>true], null)
+					]
+				);
+		} else {
+			$this->view
+				->method('getDirectoryContent')
+				->with('/user1/files')
+				->willReturn(
+					[
+						new FileInfo('path', $storage, 'intPath', ['name' => 'foo', 'type'=>'dir'], null),
+						new FileInfo('path', $storage, 'intPath', ['name' => 'bar', 'type'=>'file', 'encrypted'=>true], null)
 					]
 				);
 		}
@@ -518,9 +530,9 @@ class DecryptAllTest extends TestCase {
 			);
 
 		if (($decryptBehavior === 'exception') || ($decryptBehavior === 'exception2')) {
-			$instance->expects($this->at(0))
+			$instance->expects($this->exactly(2))
 				->method('decryptFile')
-				->with('/user1/files/bar')
+				->withConsecutive(['/user1/files/bar'])
 				->willThrowException(new \Exception());
 			if ($decryptBehavior === 'exception2') {
 				$this->invokePrivate($instance, 'failed', [['user1' => [['path' => 'a.txt', 'exception' => new \Exception('Missing file')]]]]);
@@ -529,12 +541,12 @@ class DecryptAllTest extends TestCase {
 			$instance->expects($this->never())
 				->method('decryptFile');
 		} else {
-			$instance->expects($this->at(0))
+			$instance->expects($this->exactly(2))
 				->method('decryptFile')
-				->with('/user1/files/bar');
-			$instance->expects($this->at(1))
-				->method('decryptFile')
-				->with('/user1/files/foo/subfile');
+				->withConsecutive(
+					['/user1/files/bar'],
+					['/user1/files/foo/subfile'],
+				);
 		}
 
 		$progressBar = new ProgressBar(new NullOutput());

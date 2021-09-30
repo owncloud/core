@@ -100,17 +100,14 @@ class EnableTest extends TestCase {
 				->willReturn($defaultModule);
 		}
 
-		$this->consoleOutput->expects($this->at(0))
+		$this->consoleOutput
+			->expects($this->exactly(3))
 			->method('writeln')
-			->with($this->stringContains($expectedString));
-
-		$this->consoleOutput->expects($this->at(1))
-			->method('writeln')
-			->with('');
-
-		$this->consoleOutput->expects($this->at(2))
-			->method('writeln')
-			->with($this->stringContains($expectedDefaultModuleString));
+			->withConsecutive(
+				[$this->stringContains($expectedString)],
+				[''],
+				[$this->stringContains($expectedDefaultModuleString)]
+			);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}

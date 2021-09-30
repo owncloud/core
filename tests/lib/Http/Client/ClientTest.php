@@ -39,29 +39,31 @@ class ClientTest extends \Test\TestCase {
 
 	public function testGetProxyUri() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('proxy', null)
-			->willReturn(null);
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('proxyuserpwd', null)
-			->willReturn(null);
+			->withConsecutive(
+				['proxy', null],
+				['proxyuserpwd', null],
+			)
+			->willReturnOnConsecutiveCalls(
+				null,
+				null,
+			);
 		$this->assertSame('', self::invokePrivate($this->client, 'getProxyUri'));
 	}
 
 	public function testGetProxyUriProxyHostEmptyPassword() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('proxy', null)
-			->willReturn('foo');
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('proxyuserpwd', null)
-			->willReturn(null);
+			->withConsecutive(
+				['proxy', null],
+				['proxyuserpwd', null],
+			)
+			->willReturnOnConsecutiveCalls(
+				'foo',
+				null,
+			);
 		$this->assertSame('foo', self::invokePrivate($this->client, 'getProxyUri'));
 	}
 

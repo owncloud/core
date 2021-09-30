@@ -108,15 +108,17 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 	 * Test that propFind on a missing file soft fails
 	 */
 	public function testPropFindMissingFileSoftFail() {
-		$this->tree->expects($this->at(0))
+		$this->tree
+			->expects($this->exactly(2))
 			->method('getNodeForPath')
-			->with('/dummypath')
-			->will($this->throwException(new \Sabre\DAV\Exception\NotFound()));
-
-		$this->tree->expects($this->at(1))
-			->method('getNodeForPath')
-			->with('/dummypath')
-			->will($this->throwException(new \Sabre\DAV\Exception\ServiceUnavailable()));
+			->withConsecutive(
+				['/dummypath'],
+				['/dummypath'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$this->throwException(new \Sabre\DAV\Exception\NotFound()),
+				$this->throwException(new \Sabre\DAV\Exception\ServiceUnavailable()),
+			);
 
 		$propFind = new \Sabre\DAV\PropFind(
 			'/dummypath',

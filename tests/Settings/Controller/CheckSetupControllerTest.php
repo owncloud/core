@@ -120,12 +120,13 @@ class CheckSetupControllerTest extends TestCase {
 
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
-		$client->expects($this->at(0))
+		$client
+			->expects($this->exactly(2))
 			->method('get')
-			->with('https://www.owncloud.com/', []);
-		$client->expects($this->at(1))
-			->method('get')
-			->with('http://www.owncloud.com/', []);
+			->withConsecutive(
+				['https://www.owncloud.com/', []],
+				['http://www.owncloud.com/', []],
+			);
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
@@ -147,7 +148,8 @@ class CheckSetupControllerTest extends TestCase {
 
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
-		$client->expects($this->at(0))
+		$client
+			->expects($this->once())
 			->method('get')
 			->with('https://www.owncloud.com/', [])
 			->will($this->throwException(new \Exception()));
@@ -172,13 +174,17 @@ class CheckSetupControllerTest extends TestCase {
 
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
-		$client->expects($this->at(0))
+		$client
+			->expects($this->exactly(2))
 			->method('get')
-			->with('https://www.owncloud.com/', []);
-		$client->expects($this->at(1))
-			->method('get')
-			->with('http://www.owncloud.com/', [])
-			->will($this->throwException(new \Exception()));
+			->withConsecutive(
+				['https://www.owncloud.com/', []],
+				['http://www.owncloud.com/', []],
+			)
+			->willReturnOnConsecutiveCalls(
+				[],
+				$this->throwException(new \Exception()),
+			);
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
@@ -284,22 +290,21 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testCheck() {
-		$this->config->expects($this->at(0))
+		$this->config
+			->expects($this->any())
 			->method('getSystemValue')
-			->with('has_internet_connection', true)
-			->will($this->returnValue(true));
-		$this->config->expects($this->at(1))
-			->method('getSystemValue')
-			->with('memcache.local', null)
-			->will($this->returnValue('SomeProvider'));
-		$this->config->expects($this->at(2))
-			->method('getSystemValue')
-			->with('has_internet_connection', true)
-			->will($this->returnValue(false));
-		$this->config->expects($this->at(3))
-			->method('getSystemValue')
-			->with('trusted_proxies', [])
-			->willReturn(['1.2.3.4']);
+			->withConsecutive(
+				['has_internet_connection', true],
+				['memcache.local', null],
+				['has_internet_connection', true],
+				['trusted_proxies', []],
+			)
+			->willReturnOnConsecutiveCalls(
+				true,
+				'SomeProvider',
+				false,
+				['1.2.3.4'],
+			);
 
 		$this->request->expects($this->once())
 			->method('getRemoteAddress')
@@ -307,33 +312,39 @@ class CheckSetupControllerTest extends TestCase {
 
 		$client = $this->getMockBuilder('\OCP\Http\Client\IClient')
 			->disableOriginalConstructor()->getMock();
-		$client->expects($this->at(0))
+		$client
+			->expects($this->exactly(2))
 			->method('get')
-			->with('https://www.owncloud.com/', []);
-		$client->expects($this->at(1))
-			->method('get')
-			->with('http://www.owncloud.com/', [])
-			->will($this->throwException(new \Exception()));
+			->withConsecutive(
+				['https://www.owncloud.com/', []],
+				['http://www.owncloud.com/', []],
+			)
+			->willReturnOnConsecutiveCalls(
+				[],
+				$this->throwException(new \Exception())
+			);
 
 		$this->clientService->expects($this->once())
 			->method('newClient')
 			->will($this->returnValue($client));
-		$this->urlGenerator->expects($this->at(0))
+		$this->urlGenerator
+			->expects($this->any())
 			->method('linkToDocs')
-			->with('admin-performance')
-			->willReturn('http://doc.owncloud.com/server/go.php?to=admin-performance');
-		$this->urlGenerator->expects($this->at(1))
-			->method('linkToDocs')
-			->with('admin-security')
-			->willReturn('https://doc.owncloud.com/server/8.1/admin_manual/configuration_server/hardening.html');
+			->withConsecutive(
+				['admin-performance'],
+				['admin-security'],
+				['admin-reverse-proxy'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'http://doc.owncloud.com/server/go.php?to=admin-performance',
+				'https://doc.owncloud.com/server/8.1/admin_manual/configuration_server/hardening.html',
+				'reverse-proxy-doc-link',
+			);
+
 		$this->checkSetupController
 			->expects($this->once())
 			->method('isEndOfLive')
 			->willReturn(true);
-		$this->urlGenerator->expects($this->at(2))
-			->method('linkToDocs')
-			->with('admin-reverse-proxy')
-			->willReturn('reverse-proxy-doc-link');
 
 		$expected = new DataResponse(
 			[
@@ -463,7 +474,8 @@ class CheckSetupControllerTest extends TestCase {
 			->method('getResponse')
 			->will($this->returnValue($response));
 
-		$client->expects($this->at(0))
+		$client
+			->expects($this->once())
 			->method('get')
 			->with('https://www.owncloud.com/', [])
 			->will($this->throwException($exception));
@@ -497,7 +509,8 @@ class CheckSetupControllerTest extends TestCase {
 			->method('getResponse')
 			->will($this->returnValue($response));
 
-		$client->expects($this->at(0))
+		$client
+			->expects($this->once())
 			->method('get')
 			->with('https://www.owncloud.com/', [])
 			->will($this->throwException($exception));
@@ -511,7 +524,7 @@ class CheckSetupControllerTest extends TestCase {
 
 	public function testIsUsedTlsLibOutdatedWithInternetDisabled() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
 			->will($this->returnValue(false));
@@ -520,20 +533,15 @@ class CheckSetupControllerTest extends TestCase {
 
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingEnabled() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
 			->will($this->returnValue(true));
 		$this->config
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getAppValue')
 			->with('files_sharing', 'outgoing_server2server_share_enabled', 'yes')
-			->will($this->returnValue('no'));
-		$this->config
-			->expects($this->at(2))
-			->method('getAppValue')
-			->with('files_sharing', 'incoming_server2server_share_enabled', 'yes')
-			->will($this->returnValue('yes'));
+			->willReturn('yes');
 
 		$this->checkSetupController
 			->expects($this->once())
@@ -544,20 +552,20 @@ class CheckSetupControllerTest extends TestCase {
 
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingDisabled() {
 		$this->config
-			->expects($this->at(0))
 			->method('getSystemValue')
 			->with('has_internet_connection', true)
 			->will($this->returnValue(true));
 		$this->config
-			->expects($this->at(1))
+			->expects($this->exactly(2))
 			->method('getAppValue')
-			->with('files_sharing', 'outgoing_server2server_share_enabled', 'yes')
-			->will($this->returnValue('no'));
-		$this->config
-			->expects($this->at(2))
-			->method('getAppValue')
-			->with('files_sharing', 'incoming_server2server_share_enabled', 'yes')
-			->will($this->returnValue('no'));
+			->withConsecutive(
+				['files_sharing', 'outgoing_server2server_share_enabled', 'yes'],
+				['files_sharing', 'incoming_server2server_share_enabled', 'yes'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'no',
+				'no',
+			);
 
 		$this->checkSetupController
 			->expects($this->never())

@@ -74,12 +74,13 @@ class UpdateDBTest extends TestCase {
 		$this->loader->expects($this->never())
 			->method('updateFilecache');
 
-		$this->consoleOutput->expects($this->at(0))
+		$this->consoleOutput
+			->expects($this->exactly(2))
 			->method('writeln')
-			->with('Added 0 new mimetypes');
-		$this->consoleOutput->expects($this->at(1))
-			->method('writeln')
-			->with('Updated 0 filecache rows');
+			->withConsecutive(
+				['Added 0 new mimetypes'],
+				['Updated 0 filecache rows'],
+			);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
@@ -113,19 +114,15 @@ class UpdateDBTest extends TestCase {
 			->with('new', 2)
 			->willReturn(3);
 
-		$this->consoleOutput->expects($this->at(0))
+		$this->consoleOutput
+			->expects($this->exactly(4))
 			->method('writeln')
-			->with('Added mimetype "testing/newmimetype" to database');
-		$this->consoleOutput->expects($this->at(1))
-			->method('writeln')
-			->with('Updated 3 filecache rows for mimetype "testing/newmimetype"');
-
-		$this->consoleOutput->expects($this->at(2))
-			->method('writeln')
-			->with('Added 1 new mimetypes');
-		$this->consoleOutput->expects($this->at(3))
-			->method('writeln')
-			->with('Updated 3 filecache rows');
+			->withConsecutive(
+				['Added mimetype "testing/newmimetype" to database'],
+				['Updated 3 filecache rows for mimetype "testing/newmimetype"'],
+				['Added 1 new mimetypes'],
+				['Updated 3 filecache rows'],
+			);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
@@ -168,16 +165,14 @@ class UpdateDBTest extends TestCase {
 			->with('ext', 1)
 			->willReturn(3);
 
-		$this->consoleOutput->expects($this->at(0))
+		$this->consoleOutput
+			->expects($this->exactly(3))
 			->method('writeln')
-			->with('Updated 3 filecache rows for mimetype "testing/existingmimetype"');
-
-		$this->consoleOutput->expects($this->at(1))
-			->method('writeln')
-			->with('Added 0 new mimetypes');
-		$this->consoleOutput->expects($this->at(2))
-			->method('writeln')
-			->with('Updated 3 filecache rows');
+			->withConsecutive(
+				['Updated 3 filecache rows for mimetype "testing/existingmimetype"'],
+				['Added 0 new mimetypes'],
+				['Updated 3 filecache rows'],
+			);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}

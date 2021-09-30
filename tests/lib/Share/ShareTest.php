@@ -997,23 +997,31 @@ class ShareTest extends \Test\TestCase {
 		$oldFallbackValue = \OC::$server->getConfig()->getSystemValue('sharing.federation.allowHttpFallback');
 		\OC::$server->getConfig()->setSystemValue('sharing.federation.allowHttpFallback', $allowFallback);
 
-		if ($httpsSuccess) {
-			$httpHelperMock->expects($this->at(0))
-				->method('post')
-				->with($this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares'), $this->anything())
-				->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
-		} else {
-			$httpHelperMock->expects($this->at(0))
-				->method('post')
-				->with($this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares'), $this->anything())
-				->willReturn(['success' => false, 'result' => 'Exception']);
-		}
-
 		if ($allowFallback && !$httpsSuccess) {
-			$httpHelperMock->expects($this->at(1))
+			$returnValueMap[] = ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])];
+
+			$httpHelperMock
+				->expects($this->exactly(2))
 				->method('post')
-				->with($this->stringStartsWith('http://' . $urlHost . '/ocs/v1.php/cloud/shares'), $this->anything())
-				->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
+				->withConsecutive(
+					[$this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares'), $this->anything()],
+					[$this->stringStartsWith('http://' . $urlHost . '/ocs/v1.php/cloud/shares'), $this->anything()],
+				)
+				->willReturnOnConsecutiveCalls(
+					['success' => false, 'result' => 'Exception'],
+					['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])],
+				);
+		} else {
+			if ($httpsSuccess) {
+				$returnValue = ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])];
+			} else {
+				$returnValue = ['success' => false, 'result' => 'Exception'];
+			}
+			$httpHelperMock
+				->expects($this->any())
+				->method('post')
+				->with($this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares'), $this->anything())
+				->willReturn($returnValue);
 		}
 
 		\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, $shareWith, \OCP\Constants::PERMISSION_READ);
@@ -1021,23 +1029,33 @@ class ShareTest extends \Test\TestCase {
 		$shares = \OCP\Share::getItemShared('test', 'test.txt');
 		$share = \array_shift($shares);
 
-		if ($httpsSuccess) {
-			$httpHelperMock->expects($this->at(0))
-				->method('post')
-				->with($this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything())
-				->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
-		} else {
-			$httpHelperMock->expects($this->at(0))
-				->method('post')
-				->with($this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything())
-				->willReturn(['success' => false, 'result' => 'Exception']);
-		}
-
 		if ($allowFallback && !$httpsSuccess) {
-			$httpHelperMock->expects($this->at(1))
+			$returnValueMap[] = ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])];
+
+			$httpHelperMock
+				->expects($this->exactly(2))
 				->method('post')
-				->with($this->stringStartsWith('http://' . $urlHost . '/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything())
-				->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
+				->withConsecutive(
+					[$this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything()],
+					[$this->stringStartsWith('http://' . $urlHost . '/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything()],
+				)
+				->willReturnOnConsecutiveCalls(
+					['success' => false, 'result' => 'Exception'],
+					['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])],
+				);
+		} else {
+			if ($httpsSuccess) {
+				$returnValue = ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])];
+				$callCount = 1;
+			} else {
+				$returnValue = ['success' => false, 'result' => 'Exception'];
+				$callCount = 2;
+			}
+			$httpHelperMock
+				->expects($this->exactly($callCount))
+				->method('post')
+				->with($this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything())
+				->willReturn($returnValue);
 		}
 
 		\OCP\Share::unshare('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, $shareWith);
@@ -1443,7 +1461,7 @@ class ShareTest extends \Test\TestCase {
 			->getMock();
 		$this->setHttpHelper($httpHelperMock);
 
-		$httpHelperMock->expects($this->at(0))
+		$httpHelperMock
 			->method('post')
 			->with($this->stringStartsWith('https://localhost/ocs/v1.php/cloud/shares'), $this->anything())
 			->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
@@ -1460,7 +1478,7 @@ class ShareTest extends \Test\TestCase {
 			$this->assertEquals('Sharing test.txt failed, because this item is already shared with foo@localhost', $e->getMessage());
 		}
 
-		$httpHelperMock->expects($this->at(0))
+		$httpHelperMock->expects($this->once())
 			->method('post')
 			->with($this->stringStartsWith('https://localhost/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything())
 			->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);

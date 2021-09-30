@@ -85,32 +85,26 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 
 	public function testIsLinkSharingEnabledWithEverythinEnabled() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getAppValue')
-			->with('core', 'shareapi_enabled', 'yes')
-			->will($this->returnValue('yes'));
-
-		$this->config
-			->expects($this->at(1))
-			->method('getAppValue')
-			->with('core', 'shareapi_allow_links', 'yes')
-			->will($this->returnValue('yes'));
+			->withConsecutive(
+				['core', 'shareapi_enabled', 'yes'],
+				['core', 'shareapi_allow_links', 'yes'],
+			)
+			->willReturnOnConsecutiveCalls('yes', 'yes');
 
 		$this->assertTrue(self::invokePrivate($this->sharingCheckMiddleware, 'isLinkSharingEnabled'));
 	}
 
 	public function testIsLinkSharingEnabledWithLinkSharingDisabled() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getAppValue')
-			->with('core', 'shareapi_enabled', 'yes')
-			->will($this->returnValue('yes'));
-
-		$this->config
-			->expects($this->at(1))
-			->method('getAppValue')
-			->with('core', 'shareapi_allow_links', 'yes')
-			->will($this->returnValue('no'));
+			->withConsecutive(
+				['core', 'shareapi_enabled', 'yes'],
+				['core', 'shareapi_allow_links', 'yes'],
+			)
+			->willReturnOnConsecutiveCalls('yes', 'no');
 
 		$this->assertFalse(self::invokePrivate($this->sharingCheckMiddleware, 'isLinkSharingEnabled'));
 	}
@@ -217,16 +211,13 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 			->will($this->returnValue(true));
 
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getAppValue')
-			->with('core', 'shareapi_enabled', 'yes')
-			->will($this->returnValue('yes'));
-
-		$this->config
-			->expects($this->at(1))
-			->method('getAppValue')
-			->with('core', 'shareapi_allow_links', 'yes')
-			->will($this->returnValue('yes'));
+			->withConsecutive(
+				['core', 'shareapi_enabled', 'yes'],
+				['core', 'shareapi_allow_links', 'yes'],
+			)
+			->willReturnOnConsecutiveCalls('yes', 'yes');
 
 		$controller = $this->getMockBuilder('\OCA\Files_Sharing\Controllers\ShareController')
 			->disableOriginalConstructor()->getMock();

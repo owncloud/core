@@ -124,13 +124,17 @@ class NotificationsTest extends \Test\TestCase {
 
 		$instance->expects($this->any())->method('getTimestamp')->willReturn($timestamp);
 
-		$instance->expects($this->at(0))->method('tryHttpPostToShareEndpoint')
-			->with($remote, '/notifications', $this->anything(), true)
-			->willReturn($ocmHttpRequestResult);
-
-		$instance->expects($this->at(1))->method('tryHttpPostToShareEndpoint')
-			->with($remote, '/'.$id.'/unshare', ['token' => $token, 'data1Key' => 'data1Value'])
-			->willReturn($httpRequestResult);
+		$instance
+			->expects($this->exactly(2))
+			->method('tryHttpPostToShareEndpoint')
+			->withConsecutive(
+				[$remote, '/notifications', $this->anything(), true],
+				[$remote, '/'.$id.'/unshare', ['token' => $token, 'data1Key' => 'data1Value']],
+			)
+			->willReturnOnConsecutiveCalls(
+				$ocmHttpRequestResult,
+				$httpRequestResult,
+			);
 
 		$this->addressHandler->method('removeProtocolFromUrl')
 			->with($remote)->willReturn($remote);

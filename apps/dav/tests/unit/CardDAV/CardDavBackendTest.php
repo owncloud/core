@@ -183,8 +183,14 @@ class CardDavBackendTest extends TestCase {
 
 		$uri = static::getUniqueID('card');
 		// updateProperties is expected twice, once for createCard and once for updateCard
-		$backend->expects($this->at(0))->method('updateProperties')->with($bookId, $uri, '');
-		$backend->expects($this->at(1))->method('updateProperties')->with($bookId, $uri, '***');
+		$backend
+			->expects($this->exactly(2))
+			->method('updateProperties')
+			->withConsecutive(
+				[$bookId, $uri, ''],
+				[$bookId, $uri, '***'],
+			);
+
 		// create a card
 		$backend->createCard($bookId, $uri, '');
 

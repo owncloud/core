@@ -393,31 +393,31 @@ class LostControllerTest extends TestCase {
 		$message = $this->getMockBuilder('\OC\Mail\Message')
 			->disableOriginalConstructor()->getMock();
 		$message
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('setTo')
 			->with(['test@example.com' => 'Existing User Name']);
 		$message
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('setSubject')
 			->with(' password reset');
 		$message
-			->expects($this->at(2))
+			->expects($this->once())
 			->method('setPlainBody')
 			->with($this->stringContains('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/'));
 		$message
-			->expects($this->at(3))
+			->expects($this->once())
 			->method('setHtmlBody')
 			->with($this->stringContains('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>'));
 		$message
-			->expects($this->at(4))
+			->expects($this->once())
 			->method('setFrom')
 			->with(['lostpassword-noreply@localhost' => null]);
 		$this->mailer
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('createMessage')
 			->will($this->returnValue($message));
 		$this->mailer
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('send')
 			->with($message);
 
@@ -494,31 +494,31 @@ class LostControllerTest extends TestCase {
 		$message = $this->getMockBuilder('\OC\Mail\Message')
 			->disableOriginalConstructor()->getMock();
 		$message
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('setTo')
 			->with(['test@example.com' => 'Existing User Name']);
 		$message
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('setSubject')
 			->with(' password reset');
 		$message
-			->expects($this->at(2))
+			->expects($this->once())
 			->method('setPlainBody')
 			->with($this->stringContains('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/'));
 		$message
-			->expects($this->at(3))
+			->expects($this->once())
 			->method('setHtmlBody')
 			->with($this->stringContains('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>'));
 		$message
-			->expects($this->at(4))
+			->expects($this->once())
 			->method('setFrom')
 			->with(['lostpassword-noreply@localhost' => null]);
 		$this->mailer
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('createMessage')
 			->will($this->returnValue($message));
 		$this->mailer
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('send')
 			->with($message);
 
@@ -559,31 +559,31 @@ class LostControllerTest extends TestCase {
 		$message = $this->getMockBuilder('\OC\Mail\Message')
 			->disableOriginalConstructor()->getMock();
 		$message
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('setTo')
 			->with(['test@example.com' => 'Existing User Name']);
 		$message
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('setSubject')
 			->with(' password reset');
 		$message
-			->expects($this->at(2))
+			->expects($this->once())
 			->method('setPlainBody')
 			->with($this->stringContains('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/'));
 		$message
-			->expects($this->at(3))
+			->expects($this->once())
 			->method('setHtmlBody')
 			->with($this->stringContains('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>'));
 		$message
-			->expects($this->at(4))
+			->expects($this->once())
 			->method('setFrom')
 			->with(['lostpassword-noreply@localhost' => null]);
 		$this->mailer
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('createMessage')
 			->will($this->returnValue($message));
 		$this->mailer
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('send')
 			->with($message)
 			->will($this->throwException(new \Exception()));
@@ -651,31 +651,31 @@ class LostControllerTest extends TestCase {
 		$message = $this->getMockBuilder('\OC\Mail\Message')
 			->disableOriginalConstructor()->getMock();
 		$message
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('setTo')
 			->with(['test@example.com' => 'ValidTokenUser']);
 		$message
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('setSubject')
 			->with(' password changed successfully');
 		$message
-			->expects($this->at(2))
+			->expects($this->once())
 			->method('setPlainBody')
 			->with($this->stringContains('Password changed successfully'));
 		$message
-			->expects($this->at(3))
+			->expects($this->once())
 			->method('setHtmlBody')
 			->with($this->stringContains('Password changed successfully'));
 		$message
-			->expects($this->at(4))
+			->expects($this->once())
 			->method('setFrom')
 			->with(['lostpassword-noreply@localhost' => null]);
 		$this->mailer
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('createMessage')
 			->will($this->returnValue($message));
 		$this->mailer
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('send')
 			->with($message);
 

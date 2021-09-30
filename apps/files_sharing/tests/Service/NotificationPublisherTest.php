@@ -182,20 +182,21 @@ class NotificationPublisherTest extends TestCase {
 			),
 		];
 
-		$this->notificationManager->expects($this->at(0))
+		$this->notificationManager
+			->expects($this->exactly(2))
 			->method('createNotification')
-			->willReturn($expectedNotifications[0]);
-		$this->notificationManager->expects($this->at(1))
-			->method('notify')
-			->with($expectedNotifications[0]);
+			->willReturnOnConsecutiveCalls(
+				$expectedNotifications[0],
+				$expectedNotifications[1],
+			);
 
-		$this->notificationManager->expects($this->at(2))
-			->method('createNotification')
-			->willReturn($expectedNotifications[1]);
-
-		$this->notificationManager->expects($this->at(3))
+		$this->notificationManager
+			->expects($this->exactly(2))
 			->method('notify')
-			->with($expectedNotifications[1]);
+			->withConsecutive(
+				[$expectedNotifications[0]],
+				[$expectedNotifications[1]],
+			);
 
 		$share = $this->createShare();
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);

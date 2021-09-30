@@ -105,23 +105,16 @@ class ConfigAdapterTest extends \Test\TestCase {
 			->method('wrap')
 			->will($this->returnArgument(1));
 
-		$this->userStoragesService->expects($this->at(0))
+		$this->userStoragesService->expects($this->once())
 			->method('setUser')
 			->with($this->user);
-		$this->userGlobalStoragesService->expects($this->at(0))
-			->method('setUser')
-			->with($this->user);
-
-		$this->userGlobalStoragesService->expects($this->at(1))
+		$this->userGlobalStoragesService->expects($this->once())
 			->method('getUniqueStorages')
 			->willReturn($globalStorages);
-		$this->userStoragesService->expects($this->at(1))
+		$this->userStoragesService->expects($this->once())
 			->method('getStorages')
 			->willReturn($personalStorages);
-
-		$this->userStoragesService->expects($this->at(2))
-			->method('resetUser');
-		$this->userGlobalStoragesService->expects($this->at(2))
+		$this->userStoragesService->expects($this->once())
 			->method('resetUser');
 
 		$configAdapter = new ConfigAdapter(

@@ -66,15 +66,14 @@ class SingleUserTest extends TestCase {
 	}
 
 	public function testChangeStateToOff() {
-		$this->consoleInput->expects($this->at(0))
+		$this->consoleInput
+			->expects($this->exactly(2))
 			->method('getOption')
-			->with('on')
-			->willReturn(false);
-
-		$this->consoleInput->expects($this->at(1))
-			->method('getOption')
-			->with('off')
-			->willReturn(true);
+			->withConsecutive(
+				['on'],
+				['off'],
+			)
+			->willReturnOnConsecutiveCalls(false, true);
 
 		$this->config->expects($this->once())
 			->method('setSystemValue')
@@ -101,15 +100,14 @@ class SingleUserTest extends TestCase {
 	 * @param $expectedOutput
 	 */
 	public function testState($state, $expectedOutput) {
-		$this->consoleInput->expects($this->at(0))
+		$this->consoleInput
+			->expects($this->exactly(2))
 			->method('getOption')
-			->with('on')
-			->willReturn(false);
-
-		$this->consoleInput->expects($this->at(1))
-			->method('getOption')
-			->with('off')
-			->willReturn(false);
+			->withConsecutive(
+				['on'],
+				['off'],
+			)
+			->willReturnOnConsecutiveCalls(false, false);
 
 		$this->config->expects($this->once())
 			->method('getSystemValue')
