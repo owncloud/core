@@ -557,22 +557,22 @@ class OCSContext implements Context {
 	/**
 	 * @When user :user requests these endpoints with :method including body :body using password :password about user :ofUser
 	 *
-	 * @param string $user
-	 * @param string $method
-	 * @param string $body
-	 * @param string $password
-	 * @param string $ofUser
+	 * @param string|null $user
+	 * @param string|null $method
+	 * @param string|null $body
+	 * @param string|null $password
+	 * @param string|null $ofUser
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword(
-		string $user,
-		string $method,
-		string $body,
-		string $password,
-		string $ofUser,
+		?string $user,
+		?string $method,
+		?string $body,
+		?string $password,
+		?string $ofUser,
 		TableNode $table
 	):void {
 		$user = $this->featureContext->getActualUsername($user);
