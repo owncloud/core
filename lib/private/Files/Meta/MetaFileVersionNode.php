@@ -27,10 +27,11 @@ use OC\Files\Node\File;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IProvidesAdditionalHeaders;
 use OC\Preview;
+use OCA\Files_Sharing\SharedStorage;
 use OCP\Files\IRootFolder;
 use OCP\Files\IPreviewNode;
 use OCP\Files\Storage\IVersionedStorage;
-use OCP\Files\Storage;
+use OCP\Files\Storage\IStorage;
 use OCP\IImage;
 
 /**
@@ -45,7 +46,7 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	private $versionId;
 	/** @var MetaVersionCollection */
 	private $parent;
-	/** @var IVersionedStorage */
+	/** @var IStorage|IVersionedStorage|SharedStorage */
 	private $storage;
 	/** @var string */
 	private $internalPath;
@@ -60,14 +61,14 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @param MetaVersionCollection $parent
 	 * @param IRootFolder $root
 	 * @param array $version
-	 * @param Storage $storage
+	 * @param IStorage|IVersionedStorage|SharedStorage $storage
 	 * @param string $internalPath
 	 */
 	public function __construct(
 		MetaVersionCollection $parent,
 		IRootFolder $root,
 		array $version,
-		Storage\IStorage $storage,
+		IStorage $storage,
 		$internalPath
 	) {
 		$this->parent = $parent;
@@ -146,6 +147,10 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @inheritdoc
 	 */
 	public function getContentDispositionFileName() {
+		if ($this->storage->instanceOfStorage(SharedStorage::class)) {
+			$mountPoint = $this->storage->getMountPoint();
+			return \basename($mountPoint);
+		}
 		return \basename($this->internalPath);
 	}
 

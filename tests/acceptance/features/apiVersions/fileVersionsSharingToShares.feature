@@ -301,7 +301,7 @@ Feature: dav-versions
     And the version folder of file "/Shares/sharefile.txt" for user "Brian" should contain "1" element
     And the version folder of file "/sharefile.txt" for user "Alice" should contain "1" element
 
-  @issue-36228 @skipOnOcV10
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: download old versions of a shared file as share receiver
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "uploaded content" to "textfile0.txt"
