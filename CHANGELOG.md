@@ -45,6 +45,7 @@ Summary
 * Bugfix - Don't show empty brackets in lock owner information if mail not set: [#39292](https://github.com/owncloud/core/pull/39292)
 * Bugfix - Use original UID when setting the share receiver: [#39293](https://github.com/owncloud/core/pull/39293)
 * Bugfix - Versions for files named "0": [#39300](https://github.com/owncloud/core/pull/39300)
+* Bugfix - File version names for share recipients: [#39314](https://github.com/owncloud/core/pull/39314)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -383,6 +384,14 @@ Details
 
    https://github.com/owncloud/core/issues/36000
    https://github.com/owncloud/core/pull/39300
+
+* Bugfix - File version names for share recipients: [#39314](https://github.com/owncloud/core/pull/39314)
+
+   With this fix, file version names now match with the actual file name for share recipients.
+   Before, the name has been the timestamp of the version file.
+
+   https://github.com/owncloud/core/issues/36228
+   https://github.com/owncloud/core/pull/39314
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
