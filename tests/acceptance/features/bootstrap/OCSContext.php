@@ -50,7 +50,7 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserSendsToOcsApiEndpoint($verb, $url) {
+	public function theUserSendsToOcsApiEndpoint(string $verb, string $url):void {
 		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
 	}
 
@@ -62,7 +62,7 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserHasSentToOcsApiEndpoint($verb, $url) {
+	public function theUserHasSentToOcsApiEndpoint(string $verb, string $url):void {
 		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -74,11 +74,11 @@ class OCSContext implements Context {
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function userSendsToOcsApiEndpoint($user, $verb, $url, $password = null) {
+	public function userSendsToOcsApiEndpoint(string $user, string $verb, string $url, ?string $password = null):void {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$verb,
@@ -94,11 +94,11 @@ class OCSContext implements Context {
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function userHasSentToOcsApiEndpoint($user, $verb, $url, $password = null) {
+	public function userHasSentToOcsApiEndpoint(string $user, string $verb, string $url, ?string $password = null):void {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$verb,
@@ -113,20 +113,20 @@ class OCSContext implements Context {
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
-	 * @param TableNode|array|null $body
+	 * @param TableNode|null $body
 	 * @param string|null $password
-	 * @param array $headers
+	 * @param array|null $headers
 	 *
 	 * @return void
 	 */
 	public function userSendsHTTPMethodToOcsApiEndpointWithBody(
-		$user,
-		$verb,
-		$url,
-		$body = null,
-		$password = null,
-		$headers = null
-	) {
+		string $user,
+		string $verb,
+		string $url,
+		?TableNode $body = null,
+		?string $password = null,
+		?array $headers = null
+	):void {
 		/**
 		 * array of the data to be sent in the body.
 		 * contains $body data converted to an array
@@ -171,10 +171,10 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function adminSendsHttpMethodToOcsApiEndpointWithBody(
-		$verb,
-		$url,
+		string $verb,
+		string $url,
 		TableNode $body
-	) {
+	):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$admin,
@@ -191,7 +191,7 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body) {
+	public function theUserSendsToOcsApiEndpointWithBody(string $verb, string $url, TableNode $body):void {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->featureContext->getCurrentUser(),
 			$verb,
@@ -207,17 +207,17 @@ class OCSContext implements Context {
 	 * @param string $verb
 	 * @param string $url
 	 * @param TableNode|null $body
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
 	public function userSendHTTPMethodToOcsApiEndpointWithBody(
-		$user,
-		$verb,
-		$url,
-		$body = null,
-		$password = null
-	) {
+		string $user,
+		string $verb,
+		string $url,
+		?TableNode $body = null,
+		?string $password = null
+	):void {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$verb,
@@ -239,12 +239,12 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function userHasSentHTTPMethodToOcsApiEndpointWithBody(
-		$user,
-		$verb,
-		$url,
-		$body = null,
-		$password = null
-	) {
+		string $user,
+		string $verb,
+		string $url,
+		?TableNode $body = null,
+		?string $password = null
+	):void {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$verb,
@@ -261,15 +261,15 @@ class OCSContext implements Context {
 	 *
 	 * @param string $verb
 	 * @param string $url
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
 	public function theAdministratorSendsHttpMethodToOcsApiEndpoint(
-		$verb,
-		$url,
-		$password = null
-	) {
+		string $verb,
+		string $url,
+		?string $password = null
+	):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->userSendsToOcsApiEndpoint($admin, $verb, $url, $password);
 	}
@@ -286,11 +286,11 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function userSendsToOcsApiEndpointWithHeaders(
-		$user,
-		$verb,
-		$url,
+		string $user,
+		string $verb,
+		string $url,
 		TableNode $headersTable
-	) {
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getPasswordForUser($user);
 		$this->userSendsToOcsApiEndpointWithHeadersAndPassword(
@@ -313,10 +313,10 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function administratorSendsToOcsApiEndpointWithHeaders(
-		$verb,
-		$url,
+		string $verb,
+		string $url,
 		TableNode $headersTable
-	) {
+	):void {
 		$this->userSendsToOcsApiEndpointWithHeaders(
 			$this->featureContext->getAdminUsername(),
 			$verb,
@@ -338,12 +338,12 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function userSendsToOcsApiEndpointWithHeadersAndPassword(
-		$user,
-		$verb,
-		$url,
-		$password,
+		string $user,
+		string $verb,
+		string $url,
+		string $password,
 		TableNode $headersTable
-	) {
+	):void {
 		$this->featureContext->verifyTableNodeColumns(
 			$headersTable,
 			['header', 'value']
@@ -380,11 +380,11 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function administratorSendsToOcsApiEndpointWithHeadersAndPassword(
-		$verb,
-		$url,
-		$password,
+		string $verb,
+		string $url,
+		string $password,
 		TableNode $headersTable
-	) {
+	):void {
 		$this->userSendsToOcsApiEndpointWithHeadersAndPassword(
 			$this->featureContext->getAdminUsername(),
 			$verb,
@@ -404,10 +404,10 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSendsHttpMethodToOcsApiEndpointWithBody(
-		$verb,
-		$url,
-		TableNode $body
-	) {
+		string $verb,
+		string $url,
+		?TableNode $body
+	):void {
 		$this->adminSendsHttpMethodToOcsApiEndpointWithBody(
 			$verb,
 			$url,
@@ -425,10 +425,10 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorHasSentHttpMethodToOcsApiEndpointWithBody(
-		$verb,
-		$url,
-		TableNode $body
-	) {
+		string $verb,
+		string $url,
+		?TableNode $body
+	):void {
 		$this->adminSendsHttpMethodToOcsApiEndpointWithBody(
 			$verb,
 			$url,
@@ -446,7 +446,7 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserSendsHTTPMethodToOcsApiEndpointWithBody($verb, $url, $body) {
+	public function theUserSendsHTTPMethodToOcsApiEndpointWithBody(string $verb, string $url, TableNode $body):void {
 		$this->theUserSendsHTTPMethodToOcsApiEndpointWithBody(
 			$verb,
 			$url,
@@ -463,7 +463,7 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserHasSentHTTPMethodToOcsApiEndpointWithBody($verb, $url, $body) {
+	public function theUserHasSentHTTPMethodToOcsApiEndpointWithBody(string $verb, string $url, TableNode $body):void {
 		$this->theUserSendsHTTPMethodToOcsApiEndpointWithBody(
 			$verb,
 			$url,
@@ -483,11 +483,11 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSendsHttpMethodToOcsApiWithBodyAndPassword(
-		$verb,
-		$url,
-		$password,
+		string $verb,
+		string $url,
+		string $password,
 		TableNode $body
-	) {
+	):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$admin,
@@ -510,12 +510,12 @@ class OCSContext implements Context {
 	 * @return void
 	 */
 	public function userSendsHTTPMethodToOcsApiEndpointWithBodyAndPassword(
-		$user,
-		$verb,
-		$url,
-		$password,
-		$body
-	) {
+		string $user,
+		string $verb,
+		string $url,
+		string $password,
+		TableNode $body
+	):void {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$verb,
@@ -535,15 +535,15 @@ class OCSContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function userSendsRequestToTheseEndpointsWithOutBodyUsingPassword(
-		$user,
-		$method,
-		$password,
-		$ofUser,
+		string $user,
+		string $method,
+		string $password,
+		string $ofUser,
 		TableNode $table
-	) {
+	):void {
 		$this->userSendsRequestToTheseEndpointsWithBodyUsingPassword(
 			$user,
 			$method,
@@ -565,16 +565,16 @@ class OCSContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function userSendsRequestToTheseEndpointsWithBodyUsingPassword(
-		$user,
-		$method,
-		$body,
-		$password,
-		$ofUser,
+		string $user,
+		string $method,
+		string $body,
+		string $password,
+		string $ofUser,
 		TableNode $table
-	) {
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint'], ['destination']);
@@ -616,7 +616,7 @@ class OCSContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userSendsRequestToTheseEndpointsWithBody($user, $method, $body, $ofUser, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsWithBody(string $user, string $method, string $body, string $ofUser, TableNode $table):void {
 		$header = [];
 		if ($method === 'MOVE' || $method === 'COPY') {
 			$header['Destination'] = '/path/to/destination';
@@ -645,7 +645,7 @@ class OCSContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userSendsRequestToTheseEndpointsWithProperty($user, $method, $property, $ofUser, TableNode $table) {
+	public function userSendsRequestToTheseEndpointsWithProperty(string $user, string $method, string $property, string  $ofUser, TableNode $table):void {
 		$this->sendRequestToTheseEndpointsAsNormalUser(
 			$user,
 			$method,
@@ -669,14 +669,14 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function sendRequestToTheseEndpointsAsNormalUser(
-		$user,
-		$method,
-		$ofUser,
-		$table,
-		$body = null,
-		$property = null,
-		$header = null
-	) {
+		string $user,
+		string $method,
+		string $ofUser,
+		TableNode $table,
+		?string $body = null,
+		?string $property = null,
+		?array $header = null
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$ofUser = $this->featureContext->getActualUsername($ofUser);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
@@ -714,7 +714,7 @@ class OCSContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser($asUser, $method, $body, $user, TableNode $table) {
+	public function userRequestsTheseEndpointsWithUsingThePasswordOfUser(string $asUser, string $method, string $body, string $user, TableNode $table):void {
 		$asUser = $this->featureContext->getActualUsername($asUser);
 		$userRenamed = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['endpoint']);
@@ -739,13 +739,13 @@ class OCSContext implements Context {
 	/**
 	 * @Then /^the OCS status code should be "([^"]*)"$/
 	 *
-	 * @param int|int[]|string|string[] $statusCode
+	 * @param string $statusCode
 	 * @param string $message
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
+	public function theOCSStatusCodeShouldBe(string $statusCode, $message = ""):void {
 		$responseStatusCode = $this->getOCSResponseStatusCode(
 			$this->featureContext->getResponse()
 		);
@@ -774,14 +774,15 @@ class OCSContext implements Context {
 	/**
 	 * @Then /^the OCS status code should be "([^"]*)" or "([^"]*)"$/
 	 *
-	 * @param int|string $statusCode1
-	 * @param int|string $statusCode2
+	 * @param string $statusCode1
+	 * @param string $statusCode2
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theOcsStatusCodeShouldBeOr($statusCode1, $statusCode2) {
+	public function theOcsStatusCodeShouldBeOr(string $statusCode1, string $statusCode2):void {
 		$this->theOCSStatusCodeShouldBe(
-			[$statusCode1, $statusCode2]
+			(string)[$statusCode1, $statusCode2]
 		);
 	}
 
@@ -792,11 +793,11 @@ class OCSContext implements Context {
 	 * @Then /^the OCS status message should be "([^"]*)" in language "([^"]*)"$/
 	 *
 	 * @param string $statusMessage
-	 * @param string $language
+	 * @param string|null $language
 	 *
 	 * @return void
 	 */
-	public function theOCSStatusMessageShouldBe($statusMessage, $language=null) {
+	public function theOCSStatusMessageShouldBe(string $statusMessage, ?string $language=null):void {
 		$language = TranslationHelper::getLanguage($language);
 		$statusMessage = $this->getActualStatusMessage($statusMessage, $language);
 
@@ -821,7 +822,7 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theOCSStatusMessageAboutUserShouldBe($user, $statusMessage) {
+	public function theOCSStatusMessageAboutUserShouldBe(string $user, string $statusMessage):void {
 		$user = \strtolower($this->featureContext->getActualUsername($user));
 		$statusMessage = $this->featureContext->substituteInLineCodes(
 			$statusMessage,
@@ -858,7 +859,7 @@ class OCSContext implements Context {
 	 */
 	public function theOCSStatusMessageShouldBePyString(
 		PyStringNode $statusMessage
-	) {
+	):void {
 		Assert::assertEquals(
 			$statusMessage->getRaw(),
 			$this->getOCSResponseStatusMessage(
@@ -877,14 +878,14 @@ class OCSContext implements Context {
 	 * @param ResponseInterface $response
 	 *
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function getOCSResponseStatusCode($response) {
+	public function getOCSResponseStatusCode(ResponseInterface $response):string {
 		$responseXml = $this->featureContext->getResponseXml($response, __METHOD__);
 		if (isset($responseXml->meta[0], $responseXml->meta[0]->statuscode)) {
 			return (string) $responseXml->meta[0]->statuscode;
 		}
-		throw new \Exception(
+		throw new Exception(
 			"No OCS status code found in responseXml"
 		);
 	}
@@ -897,19 +898,19 @@ class OCSContext implements Context {
 	 *
 	 * @return string
 	 */
-	public function getOCSResponseStatusMessage($response) {
+	public function getOCSResponseStatusMessage(ResponseInterface $response):string {
 		return (string) $this->featureContext->getResponseXml($response, __METHOD__)->meta[0]->message;
 	}
 
 	/**
 	 * convert status message in the desired language
 	 *
-	 * @param $statusMessage
-	 * @param $language
+	 * @param string $statusMessage
+	 * @param string $language
 	 *
 	 * @return string
 	 */
-	public function getActualStatusMessage($statusMessage, $language) {
+	public function getActualStatusMessage(string $statusMessage, string $language):string {
 		if ($language !== null) {
 			$multiLingualMessage = \json_decode(
 				\file_get_contents(__DIR__ . "/../../fixtures/multiLanguageErrors.json"),
@@ -927,12 +928,12 @@ class OCSContext implements Context {
 	 * check if the HTTP status code and the OCS status code indicate that the request was successful
 	 * this function is aware of the currently used OCS version
 	 *
-	 * @param string $message
+	 * @param string|null $message
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function assertOCSResponseIndicatesSuccess($message = "") {
+	public function assertOCSResponseIndicatesSuccess(?string $message = ""):void {
 		$this->featureContext->theHTTPStatusCodeShouldBe('200', $message);
 		if ($this->featureContext->getOcsApiVersion() === 1) {
 			$this->theOCSStatusCodeShouldBe('100', $message);
@@ -951,7 +952,7 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

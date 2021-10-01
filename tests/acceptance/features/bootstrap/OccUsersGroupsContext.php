@@ -56,8 +56,8 @@ class OccUsersGroupsContext implements Context {
 	 */
 	public function createUsersUsingOccCommand(
 		TableNode $table,
-		$checkOccCommandStatus = false
-	) {
+		bool $checkOccCommandStatus = false
+	):void {
 		foreach ($table as $row) {
 			$username = $row['username'];
 			$user = $this->featureContext->getActualUsername($username);
@@ -118,9 +118,9 @@ class OccUsersGroupsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorCreatesTheseUsersUsingTheOccCommand(TableNode $table) {
+	public function theAdministratorCreatesTheseUsersUsingTheOccCommand(TableNode $table):void {
 		$this->createUsersUsingOccCommand($table);
 	}
 
@@ -133,9 +133,9 @@ class OccUsersGroupsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theseUsersHaveBeenCreatedUsingTheOccCommand(TableNode $table) {
+	public function theseUsersHaveBeenCreatedUsingTheOccCommand(TableNode $table):void {
 		$this->createUsersUsingOccCommand($table, true);
 
 		foreach ($table as $row) {
@@ -151,7 +151,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorTriesToCreateAUserUsingTheOccCommand($username) {
+	public function theAdministratorTriesToCreateAUserUsingTheOccCommand(string $username):void {
 		$user = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommandWithEnvVariable(
 			"user:add $user  --password-from-env",
@@ -170,7 +170,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorCreatesUserPasswordGroupUsingTheOccCommand($username, $password, $group) {
+	public function theAdministratorCreatesUserPasswordGroupUsingTheOccCommand(string $username, string $password, string $group):void {
 		$user = $this->featureContext->getActualUsername($username);
 		$cmd = "user:add $user  --password-from-env --group=$group";
 		$actualPassword = $this->featureContext->getActualPassword($password);
@@ -198,7 +198,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function resetUserPasswordUsingTheOccCommand($username, $password) {
+	public function resetUserPasswordUsingTheOccCommand(string $username, string $password):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->resetUserPassword($username, $password);
 	}
@@ -212,7 +212,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function resetUserPasswordAndSendEmailUsingTheOccCommand($username, $password) {
+	public function resetUserPasswordAndSendEmailUsingTheOccCommand(string $username, string $password):void {
 		$this->resetUserPassword($username, $password, true);
 	}
 
@@ -224,7 +224,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorResetsTheirOwnPasswordToUsingTheOccCommand($newPassword) {
+	public function theAdministratorResetsTheirOwnPasswordToUsingTheOccCommand(string $newPassword):void {
 		$password = $this->featureContext->getActualPassword($newPassword);
 		$admin = $this->featureContext->getAdminUsername();
 		$this->occContext->invokingTheCommandWithEnvVariable(
@@ -243,7 +243,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorInvokesPasswordResetForUserUsingTheOccCommand($username) {
+	public function theAdministratorInvokesPasswordResetForUserUsingTheOccCommand(string $username):void {
 		$this->resetUserPassword($username);
 	}
 
@@ -256,7 +256,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorChangesTheEmailOfUserToUsingTheOccCommand($username, $newEmail) {
+	public function theAdministratorChangesTheEmailOfUserToUsingTheOccCommand(string $username, string $newEmail):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:modify $username email $newEmail"
@@ -273,7 +273,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheOccCommand($username, $newDisplayname) {
+	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheOccCommand(string $username, string $newDisplayname):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:modify $username displayname '$newDisplayname'"
@@ -290,7 +290,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorChangesTheQuotaOfUserToUsingTheOccCommand($username, $newQuota) {
+	public function theAdministratorChangesTheQuotaOfUserToUsingTheOccCommand(string $username, string $newQuota):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:modify $username quota $newQuota"
@@ -305,7 +305,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorDeletesUserUsingTheOccCommand($username) {
+	public function theAdministratorDeletesUserUsingTheOccCommand(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:delete $username"
@@ -319,7 +319,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorRetrievesAllTheUsersInJsonUsingTheOccCommand() {
+	public function theAdministratorRetrievesAllTheUsersInJsonUsingTheOccCommand():void {
 		$this->occContext->invokingTheCommand(
 			"user:list --output=json"
 		);
@@ -333,7 +333,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorGetsTheListOfAllUsersInactiveForTheLastDays($numberOfDays) {
+	public function theAdministratorGetsTheListOfAllUsersInactiveForTheLastDays(int $numberOfDays):void {
 		$this->occContext->invokingTheCommand(
 			"user:inactive $numberOfDays --output=json"
 		);
@@ -347,7 +347,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorRetrievesTheInformationOfUserInJsonUsingTheOccCommand($username) {
+	public function theAdministratorRetrievesTheInformationOfUserInJsonUsingTheOccCommand(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:list $username --output=json"
@@ -362,7 +362,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorGetsTheGroupsOfUserInJsonUsingTheOccCommand($username) {
+	public function theAdministratorGetsTheGroupsOfUserInJsonUsingTheOccCommand(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:list-group $username --output=json"
@@ -377,7 +377,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorRetrievesTheTimeWhenUserWasLastSeenUsingTheOccCommand($username) {
+	public function theAdministratorRetrievesTheTimeWhenUserWasLastSeenUsingTheOccCommand(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:lastseen $username"
@@ -394,9 +394,9 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorChangesTheLanguageOfUserToUsingTheOccCommand(
-		$username,
-		$language
-	) {
+		string $username,
+		string $language
+	):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:setting $username core lang --value='$language'"
@@ -409,7 +409,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorRetrievesTheUserReportUsingTheOccCommand() {
+	public function theAdministratorRetrievesTheUserReportUsingTheOccCommand():void {
 		$this->occContext->invokingTheCommand("user:report");
 	}
 
@@ -421,7 +421,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorCreatesGroupUsingTheOccCommand($group) {
+	public function theAdministratorCreatesGroupUsingTheOccCommand(string $group):void {
 		$this->occContext->invokingTheCommand(
 			"group:add $group"
 		);
@@ -437,7 +437,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorAddsUserToGroupUsingTheOccCommand($username, $group) {
+	public function theAdministratorAddsUserToGroupUsingTheOccCommand(string $username, string $group):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"group:add-member -m $username $group"
@@ -452,7 +452,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorDeletesGroupUsingTheOccCommand($group) {
+	public function theAdministratorDeletesGroupUsingTheOccCommand(string $group):void {
 		$this->occContext->invokingTheCommand(
 			"group:delete $group"
 		);
@@ -465,8 +465,9 @@ class OccUsersGroupsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorDeletesTheFollowingGroupsUsingTheOccCommand(TableNode $table) {
+	public function theAdministratorDeletesTheFollowingGroupsUsingTheOccCommand(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ["groupname"]);
 		$groups = $table->getHash();
 		foreach ($groups as $group) {
@@ -482,7 +483,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorGetsTheUsersInGroupInJsonUsingTheOccCommand($groupName) {
+	public function theAdministratorGetsTheUsersInGroupInJsonUsingTheOccCommand(string $groupName):void {
 		$this->occContext->invokingTheCommand(
 			"group:list-members $groupName --output=json"
 		);
@@ -494,7 +495,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorGetsTheGroupsInJsonUsingTheOccCommand() {
+	public function theAdministratorGetsTheGroupsInJsonUsingTheOccCommand():void {
 		$this->occContext->invokingTheCommand(
 			"group:list --output=json"
 		);
@@ -508,7 +509,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorGetsTheGroupsContainingInJsonUsingTheOccCommand(string $subString) {
+	public function theAdministratorGetsTheGroupsContainingInJsonUsingTheOccCommand(string $subString):void {
 		$this->occContext->invokingTheCommand(
 			"group:list $subString --output=json"
 		);
@@ -523,7 +524,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorRemovesUserFromGroupUsingTheOccCommand($username, $group) {
+	public function theAdministratorRemovesUserFromGroupUsingTheOccCommand(string $username, string $group):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"group:remove-member -m $username $group"
@@ -538,7 +539,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorDisablesUserUsingTheOccCommand($username) {
+	public function theAdministratorDisablesUserUsingTheOccCommand(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:disable $username"
@@ -553,7 +554,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function administratorEnablesUserUsingTheOccCommand($username) {
+	public function administratorEnablesUserUsingTheOccCommand(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:enable $username"
@@ -569,7 +570,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theLanguageOfUserReturnedByTheOccCommandShouldBe($username, $language) {
+	public function theLanguageOfUserReturnedByTheOccCommandShouldBe(string $username, string $language):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->occContext->invokingTheCommand(
 			"user:setting $username core lang"
@@ -591,7 +592,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUsersReturnedByTheOccCommandShouldBe(TableNode $useridTable) {
+	public function theUsersReturnedByTheOccCommandShouldBe(TableNode $useridTable):void {
 		$this->featureContext->verifyTableNodeColumns($useridTable, ['uid']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUsers = \json_decode($lastOutput, true);
@@ -630,7 +631,7 @@ class OccUsersGroupsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theInactiveUsersReturnedByTheOccCommandShouldBe(TableNode $userTable) {
+	public function theInactiveUsersReturnedByTheOccCommandShouldBe(TableNode $userTable):void {
 		$this->featureContext->verifyTableNodeColumns($userTable, ['uid', 'display name', 'inactive days']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputUsers = \json_decode($lastOutput, true);
@@ -677,8 +678,9 @@ class OccUsersGroupsContext implements Context {
 	 * @param TableNode $groupTableNode with group name with header group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theGroupsReturnedByTheOccCommandShouldBe(TableNode $groupTableNode) {
+	public function theGroupsReturnedByTheOccCommandShouldBe(TableNode $groupTableNode):void {
 		$this->featureContext->verifyTableNodeColumns($groupTableNode, ['group']);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lastOutputGroups = \json_decode($lastOutput, true);
@@ -709,7 +711,7 @@ class OccUsersGroupsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theDisplayNameReturnedByTheOccCommandShouldBe($place, $displayName) {
+	public function theDisplayNameReturnedByTheOccCommandShouldBe(string $place, string $displayName):void {
 		switch ($place) {
 			case "first":
 				$index = 0;
@@ -736,9 +738,9 @@ class OccUsersGroupsContext implements Context {
 	 * @Then the command output of user last seen should be recently
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theCommandOutputOfUserLastSeenShouldBeRecently() {
+	public function theCommandOutputOfUserLastSeenShouldBeRecently():void {
 		$currentTime = \gmdate('d.m.Y H:i');
 		$currentTimeStamp = \strtotime($currentTime);
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
@@ -758,7 +760,7 @@ class OccUsersGroupsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theCommandOutputOfUserLastSeenShouldBeNever() {
+	public function theCommandOutputOfUserLastSeenShouldBeNever():void {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		Assert::assertStringContainsString(
 			"has never logged in.",
@@ -775,7 +777,7 @@ class OccUsersGroupsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theTotalUsersReturnedByTheCommandShouldBe($noOfUsers) {
+	public function theTotalUsersReturnedByTheCommandShouldBe(int $noOfUsers):void {
 		$lastOutput = $this->featureContext->getStdOutOfOccCommand();
 		\preg_match("/\|\s+total users\s+\|\s+(\d+)\s+\|/", $lastOutput, $actualUsers);
 		Assert::assertEquals(
@@ -793,17 +795,17 @@ class OccUsersGroupsContext implements Context {
 	 * If password is supplied, then only send email if sendEmail param is true
 	 *
 	 * @param string $username
-	 * @param string $password
+	 * @param string|null $password
 	 * @param bool $sendEmail
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function resetUserPassword(
-		$username,
-		$password = null,
-		$sendEmail = false
-	) {
+		string $username,
+		?string $password = null,
+		bool $sendEmail = false
+	):void {
 		$actualUsername = $this->featureContext->getActualUsername($username);
 		if ($password === null) {
 			$this->featureContext->runOcc(
@@ -836,7 +838,7 @@ class OccUsersGroupsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
