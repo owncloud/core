@@ -430,7 +430,11 @@ class TransferOwnershipTest extends TestCase {
 		$share->method('getNode')->willThrowException($exception);
 
 		$shareManager = $this->createMock(IManager::class);
-		$shareManager->expects($this->at(0))->method('getSharesBy')->with('source-user', 1, null, true, 50, 0)->willReturn([$share]);
+		$shareManager
+			->expects($this->any())
+			->method('getSharesBy')
+			->withConsecutive(['source-user', 1, null, true, 50, 0])
+			->willReturnOnConsecutiveCalls([$share]);
 
 		$command = new TransferOwnership(
 			$this->userManager,

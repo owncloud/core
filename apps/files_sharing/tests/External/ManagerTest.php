@@ -136,14 +136,6 @@ class ManagerTest extends TestCase {
 			\array_push($called, $event);
 		});
 
-		$this->eventDispatcher->expects($this->at(0))
-			->method('dispatch')
-			->with(AcceptShare::class, $this->callback(
-				function ($event) use ($openShares) {
-					return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class);
-				}
-			));
-
 		$event = new GenericEvent(
 			null,
 			[
@@ -156,9 +148,19 @@ class ManagerTest extends TestCase {
 			]
 		);
 
-		$this->eventDispatcher->expects($this->at(1))
+		$this->eventDispatcher
 			->method('dispatch')
-			->with('remoteshare.accepted', $event);
+			->withConsecutive(
+				[
+					AcceptShare::class,
+					$this->callback(
+						function ($event) use ($openShares) {
+							return $this->verifyShareEvent($event, $openShares[0], AcceptShare::class);
+						}
+					)
+				],
+				['remoteshare.accepted', $event]
+			);
 
 		// Accept the first share
 		$this->manager->acceptShare($openShares[0]['id']);
@@ -191,15 +193,7 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 
-		$this->eventDispatcher->expects($this->at(0))
-			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(
-				function ($event) use ($openShares) {
-					return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class);
-				}
-			));
-
-		$event = new GenericEvent(
+		$event2 = new GenericEvent(
 			null,
 			[
 				'sharedItem' => '/SharedFolder',
@@ -208,9 +202,20 @@ class ManagerTest extends TestCase {
 			]
 		);
 
-		$this->eventDispatcher->expects($this->at(1))
+		$this->eventDispatcher
 			->method('dispatch')
-			->with('remoteshare.declined', $event);
+			->withConsecutive(
+				[
+					DeclineShare::class,
+					$this->callback(
+						function ($event) use ($openShares) {
+							return $this->verifyShareEvent($event, $openShares[1], DeclineShare::class);
+						}
+					)
+				],
+				['remoteshare.declined', $event2]
+			);
+
 		// Decline the third share
 		$this->manager->declineShare($openShares[1]['id']);
 
@@ -234,20 +239,26 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 
-		$this->eventDispatcher->expects($this->at(0))
+		$this->eventDispatcher
 			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(
-				function ($event) use ($openShares) {
-					return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class);
-				}
-			));
-		$this->eventDispatcher->expects($this->at(1))
-			->method('dispatch')
-			->with(DeclineShare::class, $this->callback(
-				function ($event) use ($acceptedShares) {
-					return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class);
-				}
-			));
+			->withConsecutive(
+				[
+					DeclineShare::class,
+					$this->callback(
+						function ($event) use ($openShares) {
+							return $this->verifyShareEvent($event, $openShares[0], DeclineShare::class);
+						}
+					)
+				],
+				[
+					DeclineShare::class,
+					$this->callback(
+						function ($event) use ($acceptedShares) {
+							return $this->verifyShareEvent($event, $acceptedShares[0], DeclineShare::class);
+						}
+					)
+				],
+			);
 
 		$this->manager->removeUserShares($this->uid);
 		$this->assertEmpty(self::invokePrivate($this->manager, 'getShares', [null]), 'Asserting all shares for the user have been deleted');

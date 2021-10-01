@@ -3191,23 +3191,29 @@ class ManagerTest extends \Test\TestCase {
 
 		$share = $this->createMock('\OCP\Share\IShare');
 
-		$factory->expects($this->at(0))
+		$factory
+			->expects($this->exactly(2))
 			->method('getProviderForType')
-			->with(\OCP\Share::SHARE_TYPE_LINK)
-			->willReturn($this->defaultProvider);
-		$factory->expects($this->at(1))
-			->method('getProviderForType')
-			->with(\OCP\Share::SHARE_TYPE_REMOTE)
-			->willReturn($this->defaultProvider);
+			->withConsecutive(
+				[\OCP\Share::SHARE_TYPE_LINK],
+				[\OCP\Share::SHARE_TYPE_REMOTE],
+			)
+			->willReturnOnConsecutiveCalls(
+				$this->defaultProvider,
+				$this->defaultProvider,
+			);
 
-		$this->defaultProvider->expects($this->at(0))
+		$this->defaultProvider
+			->expects($this->exactly(2))
 			->method('getShareByToken')
-			->with('token')
-			->will($this->throwException(new ShareNotFound()));
-		$this->defaultProvider->expects($this->at(1))
-			->method('getShareByToken')
-			->with('token')
-			->willReturn($share);
+			->withConsecutive(
+				['token'],
+				['token'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$this->throwException(new ShareNotFound()),
+				$share,
+			);
 
 		$ret = $manager->getShareByToken('token');
 		$this->assertSame($share, $ret);

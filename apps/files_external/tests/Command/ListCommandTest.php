@@ -90,7 +90,7 @@ class ListCommandTest extends CommandTest {
 		$instance->listMounts('', [$mount1, $mount2], $input, $output);
 		$output = $output->fetch();
 
-		$this->assertRegexp('/Number of invalid storages found/', $output);
+		$this->assertMatchesRegularExpression('/Number of invalid storages found/', $output);
 	}
 
 	public function providesShortView() {

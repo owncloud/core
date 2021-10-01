@@ -129,58 +129,42 @@ class LegacyHelperTest extends \Test\TestCase {
 		$this->assertEquals('/filename', OC_Helper::buildNotExistingFileNameForView('/', 'filename', $viewMock));
 		$this->assertEquals('dir/filename.ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename.ext', $viewMock));
 
-		$viewMock->expects($this->at(0))
+		$viewMock
 			->method('file_exists')
-			->will($this->returnValue(true)); // filename.ext exists
+			->willReturnOnConsecutiveCalls(
+				// Each "false" in this list finishes an interation of buildNotExistingFileNameForView().
+				// After each iteration, the next assertEquals() call is being made (see down below).
+				true,
+				false,
+				true,
+				true,
+				false,
+				true,
+				false,
+				true,
+				false,
+				true,
+				true,
+				false,
+				true,
+				false,
+				true,
+				false,
+				true,
+				true,
+				false,
+				true,
+				false,
+			);
+
 		$this->assertEquals('dir/filename (2).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename.ext', $viewMock));
-
-		$viewMock->expects($this->at(0))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename.ext exists
-		$viewMock->expects($this->at(1))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename (2).ext exists
 		$this->assertEquals('dir/filename (3).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename.ext', $viewMock));
-
-		$viewMock->expects($this->at(0))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename (1).ext exists
 		$this->assertEquals('dir/filename (2).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename (1).ext', $viewMock));
-
-		$viewMock->expects($this->at(0))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename (2).ext exists
 		$this->assertEquals('dir/filename (3).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename (2).ext', $viewMock));
-
-		$viewMock->expects($this->at(0))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename (2).ext exists
-		$viewMock->expects($this->at(1))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename (3).ext exists
 		$this->assertEquals('dir/filename (4).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename (2).ext', $viewMock));
-
-		$viewMock->expects($this->at(0))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename(1).ext exists
 		$this->assertEquals('dir/filename(2).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename(1).ext', $viewMock));
-
-		$viewMock->expects($this->at(0))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename(1) (1).ext exists
 		$this->assertEquals('dir/filename(1) (2).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename(1) (1).ext', $viewMock));
-
-		$viewMock->expects($this->at(0))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename(1) (1).ext exists
-		$viewMock->expects($this->at(1))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename(1) (2).ext exists
 		$this->assertEquals('dir/filename(1) (3).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename(1) (1).ext', $viewMock));
-
-		$viewMock->expects($this->at(0))
-			->method('file_exists')
-			->will($this->returnValue(true)); // filename(1) (2) (3).ext exists
 		$this->assertEquals('dir/filename(1) (2) (4).ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename(1) (2) (3).ext', $viewMock));
 	}
 
@@ -273,11 +257,11 @@ class LegacyHelperTest extends \Test\TestCase {
 		\file_put_contents($baseDir . 'a1/b/test two.txt', 'Hello file two!');
 		\OC_Helper::rmdirr($baseDir . 'a');
 
-		$this->assertFileNotExists($baseDir . 'a');
+		$this->assertFileDoesNotExist($baseDir . 'a');
 		$this->assertFileExists($baseDir . 'a1');
 
 		\OC_Helper::rmdirr($baseDir);
-		$this->assertFileNotExists($baseDir);
+		$this->assertFileDoesNotExist($baseDir);
 	}
 
 	/**

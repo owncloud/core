@@ -103,11 +103,11 @@ class UserTest extends TestCase {
 	}
 
 	public function testSetUserName() {
-		$this->config->expects($this->at(0))
+		$this->config->expects($this->once())
 			->method('getUserValue')
 			->with('foo', 'core', 'username', 'foo')
 			->willReturn('foo');
-		$this->config->expects($this->at(1))
+		$this->config->expects($this->once())
 			->method('setUserValue')
 			->with('foo', 'core', 'username', 'fooName');
 		$this->user->setUserName('fooName');

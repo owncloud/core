@@ -141,22 +141,29 @@ class StorageTest extends TestCase {
 			->method('isSystemWideMountPoint')
 			->willReturn(false);
 
-		$this->view->expects($this->at(0))
-			->method('file_exists')
-			->with($this->equalTo('/user1/files_encryption/keys' . $strippedPartialName . '/encModule/fileKey'))
-			->willReturn($originalKeyExists);
-
 		if (!$originalKeyExists) {
-			$this->view->expects($this->at(1))
+			$this->view
+				->expects($this->exactly(2))
 				->method('file_exists')
-				->with($this->equalTo('/user1/files_encryption/keys' . $path . '/encModule/fileKey'))
-				->willReturn(true);
+				->withConsecutive(
+					[$this->equalTo('/user1/files_encryption/keys' . $strippedPartialName . '/encModule/fileKey')],
+					[$this->equalTo('/user1/files_encryption/keys' . $path . '/encModule/fileKey')]
+				)
+				->willReturnOnConsecutiveCalls(
+					$originalKeyExists,
+					true,
+				);
 
 			$this->view->expects($this->once())
 				->method('file_get_contents')
 				->with($this->equalTo('/user1/files_encryption/keys' . $path . '/encModule/fileKey'))
 				->willReturn('key2');
 		} else {
+			$this->view->expects($this->once())
+				->method('file_exists')
+				->with($this->equalTo('/user1/files_encryption/keys' . $strippedPartialName . '/encModule/fileKey'))
+				->willReturn($originalKeyExists);
+
 			$this->view->expects($this->once())
 				->method('file_get_contents')
 				->with($this->equalTo('/user1/files_encryption/keys' . $strippedPartialName . '/encModule/fileKey'))

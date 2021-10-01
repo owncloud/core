@@ -563,11 +563,11 @@ class TrashbinTest extends TestCase {
 			->method('getName')
 			->will($this->returnValue('somefile.txt'));
 
-		$baseFolderTrash->expects($this->at(0))
+		$baseFolderTrash->expects($this->once())
 			->method('getById')
 			->with(123)
 			->will($this->returnValue([$node]));
-		$baseFolderTrash->expects($this->at(1))
+		$baseFolderTrash->expects($this->once())
 			->method('getRelativePath')
 			->with('test@#?%test/files_trashbin/files/test.d1462861890/sub')
 			->will($this->returnValue('/test.d1462861890/sub'));

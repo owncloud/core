@@ -546,7 +546,7 @@ class AuthTest extends TestCase {
 		$this->userSession
 			->method('isLoggedIn')
 			->willReturn(false);
-		$httpRequest->expects(self::at(0))->method('getHeader')->with('Authorization')->willReturn(null);
+		$httpRequest->expects($this->once())->method('getHeader')->with('Authorization')->willReturn(null);
 		$result = $this->auth->check($httpRequest, $httpResponse);
 		$this->assertEquals([false, 'No \'Authorization: Basic\' header found. Either the client didn\'t send one, or the server is misconfigured' ], $result);
 	}
@@ -597,7 +597,7 @@ class AuthTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$server->httpRequest
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getHeader')
 			->with('Authorization')
 			->willReturn('basic dXNlcm5hbWU6cGFzc3dvcmQ=');
@@ -631,7 +631,7 @@ class AuthTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$server->httpRequest
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getHeader')
 			->with('Authorization')
 			->willReturn('basic dXNlcm5hbWU6cGFzc3dvcmQ=');

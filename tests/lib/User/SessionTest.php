@@ -88,20 +88,23 @@ class SessionTest extends TestCase {
 			->will($this->returnValue('user123'));
 		/** @var Memory | \PHPUnit\Framework\MockObject\MockObject $session */
 		$session = $this->createMock(Memory::class);
-		$session->expects($this->at(0))
+		$session
+			->expects($this->exactly(2))
 			->method('get')
-			->with('user_id')
-			->will($this->returnValue($expectedUser->getUID()));
+			->withConsecutive(
+				['user_id'],
+				['app_password'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$expectedUser->getUID(),
+				null, // No password set -> browser session
+			);
 		$sessionId = 'abcdef12345';
 
 		/** @var Manager | \PHPUnit\Framework\MockObject\MockObject $manager */
 		$manager = $this->getMockBuilder(Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$session->expects($this->at(1))
-			->method('get')
-			->with('app_password')
-			->will($this->returnValue(null)); // No password set -> browser session
 		$session->expects($this->once())
 			->method('getId')
 			->will($this->returnValue($sessionId));
@@ -521,18 +524,19 @@ class SessionTest extends TestCase {
 			->method('getToken')
 			->with('doe')
 			->will($this->throwException(new InvalidTokenException()));
-		$this->config->expects($this->at(0))
+		$this->config
+			->expects($this->exactly(3))
 			->method('getSystemValue')
-			->with('token_auth_enforced', false)
-			->will($this->returnValue(false));
-		$this->config->expects($this->at(1))
-			->method('getSystemValue')
-			->with('strict_login_enforced', false)
-			->willReturn($strictLoginCheck);
-		$this->config->expects($this->at(2))
-			->method('getSystemValue')
-			->with('strict_login_enforced', false)
-			->willReturn($strictLoginCheck);
+			->withConsecutive(
+				['token_auth_enforced', false],
+				['strict_login_enforced', false],
+				['strict_login_enforced', false],
+			)
+			->willReturnOnConsecutiveCalls(
+				false,
+				$strictLoginCheck,
+				$strictLoginCheck,
+			);
 		$manager->expects($this->exactly($expectedGetByEmailCalls))
 			->method('getByEmail')
 			->willReturn([]);

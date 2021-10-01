@@ -70,6 +70,9 @@ if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
     cd tests
     $phpunit_cmd --configuration phpunit-autotest-external.xml ${GROUP} --coverage-clover output/coverage/autotest-external-clover-"${DB_TYPE}".xml
     $phpunit_cmd --configuration phpunit-autotest-external.xml ${GROUP} --coverage-clover output/coverage/autotest-external-clover-"${DB_TYPE}"-"${FILES_EXTERNAL_TYPE}".xml "${FILES_EXTERNAL_TEST_TO_RUN}"
+elif [[ "${SCALITY}" == "true" ]]; then
+    cd tests
+    $phpunit_cmd --configuration phpunit-autotest.xml ${GROUP}
 else
     cd tests
     $phpunit_cmd --configuration phpunit-autotest.xml ${GROUP} --coverage-clover output/coverage/autotest-clover-"${DB_TYPE}".xml

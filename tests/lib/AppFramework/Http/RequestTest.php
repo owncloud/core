@@ -520,7 +520,7 @@ class RequestTest extends TestCase {
 			[
 				'server' => [
 					'REMOTE_ADDR' => '10.0.0.2',
-					'HTTP_X_FORWARDED' => '10.4.0.5, 10.4.0.4',
+					'HTTP_X_FORWAR	DED' => '10.4.0.5, 10.4.0.4',
 					'HTTP_X_FORWARDED_FOR' => '192.168.0.233'
 				],
 			],
@@ -535,15 +535,16 @@ class RequestTest extends TestCase {
 
 	public function testGetRemoteAddressWithNoTrustedHeader() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('trusted_proxies')
-			->will($this->returnValue(['10.0.0.2']));
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('forwarded_for_headers')
-			->will($this->returnValue([]));
+			->withConsecutive(
+				['trusted_proxies'],
+				['forwarded_for_headers'],
+			)
+			->willReturnOnConsecutiveCalls(
+				['10.0.0.2'],
+				[],
+			);
 
 		$request = new Request(
 			[
@@ -564,15 +565,16 @@ class RequestTest extends TestCase {
 
 	public function testGetRemoteAddressWithSingleTrustedRemote() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('trusted_proxies')
-			->will($this->returnValue(['10.0.0.2']));
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('forwarded_for_headers')
-			->will($this->returnValue(['HTTP_X_FORWARDED']));
+			->withConsecutive(
+				['trusted_proxies'],
+				['forwarded_for_headers'],
+			)
+			->willReturnOnConsecutiveCalls(
+				['10.0.0.2'],
+				['HTTP_X_FORWARDED'],
+			);
 
 		$request = new Request(
 			[
@@ -593,19 +595,16 @@ class RequestTest extends TestCase {
 
 	public function testGetRemoteAddressVerifyPriorityHeader() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('trusted_proxies')
-			->will($this->returnValue(['10.0.0.2']));
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('forwarded_for_headers')
-			->will($this->returnValue([
-				'HTTP_CLIENT_IP',
-				'HTTP_X_FORWARDED_FOR',
-				'HTTP_X_FORWARDED'
-			]));
+			->withConsecutive(
+				['trusted_proxies'],
+				['forwarded_for_headers'],
+			)
+			->willReturnOnConsecutiveCalls(
+				['10.0.0.2'],
+				['HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED'],
+			);
 
 		$request = new Request(
 			[
@@ -677,20 +676,18 @@ class RequestTest extends TestCase {
 
 	public function testGetServerProtocolWithOverride() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('getSystemValue')
-			->with('overwriteprotocol')
-			->will($this->returnValue('customProtocol'));
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('overwritecondaddr')
-			->will($this->returnValue(''));
-		$this->config
-			->expects($this->at(2))
-			->method('getSystemValue')
-			->with('overwriteprotocol')
-			->will($this->returnValue('customProtocol'));
+			->withConsecutive(
+				['overwriteprotocol'],
+				['overwritecondaddr'],
+				['overwriteprotocol'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'customProtocol',
+				'',
+				'customProtocol',
+			);
 
 		$request = new Request(
 			[],
@@ -1023,20 +1020,18 @@ class RequestTest extends TestCase {
 
 	public function testGetServerHostWithOverwriteHost() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('getSystemValue')
-			->with('overwritehost')
-			->will($this->returnValue('my.overwritten.host'));
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('overwritecondaddr')
-			->will($this->returnValue(''));
-		$this->config
-			->expects($this->at(2))
-			->method('getSystemValue')
-			->with('overwritehost')
-			->will($this->returnValue('my.overwritten.host'));
+			->withConsecutive(
+				['overwritehost'],
+				['overwritecondaddr'],
+				['overwritehost'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'my.overwritten.host',
+				'',
+				'my.overwritten.host',
+			);
 
 		$request = new Request(
 			[],
@@ -1051,10 +1046,16 @@ class RequestTest extends TestCase {
 
 	public function testGetServerHostWithTrustedDomain() {
 		$this->config
-			->expects($this->at(3))
+			->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('trusted_domains')
-			->will($this->returnValue(['my.trusted.host']));
+			->withConsecutive(
+				['overwritehost'],
+				['trusted_domains'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'',
+				['my.trusted.host'],
+			);
 
 		$request = new Request(
 			[
@@ -1073,15 +1074,18 @@ class RequestTest extends TestCase {
 
 	public function testGetServerHostWithUntrustedDomain() {
 		$this->config
-			->expects($this->at(3))
+			->expects($this->exactly(3))
 			->method('getSystemValue')
-			->with('trusted_domains')
-			->will($this->returnValue(['my.trusted.host']));
-		$this->config
-			->expects($this->at(4))
-			->method('getSystemValue')
-			->with('trusted_domains')
-			->will($this->returnValue(['my.trusted.host']));
+			->withConsecutive(
+				['overwritehost'],
+				['trusted_domains'],
+				['trusted_domains'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'',
+				['my.trusted.host'],
+				['my.trusted.host'],
+			);
 
 		$request = new Request(
 			[
@@ -1100,15 +1104,18 @@ class RequestTest extends TestCase {
 
 	public function testGetServerHostWithNoTrustedDomain() {
 		$this->config
-			->expects($this->at(3))
+			->expects($this->exactly(3))
 			->method('getSystemValue')
-			->with('trusted_domains')
-			->will($this->returnValue([]));
-		$this->config
-			->expects($this->at(4))
-			->method('getSystemValue')
-			->with('trusted_domains')
-			->will($this->returnValue([]));
+			->withConsecutive(
+				['overwritehost'],
+				['trusted_domains'],
+				['trusted_domains'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'',
+				[],
+				[],
+			);
 
 		$request = new Request(
 			[
@@ -1144,20 +1151,18 @@ class RequestTest extends TestCase {
 
 	public function testGetOverwriteHostWithOverwrite() {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('getSystemValue')
-			->with('overwritehost')
-			->will($this->returnValue('www.owncloud.com'));
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('overwritecondaddr')
-			->will($this->returnValue(''));
-		$this->config
-			->expects($this->at(2))
-			->method('getSystemValue')
-			->with('overwritehost')
-			->will($this->returnValue('www.owncloud.com'));
+			->withConsecutive(
+				['overwritehost'],
+				['overwritecondaddr'],
+				['overwritehost'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'www.owncloud.com',
+				'',
+				'www.owncloud.com',
+			);
 
 		$request = new Request(
 			[],
@@ -1425,15 +1430,16 @@ class RequestTest extends TestCase {
 	 */
 	public function testGetRequestUriWithOverwrite($expectedUri, $overwriteWebRoot, $overwriteCondAddr) {
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getSystemValue')
-			->with('overwritewebroot')
-			->will($this->returnValue($overwriteWebRoot));
-		$this->config
-			->expects($this->at(1))
-			->method('getSystemValue')
-			->with('overwritecondaddr')
-			->will($this->returnValue($overwriteCondAddr));
+			->withConsecutive(
+				['overwritewebroot'],
+				['overwritecondaddr'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$overwriteWebRoot,
+				$overwriteCondAddr,
+			);
 
 		/** @var IRequest | \PHPUnit\Framework\MockObject\MockObject $request */
 		$request = $this->getMockBuilder('\OC\AppFramework\Http\Request')

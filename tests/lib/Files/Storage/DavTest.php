@@ -604,19 +604,17 @@ class DavTest extends TestCase {
 	}
 
 	public function testFopenWriteNewFile() {
-		// file_exists
-		$this->davClient->expects($this->at(0))
+		$this->davClient
+			->expects($this->exactly(2))
 			->method('propfind')
-			->with('some%25dir/file%25.txt')
-			->willReturn(false);
-
-		// isCreatable on parent / getPermissions
-		$this->davClient->expects($this->at(1))
-			->method('propfind')
-			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
-			->willReturn([
-				'{http://owncloud.org/ns}permissions' => 'RDWCK'
-			]);
+			->withConsecutive(
+				['some%25dir/file%25.txt'],
+				['some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions')],
+			)
+			->willReturnOnConsecutiveCalls(
+				false,
+				['{http://owncloud.org/ns}permissions' => 'RDWCK'],
+			);
 
 		$uploadUrl = null;
 		$uploadOptions = null;
@@ -637,19 +635,17 @@ class DavTest extends TestCase {
 	}
 
 	public function testFopenWriteNewFileNoPermission() {
-		// file_exists
-		$this->davClient->expects($this->at(0))
+		$this->davClient
+			->expects($this->exactly(2))
 			->method('propfind')
-			->with('some%25dir/file%25.txt')
-			->willReturn(false);
-
-		// isCreatable on parent / getPermissions
-		$this->davClient->expects($this->at(1))
-			->method('propfind')
-			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
-			->willReturn([
-				'{http://owncloud.org/ns}permissions' => 'R'
-			]);
+			->withConsecutive(
+				['some%25dir/file%25.txt'],
+				['some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions')],
+			)
+			->willReturnOnConsecutiveCalls(
+				false,
+				['{http://owncloud.org/ns}permissions' => 'R'],
+			);
 
 		$this->httpClient->expects($this->never())
 			->method('put');
@@ -793,41 +789,38 @@ class DavTest extends TestCase {
 				->method('getTime');
 		}
 
-		// file_exists
-		$this->davClient->expects($this->at(0))
+		$this->davClient
+			->expects($this->exactly(2))
 			->method('propfind')
-			->with('some%25dir')
-			->willReturn([]);
+			->withConsecutive(
+				['some%25dir'],
+				['some%25dir', $this->containsIdentical('{DAV:}getlastmodified'), 0],
+			)
+			->willReturnOnConsecutiveCalls(
+				[],
+				['{DAV:}getlastmodified' => $readMtime],
+			);
 
-		$this->davClient->expects($this->at(1))
+		$this->davClient
+			->expects($this->once())
 			->method('proppatch')
 			->with('some%25dir', ['{DAV:}lastmodified' => $setMtime || $factoryTime]);
-
-		// propfind after proppatch, to check if applied
-		$this->davClient->expects($this->at(2))
-			->method('propfind')
-			->with('some%25dir', $this->containsIdentical('{DAV:}getlastmodified'), 0)
-			->willReturn([
-				'{DAV:}getlastmodified' => $readMtime
-			]);
 
 		$this->assertEquals($expectedResult, $this->instance->touch('/some%dir', $setMtime));
 	}
 
 	public function testTouchNonExisting() {
-		// file_exists
-		$this->davClient->expects($this->at(0))
+		$this->davClient
+			->expects($this->exactly(2))
 			->method('propfind')
-			->with('some%25dir/file%25.txt')
-			->willReturn(false);
-
-		// isCreatable on parent / getPermissions
-		$this->davClient->expects($this->at(1))
-			->method('propfind')
-			->with('some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions'))
-			->willReturn([
-				'{http://owncloud.org/ns}permissions' => 'RDWCK'
-			]);
+			->withConsecutive(
+				['some%25dir/file%25.txt'],
+				['some%25dir', $this->containsIdentical('{http://owncloud.org/ns}permissions')],
+			)
+			->willReturnOnConsecutiveCalls(
+				false,
+				['{http://owncloud.org/ns}permissions' => 'RDWCK'],
+			);
 
 		$uploadUrl = null;
 		$uploadOptions = null;
@@ -851,12 +844,13 @@ class DavTest extends TestCase {
 		$this->expectException(\OCA\DAV\Connector\Sabre\Exception\Forbidden::class);
 
 		// file_exists
-		$this->davClient->expects($this->at(0))
+		$this->davClient
 			->method('propfind')
 			->with('some%25dir')
 			->willReturn([]);
 
-		$this->davClient->expects($this->at(1))
+		$this->davClient
+			->expects($this->once())
 			->method('proppatch')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
 
@@ -864,32 +858,35 @@ class DavTest extends TestCase {
 	}
 
 	public function testTouchNotFound() {
-		// file_exists
-		$this->davClient->expects($this->at(0))
+		$this->davClient
+			->expects($this->exactly(2))
 			->method('propfind')
-			->with('some%25dir')
-			->willReturn([]);
+			->withConsecutive(
+				['some%25dir'],
+				['some%25dir', $this->containsIdentical('{DAV:}getlastmodified'), 0],
+			)
+			->willReturnOnConsecutiveCalls(
+				[],
+				false,
+			);
 
-		$this->davClient->expects($this->at(1))
+		$this->davClient
+			->expects($this->once())
 			->method('proppatch');
-
-		// maybe the file disappeared in-between ?
-		$this->davClient->expects($this->at(2))
-			->method('propfind')
-			->with('some%25dir', $this->containsIdentical('{DAV:}getlastmodified'), 0)
-			->willReturn(false);
 
 		$this->assertFalse($this->instance->touch('/some%dir', 1508496363));
 	}
 
 	public function testTouchNoServerSupport() {
 		// file_exists
-		$this->davClient->expects($this->at(0))
+		$this->davClient
+			->expects($this->once())
 			->method('propfind')
 			->with('some%25dir')
 			->willReturn([]);
 
-		$this->davClient->expects($this->at(1))
+		$this->davClient
+			->expects($this->once())
 			->method('proppatch')
 			->willThrowException($this->createClientHttpException(Http::STATUS_NOT_IMPLEMENTED));
 

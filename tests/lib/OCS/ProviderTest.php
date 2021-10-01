@@ -41,20 +41,18 @@ class ProviderTest extends \Test\TestCase {
 
 	public function testBuildProviderListWithoutAnythingEnabled() {
 		$this->appManager
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('isEnabledForUser')
-			->with('files_sharing')
-			->will($this->returnValue(false));
-		$this->appManager
-			->expects($this->at(1))
-			->method('isEnabledForUser')
-			->with('activity')
-			->will($this->returnValue(false));
-		$this->appManager
-			->expects($this->at(2))
-			->method('isEnabledForUser')
-			->with('provisioning_api')
-			->will($this->returnValue(false));
+			->withConsecutive(
+				['files_sharing'],
+				['activity'],
+				['provisioning_api'],
+			)
+			->willReturnOnConsecutiveCalls(
+				false,
+				false,
+				false,
+			);
 
 		$expected = new \OCP\AppFramework\Http\JSONResponse(
 			[
@@ -77,20 +75,18 @@ class ProviderTest extends \Test\TestCase {
 
 	public function testBuildProviderListWithSharingEnabled() {
 		$this->appManager
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('isEnabledForUser')
-			->with('files_sharing')
-			->will($this->returnValue(true));
-		$this->appManager
-			->expects($this->at(1))
-			->method('isEnabledForUser')
-			->with('activity')
-			->will($this->returnValue(false));
-		$this->appManager
-			->expects($this->at(2))
-			->method('isEnabledForUser')
-			->with('provisioning_api')
-			->will($this->returnValue(false));
+			->withConsecutive(
+				['files_sharing'],
+				['activity'],
+				['provisioning_api'],
+			)
+			->willReturnOnConsecutiveCalls(
+				true,
+				false,
+				false,
+			);
 
 		$expected = new \OCP\AppFramework\Http\JSONResponse(
 			[

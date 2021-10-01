@@ -221,21 +221,19 @@ class UsersControllerTest extends \Test\TestCase {
 			->expects($this->exactly(3))
 			->method('getUserGroupIds')
 			->will($this->onConsecutiveCalls(['Users', 'Support'], ['admins', 'Support'], ['External Users']));
+
 		$this->container['UserManager']
-			->expects($this->at(0))
 			->method('get')
-			->with('foo')
-			->will($this->returnValue($foo));
-		$this->container['UserManager']
-			->expects($this->at(1))
-			->method('get')
-			->with('admin')
-			->will($this->returnValue($admin));
-		$this->container['UserManager']
-			->expects($this->at(2))
-			->method('get')
-			->with('bar')
-			->will($this->returnValue($bar));
+			->withConsecutive(
+				['foo'],
+				['admin'],
+				['bar'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$this->returnValue($foo),
+				$this->returnValue($admin),
+				$this->returnValue($bar),
+			);
 
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
@@ -420,15 +418,14 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('\Test\Util\User\Dummy'));
 
 		$this->container['GroupManager']
-			->expects($this->at(2))
+			->expects($this->exactly(2))
 			->method('displayNamesInGroup')
-			->with('SubGroup2', 'pattern')
-			->will($this->returnValue(['foo' => 'M. Foo', 'admin' => 'S. Admin']));
-		$this->container['GroupManager']
-			->expects($this->at(1))
-			->method('displayNamesInGroup')
-			->with('SubGroup1', 'pattern')
-			->will($this->returnValue(['bar' => 'B. Ar']));
+			->withConsecutive(['SubGroup1', 'pattern'], ['SubGroup2', 'pattern'])
+			->willReturnOnConsecutiveCalls(
+				['bar' => 'B. Ar'],
+				['foo' => 'M. Foo', 'admin' => 'S. Admin'],
+			);
+
 		$this->container['GroupManager']
 			->expects($this->exactly(3))
 			->method('getUserGroupIds')
@@ -438,20 +435,18 @@ class UsersControllerTest extends \Test\TestCase {
 				['SubGroup2', 'Foo']
 			));
 		$this->container['UserManager']
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('get')
-			->with('bar')
-			->will($this->returnValue($bar));
-		$this->container['UserManager']
-			->expects($this->at(1))
-			->method('get')
-			->with('foo')
-			->will($this->returnValue($foo));
-		$this->container['UserManager']
-			->expects($this->at(2))
-			->method('get')
-			->with('admin')
-			->will($this->returnValue($admin));
+			->withConsecutive(
+				['bar'],
+				['foo'],
+				['admin'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$bar,
+				$foo,
+				$admin,
+			);
 
 		$subgroup1 = $this->getMockBuilder('\OCP\IGroup')
 			->disableOriginalConstructor()
@@ -469,13 +464,15 @@ class UsersControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$subadmin
-			->expects($this->at(0))
+			->expects($this->exactly(4))
 			->method('getSubAdminsGroups')
-			->will($this->returnValue([$subgroup1, $subgroup2]));
-		$subadmin
-			->expects($this->any())
-			->method('getSubAdminsGroups')
-			->will($this->returnValue([]));
+			->willReturnOnConsecutiveCalls(
+				[$subgroup1, $subgroup2],
+				[],
+				[],
+				[],
+			);
+
 		$this->container['GroupManager']
 			->expects($this->any())
 			->method('getSubAdmin')
@@ -920,13 +917,13 @@ class UsersControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$subadmin
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getSubAdminsGroups')
-			->will($this->returnValue([$subGroup1, $subGroup2]));
-		$subadmin
-			->expects($this->at(1))
-			->method('getSubAdminsGroups')
-			->will($this->returnValue([]));
+			->willReturnOnConsecutiveCalls(
+				[$subGroup1, $subGroup2],
+				[],
+			);
+
 		$this->container['GroupManager']
 			->expects($this->any())
 			->method('getSubAdmin')
@@ -1077,15 +1074,19 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('createUser')
 			->will($this->returnValue($newUser));
 		$this->container['GroupManager']
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('get')
-			->with('SubGroup1')
-			->will($this->returnValue($subGroup1));
-		$this->container['GroupManager']
-			->expects($this->at(4))
-			->method('get')
-			->with('SubGroup1')
-			->will($this->returnValue($subGroup1));
+			->withConsecutive(
+				['SubGroup1'],
+				['ExistingGroup'],
+				['SubGroup1'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$subGroup1,
+				null,
+				$subGroup1,
+			);
+
 		$this->container['GroupManager']
 			->expects($this->once())
 			->method('getUserGroupIds')
@@ -1100,14 +1101,14 @@ class UsersControllerTest extends \Test\TestCase {
 		$subadmin = $this->getMockBuilder('\OC\SubAdmin')
 			->disableOriginalConstructor()
 			->getMock();
-		$subadmin->expects($this->at(1))
+		$subadmin
+			->expects($this->exactly(2))
 			->method('getSubAdminsGroups')
-			->with($user)
-			->will($this->returnValue([$subGroup1]));
-		$subadmin->expects($this->at(2))
-			->method('getSubAdminsGroups')
-			->with($newUser)
-			->will($this->returnValue([]));
+			->withConsecutive([$user], [$newUser])
+			->willReturnOnConsecutiveCalls(
+				[$subGroup1],
+				[],
+			);
 		$this->container['GroupManager']
 			->expects($this->any())
 			->method('getSubAdmin')
@@ -1502,11 +1503,11 @@ class UsersControllerTest extends \Test\TestCase {
 		$message = $this->getMockBuilder('\OC\Mail\Message')
 			->disableOriginalConstructor()->getMock();
 		$message
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('setTo')
 			->with(['validMail@Adre.ss' => 'foo']);
 		$message
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('setSubject')
 			->with('Your  account was created');
 		$htmlBody = new Http\TemplateResponse(
@@ -1519,7 +1520,7 @@ class UsersControllerTest extends \Test\TestCase {
 			'blank'
 		);
 		$message
-			->expects($this->at(2))
+			->expects($this->once())
 			->method('setHtmlBody')
 			->with($htmlBody->render());
 		$plainBody = new Http\TemplateResponse(
@@ -1532,25 +1533,25 @@ class UsersControllerTest extends \Test\TestCase {
 			'blank'
 		);
 		$message
-			->expects($this->at(3))
+			->expects($this->once())
 			->method('setPlainBody')
 			->with($plainBody->render());
 		$message
-			->expects($this->at(4))
+			->expects($this->once())
 			->method('setFrom')
 			->with(['no-reply@owncloud.com' => null]);
 
 		$this->container['Mailer']
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('validateMailAddress')
 			->with('validMail@Adre.ss')
 			->will($this->returnValue(true));
 		$this->container['Mailer']
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('createMessage')
 			->will($this->returnValue($message));
 		$this->container['Mailer']
-			->expects($this->at(2))
+			->expects($this->once())
 			->method('send')
 			->with($message);
 
@@ -1684,7 +1685,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('1'));
 
 		$this->container['Config']
-			->expects($this->at(1))
 			->method('getUserValue')
 			->with(
 				$this->anything(),
@@ -1763,7 +1763,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('1'));
 
 		$this->container['Config']
-			->expects($this->at(1))
 			->method('getUserValue')
 			->with(
 				$this->anything(),
@@ -2117,7 +2116,6 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['IsAdmin'] = true;
 
 		$this->container['UserManager']
-			->expects($this->at(0))
 			->method('countUsers')
 			->will($this->returnValue([128, 44]));
 
@@ -2163,7 +2161,6 @@ class UsersControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$subadmin
-			->expects($this->at(0))
 			->method('getSubAdminsGroups')
 			->will($this->returnValue([$group1, $group2]));
 

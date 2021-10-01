@@ -104,15 +104,14 @@ class OwnCloudTest extends TestCase {
 				['log_rotate_size', 0, 5 * 1024 * 1024],
 			]));
 
-		$this->consoleOutput->expects($this->at(0))
+		$this->consoleOutput
+			->expects($this->exactly(3))
 			->method('writeln')
-			->with('Log backend ownCloud: disabled');
-		$this->consoleOutput->expects($this->at(1))
-			->method('writeln')
-			->with('Log file: /var/log/owncloud.log');
-		$this->consoleOutput->expects($this->at(2))
-			->method('writeln')
-			->with('Rotate at: 5 MB');
+			->withConsecutive(
+				['Log backend ownCloud: disabled'],
+				['Log file: /var/log/owncloud.log'],
+				['Rotate at: 5 MB'],
+			);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}

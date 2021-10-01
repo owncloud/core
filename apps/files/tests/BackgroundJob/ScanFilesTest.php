@@ -56,22 +56,20 @@ class ScanFilesTest extends TestCase {
 
 	public function testRunWithoutUsers() {
 		$this->config
-				->expects($this->at(0))
+				->expects($this->once())
 				->method('getAppValue')
 				->with('files', 'cronjob_scan_files', 0)
 				->will($this->returnValue(50));
 		$this->userManager
-				->expects($this->at(0))
+				->expects($this->exactly(2))
 				->method('search')
-				->with('', 500, 50)
-				->will($this->returnValue([]));
-		$this->userManager
-				->expects($this->at(1))
-				->method('search')
-				->with('', 500)
-				->will($this->returnValue([]));
+				->withConsecutive(
+					['', 500, 50],
+					['', 500],
+				)
+				->willReturnOnConsecutiveCalls([], []);
 		$this->config
-				->expects($this->at(1))
+				->expects($this->once())
 				->method('setAppValue')
 				->with('files', 'cronjob_scan_files', 500);
 
@@ -81,19 +79,19 @@ class ScanFilesTest extends TestCase {
 	public function testRunWithUsers() {
 		$fakeUser = $this->createMock('\OCP\IUser');
 		$this->config
-				->expects($this->at(0))
+				->expects($this->once())
 				->method('getAppValue')
 				->with('files', 'cronjob_scan_files', 0)
 				->will($this->returnValue(50));
 		$this->userManager
-				->expects($this->at(0))
+				->expects($this->once())
 				->method('search')
 				->with('', 500, 50)
 				->will($this->returnValue([
 						$fakeUser
 				]));
 		$this->config
-				->expects($this->at(1))
+				->expects($this->once())
 				->method('setAppValue')
 				->with('files', 'cronjob_scan_files', 550);
 		$this->scanFiles
@@ -106,22 +104,20 @@ class ScanFilesTest extends TestCase {
 
 	public function testRunWithUsersAndOffsetAtEndOfUserList() {
 		$this->config
-				->expects($this->at(0))
+				->expects($this->once())
 				->method('getAppValue')
 				->with('files', 'cronjob_scan_files', 0)
 				->will($this->returnValue(50));
 		$this->userManager
-				->expects($this->at(0))
+				->expects($this->exactly(2))
 				->method('search')
-				->with('', 500, 50)
-				->will($this->returnValue([]));
-		$this->userManager
-				->expects($this->at(1))
-				->method('search')
-				->with('', 500)
-				->will($this->returnValue([]));
+				->withConsecutive(
+					['', 500, 50],
+					['', 500],
+				)
+				->willReturnOnConsecutiveCalls([], []);
 		$this->config
-				->expects($this->at(1))
+				->expects($this->once())
 				->method('setAppValue')
 				->with('files', 'cronjob_scan_files', 500);
 		$this->scanFiles

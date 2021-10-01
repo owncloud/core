@@ -691,12 +691,6 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	}
 
 	public function testGetSharedBy() {
-		$this->addressHandler->expects($this->at(0))->method('splitUserRemote')
-			->willReturn(['user', 'server.com']);
-
-		$this->addressHandler->expects($this->at(1))->method('splitUserRemote')
-			->willReturn(['user2', 'server.com']);
-
 		$this->tokenHandler->method('generateToken')->willReturn('token');
 		$this->notifications
 			->method('sendRemoteShare')

@@ -77,13 +77,13 @@ class SyncBackendTest extends TestCase {
 		$outputInterface = $this->createMock(OutputInterface::class);
 
 		$inputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getOption')
 			->with('list')
 			->will($this->returnValue(true));
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('writeln')
 			->with(\get_class($this->dummyBackend));
 
@@ -95,19 +95,19 @@ class SyncBackendTest extends TestCase {
 		$outputInterface = $this->createMock(OutputInterface::class);
 
 		$inputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getOption')
 			->with('list')
 			->will($this->returnValue(null));
 
 		$inputInterface
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getArgument')
 			->with('backend-class')
 			->will($this->returnValue(null));
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('writeln')
 			->with('<error>No backend class name given. Please run ./occ help user:sync to understand how this command works.</error>');
 
@@ -119,20 +119,20 @@ class SyncBackendTest extends TestCase {
 		$outputInterface = $this->createMock(OutputInterface::class);
 
 		$inputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getOption')
 			->with('list')
 			->will($this->returnValue(null));
 
 		$backendClassName = '\OCP\Some\Backend';
 		$inputInterface
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getArgument')
 			->with('backend-class')
 			->will($this->returnValue($backendClassName));
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('writeln')
 			->with("<error>The backend <$backendClassName> does not exist. Did you forget to enable the app?</error>");
 
@@ -144,25 +144,25 @@ class SyncBackendTest extends TestCase {
 		$outputInterface = $this->createMock(OutputInterface::class);
 
 		$inputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('getOption')
 			->with('list')
 			->will($this->returnValue(null));
 
 		$backendClassName = \get_class($this->dummyBackend);
 		$inputInterface
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getArgument')
 			->with('backend-class')
 			->will($this->returnValue($backendClassName));
 
 		$this->dummyBackend
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('hasUserListings')
 			->will($this->returnValue(false));
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('writeln')
 			->with("<error>The backend <$backendClassName> does not allow user listing. No sync is possible</error>");
 
@@ -174,37 +174,31 @@ class SyncBackendTest extends TestCase {
 		$outputInterface = $this->createMock(OutputInterface::class);
 
 		$inputInterface
-			->expects($this->at(0))
 			->method('getOption')
-			->with('list')
-			->will($this->returnValue(null));
+			->withConsecutive(
+				['list'],
+				['missing-account-action'],
+			)
+			->willReturnOnConsecutiveCalls(
+				null,
+				'invalid',
+			);
 
 		$backendClassName = \get_class($this->dummyBackend);
 
 		$inputInterface
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getArgument')
 			->with('backend-class')
 			->will($this->returnValue($backendClassName));
 
 		$this->dummyBackend
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('hasUserListings')
 			->will($this->returnValue(true));
-
-		$this->dummyBackend
-			->expects($this->at(0))
-			->method('hasUserListings')
-			->will($this->returnValue(true));
-
-		$inputInterface
-			->expects($this->at(2))
-			->method('getOption')
-			->with('missing-account-action')
-			->will($this->returnValue('invalid'));
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('writeln')
 			->with('<error>Unknown action. Choose between "disable" or "remove"</error>');
 
@@ -228,13 +222,13 @@ class SyncBackendTest extends TestCase {
 		$backendClassName = \get_class($this->dummyBackend);
 
 		$inputInterface
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getArgument')
 			->with('backend-class')
 			->will($this->returnValue($backendClassName));
 
 		$this->dummyBackend
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('hasUserListings')
 			->will($this->returnValue(true));
 
@@ -243,26 +237,24 @@ class SyncBackendTest extends TestCase {
 			->willReturn([]);
 
 		$inputInterface
-			->expects($this->at(2))
 			->method('getOption')
-			->with('missing-account-action')
-			->will($this->returnValue('disable'));
-		$inputInterface
-			->expects($this->at(3))
-			->method('getOption')
-			->with('missing-account-action')
-			->will($this->returnValue('disable'));
-
-		$inputInterface
-			->expects($this->at(4))
-			->method('getOption')
-			->with('uid')
-			->will($this->returnValue($uid));
+			->withConsecutive(
+				['list'],
+				['missing-account-action'],
+				['missing-account-action'],
+				['uid'],
+			)
+			->willReturnOnConsecutiveCalls(
+				null,
+				'disable',
+				'disable',
+				$uid,
+			);
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->any())
 			->method('writeln')
-			->with($expected);
+			->withConsecutive([$expected]);
 
 		$this->assertEquals(0, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
@@ -282,9 +274,12 @@ class SyncBackendTest extends TestCase {
 		$syncService->expects($this->never())->method('run');
 
 		$outputInterface
-			->expects($this->at(1))
+			->expects($this->exactly(2))
 			->method('writeln')
-			->with('<error>Multiple users returned from backend for: existing-uid. Cancelling sync.</error>');
+			->withConsecutive(
+				['Searching for existing-uid ...'],
+				['<error>Multiple users returned from backend for: existing-uid. Cancelling sync.</error>'],
+			);
 
 		$return = static::invokePrivate($this->command, 'syncSingleUser', [
 			$inputInterface,

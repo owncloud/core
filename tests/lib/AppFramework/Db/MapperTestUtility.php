@@ -29,8 +29,6 @@ namespace Test\AppFramework\Db;
 abstract class MapperTestUtility extends \Test\TestCase {
 	protected $db;
 	private $query;
-	private $queryAt;
-	private $prepareAt;
 	private $fetchAt;
 	private $iterators;
 
@@ -48,8 +46,6 @@ abstract class MapperTestUtility extends \Test\TestCase {
 			->getMock();
 
 		$this->query = $this->createMock('\PDOStatement');
-		$this->queryAt = 0;
-		$this->prepareAt = 0;
 		$this->iterators = [];
 		$this->fetchAt = 0;
 	}
@@ -97,17 +93,17 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		$expectClose=false
 	) {
 		if ($limit === null && $offset === null) {
-			$this->db->expects($this->at($this->prepareAt))
+			$this->db->expects($this->any())
 				->method('prepare')
 				->with($this->equalTo($sql))
 				->will(($this->returnValue($this->query)));
 		} elseif ($limit !== null && $offset === null) {
-			$this->db->expects($this->at($this->prepareAt))
+			$this->db->expects($this->any())
 				->method('prepare')
 				->with($this->equalTo($sql), $this->equalTo($limit))
 				->will(($this->returnValue($this->query)));
 		} elseif ($limit === null && $offset !== null) {
-			$this->db->expects($this->at($this->prepareAt))
+			$this->db->expects($this->any())
 				->method('prepare')
 				->with(
 					$this->equalTo($sql),
@@ -116,7 +112,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 				)
 				->will(($this->returnValue($this->query)));
 		} else {
-			$this->db->expects($this->at($this->prepareAt))
+			$this->db->expects($this->any())
 				->method('prepare')
 				->with(
 					$this->equalTo($sql),
@@ -142,55 +138,57 @@ abstract class MapperTestUtility extends \Test\TestCase {
 						$fetchAt++;
 					}
 
-					$this->queryAt++;
-
 					return $result;
 				}
 			));
 
+		$argsCount = \count($arguments);
+		$bindArgs = [];
+
 		if ($this->isAssocArray($arguments)) {
 			foreach ($arguments as $key => $argument) {
 				$pdoConstant = $this->getPDOType($argument);
-				$this->query->expects($this->at($this->queryAt))
-					->method('bindValue')
-					->with(
-						$this->equalTo($key),
-						$this->equalTo($argument),
-						$this->equalTo($pdoConstant)
-					);
-				$this->queryAt++;
+				$bindArgs[] = [
+					$this->equalTo($key),
+					$this->equalTo($argument),
+					$this->equalTo($pdoConstant),
+				];
 			}
 		} else {
 			$index = 1;
 			foreach ($arguments as $argument) {
 				$pdoConstant = $this->getPDOType($argument);
-				$this->query->expects($this->at($this->queryAt))
-					->method('bindValue')
-					->with(
-						$this->equalTo($index),
-						$this->equalTo($argument),
-						$this->equalTo($pdoConstant)
-					);
+				$bindArgs[] = [
+					$this->equalTo($index),
+					$this->equalTo($argument),
+					$this->equalTo($pdoConstant),
+				];
 				$index++;
-				$this->queryAt++;
 			}
 		}
 
-		$this->query->expects($this->at($this->queryAt))
-			->method('execute')
-			->will($this->returnCallback(function ($sql, $p=null, $o=null, $s=null) {
-			}));
-		$this->queryAt++;
+		$this->query
+			->expects($this->exactly($argsCount))
+			->method('bindValue')
+			->withConsecutive(...$bindArgs);
+
+		if ($argsCount > 0) {
+			$this->query
+				->expects($this->once())
+				->method('execute')
+				->willReturnOnConsecutiveCalls(
+					$this->returnCallback(function ($sql, $p=null, $o=null, $s=null) {
+					})
+				);
+		}
 
 		if ($expectClose) {
-			$closing = $this->at($this->queryAt);
+			$closing = $this->once();
 		} else {
 			$closing = $this->any();
 		}
 		$this->query->expects($closing)->method('closeCursor');
-		$this->queryAt++;
-
-		$this->prepareAt++;
+		
 		$this->fetchAt++;
 	}
 }

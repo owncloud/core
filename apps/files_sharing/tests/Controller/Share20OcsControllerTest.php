@@ -2972,9 +2972,9 @@ class Share20OcsControllerTest extends TestCase {
 		$node = null;
 		if ($requestedPath !== null) {
 			$node = $this->createMock(Node::class);
-			$node->expects($this->at(0))
+			$node->expects($this->once())
 				->method('lock');
-			$node->expects($this->at(1))
+			$node->expects($this->once())
 				->method('unlock');
 
 			$userFolder = $this->createMock(Folder::class);
@@ -3173,9 +3173,9 @@ class Share20OcsControllerTest extends TestCase {
 		$node = null;
 		if ($requestedPath !== null) {
 			$node = $this->createMock(Node::class);
-			$node->expects($this->at(0))
+			$node->expects($this->once())
 				->method('lock');
-			$node->expects($this->at(1))
+			$node->expects($this->once())
 				->method('unlock');
 
 			$userFolder = $this->createMock(Folder::class);
@@ -3271,9 +3271,9 @@ class Share20OcsControllerTest extends TestCase {
 			]));
 
 		$node = $this->createMock(Node::class);
-		$node->expects($this->at(0))
+		$node->expects($this->once())
 			->method('lock');
-		$node->expects($this->at(1))
+		$node->expects($this->once())
 			->method('unlock');
 
 		$userFolder = $this->createMock(Folder::class);
@@ -3346,26 +3346,25 @@ class Share20OcsControllerTest extends TestCase {
 		$userFolder = $this->createMock('OCP\Files\Folder');
 		if ($method === 'acceptShare') {
 			// deduplicate
-			$userFolder->expects($this->at(0))
-				->method('nodeExists')
-				->with(\dirname($target))
-				->willReturn(true);
-
 			if ($targetExists) {
-				$userFolder->expects($this->at(1))
+				$userFolder
+					->expects($this->exactly(3))
 					->method('nodeExists')
-					->with($target)
-					->willReturn(true);
-
-				$userFolder->expects($this->at(2))
-					->method('nodeExists')
-					->with("$target (2)")
-					->willReturn(false);
+					->withConsecutive(
+						[\dirname($target)],
+						[$target],
+						["$target (2)"],
+					)
+					->willReturnOnConsecutiveCalls(true, true, false);
 			} else {
-				$userFolder->expects($this->at(1))
+				$userFolder
+					->expects($this->exactly(2))
 					->method('nodeExists')
-					->with($target)
-					->willReturn(false);
+					->withConsecutive(
+						[\dirname($target)],
+						[$target],
+					)
+					->willReturnOnConsecutiveCalls(true, false);
 			}
 			$this->eventDispatcher->expects($this->exactly(2))
 				->method('dispatch')
@@ -3476,26 +3475,25 @@ class Share20OcsControllerTest extends TestCase {
 		$userFolder = $this->createMock('OCP\Files\Folder');
 		if ($method === 'acceptShare') {
 			// deduplicate
-			$userFolder->expects($this->at(0))
-				->method('nodeExists')
-				->with(\dirname($target))
-				->willReturn(true);
-
 			if ($targetExists) {
-				$userFolder->expects($this->at(1))
+				$userFolder
+					->expects($this->exactly(3))
 					->method('nodeExists')
-					->with($target)
-					->willReturn(true);
-
-				$userFolder->expects($this->at(2))
-					->method('nodeExists')
-					->with("$target (2)")
-					->willReturn(false);
+					->withConsecutive(
+						[\dirname($target)],
+						[$target],
+						["$target (2)"],
+					)
+					->willReturnOnConsecutiveCalls(true, true, false);
 			} else {
-				$userFolder->expects($this->at(1))
+				$userFolder
+					->expects($this->exactly(2))
 					->method('nodeExists')
-					->with($target)
-					->willReturn(false);
+					->withConsecutive(
+						[\dirname($target)],
+						[$target],
+					)
+					->willReturnOnConsecutiveCalls(true, false);
 			}
 			$this->eventDispatcher->expects($this->exactly(2))
 				->method('dispatch')
@@ -3546,9 +3544,9 @@ class Share20OcsControllerTest extends TestCase {
 
 	private function makeReceivedUserShareForOperation($target) {
 		$node = $this->createMock(Node::class);
-		$node->expects($this->at(0))
+		$node->expects($this->any())
 			->method('lock');
-		$node->expects($this->at(1))
+		$node->expects($this->any())
 			->method('unlock');
 
 		$userShare = $this->newShare();
@@ -3656,15 +3654,14 @@ class Share20OcsControllerTest extends TestCase {
 
 		$userFolder = $this->createMock(Folder::class);
 		if ($method === 'acceptShare') {
-			$userFolder->expects($this->at(0))
+			$userFolder
+				->expects($this->exactly(2))
 				->method('nodeExists')
-				->with(\dirname($target))
-				->willReturn(true);
-
-			$userFolder->expects($this->at(1))
-				->method('nodeExists')
-				->with($target)
-				->willReturn(false);
+				->withConsecutive(
+					[\dirname($target)],
+					[$target],
+				)
+				->willReturnOnConsecutiveCalls(true, false);
 		} else {
 			$userFolder->expects($this->never())
 				->method('nodeExists');

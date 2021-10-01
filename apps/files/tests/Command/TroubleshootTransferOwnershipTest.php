@@ -115,8 +115,18 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 			$invalidUidOwnerShareWithPointingToStorage
 		];
 
-		$command->expects($this->at(0))->method('getAllInvalidShareStorages')->with('home::')->willReturn($invalidShareStorages);
-		$command->expects($this->at(1))->method('getAllInvalidShareStorages')->with('object::user:')->willReturn([]);
+		$command
+			->expects($this->exactly(2))
+			->method('getAllInvalidShareStorages')
+			->withConsecutive(
+				['home::'],
+				['object::user:'],
+			)
+			->willReturnOnConsecutiveCalls(
+				$invalidShareStorages,
+				[],
+			);
+
 		$command->expects($this->exactly(1))->method('deleteCorruptedShare')->with('2', 0)->willReturn(null);
 		$command->expects($this->exactly(1))->method('adjustShareOwner')->with('1', 0, 'user1')->willReturn(null);
 
@@ -170,7 +180,7 @@ class TroubleshootTransferOwnershipTest extends TestCase {
 		// reshare with (file_source = 1) does not have any nodes attached
 		// (invalid uid_initiator -> resharer that does not have a node anymore)
 		$userFolder = $this->createMock(Folder::class);
-		$userFolder->expects($this->at(0))->method('getById')->with(1, true)->willReturn([]);
+		$userFolder->expects($this->once())->method('getById')->with(1, true)->willReturn([]);
 
 		$command->expects($this->exactly(1))->method('getAllResharers')->willReturn([
 			'user2'

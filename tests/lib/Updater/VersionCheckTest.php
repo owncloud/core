@@ -65,15 +65,16 @@ class VersionCheckTest extends TestCase {
 		];
 
 		$this->config
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(\time()));
-		$this->config
-			->expects($this->at(1))
-			->method('getAppValue')
-			->with('core', 'lastupdateResult')
-			->will($this->returnValue(\json_encode($expectedResult)));
+			->withConsecutive(
+				['core', 'lastupdatedat'],
+				['core', 'lastupdateResult'],
+			)
+			->willReturnOnConsecutiveCalls(
+				\time(),
+				\json_encode($expectedResult),
+			);
 
 		$this->assertSame($expectedResult, $this->updater->check());
 	}
@@ -87,33 +88,32 @@ class VersionCheckTest extends TestCase {
 		];
 
 		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getSystemValue')
 			->with('updater.server.url', 'https://updates.owncloud.com/server/')
 			->willReturn('https://updates.owncloud.com/server/');
 		$this->config
-			->expects($this->at(2))
-			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(4))
+			->expects($this->exactly(4))
 			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
+			->withConsecutive(
+				['core', 'lastupdatedat'],
+				['core', 'installedat'],
+				['core', 'installedat'],
+				['core', 'lastupdatedat'],
+			)
+			->willReturnOnConsecutiveCalls(
+				0,
+				'installedat',
+				'installedat',
+				'lastupdatedat',
+			);
 		$this->config
-			->expects($this->at(5))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
-		$this->config
-			->expects($this->at(6))
+			->expects($this->exactly(2))
 			->method('setAppValue')
-			->with('core', 'lastupdateResult', \json_encode($expectedResult));
+			->withConsecutive(
+				['core', 'lastupdatedat', $this->isType('integer')],
+				['core', 'lastupdateResult', \json_encode($expectedResult)],
+			);
 
 		$updateXml = '<?xml version="1.0"?>
 <owncloud>
@@ -133,33 +133,32 @@ class VersionCheckTest extends TestCase {
 
 	public function testCheckWithInvalidXml() {
 		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getSystemValue')
 			->with('updater.server.url', 'https://updates.owncloud.com/server/')
 			->willReturn('https://updates.owncloud.com/server/');
 		$this->config
-			->expects($this->at(2))
-			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(4))
+			->expects($this->exactly(4))
 			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
+			->withConsecutive(
+				['core', 'lastupdatedat'],
+				['core', 'installedat'],
+				['core', 'installedat'],
+				['core', 'lastupdatedat'],
+			)
+			->willReturnOnConsecutiveCalls(
+				0,
+				'installedat',
+				'installedat',
+				'lastupdatedat',
+			);
 		$this->config
-			->expects($this->at(5))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
-		$this->config
-			->expects($this->at(6))
+			->expects($this->exactly(2))
 			->method('setAppValue')
-			->with('core', 'lastupdateResult', 'false');
+			->withConsecutive(
+				['core', 'lastupdatedat', $this->isType('integer')],
+				['core', 'lastupdateResult', 'false'],
+			);
 
 		$updateXml = 'Invalid XML Response!';
 		$this->updater
@@ -180,29 +179,31 @@ class VersionCheckTest extends TestCase {
 		];
 
 		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getSystemValue')
 			->with('updater.server.url', 'https://updates.owncloud.com/server/')
 			->willReturn('https://updates.owncloud.com/server/');
 		$this->config
-			->expects($this->at(2))
+			->expects($this->exactly(4))
+			->method('getAppValue')
+			->withConsecutive(
+				['core', 'lastupdatedat'],
+				['core', 'installedat'],
+				['core', 'installedat'],
+				['core', 'lastupdatedat'],
+			)
+			->willReturnOnConsecutiveCalls(
+				0,
+				'installedat',
+				'installedat',
+				'lastupdatedat',
+			);
+		$this->config
+			->expects($this->exactly(2))
 			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(4))
-			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
-		$this->config
-			->expects($this->at(5))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
+			->withConsecutive(
+				['core', 'lastupdatedat', $this->isType('integer')],
+			);
 
 		$updateXml = '<?xml version="1.0"?>
 <owncloud>
@@ -224,33 +225,32 @@ class VersionCheckTest extends TestCase {
 		$expectedResult = [];
 
 		$this->config
-			->expects($this->at(0))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue(0));
-		$this->config
-			->expects($this->at(1))
+			->expects($this->once())
 			->method('getSystemValue')
 			->with('updater.server.url', 'https://updates.owncloud.com/server/')
 			->willReturn('https://updates.owncloud.com/server/');
 		$this->config
-			->expects($this->at(2))
-			->method('setAppValue')
-			->with('core', 'lastupdatedat', $this->isType('integer'));
-		$this->config
-			->expects($this->at(4))
+			->expects($this->exactly(4))
 			->method('getAppValue')
-			->with('core', 'installedat')
-			->will($this->returnValue('installedat'));
+			->withConsecutive(
+				['core', 'lastupdatedat'],
+				['core', 'installedat'],
+				['core', 'installedat'],
+				['core', 'lastupdatedat'],
+			)
+			->willReturnOnConsecutiveCalls(
+				0,
+				'installedat',
+				'installedat',
+				'lastupdatedat',
+			);
 		$this->config
-			->expects($this->at(5))
-			->method('getAppValue')
-			->with('core', 'lastupdatedat')
-			->will($this->returnValue('lastupdatedat'));
-		$this->config
-			->expects($this->at(6))
+			->expects($this->exactly(2))
 			->method('setAppValue')
-			->with('core', 'lastupdateResult', \json_encode($expectedResult));
+			->withConsecutive(
+				['core', 'lastupdatedat', $this->isType('integer')],
+				['core', 'lastupdateResult', \json_encode($expectedResult)],
+			);
 
 		$updateXml = '';
 		$this->updater

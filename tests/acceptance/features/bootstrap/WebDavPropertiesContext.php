@@ -818,7 +818,7 @@ class WebDavPropertiesContext implements Context {
 			$user,
 			['preg_quote' => ['/']]
 		);
-		Assert::assertRegExp(
+		Assert::assertMatchesRegularExpression(
 			$pattern,
 			$value,
 			"item \"$xpath\" found with value \"$value\", " .
@@ -921,7 +921,7 @@ class WebDavPropertiesContext implements Context {
 			"Cannot find property \"$key\""
 		);
 		$value = $xmlPart[0]->__toString();
-		Assert::assertRegExp(
+		Assert::assertMatchesRegularExpression(
 			$regex,
 			$value,
 			"Property \"$key\" found with value \"$value\", expected \"$regex\""

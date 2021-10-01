@@ -148,34 +148,21 @@ class RoutingTest extends \Test\TestCase {
 
 		// we expect create to be called once:
 		$router
-			->expects($this->at(0))
 			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.index'), $this->equalTo($url))
-			->will($this->returnValue($indexRoute));
-
-		$router
-			->expects($this->at(1))
-			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.show'), $this->equalTo($urlWithParam))
-			->will($this->returnValue($showRoute));
-
-		$router
-			->expects($this->at(2))
-			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.create'), $this->equalTo($url))
-			->will($this->returnValue($createRoute));
-
-		$router
-			->expects($this->at(3))
-			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.update'), $this->equalTo($urlWithParam))
-			->will($this->returnValue($updateRoute));
-
-		$router
-			->expects($this->at(4))
-			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.destroy'), $this->equalTo($urlWithParam))
-			->will($this->returnValue($destroyRoute));
+			->withConsecutive(
+				[$this->equalTo('app1.' . $resourceName . '.index'), $this->equalTo($url)],
+				[$this->equalTo('app1.' . $resourceName . '.show'), $this->equalTo($urlWithParam)],
+				[$this->equalTo('app1.' . $resourceName . '.create'), $this->equalTo($url)],
+				[$this->equalTo('app1.' . $resourceName . '.update'), $this->equalTo($urlWithParam)],
+				[$this->equalTo('app1.' . $resourceName . '.destroy'), $this->equalTo($urlWithParam)],
+			)
+			->willReturnOnConsecutiveCalls(
+				$indexRoute,
+				$showRoute,
+				$createRoute,
+				$updateRoute,
+				$destroyRoute,
+			);
 
 		// load route configuration
 		$config = new RouteConfig($container, $router, $yaml);

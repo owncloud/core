@@ -56,25 +56,24 @@ class SignAppTest extends TestCase {
 		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
 
 		$inputInterface
-			->expects($this->at(0))
 			->method('getOption')
-			->with('path')
-			->will($this->returnValue(null));
-		$inputInterface
-			->expects($this->at(1))
-			->method('getOption')
-			->with('privateKey')
-			->will($this->returnValue('PrivateKey'));
-		$inputInterface
-			->expects($this->at(2))
-			->method('getOption')
-			->with('certificate')
-			->will($this->returnValue('Certificate'));
+			->withConsecutive(
+				['path'],
+				['privateKey'],
+				['certificate'],
+			)
+			->willReturnOnConsecutiveCalls(
+				null,
+				'PrivateKey',
+				'Certificate',
+			);
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('writeln')
-			->with('This command requires the --path, --privateKey and --certificate.');
+			->withConsecutive(
+				['This command requires the --path, --privateKey and --certificate.']
+			);
 
 		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
@@ -84,25 +83,24 @@ class SignAppTest extends TestCase {
 		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
 
 		$inputInterface
-			->expects($this->at(0))
 			->method('getOption')
-			->with('path')
-			->will($this->returnValue('AppId'));
-		$inputInterface
-			->expects($this->at(1))
-			->method('getOption')
-			->with('privateKey')
-			->will($this->returnValue(null));
-		$inputInterface
-			->expects($this->at(2))
-			->method('getOption')
-			->with('certificate')
-			->will($this->returnValue('Certificate'));
+			->withConsecutive(
+				['path'],
+				['privateKey'],
+				['certificate'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'AppId',
+				null,
+				'Certificate',
+			);
 
 		$outputInterface
-				->expects($this->at(0))
-				->method('writeln')
-				->with('This command requires the --path, --privateKey and --certificate.');
+			->expects($this->exactly(3))
+			->method('writeln')
+			->withConsecutive(
+				['This command requires the --path, --privateKey and --certificate.']
+			);
 
 		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
@@ -112,25 +110,24 @@ class SignAppTest extends TestCase {
 		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
 
 		$inputInterface
-			->expects($this->at(0))
 			->method('getOption')
-			->with('path')
-			->will($this->returnValue('AppId'));
-		$inputInterface
-			->expects($this->at(1))
-			->method('getOption')
-			->with('privateKey')
-			->will($this->returnValue('privateKey'));
-		$inputInterface
-			->expects($this->at(2))
-			->method('getOption')
-			->with('certificate')
-			->will($this->returnValue(null));
+			->withConsecutive(
+				['path'],
+				['privateKey'],
+				['certificate'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'AppId',
+				'privateKey',
+				null,
+			);
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->exactly(3))
 			->method('writeln')
-			->with('This command requires the --path, --privateKey and --certificate.');
+			->withConsecutive(
+				['This command requires the --path, --privateKey and --certificate.']
+			);
 
 		$this->invokePrivate($this->signApp, 'execute', [$inputInterface, $outputInterface]);
 	}
@@ -140,29 +137,32 @@ class SignAppTest extends TestCase {
 		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
 
 		$inputInterface
-			->expects($this->at(0))
 			->method('getOption')
-			->with('path')
-			->will($this->returnValue('AppId'));
-		$inputInterface
-			->expects($this->at(1))
-			->method('getOption')
-			->with('privateKey')
-			->will($this->returnValue('privateKey'));
-		$inputInterface
-			->expects($this->at(2))
-			->method('getOption')
-			->with('certificate')
-			->will($this->returnValue('certificate'));
+			->withConsecutive(
+				['path'],
+				['privateKey'],
+				['certificate'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'AppId',
+				'privateKey',
+				\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt',
+			);
 
 		$this->fileAccessHelper
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('file_get_contents')
-			->with('privateKey')
-			->will($this->returnValue(false));
+			->withConsecutive(
+				['privateKey'],
+				[\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt'],
+			)
+			->willReturnOnConsecutiveCalls(
+				false,
+				\file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt'),
+			);
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('writeln')
 			->with('Private key "privateKey" does not exists.');
 
@@ -174,34 +174,32 @@ class SignAppTest extends TestCase {
 		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
 
 		$inputInterface
-			->expects($this->at(0))
 			->method('getOption')
-			->with('path')
-			->will($this->returnValue('AppId'));
-		$inputInterface
-			->expects($this->at(1))
-			->method('getOption')
-			->with('privateKey')
-			->will($this->returnValue('privateKey'));
-		$inputInterface
-			->expects($this->at(2))
-			->method('getOption')
-			->with('certificate')
-			->will($this->returnValue('certificate'));
+			->withConsecutive(
+				['path'],
+				['privateKey'],
+				['certificate'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'AppId',
+				\OC::$SERVERROOT . '/tests/data/integritycheck/core.key',
+				'certificate',
+			);
 
 		$this->fileAccessHelper
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('file_get_contents')
-			->with('privateKey')
-			->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key'));
-		$this->fileAccessHelper
-			->expects($this->at(1))
-			->method('file_get_contents')
-			->with('certificate')
-			->will($this->returnValue(false));
+			->withConsecutive(
+				[\OC::$SERVERROOT . '/tests/data/integritycheck/core.key'],
+				['certificate'],
+			)
+			->willReturnOnConsecutiveCalls(
+				\file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key'),
+				false,
+			);
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('writeln')
 			->with('Certificate "certificate" does not exists.');
 
@@ -213,38 +211,36 @@ class SignAppTest extends TestCase {
 		$outputInterface = $this->createMock('\Symfony\Component\Console\Output\OutputInterface');
 
 		$inputInterface
-			->expects($this->at(0))
 			->method('getOption')
-			->with('path')
-			->will($this->returnValue('AppId'));
-		$inputInterface
-			->expects($this->at(1))
-			->method('getOption')
-			->with('privateKey')
-			->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key'));
-		$inputInterface
-			->expects($this->at(2))
-			->method('getOption')
-			->with('certificate')
-			->will($this->returnValue(\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt'));
+			->withConsecutive(
+				['path'],
+				['privateKey'],
+				['certificate'],
+			)
+			->willReturnOnConsecutiveCalls(
+				'AppId',
+				\OC::$SERVERROOT . '/tests/data/integritycheck/core.key',
+				\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt',
+			);
 
 		$this->fileAccessHelper
-			->expects($this->at(0))
+			->expects($this->exactly(2))
 			->method('file_get_contents')
-			->with(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key')
-			->will($this->returnValue(\file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key')));
-		$this->fileAccessHelper
-			->expects($this->at(1))
-			->method('file_get_contents')
-			->with(\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt')
-			->will($this->returnValue(\file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt')));
+			->withConsecutive(
+				[\OC::$SERVERROOT . '/tests/data/integritycheck/core.key'],
+				[\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt'],
+			)
+			->willReturnOnConsecutiveCalls(
+				\file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.key'),
+				\file_get_contents(\OC::$SERVERROOT . '/tests/data/integritycheck/core.crt'),
+			);
 
 		$this->checker
 			->expects($this->once())
 			->method('writeAppSignature');
 
 		$outputInterface
-			->expects($this->at(0))
+			->expects($this->once())
 			->method('writeln')
 			->with('Successfully signed "AppId"');
 

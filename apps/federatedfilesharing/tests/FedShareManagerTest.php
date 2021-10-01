@@ -125,9 +125,8 @@ class FedShareManagerTest extends TestCase {
 		$event = $this->getMockBuilder(IEvent::class)->getMock();
 		$event->method($this->anything())
 			->willReturnSelf();
-		$event->expects($this->at(3))
+		$event->expects($this->any())
 			->method($this->anything())
-			->with(Activity::SUBJECT_REMOTE_SHARE_RECEIVED)
 			->willReturnSelf();
 
 		$this->activityManager->expects($this->once())
@@ -174,9 +173,8 @@ class FedShareManagerTest extends TestCase {
 		$event = $this->getMockBuilder(IEvent::class)->getMock();
 		$event->method($this->anything())
 			->willReturnSelf();
-		$event->expects($this->at(3))
+		$event->expects($this->any())
 			->method($this->anything())
-			->with(Activity::SUBJECT_REMOTE_SHARE_ACCEPTED)
 			->willReturnSelf();
 
 		$this->activityManager->expects($this->once())
@@ -212,9 +210,8 @@ class FedShareManagerTest extends TestCase {
 		$event = $this->getMockBuilder(IEvent::class)->getMock();
 		$event->method($this->anything())
 			->willReturnSelf();
-		$event->expects($this->at(3))
+		$event->expects($this->any())
 			->method($this->anything())
-			->with(Activity::SUBJECT_REMOTE_SHARE_DECLINED)
 			->willReturnSelf();
 
 		$this->activityManager->expects($this->once())
@@ -252,9 +249,8 @@ class FedShareManagerTest extends TestCase {
 		$event = $this->getMockBuilder(IEvent::class)->getMock();
 		$event->method($this->anything())
 			->willReturnSelf();
-		$event->expects($this->at(3))
+		$event->expects($this->any())
 			->method($this->anything())
-			->with(Activity::SUBJECT_REMOTE_SHARE_UNSHARED)
 			->willReturnSelf();
 
 		$this->activityManager->expects($this->once())

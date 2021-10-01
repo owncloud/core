@@ -7,31 +7,24 @@
 		 timeoutForMediumTests="900"
 		 timeoutForLargeTests="900"
 >
-	<testsuite name='ownCloud files external'>
-		<directory suffix=".php">../apps/files_external/tests</directory>
-		<!-- exclude backends as they are called separately -->
-		<exclude>../apps/files_external/tests/Storage/</exclude>
-	</testsuite>
-	<!-- filters for code coverage -->
-	<filter>
-		<!-- whitelist processUncoveredFilesFromWhitelist="true" -->
-		<whitelist>
-			<file>../lib/private/Files/Storage/DAV.php</file>
-			<directory suffix=".php">../apps/files_external</directory>
-			<exclude>
-				<directory suffix=".php">../apps/files_external/l10n</directory>
-				<directory suffix=".php">../apps/files_external/3rdparty</directory>
-				<directory suffix=".php">../apps/files_external/tests</directory>
-			</exclude>
-		</whitelist>
-	</filter>
-	<!--<listeners>
-		<listener class="StartSessionListener" file="startsessionlistener.php" />
-	  <listener class="TestCleanupListener" file="testcleanuplistener.php">
-		<arguments>
-			<string>detail</string>
-		</arguments>
-	  </listener>
-	</listeners>-->
+  <testsuites>
+    <testsuite name='ownCloud files external'>
+      <directory suffix=".php">../apps/files_external/tests</directory>
+      <!-- exclude backends as they are called separately -->
+      <exclude>../apps/files_external/tests/Storage/</exclude>
+    </testsuite>
+  </testsuites>
+  <!-- filters for code coverage -->
+  <coverage>
+    <!-- whitelist processUncoveredFilesFromWhitelist="true" -->
+    <include>
+      <file>../lib/private/Files/Storage/DAV.php</file>
+      <directory suffix=".php">../apps/files_external</directory>
+    </include>
+    <exclude>
+      <directory suffix=".php">../apps/files_external/l10n</directory>
+      <directory suffix=".php">../apps/files_external/3rdparty</directory>
+      <directory suffix=".php">../apps/files_external/tests</directory>
+    </exclude>
+  </coverage>
 </phpunit>
-
