@@ -76,6 +76,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Add test receiver mail in Email Settings Admin Panel: <a href="https://github.com/owncloud/core/pull/39297">#39297</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Change user casing log level to "debug": <a href="https://github.com/owncloud/core/pull/39299">#39299</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Hide the "Remove Password" button on public links: <a href="https://github.com/owncloud/core/pull/39302">#39302</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Trim spaces while creating, uploading or renaming entities in webUI: <a href="https://github.com/owncloud/core/pull/39310">#39310</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -675,6 +676,17 @@
             <p>https://github.com/owncloud/core/issues/35684<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39302<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Trim spaces while creating, uploading or renaming entities in webUI: <a href="https://github.com/owncloud/core/pull/39310">#39310</a></p>
+            <p>With this change starting or trailing spaces will be removed while: * Creating files and
+   folders in the webUI * Uploading files using the 'Upload' button in the webUI * Uploading files
+   and folders using drag & drop in the webUI * Renaming files and folders in the webUIThis also solves problems when the sync client can't sync files and folders with trailing
+   spaces based on the underlying file system.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4772<br>https://github.com/owncloud/core/issues/35017<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39310<br></p>
         </li>
     </ul>
     <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>
