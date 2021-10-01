@@ -21,7 +21,10 @@
  */
 namespace TestHelpers;
 
+use Exception;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use SimpleXMLElement;
 
 /**
  * manage Shares via OCS API
@@ -65,16 +68,16 @@ class SharingHelper {
 	 * @param string $xRequestId
 	 * @param string|null $shareWith The user or group id with which the file should
 	 *                               be shared.
-	 * @param boolean $publicUpload Whether to allow public upload to a public
-	 *                              shared folder.
+	 * @param boolean|null $publicUpload Whether to allow public upload to a public
+	 *                              	 shared folder.
 	 * @param string|null $sharePassword The password to protect the public link
 	 *                                   share with.
 	 * @param string|int|string[]|int[]|null $permissions The permissions to set on the share.
-	 *                                                    1 = read; 2 = update; 4 = create;
-	 *                                                    8 = delete; 16 = share
-	 *                                                    (default: 31, for public shares: 1)
-	 *                                                    Pass either the (total) number or array of numbers,
-	 *                                                    or any of the above keywords or array of keywords.
+	 *                                					  1 = read; 2 = update; 4 = create;
+	 *                               					  8 = delete; 16 = share
+	 *                            					      (default: 31, for public shares: 1)
+	 *                               					  Pass either the (total) number or array of numbers,
+	 *                               					  or any of the above keywords or array of keywords.
 	 * @param string|null $linkName A (human-readable) name for the share,
 	 *                              which can be up to 64 characters in length.
 	 * @param string|null $expireDate An expire date for public link shares.
@@ -84,30 +87,30 @@ class SharingHelper {
 	 * @param int $sharingApiVersion
 	 * @param string $sharingApp
 	 *
-	 * @throws \InvalidArgumentException
 	 * @return ResponseInterface
+	 * @throws InvalidArgumentException
 	 */
 	public static function createShare(
-		$baseUrl,
-		$user,
-		$password,
-		$path,
+		string $baseUrl,
+		string $user,
+		string $password,
+		string  $path,
 		$shareType,
-		$xRequestId = '',
-		$shareWith = null,
-		$publicUpload = false,
-		$sharePassword = null,
+		string $xRequestId = '',
+		?string $shareWith = null,
+		?bool	$publicUpload = false,
+		string $sharePassword = null,
 		$permissions = null,
-		$linkName = null,
-		$expireDate = null,
-		$ocsApiVersion = 1,
-		$sharingApiVersion = 1,
+		?string  $linkName = null,
+		?string $expireDate = null,
+		int $ocsApiVersion = 1,
+		int $sharingApiVersion = 1,
 		string $sharingApp = 'files_sharing'
-	) {
+	): ResponseInterface {
 		$fd = [];
 		foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
 			if (!\is_string($variableToCheck)) {
-				throw new \InvalidArgumentException(
+				throw new InvalidArgumentException(
 					"mandatory argument missing or wrong type ($variableToCheck => "
 					. \gettype($variableToCheck) . ")"
 				);
@@ -119,12 +122,12 @@ class SharingHelper {
 		}
 
 		if (!\in_array($ocsApiVersion, [1, 2], true)) {
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				"invalid ocsApiVersion ($ocsApiVersion)"
 			);
 		}
 		if (!\in_array($sharingApiVersion, [1, 2], true)) {
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				"invalid sharingApiVersion ($sharingApiVersion)"
 			);
 		}
@@ -176,11 +179,11 @@ class SharingHelper {
 	 *
 	 * @param string[]|string|int|int[] $permissions
 	 *
-	 * @throws \InvalidArgumentException
-	 *
 	 * @return int
+	 * @throws InvalidArgumentException
+	 *
 	 */
-	public static function getPermissionSum($permissions) {
+	public static function getPermissionSum($permissions):int {
 		if (\is_numeric($permissions)) {
 			// Allow any permission number so that test scenarios can
 			// specifically test invalid permission values
@@ -196,13 +199,13 @@ class SharingHelper {
 			} elseif (\in_array($permission, self::PERMISSION_TYPES, true)) {
 				$permissionSum += (int) $permission;
 			} else {
-				throw new \InvalidArgumentException(
+				throw new InvalidArgumentException(
 					"invalid permission type ($permission)"
 				);
 			}
 		}
 		if ($permissionSum < 1 || $permissionSum > 31) {
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				"invalid permission total ($permissionSum)"
 			);
 		}
@@ -215,10 +218,10 @@ class SharingHelper {
 	 * @param string|int $shareType a keyword from SHARE_TYPES or a share type number
 	 *
 	 * @return int
-	 * @throws \InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 *
 	 */
-	public static function getShareType($shareType) {
+	public static function getShareType($shareType):int {
 		if (\array_key_exists($shareType, self::SHARE_TYPES)) {
 			return self::SHARE_TYPES[$shareType];
 		} else {
@@ -229,7 +232,7 @@ class SharingHelper {
 			if ($key !== false) {
 				return self::SHARE_TYPES[$key];
 			}
-			throw new \InvalidArgumentException(
+			throw new InvalidArgumentException(
 				"invalid share type ($shareType)"
 			);
 		}
@@ -237,21 +240,21 @@ class SharingHelper {
 
 	/**
 	 *
-	 * @param \SimpleXMLElement $responseXmlObject
+	 * @param SimpleXMLElement $responseXmlObject
 	 * @param string $errorMessage
 	 *
-	 * @throws \Exception
-	 *
 	 * @return string
+	 * @throws Exception
+	 *
 	 */
 	public static function getLastShareIdFromResponse(
-		$responseXmlObject,
-		$errorMessage = "cannot find share id in response"
-	) {
+		SimpleXMLElement $responseXmlObject,
+		string $errorMessage = "cannot find share id in response"
+	):string {
 		$xmlPart = $responseXmlObject->xpath("//data/element[last()]/id");
 
 		if (!\is_array($xmlPart) || (\count($xmlPart) === 0)) {
-			throw new \Exception($errorMessage);
+			throw new Exception($errorMessage);
 		}
 		return $xmlPart[0]->__toString();
 	}
