@@ -384,7 +384,7 @@ trait Sharing {
 	 */
 	public function userHasCreatedAPublicLinkShareWithSettings(string $user, ?TableNode $body):void {
 		$this->userCreatesAPublicLinkShareWithSettings($user, $body);
-		$this->ocsContext->theOCSStatusCodeShouldBe((string)[100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe((array)[100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -410,7 +410,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAShareWithSettings(?TableNode $body):void {
 		$this->createShareWithSettings($this->currentUser, $body);
-		$this->ocsContext->theOCSStatusCodeShouldBe((string)[100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe((array)[100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -424,7 +424,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAPublicLinkShareWithSettings(?TableNode $body):void {
 		$this->theUserCreatesAPublicLinkShareWithSettings($body);
-		$this->ocsContext->theOCSStatusCodeShouldBe((string)[100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe((array)[100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -954,9 +954,9 @@ trait Sharing {
 		$this->updateLastShareWithSettings($user, $body, $shareOwner);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 		if ($this->ocsApiVersion == 1) {
-			$this->ocsContext->theOCSStatusCodeShouldBe(100);
+			$this->ocsContext->theOCSStatusCodeShouldBe((array)100);
 		} elseif ($this->ocsApiVersion === 2) {
-			$this->ocsContext->theOCSStatusCodeShouldBe(200);
+			$this->ocsContext->theOCSStatusCodeShouldBe((array)200);
 		} else {
 			throw new Exception('Invalid ocs api version used');
 		}
@@ -979,7 +979,7 @@ trait Sharing {
 	 * @param string|null $shareWith
 	 * @param string|null $publicUpload
 	 * @param string|null $sharePassword
-	 * @param string|null $permissions
+	 * @param array|null $permissions
 	 * @param string|null $linkName
 	 * @param string|null $expireDate
 	 * @param string $sharingApp
@@ -993,7 +993,7 @@ trait Sharing {
 		?string $shareWith = null,
 		?string $publicUpload = null,
 		?string $sharePassword = null,
-		?string $permissions = null,
+		?array $permissions = null,
 		?string $linkName = null,
 		?string $expireDate = null,
 		string $sharingApp = 'files_sharing'
@@ -1782,7 +1782,7 @@ trait Sharing {
 	 * @param string $filepath
 	 * @param string $userOrGroupShareType
 	 * @param string $sharee
-	 * @param string|null $permissions
+	 * @param array|null $permissions
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1793,7 +1793,7 @@ trait Sharing {
 		string $filepath,
 		string $userOrGroupShareType,
 		string $sharee,
-		?string $permissions = null
+		?array $permissions = null
 	):void {
 		$sharee = $this->getActualUsername($sharee);
 		$this->asFileOrFolderShouldExist($sharer, $entry, $filepath);
@@ -1920,7 +1920,7 @@ trait Sharing {
 	 * @return int|null
 	 * @throws Exception
 	 */
-	public function getLastShareIdOf($user):?int {
+	public function getLastShareIdOf(string $user):?int {
 		$user = $this->getActualUsername($user);
 
 		$this->getListOfShares($user);
@@ -1986,12 +1986,12 @@ trait Sharing {
 	 * Get share data of specific share_id
 	 *
 	 * @param string $user
-	 * @param int $share_id
+	 * @param object $share_id
 	 * @param string|null $language
 	 *
 	 * @return void
 	 */
-	public function getShareData(string $user, int $share_id, ?string $language=null):void {
+	public function getShareData(string $user, object $share_id, ?string $language=null):void {
 		$user = $this->getActualUsername($user);
 		$url = $this->getSharesEndpointPath("/$share_id");
 		$headers = [];

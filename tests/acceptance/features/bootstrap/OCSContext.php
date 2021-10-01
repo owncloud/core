@@ -739,13 +739,13 @@ class OCSContext implements Context {
 	/**
 	 * @Then /^the OCS status code should be "([^"]*)"$/
 	 *
-	 * @param string $statusCode
+	 * @param array $statusCode
 	 * @param string $message
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theOCSStatusCodeShouldBe(string $statusCode, $message = ""):void {
+	public function theOCSStatusCodeShouldBe(array $statusCode, $message = ""):void {
 		$responseStatusCode = $this->getOCSResponseStatusCode(
 			$this->featureContext->getResponse()
 		);
