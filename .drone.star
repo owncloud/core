@@ -1336,6 +1336,7 @@ def phpTests(ctx, testType, withCoverage):
                                              "DB_TYPE": getDbName(db),
                                              "FILES_EXTERNAL_TYPE": filesExternalType,
                                              "PRIMARY_OBJECTSTORE": primaryObjectStore,
+                                             "SCALITY": needScality,
                                          },
                                          "commands": params["extraCommandsBeforeTestRun"] + [
                                              command,
@@ -1360,7 +1361,7 @@ def phpTests(ctx, testType, withCoverage):
                         },
                     }
 
-                    if params["coverage"]:
+                    if params["coverage"] and not needScality:
                         result["steps"].append({
                             "name": "coverage-rename",
                             "image": "owncloudci/php:%s" % phpVersion,
