@@ -583,7 +583,7 @@ Feature: accept/decline shares coming from internal users
       | 2               | 200             | /PARENT             |
 
 
-  @issue-ocis-765 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @issue-ocis-765 @issue-ocis-2131 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: shares exist after restoring already shared file to a previous version
     And user "Alice" has uploaded file with content "Test Content." to "/toShareFile.txt"
     And user "Alice" has uploaded file with content "Content Test Updated." to "/toShareFile.txt"
@@ -593,7 +593,7 @@ Feature: accept/decline shares coming from internal users
     Then the content of file "/toShareFile.txt" for user "Alice" should be "Test Content."
     And the content of file "/Shares/toShareFile.txt" for user "Brian" should be "Test Content."
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2131
   Scenario: a user receives multiple group shares for matching file and folder name
     Given group "grp2" has been created
     And user "Alice" has been added to group "grp2"
@@ -654,7 +654,7 @@ Feature: accept/decline shares coming from internal users
     And the content of file "/Shares/PARENT (2).txt" for user "Brian" should be "from carol to grp1"
     And the content of file "/Shares/parent.txt" for user "Brian" should be "from carol to grp1"
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2131
   Scenario: a group receives multiple shares from non-member for matching file and folder name
     Given user "Brian" has been removed from group "grp1"
     And user "Alice" has created folder "/PaRent"
