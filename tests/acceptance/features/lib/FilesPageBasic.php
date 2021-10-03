@@ -624,8 +624,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 			// opening the side navigation
 			$appNavToggleBtn = $this->findById($this->appNavToggleBtnId);
 			$appNavToggleBtn->click();
-			// buying time for side navigation to open properly before next step executes
-			sleep(2);
+			// waiting for side navigation to open properly before next step executes
+			$this->waitForOutstandingAjaxCalls($this->getSession());
 		}
 		$appSettingsButton = $this->find('xpath', $this->appSettingsXpath);
 		$this->assertElementNotNull(
@@ -669,8 +669,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$showHiddenFilesCheckBox->click();
 		if (!empty($mobileResolution)) {
 			$appNavToggleBtn->click();
-			// buying time for side navigation to close properly so it won't interrupt other view
-			sleep(2);
+			// waiting for side navigation to close properly so it won't interrupt other view
+			$this->waitForOutstandingAjaxCalls($this->getSession());
 		}
 	}
 
