@@ -498,7 +498,7 @@ Feature: sharing
       | ocs_api_version | ocs_status_code | path                  |
       | 1               | 100             | /Shares/textfile0.txt |
       | 2               | 200             | /Shares/textfile0.txt |
-    @skipOnOcV10 @issue-2441
+    @skipOnOcV10 @issue-ocis-2441
     Examples:
       | ocs_api_version | ocs_status_code | path           |
       | 1               | 100             | /textfile0.txt |
@@ -647,7 +647,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-903
   Scenario Outline: shares to a deleted user should not be listed as shares for the sharer
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
