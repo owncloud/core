@@ -3379,6 +3379,62 @@ trait Sharing {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $path
+	 * @param string $type
+	 * @param int $permissions
+	 *
+	 * @return array
+	 */
+	public function preparePublicQuickLinkPayload(string $user, string $path, string $type, int $permissions = 1): array {
+		return [
+			"permissions" => $permissions,
+			"expireDate" => "",
+			"shareType" => 3,
+			"itemType" => $type,
+			"itemSource" => $this->getFileIdForPath($user, $path),
+			"name" => "Public quick link",
+			"attributes" =>  [
+				[
+					"scope" => "files_sharing",
+					"key" => "isQuickLink",
+					"value" => true
+				]
+			],
+			"path" => $path
+		];
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has created a read only public link for (file|folder) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $type
+	 * @param string $path
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserHasCreatedAReadOnlyPublicLinkForFileFolder(string $user, string $type, string $path):void {
+		$user = $this->getActualUsername($user);
+		$userPassword = $this->getPasswordForUser($user);
+
+		$requestPayload = $this->preparePublicQuickLinkPayload($user, $path, $type);
+		$url = $this->getBaseUrl() . "/ocs/v2.php/apps/files_sharing/api/v1/shares?format=json";
+
+		$response = HttpRequestHelper::post(
+			$url,
+			$this->getStepLineRef(),
+			$user,
+			$userPassword,
+			null,
+			$requestPayload
+		);
+		$this->setResponse($response);
+		$this->theHTTPStatusCodeShouldBe(200);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" adds the public share created from server "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user

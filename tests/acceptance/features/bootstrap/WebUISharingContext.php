@@ -753,6 +753,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user creates a read only public link for file/folder :name using the quick action button
+	 * @Given the user has created a read only public link for file/folder :name using the webUI
 	 *
 	 * @param string $name
 	 *
