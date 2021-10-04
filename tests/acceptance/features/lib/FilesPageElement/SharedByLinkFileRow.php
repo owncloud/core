@@ -24,7 +24,7 @@
 namespace Page\FilesPageElement;
 
 /**
- * Object of a row on the FilesPage
+ * Object of a row on the SharedByLinkPage
  */
 class SharedByLinkFileRow extends FileRow {
 	/**
