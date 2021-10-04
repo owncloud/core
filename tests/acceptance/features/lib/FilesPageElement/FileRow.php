@@ -527,6 +527,13 @@ class FileRow extends OwncloudPage {
 			__METHOD__ .
 			" sharer element with xpath $this->sharerXpath not found"
 		);
+		$mobileResolution = getenv("MOBILE_RESOLUTION");
+		// checking if MOBILE_RESOLUTION is set
+		if (!empty($mobileResolution)) {
+			// returning inner html to extract the sharer name as it is hidden
+			// in mobile resolution
+			return trim($element->getHtml());
+		}
 		return \trim($element->getText());
 	}
 

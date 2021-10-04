@@ -685,6 +685,20 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 		try {
 			$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
+			// getting env variable "MOBILE_RESOLUTION" which is set in drone.star
+			// It denotes the size of browser's window as WidthxHeight and runs
+			// selected tests in that resolution.
+			$mobileResolution = getenv("MOBILE_RESOLUTION");
+			// checking if MOBILE_RESOLUTION is set
+			if (!empty($mobileResolution)) {
+				echo "Running webUI test under resolution: $mobileResolution";
+				// splits "x" separated string into indexed array
+				// eg: 375x812 into array("375", "812")
+				$mobileResolution = explode("x", $mobileResolution);
+				$width = (int)$mobileResolution[0];
+				$height = (int)$mobileResolution[1];
+				$this->getSession()->resizeWindow($width, $height, 'current');
+			}
 		} catch (Exception $e) {
 			//we don't care if the context cannot be found
 			//if the developer forgets to include it the test will fail anyway

@@ -8,7 +8,7 @@ Feature: Search
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest
+  @smokeTest @mobileResolutionTest
   Scenario: Simple search
     Given user "Alice" has created the following folders
       | path                  |

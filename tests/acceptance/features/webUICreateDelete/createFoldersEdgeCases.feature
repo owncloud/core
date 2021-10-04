@@ -39,7 +39,7 @@ Feature: create folder
       | "^#2929@"            |
       | "s,a,m,p,l,e-folder" |
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario Outline: Create a sub-folder inside an existing folder with problematic name
     Given user "Alice" has created folder <folder>
     And the user has reloaded the current page of the webUI

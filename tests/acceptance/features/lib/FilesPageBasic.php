@@ -48,6 +48,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $appSettingsXpath = "//div[@id='app-settings']";
 	protected $showHiddenFilesCheckboxXpath = "//label[@for='showhiddenfilesToggle']";
 	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_files']";
+	protected $appNavToggleBtnId = "app-navigation-toggle";
 	protected $appSettingsContentId = "app-settings-content";
 	protected $styleOfCheckboxWhenVisible = "display: block;";
 	protected $detailsDialogXpath = "//*[contains(@id, 'app-sidebar') and not(contains(@class, 'disappear'))]";
@@ -617,6 +618,15 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function enableShowHiddenFilesSettings() {
+		$mobileResolution = getenv("MOBILE_RESOLUTION");
+		// checking if MOBILE_RESOLUTION is set
+		if (!empty($mobileResolution)) {
+			// opening the side navigation
+			$appNavToggleBtn = $this->findById($this->appNavToggleBtnId);
+			$appNavToggleBtn->click();
+			// waiting for side navigation to open properly before next step executes
+			$this->waitForOutstandingAjaxCalls($this->getSession());
+		}
 		$appSettingsButton = $this->find('xpath', $this->appSettingsXpath);
 		$this->assertElementNotNull(
 			$appSettingsButton,
@@ -657,6 +667,11 @@ abstract class FilesPageBasic extends OwncloudPage {
 			"could not find the field for show hidden files checkbox"
 		);
 		$showHiddenFilesCheckBox->click();
+		if (!empty($mobileResolution)) {
+			$appNavToggleBtn->click();
+			// waiting for side navigation to close properly so it won't interrupt other view
+			$this->waitForOutstandingAjaxCalls($this->getSession());
+		}
 	}
 
 	/**

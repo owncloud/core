@@ -12,7 +12,7 @@ Feature: Unmark file/folder as favorite
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: unmark a file as favorite from files page
     Given the user has marked file "data.zip" as favorite using the webUI
     When the user unmarks the favorited file "data.zip" using the webUI
@@ -27,7 +27,7 @@ Feature: Unmark file/folder as favorite
     When the user browses to the favorites page
     Then folder "simple-folder" should not be listed in the favorites page on the webUI
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: unmark a file as favorite from favorite page
     Given the user has marked file "data.zip" as favorite using the webUI
     And the user has browsed to the favorites page

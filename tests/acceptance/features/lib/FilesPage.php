@@ -41,6 +41,7 @@ class FilesPage extends FilesPageBasic {
 	protected $emptyContentXpath = ".//div[@id='app-content-files']//div[@id='emptycontent']";
 	protected $newFolderTooltipXpath = './/div[contains(@class, "newFileMenu")]//div[@class="tooltip-inner"]';
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
+	protected $deleteAllSelectedMobileBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected mobile button']";
 	protected $homePageIconXpath = "//div[@class='breadcrumb']//img[@alt='Home']";
 	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
 	protected $uploadCreatePermissionDeniedMessageSelector = ".notCreatable.notPublic";
@@ -107,6 +108,19 @@ class FilesPage extends FilesPageBasic {
 	) {
 		parent::__construct($session, $factory, $parameters);
 		$this->filesPageCRUDFunctions = $this->getPage("FilesPageCRUD");
+		$mobileResolution = getenv("MOBILE_RESOLUTION");
+		// checking if MOBILE_RESOLUTION is set
+		if (!empty($mobileResolution)) {
+			// setting appropriate xpath for elements in mobile resolution
+			$this->filesPageCRUDFunctions->setXpath(
+				$this->emptyContentXpath,
+				$this->fileListXpath,
+				$this->fileNameMatchXpath,
+				$this->fileNamesXpath,
+				$this->deleteAllSelectedMobileBtnXpath
+			);
+			return;
+		}
 		$this->filesPageCRUDFunctions->setXpath(
 			$this->emptyContentXpath,
 			$this->fileListXpath,

@@ -11,7 +11,7 @@ Feature: reset the password using an email address
     And the user has browsed to the login page
     And user "Alice" logs in with email and invalid password "%alt2%" using the webUI
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: send password reset email
     When the user requests the password reset link using the webUI
     Then a message with this text should be displayed on the webUI:
@@ -23,7 +23,7 @@ Feature: reset the password using an email address
       Use the following link to reset your password: <a href=
       """
 
-  @skipOnEncryption @smokeTest @skipOnLDAP
+  @skipOnEncryption @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: reset password for the ordinary (no encryption) case
     When the user requests the password reset link using the webUI
     And the user follows the password reset link from the email address of user "Alice"

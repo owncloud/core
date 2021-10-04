@@ -24,7 +24,7 @@ Feature: File Upload
     Then file "zzzz-zzzz-will-be-at-the-end-of-the-folder-when-uploaded.txt" should be listed on the webUI
     And the content of "zzzz-zzzz-will-be-at-the-end-of-the-folder-when-uploaded.txt" should be the same as the local "zzzz-zzzz-will-be-at-the-end-of-the-folder-when-uploaded.txt"
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario Outline: upload a new file into a sub folder
     Given a file with the size of "3000" bytes and the name "0" has been created locally
     And user "Alice" has created folder <folder-to-upload-to>

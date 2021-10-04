@@ -15,7 +15,7 @@ Feature: browse directly to details tab
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "zzzz-must-be-last-file-in-folder.txt"
     And user "Alice" has logged in using the webUI
 
-  @smokeTest
+  @smokeTest @mobileResolutionTest
   Scenario Outline: Browse directly to the sharing details of a file
     When the user browses directly to display the "sharing" details of file "<file>" in folder "<folder>"
     Then the thumbnail should be visible in the details panel

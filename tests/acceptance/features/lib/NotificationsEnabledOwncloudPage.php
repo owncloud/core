@@ -76,4 +76,16 @@ class NotificationsEnabledOwncloudPage extends OwncloudPage {
 		$notificationsAppDialog->waitTillPageIsLoaded($session);
 		return $notificationsAppDialog;
 	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return NotificationsAppDialog
+	 */
+	public function openNotificationsDialog(Session $session):NotificationsAppDialog {
+		$session->reload();
+		$this->waitForNotifications();
+		return $this->openNotifications($session);
+	}
 }

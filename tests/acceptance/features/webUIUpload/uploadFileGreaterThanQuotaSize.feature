@@ -8,7 +8,7 @@ Feature: Upload a file
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: simple upload of a file with the size greater than the size of quota
     Given the quota of user "Alice" has been set to "10 MB"
     And user "Alice" has logged in using the webUI

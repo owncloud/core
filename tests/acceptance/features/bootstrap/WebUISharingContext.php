@@ -1189,7 +1189,31 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$found = false;
 		foreach ($fileRows as $fileRow) {
-			if ($offeredByUserDisplayName === $fileRow->getSharer()) {
+			$mobileResolution = getenv("MOBILE_RESOLUTION");
+			// checking if MOBILE_RESOLUTION is set
+			if (!empty($mobileResolution)) {
+				// getting inner html which contains sharer name in between <span> tag
+				// Sharer name is not displayed in mobile resolution so we have to
+				// extract it from inner html.
+				// eg: <span> Brian</span>
+				$tempStr = $fileRow->getSharer();
+				// this regex will match text between <span></span> tag
+				$pattern = "#<\s*?span\b[^>]*>(.*?)</span\b[^>]*>#s";
+				// this built-in function serves matches in different format in multi-dim array
+				// we want only the string between tags so we will use second row ([1][...])
+				// of this multi-dim array to search for sharer name
+				preg_match_all($pattern, $tempStr, $sharerMatch);
+				$sharerMatch[1][1] = trim($sharerMatch[1][1]);
+				if ($offeredByUserDisplayName === $sharerMatch[1][1]) {
+					if (\substr($action, 0, 6) === "accept") {
+						$fileRow->acceptShare($this->getSession());
+					} else {
+						$fileRow->declineShare($this->getSession());
+					}
+					$found = true;
+					break;
+				}
+			} elseif ($offeredByUserDisplayName === $fileRow->getSharer()) {
 				if (\substr($action, 0, 6) === "accept") {
 					$fileRow->acceptShare($this->getSession());
 				} else {
@@ -1692,14 +1716,19 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$row = $this->filesPage->findFileRowByName($itemName, $this->getSession());
 		$sharingBtn = $row->findSharingButton();
-		Assert::assertSame(
-			$sharerName,
-			$this->filesPage->getTrimmedText($sharingBtn),
-			__METHOD__
-			. " The expected sharer name to be displayed is '$sharerName', but got '"
-			. $this->filesPage->getTrimmedText($sharingBtn)
-			. "' instead."
-		);
+		$mobileResolution = getenv("MOBILE_RESOLUTION");
+		// checking if MOBILE_RESOLUTION is set and skip this step if true as
+		// in mobile resolution sharer name is not displayed in file row
+		if (empty($mobileResolution)) {
+			Assert::assertSame(
+				$sharerName,
+				$this->filesPage->getTrimmedText($sharingBtn),
+				__METHOD__
+				. " The expected sharer name to be displayed is '$sharerName', but got '"
+				. $this->filesPage->getTrimmedText($sharingBtn)
+				. "' instead."
+			);
+		}
 		$sharingDialog = $this->filesPage->openSharingDialog(
 			$itemName,
 			$this->getSession()
@@ -1737,6 +1766,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				. "' instead."
 			);
 		}
+		$this->filesPage->closeDetailsDialog();
 	}
 
 	/**

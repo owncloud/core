@@ -660,6 +660,7 @@ class DetailsDialog extends OwncloudPage {
 				. "\n-------------------------\n"
 			);
 		}
+		$this->waitForOutstandingAjaxCalls($this->getSession());
 	}
 
 	/**

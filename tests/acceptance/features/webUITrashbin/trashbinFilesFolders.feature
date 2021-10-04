@@ -9,7 +9,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has logged in using the webUI
     And the user has browsed to the files page
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: Delete files & folders one by one and check that they are all in the trashbin
     When the user deletes the following elements using the webUI
       | name                                  |

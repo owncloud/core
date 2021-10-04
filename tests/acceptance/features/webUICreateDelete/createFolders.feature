@@ -39,7 +39,7 @@ Feature: create folders
     Then the newFileMenu filename form should not be displayed on the webUI
 
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: Create a folder inside another folder
     When the user creates a folder with the name "top-folder" using the webUI
     And the user opens folder "top-folder" using the webUI

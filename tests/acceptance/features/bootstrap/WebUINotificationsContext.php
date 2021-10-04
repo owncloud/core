@@ -69,7 +69,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 		$number,
 		TableNode $expectedNotifications
 	) {
-		$notificationsDialog = $this->openNotificationsDialog($this->getSession());
+		$notificationsDialog = $this->owncloudPage->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotifications();
 		Assert::assertEquals(
 			$number,
@@ -122,7 +122,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 * @throws InvalidArgumentException
 	 */
 	public function userFollowsLink($firstOrLast) {
-		$notificationsDialog = $this->openNotificationsDialog($this->getSession());
+		$notificationsDialog = $this->owncloudPage->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotificationObjects();
 		if ($firstOrLast === 'first') {
 			/**
@@ -150,7 +150,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function userReactsToAllNotificationsOnTheWebUI($reaction) {
-		$notificationsDialog = $this->openNotificationsDialog($this->getSession());
+		$notificationsDialog = $this->owncloudPage->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotificationObjects();
 		while (\count($notifications) > 0) {
 			$notifications[0]->react($reaction, $this->getSession());
@@ -177,18 +177,6 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 */
 	public function userDeclinesAllShares() {
 		$this->userReactsToAllNotificationsOnTheWebUI("Decline");
-	}
-
-	/**
-	 *
-	 * @param Session $session
-	 *
-	 * @return \Page\NotificationsAppDialog
-	 */
-	protected function openNotificationsDialog(Session $session) {
-		$this->getSession()->reload();
-		$this->owncloudPage->waitForNotifications();
-		return $this->owncloudPage->openNotifications($session);
 	}
 
 	/**

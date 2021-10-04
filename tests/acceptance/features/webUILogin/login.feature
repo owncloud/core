@@ -38,12 +38,12 @@ Feature: login users
     When user "Alice" logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
-  @smokeTest
+  @smokeTest @mobileResolutionTest
   Scenario: admin login
     When the administrator logs in using the webUI
     Then the user should be redirected to a webUI page with the title "Files - %productname%"
 
-  @smokeTest
+  @smokeTest @mobileResolutionTest
   Scenario: admin login with invalid password
     Given the user has browsed to the login page
     When the administrator tries to login with an invalid password "%regular%" using the webUI

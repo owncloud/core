@@ -287,6 +287,23 @@ config = {
             "runAllSuites": True,
             "numberOfParts": 3,
         },
+        "webUIMobileSize": {
+            "suites": {
+                "webUIMobileSize": "",
+            },
+            "browsers": [
+                "chrome",
+            ],
+            "emailNeeded": True,
+            "useHttps": False,
+            "filterTags": "@mobileResolutionTest&&~@notifications-app-required",
+            "runAllSuites": True,
+            "numberOfParts": 3,
+            "extraEnvironment": {
+                "MOBILE_RESOLUTION": "375x812",
+                "OC_LANGUAGE": "en-EN",
+            },
+        },
         "apiProxy": {
             "suites": {
                 "apiProxySmoketest": "apiProxySmoke",

@@ -8,7 +8,7 @@ Feature: File Upload
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario Outline: simple upload of a file that does not exist before
     Given user "<username>" has been created with default attributes and without skeleton files
     And user "<username>" has logged in using the webUI
@@ -25,7 +25,7 @@ Feature: File Upload
       | -123     |
       | 0.0      |
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: chunking upload
     Given a file with the size of "30000000" bytes and the name "big-video.mp4" has been created locally
     And user "Alice" has logged in using the webUI
@@ -53,7 +53,7 @@ Feature: File Upload
     And file "new-lorem.txt" should be listed on the webUI
     And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: overwrite an existing file
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
@@ -63,7 +63,7 @@ Feature: File Upload
     And the content of "lorem.txt" should be the same as the local "lorem.txt"
     But file "lorem (2).txt" should not be listed on the webUI
 
-  @smokeTest @skipOnLDAP
+  @smokeTest @skipOnLDAP @mobileResolutionTest
   Scenario: keep new and existing file
     Given user "Alice" has uploaded file with content "original content" to "/lorem.txt"
     And user "Alice" has logged in using the webUI
