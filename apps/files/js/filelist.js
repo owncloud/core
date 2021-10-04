@@ -2349,7 +2349,7 @@
 				if (filename !== oldName) {
 					// Files.isFileNameValid(filename) throws an exception itself
 					OCA.Files.Files.isFileNameValid(filename);
-					if (self.inList(filename)) {
+					if (self.inList(filename, oldFileInfo.path)) {
 						throw t('files', '{newName} already exists', {newName: filename});
 					}
 				}
@@ -2405,6 +2405,18 @@
 							.done(function() {
 								newFileInfo = Object.create(oldFileInfo);
 								newFileInfo.name = newName;
+
+								/**
+								 * Indicate that extraData has a path
+								 * so we adjust it with the new file name
+								 */
+								if (newFileInfo.extraData &&
+									newFileInfo.extraData.indexOf('/') !== -1
+								) {
+									newFileInfo.extraData = oldFileInfo.path + '/' + newName;
+								}
+
+
 								updateInList(newFileInfo, oldFileInfo);
 							})
 							.fail(function(status) {
@@ -2665,11 +2677,18 @@
 		 * Returns whether the given file name exists in the list
 		 *
 		 * @param {string} file file name
+		 * @param {string} pathToSearch only look in certain path
 		 *
-		 * @return {bool} true if the file exists in the list, false otherwise
+		 * @return {boolean} true if the file exists in the list, false otherwise
 		 */
-		inList:function(file) {
-			return this.findFile(file);
+		inList:function(file, pathToSearch) {
+			if(pathToSearch === undefined){
+				return this.findFile(file);
+			}
+
+			return _.find(this.files, function(aFile) {
+				return (aFile.name === file && aFile.path === pathToSearch);
+			});
 		},
 
 		/**
