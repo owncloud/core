@@ -277,7 +277,7 @@ class LoggingContext implements Context {
 	private function assertLogFileContainsAtLeastOneEntryMatchingTable(
 		bool      $shouldOrNot,
 		TableNode $expectedLogEntries,
-		bool $regexCompare
+		bool $regexCompare = false
 	):void {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			// Currently we don't interact with the log file on reva or OCIS
