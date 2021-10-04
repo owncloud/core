@@ -447,7 +447,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @param string $users
+	 * @param string $users space-separated usernames
 	 *
 	 * @return void
 	 * @throws Exception
@@ -2475,16 +2475,16 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator deletes all the versions for following users:
+	 * @When the administrator deletes all the versions for the following users:
 	 *
-	 * @param TableNode $table table of patterns to find with table title as 'table_column'
+	 * @param TableNode $usersTable
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorDeletesAllTheVersionsForSpecificUsers(TableNode $table):void {
-		$this->featureContext->verifyTableNodeColumns($table, ["username"]);
-		$usernames = $table->getHash();
+	public function theAdministratorDeletesAllTheVersionsForSpecificUsers(TableNode $usersTable):void {
+		$this->featureContext->verifyTableNodeColumns($usersTable, ["username"]);
+		$usernames = $usersTable->getHash();
 		$usernamesArray = [];
 		foreach ($usernames as $username) {
 			array_push($usernamesArray, $username["username"]);
