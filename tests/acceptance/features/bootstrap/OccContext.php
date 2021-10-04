@@ -447,6 +447,30 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @param string $users space-separated usernames
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteAllVersionsForSpecificUsersUsingOccCommand(string $users):void {
+		$this->invokingTheCommand(
+			"versions:cleanup $users"
+		);
+	}
+
+	/**
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteAllExpiredVersionsForUserUsingOccCommand(string $user):void {
+		$this->invokingTheCommand(
+			"versions:expire $user"
+		);
+	}
+
+	/**
 	 * @return void
 	 * @throws Exception
 	 */
@@ -2448,6 +2472,38 @@ class OccContext implements Context {
 	public function theAdministratorDeletesAllTheVersionsForUser(string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->deleteAllVersionsForUserUsingOccCommand($user);
+	}
+
+	/**
+	 * @When the administrator deletes all the versions for the following users:
+	 *
+	 * @param TableNode $usersTable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorDeletesAllTheVersionsForSpecificUsers(TableNode $usersTable):void {
+		$this->featureContext->verifyTableNodeColumns($usersTable, ["username"]);
+		$usernames = $usersTable->getHash();
+		$usernamesArray = [];
+		foreach ($usernames as $username) {
+			array_push($usernamesArray, $username["username"]);
+		}
+		$users = implode(" ", $usernamesArray);
+		$this->deleteAllVersionsForSpecificUsersUsingOccCommand($users);
+	}
+
+	/**
+	 * @When the administrator deletes all the expired versions for user :user
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorDeletesAllTheExpiredVersionsForUser(string $user):void {
+		$user = $this->featureContext->getActualUsername($user);
+		$this->deleteAllExpiredVersionsForUserUsingOccCommand($user);
 	}
 
 	/**
