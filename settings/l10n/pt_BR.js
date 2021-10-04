@@ -266,6 +266,7 @@ OC.L10N.register(
     "SMTP Username" : "Nome do Usuário SMTP",
     "SMTP Password" : "Senha SMTP",
     "Store credentials" : "Armazenar credenciais",
+    "Test receiver email" : "E-mail do destinatário de teste ",
     "Test email settings" : "Configurações de e-mail de teste",
     "Send email" : "Enviar email",
     "Manual File Locking" : "Bloqueio Manual de Arquivos",
