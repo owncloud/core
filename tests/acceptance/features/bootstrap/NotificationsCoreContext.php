@@ -184,7 +184,7 @@ class NotificationsCoreContext implements Context {
 		$this->matchNotification(
 			$notification,
 			$user,
-			$aboutUser = null,
+			"",
 			false,
 			$formData
 		);
