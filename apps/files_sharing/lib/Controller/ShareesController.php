@@ -212,6 +212,7 @@ class ShareesController extends OCSController {
 					'shareType' => Share::SHARE_TYPE_USER,
 					'shareWith' => $uid,
 					'userType' => $userTypeHelper->getUserType($uid),
+					'enabled' => $user->isEnabled(),
 				],
 			];
 			$additionalInfo = $this->getAdditionalUserInfo($user);
@@ -243,7 +244,8 @@ class ShareesController extends OCSController {
 					'allow_share_dialog_user_enumeration',
 					'yes'
 				);
-				if ($userAutoCompleteEnabled === 'yes') {
+				$showDisabledUsers = $this->config->getAppValue('files_sharing', 'sharees_display_disabled_users', 'true');
+				if ($userAutoCompleteEnabled === 'yes' && ($user->isEnabled() !== false || $showDisabledUsers === "true")) {
 					$this->result['users'][] = $entry;
 				}
 			}
