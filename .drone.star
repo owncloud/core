@@ -1671,6 +1671,7 @@ def acceptance(ctx):
                                              params["extraSetup"] +
                                              fixPermissions(phpVersion, params["federatedServerNeeded"], pathOfServerUnderTest) +
                                              waitForServer(phpVersion, params["federatedServerNeeded"]) +
+                                             waitForBrowserService(phpVersion, isWebUI) +
                                              owncloudLog("server", pathOfServerUnderTest) +
                                              [
                                                  ({
@@ -2004,6 +2005,18 @@ def browserService(browser):
             },
         }]
 
+    return []
+
+def waitForBrowserService(phpVersion, isWebUi):
+    if isWebUi:
+        return [{
+            "name": "wait-for-selenium",
+            "image": "owncloudci/php:%s" % phpVersion,
+            "pull": "always",
+            "commands": [
+                "wait-for-it -t 600 selenium:4444",
+            ],
+        }]
     return []
 
 def emailService(emailNeeded):
