@@ -4215,6 +4215,7 @@ trait WebDav {
 	 * @param string $folder
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userHasDeletedEverythingInFolder($user, $folder) {
 		$this->userDeletesEverythingInFolder($user, $folder, true);
@@ -4262,18 +4263,37 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the downloaded image should be :width pixels wide and :height pixels high
+	 * @Then the downloaded image for user :user should be :width pixels wide and :height pixels high
 	 *
-	 * @param $width
-	 * @param $height
+	 * @param string $user
+	 * @param string $width
+	 * @param string $height
 	 *
 	 * @return void
 	 */
-	public function imageDimensionsShouldBe($width, $height) {
-		if ($this->responseBodyContents === null) {
-			$this->responseBodyContents = $this->response->getBody()->getContents();
+	public function imageDimensionsForAUserShouldBe(string $user, string $width, string $height):void {
+		if ($this->userResponseBodyContents[$user] === null) {
+			$this->userResponseBodyContents[$user] = $this->response->getBody()->getContents();
 		}
-		$size = \getimagesizefromstring($this->responseBodyContents);
+		$size = \getimagesizefromstring($this->userResponseBodyContents[$user]);
+		Assert::assertNotFalse($size, "could not get size of image");
+		Assert::assertEquals($width, $size[0], "width not as expected");
+		Assert::assertEquals($height, $size[1], "height not as expected");
+	}
+
+	/**
+	 * @Then the downloaded image should be :width pixels wide and :height pixels high
+	 *
+	 * @param string $width
+	 * @param string $height
+	 *
+	 * @return void
+	 */
+	public function imageDimensionsShouldBe(string $width, string $height): void {
+		if ($this->responseBodyContent === null) {
+			$this->responseBodyContent = $this->response->getBody()->getContents();
+		}
+		$size = \getimagesizefromstring($this->responseBodyContent);
 		Assert::assertNotFalse($size, "could not get size of image");
 		Assert::assertEquals($width, $size[0], "width not as expected");
 		Assert::assertEquals($height, $size[1], "height not as expected");
@@ -4289,23 +4309,25 @@ trait WebDav {
 	 */
 	public function theDownloadedPreviewContentShouldMatchWithFixturesPreviewContentFor(string $filename):void {
 		$expectedPreview = \file_get_contents(__DIR__ . "/../../fixtures/" . $filename);
-		Assert::assertEquals($expectedPreview, $this->responseBodyContents);
+		Assert::assertEquals($expectedPreview, $this->responseBodyContent);
 	}
 
 	/**
 	 * @Given user :user has downloaded the preview of :path with width :width and height :height
 	 *
-	 * @param $user
-	 * @param $path
-	 * @param $width
-	 * @param $height
+	 * @param string $user
+	 * @param string $path
+	 * @param string $width
+	 * @param string $height
 	 *
 	 * @return void
 	 */
-	public function userDownloadsThePreviewOfWithWidthAndHeight($user, $path, $width, $height):void {
+	public function userDownloadsThePreviewOfWithWidthAndHeight(string $user, string $path, string $width, string $height):void {
 		$this->downloadPreviewOfFiles($user, $path, $width, $height);
 		$this->theHTTPStatusCodeShouldBe(200);
 		$this->imageDimensionsShouldBe($width, $height);
+		// save response to user response dictionary for further comparisons
+		$this->userResponseBodyContents[$user] = $this->responseBodyContent;
 	}
 
 	/**
@@ -4324,9 +4346,13 @@ trait WebDav {
 		$newResponseBodyContents = $this->response->getBody()->getContents();
 		Assert::assertNotEquals(
 			$newResponseBodyContents,
-			$this->responseBodyContents,
+			// different users can download files before and after an update is made to a file
+			// previous response content is fetched from user response body content array for that user
+			$this->userResponseBodyContents[$user],
 			__METHOD__ . " previous and current previews content is same but expected to be different",
 		);
+		// update the saved content for the next comparison
+		$this->userResponseBodyContents[$user] = $newResponseBodyContents;
 	}
 
 	/**
