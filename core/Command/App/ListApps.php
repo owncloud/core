@@ -73,11 +73,18 @@ class ListApps extends Base {
 				InputOption::VALUE_REQUIRED,
 				'true - limit to shipped apps only, false - limit to non-shipped apps only.'
 			)
+			->addOption(
+				'minimal',
+				'm',
+				InputOption::VALUE_NONE,
+				'Minimal view - only display apps with version',
+			)
 		;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$appNameSubString = $input->getArgument('search-pattern');
+		$minimalView = $input->getOption('minimal');
 
 		if ($input->getOption('shipped') === 'true' || $input->getOption('shipped') === 'false') {
 			$shippedFilter = $input->getOption('shipped') === 'true';
@@ -114,6 +121,11 @@ class ListApps extends Base {
 			foreach ($enabledApps as $app) {
 				$appDetailRecord = [];
 
+				if ($minimalView) {
+					$apps['enabled'][] = sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
+					continue;
+				}
+
 				if (isset($versions[$app])) {
 					$appDetailRecord['Version'] = $versions[$app];
 				}
@@ -127,6 +139,12 @@ class ListApps extends Base {
 			\sort($disabledApps);
 			foreach ($disabledApps as $app) {
 				$appDetailRecord = [];
+
+				if ($minimalView) {
+					$apps['disabled'][] = sprintf('%s%s', $app, isset($versions[$app]) ? ' '.$versions[$app] : '');
+					continue;
+				}
+
 				if (($input->getOption('disabled') && isset($versions[$app]))) {
 					$appDetailRecord['Version'] = $versions[$app];
 				}
