@@ -46,6 +46,7 @@ Summary
 * Bugfix - Use original UID when setting the share receiver: [#39293](https://github.com/owncloud/core/pull/39293)
 * Bugfix - Versions for files named "0": [#39300](https://github.com/owncloud/core/pull/39300)
 * Bugfix - File version names for share recipients: [#39314](https://github.com/owncloud/core/pull/39314)
+* Bugfix - Allow renaming two files with the same name but different paths: [#39315](https://github.com/owncloud/core/pull/39315)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -394,6 +395,17 @@ Details
 
    https://github.com/owncloud/core/issues/36228
    https://github.com/owncloud/core/pull/39314
+
+* Bugfix - Allow renaming two files with the same name but different paths: [#39315](https://github.com/owncloud/core/pull/39315)
+
+   With this change, we allow renaming a file to an existing file name, when the path differs. This
+   happens for example when the user creates the file '/mydirname/text.txt' and '/mytext.txt'
+   then marks both as favorite, and then navigates to the Favorites and renames 'mytext.txt' to
+   'text.txt'
+
+   https://github.com/owncloud/core/issues/20722
+   https://github.com/owncloud/core/issues/35174
+   https://github.com/owncloud/core/pull/39315
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 
