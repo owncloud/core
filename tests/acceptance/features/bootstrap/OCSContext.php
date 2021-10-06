@@ -746,7 +746,7 @@ class OCSContext implements Context {
 	 * @throws Exception
 	 */
 	public function theOCSStatusCodeShouldBe(string $statusCode, $message = ""):void {
-		$statusCodes = explode(" ", $statusCode);
+		$statusCodes = explode(",", $statusCode);
 		$responseStatusCode = $this->getOCSResponseStatusCode(
 			$this->featureContext->getResponse()
 		);
@@ -783,7 +783,7 @@ class OCSContext implements Context {
 	 */
 	public function theOcsStatusCodeShouldBeOr(string $statusCode1, string $statusCode2):void {
 		$this->theOCSStatusCodeShouldBe(
-			(string)[$statusCode1, $statusCode2]
+			$statusCode1 . "," . $statusCode2
 		);
 	}
 

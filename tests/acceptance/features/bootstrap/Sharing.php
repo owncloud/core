@@ -384,7 +384,7 @@ trait Sharing {
 	 */
 	public function userHasCreatedAPublicLinkShareWithSettings(string $user, ?TableNode $body):void {
 		$this->userCreatesAPublicLinkShareWithSettings($user, $body);
-		$this->ocsContext->theOCSStatusCodeShouldBe((array)[100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe("100,200");
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -410,7 +410,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAShareWithSettings(?TableNode $body):void {
 		$this->createShareWithSettings($this->currentUser, $body);
-		$this->ocsContext->theOCSStatusCodeShouldBe((array)[100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe("100,200");
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -424,7 +424,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAPublicLinkShareWithSettings(?TableNode $body):void {
 		$this->theUserCreatesAPublicLinkShareWithSettings($body);
-		$this->ocsContext->theOCSStatusCodeShouldBe((array)[100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe("100,200");
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -959,9 +959,9 @@ trait Sharing {
 		$this->updateLastShareWithSettings($user, $body, $shareOwner);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 		if ($this->ocsApiVersion == 1) {
-			$this->ocsContext->theOCSStatusCodeShouldBe((array)100);
+			$this->ocsContext->theOCSStatusCodeShouldBe("100");
 		} elseif ($this->ocsApiVersion === 2) {
-			$this->ocsContext->theOCSStatusCodeShouldBe((array)200);
+			$this->ocsContext->theOCSStatusCodeShouldBe("200");
 		} else {
 			throw new Exception('Invalid ocs api version used');
 		}
@@ -1323,7 +1323,7 @@ trait Sharing {
 		string $filepath,
 		string $user2,
 		?array $permissions = null,
-		?bool $getShareData
+		?bool $getShareData = false
 	):void {
 		$user1Actual = $this->getActualUsername($user1);
 		$user2Actual = $this->getActualUsername($user2);
@@ -1429,7 +1429,7 @@ trait Sharing {
 	 * @param string $user1
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 */
@@ -1437,20 +1437,21 @@ trait Sharing {
 		string $user1,
 		string $filepath,
 		string $user2,
-		?array $permissions = null
+		?string $permissions = null
 	):void {
 		$user1 = $this->getActualUsername($user1);
 		$user2 = $this->getActualUsername($user2);
+		$permission = explode(",", $permissions);
 		$this->shareFileWithUserUsingTheSharingApi(
 			$user1,
 			$filepath,
 			$user2,
-			$permissions,
+			$permission,
 			true
 		);
 		// this is expected to fail if a file is shared with create and delete permissions, which is not possible
 		Assert::assertTrue(
-			$this->isUserOrGroupInSharedData($user2, "user", $permissions),
+			$this->isUserOrGroupInSharedData($user2, "user", $permission),
 			__METHOD__ . " User $user1 failed to share $filepath with user $user2"
 		);
 	}
@@ -1814,7 +1815,7 @@ trait Sharing {
 
 		//v1.php returns 100 as success code
 		//v2.php returns 200 in the same case
-		$this->ocsContext->theOCSStatusCodeShouldBe([100, 200]);
+		$this->ocsContext->theOCSStatusCodeShouldBe("100, 200");
 	}
 
 	/**
