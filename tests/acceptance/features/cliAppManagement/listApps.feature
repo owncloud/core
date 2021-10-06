@@ -57,3 +57,15 @@ Feature: list apps
     Then the command should have been successful
     And app "testapp1" with version "2.3.4" and path "apps/testapp1" should have been listed in the disabled apps section
     And the enabled apps section should not exist
+
+  Scenario: list all the apps in minimal format
+    Given app "testapp1" with version "2.3.4" has been put in dir "apps"
+    And app "testapp1" has been enabled
+    And app "testapp2" with version "5.6.7" has been put in dir "apps"
+    And app "testapp2" has been disabled
+    When the administrator lists the apps in minimal format using the occ command
+    Then the command should have been successful
+    And app "testapp1" should have been listed in the enabled apps section
+    And app "testapp2" should have been listed in the disabled apps section
+    And app version and path lines should not exist in the list app output
+
