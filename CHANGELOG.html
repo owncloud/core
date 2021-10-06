@@ -74,6 +74,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Redesign group list in the user settings view: <a href="https://github.com/owncloud/core/pull/39262">#39262</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Previews for text files including non-latin characters: <a href="https://github.com/owncloud/core/pull/39271">#39271</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow empty folder uploads via webUI: <a href="https://github.com/owncloud/core/pull/39285">#39285</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add support for MariaDB 10.6: <a href="https://github.com/owncloud/core/pull/39286">#39286</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add test receiver mail in Email Settings Admin Panel: <a href="https://github.com/owncloud/core/pull/39297">#39297</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Change user casing log level to "debug": <a href="https://github.com/owncloud/core/pull/39299">#39299</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Hide the "Remove Password" button on public links: <a href="https://github.com/owncloud/core/pull/39302">#39302</a></li>
@@ -661,6 +662,17 @@
             <p>https://github.com/owncloud/core/issues/32235<br>https://github.com/owncloud/enterprise/issues/3117<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39285<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add support for MariaDB 10.6: <a href="https://github.com/owncloud/core/pull/39286">#39286</a></p>
+            <p>With this change support for MariaDB 10.6 has been added. If it is a fresh ownCloud
+   installation, MariaDB 10.6 can be used right away. For upgrading from an older version the
+   command 'occ db:restore-default-row-format' has been introduced to remove the deprecated
+   row_format 'compressed' from the ownCloud database tables and set it to the default value.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39283<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39286<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add test receiver mail in Email Settings Admin Panel: <a href="https://github.com/owncloud/core/pull/39297">#39297</a></p>

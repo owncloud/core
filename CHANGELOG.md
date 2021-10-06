@@ -76,6 +76,7 @@ Summary
 * Enhancement - Redesign group list in the user settings view: [#39262](https://github.com/owncloud/core/pull/39262)
 * Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
 * Enhancement - Allow empty folder uploads via webUI: [#39285](https://github.com/owncloud/core/pull/39285)
+* Enhancement - Add support for MariaDB 10.6: [#39286](https://github.com/owncloud/core/pull/39286)
 * Enhancement - Add test receiver mail in Email Settings Admin Panel: [#39297](https://github.com/owncloud/core/pull/39297)
 * Enhancement - Change user casing log level to "debug": [#39299](https://github.com/owncloud/core/pull/39299)
 * Enhancement - Hide the "Remove Password" button on public links: [#39302](https://github.com/owncloud/core/pull/39302)
@@ -667,6 +668,16 @@ Details
    https://github.com/owncloud/core/issues/32235
    https://github.com/owncloud/enterprise/issues/3117
    https://github.com/owncloud/core/pull/39285
+
+* Enhancement - Add support for MariaDB 10.6: [#39286](https://github.com/owncloud/core/pull/39286)
+
+   With this change support for MariaDB 10.6 has been added. If it is a fresh ownCloud
+   installation, MariaDB 10.6 can be used right away. For upgrading from an older version the
+   command 'occ db:restore-default-row-format' has been introduced to remove the deprecated
+   row_format 'compressed' from the ownCloud database tables and set it to the default value.
+
+   https://github.com/owncloud/core/issues/39283
+   https://github.com/owncloud/core/pull/39286
 
 * Enhancement - Add test receiver mail in Email Settings Admin Panel: [#39297](https://github.com/owncloud/core/pull/39297)
 
