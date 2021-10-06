@@ -739,32 +739,33 @@ class OCSContext implements Context {
 	/**
 	 * @Then /^the OCS status code should be "([^"]*)"$/
 	 *
-	 * @param array $statusCode
+	 * @param string $statusCode
 	 * @param string $message
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theOCSStatusCodeShouldBe(array $statusCode, $message = ""):void {
+	public function theOCSStatusCodeShouldBe(string $statusCode, $message = ""):void {
+		$statusCodes = explode(" ", $statusCode);
 		$responseStatusCode = $this->getOCSResponseStatusCode(
 			$this->featureContext->getResponse()
 		);
-		if (\is_array($statusCode)) {
+		if (\is_array($statusCodes)) {
 			if ($message === "") {
-				$message = "OCS status code is not any of the expected values " . \implode(",", $statusCode) . " got " . $responseStatusCode;
+				$message = "OCS status code is not any of the expected values " . \implode(",", $statusCodes) . " got " . $responseStatusCode;
 			}
 			Assert::assertContainsEquals(
 				$responseStatusCode,
-				$statusCode,
+				$statusCodes,
 				$message
 			);
 		} else {
 			if ($message === "") {
-				$message = "OCS status code is not the expected value " . $statusCode . " got " . $responseStatusCode;
+				$message = "OCS status code is not the expected value " . $statusCodes . " got " . $responseStatusCode;
 			}
 
 			Assert::assertEquals(
-				$statusCode,
+				$statusCodes,
 				$responseStatusCode,
 				$message
 			);
