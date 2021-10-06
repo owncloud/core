@@ -80,6 +80,7 @@ Summary
 * Enhancement - Change user casing log level to "debug": [#39299](https://github.com/owncloud/core/pull/39299)
 * Enhancement - Hide the "Remove Password" button on public links: [#39302](https://github.com/owncloud/core/pull/39302)
 * Enhancement - Trim spaces while creating, uploading or renaming entities in webUI: [#39310](https://github.com/owncloud/core/pull/39310)
+* Enhancement - Bring back minimalistic view to occ app:list with '-m' option: [#39326](https://github.com/owncloud/core/pull/39326)
 
 Details
 -------
@@ -702,6 +703,10 @@ Details
    https://github.com/owncloud/enterprise/issues/4772
    https://github.com/owncloud/core/issues/35017
    https://github.com/owncloud/core/pull/39310
+
+* Enhancement - Bring back minimalistic view to occ app:list with '-m' option: [#39326](https://github.com/owncloud/core/pull/39326)
+
+   https://github.com/owncloud/core/pull/39326
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
