@@ -58,7 +58,7 @@ config = {
             ],
             "databases": [
                 "sqlite",
-                "mariadb:10.2",
+                "mariadb:10.6",
             ],
         },
         "external-samba-windows": {
@@ -173,6 +173,7 @@ config = {
                 "apiFederationToShares2",
             ],
             "federatedServerNeeded": True,
+            "federatedDb": "mariadb:10.5",
             "federatedServerVersions": ["git", "latest", "10.7.0"],
         },
         "cli": {
@@ -196,6 +197,7 @@ config = {
                 "cliExternalStorage",
             ],
             "federatedServerNeeded": True,
+            "federatedDb": "mariadb:10.5",
             "federatedServerVersions": ["git", "latest", "10.7.0"],
         },
         "webUI": {
@@ -259,6 +261,7 @@ config = {
                 "webUISharingExternal2": "webUISharingExt2",
             },
             "federatedServerNeeded": True,
+            "federatedDb": "mariadb:10.5",
             "federatedServerVersions": ["git", "latest", "10.7.0"],
         },
         "webUIFirefox": {
@@ -887,7 +890,7 @@ def litmus():
 
         for phpVersion in params["phpVersions"]:
             name = "litmus-php%s" % phpVersion
-            db = "mariadb:10.2"
+            db = "mariadb:10.6"
             image = "owncloud/litmus:latest"
             environment = {
                 "LITMUS_PASSWORD": "admin",
@@ -1046,7 +1049,7 @@ def dav():
         for phpVersion in params["phpVersions"]:
             for davType in ["caldav-new", "caldav-old", "carddav-new", "carddav-old"]:
                 name = "%s-php%s" % (davType, phpVersion)
-                db = "mariadb:10.2"
+                db = "mariadb:10.6"
 
                 if (davType == "caldav-new"):
                     scriptPath = "apps/dav/tests/ci/caldav"
@@ -1460,7 +1463,7 @@ def acceptance(ctx):
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
         "nodeJsVersion": "14",
-        "databases": ["mariadb:10.2"],
+        "databases": ["mariadb:10.6"],
         "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
         "federatedDb": "",
@@ -1564,7 +1567,7 @@ def acceptance(ctx):
                                 if federatedDbName not in ["mariadb", "mysql"]:
                                     # Do not try to run 2 sets of Oracle, Postgres etc databases
                                     # When testing with these, let the federated server use mariadb
-                                    federatedDb = "mariadb:10.2"
+                                    federatedDb = "mariadb:10.5"
 
                                 if isWebUI or isAPI or isCLI:
                                     browserString = "" if browser == "" else "-" + browser
