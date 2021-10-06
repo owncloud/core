@@ -218,7 +218,6 @@ class ConnectionFactory {
 			$connectionParams['defaultTableOptions'] = [
 				'collate' => 'utf8mb4_bin',
 				'charset' => 'utf8mb4',
-				'row_format' => 'compressed',
 				'tablePrefix' => $connectionParams['tablePrefix']
 			];
 		}
