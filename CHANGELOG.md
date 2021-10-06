@@ -45,6 +45,7 @@ Summary
 * Bugfix - Don't show empty brackets in lock owner information if mail not set: [#39292](https://github.com/owncloud/core/pull/39292)
 * Bugfix - Use original UID when setting the share receiver: [#39293](https://github.com/owncloud/core/pull/39293)
 * Bugfix - Versions for files named "0": [#39300](https://github.com/owncloud/core/pull/39300)
+* Bugfix - Sanitize data send to the server while creating users via webUI: [#39306](https://github.com/owncloud/core/pull/39306)
 * Bugfix - File version names for share recipients: [#39314](https://github.com/owncloud/core/pull/39314)
 * Bugfix - Allow renaming two files with the same name but different paths: [#39315](https://github.com/owncloud/core/pull/39315)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
@@ -387,6 +388,16 @@ Details
 
    https://github.com/owncloud/core/issues/36000
    https://github.com/owncloud/core/pull/39300
+
+* Bugfix - Sanitize data send to the server while creating users via webUI: [#39306](https://github.com/owncloud/core/pull/39306)
+
+   Before this change toggle between 'Set password for new users' option, may preserve and send
+   unwanted password or email information. This has been fixed, the webUI will not send email data
+   to the server if the option 'Set password for new users' is active, vice versa password won't be
+   sent if the option is disabled.
+
+   https://github.com/owncloud/core/issues/32619
+   https://github.com/owncloud/core/pull/39306
 
 * Bugfix - File version names for share recipients: [#39314](https://github.com/owncloud/core/pull/39314)
 
