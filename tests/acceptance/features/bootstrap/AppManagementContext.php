@@ -249,6 +249,18 @@ class AppManagementContext implements Context {
 	}
 
 	/**
+	 * @When the administrator lists the apps in minimal format using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminListsTheAppsInMinimalFormat():void {
+		$this->featureContext->runOcc(
+			['app:list', '--minimal --no-ansi']
+		);
+	}
+
+	/**
 	 * @Then app :appId with version :appVersion and path :appPath should have been listed in the enabled apps section
 	 *
 	 * @param string $appId
@@ -311,6 +323,32 @@ class AppManagementContext implements Context {
 	}
 
 	/**
+	 * @Then app :appId should have been listed in the enabled apps section
+	 *
+	 * @param string $appId
+	 *
+	 * @return void
+	 */
+	public function appShouldHaveBeenListedInTheEnabledAppsSection(string $appId):void {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		$expectedStartOfOutput = "Enabled:";
+		Assert::assertEquals(
+			$expectedStartOfOutput,
+			\substr($commandOutput, 0, 8),
+			"app:list command output did not start with '$expectedStartOfOutput'"
+		);
+		$startOfDisabledSection = \strpos($commandOutput, "Disabled:");
+		if ($startOfDisabledSection) {
+			$commandOutput = \substr($commandOutput, 0, $startOfDisabledSection);
+		}
+		$expectedString = "- $appId";
+		Assert::assertNotFalse(
+			\strpos($commandOutput, $expectedString),
+			"app:list output did not contain '$expectedString' in the enabled section"
+		);
+	}
+
+	/**
 	 * @Then app :appId should have been listed in the disabled apps section
 	 *
 	 * @param string $appId
@@ -329,6 +367,23 @@ class AppManagementContext implements Context {
 		Assert::assertNotFalse(
 			\strpos($commandOutput, $expectedString),
 			"app:list output did not contain '$expectedString' in the disabled section"
+		);
+	}
+
+	/**
+	 * @Then app version and path lines should not exist in the list app output
+	 *
+	 * @return void
+	 */
+	public function appVersionAndPathLinesShouldNotExist():void {
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		Assert::assertStringNotContainsString(
+			"Version:",
+			$commandOutput
+		);
+		Assert::assertStringNotContainsString(
+			"Path:",
+			$commandOutput
 		);
 	}
 
