@@ -36,11 +36,11 @@ class FavoritesPage extends FilesPageBasic {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/?view=favorites';
-	protected $fileNamesXpath = "//span[@class='nametext']";
-	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
+	protected $fileNamesXpath = "//span[@class='nametext extra-data']";
+	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and not(contains(@class,'innernametext')) and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-favorites']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-favorites']//div[@id='emptycontent']";
-	protected $filePathInRowXpath = "//*[@data-tags='_\$!<Favorite>!\$_']";
+	protected $filePathInRowXpath = "//span[@class='nametext extra-data']";
 
 	/**
 	 * @return string

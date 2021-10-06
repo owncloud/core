@@ -205,21 +205,19 @@ Feature: Share by public link
     And folder "newfolder" should be listed on the webUI
     And folder "test" should be listed on the webUI
 
-  @skipOnOcV10 @issue-35174
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: User renames folders with different path in Shared by link page
     Given user "Alice" has created folder "nf1"
-    And user "Alice" has created folder "nf1/newfolder"
-    And user "Alice" has created folder "test"
+    And user "Alice" has created folder "nf1/test"
+    And user "Alice" has created folder "newfolder"
     And user "Alice" has created a public link share with settings
-      | path | nf1/newfolder |
+      | path | nf1/test |
     And user "Alice" has created a public link share with settings
-      | path | test |
+      | path | newfolder |
     And user "Alice" has logged in using the webUI
     And the user has browsed to the shared-by-link page
     When the user renames folder "test" to "newfolder" using the webUI
-    Then the following folder should be listed on the webUI
-      | newfolder |
-      | newfolder |
+    Then folder "newfolder" with path "nf1/newfolder" should be listed on the webUI
 
   @skipOnOcV10.3
   Scenario: user tries to deletes the expiration date of already existing public link using webUI when expiration date is enforced

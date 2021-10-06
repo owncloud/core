@@ -91,6 +91,16 @@ $(document).ready(function() {
 				if (result) {
 					// prepend empty dir info because original handler
 					result.unshift({});
+
+					for (var i = 0; i < result.length; i++) {
+						/**
+						 * Set extraData to file path and name
+						 * if the file is not in user's root home directory
+						 */
+						if (result[i].path !== '/') {
+							result[i].extraData = result[i].path + '/' + result[i].name;
+						}
+					}
 				}
 
 				return OCA.Files.FileList.prototype.reloadCallback.call(this, status, result);

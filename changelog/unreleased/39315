@@ -1,0 +1,11 @@
+Bugfix: Allow renaming two files with the same name but different paths
+
+With this change, we allow renaming a file to an existing file name,
+when the path differs.
+This happens for example when the user creates the file
+'/mydirname/text.txt' and '/mytext.txt' then marks both as favorite, and then navigates to the Favorites
+and renames 'mytext.txt' to 'text.txt'
+
+https://github.com/owncloud/core/pull/39315
+https://github.com/owncloud/core/issues/20722
+https://github.com/owncloud/core/issues/35174
