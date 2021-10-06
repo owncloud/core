@@ -1,0 +1,11 @@
+Bugfix: Sanitize data send to the server while creating users via webUI
+
+Before this change toggle between 'Set password for new users' option,
+may preserve and send unwanted password or email information.
+This has been fixed, the webUI will not send email data to the server
+if the option 'Set password for new users' is active,
+vice versa password won't be sent if the option is disabled.
+
+
+https://github.com/owncloud/core/pull/39306
+https://github.com/owncloud/core/issues/32619
