@@ -31,8 +31,8 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OC\AppFramework\Http\Request;
+use OC\Files\Filesystem;
 use OCA\DAV\Files\IProvidesAdditionalHeaders;
-use OCA\DAV\Meta\MetaFile;
 use OCP\Files\ForbiddenException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
@@ -47,6 +47,7 @@ use Sabre\DAV\ServerPlugin;
 use Sabre\DAV\Tree;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
+use OCA\DAV\Connector\Sabre\Node;
 
 class FilesPlugin extends ServerPlugin {
 
@@ -167,6 +168,36 @@ class FilesPlugin extends ServerPlugin {
 		});
 		$this->server->on('beforeMove', [$this, 'checkMove']);
 		$this->server->on('validateTokens', [$this, 'validateTokens'], 0);
+		$this->server->on('method:PROPFIND', [$this, 'checkPropFind']);
+	}
+
+	/**
+	 * Check if the file tree can be found and if it's traversable.
+	 * Also check for read permissions if the requested resource is
+	 * a share, since a share can be create-only.
+	 *
+	 * @param RequestInterface $request
+	 */
+	public function checkPropFind($request) {
+		$path = $request->getPath();
+		$node = $this->server->tree->getNodeForPath($path);
+
+		if ($node instanceof Node) {
+			/** @var Node $node */
+			'@phan-var Node $node';
+			$fileInfo = $node->getFileInfo();
+			list($storage, ) = Filesystem::resolvePath($fileInfo->getPath());
+
+			if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
+				/** @var \OCA\Files_Sharing\SharedStorage $storage */
+				'@phan-var \OCA\Files_Sharing\SharedStorage $storage';
+				$hasReadPermission = ($storage->getShare()->getPermissions() & \OCP\Constants::PERMISSION_READ) > 0;
+
+				if (!$hasReadPermission) {
+					throw new NotFound();
+				}
+			}
+		}
 	}
 
 	/**

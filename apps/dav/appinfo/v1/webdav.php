@@ -62,5 +62,6 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 $event = new \OCP\SabrePluginEvent($server);
 \OC::$server->getEventDispatcher()->dispatch('OCA\DAV\Connector\Sabre::authInit', $event);
 
+\Sabre\DAV\Server::$streamMultiStatus = true;
 // And off we go!
 $server->exec();

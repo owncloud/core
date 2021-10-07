@@ -42,6 +42,8 @@ use OCP\ITagManager;
 use OCP\IUserSession;
 use Sabre\DAV\Auth\Backend\BackendInterface;
 use OCP\AppFramework\Utility\ITimeFactory;
+use Sabre\DAV\Exception\PreconditionFailed;
+use Sabre\HTTP\Request;
 
 class ServerFactory {
 	/** @var IConfig */
@@ -132,6 +134,16 @@ class ServerFactory {
 		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
 			$server->addPlugin(new BrowserErrorPagePlugin());
 		}
+
+		$config = $this->config;
+
+		$server->on('beforeMethod:PROPFIND', function (Request $request) use ($config) {
+			$depthHeader = strtolower($request->getHeader('depth'));
+
+			if ($depthHeader === 'infinity' && !$config->getSystemValue('dav.propfind.depth_infinity', true)) {
+				throw new PreconditionFailed('Depth infinity not supported');
+			}
+		}, 0);
 
 		// wait with registering these until auth is handled and the filesystem is setup
 		$server->on('beforeMethod:*', function () use ($server, $objectTree, $viewCallBack) {

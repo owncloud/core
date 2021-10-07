@@ -1,0 +1,9 @@
+Change: Enable streaming for propfind requests
+
+Propfind requests will now be streamed to reduce memory usage
+with large responses.
+Additionally, the new config `dav.propfind.depth_infinity` has been
+added to tell clients whether `depth=infinity` is allowed for
+propfind requests. It defaults to true. 
+
+https://github.com/owncloud/core/pull/38583
