@@ -531,7 +531,7 @@ trait Sharing {
 		string $path,
 		?string $permissions
 	):void {
-		$permission = explode(" ", $permissions);
+		$permission = explode(",", $permissions);
 		$this->createAPublicShare($user, $path, true, null, $permission);
 	}
 
@@ -1373,7 +1373,7 @@ trait Sharing {
 	 * @param string $user1
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 */
@@ -1381,13 +1381,17 @@ trait Sharing {
 		string $user1,
 		string $filepath,
 		string $user2,
-		?array $permissions = null
+		?string $permissions = null
 	):void {
+		$permission = null;
+		if ($permissions  !== null) {
+			$permission = explode(",", $permissions);
+		}
 		$this->shareFileWithUserUsingTheSharingApi(
 			$user1,
 			$filepath,
 			$user2,
-			$permissions
+			$permission
 		);
 	}
 
@@ -1398,7 +1402,7 @@ trait Sharing {
 	 * @param string $sharer
 	 * @param string $sharee
 	 * @param TableNode $table
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1407,7 +1411,7 @@ trait Sharing {
 		string $sharer,
 		string $sharee,
 		TableNode $table,
-		?array $permissions = null
+		?string $permissions = null
 	):void {
 		$this->verifyTableNodeColumns($table, ["path"]);
 		$paths = $table->getHash();
@@ -1441,7 +1445,11 @@ trait Sharing {
 	):void {
 		$user1 = $this->getActualUsername($user1);
 		$user2 = $this->getActualUsername($user2);
-		$permission = explode(",", $permissions);
+		$permission = null;
+		if ($permissions  !== null) {
+			$permission = explode(",", $permissions);
+		}
+
 		$this->shareFileWithUserUsingTheSharingApi(
 			$user1,
 			$filepath,
@@ -1462,14 +1470,14 @@ trait Sharing {
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 */
 	public function userHasSharedFileWithTheAdministrator(
 		string $sharer,
 		string $filepath,
-		?array $permissions = null
+		?string $permissions = null
 	):void {
 		$admin = $this->getAdminUsername();
 		$this->userHasSharedFileWithUserUsingTheSharingApi(
@@ -1509,14 +1517,14 @@ trait Sharing {
 	 *
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 */
 	public function theUserHasSharedFileWithUserUsingTheSharingApi(
 		string $filepath,
 		string $user2,
-		?array $permissions = null
+		?string $permissions = null
 	):void {
 		$user2 = $this->getActualUsername($user2);
 		$this->userHasSharedFileWithUserUsingTheSharingApi(
@@ -1533,14 +1541,14 @@ trait Sharing {
 	 *
 	 * @param string $filepath
 	 * @param string $group
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 */
 	public function theUserSharesFileWithGroupUsingTheSharingApi(
 		string $filepath,
 		string $group,
-		?array $permissions = null
+		?string $permissions = null
 	):void {
 		$this->userSharesFileWithGroupUsingTheSharingApi(
 			$this->currentUser,
@@ -1640,7 +1648,7 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $filepath
 	 * @param string $group
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 */
@@ -1648,13 +1656,17 @@ trait Sharing {
 		string $user,
 		string $filepath,
 		string $group,
-		?array $permissions = null
+		?string $permissions = null
 	) {
+		$permission = null;
+		if ($permissions  !== null) {
+			$permission = explode(",", $permissions);
+		}
 		$this->shareFileWithGroupUsingTheSharingApi(
 			$user,
 			$filepath,
 			$group,
-			$permissions
+			$permission
 		);
 	}
 
@@ -1665,7 +1677,7 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $group
 	 * @param TableNode $table
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 * @throws Exception
@@ -1674,7 +1686,7 @@ trait Sharing {
 		string $user,
 		string $group,
 		TableNode $table,
-		?array $permissions = null
+		?string $permissions = null
 	) {
 		$this->verifyTableNodeColumns($table, ["path"]);
 		$paths = $table->getHash();
@@ -1696,7 +1708,7 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $filepath
 	 * @param string $group
-	 * @param array|null $permissions
+	 * @param string|null $permissions
 	 *
 	 * @return void
 	 */
@@ -1704,19 +1716,23 @@ trait Sharing {
 		string $user,
 		string $filepath,
 		string $group,
-		?array $permissions = null
+		?string $permissions = null
 	) {
+		$permission = null;
+		if ($permissions  !== null) {
+			$permission = explode(",", $permissions);
+		}
 		$this->shareFileWithGroupUsingTheSharingApi(
 			$user,
 			$filepath,
 			$group,
-			$permissions,
+			$permission,
 			true
 		);
 
 		Assert::assertEquals(
 			true,
-			$this->isUserOrGroupInSharedData($group, "group", $permissions),
+			$this->isUserOrGroupInSharedData($group, "group", $permission),
 			__METHOD__
 			. " Could not assert that user '$user' has shared '$filepath' with group '$group' with permissions '$permissions'"
 		);

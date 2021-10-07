@@ -349,7 +349,7 @@ Feature: copy file
     And user "Brian" has been added to group "grp1"
     And user "Brian" has created folder "/BRIAN-Folder"
     And user "Brian" has created folder "BRIAN-Folder/sample-folder"
-    And user "Brian" has shared folder "BRIAN-Folder" with group "grp1" with permissions "15"
+    And user "Brian" has shared folder "BRIAN-Folder" with group "grp1" with permissions "change"
     And user "Alice" has accepted share "/BRIAN-Folder" offered by user "Brian"
     When user "Alice" copies file "/textfile1.txt" to "/Shares/BRIAN-Folder" using the WebDAV API
     Then the HTTP status code should be "204"
