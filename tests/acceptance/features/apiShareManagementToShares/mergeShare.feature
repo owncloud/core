@@ -25,7 +25,8 @@ Feature: sharing
     Given user "Alice" has created folder "/merge-test-outside-perms"
     When user "Alice" shares folder "/merge-test-outside-perms" with group "grp1" with permissions "read" using the sharing API
     And user "Alice" shares folder "/merge-test-outside-perms" with user "Brian" with permissions "all" using the sharing API
-    And user "Brian" accepts share "/merge-test-outside-perms" offered by user "Alice" using the sharing API
+    And user "Brian" has accepted the first pending share "/merge-test-outside-perms" offered by user "Alice"
+    And user "Brian" has accepted the next pending share "/merge-test-outside-perms" offered by user "Alice"
     Then as user "Brian" folder "/Shares/merge-test-outside-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-perms (2)" should not exist
 
@@ -45,7 +46,8 @@ Feature: sharing
     And user "Alice" has created folder "/merge-test-outside-twogroups-perms"
     When user "Alice" shares folder "/merge-test-outside-twogroups-perms" with group "grp1" with permissions "read" using the sharing API
     And user "Alice" shares folder "/merge-test-outside-twogroups-perms" with group "grp2" with permissions "all" using the sharing API
-    And user "Brian" accepts share "/merge-test-outside-twogroups-perms" offered by user "Alice" using the sharing API
+    And user "Brian" has accepted the first pending share "/merge-test-outside-twogroups-perms" offered by user "Alice"
+    And user "Brian" has accepted the next pending share "/merge-test-outside-twogroups-perms" offered by user "Alice"
     Then as user "Brian" folder "/Shares/merge-test-outside-twogroups-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-twogroups-perms (2)" should not exist
 
@@ -56,7 +58,8 @@ Feature: sharing
     When user "Alice" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp1" with permissions "read" using the sharing API
     And user "Alice" shares folder "/merge-test-outside-twogroups-member-perms" with group "grp2" with permissions "all" using the sharing API
     And user "Alice" shares folder "/merge-test-outside-twogroups-member-perms" with user "Brian" with permissions "read" using the sharing API
-    And user "Brian" accepts share "/merge-test-outside-twogroups-member-perms" offered by user "Alice" using the sharing API
+    And user "Brian" has accepted the first pending share "/merge-test-outside-twogroups-member-perms" offered by user "Alice"
+    And user "Brian" has accepted the next pending share "/merge-test-outside-twogroups-member-perms" offered by user "Alice"
     Then as user "Brian" folder "/Shares/merge-test-outside-twogroups-member-perms" should contain a property "oc:permissions" with value "SRDNVCK"
     And as "Brian" folder "/Shares/merge-test-outside-twogroups-member-perms (2)" should not exist
 
