@@ -1,6 +1,28 @@
 OC.L10N.register(
     "settings",
     {
-    "Name" : "නම"
+    "Saved" : "සුරැකිණි",
+    "Create" : "තනන්න",
+    "Delete" : "මකා දමන්න",
+    "Share" : "බෙදා හදා ගන්න",
+    "Groups" : "කණ්ඩායම්",
+    "never" : "කවදාවත්",
+    "Language" : "භාෂාව",
+    "None" : "කිසිවක් නැත",
+    "Save" : "සුරකින්න",
+    "Login" : "ප්‍රවිශ්ටය",
+    "Server address" : "සේවාදායකයේ ලිපිනය",
+    "Add" : "එකතු කරන්න",
+    "Cancel" : "එපා",
+    "Email" : "විද්‍යුත් තැපෑල",
+    "Password" : "මුර පදය",
+    "New password" : "නව මුරපදය",
+    "Change password" : "මුරපදය වෙනස් කිරීම",
+    "Name" : "නම",
+    "Username" : "පරිශීලක නම",
+    "Personal" : "පෞද්ගලික",
+    "Admin" : "පරිපාලක",
+    "Settings" : "සිටුවම්",
+    "Other" : "වෙනත්"
 },
 "nplurals=2; plural=(n != 1);");
