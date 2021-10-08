@@ -24,7 +24,7 @@ Feature: using trashbin together with sharing
       | new      |
 
 
-  Scenario Outline: deleting a file in a received folder moves it to trashbin
+  Scenario Outline: deleting a file in a received folder moves it to trashbin of both users
     Given using <dav-path> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/shared"
@@ -34,6 +34,97 @@ Feature: using trashbin together with sharing
     And user "Brian" has moved file "/Shares/shared" to "/Shares/renamed_shared"
     When user "Brian" deletes file "/Shares/renamed_shared/shared_file.txt" using the WebDAV API
     Then as "Brian" the file with original path "/Shares/renamed_shared/shared_file.txt" should exist in the trashbin
+    And as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
+  Scenario Outline: sharee deleting a file in a group-shared folder moves it to the trashbin of sharee and sharer only
+    Given using <dav-path> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "/shared"
+    And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    And user "Alice" has shared folder "/shared" with group "grp1"
+    And user "Brian" has accepted share "/Shares/shared" offered by user "Alice"
+    And user "Carol" has accepted share "/Shares/shared" offered by user "Alice"
+    When user "Brian" deletes file "/Shares/shared/shared_file.txt" using the WebDAV API
+    Then as "Brian" the file with original path "/Shares/shared/shared_file.txt" should exist in the trashbin
+    And as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
+    And as "Carol" the file with original path "/Shares/shared/shared_file.txt" should not exist in the trashbin
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
+  Scenario Outline: sharer deleting a file in a group-shared folder moves it to the trashbin of sharer only
+    Given using <dav-path> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "/shared"
+    And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+    And user "Alice" has shared folder "/shared" with group "grp1"
+    And user "Brian" has accepted share "/Shares/shared" offered by user "Alice"
+    And user "Carol" has accepted share "/Shares/shared" offered by user "Alice"
+    When user "Alice" deletes file "/shared/shared_file.txt" using the WebDAV API
+    Then as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
+    And as "Brian" the file with original path "/Shares/shared/shared_file.txt" should not exist in the trashbin
+    And as "Carol" the file with original path "/Shares/shared/shared_file.txt" should not exist in the trashbin
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
+  Scenario Outline: sharee deleting a folder in a group-shared folder moves it to the trashbin of sharee and sharer only
+    Given using <dav-path> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "/shared"
+    And user "Alice" has created folder "/shared/sub"
+    And user "Alice" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
+    And user "Alice" has shared folder "/shared" with group "grp1"
+    And user "Brian" has accepted share "/Shares/shared" offered by user "Alice"
+    And user "Carol" has accepted share "/Shares/shared" offered by user "Alice"
+    When user "Brian" deletes file "/Shares/shared/sub/shared_file.txt" using the WebDAV API
+    Then as "Brian" the file with original path "/Shares/shared/sub/shared_file.txt" should exist in the trashbin
+    And as "Alice" the file with original path "/shared/sub/shared_file.txt" should exist in the trashbin
+    And as "Carol" the file with original path "/Shares/sub/shared/shared_file.txt" should not exist in the trashbin
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+
+  Scenario Outline: sharer deleting a folder in a group-shared folder moves it to the trashbin of sharer only
+    Given using <dav-path> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And group "grp1" has been created
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "/shared"
+    And user "Alice" has created folder "/shared/sub"
+    And user "Alice" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
+    And user "Alice" has shared folder "/shared" with group "grp1"
+    And user "Brian" has accepted share "/Shares/shared" offered by user "Alice"
+    And user "Carol" has accepted share "/Shares/shared" offered by user "Alice"
+    When user "Alice" deletes file "/shared/sub/shared_file.txt" using the WebDAV API
+    Then as "Alice" the file with original path "/shared/sub/shared_file.txt" should exist in the trashbin
+    And as "Brian" the file with original path "/Shares/shared/sub/shared_file.txt" should not exist in the trashbin
+    And as "Carol" the file with original path "/Shares/shared/sub/shared_file.txt" should not exist in the trashbin
     Examples:
       | dav-path |
       | old      |
