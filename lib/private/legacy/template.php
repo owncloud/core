@@ -36,8 +36,8 @@
  *
  */
 
+use OC\Log;
 use OC\TemplateLayout;
-use OCP\IL10N;
 use OCP\Theme\ITheme;
 
 require_once __DIR__.'/template/functions.php';
@@ -367,6 +367,8 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	public static function printExceptionErrorPage($exception, $fetchPage = false) {
 		try {
+			$trace = Log::replaceSensitiveData($exception->getTraceAsString());
+
 			$request = \OC::$server->getRequest();
 			$content = new \OC_Template('', 'exception', 'error', false);
 			$content->assign('errorClass', \get_class($exception));
@@ -374,7 +376,7 @@ class OC_Template extends \OC\Template\Base {
 			$content->assign('errorCode', $exception->getCode());
 			$content->assign('file', $exception->getFile());
 			$content->assign('line', $exception->getLine());
-			$content->assign('trace', $exception->getTraceAsString());
+			$content->assign('trace', $trace);
 			$content->assign('debugMode', \OC::$server->getSystemConfig()->getValue('debug', false));
 			$content->assign('remoteAddr', $request->getRemoteAddress());
 			$content->assign('requestID', $request->getId());

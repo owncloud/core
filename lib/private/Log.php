@@ -34,7 +34,7 @@ namespace OC;
 
 use InterfaSys\LogNormalizer\Normalizer;
 
-use \OCP\ILogger;
+use OCP\ILogger;
 use OCP\IUserSession;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -62,7 +62,7 @@ class Log implements ILogger {
 	private $eventDispatcher;
 
 	/** @var boolean|null cache the result of the log condition check for the request */
-	private $logConditionSatisfied = null;
+	private $logConditionSatisfied;
 
 	/** @var Normalizer */
 	private $normalizer;
@@ -74,7 +74,7 @@ class Log implements ILogger {
 	 */
 	private $inEvent = false;
 
-	protected $methodsWithSensitiveParameters = [
+	protected static $methodsWithSensitiveParameters = [
 		// Session/User
 		'login',
 		'checkPassword',
@@ -121,10 +121,10 @@ class Log implements ILogger {
 	];
 
 	/**
-	 * @param string $logger The logger that should be used
-	 * @param SystemConfig $config the system config object
+	 * @param null $logger The logger that should be used
+	 * @param SystemConfig|null $config the system config object
 	 * @param null $normalizer
-	 * @param EventDispatcherInterface $eventDispatcher event dispatcher
+	 * @param EventDispatcherInterface|null $eventDispatcher event dispatcher
 	 */
 	public function __construct(
 		$logger = null,
@@ -434,7 +434,7 @@ class Log implements ILogger {
 			'File' => $exception->getFile(),
 			'Line' => $exception->getLine(),
 		];
-		$exception['Trace'] = \preg_replace('!(' . \implode('|', $this->methodsWithSensitiveParameters) . ')\(.*\)!', '$1(*** sensitive parameters replaced ***)', $exception['Trace']);
+		$exception['Trace'] = self::replaceSensitiveData($exception['Trace']);
 		if (\OC::$server->getUserSession() && \OC::$server->getUserSession()->isLoggedIn()) {
 			$context['userid'] = \OC::$server->getUserSession()->getUser()->getUID();
 		}
@@ -446,5 +446,13 @@ class Log implements ILogger {
 			$context['message'] = 'Caused by';
 			$this->logException($context['exception']->getPrevious(), $context);
 		}
+	}
+
+	/**
+	 * @param $trace
+	 * @return array|string|string[]|null
+	 */
+	public static function replaceSensitiveData($trace) {
+		return \preg_replace('!(' . \implode('|', self::$methodsWithSensitiveParameters) . ')\(.*\)!', '$1(*** sensitive parameters replaced ***)', $trace);
 	}
 }
