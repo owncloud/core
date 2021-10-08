@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Exception;
 use Page\UserPageElement\GroupList;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use WebDriver\Exception\NoSuchElement;
@@ -110,9 +111,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 *
 	 * @return NodeElement for the requested user in the table
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function findUserInTable($username) {
+	public function findUserInTable(string $username): NodeElement {
 		$userTrs = $this->findAll('xpath', $this->userTrXpath);
 
 		foreach ($userTrs as $userTr) {
@@ -121,16 +122,16 @@ class UsersPage extends OwncloudPage {
 				return $userTr;
 			}
 		}
-		throw new \Exception("Could not find user '$username'");
+		throw new Exception("Could not find user '$username'");
 	}
 
 	/**
 	 * @param string $username
 	 *
 	 * @return string text describing the quota
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function getQuotaOfUser($username) {
+	public function getQuotaOfUser(string $username): string {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
 
@@ -160,9 +161,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 *
 	 * @return string email of user
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|ElementNotVisible|Exception
 	 */
-	public function getEmailOfUser($username) {
+	public function getEmailOfUser(string $username): string {
 		$userTr = $this->findUserInTable($username);
 		$userEmail = $userTr->find('xpath', $this->emailColumnXpath);
 
@@ -186,9 +187,9 @@ class UsersPage extends OwncloudPage {
 
 	/**
 	 * @return bool
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function isPasswordFieldOfNewUserVisible() {
+	public function isPasswordFieldOfNewUserVisible(): bool {
 		$newUserPasswordField = $this->findById($this->newUserPasswordFieldId);
 		if ($newUserPasswordField === null) {
 			throw new ElementNotFoundException(
@@ -203,9 +204,9 @@ class UsersPage extends OwncloudPage {
 
 	/**
 	 * @return bool
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function isEmailFieldOfNewUserVisible() {
+	public function isEmailFieldOfNewUserVisible(): bool {
 		$newUserEmailField = $this->findById($this->newUserEmailFieldId);
 		if ($newUserEmailField === null) {
 			throw new ElementNotFoundException(
@@ -222,9 +223,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 *
 	 * @return bool
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function isPasswordColumnOfUserVisible($username) {
+	public function isPasswordColumnOfUserVisible(string $username): bool {
 		$userTr = $this->findUserInTable($username);
 		$userPassword = $userTr->find('xpath', $this->passwordColumnXpath);
 
@@ -247,9 +248,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 *
 	 * @return bool
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function isQuotaColumnOfUserVisible($username) {
+	public function isQuotaColumnOfUserVisible(string $username): bool {
 		$userTr = $this->findUserInTable($username);
 		$userQuota = $userTr->find('xpath', $this->quotaColumnXpath);
 
@@ -271,9 +272,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 *
 	 * @return string storage location of user
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|ElementNotVisible|Exception
 	 */
-	public function getStorageLocationOfUser($username) {
+	public function getStorageLocationOfUser(string $username): string {
 		$userTr = $this->findUserInTable($username);
 		$userStorageLocation = $userTr->find(
 			'xpath',
@@ -302,9 +303,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 *
 	 * @return string last login of a user
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|ElementNotVisible|Exception
 	 */
-	public function getLastLoginOfUser($username) {
+	public function getLastLoginOfUser(string $username): string {
 		$userTr = $this->findUserInTable($username);
 		$userLastLogin = $userTr->find(
 			'xpath',
@@ -335,7 +336,7 @@ class UsersPage extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function openAppSettingsMenu() {
+	public function openAppSettingsMenu(): void {
 		$settingsBtn = $this->find("xpath", $this->settingsBtnXpath);
 		if ($settingsBtn === null) {
 			throw new ElementNotFoundException(
@@ -364,7 +365,7 @@ class UsersPage extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function setSetting($setting, $value = true) {
+	public function setSetting(string $setting, bool $value = true): void {
 		$settingContent = $this->findById($this->settingContentId);
 		if ($settingContent === null) {
 			throw new ElementNotFoundException(
@@ -424,19 +425,19 @@ class UsersPage extends OwncloudPage {
 	 * @param Session $session
 	 * @param string $username
 	 * @param string $password
-	 * @param string $email
-	 * @param string[] $groups
+	 * @param string|null $email
+	 * @param string[]|null $groups
 	 *
 	 * @return void
-	 * @throws ElementNotFoundException
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
 	public function createUser(
 		Session $session,
-		$username,
-		$password,
-		$email = null,
-		$groups = null
-	) {
+		string  $username,
+		string  $password,
+		?string  $email = null,
+		?array $groups = null
+	): void {
 		$this->setSetting("Set password for new users", $password !== null);
 		$this->fillField($this->newUserUsernameFieldId, $username);
 		if ($password !== null) {
@@ -545,11 +546,11 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function setQuotaOfUserTo(
-		$username,
-		$quota,
+		string  $username,
+		string  $quota,
 		Session $session,
-		$valid = true
-	) {
+		bool $valid = true
+	): void {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
 
@@ -605,7 +606,7 @@ class UsersPage extends OwncloudPage {
 					"//*[@id='$this->notificationId']",
 					1000
 				);
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				// Sometimes the notification is not "noticed".
 				// Later steps are responsible for caring if a notification
 				// is actually seen, so just output some information
@@ -622,7 +623,7 @@ class UsersPage extends OwncloudPage {
 	 * @return GroupList
 	 * @throws ElementNotFoundException
 	 */
-	private function getGroupListElement() {
+	private function getGroupListElement(): GroupList {
 		$groupListElement = $this->findById($this->groupListId);
 		if ($groupListElement === null) {
 			throw new ElementNotFoundException(
@@ -646,7 +647,7 @@ class UsersPage extends OwncloudPage {
 	 *
 	 * @return string[]
 	 */
-	public function getAllGroups() {
+	public function getAllGroups(): array {
 		$groupList = $this->getGroupListElement();
 		return $groupList->namesToArray();
 	}
@@ -659,7 +660,7 @@ class UsersPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function deleteGroup($name, Session $session, $confirm = false) {
+	public function deleteGroup(string $name, Session $session, bool $confirm): void {
 		$groupList = $this->getGroupListElement();
 		$groupList->deleteGroup($name, $confirm);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -672,7 +673,7 @@ class UsersPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function addGroup($groupName, Session $session) {
+	public function addGroup(string $groupName, Session $session): void {
 		$groupList = $this->getGroupListElement();
 		$groupList->addGroup($groupName);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -683,8 +684,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function disableUser($username) {
+	public function disableUser(string $username): void {
 		$userTr = $this->findUserInTable($username);
 		$userTr->find("xpath", $this->disableUserCheckboxXpath)->click();
 	}
@@ -696,8 +698,9 @@ class UsersPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function deleteUser($username, $confirm, Session $session) {
+	public function deleteUser(string $username, bool $confirm, Session $session): void {
 		$userTr = $this->findUserInTable($username);
 		$deleteBtn = $userTr->find("xpath", $this->deleteUserBtnXpath);
 		if ($deleteBtn === null) {
@@ -734,8 +737,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $displayName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function setDisplayNameofUserTo(Session $session, $username, $displayName) {
+	public function setDisplayNameofUserTo(Session $session, string $username, string $displayName): void {
 		$userTr = $this->findUserInTable($username);
 		$editDisplayNameBtn = $userTr->find("xpath", $this->editUserDisplayNameBtnXpath);
 		if ($editDisplayNameBtn === null) {
@@ -770,8 +774,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function changeUserPassword(Session $session, $user, $password) {
+	public function changeUserPassword(Session $session, string $user, string $password): void {
 		$userTr = $this->findUserInTable($user);
 		$editPasswordBtn = $userTr->find("xpath", $this->editPasswordBtnXpath);
 		if ($editPasswordBtn === null) {
@@ -806,8 +811,9 @@ class UsersPage extends OwncloudPage {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function changeUserEmail(Session $session, $user, $email) {
+	public function changeUserEmail(Session $session, string $user, string $email): void {
 		$userTr = $this->findUserInTable($user);
 		$editEmailBtn = $userTr->find("xpath", $this->editEmailBtnXpath);
 		$this->assertElementNotNull(
@@ -844,9 +850,9 @@ class UsersPage extends OwncloudPage {
 	 * @param boolean $failIfElementNotFound If true then fail if an element(s) is not found. Otherwise just return early.
 	 *
 	 * @return void
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function addOrRemoveUserToGroup(Session $session, $user, $group, $add = true, $failIfElementNotFound = true) {
+	public function addOrRemoveUserToGroup(Session $session, string $user, string $group, bool $add = true, bool $failIfElementNotFound = true): void {
 		$userTr = $this->findUserInTable($user);
 		$groupsField = $userTr->find('xpath', $this->groupsFieldXpath);
 		$userGroupsInput = $groupsField->find("xpath", $this->userGroupsInputXpath);
@@ -914,12 +920,12 @@ class UsersPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
 		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+	): void {
 		// There is always at least the "admin" user in the displayed list of users
 		// So wait for the user list to have at least 1 real user in it
 		$currentTime = \microtime(true);
@@ -939,7 +945,7 @@ class UsersPage extends OwncloudPage {
 		}
 
 		if ($currentTime > $end) {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " timeout waiting for user list to load on users page"
 			);
 		}
@@ -951,7 +957,7 @@ class UsersPage extends OwncloudPage {
 	 * @return int|null
 	 * @throws ElementNotFoundException
 	 */
-	public function getUserCountOfGroup($group) {
+	public function getUserCountOfGroup(string $group): ?int {
 		$groupUserCountXpath = \sprintf($this->groupUserCountXpath, $group);
 		$groupUserCount = $this->find('xpath', $groupUserCountXpath);
 		$this->assertElementNotNull(
@@ -972,9 +978,9 @@ class UsersPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function resendInvitationEmail($username, $session) {
+	public function resendInvitationEmail(string $username, Session $session): void {
 		$userTr = $this->findUserInTable($username);
 		$resendInvitationEmailBtn = $userTr->find('xpath', $this->resendInvitationEmailBtnXpath);
 
