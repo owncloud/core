@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Exception;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -57,9 +58,9 @@ class LoginPage extends OwncloudPage {
 	 * @param string $target
 	 *
 	 * @return Page
-	 * @throws ElementNotFoundException
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function loginAs($username, $password, $target = 'FilesPage') {
+	public function loginAs(string $username, string $password, string $target = 'FilesPage'):Page {
 		$this->fillField($this->userInputId, $username);
 		$this->fillField($this->passwordInputId, $password);
 		$submitElement = $this->findById($this->submitLoginId);
@@ -83,7 +84,7 @@ class LoginPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
@@ -102,7 +103,7 @@ class LoginPage extends OwncloudPage {
 		}
 
 		if ($currentTime > $end) {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " timeout waiting for page to load"
 			);
 		}
@@ -112,11 +113,11 @@ class LoginPage extends OwncloudPage {
 
 	/**
 	 *
-	 * @return Page
+	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 *
 	 */
-	private function lostPasswordField() {
+	private function lostPasswordField():NodeElement {
 		$lostPasswordField = $this->findById($this->lostPasswordId);
 		$this->assertElementNotNull(
 			$lostPasswordField,
@@ -130,7 +131,7 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getUserLabelText() {
+	public function getUserLabelText():string {
 		$userInputField = $this->findById($this->userInputId);
 
 		$this->assertElementNotNull(
@@ -156,7 +157,7 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getPasswordLabelText() {
+	public function getPasswordLabelText():string {
 		$passwordInputField = $this->findById($this->passwordInputId);
 		$this->assertElementNotNull(
 			$passwordInputField,
@@ -182,7 +183,7 @@ class LoginPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 *
 	 */
-	private function getSetPasswordErrorMessageField() {
+	private function getSetPasswordErrorMessageField():NodeElement {
 		$setPasswordErrorMessageField = $this->findById($this->setPasswordErrorMessageId);
 		$this->assertElementNotNull(
 			$setPasswordErrorMessageField,
@@ -198,7 +199,7 @@ class LoginPage extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 *
 	 */
-	private function getLostPasswordResetErrorMessageField() {
+	private function getLostPasswordResetErrorMessageField():NodeElement {
 		$lostPasswordResetErrorMessageField = $this->find(
 			"xpath",
 			$this->lostPasswordResetErrorXpath
@@ -217,7 +218,7 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function requestPasswordReset(Session $session) {
+	public function requestPasswordReset(Session $session):void {
 		$this->lostPasswordField()->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -226,7 +227,7 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getLostPasswordMessage() {
+	public function getLostPasswordMessage():string {
 		$passwordRecoveryMessage = $this->lostPasswordField()->getText();
 		return $passwordRecoveryMessage;
 	}
@@ -235,7 +236,7 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getSetPasswordErrorMessage() {
+	public function getSetPasswordErrorMessage():string {
 		$setPasswordErrorMessage = $this->getSetPasswordErrorMessageField()->getText();
 		return $setPasswordErrorMessage;
 	}
@@ -244,7 +245,7 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getLostPasswordResetErrorMessage() {
+	public function getLostPasswordResetErrorMessage():string {
 		$generalErrorMessage = $this->getLostPasswordResetErrorMessageField()->getText();
 		return $generalErrorMessage;
 	}
@@ -256,8 +257,9 @@ class LoginPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function resetThePassword($newPassword, $confirmNewPassword, Session $session) {
+	public function resetThePassword(string $newPassword, string $confirmNewPassword, Session $session):void {
 		$form = $this->waitTillElementIsNotNull($this->setPasswordFormXpath);
 		$this->assertElementNotNull(
 			$form,
@@ -275,7 +277,7 @@ class LoginPage extends OwncloudPage {
 	/**
 	 * @return string
 	 */
-	public function getRestPasswordConfirmError() {
+	public function getRestPasswordConfirmError():string {
 		$messageVal = $this->findById($this->passwordResetConfirmMessage)->getText();
 		return $messageVal;
 	}
@@ -285,15 +287,15 @@ class LoginPage extends OwncloudPage {
 	 * @param string $legalUrlType
 	 *
 	 * @return string imprint url link
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function getLegalUrl($legalUrlType) {
+	public function getLegalUrl(string $legalUrlType):string {
 		if ($legalUrlType === "Imprint") {
 			$legalUrlLink = $this->find("xpath", $this->imprintUrlXpath);
 		} elseif ($legalUrlType === "Privacy Policy") {
 			$legalUrlLink = $this->find("xpath", $this->privacyPolicyXpath);
 		} else {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " invalid legal url type: $legalUrlType"
 			);
 		}
