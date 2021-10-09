@@ -1,4 +1,4 @@
-@api @files_sharing-app-required @issue-ocis-1289 @issue-ocis-1328
+@api @files_sharing-app-required @issue-ocis-1289 @issue-ocis-1328 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: share with groups, group names are case-sensitive
 
   Background:
@@ -53,7 +53,7 @@ Feature: share with groups, group names are case-sensitive
       | 2               | Case-Sensitive-Group | CASE-SENSITIVE-GROUP | case-sensitive-group | 200             |
       | 2               | CASE-SENSITIVE-GROUP | case-sensitive-group | Case-Sensitive-Group | 200             |
 
-  @skipOnLDAP @issue-ldap-250 @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+  @skipOnLDAP @issue-ldap-250
   Scenario Outline: group names are case-sensitive, sharing with nonexistent groups with different upper and lower case names
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:

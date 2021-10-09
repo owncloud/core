@@ -1,4 +1,4 @@
-@api @files_sharing-app-required
+@api @files_sharing-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: sharing works when a username and group name are the same
 
   Background:
@@ -6,7 +6,7 @@ Feature: sharing works when a username and group name are the same
     And auto-accept shares has been disabled
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
+  @skipOnLDAP
   Scenario: creating a new share with user and a group having same name
     Given these users have been created without skeleton files:
       | username |
@@ -30,7 +30,7 @@ Feature: sharing works when a username and group name are the same
     And the content of file "/Shares/randomfile.txt" for user "Brian" should be "Random data"
     And the content of file "/Shares/randomfile.txt" for user "Carol" should be "Random data"
 
-  @skipOnLDAP @skipOnOcV10.3.0 @skipOnOcV10.3.1
+  @skipOnLDAP
   Scenario: creating a new share with group and a user having same name
     Given these users have been created without skeleton files:
       | username |

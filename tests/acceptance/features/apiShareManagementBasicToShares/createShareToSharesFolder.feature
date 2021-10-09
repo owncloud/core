@@ -388,7 +388,7 @@ Feature: sharing
      | /Shares/randomfile.txt |
     And the content of file "Shares/randomfile.txt" for user "brian" should be "Random data"
 
-  @skipOnLDAP
+  @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: creating a new share with user of a group when username contains capital letters
     Given these users have been created without skeleton files:
       | username |
@@ -438,7 +438,7 @@ Feature: sharing
       | 1               | 100             |
       | 2               | 200             |
 
-  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
+  @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: share with a group and then add a user to that group
     Given using OCS API version "<ocs_api_version>"
     And these users have been created with default attributes and without skeleton files:
@@ -493,7 +493,7 @@ Feature: sharing
     And file "/textfile0.txt" should not be included as path in the response
     And as "Brian" file "/Shares/textfile0.txt" should not exist
     And as "Carol" file "/Shares/textfile0.txt" should not exist
-    @skipOnOcis
+    @skipOnOcis @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | ocs_api_version | ocs_status_code | path                  |
       | 1               | 100             | /Shares/textfile0.txt |

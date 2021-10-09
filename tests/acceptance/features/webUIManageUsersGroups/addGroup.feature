@@ -60,7 +60,7 @@ Feature: Add group
       | "⛷"       |
       | "⛹"       |
 
-  @skipOnLDAP
+  @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: adding multiple users to a group
     Given these users have been created without skeleton files:
       | username |

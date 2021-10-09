@@ -204,7 +204,7 @@ Feature: previews of files downloaded through the webdav API
     When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
     Then as user "Brian" the preview of "/Shares/parent.txt" with width "32" and height "32" should have been changed
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: it should update the preview content if the file content is updated (content with UTF chars)
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
     When user "Alice" uploads file with content "सिमसिमे पानी" to "/lorem.txt" using the WebDAV API
@@ -213,42 +213,42 @@ Feature: previews of files downloaded through the webdav API
     And the downloaded image should be "32" pixels wide and "32" pixels high
     And the downloaded preview content should match with "सिमसिमे-पानी.png" fixtures preview content
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: updates to a file should change the preview for both sharees and sharers
+    Given user "Brian" has been created with default attributes and without skeleton files
+    And user "Alice" has created folder "FOLDER"
+    And user "Alice" has uploaded file with content "file to upload" to "/FOLDER/lorem.txt"
+    And user "Alice" has shared folder "FOLDER" with user "Brian"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    And user "Alice" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
+    And user "Brian" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
+    When user "Alice" uploads file "filesForUpload/lorem.txt" to "/FOLDER/lorem.txt" using the WebDAV API
+    Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    When user "Brian" uploads file with content "new uploaded content" to "/FOLDER/lorem.txt" using the WebDAV API
+    Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
 
-    Scenario: updates to a file should change the preview for both sharees and sharers
-      Given user "Brian" has been created with default attributes and without skeleton files
-      And user "Alice" has created folder "FOLDER"
-      And user "Alice" has uploaded file with content "file to upload" to "/FOLDER/lorem.txt"
-      And user "Alice" has shared folder "FOLDER" with user "Brian"
-      And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
-      And user "Alice" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
-      And user "Brian" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
-      When user "Alice" uploads file "filesForUpload/lorem.txt" to "/FOLDER/lorem.txt" using the WebDAV API
-      Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-      And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-      When user "Brian" uploads file with content "new uploaded content" to "/FOLDER/lorem.txt" using the WebDAV API
-      Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-      And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-
-
-    Scenario: updates to a group shared file should change the preview for both sharees and sharers
-      Given group "grp1" has been created
-      And user "Brian" has been created with default attributes and without skeleton files
-      And user "Carol" has been created with default attributes and without skeleton files
-      And user "Brian" has been added to group "grp1"
-      And user "Carol" has been added to group "grp1"
-      And user "Alice" has created folder "FOLDER"
-      And user "Alice" has uploaded file with content "file to upload" to "/FOLDER/lorem.txt"
-      And user "Alice" has shared folder "/FOLDER" with group "grp1"
-      And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
-      And user "Carol" has accepted share "/FOLDER" offered by user "Alice"
-      And user "Alice" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
-      And user "Brian" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
-      And user "Carol" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
-      When user "Alice" uploads file "filesForUpload/lorem.txt" to "/FOLDER/lorem.txt" using the WebDAV API
-      Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-      And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-      And as user "Carol" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-      When user "Brian" uploads file with content "new uploaded content" to "/FOLDER/lorem.txt" using the WebDAV API
-      Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-      And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
-      And as user "Carol" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: updates to a group shared file should change the preview for both sharees and sharers
+    Given group "grp1" has been created
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Brian" has been added to group "grp1"
+    And user "Carol" has been added to group "grp1"
+    And user "Alice" has created folder "FOLDER"
+    And user "Alice" has uploaded file with content "file to upload" to "/FOLDER/lorem.txt"
+    And user "Alice" has shared folder "/FOLDER" with group "grp1"
+    And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
+    And user "Carol" has accepted share "/FOLDER" offered by user "Alice"
+    And user "Alice" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
+    And user "Brian" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
+    And user "Carol" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
+    When user "Alice" uploads file "filesForUpload/lorem.txt" to "/FOLDER/lorem.txt" using the WebDAV API
+    Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    And as user "Carol" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    When user "Brian" uploads file with content "new uploaded content" to "/FOLDER/lorem.txt" using the WebDAV API
+    Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    And as user "Carol" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed

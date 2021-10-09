@@ -48,6 +48,7 @@ Feature: rename folders
     And the user reloads the current page of the webUI
     Then folder "hash#And&QuestionMark?At@FolderName" should be listed on the webUI
 
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Rename a folder using spaces at front and/or back of the name
     Given user "Alice" has created folder "a-folder"
     And user "Alice" has logged in using the webUI
