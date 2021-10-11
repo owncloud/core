@@ -21,6 +21,7 @@ OC.L10N.register(
     "An error occurred while updating share state: {message}" : "Un error ha ocurrido mientras se trataba de actualizar el estado: {message}",
     "Accept Share" : "Aceptar compartido",
     "Decline Share" : "No aceptar compartido",
+    "Federated share" : "compartido federado",
     "Cancel" : "Cancelar",
     "You can upload into this folder" : "Usted puede cargar en esta carpeta",
     "Add to another cloud" : "Agregar a otra nube",
