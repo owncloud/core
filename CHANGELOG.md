@@ -61,6 +61,7 @@ Summary
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 * Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: [#38991](https://github.com/owncloud/core/issues/38991)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
+* Enhancement - Include new DB index to speed up addressbook searches: [#39017](https://github.com/owncloud/core/pull/39017)
 * Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
 * Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
 * Enhancement - Extend transfer ownership cmd with option to transfer entire user: [#39118](https://github.com/owncloud/core/pull/39118)
@@ -545,6 +546,10 @@ Details
    case we should log the mount-count for easier debugging.
 
    https://github.com/owncloud/core/pull/39015
+
+* Enhancement - Include new DB index to speed up addressbook searches: [#39017](https://github.com/owncloud/core/pull/39017)
+
+   https://github.com/owncloud/core/pull/39017
 
 * Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
 
