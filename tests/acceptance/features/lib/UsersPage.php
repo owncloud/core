@@ -424,7 +424,7 @@ class UsersPage extends OwncloudPage {
 	 *
 	 * @param Session $session
 	 * @param string $username
-	 * @param string $password
+	 * @param string|null $password
 	 * @param string|null $email
 	 * @param string[]|null $groups
 	 *
@@ -434,7 +434,7 @@ class UsersPage extends OwncloudPage {
 	public function createUser(
 		Session $session,
 		string  $username,
-		string  $password,
+		?string  $password,
 		?string  $email = null,
 		?array $groups = null
 	): void {
