@@ -24,10 +24,12 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Exception;
 use Page\FilesPageElement\DetailsDialog;
 use Page\FilesPageElement\FileActionsMenu;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
 
@@ -58,27 +60,27 @@ abstract class FilesPageBasic extends OwncloudPage {
 	/**
 	 * @return string
 	 */
-	abstract protected function getFileListXpath();
+	abstract protected function getFileListXpath(): string;
 
 	/**
 	 * @return string
 	 */
-	abstract protected function getFileNamesXpath();
+	abstract protected function getFileNamesXpath(): string;
 
 	/**
 	 * @return string
 	 */
-	abstract protected function getFileNameMatchXpath();
+	abstract protected function getFileNameMatchXpath(): string;
 
 	/**
 	 * @return string
 	 */
-	abstract protected function getEmptyContentXpath();
+	abstract protected function getEmptyContentXpath(): string;
 
 	/**
 	 * @return string
 	 */
-	abstract protected function getFilePathInRowXpath();
+	abstract protected function getFilePathInRowXpath(): string;
 
 	/**
 	 * finds all row elements that have the given name
@@ -89,7 +91,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return NodeElement[]
 	 * @throws ElementNotFoundException
 	 */
-	protected function getFileRowElementsByName($name, Session $session) {
+	protected function getFileRowElementsByName($name, Session $session): array {
 		$previousFileCount = 0;
 		$currentFileCount = null;
 		$spaceLeftTillBottom = 0;
@@ -201,14 +203,14 @@ abstract class FilesPageBasic extends OwncloudPage {
 	/**
 	 * @return string
 	 */
-	public function getFileActionMenuXpath() {
+	public function getFileActionMenuXpath(): string {
 		return $this->fileActionMenuXpath;
 	}
 
 	/**
 	 * @return int the number of files and folders listed on the page
 	 */
-	public function getSizeOfFileFolderList() {
+	public function getSizeOfFileFolderList(): int {
 		$fileListElement = $this->find("xpath", $this->getFileListXpath());
 
 		if ($fileListElement === null) {
@@ -225,7 +227,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return NodeElement|null
 	 */
-	public function findActionMenuByNo($number) {
+	public function findActionMenuByNo(int $number): ?NodeElement {
 		$xpath = \sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		return $this->find("xpath", $xpath);
 	}
@@ -239,7 +241,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return FileRow
 	 * @throws ElementNotFoundException
 	 */
-	public function findFileRowByName($name, Session $session) {
+	public function findFileRowByName($name, Session $session): FileRow {
 		return $this->findAllFileRowsByName($name, $session)[0];
 	}
 
@@ -254,7 +256,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return FileRow
 	 * @throws ElementNotFoundException
 	 */
-	public function findFileRowByNameAndPath($name, $path, Session $session) {
+	public function findFileRowByNameAndPath($name, string $path, Session $session): FileRow {
 		$fileRows = $this->findAllFileRowsByName($name, $session);
 		foreach ($fileRows as $fileRow) {
 			$filePath = $fileRow->getFilePath($this->getFilePathInRowXpath());
@@ -277,7 +279,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return FileRow[]
 	 * @throws ElementNotFoundException
 	 */
-	public function findAllFileRowsByName($name, Session $session) {
+	public function findAllFileRowsByName($name, Session $session): array {
 		$fileRowElements = $this->getFileRowElementsByName($name, $session);
 		$fileRows = [];
 		foreach ($fileRowElements as $fileRowElement) {
@@ -296,7 +298,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function scrollDownAppContent(Session $session) {
+	public function scrollDownAppContent(Session $session): void {
 		$this->scrollToPosition(
 			"#$this->appContentId",
 			'$("#' . $this->appContentId . '").scrollTop() + $("#' .
@@ -314,7 +316,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	public function findFileActionMenuElement() {
+	public function findFileActionMenuElement(): NodeElement {
 		$actionMenu = $this->waitTillElementIsNotNull($this->fileActionMenuXpath);
 		$this->assertElementNotNull(
 			$actionMenu,
@@ -333,7 +335,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function openFile($name, Session $session) {
+	public function openFile($name, Session $session): void {
 		$fileRow = $this->findFileRowByName($name, $session);
 		$fileRow->openFileFolder($session);
 	}
@@ -343,7 +345,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function closeFileActionsMenu() {
+	public function closeFileActionsMenu(): void {
 		try {
 			$actionMenu = $this->findFileActionMenuElement();
 			$fileRowElement = $actionMenu->find(
@@ -357,7 +359,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 			$fileRow = $this->getPage('FilesPageElement\\FileRow');
 			$fileRow->setElement($fileRowElement);
 			$fileRow->clickFileActionButton();
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 		}
 	}
 
@@ -367,7 +369,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return DetailsDialog
 	 * @throws ElementNotFoundException
 	 */
-	public function getDetailsDialog() {
+	public function getDetailsDialog(): DetailsDialog {
 		$detailsDialogElement = $this->find("xpath", $this->detailsDialogXpath);
 		$this->assertElementNotNull(
 			$detailsDialogElement,
@@ -390,7 +392,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	public function findSelectAllFilesBtn() {
+	public function findSelectAllFilesBtn(): NodeElement {
 		$selectedAllFilesBtn = $this->find(
 			"xpath",
 			$this->selectAllFilesCheckboxXpath
@@ -412,7 +414,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function selectFileForBatchAction($name, Session $session) {
+	public function selectFileForBatchAction(string $name, Session $session): void {
 		$row = $this->findFileRowByName($name, $session);
 		$row->selectForBatchAction();
 	}
@@ -432,7 +434,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	public function findFileActionsMenuBtnByNo($number) {
+	public function findFileActionsMenuBtnByNo(int $number): NodeElement {
 		$xpathLocator = \sprintf($this->fileActionMenuBtnXpathByNo, $number);
 		$actionMenuBtn = $this->find("xpath", $xpathLocator);
 		$this->assertElementNotNull(
@@ -450,7 +452,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function clickFileActionsMenuBtnByNo($number) {
+	public function clickFileActionsMenuBtnByNo(int $number): void {
 		$this->findFileActionsMenuBtnByNo($number)->click();
 	}
 
@@ -459,9 +461,9 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @param int $number
 	 * @param Session $session
 	 *
-	 * @return FileActionsMenu
+	 * @return Page
 	 */
-	public function openFileActionsMenuByNo($number, Session $session) {
+	public function openFileActionsMenuByNo(int $number, Session $session): Page {
 		$this->clickFileActionsMenuBtnByNo($number);
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
 		$actionMenu->waitTillPageIsLoaded(
@@ -477,9 +479,9 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return boolean
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function isFolderEmpty(Session $session) {
+	public function isFolderEmpty(Session $session): bool {
 		$this->waitTillPageIsLoaded($session);
 		$emptyContentElement = $this->find(
 			"xpath",
@@ -501,11 +503,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
 		int $timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
-	):void {
+	): void {
 		$this->initAjaxCounters($session);
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
@@ -564,7 +567,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		}
 
 		if ($currentTime > $end) {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " timeout waiting for page to load"
 			);
 		}
@@ -581,11 +584,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillFileRowsAreReady(
 		Session $session,
-		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		int $timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
+	): void {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
@@ -607,7 +611,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		}
 
 		if ($currentTime > $end) {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " timeout waiting for file rows to be ready"
 			);
 		}
@@ -615,9 +619,9 @@ abstract class FilesPageBasic extends OwncloudPage {
 
 	/**
 	 * @return void
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function enableShowHiddenFilesSettings() {
+	public function enableShowHiddenFilesSettings(): void {
 		$mobileResolution = getenv("MOBILE_RESOLUTION");
 		// checking if MOBILE_RESOLUTION is set
 		if (!empty($mobileResolution)) {
@@ -647,7 +651,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($appSettingsDiv->getAttribute('style') !== $this->styleOfCheckboxWhenVisible) {
 			if ($currentTime >= $end) {
-				throw new \Exception(
+				throw new Exception(
 					__METHOD__ .
 					" timed out waiting for show hidden files checkbox to appear"
 				);
@@ -679,7 +683,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return boolean
 	 */
-	public function isUploadButtonAvailable() {
+	public function isUploadButtonAvailable(): bool {
 		$btn = $this->find("xpath", $this->newFileFolderButtonXpath);
 		if ($btn === null) {
 			return false;
@@ -692,7 +696,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getFileActionsApplicationSelectMenu() {
+	public function getFileActionsApplicationSelectMenu(): string {
 		$menu = $this->find("xpath", $this->fileActionsApplicationSelectMenuXpath);
 
 		if ($menu === null) {
@@ -709,7 +713,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getFileActionsMenu() {
+	public function getFileActionsMenu(): string {
 		$menu = $this->find("xpath", $this->fileActionMenuXpath);
 
 		if ($menu === null) {

@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Exception;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -56,28 +57,28 @@ class TrashbinPage extends FilesPageBasic {
 	/**
 	 * @return string
 	 */
-	protected function getFileListXpath() {
+	protected function getFileListXpath(): string {
 		return $this->fileListXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNamesXpath() {
+	protected function getFileNamesXpath(): string {
 		return $this->fileNamesXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNameMatchXpath() {
+	protected function getFileNameMatchXpath(): string {
 		return $this->fileNameMatchXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getEmptyContentXpath() {
+	protected function getEmptyContentXpath(): string {
 		return $this->emptyContentXpath;
 	}
 
@@ -88,7 +89,7 @@ class TrashbinPage extends FilesPageBasic {
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
 	 */
-	protected function getFilePathInRowXpath() {
+	protected function getFilePathInRowXpath(): string {
 		return $this->filePathInRowXpath;
 	}
 
@@ -117,7 +118,7 @@ class TrashbinPage extends FilesPageBasic {
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	public function findRestoreAllSelectedFilesBtn() {
+	public function findRestoreAllSelectedFilesBtn(): NodeElement {
 		$mobileResolution = getenv("MOBILE_RESOLUTION");
 		// checking if MOBILE_RESOLUTION is set
 		if (!empty($mobileResolution)) {
@@ -152,8 +153,9 @@ class TrashbinPage extends FilesPageBasic {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function restoreAllSelectedFiles(Session $session) {
+	public function restoreAllSelectedFiles(Session $session): void {
 		$this->findRestoreAllSelectedFilesBtn()->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$this->waitTillFileRowsAreReady($session);
@@ -166,7 +168,7 @@ class TrashbinPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function restore($fname, Session $session) {
+	public function restore(string $fname, Session $session): void {
 		$row = $this->findFileRowByName($fname, $session);
 		$row->restore($session);
 	}
@@ -180,7 +182,7 @@ class TrashbinPage extends FilesPageBasic {
 	 * @return FileRow[]
 	 * @throws ElementNotFoundException
 	 */
-	public function findAllFileRowsByName($name, Session $session) {
+	public function findAllFileRowsByName($name, Session $session): array {
 		$fileRowElements = $this->getFileRowElementsByName($name, $session);
 		$fileRows = [];
 		foreach ($fileRowElements as $fileRowElement) {
@@ -200,13 +202,14 @@ class TrashbinPage extends FilesPageBasic {
 	 * @param int $maxRetries
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function deleteFile(
 		$name,
 		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		bool $expectToDeleteFile = true,
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->filesPageCRUDFunctions->deleteFile(
 			$name,
 			$session,
@@ -221,7 +224,7 @@ class TrashbinPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function deleteAllSelectedFiles(Session $session) {
+	public function deleteAllSelectedFiles(Session $session): void {
 		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
 	}
 }

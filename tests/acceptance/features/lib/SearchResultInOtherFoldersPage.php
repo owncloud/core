@@ -35,35 +35,35 @@ class SearchResultInOtherFoldersPage extends FilesPageBasic {
 	/**
 	 * @return string
 	 */
-	protected function getEmptyContentXpath() {
+	protected function getEmptyContentXpath(): string {
 		return $this->emptyContentXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNameMatchXpath() {
+	protected function getFileNameMatchXpath(): string {
 		return $this->fileNameMatchXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNamesXpath() {
+	protected function getFileNamesXpath(): string {
 		return $this->fileNamesXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileListXpath() {
+	protected function getFileListXpath(): string {
 		return $this->fileListXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFilePathInRowXpath() {
+	protected function getFilePathInRowXpath(): string {
 		return $this->filePathInRowXpath;
 	}
 }
