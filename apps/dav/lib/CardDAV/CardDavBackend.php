@@ -842,8 +842,8 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 */
 	public function searchEx($addressBookId, $pattern, $searchProperties, $options, $limit = 100, $offset = 0) {
 		$query = $this->db->getQueryBuilder();
-		$query2 = $this->db->getQueryBuilder();
-		$query2->selectDistinct('cp.cardid')->from($this->dbCardsPropertiesTable, 'cp');
+		$cardIdSelect = $this->db->getQueryBuilder();
+		$cardIdSelect->selectDistinct('cp.cardid')->from($this->dbCardsPropertiesTable, 'cp');
 
 		$matchMode = $options['matchMode'] ?? 'any';
 		switch ($matchMode) {
@@ -862,17 +862,18 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		}
 
 		foreach ($searchProperties as $property) {
-			$query2->orWhere(
-				$query2->expr()->andX(
-					$query2->expr()->eq('cp.name', $query->createNamedParameter($property)),
-					$query2->expr()->iLike('cp.value', $query->createNamedParameter($searchPattern))
+			$cardIdSelect->orWhere(
+				$cardIdSelect->expr()->andX(
+					$cardIdSelect->expr()->eq('cp.name', $query->createNamedParameter($property)),
+					$cardIdSelect->expr()->iLike('cp.value', $query->createNamedParameter($searchPattern))
 				)
 			);
 		}
-		$query2->andWhere($query2->expr()->eq('cp.addressbookid', $query->createNamedParameter($addressBookId)));
+		$cardIdSelect->andWhere($cardIdSelect->expr()->eq('cp.addressbookid', $query->createNamedParameter($addressBookId)));
 
 		$query->select('c.carddata', 'c.uri')->from($this->dbCardsTable, 'c')
-			->where($query->expr()->in('c.id', $query->createFunction($query2->getSQL())));
+				->where($query->expr()->in('c.id', $query->createFunction($cardIdSelect->getSQL())))
+				->andWhere($query->expr()->eq('c.addressbookid', $query->createNamedParameter($addressBookId)));
 
 		$query->setFirstResult($offset)->setMaxResults($limit);
 		$query->orderBy('c.uri');
