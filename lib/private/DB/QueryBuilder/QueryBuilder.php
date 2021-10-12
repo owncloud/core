@@ -25,6 +25,7 @@ namespace OC\DB\QueryBuilder;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
+use Doctrine\DBAL\Types\Type;
 use OC\DB\OracleConnection;
 use OC\DB\QueryBuilder\ExpressionBuilder\ExpressionBuilder;
 use OC\DB\QueryBuilder\ExpressionBuilder\MySqlExpressionBuilder;
@@ -170,7 +171,7 @@ class QueryBuilder implements IQueryBuilder {
 	 *
 	 * @param string|integer $key The parameter position or name.
 	 * @param mixed $value The parameter value.
-	 * @param string|null $type One of the IQueryBuilder::PARAM_* constants.
+	 * @param int|string|Type|null $type One of the IQueryBuilder::PARAM_* constants.
 	 *
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
