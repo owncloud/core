@@ -47,17 +47,17 @@ class SearchContext implements Context {
 	 *
 	 * @param string $user
 	 * @param string $pattern
-	 * @param string $limit
-	 * @param TableNode $properties
+	 * @param string|null $limit
+	 * @param TableNode|null $properties
 	 *
 	 * @return void
 	 */
 	public function userSearchesUsingWebDavAPI(
-		$user,
-		$pattern,
-		$limit = null,
+		string    $user,
+		string  $pattern,
+		?string	  $limit = null,
 		TableNode $properties = null
-	) {
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$baseUrl = $this->featureContext->getBaseUrl();
 		$password = $this->featureContext->getPasswordForUser($user);
@@ -105,10 +105,10 @@ class SearchContext implements Context {
 	 * @throws Exception
 	 */
 	public function fileOrFolderInTheSearchResultShouldContainProperties(
-		$path,
-		$user,
+		string $path,
+		string $user,
 		TableNode $properties
-	) {
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($properties, ['name', 'value']);
 		$properties = $properties->getHash();
@@ -154,7 +154,7 @@ class SearchContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -164,16 +164,16 @@ class SearchContext implements Context {
 	/**
 	 * @Then the search result by tags for user :user should contain these entries:
 	 *
-	 * @param string $user
+	 * @param string|null $user
 	 * @param TableNode $expectedEntries
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function theSearchResultByTagsForUserShouldContainTheseEntries(
-		$user,
+		?string $user,
 		TableNode $expectedEntries
-	) {
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumnsCount($expectedEntries, 1);
 		$expectedEntries = $expectedEntries->getRows();

@@ -46,7 +46,7 @@ class TransferOwnershipContext implements Context {
 	/**
 	 * @return string
 	 */
-	public function getLastTransferPath() {
+	public function getLastTransferPath():string {
 		return $this->lastTransferPath;
 	}
 
@@ -55,7 +55,7 @@ class TransferOwnershipContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setLastTransferPath($lastTransferPath) {
+	public function setLastTransferPath(string $lastTransferPath):void {
 		$this->lastTransferPath = $lastTransferPath;
 	}
 
@@ -66,7 +66,7 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function transferringOwnership($user1, $user2) {
+	public function transferringOwnership(string $user1, string $user2):void {
 		if ($this->featureContext->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
 			$this->lastTransferPath
 				= $this->featureContext->findLastTransferFolderForUser($user1, $user2);
@@ -82,7 +82,7 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function troubleshootingTransferOwnership($type) {
+	public function troubleshootingTransferOwnership(string $type):void {
 		$this->featureContext->runOcc(['files:troubleshoot-transfer-ownership', $type, '--fix']);
 	}
 
@@ -95,7 +95,7 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorTransfersOwnershipFromToUsingTheOccCommand($user1, $user2) {
+	public function theAdministratorTransfersOwnershipFromToUsingTheOccCommand(string $user1, string $user2):void {
 		$user1 = $this->featureContext->getActualUsername($user1);
 		$user2 = $this->featureContext->getActualUsername($user2);
 		$this->transferringOwnership($user1, $user2);
@@ -109,7 +109,7 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorTroubleshootsTransferOwnershipUsingTheOccCommand($type) {
+	public function theAdministratorTroubleshootsTransferOwnershipUsingTheOccCommand(string $type):void {
 		$this->troubleshootingTransferOwnership($type);
 		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
@@ -123,7 +123,7 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasTransferredOwnershipFromToUsingTheOccCommand($user1, $user2) {
+	public function theAdministratorHasTransferredOwnershipFromToUsingTheOccCommand(string $user1, string $user2):void {
 		$this->transferringOwnership($user1, $user2);
 		$this->occContext->theCommandShouldHaveBeenSuccessful();
 	}
@@ -136,7 +136,7 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function transferringOwnershipPath($path, $user1, $user2) {
+	public function transferringOwnershipPath(string $path, string $user1, string $user2):void {
 		$user1 = $this->featureContext->getActualUsername($user1);
 		$user2 = $this->featureContext->getActualUsername($user2);
 		$path = "--path=$path";
@@ -159,7 +159,7 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorTransfersOwnershipOfPathFromToUsingTheOccCommand($path, $user1, $user2) {
+	public function theAdministratorTransfersOwnershipOfPathFromToUsingTheOccCommand(string $path, string $user1, string $user2):void {
 		$this->transferringOwnershipPath(
 			$path,
 			$user1,
@@ -177,7 +177,7 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasTransferredOwnershipOfPathFromToUsingTheOccCommand($path, $user1, $user2) {
+	public function theAdministratorHasTransferredOwnershipOfPathFromToUsingTheOccCommand(string $path, string $user1, string $user2):void {
 		$this->transferringOwnershipPath(
 			$path,
 			$user1,
@@ -197,11 +197,11 @@ class TransferOwnershipContext implements Context {
 	 * @return void
 	 */
 	public function downloadedContentWhenDownloadingForUserWithRangeShouldBe(
-		$fileSource,
-		$user,
-		$range,
-		$content
-	) {
+		string $fileSource,
+		string $user,
+		string $range,
+		string $content
+	):void {
 		$fileSource = $this->getLastTransferPath() . $fileSource;
 		$this->featureContext->downloadedContentWhenDownloadingForUserWithRangeShouldBe(
 			$fileSource,
@@ -219,9 +219,9 @@ class TransferOwnershipContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function asFileOrFolderShouldNotExist($user, $entry, $path) {
+	public function asFileOrFolderShouldNotExist(string $user, string $entry, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		//the entry in the folder should not exist
 		//but the last received transfer folder itself should exist
@@ -247,9 +247,9 @@ class TransferOwnershipContext implements Context {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function asFileOrFolderShouldExist($user, $entry, $path) {
+	public function asFileOrFolderShouldExist(string $user, string $entry, string $path):void {
 		$path = $this->getLastTransferPath() . $path;
 		$this->featureContext->asFileOrFolderShouldExist(
 			$user,
@@ -268,7 +268,7 @@ class TransferOwnershipContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
