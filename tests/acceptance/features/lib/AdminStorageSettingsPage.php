@@ -23,7 +23,9 @@
 
 namespace Page;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
+use Exception;
 
 /**
  * Admin Storage Settings page.
@@ -68,8 +70,9 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function enableExternalStorage(Session $session) {
+	public function enableExternalStorage(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -84,8 +87,9 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function disableExternalStorage(Session $session) {
+	public function disableExternalStorage(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"disables",
@@ -102,7 +106,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 *
 	 * @return boolean
 	 */
-	public function externalStorageFormVisible() {
+	public function externalStorageFormVisible(): bool {
 		return $this->findById($this->externalStorageFormId)->isVisible();
 	}
 
@@ -114,8 +118,9 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 * @param string $dirLocation
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
-	public function addLocalStorageMount($session, $mount, $dirLocation) {
+	public function addLocalStorageMount(Session $session, string $mount, string $dirLocation): void {
 		$newFolderNameXpath = $this->find("xpath", $this->newFolderNameXpath);
 		$this->assertElementNotNull(
 			$newFolderNameXpath,
@@ -163,9 +168,9 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 * @param string $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function addApplicableToLastMount($session, $user) {
+	public function addApplicableToLastMount(Session $session, string $user): void {
 		$lastMountApplicable = $this->find("xpath", $this->lastMountApplicableXpath);
 		$this->assertElementNotNull(
 			$lastMountApplicable,
@@ -188,7 +193,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 			}
 			$i++;
 		}
-		throw new \Exception(
+		throw new Exception(
 			__METHOD__ . " could not find $user to add on applicable list"
 		);
 	}
@@ -200,9 +205,9 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 * @param string $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function removeApplicableFromLastMount($session, $user) {
+	public function removeApplicableFromLastMount(Session $session, string $user): void {
 		$applicableUsersList = $this->findAll("xpath", $this->applicableUsersListXpath);
 		for ($i = 1; $i <= \count($applicableUsersList); $i++) {
 			$applicableUser = $this->find(
@@ -219,7 +224,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 				return;
 			}
 		}
-		throw new \Exception(
+		throw new Exception(
 			__METHOD__ . " could not find $user to remove from applicable list"
 		);
 	}
@@ -231,7 +236,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function deleteLastCreatedLocalMount($session) {
+	public function deleteLastCreatedLocalMount(Session $session): void {
 		$lastCreatedMountDeleteButton = $this->find(
 			"xpath",
 			$this->lastCreatedMountDeleteButtonXpath
@@ -253,7 +258,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 *
 	 * @return boolean
 	 */
-	public function checkIfLastCreatedMountIsPresent($lastCreatedMountName) {
+	public function checkIfLastCreatedMountIsPresent(string $lastCreatedMountName): bool {
 		$lastCreatedMountList = $this->findAll(
 			"xpath",
 			$this->lastCreatedMountListXpath
@@ -280,8 +285,8 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 * @return void
 	 */
 	public function waitUntilSuccessOrFailureSymbolAppears(
-		$timeout = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		int $timeout = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	): void {
 		$statusSymbol = $this->find("xpath", $this->statusSymbolXpath);
 		$this->assertElementNotNull(
 			$statusSymbol,
@@ -310,7 +315,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function openMountOptions($session) {
+	public function openMountOptions(Session $session): void {
 		$lastCreatedMountOptionsButton = $this->find(
 			"xpath",
 			$this->lastCreatedMountOptionsButtonXpath
@@ -331,7 +336,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function enableReadonlyMountOption(Session $session) {
+	public function enableReadonlyMountOption(Session $session): void {
 		$checkCheckbox = $this->findById($this->setReadonlyId);
 		$this->assertElementNotNull(
 			$checkCheckbox,
@@ -351,7 +356,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function enableSharingMountOption(Session $session) {
+	public function enableSharingMountOption(Session $session): void {
 		$checkCheckbox = $this->findById($this->setSharingId);
 		$this->assertElementNotNull(
 			$checkCheckbox,
@@ -373,8 +378,9 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 * @param string $checkboxId
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleCheckbox(Session $session, $action, $checkboxXpath, $checkboxId) {
+	public function toggleCheckbox(Session $session, string $action, string $checkboxXpath, string $checkboxId): void {
 		$checkbox = $this->find("xpath", $checkboxXpath);
 		$checkCheckbox = $this->findById($checkboxId);
 		$this->assertElementNotNull(
@@ -398,7 +404,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 				$checkbox->click();
 			}
 		} else {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " invalid action: $action"
 			);
 		}
@@ -412,6 +418,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,

@@ -24,6 +24,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 
 /**
  * Admin Apps Settings page.
@@ -47,7 +48,7 @@ class AdminAppsSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function browseToDisabledAppsPage(Session $session) {
+	public function browseToDisabledAppsPage(Session $session): void {
 		$showDisablesAppsButton = $this->findById($this->showDisabledAppsButtonId);
 		$showDisablesAppsButton->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -61,7 +62,7 @@ class AdminAppsSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function disableApp(Session $session, $appName) {
+	public function disableApp(Session $session, string $appName): void {
 		$appDisableButton = $this->find(
 			"xpath",
 			\sprintf($this->appEnableDisableButtonByNameXpath, $appName)
@@ -78,7 +79,7 @@ class AdminAppsSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function enableApp(Session $session, $appName) {
+	public function enableApp(Session $session, string $appName): void {
 		$appEnableButton = $this->find(
 			"xpath",
 			\sprintf($this->appEnableDisableButtonByNameXpath, $appName)
@@ -94,11 +95,12 @@ class AdminAppsSettingsPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
 		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	):void {
+	): void {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$this->waitTillXpathIsVisible(
 			$this->appEnableDisableButtonXpath,
