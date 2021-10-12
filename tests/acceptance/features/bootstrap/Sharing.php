@@ -253,7 +253,7 @@ trait Sharing {
 
 		if (\array_key_exists('permissions', $bodyRows)) {
 			if (\is_numeric($bodyRows['permissions'])) {
-				$bodyRows['permissions'] = (int) $bodyRows['permissions'];
+				$bodyRows['permissions'] = (array) $bodyRows['permissions'];
 			} else {
 				$bodyRows['permissions'] = $this->splitPermissionsString($bodyRows['permissions']);
 			}

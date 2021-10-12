@@ -38,7 +38,6 @@ class SharingHelper {
 			'create' => 4,
 			'delete' => 8,
 			'share' => 16,
-			'change' => 15,
 	];
 
 	public const SHARE_TYPES = [
@@ -184,16 +183,16 @@ class SharingHelper {
 	 *
 	 */
 	public static function getPermissionSum(?array $permissions):int {
-		if (\is_numeric($permissions)) {
-			// Allow any permission number so that test scenarios can
-			// specifically test invalid permission values
-			return (int) $permissions;
-		}
 		if (!\is_array($permissions)) {
 			$permissions = [$permissions];
 		}
 		$permissionSum = 0;
 		foreach ($permissions as $permission) {
+			if (\is_numeric($permission)) {
+				// Allow any permission number so that test scenarios can
+				// specifically test invalid permission values
+				return (int) $permission;
+			}
 			if (\array_key_exists($permission, self::PERMISSION_TYPES)) {
 				$permissionSum += self::PERMISSION_TYPES[$permission];
 			} elseif (\in_array($permission, self::PERMISSION_TYPES, true)) {
