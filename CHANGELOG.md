@@ -13,6 +13,7 @@ Summary
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
 * Bugfix - Update and upgrade words are inconsistent on the web UI: [#39028](https://github.com/owncloud/core/issues/39028)
 * Bugfix - Avoid potential open_basedir errors after upgrade to PHP 7.4.21: [#39034](https://github.com/owncloud/core/issues/39034)
+* Bugfix - Allow copying file keys when storage has multiple mount points: [#39058](https://github.com/owncloud/core/pull/39058)
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
 * Bugfix - Do not try to delete the folder twice: [#39070](https://github.com/owncloud/core/pull/39070)
 * Bugfix - Close open menus if click is on an iFrame: [#39093](https://github.com/owncloud/core/issues/39093)
@@ -130,6 +131,10 @@ Details
 
    https://github.com/owncloud/core/issues/39034
    https://github.com/owncloud/core/pull/39035
+
+* Bugfix - Allow copying file keys when storage has multiple mount points: [#39058](https://github.com/owncloud/core/pull/39058)
+
+   https://github.com/owncloud/core/pull/39058
 
 * Bugfix - Show previews in profile picture setting, select from files: [#39067](https://github.com/owncloud/core/pull/39067)
 
