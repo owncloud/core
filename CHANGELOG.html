@@ -79,6 +79,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Previews for text files including non-latin characters: <a href="https://github.com/owncloud/core/pull/39271">#39271</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow empty folder uploads via webUI: <a href="https://github.com/owncloud/core/pull/39285">#39285</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add support for MariaDB 10.6: <a href="https://github.com/owncloud/core/pull/39286">#39286</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Optimized preview for text files: <a href="https://github.com/owncloud/core/pull/39296">#39296</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add test receiver mail in Email Settings Admin Panel: <a href="https://github.com/owncloud/core/pull/39297">#39297</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Change user casing log level to "debug": <a href="https://github.com/owncloud/core/pull/39299">#39299</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Hide the "Remove Password" button on public links: <a href="https://github.com/owncloud/core/pull/39302">#39302</a></li>
@@ -710,6 +711,15 @@
             <p>https://github.com/owncloud/core/issues/39283<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39286<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Optimized preview for text files: <a href="https://github.com/owncloud/core/pull/39296">#39296</a></p>
+            <p>Previews for text files are generated a bit faster. The preview will be generated based on the
+   first 2 KB of content. In addition to common Latin script, texts using Han, Hiragana, Katakana,
+   Hangul, Devanagari and Arabic scripts will also be shown. Note that a text with mixed scripts
+   won't be previewed properly.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39296<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add test receiver mail in Email Settings Admin Panel: <a href="https://github.com/owncloud/core/pull/39297">#39297</a></p>

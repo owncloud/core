@@ -81,6 +81,7 @@ Summary
 * Enhancement - Previews for text files including non-latin characters: [#39271](https://github.com/owncloud/core/pull/39271)
 * Enhancement - Allow empty folder uploads via webUI: [#39285](https://github.com/owncloud/core/pull/39285)
 * Enhancement - Add support for MariaDB 10.6: [#39286](https://github.com/owncloud/core/pull/39286)
+* Enhancement - Optimized preview for text files: [#39296](https://github.com/owncloud/core/pull/39296)
 * Enhancement - Add test receiver mail in Email Settings Admin Panel: [#39297](https://github.com/owncloud/core/pull/39297)
 * Enhancement - Change user casing log level to "debug": [#39299](https://github.com/owncloud/core/pull/39299)
 * Enhancement - Hide the "Remove Password" button on public links: [#39302](https://github.com/owncloud/core/pull/39302)
@@ -714,6 +715,15 @@ Details
 
    https://github.com/owncloud/core/issues/39283
    https://github.com/owncloud/core/pull/39286
+
+* Enhancement - Optimized preview for text files: [#39296](https://github.com/owncloud/core/pull/39296)
+
+   Previews for text files are generated a bit faster. The preview will be generated based on the
+   first 2 KB of content. In addition to common Latin script, texts using Han, Hiragana, Katakana,
+   Hangul, Devanagari and Arabic scripts will also be shown. Note that a text with mixed scripts
+   won't be previewed properly.
+
+   https://github.com/owncloud/core/pull/39296
 
 * Enhancement - Add test receiver mail in Email Settings Admin Panel: [#39297](https://github.com/owncloud/core/pull/39297)
 
