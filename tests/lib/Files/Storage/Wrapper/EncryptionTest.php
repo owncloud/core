@@ -4,10 +4,12 @@ namespace Test\Files\Storage\Wrapper;
 
 use OC\Encryption\Util;
 use OC\Files\Cache\Cache;
+use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\Temporary;
 use OC\Files\Storage\Wrapper\Encryption;
 use OC\Files\View;
 use OC\User\Manager;
+use OCP\Files\Storage\IStorage;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\Files\Storage\Storage;
 
@@ -1009,5 +1011,37 @@ class EncryptionTest extends Storage {
 			[true],
 			[false]
 		];
+	}
+
+	public function testCopyFromStorageWithMultipleMounts() {
+		$mount = $this->createMock(MountPoint::class);
+		$mount->expects($this->once())->method('getMountPoint');
+
+		$mountManager = $this->getMockBuilder(\OC\Files\Mount\Manager::class)
+			->disableOriginalConstructor()->getMock();
+		$mountManager->expects($this->once())->method('findByStorageId')->willReturn([$mount, $mount]);
+
+		$sourceStorage = $this->getMockBuilder(\OC\Files\Storage\Storage::class)
+			->disableOriginalConstructor()->getMock();
+		$sourceStorage->expects($this->once())->method('is_dir')->willReturn(true);
+
+		$instance = $this->getMockBuilder(Encryption::class)
+			->setConstructorArgs(
+				[
+					[
+						'storage' => $sourceStorage,
+						'root' => 'foo',
+						'mountPoint' => '/',
+						'mount' => $this->mount
+					],
+					$this->encryptionManager, $this->util, $this->logger, $this->file, null, $this->keyStore, $this->update, $mountManager, $this->arrayCache
+				]
+			)
+			->setMethods(['getCache', 'verifyUnencryptedSize', 'copyKeys', 'getFullPath', 'mkdir'])
+			->getMock();
+		$instance->expects($this->once())->method('copyKeys');
+		$instance->expects($this->once())->method('getFullPath');
+
+		$instance->copyFromStorage($sourceStorage, 'files/text.txt', '/files/groupshare/text.txt');
 	}
 }

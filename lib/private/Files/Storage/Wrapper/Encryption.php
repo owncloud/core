@@ -776,7 +776,8 @@ class Encryption extends Wrapper {
 		// first copy the keys that we reuse the existing file key on the target location
 		// and don't create a new one which would break versions for example.
 		$mount = $this->mountManager->findByStorageId($sourceStorage->getId());
-		if (\is_array($mount) && \count($mount) === 1) {
+		if (\count($mount) > 0) {
+			// multiple mount points still refer to the same storage, so pick the first
 			$mountPoint = $mount[0]->getMountPoint();
 			$source = $mountPoint . '/' . $sourceInternalPath;
 			$target = $this->getFullPath($targetInternalPath);
@@ -798,7 +799,7 @@ class Encryption extends Wrapper {
 		} else {
 			try {
 				$source = $sourceStorage->fopen($sourceInternalPath, 'r');
-				if ($isRename && (\count($mount) === 1)) {
+				if ($isRename && (\count($mount) > 0)) {
 					$sourceStorageMountPoint = $mount[0]->getMountPoint();
 					$this->sourcePath[$targetInternalPath] = $sourceStorageMountPoint . '/' . $sourceInternalPath;
 				} else {
