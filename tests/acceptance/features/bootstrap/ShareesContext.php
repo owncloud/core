@@ -54,7 +54,7 @@ class ShareesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserGetsTheShareesWithParameters($body) {
+	public function theUserGetsTheShareesWithParameters(TableNode $body):void {
 		$this->userGetsTheShareesWithParameters(
 			$this->featureContext->getCurrentUser(),
 			$body
@@ -68,8 +68,9 @@ class ShareesContext implements Context {
 	 * @param TableNode $body
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userGetsTheShareesWithParameters($user, $body) {
+	public function userGetsTheShareesWithParameters(string $user, TableNode $body):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$url = '/apps/files_sharing/api/v1/sharees';
 		$this->featureContext->verifyTableNodeColumnsCount($body, 2);
@@ -98,8 +99,9 @@ class ShareesContext implements Context {
 	 * @param TableNode $shareesList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theShareesReturnedShouldBe($shareeType, $shareesList) {
+	public function theShareesReturnedShouldBe(string $shareeType, TableNode $shareesList):void {
 		$this->featureContext->verifyTableNodeColumnsCount($shareesList, 3);
 		$sharees = $shareesList->getRows();
 		$respondedArray = $this->getArrayOfShareesResponded(
@@ -120,8 +122,9 @@ class ShareesContext implements Context {
 	 * @param TableNode $shareesList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theShareesReturnedShouldInclude($shareeType, $shareesList) {
+	public function theShareesReturnedShouldInclude(string $shareeType, TableNode $shareesList):void {
 		$this->featureContext->verifyTableNodeColumnsCount($shareesList, 3);
 		$sharees = $shareesList->getRows();
 		$respondedArray = $this->getArrayOfShareesResponded(
@@ -144,7 +147,7 @@ class ShareesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theShareesReturnedShouldBeEmpty($shareeType) {
+	public function theShareesReturnedShouldBeEmpty(string $shareeType):void {
 		$respondedArray = $this->getArrayOfShareesResponded(
 			$this->featureContext->getResponse(),
 			$shareeType
@@ -170,8 +173,8 @@ class ShareesContext implements Context {
 	 */
 	public function getArrayOfShareesResponded(
 		ResponseInterface $response,
-		$shareeType
-	) {
+		string $shareeType
+	):array {
 		$elements = $this->featureContext->getResponseXml($response, __METHOD__)->data;
 		$elements = \json_decode(\json_encode($elements), 1);
 		if (\strpos($shareeType, 'exact ') === 0) {
@@ -218,7 +221,7 @@ class ShareesContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
