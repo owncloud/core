@@ -133,12 +133,14 @@ class RedisFactory {
 					$this->instance->connect($host, $port, $timeout, null, 0, 0, $connectionParameters);  // @phan-suppress-current-line PhanParamTooManyInternal
 				} catch (\Exception $e) {
 					$this->logger->error('Unable to connect to redis', ['exception' => $e]);
+					return;
 				}
 			} else {
 				try {
 					$this->instance->connect($host, $port, $timeout);
 				} catch (\Exception $e) {
 					$this->logger->error('Unable to connect to redis', ['exception' => $e]);
+					return;
 				}
 			}
 
