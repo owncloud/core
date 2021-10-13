@@ -250,11 +250,11 @@ class Users {
 		}
 
 		$emailChangeAllowed = $this->config->getSystemValue('allow_user_to_change_mail_address', true) !== false;
+		$displayNameChangeAllowed = $this->config->getSystemValue('allow_user_to_change_display_name', true) !== false;
 
 		if ($targetUserId === $currentLoggedInUser->getUID()) {
 			// Editing self (display, email)
 			$permittedFields[] = 'display';
-			$permittedFields[] = 'displayname';
 			$permittedFields[] = 'password';
 			$permittedFields[] = 'two_factor_auth_enabled';
 			// If admin they can edit their own quota
@@ -264,6 +264,9 @@ class Users {
 			if ($emailChangeAllowed) {
 				$permittedFields[] = 'email';
 			}
+			if ($displayNameChangeAllowed) {
+				$permittedFields[] = 'displayname';
+			}
 		} else {
 			// Check if admin / subadmin
 			$subAdminManager = $this->groupManager->getSubAdmin();
@@ -271,12 +274,14 @@ class Users {
 			|| $this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
 				// They have permissions over the user
 				$permittedFields[] = 'display';
-				$permittedFields[] = 'displayname';
 				$permittedFields[] = 'quota';
 				$permittedFields[] = 'password';
 				$permittedFields[] = 'two_factor_auth_enabled';
 				if ($emailChangeAllowed) {
 					$permittedFields[] = 'email';
+				}
+				if ($displayNameChangeAllowed) {
+					$permittedFields[] = 'displayname';
 				}
 			} else {
 				// No rights

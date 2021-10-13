@@ -968,6 +968,31 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
 	}
 
+	public function testEditUserRegularUserSelfEditChangeDisplaynameProhibited() {
+		$loggedInUser = $this->createMock(IUser::class);
+		$loggedInUser
+			->method('getUID')
+			->will($this->returnValue('UserToEdit'));
+		$targetUser = $this->createMock(IUser::class);
+		$this->userSession
+			->method('getUser')
+			->will($this->returnValue($loggedInUser));
+		$this->userManager
+			->method('get')
+			->with('UserToEdit')
+			->will($this->returnValue($targetUser));
+		$this->config
+			->method('getSystemValue')
+			->withConsecutive(
+				['allow_user_to_change_mail_address'],
+				['allow_user_to_change_display_name'],
+			)
+			->willReturn(true, false);
+
+		$expected = new Result(null, 997);
+		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
+	}
+
 	public function testEditUserRegularUserSelfEditChangeEmailValid() {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
@@ -1008,8 +1033,11 @@ class UsersTest extends OriginalTest {
 			->will($this->returnValue($targetUser));
 		$this->config
 			->method('getSystemValue')
-			->with('allow_user_to_change_mail_address')
-			->will($this->returnValue(false));
+			->withConsecutive(
+				['allow_user_to_change_mail_address'],
+				['allow_user_to_change_display_name'],
+			)
+			->willReturn(false, true);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.com']]));
