@@ -996,16 +996,13 @@ class UsersTest extends OriginalTest {
 	public function testEditUserRegularUserSelfEditChangeEmailProhibited() {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
-			->expects($this->any())
 			->method('getUID')
 			->will($this->returnValue('UserToEdit'));
 		$targetUser = $this->createMock(IUser::class);
 		$this->userSession
-			->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($loggedInUser));
 		$this->userManager
-			->expects($this->once())
 			->method('get')
 			->with('UserToEdit')
 			->will($this->returnValue($targetUser));
