@@ -208,7 +208,7 @@ Feature: edit users
     When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
     And user "Alice" tries to change the email of user "Alice" to "alice@gmail.com" using the provisioning API
     Then the OCS status code should be "997"
-    And the HTTP status code should be "403"
+    And the HTTP status code should be "401"
     And the attributes of user "Alice" returned by the API should include
       | email | alice@example.org |
     And the email address of user "Alice" should not have changed
@@ -230,7 +230,7 @@ Feature: edit users
     When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
     And user "Alice" tries to change the display name of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "997"
-    And the HTTP status code should be "403"
+    And the HTTP status code should be "401"
     And the attributes of user "Alice" returned by the API should include
       | displayname | Alice Hansen |
     And the display name of user "Alice" should not have changed
