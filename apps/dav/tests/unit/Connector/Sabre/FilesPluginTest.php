@@ -25,6 +25,8 @@
  */
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
+use OC\Files\Filesystem;
+use OC\Files\Mount\MountPoint;
 use OC\User\User;
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\File;
@@ -32,9 +34,13 @@ use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCP\Files\FileInfo;
 use OCA\DAV\Connector\Sabre\Node;
 use OCA\DAV\Meta\MetaFile;
+use OCA\Files_Sharing\SharedStorage;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
 use OCP\IRequest;
+use OCP\Share\IShare;
+use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\ICollection;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 use Sabre\DAV\Server;
@@ -49,6 +55,8 @@ use Test\TestCase;
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
+ *
+ * @group DB
  */
 class FilesPluginTest extends TestCase {
 	public const GETETAG_PROPERTYNAME = FilesPlugin::GETETAG_PROPERTYNAME;
@@ -626,5 +634,59 @@ class FilesPluginTest extends TestCase {
 			);
 
 		$this->plugin->httpGet($request, $response);
+	}
+
+	public function testCheckPropfindInvalidPath() {
+		$this->expectException(NotFound::class);
+
+		$this->plugin = new FilesPlugin(
+			$this->tree,
+			$this->config,
+			$this->request
+		);
+
+		$this->server->tree = new Tree($this->getMockBuilder(ICollection::class)->getMock());
+		$this->plugin->initialize($this->server);
+
+		$sabreRequest = $this->getMockBuilder(RequestInterface::class)->disableOriginalConstructor()->getMock();
+		$sabreRequest->method('getPath')->willReturn('/invalid/path');
+
+		$this->plugin->checkPropFind($sabreRequest);
+	}
+
+	public function testCheckPropfindInsufficientPermissions() {
+		$this->expectException(NotFound::class);
+
+		$this->plugin = new FilesPlugin(
+			$this->tree,
+			$this->config,
+			$this->request
+		);
+
+		$node = $this->createMock(Node::class);
+
+		$shareMock = $this->createMock(IShare::class);
+		$shareMock->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_CREATE);
+
+		$storage = $this->createMock(SharedStorage::class);
+		$storage->method('instanceOfStorage')->willReturn(true);
+		$storage->method('getShare')->willReturn($shareMock);
+		$mount = new MountPoint($storage, '/user2/files/sharedfolder', [[]], Filesystem::getLoader());
+		Filesystem::getMountManager()->addMount($mount);
+
+		$fileInfo = $this->createMock(FileInfo::class);
+		$fileInfo->method('getPath')->willReturn('user2/files/sharedfolder');
+
+		$node->method('getFileInfo')->willReturn($fileInfo);
+
+		$this->tree->method('getNodeForPath')->willReturn($node);
+		$this->server->tree = $this->tree;
+		$this->plugin->initialize($this->server);
+
+		$sabreRequest = $this->getMockBuilder(RequestInterface::class)->disableOriginalConstructor()->getMock();
+		$sabreRequest->method('getPath')->willReturn('user2/files/sharedfolder');
+
+		$this->plugin->checkPropFind($sabreRequest);
+		Filesystem::getMountManager()->removeMount('/user2/files/sharedfolder');
 	}
 }

@@ -1658,6 +1658,15 @@ $CONFIG = [
 'dav.enable.async' => false,
 
 /**
+ * Allow propfind depth infinity
+ *
+ * With this setting that defaults to true, propfind requests will now be streamed to reduce memory usage
+ * with large responses. It tells the clients whether `depth=infinity` is allowed for propfind requests.
+ * For details see: https://datatracker.ietf.org/doc/html/rfc4918#section-10.2
+ */
+'dav.propfind.depth_infinity' => true,
+
+/**
  * Show the grace period popup
  * Decide whether show or not the grace period popup. There is no change in the
  * behaviour of the grace period.

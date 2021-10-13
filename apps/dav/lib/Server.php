@@ -74,6 +74,7 @@ use Sabre\CalDAV\ICSExportPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
 use Sabre\DAV\Auth\Plugin;
 use Sabre\DAV\Exception;
+use Sabre\HTTP\Request;
 
 class Server {
 
@@ -226,6 +227,7 @@ class Server {
 		));
 
 		if ($this->isRequestForSubtree(['files', 'trash-bin', 'public-files'])) {
+			\Sabre\DAV\Server::$streamMultiStatus = true;
 			$this->server->addPlugin(new ViewOnlyPlugin(
 				OC::$server->getLogger()
 			));
@@ -236,6 +238,15 @@ class Server {
 		}
 
 		$this->server->addPlugin(new PreviewPlugin(OC::$server->getTimeFactory(), OC::$server->getPreviewManager()));
+
+		$this->server->on('beforeMethod:PROPFIND', function (Request $request) use ($config) {
+			$depthHeader = strtolower($request->getHeader('depth'));
+
+			if ($depthHeader === 'infinity' && !$config->getSystemValue('dav.propfind.depth_infinity', true)) {
+				throw new Exception\PreconditionFailed('Depth infinity not supported');
+			}
+		}, 0);
+
 		// wait with registering these until auth is handled and the filesystem is setup
 		$this->server->on('beforeMethod:*', function () use ($root) {
 			// custom properties plugin must be the last one
