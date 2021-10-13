@@ -1,0 +1,8 @@
+Bugfix: Prohibit email change via API when it's not allowed
+
+When the config `allow_user_to_change_mail_address` is set
+to `false`, changing the email address via the provisioning
+API is no longer possible.
+
+https://github.com/owncloud/core/pull/39353
+https://github.com/owncloud/core/issues/39332
