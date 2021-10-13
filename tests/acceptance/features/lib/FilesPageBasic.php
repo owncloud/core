@@ -504,8 +504,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		int $timeout_msec = LONG_UI_WAIT_TIMEOUT_MILLISEC
+	):void {
 		$this->initAjaxCounters($session);
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);

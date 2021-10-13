@@ -924,7 +924,7 @@ class UsersPage extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	): void {
 		// There is always at least the "admin" user in the displayed list of users
 		// So wait for the user list to have at least 1 real user in it

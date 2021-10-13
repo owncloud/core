@@ -83,8 +83,8 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	):void {
 		$this->waitTillXpathIsVisible(
 			$this->personalProfilePanelXpath,
 			$timeout_msec

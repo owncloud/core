@@ -814,8 +814,8 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	):void {
 		$this->waitTillXpathIsVisible(
 			$this->shareApiCheckboxXpath,
 			$timeout_msec
