@@ -50,6 +50,7 @@ Summary
 * Bugfix - File version names for share recipients: [#39314](https://github.com/owncloud/core/pull/39314)
 * Bugfix - Allow renaming two files with the same name but different paths: [#39315](https://github.com/owncloud/core/pull/39315)
 * Bugfix - No sensitive data on exception page: [#39334](https://github.com/owncloud/core/pull/39334)
+* Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -432,6 +433,14 @@ Details
    like passwords as method arguments. They are now filtered and no longer exposed to the user.
 
    https://github.com/owncloud/core/pull/39334
+
+* Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
+
+   Propfind requests will now be streamed to reduce memory usage with large responses.
+   Additionally, the new config `dav.propfind.depth_infinity` has been added to tell clients
+   whether `depth=infinity` is allowed for propfind requests. It defaults to true.
+
+   https://github.com/owncloud/core/pull/38583
 
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 

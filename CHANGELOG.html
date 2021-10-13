@@ -48,6 +48,7 @@
         <li class="type-bugfix changelog-item">Bugfix - File version names for share recipients: <a href="https://github.com/owncloud/core/pull/39314">#39314</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow renaming two files with the same name but different paths: <a href="https://github.com/owncloud/core/pull/39315">#39315</a></li>
         <li class="type-bugfix changelog-item">Bugfix - No sensitive data on exception page: <a href="https://github.com/owncloud/core/pull/39334">#39334</a></li>
+        <li class="type-change changelog-item">Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
@@ -438,6 +439,14 @@
    like passwords as method arguments. They are now filtered and no longer exposed to the user.
             </p>
             <p>https://github.com/owncloud/core/pull/39334<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></p>
+            <p>Propfind requests will now be streamed to reduce memory usage with large responses.
+   Additionally, the new config `dav.propfind.depth_infinity` has been added to tell clients
+   whether `depth=infinity` is allowed for propfind requests. It defaults to true.
+            </p>
+            <p>https://github.com/owncloud/core/pull/38583<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></p>
