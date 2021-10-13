@@ -25,17 +25,23 @@
 
 namespace OC\Memcache;
 
+use OCP\ILogger;
 use OCP\IMemcacheTTL;
 
 class Redis extends Cache implements IMemcacheTTL {
 	/** @var \Redis | \RedisCluster $cache */
 	private static $cache = null;
 
+	/** @var ILogger */
+	private $logger;
+
 	public function __construct($prefix = '') {
 		parent::__construct($prefix);
 		if (self::$cache === null) {
 			self::$cache = \OC::$server->getGetRedisFactory()->getInstance();
 		}
+
+		$this->logger = \OC::$server->getLogger();
 	}
 
 	/**
@@ -46,7 +52,13 @@ class Redis extends Cache implements IMemcacheTTL {
 	}
 
 	public function get($key) {
-		$result = self::$cache->get($this->getNameSpace() . $key);
+		try {
+			$result = self::$cache->get($this->getNameSpace() . $key);
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return null;
+		}
+
 		if ($result === false && !self::$cache->exists($this->getNameSpace() . $key)) {
 			return null;
 		} else {
@@ -55,21 +67,36 @@ class Redis extends Cache implements IMemcacheTTL {
 	}
 
 	public function set($key, $value, $ttl = 0) {
-		if ($ttl > 0) {
-			return self::$cache->setex($this->getNameSpace() . $key, $ttl, \json_encode($value));
-		} else {
-			return self::$cache->set($this->getNameSpace() . $key, \json_encode($value));
+		try {
+			if ($ttl > 0) {
+				return self::$cache->setex($this->getNameSpace() . $key, $ttl, \json_encode($value));
+			} else {
+				return self::$cache->set($this->getNameSpace() . $key, \json_encode($value));
+			}
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
 		}
 	}
 
 	public function hasKey($key) {
-		return self::$cache->exists($this->getNameSpace() . $key);
+		try {
+			return self::$cache->exists($this->getNameSpace() . $key);
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
+		}
 	}
 
 	public function remove($key) {
-		if (self::$cache->del($this->getNameSpace() . $key)) {
-			return true;
-		} else {
+		try {
+			if (self::$cache->del($this->getNameSpace() . $key)) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
 			return false;
 		}
 	}
@@ -77,11 +104,17 @@ class Redis extends Cache implements IMemcacheTTL {
 	public function clear($prefix = '') {
 		$prefix = $this->getNameSpace() . $prefix . '*';
 		$it = null;
-		self::$cache->setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
-		while ($keys = self::$cache->scan($it, $prefix)) {
-			self::$cache->del($keys);
+
+		try {
+			self::$cache->setOption(\Redis::OPT_SCAN, \Redis::SCAN_RETRY);
+			while ($keys = self::$cache->scan($it, $prefix)) {
+				self::$cache->del($keys);
+			}
+			return true;
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
 		}
-		return true;
 	}
 
 	/**
@@ -97,7 +130,12 @@ class Redis extends Cache implements IMemcacheTTL {
 		if (!\is_int($value)) {
 			$value = \json_encode($value);
 		}
-		return self::$cache->setnx($this->getPrefix() . $key, $value);
+		try {
+			return self::$cache->setnx($this->getPrefix() . $key, $value);
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
+		}
 	}
 
 	/**
@@ -108,7 +146,12 @@ class Redis extends Cache implements IMemcacheTTL {
 	 * @return int | bool
 	 */
 	public function inc($key, $step = 1) {
-		return self::$cache->incrBy($this->getNameSpace() . $key, $step);
+		try {
+			return self::$cache->incrBy($this->getNameSpace() . $key, $step);
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
+		}
 	}
 
 	/**
@@ -122,7 +165,12 @@ class Redis extends Cache implements IMemcacheTTL {
 		if (!$this->hasKey($key)) {
 			return false;
 		}
-		return self::$cache->decrBy($this->getNameSpace() . $key, $step);
+		try {
+			return self::$cache->decrBy($this->getNameSpace() . $key, $step);
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
+		}
 	}
 
 	/**
@@ -137,16 +185,21 @@ class Redis extends Cache implements IMemcacheTTL {
 		if (!\is_int($new)) {
 			$new = \json_encode($new);
 		}
-		self::$cache->watch($this->getNameSpace() . $key);
-		if ($this->get($key) === $old) {
-			/** @phan-suppress-next-line PhanNonClassMethodCall */
-			$result = self::$cache->multi()
-				->set($this->getNameSpace() . $key, $new)
-				->exec();
-			return ($result === false) ? false : true;
+		try {
+			self::$cache->watch($this->getNameSpace() . $key);
+			if ($this->get($key) === $old) {
+				/** @phan-suppress-next-line PhanNonClassMethodCall */
+				$result = self::$cache->multi()
+					->set($this->getNameSpace() . $key, $new)
+					->exec();
+				return ($result === false) ? false : true;
+			}
+			self::$cache->unwatch();
+			return false;
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
 		}
-		self::$cache->unwatch();
-		return false;
 	}
 
 	/**
@@ -157,20 +210,30 @@ class Redis extends Cache implements IMemcacheTTL {
 	 * @return bool
 	 */
 	public function cad($key, $old) {
-		self::$cache->watch($this->getNameSpace() . $key);
-		if ($this->get($key) === $old) {
-			/** @phan-suppress-next-line PhanNonClassMethodCall */
-			$result = self::$cache->multi()
-				->del($this->getNameSpace() . $key)
-				->exec();
-			return ($result === false) ? false : true;
+		try {
+			self::$cache->watch($this->getNameSpace() . $key);
+			if ($this->get($key) === $old) {
+				/** @phan-suppress-next-line PhanNonClassMethodCall */
+				$result = self::$cache->multi()
+					->del($this->getNameSpace() . $key)
+					->exec();
+				return ($result === false) ? false : true;
+			}
+			self::$cache->unwatch();
+			return false;
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
 		}
-		self::$cache->unwatch();
-		return false;
 	}
 
 	public function setTTL($key, $ttl) {
-		self::$cache->expire($this->getNameSpace() . $key, $ttl);
+		try {
+			self::$cache->expire($this->getNameSpace() . $key, $ttl);
+		} catch (\Exception $e) {
+			$this->logger->error('Unable to execute redis command', ['exception' => $e]);
+			return false;
+		}
 	}
 
 	public static function isAvailable() {
