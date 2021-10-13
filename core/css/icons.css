@@ -42,6 +42,9 @@
 	transform-origin: center;
 }
 
+/* Disable this loading animation on login screen */
+#body-login button.icon-loading-small:after { display: none; }
+
 .loading:after,
 .loading-small:after,
 .icon-loading:after,
@@ -77,6 +80,9 @@ img.icon-loading-dark, object.icon-loading-dark, video.icon-loading-dark, button
 img.icon-loading-small, object.icon-loading-small, video.icon-loading-small, button.icon-loading-small, textarea.icon-loading-small, input.icon-loading-small, select.icon-loading-small {
 	background-image: url("../img/loading-small.gif");
 }
+
+/* Disable this loading animation on login screen */
+#body-login button.icon-loading-small { background-image: none; }
 
 img.icon-loading-small-dark, object.icon-loading-small-dark, video.icon-loading-small-dark, button.icon-loading-small-dark, textarea.icon-loading-small-dark, input.icon-loading-small-dark, select.icon-loading-small-dark {
 	background-image: url("../img/loading-small-dark.gif");
