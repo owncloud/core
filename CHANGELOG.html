@@ -48,6 +48,7 @@
         <li class="type-bugfix changelog-item">Bugfix - File version names for share recipients: <a href="https://github.com/owncloud/core/pull/39314">#39314</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow renaming two files with the same name but different paths: <a href="https://github.com/owncloud/core/pull/39315">#39315</a></li>
         <li class="type-bugfix changelog-item">Bugfix - No sensitive data on exception page: <a href="https://github.com/owncloud/core/pull/39334">#39334</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prohibit email/displayname change via API when not allowed: <a href="https://github.com/owncloud/core/pull/39353">#39353</a></li>
         <li class="type-change changelog-item">Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
@@ -439,6 +440,16 @@
    like passwords as method arguments. They are now filtered and no longer exposed to the user.
             </p>
             <p>https://github.com/owncloud/core/pull/39334<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prohibit email/displayname change via API when not allowed: <a href="https://github.com/owncloud/core/pull/39353">#39353</a></p>
+            <p>When the configs `allow_user_to_change_mail_address` or
+   `allow_user_to_change_display_name` are set to `false`, changing the corresponding
+   values via the provisioning API is no longer possible.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39332<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39353<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></p>
