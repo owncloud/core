@@ -853,6 +853,7 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException|Exception
 	 */
 	public function addOrRemoveUserToGroup(Session $session, string $user, string $group, bool $add = true, bool $failIfElementNotFound = true): void {
+		$this->waitForAjaxCallsToStartAndFinish($session);
 		$userTr = $this->findUserInTable($user);
 		$groupsField = $userTr->find('xpath', $this->groupsFieldXpath);
 		$userGroupsInput = $groupsField->find("xpath", $this->userGroupsInputXpath);
