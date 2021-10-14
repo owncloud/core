@@ -32,8 +32,8 @@ namespace OCA\Provisioning_API;
 use OC\OCS\Result;
 use OC_Helper;
 use OCP\API;
-use OCP\Files\FileInfo;
 use OCP\Files\NotFoundException;
+use OCP\IConfig;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\ILogger;
@@ -52,6 +52,8 @@ class Users {
 	private $userSession;
 	/** @var ILogger */
 	private $logger;
+	/** @var IConfig */
+	private $config;
 	/** @var \OC\Authentication\TwoFactorAuth\Manager */
 	private $twoFactorAuthManager;
 
@@ -60,18 +62,21 @@ class Users {
 	 * @param IGroupManager $groupManager
 	 * @param IUserSession $userSession
 	 * @param ILogger $logger
+	 * @param IConfig $config
 	 */
 	public function __construct(
 		IUserManager $userManager,
 		IGroupManager $groupManager,
 		IUserSession $userSession,
 		ILogger $logger,
+		IConfig $config,
 		\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager
 	) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
 		$this->logger = $logger;
+		$this->config = $config;
 		$this->twoFactorAuthManager = $twoFactorAuthManager;
 	}
 
@@ -244,16 +249,23 @@ class Users {
 			return new Result(null, 997);
 		}
 
+		$emailChangeAllowed = $this->config->getSystemValue('allow_user_to_change_mail_address', true) !== false;
+		$displayNameChangeAllowed = $this->config->getSystemValue('allow_user_to_change_display_name', true) !== false;
+
 		if ($targetUserId === $currentLoggedInUser->getUID()) {
 			// Editing self (display, email)
 			$permittedFields[] = 'display';
-			$permittedFields[] = 'displayname';
-			$permittedFields[] = 'email';
 			$permittedFields[] = 'password';
 			$permittedFields[] = 'two_factor_auth_enabled';
 			// If admin they can edit their own quota
 			if ($this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
 				$permittedFields[] = 'quota';
+			}
+			if ($emailChangeAllowed) {
+				$permittedFields[] = 'email';
+			}
+			if ($displayNameChangeAllowed) {
+				$permittedFields[] = 'displayname';
 			}
 		} else {
 			// Check if admin / subadmin
@@ -262,11 +274,15 @@ class Users {
 			|| $this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
 				// They have permissions over the user
 				$permittedFields[] = 'display';
-				$permittedFields[] = 'displayname';
 				$permittedFields[] = 'quota';
 				$permittedFields[] = 'password';
-				$permittedFields[] = 'email';
 				$permittedFields[] = 'two_factor_auth_enabled';
+				if ($emailChangeAllowed) {
+					$permittedFields[] = 'email';
+				}
+				if ($displayNameChangeAllowed) {
+					$permittedFields[] = 'displayname';
+				}
 			} else {
 				// No rights
 				return new Result(null, 997);

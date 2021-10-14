@@ -38,6 +38,7 @@ $users = new Users(
 	\OC::$server->getGroupManager(),
 	\OC::$server->getUserSession(),
 	\OC::$server->getLogger(),
+	\OC::$server->getConfig(),
 	\OC::$server->getTwoFactorAuthManager()
 );
 

@@ -35,12 +35,12 @@ use OCP\API;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\IUserSession;
-use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase as OriginalTest;
 use OCP\IUser;
 use OC\SubAdmin;
 use OCP\IGroup;
 use OC\Authentication\TwoFactorAuth\Manager;
+use OCP\IConfig;
 
 class UsersTest extends OriginalTest {
 
@@ -52,6 +52,8 @@ class UsersTest extends OriginalTest {
 	protected $userSession;
 	/** @var ILogger | PHPUnit\Framework\MockObject\MockObject */
 	protected $logger;
+	/** @var IConfig | PHPUnit\Framework\MockObject\MockObject */
+	protected $config;
 	/** @var Users | PHPUnit\Framework\MockObject\MockObject */
 	protected $api;
 	/** @var \OC\Authentication\TwoFactorAuth\Manager | PHPUnit\Framework\MockObject\MockObject */
@@ -72,6 +74,7 @@ class UsersTest extends OriginalTest {
 			->getMock();
 		$this->userSession = $this->createMock(IUserSession::class);
 		$this->logger = $this->createMock(ILogger::class);
+		$this->config = $this->createMock(IConfig::class);
 		$this->twoFactorAuthManager = $this->getMockBuilder(Manager::class)
 			->disableOriginalConstructor()
 			->setMethods(['isTwoFactorAuthenticated', 'enableTwoFactorAuthentication'])
@@ -85,6 +88,7 @@ class UsersTest extends OriginalTest {
 				$this->groupManager,
 				$this->userSession,
 				$this->logger,
+				$this->config,
 				$this->twoFactorAuthManager
 			])
 			->setMethods(['fillStorageInfo'])
@@ -964,6 +968,31 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
 	}
 
+	public function testEditUserRegularUserSelfEditChangeDisplaynameProhibited() {
+		$loggedInUser = $this->createMock(IUser::class);
+		$loggedInUser
+			->method('getUID')
+			->will($this->returnValue('UserToEdit'));
+		$targetUser = $this->createMock(IUser::class);
+		$this->userSession
+			->method('getUser')
+			->will($this->returnValue($loggedInUser));
+		$this->userManager
+			->method('get')
+			->with('UserToEdit')
+			->will($this->returnValue($targetUser));
+		$this->config
+			->method('getSystemValue')
+			->withConsecutive(
+				['allow_user_to_change_mail_address'],
+				['allow_user_to_change_display_name'],
+			)
+			->willReturn(true, false);
+
+		$expected = new Result(null, 997);
+		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'displayname', 'value' => 'NewDisplayName']]));
+	}
+
 	public function testEditUserRegularUserSelfEditChangeEmailValid() {
 		$loggedInUser = $this->createMock(IUser::class);
 		$loggedInUser
@@ -986,6 +1015,31 @@ class UsersTest extends OriginalTest {
 			->with('demo@owncloud.com');
 
 		$expected = new Result(null, 100);
+		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.com']]));
+	}
+
+	public function testEditUserRegularUserSelfEditChangeEmailProhibited() {
+		$loggedInUser = $this->createMock(IUser::class);
+		$loggedInUser
+			->method('getUID')
+			->will($this->returnValue('UserToEdit'));
+		$targetUser = $this->createMock(IUser::class);
+		$this->userSession
+			->method('getUser')
+			->will($this->returnValue($loggedInUser));
+		$this->userManager
+			->method('get')
+			->with('UserToEdit')
+			->will($this->returnValue($targetUser));
+		$this->config
+			->method('getSystemValue')
+			->withConsecutive(
+				['allow_user_to_change_mail_address'],
+				['allow_user_to_change_display_name'],
+			)
+			->willReturn(false, true);
+
+		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo@owncloud.com']]));
 	}
 

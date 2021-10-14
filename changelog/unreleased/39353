@@ -1,0 +1,9 @@
+Bugfix: Prohibit email/displayname change via API when not allowed
+
+When the configs `allow_user_to_change_mail_address` or
+`allow_user_to_change_display_name` are set to `false`,
+changing the corresponding values via the provisioning API
+is no longer possible.
+
+https://github.com/owncloud/core/pull/39353
+https://github.com/owncloud/core/issues/39332
