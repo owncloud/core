@@ -79,8 +79,8 @@ class AdminEncryptionSettingsPage extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	):void {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {

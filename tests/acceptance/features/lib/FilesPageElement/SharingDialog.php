@@ -981,16 +981,17 @@ class SharingDialog extends OwncloudPage {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
-	 * @param string $xpath the xpath of the element to wait for
-	 *                      required to be set
+	 * @param string|null $xpath the xpath of the element to wait for
+	 *                           required to be set
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
-		$xpath = null
-	) {
+		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		?string $xpath = null
+	):void {
 		if ($xpath === null) {
 			throw new \InvalidArgumentException('$xpath needs to be set');
 		}

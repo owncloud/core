@@ -853,6 +853,7 @@ class UsersPage extends OwncloudPage {
 	 * @throws ElementNotFoundException|Exception
 	 */
 	public function addOrRemoveUserToGroup(Session $session, string $user, string $group, bool $add = true, bool $failIfElementNotFound = true): void {
+		$this->waitForAjaxCallsToStartAndFinish($session);
 		$userTr = $this->findUserInTable($user);
 		$groupsField = $userTr->find('xpath', $this->groupsFieldXpath);
 		$userGroupsInput = $groupsField->find("xpath", $this->userGroupsInputXpath);
@@ -924,7 +925,7 @@ class UsersPage extends OwncloudPage {
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
-		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	): void {
 		// There is always at least the "admin" user in the displayed list of users
 		// So wait for the user list to have at least 1 real user in it
