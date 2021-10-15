@@ -252,3 +252,16 @@ Feature: previews of files downloaded through the webdav API
     Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Carol" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: JPEG preview quality can be determined by config
+    Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testavatar_low.jpg"
+    And the administrator has updated system config key "previewJPEGImageDisplayQuality" with value "1"
+    And user "Alice" downloads the preview of "/testavatar_low.jpg" with width "32" and height "32" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the requested JPEG image should have a quality value of "1"
+    Then user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testavatar_high.jpg"
+    And the administrator has updated system config key "previewJPEGImageDisplayQuality" with value "100"
+    And user "Alice" downloads the preview of "/testavatar_high.jpg" with width "32" and height "32" using the WebDAV API
+    Then the HTTP status code should be "200"
+    And the requested JPEG image should have a quality value of "100"

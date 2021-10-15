@@ -1,0 +1,7 @@
+Enhancement: Add quality setting for JP(E)G preview images
+
+A new config setting `previewJPEGImageDisplayQuality` has been introduced
+with which the quality of generated JP(E)G previews can be determined.
+
+https://github.com/owncloud/core/pull/39349
+https://github.com/owncloud/enterprise/issues/4702
