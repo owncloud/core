@@ -4300,6 +4300,20 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the requested JPEG image should have a quality value of :size
+	 *
+	 * @param string $value
+	 *
+	 * @return void
+	 */
+	public function jpgQualityValueShouldBe(string $value): void {
+		$this->responseBodyContent = $this->response->getBody()->getContents();
+		// quality value is embedded in the string content for JPEG images
+		$qualityString = "quality = $value";
+		Assert::assertStringContainsString($qualityString, $this->responseBodyContent);
+	}
+
+	/**
 	 * @Then the downloaded preview content should match with :preview fixtures preview content
 	 *
 	 * @param string $filename relative path from fixtures directory

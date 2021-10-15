@@ -56,6 +56,8 @@ class OC_Image implements \OCP\IImage {
 	private $fileInfo;
 	/** @var \OCP\ILogger */
 	private $logger;
+	/** @var \OCP\IConfig */
+	private $config;
 	/** @var array|false */
 	private $exifData;
 
@@ -81,11 +83,17 @@ class OC_Image implements \OCP\IImage {
 	 * @param resource|string $imageRef The path to a local file, a base64 encoded string or a resource created by
 	 * an imagecreate* function.
 	 * @param \OCP\ILogger $logger
+	 * @param \OCP\IConfig $config
 	 */
-	public function __construct($imageRef = null, $logger = null) {
+	public function __construct($imageRef = null, $logger = null, $config = null) {
 		$this->logger = $logger;
 		if ($logger === null) {
 			$this->logger = \OC::$server->getLogger();
+		}
+
+		$this->config = $config;
+		if ($config === null) {
+			$this->config = \OC::$server->getConfig();
 		}
 
 		if (\OC_Util::fileInfoLoaded()) {
@@ -270,7 +278,7 @@ class OC_Image implements \OCP\IImage {
 				$retVal = \imagegif($this->resource, $filePath);
 				break;
 			case IMAGETYPE_JPEG:
-				$retVal = \imagejpeg($this->resource, $filePath);
+				$retVal = \imagejpeg($this->resource, $filePath, (int)$this->config->getSystemValue('previewJPEGImageDisplayQuality', -1));
 				break;
 			case IMAGETYPE_PNG:
 				$retVal = \imagepng($this->resource, $filePath);
