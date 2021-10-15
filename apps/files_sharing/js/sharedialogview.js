@@ -76,4 +76,4 @@
 	};
 })();
 
-OC.Plugins.register('OC.Share.ShareDialogView', OCA.Sharing.ShareDialogView);
+OC.Plugins.register('OC.Share.ShareDialogView', OCA.Sharing.ShareDialogView, 100);
