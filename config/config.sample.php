@@ -967,6 +967,7 @@ $CONFIG = [
  *
  *  - OC\Preview\PNG
  *  - OC\Preview\JPEG
+ *  - OC\Preview\WEBP
  *  - OC\Preview\GIF
  *  - OC\Preview\BMP
  *  - OC\Preview\XBitmap
@@ -982,6 +983,7 @@ $CONFIG = [
 	'OC\Preview\Heic',
 	'OC\Preview\PNG',
 	'OC\Preview\JPEG',
+	'OC\Preview\WEBP',
 	'OC\Preview\GIF',
 	'OC\Preview\BMP',
 	'OC\Preview\XBitmap',
