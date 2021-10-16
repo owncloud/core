@@ -1,13 +1,9 @@
-Enhancement: Added needed code for webp thumbnail generation to occur.
+Enhancement: Added needed code for webp thumbnail generation to occur
 
 Previously thumbnail previews for image files of the webp format with the
 .webp extension were not generated.  Instead a generic placeholder icon was
 shown.  This enhancement/fix caused the generation of preview thumbnails,
 just as was standard with other image formats.
-
-The text in the paragraphs is written in past tense. The last section is a list
-of issue URLs, PR URLs and other URLs. The first issue ID (or the first PR ID,
-in case there aren't any issue links) is used as the primary ID.
 
 https://github.com/owncloud/core/issues/39358
 https://github.com/owncloud/core/pull/39360

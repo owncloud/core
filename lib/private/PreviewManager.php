@@ -233,7 +233,7 @@ class PreviewManager implements IPreview {
 	 * The following providers are enabled by default:
 	 *  - OC\Preview\PNG
 	 *  - OC\Preview\JPEG
-     *  - OC\Preview\WEBP
+	 *  - OC\Preview\WEBP
 	 *  - OC\Preview\GIF
 	 *  - OC\Preview\BMP
 	 *  - OC\Preview\XBitmap
@@ -266,7 +266,7 @@ class PreviewManager implements IPreview {
 		$imageProviders = [
 			'OC\Preview\PNG',
 			'OC\Preview\JPEG',
-            'OC\Preview\WEBP',
+			'OC\Preview\WEBP',
 			'OC\Preview\GIF',
 			'OC\Preview\BMP',
 			'OC\Preview\Heic',
@@ -314,7 +314,7 @@ class PreviewManager implements IPreview {
 		$this->registerCoreProvider('OC\Preview\MarkDown', '/text\/(x-)?markdown/');
 		$this->registerCoreProvider('OC\Preview\PNG', '/image\/png/');
 		$this->registerCoreProvider('OC\Preview\JPEG', '/image\/jpeg/');
-        $this->registerCoreProvider('OC\Preview\WEBP', '/application\/octet-stream/');
+		$this->registerCoreProvider('OC\Preview\WEBP', '/application\/octet-stream/');
 		$this->registerCoreProvider('OC\Preview\GIF', '/image\/gif/');
 		$this->registerCoreProvider('OC\Preview\BMP', '/image\/bmp/');
 		$this->registerCoreProvider('OC\Preview\XBitmap', '/image\/x-xbitmap/');
