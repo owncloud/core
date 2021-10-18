@@ -389,6 +389,7 @@ table td.upload {
 table td.filename .nametext {
 	float: left;
 	padding: 15px 0;
+	text-overflow: ellipsis;
 }
 
 .column-last > span:first-child,
@@ -405,10 +406,8 @@ table td.filename .nametext {
 	left: 55px;
 	padding: 0;
 	overflow: hidden;
-	text-overflow: clip;
 	max-width: 800px;
 	height: 100%;
-	width: 100%;
 }
 
 .has-favorites #fileList td.filename a.name {
