@@ -314,7 +314,7 @@ class PreviewManager implements IPreview {
 		$this->registerCoreProvider('OC\Preview\MarkDown', '/text\/(x-)?markdown/');
 		$this->registerCoreProvider('OC\Preview\PNG', '/image\/png/');
 		$this->registerCoreProvider('OC\Preview\JPEG', '/image\/jpeg/');
-		$this->registerCoreProvider('OC\Preview\WEBP', '/application\/octet-stream/');
+		$this->registerCoreProvider('OC\Preview\WEBP', '/image\/webp/');
 		$this->registerCoreProvider('OC\Preview\GIF', '/image\/gif/');
 		$this->registerCoreProvider('OC\Preview\BMP', '/image\/bmp/');
 		$this->registerCoreProvider('OC\Preview\XBitmap', '/image\/x-xbitmap/');
