@@ -44,6 +44,7 @@ Feature: edit users
     And the OCS status code should be "100"
     And the display name of user "brand-new-user" should be "A New User"
 
+
   Scenario: the administrator can clear a user display name and then it defaults to the username
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And the administrator has changed the display name of user "brand-new-user" to "A New User"
@@ -59,6 +60,7 @@ Feature: edit users
     Then the HTTP status code should be "200"
     And the OCS status code should be "100"
     And the quota definition of user "brand-new-user" should be "12 MB"
+
 
   Scenario: the administrator can override an existing user email
     Given user "brand-new-user" has been created with default attributes and without skeleton files
@@ -97,6 +99,7 @@ Feature: edit users
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
     And the quota definition of user "brand-new-user" should be "12 MB"
 
+
   Scenario: a normal user should be able to change their email address
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When user "brand-new-user" changes the email of user "brand-new-user" to "brand-new-user@example.com" using the provisioning API
@@ -105,6 +108,7 @@ Feature: edit users
     And the attributes of user "brand-new-user" returned by the API should include
       | email | brand-new-user@example.com |
     And the email address of user "brand-new-user" should be "brand-new-user@example.com"
+
 
   Scenario Outline: a normal user should be able to change their display name
     Given user "brand-new-user" has been created with default attributes and without skeleton files
@@ -119,6 +123,7 @@ Feature: edit users
       | Alan Border     |
       | Phil Cyclist 🚴 |
 
+
   Scenario: a normal user should not be able to change their quota
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     When user "brand-new-user" changes the quota of user "brand-new-user" to "12MB" using the provisioning API
@@ -127,11 +132,12 @@ Feature: edit users
     And the attributes of user "brand-new-user" returned by the API should include
       | quota definition | default |
     And the quota definition of user "brand-new-user" should be "default"
+
   @notToImplementOnOCIS
   Scenario: the administrator can edit user information with admin permissions
     Given these users have been created with default attributes and without skeleton files:
-      | username            |
-      | another-admin       |
+      | username      |
+      | another-admin |
     And user "another-admin" has been added to group "admin"
     When user "another-admin" changes the quota of user "another-admin" to "12MB" using the provisioning API
     And user "another-admin" changes the email of user "another-admin" to "another-admin@example.com" using the provisioning API
@@ -139,6 +145,7 @@ Feature: edit users
     Then the display name of user "another-admin" should be "Anne Brown"
     And the email address of user "another-admin" should be "another-admin@example.com"
     And the quota definition of user "another-admin" should be "12 MB"
+
   @notToImplementOnOCIS
   Scenario: a subadmin should be able to edit user information with subadmin permissions in their group
     Given these users have been created with default attributes and without skeleton files:
@@ -155,8 +162,9 @@ Feature: edit users
     Then the display name of user "another-subadmin" should be "Anne Brown"
     And the email address of user "another-subadmin" should be "brand-new-user@example.com"
     And the quota definition of user "another-subadmin" should be "12 MB"
+
   @notToImplementOnOCIS
-    Scenario: a subadmin should not be able to edit user information of another subadmin of same group
+  Scenario: a subadmin should not be able to edit user information of another subadmin of same group
     Given these users have been created with default attributes and without skeleton files:
       | username         |
       | subadmin         |
@@ -176,6 +184,7 @@ Feature: edit users
     And the display name of user "another-subadmin" should be "Regular User"
     And the email address of user "another-subadmin" should be "another-subadmin@owncloud.com"
     And the quota definition of user "another-subadmin" should be "default"
+
 
   Scenario: a normal user should not be able to edit another user's information
     Given these users have been created with default attributes and without skeleton files:
@@ -202,7 +211,7 @@ Feature: edit users
       | email | alice@gmail.com |
     And the email address of user "Alice" should be "alice@gmail.com"
 
-
+  @notToImplementOnOCIS
   Scenario: Admin does not give access to users to change their email address
     Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
@@ -224,7 +233,7 @@ Feature: edit users
       | displayname | Alice Wonderland |
     And the display name of user "Alice" should be "Alice Wonderland"
 
-
+  @notToImplementOnOCIS
   Scenario: Admin does not give access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
