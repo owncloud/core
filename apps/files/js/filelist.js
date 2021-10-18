@@ -44,7 +44,7 @@
 		SORT_INDICATOR_DESC_CLASS: 'icon-triangle-s',
 
 		id: 'files',
-		appName: t('files', 'Files'),
+		appName: t('files', 'All files'),
 		isEmpty: true,
 		useUndo:true,
 
@@ -298,7 +298,9 @@
 				onClick: _.bind(this._onClickBreadCrumb, this),
 				getCrumbUrl: function(part) {
 					return self.linkTo(part.dir);
-				}
+				},
+				rootName: this.appName,
+				rootIconClass: 'nav-icon-' + this.id,
 			};
 			// if dropping on folders is allowed, then also allow on breadcrumbs
 			if (this._folderDropOptions) {
