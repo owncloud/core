@@ -91,6 +91,7 @@ Summary
 * Enhancement - Trim spaces while creating, uploading or renaming entities in webUI: [#39310](https://github.com/owncloud/core/pull/39310)
 * Enhancement - Bring back minimalistic view to occ app:list with '-m' option: [#39326](https://github.com/owncloud/core/pull/39326)
 * Enhancement - Add quality setting for JP(E)G preview images: [#39349](https://github.com/owncloud/core/pull/39349)
+* Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
 
 Details
 -------
@@ -797,6 +798,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4702
    https://github.com/owncloud/core/pull/39349
+
+* Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
+
+   JavaScript plugins can now be registered with a specific priority. A higher priority means the
+   plugin will be attached/detached before others.
+
+   https://github.com/owncloud/core/pull/39359
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
