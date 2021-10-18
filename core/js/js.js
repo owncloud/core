@@ -874,13 +874,18 @@ OC.Plugins = {
 	 *
 	 * @param {String} targetName app name / class name to hook into
 	 * @param {OC.Plugin} plugin
+	 * @param {String} priority priority of the plugin. sortPluginsByPriority()
+	 * can be used to sort given plugins by their priority.
 	 */
-	register: function (targetName, plugin) {
+	register: function (targetName, plugin, priority) {
+		if (!priority) {
+			priority = 50;
+		}
 		var plugins = this._plugins[targetName];
 		if (!plugins) {
 			plugins = this._plugins[targetName] = [];
 		}
-		plugins.push(plugin);
+		plugins.push({plugin: plugin, priority: priority});
 	},
 
 	/**
@@ -895,6 +900,24 @@ OC.Plugins = {
 	},
 
 	/**
+	 * Sort a list of given plugins by their priority.
+	 * A higher priority means the plugin is listed before others.
+	 *
+	 * @param {Array.<OC.Plugin>} plugins
+	 */
+	sortPluginsByPriority: function (plugins) {
+		return plugins.sort(function(a, b) {
+			if (a.priority > b.priority) {
+				return -1;
+			}
+			if (a.priority < b.priority) {
+				return 1;
+			}
+			return 0;
+		});
+	},
+
+	/**
 	 * Call attach() on all plugins registered to the given target name.
 	 *
 	 * @param {String} targetName app name / class name
@@ -903,9 +926,11 @@ OC.Plugins = {
 	 */
 	attach: function (targetName, targetObject, options) {
 		var plugins = this.getPlugins(targetName);
+		plugins = this.sortPluginsByPriority(plugins);
 		for (var i = 0; i < plugins.length; i++) {
-			if (plugins[i].attach) {
-				plugins[i].attach(targetObject, options);
+			var plugin = plugins[i].plugin;
+			if (plugin.attach) {
+				plugin.attach(targetObject, options);
 			}
 		}
 	},
@@ -919,9 +944,11 @@ OC.Plugins = {
 	 */
 	detach: function (targetName, targetObject, options) {
 		var plugins = this.getPlugins(targetName);
+		plugins = this.sortPluginsByPriority(plugins);
 		for (var i = 0; i < plugins.length; i++) {
-			if (plugins[i].detach) {
-				plugins[i].detach(targetObject, options);
+			var plugin = plugins[i].plugin;
+			if (plugin.detach) {
+				plugin.detach(targetObject, options);
 			}
 		}
 	},
