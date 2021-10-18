@@ -92,6 +92,7 @@ Summary
 * Enhancement - Bring back minimalistic view to occ app:list with '-m' option: [#39326](https://github.com/owncloud/core/pull/39326)
 * Enhancement - Add quality setting for JP(E)G preview images: [#39349](https://github.com/owncloud/core/pull/39349)
 * Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
+* Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
 
 Details
 -------
@@ -805,6 +806,11 @@ Details
    plugin will be attached/detached before others.
 
    https://github.com/owncloud/core/pull/39359
+
+* Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
+
+   https://github.com/owncloud/enterprise/issues/4794
+   https://github.com/owncloud/core/pull/39366
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
