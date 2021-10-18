@@ -993,6 +993,25 @@ $CONFIG = [
   ],
 
 /**
+ * Define the jpeg preview quality
+ *
+ * This setting defines the JP(E)G image quality in [%] for displaying thumbnails and image
+ * previews for apps like 'files_mediaviewer'. Note that this setting is for displaying
+ * only and has no impact on the stored thumbnail / preview quality or size.
+ * The scale ranges from 1 to 100, where 1 is the lowest and 100 the highest.
+ * It defaults to -1 which is equivalent to approximately 75% of the original
+ * image quality.
+ *
+ * Note that any value over 80 may result in an unnecessary increase of the
+ * displayed image and has larger responses sizes when requesting images,
+ * without much increase of the image quality.
+ *
+ * For more information see:
+ * https://www.php.net/manual/en/function.imagejpeg.php
+ */
+'previewJPEGImageDisplayQuality' => -1,
+
+/**
  * Comments
  *
  * Global settings for the Comments infrastructure
