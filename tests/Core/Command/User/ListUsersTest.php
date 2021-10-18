@@ -73,6 +73,11 @@ class ListUsersTest extends TestCase {
 				'uid', 'displayName', 'email', 'quota', 'enabled', 'lastLogin',
 				'home', 'backend', 'cloudId', 'searchTerms'
 				]
+			],
+			[['--show-all-attributes' => true], [
+				'uid', 'displayName', 'email', 'quota', 'enabled', 'lastLogin',
+				'home', 'backend', 'cloudId', 'searchTerms'
+			]
 			]
 		];
 	}
