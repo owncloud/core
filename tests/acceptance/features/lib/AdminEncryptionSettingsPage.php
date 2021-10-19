@@ -48,8 +48,9 @@ class AdminEncryptionSettingsPage extends OwncloudPage {
 	 * @param string $recoveryKey
 	 *
 	 * @return void
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function enableRecoveryKeyAndSetRecoveryKeyTo($recoveryKey) {
+	public function enableRecoveryKeyAndSetRecoveryKeyTo(string $recoveryKey): void {
 		$enableRecoveryKeyBtn = $this->findById($this->enableRecoveryBtnId);
 		$this->assertElementNotNull(
 			$enableRecoveryKeyBtn,
@@ -80,7 +81,7 @@ class AdminEncryptionSettingsPage extends OwncloudPage {
 	public function waitTillPageIsLoaded(
 		Session $session,
 		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	):void {
+	): void {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {

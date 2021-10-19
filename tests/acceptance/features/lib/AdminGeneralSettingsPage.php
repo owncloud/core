@@ -24,7 +24,9 @@
 namespace Page;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
+use Exception;
 use TestHelpers\EmailHelper;
 
 /**
@@ -73,8 +75,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * @param TableNode $emailSettingsTable
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function setEmailServerSettings($session, $emailSettingsTable) {
+	public function setEmailServerSettings(Session $session, TableNode $emailSettingsTable): void {
 		foreach ($emailSettingsTable as $row) {
 			if ($row['setting'] === 'send mode') {
 				$this->selectFieldOption($this->sendModeTypeId, $row['value']);
@@ -107,7 +110,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function sendTestEmail($session) {
+	public function sendTestEmail(Session $session): void {
 		$sendTestEmailBtn = $this->findById($this->sendTestEmailBtnId);
 
 		$this->assertElementNotNull(
@@ -127,9 +130,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * @param string $requiredState ('true' | 'false')
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function checkRequiredAuthentication($requiredState) {
+	public function checkRequiredAuthentication(string $requiredState): void {
 		$checkbox = $this->find("xpath", $this->authRequiredCheckboxXpath);
 		$checkCheckbox = $this->findById($this->authRequiredCheckboxId);
 
@@ -156,7 +159,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 				$checkbox->click();
 			}
 		} else {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " invalid auth required checkbox state: $requiredState"
 			);
 		}
@@ -169,15 +172,15 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * @param string $legalUrlValue
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function setLegalUrl($legalUrlType, $legalUrlValue) {
+	public function setLegalUrl(string $legalUrlType, string $legalUrlValue): void {
 		if ($legalUrlType === "Imprint") {
 			$this->fillField($this->imprintUrlFieldId, $legalUrlValue);
 		} elseif ($legalUrlType === "Privacy Policy") {
 			$this->fillField($this->privacyPolicyUrlFieldId, $legalUrlValue);
 		} else {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " invalid legal url type: $legalUrlType"
 			);
 		}
@@ -189,8 +192,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * @param string $updateChannel
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
-	public function setUpdateChannelValue($updateChannel) {
+	public function setUpdateChannelValue(string $updateChannel): void {
 		$this->selectFieldOption($this->releaseChannelId, $updateChannel);
 	}
 
@@ -200,9 +204,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * @param string $cronJob
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function setCronJobValue($cronJob) {
+	public function setCronJobValue(string $cronJob): void {
 		if ($cronJob == "ajax") {
 			$selectCron = $this->find("xpath", $this->cronJobAjaxXpath);
 			$this->assertElementNotNull(
@@ -228,7 +232,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 				"could not find xpath for radio button"
 			);
 		} else {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " invalid cron job type: $cronJob"
 			);
 		}
@@ -240,7 +244,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return string ownCloud Version
 	 */
-	public function getOwncloudVersion() {
+	public function getOwncloudVersion(): string {
 		$actualVersion = $this->find("xpath", $this->ownCloudVersionXpath);
 		$this->assertElementNotNull(
 			$actualVersion,
@@ -256,7 +260,7 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return string ownCloud Version String
 	 */
-	public function getOwncloudVersionString() {
+	public function getOwncloudVersionString(): string {
 		$actualVersion = $this->find("xpath", $this->ownCloudVersionStringXpath);
 		$this->assertElementNotNull(
 			$actualVersion,
@@ -273,13 +277,14 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * @param integer $logLevel
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function setLogLevel($logLevel) {
+	public function setLogLevel(int $logLevel): void {
 		$loglevels = [0, 1, 2, 3, 4];
 		if (\in_array($logLevel, $loglevels)) {
 			$this->selectFieldOption($this->logLevelId, $logLevel);
 		} else {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " invalid log level: $logLevel"
 			);
 		}
@@ -292,11 +297,12 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
 		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	):void {
+	): void {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 		$this->waitTillXpathIsVisible(
 			$this->ownCloudVersionStringXpath,
@@ -314,8 +320,8 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 */
 	public function addGroupLockBreakersGroup(
 		Session $session,
-		$groupName
-	) {
+		string $groupName
+	): void {
 		$this->getPage('AdminSharingSettingsPage')->addGroupToInputField($groupName, $this->lockBreakerXpath);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -324,8 +330,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	 * get lock breakers group
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getLockBreakersGroups() {
+	public function getLockBreakersGroups(): array {
 		$this->waitTillElementIsNotNull($this->lockBreakerGroups);
 		$groupList = $this->findAll("xpath", $this->lockBreakerGroups);
 		$this->assertElementNotNull(

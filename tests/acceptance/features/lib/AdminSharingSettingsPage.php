@@ -25,6 +25,8 @@ namespace Page;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Exception;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Admin Sharing Settings page.
@@ -107,8 +109,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleShareApi(Session $session, $action) {
+	public function toggleShareApi(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -125,8 +128,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $value
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleDefaultSharePermissions(Session $session, $action, $value) {
+	public function toggleDefaultSharePermissions(Session $session, string $action, string $value): void {
 		$checkboxXpath = null;
 		if ($value == "create") {
 			$checkboxXpath = $this->createSharePermissionXpath;
@@ -152,8 +156,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleShareViaLink(Session $session, $action) {
+	public function toggleShareViaLink(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -169,8 +174,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function togglePublicUpload(Session $session, $action) {
+	public function togglePublicUpload(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -186,8 +192,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleMailNotification(Session $session, $action) {
+	public function toggleMailNotification(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -203,8 +210,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleSocialShareOnPublicLinkShare(Session $session, $action) {
+	public function toggleSocialShareOnPublicLinkShare(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -220,11 +228,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function toggleEnforcePasswordProtectionForReadOnlyLinks(
 		Session $session,
-		$action
-	) {
+		string $action
+	): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -240,11 +249,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function toggleEnforcePasswordProtectionForReadWriteLinks(
 		Session $session,
-		$action
-	) {
+		string $action
+	): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -260,11 +270,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function toggleEnforcePasswordProtectionForReadWriteDeleteLinks(
 		Session $session,
-		$action
-	) {
+		string $action
+	): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -280,11 +291,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function toggleEnforcePasswordProtectionForWriteOnlyLinks(
 		Session $session,
-		$action
-	) {
+		string $action
+	): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -300,8 +312,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleResharing(Session $session, $action) {
+	public function toggleResharing(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -317,8 +330,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleGroupSharing(Session $session, $action) {
+	public function toggleGroupSharing(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -334,11 +348,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function toggleRestrictUsersToOnlyShareWithTheirGroupMembers(
 		Session $session,
-		$action
-	) {
+		string $action
+	): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -353,8 +368,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function enableExcludeGroupFromSharing(Session $session) {
+	public function enableExcludeGroupFromSharing(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -366,82 +382,82 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	/**
 	 * @return NodeElement|null
 	 */
-	public function getDefaultExpirationForUserShareElement() {
+	public function getDefaultExpirationForUserShareElement(): ?NodeElement {
 		return $this->findById($this->defaultExpirationDateForUserCheckboxId);
 	}
 
 	/**
 	 * @return NodeElement|null
 	 */
-	public function getDefaultExpirationForGroupShareElement() {
+	public function getDefaultExpirationForGroupShareElement(): ?NodeElement {
 		return $this->findById($this->defaultExpirationDateForGroupCheckboxId);
 	}
 
 	/**
 	 * @return NodeElement|null
 	 */
-	public function getDefaultExpirationForFederatedShareElement() {
+	public function getDefaultExpirationForFederatedShareElement(): ?NodeElement {
 		return $this->findById($this->defaultExpirationDateForFederatedCheckboxId);
 	}
 
 	/**
 	 * @return NodeElement|null
 	 */
-	public function getEnforceExpireDateUserShareElement() {
+	public function getEnforceExpireDateUserShareElement(): ?NodeElement {
 		return $this->findById($this->enforceExpirationDateUserShareCheckboxId);
 	}
 
 	/**
 	 * @return NodeElement|null
 	 */
-	public function getEnforceExpireDateGroupShareElement() {
+	public function getEnforceExpireDateGroupShareElement(): ?NodeElement {
 		return $this->findById($this->enforceExpirationDateGroupShareCheckboxId);
 	}
 
 	/**
 	 * @return NodeElement|null
 	 */
-	public function getEnforceExpireDateFederatedShareElement() {
+	public function getEnforceExpireDateFederatedShareElement(): ?NodeElement {
 		return $this->findById($this->enforceExpirationDateFederatedShareCheckboxId);
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getUserShareExpirationDays() {
+	public function getUserShareExpirationDays(): string {
 		$expirationDay = $this->find("xpath", $this->userShareExpirationDateFieldXpath);
 		$this->assertElementNotNull(
 			$expirationDay,
 			__METHOD__ .
 			" could not find user share expiration day field"
 		);
-		return $expirationDay->getValue($expirationDay);
+		return $expirationDay->getValue();
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getGroupShareExpirationDays() {
+	public function getGroupShareExpirationDays(): string {
 		$expirationDay = $this->find("xpath", $this->groupShareExpirationDateFieldXpath);
 		$this->assertElementNotNull(
 			$expirationDay,
 			__METHOD__ .
 			" could not find group share expiration day field"
 		);
-		return $expirationDay->getValue($expirationDay);
+		return $expirationDay->getValue();
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getFederatedShareExpirationDays() {
+	public function getFederatedShareExpirationDays(): string {
 		$expirationDay = $this->find("xpath", $this->federatedShareExpirationDateFieldXpath);
 		$this->assertElementNotNull(
 			$expirationDay,
 			__METHOD__ .
 			" could not find federated share expiration day field"
 		);
-		return $expirationDay->getValue($expirationDay);
+		return $expirationDay->getValue();
 	}
 
 	/**
@@ -450,8 +466,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function enableDefaultExpirationDateForUserShares(Session $session) {
+	public function enableDefaultExpirationDateForUserShares(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -466,8 +483,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function enforceMaximumExpirationDateForUserShares(Session $session) {
+	public function enforceMaximumExpirationDateForUserShares(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -482,8 +500,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function enforceMaximumExpirationDateForGroupShares(Session $session) {
+	public function enforceMaximumExpirationDateForGroupShares(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -498,8 +517,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function enforceMaximumExpirationDateForFederatedShares(Session $session) {
+	public function enforceMaximumExpirationDateForFederatedShares(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -513,7 +533,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return NodeElement|NULL
 	 * @throws ElementNotFoundException
 	 */
-	private function findUserShareExpirationField() {
+	private function findUserShareExpirationField(): ?NodeElement {
 		$expirationDateField = $this->find("xpath", $this->userShareExpirationDateFieldXpath);
 		$this->assertElementNotNull(
 			$expirationDateField,
@@ -528,7 +548,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return NodeElement|NULL
 	 * @throws ElementNotFoundException
 	 */
-	private function findGroupShareExpirationField() {
+	private function findGroupShareExpirationField(): ?NodeElement {
 		$expirationDateField = $this->find("xpath", $this->groupShareExpirationDateFieldXpath);
 		$this->assertElementNotNull(
 			$expirationDateField,
@@ -543,7 +563,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @return NodeElement|NULL
 	 * @throws ElementNotFoundException
 	 */
-	private function findFederatedShareExpirationField() {
+	private function findFederatedShareExpirationField(): ?NodeElement {
 		$expirationDateField = $this->find("xpath", $this->federatedShareExpirationDateFieldXpath);
 		$this->assertElementNotNull(
 			$expirationDateField,
@@ -560,11 +580,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setExpirationDaysForUserShare(
-		$date,
+		int     $date,
 		Session $session
-	) {
+	): void {
 		$expirationDateField = $this->findUserShareExpirationField();
 		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -577,11 +598,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setExpirationDaysForGroupShare(
-		$date,
+		int     $date,
 		Session $session
-	) {
+	): void {
 		$expirationDateField = $this->findGroupShareExpirationField();
 		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -594,11 +616,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setExpirationDaysForFederatedShare(
-		$date,
+		int     $date,
 		Session $session
-	) {
+	): void {
 		$expirationDateField = $this->findFederatedShareExpirationField();
 		$this->fillFieldAndKeepFocus($expirationDateField, $date . "\n", $session);
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -610,8 +633,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function enableDefaultExpirationDateForGroupShares(Session $session) {
+	public function enableDefaultExpirationDateForGroupShares(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -626,8 +650,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function enableDefaultExpirationDateForFederatedShares(Session $session) {
+	public function enableDefaultExpirationDateForFederatedShares(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -642,8 +667,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function restrictUserToOnlyShareWithMembershipGroup(Session $session) {
+	public function restrictUserToOnlyShareWithMembershipGroup(Session $session): void {
 		$this->toggleCheckbox(
 			$session,
 			"enables",
@@ -659,11 +685,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $groupName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function addGroupToExcludeGroupsFromSharingList(
 		Session $session,
-		$groupName
-	) {
+		string $groupName
+	): void {
 		$this->addGroupToInputField($groupName, $this->excludeGroupsFromSharingListFieldXpath);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -675,8 +702,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $groupName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function addGroupToExcludedFromReceivingShares(Session $session, $groupName) {
+	public function addGroupToExcludedFromReceivingShares(Session $session, string $groupName): void {
 		$this->addGroupToInputField($groupName, $this->excludeGroupFromSharesFieldXpath);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -688,8 +716,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $fieldXpath
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function addGroupToInputField($groupName, $fieldXpath) {
+	public function addGroupToInputField(string $groupName, string $fieldXpath): void {
 		$inputField = $this->find("xpath", $fieldXpath);
 		$this->assertElementNotNull(
 			$inputField,
@@ -722,8 +751,9 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleAutoAddServer(Session $session, $action) {
+	public function toggleAutoAddServer(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -740,7 +770,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 *
 	 * @return AdminSharingSettingsPage
 	 */
-	public function addTrustedServer(Session $session, $url) {
+	public function addTrustedServer(Session $session, string $url): AdminSharingSettingsPage {
 		$btn = $this->find("xpath", $this->addTrustedServerBtnXpath);
 		$this->assertElementNotNull(
 			$btn,
@@ -773,7 +803,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 *
 	 * @return AdminSharingSettingsPage
 	 */
-	public function deleteTrustedServer(Session $session, $url) {
+	public function deleteTrustedServer(Session $session, string $url): AdminSharingSettingsPage {
 		$btn = $this->find(
 			"xpath",
 			\sprintf($this->deleteTrustedServerBtnXpath, $url)
@@ -792,7 +822,7 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 *
 	 * @return string
 	 */
-	public function getTrustedServerErrorMsg() {
+	public function getTrustedServerErrorMsg(): string {
 		$err = $this->find(
 			"xpath",
 			$this->trustedServerErrorMsgXpath
@@ -811,11 +841,12 @@ class AdminSharingSettingsPage extends SharingSettingsPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
 		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	):void {
+	): void {
 		$this->waitTillXpathIsVisible(
 			$this->shareApiCheckboxXpath,
 			$timeout_msec
