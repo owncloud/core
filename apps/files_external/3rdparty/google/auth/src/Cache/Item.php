@@ -17,7 +17,11 @@
 
 namespace Google\Auth\Cache;
 
+use DateTime;
+use DateTimeInterface;
+use DateTimeZone;
 use Psr\Cache\CacheItemInterface;
+use TypeError;
 
 /**
  * A cache item.
@@ -35,7 +39,7 @@ final class Item implements CacheItemInterface
     private $value;
 
     /**
-     * @var \DateTime|null
+     * @var DateTimeInterface|null
      */
     private $expiration;
 
@@ -106,18 +110,13 @@ final class Item implements CacheItemInterface
             return $this;
         }
 
-        $implementationMessage = interface_exists('DateTimeInterface')
-            ? 'implement interface DateTimeInterface'
-            : 'be an instance of DateTime';
-
         $error = sprintf(
-            'Argument 1 passed to %s::expiresAt() must %s, %s given',
+            'Argument 1 passed to %s::expiresAt() must implement interface DateTimeInterface, %s given',
             get_class($this),
-            $implementationMessage,
             gettype($expiration)
         );
 
-        $this->handleError($error);
+        throw new TypeError($error);
     }
 
     /**
@@ -136,25 +135,10 @@ final class Item implements CacheItemInterface
                        'instance of DateInterval or of the type integer, %s given';
             $error = sprintf($message, get_class($this), gettype($time));
 
-            $this->handleError($error);
+            throw new TypeError($error);
         }
 
         return $this;
-    }
-
-    /**
-     * Handles an error.
-     *
-     * @param string $error
-     * @throws \TypeError
-     */
-    private function handleError($error)
-    {
-        if (class_exists('TypeError')) {
-            throw new \TypeError($error);
-        }
-
-        trigger_error($error, E_USER_ERROR);
     }
 
     /**
@@ -169,22 +153,18 @@ final class Item implements CacheItemInterface
             return true;
         }
 
-        // We test for two types here due to the fact the DateTimeInterface
-        // was not introduced until PHP 5.5. Checking for the DateTime type as
-        // well allows us to support 5.4.
-        if ($expiration instanceof \DateTimeInterface) {
-            return true;
-        }
-
-        if ($expiration instanceof \DateTime) {
+        if ($expiration instanceof DateTimeInterface) {
             return true;
         }
 
         return false;
     }
 
+    /**
+     * @return DateTime
+     */
     protected function currentTime()
     {
-        return new \DateTime('now', new \DateTimeZone('UTC'));
+        return new DateTime('now', new DateTimeZone('UTC'));
     }
 }
