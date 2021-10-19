@@ -1,0 +1,9 @@
+Enhancement: Added needed code for webp thumbnail generation to occur
+
+Previously thumbnail previews for image files of the webp format with the
+.webp extension were not generated.  Instead a generic placeholder icon was
+shown.  This enhancement/fix caused the generation of preview thumbnails,
+just as was standard with other image formats.
+
+https://github.com/owncloud/core/issues/39358
+https://github.com/owncloud/core/pull/39360

@@ -258,6 +258,9 @@ class OC_Image implements \OCP\IImage {
 				case 'image/jpeg':
 					$imageType = IMAGETYPE_JPEG;
 					break;
+				case 'image/webp':
+					$imageType = IMAGETYPE_WEBP;
+					break;
 				case 'image/png':
 					$imageType = IMAGETYPE_PNG;
 					break;
@@ -279,6 +282,9 @@ class OC_Image implements \OCP\IImage {
 				break;
 			case IMAGETYPE_JPEG:
 				$retVal = \imagejpeg($this->resource, $filePath, (int)$this->config->getSystemValue('previewJPEGImageDisplayQuality', -1));
+				break;
+			case IMAGETYPE_WEBP:
+				$retVal = \imagewebp($this->resource, $filePath);
 				break;
 			case IMAGETYPE_PNG:
 				$retVal = \imagepng($this->resource, $filePath);
@@ -523,6 +529,13 @@ class OC_Image implements \OCP\IImage {
 				} else {
 					$this->logger->debug('OC_Image->loadFromFile, JPG images not supported: ' . $imagePath, ['app' => 'core']);
 				}
+				break;
+				case IMAGETYPE_WEBP:
+					if (\imagetypes() & IMG_WEBP) {
+						$this->resource = \imagecreatefromwebp($imagePath);
+					} else {
+						$this->logger->debug('OC_Image->loadFromFile, WEBP images not supported: ' . $imagePath, ['app' => 'core']);
+					}
 				break;
 			case IMAGETYPE_PNG:
 				if (\imagetypes() & IMG_PNG) {

@@ -168,6 +168,7 @@
 	"vsd": ["application/vnd.visio"],
 	"wav": ["audio/wav"],
 	"webm": ["video/webm"],
+	"webp": ["image/webp"],
 	"woff": ["application/font-woff"],
 	"wpd": ["application/vnd.wordperfect"],
 	"wmv": ["video/x-ms-wmv"],
