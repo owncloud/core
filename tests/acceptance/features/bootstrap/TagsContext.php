@@ -53,18 +53,18 @@ class TagsContext implements Context {
 	 * @param string $userAssignable "true", "1" or "false", "0"
 	 * @param string $userEditable "true", "1" or "false", "0"
 	 * @param string $name
-	 * @param string $groups
+	 * @param string|null $groups
 	 *
 	 * @return void
 	 */
 	private function createTag(
-		$user,
-		$userVisible,
-		$userAssignable,
-		$userEditable,
-		$name,
-		$groups = null
-	) {
+		string $user,
+		string $userVisible,
+		string $userAssignable,
+		string $userEditable,
+		string $name,
+		?string $groups = null
+	):void {
 		$response = TagsHelper::createTag(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getActualUsername($user),
@@ -95,7 +95,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function addToTheListOfCreatedTagsByDisplayName($tagDisplayName) {
+	public function addToTheListOfCreatedTagsByDisplayName(string $tagDisplayName):void {
 		$tagId = $this->findTagIdByName($tagDisplayName);
 		$this->createdTags[$tagId]['name'] = $tagDisplayName;
 		$this->createdTags[$tagId]['userAssignable'] = true;
@@ -106,7 +106,7 @@ class TagsContext implements Context {
 	 *
 	 * @return array
 	 */
-	public function getListOfCreatedTags() {
+	public function getListOfCreatedTags():array {
 		return $this->createdTags;
 	}
 
@@ -115,9 +115,9 @@ class TagsContext implements Context {
 	 * @param string $type
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	private function assertTypeOfTag($tagData, $type) {
+	private function assertTypeOfTag(SimpleXMLElement $tagData, string $type):void {
 		$userAttributes = TagsHelper::validateTypeOfTag($type);
 		$userVisible = $userAttributes[0];
 		$userAssignable = $userAttributes[1];
@@ -162,7 +162,7 @@ class TagsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function createTagWithNameAsAdmin($type, $name, $useTrueFalseStrings = true) {
+	public function createTagWithNameAsAdmin(string $type, string $name, bool $useTrueFalseStrings = true):void {
 		$this->createTagWithName(
 			$this->featureContext->getAdminUsername(),
 			$type,
@@ -178,9 +178,9 @@ class TagsContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorCreatesATagWithName($type, $name) {
+	public function theAdministratorCreatesATagWithName(string $type, string $name):void {
 		$this->createTagWithNameAsAdmin(
 			$type,
 			$name
@@ -195,9 +195,9 @@ class TagsContext implements Context {
 	 * @param string $stringsOrNumbers
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorCreatesATagWithNameSending($type, $name, $stringsOrNumbers) {
+	public function theAdministratorCreatesATagWithNameSending(string $type, string $name, string $stringsOrNumbers):void {
 		if ($stringsOrNumbers === "true-false-strings") {
 			$useTrueFalseStrings = true;
 		} else {
@@ -218,9 +218,9 @@ class TagsContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorHasCreatedATagWithName($type, $name) {
+	public function theAdministratorHasCreatedATagWithName(string $type, string $name):void {
 		$this->createTagWithNameAsAdmin(
 			$type,
 			$name
@@ -234,9 +234,9 @@ class TagsContext implements Context {
 	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function createTagWithNameAsCurrentUser($type, $name, $useTrueFalseStrings = true) {
+	public function createTagWithNameAsCurrentUser(string $type, string $name, bool $useTrueFalseStrings = true):void {
 		$this->createTagWithName(
 			$this->featureContext->getCurrentUser(),
 			$type,
@@ -252,9 +252,9 @@ class TagsContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserCreatesATagWithName($type, $name) {
+	public function theUserCreatesATagWithName(string $type, string $name):void {
 		$this->createTagWithNameAsCurrentUser(
 			$type,
 			$name
@@ -268,9 +268,9 @@ class TagsContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserHasCreatedATagWithName($type, $name) {
+	public function theUserHasCreatedATagWithName(string $type, string $name):void {
 		$this->createTagWithNameAsCurrentUser(
 			$type,
 			$name
@@ -285,9 +285,9 @@ class TagsContext implements Context {
 	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function createTagWithName($user, $type, $name, $useTrueFalseStrings = true) {
+	public function createTagWithName(string $user, string $type, string $name, bool $useTrueFalseStrings = true) {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->createTag(
 			$user,
@@ -306,9 +306,9 @@ class TagsContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userCreatesATagWithName($user, $type, $name) {
+	public function userCreatesATagWithName(string $user, string $type, string $name):void {
 		$this->createTagWithName(
 			$user,
 			$type,
@@ -325,18 +325,18 @@ class TagsContext implements Context {
 	 * @param string $stringsOrNumbers
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function userCreatesATagWithNameSendingInTheRequest(
-		$user,
-		$type,
-		$name,
-		$stringsOrNumbers
-	) {
+		string $user,
+		string $type,
+		string $name,
+		string $stringsOrNumbers
+	):void {
 		if ($stringsOrNumbers === "true-false-strings") {
 			$useTrueFalseStrings = true;
 		} else {
-			$useTrueFalseStrings = true;
+			$useTrueFalseStrings = false;
 		}
 
 		$this->createTagWithName(
@@ -355,9 +355,9 @@ class TagsContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasCreatedATagWithName($user, $type, $name) {
+	public function userHasCreatedATagWithName(string $user, string $type, string $name):void {
 		$this->createTagWithName(
 			$user,
 			$type,
@@ -372,9 +372,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function createTagWithNameAndGroupsAsCurrentUser($type, $name, $groups) {
+	public function createTagWithNameAndGroupsAsCurrentUser(string $type, string $name, string $groups):void {
 		$this->createTagWithNameAndGroups(
 			$this->featureContext->getCurrentUser(),
 			$type,
@@ -391,9 +391,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserCreatesATagWithNameAndGroups($type, $name, $groups) {
+	public function theUserCreatesATagWithNameAndGroups(string $type, string $name, string $groups):void {
 		$this->createTagWithNameAndGroupsAsCurrentUser(
 			$type,
 			$name,
@@ -409,9 +409,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserHasCreatedATagWithNameAndGroups($type, $name, $groups) {
+	public function theUserHasCreatedATagWithNameAndGroups(string $type, string $name, string $groups):void {
 		$this->createTagWithNameAndGroupsAsCurrentUser(
 			$type,
 			$name,
@@ -426,9 +426,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function createTagWithNameAndGroupsAsAdmin($type, $name, $groups) {
+	public function createTagWithNameAndGroupsAsAdmin(string $type, string $name, string $groups):void {
 		$this->createTagWithNameAndGroups(
 			$this->featureContext->getAdminUsername(),
 			$type,
@@ -445,9 +445,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorCreatesATagWithNameAndGroups($type, $name, $groups) {
+	public function theAdministratorCreatesATagWithNameAndGroups(string $type, string $name, string $groups):void {
 		$this->createTagWithNameAndGroupsAsAdmin(
 			$type,
 			$name,
@@ -463,9 +463,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorHasCreatedATagWithNameAndGroups($type, $name, $groups) {
+	public function theAdministratorHasCreatedATagWithNameAndGroups(string $type, string $name, string $groups):void {
 		$this->createTagWithNameAndGroupsAsAdmin(
 			$type,
 			$name,
@@ -482,9 +482,9 @@ class TagsContext implements Context {
 	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function createTagWithNameAndGroups($user, $type, $name, $groups, $useTrueFalseStrings = true) {
+	public function createTagWithNameAndGroups(string $user, string $type, string $name, string $groups, bool $useTrueFalseStrings = true):void {
 		$this->createTag(
 			$user,
 			TagsHelper::validateTypeOfTag($type, $useTrueFalseStrings)[0],
@@ -504,9 +504,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userCreatesATagWithNameAndGroups($user, $type, $name, $groups) {
+	public function userCreatesATagWithNameAndGroups(string $user, string $type, string $name, string $groups):void {
 		$this->createTagWithNameAndGroups(
 			$user,
 			$type,
@@ -524,9 +524,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasCreatedATagWithNameAndGroups($user, $type, $name, $groups) {
+	public function userHasCreatedATagWithNameAndGroups(string $user, string $type, string $name, string $groups):void {
 		$this->createTagWithNameAndGroups(
 			$user,
 			$type,
@@ -542,7 +542,7 @@ class TagsContext implements Context {
 	 *
 	 * @return SimpleXMLElement
 	 */
-	public function requestTagsForUser($user, $withGroups = false) {
+	public function requestTagsForUser(string $user, bool $withGroups = false):SimpleXMLElement {
 		return TagsHelper:: requestTagsForUser(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getActualUsername($user),
@@ -560,10 +560,10 @@ class TagsContext implements Context {
 	 * @return SimpleXMLElement|null
 	 */
 	public function requestTagByDisplayName(
-		$user,
-		$tagDisplayName,
-		$withGroups = false
-	) {
+		string $user,
+		string $tagDisplayName,
+		bool $withGroups = false
+	):?SimpleXMLElement {
 		$tagList = $this->requestTagsForUser($user, $withGroups);
 
 		$tagData = $tagList->xpath(
@@ -582,9 +582,9 @@ class TagsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theFollowingTagsShouldExistForTheAdministrator(TableNode $table) {
+	public function theFollowingTagsShouldExistForTheAdministrator(TableNode $table):void {
 		$this->theFollowingTagsShouldExistForUser(
 			$this->featureContext->getAdminUsername(),
 			$table
@@ -597,9 +597,9 @@ class TagsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theFollowingTagsShouldExistForTheUser(TableNode $table) {
+	public function theFollowingTagsShouldExistForTheUser(TableNode $table):void {
 		$this->theFollowingTagsShouldExistForUser(
 			$this->featureContext->getCurrentUser(),
 			$table
@@ -613,9 +613,9 @@ class TagsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theFollowingTagsShouldExistForUser($user, TableNode $table) {
+	public function theFollowingTagsShouldExistForUser(string $user, TableNode $table):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumns($table, ['name', 'type']);
 		foreach ($table->getHash() as $row) {
@@ -638,7 +638,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function tagShouldNotExistForUser($tagDisplayName, $user) {
+	public function tagShouldNotExistForUser(string $tagDisplayName, string $user):void {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
 		Assert::assertNull(
 			$tagData,
@@ -652,9 +652,9 @@ class TagsContext implements Context {
 	 * @param string $tagDisplayName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theFollowingTagsShouldNotExistForTheAdministrator($tagDisplayName) {
+	public function theFollowingTagsShouldNotExistForTheAdministrator(string $tagDisplayName):void {
 		$this->tagShouldNotExistForUser(
 			$tagDisplayName,
 			$this->featureContext->getAdminUsername()
@@ -667,9 +667,9 @@ class TagsContext implements Context {
 	 * @param string $tagDisplayName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theFollowingTagsShouldNotExistForTheUser($tagDisplayName) {
+	public function theFollowingTagsShouldNotExistForTheUser(string $tagDisplayName):void {
 		$this->tagShouldNotExistForUser(
 			$tagDisplayName,
 			$this->featureContext->getCurrentUser()
@@ -684,13 +684,13 @@ class TagsContext implements Context {
 	 * @param string $tagDisplayName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function theUserCanAssignTheTag(
-		$shouldOrNot,
-		$type,
-		$tagDisplayName
-	) {
+		string $shouldOrNot,
+		string $type,
+		string $tagDisplayName
+	):void {
 		$this->userCanAssignTheTag(
 			$this->featureContext->getCurrentUser(),
 			$shouldOrNot,
@@ -708,14 +708,14 @@ class TagsContext implements Context {
 	 * @param string $tagDisplayName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function userCanAssignTheTag(
-		$user,
-		$shouldOrNot,
-		$type,
-		$tagDisplayName
-	) {
+		string $user,
+		string $shouldOrNot,
+		string $type,
+		string $tagDisplayName
+	):void {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
 		$this->assertTypeOfTag($tagData, $type);
 		if ($shouldOrNot === 'should') {
@@ -725,7 +725,7 @@ class TagsContext implements Context {
 			$expected = 'false';
 			$errorMessage = 'Tag can be assigned by user but should not';
 		} else {
-			throw new \Exception(
+			throw new Exception(
 				'Invalid condition, must be "should" or "should not"'
 			);
 		}
@@ -741,9 +741,9 @@ class TagsContext implements Context {
 	 * @param string $groups list of groups separated by "|"
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theTagHasGroup($type, $tagName, $groups) {
+	public function theTagHasGroup(string $type, string $tagName, string $groups):void {
 		$tagData = $this->requestTagByDisplayName(
 			$this->featureContext->getAdminUsername(),
 			$tagName,
@@ -774,9 +774,9 @@ class TagsContext implements Context {
 	 * @param string $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function tagsShouldExistForUser($count, $user) {
+	public function tagsShouldExistForUser(int $count, string $user):void {
 		Assert::assertEquals(
 			(int) $count,
 			\count($this->requestTagsforUser($user)),
@@ -791,7 +791,7 @@ class TagsContext implements Context {
 	 *
 	 * @return int
 	 */
-	public function findTagIdByName($name) {
+	public function findTagIdByName(string $name):int {
 		$tagData = $this->requestTagByDisplayName(
 			$this->featureContext->getAdminUsername(),
 			$name
@@ -808,11 +808,11 @@ class TagsContext implements Context {
 	 * @return ResponseInterface
 	 */
 	private function sendProppatchToSystemtags(
-		$user,
-		$tagDisplayName,
-		$propertyName,
-		$propertyValue
-	) {
+		string $user,
+		string $tagDisplayName,
+		string $propertyName,
+		string $propertyValue
+	):ResponseInterface {
 		$renamedUser = $this->featureContext->getActualUsername($user);
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		$response = WebDavHelper::proppatch(
@@ -836,9 +836,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function editTagWithNameAndSetNameUsingWebDAVAPIAsAdmin($oldName, $newName) {
+	public function editTagWithNameAndSetNameUsingWebDAVAPIAsAdmin(string $oldName, string $newName):void {
 		$this->editTagName(
 			$this->featureContext->getAdminUsername(),
 			$oldName,
@@ -853,9 +853,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
+	public function theAdministratorEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI(string $oldName, string $newName):void {
 		$this->editTagWithNameAndSetNameUsingWebDAVAPIAsAdmin(
 			$oldName,
 			$newName
@@ -869,9 +869,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorHasEditedTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
+	public function theAdministratorHasEditedTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI(string $oldName, string $newName):void {
 		$this->editTagWithNameAndSetNameUsingWebDAVAPIAsAdmin(
 			$oldName,
 			$newName
@@ -884,9 +884,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function editTagWithNameAndSetNameUsingWebDAVAPIAsCurrentUser($oldName, $newName) {
+	public function editTagWithNameAndSetNameUsingWebDAVAPIAsCurrentUser(string $oldName, string $newName):void {
 		$this->editTagName(
 			$this->featureContext->getCurrentUser(),
 			$oldName,
@@ -901,9 +901,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
+	public function theUserEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI(string $oldName, string $newName):void {
 		$this->editTagWithNameAndSetNameUsingWebDAVAPIAsCurrentUser(
 			$oldName,
 			$newName
@@ -917,9 +917,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserHasEditedTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($oldName, $newName) {
+	public function theUserHasEditedTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI(string $oldName, string $newName):void {
 		$this->editTagWithNameAndSetNameUsingWebDAVAPIAsCurrentUser(
 			$oldName,
 			$newName
@@ -933,9 +933,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function editTagName($user, $oldName, $newName) {
+	public function editTagName(string $user, string $oldName, string $newName):void {
 		$this->sendProppatchToSystemtags($user, $oldName, 'display-name', $newName);
 	}
 
@@ -947,9 +947,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($user, $oldName, $newName) {
+	public function userEditsTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI(string $user, string $oldName, string $newName):void {
 		$this->editTagName(
 			$user,
 			$oldName,
@@ -965,9 +965,9 @@ class TagsContext implements Context {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasEditedTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI($user, $oldName, $newName) {
+	public function userHasEditedTheTagWithNameAndSetItsNameToUsingTheWebDAVAPI(string $user, string $oldName, string $newName):void {
 		$this->editTagName(
 			$user,
 			$oldName,
@@ -981,9 +981,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function editTagWithNameAndSetsGroupsUsingWebDAVAPIAsAdmin($oldName, $groups) {
+	public function editTagWithNameAndSetsGroupsUsingWebDAVAPIAsAdmin(string $oldName, string $groups):void {
 		$this->editTagGroups(
 			$this->featureContext->getAdminUsername(),
 			$oldName,
@@ -998,9 +998,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
+	public function theAdministratorEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI(string $oldName, string $groups):void {
 		$this->editTagWithNameAndSetsGroupsUsingWebDAVAPIAsAdmin(
 			$oldName,
 			$groups
@@ -1014,9 +1014,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorHasEditedTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
+	public function theAdministratorHasEditedTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI(string $oldName, string $groups):void {
 		$this->editTagWithNameAndSetsGroupsUsingWebDAVAPIAsAdmin(
 			$oldName,
 			$groups
@@ -1029,9 +1029,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function editTagWithNameAndSetGroupsUsingWebDAVAPIAsCurrentUser($oldName, $groups) {
+	public function editTagWithNameAndSetGroupsUsingWebDAVAPIAsCurrentUser(string $oldName, string $groups):void {
 		$this->editTagGroups(
 			$this->featureContext->getCurrentUser(),
 			$oldName,
@@ -1046,9 +1046,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
+	public function theUserEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI(string $oldName, string $groups):void {
 		$this->editTagWithNameAndSetGroupsUsingWebDAVAPIAsCurrentUser(
 			$oldName,
 			$groups
@@ -1062,9 +1062,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserHasEditedTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI($oldName, $groups) {
+	public function theUserHasEditedTheTagWithNameAndSetsItsGroupsToUsingTheWebDAVAPI(string $oldName, string $groups):void {
 		$this->editTagWithNameAndSetGroupsUsingWebDAVAPIAsCurrentUser(
 			$oldName,
 			$groups
@@ -1078,9 +1078,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function editTagGroups($user, $oldName, $groups) {
+	public function editTagGroups(string $user, string $oldName, string $groups):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->sendProppatchToSystemtags($user, $oldName, 'groups', $groups);
 	}
@@ -1093,9 +1093,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDavApi($user, $oldName, $groups) {
+	public function userEditsTheTagWithNameAndSetsItsGroupsToUsingTheWebDavApi(string $user, string $oldName, string $groups):void {
 		$this->editTagGroups(
 			$user,
 			$oldName,
@@ -1111,9 +1111,9 @@ class TagsContext implements Context {
 	 * @param string $groups
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasEditedTheTagWithNameAndSetsItsGroupsToUsingTheWebDavApi($user, $oldName, $groups) {
+	public function userHasEditedTheTagWithNameAndSetsItsGroupsToUsingTheWebDavApi(string $user, string $oldName, string $groups):void {
 		$this->editTagGroups(
 			$user,
 			$oldName,
@@ -1128,7 +1128,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function deleteTag($user, $name) {
+	public function deleteTag(string $user, string $name):void {
 		$tagID = $this->findTagIdByName($name);
 		$response = TagsHelper::deleteTag(
 			$this->featureContext->getBaseUrl(),
@@ -1152,7 +1152,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userDeletesTag($user, $name) {
+	public function userDeletesTag(string $user, string $name):void {
 		$this->deleteTag(
 			$user,
 			$name
@@ -1164,7 +1164,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function deleteTagAsCurrentUser($name) {
+	public function deleteTagAsCurrentUser(string $name):void {
 		$this->userDeletesTag(
 			$this->featureContext->getCurrentUser(),
 			$name
@@ -1178,7 +1178,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserDeletesTagWithName($name) {
+	public function theUserDeletesTagWithName(string $name):void {
 		$this->deleteTagAsCurrentUser($name);
 	}
 
@@ -1187,7 +1187,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function deleteTagAsAdmin($name) {
+	public function deleteTagAsAdmin(string $name):void {
 		$this->userDeletesTag(
 			$this->featureContext->getAdminUsername(),
 			$name
@@ -1201,7 +1201,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDeletesTagWithName($name) {
+	public function theAdministratorDeletesTagWithName(string $name):void {
 		$this->deleteTagAsAdmin($name);
 	}
 
@@ -1215,11 +1215,11 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	private function tag(
-		$taggingUser,
-		$tagName,
-		$fileName,
-		$fileOwner = null
-	) {
+		string $taggingUser,
+		string $tagName,
+		string $fileName,
+		?string $fileOwner = null
+	):void {
 		if ($fileOwner === null) {
 			$fileOwner = $taggingUser;
 		}
@@ -1246,8 +1246,9 @@ class TagsContext implements Context {
 	 * @param string|null $sharingUser
 	 *
 	 * @return SimpleXMLElement
+	 * @throws Exception
 	 */
-	private function requestTagsForFile($user, $fileName, $sharingUser = null) {
+	private function requestTagsForFile(string $user, string $fileName, ?string $sharingUser = null):SimpleXMLElement {
 		$user = $this->featureContext->getActualUsername($user);
 		if ($sharingUser !== null) {
 			$sharingUser = $this->featureContext->getActualUsername($sharingUser);
@@ -1277,11 +1278,10 @@ class TagsContext implements Context {
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);
-		$responseXmlObject = HttpRequestHelper::getResponseXml(
+		return HttpRequestHelper::getResponseXml(
 			$response,
 			__METHOD__
 		);
-		return $responseXmlObject;
 	}
 
 	/**
@@ -1290,12 +1290,13 @@ class TagsContext implements Context {
 	 * @param string $fileName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function addTagToFileFolderAsAdminOrUser(
-		$adminOrUser,
-		$tagName,
-		$fileName
-	) {
+		string $adminOrUser,
+		string $tagName,
+		string $fileName
+	):void {
 		$adminOrUser = $this->featureContext->getActualUsername($adminOrUser);
 		if ($adminOrUser === 'administrator') {
 			$taggingUser = $this->featureContext->getAdminUsername();
@@ -1313,12 +1314,13 @@ class TagsContext implements Context {
 	 * @param string $fileName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserOrAdministratorAddsTagToFileFolder(
-		$adminOrUser,
-		$tagName,
-		$fileName
-	) {
+		string $adminOrUser,
+		string $tagName,
+		string $fileName
+	):void {
 		$this->addTagToFileFolderAsAdminOrUser(
 			$adminOrUser,
 			$tagName,
@@ -1335,12 +1337,13 @@ class TagsContext implements Context {
 	 * @param string $fileName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserOrAdministratorHasAddedTagToFileFolder(
-		$adminOrUser,
-		$tagName,
-		$fileName
-	) {
+		string $adminOrUser,
+		string $tagName,
+		string $fileName
+	):void {
 		$this->addTagToFileFolderAsAdminOrUser(
 			$adminOrUser,
 			$tagName,
@@ -1358,10 +1361,10 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function addTagToFileFolder(
-		$taggingUser,
-		$tagName,
-		$fileName
-	) {
+		string $taggingUser,
+		string $tagName,
+		string $fileName
+	):void {
 		$taggingUser = $this->featureContext->getActualUsername($taggingUser);
 		$this->tag($taggingUser, $tagName, $fileName);
 	}
@@ -1377,10 +1380,10 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function userAddsTagToFileFolder(
-		$taggingUser,
-		$tagName,
-		$fileName
-	) {
+		string $taggingUser,
+		string $tagName,
+		string $fileName
+	):void {
 		$this->addTagToFileFolder(
 			$taggingUser,
 			$tagName,
@@ -1399,10 +1402,10 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasAddedTagToFileFolder(
-		$taggingUser,
-		$tagName,
-		$fileName
-	) {
+		string $taggingUser,
+		string $tagName,
+		string $fileName
+	):void {
 		$this->addTagToFileFolder(
 			$taggingUser,
 			$tagName,
@@ -1421,11 +1424,11 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function addTagToResourceSharedByUser(
-		$taggingUser,
-		$tagName,
-		$fileName,
-		$sharingUser
-	) {
+		string $taggingUser,
+		string $tagName,
+		string $fileName,
+		string $sharingUser
+	):void {
 		$taggingUser = $this->featureContext->getActualUsername($taggingUser);
 		$sharingUser = $this->featureContext->getActualUsername($sharingUser);
 		$this->tag(
@@ -1448,11 +1451,11 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function userAddsTagToSharedBy(
-		$taggingUser,
-		$tagName,
-		$fileName,
-		$sharingUser
-	) {
+		string $taggingUser,
+		string $tagName,
+		string $fileName,
+		string $sharingUser
+	):void {
 		$this->addTagToResourceSharedByUser(
 			$taggingUser,
 			$tagName,
@@ -1473,11 +1476,11 @@ class TagsContext implements Context {
 	 * @throws Exception
 	 */
 	public function userHasAddedTagToSharedBy(
-		$taggingUser,
-		$tagName,
-		$fileName,
-		$sharingUser
-	) {
+		string $taggingUser,
+		string $tagName,
+		string $fileName,
+		string $sharingUser
+	):void {
 		$this->addTagToResourceSharedByUser(
 			$taggingUser,
 			$tagName,
@@ -1496,14 +1499,14 @@ class TagsContext implements Context {
 	 * @param string $status
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function theHttpStatusWhenUserRequestsTagsForEntryOwnedByShouldBe(
-		$user,
-		$fileName,
-		$sharingUser,
-		$status
-	) {
+		string $user,
+		string $fileName,
+		string $sharingUser,
+		string $status
+	):void {
 		$this->requestTagsForFile($user, $fileName, $sharingUser);
 		$actualStatus = $this->featureContext->getResponse()->getStatusCode();
 		Assert::assertEquals(
@@ -1522,13 +1525,13 @@ class TagsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function sharedByTheUserOrAdminHasTheFollowingTags(
-		$fileName,
-		$adminOrUser,
+		string $fileName,
+		string $adminOrUser,
 		TableNode $table
-	) {
+	):void {
 		if ($adminOrUser === 'user') {
 			$sharingUser = $this->featureContext->getCurrentUser();
 		} else {
@@ -1549,13 +1552,13 @@ class TagsContext implements Context {
 	 *                          | tag2 | static |
 	 *
 	 * @return bool
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function sharedByHasTheFollowingTags(
-		$fileName,
-		$sharingUser,
+		string $fileName,
+		string $sharingUser,
 		TableNode $table
-	) {
+	):bool {
 		$xml = $this->requestTagsForFile($sharingUser, $fileName);
 		$tagList = $xml->xpath("//d:prop");
 		$found = false;
@@ -1592,13 +1595,13 @@ class TagsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function fileHasTheFollowingTagsForUserOrAdministrator(
-		$fileName,
-		$adminOrUser,
+		string $fileName,
+		string $adminOrUser,
 		TableNode $table
-	) {
+	):void {
 		if ($adminOrUser === 'administrator') {
 			$user = $this->featureContext->getAdminUsername();
 		} else {
@@ -1615,13 +1618,13 @@ class TagsContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function fileHasTheFollowingTagsForUser(
-		$fileName,
-		$user,
+		string $fileName,
+		string $user,
 		TableNode $table
-	) {
+	):void {
 		$this->sharedByHasTheFollowingTags($fileName, $user, $table);
 	}
 
@@ -1632,9 +1635,9 @@ class TagsContext implements Context {
 	 * @param string $sharingUser
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function sharedByHasNoTags($fileName, $sharingUser) {
+	public function sharedByHasNoTags(string $fileName, string $sharingUser):void {
 		$sharingUser = $this->featureContext->getActualUsername($sharingUser);
 		$responseXml = $this->requestTagsForFile($sharingUser, $fileName);
 		$tagList = $responseXml->xpath("//d:prop");
@@ -1655,13 +1658,13 @@ class TagsContext implements Context {
 	 * @Then /^(?:file|folder|entry) "([^"]*)" should have no tags for the (administrator|user)?$/
 	 *
 	 * @param string $fileName
-	 * @param string $adminOrUser
-	 * @param string $user
+	 * @param string|null $adminOrUser
+	 * @param string|null $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function fileHasNoTagsForUser($fileName, $adminOrUser = null, $user = null) {
+	public function fileHasNoTagsForUser(string $fileName, ?string $adminOrUser = null, ?string $user = null):void {
 		if ($user === null) {
 			if ($adminOrUser === 'administrator') {
 				$user = $this->featureContext->getAdminUsername();
@@ -1680,7 +1683,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	private function untag($untaggingUser, $tagName, $fileName, $fileOwner) {
+	private function untag(string $untaggingUser, string $tagName, string $fileName, string $fileOwner):void {
 		$untaggingUser = $this->featureContext->getActualUsername($untaggingUser);
 		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
 		$fileID = $this->featureContext->getFileIdForPath($fileOwner, $fileName);
@@ -1705,7 +1708,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function removeTagFromFile($user, $tagName, $fileName) {
+	public function removeTagFromFile(string $user, string $tagName, string $fileName):void {
 		$this->untag($user, $tagName, $fileName, $user);
 	}
 
@@ -1718,7 +1721,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userRemovesTagFromFile($user, $tagName, $fileName) {
+	public function userRemovesTagFromFile(string $user, string $tagName, string $fileName):void {
 		$this->removeTagFromFile(
 			$user,
 			$tagName,
@@ -1735,11 +1738,11 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function removeTagFromFileSharedByUser(
-		$user,
-		$tagName,
-		$fileName,
-		$shareUser
-	) {
+		string $user,
+		string $tagName,
+		string $fileName,
+		string $shareUser
+	):void {
 		$this->untag(
 			$user,
 			$tagName,
@@ -1759,11 +1762,11 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function userRemovesTagFromFileSharedBy(
-		$user,
-		$tagName,
-		$fileName,
-		$shareUser
-	) {
+		string $user,
+		string $tagName,
+		string $fileName,
+		string $shareUser
+	):void {
 		$this->removeTagFromFileSharedByUser(
 			$user,
 			$tagName,
@@ -1780,10 +1783,10 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function removeTagFromFileSharedByUserAsAdminUsingWebDavApi(
-		$tagName,
-		$fileName,
-		$shareUser
-	) {
+		string $tagName,
+		string $fileName,
+		string $shareUser
+	):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->removeTagFromFileSharedByUser($admin, $tagName, $fileName, $shareUser);
 	}
@@ -1798,10 +1801,10 @@ class TagsContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorRemovesTheTagFromFileSharedByUsingTheWebdavApi(
-		$tagName,
-		$fileName,
-		$shareUser
-	) {
+		string $tagName,
+		string $fileName,
+		string $shareUser
+	):void {
 		$this->removeTagFromFileSharedByUserAsAdminUsingWebDavApi(
 			$tagName,
 			$fileName,
@@ -1812,13 +1815,13 @@ class TagsContext implements Context {
 	/**
 	 * search resources with tags using the REPORT webDAV method
 	 *
-	 * @param $user
+	 * @param string $user
 	 * @param TableNode $tagNames
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function searchForTagsOfFileWithReportUsingWebDAVApi($user, $tagNames) {
+	public function searchForTagsOfFileWithReportUsingWebDAVApi(string $user, TableNode $tagNames):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->featureContext->verifyTableNodeColumnsCount($tagNames, 1);
 		$tagNames = $tagNames->getRows();
@@ -1880,7 +1883,7 @@ class TagsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userSearchesForFollowingTagsUsingWebDAVApi($user, TableNode $tagNames) {
+	public function userSearchesForFollowingTagsUsingWebDAVApi(string $user, TableNode $tagNames):void {
 		$this->searchForTagsOfFileWithReportUsingWebDAVApi(
 			$user,
 			$tagNames
@@ -1896,7 +1899,7 @@ class TagsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userSearchesForTagUsingWebDavAPI($user, $tagName) {
+	public function userSearchesForTagUsingWebDavAPI(string $user, string $tagName):void {
 		$tagName = new TableNode([[$tagName]]);
 		$this->searchForTagsOfFileWithReportUsingWebDAVApi($user, $tagName);
 	}
@@ -1911,7 +1914,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function asUserFileShouldBeTaggedWithTagName($user, $shouldOrNot, $fileOrFolder, $path) {
+	public function asUserFileShouldBeTaggedWithTagName(string $user, string $shouldOrNot, string $fileOrFolder, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$expected = ($shouldOrNot === "");
 		$responseResourcesArray = $this->featureContext->findEntryFromReportResponse($user);
@@ -1934,8 +1937,9 @@ class TagsContext implements Context {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function cleanupTags() {
+	public function cleanupTags():void {
 		$this->featureContext->authContext->deleteTokenAuthEnforcedAfterScenario();
 		foreach ($this->createdTags as $tagID => $tag) {
 			TagsHelper::deleteTag(
@@ -1959,7 +1963,7 @@ class TagsContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
