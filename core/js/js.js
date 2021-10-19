@@ -1588,6 +1588,16 @@ function initCore() {
 		OC.hideMenus();
 	});
 
+	/**
+	 * This event gets fired, if you press the escape key
+	 * So we can close the open menus, for example the #settings menu
+	 */
+	$(window).on('keyup',function(event){
+		if (event.key === "Escape"){
+			OC.hideMenus();
+		}
+	});
+
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function (event) {
 		var $el = $(event.target);

@@ -2351,6 +2351,18 @@ describe('OCA.Files.FileList tests', function() {
 			expect(context.fileActions).toBeDefined();
 			expect(context.dir).toEqual('/subdir');
 		});
+		it('Right clicking on a file row will open action menu', function() {
+			fileList.setFiles(testFiles);
+			var $tr = fileList.findFileEl('One.txt');
+
+			$tr.trigger({
+				type: 'mouseup',
+				which: 3
+			});
+
+			var $menu = fileList.$el.find('.fileActionsMenu.open');
+			expect($menu.length).toEqual(1);
+		});
 		it('clicking on a file name will render the app drawer context menu if more than one action applies for this mime type', function() {
 			var actionStub = sinon.stub();
 			fileList.setFiles(testFiles);

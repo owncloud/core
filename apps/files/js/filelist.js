@@ -330,7 +330,14 @@
 
 			this.updateSearch();
 
-			this.$fileList.on('click','td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
+			this.$fileList.on('click', 'td.filename>a.name, td.filesize, td.date', _.bind(this._onClickFile, this));
+
+			// disable context menu
+			this.$fileList.on('contextmenu', function (e) {
+				e.preventDefault();
+			});
+
+			this.$fileList.on('mouseup', 'tr', _.bind(this._onRightClickTableRow, this));
 
 			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
 			// use namespaced event because "bind" will get in the way to remove the event later
@@ -634,6 +641,48 @@
 			}
 			this.$el.find('.select-all').prop('checked', this._selectionSummary.getTotal() === this.files.length);
 		},
+
+
+		/**
+		 * Event handler when right clicking on files table row
+		 */
+		_onRightClickTableRow: function (event) {
+			var isRightMouseClick = event.which === 3;
+
+			if (!isRightMouseClick) {
+				return;
+			}
+
+			event.stopPropagation();
+
+			var self = this;
+			var $tr = $(event.currentTarget).closest("tr");
+			var context = {
+				$file: $tr,
+				fileActions: this.fileActions,
+				fileList: this,
+				dir: $tr.attr('data-path') || this.getCurrentDirectory(),
+				fileInfoModel: this.getModelForFile($tr),
+			};
+			var menu = new OCA.Files.FileActionsMenu();
+			context.$file.find('td.filename').append(menu.$el);
+
+			this.fileActions.currentFile = $tr.find('td');
+			context.$file.addClass('mouseOver');
+			menu.$el.on('afterHide', function () {
+				context.$file.removeClass('mouseOver');
+				menu.remove();
+				self.fileActions.currentFile = null;
+			});
+			menu.show(context);
+
+			var leftOffset = this.$el.offset().left;
+			var positionX = Math.max(0, event.pageX - leftOffset - (menu.$el.width() / 2));
+
+			menu.$el.css({'right': 'auto', 'left': positionX + 'px'});
+			menu.$el.addClass('no-arrow');
+		},
+
 
 		/**
 		 * Event handler for when clicking on files to select them

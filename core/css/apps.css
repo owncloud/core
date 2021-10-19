@@ -348,6 +348,12 @@
 	border-width: 10px;
 	margin-left: -10px;
 }
+
+/* class to disable arrow */
+.no-arrow.bubble:after {
+	border: none;
+}
+
 .bubble .action {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)" !important;
 	filter: alpha(opacity=50) !important;
