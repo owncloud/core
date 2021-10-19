@@ -5059,7 +5059,8 @@ trait WebDav {
 	 * @Then the author of the created version with index :arg1 should be :arg2
 	 *
 	 * @param $user string
-	 *
+	 * @param $index string
+   *
 	 * @return void
 	 * @throws Exception
 	 */
