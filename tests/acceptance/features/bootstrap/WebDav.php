@@ -5073,12 +5073,12 @@ trait WebDav {
 			);
 		}
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by//text()");
-		if (!isset($xmlPart[$index-1])) {
+		if (!isset($xmlPart[$index - 1])) {
 			Assert::fail(
 				'could not find version with index "' . $index . '"'
 			);
 		}
-		$actualUser = $xmlPart[$index-1][0];
+		$actualUser = $xmlPart[$index - 1][0];
 		Assert::assertEquals(
 			$expectedUser,
 			$actualUser,
