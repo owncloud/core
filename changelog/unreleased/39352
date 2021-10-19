@@ -1,0 +1,6 @@
+Bugfix: Hide legacy login button animation
+
+In some cases the old animation was still displayed on login buttons. 
+This PR hides it in favour of the newly introduced animation.
+
+https://github.com/owncloud/core/pull/39352
