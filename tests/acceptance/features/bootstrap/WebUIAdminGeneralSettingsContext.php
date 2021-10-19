@@ -69,8 +69,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @When the administrator browses to the admin general settings page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorHasBrowsedToTheAdminGeneralSettingsPage() {
+	public function theAdministratorHasBrowsedToTheAdminGeneralSettingsPage():void {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminGeneralSettingsPage->open();
 		$this->adminGeneralSettingsPage->waitTillPageIsLoaded($this->getSession());
@@ -85,7 +86,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 */
 	public function administratorSetsTheFollowingSettingsInEmailServerSettingUsingTheWebui(
 		TableNode $emailSettingsTable
-	) {
+	):void {
 		$this->adminGeneralSettingsPage->setEmailServerSettings(
 			$this->getSession(),
 			$emailSettingsTable
@@ -97,7 +98,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorClicksOnSendTestEmailInTheAdminGeneralSettingsPageUsingTheWebui() {
+	public function theAdministratorClicksOnSendTestEmailInTheAdminGeneralSettingsPageUsingTheWebui():void {
 		$this->adminGeneralSettingsPage->sendTestEmail($this->getSession());
 	}
 
@@ -107,8 +108,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @param string $imprintUrl
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorSetsTheValueOfImprintUrlToUsingTheWebui($imprintUrl) {
+	public function theAdministratorSetsTheValueOfImprintUrlToUsingTheWebui(string $imprintUrl):void {
 		$this->adminGeneralSettingsPage->setLegalUrl("Imprint", $imprintUrl);
 	}
 
@@ -118,8 +120,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @param string $privacyPolicyUrl
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorSetsTheValueOfPrivacyPolicyUrlToUsingTheWebui($privacyPolicyUrl) {
+	public function theAdministratorSetsTheValueOfPrivacyPolicyUrlToUsingTheWebui(string $privacyPolicyUrl):void {
 		$this->adminGeneralSettingsPage->setLegalUrl("Privacy Policy", $privacyPolicyUrl);
 	}
 
@@ -130,7 +133,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorSetsTheValueOfUpdateChannelUsingTheWebui($updateChannel) {
+	public function theAdministratorSetsTheValueOfUpdateChannelUsingTheWebui(string $updateChannel):void {
 		$this->adminGeneralSettingsPage->setUpdateChannelValue($updateChannel);
 	}
 
@@ -140,8 +143,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @param string $cronJob
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorSetsTheValueOfCronJobToUsingTheWebui($cronJob) {
+	public function theAdministratorSetsTheValueOfCronJobToUsingTheWebui(string $cronJob):void {
 		$this->adminGeneralSettingsPage->setCronJobValue($cronJob);
 	}
 
@@ -151,8 +155,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @param integer $logLevel
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorSetsTheLogLevelUsingTheWebui($logLevel) {
+	public function theAdministratorSetsTheLogLevelUsingTheWebui(int $logLevel):void {
 		$this->adminGeneralSettingsPage->setLogLevel($logLevel);
 	}
 
@@ -163,7 +168,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsGroupToLockBreakersGroupUsingTheWebui($lockBreakerGroup) {
+	public function theAdministratorAddsGroupToLockBreakersGroupUsingTheWebui(string $lockBreakerGroup):void {
 		$this->adminGeneralSettingsPage-> addGroupLockBreakersGroup(
 			$this->getSession(),
 			$lockBreakerGroup
@@ -173,11 +178,11 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	/**
 	 * @Then group :expectedGroup should be listed in the lock breakers groups on the webUI
 	 *
-	 * @param $expectedGroup
+	 * @param string $expectedGroup
 	 *
 	 * @return void
 	 */
-	public function groupShouldBeListedAsLockBreakersGroupInTheWebui($expectedGroup) {
+	public function groupShouldBeListedAsLockBreakersGroupInTheWebui(string $expectedGroup):void {
 		$actualGroup = $this->adminGeneralSettingsPage-> getLockBreakersGroups();
 		if (!\in_array($expectedGroup, $actualGroup)) {
 			Assert::assertFalse(
@@ -193,7 +198,7 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function followingGroupsShouldBeListedInTheLockBreakersGroupsInTheWebui(TableNode $table) {
+	public function followingGroupsShouldBeListedInTheLockBreakersGroupsInTheWebui(TableNode $table):void {
 		foreach ($table as $row) {
 			$this->groupShouldBeListedAsLockBreakersGroupInTheWebui($row["groups"]);
 		}
@@ -208,8 +213,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -252,8 +258,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @Then the version of the owncloud installation should be displayed on the admin general settings page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theVersionOfOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
+	public function theVersionOfOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage():void {
 		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersion();
 		$expectedVersion = SetupHelper::getSystemConfigValue(
 			'version',
@@ -273,8 +280,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @Then the version string of the owncloud installation should be displayed on the admin general settings page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theVersionStringOfTheOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage() {
+	public function theVersionStringOfTheOwncloudInstallationShouldBeDisplayedOnTheAdminGeneralSettingsPage():void {
 		$actualVersion = $this->adminGeneralSettingsPage->getOwncloudVersionString();
 		$expectedVersion = SetupHelper::runOcc(
 			['-V'],
@@ -296,8 +304,9 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	 * @AfterScenario @webUI
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function restoreScenario() {
+	public function restoreScenario():void {
 		// Restore app config settings
 		AppConfigHelper::modifyAppConfigs(
 			$this->featureContext->getBaseUrl(),

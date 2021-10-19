@@ -23,6 +23,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Mink\Element\NodeElement;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\AdminSharingSettingsPage;
 use PHPUnit\Framework\Assert;
@@ -64,8 +65,9 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @Given the administrator has browsed to the admin sharing settings page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdminBrowsesToTheAdminSharingSettingsPage() {
+	public function theAdminBrowsesToTheAdminSharingSettingsPage():void {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminSharingSettingsPage->open();
 		$this->adminSharingSettingsPage->waitTillPageIsLoaded($this->getSession());
@@ -79,7 +81,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesShareApiUsingTheWebui($action) {
+	public function adminTogglesShareApiUsingTheWebui(string $action):void {
 		$this->adminSharingSettingsPage->toggleShareApi(
 			$this->getSession(),
 			$action
@@ -93,7 +95,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesShareViaLink($action) {
+	public function adminTogglesShareViaLink(string $action):void {
 		$this->adminSharingSettingsPage->toggleShareViaLink(
 			$this->getSession(),
 			$action
@@ -106,7 +108,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	private function assertCheckBoxIsChecked($checkbox) {
+	private function assertCheckBoxIsChecked(?NodeElement $checkbox):void {
 		Assert::assertNotNull($checkbox, "checkbox does not exist");
 		Assert::assertTrue($checkbox->isChecked(), "checkbox is not checked");
 	}
@@ -116,7 +118,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function setDefaultExpirationDateForUserSharesCheckboxShouldBeEnabled() {
+	public function setDefaultExpirationDateForUserSharesCheckboxShouldBeEnabled():void {
 		$checkboxElement = $this->adminSharingSettingsPage->getDefaultExpirationForUserShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
@@ -126,7 +128,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function setDefaultExpirationDateForGroupCheckboxSharesShouldBeEnabled() {
+	public function setDefaultExpirationDateForGroupCheckboxSharesShouldBeEnabled():void {
 		$checkboxElement = $this->adminSharingSettingsPage->getDefaultExpirationForGroupShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
@@ -136,7 +138,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function setDefaultExpirationDateForFederatedCheckboxSharesShouldBeEnabled() {
+	public function setDefaultExpirationDateForFederatedCheckboxSharesShouldBeEnabled():void {
 		$checkboxElement = $this->adminSharingSettingsPage->getDefaultExpirationForFederatedShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
@@ -146,7 +148,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function enforceMaximumExpirationDateForUserSharesCheckboxShouldBeEnabled() {
+	public function enforceMaximumExpirationDateForUserSharesCheckboxShouldBeEnabled():void {
 		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateUserShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
@@ -156,7 +158,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function enforceMaximumExpirationDateForGroupSharesCheckboxShouldBeEnabled() {
+	public function enforceMaximumExpirationDateForGroupSharesCheckboxShouldBeEnabled():void {
 		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateGroupShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
@@ -166,7 +168,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function enforceMaximumExpirationDateForFederatedSharesCheckboxShouldBeEnabled() {
+	public function enforceMaximumExpirationDateForFederatedSharesCheckboxShouldBeEnabled():void {
 		$checkboxElement = $this->adminSharingSettingsPage->getEnforceExpireDateFederatedShareElement();
 		$this->assertCheckBoxIsChecked($checkboxElement);
 	}
@@ -178,7 +180,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function expirationDateForUserSharesShouldBeSetToXDays($days) {
+	public function expirationDateForUserSharesShouldBeSetToXDays(int $days):void {
 		$expirationDays = $this->adminSharingSettingsPage->getUserShareExpirationDays();
 		Assert::assertEquals(
 			$days,
@@ -196,7 +198,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function expirationDateForGroupSharesShouldBeSetToXDays($days) {
+	public function expirationDateForGroupSharesShouldBeSetToXDays(int $days):void {
 		$expirationDays = $this->adminSharingSettingsPage->getGroupShareExpirationDays();
 		Assert::assertEquals(
 			$days,
@@ -214,7 +216,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function expirationDateForFederatedSharesShouldBeSetToXDays($days) {
+	public function expirationDateForFederatedSharesShouldBeSetToXDays(int $days):void {
 		$expirationDays = $this->adminSharingSettingsPage->getFederatedShareExpirationDays();
 		Assert::assertEquals(
 			$days,
@@ -232,7 +234,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesPublicUpload($action) {
+	public function adminTogglesPublicUpload(string $action):void {
 		$this->adminSharingSettingsPage->togglePublicUpload(
 			$this->getSession(),
 			$action
@@ -246,7 +248,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesMailNotificationOnPublicLinkShare($action) {
+	public function adminTogglesMailNotificationOnPublicLinkShare(string $action):void {
 		$this->adminSharingSettingsPage->toggleMailNotification(
 			$this->getSession(),
 			$action
@@ -260,7 +262,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesSocialShareOnPublicLinkShare($action) {
+	public function adminTogglesSocialShareOnPublicLinkShare(string $action):void {
 		$this->adminSharingSettingsPage->toggleSocialShareOnPublicLinkShare(
 			$this->getSession(),
 			$action
@@ -274,7 +276,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesEnforcePasswordProtectionForReadOnlyLinks($action) {
+	public function adminTogglesEnforcePasswordProtectionForReadOnlyLinks(string $action):void {
 		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadOnlyLinks(
 			$this->getSession(),
 			$action
@@ -288,7 +290,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesEnforcePasswordProtectionForReadWriteLinks($action) {
+	public function adminTogglesEnforcePasswordProtectionForReadWriteLinks(string $action):void {
 		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadWriteLinks(
 			$this->getSession(),
 			$action
@@ -302,7 +304,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesEnforcePasswordProtectionForReadWriteDeleteLinks($action) {
+	public function adminTogglesEnforcePasswordProtectionForReadWriteDeleteLinks(string $action):void {
 		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadWriteDeleteLinks(
 			$this->getSession(),
 			$action
@@ -316,7 +318,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesEnforcePasswordProtectionForWriteOnlyLinks($action) {
+	public function adminTogglesEnforcePasswordProtectionForWriteOnlyLinks(string $action):void {
 		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForWriteOnlyLinks(
 			$this->getSession(),
 			$action
@@ -330,7 +332,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesDisableResharing($action) {
+	public function adminTogglesDisableResharing(string $action):void {
 		$this->adminSharingSettingsPage->toggleResharing(
 			$this->getSession(),
 			$action
@@ -344,7 +346,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function adminTogglesSharingWithGroupUsingTheWebui($action) {
+	public function adminTogglesSharingWithGroupUsingTheWebui(string $action):void {
 		$this->adminSharingSettingsPage->toggleGroupSharing(
 			$this->getSession(),
 			$action
@@ -358,7 +360,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdminRestrictsUsersToOnlyShareWithTheirGroupMemberUsingTheWebui($action) {
+	public function theAdminRestrictsUsersToOnlyShareWithTheirGroupMemberUsingTheWebui(string $action):void {
 		$this->adminSharingSettingsPage->toggleRestrictUsersToOnlyShareWithTheirGroupMembers(
 			$this->getSession(),
 			$action
@@ -370,7 +372,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesExcludeGroupsFromSharingUsingTheWebui() {
+	public function theAdministratorEnablesExcludeGroupsFromSharingUsingTheWebui():void {
 		$this->adminSharingSettingsPage->enableExcludeGroupFromSharing(
 			$this->getSession()
 		);
@@ -381,7 +383,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorEnablesDefaultExpirationDateForUserShares() {
+	public function administratorEnablesDefaultExpirationDateForUserShares():void {
 		$this->adminSharingSettingsPage->enableDefaultExpirationDateForUserShares(
 			$this->getSession()
 		);
@@ -392,7 +394,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorEnforcesMaximumExpirationDateForUserShares() {
+	public function administratorEnforcesMaximumExpirationDateForUserShares():void {
 		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForUserShares(
 			$this->getSession()
 		);
@@ -403,7 +405,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorEnforcesMaximumExpirationDateForGroupShares() {
+	public function administratorEnforcesMaximumExpirationDateForGroupShares():void {
 		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForGroupShares(
 			$this->getSession()
 		);
@@ -414,7 +416,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorEnforcesMaximumExpirationDateForFederatedShares() {
+	public function administratorEnforcesMaximumExpirationDateForFederatedShares():void {
 		$this->adminSharingSettingsPage->enforceMaximumExpirationDateForFederatedShares(
 			$this->getSession()
 		);
@@ -427,7 +429,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorUpdatesUserShareExpirationTo($days) {
+	public function administratorUpdatesUserShareExpirationTo(int $days):void {
 		$this->adminSharingSettingsPage->setExpirationDaysForUserShare($days, $this->getSession());
 	}
 
@@ -438,7 +440,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorUpdatesGroupShareExpirationTo($days) {
+	public function administratorUpdatesGroupShareExpirationTo(int $days):void {
 		$this->adminSharingSettingsPage->setExpirationDaysForGroupShare($days, $this->getSession());
 	}
 
@@ -449,7 +451,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function administratorUpdatesFederatedShareExpirationTo($days) {
+	public function administratorUpdatesFederatedShareExpirationTo(int $days):void {
 		$this->adminSharingSettingsPage->setExpirationDaysForFederatedShare($days, $this->getSession());
 	}
 
@@ -458,7 +460,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesDefaultExpirationDateForGroupShares() {
+	public function theAdministratorEnablesDefaultExpirationDateForGroupShares():void {
 		$this->adminSharingSettingsPage->enableDefaultExpirationDateForGroupShares(
 			$this->getSession()
 		);
@@ -469,7 +471,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesDefaultExpirationDateForFederatedShares() {
+	public function theAdministratorEnablesDefaultExpirationDateForFederatedShares():void {
 		$this->adminSharingSettingsPage->enableDefaultExpirationDateForFederatedShares(
 			$this->getSession()
 		);
@@ -480,7 +482,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesRestrictUsersToOnlyShareWithGroupsTheyAreMemberOfUsingTheWebui() {
+	public function theAdministratorEnablesRestrictUsersToOnlyShareWithGroupsTheyAreMemberOfUsingTheWebui():void {
 		$this->adminSharingSettingsPage->restrictUserToOnlyShareWithMembershipGroup(
 			$this->getSession()
 		);
@@ -493,7 +495,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsGroupToTheExcludeGroupFromSharingList($group) {
+	public function theAdministratorAddsGroupToTheExcludeGroupFromSharingList(string $group):void {
 		$this->adminSharingSettingsPage->addGroupToExcludeGroupsFromSharingList(
 			$this->getSession(),
 			$group
@@ -507,7 +509,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorExcludesGroupFromReceivingSharesUsingTheWebui($group) {
+	public function theAdministratorExcludesGroupFromReceivingSharesUsingTheWebui(string $group):void {
 		$this->adminSharingSettingsPage->addGroupToExcludedFromReceivingShares(
 			$this->getSession(),
 			$group
@@ -521,7 +523,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesAddServerAutomatically($action) {
+	public function theAdministratorEnablesAddServerAutomatically(string $action):void {
 		$this->adminSharingSettingsPage->toggleAutoAddServer(
 			$this->getSession(),
 			$action
@@ -536,7 +538,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesDefaultSharePermission($action, $permissionValue) {
+	public function theAdministratorEnablesDefaultSharePermission(string $action, string $permissionValue):void {
 		$this->adminSharingSettingsPage->toggleDefaultSharePermissions(
 			$this->getSession(),
 			$action,
@@ -551,7 +553,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorAddsAsATrustedServerUsingTheWebui($url) {
+	public function theAdministratorAddsAsATrustedServerUsingTheWebui(string $url) {
 		$this->adminSharingSettingsPage->addTrustedServer(
 			$this->getSession(),
 			$this->featureContext->substituteInLineCodes($url)
@@ -565,7 +567,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDeletesAsATrustedServerUsingTheWebui($url) {
+	public function theAdministratorDeletesAsATrustedServerUsingTheWebui(string $url):void {
 		$this->adminSharingSettingsPage->deleteTrustedServer(
 			$this->getSession(),
 			$this->featureContext->substituteInLineCodes($url)
@@ -579,7 +581,7 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function aErrorMessageForTrustedServerShouldContain($text) {
+	public function aErrorMessageForTrustedServerShouldContain(string $text):void {
 		$msg = $this->adminSharingSettingsPage->getTrustedServerErrorMsg();
 		Assert::assertStringContainsString(
 			$text,
@@ -598,8 +600,9 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
