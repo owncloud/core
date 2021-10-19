@@ -22,12 +22,30 @@ class GoogleCloudRunV2ExecutionReference extends \Google\Model
   /**
    * @var string
    */
+  public $completionTime;
+  /**
+   * @var string
+   */
   public $createTime;
   /**
    * @var string
    */
   public $name;
 
+  /**
+   * @param string
+   */
+  public function setCompletionTime($completionTime)
+  {
+    $this->completionTime = $completionTime;
+  }
+  /**
+   * @return string
+   */
+  public function getCompletionTime()
+  {
+    return $this->completionTime;
+  }
   /**
    * @param string
    */

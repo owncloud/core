@@ -30,6 +30,8 @@ class AuthConfig extends \Google\Collection
   protected $oauth2ClientCredentialsDataType = '';
   protected $oauth2JwtBearerType = Oauth2JwtBearer::class;
   protected $oauth2JwtBearerDataType = '';
+  protected $sshPublicKeyType = SshPublicKey::class;
+  protected $sshPublicKeyDataType = '';
   protected $userPasswordType = UserPassword::class;
   protected $userPasswordDataType = '';
 
@@ -88,6 +90,20 @@ class AuthConfig extends \Google\Collection
   public function getOauth2JwtBearer()
   {
     return $this->oauth2JwtBearer;
+  }
+  /**
+   * @param SshPublicKey
+   */
+  public function setSshPublicKey(SshPublicKey $sshPublicKey)
+  {
+    $this->sshPublicKey = $sshPublicKey;
+  }
+  /**
+   * @return SshPublicKey
+   */
+  public function getSshPublicKey()
+  {
+    return $this->sshPublicKey;
   }
   /**
    * @param UserPassword

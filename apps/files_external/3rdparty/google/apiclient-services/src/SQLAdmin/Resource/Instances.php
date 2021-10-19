@@ -211,8 +211,9 @@ class Instances extends \Google\Service\Resource
    * Multiple filter queries are space-separated. For example. 'state:RUNNABLE
    * instanceType:CLOUD_SQL_INSTANCE'. By default, each expression is an AND
    * expression. However, you can include AND and OR expressions explicitly.
-   * @opt_param string maxResults The maximum number of results to return per
-   * response.
+   * @opt_param string maxResults The maximum number of instances to return. The
+   * service may return fewer than this value. The maximum value is 1000; values
+   * above 1000 are coerced to 1000.
    * @opt_param string pageToken A previously-returned page token representing
    * part of the larger set of results to view.
    * @return InstancesListResponse

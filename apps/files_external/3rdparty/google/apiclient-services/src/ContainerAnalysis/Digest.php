@@ -26,7 +26,7 @@ class Digest extends \Google\Model
   /**
    * @var string
    */
-  public $digestValue;
+  public $digestBytes;
 
   /**
    * @param string
@@ -45,16 +45,16 @@ class Digest extends \Google\Model
   /**
    * @param string
    */
-  public function setDigestValue($digestValue)
+  public function setDigestBytes($digestBytes)
   {
-    $this->digestValue = $digestValue;
+    $this->digestBytes = $digestBytes;
   }
   /**
    * @return string
    */
-  public function getDigestValue()
+  public function getDigestBytes()
   {
-    return $this->digestValue;
+    return $this->digestBytes;
   }
 }
 

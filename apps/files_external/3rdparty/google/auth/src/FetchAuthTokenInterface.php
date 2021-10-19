@@ -26,7 +26,7 @@ interface FetchAuthTokenInterface
      * Fetches the auth tokens based on the current state.
      *
      * @param callable $httpHandler callback which delivers psr7 request
-     * @return array a hash of auth tokens
+     * @return array<mixed> a hash of auth tokens
      */
     public function fetchAuthToken(callable $httpHandler = null);
 
@@ -43,11 +43,11 @@ interface FetchAuthTokenInterface
      * Returns an associative array with the token and
      * expiration time.
      *
-     * @return null|array {
-     *      The last received access token.
+     * @return null|array<mixed> {
+     *     The last received access token.
      *
-     * @var string $access_token The access token string.
-     * @var int $expires_at The time the token expires as a UNIX timestamp.
+     *     @type string $access_token The access token string.
+     *     @type int $expires_at The time the token expires as a UNIX timestamp.
      * }
      */
     public function getLastReceivedToken();

@@ -2,8 +2,10 @@
 declare(strict_types=1);
 namespace ParagonIE\ConstantTime;
 
+use TypeError;
+
 /**
- *  Copyright (c) 2016 - 2018 Paragon Initiative Enterprises.
+ *  Copyright (c) 2016 - 2022 Paragon Initiative Enterprises.
  *  Copyright (c) 2014 Steve "Sc00bz" Thomas (steve at tobtu dot com)
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,7 +43,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base64Encode(string $str): string
     {
@@ -55,7 +58,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base64Decode(string $str): string
     {
@@ -69,7 +73,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base64UrlSafeEncode(string $str): string
     {
@@ -83,7 +88,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base64UrlSafeDecode(string $str): string
     {
@@ -97,7 +103,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base32Encode(string $str): string
     {
@@ -111,7 +118,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base32Decode(string $str): string
     {
@@ -125,7 +133,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base32HexEncode(string $str): string
     {
@@ -139,7 +148,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base32HexDecode(string $str): string
     {
@@ -153,7 +163,8 @@ abstract class RFC4648
      *
      * @param string $str
      * @return string
-     * @throws \TypeError
+     *
+     * @throws TypeError
      */
     public static function base16Encode(string $str): string
     {

@@ -353,6 +353,16 @@ class GoogleAnalyticsAdmin extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'getAttributionSettings' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'getDataRetentionSettings' => [
               'path' => 'v1alpha/{+name}',
               'httpMethod' => 'GET',
@@ -395,6 +405,20 @@ class GoogleAnalyticsAdmin extends \Google\Service
                 ],
               ],
             ],'patch' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'updateAttributionSettings' => [
               'path' => 'v1alpha/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [

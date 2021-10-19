@@ -47,5 +47,10 @@
     "psr-4": {
       "ParagonIE\\ConstantTime\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ParagonIE\\ConstantTime\\Tests\\": "tests/"
+    }
   }
 }

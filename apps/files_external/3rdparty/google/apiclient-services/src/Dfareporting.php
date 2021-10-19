@@ -20,7 +20,7 @@ namespace Google\Service;
 use Google\Client;
 
 /**
- * Service definition for Dfareporting (v3.5).
+ * Service definition for Dfareporting (v4).
  *
  * <p>
  * Build applications to efficiently manage large or complex trafficking,
@@ -52,8 +52,12 @@ class Dfareporting extends \Google\Service
   public $accounts;
   public $ads;
   public $advertiserGroups;
+  public $advertiserInvoices;
   public $advertiserLandingPages;
   public $advertisers;
+  public $billingAssignments;
+  public $billingProfiles;
+  public $billingRates;
   public $browsers;
   public $campaignCreativeAssociations;
   public $campaigns;
@@ -121,7 +125,7 @@ class Dfareporting extends \Google\Service
     $this->rootUrl = $rootUrl ?: 'https://dfareporting.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v3.5';
+    $this->version = 'v4';
     $this->serviceName = 'dfareporting';
 
     $this->accountActiveAdSummaries = new Dfareporting\Resource\AccountActiveAdSummaries(
@@ -131,7 +135,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountActiveAdSummaries/{summaryAccountId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountActiveAdSummaries/{summaryAccountId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -156,7 +160,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountPermissionGroups/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountPermissionGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -171,7 +175,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountPermissionGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountPermissionGroups',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -191,7 +195,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountPermissions/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountPermissions/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -206,7 +210,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountPermissions',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountPermissions',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -226,7 +230,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountUserProfiles/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -241,7 +245,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountUserProfiles',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -251,7 +255,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountUserProfiles',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -298,7 +302,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountUserProfiles',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -313,7 +317,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accountUserProfiles',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accountUserProfiles',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -333,7 +337,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accounts/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accounts/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -348,7 +352,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accounts',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accounts',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -387,7 +391,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accounts',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accounts',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -402,7 +406,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/accounts',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/accounts',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -422,7 +426,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/ads/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -437,7 +441,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/ads',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -447,7 +451,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/ads',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -559,7 +563,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/ads',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -574,7 +578,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/ads',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/ads',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -594,7 +598,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserGroups/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -609,7 +613,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -624,7 +628,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserGroups',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -634,7 +638,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserGroups',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -669,7 +673,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserGroups',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -684,13 +688,50 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserGroups',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->advertiserInvoices = new Dfareporting\Resource\AdvertiserInvoices(
+        $this,
+        $this->serviceName,
+        'advertiserInvoices',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertisers/{advertiserId}/invoices',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'profileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'advertiserId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'issueMonth' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'maxResults' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],
@@ -704,7 +745,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserLandingPages/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -719,7 +760,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserLandingPages',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -729,7 +770,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserLandingPages',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -782,7 +823,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserLandingPages',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -797,7 +838,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertiserLandingPages',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertiserLandingPages',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -817,7 +858,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertisers/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -832,7 +873,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertisers',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -842,7 +883,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertisers',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -903,7 +944,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertisers',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -918,10 +959,163 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/advertisers',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/advertisers',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->billingAssignments = new Dfareporting\Resource\BillingAssignments(
+        $this,
+        $this->serviceName,
+        'billingAssignments',
+        [
+          'methods' => [
+            'insert' => [
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/billingProfiles/{billingProfileId}/billingAssignments',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'profileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'billingProfileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/billingProfiles/{billingProfileId}/billingAssignments',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'profileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'billingProfileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->billingProfiles = new Dfareporting\Resource\BillingProfiles(
+        $this,
+        $this->serviceName,
+        'billingProfiles',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/billingProfiles/{id}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'profileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'id' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/billingProfiles',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'profileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'currency_code' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'ids' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ],
+                'maxResults' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'name' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'onlySuggestion' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'sortField' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'sortOrder' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'status' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ],
+                'subaccountIds' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ],
+              ],
+            ],'update' => [
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/billingProfiles',
+              'httpMethod' => 'PUT',
+              'parameters' => [
+                'profileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->billingRates = new Dfareporting\Resource\BillingRates(
+        $this,
+        $this->serviceName,
+        'billingRates',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/billingProfiles/{billingProfileId}/billingRates',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'profileId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'billingProfileId' => [
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
@@ -938,7 +1132,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/browsers',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/browsers',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -958,7 +1152,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns/{campaignId}/campaignCreativeAssociations',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/campaigns/{campaignId}/campaignCreativeAssociations',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -973,7 +1167,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns/{campaignId}/campaignCreativeAssociations',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/campaigns/{campaignId}/campaignCreativeAssociations',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1010,7 +1204,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/campaigns/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1025,7 +1219,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/campaigns',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1035,7 +1229,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/campaigns',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1101,7 +1295,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/campaigns',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -1116,7 +1310,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/campaigns',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/campaigns',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -1136,7 +1330,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/changeLogs/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/changeLogs/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1151,7 +1345,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/changeLogs',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/changeLogs',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1214,7 +1408,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/cities',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/cities',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1253,7 +1447,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/connectionTypes/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/connectionTypes/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1268,7 +1462,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/connectionTypes',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/connectionTypes',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1288,7 +1482,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/contentCategories/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -1303,7 +1497,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/contentCategories/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1318,7 +1512,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/contentCategories',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1328,7 +1522,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/contentCategories',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1363,7 +1557,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/contentCategories',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -1378,7 +1572,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/contentCategories',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/contentCategories',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -1398,7 +1592,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'batchinsert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/conversions/batchinsert',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/conversions/batchinsert',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1408,7 +1602,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'batchupdate' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/conversions/batchupdate',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/conversions/batchupdate',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1428,7 +1622,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/countries/{dartId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/countries/{dartId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1443,7 +1637,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/countries',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/countries',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1463,7 +1657,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeAssets/{advertiserId}/creativeAssets',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeAssets/{advertiserId}/creativeAssets',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1488,7 +1682,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -1508,7 +1702,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1528,7 +1722,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1543,7 +1737,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1583,7 +1777,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -1603,7 +1797,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields/{creativeFieldId}/creativeFieldValues',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -1628,7 +1822,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -1643,7 +1837,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1658,7 +1852,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1668,7 +1862,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1708,7 +1902,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -1723,7 +1917,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeFields',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeFields',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -1743,7 +1937,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1758,7 +1952,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeGroups',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1768,7 +1962,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeGroups',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1812,7 +2006,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeGroups',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -1827,7 +2021,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creativeGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creativeGroups',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -1847,7 +2041,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creatives/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1862,7 +2056,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creatives',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -1872,7 +2066,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creatives',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -1952,7 +2146,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creatives',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -1967,7 +2161,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/creatives',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/creatives',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -1987,7 +2181,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'query' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/dimensionvalues/query',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/dimensionvalues/query',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -2015,7 +2209,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/directorySites/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/directorySites/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2030,7 +2224,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/directorySites',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/directorySites',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -2040,7 +2234,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/directorySites',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/directorySites',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2105,7 +2299,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/dynamicTargetingKeys/{objectId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/dynamicTargetingKeys/{objectId}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -2130,7 +2324,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/dynamicTargetingKeys',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/dynamicTargetingKeys',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -2140,7 +2334,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/dynamicTargetingKeys',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/dynamicTargetingKeys',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2177,7 +2371,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/eventTags/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -2192,7 +2386,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/eventTags/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2207,7 +2401,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/eventTags',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -2217,7 +2411,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/eventTags',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2269,7 +2463,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/eventTags',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -2284,7 +2478,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/eventTags',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/eventTags',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -2304,7 +2498,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/reports/{reportId}/files/{fileId}',
+              'path' => 'dfareporting/v4/reports/{reportId}/files/{fileId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'reportId' => [
@@ -2319,7 +2513,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/files',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/files',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2359,7 +2553,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivities/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -2374,7 +2568,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'generatetag' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities/generatetag',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivities/generatetag',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -2388,7 +2582,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivities/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2403,7 +2597,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivities',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -2413,7 +2607,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivities',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2477,7 +2671,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivities',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -2492,7 +2686,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivities',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivities',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -2512,7 +2706,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivityGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2527,7 +2721,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivityGroups',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -2537,7 +2731,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivityGroups',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2584,7 +2778,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivityGroups',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -2599,7 +2793,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightActivityGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightActivityGroups',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -2619,7 +2813,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightConfigurations/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightConfigurations/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2634,7 +2828,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightConfigurations',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightConfigurations',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2649,7 +2843,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightConfigurations',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightConfigurations',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -2664,7 +2858,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/floodlightConfigurations',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/floodlightConfigurations',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -2684,7 +2878,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/inventoryItems/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/projects/{projectId}/inventoryItems/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2704,7 +2898,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/inventoryItems',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/projects/{projectId}/inventoryItems',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2768,7 +2962,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/languages',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/languages',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2788,7 +2982,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/metros',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/metros',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2808,7 +3002,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/mobileApps/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/mobileApps/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2823,7 +3017,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/mobileApps',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/mobileApps',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2865,7 +3059,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/mobileCarriers/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/mobileCarriers/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2880,7 +3074,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/mobileCarriers',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/mobileCarriers',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2900,7 +3094,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/operatingSystemVersions/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/operatingSystemVersions/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2915,7 +3109,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/operatingSystemVersions',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/operatingSystemVersions',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2935,7 +3129,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/operatingSystems/{dartId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/operatingSystems/{dartId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2950,7 +3144,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/operatingSystems',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/operatingSystems',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2970,7 +3164,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/orderDocuments/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/projects/{projectId}/orderDocuments/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -2990,7 +3184,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/orderDocuments',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/projects/{projectId}/orderDocuments',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3054,7 +3248,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/orders/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/projects/{projectId}/orders/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3074,7 +3268,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{projectId}/orders',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/projects/{projectId}/orders',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3129,7 +3323,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3144,7 +3338,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementGroups',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -3154,7 +3348,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementGroups',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3162,14 +3356,15 @@ class Dfareporting extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'advertiserIds' => [
+                'activeStatus' => [
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ],
-                'archived' => [
+                'advertiserIds' => [
                   'location' => 'query',
-                  'type' => 'boolean',
+                  'type' => 'string',
+                  'repeated' => true,
                 ],
                 'campaignIds' => [
                   'location' => 'query',
@@ -3248,7 +3443,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementGroups',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -3263,7 +3458,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementGroups',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -3283,7 +3478,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementStrategies/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -3298,7 +3493,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementStrategies/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3313,7 +3508,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementStrategies',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -3323,7 +3518,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementStrategies',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3358,7 +3553,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementStrategies',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -3373,7 +3568,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placementStrategies',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placementStrategies',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -3393,7 +3588,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'generatetags' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements/generatetags',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placements/generatetags',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -3417,7 +3612,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placements/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3432,7 +3627,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placements',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -3442,7 +3637,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placements',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3450,14 +3645,15 @@ class Dfareporting extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'advertiserIds' => [
+                'activeStatus' => [
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
                 ],
-                'archived' => [
+                'advertiserIds' => [
                   'location' => 'query',
-                  'type' => 'boolean',
+                  'type' => 'string',
+                  'repeated' => true,
                 ],
                 'campaignIds' => [
                   'location' => 'query',
@@ -3551,7 +3747,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placements',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -3566,7 +3762,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/placements',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/placements',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -3586,7 +3782,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/platformTypes/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/platformTypes/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3601,7 +3797,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/platformTypes',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/platformTypes',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3621,7 +3817,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/postalCodes/{code}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/postalCodes/{code}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3636,7 +3832,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/postalCodes',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/postalCodes',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3656,7 +3852,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/projects/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3671,7 +3867,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/projects',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/projects',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3721,7 +3917,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/regions',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/regions',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3741,7 +3937,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingListShares/{remarketingListId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/remarketingListShares/{remarketingListId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3756,7 +3952,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingListShares',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/remarketingListShares',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -3771,7 +3967,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingListShares',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/remarketingListShares',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -3791,7 +3987,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/remarketingLists/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3806,7 +4002,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/remarketingLists',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -3816,7 +4012,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/remarketingLists',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3859,7 +4055,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/remarketingLists',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -3874,7 +4070,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/remarketingLists',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/remarketingLists',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -3894,7 +4090,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports/{reportId}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -3909,7 +4105,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports/{reportId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3924,7 +4120,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -3934,7 +4130,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -3964,7 +4160,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports/{reportId}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -3979,7 +4175,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'run' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}/run',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports/{reportId}/run',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -3998,7 +4194,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports/{reportId}',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -4023,7 +4219,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'query' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/compatiblefields/query',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports/compatiblefields/query',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -4043,7 +4239,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}/files/{fileId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports/{reportId}/files/{fileId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4063,7 +4259,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/reports/{reportId}/files',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/reports/{reportId}/files',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4104,7 +4300,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/sites/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4119,7 +4315,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/sites',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -4129,7 +4325,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/sites',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4202,7 +4398,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/sites',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -4217,7 +4413,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sites',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/sites',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -4237,7 +4433,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sizes/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/sizes/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4252,7 +4448,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sizes',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/sizes',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -4262,7 +4458,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/sizes',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/sizes',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4299,7 +4495,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/subaccounts/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4314,7 +4510,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/subaccounts',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -4324,7 +4520,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/subaccounts',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4359,7 +4555,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/subaccounts',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -4374,7 +4570,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/subaccounts',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/subaccounts',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -4394,7 +4590,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetableRemarketingLists/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/targetableRemarketingLists/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4409,7 +4605,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetableRemarketingLists',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/targetableRemarketingLists',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4458,7 +4654,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/targetingTemplates/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4473,7 +4669,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/targetingTemplates',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -4483,7 +4679,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/targetingTemplates',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4522,7 +4718,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/targetingTemplates',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -4537,7 +4733,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/targetingTemplates',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/targetingTemplates',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -4557,7 +4753,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4567,7 +4763,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles',
+              'path' => 'dfareporting/v4/userprofiles',
               'httpMethod' => 'GET',
               'parameters' => [],
             ],
@@ -4581,7 +4777,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRolePermissionGroups/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRolePermissionGroups/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4596,7 +4792,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRolePermissionGroups',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRolePermissionGroups',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4616,7 +4812,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRolePermissions/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRolePermissions/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4631,7 +4827,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRolePermissions',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRolePermissions',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4656,7 +4852,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'delete' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRoles/{id}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'profileId' => [
@@ -4671,7 +4867,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRoles/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4686,7 +4882,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'insert' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRoles',
               'httpMethod' => 'POST',
               'parameters' => [
                 'profileId' => [
@@ -4696,7 +4892,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRoles',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4739,7 +4935,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRoles',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'profileId' => [
@@ -4754,7 +4950,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'update' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/userRoles',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/userRoles',
               'httpMethod' => 'PUT',
               'parameters' => [
                 'profileId' => [
@@ -4774,7 +4970,7 @@ class Dfareporting extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/videoFormats/{id}',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/videoFormats/{id}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [
@@ -4789,7 +4985,7 @@ class Dfareporting extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'dfareporting/v3.5/userprofiles/{profileId}/videoFormats',
+              'path' => 'dfareporting/v4/userprofiles/{profileId}/videoFormats',
               'httpMethod' => 'GET',
               'parameters' => [
                 'profileId' => [

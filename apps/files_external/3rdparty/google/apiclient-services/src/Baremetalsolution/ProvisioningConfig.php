@@ -58,6 +58,10 @@ class ProvisioningConfig extends \Google\Collection
   public $updateTime;
   protected $volumesType = VolumeConfig::class;
   protected $volumesDataType = 'array';
+  /**
+   * @var bool
+   */
+  public $vpcScEnabled;
 
   /**
    * @param string
@@ -212,6 +216,20 @@ class ProvisioningConfig extends \Google\Collection
   public function getVolumes()
   {
     return $this->volumes;
+  }
+  /**
+   * @param bool
+   */
+  public function setVpcScEnabled($vpcScEnabled)
+  {
+    $this->vpcScEnabled = $vpcScEnabled;
+  }
+  /**
+   * @return bool
+   */
+  public function getVpcScEnabled()
+  {
+    return $this->vpcScEnabled;
   }
 }
 

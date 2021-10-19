@@ -42,7 +42,15 @@ class Volume extends \Google\Model
   /**
    * @var string
    */
+  public $maxSizeGib;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
+  public $originallyRequestedSizeGib;
   /**
    * @var string
    */
@@ -151,6 +159,20 @@ class Volume extends \Google\Model
   /**
    * @param string
    */
+  public function setMaxSizeGib($maxSizeGib)
+  {
+    $this->maxSizeGib = $maxSizeGib;
+  }
+  /**
+   * @return string
+   */
+  public function getMaxSizeGib()
+  {
+    return $this->maxSizeGib;
+  }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
@@ -161,6 +183,20 @@ class Volume extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setOriginallyRequestedSizeGib($originallyRequestedSizeGib)
+  {
+    $this->originallyRequestedSizeGib = $originallyRequestedSizeGib;
+  }
+  /**
+   * @return string
+   */
+  public function getOriginallyRequestedSizeGib()
+  {
+    return $this->originallyRequestedSizeGib;
   }
   /**
    * @param string

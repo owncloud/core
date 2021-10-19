@@ -37,6 +37,10 @@ class NfsShare extends \Google\Collection
   /**
    * @var string
    */
+  public $requestedSizeGib;
+  /**
+   * @var string
+   */
   public $state;
   /**
    * @var string
@@ -98,6 +102,20 @@ class NfsShare extends \Google\Collection
   public function getNfsShareId()
   {
     return $this->nfsShareId;
+  }
+  /**
+   * @param string
+   */
+  public function setRequestedSizeGib($requestedSizeGib)
+  {
+    $this->requestedSizeGib = $requestedSizeGib;
+  }
+  /**
+   * @return string
+   */
+  public function getRequestedSizeGib()
+  {
+    return $this->requestedSizeGib;
   }
   /**
    * @param string

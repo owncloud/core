@@ -28,6 +28,8 @@ class Bucket extends \Google\Collection
   protected $billingDataType = '';
   protected $corsType = BucketCors::class;
   protected $corsDataType = 'array';
+  protected $customPlacementConfigType = BucketCustomPlacementConfig::class;
+  protected $customPlacementConfigDataType = '';
   /**
    * @var bool
    */
@@ -166,6 +168,20 @@ class Bucket extends \Google\Collection
   public function getCors()
   {
     return $this->cors;
+  }
+  /**
+   * @param BucketCustomPlacementConfig
+   */
+  public function setCustomPlacementConfig(BucketCustomPlacementConfig $customPlacementConfig)
+  {
+    $this->customPlacementConfig = $customPlacementConfig;
+  }
+  /**
+   * @return BucketCustomPlacementConfig
+   */
+  public function getCustomPlacementConfig()
+  {
+    return $this->customPlacementConfig;
   }
   /**
    * @param bool

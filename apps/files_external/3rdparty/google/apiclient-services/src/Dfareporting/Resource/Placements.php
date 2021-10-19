@@ -85,10 +85,10 @@ class Placements extends \Google\Service\Resource
    * @param string $profileId User profile ID associated with this request.
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string activeStatus Select only placements with these active
+   * statuses.
    * @opt_param string advertiserIds Select only placements that belong to these
    * advertisers.
-   * @opt_param bool archived Select only archived placements. Don't set this
-   * field to select both archived and non-archived placements.
    * @opt_param string campaignIds Select only placements that belong to these
    * campaigns.
    * @opt_param string compatibilities Select only placements that are associated

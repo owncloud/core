@@ -25,6 +25,10 @@ class Placement extends \Google\Collection
    */
   public $accountId;
   /**
+   * @var string
+   */
+  public $activeStatus;
+  /**
    * @var bool
    */
   public $adBlockingOptOut;
@@ -36,10 +40,6 @@ class Placement extends \Google\Collection
   public $advertiserId;
   protected $advertiserIdDimensionValueType = DimensionValue::class;
   protected $advertiserIdDimensionValueDataType = '';
-  /**
-   * @var bool
-   */
-  public $archived;
   /**
    * @var string
    */
@@ -176,6 +176,20 @@ class Placement extends \Google\Collection
     return $this->accountId;
   }
   /**
+   * @param string
+   */
+  public function setActiveStatus($activeStatus)
+  {
+    $this->activeStatus = $activeStatus;
+  }
+  /**
+   * @return string
+   */
+  public function getActiveStatus()
+  {
+    return $this->activeStatus;
+  }
+  /**
    * @param bool
    */
   public function setAdBlockingOptOut($adBlockingOptOut)
@@ -230,20 +244,6 @@ class Placement extends \Google\Collection
   public function getAdvertiserIdDimensionValue()
   {
     return $this->advertiserIdDimensionValue;
-  }
-  /**
-   * @param bool
-   */
-  public function setArchived($archived)
-  {
-    $this->archived = $archived;
-  }
-  /**
-   * @return bool
-   */
-  public function getArchived()
-  {
-    return $this->archived;
   }
   /**
    * @param string

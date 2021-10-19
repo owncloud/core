@@ -22,11 +22,7 @@ class EventPublishConfig extends \Google\Model
   /**
    * @var bool
    */
-  public $eventPublishEnabled;
-  /**
-   * @var string
-   */
-  public $project;
+  public $enabled;
   /**
    * @var string
    */
@@ -35,30 +31,16 @@ class EventPublishConfig extends \Google\Model
   /**
    * @param bool
    */
-  public function setEventPublishEnabled($eventPublishEnabled)
+  public function setEnabled($enabled)
   {
-    $this->eventPublishEnabled = $eventPublishEnabled;
+    $this->enabled = $enabled;
   }
   /**
    * @return bool
    */
-  public function getEventPublishEnabled()
+  public function getEnabled()
   {
-    return $this->eventPublishEnabled;
-  }
-  /**
-   * @param string
-   */
-  public function setProject($project)
-  {
-    $this->project = $project;
-  }
-  /**
-   * @return string
-   */
-  public function getProject()
-  {
-    return $this->project;
+    return $this->enabled;
   }
   /**
    * @param string

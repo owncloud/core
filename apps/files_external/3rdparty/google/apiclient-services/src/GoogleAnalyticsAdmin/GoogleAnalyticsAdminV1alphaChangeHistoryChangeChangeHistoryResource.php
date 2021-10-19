@@ -21,6 +21,8 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
 {
   protected $accountType = GoogleAnalyticsAdminV1alphaAccount::class;
   protected $accountDataType = '';
+  protected $attributionSettingsType = GoogleAnalyticsAdminV1alphaAttributionSettings::class;
+  protected $attributionSettingsDataType = '';
   protected $conversionEventType = GoogleAnalyticsAdminV1alphaConversionEvent::class;
   protected $conversionEventDataType = '';
   protected $customDimensionType = GoogleAnalyticsAdminV1alphaCustomDimension::class;
@@ -59,6 +61,20 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
   public function getAccount()
   {
     return $this->account;
+  }
+  /**
+   * @param GoogleAnalyticsAdminV1alphaAttributionSettings
+   */
+  public function setAttributionSettings(GoogleAnalyticsAdminV1alphaAttributionSettings $attributionSettings)
+  {
+    $this->attributionSettings = $attributionSettings;
+  }
+  /**
+   * @return GoogleAnalyticsAdminV1alphaAttributionSettings
+   */
+  public function getAttributionSettings()
+  {
+    return $this->attributionSettings;
   }
   /**
    * @param GoogleAnalyticsAdminV1alphaConversionEvent

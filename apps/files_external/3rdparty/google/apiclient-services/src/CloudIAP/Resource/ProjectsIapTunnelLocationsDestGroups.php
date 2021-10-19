@@ -42,7 +42,7 @@ class ProjectsIapTunnelLocationsDestGroups extends \Google\Service\Resource
    *
    * @opt_param string tunnelDestGroupId Required. The ID to use for the
    * TunnelDestGroup, which becomes the final component of the resource name. This
-   * value must be 4-63 characters, and valid characters are `a-z-`.
+   * value must be 4-63 characters, and valid characters are `[a-z]-`.
    * @return TunnelDestGroup
    */
   public function create($parent, TunnelDestGroup $postBody, $optParams = [])
@@ -112,7 +112,8 @@ class ProjectsIapTunnelLocationsDestGroups extends \Google\Service\Resource
    * Updates a TunnelDestGroup. (destGroups.patch)
    *
    * @param string $name Required. Immutable. Identifier for the TunnelDestGroup.
-   * Must be unique within the project.
+   * Must be unique within the project and contain only lower case letters (a-z)
+   * and dashes (-).
    * @param TunnelDestGroup $postBody
    * @param array $optParams Optional parameters.
    *

@@ -35,6 +35,9 @@ class CustomersTelemetryDevices extends \Google\Service\Resource
    *
    * @param string $name Required. Name of the `TelemetryDevice` to return.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string readMask Required. Read mask to specify which fields to
+   * return.
    * @return GoogleChromeManagementV1TelemetryDevice
    */
   public function get($name, $optParams = [])

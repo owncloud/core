@@ -31,15 +31,15 @@ use Google\Service\Apigee\GoogleCloudApigeeV1ListKeyValueEntriesResponse;
 class OrganizationsEnvironmentsKeyvaluemapsEntries extends \Google\Service\Resource
 {
   /**
-   * Creates key value entries in a org, env or apis scoped key value map.
-   * (entries.create)
+   * Creates key value entries in a key value map scoped to an organization,
+   * environment, or API proxy. (entries.create)
    *
    * @param string $parent Required. Scope as indicated by the URI in which to
-   * create the key value map entry. Use one of the following formats in your
-   * request:
-   * `organizations/{organization}/apis/{api}/keyvaluemaps/{keyvaluemap}`. `organi
-   * zations/{organization}/environments/{environment}/keyvaluemaps/{keyvaluemap}`
-   * `organizations/{organization}/keyvaluemaps/{keyvaluemap}`.
+   * create the key value map entry. Use **one** of the following structures in
+   * your request: *
+   * `organizations/{organization}/apis/{api}/keyvaluemaps/{keyvaluemap}`. * `orga
+   * nizations/{organization}/environments/{environment}/keyvaluemaps/{keyvaluemap
+   * }` * `organizations/{organization}/keyvaluemaps/{keyvaluemap}`.
    * @param GoogleCloudApigeeV1KeyValueEntry $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1KeyValueEntry
@@ -51,14 +51,16 @@ class OrganizationsEnvironmentsKeyvaluemapsEntries extends \Google\Service\Resou
     return $this->call('create', [$params], GoogleCloudApigeeV1KeyValueEntry::class);
   }
   /**
-   * Deletes a key value entry from an org, environment or apis scoped key value
-   * map. (entries.delete)
+   * Deletes a key value entry from a key value map scoped to an organization,
+   * environment, or API proxy. **Note:** After you delete the key value entry,
+   * the policy consuming the entry will continue to function with its cached
+   * values for a few minutes. This is expected behavior. (entries.delete)
    *
    * @param string $name Required. Scope as indicated by the URI in which to
-   * delete the key value map entry. Use one of the following formats in your
-   * request: `organizations/{organization}/apis/{api}/keyvaluemaps/{keyvaluemap}/
-   * entries/{entry}`. `organizations/{organization}/environments/{environment}/ke
-   * yvaluemaps/{keyvaluemap}/entries/{entry}`
+   * delete the key value map entry. Use **one** of the following structures in
+   * your request: * `organizations/{organization}/apis/{api}/keyvaluemaps/{keyval
+   * uemap}/entries/{entry}`. * `organizations/{organization}/environments/{enviro
+   * nment}/keyvaluemaps/{keyvaluemap}/entries/{entry}` *
    * `organizations/{organization}/keyvaluemaps/{keyvaluemap}/entries/{entry}`.
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1KeyValueEntry
@@ -74,10 +76,10 @@ class OrganizationsEnvironmentsKeyvaluemapsEntries extends \Google\Service\Resou
    * (entries.get)
    *
    * @param string $name Required. Scope as indicated by the URI in which to fetch
-   * the key value map entry/value. Use one of the following formats in your
-   * request: `organizations/{organization}/apis/{api}/keyvaluemaps/{keyvaluemap}/
-   * entries/{entry}`. `organizations/{organization}/environments/{environment}/ke
-   * yvaluemaps/{keyvaluemap}/entries/{entry}`
+   * the key value map entry/value. Use **one** of the following structures in
+   * your request: * `organizations/{organization}/apis/{api}/keyvaluemaps/{keyval
+   * uemap}/entries/{entry}`. * `organizations/{organization}/environments/{enviro
+   * nment}/keyvaluemaps/{keyvaluemap}/entries/{entry}` *
    * `organizations/{organization}/keyvaluemaps/{keyvaluemap}/entries/{entry}`.
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1KeyValueEntry
@@ -94,16 +96,17 @@ class OrganizationsEnvironmentsKeyvaluemapsEntries extends \Google\Service\Resou
    * (entries.listOrganizationsEnvironmentsKeyvaluemapsEntries)
    *
    * @param string $parent Required. Scope as indicated by the URI in which to
-   * list key value maps. Use one of the following formats in your request:
-   * `organizations/{organization}/apis/{api}/keyvaluemaps/{keyvaluemap}`. `organi
-   * zations/{organization}/environments/{environment}/keyvaluemaps/{keyvaluemap}`
-   * `organizations/{organization}/keyvaluemaps/{keyvaluemap}`.
+   * list key value maps. Use **one** of the following structures in your request:
+   * * `organizations/{organization}/apis/{api}/keyvaluemaps/{keyvaluemap}`. * `or
+   * ganizations/{organization}/environments/{environment}/keyvaluemaps/{keyvaluem
+   * ap}` * `organizations/{organization}/keyvaluemaps/{keyvaluemap}`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. Maximum number of key value entries to
    * return. If unspecified, at most 100 entries will be returned.
-   * @opt_param string pageToken Optional. Page token, a key value entry returned
-   * from a previous call that can use to retrieve the next page.
+   * @opt_param string pageToken Optional. Page token. If provides, must be a
+   * valid key value entry returned from a previous call that can be used to
+   * retrieve the next page.
    * @return GoogleCloudApigeeV1ListKeyValueEntriesResponse
    */
   public function listOrganizationsEnvironmentsKeyvaluemapsEntries($parent, $optParams = [])

@@ -43,6 +43,12 @@ class NonComplianceDetail extends \Google\Model
    * @var string
    */
   public $settingName;
+  protected $specificNonComplianceContextType = SpecificNonComplianceContext::class;
+  protected $specificNonComplianceContextDataType = '';
+  /**
+   * @var string
+   */
+  public $specificNonComplianceReason;
 
   /**
    * @param array
@@ -127,6 +133,34 @@ class NonComplianceDetail extends \Google\Model
   public function getSettingName()
   {
     return $this->settingName;
+  }
+  /**
+   * @param SpecificNonComplianceContext
+   */
+  public function setSpecificNonComplianceContext(SpecificNonComplianceContext $specificNonComplianceContext)
+  {
+    $this->specificNonComplianceContext = $specificNonComplianceContext;
+  }
+  /**
+   * @return SpecificNonComplianceContext
+   */
+  public function getSpecificNonComplianceContext()
+  {
+    return $this->specificNonComplianceContext;
+  }
+  /**
+   * @param string
+   */
+  public function setSpecificNonComplianceReason($specificNonComplianceReason)
+  {
+    $this->specificNonComplianceReason = $specificNonComplianceReason;
+  }
+  /**
+   * @return string
+   */
+  public function getSpecificNonComplianceReason()
+  {
+    return $this->specificNonComplianceReason;
   }
 }
 

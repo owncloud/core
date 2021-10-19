@@ -200,15 +200,15 @@ class DavTest extends TestCase {
 	}
 
 	private function createGuzzleClientException($statusCode) {
-		$request = $this->createMock(\GuzzleHttp\Message\RequestInterface::class);
-		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
+		$request = $this->createMock(\Psr\Http\Message\RequestInterface::class);
+		$response = $this->createMock(\Psr\Http\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn($statusCode);
 		return new ClientException('ClientException', $request, $response);
 	}
 
 	private function createGuzzleServerException($statusCode) {
-		$request = $this->createMock(\GuzzleHttp\Message\RequestInterface::class);
-		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
+		$request = $this->createMock(\Psr\Http\Message\RequestInterface::class);
+		$response = $this->createMock(\Psr\Http\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn($statusCode);
 		return new ServerException('ServerException', $request, $response);
 	}
@@ -240,8 +240,8 @@ class DavTest extends TestCase {
 		$testCases[] = [
 			new ServerException(
 				'ServerException with no response',
-				$this->createMock(\GuzzleHttp\Message\RequestInterface::class),
-				null
+				$this->createMock(\Psr\Http\Message\RequestInterface::class),
+				$this->createMock(\Psr\Http\Message\ResponseInterface::class),
 			),
 			StorageNotAvailableException::class
 		];
@@ -524,7 +524,7 @@ class DavTest extends TestCase {
 	}
 
 	public function testFopenRead() {
-		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
+		$response = $this->createMock(\Psr\Http\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_OK);
 		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
 
@@ -585,7 +585,7 @@ class DavTest extends TestCase {
 	public function testFopenReadLockedException() {
 		$this->expectException(\OCP\Lock\LockedException::class);
 
-		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
+		$response = $this->createMock(\Psr\Http\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_LOCKED);
 		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
 

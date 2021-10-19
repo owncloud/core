@@ -53,6 +53,7 @@ class Spanner extends \Google\Service
   public $projects_instances_backups_operations;
   public $projects_instances_databaseOperations;
   public $projects_instances_databases;
+  public $projects_instances_databases_databaseRoles;
   public $projects_instances_databases_operations;
   public $projects_instances_databases_sessions;
   public $projects_instances_operations;
@@ -672,6 +673,34 @@ class Spanner extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_instances_databases_databaseRoles = new Spanner\Resource\ProjectsInstancesDatabasesDatabaseRoles(
+        $this,
+        $this->serviceName,
+        'databaseRoles',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/databaseRoles',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],

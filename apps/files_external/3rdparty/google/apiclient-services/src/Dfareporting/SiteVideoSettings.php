@@ -35,6 +35,10 @@ class SiteVideoSettings extends \Google\Model
    * @var string
    */
   public $orientation;
+  /**
+   * @var string
+   */
+  public $publisherSpecificationId;
   protected $skippableSettingsType = SiteSkippableSetting::class;
   protected $skippableSettingsDataType = '';
   protected $transcodeSettingsType = SiteTranscodeSetting::class;
@@ -109,6 +113,20 @@ class SiteVideoSettings extends \Google\Model
   public function getOrientation()
   {
     return $this->orientation;
+  }
+  /**
+   * @param string
+   */
+  public function setPublisherSpecificationId($publisherSpecificationId)
+  {
+    $this->publisherSpecificationId = $publisherSpecificationId;
+  }
+  /**
+   * @return string
+   */
+  public function getPublisherSpecificationId()
+  {
+    return $this->publisherSpecificationId;
   }
   /**
    * @param SiteSkippableSetting

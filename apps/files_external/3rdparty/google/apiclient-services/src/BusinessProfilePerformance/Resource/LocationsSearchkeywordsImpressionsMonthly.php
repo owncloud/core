@@ -32,10 +32,11 @@ class LocationsSearchkeywordsImpressionsMonthly extends \Google\Service\Resource
   /**
    * Returns the search keywords used to find a business in search or maps. Each
    * search keyword is accompanied by impressions which are aggregated on a
-   * monthly basis. Example request: GET https://businessprofileperformance.google
-   * apis.com/v1/locations/12345/searchkeywords/impressions/monthly?monthly_range.
-   * start_month.year=2022_range.start_month.month=1_range.end_month.year=2022_ran
-   * ge.end_month.month=3 (monthly.listLocationsSearchkeywordsImpressionsMonthly)
+   * monthly basis. Example request: `GET https://businessprofileperformance.googl
+   * eapis.com/v1/locations/12345/searchkeywords/impressions/monthly?monthly_range
+   * .start_month.year=2022_range.start_month.month=1_range.end_month.year=2022_ra
+   * nge.end_month.month=3`
+   * (monthly.listLocationsSearchkeywordsImpressionsMonthly)
    *
    * @param string $parent Required. The location for which the time series should
    * be fetched. Format: locations/{location_id} where location_id is an

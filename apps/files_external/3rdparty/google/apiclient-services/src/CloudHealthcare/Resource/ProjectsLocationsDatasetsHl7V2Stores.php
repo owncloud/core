@@ -220,8 +220,9 @@ class ProjectsLocationsDatasetsHl7V2Stores extends \Google\Service\Resource
   /**
    * Updates the HL7v2 store. (hl7V2Stores.patch)
    *
-   * @param string $name Resource name of the HL7v2 store, of the form
-   * `projects/{project_id}/datasets/{dataset_id}/hl7V2Stores/{hl7v2_store_id}`.
+   * @param string $name Resource name of the HL7v2 store, of the form `projects/{
+   * project_id}/locations/{location_id}/datasets/{dataset_id}/hl7V2Stores/{hl7v2_
+   * store_id}`.
    * @param Hl7V2Store $postBody
    * @param array $optParams Optional parameters.
    *

@@ -31,11 +31,11 @@ class Locations extends \Google\Service\Resource
 {
   /**
    * Returns the values for each date from a given time range that are associated
-   * with the specific daily metric. Example request: GET https://businessprofilep
-   * erformance.googleapis.com/v1/locations/12345:getDailyMetricsTimeSeries?dailyM
-   * etric=WEBSITE_CLICKS_range.start_date.year=2022_range.start_date.month=1_rang
-   * e.start_date.day=1_range.end_date.year=2022_range.end_date.month=3_range.end_
-   * date.day=31 (locations.getDailyMetricsTimeSeries)
+   * with the specific daily metric. Example request: `GET https://businessprofile
+   * performance.googleapis.com/v1/locations/12345:getDailyMetricsTimeSeries?daily
+   * Metric=WEBSITE_CLICKS_range.start_date.year=2022_range.start_date.month=1_ran
+   * ge.start_date.day=1_range.end_date.year=2022_range.end_date.month=3_range.end
+   * _date.day=31` (locations.getDailyMetricsTimeSeries)
    *
    * @param string $name Required. The location for which the time series should
    * be fetched. Format: locations/{location_id} where location_id is an

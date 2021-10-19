@@ -24,7 +24,7 @@
 namespace OCA\FederatedFileSharing\Tests;
 
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\ResponseInterface;
 use OC\AppFramework\Http;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
@@ -258,7 +258,7 @@ class NotificationsTest extends \Test\TestCase {
 	}
 
 	public function dataTryHttpPostToShareEndpointInException() {
-		$responseMock = $this->createMock(IResponse::class);
+		$responseMock = $this->createMock(ResponseInterface::class);
 		$responseMock->method('getBody')
 			->willReturn('User does not exist');
 

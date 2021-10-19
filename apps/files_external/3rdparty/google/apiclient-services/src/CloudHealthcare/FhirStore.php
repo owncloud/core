@@ -21,6 +21,10 @@ class FhirStore extends \Google\Collection
 {
   protected $collection_key = 'streamConfigs';
   /**
+   * @var string
+   */
+  public $complexDataTypeReferenceParsing;
+  /**
    * @var bool
    */
   public $defaultSearchHandlingStrict;
@@ -55,6 +59,20 @@ class FhirStore extends \Google\Collection
    */
   public $version;
 
+  /**
+   * @param string
+   */
+  public function setComplexDataTypeReferenceParsing($complexDataTypeReferenceParsing)
+  {
+    $this->complexDataTypeReferenceParsing = $complexDataTypeReferenceParsing;
+  }
+  /**
+   * @return string
+   */
+  public function getComplexDataTypeReferenceParsing()
+  {
+    return $this->complexDataTypeReferenceParsing;
+  }
   /**
    * @param bool
    */
