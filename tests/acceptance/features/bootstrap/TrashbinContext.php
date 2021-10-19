@@ -139,7 +139,7 @@ class TrashbinContext implements Context {
 	 * List trashbin folder
 	 *
 	 * @param string $user user
-	 * @param string $path path
+	 * @param string|null $path path
 	 * @param string|null $asUser - To send request as another user
 	 * @param string|null $password
 	 * @param string $depth
@@ -147,7 +147,7 @@ class TrashbinContext implements Context {
 	 * @return array response
 	 * @throws Exception
 	 */
-	public function listTrashbinFolder(string $user, string $path, ?string $asUser = null, ?string $password = null, string $depth = "infinity"):array {
+	public function listTrashbinFolder(string $user, ?string $path, ?string $asUser = null, ?string $password = null, string $depth = "infinity"):array {
 		$asUser = $asUser ?? $user;
 		$path = $path ?? '/';
 		$password = $password ?? $this->featureContext->getPasswordForUser($asUser);
@@ -968,10 +968,10 @@ class TrashbinContext implements Context {
 	 * @param string $user
 	 * @param string $name
 	 *
-	 * @return string|null real entry name with timestamp suffix or null if not found
+	 * @return array|null real entry name with timestamp suffix or null if not found
 	 * @throws Exception
 	 */
-	private function findFirstTrashedEntry(string $user, string $name):?string {
+	private function findFirstTrashedEntry(string $user, string $name):?array {
 		$listing = $this->listTrashbinFolder($user, '/');
 
 		foreach ($listing as $entry) {
