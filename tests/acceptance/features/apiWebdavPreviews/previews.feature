@@ -253,7 +253,7 @@ Feature: previews of files downloaded through the webdav API
     And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Carol" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @notToImplementOnOCIS
   Scenario: JPEG preview quality can be determined by config
     Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testavatar_low.jpg"
     And the administrator has updated system config key "previewJPEGImageDisplayQuality" with value "1"
