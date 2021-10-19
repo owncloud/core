@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use WebDriver\Exception\NoSuchElement;
@@ -66,41 +67,41 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	/**
 	 * @return string
 	 */
-	protected function getFileListXpath() {
+	protected function getFileListXpath(): string {
 		return $this->fileListXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNamesXpath() {
+	protected function getFileNamesXpath(): string {
 		return $this->fileNamesXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNameMatchXpath() {
+	protected function getFileNameMatchXpath(): string {
 		return $this->fileNameMatchXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getEmptyContentXpath() {
+	protected function getEmptyContentXpath(): string {
 		return $this->emptyContentXpath;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @return void
-	 * @throws \Exception
+	 * @return string
+	 * @throws Exception
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
 	 */
-	protected function getFilePathInRowXpath() {
-		throw new \Exception(__METHOD__ . " not implemented in PublicLinkFilesPage");
+	protected function getFilePathInRowXpath(): string {
+		throw new Exception(__METHOD__ . " not implemented in PublicLinkFilesPage");
 	}
 
 	/**
@@ -130,7 +131,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return bool
 	 * @throws ElementNotFoundException
 	 */
-	public function isAddtoServerButtonPresent() {
+	public function isAddtoServerButtonPresent(): bool {
 		$addToYourOcBtn = $this->findById($this->saveToOcButtonContainerId);
 		if ($addToYourOcBtn) {
 			return true;
@@ -147,7 +148,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function addToServer($server) {
+	public function addToServer(string $server): void {
 		$changeServerLink = $this->findById($this->changeServerLinkId);
 		$saveToOcButtonExpand = $this->findById($this->saveToOcButtonExpandId);
 
@@ -200,17 +201,17 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * If name is not given a random one is chosen
 	 *
 	 * @param Session $session
-	 * @param string $name
+	 * @param string|null $name
 	 * @param int $timeoutMsec
 	 *
 	 * @return string name of the created file
-	 * @throws ElementNotFoundException|\Exception
+	 * @throws ElementNotFoundException|Exception
 	 */
 	public function createFolder(
 		Session $session,
-		$name = null,
-		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		?string  $name = null,
+		int $timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	): string {
 		return $this->filesPageCRUDFunctions->createFolder(
 			$session,
 			$name,
@@ -232,8 +233,8 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$fromFileName,
 		$toFileName,
 		Session $session,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->filesPageCRUDFunctions->renameFile(
 			$fromFileName,
 			$toFileName,
@@ -256,8 +257,8 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$name,
 		$destination,
 		Session $session,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->filesPageCRUDFunctions->moveFileTo(
 			$name,
 			$destination,
@@ -272,7 +273,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return string
 	 * @throws ElementNotFoundException
 	 */
-	public function getPreviewText() {
+	public function getPreviewText(): string {
 		$previewContainer = $this->find("xpath", $this->textPreviewContainerXpath);
 		$this->assertElementNotNull(
 			$previewContainer,
@@ -289,7 +290,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return string|null
 	 * @throws ElementNotFoundException
 	 */
-	public function getDownloadUrl() {
+	public function getDownloadUrl(): ?string {
 		$downloadBtn = $this->find("xpath", $this->DownloadBtnXpath);
 		$this->assertElementNotNull(
 			$downloadBtn,
@@ -308,7 +309,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return array
 	 * @throws ElementNotFoundException
 	 */
-	public function getAllDownloadUrls() {
+	public function getAllDownloadUrls(): array {
 		$downloadBtn = $this->find("xpath", $this->DownloadBtnXpath);
 		$downloadFileBtn = $this->find("xpath", $this->downloadFileXpath);
 		$directLink = $this->find("xpath", $this->directLinkXpath);
@@ -340,7 +341,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function enterPublicLinkPassword($password) {
+	public function enterPublicLinkPassword(string $password): void {
 		$passwordInputField = $this->findById($this->passwordFieldId);
 		$this->assertElementNotNull(
 			$passwordInputField,
@@ -367,7 +368,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function openPublicShareAuthenticateUrl($createdPublicLinks, $baseUrl) {
+	public function openPublicShareAuthenticateUrl(array $createdPublicLinks, string $baseUrl): void {
 		$lastCreatedLink = \end($createdPublicLinks);
 		$path = \str_replace(
 			$baseUrl,
@@ -383,7 +384,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 * @return string
 	 */
-	public function getWarningMessage() {
+	public function getWarningMessage(): string {
 		$warningMessageBox = $this->find('css', $this->warningMessageCss);
 		$this->assertElementNotNull(
 			$warningMessageBox,
@@ -403,10 +404,10 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param Session $session
 	 *
 	 * @return string
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function getTooltipOfFile($fileName, Session $session) {
-		throw new \Exception(__METHOD__ . " not implemented in PublicLinkFilesPage");
+	public function getTooltipOfFile(string $fileName, Session $session): string {
+		throw new Exception(__METHOD__ . " not implemented in PublicLinkFilesPage");
 	}
 
 	/**
@@ -417,6 +418,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
@@ -491,7 +493,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		}
 
 		if ($currentTime > $end) {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " timeout waiting for page to load"
 			);
 		}
@@ -507,13 +509,14 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param int $maxRetries
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function deleteFile(
 		$name,
 		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		bool $expectToDeleteFile = true,
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->filesPageCRUDFunctions->deleteFile(
 			$name,
 			$session,
@@ -528,7 +531,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function deleteAllSelectedFiles(Session $session) {
+	public function deleteAllSelectedFiles(Session $session): void {
 		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
 	}
 
@@ -539,7 +542,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function uploadFile(Session $session, $name) {
+	public function uploadFile(Session $session, string $name): void {
 		$this->filesPageCRUDFunctions->uploadFile($session, $name);
 	}
 
@@ -549,7 +552,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function waitForUploadProgressbarToFinish() {
+	public function waitForUploadProgressbarToFinish(): void {
 		$this->filesPageCRUDFunctions->waitForUploadProgressbarToFinish();
 	}
 
@@ -558,7 +561,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 * @return array
 	 */
-	public function getCompletelyUploadedElements() {
+	public function getCompletelyUploadedElements(): array {
 		$uploadedElementsContainer = $this->find("css", $this->uploadedElementsCss);
 		$this->assertElementNotNull(
 			$uploadedElementsContainer,
@@ -580,7 +583,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function saveToSameServer() {
+	public function saveToSameServer(): void {
 		$saveToElement = $this->findById($this->saveToOcButtonId);
 
 		$this->assertElementNotNull(

@@ -78,12 +78,12 @@ class ExternalStoragePage extends FilesPageBasic {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @return void
+	 * @return string
 	 * @throws Exception
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
 	 */
-	protected function getFilePathInRowXpath():void {
+	protected function getFilePathInRowXpath(): string {
 		throw new Exception(__METHOD__ . " not implemented in ExternalStoragePage");
 	}
 }

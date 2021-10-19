@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 use Page\FilesPageElement\FileRow;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -50,28 +51,28 @@ class TagsPage extends FilesPageBasic {
 	/**
 	 * @return string
 	 */
-	protected function getFileListXpath() {
+	protected function getFileListXpath(): string {
 		return $this->fileListXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNamesXpath() {
+	protected function getFileNamesXpath(): string {
 		return $this->fileNamesXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNameMatchXpath() {
+	protected function getFileNameMatchXpath(): string {
 		return $this->fileNameMatchXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getEmptyContentXpath() {
+	protected function getEmptyContentXpath(): string {
 		return $this->emptyContentXpath;
 	}
 
@@ -79,7 +80,7 @@ class TagsPage extends FilesPageBasic {
 	 * @return string
 	 * @throws ElementNotFoundException
 	 */
-	protected function getFilePathInRowXpath() {
+	protected function getFilePathInRowXpath(): string {
 		return $this->filePathInRowXpath;
 	}
 
@@ -112,7 +113,7 @@ class TagsPage extends FilesPageBasic {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function searchByTag($tagName) {
+	public function searchByTag(string $tagName): void {
 		$this->waitTillElementIsNotNull($this->tagsInputXpath);
 		$inputField = $this->find("xpath", $this->tagsInputXpath);
 
@@ -141,7 +142,7 @@ class TagsPage extends FilesPageBasic {
 	 *
 	 * @return string
 	 */
-	public function getTagsDropDownResultsXpath() {
+	public function getTagsDropDownResultsXpath(): string {
 		$resultXpath = $this->tagsSuggestDropDown .
 			"//ul[@class='select2-results']" .
 			"//span";
@@ -157,7 +158,7 @@ class TagsPage extends FilesPageBasic {
 	 * @return FileRow[]
 	 * @throws ElementNotFoundException
 	 */
-	public function findAllFileRowsByName($name, Session $session) {
+	public function findAllFileRowsByName($name, Session $session): array {
 		$fileRowElements = $this->getFileRowElementsByName($name, $session);
 		$fileRows = [];
 		foreach ($fileRowElements as $fileRowElement) {
@@ -177,13 +178,14 @@ class TagsPage extends FilesPageBasic {
 	 * @param int $maxRetries
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function deleteFile(
 		$name,
 		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		bool $expectToDeleteFile = true,
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->filesPageCRUDFunctions->deleteFile(
 			$name,
 			$session,
@@ -198,7 +200,7 @@ class TagsPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function deleteAllSelectedFiles(Session $session) {
+	public function deleteAllSelectedFiles(Session $session): void {
 		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
 	}
 }

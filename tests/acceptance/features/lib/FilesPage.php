@@ -22,11 +22,15 @@
 
 namespace Page;
 
+use Behat\Mink\Exception\DriverException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Session;
-use Page\FilesPageElement\SharingDialog;
+use Exception;
+use Page\FilesPageElement\DetailsDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * Files page.
@@ -60,40 +64,41 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * @return string
 	 */
-	protected function getFileListXpath() {
+	protected function getFileListXpath(): string {
 		return $this->fileListXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNamesXpath() {
+	protected function getFileNamesXpath(): string {
 		return $this->fileNamesXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNameMatchXpath() {
+	protected function getFileNameMatchXpath(): string {
 		return $this->fileNameMatchXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getEmptyContentXpath() {
+	protected function getEmptyContentXpath(): string {
 		return $this->emptyContentXpath;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @return void
+	 * @return string
+	 * @throws Exception
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
 	 */
-	protected function getFilePathInRowXpath() {
-		throw new \Exception(__METHOD__ . " not implemented in FilesPage");
+	protected function getFilePathInRowXpath(): string {
+		throw new Exception(__METHOD__ . " not implemented in FilesPage");
 	}
 
 	/**
@@ -135,19 +140,19 @@ class FilesPage extends FilesPageBasic {
 	 * If name is not given a random one is chosen
 	 *
 	 * @param Session $session
-	 * @param string $name
+	 * @param string|null $name
 	 * @param int $timeoutMsec
 	 * @param boolean $useCreateButton
 	 *
 	 * @return string name of the created file
-	 * @throws ElementNotFoundException|\Exception
+	 * @throws ElementNotFoundException|Exception
 	 */
 	public function createFolder(
 		Session $session,
-		$name = null,
-		$timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
-		$useCreateButton = false
-	) {
+		string  $name = null,
+		int $timeoutMsec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC,
+		bool $useCreateButton = false
+	): string {
 		return $this->filesPageCRUDFunctions->createFolder(
 			$session,
 			$name,
@@ -166,9 +171,9 @@ class FilesPage extends FilesPageBasic {
 	 * @return string
 	 */
 	public function getTooltipOfFile(
-		$fileName,
+		string  $fileName,
 		Session $session
-	) {
+	): string {
 		return $this->filesPageCRUDFunctions->getTooltipOfFile(
 			$fileName,
 			$session
@@ -180,7 +185,7 @@ class FilesPage extends FilesPageBasic {
 	 * @return string
 	 * @throws ElementNotFoundException
 	 */
-	public function getCreateFolderTooltip() {
+	public function getCreateFolderTooltip(): string {
 		$newFolderTooltip = $this->find("xpath", $this->newFolderTooltipXpath);
 		$this->assertElementNotNull(
 			$newFolderTooltip,
@@ -198,17 +203,17 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function uploadFile(Session $session, $name) {
+	public function uploadFile(Session $session, string $name): void {
 		$this->filesPageCRUDFunctions->uploadFile($session, $name);
 	}
 
 	/**
 	 * gets a sharing dialog object
 	 *
-	 * @return SharingDialog
+	 * @return Page
 	 * @throws ElementNotFoundException
 	 */
-	public function getSharingDialog() {
+	public function getSharingDialog(): Page {
 		return $this->getPage("FilesPageElement\\SharingDialog");
 	}
 
@@ -219,9 +224,9 @@ class FilesPage extends FilesPageBasic {
 	 * @param string $fileName
 	 * @param Session $session
 	 *
-	 * @return SharingDialog
+	 * @return Page
 	 */
-	public function openSharingDialog($fileName, Session $session) {
+	public function openSharingDialog(string $fileName, Session $session): Page {
 		$shareDialog = \sprintf($this->sharingDialogXpath, $fileName);
 		$element = $this->find("xpath", $shareDialog);
 		// open sharing dialog only if it is not already open
@@ -240,7 +245,7 @@ class FilesPage extends FilesPageBasic {
 	 * @throws ElementNotFoundException
 	 * if no sharing dialog is open
 	 */
-	public function closeDetailsDialog() {
+	public function closeDetailsDialog(): void {
 		$this->getDetailsDialog()->closeDetailsDialog();
 	}
 
@@ -258,8 +263,8 @@ class FilesPage extends FilesPageBasic {
 		$fromFileName,
 		$toFileName,
 		Session $session,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->filesPageCRUDFunctions->renameFile(
 			$fromFileName,
 			$toFileName,
@@ -276,13 +281,14 @@ class FilesPage extends FilesPageBasic {
 	 * @param int $maxRetries
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function deleteFile(
 		$name,
 		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		bool $expectToDeleteFile = true,
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->filesPageCRUDFunctions->deleteFile(
 			$name,
 			$session,
@@ -297,7 +303,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function deleteAllSelectedFiles(Session $session) {
+	public function deleteAllSelectedFiles(Session $session): void {
 		$this->filesPageCRUDFunctions->deleteAllSelectedFiles($session);
 	}
 
@@ -315,8 +321,8 @@ class FilesPage extends FilesPageBasic {
 		$name,
 		$destination,
 		Session $session,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		int $maxRetries = STANDARD_RETRY_COUNT
+	):void {
 		$this->filesPageCRUDFunctions->moveFileTo(
 			$name,
 			$destination,
@@ -335,24 +341,30 @@ class FilesPage extends FilesPageBasic {
 	 * @return FilesPage
 	 * @see \SensioLabs\Behat\PageObjectExtension\PageObject\Page::open()
 	 */
-	public function open(array $urlParameters = []) {
+	public function open(array $urlParameters = []): FilesPage {
 		$url = $this->getUrl($urlParameters);
 
-		$this->getDriver()->visit($url);
+		try {
+			$this->getDriver()->visit($url);
+		} catch (UnsupportedDriverActionException | DriverException $e) {
+		}
 
 		$this->verifyResponse();
-		if (\strpos(
-			$this->getDriver()->getCurrentUrl(),
-			$this->getUrl($urlParameters)
-		) === false
-		) {
-			throw new UnexpectedPageException(
-				\sprintf(
-					'Expected to be on "%s" but found "%s" instead',
-					$this->getUrl($urlParameters),
-					$this->getDriver()->getCurrentUrl()
-				)
-			);
+		try {
+			if (\strpos(
+				$this->getDriver()->getCurrentUrl(),
+				$this->getUrl($urlParameters)
+			) === false
+			) {
+				throw new UnexpectedPageException(
+					\sprintf(
+						'Expected to be on "%s" but found "%s" instead',
+						$this->getUrl($urlParameters),
+						$this->getDriver()->getCurrentUrl()
+					)
+				);
+			}
+		} catch (UnsupportedDriverActionException | DriverException $e) {
 		}
 		$this->verifyPage();
 		return $this;
@@ -372,10 +384,10 @@ class FilesPage extends FilesPageBasic {
 	 * @return FilesPage
 	 */
 	public function browseToFileId(
-		$fileId,
-		$folderName = '/',
-		$detailsTab = null
-	) {
+		string $fileId,
+		string $folderName = '/',
+		?string $detailsTab = null
+	): FilesPage {
 		$url = \rtrim($this->getUrl(), '/');
 		$fullUrl = "$url/?dir=$folderName&fileid=$fileId";
 
@@ -390,7 +402,10 @@ class FilesPage extends FilesPageBasic {
 		$detailsDialog = $this->getPage("FilesPageElement\\DetailsDialog");
 		$fullUrl = "$fullUrl&details=" . $detailsDialog->getDetailsTabId($detailsTab);
 
-		$this->getDriver()->visit($fullUrl);
+		try {
+			$this->getDriver()->visit($fullUrl);
+		} catch (UnsupportedDriverActionException | DriverException $e) {
+		}
 
 		return $this;
 	}
@@ -401,9 +416,9 @@ class FilesPage extends FilesPageBasic {
 	 * @param Session $session
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function browseToHomePage($session) {
+	public function browseToHomePage(Session $session): void {
 		$homePageIcon = $this->find("xpath", $this->homePageIconXpath);
 		$this->assertElementNotNull(
 			$homePageIcon,
@@ -424,9 +439,9 @@ class FilesPage extends FilesPageBasic {
 	 * @param string $folderName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function browseToFolder($folderName) {
+	public function browseToFolder(string $folderName): void {
 
 		// foldername is encoded into query-string
 		$folderName = \urlencode($folderName);
@@ -453,7 +468,7 @@ class FilesPage extends FilesPageBasic {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function waitForUploadProgressbarToFinish() {
+	public function waitForUploadProgressbarToFinish(): void {
 		$this->filesPageCRUDFunctions->waitForUploadProgressbarToFinish();
 	}
 
@@ -465,7 +480,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @return bool
 	 */
-	public function isSharedIndicatorPresent($fileName, $session) {
+	public function isSharedIndicatorPresent(string $fileName, Session $session): bool {
 		$fileRow = $this->findFileRowByName($fileName, $session);
 		return $fileRow->isSharedIndicatorPresent();
 	}
@@ -475,7 +490,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @return string
 	 */
-	public function getUploadCreatePermissionDeniedMessage() {
+	public function getUploadCreatePermissionDeniedMessage(): string {
 		$msg = $this->find("css", $this->uploadCreatePermissionDeniedMessageSelector);
 		if ($msg === null || !$msg->isVisible()) {
 			return "";
@@ -488,7 +503,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @return bool
 	 */
-	public function isNewFileIconVisible() {
+	public function isNewFileIconVisible(): bool {
 		$newFileIcon = $this->find("xpath", $this->newFileFolderButtonXpath);
 		return $newFileIcon->isVisible();
 	}
@@ -496,9 +511,9 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * Closes the federated Share dialog
 	 *
-	 * @return bool
+	 * @return void
 	 */
-	public function closeFederationDialog() {
+	public function closeFederationDialog(): void {
 		$closeIcon = $this->find("xpath", $this->closeOCDialogXpath);
 		$this->assertElementNotNull(
 			$closeIcon,
@@ -516,7 +531,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @return boolean
 	 */
-	public function isPublicLinkQuickActionVisible(string $name):bool {
+	public function isPublicLinkQuickActionVisible(string $name): bool {
 		$quickActionXpathLocator = \sprintf($this->publicLinkQuickActionXpath, $name);
 		$quickActionButton = $this->find("xpath", $quickActionXpathLocator);
 		return !($quickActionButton === null);
@@ -529,7 +544,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @return void
 	 */
-	public function clickOnPublicShareQuickAction(string $name):void {
+	public function clickOnPublicShareQuickAction(string $name): void {
 		$quickActionXpathLocator = \sprintf($this->publicLinkQuickActionXpath, $name);
 		$folder = $this->find("xpath", $quickActionXpathLocator);
 		$this->assertElementNotNull(

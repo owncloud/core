@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 
 /**
  * Shared with you page.
@@ -43,28 +44,28 @@ class SharedWithYouPage extends FilesPageBasic {
 	/**
 	 * @return string
 	 */
-	protected function getFileListXpath() {
+	protected function getFileListXpath(): string {
 		return $this->fileListXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNamesXpath() {
+	protected function getFileNamesXpath(): string {
 		return $this->fileNamesXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getFileNameMatchXpath() {
+	protected function getFileNameMatchXpath(): string {
 		return $this->fileNameMatchXpath;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected function getEmptyContentXpath() {
+	protected function getEmptyContentXpath(): string {
 		return $this->emptyContentXpath;
 	}
 
@@ -72,11 +73,12 @@ class SharedWithYouPage extends FilesPageBasic {
 	 * {@inheritDoc}
 	 *
 	 * @return void
+	 * @throws Exception
 	 * @see \Page\FilesPageBasic::getFilePathInRowXpath()
 	 *
 	 */
-	protected function getFilePathInRowXpath() {
-		throw new \Exception(__METHOD__ . " not implemented in SharedWithYouPage");
+	protected function getFilePathInRowXpath(): string {
+		throw new Exception(__METHOD__ . " not implemented in SharedWithYouPage");
 	}
 
 	/**
@@ -91,9 +93,9 @@ class SharedWithYouPage extends FilesPageBasic {
 	public function declineFile(
 		$name,
 		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		bool $expectToDeleteFile = true,
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
 
@@ -112,7 +114,7 @@ class SharedWithYouPage extends FilesPageBasic {
 				} else {
 					break;
 				}
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				$this->closeFileActionsMenu();
 				if ($expectToDeleteFile) {
 					\error_log(
@@ -143,13 +145,14 @@ class SharedWithYouPage extends FilesPageBasic {
 	 * @param int $maxRetries
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function deleteFileFromSharedWithYou(
 		$name,
 		Session $session,
-		$expectToDeleteFile = true,
-		$maxRetries = STANDARD_RETRY_COUNT
-	) {
+		bool $expectToDeleteFile = true,
+		int $maxRetries = STANDARD_RETRY_COUNT
+	): void {
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
 
@@ -168,7 +171,7 @@ class SharedWithYouPage extends FilesPageBasic {
 				} else {
 					break;
 				}
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				$this->closeFileActionsMenu();
 				if ($expectToDeleteFile) {
 					\error_log(
@@ -189,7 +192,7 @@ class SharedWithYouPage extends FilesPageBasic {
 			echo $message;
 			\error_log($message);
 			if ($counter === $maxRetries) {
-				throw new \Exception($message);
+				throw new Exception($message);
 			}
 		}
 	}
