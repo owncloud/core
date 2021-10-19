@@ -43,6 +43,8 @@ namespace OCA\Files_Versions;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OC\Share\Constants;
+use OCA\DAV\Meta\MetaPlugin;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Command\Expire;
 use OCP\Files\NotFoundException;
@@ -202,18 +204,17 @@ class Storage {
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
 
-        $config = \OC::$server->getConfig();
-        if ($config->getSystemValue('file_storage.save_version', false) === true) {
-          $user = \OC::$server->getUserSession()->getUser();
-          if ($user !== null) {
-            $existingVersion = self::getVersions($uid, $filename);
-            $metaDataKey = sizeof($existingVersion) > 1 ? \OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME
-              : \OC\Share\Constants::CREATED_BY_USER_METADATA;
-            $metadata = [$metaDataKey => $user->getDisplayName()];
-            $metadataJsonObject = \json_encode($metadata);
-            $users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
-          }
-        }
+				$config = \OC::$server->getConfig();
+				if ($config->getSystemValue('file_storage.save_version', false) === true) {
+					$user = \OC::$server->getUserSession()->getUser();
+					if ($user !== null && !$users_view->file_exists($versionFileName . '.json')) {
+						$versions = self::getVersions($uid, $filename);
+						$metaDataKey =  sizeof($versions) == 1 ? Constants::CREATED_BY_USER_METADATA : MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
+						$metadata = [$metaDataKey => $user->getDisplayName()];
+						$metadataJsonObject = \json_encode($metadata);
+						$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
+					}
+				}
 			}
 		}
 	}
@@ -485,12 +486,11 @@ class Storage {
 						if ($view->file_exists($jsonMetadataFile)) {
 							$metaDataFileContents = $view->file_get_contents($jsonMetadataFile);
 							if ($decoded = \json_decode($metaDataFileContents, true)) {
-								if (!is_null($decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA])) {
-									$versions[$key]['created_by'] = $decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA];
+								if (isset($decoded[Constants::CREATED_BY_USER_METADATA])) {
+									$versions[$key]['created_by'] = $decoded[Constants::CREATED_BY_USER_METADATA];
+								} elseif ($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME] !== null) {
+									$versions[$key]['edited_by'] = $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
 								}
-                else if ($decoded[\OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME] !== null) {
-                  $versions[$key]['edited_by'] = $decoded[\OCA\DAV\Meta\MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
-                }
 							}
 						}
 					}

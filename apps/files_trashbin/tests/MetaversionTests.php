@@ -46,153 +46,146 @@ use Test\Traits\UserTrait;
  * @package OCA\Files_Trashbin\Tests
  */
 class MetaversionTests extends TestCase {
-  use UserTrait;
+	use UserTrait;
 
+	/**
+	 * @var string
+	 */
+	private $userFirst;
 
-  /**
-   * @var string
-   */
-  private $userFirst;
+	/**
+	 * @var string
+	 */
+	private $userSecond;
+	/**
+	 * @var View
+	 */
+	private $rootView;
 
-  /**
-   * @var string
-   */
-  private $userSecond;
-  /**
-   * @var View
-   */
-  private $rootView;
+	/**
+	 * @var View
+	 */
+	private $userView;
 
-  /**
-   * @var View
-   */
-  private $userView;
+	protected function setUp(): void {
+		parent::setUp();
 
-  protected function setUp(): void {
-    parent::setUp();
+		\OC::$server->getEncryptionManager()->setupStorage();
 
-    \OC::$server->getEncryptionManager()->setupStorage();
+		$this->userFirst = $this->getUniqueId('user');
+		$this->userSecond = $this->getUniqueId('user');
 
-    $this->userFirst = $this->getUniqueId('user');
-    $this->userSecond = $this->getUniqueId('user');
+		$this->createUser($this->userFirst, $this->userFirst);
+		$this->createUser($this->userSecond, $this->userSecond);
 
-    $this->createUser($this->userFirst, $this->userFirst);
-    $this->createUser($this->userSecond, $this->userSecond);
+		// this will setup the FS
+		$this->loginAsUser($this->userFirst);
 
+		\OCA\Files_Trashbin\Storage::setupStorage();
 
-    // this will setup the FS
-    $this->loginAsUser($this->userFirst);
+		$config = clone \OC::$server->getConfig();
+		$mockConfig = $this->createMock('\OCP\IConfig');
 
-    \OCA\Files_Trashbin\Storage::setupStorage();
+		$mockConfig->expects($this->any())
+	  ->method('getSystemValue')
+	  ->will($this->returnCallback(function ($key, $default) use ($config) {
+	  	if ($key === 'file_storage.save_version') {
+	  		return true;
+	  	} else {
+	  		return $config->getSystemValue($key, $default);
+	  	}
+	  }));
+		$this->overwriteService('AllConfig', $mockConfig);
 
-    $config = clone \OC::$server->getConfig();
-    $mockConfig = $this->createMock('\OCP\IConfig');
+		\OC_Hook::clear();
+		\OCA\Files_Versions\Hooks::connectHooks();
+		\OCA\Files_Trashbin\Trashbin::registerHooks();
 
-    $mockConfig->expects($this->any())
-      ->method('getSystemValue')
-      ->will($this->returnCallback(function ($key, $default) use ($config) {
-        if ($key === 'file_storage.save_version') {
-          return true;
-        } else {
-          return $config->getSystemValue($key, $default);
-        }
-      }));
-    $this->overwriteService('AllConfig', $mockConfig);
+		$this->rootView = new View('/');
+		$this->userView = new View('/' . $this->userFirst . '/files/');
 
-    \OC_Hook::clear();
-    \OCA\Files_Versions\Hooks::connectHooks();
-    \OCA\Files_Trashbin\Trashbin::registerHooks();
+		\OC_Util::tearDownFS();
+		\OC_User::setUserId($this->userFirst);
+		\OC\Files\Filesystem::tearDown();
+		\OC_Util::setupFS($this->userFirst);
+	}
 
-    $this->rootView = new View('/');
-    $this->userView = new View('/' . $this->userFirst . '/files/');
+	public function testMetadataVersionFeatures() {
+		$config = \OC::$server->getConfig();
+		$constant = 'file_storage.save_version';
+		$mockConfigValue = $config->getSystemValue($constant, false);
+		$this->assertTrue($mockConfigValue);
 
-    \OC_Util::tearDownFS();
-    \OC_User::setUserId($this->userFirst);
-    \OC\Files\Filesystem::tearDown();
-    \OC_Util::setupFS($this->userFirst);
+		// test file creation and versioning for initial file creation
+		$initialContents = 'v1';
+		$this->userView->file_put_contents('test.txt', $initialContents);
 
-  }
+		$results = $this->rootView->getDirectoryContent($this->userFirst . '/files_versions/');
+		$this->assertCount(2, $results);
+		$this->checkResultsValidityForUser($results, $initialContents, $this->userFirst);
+		time_nanosleep(1, 300);
+		$updatedContents = $initialContents . 'v2';
+		$this->userView->file_put_contents('test.txt', $updatedContents);
+		$results = $this->rootView->getDirectoryContent($this->userFirst . '/files_versions/');
+		$this->assertEquals(4, sizeof($results));
+		$updatedContents = $updatedContents . 'v3';
+		$this->logout();
 
+		\OC_Util::tearDownFS();
+		\OC_User::setUserId($this->userSecond);
+		\OC\Files\Filesystem::tearDown();
+		\OC_Util::setupFS($this->userSecond);
 
-  public function testMetadataVersionFeatures() {
-    $config = \OC::$server->getConfig();
-    $constant = 'file_storage.save_version';
-    $mockConfigValue = $config->getSystemValue($constant, false);
-    $this->assertTrue($mockConfigValue);
+		// attempt to write third version from another user's perspective
+		$this->loginAsUser($this->userSecond);
 
-    // test file creation and versioning for initial file creation
-    $initialContents = 'v1';
-    $this->userView->file_put_contents('test.txt', $initialContents);
+		time_nanosleep(1, 1);
+		$this->userView->file_put_contents('test.txt', $updatedContents);
+		$results = $this->rootView->getDirectoryContent($this->userFirst . '/files_versions/');
 
-    $results = $this->rootView->getDirectoryContent($this->userFirst . '/files_versions/');
-    $this->assertCount(2, $results);
-    $this->checkResultsValidityForUser($results, $initialContents, $this->userFirst);
-    time_nanosleep(1, 300);
-    $updatedContents = $initialContents . 'v2';
-    $this->userView->file_put_contents('test.txt', $updatedContents);
-    $results = $this->rootView->getDirectoryContent($this->userFirst . '/files_versions/');
-    $this->assertEquals(4, sizeof($results));
-    $updatedContents = $updatedContents . 'v3';
-    $this->logout();
+		// should assert 6 here instead, but hooks don't work for second user,
+		// so second's user file write attempt ^^^ does not work
 
-    \OC_Util::tearDownFS();
-    \OC_User::setUserId($this->userSecond);
-    \OC\Files\Filesystem::tearDown();
-    \OC_Util::setupFS($this->userSecond);
+		$this->assertEquals(4, sizeof($results));
+	}
 
-    // attempt to write third version from another user's perspective
-    $this->loginAsUser($this->userSecond);
+	private function checkResultsValidityForUser($results, $checkContents, $user) {
+		$versionCounter = 0;
+		$metadataCounter = 0;
 
-    time_nanosleep(1, 1);
-    $this->userView->file_put_contents('test.txt', $updatedContents);
-    $results = $this->rootView->getDirectoryContent($this->userFirst . '/files_versions/');
+		foreach ($results as $fileInfo) {
+			$path = $fileInfo->getPath();
+			$extension = \pathinfo($path)['extension'];
+			$contents = $this->rootView->file_get_contents($path);
+			if (preg_match('/v[0-9]*/', $extension)) {
+				$this->assertEquals($contents, $checkContents);
+				$versionCounter++;
+			} else {
+				$decoded = json_decode($contents, true);
+				$this->assertIsArray($decoded);
+				$value = '';
+				if (isset($decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA])) {
+					$value = $decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA];
+				} else {
+					$value = $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+				}
+				$this->assertEquals($value, $user);
+				$metadataCounter++;
+			}
+		}
+		$this->assertEquals($versionCounter, $metadataCounter);
+	}
 
-    // should assert 6 here instead, but hooks don't work for second user,
-    // so second's user file write attempt ^^^ does not work
+	protected function tearDown(): void {
+		$this->restoreService('AllConfig');
 
-    $this->assertEquals(4, sizeof($results));
-  }
+		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
+		$this->logout();
+		\OC_Hook::clear();
+		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_encryption');
+		\OC_Util::tearDownFS();
+		\OC\Files\Filesystem::tearDown();
 
-  private function checkResultsValidityForUser($results, $checkContents, $user) {
-
-    $versionCounter = 0;
-    $metadataCounter = 0;
-
-    foreach ($results as $fileInfo) {
-      $path = $fileInfo->getPath();
-      $extension = \pathinfo($path)['extension'];
-      $contents = $this->rootView->file_get_contents($path);
-      if (preg_match('/v[0-9]*/', $extension)) {
-        $this->assertEquals($contents, $checkContents);
-        $versionCounter++;
-      } else {
-        $decoded = json_decode($contents, true);
-        $this->assertIsArray($decoded);
-        $value = '';
-        if (isset($decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA])) {
-          $value = $decoded[\OC\Share\Constants::CREATED_BY_USER_METADATA];
-        } else {
-          $value = $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
-        }
-        $this->assertEquals($value, $user);
-        $metadataCounter++;
-      }
-    }
-    $this->assertEquals($versionCounter, $metadataCounter);
-  }
-
-  protected function tearDown(): void {
-    $this->restoreService('AllConfig');
-
-    \OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
-    $this->logout();
-    \OC_Hook::clear();
-    \OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_encryption');
-    \OC_Util::tearDownFS();
-    \OC\Files\Filesystem::tearDown();
-
-    parent::tearDown();
-
-  }
-
+		parent::tearDown();
+	}
 }
