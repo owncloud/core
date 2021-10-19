@@ -39,10 +39,15 @@ table.multiselect thead {
 	opacity: .3 !important;
 }
 
+table td.filename .nametext {
+		max-width: 180px;
+}
+
 /* ellipsis on file names */
 table td.filename .nametext .innernametext {
-	max-width: 90%;
+	max-width: 100px;
 }
+
 
 /* proper notification area for multi line messages */
 #notification-container {
