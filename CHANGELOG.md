@@ -93,6 +93,7 @@ Summary
 * Enhancement - Bring back minimalistic view to occ app:list with '-m' option: [#39326](https://github.com/owncloud/core/pull/39326)
 * Enhancement - Add quality setting for JP(E)G preview images: [#39349](https://github.com/owncloud/core/pull/39349)
 * Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
+* Enhancement - Added needed code for webp thumbnail generation to occur: [#39358](https://github.com/owncloud/core/issues/39358)
 * Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
 
 Details
@@ -817,6 +818,15 @@ Details
    plugin will be attached/detached before others.
 
    https://github.com/owncloud/core/pull/39359
+
+* Enhancement - Added needed code for webp thumbnail generation to occur: [#39358](https://github.com/owncloud/core/issues/39358)
+
+   Previously thumbnail previews for image files of the webp format with the .webp extension were
+   not generated. Instead a generic placeholder icon was shown. This enhancement/fix caused the
+   generation of preview thumbnails, just as was standard with other image formats.
+
+   https://github.com/owncloud/core/issues/39358
+   https://github.com/owncloud/core/pull/39360
 
 * Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
 

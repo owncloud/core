@@ -91,6 +91,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Bring back minimalistic view to occ app:list with '-m' option: <a href="https://github.com/owncloud/core/pull/39326">#39326</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add quality setting for JP(E)G preview images: <a href="https://github.com/owncloud/core/pull/39349">#39349</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add priority for JavaScript plugins: <a href="https://github.com/owncloud/core/pull/39359">#39359</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Added needed code for webp thumbnail generation to occur: <a href="https://github.com/owncloud/core/issues/39358">#39358</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add show-all-attributes option to occ user:list command: <a href="https://github.com/owncloud/core/pull/39366">#39366</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
@@ -817,6 +818,16 @@
    plugin will be attached/detached before others.
             </p>
             <p>https://github.com/owncloud/core/pull/39359<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Added needed code for webp thumbnail generation to occur: <a href="https://github.com/owncloud/core/issues/39358">#39358</a></p>
+            <p>Previously thumbnail previews for image files of the webp format with the .webp extension were
+   not generated. Instead a generic placeholder icon was shown. This enhancement/fix caused the
+   generation of preview thumbnails, just as was standard with other image formats.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39358<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39360<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add show-all-attributes option to occ user:list command: <a href="https://github.com/owncloud/core/pull/39366">#39366</a></p>
