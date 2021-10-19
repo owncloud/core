@@ -277,7 +277,8 @@ module.exports = function(config) {
 		preprocessors: preprocessors,
 
 		coverageReporter: {
-			dir:'tests/output/coverage',
+			dir: 'tests/output/coverage',
+			subdir: '.',
 			reporters: [
 				{ type: 'html' },
 				{ type: 'cobertura' },

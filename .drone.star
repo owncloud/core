@@ -1180,10 +1180,10 @@ def javascript(ctx, withCoverage):
                         "from_secret": "cache_s3_endpoint",
                     },
                     "bucket": "cache",
-                    "source": "tests/output/coverage/Firefox 93.0.0 (Ubuntu 0.0.0)/lcov.info",
+                    "source": "tests/output/coverage/lcov.info",
                     "target": "%s/%s/coverage" % (ctx.repo.slug, ctx.build.commit + "-${DRONE_BUILD_NUMBER}"),
                     "path_style": True,
-                    "strip_prefix": "tests/output/coverage/Firefox 93.0.0 (Ubuntu 0.0.0)",
+                    "strip_prefix": "tests/output/coverage",
                     "access_key": {
                         "from_secret": "cache_s3_access_key",
                     },
