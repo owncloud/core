@@ -87,13 +87,13 @@ class MetaversionTests extends TestCase {
 		$mockConfig = $this->createMock('\OCP\IConfig');
 
 		$mockConfig->expects($this->any())->method('getSystemValue')
-      ->will($this->returnCallback(function ($key, $default) use ($config) {
-        if ($key === 'file_storage.save_version') {
-          return true;
-        } else {
-          return $config->getSystemValue($key, $default);
-        }
-      }));
+	  ->will($this->returnCallback(function ($key, $default) use ($config) {
+	  	if ($key === 'file_storage.save_version') {
+	  		return true;
+	  	} else {
+	  		return $config->getSystemValue($key, $default);
+	  	}
+	  }));
 		$this->overwriteService('AllConfig', $mockConfig);
 
 		\OC_Hook::clear();
