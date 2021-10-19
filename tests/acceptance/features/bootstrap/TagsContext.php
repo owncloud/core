@@ -162,7 +162,7 @@ class TagsContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function createTagWithNameAsAdmin(string $type, string $name, boolean $useTrueFalseStrings = true):void {
+	public function createTagWithNameAsAdmin(string $type, string $name, bool $useTrueFalseStrings = true):void {
 		$this->createTagWithName(
 			$this->featureContext->getAdminUsername(),
 			$type,
