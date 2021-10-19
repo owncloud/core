@@ -22,8 +22,11 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use GuzzleHttp\Exception\GuzzleException;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\WebDavHelper;
+use TusPhp\Exception\ConnectionException;
+use TusPhp\Exception\TusException;
 use TusPhp\Tus\Client;
 use PHPUnit\Framework\Assert;
 
@@ -53,7 +56,7 @@ class TUSContext implements Context {
 	 *
 	 * @throws Exception
 	 */
-	public function createNewTUSresourceWithHeaders(string $user, TableNode $headers, string $content = '') {
+	public function createNewTUSresourceWithHeaders(string $user, TableNode $headers, string $content = ''):void {
 		$this->featureContext->verifyTableNodeColumnsCount($headers, 2);
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getUserPassword($user);
@@ -88,7 +91,7 @@ class TUSContext implements Context {
 	 *
 	 * @throws Exception
 	 */
-	public function createNewTUSresource(string $user, TableNode $headers) {
+	public function createNewTUSresource(string $user, TableNode $headers):void {
 		$rows = $headers->getRows();
 		$rows[] = ['Tus-Resumable', '1.0.0'];
 		$this->createNewTUSresourceWithHeaders($user, new TableNode($rows));
@@ -107,7 +110,7 @@ class TUSContext implements Context {
 	 *
 	 * @throws Exception
 	 */
-	public function sendsAChunkToTUSLocationWithOffsetAndData(string $user, string $offset, string $data, string $checksum = '') {
+	public function sendsAChunkToTUSLocationWithOffsetAndData(string $user, string $offset, string $data, string $checksum = ''):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getUserPassword($user);
 		$this->featureContext->setResponse(
@@ -134,17 +137,18 @@ class TUSContext implements Context {
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
-	 * @param array  $uploadMetadata array of metadata to be placed in the
-	 *                               `Upload-Metadata` header.
-	 *                               see https://tus.io/protocols/resumable-upload.html#upload-metadata
-	 *                               Don't Base64 encode the value.
-	 * @param int    $noOfChunks
-	 * @param int $bytes
+	 * @param array $uploadMetadata array of metadata to be placed in the
+	 *                              `Upload-Metadata` header.
+	 *                              see https://tus.io/protocols/resumable-upload.html#upload-metadata
+	 *                              Don't Base64 encode the value.
+	 * @param int $noOfChunks
+	 * @param int|null $bytes
 	 * @param string $checksum
 	 *
 	 * @return void
-	 * @throws ConnectionException
 	 * @throws ReflectionException
+	 * @throws GuzzleException
+	 * @throws ConnectionException
 	 * @throws TusException
 	 */
 	public function userUploadsUsingTusAFileTo(
@@ -155,7 +159,7 @@ class TUSContext implements Context {
 		int $noOfChunks = 1,
 		int $bytes = null,
 		string $checksum = ''
-	) {
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getUserPassword($user);
 		$headers = [
@@ -209,13 +213,14 @@ class TUSContext implements Context {
 	 * @param string $content
 	 * @param string $destination
 	 *
-	 * @return string
+	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function userUploadsAFileWithContentToUsingTus(
 		string $user,
 		string $content,
 		string $destination
-	) {
+	):void {
 		$tmpfname = $this->writeDataToTempFile($content);
 		try {
 			$this->userUploadsUsingTusAFileTo(
@@ -234,20 +239,22 @@ class TUSContext implements Context {
 	 *
 	 * @param string $user
 	 * @param string $content
-	 * @param int    $noOfChunks
+	 * @param int $noOfChunks
 	 * @param string $destination
 	 *
 	 * @return void
 	 * @throws ConnectionException
 	 * @throws ReflectionException
 	 * @throws TusException
+	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function userUploadsAFileWithContentInChunksUsingTus(
 		string $user,
 		string $content,
 		int $noOfChunks,
 		string $destination
-	) {
+	):void {
 		$tmpfname = $this->writeDataToTempFile($content);
 		$this->userUploadsUsingTusAFileTo(
 			$user,
@@ -268,13 +275,15 @@ class TUSContext implements Context {
 	 * @param string $mtime Time in human readable format is taken as input which is converted into milliseconds that is used by API
 	 *
 	 * @return void
+	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function userUploadsFileWithContentToWithMtimeUsingTUS(
 		string $user,
 		string $source,
 		string $destination,
 		string $mtime
-	) {
+	):void {
 		$mtime = new DateTime($mtime);
 		$mtime = $mtime->format('U');
 		$user = $this->featureContext->getActualUsername($user);
@@ -292,7 +301,7 @@ class TUSContext implements Context {
 	 * @return string the file name
 	 * @throws Exception
 	 */
-	private function writeDataToTempFile(string $content) {
+	private function writeDataToTempFile(string $content):string {
 		$tmpfname = \tempnam(
 			$this->featureContext->acceptanceTestsDirLocation(),
 			"tus-upload-test-"
@@ -316,7 +325,7 @@ class TUSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -331,12 +340,13 @@ class TUSContext implements Context {
 	 * @param TableNode $headers
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userCreatesWithUpload(
 		string $user,
 		string $content,
 		TableNode $headers
-	) {
+	):void {
 		$this->createNewTUSresourceWithHeaders($user, $headers, $content);
 	}
 
@@ -348,12 +358,14 @@ class TUSContext implements Context {
 	 * @param string $content
 	 *
 	 * @return void
+	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function userUploadsWithCreatesWithUpload(
 		string $user,
 		string $source,
 		string $content
-	) {
+	):void {
 		$tmpfname = $this->writeDataToTempFile($content);
 		$this->userUploadsUsingTusAFileTo(
 			$user,
@@ -382,7 +394,7 @@ class TUSContext implements Context {
 		string $checksum,
 		string $offset,
 		string $content
-	) {
+	):void {
 		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $content, $checksum);
 	}
 
@@ -402,7 +414,7 @@ class TUSContext implements Context {
 		string $checksum,
 		string $offset,
 		string $content
-	) {
+	):void {
 		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $content, $checksum);
 		$this->featureContext->theHTTPStatusCodeShouldBe(204, "");
 	}
@@ -418,7 +430,7 @@ class TUSContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userUploadsChunkFileWithChecksum($user, $offset, $data, $checksum) {
+	public function userUploadsChunkFileWithChecksum(string $user, string $offset, string $data, string $checksum):void {
 		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $data, $checksum);
 	}
 
@@ -433,7 +445,7 @@ class TUSContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userHasUploadedChunkFileWithChecksum($user, $offset, $data, $checksum) {
+	public function userHasUploadedChunkFileWithChecksum(string $user, string $offset, string $data, string $checksum):void {
 		$this->sendsAChunkToTUSLocationWithOffsetAndData($user, $offset, $data, $checksum);
 		$this->featureContext->theHTTPStatusCodeShouldBe(204, "");
 	}
@@ -452,7 +464,7 @@ class TUSContext implements Context {
 	 *
 	 * @throws Exception
 	 */
-	public function userOverwritesFileWithChecksum($user, $offset, $data, $checksum, TableNode $headers) {
+	public function userOverwritesFileWithChecksum(string $user, string $offset, string $data, string  $checksum, TableNode $headers):void {
 		$this->createNewTUSresource($user, $headers);
 		$this->userHasUploadedChunkFileWithChecksum($user, $offset, $data, $checksum);
 	}
