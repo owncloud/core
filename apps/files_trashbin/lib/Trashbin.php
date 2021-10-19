@@ -298,7 +298,7 @@ class Trashbin {
 			// trashbin not usable for user (ex: guest), switch to owner only
 			$user = $owner;
 			if (!self::setUpTrash($owner)) {
-				// nothing to do as no trash is available anywheree
+				// nothing to do as no trash is available anywhere
 				return true;
 			}
 		}
@@ -799,7 +799,7 @@ class Trashbin {
 	 * recursive copy to copy a whole directory
 	 *
 	 * @param string $source source path, relative to the users files directory
-	 * @param string $destination destination path relative to the users root directoy
+	 * @param string $destination destination path relative to the users root directory
 	 * @param View $view file view for the users root directory
 	 * @return int
 	 * @throws Exceptions\CopyRecursiveException
