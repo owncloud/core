@@ -49,6 +49,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Allow renaming two files with the same name but different paths: <a href="https://github.com/owncloud/core/pull/39315">#39315</a></li>
         <li class="type-bugfix changelog-item">Bugfix - No sensitive data on exception page: <a href="https://github.com/owncloud/core/pull/39334">#39334</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Prohibit email/displayname change via API when not allowed: <a href="https://github.com/owncloud/core/pull/39353">#39353</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Clicking in the middle of the row in the file list downloads the file: <a href="https://github.com/owncloud/core/pull/39361">#39361</a></li>
         <li class="type-change changelog-item">Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
@@ -453,6 +454,17 @@
             <p>https://github.com/owncloud/core/issues/39332<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39353<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Clicking in the middle of the row in the file list downloads the file: <a href="https://github.com/owncloud/core/pull/39361">#39361</a></p>
+            <p>This change addresses the issue if the user clicks in on a row in the file list, the file gets
+   downloaded or open with the default viewer. This was not intended, the download or default
+   opening should only happen if the user clicks directly on the file name. Problems with mobile
+   devices, where the file name was too long to display, has been also solved.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39329<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39361<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></p>

@@ -51,6 +51,7 @@ Summary
 * Bugfix - Allow renaming two files with the same name but different paths: [#39315](https://github.com/owncloud/core/pull/39315)
 * Bugfix - No sensitive data on exception page: [#39334](https://github.com/owncloud/core/pull/39334)
 * Bugfix - Prohibit email/displayname change via API when not allowed: [#39353](https://github.com/owncloud/core/pull/39353)
+* Bugfix - Clicking in the middle of the row in the file list downloads the file: [#39361](https://github.com/owncloud/core/pull/39361)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -446,6 +447,16 @@ Details
 
    https://github.com/owncloud/core/issues/39332
    https://github.com/owncloud/core/pull/39353
+
+* Bugfix - Clicking in the middle of the row in the file list downloads the file: [#39361](https://github.com/owncloud/core/pull/39361)
+
+   This change addresses the issue if the user clicks in on a row in the file list, the file gets
+   downloaded or open with the default viewer. This was not intended, the download or default
+   opening should only happen if the user clicks directly on the file name. Problems with mobile
+   devices, where the file name was too long to display, has been also solved.
+
+   https://github.com/owncloud/core/issues/39329
+   https://github.com/owncloud/core/pull/39361
 
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
