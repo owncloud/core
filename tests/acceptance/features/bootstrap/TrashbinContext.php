@@ -641,10 +641,12 @@ class TrashbinContext implements Context {
 		if ($techPreviewHadToBeEnabled) {
 			$this->occContext->disableDAVTechPreview();
 		}
-		$originalPath = \trim($originalPath, '/');
+
+		// we don't care if the test step writes a leading "/" or not
+		$originalPath = \ltrim($originalPath, '/');
 
 		foreach ($listing as $entry) {
-			if ($entry['original-location'] === $originalPath) {
+			if (\ltrim($entry['original-location'], '/') === $originalPath) {
 				return true;
 			}
 		}
@@ -896,7 +898,7 @@ class TrashbinContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		Assert::assertTrue(
 			$this->isInTrash($user, $originalPath),
-			"File previously located at $originalPath wasn't found in the trashbin"
+			"File previously located at $originalPath wasn't found in the trashbin of user $user"
 		);
 	}
 
@@ -916,7 +918,7 @@ class TrashbinContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
-			"File previously located at $originalPath was found in the trashbin"
+			"File previously located at $originalPath was found in the trashbin of user $user"
 		);
 	}
 
