@@ -50,6 +50,7 @@ Summary
 * Bugfix - File version names for share recipients: [#39314](https://github.com/owncloud/core/pull/39314)
 * Bugfix - Allow renaming two files with the same name but different paths: [#39315](https://github.com/owncloud/core/pull/39315)
 * Bugfix - No sensitive data on exception page: [#39334](https://github.com/owncloud/core/pull/39334)
+* Bugfix - Hide legacy login button animation: [#39352](https://github.com/owncloud/core/pull/39352)
 * Bugfix - Prohibit email/displayname change via API when not allowed: [#39353](https://github.com/owncloud/core/pull/39353)
 * Bugfix - Clicking in the middle of the row in the file list downloads the file: [#39361](https://github.com/owncloud/core/pull/39361)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
@@ -439,6 +440,13 @@ Details
    like passwords as method arguments. They are now filtered and no longer exposed to the user.
 
    https://github.com/owncloud/core/pull/39334
+
+* Bugfix - Hide legacy login button animation: [#39352](https://github.com/owncloud/core/pull/39352)
+
+   In some cases the old animation was still displayed on login buttons. This PR hides it in favour
+   of the newly introduced animation.
+
+   https://github.com/owncloud/core/pull/39352
 
 * Bugfix - Prohibit email/displayname change via API when not allowed: [#39353](https://github.com/owncloud/core/pull/39353)
 
