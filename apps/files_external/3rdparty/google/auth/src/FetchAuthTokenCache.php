@@ -38,18 +38,8 @@ class FetchAuthTokenCache implements
     private $fetcher;
 
     /**
-     * @var array
-     */
-    private $cacheConfig;
-
-    /**
-     * @var CacheItemPoolInterface
-     */
-    private $cache;
-
-    /**
      * @param FetchAuthTokenInterface $fetcher A credentials fetcher
-     * @param array $cacheConfig Configuration for the cache
+     * @param array<mixed> $cacheConfig Configuration for the cache
      * @param CacheItemPoolInterface $cache
      */
     public function __construct(
@@ -72,7 +62,7 @@ class FetchAuthTokenCache implements
      * from the supplied fetcher.
      *
      * @param callable $httpHandler callback which delivers psr7 request
-     * @return array the response
+     * @return array<mixed> the response
      * @throws \Exception
      */
     public function fetchAuthToken(callable $httpHandler = null)
@@ -97,7 +87,7 @@ class FetchAuthTokenCache implements
     }
 
     /**
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function getLastReceivedToken()
     {
@@ -118,7 +108,7 @@ class FetchAuthTokenCache implements
                 'Google\Auth\SignBlobInterface'
             );
         }
-        
+
         return $this->fetcher->getClientName($httpHandler);
     }
 
@@ -164,6 +154,8 @@ class FetchAuthTokenCache implements
         if ($this->fetcher instanceof GetQuotaProjectInterface) {
             return $this->fetcher->getQuotaProject();
         }
+
+        return null;
     }
 
     /*
@@ -189,10 +181,10 @@ class FetchAuthTokenCache implements
     /**
      * Updates metadata with the authorization token.
      *
-     * @param array $metadata metadata hashmap
+     * @param array<mixed> $metadata metadata hashmap
      * @param string $authUri optional auth uri
      * @param callable $httpHandler callback which delivers psr7 request
-     * @return array updated metadata hashmap
+     * @return array<mixed> updated metadata hashmap
      * @throws \RuntimeException If the fetcher does not implement
      *     `Google\Auth\UpdateMetadataInterface`.
      */
@@ -233,6 +225,10 @@ class FetchAuthTokenCache implements
         return $newMetadata;
     }
 
+    /**
+     * @param string|null $authUri
+     * @return array<mixed>|null
+     */
     private function fetchAuthTokenFromCache($authUri = null)
     {
         // Use the cached value if its available.
@@ -263,6 +259,11 @@ class FetchAuthTokenCache implements
         return null;
     }
 
+    /**
+     * @param array<mixed> $authToken
+     * @param string|null  $authUri
+     * @return void
+     */
     private function saveAuthTokenInCache($authToken, $authUri = null)
     {
         if (isset($authToken['access_token']) ||
