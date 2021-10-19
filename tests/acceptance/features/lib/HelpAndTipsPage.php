@@ -45,7 +45,7 @@ class HelpAndTipsPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getLinkXpath($linkTitle) {
+	public function getLinkXpath(string $linkTitle): string {
 		return \sprintf($this->linkXpath, $linkTitle);
 	}
 
@@ -56,7 +56,7 @@ class HelpAndTipsPage extends OwncloudPage {
 	 *
 	 * @return NodeElement
 	 */
-	public function getLinkByTitle($linkTitle) {
+	public function getLinkByTitle(string $linkTitle): NodeElement {
 		$linkElement = $this->find('xpath', $this->getLinkXpath($linkTitle));
 		return $linkElement;
 	}
@@ -68,7 +68,7 @@ class HelpAndTipsPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getLinkUrlByTitle($linkTitle) {
+	public function getLinkUrlByTitle(string $linkTitle): string {
 		return $this->getLinkByTitle($linkTitle)->getAttribute("href");
 	}
 }

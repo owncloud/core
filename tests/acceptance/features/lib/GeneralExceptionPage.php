@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
@@ -37,7 +38,7 @@ class GeneralExceptionPage extends OwncloudPage {
 	 * @return string
 	 * @throws ElementNotFoundException
 	 */
-	public function getExceptionMessage() {
+	public function getExceptionMessage(): string {
 		$exceptionMessageElement = $this->find("xpath", $this->exceptionMessageXpath);
 		$this->assertElementNotNull(
 			$exceptionMessageElement,
@@ -52,7 +53,7 @@ class GeneralExceptionPage extends OwncloudPage {
 	 * @return string
 	 * @throws ElementNotFoundException
 	 */
-	public function getExceptionTitle() {
+	public function getExceptionTitle(): string {
 		$exceptionTitleElement = $this->find("xpath", $this->exceptionTitleXpath);
 		$this->assertElementNotNull(
 			$exceptionTitleElement,
@@ -68,7 +69,7 @@ class GeneralExceptionPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
