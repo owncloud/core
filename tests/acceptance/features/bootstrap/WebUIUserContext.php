@@ -55,7 +55,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function displayNameOfTheCurrentUserOnTheWebUiShouldBe($displayname) {
+	public function displayNameOfTheCurrentUserOnTheWebUiShouldBe(string $displayname):void {
 		$actualUserName = $this->owncloudPage->getMyDisplayname();
 		Assert::assertSame(
 			$displayname,
@@ -72,8 +72,8 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function displayNameOfTheCurrentUserShouldBeVisibleOnTheWebUI(
-		$shouldOrNot
-	) {
+		string $shouldOrNot
+	):void {
 		$should = ($shouldOrNot !== "not");
 		if ($should) {
 			Assert::assertTrue(
@@ -95,7 +95,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function avatarShouldBeShownOnTheWebUI($shouldOrNot) {
+	public function avatarShouldBeShownOnTheWebUI(string $shouldOrNot):void {
 		$should = ($shouldOrNot !== "no");
 		if ($should) {
 			Assert::assertTrue(

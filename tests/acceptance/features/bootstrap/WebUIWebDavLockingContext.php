@@ -77,7 +77,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function unlockFileOnTheWebui($lockNumber, $file) {
+	public function unlockFileOnTheWebui(int $lockNumber, string $file):void {
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
@@ -91,7 +91,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theFileShouldBeMarkedAsLockedOnTheWebui($file) {
+	public function theFileShouldBeMarkedAsLockedOnTheWebui(string $file):void {
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
@@ -108,7 +108,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theFileShouldNotBeMarkedAsLockedOnTheWebui($file) {
+	public function theFileShouldNotBeMarkedAsLockedOnTheWebui(string $file):void {
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		$fileRow = $pageObject->findFileRowByName($file, $this->getSession());
@@ -128,10 +128,10 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 * @return boolean true if the requested check was successful
 	 */
 	public function theFileShouldBeMarkedAsLockedByUserInLocksTab(
-		$file,
-		$shouldOrNot,
-		$lockedBy
-	) {
+		string $file,
+		string $shouldOrNot,
+		string $lockedBy
+	):bool {
 		$should = ($shouldOrNot !== "not");
 		$this->closeDetailsDialog();
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
@@ -179,7 +179,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -191,7 +191,7 @@ class WebUIWebDavLockingContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	private function closeDetailsDialog() {
+	private function closeDetailsDialog():void {
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		try {
 			$pageObject->closeDetailsDialog();

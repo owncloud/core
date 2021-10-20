@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\GeneralErrorPage;
 use Page\LoginPage;
@@ -31,6 +32,7 @@ use Page\UsersPage;
 use Page\OwncloudPage;
 use PHPUnit\Framework\Assert;
 use TestHelpers\AppConfigHelper;
+use WebDriver\Exception\ElementNotVisible;
 
 require_once 'bootstrap.php';
 
@@ -93,8 +95,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @Given the user/administrator has browsed to the users page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theUserBrowsesToTheUsersPage() {
+	public function theUserBrowsesToTheUsersPage():void {
 		$this->usersPage->open();
 		$this->usersPage->waitTillPageIsLoaded($this->getSession());
 	}
@@ -108,9 +111,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSetsTheQuotaOfUserUsingTheWebUI(
-		$username,
-		$quota
-	) {
+		string $username,
+		string $quota
+	):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
 	}
@@ -124,9 +127,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theAdministratorSetsInvalidQuotaOfUserUsingTheWebUI(
-		$username,
-		$quota
-	) {
+		string $username,
+		string $quota
+	):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->setQuotaOfUserTo(
 			$username,
@@ -139,21 +142,22 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	/**
 	 * @When /^the administrator (attempts to create|creates) a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)? using the webUI$/
 	 *
-	 * @param string $attemptTo
-	 * @param string $username
-	 * @param string $password
-	 * @param string $email
-	 * @param TableNode $groupsTable table of groups with a heading | group |
+	 * @param string|null $attemptTo
+	 * @param string|null $username
+	 * @param string|null $password
+	 * @param string|null $email
+	 * @param TableNode|null $groupsTable table of groups with a heading | group |
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function theAdminCreatesAUserUsingTheWebUI(
-		$attemptTo,
-		$username,
-		$password,
-		$email = null,
-		TableNode $groupsTable = null
-	) {
+		?string $attemptTo,
+		?string $username,
+		?string $password,
+		?string $email = null,
+		?TableNode $groupsTable = null
+	):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getActualPassword($password);
 		if ($groupsTable !== null) {
@@ -193,8 +197,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
-	public function theAdministratorAttemptsToCreateAUser(TableNode $table) {
+	public function theAdministratorAttemptsToCreateAUser(TableNode $table):void {
 		foreach ($table->getHash() as $row) {
 			$user = $row['user'];
 			$this->theAdminCreatesAUserUsingTheWebUI(
@@ -220,17 +225,18 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $attemptTo
 	 * @param string $username
-	 * @param string $email
-	 * @param TableNode $groupsTable table of groups with a heading | group |
+	 * @param string|null $email
+	 * @param TableNode|null $groupsTable table of groups with a heading | group |
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
 	public function theAdminCreatesAUserUsingWithoutAPasswordTheWebUI(
-		$attemptTo,
-		$username,
-		$email,
+		string $attemptTo,
+		string $username,
+		?string $email,
 		TableNode $groupsTable = null
-	) {
+	):void {
 		$this->theAdminCreatesAUserUsingTheWebUI(
 			$attemptTo,
 			$username,
@@ -246,10 +252,11 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdminResendsInvitationEmailUsingTheWebUI(
 		string $username
-	) {
+	):void {
 		$this->usersPage->resendInvitationEmail($username, $this->getSession());
 	}
 
@@ -259,8 +266,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function subadminShouldBeAbleToSeePasswordFieldInNewUserForm($shouldOrNot) {
+	public function subadminShouldBeAbleToSeePasswordFieldInNewUserForm(string $shouldOrNot):void {
 		$expected = true;
 		$expectedMsg = "The password field of new user was expected to be visible in new user form, but is not visible.";
 		if ($shouldOrNot == "not") {
@@ -283,8 +291,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function subadminShouldBeAbleToSeeEmailFieldInNewUserForm($shouldOrNot) {
+	public function subadminShouldBeAbleToSeeEmailFieldInNewUserForm(string $shouldOrNot):void {
 		$expected = true;
 		$expectedMsg = "The email field of new user was expected to be visible in new user form, but is not visible.";
 		if ($shouldOrNot == "not") {
@@ -310,7 +319,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theUserShouldSeeAnErrorWithMessage(
 		string $message
-	) {
+	):void {
 		Assert::assertEquals($message, $this->generalErrorPage->getErrorMessage());
 	}
 
@@ -322,7 +331,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdminDeletesTheGroupUsingTheWebUI($name) {
+	public function theAdminDeletesTheGroupUsingTheWebUI(string $name):void {
 		$this->usersPage->deleteGroup($name, $this->getSession(), true);
 		$this->featureContext->rememberThatGroupIsNotExpectedToExist($name);
 	}
@@ -334,7 +343,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdminDeletesDoesNotDeleteGroupUsingWebUI($name) {
+	public function theAdminDeletesDoesNotDeleteGroupUsingWebUI(string $name):void {
 		$this->usersPage->deleteGroup($name, $this->getSession(), false);
 	}
 
@@ -347,7 +356,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdminDeletesTheseGroupsUsingTheWebUI(TableNode $table) {
+	public function theAdminDeletesTheseGroupsUsingTheWebUI(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			$this->theAdminDeletesTheGroupUsingTheWebUI($row['groupname']);
@@ -363,7 +372,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdminDeletesDoesNotTheseGroupsUsingTheWebUI(TableNode $table) {
+	public function theAdminDeletesDoesNotTheseGroupsUsingTheWebUI(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
 			$this->theAdminDeletesDoesNotDeleteGroupUsingWebUI($row['groupname']);
@@ -377,7 +386,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theGroupNameShouldBeListed($groupName) {
+	public function theGroupNameShouldBeListed(string $groupName):void {
 		$groups = $this->usersPage->getAllGroups();
 		Assert::assertContains(
 			$groupName,
@@ -393,7 +402,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theGroupNamedShouldNotBeListedOnTheWebUI($name) {
+	public function theGroupNamedShouldNotBeListedOnTheWebUI(string $name):void {
 		Assert::assertFalse(
 			\in_array($name, $this->usersPage->getAllGroups(), true),
 			"group '" . $name . "' is listed but should not be"
@@ -411,9 +420,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theseGroupsShouldBeListedOnTheWebUI(
-		$shouldOrNot,
+		string $shouldOrNot,
 		TableNode $table
-	) {
+	):void {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->usersPage->getAllGroups();
 		$this->featureContext->verifyTableNodeColumns($table, ['groupname']);
@@ -435,7 +444,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUserReloadsTheUsersPage() {
+	public function theUserReloadsTheUsersPage():void {
 		$this->getSession()->reload();
 		$this->usersPage->waitTillPageIsLoaded($this->getSession());
 	}
@@ -446,8 +455,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdminDisablesUserUsingTheWebui($username) {
+	public function theAdminDisablesUserUsingTheWebui(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting("Show enabled/disabled option");
@@ -461,8 +471,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
 	 */
-	public function theDisabledUserTriesToLogin($username, $password) {
+	public function theDisabledUserTriesToLogin(string $username, string $password):void {
 		$password = $this->featureContext->substituteInLineCodes($password, $username);
 		$username = $this->featureContext->getActualUsername($username);
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
@@ -485,8 +496,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorDeletesTheUser($username) {
+	public function theAdministratorDeletesTheUser(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->deleteUser($username, true, $this->getSession());
 		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
@@ -498,8 +510,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorDoesNotDeleteTheUser($username) {
+	public function theAdministratorDoesNotDeleteTheUser(string $username):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->deleteUser($username, false, $this->getSession());
 	}
@@ -511,8 +524,10 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws ElementNotFoundException
+	 * @throws Exception
 	 */
-	public function theDeletedUserTriesToLogin($username, $password) {
+	public function theDeletedUserTriesToLogin(string $username, string $password):void {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		$password = $this->featureContext->substituteInLineCodes($password, $username);
 		$username = $this->featureContext->getActualUsername($username);
@@ -528,7 +543,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function enableOrDisableSettings($action, $setting) {
+	public function enableOrDisableSettings(string $action, string $setting):void {
 		$value = ($action === 'enables' || $action === 'enabled') ? true : false;
 		$this->usersPage->setSetting($setting, $value);
 	}
@@ -540,8 +555,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $quota
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
+	public function quotaOfUserShouldBeSetToOnTheWebUI(string $username, string $quota):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$setQuota = $this->usersPage->getQuotaOfUser($username);
 		Assert::assertEquals(
@@ -560,7 +576,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table) {
+	public function theAdministratorShouldBeAbleToSeeEmailOfTheseUsers(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
@@ -587,7 +603,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorShouldBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
+	public function theAdministratorShouldBeAbleToSeeQuotaOfTheseUsers(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'quota']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
@@ -611,7 +627,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorShouldNotBeAbleToSeeQuotaOfTheseUsers(TableNode $table) {
+	public function theAdministratorShouldNotBeAbleToSeeQuotaOfTheseUsers(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
@@ -635,7 +651,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorShouldBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+	public function theAdministratorShouldBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
@@ -659,7 +675,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorShouldNotBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table) {
+	public function theAdministratorShouldNotBeAbleToSeePasswordColumnOfTheseUsers(TableNode $table):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['username']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
@@ -685,7 +701,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdministratorShouldBeAbleToSeeStorageLocationOfTheseUsers(
 		TableNode $table
-	) {
+	):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'storage location']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
@@ -716,10 +732,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table table of usernames and last logins with a heading | username | and | last logins |
 	 *
 	 * @return void
+	 * @throws ElementNotVisible
+	 * @throws Exception
 	 */
 	public function theAdministratorShouldBeAbleToSeeLastLoginOfTheseUsers(
 		TableNode $table
-	) {
+	):void {
 		$this->featureContext->verifyTableNodeColumns($table, ['username', 'last login']);
 		foreach ($table as $row) {
 			$user = $this->featureContext->getActualUsername($row['username']);
@@ -747,7 +765,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -794,7 +812,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function restoreScenario(AfterScenarioScope $afterScenarioScope) {
+	public function restoreScenario(AfterScenarioScope $afterScenarioScope):void {
 		// Restore app config settings
 		AppConfigHelper::modifyAppConfigs(
 			$this->featureContext->getBaseUrl(),
@@ -812,7 +830,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdminAddsGroupUsingTheWebUI($groupName) {
+	public function theAdminAddsGroupUsingTheWebUI(string $groupName):void {
 		$this->usersPage->addGroup($groupName, $this->getSession());
 		$this->featureContext->addGroupToCreatedGroupsList($groupName);
 	}
@@ -826,7 +844,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheWebui($user, $displayName) {
+	public function theAdministratorChangesTheDisplayNameOfUserToUsingTheWebui(string $user, string $displayName):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->setDisplayNameofUserTo($this->getSession(), $user, $displayName);
 		$this->featureContext->rememberUserDisplayName($user, $displayName);
@@ -839,8 +857,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorChangesThePasswordOfUserToUsingTheWebui($user, $password) {
+	public function theAdministratorChangesThePasswordOfUserToUsingTheWebui(string $user, string $password):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->changeUserPassword($this->getSession(), $user, $password);
 	}
@@ -852,8 +871,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function addsUserToGroupUsingTheWebui($user, $group) {
+	public function addsUserToGroupUsingTheWebui(string $user, string $group):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->addOrRemoveUserToGroup($this->getSession(), $user, $group);
 	}
@@ -865,8 +885,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function adminTriesToAddUserToGroupUsingTheWebui($user, $group) {
+	public function adminTriesToAddUserToGroupUsingTheWebui(string $user, string $group):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->addOrRemoveUserToGroup($this->getSession(), $user, $group, true, false);
 	}
@@ -878,8 +899,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorRemovesUserFromGroupUsingTheWebui($user, $group) {
+	public function theAdministratorRemovesUserFromGroupUsingTheWebui(string $user, string $group):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$this->usersPage->addOrRemoveUserToGroup($this->getSession(), $user, $group, false);
 	}
@@ -893,7 +915,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorChangesTheEmailOfUserToUsingTheWebui($username, $email) {
+	public function theAdministratorChangesTheEmailOfUserToUsingTheWebui(string $username, string $email):void {
 		$username = $this->featureContext->getActualUsername($username);
 		$this->usersPage->openAppSettingsMenu();
 		$this->usersPage->setSetting('Show email address');
@@ -909,7 +931,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserCountOfGroupShouldDisplayUsersOnTheWebUI($group, $count) {
+	public function theUserCountOfGroupShouldDisplayUsersOnTheWebUI(string $group, int $count):void {
 		$expectedCount = (int) $count;
 		$actualCount = $this->usersPage->getUserCountOfGroup($group);
 		Assert::assertEquals(
