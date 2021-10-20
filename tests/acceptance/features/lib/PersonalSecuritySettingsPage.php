@@ -25,6 +25,7 @@ namespace Page;
 
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
@@ -55,9 +56,9 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * @param string $appName
 	 *
 	 * @return void
-	 * @throws ElementNotFoundException
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function createNewAppPassword($appName) {
+	public function createNewAppPassword(string $appName): void {
 		$this->fillField($this->appPasswordNameInputId, $appName);
 		$createNewAppPasswordButton = $this->findById(
 			$this->createNewAppPasswordButtonId
@@ -99,9 +100,9 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * @param string $appName
 	 *
 	 * @return NodeElement
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function getLinkedAppByName($appName) {
+	public function getLinkedAppByName(string $appName): NodeElement {
 		$appTrs = $this->findAll("xpath", $this->linkedAppsTrXpath);
 		foreach ($appTrs as $appTr) {
 			$app = $appTr->find("xpath", $this->linkedAppNameXpath);
@@ -109,7 +110,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 				return $appTr;
 			}
 		}
-		throw new \Exception("Could not find app '$appName'");
+		throw new Exception("Could not find app '$appName'");
 	}
 
 	/**
@@ -120,7 +121,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 *
 	 * @return NodeElement|NULL
 	 */
-	public function getDisconnectButton(NodeElement $tr) {
+	public function getDisconnectButton(NodeElement $tr): ?NodeElement {
 		return $tr->find("xpath", $this->disconnectButtonXpath);
 	}
 
@@ -130,7 +131,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 *
 	 * @return NodeElement[]|NULL[]
 	 */
-	public function getAppPasswordResult() {
+	public function getAppPasswordResult(): array {
 		return [
 			$this->findField($this->newAppLoginNameId),
 			$this->findField($this->newAppPasswordId)
@@ -145,6 +146,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,

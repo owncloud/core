@@ -24,6 +24,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -67,8 +68,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * @param string $language
 	 *
 	 * @return void
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function changeLanguage($language) {
+	public function changeLanguage(string $language): void {
 		$this->selectFieldOption($this->languageSelectId, $language);
 	}
 
@@ -80,6 +82,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
@@ -99,8 +102,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function changePassword($oldPassword, $newPassword, Session $session) {
+	public function changePassword(string $oldPassword, string $newPassword, Session $session): void {
 		$this->fillField($this->newPasswordInputID, $newPassword);
 		$this->fillField($this->oldPasswordInputID, $oldPassword);
 		$changePasswordButton = $this->findById($this->changePasswordButtonID);
@@ -119,8 +123,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function changeFullname($newFullname, Session $session) {
+	public function changeFullname(string $newFullname, Session $session): void {
 		$this->fillField($this->fullNameInputID, $newFullname);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
@@ -132,7 +137,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function changeEmailAddress($newEmailAddress, Session $session) {
+	public function changeEmailAddress(string $newEmailAddress, Session $session): void {
 		$emailField = $this->findById($this->emailAddressInputID);
 		if ($emailField === null) {
 			throw new ElementNotFoundException(
@@ -154,10 +159,10 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	/**
 	 *
 	 * @return string
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 *
 	 */
-	public function getWrongPasswordMessageText() {
+	public function getWrongPasswordMessageText(): string {
 		$errorMessage = $this->findById($this->passwordErrorMessageID);
 
 		$this->assertElementNotNull(
@@ -173,8 +178,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * check if the version number displayed in the UI is correct
 	 *
 	 * @return bool
+	 * @throws Exception
 	 */
-	public function isVersionDisplayed() {
+	public function isVersionDisplayed(): bool {
 		$this->waitTillElementIsNotNull($this->versionSectionXpath);
 		$versionSection = $this->find("xpath", $this->versionSectionXpath);
 		$currentVersion = \trim(SetupHelper::runOcc(['-V'])['stdOut']);
@@ -190,7 +196,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getFederatedCloudID() {
+	public function getFederatedCloudID(): string {
 		$this->waitTillElementIsNotNull($this->federatedCloudIDXpath);
 		return $this->find("xpath", $this->federatedCloudIDXpath)->getText();
 	}
@@ -200,9 +206,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @param string $groupName
 	 *
-	 * @return string
+	 * @return bool
 	 */
-	public function isGroupNameDisplayed($groupName) {
+	public function isGroupNameDisplayed(string $groupName): bool {
 		$this->waitTillElementIsNotNull($this->groupListXpath);
 		$groupList = $this->find("xpath", $this->groupListXpath)->getText();
 
@@ -219,8 +225,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function setProfilePicture($fileName, Session $session) {
+	public function setProfilePicture(string $fileName, Session $session): void {
 		$this->waitTillElementIsNotNull($this->setProfilePicFromFilesBtnXpath);
 		$profilePicBtn = $this->find('xpath', $this->setProfilePicFromFilesBtnXpath);
 		$this->assertElementNotNull(
@@ -267,7 +274,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return boolean
 	 */
-	public function isProfilePicturePreviewDisplayed() {
+	public function isProfilePicturePreviewDisplayed(): bool {
 		$profilePicPreview = $this->find('xpath', $this->profilePicPreviewXpath);
 		if ($profilePicPreview === null) {
 			return false;
@@ -282,7 +289,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function deleteProfilePicture(Session $session) {
+	public function deleteProfilePicture(Session $session): void {
 		$deleteBtn = $this->find('xpath', $this->profilePicDeleteBtnXpath);
 		$this->assertElementNotNull(
 			$deleteBtn,
@@ -299,8 +306,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function selectDefaultCropForProfilePicture(Session $session) {
+	public function selectDefaultCropForProfilePicture(Session $session): void {
 		$setBtn = $this->find('xpath', $this->setProfilePicBtnXpath);
 		$this->waitTillXpathIsVisible(
 			$this->profilePicUploadedXpath
@@ -322,7 +330,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function selectFileForUploadAsProfilePicture(Session $session, $name) {
+	public function selectFileForUploadAsProfilePicture(Session $session, string $name): void {
 		$uploadField = $this->findById($this->profilePicUploadInputId);
 		$this->assertElementNotNull(
 			$uploadField,
@@ -341,8 +349,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 * @param string $name
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function uploadProfilePicture(Session $session, $name) {
+	public function uploadProfilePicture(Session $session, string $name): void {
 		$this->selectFileForUploadAsProfilePicture($session, $name);
 		$this->selectDefaultCropForProfilePicture($session);
 	}
@@ -352,7 +361,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @return boolean
 	 */
-	public function isFileUploadErrorMsgVisible() {
+	public function isFileUploadErrorMsgVisible(): bool {
 		$errorMsg = $this->waitTillElementIsNotNull($this->invalidImageErrorMsgXpath);
 		return $errorMsg !== null;
 	}

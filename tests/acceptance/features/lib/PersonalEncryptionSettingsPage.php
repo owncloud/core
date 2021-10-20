@@ -24,6 +24,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 
 /**
  * PageObject for the personal encryption settings page
@@ -45,7 +46,7 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function enablePasswordRecovery() {
+	public function enablePasswordRecovery(): void {
 		$userEnableRecoveryCheckbox = $this->find('xpath', $this->userEnableRecoveryCheckboxXpath);
 		$this->assertElementNotNull(
 			$userEnableRecoveryCheckbox,
@@ -65,7 +66,7 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
@@ -82,7 +83,7 @@ class PersonalEncryptionSettingsPage extends OwncloudPage {
 		}
 
 		if ($currentTime > $end) {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " timeout waiting for personal encryption settings page to load"
 			);
 		}
