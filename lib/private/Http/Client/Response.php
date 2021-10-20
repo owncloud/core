@@ -23,7 +23,7 @@
 namespace OC\Http\Client;
 
 use OCP\Http\Client\IResponse;
-use GuzzleHttp\Message\Response as GuzzleResponse;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 
 /**
  * Class Response
@@ -69,7 +69,10 @@ class Response implements IResponse {
 	 * @return string
 	 */
 	public function getHeader($key) {
-		return $this->response->getHeader($key);
+		if ($this->response->hasHeader($key)) {
+			return \implode(', ', $this->response->getHeader($key));
+		}
+		return '';
 	}
 
 	/**

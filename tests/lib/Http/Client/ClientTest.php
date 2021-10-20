@@ -8,15 +8,16 @@
 
 namespace Test\Http\Client;
 
-use GuzzleHttp\Message\Response;
+use GuzzleHttp\Psr7\Response;
 use OC\Http\Client\Client;
 use OCP\IConfig;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Class ClientTest
  */
 class ClientTest extends \Test\TestCase {
-	/** @var \GuzzleHttp\Client */
+	/** @var GuzzleClient */
 	private $guzzleClient;
 	/** @var Client */
 	private $client;
@@ -26,9 +27,7 @@ class ClientTest extends \Test\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 		$this->config = $this->createMock('\OCP\IConfig');
-		$this->guzzleClient = $this->getMockBuilder('\GuzzleHttp\Client')
-			->disableOriginalConstructor()
-			->getMock();
+		$this->guzzleClient = $this->createMock(GuzzleClient::class);
 		$certificateManager = $this->createMock('\OCP\ICertificateManager');
 		$this->client = new Client(
 			$this->config,
@@ -81,8 +80,8 @@ class ClientTest extends \Test\TestCase {
 
 	public function testGet() {
 		$this->guzzleClient->method('get')
-			->willReturn(new Response(1337));
-		$this->assertEquals(1337, $this->client->get('http://localhost/', [])->getStatusCode());
+			->willReturn(new Response(200));
+		$this->assertEquals(200, $this->client->get('http://localhost/', [])->getStatusCode());
 	}
 
 	public function testGetStream() {
@@ -95,8 +94,8 @@ class ClientTest extends \Test\TestCase {
 				]
 			);
 		$this->guzzleClient->method('get')
-			->willReturn(new Response(1337));
-		$this->assertEquals(1337, $this->client->get(
+			->willReturn(new Response(200));
+		$this->assertEquals(200, $this->client->get(
 			'http://localhost/',
 			[
 				'stream' => true,
@@ -113,25 +112,25 @@ class ClientTest extends \Test\TestCase {
 
 	public function testPost() {
 		$this->guzzleClient->method('post')
-			->willReturn(new Response(1337));
-		$this->assertEquals(1337, $this->client->post('http://localhost/', [])->getStatusCode());
+			->willReturn(new Response(200));
+		$this->assertEquals(200, $this->client->post('http://localhost/', [])->getStatusCode());
 	}
 
 	public function testPut() {
 		$this->guzzleClient->method('put')
-			->willReturn(new Response(1337));
-		$this->assertEquals(1337, $this->client->put('http://localhost/', [])->getStatusCode());
+			->willReturn(new Response(200));
+		$this->assertEquals(200, $this->client->put('http://localhost/', [])->getStatusCode());
 	}
 
 	public function testDelete() {
 		$this->guzzleClient->method('delete')
-			->willReturn(new Response(1337));
-		$this->assertEquals(1337, $this->client->delete('http://localhost/', [])->getStatusCode());
+			->willReturn(new Response(201));
+		$this->assertEquals(201, $this->client->delete('http://localhost/', [])->getStatusCode());
 	}
 
 	public function testOptions() {
-		$this->guzzleClient->method('options')
-			->willReturn(new Response(1337));
-		$this->assertEquals(1337, $this->client->options('http://localhost/', [])->getStatusCode());
+		$this->guzzleClient->method('request')
+			->willReturn(new Response(200));
+		$this->assertEquals(200, $this->client->options('http://localhost/', [])->getStatusCode());
 	}
 }

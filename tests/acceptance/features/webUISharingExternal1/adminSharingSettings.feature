@@ -25,4 +25,4 @@ Feature: Manage Trusted servers from the webUI
   Scenario: Add  url as trusted server which is not oc server from the webUI
     When the administrator adds "http://google.com" as a trusted server using the webUI
     Then url "http://google.com" should not be a trusted server
-    And a trusted server error message should be displayed on the webUI with the text "Client error response"
+    And a trusted server error message should be displayed on the webUI with the text "Client error"
