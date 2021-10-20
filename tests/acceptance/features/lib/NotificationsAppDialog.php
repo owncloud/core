@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 
 /**
  * PageObject for the Notifications area
@@ -37,7 +38,7 @@ class NotificationsAppDialog extends OwncloudPage {
 	 *
 	 * @return array with notifications details title,link,message
 	 */
-	public function getAllNotifications() {
+	public function getAllNotifications(): array {
 		$notifications = $this->findAll("xpath", $this->notificationContainerXpath);
 		$notificationsArray = [];
 		foreach ($notifications as $notification) {
@@ -70,9 +71,9 @@ class NotificationsAppDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @return \Page\Notification[]
+	 * @return Notification[]
 	 */
-	public function getAllNotificationObjects() {
+	public function getAllNotificationObjects(): array {
 		$notificationsElement = $this->findAll("xpath", $this->notificationContainerXpath);
 		$notificationObjects = [];
 		foreach ($notificationsElement as $notificationElement) {
@@ -94,6 +95,7 @@ class NotificationsAppDialog extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
