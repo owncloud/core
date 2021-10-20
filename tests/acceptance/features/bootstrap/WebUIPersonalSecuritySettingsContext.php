@@ -63,7 +63,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 *
 	 * @return void
 	 */
-	public function theUserBrowsesToThePersonalSecuritySettingsPage() {
+	public function theUserBrowsesToThePersonalSecuritySettingsPage():void {
 		$this->personalSecuritySettingsPage->open();
 		$this->personalSecuritySettingsPage->waitTillPageIsLoaded(
 			$this->getSession()
@@ -76,7 +76,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 *
 	 * @return void
 	 */
-	public function theUserCreatesANewAppPasswordUsingTheWebUI() {
+	public function theUserCreatesANewAppPasswordUsingTheWebUI():void {
 		$this->personalSecuritySettingsPage->createNewAppPassword($this->appName);
 		$this->newAppPassword = $this->personalSecuritySettingsPage
 			->getAppPasswordResult()[1]->getValue();
@@ -86,9 +86,9 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * @Then the new app should be listed in the App passwords list on the webUI
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAppShouldBeListedInTheAppPasswordsListOnTheWebUI() {
+	public function theAppShouldBeListedInTheAppPasswordsListOnTheWebUI():void {
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
@@ -113,7 +113,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 *
 	 * @return void
 	 */
-	public function theUserLogsInWithNewAppPassword($username) {
+	public function theUserLogsInWithNewAppPassword(string $username):void {
 		$this->webUILoginContext->userReLogsInWithUsernameAndPassword(
 			$username,
 			$this->newAppPassword
@@ -125,9 +125,9 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * @Given the user has deleted the app password
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserDeletesTheAppPassword() {
+	public function theUserDeletesTheAppPassword():void {
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
@@ -145,9 +145,9 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * @param string $username
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function reLogInWithDeletedAppPassword($username) {
+	public function reLogInWithDeletedAppPassword(string $username):void {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		$this->loginPage->loginAs($username, $this->newAppPassword);
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
@@ -163,7 +163,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
