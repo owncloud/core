@@ -205,7 +205,7 @@ class Storage {
 				]);
 
 				$config = \OC::$server->getConfig();
-				if ($config->getSystemValue('file_storage.save_version', false) === true) {
+				if ($config->getSystemValue('file_storage.save_version_author', false) === true) {
 					$user = \OC::$server->getUserSession()->getUser();
 					if ($user !== null && !$users_view->file_exists($versionFileName . '.json')) {
 						$versions = self::getVersions($uid, $filename);

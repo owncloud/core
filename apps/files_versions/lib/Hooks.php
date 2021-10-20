@@ -36,7 +36,7 @@ class Hooks {
 	public static function connectHooks() {
 		// Listen to write signals
 		\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');
-		if (\OC::$server->getConfig()->getSystemValue('file_storage.save_version', false) === true) {
+		if (\OC::$server->getConfig()->getSystemValue('file_storage.save_version_author', false) === true) {
 			\OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Versions\Hooks', 'post_write_hook');
 		}
 		// Listen to delete and rename signals

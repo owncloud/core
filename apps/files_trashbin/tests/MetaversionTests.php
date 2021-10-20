@@ -88,7 +88,7 @@ class MetaversionTests extends TestCase {
 
 		$mockConfig->expects($this->any())->method('getSystemValue')
 	  ->will($this->returnCallback(function ($key, $default) use ($config) {
-	  	if ($key === 'file_storage.save_version') {
+	  	if ($key === 'file_storage.save_version_author') {
 	  		return true;
 	  	} else {
 	  		return $config->getSystemValue($key, $default);
@@ -111,7 +111,7 @@ class MetaversionTests extends TestCase {
 
 	public function testMetadataVersionFeatures() {
 		$config = \OC::$server->getConfig();
-		$constant = 'file_storage.save_version';
+		$constant = 'file_storage.save_version_author';
 		$mockConfigValue = $config->getSystemValue($constant, false);
 		$this->assertTrue($mockConfigValue);
 
