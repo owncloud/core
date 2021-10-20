@@ -65,8 +65,9 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 * @param string $to
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
-	protected function generateHelpLinks($to) {
+	protected function generateHelpLinks(string $to):string {
 		$version = SetupHelper::getSystemConfigValue(
 			'version',
 			$this->featureContext->getStepLineRef()
@@ -82,9 +83,9 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 * @param string $linkTitle
 	 *
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	protected function getLinkID($linkTitle) {
+	protected function getLinkID(string $linkTitle):string {
 		switch ($linkTitle) {
 			case "How to do backups":
 				return "admin-backup";
@@ -97,7 +98,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 			case "Hardening and security guidance":
 				return "admin-security";
 			default:
-				throw new \Exception("The Link with title '$linkTitle' was not found");
+				throw new Exception("The Link with title '$linkTitle' was not found");
 		}
 	}
 
@@ -106,8 +107,9 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 * @When the administrator browses to the help and tips page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorHasBrowsedToTheHelpAndTipsPage() {
+	public function theAdministratorHasBrowsedToTheHelpAndTipsPage():void {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->helpAndTipsPage->open();
 	}
@@ -119,7 +121,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theLinkForShouldBeShownOnTheWebui($linkTitle) {
+	public function theLinkForShouldBeShownOnTheWebui(string $linkTitle):void {
 		$link = $this->helpAndTipsPage->getLinkByTitle($linkTitle);
 		$this->helpAndTipsPage->assertElementNotNull(
 			$link,
@@ -133,8 +135,9 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 * @param string $linkTitle
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theLinkForShouldBeValid($linkTitle) {
+	public function theLinkForShouldBeValid(string $linkTitle):void {
 		$linkUrl = $this->generateHelpLinks($this->getLinkID($linkTitle));
 		$linkOnUI = $this->helpAndTipsPage->getLinkUrlByTitle($linkTitle);
 		Assert::assertSame(
@@ -152,7 +155,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorOpensTheLinkFor($linkTitle) {
+	public function theAdministratorOpensTheLinkFor(string $linkTitle):void {
 		$link = $this->helpAndTipsPage->getLinkByTitle($linkTitle);
 		$link->click();
 
@@ -173,7 +176,7 @@ class WebUIHelpAndTipsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

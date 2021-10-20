@@ -23,6 +23,7 @@
 require_once 'bootstrap.php';
 
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 
@@ -54,20 +55,20 @@ class WebUIFileActionsMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserClicksOnTheFile(string $filename) {
+	public function theUserClicksOnTheFile(string $filename):void {
 		$this->filesPage->openFile($filename, $this->getSession());
 	}
 
 	/**
 	 * @Then the file actions application select menu should be displayed with these items on the webUI
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode $menuItems
+	 * @param TableNode $menuItems
 	 *
 	 * @return void
 	 */
 	public function theFileActionsApplicationSelectMenuShouldBeDisplayed(
-		\Behat\Gherkin\Node\TableNode $menuItems
-	) {
+		TableNode $menuItems
+	):void {
 		$menuContent = $this->filesPage->getFileActionsApplicationSelectMenu();
 		foreach ($menuItems->getRows()[0] as $item) {
 			PHPUnit\Framework\Assert::assertStringContainsString(
@@ -81,11 +82,11 @@ class WebUIFileActionsMenuContext extends RawMinkContext implements Context {
 	/**
 	 * @Then the file actions menu should be displayed with these items on the webUI
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode $menuItems
+	 * @param TableNode $menuItems
 	 *
 	 * @return void
 	 */
-	public function theFileActionsMenuShouldBeDisplayed(\Behat\Gherkin\Node\TableNode $menuItems) {
+	public function theFileActionsMenuShouldBeDisplayed(TableNode $menuItems):void {
 		$menuContent = $this->filesPage->getFileActionsMenu();
 		foreach ($menuItems->getRows()[0] as $item) {
 			PHPUnit\Framework\Assert::assertStringContainsString(
