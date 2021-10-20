@@ -74,8 +74,9 @@ class WebUIAdminEncryptionSettingsContext extends RawMinkContext implements Cont
 	 * @Given the administrator has browsed to the admin encryption settings page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorHasBrowsedToTheAdminEncryptionSettingsPage() {
+	public function theAdministratorHasBrowsedToTheAdminEncryptionSettingsPage():void {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminEncryptionSettingsPage->open();
 		$this->adminEncryptionSettingsPage->waitTillPageIsLoaded($this->getSession());
@@ -88,7 +89,7 @@ class WebUIAdminEncryptionSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasEnabledRecoveryKeyAndSetRecoveryKeyTo($recoveryKey) {
+	public function theAdministratorHasEnabledRecoveryKeyAndSetRecoveryKeyTo(string $recoveryKey):void {
 		$this->adminEncryptionSettingsPage->enableRecoveryKeyAndSetRecoveryKeyTo($recoveryKey);
 		$this->adminEncryptionSettingsPage->waitForAjaxCallsToStartAndFinish($this->getSession());
 	}
@@ -100,7 +101,7 @@ class WebUIAdminEncryptionSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

@@ -56,8 +56,9 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	 * @Given the administrator has browsed to the admin apps settings page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdminBrowsesToTheAdminAppsSettingsPage() {
+	public function theAdminBrowsesToTheAdminAppsSettingsPage():void {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminAppsSettingsPage->open();
 		$this->adminAppsSettingsPage->waitTillPageIsLoaded($this->getSession());
@@ -68,7 +69,7 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdminHasBrowsedToDisabledAppsPage() {
+	public function theAdminHasBrowsedToDisabledAppsPage():void {
 		$this->adminAppsSettingsPage->browseToDisabledAppsPage($this->getSession());
 	}
 
@@ -79,7 +80,7 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesAppUsingTheWebUI($appName) {
+	public function theAdminDisablesAppUsingTheWebUI(string $appName):void {
 		$this->adminAppsSettingsPage->disableApp($this->getSession(), $appName);
 	}
 
@@ -90,7 +91,7 @@ class WebUIAdminAppsSettingsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theAdminEnablesAppUsingTheWebui($appName) {
+	public function theAdminEnablesAppUsingTheWebui(string $appName):void {
 		$this->adminAppsSettingsPage->enableApp($this->getSession(), $appName);
 	}
 
