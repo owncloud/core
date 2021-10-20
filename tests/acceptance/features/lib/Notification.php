@@ -46,11 +46,11 @@ class Notification extends OwncloudPage {
 	 * from an other Page Object by $this->getPage("Notification")
 	 * there is no real __construct() that can take arguments
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $notificationElement
+	 * @param NodeElement $notificationElement
 	 *
 	 * @return void
 	 */
-	public function setElement(NodeElement $notificationElement) {
+	public function setElement(NodeElement $notificationElement): void {
 		$this->notificationElement = $notificationElement;
 	}
 
@@ -65,8 +65,8 @@ class Notification extends OwncloudPage {
 	 */
 	public function followLink(
 		Session $session,
-		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	): void {
 		$link = $this->notificationElement->find(
 			"xpath",
 			$this->notificationLinkXpath
@@ -95,7 +95,7 @@ class Notification extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function react($reaction, Session $session) {
+	public function react(string $reaction, Session $session): void {
 		$buttonXpath = \sprintf($this->buttonByTextXpath, $reaction);
 		$button = $this->notificationElement->find(
 			"xpath",

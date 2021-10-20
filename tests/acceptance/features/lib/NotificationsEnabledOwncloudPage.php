@@ -24,6 +24,7 @@ namespace Page;
 
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
@@ -38,7 +39,7 @@ class NotificationsEnabledOwncloudPage extends OwncloudPage {
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	private function findNotificationsButton() {
+	private function findNotificationsButton(): NodeElement {
 		$button = $this->waitTillElementIsNotNull($this->notificationsButtonXpath);
 		$this->assertElementNotNull(
 			$button,
@@ -65,8 +66,9 @@ class NotificationsEnabledOwncloudPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return NotificationsAppDialog
+	 * @throws Exception
 	 */
-	public function openNotifications(Session $session) {
+	public function openNotifications(Session $session): NotificationsAppDialog {
 		$this->findNotificationsButton()->click();
 		/**
 		 *
@@ -82,6 +84,7 @@ class NotificationsEnabledOwncloudPage extends OwncloudPage {
 	 * @param Session $session
 	 *
 	 * @return NotificationsAppDialog
+	 * @throws Exception
 	 */
 	public function openNotificationsDialog(Session $session):NotificationsAppDialog {
 		$session->reload();
