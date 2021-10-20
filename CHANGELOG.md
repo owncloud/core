@@ -59,6 +59,7 @@ Summary
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Add index.html to invalid username list: [#39206](https://github.com/owncloud/core/pull/39206)
+* Change - Update JavaScript dependencies: [#39385](https://github.com/owncloud/core/pull/39385)
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 * Enhancement - Special user groups can break persistent locks: [#38222](https://github.com/owncloud/core/pull/38222)
@@ -513,6 +514,12 @@ Details
 
    https://github.com/owncloud/core/issues/39205
    https://github.com/owncloud/core/pull/39206
+
+* Change - Update JavaScript dependencies: [#39385](https://github.com/owncloud/core/pull/39385)
+
+   The following have been updated: - karma (4.4.1 to 6.3.4)
+
+   https://github.com/owncloud/core/pull/39385
 
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 
