@@ -350,21 +350,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $folder
-	 * @param string $userOrGroup (user|group)
-	 * @param string $remote (remote|federated|)
-	 * @param string $name
+	 * @param string|null $userOrGroup (user|group)
+	 * @param string|null $remote (remote|federated|)
+	 * @param string|null $name
 	 * @param int $maxRetries
 	 * @param bool $quiet
 	 *
 	 * @return void
 	 * @throws Exception
-	 *
 	 */
 	public function theUserSharesUsingWebUIWithoutClosingDialog(
 		string $folder,
-		string $userOrGroup,
-		string $remote,
-		string $name,
+		?string $userOrGroup,
+		?string $remote,
+		?string $name,
 		int $maxRetries = STANDARD_RETRY_COUNT,
 		bool $quiet = false
 	):void {
@@ -435,9 +434,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $folder
-	 * @param string $userOrGroup
-	 * @param string $remote
-	 * @param string $name
+	 * @param string|null $userOrGroup
+	 * @param string|null $remote
+	 * @param string|null $name
 	 * @param int $maxRetries
 	 * @param bool $quiet
 	 *
@@ -446,9 +445,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theUserSharesFileFolderWithUserOrGroupUsingTheWebUI(
 		string $folder,
-		string $userOrGroup,
-		string $remote,
-		string $name,
+		?string $userOrGroup,
+		?string $remote,
+		?string $name,
 		int $maxRetries = STANDARD_RETRY_COUNT,
 		bool $quiet = false
 	):void {
