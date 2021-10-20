@@ -78,12 +78,12 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	/**
 	 * Checks and asserts that the expected tags are displayed.
 	 *
-	 * @param $results
+	 * @param array $results
 	 * @param TableNode $ExpectedTags
 	 *
 	 * @return void
 	 */
-	public function assertTheExpectedTagsAreDisplayed($results, $ExpectedTags) {
+	public function assertTheExpectedTagsAreDisplayed(array $results, TableNode $ExpectedTags):void {
 		$displayedTags = [];
 		foreach ($results as $tagResult) {
 			$tag = $tagResult->getText();
@@ -107,7 +107,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserAddsATagToTheFileUsingTheWebUI($tagName) {
+	public function theUserAddsATagToTheFileUsingTheWebUI(string $tagName):void {
 		$this->filesPage->getDetailsDialog()->addTag($tagName);
 
 		// For tags to be created, OC checks (|for the permission) if the tag could be created
@@ -129,7 +129,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserTypesAValueInTheCollaborativeTagsFieldUsingTheWebUI($value) {
+	public function theUserTypesAValueInTheCollaborativeTagsFieldUsingTheWebUI(string $value):void {
 		$this->filesPage->getDetailsDialog()->insertTagNameInTheTagsField($value);
 	}
 
@@ -141,7 +141,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserEditsTheTagWithNameAndSetsItsNameToUsingTheWebui($oldName, $newName) {
+	public function theUserEditsTheTagWithNameAndSetsItsNameToUsingTheWebui(string $oldName, string $newName):void {
 		$this->filesPage->getDetailsDialog()->renameTag($oldName, $newName);
 	}
 
@@ -151,9 +151,9 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 * @param string $value
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function allTheTagsStartingWithInTheirNameShouldBeListedInTheDropdownListOnTheWebUI($value) {
+	public function allTheTagsStartingWithInTheirNameShouldBeListedInTheDropdownListOnTheWebUI(string $value):void {
 		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
 		foreach ($results as $tagResult) {
 			Assert::assertStringStartsWith(
@@ -183,16 +183,16 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 * @param string $tagName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName) {
+	public function theTagShouldBeListedInTheDropdownListOnTheWebUI(string $tagName):void {
 		$results = $this->filesPage->getDetailsDialog()->getDropDownTagsSuggestionResults();
 		foreach ($results as $tagResult) {
 			if ($tagResult->getText() === $tagName) {
 				return;
 			}
 		}
-		throw new \Exception("No tags could be found with $tagName.");
+		throw new Exception("No tags could be found with $tagName.");
 	}
 
 	/**
@@ -201,9 +201,9 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 * @param TableNode $tags
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theFollowingTagsShouldBeDisplayedOnTheTagListOnWebUI($tags) {
+	public function theFollowingTagsShouldBeDisplayedOnTheTagListOnWebUI(TableNode $tags):void {
 		$this->featureContext->verifyTableNodeColumns($tags, ['name']);
 		$results = $this->filesPage->getDetailsDialog()->getTagsListItems();
 		$this->assertTheExpectedTagsAreDisplayed($results, $tags);
@@ -215,9 +215,9 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 * @param TableNode $tags
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theFollowingTagsShouldBeDisplayedOnTheTagInputFieldOnWebUI($tags) {
+	public function theFollowingTagsShouldBeDisplayedOnTheTagInputFieldOnWebUI(TableNode $tags):void {
 		$this->featureContext->verifyTableNodeColumns($tags, ['name']);
 		$results = $this->filesPage->getDetailsDialog()->getTagsItemsFromTagInputField();
 		$this->assertTheExpectedTagsAreDisplayed($results, $tags);
@@ -229,15 +229,15 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 * @param string $tagName
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function tagShouldNotBeListedInTheDropdownListOnTheWebui($tagName) {
+	public function tagShouldNotBeListedInTheDropdownListOnTheWebui(string $tagName):void {
 		try {
 			$this->theTagShouldBeListedInTheDropdownListOnTheWebUI($tagName);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return;
 		}
-		throw new \Exception("Tag $tagName should not be on the dropdown.");
+		throw new Exception("Tag $tagName should not be on the dropdown.");
 	}
 
 	/**
@@ -247,7 +247,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserDeletesTagWithNameUsingTheWebui($name) {
+	public function theUserDeletesTagWithNameUsingTheWebui(string $name):void {
 		$this->filesPage->getDetailsDialog()->deleteTag($name);
 	}
 
@@ -261,7 +261,7 @@ class WebUITagsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
