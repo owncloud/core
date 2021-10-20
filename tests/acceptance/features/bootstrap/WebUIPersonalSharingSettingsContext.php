@@ -49,7 +49,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserBrowsesToThePersonalSharingSettingsPage() {
+	public function theUserBrowsesToThePersonalSharingSettingsPage():void {
 		$this->personalSharingSettingsPage->open();
 		$this->personalSharingSettingsPage->waitTillPageIsLoaded(
 			$this->getSession()
@@ -63,7 +63,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function switchAutoAcceptingLocalShares($action) {
+	public function switchAutoAcceptingLocalShares(string $action):void {
 		$this->personalSharingSettingsPage->toggleAutoAcceptingLocalShares(
 			$this->getSession(),
 			$action
@@ -77,7 +77,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function switchAutoAcceptingFederatedShares($action) {
+	public function switchAutoAcceptingFederatedShares(string $action):void {
 		$this->personalSharingSettingsPage->toggleAutoAcceptingFederatedShares(
 			$this->getSession(),
 			$action
@@ -91,7 +91,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function switchAllowFindingYouViaAutocompleteInShareDialog($action) {
+	public function switchAllowFindingYouViaAutocompleteInShareDialog(string $action):void {
 		$this->personalSharingSettingsPage->toggleFindingYouViaAutocomplete(
 			$this->getSession(),
 			$action
@@ -103,7 +103,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function autoAcceptingCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageOnTheWebui() {
+	public function autoAcceptingCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageOnTheWebui():void {
 		Assert::assertFalse(
 			$this->personalSharingSettingsPage->isAutoAcceptLocalSharesCheckboxDisplayed(),
 			__METHOD__
@@ -116,7 +116,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function autoAcceptingFederatedCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageOnTheWebui() {
+	public function autoAcceptingFederatedCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPageOnTheWebui():void {
 		Assert::assertFalse(
 			$this->personalSharingSettingsPage->isAutoAcceptFederatedSharesCheckboxDisplayed(),
 			__METHOD__
@@ -129,7 +129,7 @@ class WebUIPersonalSharingSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function allowFindingYouViaAutocompleteCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPage() {
+	public function allowFindingYouViaAutocompleteCheckboxShouldNotBeDisplayedOnThePersonalSharingSettingsPage():void {
 		Assert::assertFalse(
 			$this->personalSharingSettingsPage->isAllowFindingYouViaAutocompleteCheckboxDisplayed(),
 			__METHOD__

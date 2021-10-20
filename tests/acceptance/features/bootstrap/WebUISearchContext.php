@@ -75,9 +75,9 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 * @param string $searchTerm
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserSearchesUsingTheWebUI($searchTerm) {
+	public function theUserSearchesUsingTheWebUI(string $searchTerm):void {
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 		$this->filesPage->search($this->getSession(), $searchTerm);
 	}
@@ -90,8 +90,9 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function fileWithPathShouldBeListedInSearchResultOtherFolders($fileName, $path, $shouldOrNot) {
+	public function fileWithPathShouldBeListedInSearchResultOtherFolders(string $fileName, string $path, string $shouldOrNot):void {
 		$fileName = \trim($fileName, $fileName[0]);
 		$path = \trim($path, $path[0]);
 		$this->webUIGeneralContext->setCurrentPageObject($this->searchResultInOtherFoldersPage);
@@ -113,7 +114,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function fileShouldNotBeListedInSearchResultOtherFolders($fileName, $shouldOrNot) {
+	public function fileShouldNotBeListedInSearchResultOtherFolders(string $fileName, string $shouldOrNot):void {
 		$fileName = \trim($fileName, $fileName[0]);
 		$this->webUIGeneralContext->setCurrentPageObject($this->searchResultInOtherFoldersPage);
 		$this->webUIFilesContext->checkIfFileFolderIsListedOnTheWebUI(
@@ -133,7 +134,7 @@ class WebUISearchContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

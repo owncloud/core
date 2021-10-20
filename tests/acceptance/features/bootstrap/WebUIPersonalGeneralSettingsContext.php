@@ -64,7 +64,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserBrowsesToThePersonalGeneralSettingsPage() {
+	public function theUserBrowsesToThePersonalGeneralSettingsPage():void {
 		$this->personalGeneralSettingsPage->open();
 		$this->personalGeneralSettingsPage->waitTillPageIsLoaded(
 			$this->getSession()
@@ -83,7 +83,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserAttemptsToBrowseToThePersonalGeneralSettingsPage() {
+	public function theUserAttemptsToBrowseToThePersonalGeneralSettingsPage():void {
 		$this->visitPath($this->personalGeneralSettingsPage->getPagePath());
 
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
@@ -99,7 +99,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserChangesTheLanguageToUsingTheWebUI($language) {
+	public function theUserChangesTheLanguageToUsingTheWebUI(string $language):void {
 		$this->personalGeneralSettingsPage->changeLanguage($language);
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
 			$this->getSession()
@@ -113,9 +113,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @param string $newPassword
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserChangesThePasswordToUsingTheWebUI($newPassword) {
+	public function theUserChangesThePasswordToUsingTheWebUI(string $newPassword):void {
 		$username = $this->featureContext->getCurrentUser();
 		$oldPassword = \trim($this->featureContext->getUserPassword($username));
 		$newPassword = $this->featureContext->getActualPassword($newPassword);
@@ -130,9 +130,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @When the user changes the password to the current password using the webUI
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserChangesThePasswordToCurrentPasswordUsingTheWebUI() {
+	public function theUserChangesThePasswordToCurrentPasswordUsingTheWebUI():void {
 		$username = $this->featureContext->getCurrentUser();
 		$currentPassword = \trim($this->featureContext->getUserPassword($username));
 		$this->personalGeneralSettingsPage->changePassword(
@@ -152,9 +152,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function theUserChangesThePasswordWrongCurrentPasswordUsingTheWebUI(
-		$newPassword,
-		$wrongPassword
-	) {
+		string $newPassword,
+		string $wrongPassword
+	):void {
 		$newPassword = $this->featureContext->getActualPassword($newPassword);
 		$wrongPassword = $this->featureContext->getActualPassword($wrongPassword);
 		$this->personalGeneralSettingsPage->changePassword(
@@ -171,8 +171,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @param string $newFullName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theUserChangesTheFullNameToUsingTheWebUI($newFullName) {
+	public function theUserChangesTheFullNameToUsingTheWebUI(string $newFullName):void {
 		$this->personalGeneralSettingsPage->changeFullname(
 			$newFullName,
 			$this->getSession()
@@ -189,7 +190,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUserShouldNotBeAbleToChangeTheFullNameUsingTheWebui() {
+	public function theUserShouldNotBeAbleToChangeTheFullNameUsingTheWebui():void {
 		try {
 			$this->personalGeneralSettingsPage->changeFullname(
 				"anything",
@@ -207,8 +208,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @param string $emailAddress
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theUserChangesTheEmailAddressToUsingTheWebUI($emailAddress) {
+	public function theUserChangesTheEmailAddressToUsingTheWebUI(string $emailAddress):void {
 		$this->personalGeneralSettingsPage->changeEmailAddress(
 			$emailAddress,
 			$this->getSession()
@@ -225,7 +227,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUserShouldNotBeAbleToChangeTheEmailAddressUsingTheWebui() {
+	public function theUserShouldNotBeAbleToChangeTheEmailAddressUsingTheWebui():void {
 		try {
 			$this->personalGeneralSettingsPage->changeEmailAddress(
 				"somebody@example.com",
@@ -241,7 +243,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui() {
+	public function theOwncloudVersionShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui():void {
 		Assert::assertTrue(
 			$this->personalGeneralSettingsPage->isVersionDisplayed(),
 			__METHOD__
@@ -256,7 +258,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($user) {
+	public function theFederatedCloudIdForUserShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui(string $user):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$userFederatedCloudId = $user . "@" . $this->featureContext->getLocalBaseUrlWithoutScheme();
 		Assert::assertEquals(
@@ -276,7 +278,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui($groupName) {
+	public function groupShouldBeDisplayedOnThePersonalGeneralSettingsPageOnTheWebui(string $groupName):void {
 		Assert::assertTrue(
 			$this->personalGeneralSettingsPage->isGroupNameDisplayed($groupName),
 			__METHOD__
@@ -291,9 +293,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @param string $emailAddress
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserFollowsTheEmailChangeConfirmationLinkEmail($emailAddress) {
+	public function theUserFollowsTheEmailChangeConfirmationLinkEmail(string $emailAddress):void {
 		$content = EmailHelper::getBodyOfLastEmail(
 			EmailHelper::getLocalMailhogUrl(),
 			$emailAddress,
@@ -321,8 +323,8 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function aPasswordErrorMessageShouldBeDisplayedOnTheWebUIWithTheText(
-		$wrongPasswordMessageText
-	) {
+		string $wrongPasswordMessageText
+	):void {
 		Assert::assertEquals(
 			$wrongPasswordMessageText,
 			$this->personalGeneralSettingsPage->getWrongPasswordMessageText(),
@@ -339,7 +341,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserSetsProfilePictureToFromTheirCloudFiles($filename) {
+	public function theUserSetsProfilePictureToFromTheirCloudFiles(string $filename):void {
 		$this->personalGeneralSettingsPage->setProfilePicture($filename, $this->getSession());
 	}
 
@@ -350,7 +352,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserHasSetProfilePictureToFromTheirCloudFiles($filename) {
+	public function theUserHasSetProfilePictureToFromTheirCloudFiles(string $filename):void {
 		$this->theUserSetsProfilePictureToFromTheirCloudFiles($filename);
 		$this->thePreviewOfTheProfilePictureShouldBeShownOnTheWebui("");
 	}
@@ -362,7 +364,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function thePreviewOfTheProfilePictureShouldBeShownOnTheWebui($shouldOrNot) {
+	public function thePreviewOfTheProfilePictureShouldBeShownOnTheWebui(string $shouldOrNot):void {
 		if ($shouldOrNot !== "not") {
 			Assert::assertTrue(
 				$this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed(),
@@ -383,7 +385,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserDeletesTheExistingProfilePicture() {
+	public function theUserDeletesTheExistingProfilePicture():void {
 		if ($this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()) {
 			$this->personalGeneralSettingsPage->deleteProfilePicture($this->getSession());
 		}
@@ -393,8 +395,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @Given the user has deleted any existing profile picture
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theUserHasDeletedAnyExistingProfilePicture() {
+	public function theUserHasDeletedAnyExistingProfilePicture():void {
 		$this->theUserDeletesTheExistingProfilePicture();
 		if ($this->personalGeneralSettingsPage->isProfilePicturePreviewDisplayed()) {
 			throw new Exception(" The profile picture preview is displayed unexpectedly.");
@@ -408,7 +411,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserUploadsAsANewProfilePicture($fileName) {
+	public function theUserUploadsAsANewProfilePicture(string $fileName):void {
 		$this->personalGeneralSettingsPage->uploadProfilePicture($this->getSession(), $fileName);
 	}
 
@@ -419,7 +422,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserSelectsForUploadingAsAProfilePicture($fileName) {
+	public function theUserSelectsForUploadingAsAProfilePicture(string $fileName):void {
 		$this->personalGeneralSettingsPage->selectFileForUploadAsProfilePicture($this->getSession(), $fileName);
 	}
 
@@ -430,7 +433,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function theUserShouldBeAbleToUploadTheFileAsTheProfilePicture($shouldOrNot) {
+	public function theUserShouldBeAbleToUploadTheFileAsTheProfilePicture(string $shouldOrNot):void {
 		if ($shouldOrNot !== "not") {
 			Assert::assertFalse(
 				$this->personalGeneralSettingsPage->isFileUploadErrorMsgVisible(),
@@ -456,7 +459,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
