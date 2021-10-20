@@ -200,7 +200,7 @@ Feature: edit users
     And the display name of user "Brian" should not have changed
     And the email address of user "Brian" should not have changed
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their email address
     Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator updates system config key "allow_user_to_change_mail_address" with value "true" and type "boolean" using the occ command
@@ -211,7 +211,7 @@ Feature: edit users
       | email | alice@gmail.com |
     And the email address of user "Alice" should be "alice@gmail.com"
 
-  @notToImplementOnOCIS
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin does not give access to users to change their email address
     Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
@@ -222,7 +222,7 @@ Feature: edit users
       | email | alice@example.org |
     And the email address of user "Alice" should not have changed
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator updates system config key "allow_user_to_change_display_name" with value "true" and type "boolean" using the occ command
@@ -233,7 +233,7 @@ Feature: edit users
       | displayname | Alice Wonderland |
     And the display name of user "Alice" should be "Alice Wonderland"
 
-  @notToImplementOnOCIS
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin does not give access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
     When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
