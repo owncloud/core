@@ -465,7 +465,7 @@ class CheckSetupControllerTest extends TestCase {
 		/** @var ClientException | \PHPUnit\Framework\MockObject\MockObject $exception */
 		$exception = $this->getMockBuilder('\GuzzleHttp\Exception\ClientException')
 			->disableOriginalConstructor()->getMock();
-		$response = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
+		$response = $this->getMockBuilder('\Psr\Http\Message\ResponseInterface')
 			->disableOriginalConstructor()->getMock();
 		$response->expects($this->once())
 			->method('getStatusCode')
@@ -500,7 +500,7 @@ class CheckSetupControllerTest extends TestCase {
 		/** @var ClientException | \PHPUnit\Framework\MockObject\MockObject $exception */
 		$exception = $this->getMockBuilder('\GuzzleHttp\Exception\ClientException')
 			->disableOriginalConstructor()->getMock();
-		$response = $this->getMockBuilder('\GuzzleHttp\Message\ResponseInterface')
+		$response = $this->getMockBuilder('\Psr\Http\Message\ResponseInterface')
 			->disableOriginalConstructor()->getMock();
 		$response->expects($this->once())
 			->method('getStatusCode')
