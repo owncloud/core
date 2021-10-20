@@ -24,6 +24,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 
 /**
  * page to set personal sharing settings
@@ -55,8 +56,9 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleAutoAcceptingLocalShares(Session $session, $action) {
+	public function toggleAutoAcceptingLocalShares(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -71,8 +73,9 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleAutoAcceptingFederatedShares(Session $session, $action) {
+	public function toggleAutoAcceptingFederatedShares(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -87,8 +90,9 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	 * @param string $action "enables|disables"
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function toggleFindingYouViaAutocomplete(Session $session, $action) {
+	public function toggleFindingYouViaAutocomplete(Session $session, string $action): void {
 		$this->toggleCheckbox(
 			$session,
 			$action,
@@ -105,6 +109,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
@@ -122,7 +127,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	 *
 	 * @return boolean
 	 */
-	public function isAutoAcceptLocalSharesCheckboxDisplayed() {
+	public function isAutoAcceptLocalSharesCheckboxDisplayed(): bool {
 		$localAutoAcceptCheckbox = $this->find('xpath', $this->autoAcceptLocalSharesCheckboxXpath);
 		if ($localAutoAcceptCheckbox === null) {
 			return false;
@@ -135,7 +140,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	 *
 	 * @return boolean
 	 */
-	public function isAutoAcceptFederatedSharesCheckboxDisplayed() {
+	public function isAutoAcceptFederatedSharesCheckboxDisplayed(): bool {
 		$localAutoAcceptCheckbox = $this->find('xpath', $this->autoAcceptFederatedSharesCheckboxXpath);
 		if ($localAutoAcceptCheckbox === null) {
 			return false;
@@ -148,7 +153,7 @@ class PersonalSharingSettingsPage extends SharingSettingsPage {
 	 *
 	 * @return boolean
 	 */
-	public function isAllowFindingYouViaAutocompleteCheckboxDisplayed() {
+	public function isAllowFindingYouViaAutocompleteCheckboxDisplayed(): bool {
 		$localAutoAcceptCheckbox = $this->find(
 			'xpath',
 			$this->allowFindingYouViaAutocompleteCheckboxXpath
