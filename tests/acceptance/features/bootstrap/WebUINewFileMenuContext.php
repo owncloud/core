@@ -67,7 +67,7 @@ class WebUINewFileMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserOpensTheNewfilemenuUsingTheWebUI() {
+	public function theUserOpensTheNewfilemenuUsingTheWebUI():void {
 		$this->newFileMenu->openNewFileMenu();
 	}
 
@@ -76,7 +76,7 @@ class WebUINewFileMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theNewFilemenuShouldBeDisplayedOnTheWebUI() {
+	public function theNewFilemenuShouldBeDisplayedOnTheWebUI():void {
 		Assert::assertNotNull(
 			$this->newFileMenu->getNewFileMenu(),
 			'New file menu is expected to be visible but is not'
@@ -88,7 +88,7 @@ class WebUINewFileMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserClicksFolderInTheNewFileMenuUsingTheWebUI() {
+	public function theUserClicksFolderInTheNewFileMenuUsingTheWebUI():void {
 		$this->newFileMenu->clickFolder();
 	}
 
@@ -97,7 +97,7 @@ class WebUINewFileMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theNewFileMenuFilenameFormShouldBeDisplayedOnTheWebUI() {
+	public function theNewFileMenuFilenameFormShouldBeDisplayedOnTheWebUI():void {
 		Assert::assertNotNull(
 			$this->newFileMenu->getNewFileMenuFilenameForm(),
 			'New file menu filename form is expected to be visible but is not'
@@ -109,7 +109,7 @@ class WebUINewFileMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theNewFileMenuFilenameFormShouldNotBeDisplayedOnTheWebUI() {
+	public function theNewFileMenuFilenameFormShouldNotBeDisplayedOnTheWebUI():void {
 		Assert::assertNull(
 			$this->newFileMenu->getNewFileMenuFilenameForm(),
 			'New file menu filename form is expected to be not visible but is'
@@ -121,7 +121,7 @@ class WebUINewFileMenuContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserClicksCancelInTheNewFileMenuFilenameFormUsingTheWebUI() {
+	public function theUserClicksCancelInTheNewFileMenuFilenameFormUsingTheWebUI():void {
 		$this->newFileMenu->clickCancelFilenameForm();
 	}
 }

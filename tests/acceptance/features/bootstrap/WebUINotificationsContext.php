@@ -64,11 +64,12 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 * @param TableNode $expectedNotifications
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function assertNotificationsOnWebUI(
-		$number,
+		int $number,
 		TableNode $expectedNotifications
-	) {
+	):void {
 		$notificationsDialog = $this->owncloudPage->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotifications();
 		Assert::assertEquals(
@@ -117,11 +118,11 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 * @param string $firstOrLast first|last
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function userFollowsLink($firstOrLast) {
+	public function userFollowsLink(string $firstOrLast):void {
 		$notificationsDialog = $this->owncloudPage->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotificationObjects();
 		if ($firstOrLast === 'first') {
@@ -136,7 +137,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 			throw new InvalidArgumentException();
 		}
 		if ($notification === false) {
-			throw new \Exception(__METHOD__ . " no notifications found");
+			throw new Exception(__METHOD__ . " no notifications found");
 		}
 		$notification->followLink($this->getSession());
 	}
@@ -149,7 +150,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userReactsToAllNotificationsOnTheWebUI($reaction) {
+	public function userReactsToAllNotificationsOnTheWebUI(string $reaction):void {
 		$notificationsDialog = $this->owncloudPage->openNotificationsDialog($this->getSession());
 		$notifications = $notificationsDialog->getAllNotificationObjects();
 		while (\count($notifications) > 0) {
@@ -165,7 +166,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userAcceptsAllShares() {
+	public function userAcceptsAllShares():void {
 		$this->userReactsToAllNotificationsOnTheWebUI("Accept");
 	}
 
@@ -175,7 +176,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function userDeclinesAllShares() {
+	public function userDeclinesAllShares():void {
 		$this->userReactsToAllNotificationsOnTheWebUI("Decline");
 	}
 
@@ -188,7 +189,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context

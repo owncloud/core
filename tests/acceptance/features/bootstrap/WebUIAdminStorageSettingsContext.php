@@ -64,8 +64,9 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 * @When the administrator browses to the admin storage settings page
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorHasBrowsedToTheAdminStorageSettingsPage() {
+	public function theAdministratorHasBrowsedToTheAdminStorageSettingsPage():void {
 		$this->webUIGeneralContext->adminLogsInUsingTheWebUI();
 		$this->adminStorageSettingsPage->open();
 		$this->adminStorageSettingsPage->waitTillPageIsLoaded($this->getSession());
@@ -77,7 +78,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesTheExternalStorageUsingTheWebui() {
+	public function theAdministratorEnablesTheExternalStorageUsingTheWebui():void {
 		$this->adminStorageSettingsPage->enableExternalStorage(
 			$this->getSession()
 		);
@@ -88,7 +89,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDisablesTheExternalStorageUsingTheWebui() {
+	public function theAdministratorDisablesTheExternalStorageUsingTheWebui():void {
 		$this->adminStorageSettingsPage->disableExternalStorage(
 			$this->getSession()
 		);
@@ -100,7 +101,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 * @throws Exception
 	 */
-	public function createLocalStorageMountUsingTheWebui($mount) {
+	public function createLocalStorageMountUsingTheWebui(string $mount):void {
 		$serverRoot = SetupHelper::getServerRoot(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -132,7 +133,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorCreatesTheLocalStorageMountUsingTheWebui($mount) {
+	public function theAdministratorCreatesTheLocalStorageMountUsingTheWebui(string $mount):void {
 		$this->createLocalStorageMountUsingTheWebui($mount);
 	}
 
@@ -144,7 +145,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasCreatedTheLocalStorageMountUsingTheWebui($mount) {
+	public function theAdministratorHasCreatedTheLocalStorageMountUsingTheWebui(string $mount):void {
 		$this->createLocalStorageMountUsingTheWebui($mount);
 		$this->featureContext->asFileOrFolderShouldExist($this->featureContext->getAdminUsername(), "folder", $mount);
 	}
@@ -158,12 +159,13 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorAddsUserAsTheApplicableUserForTheLastLocalStorageMountUsingTheWebui(
-		$action,
-		$userOrGroup,
-		$user
-	) {
+		string $action,
+		string $userOrGroup,
+		string $user
+	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$displayName = $this->featureContext->getUserDisplayName($user);
 		if ($action === "adds" || $action === "added") {
@@ -187,7 +189,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorDeletesTheLastCreatedLocalStorageMountUsingTheWebui() {
+	public function theAdministratorDeletesTheLastCreatedLocalStorageMountUsingTheWebui():void {
 		$this->adminStorageSettingsPage->deleteLastCreatedLocalMount($this->getSession());
 	}
 
@@ -197,7 +199,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesReadonlyForTheLastCreatedLocalStorageMountUsingTheWebui() {
+	public function theAdministratorEnablesReadonlyForTheLastCreatedLocalStorageMountUsingTheWebui():void {
 		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
 		$this->adminStorageSettingsPage->enableReadonlyMountOption($this->getSession());
 		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
@@ -208,7 +210,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theAdministratorHasEnabledSharingForTheLastCreatedLocalStorageMountUsingTheWebui() {
+	public function theAdministratorHasEnabledSharingForTheLastCreatedLocalStorageMountUsingTheWebui():void {
 		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
 		$this->adminStorageSettingsPage->enableSharingMountOption($this->getSession());
 		$this->adminStorageSettingsPage->openMountOptions($this->getSession());
@@ -221,7 +223,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theLastCreatedLocalStorageMountShouldOrNotBeListedOnTheWebui($shouldOrNot) {
+	public function theLastCreatedLocalStorageMountShouldOrNotBeListedOnTheWebui(string $shouldOrNot):void {
 		$mountNameList = $this->featureContext->getStorageIds();
 		$lastCreatedMountName = \end($mountNameList);
 		$result = $this->adminStorageSettingsPage->checkIfLastCreatedMountIsPresent(
@@ -246,7 +248,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theExternalStorageFormShouldBeOnTheStorageSettingsPage() {
+	public function theExternalStorageFormShouldBeOnTheStorageSettingsPage():void {
 		$isDisplayed = $this->adminStorageSettingsPage->externalStorageFormVisible();
 		Assert::assertTrue(
 			$isDisplayed,
@@ -259,7 +261,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function theExternalStorageFormShouldNotBeOnTheStorageSettingsPage() {
+	public function theExternalStorageFormShouldNotBeOnTheStorageSettingsPage():void {
 		$isDisplayed = $this->adminStorageSettingsPage->externalStorageFormVisible();
 		Assert::assertFalse(
 			$isDisplayed,
@@ -277,7 +279,7 @@ class WebUIAdminStorageSettingsContext extends RawMinkContext implements Context
 	 *
 	 * @return void
 	 */
-	public function before(BeforeScenarioScope $scope) {
+	public function before(BeforeScenarioScope $scope):void {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
