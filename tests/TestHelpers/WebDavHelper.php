@@ -38,22 +38,22 @@ class WebDavHelper {
 	/**
 	 * returns the id of a file
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $path
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $path
+	 * @param string|null $xRequestId
 	 *
-	 * @throws Exception
 	 * @return int
+	 * @throws Exception
 	 */
 	public static function getFileIdForPath(
-		$baseUrl,
-		$user,
-		$password,
-		$path,
-		$xRequestId = ''
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $path,
+		?string $xRequestId = ''
+	):int {
 		$body
 			= '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
@@ -92,34 +92,32 @@ class WebDavHelper {
 	 *  | oc     | http://owncloud.org/ns                    |
 	 *  | ocs    | http://open-collaboration-services.org/ns |
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $path
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $path
 	 * @param string[] $properties
 	 *        string can contain namespace prefix,
 	 *        if no prefix is given 'd:' is used as prefix
 	 *        if associated array is used then the key will be used as namespace
-	 * @param string $xRequestId
-	 * @param int $folderDepth
-	 * @param string $type
-	 * @param int $davPathVersionToUse
-	 *
-	 * @throws Exception
+	 * @param string|null $xRequestId
+	 * @param string|null $folderDepth
+	 * @param string|null $type
+	 * @param int|null $davPathVersionToUse
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function propfind(
-		$baseUrl,
-		$user,
-		$password,
-		$path,
-		$properties,
-		$xRequestId = '',
-		$folderDepth = 0,
-		$type = "files",
-		$davPathVersionToUse = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $path,
+		?array $properties,
+		?string $xRequestId = '',
+		?string $folderDepth = '0',
+		?string $type = "files",
+		?int $davPathVersionToUse = 2
+	):ResponseInterface {
 		$propertyBody = "";
 		$extraNamespaces = "";
 		foreach ($properties as $namespaceString => $property) {
@@ -169,34 +167,35 @@ class WebDavHelper {
 			$type
 		);
 	}
+
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $path
-	 * @param string $propertyName
-	 * @param string $propertyValue
-	 * @param string $xRequestId
-	 * @param string $namespaceString string containing prefix and namespace
-	 *                                e.g "x1='http://whatever.org/ns'"
-	 * @param number $davPathVersionToUse
-	 * @param string $type
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $path
+	 * @param string|null $propertyName
+	 * @param string|null $propertyValue
+	 * @param string|null $xRequestId
+	 * @param string|null $namespaceString string containing prefix and namespace
+	 *                                     e.g "x1='http://whatever.org/ns'"
+	 * @param int|null $davPathVersionToUse
+	 * @param string|null $type
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function proppatch(
-		$baseUrl,
-		$user,
-		$password,
-		$path,
-		$propertyName,
-		$propertyValue,
-		$xRequestId = '',
-		$namespaceString = "oc='http://owncloud.org/ns'",
-		$davPathVersionToUse = 2,
-		$type="files"
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $path,
+		?string $propertyName,
+		?string $propertyValue,
+		?string $xRequestId = '',
+		?string $namespaceString = "oc='http://owncloud.org/ns'",
+		?int $davPathVersionToUse = 2,
+		?string $type="files"
+	):ResponseInterface {
 		$matches = [];
 		\preg_match("/^(.*)='(.*)'$/", $namespaceString, $matches);
 		$namespace = $matches[2];
@@ -230,12 +229,12 @@ class WebDavHelper {
 	 * gets namespace-prefix, namespace url and propName from provided namespaceString or property
 	 * or otherwise use default
 	 *
-	 * @param string $namespaceString
-	 * @param string $property
+	 * @param string|null $namespaceString
+	 * @param string|null $property
 	 *
 	 * @return array
 	 */
-	public static function getPropertyWithNamespaceInfo($namespaceString = "", $property = "") {
+	public static function getPropertyWithNamespaceInfo(?string $namespaceString = "", ?string $property = ""):array {
 		$namespace = "";
 		$namespacePrefix = "";
 		if (\is_int($namespaceString)) {
@@ -262,29 +261,29 @@ class WebDavHelper {
 	/**
 	 * sends HTTP request PROPPATCH method with multiple properties
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
 	 * @param string $path
-	 * @param array $propertiesArray
-	 * @param string $xRequestId
-	 * @param string $namespaceString
-	 * @param int $davPathVersionToUse
-	 * @param string $type
+	 * @param array|null $propertiesArray
+	 * @param string|null $xRequestId
+	 * @param string|null $namespaceString
+	 * @param int|null $davPathVersionToUse
+	 * @param string|null $type
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function proppatchWithMultipleProps(
-		$baseUrl,
-		$user,
-		$password,
-		$path,
-		$propertiesArray,
-		$xRequestId = '',
-		$namespaceString = "oc='http://owncloud.org/ns'",
-		$davPathVersionToUse = 2,
-		$type="files"
-	) {
+		?string  $baseUrl,
+		?string  $user,
+		?string $password,
+		string  $path,
+		?array $propertiesArray,
+		?string $xRequestId = '',
+		?string  $namespaceString = "oc='http://owncloud.org/ns'",
+		?int     $davPathVersionToUse = 2,
+		?string  $type="files"
+	):ResponseInterface {
 		$propertyBody = "";
 		foreach ($propertiesArray as $propertyArray) {
 			$property = $propertyArray["propertyName"];
@@ -322,30 +321,29 @@ class WebDavHelper {
 	/**
 	 * returns the response to listing a folder (collection)
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $path
-	 * @param int $folderDepth
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $path
+	 * @param string|null $folderDepth
+	 * @param string|null $xRequestId
 	 * @param string[] $properties
-	 * @param string $type
-	 * @param int $davPathVersionToUse
+	 * @param string|null $type
+	 * @param int|null $davPathVersionToUse
 	 *
 	 * @return ResponseInterface
-	 * @throws Exception
 	 */
 	public static function listFolder(
-		$baseUrl,
-		$user,
-		$password,
-		$path,
-		$folderDepth,
-		$xRequestId = '',
-		$properties = null,
-		$type = "files",
-		$davPathVersionToUse = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $path,
+		?string $folderDepth,
+		?string $xRequestId = '',
+		?array $properties = null,
+		?string $type = "files",
+		?int $davPathVersionToUse = 2
+	):ResponseInterface {
 		if (!$properties) {
 			$properties = [
 				'getetag', 'resourcetype'
@@ -366,49 +364,49 @@ class WebDavHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
+	 * @param string|null $baseUrl
 	 * URL of owncloud e.g. http://localhost:8080
 	 * should include the subfolder if owncloud runs in a subfolder
 	 * e.g. http://localhost:8080/owncloud-core
-	 * @param string $user
-	 * @param string $password or token when bearer auth is used
-	 * @param string $method PUT, GET, DELETE, etc.
-	 * @param string $path
-	 * @param array $headers
-	 * @param string $xRequestId
+	 * @param string|null $user
+	 * @param string|null $password or token when bearer auth is used
+	 * @param string|null $method PUT, GET, DELETE, etc.
+	 * @param string|null $path
+	 * @param array|null $headers
+	 * @param string|null $xRequestId
 	 * @param string|null|resource|StreamInterface $body
-	 * @param int $davPathVersionToUse (1|2)
-	 * @param string $type of request
-	 * @param string $sourceIpAddress to initiate the request from
-	 * @param string $authType basic|bearer
+	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param string|null $type of request
+	 * @param string|null $sourceIpAddress to initiate the request from
+	 * @param string|null $authType basic|bearer
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
-	 * @param int $timeout
+	 * @param int|null $timeout
 	 * @param Client|null $client
-	 * @param array $urlParameter to concatenate with path
-	 * @param string $doDavRequestAsUser run the DAV as this user, if null its same as $user
+	 * @param array|null $urlParameter to concatenate with path
+	 * @param string|null $doDavRequestAsUser run the DAV as this user, if null its same as $user
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function makeDavRequest(
-		$baseUrl,
-		$user,
-		$password,
-		$method,
-		$path,
-		$headers,
-		$xRequestId = '',
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $method,
+		?string $path,
+		?array $headers,
+		?string $xRequestId = '',
 		$body = null,
-		$davPathVersionToUse = 1,
-		$type = "files",
-		$sourceIpAddress = null,
-		$authType = "basic",
-		$stream = false,
-		$timeout = 0,
-		$client = null,
-		$urlParameter = [],
-		$doDavRequestAsUser = null
-	) {
+		?int $davPathVersionToUse = 1,
+		?string $type = "files",
+		?string $sourceIpAddress = null,
+		?string $authType = "basic",
+		?bool $stream = false,
+		?int $timeout = 0,
+		?Client $client = null,
+		?array $urlParameter = [],
+		?string $doDavRequestAsUser = null
+	):ResponseInterface {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		if ($doDavRequestAsUser === null) {
 			$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
@@ -474,18 +472,17 @@ class WebDavHelper {
 	/**
 	 * get the dav path
 	 *
-	 * @param string $user
-	 * @param int $davPathVersionToUse (1|2)
-	 * @param string $type
+	 * @param string|null $user
+	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param string|null $type
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string
 	 */
 	public static function getDavPath(
-		$user,
-		$davPathVersionToUse = 1,
-		$type = "files"
-	) {
+		?string $user,
+		?int $davPathVersionToUse = 1,
+		?string $type = "files"
+	):string {
 		if ($type === "public-files" || $type === "public-files-old") {
 			return "public.php/webdav/";
 		}
@@ -518,12 +515,12 @@ class WebDavHelper {
 	/**
 	 * make sure there are no double slash in the URL
 	 *
-	 * @param string $url
-	 * @param bool $trailingSlash forces a trailing slash
+	 * @param string|null $url
+	 * @param bool|null $trailingSlash forces a trailing slash
 	 *
 	 * @return string
 	 */
-	public static function sanitizeUrl($url, $trailingSlash = false) {
+	public static function sanitizeUrl(?string $url, ?bool $trailingSlash = false):string {
 		if ($trailingSlash === true) {
 			$url = $url . "/";
 		} else {
@@ -550,7 +547,7 @@ class WebDavHelper {
 	public static function isValidDavChunkingCombination(
 		$davPathVersion,
 		$chunkingVersion
-	) {
+	): bool {
 		return (
 			($chunkingVersion === 'no' || $chunkingVersion === null) ||
 			($davPathVersion === $chunkingVersion)
@@ -560,22 +557,22 @@ class WebDavHelper {
 	/**
 	 * get Mtime of File in a public link share
 	 *
-	 * @param string $baseUrl
-	 * @param string $fileName
-	 * @param string $token
-	 * @param string $xRequestId
-	 * @param int $davVersionToUse
+	 * @param string|null $baseUrl
+	 * @param string|null $fileName
+	 * @param string|null $token
+	 * @param string|null $xRequestId
+	 * @param int|null $davVersionToUse
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
 	public static function getMtimeOfFileinPublicLinkShare(
-		$baseUrl,
-		$fileName,
-		$token,
-		$xRequestId = '',
-		$davVersionToUse = 2
-	) {
+		?string $baseUrl,
+		?string $fileName,
+		?string $token,
+		?string $xRequestId = '',
+		?int $davVersionToUse = 2
+	):string {
 		$response = self::propfind(
 			$baseUrl,
 			null,
@@ -599,22 +596,22 @@ class WebDavHelper {
 	/**
 	 * get Mtime of a resource
 	 *
-	 * @param string $user
-	 * @param string $password
-	 * @param string $baseUrl
-	 * @param string $resource
-	 * @param string $xRequestId
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $baseUrl
+	 * @param string|null $resource
+	 * @param string|null $xRequestId
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
 	public static function getMtimeOfResource(
-		$user,
-		$password,
-		$baseUrl,
-		$resource,
-		$xRequestId = ''
-	) {
+		?string $user,
+		?string $password,
+		?string $baseUrl,
+		?string $resource,
+		?string $xRequestId = ''
+	):string {
 		$response = self::propfind(
 			$baseUrl,
 			$user,
