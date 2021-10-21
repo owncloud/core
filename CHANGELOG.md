@@ -517,9 +517,10 @@ Details
 
 * Change - Update JavaScript dependencies: [#39385](https://github.com/owncloud/core/pull/39385)
 
-   The following have been updated: - karma (4.4.1 to 6.3.4)
+   The following have been updated: - karma (4.4.1 to 6.3.4) - sinon (7.5.0 to 11.1.2)
 
    https://github.com/owncloud/core/pull/39385
+   https://github.com/owncloud/core/pull/39145
 
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 
