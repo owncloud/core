@@ -52,7 +52,7 @@ describe('OCA.Files.MainFileInfoDetailView tests', function() {
 	describe('rendering', function() {
 		it('displays basic info', function() {
 			var clock = sinon.useFakeTimers(Date.UTC(2015, 6, 17, 1, 2, 0, 3));
-			var dateExpected = OC.Util.formatDate(Date(Date.UTC(2015, 6, 17, 1, 2, 0, 0)));
+			var dateExpected = OC.Util.formatDate(Date.UTC(2015, 6, 17, 1, 2, 0, 0));
 			view.setFileInfo(testFileInfo);
 			expect(view.$el.find('.fileName h3').text()).toEqual('One.txt');
 			expect(view.$el.find('.fileName h3').attr('title')).toEqual('One.txt');
