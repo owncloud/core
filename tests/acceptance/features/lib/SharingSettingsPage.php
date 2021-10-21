@@ -24,6 +24,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Exception;
 
 /**
  * common things for sharing settings pages (global and personal)
@@ -39,13 +40,14 @@ class SharingSettingsPage extends OwncloudPage {
 	 * @param string $checkboxId
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function toggleCheckbox(
 		Session $session,
-		$action,
-		$checkboxXpath,
-		$checkboxId
-	) {
+		string  $action,
+		string  $checkboxXpath,
+		string $checkboxId
+	): void {
 		$checkbox = $this->find("xpath", $checkboxXpath);
 		$checkCheckbox = $this->findById($checkboxId);
 		$this->assertElementNotNull(
@@ -69,7 +71,7 @@ class SharingSettingsPage extends OwncloudPage {
 				$checkbox->click();
 			}
 		} else {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " invalid action: $action"
 			);
 		}

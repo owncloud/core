@@ -25,6 +25,7 @@ namespace Page\FilesPageElement\LockDialogElement;
 
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use Page\OwncloudPage;
 
 /**
@@ -57,7 +58,7 @@ class LockEntry extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function setElement(NodeElement $lockElement) {
+	public function setElement(NodeElement $lockElement): void {
 		$this->lockElement = $lockElement;
 	}
 
@@ -68,7 +69,7 @@ class LockEntry extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function delete(Session $session) {
+	public function delete(Session $session): void {
 		$unlockButton = $this->lockElement->find("xpath", $this->unlockButtonXpath);
 		$this->assertElementNotNull(
 			$unlockButton,
@@ -83,10 +84,10 @@ class LockEntry extends OwncloudPage {
 	 * gets the user that has locked the resource
 	 *
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 *
 	 */
-	public function getLockingUser() {
+	public function getLockingUser(): string {
 		$lockDescriptionElement = $this->lockElement->find(
 			"xpath",
 			$this->lockDescriptionXpath
@@ -105,7 +106,7 @@ class LockEntry extends OwncloudPage {
 		) {
 			return $matches [1];
 		}
-		throw new \Exception(
+		throw new Exception(
 			"could not extract locking user name from lock description '" .
 			$lockDescriptionElement->getText() . "'"
 		);
@@ -113,8 +114,9 @@ class LockEntry extends OwncloudPage {
 
 	/**
 	 * @return void
+	 * @throws Exception
 	 */
-	public function getLockingResource() {
-		throw new \Exception(__METHOD__ . " not implemented in LockEntry");
+	public function getLockingResource(): void {
+		throw new Exception(__METHOD__ . " not implemented in LockEntry");
 	}
 }

@@ -24,6 +24,7 @@
 namespace Page\OwncloudPageElement;
 
 use Behat\Mink\Session;
+use Exception;
 use Page\OwncloudPage;
 
 /**
@@ -56,6 +57,7 @@ class SettingsMenu extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,

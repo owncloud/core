@@ -24,6 +24,7 @@
 namespace Page\UserPageElement;
 
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
@@ -54,11 +55,11 @@ class GroupList extends OwncloudPage {
 	 * from an other Page Object by $this->getPage("OwncloudPageElement\\GroupList")
 	 * there is no real __construct() that can take arguments
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $groupListElement
+	 * @param NodeElement $groupListElement
 	 *
 	 * @return void
 	 */
-	public function setElement(NodeElement $groupListElement) {
+	public function setElement(NodeElement $groupListElement): void {
 		$this->groupListElement = $groupListElement;
 	}
 
@@ -66,10 +67,10 @@ class GroupList extends OwncloudPage {
 	 *
 	 * @param string $name
 	 *
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	public function selectGroup($name) {
+	public function selectGroup(string $name): NodeElement {
 		$name = $this->quotedText($name);
 		$xpathLocator = \sprintf($this->groupLiXpath, $name);
 		$groupLi = $this->groupListElement->find(
@@ -94,9 +95,9 @@ class GroupList extends OwncloudPage {
 	 * @param bool $confirm
 	 *
 	 * @return void
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function deleteGroup($name, $confirm) {
+	public function deleteGroup(string $name, bool $confirm): void {
 		$groupLi = $this->selectGroup($name);
 		$deleteButton = $groupLi->find("xpath", $this->deleteBtnXpath);
 		if ($deleteButton === null) {
@@ -130,9 +131,9 @@ class GroupList extends OwncloudPage {
 	 * @param string $groupName
 	 *
 	 * @return void
-	 * @throws ElementNotFoundException
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function addGroup($groupName) {
+	public function addGroup(string $groupName): void {
 		$addLink = $this->find("xpath", $this->addGroupXpath);
 		if ($addLink === null) {
 			throw new ElementNotFoundException(
@@ -158,8 +159,9 @@ class GroupList extends OwncloudPage {
 	 * returns all group names in an array
 	 *
 	 * @return string[]
+	 * @throws Exception
 	 */
-	public function namesToArray() {
+	public function namesToArray(): array {
 		$allGroupElements = $this->groupListElement->findAll(
 			"xpath",
 			$this->allGroupsXpath
