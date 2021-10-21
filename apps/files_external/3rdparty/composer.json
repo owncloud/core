@@ -10,6 +10,9 @@
 			"php": "7.2.5"
 		}
 	},
+	"replace": {
+		"guzzlehttp/guzzle": "*"
+	},
 	"require": {
 		"php": ">=7.2",
 		"icewind/smb": "3.5.4",
