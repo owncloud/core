@@ -327,7 +327,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function publiclyUploadingFile(string $source, string $publicWebDAVAPIVersion):void {
-		$file = \GuzzleHttp\Psr7\stream_for(\fopen($source, 'r'));
+		$file = \fopen($source, 'r');
 		$this->publicUploadContent(
 			\basename($source),
 			'',
