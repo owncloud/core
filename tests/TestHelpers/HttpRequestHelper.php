@@ -22,14 +22,17 @@
 
 namespace TestHelpers;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use Sabre\VObject\Cli;
 use SimpleXMLElement;
 use Sabre\Xml\LibXMLException;
 use Sabre\Xml\Reader;
@@ -41,37 +44,37 @@ use GuzzleHttp\Pool;
 class HttpRequestHelper {
 	/**
 	 *
-	 * @param string $url
-	 * @param string $xRequestId
-	 * @param string $method
-	 * @param string $user
-	 * @param string $password
-	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param string|null $url
+	 * @param string|null $xRequestId
+	 * @param string|null $method
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $headers ['X-MyHeader' => 'value']
 	 * @param mixed $body
-	 * @param array $config
-	 * @param CookieJar $cookies
+	 * @param array|null $config
+	 * @param CookieJar|null $cookies
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
-	 * @param int $timeout
+	 * @param int|null $timeout
 	 * @param Client|null $client
 	 *
-	 * @throws BadResponseException
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function sendRequest(
-		$url,
-		$xRequestId,
-		$method = 'GET',
-		$user = null,
-		$password = null,
-		$headers = null,
+		?string $url,
+		?string $xRequestId,
+		?string $method = 'GET',
+		?string $user = null,
+		?string $password = null,
+		?array $headers = null,
 		$body = null,
-		$config = null,
-		$cookies = null,
-		$stream = false,
-		$timeout = 0,
-		$client =  null
-	) {
+		?array $config = null,
+		?CookieJar $cookies = null,
+		bool $stream = false,
+		?int $timeout = 0,
+		?Client $client =  null
+	):ResponseInterface {
 		if ($client === null) {
 			$client = self::createClient(
 				$user,
@@ -135,13 +138,13 @@ class HttpRequestHelper {
 	/**
 	 * Print details about the request.
 	 *
-	 * @param RequestInterface $request
-	 * @param string $user
-	 * @param string $password
+	 * @param RequestInterface|null $request
+	 * @param string|null $user
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	private static function debugRequest($request, $user, $password) {
+	private static function debugRequest(?RequestInterface $request, ?string $user, ?string $password):void {
 		print("### AUTH: $user:$password\n");
 		print("### REQUEST: " . $request->getMethod() . " " . $request->getUri() . "\n");
 		self::printHeaders($request->getHeaders());
@@ -152,11 +155,11 @@ class HttpRequestHelper {
 	/**
 	 * Print details about the response.
 	 *
-	 * @param ResponseInterface $response
+	 * @param ResponseInterface|null $response
 	 *
 	 * @return void
 	 */
-	private static function debugResponse($response) {
+	private static function debugResponse(?ResponseInterface $response):void {
 		print("### RESPONSE\n");
 		print("Status: " . $response->getStatusCode() . "\n");
 		self::printHeaders($response->getHeaders());
@@ -167,11 +170,11 @@ class HttpRequestHelper {
 	/**
 	 * Print details about the headers.
 	 *
-	 * @param array $headers
+	 * @param array|null $headers
 	 *
 	 * @return void
 	 */
-	private static function printHeaders($headers) {
+	private static function printHeaders(?array $headers):void {
 		if ($headers) {
 			print("Headers:\n");
 			foreach ($headers as $header => $value) {
@@ -189,11 +192,11 @@ class HttpRequestHelper {
 	/**
 	 * Print details about the body.
 	 *
-	 * @param StreamInterface $body
+	 * @param StreamInterface|null $body
 	 *
 	 * @return void
 	 */
-	private static function printBody($body) {
+	private static function printBody(?StreamInterface $body):void {
 		print("Body:\n");
 		\var_dump($body->getContents());
 		// Rewind the stream so that later code can read from the start.
@@ -205,15 +208,15 @@ class HttpRequestHelper {
 	 * This function takes an array of requests and an optional client.
 	 * It will send all the requests to the server using the Pool object in guzzle.
 	 *
-	 * @param array $requests
-	 * @param Client $client
+	 * @param array|null $requests
+	 * @param Client|null $client
 	 *
 	 * @return array
 	 */
 	public static function sendBatchRequest(
-		$requests,
-		$client
-	) {
+		?array $requests,
+		?Client $client
+	):array {
 		$results = Pool::batch($client, $requests);
 		return $results;
 	}
@@ -222,24 +225,24 @@ class HttpRequestHelper {
 	 * Create a Guzzle Client
 	 * This creates a client object that can be used later to send a request object(s)
 	 *
-	 * @param string $user
-	 * @param string $password
-	 * @param array $config
-	 * @param CookieJar $cookies
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $config
+	 * @param CookieJar|null $cookies
 	 * @param bool $stream Set to true to stream a response rather
 	 *                     than download it all up-front.
-	 * @param int $timeout
+	 * @param int|null $timeout
 	 *
 	 * @return Client
 	 */
 	public static function createClient(
-		$user = null,
-		$password = null,
-		$config = null,
-		$cookies = null,
-		$stream = false,
-		$timeout = 0
-	) {
+		?string $user = null,
+		?string $password = null,
+		?array $config = null,
+		?CookieJar $cookies = null,
+		?bool $stream = false,
+		?int $timeout = 0
+	):Client {
 		$options = [];
 		if ($user !== null) {
 			$options['auth'] = [$user, $password];
@@ -262,10 +265,10 @@ class HttpRequestHelper {
 	 * This creates a RequestInterface object that can be used with a client to send a request.
 	 * This enables us to create multiple requests in advance so that we can send them to the server at once in parallel.
 	 *
-	 * @param string $url
-	 * @param string $xRequestId
-	 * @param string $method
-	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param string|null $url
+	 * @param string|null $xRequestId
+	 * @param string|null $method
+	 * @param array|null $headers ['X-MyHeader' => 'value']
 	 * @param string|array $body either the actual string to send in the body,
 	 *                           or an array of key-value pairs to be converted
 	 *                           into a body with http_build_query.
@@ -273,12 +276,12 @@ class HttpRequestHelper {
 	 * @return RequestInterface
 	 */
 	public static function createRequest(
-		$url,
-		$xRequestId = '',
-		$method = 'GET',
-		$headers = null,
+		?string $url,
+		?string $xRequestId = '',
+		?string $method = 'GET',
+		?array $headers = null,
 		$body = null
-	) {
+	):RequestInterface {
 		if ($headers === null) {
 			$headers = [];
 		}
@@ -305,32 +308,31 @@ class HttpRequestHelper {
 	/**
 	 * same as HttpRequestHelper::sendRequest() but with "GET" as method
 	 *
-	 * @see HttpRequestHelper::sendRequest()
-	 *
-	 * @param string $url
-	 * @param string $xRequestId
-	 * @param string $user
-	 * @param string $password
-	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param string|null $url
+	 * @param string|null $xRequestId
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $headers ['X-MyHeader' => 'value']
 	 * @param mixed $body
-	 * @param array $config
-	 * @param CookieJar $cookies
+	 * @param array|null $config
+	 * @param CookieJar|null $cookies
 	 * @param boolean $stream
 	 *
-	 * @throws BadResponseException
 	 * @return ResponseInterface
+	 * @throws GuzzleException
+	 * @see HttpRequestHelper::sendRequest()
 	 */
 	public static function get(
-		$url,
-		$xRequestId,
-		$user = null,
-		$password = null,
-		$headers = null,
+		?string $url,
+		?string $xRequestId,
+		?string $user = null,
+		?string $password = null,
+		?array $headers = null,
 		$body = null,
-		$config = null,
-		$cookies = null,
-		$stream = false
-	) {
+		?array $config = null,
+		?CookieJar $cookies = null,
+		?bool $stream = false
+	):ResponseInterface {
 		return self::sendRequest(
 			$url,
 			$xRequestId,
@@ -348,32 +350,31 @@ class HttpRequestHelper {
 	/**
 	 * same as HttpRequestHelper::sendRequest() but with "POST" as method
 	 *
-	 * @see HttpRequestHelper::sendRequest()
-	 *
-	 * @param string $url
-	 * @param string $xRequestId
-	 * @param string $user
-	 * @param string $password
-	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param string|null $url
+	 * @param string|null $xRequestId
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $headers ['X-MyHeader' => 'value']
 	 * @param mixed $body
-	 * @param array $config
-	 * @param CookieJar $cookies
+	 * @param array|null $config
+	 * @param CookieJar|null $cookies
 	 * @param boolean $stream
 	 *
-	 * @throws BadResponseException
 	 * @return ResponseInterface
+	 * @throws GuzzleException
+	 * @see HttpRequestHelper::sendRequest()
 	 */
 	public static function post(
-		$url,
-		$xRequestId,
-		$user = null,
-		$password = null,
-		$headers = null,
+		?string $url,
+		?string $xRequestId,
+		?string $user = null,
+		?string $password = null,
+		?array $headers = null,
 		$body = null,
-		$config = null,
-		$cookies = null,
-		$stream = false
-	) {
+		?array $config = null,
+		?CookieJar $cookies = null,
+		?bool $stream = false
+	):ResponseInterface {
 		return self::sendRequest(
 			$url,
 			$xRequestId,
@@ -391,32 +392,31 @@ class HttpRequestHelper {
 	/**
 	 * same as HttpRequestHelper::sendRequest() but with "PUT" as method
 	 *
-	 * @see HttpRequestHelper::sendRequest()
-	 *
-	 * @param string $url
-	 * @param string $xRequestId
-	 * @param string $user
-	 * @param string $password
-	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param string|null $url
+	 * @param string|null $xRequestId
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $headers ['X-MyHeader' => 'value']
 	 * @param mixed $body
-	 * @param array $config
-	 * @param CookieJar $cookies
+	 * @param array|null $config
+	 * @param CookieJar|null $cookies
 	 * @param boolean $stream
 	 *
-	 * @throws BadResponseException
 	 * @return ResponseInterface
+	 * @throws GuzzleException
+	 * @see HttpRequestHelper::sendRequest()
 	 */
 	public static function put(
-		$url,
-		$xRequestId,
-		$user = null,
-		$password = null,
-		$headers = null,
+		?string $url,
+		?string $xRequestId,
+		?string $user = null,
+		?string $password = null,
+		?array $headers = null,
 		$body = null,
-		$config = null,
-		$cookies = null,
-		$stream = false
-	) {
+		?array $config = null,
+		?CookieJar $cookies = null,
+		?bool $stream = false
+	):ResponseInterface {
 		return self::sendRequest(
 			$url,
 			$xRequestId,
@@ -434,32 +434,32 @@ class HttpRequestHelper {
 	/**
 	 * same as HttpRequestHelper::sendRequest() but with "DELETE" as method
 	 *
-	 * @see HttpRequestHelper::sendRequest()
-	 *
-	 * @param string $url
-	 * @param string $xRequestId
-	 * @param string $user
-	 * @param string $password
-	 * @param array $headers ['X-MyHeader' => 'value']
+	 * @param string|null $url
+	 * @param string|null $xRequestId
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $headers ['X-MyHeader' => 'value']
 	 * @param mixed $body
-	 * @param array $config
-	 * @param CookieJar $cookies
+	 * @param array|null $config
+	 * @param CookieJar|null $cookies
 	 * @param boolean $stream
 	 *
-	 * @throws BadResponseException
 	 * @return ResponseInterface
+	 * @throws GuzzleException
+	 * @see HttpRequestHelper::sendRequest()
+	 *
 	 */
 	public static function delete(
-		$url,
-		$xRequestId,
-		$user = null,
-		$password = null,
-		$headers = null,
+		?string $url,
+		?string $xRequestId,
+		?string $user = null,
+		?string $password = null,
+		?array $headers = null,
 		$body = null,
-		$config = null,
-		$cookies = null,
-		$stream = false
-	) {
+		?array $config = null,
+		?CookieJar $cookies = null,
+		?bool $stream = false
+	):ResponseInterface {
 		return self::sendRequest(
 			$url,
 			$xRequestId,
@@ -483,12 +483,12 @@ class HttpRequestHelper {
 	 *  | ocs    | http://open-collaboration-services.org/ns |
 	 *
 	 * @param ResponseInterface $response
-	 * @param string $exceptionText text to put at the front of exception messages
+	 * @param string|null $exceptionText text to put at the front of exception messages
 	 *
 	 * @return SimpleXMLElement
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public static function getResponseXml($response, $exceptionText = '') {
+	public static function getResponseXml(ResponseInterface $response, ?string $exceptionText = ''):SimpleXMLElement {
 		// rewind just to make sure we can re-parse it in case it was parsed already...
 		$response->getBody()->rewind();
 		$contents = $response->getBody()->getContents();
@@ -507,15 +507,15 @@ class HttpRequestHelper {
 				'DAV:'
 			);
 			return $responseXmlObject;
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			if ($exceptionText !== '') {
 				$exceptionText = $exceptionText . ' ';
 			}
 			if ($contents === '') {
-				throw new \Exception($exceptionText . "Received empty response where XML was expected");
+				throw new Exception($exceptionText . "Received empty response where XML was expected");
 			}
 			$message = $exceptionText . "Exception parsing response body: \"" . $contents . "\"";
-			throw new \Exception($message, 0, $e);
+			throw new Exception($message, 0, $e);
 		}
 	}
 
@@ -530,7 +530,7 @@ class HttpRequestHelper {
 	 *
 	 * @return array
 	 */
-	public static function parseResponseAsXml($response) {
+	public static function parseResponseAsXml(ResponseInterface $response):array {
 		$body = $response->getBody()->getContents();
 		$parsedResponse = [];
 		if ($body && \substr($body, 0, 1) === '<') {

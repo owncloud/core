@@ -93,7 +93,7 @@ trait Provisioning {
 	 *
 	 * @return boolean
 	 */
-	public function isLocalAdminGroup($groupname) {
+	public function isLocalAdminGroup(string $groupname):bool {
 		return ($groupname === "admin");
 	}
 
@@ -102,32 +102,32 @@ trait Provisioning {
 	 * mix of upper and lower case. For remembering usernames use the normalized
 	 * form so that "alice" and "Alice" are remembered as the same user.
 	 *
-	 * @param string $username
+	 * @param string|null $username
 	 *
 	 * @return string
 	 */
-	public function normalizeUsername($username) {
+	public function normalizeUsername(?string $username):string {
 		return \strtolower($username);
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getCreatedUsers() {
+	public function getCreatedUsers():array {
 		return $this->createdUsers;
 	}
 
 	/**
 	 * @return boolean
 	 */
-	public function someUsersHaveBeenCreated() {
+	public function someUsersHaveBeenCreated():bool {
 		return (\count($this->createdUsers) > 0);
 	}
 
 	/**
 	 * @return array
 	 */
-	public function getCreatedGroups() {
+	public function getCreatedGroups():array {
 		return $this->createdGroups;
 	}
 
@@ -137,7 +137,7 @@ trait Provisioning {
 	 *
 	 * @return string
 	 */
-	public function getCurrentUserDisplayName() {
+	public function getCurrentUserDisplayName():string {
 		return $this->getUserDisplayName($this->getCurrentUser());
 	}
 
@@ -149,7 +149,7 @@ trait Provisioning {
 	 *
 	 * @return string
 	 */
-	public function getUserDisplayName($username) {
+	public function getUserDisplayName(string $username):string {
 		$normalizedUsername = $this->normalizeUsername($username);
 		if (isset($this->createdUsers[$normalizedUsername]['displayname'])) {
 			$displayName = (string) $this->createdUsers[$normalizedUsername]['displayname'];
@@ -167,7 +167,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function rememberUserDisplayName($user, $displayName) {
+	public function rememberUserDisplayName(string $user, string $displayName):void {
 		$normalizedUsername = $this->normalizeUsername($user);
 		if ($this->isAdminUsername($normalizedUsername)) {
 			$this->adminDisplayName = $displayName;
@@ -176,7 +176,7 @@ trait Provisioning {
 				if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
 					$this->createdUsers[$normalizedUsername]['displayname'] = $displayName;
 				} else {
-					throw new \Exception(
+					throw new Exception(
 						__METHOD__ . " tried to remember display name '$displayName' for nonexistent local user '$user'"
 					);
 				}
@@ -184,7 +184,7 @@ trait Provisioning {
 				if (\array_key_exists($normalizedUsername, $this->createdRemoteUsers)) {
 					$this->createdRemoteUsers[$normalizedUsername]['displayname'] = $displayName;
 				} else {
-					throw new \Exception(
+					throw new Exception(
 						__METHOD__ . " tried to remember display name '$displayName' for nonexistent federated user '$user'"
 					);
 				}
@@ -199,7 +199,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function rememberUserEmailAddress($user, $emailAddress) {
+	public function rememberUserEmailAddress(string $user, string $emailAddress):void {
 		$normalizedUsername = $this->normalizeUsername($user);
 		if ($this->isAdminUsername($normalizedUsername)) {
 			$this->adminEmailAddress = $emailAddress;
@@ -208,7 +208,7 @@ trait Provisioning {
 				if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
 					$this->createdUsers[$normalizedUsername]['email'] = $emailAddress;
 				} else {
-					throw new \Exception(
+					throw new Exception(
 						__METHOD__ . " tried to remember email address '$emailAddress' for nonexistent local user '$user'"
 					);
 				}
@@ -216,7 +216,7 @@ trait Provisioning {
 				if (\array_key_exists($normalizedUsername, $this->createdRemoteUsers)) {
 					$this->createdRemoteUsers[$normalizedUsername]['email'] = $emailAddress;
 				} else {
-					throw new \Exception(
+					throw new Exception(
 						__METHOD__ . " tried to remember email address '$emailAddress' for nonexistent federated user '$user'"
 					);
 				}
@@ -230,7 +230,7 @@ trait Provisioning {
 	 *
 	 * @return array
 	 */
-	public function getCreatedUserDisplayNames() {
+	public function getCreatedUserDisplayNames():array {
 		$result = [];
 		foreach ($this->getCreatedUsers() as $normalizedUsername => $user) {
 			$result[$normalizedUsername] = $this->getUserDisplayName($normalizedUsername);
@@ -246,7 +246,7 @@ trait Provisioning {
 	 *
 	 * @return array
 	 */
-	public function getCreatedGroupDisplayNames() {
+	public function getCreatedGroupDisplayNames():array {
 		$result = [];
 		foreach ($this->getCreatedGroups() as $groupName => $groupData) {
 			$result[$groupName] = $groupName;
@@ -259,9 +259,9 @@ trait Provisioning {
 	 * @param string $username
 	 *
 	 * @return string password
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function getUserPassword($username) {
+	public function getUserPassword(string $username):string {
 		$normalizedUsername = $this->normalizeUsername($username);
 		if ($normalizedUsername === $this->getAdminUsername()) {
 			$password = $this->getAdminPassword();
@@ -284,9 +284,9 @@ trait Provisioning {
 	 * @param string $username
 	 *
 	 * @return boolean
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theUserShouldExist($username) {
+	public function theUserShouldExist(string $username):bool {
 		$normalizedUsername = $this->normalizeUsername($username);
 		if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
 			return $this->createdUsers[$normalizedUsername]['shouldExist'];
@@ -307,9 +307,9 @@ trait Provisioning {
 	 * @param string $groupname
 	 *
 	 * @return boolean
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theGroupShouldExist($groupname) {
+	public function theGroupShouldExist(string $groupname):bool {
 		if (\array_key_exists($groupname, $this->createdGroups)) {
 			if (\array_key_exists('shouldExist', $this->createdGroups[$groupname])) {
 				return $this->createdGroups[$groupname]['shouldExist'];
@@ -335,9 +335,9 @@ trait Provisioning {
 	 * @param string $groupname
 	 *
 	 * @return boolean
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theGroupShouldBeAbleToBeDeleted($groupname) {
+	public function theGroupShouldBeAbleToBeDeleted(string $groupname):bool {
 		if (\array_key_exists($groupname, $this->createdGroups)) {
 			return $this->createdGroups[$groupname]['possibleToDelete'] ?? true;
 		}
@@ -355,12 +355,12 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator creates user "([^"]*)" using the provisioning API$/
 	 *
-	 * @param string $user
+	 * @param string|null $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function adminCreatesUserUsingTheProvisioningApi($user) {
+	public function adminCreatesUserUsingTheProvisioningApi(?string $user):void {
 		$this->createUser(
 			$user,
 			null,
@@ -374,12 +374,12 @@ trait Provisioning {
 	/**
 	 * @Given /^user "([^"]*)" has been created with default attributes in the database user backend$/
 	 *
-	 * @param string $user
+	 * @param string|null $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasBeenCreatedOnDatabaseBackend($user) {
+	public function userHasBeenCreatedOnDatabaseBackend(?string $user):void {
 		$this->adminCreatesUserUsingTheProvisioningApi($user);
 		$this->userShouldExist($user);
 	}
@@ -392,13 +392,13 @@ trait Provisioning {
 	 * @param boolean $skeleton
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function userHasBeenCreatedWithDefaultAttributes(
 		string $user,
 		string $skeletonType = "",
-		$skeleton = true
-	) {
+		bool $skeleton = true
+	):void {
 		if ($skeletonType === "") {
 			$skeletonType = $this->getSmallestSkeletonDirName();
 		}
@@ -430,7 +430,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles($user) {
+	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(string $user):void {
 		$this->userHasBeenCreatedWithDefaultAttributes($user);
 	}
 
@@ -444,7 +444,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table) {
+	public function theseUsersHaveBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(TableNode $table):void {
 		$originalSkeletonPath = $this->setSkeletonDirByType($this->getSmallestSkeletonDirName());
 		try {
 			$this->createTheseUsers(true, true, true, $table);
@@ -466,19 +466,19 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table, string $doNotInitialize) {
+	public function theseUsersHaveBeenCreatedWithoutSkeletonFiles(TableNode $table, string $doNotInitialize):void {
 		$this->theseUsersHaveBeenCreated("", "", $doNotInitialize, $table);
 	}
 
 	/**
 	 * @Given the administrator has set the system language to :defaultLanguage
 	 *
-	 * @param $defaultLanguage
+	 * @param string $defaultLanguage
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theAdministratorHasSetTheSystemLanguageTo($defaultLanguage) {
+	public function theAdministratorHasSetTheSystemLanguageTo(string $defaultLanguage):void {
 		$this->runOcc(
 			["config:system:set default_language --value $defaultLanguage"]
 		);
@@ -490,7 +490,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function importLdifFile($path) {
+	public function importLdifFile(string $path):void {
 		$ldifData = \file_get_contents($path);
 		$this->importLdifData($ldifData);
 	}
@@ -502,7 +502,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function importLdifData($ldifData) {
+	public function importLdifData(string $ldifData):void {
 		$items = Laminas\Ldap\Ldif\Encoder::decode($ldifData);
 		if (isset($items['dn'])) {
 			//only one item in the ldif data
@@ -524,13 +524,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param $suiteParameters
+	 * @param string $suiteParameters
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 * @throws \LdapException
 	 */
-	public function connectToLdap($suiteParameters) {
+	public function connectToLdap(string $suiteParameters):void {
 		$useSsl = false;
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->ldapBaseDN = OcisHelper::getBaseDN();
@@ -596,14 +596,14 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theLdapUsersHaveBeenReSynced() {
+	public function theLdapUsersHaveBeenReSynced():void {
 		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$occResult = SetupHelper::runOcc(
 				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
 				$this->getStepLineRef()
 			);
 			if ($occResult['code'] !== "0") {
-				throw new \Exception(__METHOD__ . " could not sync LDAP users " . $occResult['stdErr']);
+				throw new Exception(__METHOD__ . " could not sync LDAP users " . $occResult['stdErr']);
 			}
 		}
 	}
@@ -614,7 +614,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theLdapUsersAreReSynced() {
+	public function theLdapUsersAreReSynced():void {
 		SetupHelper::runOcc(
 			['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
 			$this->getStepLineRef()
@@ -629,7 +629,7 @@ trait Provisioning {
 	 *
 	 * @return array
 	 */
-	public function buildUsersAttributesArray($setDefaultAttributes, $table) {
+	public function buildUsersAttributesArray(bool $setDefaultAttributes, array $table):array {
 		$usersAttributes = [];
 		foreach ($table as $row) {
 			$userAttribute['userid'] = $this->getActualUsername($row['username']);
@@ -676,7 +676,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function createLdapUser($setting) {
+	public function createLdapUser(array $setting):void {
 		$ou = "TestUsers";
 		// Some special characters need to be escaped in LDAP DN and attributes
 		// The special characters allowed in a username (UID) are +_.@-
@@ -720,7 +720,7 @@ trait Provisioning {
 	 * @throws Exception
 	 * @throws LdapException
 	 */
-	public function createLdapGroup($group) {
+	public function createLdapGroup(string $group):void {
 		$baseDN = $this->getLdapBaseDN();
 		$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
 		$entry = [];
@@ -742,10 +742,10 @@ trait Provisioning {
 	 * @param string $configKey
 	 * @param string $configValue
 	 *
-	 * @throws \Exception
 	 * @return void
+	 * @throws Exception
 	 */
-	public function setLdapSetting($configId, $configKey, $configValue) {
+	public function setLdapSetting(string $configId, string $configKey, string $configValue):void {
 		if ($configValue === "") {
 			$configValue = "''";
 		}
@@ -786,7 +786,7 @@ trait Provisioning {
 			$this->getStepLineRef()
 		);
 		if ($occResult['code'] !== "0") {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " could not set LDAP setting " . $occResult['stdErr']
 			);
 		}
@@ -798,7 +798,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteLdapUsersAndGroups() {
+	public function deleteLdapUsersAndGroups():void {
 		//delete created ldap users
 		$this->ldap->delete(
 			"ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
@@ -824,7 +824,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function resetOldLdapConfig() {
+	public function resetOldLdapConfig():void {
 		$toDeleteLdapConfig = $this->getToDeleteLdapConfigs();
 		foreach ($toDeleteLdapConfig as $configId) {
 			SetupHelper::runOcc(
@@ -851,7 +851,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function manuallyAddSkeletonFilesForUser($user, $password) {
+	public function manuallyAddSkeletonFilesForUser(string $user, string $password):void {
 		$settings = [];
 		$setting["userid"] = $user;
 		$setting["password"] = $password;
@@ -867,7 +867,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function manuallyAddSkeletonFiles($usersAttributes) {
+	public function manuallyAddSkeletonFiles(array $usersAttributes):void {
 		$skeletonDir = \getenv("SKELETON_DIR");
 		$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
 		$skeletonStrategy = \getenv("OCIS_SKELETON_STRATEGY");
@@ -917,7 +917,7 @@ trait Provisioning {
 	 * This will be faster in comparison to waiting for each request to complete before sending another request.
 	 *
 	 * @param boolean $initialize
-	 * @param array $usersAttributes
+	 * @param array|null $usersAttributes
 	 * @param string|null $method create the user with "ldap" or "api"
 	 * @param boolean $skeleton
 	 *
@@ -925,10 +925,10 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function usersHaveBeenCreated(
-		$initialize,
-		$usersAttributes,
-		$method = null,
-		$skeleton = true
+		bool $initialize,
+		?array $usersAttributes,
+		?string $method = null,
+		?bool $skeleton = true
 	) {
 		$requests = [];
 		$client = HttpRequestHelper::createClient(
@@ -1066,7 +1066,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function theAdministratorCreatesTheseUsers($setDefaultAttributes, $doNotInitialize, TableNode $table) {
 		$this->verifyTableNodeColumns($table, ['username'], ['displayname', 'email', 'password']);
@@ -1091,9 +1091,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function createTheseUsers($setDefaultAttributes, $initialize, $skeleton, TableNode $table) {
+	public function createTheseUsers(bool $setDefaultAttributes, bool $initialize, bool $skeleton, TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ['username'], ['displayname', 'email', 'password']);
 		$table = $table->getColumnsHash();
 		$usersAttributes = $this->buildUsersAttributesArray($setDefaultAttributes, $table);
@@ -1121,14 +1121,14 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function theseUsersHaveBeenCreated(
 		string $defaultAttributesText,
 		string $skeletonType,
 		string $doNotInitialize,
 		TableNode $table
-	) {
+	):void {
 		if ($skeletonType === "") {
 			$skeletonType = $this->getSmallestSkeletonDirName();
 		}
@@ -1156,12 +1156,12 @@ trait Provisioning {
 	 * @param string $password
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function adminChangesPasswordOfUserToUsingTheProvisioningApi(
-		$user,
-		$password
-	) {
+		string $user,
+		string $password
+	):void {
 		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$user,
@@ -1180,12 +1180,12 @@ trait Provisioning {
 	 * @param string $password
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function adminHasChangedPasswordOfUserTo(
-		$user,
-		$password
-	) {
+		string $user,
+		string $password
+	):void {
 		$this->adminChangesPasswordOfUserToUsingTheProvisioningApi(
 			$user,
 			$password
@@ -1205,7 +1205,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userEnablesOrDisablesApp($user, $action, $app) {
+	public function userEnablesOrDisablesApp(string $user, string $action, string $app):void {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps/$app";
 		if ($action === 'enables') {
@@ -1233,7 +1233,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminEnablesOrDisablesApp($action, $app) {
+	public function adminEnablesOrDisablesApp(string $action, string $app):void {
 		$this->userEnablesOrDisablesApp(
 			$this->getAdminUsername(),
 			$action,
@@ -1249,7 +1249,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function appHasBeenDisabled($app, $action) {
+	public function appHasBeenDisabled(string $app, string $action):void {
 		if ($action === 'enabled') {
 			$action = 'enables';
 		} else {
@@ -1269,7 +1269,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsTheInfoOfApp($app) {
+	public function theAdministratorGetsTheInfoOfApp(string $app):void {
 		$this->ocsContext->userSendsToOcsApiEndpoint(
 			$this->getAdminUsername(),
 			"GET",
@@ -1282,7 +1282,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsAllAppsUsingTheProvisioningApi() {
+	public function theAdministratorGetsAllAppsUsingTheProvisioningApi():void {
 		$this->getAllApps();
 	}
 
@@ -1291,7 +1291,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsAllEnabledAppsUsingTheProvisioningApi() {
+	public function theAdministratorGetsAllEnabledAppsUsingTheProvisioningApi():void {
 		$this->getEnabledApps();
 	}
 
@@ -1300,7 +1300,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsAllDisabledAppsUsingTheProvisioningApi() {
+	public function theAdministratorGetsAllDisabledAppsUsingTheProvisioningApi():void {
 		$this->getDisabledApps();
 	}
 
@@ -1312,7 +1312,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminSendsUserCreationRequestWithFollowingAttributesUsingTheProvisioningApi(TableNode $table) {
+	public function adminSendsUserCreationRequestWithFollowingAttributesUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeRows($table, ["username", "password"], ["email", "displayname"]);
 		$table = $table->getRowsHash();
 		$username = $this->getActualUsername($table["username"]);
@@ -1361,7 +1361,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminSendsUserCreationRequestUsingTheProvisioningApi($user, $password) {
+	public function adminSendsUserCreationRequestUsingTheProvisioningApi(string $user, string $password):void {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
@@ -1411,8 +1411,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorSendsAUserCreationRequestForTheFollowingUsersWithPasswordUsingTheProvisioningApi(TableNode $table) {
+	public function theAdministratorSendsAUserCreationRequestForTheFollowingUsersWithPasswordUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username", "password"], ["comment"]);
 		$users = $table->getHash();
 		foreach ($users as $user) {
@@ -1430,7 +1431,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userSendsUserCreationRequestUsingTheProvisioningApi($user, $userToCreate, $password) {
+	public function userSendsUserCreationRequestUsingTheProvisioningApi(string $user, string $userToCreate, string $password):void {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
@@ -1473,10 +1474,10 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theAdministratorCreatesUserPasswordGroupUsingTheProvisioningApi(
-		$user,
-		$password,
-		$group
-	) {
+		string $user,
+		string $password,
+		string $group
+	):void {
 		$user = $this->getActualUsername($user);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
@@ -1526,11 +1527,11 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theGroupAdminCreatesUserPasswordGroupUsingTheProvisioningApi(
-		$groupadmin,
-		$userToCreate,
-		$password,
-		$group
-	) {
+		string $groupadmin,
+		string $userToCreate,
+		string $password,
+		string $group
+	):void {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
@@ -1573,18 +1574,17 @@ trait Provisioning {
 	 *
 	 * @param string $groupadmin
 	 * @param string $userToCreate
-	 * @param string $password
+	 * @param string|null $password
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws Exception
 	 */
 	public function theGroupAdminCreatesUserPasswordInOtherGroupUsingTheProvisioningApi(
-		$groupadmin,
-		$userToCreate,
-		$password,
-		$group
-	) {
+		string $groupadmin,
+		string $userToCreate,
+		?string $password,
+		string $group
+	):void {
 		$userToCreate = $this->getActualUsername($userToCreate);
 		$password = $this->getActualPassword($password);
 		if (OcisHelper::isTestingOnOcisOrReva()) {
@@ -1621,11 +1621,11 @@ trait Provisioning {
 
 	/**
 	 * @param string $username
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function resetUserPasswordAsAdminUsingTheProvisioningApi($username, $password) {
+	public function resetUserPasswordAsAdminUsingTheProvisioningApi(string $username, ?string $password):void {
 		$this->userResetUserPasswordUsingProvisioningApi(
 			$this->getAdminUsername(),
 			$username,
@@ -1637,11 +1637,11 @@ trait Provisioning {
 	 * @When the administrator resets the password of user :username to :password using the provisioning API
 	 *
 	 * @param string $username of the user whose password is reset
-	 * @param string $password
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function adminResetsPasswordOfUserUsingTheProvisioningApi($username, $password) {
+	public function adminResetsPasswordOfUserUsingTheProvisioningApi(string $username, ?string $password):void {
 		$this->resetUserPasswordAsAdminUsingTheProvisioningApi(
 			$username,
 			$password
@@ -1656,7 +1656,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminHasResetPasswordOfUserUsingTheProvisioningApi($username, $password) {
+	public function adminHasResetPasswordOfUserUsingTheProvisioningApi(string $username, ?string $password):void {
 		$this->resetUserPasswordAsAdminUsingTheProvisioningApi(
 			$username,
 			$password
@@ -1665,13 +1665,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string $username
-	 * @param string $password
+	 * @param string|null $user
+	 * @param string|null $username
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function userResetUserPasswordUsingProvisioningApi($user, $username, $password) {
+	public function userResetUserPasswordUsingProvisioningApi(?string $user, ?string $username, ?string $password):void {
 		$targetUsername = $this->getActualUsername($username);
 		$password = $this->getActualPassword($password);
 		$this->userTriesToResetUserPasswordUsingTheProvisioningApi(
@@ -1685,13 +1685,13 @@ trait Provisioning {
 	/**
 	 * @When user :user resets the password of user :username to :password using the provisioning API
 	 *
-	 * @param string $user that does the password reset
-	 * @param string $username of the user whose password is reset
-	 * @param string $password
+	 * @param string|null $user that does the password reset
+	 * @param string|null $username of the user whose password is reset
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function userResetsPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+	public function userResetsPasswordOfUserUsingTheProvisioningApi(?string $user, ?string $username, ?string $password):void {
 		$this->userResetUserPasswordUsingProvisioningApi(
 			$user,
 			$username,
@@ -1702,13 +1702,13 @@ trait Provisioning {
 	/**
 	 * @Given user :user has reset the password of user :username to :password
 	 *
-	 * @param string $user that does the password reset
-	 * @param string $username of the user whose password is reset
-	 * @param string $password
+	 * @param string|null $user that does the password reset
+	 * @param string|null $username of the user whose password is reset
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function userHasResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+	public function userHasResetPasswordOfUserUsingTheProvisioningApi(?string $user, ?string $username, ?string $password):void {
 		$this->userResetUserPasswordUsingProvisioningApi(
 			$user,
 			$username,
@@ -1718,13 +1718,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string $username
-	 * @param string $password
+	 * @param string|null $user
+	 * @param string|null $username
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function userTriesToResetUserPasswordUsingTheProvisioningApi($user, $username, $password) {
+	public function userTriesToResetUserPasswordUsingTheProvisioningApi(?string $user, ?string $username, ?string $password):void {
 		$password = $this->getActualPassword($password);
 		$bodyTable = new TableNode([['key', 'password'], ['value', $password]]);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -1738,13 +1738,13 @@ trait Provisioning {
 	/**
 	 * @When user :user tries to reset the password of user :username to :password using the provisioning API
 	 *
-	 * @param string $user that does the password reset
-	 * @param string $username of the user whose password is reset
-	 * @param string $password
+	 * @param string|null $user that does the password reset
+	 * @param string|null $username of the user whose password is reset
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function userTriesToResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+	public function userTriesToResetPasswordOfUserUsingTheProvisioningApi(?string $user, ?string $username, ?string $password):void {
 		$this->userTriesToResetUserPasswordUsingTheProvisioningApi(
 			$user,
 			$username,
@@ -1755,13 +1755,13 @@ trait Provisioning {
 	/**
 	 * @Given user :user has tried to reset the password of user :username to :password
 	 *
-	 * @param string $user that does the password reset
-	 * @param string $username of the user whose password is reset
-	 * @param string $password
+	 * @param string|null $user that does the password reset
+	 * @param string|null $username of the user whose password is reset
+	 * @param string|null $password
 	 *
 	 * @return void
 	 */
-	public function userHasTriedToResetPasswordOfUserUsingTheProvisioningApi($user, $username, $password) {
+	public function userHasTriedToResetPasswordOfUserUsingTheProvisioningApi(?string $user, ?string $username, ?string $password):void {
 		$this->userTriesToResetUserPasswordUsingTheProvisioningApi(
 			$user,
 			$username,
@@ -1769,15 +1769,16 @@ trait Provisioning {
 		);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
+
 	/**
 	 * @Given /^the administrator has deleted user "([^"]*)" using the provisioning API$/
 	 *
-	 * @param string $user
+	 * @param string|null $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorHasDeletedUserUsingTheProvisioningApi($user) {
+	public function theAdministratorHasDeletedUserUsingTheProvisioningApi(?string $user):void {
 		$user = $this->getActualUsername($user);
 		$this->deleteTheUserUsingTheProvisioningApi($user);
 		$this->userShouldNotExist($user);
@@ -1789,9 +1790,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdminDeletesUserUsingTheProvisioningApi($user) {
+	public function theAdminDeletesUserUsingTheProvisioningApi(string $user):void {
 		$user = $this->getActualUsername($user);
 		$this->deleteTheUserUsingTheProvisioningApi($user);
 		$this->rememberThatUserIsNotExpectedToExist($user);
@@ -1803,8 +1804,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorDeletesTheFollowingUsersUsingTheProvisioningApi(TableNode $table) {
+	public function theAdministratorDeletesTheFollowingUsersUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -1819,11 +1821,12 @@ trait Provisioning {
 	 * @param string $otherUser
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userDeletesUserUsingTheProvisioningApi(
-		$user,
-		$otherUser
-	) {
+		string $user,
+		string $otherUser
+	):void {
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$actualOtherUser = $this->getActualUsername($otherUser);
@@ -1845,11 +1848,12 @@ trait Provisioning {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminChangesTheEmailOfUserToUsingTheProvisioningApi(
-		$user,
-		$email
-	) {
+		string $user,
+		string $email
+	):void {
 		$user = $this->getActualUsername($user);
 		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
@@ -1871,8 +1875,9 @@ trait Provisioning {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function adminHasChangedTheEmailOfUserTo($user, $email) {
+	public function adminHasChangedTheEmailOfUserTo(string $user, string $email):void {
 		$this->adminChangesTheEmailOfUserToUsingTheProvisioningApi(
 			$user,
 			$email
@@ -1889,8 +1894,9 @@ trait Provisioning {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorHasChangedTheirOwnEmailAddressTo($email) {
+	public function theAdministratorHasChangedTheirOwnEmailAddressTo(?string $email):void {
 		$admin = $this->getAdminUsername();
 		$this->adminHasChangedTheEmailOfUserTo($admin, $email);
 	}
@@ -1903,10 +1909,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userChangesUserEmailUsingProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$email
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $email
+	):void {
 		$this->response = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($targetUser),
@@ -1927,12 +1933,13 @@ trait Provisioning {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userChangesTheEmailOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$email
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $email
+	):void {
 		$this->userTriesToChangeTheEmailOfUserUsingTheProvisioningApi(
 			$requestingUser,
 			$targetUser,
@@ -1952,10 +1959,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userTriesToChangeTheEmailOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$email
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $email
+	):void {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
@@ -1973,12 +1980,13 @@ trait Provisioning {
 	 * @param string $email
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userHasChangedTheEmailOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$email
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $email
+	):void {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesUserEmailUsingProvisioningApi(
@@ -2006,9 +2014,9 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
-		$user,
-		$displayName
-	) {
+		string $user,
+		string $displayName
+	):void {
 		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
 			$user,
@@ -2028,9 +2036,9 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function adminHasChangedTheDisplayNameOfUser(
-		$user,
-		$displayName
-	) {
+		string $user,
+		string $displayName
+	):void {
 		$user = $this->getActualUsername($user);
 		if ($this->isTestingWithLdap()) {
 			$this->editLdapUserDisplayName(
@@ -2072,9 +2080,9 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayOfUserUsingTheProvisioningApi(
-		$user,
-		$displayName
-	) {
+		string $user,
+		string $displayName
+	):void {
 		$user = $this->getActualUsername($user);
 		$this->adminChangesTheDisplayNameOfUserUsingKey(
 			$user,
@@ -2094,10 +2102,10 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function adminChangesTheDisplayNameOfUserUsingKey(
-		$user,
-		$key,
-		$displayName
-	) {
+		string $user,
+		string $key,
+		string $displayName
+	):void {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
@@ -2110,7 +2118,7 @@ trait Provisioning {
 		);
 		$this->response = $result;
 		if ($result->getStatusCode() !== 200) {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " could not change display name of user using key $key "
 				. $result->getStatusCode() . " " . $result->getBody()
 			);
@@ -2131,12 +2139,13 @@ trait Provisioning {
 	 * @param string $displayName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userChangesTheDisplayNameOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$displayName
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $displayName
+	):void {
 		$this->userTriesToChangeTheDisplayNameOfUserUsingTheProvisioningApi(
 			$requestingUser,
 			$targetUser,
@@ -2162,10 +2171,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userTriesToChangeTheDisplayNameOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$displayName
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $displayName
+	):void {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
@@ -2190,12 +2199,13 @@ trait Provisioning {
 	 * @param string $displayName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userChangesTheDisplayOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$displayName
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $displayName
+	):void {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
@@ -2215,12 +2225,13 @@ trait Provisioning {
 	 * @param string $displayName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userHasChangedTheDisplayNameOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$displayName
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $displayName
+	):void {
 		$requestingUser = $this->getActualUsername($requestingUser);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->userChangesTheDisplayNameOfUserUsingKey(
@@ -2242,11 +2253,11 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userChangesTheDisplayNameOfUserUsingKey(
-		$requestingUser,
-		$targetUser,
-		$key,
-		$displayName
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $key,
+		string $displayName
+	):void {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($targetUser),
@@ -2269,9 +2280,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminChangesTheQuotaOfUserUsingTheProvisioningApi(
-		$user,
-		$quota
-	) {
+		string $user,
+		string $quota
+	):void {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
@@ -2294,9 +2305,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminHasChangedTheQuotaOfUserTo(
-		$user,
-		$quota
-	) {
+		string $user,
+		string $quota
+	):void {
 		$user = $this->getActualUsername($user);
 		$this->adminChangesTheQuotaOfUserUsingTheProvisioningApi(
 			$user,
@@ -2316,10 +2327,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userChangeQuotaOfUserUsingProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$quota
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $quota
+	):void {
 		$result = UserHelper::editUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($targetUser),
@@ -2343,10 +2354,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userChangesTheQuotaOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$quota
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $quota
+	):void {
 		$this->userChangeQuotaOfUserUsingProvisioningApi(
 			$requestingUser,
 			$targetUser,
@@ -2364,10 +2375,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userHasChangedTheQuotaOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser,
-		$quota
-	) {
+		string $requestingUser,
+		string $targetUser,
+		string $quota
+	):void {
 		$this->userChangeQuotaOfUserUsingProvisioningApi(
 			$requestingUser,
 			$targetUser,
@@ -2382,8 +2393,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function retrieveUserInformationAsAdminUsingProvisioningApi(
-		$user
-	) {
+		string $user
+	):void {
 		$result = UserHelper::getUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($user),
@@ -2403,8 +2414,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminRetrievesTheInformationOfUserUsingTheProvisioningApi(
-		$user
-	) {
+		string $user
+	):void {
 		$user = $this->getActualUsername($user);
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi(
 			$user
@@ -2419,8 +2430,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminHasRetrievedTheInformationOfUserUsingTheProvisioningApi(
-		$user
-	) {
+		string $user
+	):void {
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
@@ -2432,9 +2443,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userRetrieveUserInformationUsingProvisioningApi(
-		$requestingUser,
-		$targetUser
-	) {
+		string $requestingUser,
+		string $targetUser
+	):void {
 		$result = UserHelper::getUser(
 			$this->getBaseUrl(),
 			$this->getActualUsername($targetUser),
@@ -2455,9 +2466,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userRetrievesTheInformationOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser
-	) {
+		string $requestingUser,
+		string $targetUser
+	):void {
 		$this->userRetrieveUserInformationUsingProvisioningApi(
 			$requestingUser,
 			$targetUser
@@ -2473,9 +2484,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userHasRetrievedTheInformationOfUserUsingTheProvisioningApi(
-		$requestingUser,
-		$targetUser
-	) {
+		string $requestingUser,
+		string $targetUser
+	):void {
 		$this->userRetrieveUserInformationUsingProvisioningApi(
 			$requestingUser,
 			$targetUser
@@ -2490,7 +2501,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userShouldExist($user) {
+	public function userShouldExist(string $user):void {
 		$user = $this->getActualUsername($user);
 		Assert::assertTrue(
 			$this->userExists($user),
@@ -2504,8 +2515,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theFollowingUsersShouldExist(TableNode $table) {
+	public function theFollowingUsersShouldExist(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -2520,7 +2532,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userShouldNotExist($user) {
+	public function userShouldNotExist(string $user):void {
 		$user = $this->getActualUsername($user);
 		Assert::assertFalse(
 			$this->userExists($user),
@@ -2535,8 +2547,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theFollowingUsersShouldNotExist(TableNode $table) {
+	public function theFollowingUsersShouldNotExist(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -2552,7 +2565,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function groupShouldExist($group) {
+	public function groupShouldExist(string $group):void {
 		Assert::assertTrue(
 			$this->groupExists($group),
 			"Group '$group' should exist but does not exist"
@@ -2567,7 +2580,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function groupShouldNotExist($group) {
+	public function groupShouldNotExist(string $group):void {
 		Assert::assertFalse(
 			$this->groupExists($group),
 			"Group '$group' should not exist but does exist"
@@ -2580,8 +2593,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theFollowingGroupsShouldNotExist(TableNode $table) {
+	public function theFollowingGroupsShouldNotExist(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["groupname"]);
 		$groups = $table->getHash();
 		foreach ($groups as $group) {
@@ -2597,9 +2611,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
+	public function theseGroupsShouldNotExist(string $shouldOrNot, TableNode $table):void {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
 		$this->verifyTableNodeColumns($table, ['groupname']);
@@ -2620,9 +2634,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasBeenDeleted($user) {
+	public function userHasBeenDeleted(string $user):void {
 		$user = $this->getActualUsername($user);
 		if ($this->userExists($user)) {
 			if ($this->isTestingWithLdap() && \in_array($user, $this->ldapCreatedUsers)) {
@@ -2640,8 +2654,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theFollowingUsersHaveBeenDeleted(TableNode $table) {
+	public function theFollowingUsersHaveBeenDeleted(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -2658,7 +2673,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theseUsersHaveBeenInitialized(TableNode $table) {
+	public function theseUsersHaveBeenInitialized(TableNode $table):void {
 		foreach ($table as $row) {
 			if (!isset($row ['password'])) {
 				$password = $this->getPasswordForUser($row ['username']);
@@ -2679,7 +2694,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsAllTheMembersOfGroupUsingTheProvisioningApi($group) {
+	public function theAdministratorGetsAllTheMembersOfGroupUsingTheProvisioningApi(string $group):void {
 		$this->userGetsAllTheMembersOfGroupUsingTheProvisioningApi(
 			$this->getAdminUsername(),
 			$group
@@ -2694,7 +2709,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userGetsAllTheMembersOfGroupUsingTheProvisioningApi($user, $group) {
+	public function userGetsAllTheMembersOfGroupUsingTheProvisioningApi(string $user, string $group):void {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
@@ -2709,7 +2724,7 @@ trait Provisioning {
 	 *
 	 * @return ResponseInterface
 	 */
-	public function getAllGroups() {
+	public function getAllGroups():ResponseInterface {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
 		return HttpRequestHelper::get(
 			$fullUrl,
@@ -2724,7 +2739,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsAllTheGroupsUsingTheProvisioningApi() {
+	public function theAdministratorGetsAllTheGroupsUsingTheProvisioningApi():void {
 		$this->response = $this->getAllGroups();
 	}
 
@@ -2735,8 +2750,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userTriesToGetAllTheGroupsUsingTheProvisioningApi($user) {
+	public function userTriesToGetAllTheGroupsUsingTheProvisioningApi(string $user):void {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/groups";
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
@@ -2754,8 +2770,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorGetsAllTheGroupsOfUser($user) {
+	public function theAdministratorGetsAllTheGroupsOfUser(string $user):void {
 		$this->userGetsAllTheGroupsOfUser($this->getAdminUsername(), $user);
 	}
 
@@ -2766,8 +2783,9 @@ trait Provisioning {
 	 * @param string $otherUser
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userGetsAllTheGroupsOfUser($user, $otherUser) {
+	public function userGetsAllTheGroupsOfUser(string $user, string $otherUser):void {
 		$actualOtherUser = $this->getActualUsername($otherUser);
 		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/groups";
 		$actualUser = $this->getActualUsername($user);
@@ -2785,7 +2803,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsTheListOfAllUsersUsingTheProvisioningApi() {
+	public function theAdministratorGetsTheListOfAllUsersUsingTheProvisioningApi():void {
 		$this->userGetsTheListOfAllUsersUsingTheProvisioningApi($this->getAdminUsername());
 	}
 
@@ -2795,8 +2813,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userGetsTheListOfAllUsersUsingTheProvisioningApi($user) {
+	public function userGetsTheListOfAllUsersUsingTheProvisioningApi(string $user):void {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->ocsApiVersion}.php/cloud/users";
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
@@ -2817,7 +2836,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function initializeUser($user, $password) {
+	public function initializeUser(string $user, string $password):void {
 		$url = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
 		HttpRequestHelper::get(
@@ -2835,9 +2854,9 @@ trait Provisioning {
 	 * @param array $users
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function initializeUsers($users) {
+	public function initializeUsers(array $users):void {
 		$url = "/cloud/users/%s";
 		foreach ($users as $user) {
 			$response = OcsApiHelper::sendRequest(
@@ -2858,20 +2877,20 @@ trait Provisioning {
 	 * makes it possible to use this list in other test steps
 	 * or to delete them at the end of the test
 	 *
-	 * @param string $user
-	 * @param string $password
-	 * @param string $displayName
-	 * @param string $email
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $displayName
+	 * @param string|null $email
 	 * @param bool $shouldExist
 	 *
 	 * @return void
 	 */
 	public function addUserToCreatedUsersList(
-		$user,
-		$password,
-		$displayName = null,
-		$email = null,
-		$shouldExist = true
+		?string $user,
+		?string $password,
+		?string $displayName = null,
+		?string $email = null,
+		bool $shouldExist = true
 	) {
 		$user = $this->getActualUsername($user);
 		$normalizedUsername = $this->normalizeUsername($user);
@@ -2910,9 +2929,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function rememberUserPassword(
-		$user,
-		$password
-	) {
+		string $user,
+		string $password
+	):void {
 		$normalizedUsername = $this->normalizeUsername($user);
 		if ($this->currentServer === 'LOCAL') {
 			if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
@@ -2935,7 +2954,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function rememberThatUserIsNotExpectedToExist($user) {
+	public function rememberThatUserIsNotExpectedToExist(string $user):void {
 		$user = $this->getActualUsername($user);
 		$normalizedUsername = $this->normalizeUsername($user);
 		if (\array_key_exists($normalizedUsername, $this->createdUsers)) {
@@ -2946,7 +2965,7 @@ trait Provisioning {
 	/**
 	 * creates a single user
 	 *
-	 * @param string $user
+	 * @param string|null $user
 	 * @param string|null $password if null, then select a password
 	 * @param string|null $displayName
 	 * @param string|null $email
@@ -2956,18 +2975,18 @@ trait Provisioning {
 	 * @param bool $skeleton
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function createUser(
-		$user,
-		$password = null,
-		$displayName = null,
-		$email = null,
-		$initialize = true,
-		$method = null,
-		$setDefault = true,
-		$skeleton = null
-	) {
+		?string $user,
+		?string $password = null,
+		?string $displayName = null,
+		?string $email = null,
+		bool $initialize = true,
+		?string $method = null,
+		bool $setDefault = true,
+		?bool $skeleton = null
+	):void {
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
 		}
@@ -3050,9 +3069,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function deleteUser($user) {
+	public function deleteUser(string $user):void {
 		$this->deleteTheUserUsingTheProvisioningApi($user);
 		$this->userShouldNotExist($user);
 	}
@@ -3065,12 +3084,12 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function cleanupGroup($group) {
+	public function cleanupGroup(string $group):void {
 		try {
 			$this->deleteTheGroupUsingTheProvisioningApi($group);
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			\error_log(
 				"INFORMATION: There was an unexpected problem trying to delete group " .
 				"'$group' message '" . $e->getMessage() . "'"
@@ -3089,11 +3108,11 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param string $user
+	 * @param string|null $user
 	 *
 	 * @return bool
 	 */
-	public function userExists($user) {
+	public function userExists(?string $user):bool {
 		// in OCIS there is no admin user and in oC10 there are issues when
 		// sending the username in lowercase in the auth but in uppercase in
 		// the URL see https://github.com/owncloud/core/issues/36822
@@ -3134,8 +3153,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userShouldBelongToGroup($user, $group) {
+	public function userShouldBelongToGroup(string $user, string $group):void {
 		$user = $this->getActualUsername($user);
 		$this->theAdministratorGetsAllTheGroupsOfUser($user);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
@@ -3163,8 +3183,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theTheFollowingUserShouldBelongToTheFollowingGroup(TableNode $table) {
+	public function theTheFollowingUserShouldBelongToTheFollowingGroup(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username", "groupname"]);
 		$rows = $table->getHash();
 		foreach ($rows as $row) {
@@ -3177,7 +3198,7 @@ trait Provisioning {
 	 *
 	 * @return array
 	 */
-	public function getUsersOfLdapGroup($group) {
+	public function getUsersOfLdapGroup(string $group):array {
 		$ou = $this->getLdapGroupsOU();
 		$entry = 'cn=' . $group . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
 		$ldapResponse = $this->ldap->getEntry($entry);
@@ -3192,7 +3213,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userShouldNotBelongToGroup($user, $group) {
+	public function userShouldNotBelongToGroup(string $user, string $group):void {
 		$user = $this->getActualUsername($user);
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
 		$this->response = HttpRequestHelper::get(
@@ -3216,8 +3237,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theTheFollowingUserShouldNotBelongToTheFollowingGroup(TableNode $table) {
+	public function theTheFollowingUserShouldNotBelongToTheFollowingGroup(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username", "groupname"]);
 		$rows = $table->getHash();
 		foreach ($rows as $row) {
@@ -3233,7 +3255,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function groupShouldNotContainUser($group, $username) {
+	public function groupShouldNotContainUser(string $group, string $username):void {
 		$username = $this->getActualUsername($username);
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group";
 		$this->response = HttpRequestHelper::get(
@@ -3251,7 +3273,7 @@ trait Provisioning {
 	 *
 	 * @return bool
 	 */
-	public function userBelongsToGroup($user, $group) {
+	public function userBelongsToGroup(string $user, string $group):bool {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
@@ -3275,9 +3297,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function adminAddsUserToGroupUsingTheProvisioningApi($user, $group) {
+	public function adminAddsUserToGroupUsingTheProvisioningApi(string $user, string $group):void {
 		$this->addUserToGroup($user, $group, "api");
 	}
 
@@ -3287,8 +3309,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorAddsUserToTheFollowingGroupsUsingTheProvisioningApi(TableNode $table) {
+	public function theAdministratorAddsUserToTheFollowingGroupsUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username", "groupname"], ["comment"]);
 		$rows = $table->getHash();
 		foreach ($rows as $row) {
@@ -3304,8 +3327,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userTriesToAddUserToGroupUsingTheProvisioningApi($user, $otherUser, $group) {
+	public function userTriesToAddUserToGroupUsingTheProvisioningApi(string $user, string $otherUser, string $group):void {
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$actualOtherUser = $this->getActualUsername($otherUser);
@@ -3328,8 +3352,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userTriesToAddHimselfToGroupUsingTheProvisioningApi($user, $group) {
+	public function userTriesToAddHimselfToGroupUsingTheProvisioningApi(string $user, string $group):void {
 		$this->userTriesToAddUserToGroupUsingTheProvisioningApi($user, $user, $group);
 	}
 
@@ -3340,11 +3365,12 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorTriesToAddUserToGroupUsingTheProvisioningApi(
-		$user,
-		$group
-	) {
+		string $user,
+		string $group
+	):void {
 		$this->userTriesToAddUserToGroupUsingTheProvisioningApi(
 			$this->getAdminUsername(),
 			$user,
@@ -3359,9 +3385,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasBeenAddedToGroup($user, $group) {
+	public function userHasBeenAddedToGroup(string $user, string $group):void {
 		$user = $this->getActualUsername($user);
 		$this->addUserToGroup($user, $group, null, true);
 	}
@@ -3372,8 +3398,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theFollowingUserHaveBeenAddedToTheFollowingGroup(TableNode $table) {
+	public function theFollowingUserHaveBeenAddedToTheFollowingGroup(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ['username', 'groupname']);
 		foreach ($table as $row) {
 			$this->userHasBeenAddedToGroup($row['username'], $row['groupname']);
@@ -3387,22 +3414,22 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function userHasBeenAddedToDatabaseBackendGroup($user, $group) {
+	public function userHasBeenAddedToDatabaseBackendGroup(string $user, string $group):void {
 		$this->addUserToGroup($user, $group, 'api', true);
 	}
 
 	/**
 	 * @param string $user
 	 * @param string $group
-	 * @param string $method how to add the user to the group api|occ
+	 * @param string|null $method how to add the user to the group api|occ
 	 * @param bool $checkResult if true, then check the status of the operation. default false.
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function addUserToGroup($user, $group, $method = null, $checkResult = false) {
+	public function addUserToGroup(string $user, string $group, ?string $method = null, bool $checkResult = false):void {
 		$user = $this->getActualUsername($user);
 		if ($method === null
 			&& $this->isTestingWithLdap()
@@ -3473,9 +3500,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theAdministratorHasBeenAddedToGroup($group) {
+	public function theAdministratorHasBeenAddedToGroup(string $group):void {
 		$admin = $this->getAdminUsername();
 		$this->addUserToGroup($admin, $group, null, true);
 	}
@@ -3488,10 +3515,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function addGroupToCreatedGroupsList(
-		$group,
-		$shouldExist = true,
-		$possibleToDelete = true
-	) {
+		string $group,
+		bool $shouldExist = true,
+		bool $possibleToDelete = true
+	):void {
 		$groupData = [
 			"shouldExist" => $shouldExist,
 			"possibleToDelete" => $possibleToDelete
@@ -3514,7 +3541,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function rememberThatGroupIsNotExpectedToExist($group) {
+	public function rememberThatGroupIsNotExpectedToExist(string $group):void {
 		if (\array_key_exists($group, $this->createdGroups)) {
 			$this->createdGroups[$group]['shouldExist'] = false;
 		}
@@ -3526,9 +3553,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function adminCreatesGroupUsingTheProvisioningApi($group) {
+	public function adminCreatesGroupUsingTheProvisioningApi(string $group):void {
 		if (!$this->groupExists($group)) {
 			$this->createTheGroup($group, 'api');
 		}
@@ -3541,9 +3568,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function groupHasBeenCreated($group) {
+	public function groupHasBeenCreated(string $group):void {
 		$this->createTheGroup($group);
 		$this->groupShouldExist($group);
 	}
@@ -3554,9 +3581,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function groupHasBeenCreatedOnDatabaseBackend($group) {
+	public function groupHasBeenCreatedOnDatabaseBackend(string $group):void {
 		$this->adminCreatesGroupUsingTheProvisioningApi($group);
 	}
 
@@ -3567,9 +3594,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function theseGroupsHaveBeenCreated(TableNode $table) {
+	public function theseGroupsHaveBeenCreated(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ['groupname'], ['comment']);
 		foreach ($table as $row) {
 			$this->createTheGroup($row['groupname']);
@@ -3580,14 +3607,14 @@ trait Provisioning {
 	 * @When /^the administrator sends a group creation request for group "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $group
-	 * @param string $user
+	 * @param string|null $user
 	 *
 	 * @return void
 	 */
 	public function adminSendsGroupCreationRequestUsingTheProvisioningApi(
-		$group,
-		$user = null
-	) {
+		string $group,
+		?string $user = null
+	):void {
 		$bodyTable = new TableNode([['groupid', $group]]);
 		$user = $user === null ? $this->getAdminUsername() : $user;
 		$this->emptyLastHTTPStatusCodesArray();
@@ -3608,8 +3635,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorSendsAGroupCreationRequestForTheFollowingGroupUsingTheProvisioningApi(TableNode $table) {
+	public function theAdministratorSendsAGroupCreationRequestForTheFollowingGroupUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["groupname"], ["comment"]);
 		$groups = $table->getHash();
 		foreach ($groups as $group) {
@@ -3624,7 +3652,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminTriesToSendGroupCreationRequestUsingTheAPI($group) {
+	public function adminTriesToSendGroupCreationRequestUsingTheAPI(string $group):void {
 		$this->adminSendsGroupCreationRequestUsingTheProvisioningApi($group);
 		$this->rememberThatGroupIsNotExpectedToExist($group);
 	}
@@ -3637,7 +3665,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userTriesToSendGroupCreationRequestUsingTheAPI($user, $group) {
+	public function userTriesToSendGroupCreationRequestUsingTheAPI(string $user, string $group):void {
 		$this->adminSendsGroupCreationRequestUsingTheProvisioningApi($group, $user);
 		$this->rememberThatGroupIsNotExpectedToExist($group);
 	}
@@ -3646,12 +3674,12 @@ trait Provisioning {
 	 * creates a single group
 	 *
 	 * @param string $group
-	 * @param string $method how to create the group api|occ
+	 * @param string|null $method how to create the group api|occ
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function createTheGroup($group, $method = null) {
+	public function createTheGroup(string $group, ?string $method = null):void {
 		//guess yourself
 		if ($method === null && $this->isTestingWithLdap()) {
 			$method = "ldap";
@@ -3717,13 +3745,14 @@ trait Provisioning {
 	 * @param bool $append
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function setTheLdapAttributeOfTheEntryTo(
-		$attribute,
-		$entry,
-		$value,
-		$append = false
-	) {
+		string $attribute,
+		string $entry,
+		string $value,
+		bool $append = false
+	):void {
 		$ldapEntry = $this->ldap->getEntry($entry . "," . $this->ldapBaseDN);
 		Laminas\Ldap\Attribute::setAttribute($ldapEntry, $attribute, $value, $append);
 		$this->ldap->update($entry . "," . $this->ldapBaseDN, $ldapEntry);
@@ -3736,8 +3765,9 @@ trait Provisioning {
 	 * @param string|null $ou
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function addUserToLdapGroup($user, $group, $ou = null) {
+	public function addUserToLdapGroup(string $user, string $group, ?string $ou = null):void {
 		if ($ou === null) {
 			$ou = $this->getLdapGroupsOU();
 		}
@@ -3756,7 +3786,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function deleteValueFromLdapAttribute($value, $attribute, $entry) {
+	public function deleteValueFromLdapAttribute(string $value, string $attribute, string $entry):void {
 		$this->ldap->deleteAttributes(
 			$entry . "," . $this->ldapBaseDN,
 			[$attribute => [$value]]
@@ -3766,12 +3796,12 @@ trait Provisioning {
 	/**
 	 * @param string $user
 	 * @param string $group
-	 * @param null $ou
+	 * @param string|null $ou
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function removeUserFromLdapGroup($user, $group, $ou = null) {
+	public function removeUserFromLdapGroup(string $user, string $group, ?string $ou = null):void {
 		if ($ou === null) {
 			$ou = $this->getLdapGroupsOU();
 		}
@@ -3789,20 +3819,20 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteTheLdapEntry($entry) {
+	public function deleteTheLdapEntry(string $entry):void {
 		$this->ldap->delete($entry . "," . $this->ldapBaseDN);
 		$this->theLdapUsersHaveBeenReSynced();
 	}
 
 	/**
 	 * @param string $group
-	 * @param null $ou
+	 * @param string|null $ou
 	 *
 	 * @return void
 	 * @throws LdapException
 	 * @throws Exception
 	 */
-	public function deleteLdapGroup($group, $ou = null) {
+	public function deleteLdapGroup(string $group, ?string $ou = null):void {
 		if ($ou === null) {
 			$ou = $this->getLdapGroupsOU();
 		}
@@ -3816,13 +3846,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param string $username
-	 * @param null $ou
+	 * @param string|null $username
+	 * @param string|null $ou
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteLdapUser($username, $ou = null) {
+	public function deleteLdapUser(?string $username, ?string $ou = null):void {
 		if (!\in_array($username, $this->ldapCreatedUsers)) {
 			throw new Error(
 				"User " . $username . " was not created using Ldap and does not exist as an Ldap User"
@@ -3841,13 +3871,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param string $user
-	 * @param string $displayName
+	 * @param string|null $user
+	 * @param string|null $displayName
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function editLdapUserDisplayName($user, $displayName) {
+	public function editLdapUserDisplayName(?string $user, ?string $displayName):void {
 		$entry = "uid=" . $user . ",ou=" . $this->getLdapUsersOU();
 		$this->setTheLdapAttributeOfTheEntryTo(
 			'displayname',
@@ -3860,11 +3890,11 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator disables user "([^"]*)" using the provisioning API$/
 	 *
-	 * @param string $user
+	 * @param string|null $user
 	 *
 	 * @return void
 	 */
-	public function adminDisablesUserUsingTheProvisioningApi($user) {
+	public function adminDisablesUserUsingTheProvisioningApi(?string $user):void {
 		$user = $this->getActualUsername($user);
 		$this->disableOrEnableUser($this->getAdminUsername(), $user, 'disable');
 	}
@@ -3875,8 +3905,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorDisablesTheFollowingUsersUsingTheProvisioningApi(TableNode $table) {
+	public function theAdministratorDisablesTheFollowingUsersUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -3887,11 +3918,12 @@ trait Provisioning {
 	/**
 	 * @Given /^user "([^"]*)" has been disabled$/
 	 *
-	 * @param string $user
+	 * @param string|null $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function adminHasDisabledUserUsingTheProvisioningApi($user) {
+	public function adminHasDisabledUserUsingTheProvisioningApi(?string $user):void {
 		$user = $this->getActualUsername($user);
 		$this->disableOrEnableUser($this->getAdminUsername(), $user, 'disable');
 		$this->theHTTPStatusCodeShouldBeSuccess();
@@ -3904,8 +3936,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theFollowingUsersHaveBeenDisabled(TableNode $table) {
+	public function theFollowingUsersHaveBeenDisabled(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -3921,7 +3954,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userDisablesUserUsingTheProvisioningApi($user, $otherUser) {
+	public function userDisablesUserUsingTheProvisioningApi(string $user, string $otherUser):void {
 		$user = $this->getActualUsername($user);
 		$actualOtherUser = $this->getActualUsername($otherUser);
 		$this->disableOrEnableUser($user, $actualOtherUser, 'disable');
@@ -3934,7 +3967,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorEnablesUserUsingTheProvisioningApi($user) {
+	public function theAdministratorEnablesUserUsingTheProvisioningApi(string $user):void {
 		$this->disableOrEnableUser($this->getAdminUsername(), $user, 'enable');
 	}
 
@@ -3944,8 +3977,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorEnablesTheFollowingUsersUsingTheProvisioningApi(TableNode $table) {
+	public function theAdministratorEnablesTheFollowingUsersUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -3963,9 +3997,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userTriesToEnableUserUsingTheProvisioningApi(
-		$user,
-		$otherUser
-	) {
+		string $user,
+		string $otherUser
+	):void {
 		$this->disableOrEnableUser($user, $otherUser, 'enable');
 	}
 
@@ -3973,9 +4007,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function deleteTheUserUsingTheProvisioningApi($user) {
+	public function deleteTheUserUsingTheProvisioningApi(string $user):void {
 		$this->emptyLastHTTPStatusCodesArray();
 		$this->emptyLastOCSStatusCodesArray();
 		// Always try to delete the user
@@ -4012,7 +4046,7 @@ trait Provisioning {
 	 * @throws Exception
 	 * @throws LdapException
 	 */
-	public function deleteGroup($group) {
+	public function deleteGroup(string $group):void {
 		if ($this->groupExists($group)) {
 			if ($this->isTestingWithLdap() && \in_array($group, $this->ldapCreatedGroups)) {
 				$this->deleteLdapGroup($group);
@@ -4028,9 +4062,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function groupHasBeenDeleted($group) {
+	public function groupHasBeenDeleted(string $group):void {
 		$this->deleteGroup($group);
 		$this->groupShouldNotExist($group);
 	}
@@ -4041,9 +4075,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function adminDeletesGroup($group) {
+	public function adminDeletesGroup(string $group):void {
 		$this->deleteGroup($group);
 	}
 
@@ -4053,9 +4087,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function deleteTheGroupUsingTheProvisioningApi($group) {
+	public function deleteTheGroupUsingTheProvisioningApi(string $group):void {
 		$this->emptyLastHTTPStatusCodesArray();
 		$this->emptyLastOCSStatusCodesArray();
 		$this->response = UserHelper::deleteGroup(
@@ -4086,8 +4120,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorDeletesTheFollowingGroupsUsingTheProvisioningApi(TableNode $table) {
+	public function theAdministratorDeletesTheFollowingGroupsUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["groupname"]);
 		$groups = $table->getHash();
 		foreach ($groups as $group) {
@@ -4103,7 +4138,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userTriesToDeleteGroupUsingTheProvisioningApi($user, $group) {
+	public function userTriesToDeleteGroupUsingTheProvisioningApi(string $user, string $group):void {
 		$this->response = UserHelper::deleteGroup(
 			$this->getBaseUrl(),
 			$group,
@@ -4120,7 +4155,7 @@ trait Provisioning {
 	 * @return bool
 	 * @throws Exception
 	 */
-	public function groupExists($group) {
+	public function groupExists(string $group):bool {
 		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcisOrReva()) {
 			$baseDN = $this->getLdapBaseDN();
 			$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
@@ -4150,7 +4185,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function removeUserFromGroupAsAdminUsingTheProvisioningApi($user, $group) {
+	public function removeUserFromGroupAsAdminUsingTheProvisioningApi(string $user, string $group):void {
 		$this->userRemovesUserFromGroupUsingTheProvisioningApi(
 			$this->getAdminUsername(),
 			$user,
@@ -4167,7 +4202,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminRemovesUserFromGroupUsingTheProvisioningApi($user, $group) {
+	public function adminRemovesUserFromGroupUsingTheProvisioningApi(string $user, string $group):void {
 		$user = $this->getActualUsername($user);
 		$this->removeUserFromGroupAsAdminUsingTheProvisioningApi(
 			$user,
@@ -4181,8 +4216,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorRemovesTheFollowingUserFromTheFollowingGroupUsingTheProvisioningApi(TableNode $table) {
+	public function theAdministratorRemovesTheFollowingUserFromTheFollowingGroupUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ['username', 'groupname']);
 		foreach ($table as $row) {
 			$this->adminRemovesUserFromGroupUsingTheProvisioningApi($row['username'], $row['groupname']);
@@ -4198,7 +4234,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function adminHasRemovedUserFromGroup($user, $group) {
+	public function adminHasRemovedUserFromGroup(string $user, string $group):void {
 		if ($this->isTestingWithLdap()
 			&& !$this->isLocalAdminGroup($group)
 			&& \in_array($group, $this->ldapCreatedGroups)
@@ -4223,10 +4259,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userRemovesUserFromGroupUsingTheProvisioningApi(
-		$user,
-		$otherUser,
-		$group
-	) {
+		string $user,
+		string $otherUser,
+		string $group
+	):void {
 		$this->userTriesToRemoveUserFromGroupUsingTheProvisioningApi(
 			$user,
 			$otherUser,
@@ -4249,12 +4285,13 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userTriesToRemoveUserFromGroupUsingTheProvisioningApi(
-		$user,
-		$otherUser,
-		$group
-	) {
+		string $user,
+		string $otherUser,
+		string $group
+	):void {
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$actualOtherUser = $this->getActualUsername($otherUser);
@@ -4278,9 +4315,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminMakesUserSubadminOfGroupUsingTheProvisioningApi(
-		$user,
-		$group
-	) {
+		string $user,
+		string $group
+	):void {
 		$user = $this->getActualUsername($user);
 		$this->userMakesUserASubadminOfGroupUsingTheProvisioningApi(
 			$this->getAdminUsername(),
@@ -4297,12 +4334,13 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userMakesUserASubadminOfGroupUsingTheProvisioningApi(
-		$user,
-		$otherUser,
-		$group
-	) {
+		string $user,
+		string $otherUser,
+		string $group
+	):void {
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getUserPassword($actualUser);
 		$actualSubadminUsername = $this->getActualUsername($otherUser);
@@ -4327,7 +4365,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorGetsAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi($user) {
+	public function theAdministratorGetsAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi(string $user):void {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
 		$this->response = HttpRequestHelper::get(
@@ -4346,8 +4384,9 @@ trait Provisioning {
 	 * @param string $otherUser
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userTriesToGetAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi($user, $otherUser) {
+	public function userTriesToGetAllTheGroupsWhereUserIsSubadminUsingTheProvisioningApi(string $user, string $otherUser):void {
 		$actualOtherUser = $this->getActualUsername($otherUser);
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/subadmins";
@@ -4370,9 +4409,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userHasBeenMadeSubadminOfGroup(
-		$user,
-		$group
-	) {
+		string $user,
+		string $group
+	):void {
 		$this->adminMakesUserSubadminOfGroupUsingTheProvisioningApi(
 			$user,
 			$group
@@ -4389,8 +4428,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($group) {
+	public function theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi(string $group):void {
 		$this->userGetsAllTheSubadminsOfGroupUsingTheProvisioningApi(
 			$this->getAdminUsername(),
 			$group
@@ -4404,8 +4444,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($user, $group) {
+	public function userGetsAllTheSubadminsOfGroupUsingTheProvisioningApi(string $user, string $group):void {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/groups/$group/subadmins";
 		$actualUser = $this->getActualUsername($user);
@@ -4427,9 +4468,9 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theAdministratorRemovesUserFromBeingASubadminOfGroupUsingTheProvisioningApi(
-		$user,
-		$group
-	) {
+		string $user,
+		string $group
+	):void {
 		$this->userRemovesUserFromBeingASubadminOfGroupUsingTheProvisioningApi(
 			$this->getAdminUsername(),
 			$user,
@@ -4445,12 +4486,13 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function userRemovesUserFromBeingASubadminOfGroupUsingTheProvisioningApi(
-		$user,
-		$otherUser,
-		$group
-	) {
+		string $user,
+		string $otherUser,
+		string $group
+	):void {
 		$actualOtherUser = $this->getActualUsername($otherUser);
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$actualOtherUser/subadmins";
@@ -4472,8 +4514,9 @@ trait Provisioning {
 	 * @param TableNode $usersList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theUsersShouldBe($usersList) {
+	public function theUsersShouldBe(TableNode $usersList):void {
 		$this->verifyTableNodeColumnsCount($usersList, 1);
 		$users = $usersList->getRows();
 		$usersSimplified = \array_map(
@@ -4495,8 +4538,9 @@ trait Provisioning {
 	 * @param TableNode $usersList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theUsersShouldInclude($usersList) {
+	public function theUsersShouldInclude(TableNode $usersList):void {
 		$this->verifyTableNodeColumnsCount($usersList, 1);
 		$users = $usersList->getRows();
 		$usersSimplified = \array_map(
@@ -4523,8 +4567,9 @@ trait Provisioning {
 	 * @param TableNode $groupsList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theGroupsShouldBe($groupsList) {
+	public function theGroupsShouldBe(TableNode $groupsList):void {
 		$this->verifyTableNodeColumnsCount($groupsList, 1);
 		$groups = $groupsList->getRows();
 		$groupsSimplified = $this->simplifyArray($groups);
@@ -4542,7 +4587,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theGroupsReturnedByTheApiShouldInclude($group) {
+	public function theGroupsReturnedByTheApiShouldInclude(string $group):void {
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		Assert::assertContains($group, $respondedArray);
 	}
@@ -4554,7 +4599,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theGroupsReturnedByTheApiShouldNotInclude($group) {
+	public function theGroupsReturnedByTheApiShouldNotInclude(string $group):void {
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		Assert::assertNotContains($group, $respondedArray);
 	}
@@ -4566,7 +4611,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theUsersReturnedByTheApiShouldNotInclude($user) {
+	public function theUsersReturnedByTheApiShouldNotInclude(string $user):void {
 		$respondedArray = $this->getArrayOfUsersResponded($this->response);
 		Assert::assertNotContains($user, $respondedArray);
 	}
@@ -4575,8 +4620,9 @@ trait Provisioning {
 	 * @param TableNode|null $groupsOrUsersList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function checkSubadminGroupsOrUsersTable($groupsOrUsersList) {
+	public function checkSubadminGroupsOrUsersTable(?TableNode $groupsOrUsersList):void {
 		$this->verifyTableNodeColumnsCount($groupsOrUsersList, 1);
 		$tableRows = $groupsOrUsersList->getRows();
 		$simplifiedTableRows = $this->simplifyArray($tableRows);
@@ -4593,8 +4639,9 @@ trait Provisioning {
 	 * @param TableNode|null $groupsList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theSubadminGroupsShouldBe($groupsList) {
+	public function theSubadminGroupsShouldBe(?TableNode $groupsList):void {
 		$this->checkSubadminGroupsOrUsersTable($groupsList);
 	}
 
@@ -4604,8 +4651,9 @@ trait Provisioning {
 	 * @param TableNode|null $usersList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theSubadminUsersShouldBe($usersList) {
+	public function theSubadminUsersShouldBe(?TableNode $usersList):void {
 		$this->checkSubadminGroupsOrUsersTable($usersList);
 	}
 
@@ -4615,8 +4663,9 @@ trait Provisioning {
 	 * @param TableNode|null $appList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAppsShouldInclude($appList) {
+	public function theAppsShouldInclude(?TableNode $appList):void {
 		$this->verifyTableNodeColumnsCount($appList, 1);
 		$apps = $appList->getRows();
 		$appsSimplified = $this->simplifyArray($apps);
@@ -4636,8 +4685,9 @@ trait Provisioning {
 	 * @param TableNode|null $appList
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theAppsShouldNotInclude($appList) {
+	public function theAppsShouldNotInclude(?TableNode $appList):void {
 		$this->verifyTableNodeColumnsCount($appList, 1);
 		$apps = $appList->getRows();
 		$appsSimplified = $this->simplifyArray($apps);
@@ -4658,7 +4708,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function appShouldNotBeInTheAppsList($appName) {
+	public function appShouldNotBeInTheAppsList(string $appName):void {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
@@ -4677,8 +4727,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userShouldBeASubadminOfGroup($user, $group) {
+	public function userShouldBeASubadminOfGroup(string $user, string $group):void {
 		$this->theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($group);
 		Assert::assertEquals(
 			200,
@@ -4698,8 +4749,9 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userShouldNotBeASubadminOfGroup($user, $group) {
+	public function userShouldNotBeASubadminOfGroup(string $user, string $group):void {
 		$this->theAdministratorGetsAllTheSubadminsOfGroupUsingTheProvisioningApi($group);
 		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
 		Assert::assertNotContains(
@@ -4714,8 +4766,9 @@ trait Provisioning {
 	 * @param string $expectedDisplayName
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theDisplayNameReturnedByTheApiShouldBe($expectedDisplayName) {
+	public function theDisplayNameReturnedByTheApiShouldBe(string $expectedDisplayName):void {
 		$responseDisplayName = (string) $this->getResponseXml(null, __METHOD__)->data[0]->displayname;
 		Assert::assertEquals(
 			$expectedDisplayName,
@@ -4730,8 +4783,9 @@ trait Provisioning {
 	 * @param string $displayname
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theDisplayNameOfUserShouldBe($user, $displayname) {
+	public function theDisplayNameOfUserShouldBe(string $user, string $displayname):void {
 		$actualUser = $this->getActualUsername($user);
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi($actualUser);
 		$this->theDisplayNameReturnedByTheApiShouldBe($displayname);
@@ -4743,8 +4797,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theDisplayNameOfTheFollowingUsersShouldBe(TableNode $table) {
+	public function theDisplayNameOfTheFollowingUsersShouldBe(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["name", "display-name"]);
 		$users = $table->getHash();
 		foreach ($users as $user) {
@@ -4758,8 +4813,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theDisplayNameOfUserShouldNotHaveChanged($user) {
+	public function theDisplayNameOfUserShouldNotHaveChanged(string $user):void {
 		$actualUser = $this->getActualUsername($user);
 		$expectedDisplayName = $this->getDisplayNameForUser($user);
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi($actualUser);
@@ -4772,8 +4828,9 @@ trait Provisioning {
 	 * @param string $expectedEmailAddress
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress) {
+	public function theEmailAddressReturnedByTheApiShouldBe(string $expectedEmailAddress):void {
 		$responseEmailAddress = (string) $this->getResponseXml(null, __METHOD__)->data[0]->email;
 		Assert::assertEquals(
 			$expectedEmailAddress,
@@ -4788,8 +4845,9 @@ trait Provisioning {
 	 * @param string $expectedEmailAddress
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theEmailAddressOfUserShouldBe($user, $expectedEmailAddress) {
+	public function theEmailAddressOfUserShouldBe(string $user, string $expectedEmailAddress):void {
 		$user = $this->getActualUsername($user);
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
 		$this->theEmailAddressReturnedByTheApiShouldBe($expectedEmailAddress);
@@ -4801,8 +4859,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theEmailAddressOfUserShouldNotHaveChanged($user) {
+	public function theEmailAddressOfUserShouldNotHaveChanged(string $user):void {
 		$user = $this->getActualUsername($user);
 		$expectedEmailAddress = $this->getEmailAddressForUser($user);
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
@@ -4815,8 +4874,9 @@ trait Provisioning {
 	 * @param string $expectedQuotaDefinition a string that describes the quota
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theQuotaDefinitionReturnedByTheApiShouldBe($expectedQuotaDefinition) {
+	public function theQuotaDefinitionReturnedByTheApiShouldBe(string $expectedQuotaDefinition):void {
 		$responseQuotaDefinition = (string) $this->getResponseXml(null, __METHOD__)->data[0]->quota->definition;
 		Assert::assertEquals(
 			$expectedQuotaDefinition,
@@ -4831,8 +4891,9 @@ trait Provisioning {
 	 * @param string $expectedQuotaDefinition
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theQuotaDefinitionOfUserShouldBe($user, $expectedQuotaDefinition) {
+	public function theQuotaDefinitionOfUserShouldBe(string $user, string $expectedQuotaDefinition):void {
 		$this->retrieveUserInformationAsAdminUsingProvisioningApi($user);
 		$this->theQuotaDefinitionReturnedByTheApiShouldBe($expectedQuotaDefinition);
 	}
@@ -4843,8 +4904,9 @@ trait Provisioning {
 	 * @param ResponseInterface $resp
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getArrayOfUsersResponded($resp) {
+	public function getArrayOfUsersResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->users[0]->element;
 		$extractedElementsArray
@@ -4858,8 +4920,9 @@ trait Provisioning {
 	 * @param ResponseInterface $resp
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getArrayOfGroupsResponded($resp) {
+	public function getArrayOfGroupsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->groups[0]->element;
 		$extractedElementsArray
@@ -4873,8 +4936,9 @@ trait Provisioning {
 	 * @param ResponseInterface $resp
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getArrayOfAppsResponded($resp) {
+	public function getArrayOfAppsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->apps[0]->element;
 		$extractedElementsArray
@@ -4888,8 +4952,9 @@ trait Provisioning {
 	 * @param ResponseInterface $resp
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getArrayOfSubadminsResponded($resp) {
+	public function getArrayOfSubadminsResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->element;
 		$extractedElementsArray
@@ -4903,8 +4968,9 @@ trait Provisioning {
 	 * @param ResponseInterface $resp
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getArrayOfAppInfoResponded($resp) {
+	public function getArrayOfAppInfoResponded(ResponseInterface $resp):array {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0];
 		$extractedElementsArray
@@ -4918,8 +4984,9 @@ trait Provisioning {
 	 * @param string $app
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function appShouldBeDisabled($app) {
+	public function appShouldBeDisabled(string $app):void {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v2.php/cloud/apps?filter=disabled";
 		$this->response = HttpRequestHelper::get(
@@ -4942,8 +5009,9 @@ trait Provisioning {
 	 * @param string $app
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function appShouldBeEnabled($app) {
+	public function appShouldBeEnabled(string $app):void {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=enabled";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
@@ -4965,8 +5033,9 @@ trait Provisioning {
 	 * @param string $app
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theInformationForAppShouldHaveAValidVersion($app) {
+	public function theInformationForAppShouldHaveAValidVersion(string $app):void {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps/$app";
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
@@ -4997,8 +5066,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userShouldBeDisabled($user) {
+	public function userShouldBeDisabled(string $user):void {
 		$user = $this->getActualUsername($user);
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
@@ -5020,8 +5090,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theFollowingUsersShouldBeDisabled(TableNode $table) {
+	public function theFollowingUsersShouldBeDisabled(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -5035,8 +5106,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function userShouldBeEnabled($user) {
+	public function userShouldBeEnabled(string $user):void {
 		$user = $this->getActualUsername($user);
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
@@ -5058,8 +5130,9 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theFollowingUsersShouldBeEnabled(TableNode $table) {
+	public function theFollowingUsersShouldBeEnabled(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ["username"]);
 		$usernames = $table->getHash();
 		foreach ($usernames as $username) {
@@ -5075,7 +5148,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminSetsUserQuotaToUsingTheProvisioningApi($user, $quota) {
+	public function adminSetsUserQuotaToUsingTheProvisioningApi(string $user, string $quota):void {
 		$user = $this->getActualUsername($user);
 		$body
 			= [
@@ -5103,7 +5176,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theQuotaOfUserHasBeenSetTo($user, $quota) {
+	public function theQuotaOfUserHasBeenSetTo(string $user, string $quota):void {
 		$this->adminSetsUserQuotaToUsingTheProvisioningApi($user, $quota);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
@@ -5115,7 +5188,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminGivesUnlimitedQuotaToUserUsingTheProvisioningApi($user) {
+	public function adminGivesUnlimitedQuotaToUserUsingTheProvisioningApi(string $user):void {
 		$this->adminSetsUserQuotaToUsingTheProvisioningApi($user, 'none');
 	}
 
@@ -5126,7 +5199,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function userHasBeenGivenUnlimitedQuota($user) {
+	public function userHasBeenGivenUnlimitedQuota(string $user):void {
 		$this->theQuotaOfUserHasBeenSetTo($user, 'none');
 	}
 
@@ -5136,8 +5209,9 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
-	public function getUserHome($user) {
+	public function getUserHome(string $user):string {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
 		$this->response = HttpRequestHelper::get(
@@ -5155,8 +5229,9 @@ trait Provisioning {
 	 * @param TableNode|null $body
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function checkUserAttributes($body) {
+	public function checkUserAttributes(?TableNode $body):void {
 		$this->verifyTableNodeRows($body, [], $this->userResponseFields);
 		$bodyRows = $body->getRowsHash();
 		foreach ($bodyRows as $field => $value) {
@@ -5180,8 +5255,9 @@ trait Provisioning {
 	 * @param TableNode $body
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function checkAttributesForUser($user, $body) {
+	public function checkAttributesForUser(string $user, TableNode $body):void {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeColumnsCount($body, 2);
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -5197,8 +5273,9 @@ trait Provisioning {
 	 * @Then /^the API should not return any data$/
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theApiShouldNotReturnAnyData() {
+	public function theApiShouldNotReturnAnyData():void {
 		$responseData = $this->getResponseXml(null, __METHOD__)->data[0];
 		Assert::assertEmpty(
 			$responseData,
@@ -5210,8 +5287,9 @@ trait Provisioning {
 	 * @Then /^the list of users returned by the API should be empty$/
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theListOfUsersReturnedByTheApiShouldBeEmpty() {
+	public function theListOfUsersReturnedByTheApiShouldBeEmpty():void {
 		$usersList = $this->getResponseXml(null, __METHOD__)->data[0]->users[0];
 		Assert::assertEmpty(
 			$usersList,
@@ -5223,8 +5301,9 @@ trait Provisioning {
 	 * @Then /^the list of groups returned by the API should be empty$/
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function theListOfGroupsReturnedByTheApiShouldBeEmpty() {
+	public function theListOfGroupsReturnedByTheApiShouldBeEmpty():void {
 		$groupsList = $this->getResponseXml(null, __METHOD__)->data[0]->groups[0];
 		Assert::assertEmpty(
 			$groupsList,
@@ -5236,9 +5315,9 @@ trait Provisioning {
 	 * @AfterScenario
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function afterScenario() {
+	public function afterScenario():void {
 		$this->restoreParametersAfterScenario();
 
 		if (OcisHelper::isTestingOnOcisOrReva() && $this->someUsersHaveBeenCreated()) {
@@ -5258,8 +5337,9 @@ trait Provisioning {
 	/**
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function resetAdminUserAttributes() {
+	public function resetAdminUserAttributes():void {
 		if ($this->adminDisplayName !== '') {
 			$this->adminChangesTheDisplayNameOfUserUsingTheProvisioningApi(
 				$this->getAdminUsername(),
@@ -5277,9 +5357,9 @@ trait Provisioning {
 	/**
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function cleanupDatabaseUsers() {
+	public function cleanupDatabaseUsers():void {
 		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
@@ -5296,9 +5376,9 @@ trait Provisioning {
 	/**
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public function cleanupDatabaseGroups() {
+	public function cleanupDatabaseGroups():void {
 		$this->authContext->deleteTokenAuthEnforcedAfterScenario();
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
@@ -5316,8 +5396,9 @@ trait Provisioning {
 	 * @BeforeScenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function rememberAppEnabledDisabledState() {
+	public function rememberAppEnabledDisabledState():void {
 		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			SetupHelper::init(
 				$this->getAdminUsername(),
@@ -5336,8 +5417,9 @@ trait Provisioning {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function restoreAppEnabledDisabledState() {
+	public function restoreAppEnabledDisabledState():void {
 		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$this->runOcc(['app:list', '--output json']);
 			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
@@ -5367,7 +5449,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function disableOrEnableUser($user, $otherUser, $action) {
+	public function disableOrEnableUser(string $user, string $otherUser, string $action):void {
 		$actualUser = $this->getActualUsername($user);
 		$actualPassword = $this->getPasswordForUser($actualUser);
 		$actualOtherUser = $this->getActualUsername($otherUser);
@@ -5387,8 +5469,9 @@ trait Provisioning {
 	 * Returns an array of all apps reported by the cloud/apps endpoint
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getAllApps() {
+	public function getAllApps():array {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps";
 		$this->response = HttpRequestHelper::get(
@@ -5404,8 +5487,9 @@ trait Provisioning {
 	 * Returns array of enabled apps reported by the cloud/apps endpoint
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getEnabledApps() {
+	public function getEnabledApps():array {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=enabled";
 		$this->response = HttpRequestHelper::get(
@@ -5421,8 +5505,9 @@ trait Provisioning {
 	 * Returns array of disabled apps reported by the cloud/apps endpoint
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
-	public function getDisabledApps() {
+	public function getDisabledApps():array {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps?filter=disabled";
 		$this->response = HttpRequestHelper::get(
@@ -5437,11 +5522,12 @@ trait Provisioning {
 	/**
 	 * Removes skeleton directory config from config.php and returns the config value
 	 *
-	 * @param string $baseUrl
+	 * @param string|null $baseUrl
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
-	public function popSkeletonDirectoryConfig($baseUrl = null) {
+	public function popSkeletonDirectoryConfig(?string $baseUrl = null):string {
 		$path = $this->getSkeletonDirectory($baseUrl);
 		$this->runOcc(
 			["config:system:delete skeletondirectory"],
@@ -5456,8 +5542,9 @@ trait Provisioning {
 	 * @param string|null $baseUrl
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
-	private function getSkeletonDirectory(string $baseUrl = null): string {
+	private function getSkeletonDirectory(?string $baseUrl = null):string {
 		$this->runOcc(
 			["config:system:get skeletondirectory"],
 			null,
@@ -5490,6 +5577,7 @@ trait Provisioning {
 	 *                             setting will not be changed
 	 *
 	 * @return string skeleton folder before the change
+	 * @throws Exception
 	 */
 	private function setSkeletonDirByType(string $skeletonType): string {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
@@ -5530,6 +5618,7 @@ trait Provisioning {
 	 *                            setting will not be changed
 	 *
 	 * @return string skeleton folder before the change
+	 * @throws Exception
 	 */
 	private function setSkeletonDir(string $skeletonDir): string {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
