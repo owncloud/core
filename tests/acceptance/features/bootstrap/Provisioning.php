@@ -5426,7 +5426,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function rememberAppEnabledDisabledState():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
+		if (!OcisHelper::isTestingOnOcisOrReva() && !$this->isRunningForDbConversion()) {
 			SetupHelper::init(
 				$this->getAdminUsername(),
 				$this->getAdminPassword(),
@@ -5447,7 +5447,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function restoreAppEnabledDisabledState():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
+		if (!OcisHelper::isTestingOnOcisOrReva() && !$this->isRunningForDbConversion()) {
 			$this->runOcc(['app:list', '--output json']);
 			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
 			$currentlyEnabledApps = \array_keys($apps["enabled"]);
@@ -5464,6 +5464,17 @@ trait Provisioning {
 					$this->adminEnablesOrDisablesApp('disables', $enabledApp);
 				}
 			}
+		}
+	}
+
+	/**
+	 * @AfterScenario @dbConversion
+	 *
+	 * @return void
+	 */
+	public function unsetDbConversionState():void {
+		if ($this->isRunningForDbConversion()) {
+			$this->setDbConversionState(false);
 		}
 	}
 

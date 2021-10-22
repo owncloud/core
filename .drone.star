@@ -218,6 +218,19 @@ config = {
                 "chmod -R 0770 data/owncloud-keys",
             ],
         },
+        "cliDbConversion": {
+            "suites": [
+                "cliDbConversion",
+            ],
+            "databases": [
+                "sqlite",
+            ],
+            "dbServices": [
+                "sqlite",
+                "mysql:8.0",
+                "postgres:10.3",
+            ],
+        },
         "cliExternalStorage": {
             "suites": [
                 "cliExternalStorage",
@@ -1518,6 +1531,7 @@ def acceptance(ctx):
         "coreTarball": "daily-master-qa",
         "earlyFail": True,
         "selUserNeeded": False,
+        "dbServices": [],
     }
 
     if "defaults" in config:
@@ -1676,6 +1690,12 @@ def acceptance(ctx):
 
                                 federationDbSuffix = "fed"
 
+                                # database services
+                                dbServices = databaseService(db)
+                                for dbService in params["dbServices"]:
+                                    if (dbService != db):
+                                        dbServices += databaseService(dbService)
+
                                 result = {
                                     "kind": "pipeline",
                                     "type": "docker",
@@ -1722,7 +1742,7 @@ def acceptance(ctx):
                                                      }],
                                                  }),
                                              ] + buildGithubCommentForBuildStopped(name, params["earlyFail"]) + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
-                                    "services": databaseService(db) +
+                                    "services": dbServices +
                                                 browserService(browser) +
                                                 emailService(params["emailNeeded"]) +
                                                 ldapService(params["ldapNeeded"]) +
