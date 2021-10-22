@@ -691,6 +691,14 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+    
+    cliDbConversion:
+      paths:
+        - '%paths.base%/../features/cliDbConversion'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
 
     cliEncryption:
       paths:

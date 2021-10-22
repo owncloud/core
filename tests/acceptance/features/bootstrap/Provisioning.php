@@ -5484,8 +5484,9 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function restoreAppEnabledDisabledState():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
+		if (!OcisHelper::isTestingOnOcisOrReva() && !$this->isRunningForDbConversion()) {
 			$this->runOcc(['app:list', '--output json']);
+
 			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
 			$currentlyEnabledApps = \array_keys($apps["enabled"]);
 			$currentlyDisabledApps = \array_keys($apps["disabled"]);
