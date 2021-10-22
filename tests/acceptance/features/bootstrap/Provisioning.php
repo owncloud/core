@@ -3722,7 +3722,7 @@ trait Provisioning {
 		$attribute,
 		$entry,
 		$value,
-		$append=false
+		$append = false
 	) {
 		$ldapEntry = $this->ldap->getEntry($entry . "," . $this->ldapBaseDN);
 		Laminas\Ldap\Attribute::setAttribute($ldapEntry, $attribute, $value, $append);

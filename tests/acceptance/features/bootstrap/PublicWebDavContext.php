@@ -552,7 +552,7 @@ class PublicWebDavContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function publiclyOverwritingContent(string $filename, string $body = 'test', string $publicWebDAVAPIVersion='old'):void {
+	public function publiclyOverwritingContent(string $filename, string $body = 'test', string $publicWebDAVAPIVersion = 'old'):void {
 		$this->publicUploadContent($filename, '', $body, false, [], $publicWebDAVAPIVersion);
 	}
 
@@ -1233,7 +1233,7 @@ class PublicWebDavContext implements Context {
 	public function thePublicUploadsFileToLastSharedFolderWithMtimeUsingTheWebdavApi(
 		string $fileName,
 		string $mtime,
-		string $davVersion="old"
+		string $davVersion = "old"
 	):void {
 		$mtime = new DateTime($mtime);
 		$mtime = $mtime->format('U');

@@ -798,7 +798,7 @@ class OCSContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theOCSStatusMessageShouldBe(string $statusMessage, ?string $language=null):void {
+	public function theOCSStatusMessageShouldBe(string $statusMessage, ?string $language = null):void {
 		$language = TranslationHelper::getLanguage($language);
 		$statusMessage = $this->getActualStatusMessage($statusMessage, $language);
 
@@ -907,11 +907,11 @@ class OCSContext implements Context {
 	 * convert status message in the desired language
 	 *
 	 * @param string $statusMessage
-	 * @param string $language
+	 * @param string|null $language
 	 *
 	 * @return string
 	 */
-	public function getActualStatusMessage(string $statusMessage, string $language):string {
+	public function getActualStatusMessage(string $statusMessage, ?string $language = null):string {
 		if ($language !== null) {
 			$multiLingualMessage = \json_decode(
 				\file_get_contents(__DIR__ . "/../../fixtures/multiLanguageErrors.json"),

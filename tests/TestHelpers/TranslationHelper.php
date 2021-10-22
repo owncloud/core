@@ -30,11 +30,11 @@ namespace TestHelpers;
  */
 class TranslationHelper {
 	/**
-	 * @param $language
+	 * @param string|null $language
 	 *
 	 * @return string
 	 */
-	public static function getLanguage($language) {
+	public static function getLanguage(?string $language): ?string {
 		if (!isset($language)) {
 			if (\getenv('OC_LANGUAGE') !== false) {
 				$language = \getenv('OC_LANGUAGE');
