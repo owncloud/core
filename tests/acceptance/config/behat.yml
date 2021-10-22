@@ -692,6 +692,16 @@ default:
         - FeatureContext: *common_feature_context_params
         - OccContext:
 
+    cliEncryption:
+      paths:
+        - '%paths.base%/../features/cliEncryption'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - OccContext:
+        - WebDavPropertiesContext:
+        - EncryptionContext:
+
     cliExternalStorage:
       paths:
         - '%paths.base%/../features/cliExternalStorage'

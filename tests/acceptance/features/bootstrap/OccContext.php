@@ -640,6 +640,16 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has selected master key encryption type using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasSelectedMasterKeyEncryptionTypeUsingTheOccCommand():void {
+		$this->featureContext->runOcc(['encryption:select-encryption-type', "masterkey --yes"]);
+	}
+
+	/**
 	 * @When the administrator imports security certificate from file :filename in temporary storage on the system under test
 	 *
 	 * @param string $filename
@@ -733,6 +743,40 @@ class OccContext implements Context {
 			// if the above command fails make sure to turn off maintenance mode
 			\system("./occ maintenance:mode --off");
 		}
+	}
+
+	/**
+	 * @Given the administrator has decrypted everything
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasDecryptedEverything():void {
+		$this->theAdministratorRunsEncryptionDecryptAllUsingTheOccCommand();
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @When the administrator disables encryption using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorDisablesEncryptionUsingTheOccCommand():void {
+		$this->invokingTheCommand("encryption:disable");
+	}
+
+	/**
+	 * @When the administrator runs encryption decrypt all using the occ command
+	 *
+	 * @return void
+	 */
+	public function theAdministratorRunsEncryptionDecryptAllUsingTheOccCommand():void {
+		\system("./occ maintenance:singleuser --on");
+		\system("./occ encryption:decrypt-all -c yes", $status);
+
+		$this->featureContext->setResultOfOccCommand(["code" => $status, "stdOut" => null, "stdErr" => null]);
+		\system("./occ maintenance:singleuser --off");
 	}
 
 	/**

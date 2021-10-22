@@ -191,6 +191,33 @@ config = {
             ],
             "testingRemoteSystem": False,
         },
+        "cliEncryption": {
+            "suites": [
+                "cliEncryption",
+            ],
+            "extraApps": {
+                "encryption": "composer install",
+            },
+            "testingRemoteSystem": False,
+            "extraSetup": [{
+                "name": "configure-encryption",
+                "image": "owncloudci/php:7.4",
+                "pull": "always",
+                "commands": [
+                    "php occ maintenance:singleuser --on",
+                    "php occ encryption:enable",
+                    "php occ encryption:select-encryption-type masterkey --yes",
+                    "php occ encryption:encrypt-all --yes",
+                    "php occ encryption:status",
+                    "php occ maintenance:singleuser --off",
+                ],
+            }],
+            "extraCommandsBeforeTestRun": [
+                "mkdir data/owncloud-keys",
+                "chown -R www-data data/owncloud-keys",
+                "chmod -R 0770 data/owncloud-keys",
+            ],
+        },
         "cliExternalStorage": {
             "suites": [
                 "cliExternalStorage",
