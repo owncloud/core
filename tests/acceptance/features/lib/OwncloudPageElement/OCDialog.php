@@ -25,6 +25,7 @@ namespace Page\OwncloudPageElement;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Exception;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
@@ -67,16 +68,16 @@ class OCDialog extends OwncloudPage {
 	 *
 	 * @return NodeElement
 	 */
-	public function getOwnElement() {
+	public function getOwnElement(): NodeElement {
 		return $this->dialogElement;
 	}
 
 	/**
 	 *
 	 * @return string
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function getTitle() {
+	public function getTitle(): string {
 		$title = $this->dialogElement->find("xpath", $this->titleClassXpath);
 		$this->assertElementNotNull(
 			$title,
@@ -90,9 +91,9 @@ class OCDialog extends OwncloudPage {
 	/**
 	 *
 	 * @return string
-	 * @throws ElementNotFoundException
+	 * @throws ElementNotFoundException|Exception
 	 */
-	public function getMessage() {
+	public function getMessage(): string {
 		$contentElement = $this->dialogElement->find(
 			"xpath",
 			$this->contentClassXpath
@@ -139,7 +140,7 @@ class OCDialog extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function clickButton(Session $session, $label) {
+	public function clickButton(Session $session, string $label) {
 		$xpathToFind = \sprintf($this->buttonByLabelXpath, $label);
 		$button = $this->dialogElement->find("xpath", $xpathToFind);
 		$this->assertElementNotNull(

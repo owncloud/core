@@ -338,10 +338,10 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @param array $urlParameters
 	 *
-	 * @return FilesPage
+	 * @return Page
 	 * @see \SensioLabs\Behat\PageObjectExtension\PageObject\Page::open()
 	 */
-	public function open(array $urlParameters = []): FilesPage {
+	public function open(array $urlParameters = []): Page {
 		$url = $this->getUrl($urlParameters);
 
 		try {
