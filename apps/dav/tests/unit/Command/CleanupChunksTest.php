@@ -21,9 +21,9 @@
 
 namespace OCA\DAV\Tests\Unit\Command;
 
+use OC\Files\Filesystem;
 use OC\Files\View;
 use OCA\DAV\Command\CleanupChunks;
-use OCP\IUser;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 use Test\Traits\UserTrait;
@@ -39,8 +39,6 @@ class CleanupChunksTest extends TestCase {
 
 	/** @var CommandTester */
 	private $commandTester;
-	/** @var IUser */
-	private $user;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -69,8 +67,8 @@ class CleanupChunksTest extends TestCase {
 		$userId = 'dav-clean-chunks-user';
 		$uploadId = $this->getUniqueID('upload');
 		// create one user for testing
-		$this->user = $this->createUser($userId);
-		$this->loginAsUser($this->user->getUID());
+		$user = $this->createUser($userId);
+		$this->loginAsUser($user->getUID());
 
 		// generate old chunks
 		$view = new View("/$userId/uploads");
@@ -81,9 +79,38 @@ class CleanupChunksTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertStringContainsString("Cleaning chunks older than 2 days", $output);
-		$this->assertStringContainsString("Cleaning chunks for $userId", $output);
-
+		$this->assertStringContainsString("Cleaning 1 chunks for $userId", $output);
 		$this->assertFalse($view->file_exists($uploadId));
+	}
+
+	public function testCommandWithOptionLocal() {
+		$userId = 'dav-clean-chunks-user-2';
+		$uploadId = $this->getUniqueID('upload');
+		// create one user for testing
+		$user = $this->createUser($userId);
+		$this->loginAsUser($user->getUID());
+		// generate old chunks
+		$view = new View("/$userId/uploads");
+		$view->mkdir($uploadId);
+		$this->assertTrue($view->file_exists($uploadId));
+		$view->touch($uploadId, 0);
+
+		$path = $view->getAbsolutePath('/' . $user->getUID(
+			) . '/uploads/'. $uploadId);
+
+		list($storage) = Filesystem::resolvePath($path);
+
+		if (!$storage->isLocal()) {
+			$this->markTestSkipped('Test only relevant on local storage');
+		}
+
+		$localPath = $storage->getLocalFolder('uploads/'.$uploadId);
+		\rmdir($localPath);
+
+		$this->commandTester->execute(['--local' => true]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertStringContainsString("Cleaning chunks older than 2 days", $output);
+		$this->assertStringNotContainsString("Cleaning 1 chunks for $userId", $output);
 	}
 
 	public function providesDays() {
