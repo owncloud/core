@@ -321,6 +321,29 @@ class FeatureContext extends BehatVariablesContext {
 	private $lastOCSStatusCodesArray = [];
 
 	/**
+	 * @var bool
+	 *
+	 * this is set true for db conversion tests
+	 */
+	private $dbConversion = false;
+
+	/**
+	 * @param bool $value
+	 *
+	 * @return void
+	 */
+	public function setDbConversionState(bool $value):void {
+		$this->dbConversion = $value;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isRunningForDbConversion():bool {
+		return $this->dbConversion;
+	}
+
+	/**
 	 * @param string $httpStatusCode
 	 *
 	 * @return void
