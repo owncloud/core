@@ -96,6 +96,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Add priority for JavaScript plugins: <a href="https://github.com/owncloud/core/pull/39359">#39359</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Added needed code for webp thumbnail generation to occur: <a href="https://github.com/owncloud/core/issues/39358">#39358</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add show-all-attributes option to occ user:list command: <a href="https://github.com/owncloud/core/pull/39366">#39366</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Extend occ dav:cleanup-chunks command with local option: <a href="https://github.com/owncloud/core/pull/39394">#39394</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -861,6 +862,19 @@
             <p>https://github.com/owncloud/enterprise/issues/4794<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39366<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Extend occ dav:cleanup-chunks command with local option: <a href="https://github.com/owncloud/core/pull/39394">#39394</a></p>
+            <p>If an admin runs a setup with multiple servers, connected to the same database and sets the
+   configuration for the chunking directory 'dav.chunk_base_dir' to a unique place on the
+   server, the command occ dav:cleanup-chunks might fail. This happens as the oc_filecache
+   table doesn't give us the information on which server the directory is. Therefore the local
+   option has been added to the command, with this precondition only files that are on the local
+   filesystem will be removed.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4824<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39394<br></p>
         </li>
     </ul>
     <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>

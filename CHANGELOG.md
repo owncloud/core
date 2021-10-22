@@ -98,6 +98,7 @@ Summary
 * Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
 * Enhancement - Added needed code for webp thumbnail generation to occur: [#39358](https://github.com/owncloud/core/issues/39358)
 * Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
+* Enhancement - Extend occ dav:cleanup-chunks command with local option: [#39394](https://github.com/owncloud/core/pull/39394)
 
 Details
 -------
@@ -866,6 +867,18 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4794
    https://github.com/owncloud/core/pull/39366
+
+* Enhancement - Extend occ dav:cleanup-chunks command with local option: [#39394](https://github.com/owncloud/core/pull/39394)
+
+   If an admin runs a setup with multiple servers, connected to the same database and sets the
+   configuration for the chunking directory 'dav.chunk_base_dir' to a unique place on the
+   server, the command occ dav:cleanup-chunks might fail. This happens as the oc_filecache
+   table doesn't give us the information on which server the directory is. Therefore the local
+   option has been added to the command, with this precondition only files that are on the local
+   filesystem will be removed.
+
+   https://github.com/owncloud/enterprise/issues/4824
+   https://github.com/owncloud/core/pull/39394
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
