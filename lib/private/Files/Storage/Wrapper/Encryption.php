@@ -254,7 +254,11 @@ class Encryption extends Wrapper implements Storage\IVersionedStorage {
 
 		$encryptionModule = ($this->encryptionManager->isEnabled()) ? $this->getEncryptionModule($path) : "";
 		if ($encryptionModule) {
-			$this->keyStorage->deleteAllFileKeys($this->getFullPath($path));
+			# TODO: stupid short cut - we better have an capabilities method or something
+			$keyPath = $this->storage->getEncryptionFileKeyDirectory($encryptionModule->getId(), $path);
+			if (!$keyPath) {
+				$this->keyStorage->deleteAllFileKeys($this->getFullPath($path));
+			}
 		}
 
 		return $this->storage->unlink($path);
