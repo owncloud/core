@@ -131,7 +131,7 @@ class DisableTest extends TestCase {
 		} else {
 			$this->consoleOutput->expects($this->once())
 				->method('writeln')
-				->with($this->stringContains('<info>The system still have encrypted files. Please decrypt them all before disabling encryption.</info>'));
+				->with($this->stringContains('<info>The system still has encrypted files. Please decrypt them all before disabling encryption.</info>'));
 			$expectedExitCode = 1;
 		}
 

@@ -60,7 +60,7 @@ class Disable extends Command {
 		$hasEncryptedFiles = (bool) $results->fetchColumn(0);
 		$results->closeCursor();
 		if ($hasEncryptedFiles !== false) {
-			$output->writeln('<info>The system still have encrypted files. Please decrypt them all before disabling encryption.</info>');
+			$output->writeln('<info>The system still has encrypted files. Please decrypt them all before disabling encryption.</info>');
 			return 1;
 		}
 
