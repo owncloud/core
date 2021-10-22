@@ -166,14 +166,14 @@ class OCSContext implements Context {
 	/**
 	 * @param string $verb
 	 * @param string $url
-	 * @param TableNode $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
 	public function adminSendsHttpMethodToOcsApiEndpointWithBody(
 		string $verb,
 		string $url,
-		TableNode $body
+		?TableNode $body
 	):void {
 		$admin = $this->featureContext->getAdminUsername();
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
@@ -187,11 +187,11 @@ class OCSContext implements Context {
 	/**
 	 * @param string $verb
 	 * @param string $url
-	 * @param TableNode $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
-	public function theUserSendsToOcsApiEndpointWithBody(string $verb, string $url, TableNode $body):void {
+	public function theUserSendsToOcsApiEndpointWithBody(string $verb, string $url, ?TableNode $body = null):void {
 		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->featureContext->getCurrentUser(),
 			$verb,

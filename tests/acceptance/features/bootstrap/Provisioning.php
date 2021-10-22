@@ -1338,7 +1338,7 @@ trait Provisioning {
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/users",
-			$userAttributes
+			new TableNode($userAttributes)
 		);
 		$this->addUserToCreatedUsersList(
 			$username,
