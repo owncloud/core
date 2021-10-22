@@ -90,11 +90,11 @@ class FileRow extends OwncloudPage {
 
 	/**
 	 *
-	 * @param string $name
+	 * @param string|array $name
 	 *
 	 * @return void
 	 */
-	public function setName(string $name): void {
+	public function setName($name): void {
 		$this->name = $name;
 	}
 

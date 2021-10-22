@@ -210,7 +210,7 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 * fills the "share-with" input field
 	 *
-	 * @param string $input
+	 * @param string|null $input
 	 * @param Session $session
 	 * @param int $timeout_msec how long to wait till the autocomplete comes back
 	 *
@@ -218,7 +218,7 @@ class SharingDialog extends OwncloudPage {
 	 * @throws Exception
 	 */
 	public function fillShareWithField(
-		string  $input,
+		?string  $input,
 		Session $session,
 		int     $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
 	): NodeElement {
@@ -325,17 +325,17 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @param string $nameToType what to type in the share with field
+	 * @param string|null $nameToType what to type in the share with field
 	 * @param string $nameToMatch what exact item to select
 	 * @param Session $session
-	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 * @param int $maxRetries
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException|Exception
 	 */
 	public function shareWithUserOrGroup(
-		string  $nameToType,
+		?string  $nameToType,
 		string  $nameToMatch,
 		Session $session,
 		bool $quiet,
@@ -380,16 +380,16 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @param string $name
+	 * @param string|null $name
 	 * @param Session $session
-	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 * @param int $maxRetries
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException|Exception
 	 */
 	public function shareWithUser(
-		string  $name,
+		?string  $name,
 		Session $session,
 		bool $quiet,
 		int     $maxRetries = 5
@@ -405,16 +405,16 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @param string $name
+	 * @param string|null $name
 	 * @param Session $session
-	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 * @param int $maxRetries
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException|Exception
 	 */
 	public function shareWithRemoteUser(
-		string  $name,
+		?string  $name,
 		Session $session,
 		bool $quiet,
 		int     $maxRetries = 5
@@ -430,16 +430,16 @@ class SharingDialog extends OwncloudPage {
 
 	/**
 	 *
-	 * @param string $name
+	 * @param string|null $name
 	 * @param Session $session
-	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 * @param int $maxRetries
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException|Exception
 	 */
 	public function shareWithGroup(
-		string  $name,
+		?string  $name,
 		Session $session,
 		bool $quiet,
 		int     $maxRetries = 5
@@ -456,12 +456,12 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 *
 	 * @param string $userOrGroup
-	 * @param string $shareReceiverName
+	 * @param string|null $shareReceiverName
 	 *
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	public function openShareActionsIfNotOpen(string $userOrGroup, string $shareReceiverName): NodeElement {
+	public function openShareActionsIfNotOpen(string $userOrGroup, ?string $shareReceiverName): NodeElement {
 		if ($userOrGroup == "group") {
 			$xpathLocator = \sprintf(
 				$this->permissionsFieldByGroupName,
@@ -523,7 +523,7 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 *
 	 * @param string $userOrGroup
-	 * @param string $shareReceiverName
+	 * @param string|null $shareReceiverName
 	 * @param array $permissions [['permission' => 'yes|no']]
 	 * @param Session $session
 	 *
@@ -532,7 +532,7 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function setSharingPermissions(
 		string  $userOrGroup,
-		string  $shareReceiverName,
+		?string  $shareReceiverName,
 		array   $permissions,
 		Session $session
 	): void {
@@ -593,7 +593,7 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 *
 	 * @param string $userOrGroup
-	 * @param string $shareReceiverName
+	 * @param string|null $shareReceiverName
 	 * @param array $permissions [['permission' => 'yes|no']]
 	 * @param Session $session
 	 *
@@ -602,7 +602,7 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function checkSharingPermissions(
 		string  $userOrGroup,
-		string  $shareReceiverName,
+		?string  $shareReceiverName,
 		array   $permissions,
 		Session $session
 	): void {
@@ -864,9 +864,9 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 * get the list of shared with users
 	 *
-	 * @return NodeElement
+	 * @return NodeElement[]
 	 */
-	public function getShareWithList(): NodeElement {
+	public function getShareWithList(): array {
 		return $this->findAll('xpath', $this->shareWithListXpath);
 	}
 
