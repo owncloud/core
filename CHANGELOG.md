@@ -61,7 +61,7 @@ Summary
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Add index.html to invalid username list: [#39206](https://github.com/owncloud/core/pull/39206)
 * Change - Update JavaScript dependencies: [#39385](https://github.com/owncloud/core/pull/39385)
-* Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
+* Change - Update PHP dependencies: [#38907](https://github.com/owncloud/core/pull/38907)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 * Enhancement - Special user groups can break persistent locks: [#38222](https://github.com/owncloud/core/pull/38222)
 * Enhancement - Add support for MSOFBA: [#38838](https://github.com/owncloud/core/pull/38838)
@@ -533,7 +533,7 @@ Details
    https://github.com/owncloud/core/pull/38670
    https://github.com/owncloud/core/pull/38671
 
-* Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
+* Change - Update PHP dependencies: [#38907](https://github.com/owncloud/core/pull/38907)
 
    The following have been updated: - doctrine/cache (2.0.3 to 2.1.1) - doctrine/dbal (2.13.2 to
    2.13.4) - egulias/email-validator (3.1.1 to 3.1.2) - laminas/laminas-stdlib (3.5.0 to
@@ -541,8 +541,10 @@ Details
    laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0) - league/flysystem (1.1.4 to
    1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.13.0) -
    pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.10) - punic/punic
-   (3.6.0 to 3.6.1) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0)
+   (3.6.0 to 3.6.1) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0) - pimple/pimple (3.2.3 =>
+   3.4.0)
 
+   https://github.com/owncloud/core/pull/38907
    https://github.com/owncloud/core/pull/39030
    https://github.com/owncloud/core/pull/39047
    https://github.com/owncloud/core/pull/39065
