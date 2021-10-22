@@ -3433,6 +3433,68 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has changed the database type to :dbType
+	 *
+	 * @param string $dbType
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasChangedTheDatabaseType(string $dbType): void {
+		$this->theAdministratorChangesTheDatabaseType($dbType);
+		$exitStatusCode = $this->featureContext->getExitStatusCodeOfOccCommand();
+
+		if ($exitStatusCode !== 0) {
+			$exceptions = $this->featureContext->findExceptions();
+			$commandErr = $this->featureContext->getStdErrOfOccCommand();
+			$sameTypeError = "Can not convert from $dbType to $dbType.";
+			$lines = SetupHelper::findLines(
+				$commandErr,
+				$sameTypeError
+			);
+			// pass if the same type error is found
+			if (\count($lines) === 0) {
+				$msg = "The command was not successful, exit code was " .
+					$exitStatusCode . ".\n" .
+					"stdOut was: '" .
+					$this->featureContext->getStdOutOfOccCommand() . "'\n" .
+					"stdErr was: '$commandErr'\n";
+				if (!empty($exceptions)) {
+					$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
+				}
+				throw new Exception($msg);
+			}
+		}
+	}
+
+	/**
+	 * @When the administrator changes the database type to :dbType
+	 * @When the administrator tries to change the database type to :dbType
+	 *
+	 * @param string $dbType
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorChangesTheDatabaseType(string $dbType): void {
+		$dbUser = "owncloud";
+		$dbHost = $dbType;
+		$dbName = "owncloud";
+		$dbPass = "owncloud";
+
+		if ($dbType === "postgres") {
+			$dbType = "pgsql";
+		}
+		if ($dbType === "oracle") {
+			$dbUser = "autotest";
+			$dbType = "oci";
+		}
+
+		$this->invokingTheCommand("db:convert-type --password=$dbPass $dbType $dbUser $dbHost $dbName");
+		$this->featureContext->setDbConversionState(true);
+	}
+
+	/**
 	 * This will run after EVERY scenario.
 	 * It will set the properties for this object.
 	 *
@@ -3530,5 +3592,28 @@ class OccContext implements Context {
 			$this->initialTechPreviewStatus = $techPreviewEnabled;
 			$this->techPreviewEnabled = $techPreviewEnabled === 'true';
 		}
+	}
+
+	/**
+	 * @Then /^the system config should have dbtype set as "([^"]*)"$/
+	 *
+	 * @param string $value
+	 *
+	 * @return void
+	 * @throws \GuzzleHttp\Exception\GuzzleException
+	 */
+	public function theSystemConfigKeyShouldBeSetAs(string $value):void {
+		$actual_value = SetupHelper::getSystemConfigValue(
+			"dbtype",
+			$this->featureContext->getStepLineRef()
+		);
+		$actual_value = \str_replace("\n", "", $actual_value);
+		Assert::assertEquals(
+			$value,
+			$actual_value,
+			"System config mismatched.\n
+			Expected dbType to be: " . $actual_value . "\n
+			Found: " . $value
+		);
 	}
 }
