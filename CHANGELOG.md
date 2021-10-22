@@ -525,11 +525,13 @@ Details
 * Change - Update JavaScript dependencies: [#39385](https://github.com/owncloud/core/pull/39385)
 
    The following have been updated: - karma (4.4.1 to 6.3.4) - sinon (7.5.0 to 11.1.2) -
-   bower_components/handlebars (4.5.3 to 4.7.7)
+   bower_components/handlebars (4.5.3 to 4.7.7) - bower_components/moment (2.24.0 to
+   2.29.1)
 
    https://github.com/owncloud/core/pull/39385
    https://github.com/owncloud/core/pull/39145
    https://github.com/owncloud/core/pull/38670
+   https://github.com/owncloud/core/pull/38671
 
 * Change - Update PHP dependencies: [#39030](https://github.com/owncloud/core/pull/39030)
 
