@@ -98,7 +98,7 @@ class EncryptAll extends Command {
 		$this->setDescription('Encrypt all files for all users.');
 		$this->setHelp(
 			'This will encrypt all files for all users. '
-			. 'Please make sure that no user access his files during this process!'
+			. 'Please make sure that no user accesses their files during this process!'
 		);
 		$this->addOption(
 			'yes',

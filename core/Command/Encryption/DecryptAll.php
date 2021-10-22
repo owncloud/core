@@ -110,7 +110,7 @@ class DecryptAll extends Command {
 		$this->setHelp(
 			'This will disable server-side encryption and decrypt all files for '
 			. 'all users if it is supported by your encryption module. '
-			. 'Please make sure that no user access his files during this process!'
+			. 'Please make sure that no user accesses their files during this process!'
 		);
 		$this->addArgument(
 			'user',
@@ -161,7 +161,7 @@ class DecryptAll extends Command {
 			$output->writeln("You are about to start to decrypt all files stored in $message.");
 			$output->writeln('It will depend on the encryption module and your setup if this is possible.');
 			$output->writeln('Depending on the number and size of your files this can take some time');
-			$output->writeln('Please make sure that no user access his files during this process!');
+			$output->writeln('Please make sure that no user accesses their files during this process!');
 			$output->writeln('');
 			$question = new ConfirmationQuestion('Do you really want to continue? (y/n) ', false);
 			if (($confirmed === 'yes') || $this->questionHelper->ask($input, $output, $question)) {

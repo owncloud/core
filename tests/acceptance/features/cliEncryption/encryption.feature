@@ -52,7 +52,7 @@ Feature: encryption command
     Given the administrator has uploaded file with content "uploaded content" to "/lorem.txt"
     When the administrator disables encryption using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text "The system still have encrypted files. Please decrypt them all before disabling encryption."
+    And the command output should contain the text "The system still has encrypted files. Please decrypt them all before disabling encryption."
 
 
   Scenario: move encryption keys to a different folder
@@ -68,4 +68,4 @@ Feature: encryption command
     Given the administrator has decrypted everything
     When the administrator disables encryption using the occ command
     Then the command should have failed with exit code 1
-    And the command output should contain the text "The system still have encrypted files. Please decrypt them all before disabling encryption"
+    And the command output should contain the text "The system still has encrypted files. Please decrypt them all before disabling encryption"
