@@ -22,6 +22,7 @@
  *
  */
 
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
@@ -1902,7 +1903,7 @@ trait Sharing {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userGetsInfoOfLastShareUsingTheSharingApi(string $user, ?string $language=null):void {
+	public function userGetsInfoOfLastShareUsingTheSharingApi(string $user, ?string $language = null):void {
 		if (isset($this->lastShareData->data[0]->id)) {
 			$share_id = $this->lastShareData->data[0]->id;
 		} else {
@@ -1994,7 +1995,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function getShareData(string $user, string $share_id, ?string $language=null):void {
+	public function getShareData(string $user, string $share_id, ?string $language = null):void {
 		$user = $this->getActualUsername($user);
 		$url = $this->getSharesEndpointPath("/$share_id");
 		$headers = [];

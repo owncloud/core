@@ -980,7 +980,7 @@ class WebDavPropertiesContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function storeEtagOfElement(string $user, string $path, ?string $storePath=""):void {
+	public function storeEtagOfElement(string $user, string $path, ?string $storePath = ""):void {
 		if ($storePath === "") {
 			$storePath = $path;
 		}
