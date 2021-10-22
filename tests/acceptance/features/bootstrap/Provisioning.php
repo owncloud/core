@@ -2891,7 +2891,7 @@ trait Provisioning {
 		?string $displayName = null,
 		?string $email = null,
 		bool $shouldExist = true
-	) {
+	):void {
 		$user = $this->getActualUsername($user);
 		$normalizedUsername = $this->normalizeUsername($user);
 		$userData = [

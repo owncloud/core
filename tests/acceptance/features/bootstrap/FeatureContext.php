@@ -492,8 +492,7 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * @return bool
 	 */
-	public function isTestingReplacingUsernames():
-	bool {
+	public function isTestingReplacingUsernames():bool {
 		return (\getenv('REPLACE_USERNAMES') === "true");
 	}
 
