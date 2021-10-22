@@ -382,8 +382,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$this->sharingDialog->shareWithRemoteUser(
 					$name,
 					$this->getSession(),
-					$maxRetries,
-					$quiet
+					$quiet,
+					$maxRetries
 				);
 			} else {
 				$user = $this->featureContext->substituteInLineCodes($name);
@@ -391,16 +391,16 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$this->sharingDialog->shareWithUser(
 					$name,
 					$this->getSession(),
-					$maxRetries,
-					$quiet
+					$quiet,
+					$maxRetries
 				);
 			}
 		} else {
 			$this->sharingDialog->shareWithGroup(
 				$name,
 				$this->getSession(),
-				$maxRetries,
-				$quiet
+				$quiet,
+				$maxRetries
 			);
 		}
 	}

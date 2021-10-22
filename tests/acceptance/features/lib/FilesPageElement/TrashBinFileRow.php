@@ -30,9 +30,9 @@ class TrashBinFileRow extends FileRow {
 	/**
 	 * @param string $xpath
 	 *
-	 * @return null|string
+	 * @return string|null
 	 */
-	public function getFilePath($xpath) {
+	public function getFilePath(string $xpath): ?string {
 		$fileRowLabel = $this->rowElement->find("xpath", $xpath);
 		$filePath = $fileRowLabel->getAttribute("data-original-title");
 		return ($filePath);

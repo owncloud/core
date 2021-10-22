@@ -30,9 +30,9 @@ class SharedByLinkFileRow extends FileRow {
 	/**
 	 * @param string $xpath
 	 *
-	 * @return null|string
+	 * @return string|null
 	 */
-	public function getFilePath($xpath) {
+	public function getFilePath(string $xpath): ?string {
 		$fileRowLabel = $this->rowElement->find("xpath", $xpath);
 		if ($fileRowLabel === null) {
 			// On the shared-by-link page, the xpath on the way to the

@@ -42,7 +42,7 @@ class ConflictDialog extends OCDialog {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	private function keepFiles($xpath) {
+	private function keepFiles(string $xpath): void {
 		$checkBox = $this->dialogElement->find("xpath", $xpath);
 		$this->assertElementNotNull(
 			$checkBox,
@@ -57,7 +57,7 @@ class ConflictDialog extends OCDialog {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function keepExistingFiles() {
+	public function keepExistingFiles(): void {
 		$this->keepFiles($this->keepExistingFilesCheckXpath);
 	}
 
@@ -65,7 +65,7 @@ class ConflictDialog extends OCDialog {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function keepNewFiles() {
+	public function keepNewFiles(): void {
 		$this->keepFiles($this->keepNewFilesCheckXpath);
 	}
 }

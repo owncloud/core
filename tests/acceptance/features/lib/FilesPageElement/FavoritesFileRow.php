@@ -30,9 +30,9 @@ class FavoritesFileRow extends FileRow {
 	/**
 	 * @param string $xpath
 	 *
-	 * @return null|string
+	 * @return string|null
 	 */
-	public function getFilePath($xpath) {
+	public function getFilePath(string $xpath): ?string {
 		$filePath = $this->rowElement->getAttribute("data-path");
 		return $filePath;
 	}
