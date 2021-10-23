@@ -524,13 +524,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param string $suiteParameters
+	 * @param array $suiteParameters
 	 *
 	 * @return void
 	 * @throws Exception
 	 * @throws \LdapException
 	 */
-	public function connectToLdap(string $suiteParameters):void {
+	public function connectToLdap(array $suiteParameters):void {
 		$useSsl = false;
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->ldapBaseDN = OcisHelper::getBaseDN();
