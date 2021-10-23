@@ -327,11 +327,10 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function publiclyUploadingFile(string $source, string $publicWebDAVAPIVersion):void {
-		$file = \fopen($source, 'r');
 		$this->publicUploadContent(
 			\basename($source),
 			'',
-			$file->getContents(),
+			\file_get_contents($source),
 			false,
 			[],
 			$publicWebDAVAPIVersion
