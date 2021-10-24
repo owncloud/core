@@ -1317,8 +1317,9 @@ trait Provisioning {
 		$table = $table->getRowsHash();
 		$username = $this->getActualUsername($table["username"]);
 		$password = $this->getActualPassword($table["password"]);
-		$displayname = \array_key_exists("displayname", $table) ? $table["displayname"] : "";
-		$email = \array_key_exists("email", $table) ? $table["email"] : "";
+		$displayname = \array_key_exists("displayname", $table) ? $table["displayname"] : null;
+		$email = \array_key_exists("email", $table) ? $table["email"] : null;
+
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			if ($email === null) {
 				$email = $username . '@owncloud.com';
@@ -1328,9 +1329,15 @@ trait Provisioning {
 		$userAttributes = [
 			["userid", $username],
 			["password", $password],
-			["displayname", $displayname],
-			["email", $email]
 		];
+
+		if ($displayname !== null) {
+			$userAttributes[] = ["displayname", $displayname];
+		}
+
+		if ($email !== null) {
+			$userAttributes[] = ["email", $email];
+		}
 
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$userAttributes[] = ["username", $username];
