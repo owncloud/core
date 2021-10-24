@@ -1317,21 +1317,23 @@ trait Provisioning {
 		$table = $table->getRowsHash();
 		$username = $this->getActualUsername($table["username"]);
 		$password = $this->getActualPassword($table["password"]);
-		$displayname = \array_key_exists("displayname", $table) ? $table["displayname"] : null;
-		$email = \array_key_exists("email", $table) ? $table["email"] : null;
-		$userAttributes = [
-			"userid" => $username,
-			"password" => $password,
-			"displayname" => $displayname,
-			"email" => $email
-		];
-
+		$displayname = \array_key_exists("displayname", $table) ? $table["displayname"] : "";
+		$email = \array_key_exists("email", $table) ? $table["email"] : "";
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			if ($email === null) {
 				$email = $username . '@owncloud.com';
 			}
-			$userAttributes["username"] = $username;
-			$userAttributes["email"] = $email;
+		}
+
+		$userAttributes = [
+			["userid", $username],
+			["password", $password],
+			["displayname", $displayname],
+			["email", $email]
+		];
+
+		if (OcisHelper::isTestingOnOcisOrReva()) {
+			$userAttributes[] = ["username", $username];
 		}
 
 		$this->ocsContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
