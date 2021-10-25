@@ -425,6 +425,7 @@ Details
 
    https://github.com/owncloud/core/issues/36228
    https://github.com/owncloud/core/pull/39314
+   https://github.com/owncloud/core/pull/39415
 
 * Bugfix - Allow renaming two files with the same name but different paths: [#39315](https://github.com/owncloud/core/pull/39315)
 
