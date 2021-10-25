@@ -41,13 +41,13 @@ class IpHelper {
 	/**
 	 * parse the output of ifconfig to find matching items such as IP addresses
 	 *
-	 * @param string $regex matching the desired text in the ifconfig output
-	 * @param string $except regex that matches devices not to be included
+	 * @param string|null $regex matching the desired text in the ifconfig output
+	 * @param string|null $except regex that matches devices not to be included
 	 *
-	 * @throws Exception
 	 * @return array of elements that match the inner part of the regex
+	 * @throws Exception
 	 */
-	private static function parseIfconfigOutput($regex, $except = null) {
+	private static function parseIfconfigOutput(?string $regex, ?string $except = null):array {
 		if ($except !== null) {
 			// device names are at the start of a line
 			$invalid_device_regex = '/^\d+:\s' . $except . '/';
@@ -88,8 +88,9 @@ class IpHelper {
 
 	/**
 	 * @return array of IPv4 addresses found on the local system
+	 * @throws Exception
 	 */
-	private static function systemIpv4Addresses() {
+	private static function systemIpv4Addresses():array {
 		// IPv4 addresses are like 192.168.12.34
 		return self::parseIfconfigOutput(
 			'/inet\s*(?:addr)?:?\s*([\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3})/',
@@ -99,8 +100,9 @@ class IpHelper {
 
 	/**
 	 * @return array of IPv6 addresses found on the local system
+	 * @throws Exception
 	 */
-	private static function systemIpv6Addresses() {
+	private static function systemIpv6Addresses():array {
 		// IPv6 addresses are like fe80::6e26:388d:7bf:15d1
 		return self::parseIfconfigOutput(
 			'/inet6\s*(?:addr)?:?\s+([0123456789abcdef:]+)/',
@@ -112,13 +114,12 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the given IPv4 address
 	 *
-	 * @param string $ipv4Address with format like "192.168.1.1"
-	 * @param int $cidr the CIDR "mask" size for the subnet (0 to 32)
+	 * @param string|null $ipv4Address with format like "192.168.1.1"
+	 * @param int|null $cidr the CIDR "mask" size for the subnet (0 to 32)
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IPv4 subnet base address
 	 */
-	private static function ipv4AddressSubnet($ipv4Address, $cidr) {
+	private static function ipv4AddressSubnet(?string $ipv4Address, ?int $cidr):string {
 		$cidr = (int) $cidr;
 		if (($cidr < 0) || ($cidr > 32)) {
 			throw new \InvalidArgumentException(
@@ -142,13 +143,13 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the given IPv6 address
 	 *
-	 * @param string $ipv6Address with format like "a:b:c::1"
-	 * @param int $cidr the CIDR "mask" size for the subnet (0 to 128)
+	 * @param string|null $ipv6Address with format like "a:b:c::1"
+	 * @param int|null $cidr the CIDR "mask" size for the subnet (0 to 128)
 	 *
 	 * @throws InvalidArgumentException
 	 * @return string IPv6 subnet base address
 	 */
-	private static function ipv6AddressSubnet($ipv6Address, $cidr) {
+	private static function ipv6AddressSubnet(?string $ipv6Address, ?int$cidr):string {
 		$cidr = (int) $cidr;
 		if (($cidr < 0) || ($cidr > 128)) {
 			throw new \InvalidArgumentException(
@@ -193,7 +194,7 @@ class IpHelper {
 	 * @throws Exception
 	 * @return string IPv4 loopback address
 	 */
-	private static function loopbackIpv4Address() {
+	private static function loopbackIpv4Address():string {
 		foreach (self::systemIpv4Addresses() as $ipv4Address) {
 			if (\strpos($ipv4Address, self::IPV4_LOOPBACK_ADDRESS_TOP) === 0) {
 				return $ipv4Address;
@@ -209,19 +210,19 @@ class IpHelper {
 	 *
 	 * @return string IPv6 loopback address
 	 */
-	private static function loopbackIpv6Address() {
+	private static function loopbackIpv6Address():string {
 		return self::IPV6_LOOPBACK_ADDRESS;
 	}
 
 	/**
 	 * get a loopback address for the given IP address family
 	 *
-	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IP loopback address
+	 * @throws Exception
 	 */
-	private static function loopbackIpAddress($ipAddressFamily) {
+	private static function loopbackIpAddress(?string $ipAddressFamily):string {
 		switch (\strtolower($ipAddressFamily)) {
 			case 'ipv4':
 				return self::loopbackIpv4Address();
@@ -238,12 +239,12 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the loopback address of the given IP address family
 	 *
-	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IP of loopback subnet base address
+	 * @throws Exception
 	 */
-	private static function loopbackIpAddressSubnet($ipAddressFamily) {
+	private static function loopbackIpAddressSubnet(?string $ipAddressFamily):string {
 		switch (\strtolower($ipAddressFamily)) {
 			case 'ipv4':
 				return self::loopbackIpv4Address();
@@ -260,10 +261,10 @@ class IpHelper {
 	 * find the first IPv4 address on the local system that is not a loopback address
 	 * i.e. a "real" routable IPv4 address on some network interface
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IPv4 address
+	 * @throws InvalidArgumentException|Exception
 	 */
-	private static function routableIpv4Address() {
+	private static function routableIpv4Address():string {
 		foreach (self::systemIpv4Addresses() as $ipv4Address) {
 			if (\strpos($ipv4Address, self::IPV4_LOOPBACK_ADDRESS_TOP) !== 0) {
 				return $ipv4Address;
@@ -280,10 +281,10 @@ class IpHelper {
 	 * that is not a loopback or link-local address,
 	 * i.e. a "real" routable IPv6 address on some network interface
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IPv6 address
+	 * @throws InvalidArgumentException|Exception
 	 */
-	private static function routableIpv6Address() {
+	private static function routableIpv6Address():string {
 		foreach (self::systemIpv6Addresses() as $ipv6Address) {
 			if (($ipv6Address !== self::IPV6_LOOPBACK_ADDRESS)
 				&& (\strpos($ipv6Address, self::IPV6_LINK_LOCAL_ADDRESS_TOP) !== 0)
@@ -301,12 +302,12 @@ class IpHelper {
 	 * get a non-loopback address on the local system for the given IP address family
 	 * i.e. a "real" routable IP address on some network interface
 	 *
-	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IP address
+	 * @throws Exception
 	 */
-	private static function routableIpAddress($ipAddressFamily) {
+	private static function routableIpAddress(?string $ipAddressFamily):string {
 		switch (\strtolower($ipAddressFamily)) {
 			case 'ipv4':
 				return self::routableIpv4Address();
@@ -323,11 +324,12 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the IPv4 address of the first routable IPv4 subnet
 	 *
-	 * @param int $cidr the CIDR "mask" size for the subnet
+	 * @param int|null $cidr the CIDR "mask" size for the subnet
 	 *
 	 * @return string IPv4 local subnet base address
+	 * @throws Exception
 	 */
-	private static function routableIpv4AddressSubnet($cidr) {
+	private static function routableIpv4AddressSubnet(?int $cidr):string {
 		return self::ipv4AddressSubnet(self::routableIpv4Address(), $cidr);
 	}
 
@@ -335,11 +337,12 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the IPv6 address of the first routable IPv6 subnet
 	 *
-	 * @param int $cidr the CIDR "mask" size for the subnet
+	 * @param int|null $cidr the CIDR "mask" size for the subnet
 	 *
 	 * @return string IPv6 local subnet base address
+	 * @throws Exception
 	 */
-	private static function routableIpv6AddressSubnet($cidr) {
+	private static function routableIpv6AddressSubnet(?int $cidr):string {
 		return self::ipv6AddressSubnet(self::routableIpv6Address(), $cidr);
 	}
 
@@ -347,13 +350,13 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains the first routable IP address of the given IP address family
 	 *
-	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
-	 * @param int $cidr the CIDR "mask" size for the subnet
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param int|null $cidr the CIDR "mask" size for the subnet
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IP of local subnet base address
+	 * @throws Exception
 	 */
-	private static function routableIpAddressSubnet($ipAddressFamily, $cidr) {
+	private static function routableIpAddressSubnet(?string $ipAddressFamily, ?int $cidr):string {
 		switch (\strtolower($ipAddressFamily)) {
 			case 'ipv4':
 				return self::routableIpv4AddressSubnet($cidr);
@@ -370,14 +373,14 @@ class IpHelper {
 	 * find an IP address on the local system that is either a loopback address
 	 * or a routable IP address of the given IP address family.
 	 *
-	 * @param string $networkScope which type of address to return,
-	 *                             "routable" or "loopback"
-	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param string|null $networkScope which type of address to return,
+	 *                                  "routable" or "loopback"
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IP address
+	 * @throws Exception
 	 */
-	public static function ipAddress($networkScope, $ipAddressFamily) {
+	public static function ipAddress(?string $networkScope, ?string $ipAddressFamily):string {
 		switch (\strtolower($networkScope)) {
 			case 'routable':
 				return self::routableIpAddress($ipAddressFamily);
@@ -398,15 +401,15 @@ class IpHelper {
 	 * calculate the base address of the subnet with the given CIDR
 	 * that contains a routable or loopback IP address of the given IP address family
 	 *
-	 * @param string $networkScope which type of address to return,
-	 *                             "routable" or "loopback"
-	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
-	 * @param int $cidr the CIDR "mask" size for the subnet
+	 * @param string|null $networkScope which type of address to return,
+	 *                                  "routable" or "loopback"
+	 * @param string|null $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 * @param int|null $cidr the CIDR "mask" size for the subnet
 	 *
-	 * @throws InvalidArgumentException
 	 * @return string IP of base address
+	 * @throws Exception
 	 */
-	public static function ipAddressSubnet($networkScope, $ipAddressFamily, $cidr) {
+	public static function ipAddressSubnet(?string $networkScope, ?string $ipAddressFamily, ?int $cidr):string {
 		switch (\strtolower($networkScope)) {
 			case 'routable':
 				return self::routableIpAddressSubnet($ipAddressFamily, $cidr);
