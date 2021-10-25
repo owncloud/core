@@ -530,3 +530,94 @@ Feature: share resources where the sharee receives the share in multiple ways
     Examples:
       | path           |
       | /parent/child1 |
+
+
+  @skipOnOcV10 @issue-39347
+  Scenario Outline: Share reciever renames the recieved group share and share same folder through user share again
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp" has been created
+    And user "Brian" has been added to group "grp"
+    And user "Alice" has been added to group "grp"
+    And user "Alice" has created folder "parent"
+    And user "Alice" has created folder "parent/child"
+    And user "Alice" has uploaded file with content "Share content" to "parent/child/lorem.txt"
+    When user "Alice" shares folder "parent" with group "grp" with permissions "read" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    And user "Brian" moves folder "/Shares/parent" to "/Shares/sharedParent" using the WebDAV API
+    And user "Alice" shares folder "parent" with user "Brian" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    Then as "Brian" folder "Shares/parent" should not exist
+    And as "Brian" folder "Shares/sharedParent" should exist
+    And as "Brian" file "Shares/sharedParent/child/lorem.txt" should exist
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10 @issue-39347
+  Scenario Outline: Share reciever renames the recieved group share and declines another share of same folder through user share again
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp" has been created
+    And user "Brian" has been added to group "grp"
+    And user "Alice" has been added to group "grp"
+    And user "Alice" has created folder "parent"
+    And user "Alice" has created folder "parent/child"
+    And user "Alice" has uploaded file with content "Share content" to "parent/child/lorem.txt"
+    When user "Alice" shares folder "parent" with group "grp" with permissions "read" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    And user "Brian" moves folder "/Shares/parent" to "/Shares/sharedParent" using the WebDAV API
+    And user "Alice" shares folder "parent" with user "Brian" using the sharing API
+    And user "Brian" declines share "/parent" offered by user "Alice" using the sharing API
+    Then as "Brian" folder "Shares/parent" should not exist
+    And as "Brian" folder "Shares/sharedParent" should exist
+    And as "Brian" file "Shares/sharedParent/child/lorem.txt" should exist
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10 @issue-39347
+  Scenario Outline: Share reciever renames a group share and recieves same resource through user share with additional permissions
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp" has been created
+    And user "Brian" has been added to group "grp"
+    And user "Alice" has been added to group "grp"
+    And user "Alice" has created folder "parent"
+    And user "Alice" has created folder "parent/child"
+    And user "Alice" has uploaded file with content "Share content" to "parent/child/lorem.txt"
+    When user "Alice" shares folder "parent" with group "grp" with permissions "read" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    And user "Brian" moves folder "/Shares/parent" to "/Shares/sharedParent" using the WebDAV API
+    And user "Alice" shares folder "parent" with user "Brian" with permissions "all" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    Then as "Brian" folder "Shares/parent" should not exist
+    And as "Brian" folder "Shares/sharedParent" should exist
+    And as "Brian" file "Shares/sharedParent/child/lorem.txt" should exist
+    And user "Brian" should be able to delete file "Shares/parent/child/lorem.txt"
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
+
+  @skipOnOcV10 @issue-39347
+  Scenario Outline: Share reciever renames a group share and recieves same resource through user share with less permissions
+    Given using OCS API version "<ocs_api_version>"
+    And group "grp" has been created
+    And user "Brian" has been added to group "grp"
+    And user "Alice" has been added to group "grp"
+    And user "Alice" has created folder "parent"
+    And user "Alice" has created folder "parent/child"
+    And user "Alice" has uploaded file with content "Share content" to "parent/child/lorem.txt"
+    When user "Alice" shares folder "parent" with group "grp" with permissions "all" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    And user "Brian" moves folder "/Shares/parent" to "/Shares/sharedParent" using the WebDAV API
+    And user "Alice" shares folder "parent" with user "Brian" with permissions "read" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    Then as "Brian" folder "Shares/parent" should not exist
+    And as "Brian" folder "Shares/sharedParent" should exist
+    And as "Brian" file "Shares/sharedParent/child/lorem.txt" should exist
+    Then user "Brian" should be able to delete file "Shares/parent/child/lorem.txt"
+    Examples:
+      | ocs_api_version |
+      | 1               |
+      | 2               |
