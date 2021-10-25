@@ -528,13 +528,13 @@ Details
    The following have been updated: - karma (4.4.1 to 6.3.4) - sinon (7.5.0 to 11.1.2) -
    bower_components/handlebars (4.5.3 to 4.7.7) - bower_components/moment (2.24.0 to
    2.29.1) - bower_components/base64 (1.0.2 to 1.1.0) - bower_components/clipboard (2.0.4 to
-   2.0.8)
+   2.0.6)
 
    https://github.com/owncloud/core/pull/39385
    https://github.com/owncloud/core/pull/39145
    https://github.com/owncloud/core/pull/38670
    https://github.com/owncloud/core/pull/38671
-   https://github.com/owncloud/core/pull/38672
+   https://github.com/owncloud/core/pull/39407
    https://github.com/owncloud/core/pull/36633
 
 * Change - Update PHP dependencies: [#38907](https://github.com/owncloud/core/pull/38907)
