@@ -32,36 +32,36 @@ use Psr\Http\Message\ResponseInterface;
 class UploadHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 *
-	 * @param string $baseUrl             URL of owncloud
-	 *                                    e.g. http://localhost:8080
-	 *                                    should include the subfolder
-	 *                                    if owncloud runs in a subfolder
-	 *                                    e.g. http://localhost:8080/owncloud-core
-	 * @param string $user
-	 * @param string $password
-	 * @param string $source
-	 * @param string $destination
-	 * @param string $xRequestId
-	 * @param array  $headers
-	 * @param int    $davPathVersionToUse (1|2)
-	 * @param int    $chunkingVersion     (1|2|null)
-	 *                                    if set to null chunking will not be used
-	 * @param int    $noOfChunks          how many chunks do we want to upload
+	 * @param string|null $baseUrl URL of owncloud
+	 *                             e.g. http://localhost:8080
+	 *                             should include the subfolder
+	 *                             if owncloud runs in a subfolder
+	 *                             e.g. http://localhost:8080/owncloud-core
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $source
+	 * @param string|null $destination
+	 * @param string|null $xRequestId
+	 * @param array|null $headers
+	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param int|null $chunkingVersion (1|2|null)
+	 *                                  if set to null chunking will not be used
+	 * @param int|null $noOfChunks how many chunks do we want to upload
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function upload(
-		$baseUrl,
-		$user,
-		$password,
-		$source,
-		$destination,
-		$xRequestId = '',
-		$headers = [],
-		$davPathVersionToUse = 1,
-		$chunkingVersion = null,
-		$noOfChunks = 1
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $source,
+		?string $destination,
+		?string $xRequestId = '',
+		?array $headers = [],
+		?int $davPathVersionToUse = 1,
+		?int $chunkingVersion = null,
+		?int $noOfChunks = 1
+	): ResponseInterface {
 
 		//simple upload with no chunking
 		if ($chunkingVersion === null) {
@@ -159,28 +159,28 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * Upload the same file multiple times with different mechanisms.
 	 *
-	 * @param string $baseUrl URL of owncloud
-	 * @param string $user user who uploads
-	 * @param string $password
-	 * @param string $source source file path
-	 * @param string $destination destination path on the server
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl URL of owncloud
+	 * @param string|null $user user who uploads
+	 * @param string|null $password
+	 * @param string|null $source source file path
+	 * @param string|null $destination destination path on the server
+	 * @param string|null $xRequestId
 	 * @param bool $overwriteMode when false creates separate files to test uploading brand new files,
 	 *                            when true it just overwrites the same file over and over again with the same name
-	 * @param string $exceptChunkingType empty string or "old" or "new"
+	 * @param string|null $exceptChunkingType empty string or "old" or "new"
 	 *
 	 * @return array of ResponseInterface
 	 */
 	public static function uploadWithAllMechanisms(
-		$baseUrl,
-		$user,
-		$password,
-		$source,
-		$destination,
-		$xRequestId = '',
-		$overwriteMode = false,
-		$exceptChunkingType = ''
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $source,
+		?string $destination,
+		?string $xRequestId = '',
+		?bool $overwriteMode = false,
+		?string $exceptChunkingType = ''
+	):array {
 		$responses = [];
 		foreach ([1, 2] as $davPathVersion) {
 			if ($davPathVersion === 1) {
@@ -234,16 +234,17 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		}
 		return $responses;
 	}
+
 	/**
 	 * cut the file in multiple chunks
 	 * returns an array of chunks with the content of the file
 	 *
-	 * @param string $file
-	 * @param int $noOfChunks
+	 * @param string|null $file
+	 * @param int|null $noOfChunks
 	 *
 	 * @return array $string
 	 */
-	public static function chunkFile($file, $noOfChunks = 1) {
+	public static function chunkFile(?string $file, ?int $noOfChunks = 1):array {
 		$size = \filesize($file);
 		$chunkSize = \ceil($size / $noOfChunks);
 		$chunks = [];
@@ -262,12 +263,12 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * creates a File with a specific size
 	 *
-	 * @param string $name full path of the file to create
-	 * @param int $size
+	 * @param string|null $name full path of the file to create
+	 * @param int|null $size
 	 *
 	 * @return void
 	 */
-	public static function createFileSpecificSize($name, $size) {
+	public static function createFileSpecificSize(?string $name, ?int $size):void {
 		if (\file_exists($name)) {
 			\unlink($name);
 		}
@@ -290,12 +291,12 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * creates a File with a specific text content
 	 *
-	 * @param string $name full path of the file to create
-	 * @param string $text
+	 * @param string|null $name full path of the file to create
+	 * @param string|null $text
 	 *
 	 * @return void
 	 */
-	public static function createFileWithText($name, $text) {
+	public static function createFileWithText(?string $name, ?string $text):void {
 		$file = \fopen($name, 'w');
 		\fwrite($file, $text);
 		\fclose($file);
@@ -308,11 +309,11 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * get the path of a file from FilesForUpload directory
 	 *
-	 * @param string $name name of the file to upload
+	 * @param string|null $name name of the file to upload
 	 *
 	 * @return string
 	 */
-	public static function getUploadFilesDir($name) {
+	public static function getUploadFilesDir(?string $name):string {
 		return \getenv("FILES_FOR_UPLOAD") . $name;
 	}
 }

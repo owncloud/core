@@ -35,34 +35,34 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * tags a file
 	 *
-	 * @param string $baseUrl
-	 * @param string $taggingUser
-	 * @param string $password
-	 * @param string $tagName
-	 * @param string $fileName
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $taggingUser
+	 * @param string|null $password
+	 * @param string|null $tagName
+	 * @param string|null $fileName
+	 * @param string|null $xRequestId
 	 * @param string|null $fileOwner
 	 * @param string|null $fileOwnerPassword
-	 * @param int $davPathVersionToUse (1|2)
-	 * @param string $adminUsername
-	 * @param string $adminPassword
+	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
 	 *
 	 * @return ResponseInterface
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function tag(
-		$baseUrl,
-		$taggingUser,
-		$password,
-		$tagName,
-		$fileName,
-		$xRequestId = '',
-		$fileOwner = null,
-		$fileOwnerPassword = null,
-		$davPathVersionToUse = 2,
-		$adminUsername = null,
-		$adminPassword = null
-	) {
+		?string $baseUrl,
+		?string $taggingUser,
+		?string $password,
+		?string $tagName,
+		?string $fileName,
+		?string $xRequestId = '',
+		?string $fileOwner = null,
+		?string $fileOwnerPassword = null,
+		?int $davPathVersionToUse = 2,
+		?string $adminUsername = null,
+		?string $adminPassword = null
+	):ResponseInterface {
 		if ($fileOwner === null) {
 			$fileOwner = $taggingUser;
 		}
@@ -120,11 +120,11 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param \SimpleXMLElement $tagData
+	 * @param SimpleXMLElement $tagData
 	 *
 	 * @return int
 	 */
-	public static function getTagIdFromTagData($tagData) {
+	public static function getTagIdFromTagData(SimpleXMLElement $tagData):int {
 		$tagID = $tagData->xpath(".//oc:id");
 		self::assertArrayHasKey(
 			0,
@@ -138,21 +138,22 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * get all tags of a user
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $xRequestId
 	 * @param bool $withGroups
 	 *
 	 * @return SimpleXMLElement
+	 * @throws Exception
 	 */
 	public static function requestTagsForUser(
-		$baseUrl,
-		$user,
-		$password,
-		$xRequestId = '',
-		$withGroups = false
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $xRequestId = '',
+		?bool $withGroups = false
+	):SimpleXMLElement {
 		$properties = [
 			'oc:id',
 			'oc:display-name',
@@ -179,23 +180,24 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * find a tag by its name
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $tagDisplayName
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $tagDisplayName
+	 * @param string|null $xRequestId
 	 * @param bool $withGroups
 	 *
 	 * @return SimpleXMLElement
+	 * @throws Exception
 	 */
 	public static function requestTagByDisplayName(
-		$baseUrl,
-		$user,
-		$password,
-		$tagDisplayName,
-		$xRequestId = '',
-		$withGroups = false
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $tagDisplayName,
+		?string $xRequestId = '',
+		?bool $withGroups = false
+	):SimpleXMLElement {
 		$tagList = self::requestTagsForUser(
 			$baseUrl,
 			$user,
@@ -216,32 +218,32 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $baseUrl see: self::makeDavRequest()
-	 * @param string $user
-	 * @param string $password
-	 * @param string $name
-	 * @param string $xRequestId
-	 * @param string $userVisible "true", "1" or "false", "0"
-	 * @param string $userAssignable "true", "1" or "false", "0"
-	 * @param string $userEditable "true", "1" or "false", "0"
-	 * @param string $groups separated by "|"
-	 * @param int $davPathVersionToUse (1|2)
+	 * @param string|null $baseUrl see: self::makeDavRequest()
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $name
+	 * @param string|null $xRequestId
+	 * @param string|null $userVisible "true", "1" or "false", "0"
+	 * @param string|null $userAssignable "true", "1" or "false", "0"
+	 * @param string|null $userEditable "true", "1" or "false", "0"
+	 * @param string|null $groups separated by "|"
+	 * @param int|null $davPathVersionToUse (1|2)
 	 *
 	 * @return ResponseInterface
 	 * @link self::makeDavRequest()
 	 */
 	public static function createTag(
-		$baseUrl,
-		$user,
-		$password,
-		$name,
-		$xRequestId = '',
-		$userVisible = "true",
-		$userAssignable = "true",
-		$userEditable = "false",
-		$groups = null,
-		$davPathVersionToUse = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $name,
+		?string $xRequestId = '',
+		?string $userVisible = "true",
+		?string $userAssignable = "true",
+		?string $userEditable = "false",
+		?string $groups = null,
+		?int $davPathVersionToUse = 2
+	):ResponseInterface {
 		$tagsPath = '/systemtags/';
 		$body = [
 			'name' => $name,
@@ -270,23 +272,23 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param int $tagID
-	 * @param string $xRequestId
-	 * @param int $davPathVersionToUse (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param int|null $tagID
+	 * @param string|null $xRequestId
+	 * @param int|null $davPathVersionToUse (1|2)
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function deleteTag(
-		$baseUrl,
-		$user,
-		$password,
-		$tagID,
-		$xRequestId = '',
-		$davPathVersionToUse = 1
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?int $tagID,
+		?string $xRequestId = '',
+		?int $davPathVersionToUse = 1
+	):ResponseInterface {
 		$tagsPath = '/systemtags/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl,
@@ -312,13 +314,13 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 	 * either "true"/"false" or "1"/"0" in the request. Choose this "request style"
 	 * by passing the $useTrueFalseStrings parameter.
 	 *
-	 * @param string $type
+	 * @param string|null $type
 	 * @param boolean $useTrueFalseStrings use the strings "true"/"false" else "1"/"0"
 	 *
-	 * @throws \Exception
 	 * @return string[]
+	 * @throws Exception
 	 */
-	public static function validateTypeOfTag($type, $useTrueFalseStrings = true) {
+	public static function validateTypeOfTag(?string $type, ?bool $useTrueFalseStrings = true):array {
 		if ($useTrueFalseStrings) {
 			$trueValue = "true";
 			$falseValue = "false";
@@ -342,7 +344,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 				$userEditable = $falseValue;
 				break;
 			default:
-				throw new \Exception('Unsupported type');
+				throw new Exception('Unsupported type');
 		}
 
 		return [$userVisible, $userAssignable, $userEditable];

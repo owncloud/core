@@ -21,6 +21,7 @@
  */
 namespace TestHelpers;
 
+use Exception;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
 
@@ -33,27 +34,27 @@ use Psr\Http\Message\ResponseInterface;
 class UserHelper {
 	/**
 	 *
-	 * @param string $baseUrl
+	 * @param string|null $baseUrl
 	 * @param string $user
 	 * @param string $key
 	 * @param string $value
 	 * @param string $adminUser
 	 * @param string $adminPassword
 	 * @param string $xRequestId
-	 * @param int $ocsApiVersion
+	 * @param int|null $ocsApiVersion
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function editUser(
-		$baseUrl,
-		$user,
-		$key,
-		$value,
-		$adminUser,
-		$adminPassword,
-		$xRequestId  = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		string $user,
+		string $key,
+		string $value,
+		string 	$adminUser,
+		string $adminPassword,
+		string $xRequestId  = '',
+		?int $ocsApiVersion = 2
+	):ResponseInterface {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUser,
@@ -70,23 +71,24 @@ class UserHelper {
 	 * Send batch requests to edit the user.
 	 * This will send multiple requests in parallel to the server which will be faster in comparison to waiting for each request to complete.
 	 *
-	 * @param string $baseUrl
-	 * @param array $editData ['user' => '', 'key' => '', 'value' => '']
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion
+	 * @param string|null $baseUrl
+	 * @param array|null $editData ['user' => '', 'key' => '', 'value' => '']
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
 	public static function editUserBatch(
-		$baseUrl,
-		$editData,
-		$adminUser,
-		$adminPassword,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?array $editData,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):array {
 		$requests = [];
 		$client = HttpRequestHelper::createClient(
 			$adminUser,
@@ -115,7 +117,7 @@ class UserHelper {
 			if ($e instanceof ClientException) {
 				$httpStatusCode = $e->getResponse()->getStatusCode();
 				$reasonPhrase = $e->getResponse()->getReasonPhrase();
-				throw new \Exception(
+				throw new Exception(
 					"Unexpected failure when editing a user: HTTP status $httpStatusCode HTTP reason $reasonPhrase"
 				);
 			}
@@ -125,23 +127,23 @@ class UserHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $userName
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion
+	 * @param string|null $baseUrl
+	 * @param string|null $userName
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function getUser(
-		$baseUrl,
-		$userName,
-		$adminUser,
-		$adminPassword,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $userName,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):ResponseInterface {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUser,
@@ -156,23 +158,23 @@ class UserHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $userName
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion
+	 * @param string|null $baseUrl
+	 * @param string|null $userName
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function deleteUser(
-		$baseUrl,
-		$userName,
-		$adminUser,
-		$adminPassword,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $userName,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):ResponseInterface {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUser,
@@ -187,21 +189,21 @@ class UserHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $group
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $group
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function createGroup(
-		$baseUrl,
-		$group,
-		$adminUser,
-		$adminPassword,
-		$xRequestId = ''
-	) {
+		?string $baseUrl,
+		?string $group,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId = ''
+	):ResponseInterface {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUser,
@@ -215,23 +217,23 @@ class UserHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $group
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion
+	 * @param string|null $baseUrl
+	 * @param string|null $group
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function deleteGroup(
-		$baseUrl,
-		$group,
-		$adminUser,
-		$adminPassword,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $group,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):ResponseInterface {
 		$group = \rawurlencode($group);
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
@@ -247,25 +249,25 @@ class UserHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $group
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
-	 * @param integer $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $group
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function addUserToGroup(
-		$baseUrl,
-		$user,
-		$group,
-		$adminUser,
-		$adminPassword,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $group,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):ResponseInterface {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUser,
@@ -280,25 +282,25 @@ class UserHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $group
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
-	 * @param integer $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $group
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function removeUserFromGroup(
-		$baseUrl,
-		$user,
-		$group,
-		$adminUser,
-		$adminPassword,
-		$xRequestId,
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $group,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId,
+		?int $ocsApiVersion = 2
+	):ResponseInterface {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUser,
@@ -313,21 +315,21 @@ class UserHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
-	 * @param string $search
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
+	 * @param string|null $search
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function getGroups(
-		$baseUrl,
-		$adminUser,
-		$adminPassword,
-		$xRequestId = '',
-		$search =""
-	) {
+		?string $baseUrl,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId = '',
+		?string $search =""
+	):ResponseInterface {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUser,
@@ -340,21 +342,22 @@ class UserHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $adminUser
-	 * @param string $adminPassword
-	 * @param string $xRequestId
-	 * @param string $search
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUser
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
+	 * @param string|null $search
 	 *
 	 * @return string[]
+	 * @throws Exception
 	 */
 	public static function getGroupsAsArray(
-		$baseUrl,
-		$adminUser,
-		$adminPassword,
-		$xRequestId = '',
-		$search =""
-	) {
+		?string $baseUrl,
+		?string $adminUser,
+		?string $adminPassword,
+		?string $xRequestId = '',
+		?string $search =""
+	):array {
 		$result = self::getGroups(
 			$baseUrl,
 			$adminUser,
