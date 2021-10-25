@@ -4413,9 +4413,9 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $path
 	 *
-	 * @return int|null
+	 * @return string|null
 	 */
-	public function getFileIdForPath(string $user, string $path):?int {
+	public function getFileIdForPath(string $user, string $path): ?string {
 		$user = $this->getActualUsername($user);
 		try {
 			return WebDavHelper::getFileIdForPath(
