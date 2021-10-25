@@ -22,7 +22,6 @@ jobs:
           stale-issue-message: 'This issue has been automatically marked as stale because it has not had recent activity. It will be closed in 10 days if no further activity occurs. Thank you for your contributions.'
           close-issue-message: 'This issue has been automatically closed.'
           stale-issue-label: 'status/STALE'
-          exempt-issue-labels: 
-            - "Type:Bug"
-            - "technical debt"
-            - "QA:team"
+          exempt-issue-labels: 'Type:Bug,technical debt,QA:team'
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
