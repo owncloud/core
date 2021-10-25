@@ -147,7 +147,9 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	 * @inheritdoc
 	 */
 	public function getContentDispositionFileName() {
-		if ($this->storage->instanceOfStorage(SharedStorage::class)) {
+		// internalPath is empty for the share receiver if a single file was shared.
+		// We need to retrieve the file name via the mount point then.
+		if ($this->storage->instanceOfStorage(SharedStorage::class) && $this->internalPath === '') {
 			$mountPoint = $this->storage->getMountPoint();
 			return \basename($mountPoint);
 		}
