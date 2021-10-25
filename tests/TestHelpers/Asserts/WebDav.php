@@ -21,6 +21,7 @@
  */
 namespace TestHelpers\Asserts;
 
+use Exception;
 use SimpleXMLElement;
 use TestHelpers\DownloadHelper;
 use TestHelpers\SetupHelper;
@@ -31,19 +32,19 @@ use TestHelpers\SetupHelper;
 class WebDav extends \PHPUnit\Framework\Assert {
 	/**
 	 *
-	 * @param string $element exception|message|reason
-	 * @param string $expectedValue
-	 * @param array $responseXml
-	 * @param string $extraErrorText
+	 * @param string|null $element exception|message|reason
+	 * @param string|null $expectedValue
+	 * @param array|null $responseXml
+	 * @param string|null $extraErrorText
 	 *
 	 * @return void
 	 */
 	public static function assertDavResponseElementIs(
-		$element,
-		$expectedValue,
-		$responseXml,
-		$extraErrorText = ''
-	) {
+		?string $element,
+		?string $expectedValue,
+		?array $responseXml,
+		?string $extraErrorText = ''
+	):void {
 		if ($extraErrorText !== '') {
 			$extraErrorText = $extraErrorText . " ";
 		}
@@ -70,14 +71,14 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	/**
 	 *
 	 * @param SimpleXMLElement $responseXmlObject
-	 * @param array $expectedShareTypes
+	 * @param array|null $expectedShareTypes
 	 *
 	 * @return void
 	 */
 	public static function assertResponseContainsShareTypes(
-		$responseXmlObject,
-		$expectedShareTypes
-	) {
+		SimpleXMLElement $responseXmlObject,
+		?array $expectedShareTypes
+	):void {
 		foreach ($expectedShareTypes as $row) {
 			$xmlPart = $responseXmlObject->xpath(
 				"//d:prop/oc:share-types/oc:share-type[.=" . $row[0] . "]"
@@ -93,27 +94,26 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 * Asserts that the content of a remote and a local file is the same
 	 * or is different
 	 *
-	 * @param string $baseUrl
-	 * @param string $username
-	 * @param string $password
-	 * @param string $remoteFile
-	 * @param string $localFile
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $username
+	 * @param string|null $password
+	 * @param string|null $remoteFile
+	 * @param string|null $localFile
+	 * @param string|null $xRequestId
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
 	 *                           otherwise check that the file contents are different
 	 *
 	 * @return void
-	 * @throws \Exception
 	 */
 	public static function assertContentOfRemoteAndLocalFileIsSame(
-		$baseUrl,
-		$username,
-		$password,
-		$remoteFile,
-		$localFile,
-		$xRequestId = '',
-		$shouldBeSame = true
-	) {
+		?string $baseUrl,
+		?string $username,
+		?string $password,
+		?string $remoteFile,
+		?string $localFile,
+		?string $xRequestId = '',
+		?bool $shouldBeSame = true
+	):void {
 		$result = DownloadHelper::download(
 			$baseUrl,
 			$username,
@@ -143,31 +143,31 @@ class WebDav extends \PHPUnit\Framework\Assert {
 	 * and a file in the skeleton folder of the system under test is the same
 	 * or is different
 	 *
-	 * @param string $baseUrl
-	 * @param string $username
-	 * @param string $password
-	 * @param string $adminUsername
-	 * @param string $adminPassword
-	 * @param string $remoteFile
-	 * @param string $fileInSkeletonFolder
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $username
+	 * @param string|null $password
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $remoteFile
+	 * @param string|null $fileInSkeletonFolder
+	 * @param string|null $xRequestId
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
 	 *                           otherwise check that the file contents are different
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function assertContentOfDAVFileAndSkeletonFileOnSUT(
-		$baseUrl,
-		$username,
-		$password,
-		$adminUsername,
-		$adminPassword,
-		$remoteFile,
-		$fileInSkeletonFolder,
-		$xRequestId = '',
-		$shouldBeSame = true
-	) {
+		?string $baseUrl,
+		?string $username,
+		?string $password,
+		?string $adminUsername,
+		?string $adminPassword,
+		?string $remoteFile,
+		?string $fileInSkeletonFolder,
+		?string $xRequestId = '',
+		?bool $shouldBeSame = true
+	):void {
 		$result = DownloadHelper::download(
 			$baseUrl,
 			$username,

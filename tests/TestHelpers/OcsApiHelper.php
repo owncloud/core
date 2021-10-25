@@ -21,6 +21,7 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -32,29 +33,30 @@ use Psr\Http\Message\ResponseInterface;
  */
 class OcsApiHelper {
 	/**
-	 * @param string $baseUrl
-	 * @param string $user if set to null no authentication header will be sent
-	 * @param string $password
-	 * @param string $method HTTP Method
-	 * @param string $path
-	 * @param string $xRequestId
-	 * @param array $body array of key, value pairs e.g ['value' => 'yes']
-	 * @param int $ocsApiVersion (1|2) default 2
-	 * @param array $headers
+	 * @param string|null $baseUrl
+	 * @param string|null $user if set to null no authentication header will be sent
+	 * @param string|null $password
+	 * @param string|null $method HTTP Method
+	 * @param string|null $path
+	 * @param string|null $xRequestId
+	 * @param array|null $body array of key, value pairs e.g ['value' => 'yes']
+	 * @param int|null $ocsApiVersion (1|2) default 2
+	 * @param array|null $headers
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function sendRequest(
-		$baseUrl,
-		$user,
-		$password,
-		$method,
-		$path,
-		$xRequestId = '',
-		$body = [],
-		$ocsApiVersion = 2,
-		$headers = []
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $method,
+		?string $path,
+		?string $xRequestId = '',
+		?array $body = [],
+		?int $ocsApiVersion = 2,
+		?array $headers = []
+	):ResponseInterface {
 		$fullUrl = $baseUrl;
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
@@ -67,25 +69,25 @@ class OcsApiHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $method HTTP Method
-	 * @param string $path
-	 * @param string $xRequestId
-	 * @param array $body array of key, value pairs e.g ['value' => 'yes']
-	 * @param int $ocsApiVersion (1|2) default 2
-	 * @param array $headers
+	 * @param string|null $baseUrl
+	 * @param string|null $method HTTP Method
+	 * @param string|null $path
+	 * @param string|null $xRequestId
+	 * @param array|null $body array of key, value pairs e.g ['value' => 'yes']
+	 * @param int|null $ocsApiVersion (1|2) default 2
+	 * @param array|null $headers
 	 *
 	 * @return RequestInterface
 	 */
 	public static function createOcsRequest(
-		$baseUrl,
-		$method,
-		$path,
-		$xRequestId = '',
-		$body = [],
-		$ocsApiVersion = 2,
-		$headers = []
-	) {
+		?string $baseUrl,
+		?string $method,
+		?string $path,
+		?string $xRequestId = '',
+		?array $body = [],
+		?int $ocsApiVersion = 2,
+		?array $headers = []
+	):RequestInterface {
 		$fullUrl = $baseUrl;
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
