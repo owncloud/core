@@ -25,6 +25,7 @@ namespace Page\FilesPageElement\SharingDialogElement;
 
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
@@ -67,7 +68,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function setElement(NodeElement $popupElement) {
+	public function setElement(NodeElement $popupElement): void {
 		$this->popupElement = $popupElement;
 	}
 
@@ -77,7 +78,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	private function findNameInput() {
+	private function findNameInput(): NodeElement {
 		$nameInput = $this->popupElement->find("xpath", $this->nameInputXpath);
 		$this->assertElementNotNull(
 			$nameInput,
@@ -94,7 +95,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function setLinkName($name) {
+	public function setLinkName(string $name): void {
 		$nameInput = $this->findNameInput();
 		$nameInput->setValue($name);
 	}
@@ -103,7 +104,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getLinkName() {
+	public function getLinkName(): string {
 		$nameInput = $this->findNameInput();
 		return $nameInput->getValue();
 	}
@@ -115,7 +116,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function setLinkPermissions($permissions) {
+	public function setLinkPermissions(string $permissions): void {
 		$permissions = \strtolower($permissions);
 		if (\array_key_exists($permissions, $this->permissionLabelXpath)) {
 			$permissionsCheckbox = $this->popupElement->find(
@@ -142,7 +143,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function setLinkPassword($password) {
+	public function setLinkPassword(string $password): void {
 		$passwordInput = $this->popupElement->find(
 			"xpath",
 			$this->passwordInputXpath
@@ -163,7 +164,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function setLinkExpirationDate($date) {
+	public function setLinkExpirationDate(string $date): void {
 		$expirationDateInput = $this->popupElement->find(
 			"xpath",
 			$this->expirationDateInputXpath
@@ -196,7 +197,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function setLinkEmail($email) {
+	public function setLinkEmail(string $email): void {
 		$emailInput = $this->popupElement->find("xpath", $this->emailInputXpath);
 		$this->assertElementNotNull(
 			$emailInput,
@@ -214,7 +215,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function unsetLinkEmail($email) {
+	public function unsetLinkEmail(string $email): void {
 		$emailRemoveBtns = $this->popupElement->findAll("xpath", $this->emailInputCloseXpath);
 		foreach ($emailRemoveBtns as $emailRemoveBtn) {
 			$precedingSiblingNodeWithEmail = $emailRemoveBtn->getParent()->find('xpath', '/div');
@@ -231,7 +232,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function setEmailToSelf() {
+	public function setEmailToSelf(): void {
 		$checkbox = $this->popupElement->find("xpath", $this->emailToSelfCheckboxXpath);
 		$this->waitTillElementIsNotNull($this->emailToSelfCheckboxXpath);
 
@@ -253,7 +254,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function setPersonalMessage($personalMessage) {
+	public function setPersonalMessage(string $personalMessage): void {
 		$personalMessageInput = $this->popupElement->find("xpath", $this->personalMessageInputXpath);
 		$this->assertElementNotNull(
 			$personalMessageInput,
@@ -272,7 +273,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function save() {
+	public function save(): void {
 		$saveButton = $this->popupElement->find("xpath", $this->shareButtonXpath);
 		$this->assertElementNotNull(
 			$saveButton,
@@ -289,7 +290,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function cancel() {
+	public function cancel(): void {
 		$cancelButton = $this->popupElement->find("xpath", $this->cancelButtonXpath);
 		$this->assertElementNotNull(
 			$cancelButton,
@@ -306,7 +307,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function close() {
+	public function close(): void {
 		$closeButton = $this->popupElement->find("xpath", $this->popupCloseButton);
 		$this->assertElementNotNull(
 			$closeButton,
@@ -326,7 +327,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 *                           required to be set
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
@@ -343,10 +344,10 @@ class EditPublicLinkPopup extends OwncloudPage {
 
 	/**
 	 *
-	 * @return $errorMessage
+	 * @return string
 	 * @throws ElementNotFoundException
 	 */
-	public function getErrorMessage() {
+	public function getErrorMessage(): string {
 		$errorMessageElement = $this->popupElement->find(
 			"xpath",
 			$this->expirationDateRequiredErrorMessageXpath
