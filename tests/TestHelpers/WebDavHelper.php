@@ -44,7 +44,7 @@ class WebDavHelper {
 	 * @param string|null $path
 	 * @param string|null $xRequestId
 	 *
-	 * @return int
+	 * @return string
 	 * @throws Exception
 	 */
 	public static function getFileIdForPath(
@@ -53,7 +53,7 @@ class WebDavHelper {
 		?string $password,
 		?string $path,
 		?string $xRequestId = ''
-	):int {
+	): string {
 		$body
 			= '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
