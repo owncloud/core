@@ -1396,14 +1396,15 @@ trait Provisioning {
 			$bodyTable
 		);
 		$this->pushToLastStatusCodesArrays();
+		$success = $this->theHTTPStatusCodeWasSuccess();
 		$this->addUserToCreatedUsersList(
 			$user,
 			$password,
 			null,
 			$email,
-			$this->theHTTPStatusCodeWasSuccess()
+			$success
 		);
-		if (OcisHelper::isTestingOnOcisOrReva()) {
+		if (OcisHelper::isTestingOnOcisOrReva() && $success) {
 			OcisHelper::createEOSStorageHome(
 				$this->getBaseUrl(),
 				$user,
