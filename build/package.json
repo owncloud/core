@@ -32,7 +32,7 @@
     "@bower_components/strengthify": "MorrisJobke/strengthify#0.5.9",
     "@bower_components/underscore": "jashkenas/underscore#1.9.1",
     "@bower_components/zxcvbn": "dropbox/zxcvbn#4.4.2",
-    "minimist": "1.2.3",
+    "minimist": "1.2.5",
     "modclean": "^3.0.0-beta.1",
     "modclean-patterns-owncloud": "./modclean-patterns-owncloud/"
   },
