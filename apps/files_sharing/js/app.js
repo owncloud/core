@@ -230,29 +230,17 @@ OCA.Sharing.App = {
 		var isRemote = targetFileData.shareLocationType === 'remote';
 		function responseCallback(response, status) {
 			if (status === 'success') {
-				// note: there could be multiple shares/responses but
-				// we assume that the relevant content is the same
-				// for all (state, file_target)
-				var data = response.ocs.data[0];
-				// If we declined a remote share we need to hide it from the list
-				if (isRemote === true && newState === OC.Share.STATE_REJECTED) {
-					return context.fileList.remove(context.$file.attr('data-file'), {updateSummary:true});
-				}
 				var meta = response.ocs.meta;
 				if (meta.status === 'ok') {
-					context.fileInfoModel.set({
-						shareState: data.state,
-						name: OC.basename(data.file_target),
-						path: OC.dirname(data.file_target)
-					});
+					context.fileList.reload();
 				} else {
 					OC.Notification.show(
 						t('files_sharing', 'An error occurred while updating share state: {message}',
 							{message: meta.message}, 0, {escape: false}), {type: 'error'}
 					);
+					context.fileList.showFileBusyState(context.$file, false);
 				}
 			}
-			context.fileList.showFileBusyState(context.$file, false);
 		}
 
 		context.fileList.showFileBusyState(context.$file, true);
