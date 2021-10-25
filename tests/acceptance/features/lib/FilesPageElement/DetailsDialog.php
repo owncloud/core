@@ -25,10 +25,12 @@ namespace Page\FilesPageElement;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use Exception;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use WebDriver\Exception\NoSuchElement;
 use WebDriver\Exception\StaleElementReference;
+use WebDriver\Exception\UnknownError;
 use WebDriver\Key;
 
 /**
@@ -99,7 +101,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function setElement(NodeElement $detailsDialogElement) {
+	public function setElement(NodeElement $detailsDialogElement): void {
 		$this->detailsDialogElement = $detailsDialogElement;
 	}
 
@@ -111,7 +113,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getDetailsTabId($tabName) {
+	public function getDetailsTabId(string $tabName): string {
 		if (isset($this->detailsTabId[$tabName])) {
 			$tabId = $this->detailsTabId[$tabName];
 		} else {
@@ -129,7 +131,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	private function findDetailsTab($tabName) {
+	private function findDetailsTab(string $tabName): NodeElement {
 		$tab = $this->detailsDialogElement->findById(
 			$this->getDetailsTabId($tabName)
 		);
@@ -148,16 +150,16 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	private function getCommentXpath($content) {
+	private function getCommentXpath(string $content): string {
 		return \sprintf($this->commentXpath, $content);
 	}
 
 	/**
 	 * find the xpath of version list
 	 *
-	 * @return string
+	 * @return object
 	 */
-	public function getVersionsList() {
+	public function getVersionsList(): object {
 		$versionsList = $this->detailsDialogElement->find(
 			"xpath",
 			$this->versionsListXpath
@@ -176,7 +178,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return NodeElement
 	 */
-	public function getLastVersionRevertButton() {
+	public function getLastVersionRevertButton(): NodeElement {
 		$btn = $this->detailsDialogElement->find(
 			"xpath",
 			$this->lastVersionRevertButton
@@ -197,7 +199,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getTabSwitchBtnXpath($tabId) {
+	public function getTabSwitchBtnXpath(string $tabId): string {
 		return \sprintf($this->tabSwitchBtnXpath, $tabId);
 	}
 
@@ -209,7 +211,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function changeDetailsTab($tabName) {
+	public function changeDetailsTab(string $tabName): void {
 		$tabId = $this->getDetailsTabId($tabName);
 		$tabSwitchXpath = $this->getTabSwitchBtnXpath($tabId);
 		$tabSwitch = $this->detailsDialogElement->find("xpath", $tabSwitchXpath);
@@ -228,7 +230,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return bool
 	 */
-	public function isDialogVisible() {
+	public function isDialogVisible(): bool {
 		return $this->detailsDialogElement->isVisible();
 	}
 
@@ -237,7 +239,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return NodeElement[]
 	 */
-	public function getCommentList() {
+	public function getCommentList(): array {
 		return $this->detailsDialogElement->findAll(
 			"xpath",
 			$this->commentListXpath
@@ -251,7 +253,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return bool
 	 */
-	public function isCommentOnUI($text) {
+	public function isCommentOnUI(string $text): bool {
 		$commentList = $this->getCommentList();
 		if (\sizeof($commentList) === 0) {
 			return false;
@@ -273,7 +275,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function addComment(Session $session, $content) {
+	public function addComment(Session $session, string $content): void {
 		$commentInput = $this->detailsDialogElement->find(
 			"xpath",
 			$this->commentInputXpath
@@ -313,7 +315,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 *
 	 */
-	public function deleteComment($content) {
+	public function deleteComment(string $content): void {
 		$commentList = $this->detailsDialogElement->find(
 			"xpath",
 			$this->getCommentXpath($content)
@@ -367,7 +369,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return bool
 	 */
-	public function isDetailsPanelVisible($tabName) {
+	public function isDetailsPanelVisible(string $tabName): bool {
 		try {
 			$visible = $this->findDetailsTab($tabName)->isVisible();
 		} catch (ElementNotFoundException $e) {
@@ -381,7 +383,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return NodeElement of the whole container holding the thumbnail
 	 * @throws ElementNotFoundException
 	 */
-	public function findThumbnailContainer() {
+	public function findThumbnailContainer(): NodeElement {
 		$thumbnailContainer = $this->detailsDialogElement->find(
 			"xpath",
 			$this->thumbnailContainerXpath
@@ -400,7 +402,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
-	public function findThumbnail() {
+	public function findThumbnail(): NodeElement {
 		$thumbnailContainer = $this->findThumbnailContainer();
 		$thumbnail = $thumbnailContainer->find(
 			"xpath",
@@ -423,7 +425,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function insertTagNameInTheTagsField($tagName) {
+	public function insertTagNameInTheTagsField(string $tagName): void {
 		$inputField = $this->detailsDialogElement->find(
 			"xpath",
 			$this->tagsContainer . $this->tagsInputXpath
@@ -446,7 +448,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return NodeElement[]
 	 */
-	public function getDropDownTagsSuggestionResults() {
+	public function getDropDownTagsSuggestionResults(): array {
 		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
 
 		// select2 requires some time to display the results even though the dropdown has appeared.
@@ -462,7 +464,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return NodeElement[]
 	 */
-	public function getTagsListItems() {
+	public function getTagsListItems(): array {
 		return $this->findAll("xpath", $this->getTagsListXpath());
 	}
 
@@ -471,7 +473,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return NodeElement[]
 	 */
-	public function getTagsItemsFromTagInputField() {
+	public function getTagsItemsFromTagInputField(): array {
 		return $this->findAll("xpath", $this->getTagsInputFieldItemsXpath());
 	}
 
@@ -483,7 +485,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function addTag($tagName) {
+	public function addTag(string $tagName): void {
 		$this->insertTagNameInTheTagsField($tagName);
 
 		$this->waitTillElementIsNotNull($this->tagsSuggestDropDownXpath);
@@ -505,7 +507,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function deleteTag($tagName) {
+	public function deleteTag(string $tagName): void {
 		$this->insertTagNameInTheTagsField($tagName);
 		$suggestions = $this->getDropDownTagsSuggestionResults();
 		foreach ($suggestions as $tag) {
@@ -541,9 +543,9 @@ class DetailsDialog extends OwncloudPage {
 	 * @param string $newName
 	 *
 	 * @return void
-	 * @throws ElementNotFoundException
+	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function renameTag($tagName, $newName) {
+	public function renameTag(string $tagName, string $newName): void {
 		$this->insertTagNameInTheTagsField($tagName);
 		$suggestions = $this->getDropDownTagsSuggestionResults();
 		foreach ($suggestions as $tag) {
@@ -593,7 +595,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getTagsDropDownResultsXpath() {
+	public function getTagsDropDownResultsXpath(): string {
 		return $this->tagsDropDownResultXpath;
 	}
 
@@ -602,7 +604,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getTagsListXpath() {
+	public function getTagsListXpath(): string {
 		return $this->tagList;
 	}
 
@@ -611,7 +613,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getTagsInputFieldItemsXpath() {
+	public function getTagsInputFieldItemsXpath(): string {
 		return $this->tagSearchChoiceXpath;
 	}
 
@@ -620,7 +622,7 @@ class DetailsDialog extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function restoreCurrentFileToLastVersion($session) {
+	public function restoreCurrentFileToLastVersion(Session $session): void {
 		$revertBtn = $this->getLastVersionRevertButton();
 		$revertBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
@@ -632,7 +634,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function closeDetailsDialog() {
+	public function closeDetailsDialog(): void {
 		$detailsDialogCloseButton = $this->detailsDialogElement->find(
 			"xpath",
 			$this->detailsDialogCloseXpath
@@ -672,7 +674,7 @@ class DetailsDialog extends OwncloudPage {
 	 * @param int $timeout_msec
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
@@ -695,7 +697,7 @@ class DetailsDialog extends OwncloudPage {
 		}
 
 		if ($currentTime > $end) {
-			throw new \Exception(
+			throw new Exception(
 				__METHOD__ . " timeout waiting for the files dialog to open"
 			);
 		}

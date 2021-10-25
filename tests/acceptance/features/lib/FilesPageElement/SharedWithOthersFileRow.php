@@ -30,9 +30,9 @@ class SharedWithOthersFileRow extends FileRow {
 	/**
 	 * @param string $xpath
 	 *
-	 * @return null|string
+	 * @return string|null
 	 */
-	public function getFilePath($xpath) {
+	public function getFilePath(string $xpath): ?string {
 		return $this->rowElement->getAttribute("data-path");
 	}
 }

@@ -25,6 +25,7 @@ namespace Page\FilesPageElement;
 
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
@@ -56,7 +57,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function setElement(NodeElement $menuElement) {
+	public function setElement(NodeElement $menuElement): void {
 		$this->menuElement = $menuElement;
 	}
 
@@ -69,7 +70,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *                           required to be set
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
@@ -87,16 +88,16 @@ class FileActionsMenu extends OwncloudPage {
 	/**
 	 * clicks the rename button
 	 *
-	 * @param string $xpathToWaitFor wait for this element to appear before returning
+	 * @param string|null $xpathToWaitFor wait for this element to appear before returning
 	 * @param int $timeout_msec
 	 *
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
 	public function rename(
-		$xpathToWaitFor = null,
-		$timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
-	) {
+		?string $xpathToWaitFor = null,
+		int $timeout_msec = STANDARD_UI_WAIT_TIMEOUT_MILLISEC
+	): void {
 		$renameBtn = $this->findButton($this->renameActionLabel);
 		$this->assertElementNotNull(
 			$renameBtn,
@@ -114,7 +115,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function delete() {
+	public function delete(): void {
 		$deleteBtn = $this->findButton($this->deleteActionLabel);
 		$this->assertElementNotNull(
 			$deleteBtn,
@@ -130,7 +131,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return null|string
 	 */
-	public function getDownloadUrlForFile() {
+	public function getDownloadUrlForFile(): ?string {
 		$downloadBtn = $this->find("xpath", $this->fileRowDownloadBtnXpath);
 		$this->assertElementNotNull(
 			$downloadBtn,
@@ -148,7 +149,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function openDetails() {
+	public function openDetails(): void {
 		$detailsBtn = $this->findButton($this->detailsActionLabel);
 		$this->assertElementNotNull(
 			$detailsBtn,
@@ -164,7 +165,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function lockFile() {
+	public function lockFile(): void {
 		$detailsBtn = $this->findButton($this->lockFileActionLabel);
 		$this->assertElementNotNull(
 			$detailsBtn,
@@ -180,7 +181,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function declineShare() {
+	public function declineShare(): void {
 		$declineBtn = $this->findButton($this->declineShareDataAction);
 		$this->assertElementNotNull(
 			$declineBtn,
@@ -194,13 +195,13 @@ class FileActionsMenu extends OwncloudPage {
 	/**
 	 * finds the actual action link in the action menu
 	 *
-	 * @param string $action
+	 * @param string $locator
 	 *
 	 * @return NodeElement
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 */
-	public function findButton($action) {
-		$xpathLocator = \sprintf($this->fileActionXpath, $action);
+	public function findButton($locator): NodeElement {
+		$xpathLocator = \sprintf($this->fileActionXpath, $locator);
 		$this->waitTillElementIsNotNull($xpathLocator);
 		$button = $this->menuElement->find(
 			"xpath",
@@ -209,7 +210,7 @@ class FileActionsMenu extends OwncloudPage {
 		$this->assertElementNotNull(
 			$button,
 			__METHOD__ .
-			" xpath $xpathLocator could not find button '$action' in action Menu"
+			" xpath $xpathLocator could not find button '$locator' in action Menu"
 		);
 		$this->waitFor(
 			STANDARD_UI_WAIT_TIMEOUT_MILLISEC / 1000,
@@ -224,7 +225,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getDeleteActionLabel() {
+	public function getDeleteActionLabel(): string {
 		return $this->deleteActionLabel;
 	}
 
@@ -234,7 +235,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getDetailsActionLabel() {
+	public function getDetailsActionLabel(): string {
 		return $this->detailsActionLabel;
 	}
 
@@ -244,7 +245,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getLockFileActionLabel() {
+	public function getLockFileActionLabel(): string {
 		return $this->lockFileActionLabel;
 	}
 
@@ -254,7 +255,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getRenameActionLabel() {
+	public function getRenameActionLabel(): string {
 		return $this->renameActionLabel;
 	}
 
@@ -265,7 +266,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return string
 	 */
-	public function getActionLabelLocalized($action) {
+	public function getActionLabelLocalized(string $action): string {
 		return $this->findButton($action)->getText();
 	}
 
@@ -276,7 +277,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @return boolean
 	 */
-	public function isActionLabelVisible($action) {
+	public function isActionLabelVisible(string $action): bool {
 		$xpathLocator = \sprintf($this->fileActionXpath, $action);
 		$this->waitTillElementIsNotNull($xpathLocator);
 		$button = $this->menuElement->find(

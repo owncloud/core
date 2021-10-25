@@ -25,6 +25,7 @@ namespace Page\FilesPageElement;
 
 use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
+use Exception;
 use Page\OwncloudPage;
 use Page\FilesPageElement\LockDialogElement\LockEntry;
 
@@ -56,7 +57,7 @@ class LockDialog extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function setElement(NodeElement $dialogElement) {
+	public function setElement(NodeElement $dialogElement): void {
 		$this->dialogElement = $dialogElement;
 	}
 
@@ -64,7 +65,7 @@ class LockDialog extends OwncloudPage {
 	 *
 	 * @return LockEntry[]
 	 */
-	public function getAllLocks() {
+	public function getAllLocks(): array {
 		$lockEntryElements = $this->dialogElement->findAll("xpath", $this->lockEntriesXpath);
 		$lockEntries = [];
 		foreach ($lockEntryElements as $lockEntryElement) {
@@ -87,7 +88,7 @@ class LockDialog extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function deleteLockByNumber($number, Session $session) {
+	public function deleteLockByNumber(int $number, Session $session): void {
 		$lockEntryElements = $this->dialogElement->findAll("xpath", $this->lockEntriesXpath);
 		/**
 		 *
@@ -104,8 +105,9 @@ class LockDialog extends OwncloudPage {
 	 * @param string $resource
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function deleteLockByUserAndLockingResource($user, $resource) {
-		throw new \Exception(__METHOD__ . " not implemented in LockDialog");
+	public function deleteLockByUserAndLockingResource(string $user, string $resource): void {
+		throw new Exception(__METHOD__ . " not implemented in LockDialog");
 	}
 }

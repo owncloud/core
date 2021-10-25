@@ -50,7 +50,7 @@ class NewFileMenu extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function openNewFileMenu() {
+	public function openNewFileMenu(): void {
 		$newButtonElement = $this->find("xpath", $this->newButtonXpath);
 
 		$this->assertElementNotNull(
@@ -68,7 +68,7 @@ class NewFileMenu extends OwncloudPage {
 	 *
 	 * @return NodeElement | null
 	 */
-	public function getNewFileMenu() {
+	public function getNewFileMenu(): ?NodeElement {
 		$newFileMenuElement = $this->find("xpath", $this->newFileMenuXpath);
 		return $newFileMenuElement;
 	}
@@ -79,7 +79,7 @@ class NewFileMenu extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function clickFolder() {
+	public function clickFolder(): void {
 		$newFileMenuFolderMenuItemElement = $this->find("xpath", $this->newFileMenuFolderMenuItemXpath);
 
 		$this->assertElementNotNull(
@@ -97,7 +97,7 @@ class NewFileMenu extends OwncloudPage {
 	 *
 	 * @return NodeElement | null
 	 */
-	public function getNewFileMenuFilenameForm() {
+	public function getNewFileMenuFilenameForm(): ?NodeElement {
 		$newFileMenuFolderFilenameFormElement = $this->find("xpath", $this->newFileMenuFilenameFormXpath);
 		return $newFileMenuFolderFilenameFormElement;
 	}
@@ -108,7 +108,7 @@ class NewFileMenu extends OwncloudPage {
 	 * @return void
 	 * @throws ElementNotFoundException
 	 */
-	public function clickCancelFilenameForm() {
+	public function clickCancelFilenameForm(): void {
 		$newFileMenuFilenameFormButtonElement = $this->find("xpath", $this->newFileMenuFilenameFormButtonXpath);
 
 		$this->assertElementNotNull(
