@@ -209,7 +209,6 @@
 
 "@bower_components/base64@davidchambers/Base64.js#1.1.0":
   version "1.1.0"
-  uid "660b299aa4854843fd35d42b30eda9273125b9da"
   resolved "https://codeload.github.com/davidchambers/Base64.js/tar.gz/660b299aa4854843fd35d42b30eda9273125b9da"
 
 "@bower_components/blueimp-md5@blueimp/JavaScript-MD5#1.0.1":
@@ -228,9 +227,9 @@
   version "2.0.5"
   resolved "https://codeload.github.com/Graffino/Browser-Update/tar.gz/76efd225894bf77c411aa8cced870fe6327ac259"
 
-"@bower_components/clipboard@zenorocha/clipboard.js#v2.0.4":
-  version "2.0.4"
-  resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/d17eca050e705ae4932fd1be3e96abe38bd3397c"
+"@bower_components/clipboard@zenorocha/clipboard.js#v2.0.6":
+  version "2.0.6"
+  resolved "https://codeload.github.com/zenorocha/clipboard.js/tar.gz/fddd2aac5f8772c468b36e8607ab9b0704ee73c6"
   dependencies:
     good-listener "^1.2.2"
     select "^1.1.2"
@@ -246,7 +245,6 @@
 
 "@bower_components/handlebars@components/handlebars.js#v4.7.7":
   version "4.7.7"
-  uid "17bcc2c774d5ee604f926cef2d1ef7c55972a3a6"
   resolved "https://codeload.github.com/components/handlebars.js/tar.gz/17bcc2c774d5ee604f926cef2d1ef7c55972a3a6"
 
 "@bower_components/jcrop@tapmodo/Jcrop#0.9.12":
@@ -271,7 +269,6 @@
 
 "@bower_components/moment@moment/moment#2.29.1":
   version "2.29.1"
-  uid b7ec8e2ec068e03de4f832f28362675bb9e02261
   resolved "https://codeload.github.com/moment/moment/tar.gz/b7ec8e2ec068e03de4f832f28362675bb9e02261"
 
 "@bower_components/select2@ivaynberg/select2#3.5.4":
