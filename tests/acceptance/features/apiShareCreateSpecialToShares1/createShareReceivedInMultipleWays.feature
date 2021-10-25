@@ -533,7 +533,7 @@ Feature: share resources where the sharee receives the share in multiple ways
 
 
   @skipOnOcV10 @issue-39347
-  Scenario Outline: Share reciever renames the recieved group share and share same folder through user share again
+  Scenario Outline: Share receiver renames the received group share and shares same folder through user share again
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
     And user "Brian" has been added to group "grp"
@@ -555,7 +555,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 2               |
 
   @skipOnOcV10 @issue-39347
-  Scenario Outline: Share reciever renames the recieved group share and declines another share of same folder through user share again
+  Scenario Outline: Share receiver renames the received group share and declines another share of same folder through user share again
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
     And user "Brian" has been added to group "grp"
@@ -577,7 +577,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 2               |
 
   @skipOnOcV10 @issue-39347
-  Scenario Outline: Share reciever renames a group share and recieves same resource through user share with additional permissions
+  Scenario Outline: Share receiver renames a group share and receives same resource through user share with additional permissions
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
     And user "Brian" has been added to group "grp"
@@ -600,7 +600,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 2               |
 
   @skipOnOcV10 @issue-39347
-  Scenario Outline: Share reciever renames a group share and recieves same resource through user share with less permissions
+  Scenario Outline: Share receiver renames a group share and receives same resource through user share with less permissions
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
     And user "Brian" has been added to group "grp"
@@ -616,7 +616,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then as "Brian" folder "Shares/parent" should not exist
     And as "Brian" folder "Shares/sharedParent" should exist
     And as "Brian" file "Shares/sharedParent/child/lorem.txt" should exist
-    Then user "Brian" should be able to delete file "Shares/parent/child/lorem.txt"
+    And user "Brian" should be able to delete file "Shares/parent/child/lorem.txt"
     Examples:
       | ocs_api_version |
       | 1               |
