@@ -210,7 +210,7 @@ describe('OCA.Sharing.App tests', function() {
 
 			_.each(actionProvider, function(spec) {
 				it('sends server request when ' + spec.description + ' a share', function() {
-					var updateRowSpy = sinon.spy(fileListIn, 'updateRow');
+					var reloadSpy = sinon.spy(fileListIn, 'reload');
 					fileData.shareState = OC.Share.STATE_PENDING;
 					var $tr = fileListIn.add(fileData);
 
@@ -236,9 +236,15 @@ describe('OCA.Sharing.App tests', function() {
 					};
 					request.respond(200, {'Content-Type': 'application/json'}, JSON.stringify(response));
 
-					expect(updateRowSpy.calledOnce).toEqual(true);
+					expect(reloadSpy.calledOnce).toEqual(true);
 
-					$tr = updateRowSpy.getCall(0).returnValue;
+					var newFileData = $.extend(true, fileData, {
+						name : 'testdir (2)',
+						shareState: spec.newState,
+						path: '/dir'
+					});
+
+					$tr = fileListIn.add(newFileData);
 
 					expect(parseInt($tr.attr('data-share-state'), 10)).toEqual(spec.newState);
 					expect($tr.attr('data-file')).toEqual('testdir (2)');
