@@ -1176,10 +1176,10 @@ class Encryption extends Wrapper implements Storage\IVersionedStorage {
 			$fileEncryptionVersion = null;
 			$info = $this->storage->getVersion($internalPath, $versionId);
 
-			if ($info['size']) {
+			if (isset($info['size'])) {
 				$unencryptedSize = $info['size'];
 			}
-			if ($info['encryptedVersion']) {
+			if (isset($info['encryptedVersion'])) {
 				$fileEncryptionVersion = $info['encryptedVersion'];
 			}
 			$headerSize = $this->getHeaderSize($stream);
