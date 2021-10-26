@@ -9,9 +9,12 @@ use OC\Files\Storage\Temporary;
 use OC\Files\Storage\Wrapper\Encryption;
 use OC\Files\View;
 use OC\User\Manager;
-use OCP\Files\Storage\IStorage;
+use OCP\Files\Storage\IVersionedStorage;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\Files\Storage\Storage;
+
+interface ITestVersionStorage extends IVersionedStorage, \OC\Files\Storage\Storage {
+}
 
 class EncryptionTest extends Storage {
 
@@ -1046,5 +1049,72 @@ class EncryptionTest extends Storage {
 		$instance->expects($this->once())->method('getFullPath');
 
 		$instance->copyFromStorage($sourceStorage, 'files/text.txt', '/files/groupshare/text.txt');
+	}
+
+	/**
+	 * @param IVersionedStorage | MockObject
+	 * @return Encryption | MockObject
+	 */
+	private function getVersionInstance($sourceStorage) {
+		return $this->getMockBuilder(Encryption::class)
+			->setConstructorArgs(
+				[
+					[
+						'storage' => $sourceStorage,
+						'root' => 'foo',
+						'mountPoint' => '/',
+						'mount' => $this->mount
+					],
+					$this->encryptionManager, $this->util, $this->logger, $this->file, null, $this->keyStore, $this->update, $this->mountManager, $this->arrayCache
+				]
+			)
+			->setMethods(['getHeader', 'getFullPath', 'getHeaderSize'])
+			->getMock();
+	}
+
+	public function testGetVersions() {
+		$expectedVersions = ['version1'];
+		$sourceStorage = $this->createMock(ITestVersionStorage::class);
+		$sourceStorage->method('getVersions')->willReturn($expectedVersions);
+		$instance = $this->getVersionInstance($sourceStorage);
+		$this->assertSame($expectedVersions, $instance->getVersions('/test/test.txt'));
+	}
+
+	public function testGetVersion() {
+		$expectedVersion = ['version1'];
+		$sourceStorage = $this->createMock(ITestVersionStorage::class);
+		$sourceStorage->method('getVersion')->willReturn($expectedVersion);
+		$instance = $this->getVersionInstance($sourceStorage);
+		$this->assertSame($expectedVersion, $instance->getVersion('/test/test.txt', 'version1Id'));
+	}
+
+	public function testGetContentOfVersion() {
+		$this->encryptionManager->method('isEnabled')->willReturn(true);
+		$sourceStorage = $this->createMock(ITestVersionStorage::class);
+		$tmp = \tmpfile();
+		$sourceStorage->method('getContentOfVersion')->willReturn($tmp);
+		$sourceStorage->method('filesize')->willReturn(100);
+		$sourceStorage->method('getVersion')->willReturn(['version1']);
+
+		$instance = $this->getVersionInstance($sourceStorage);
+		$instance->method('getHeader')->willReturn(['signed' => true]);
+		$instance->method('getFullPath')->willReturn('/full/path');
+		$instance->method('getHeaderSize')->willReturn($this->headerSize);
+
+		$this->assertNotNull($instance->getContentOfVersion('/test/test.txt', 'version1Id'));
+	}
+
+	public function testResoreVersion() {
+		$sourceStorage = $this->createMock(ITestVersionStorage::class);
+		$sourceStorage->method('restoreVersion')->willReturn(true);
+		$instance = $this->getVersionInstance($sourceStorage);
+		$this->assertTrue($instance->restoreVersion('/test/test.txt', 'version1Id'));
+	}
+
+	public function testSaveVersion() {
+		$sourceStorage = $this->createMock(ITestVersionStorage::class);
+		$sourceStorage->method('saveVersion')->willReturn(true);
+		$instance = $this->getVersionInstance($sourceStorage);
+		$this->assertTrue($instance->saveVersion('/test/test.txt'));
 	}
 }
