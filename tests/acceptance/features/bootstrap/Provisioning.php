@@ -5570,13 +5570,14 @@ trait Provisioning {
 	 * In ownCloud 10 there is always a skeleton directory. If none is specified
 	 * then whatever is in core/skeleton is used. That contains different files
 	 * and folders depending on the build that is being tested. So for testing
-	 * we have "tiny" skeleton that contains just one file. That provides a
-	 * consistent skeleton for test scenarios that specify "without skeleton files"
+	 * we have "empty" skeleton that is created on-the-fly by the testing app.
+	 * That provides a consistent skeleton for test scenarios that specify
+	 * "without skeleton files"
 	 *
 	 * @return string name of the smallest skeleton folder
 	 */
 	private function getSmallestSkeletonDirName(): string {
-		return "tiny";
+		return "empty";
 	}
 
 	/**
@@ -5593,9 +5594,15 @@ trait Provisioning {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$originalSkeletonPath = \getenv("SKELETON_DIR");
 			if ($skeletonType !== '') {
+				$skeletonDirName = $skeletonType . "Skeleton";
+				$newSkeletonPath = \dirname($originalSkeletonPath) . '/' . $skeletonDirName;
+				// We cannot have a really empty skeleton folder committed by git.
+				// So create it on-the-fly if a test scenario wants an empty skeleton.
+				if (($skeletonDirName === "emptySkeleton") && !\file_exists($newSkeletonPath)) {
+					\mkdir($newSkeletonPath);
+				}
 				\putenv(
-					"SKELETON_DIR=" .
-					\dirname($originalSkeletonPath) . '/' . $skeletonType . "Skeleton"
+					"SKELETON_DIR=" . $newSkeletonPath
 				);
 			}
 		} else {
