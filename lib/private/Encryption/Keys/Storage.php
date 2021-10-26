@@ -176,6 +176,12 @@ class Storage implements IStorage {
 	 * @inheritdoc
 	 */
 	public function deleteAllFileKeys($path) {
+		$mount = $this->mountManager->find($path);
+		$keyPath = $mount ? $mount->getStorage()->getEncryptionFileKeyDirectory('', $mount->getInternalPath($path)) : null;
+		if ($keyPath) {
+			return false;
+		}
+
 		$keyDir = $this->getFileKeyDir('', $path);
 		return !$this->view->file_exists($keyDir) || $this->view->deleteAll($keyDir);
 	}
@@ -345,6 +351,13 @@ class Storage implements IStorage {
 	 * @return string
 	 */
 	protected function getPathToKeys($path) {
+		# ask the storage implementation for the key storage
+		$mount = $this->mountManager->find($path);
+		$keyPath = $mount ? $mount->getStorage()->getEncryptionFileKeyDirectory('', $mount->getInternalPath($path)) : null;
+		if ($keyPath) {
+			return $keyPath;
+		}
+
 		list($owner, $relativePath) = $this->util->getUidAndFilename($path);
 		$systemWideMountPoint = $this->util->isSystemWideMountPoint($relativePath, $owner);
 
