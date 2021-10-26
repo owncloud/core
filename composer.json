@@ -39,7 +39,7 @@
         "pear/archive_tar": "1.4.14",
         "symfony/console": "^4.4",
         "symfony/event-dispatcher": "^4.4",
-        "symfony/routing": "^4.4",
+        "symfony/routing": "^5.3",
         "symfony/process": "^4.4",
         "pimple/pimple": "^3.4",
         "nikic/php-parser": "^4.4",
