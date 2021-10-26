@@ -55,7 +55,7 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testDeleteHelperWithOlderDavVersion() {
+	public function testDeleteHelperWithOlderDavVersion():void {
 		$response = DeleteHelper::delete(
 			'http://localhost',
 			'user',
@@ -85,7 +85,7 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testDeleteHelperWithNewerDavVersion() {
+	public function testDeleteHelperWithNewerDavVersion():void {
 		$response = DeleteHelper::delete(
 			'http://localhost',
 			'user',
@@ -115,7 +115,7 @@ class DeleteHelperTest extends PHPUnit\Framework\TestCase {
 	 *
 	 * @return void
 	 */
-	public function testDeleteHelperSendsWithGivenHeaders() {
+	public function testDeleteHelperSendsWithGivenHeaders():void {
 		$headers = ["Cache-Control" => "no-cache"];
 		$response = DeleteHelper::delete(
 			'http://localhost',
