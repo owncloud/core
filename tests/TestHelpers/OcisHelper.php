@@ -176,7 +176,7 @@ class OcisHelper {
 
 		$dir = \opendir($source);
 		while (($file = \readdir($dir)) !== false) {
-			if (($file != '.') && ($file != '..')) {
+			if (($file != '.') && ($file != '..') && ($file != '.gitignore')) {
 				$sourcePath = $source . '/' . $file;
 				$destinationPath = $destination . '/' . $file;
 				if (\is_dir($sourcePath)) {
