@@ -22,6 +22,9 @@
 
 namespace TestHelpers;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+
 /**
  * Class OcisHelper
  *
@@ -33,28 +36,28 @@ class OcisHelper {
 	/**
 	 * @return bool
 	 */
-	public static function isTestingOnOcis() {
+	public static function isTestingOnOcis():bool {
 		return (\getenv("TEST_OCIS") === "true");
 	}
 
 	/**
 	 * @return bool
 	 */
-	public static function isTestingOnReva() {
+	public static function isTestingOnReva():bool {
 		return (\getenv("TEST_REVA") === "true");
 	}
 
 	/**
 	 * @return bool
 	 */
-	public static function isTestingOnOcisOrReva() {
+	public static function isTestingOnOcisOrReva():bool {
 		return (self::isTestingOnOcis() || self::isTestingOnReva());
 	}
 
 	/**
 	 * @return bool
 	 */
-	public static function isTestingOnOc10() {
+	public static function isTestingOnOc10():bool {
 		return (!self::isTestingOnOcisOrReva());
 	}
 
@@ -71,16 +74,16 @@ class OcisHelper {
 
 	/**
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	public static function getStorageDriver() {
+	public static function getStorageDriver():string {
 		$storageDriver = (\getenv("STORAGE_DRIVER"));
 		if ($storageDriver === false) {
 			return "OWNCLOUD";
 		}
 		$storageDriver = \strtoupper($storageDriver);
 		if ($storageDriver !== "OCIS" && $storageDriver !== "EOS" && $storageDriver !== "OWNCLOUD" && $storageDriver !== "S3NG") {
-			throw new \Exception(
+			throw new Exception(
 				"Invalid storage driver. " .
 				"STORAGE_DRIVER must be OCIS|EOS|OWNCLOUD|S3NG"
 			);
@@ -89,11 +92,12 @@ class OcisHelper {
 	}
 
 	/**
-	 * @param string $user
+	 * @param string|null $user
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public static function deleteRevaUserData($user = "") {
+	public static function deleteRevaUserData(?string $user = ""):void {
 		$deleteCmd = self::getDeleteUserDataCommand();
 		if ($deleteCmd === false) {
 			if (self::getStorageDriver() === "OWNCLOUD") {
@@ -117,13 +121,12 @@ class OcisHelper {
 	 * Helper for Recursive Copy of file/folder
 	 * For more info check this out https://gist.github.com/gserrano/4c9648ec9eb293b9377b
 	 *
-	 * @param string $source
-	 * @param string $destination
+	 * @param string|null $source
+	 * @param string|null $destination
 	 *
 	 * @return void
-	 *
 	 */
-	public static function recurseCopy($source, $destination) {
+	public static function recurseCopy(?string $source, ?string $destination):void {
 		$dir = \opendir($source);
 		@\mkdir($destination);
 		while (($file = \readdir($dir)) !== false) {
@@ -141,24 +144,24 @@ class OcisHelper {
 	/**
 	 * Helper for Recursive Upload of file/folder
 	 *
-	 * @param string $baseUrl
-	 * @param string $source
-	 * @param string $userId
-	 * @param string $password
-	 * @param string $xRequestId
-	 * @param string $destination
+	 * @param string|null $baseUrl
+	 * @param string|null $source
+	 * @param string|null $userId
+	 * @param string|null $password
+	 * @param string|null $xRequestId
+	 * @param string|null $destination
 	 *
 	 * @return void
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public static function recurseUpload(
-		$baseUrl,
-		$source,
-		$userId,
-		$password,
-		$xRequestId = '',
-		$destination = ''
-	) {
+		?string $baseUrl,
+		?string $source,
+		?string $userId,
+		?string $password,
+		?string $xRequestId = '',
+		?string $destination = ''
+	):void {
 		if ($destination !== '') {
 			$response = WebDavHelper::makeDavRequest(
 				$baseUrl,
@@ -170,7 +173,7 @@ class OcisHelper {
 				$xRequestId
 			);
 			if ($response->getStatusCode() !== 201) {
-				throw new \Exception("Could not create folder destination" . $response->getBody()->getContents());
+				throw new Exception("Could not create folder destination" . $response->getBody()->getContents());
 			}
 		}
 
@@ -199,7 +202,7 @@ class OcisHelper {
 					);
 					$responseStatus = $response->getStatusCode();
 					if ($responseStatus !== 201) {
-						throw new \Exception(
+						throw new Exception(
 							"Could not upload skeleton file $sourcePath to $destinationPath for user '$userId' status '$responseStatus' response body: '"
 							. $response->getBody()->getContents() . "'"
 						);
@@ -213,7 +216,7 @@ class OcisHelper {
 	/**
 	 * @return int
 	 */
-	public static function getLdapPort() {
+	public static function getLdapPort():int {
 		$port = \getenv("REVA_LDAP_PORT");
 		return $port ? (int)$port : 636;
 	}
@@ -221,14 +224,14 @@ class OcisHelper {
 	/**
 	 * @return bool
 	 */
-	public static function useSsl() {
+	public static function useSsl():bool {
 		return (self::getLdapPort() === 636);
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getBaseDN() {
+	public static function getBaseDN():string {
 		$dn = \getenv("REVA_LDAP_BASE_DN");
 		return $dn ? $dn : "dc=owncloud,dc=com";
 	}
@@ -236,7 +239,7 @@ class OcisHelper {
 	/**
 	 * @return string
 	 */
-	public static function getHostname() {
+	public static function getHostname():string {
 		$hostname = \getenv("REVA_LDAP_HOSTNAME");
 		return $hostname ? $hostname : "localhost";
 	}
@@ -244,7 +247,7 @@ class OcisHelper {
 	/**
 	 * @return string
 	 */
-	public static function getBindDN() {
+	public static function getBindDN():string {
 		$dn = \getenv("REVA_LDAP_BIND_DN");
 		return $dn ? $dn : "cn=admin,dc=owncloud,dc=com";
 	}
@@ -252,7 +255,7 @@ class OcisHelper {
 	/**
 	 * @return string
 	 */
-	private static function getOcisRevaDataRoot() {
+	private static function getOcisRevaDataRoot():string {
 		$root = \getenv("OCIS_REVA_DATA_ROOT");
 		if (($root === false || $root === "") && self::isTestingOnOcisOrReva()) {
 			$root = "/var/tmp/ocis/owncloud/";
@@ -264,11 +267,11 @@ class OcisHelper {
 	}
 
 	/**
-	 * @param string $dir
+	 * @param string|null $dir
 	 *
 	 * @return bool
 	 */
-	private static function recurseRmdir($dir) {
+	private static function recurseRmdir(?string $dir):bool {
 		if (\file_exists($dir) === true) {
 			$files = \array_diff(\scandir($dir), ['.', '..']);
 			foreach ($files as $file) {
@@ -287,19 +290,20 @@ class OcisHelper {
 	 * On Eos storage backend when the user data is cleared after test run
 	 * Running another test immediately fails. So Send this request to create user home directory
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $xRequestId
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public static function createEOSStorageHome(
-		$baseUrl,
-		$user,
-		$password,
-		$xRequestId = ''
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $xRequestId = ''
+	):void {
 		HttpRequestHelper::get(
 			$baseUrl . "/ocs/v2.php/apps/notifications/api/v1/notifications",
 			$xRequestId,
