@@ -531,7 +531,6 @@ Feature: share resources where the sharee receives the share in multiple ways
       | path           |
       | /parent/child1 |
 
-
   @skipOnOcV10 @issue-39347
   Scenario Outline: Share receiver renames the received group share and shares same folder through user share again
     Given using OCS API version "<ocs_api_version>"

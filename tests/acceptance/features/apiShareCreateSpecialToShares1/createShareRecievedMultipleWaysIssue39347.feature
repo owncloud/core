@@ -11,6 +11,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | Alice    |
       | Brian    |
 
+
   Scenario Outline: Share receiver renames the received group share and shares same folder through user share again
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
@@ -54,6 +55,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               |
       | 2               |
 
+
   Scenario Outline: Share receiver renames a group share and receives same resource through user share with additional permissions
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
@@ -71,11 +73,12 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "Shares/sharedParent" should not exist
     And as "Brian" file "Shares/sharedParent/child/lorem.txt" should not exist
     And as "Brian" file "Shares/parent/child/lorem.txt" should exist
-    And user "Brian" should not be able to delete file "Shares/parent/child/lorem.txt"
+    And user "Brian" should be able to delete file "Shares/parent/child/lorem.txt"
     Examples:
       | ocs_api_version |
       | 1               |
       | 2               |
+
 
   Scenario Outline:Share receiver renames a group share and receives same resource through user share with additional permissions
     Given using OCS API version "<ocs_api_version> "
@@ -94,7 +97,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "Shares/sharedParent" should not exist
     And as "Brian" file "Shares/sharedParent/child/lorem.txt" should not exist
     And as "Brian" file "Shares/parent/child/lorem.txt" should exist
-    And user "Brian" should not be able to delete file "Shares/parent/child/lorem.txt"
+    And user "Brian" should be able to delete file "Shares/parent/child/lorem.txt"
     Examples:
       | ocs_api_version |
       | 1               |
