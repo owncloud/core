@@ -32,33 +32,33 @@ use Psr\Http\Message\ResponseInterface;
 class DeleteHelper {
 	/**
 	 *
-	 * @param string $baseUrl URL of owncloud
-	 *                        e.g. http://localhost:8080
-	 *                        should include the subfolder
-	 *                        if owncloud runs in a subfolder
-	 *                        e.g. http://localhost:8080/owncloud-core
-	 * @param string $user
-	 * @param string $password
-	 * @param string $fileName
-	 * @param string $xRequestId
-	 * @param array  $headers
-	 * @param int    $davPathVersionToUse (1|2)
-	 * @param string $sourceIpAddress
+	 * @param string|null $baseUrl URL of owncloud
+	 *                             e.g. http://localhost:8080
+	 *                        	   should include the subfolder
+	 *                       	   if owncloud runs in a subfolder
+	 *                       	   e.g. http://localhost:8080/owncloud-core
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $fileName
+	 * @param string|null $xRequestId
+	 * @param array|null $headers
+	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param string|null $sourceIpAddress
 	 * @param Client|null $client
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function delete(
-		$baseUrl,
-		$user,
-		$password,
-		$fileName,
-		$xRequestId = '',
-		$headers = [],
-		$davPathVersionToUse = 1,
-		$sourceIpAddress = null,
-		$client = null
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $fileName,
+		?string $xRequestId = '',
+		?array $headers = [],
+		?int $davPathVersionToUse = 1,
+		?string $sourceIpAddress = null,
+		?Client $client = null
+	):ResponseInterface {
 		return WebDavHelper::makeDavRequest(
 			$baseUrl,
 			$user,

@@ -25,10 +25,12 @@ use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use GuzzleHttp\Exception\GuzzleException;
 use Page\LoginPage;
 use Page\OwncloudPage;
 use PHPUnit\Framework\Assert;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\EmailHelper;
 use TestHelpers\SetupHelper;
@@ -215,10 +217,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 * @param string $target
 	 *
-	 * @return OwncloudPage
+	 * @return Page
 	 * @throws Exception
 	 */
-	public function loginAs(string $username, string $password, string $target = 'FilesPage'):OwncloudPage {
+	public function loginAs(string $username, string $password, string $target = 'FilesPage'): Page {
 		$username = $this->featureContext->getActualUsername($username);
 		$password = $this->featureContext->getActualPassword($password);
 		$session = $this->getSession();
@@ -258,6 +260,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param int $numEmails which number of multiple emails to read (first email is 1)
 	 *
 	 * @return string
+	 * @throws GuzzleException
 	 */
 	public function getLinkFromEmail(string $emailAddress, string $regexSearch, string $errorMessage, int $numEmails = 1):string {
 		$content = EmailHelper::getBodyOfEmail(
@@ -280,6 +283,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param int $numEmails which number of multiple emails to read (first email is 1)
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function followLinkFromEmail(string $emailAddress, string $regexSearch, string $errorMessage, int $numEmails = 1):void {
 		$link = $this->getLinkFromEmail(
@@ -295,6 +299,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @Then no notification should be displayed on the webUI
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function noNotificationShouldBeDisplayedOnTheWebUI():void {
 		try {
@@ -315,6 +320,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $notificationText expected notification text
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function aNotificationShouldBeDisplayedOnTheWebUIWithTheText(
 		string $notificationText
@@ -385,6 +391,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *                              | title | content |
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function dialogsShouldBeDisplayedOnTheWebUI(
 		$count = null,
@@ -476,6 +483,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $title
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserShouldBeRedirectedToGeneralErrorPage(string $title):void {
 		$title = $this->featureContext->substituteInLineCodes($title);
@@ -516,6 +524,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $title
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserShouldBeRedirectedToGeneralExceptionPage(string $title):void {
 		$title = $this->featureContext->substituteInLineCodes($title);
@@ -576,6 +585,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $section
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function adminSwitchesSettingInSection(string $value, string $setting, string $section):void {
 		if ($value === "enables") {
@@ -594,6 +604,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $value
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function settingInSectionHasBeen(string $setting, string $section, string $value):void {
 		if ($value === "enabled") {
@@ -642,9 +653,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * returns the saved capabilities as XML
 	 *
-	 * @return array
+	 * @return array|null
 	 */
-	public function getSavedCapabilitiesXml():array {
+	public function getSavedCapabilitiesXml():?array {
 		return $this->savedCapabilitiesXml;
 	}
 

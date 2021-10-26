@@ -21,6 +21,8 @@
  */
 namespace TestHelpers;
 
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -32,14 +34,15 @@ class EmailHelper {
 	/**
 	 * retrieving emails sent from mailhog
 	 *
-	 * @param string $localMailhogUrl
-	 * @param string $xRequestId
+	 * @param string|null $localMailhogUrl
+	 * @param string|null $xRequestId
 	 *
 	 * @return mixed JSON encoded contents
+	 * @throws GuzzleException
 	 */
 	public static function getEmails(
-		$localMailhogUrl,
-		$xRequestId = ''
+		?string $localMailhogUrl,
+		?string $xRequestId = ''
 	) {
 		$response = HttpRequestHelper::get(
 			$localMailhogUrl . "/api/v2/messages",
@@ -55,21 +58,20 @@ class EmailHelper {
 
 	/**
 	 *
-	 * @param string $localMailhogUrl
-	 * @param string $emailAddress
-	 * @param string $xRequestId
-	 * @param int $waitTimeSec Time to wait for the email
-	 *
-	 * @throws \Exception
+	 * @param string|null $localMailhogUrl
+	 * @param string|null $emailAddress
+	 * @param string|null $xRequestId
+	 * @param int|null $waitTimeSec Time to wait for the email
 	 *
 	 * @return string
+	 * @throws Exception
 	 */
 	public static function getBodyOfLastEmail(
-		$localMailhogUrl,
-		$emailAddress,
-		$xRequestId,
-		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
-	) {
+		?string $localMailhogUrl,
+		?string $emailAddress,
+		?string $xRequestId,
+		?int $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	):string {
 		return self::getBodyOfEmail(
 			$localMailhogUrl,
 			$emailAddress,
@@ -81,23 +83,23 @@ class EmailHelper {
 
 	/**
 	 *
-	 * @param string $localMailhogUrl
-	 * @param string $emailAddress
-	 * @param string $xRequestId
-	 * @param int $emailNumber which number of multiple emails to read (first email is 1)
-	 * @param int $waitTimeSec Time to wait for the email
-	 *
-	 * @throws \Exception
+	 * @param string|null $localMailhogUrl
+	 * @param string|null $emailAddress
+	 * @param string|null $xRequestId
+	 * @param int|null $emailNumber which number of multiple emails to read (first email is 1)
+	 * @param int|null $waitTimeSec Time to wait for the email
 	 *
 	 * @return string
+	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function getBodyOfEmail(
-		$localMailhogUrl,
-		$emailAddress,
-		$xRequestId = '',
-		$emailNumber = 1,
-		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
-	) {
+		?string $localMailhogUrl,
+		?string $emailAddress,
+		?string $xRequestId = '',
+		?int $emailNumber = 1,
+		?int $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	):string {
 		$currentTime = \time();
 		$endTime = $currentTime + $waitTimeSec;
 
@@ -124,26 +126,24 @@ class EmailHelper {
 			$currentTime = \time();
 		}
 
-		throw new \Exception("Could not find the email to the address: " . $emailAddress);
+		throw new Exception("Could not find the email to the address: " . $emailAddress);
 	}
 
 	/**
 	 *
-	 * @param string $localMailhogUrl
-	 * @param string $emailAddress
-	 * @param string $xRequestId
-	 * @param int $waitTimeSec Time to wait for the email
-	 *
-	 * @throws \Exception
+	 * @param string|null $localMailhogUrl
+	 * @param string|null $emailAddress
+	 * @param string|null $xRequestId
+	 * @param int|null $waitTimeSec Time to wait for the email
 	 *
 	 * @return boolean
 	 */
 	public static function emailReceived(
-		$localMailhogUrl,
-		$emailAddress,
-		$xRequestId,
-		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
-	) {
+		?string $localMailhogUrl,
+		?string $emailAddress,
+		?string $xRequestId,
+		?int $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+	):bool {
 		try {
 			self::getBodyOfLastEmail(
 				$localMailhogUrl,
@@ -151,7 +151,7 @@ class EmailHelper {
 				$xRequestId,
 				$waitTimeSec
 			);
-		} catch (\Exception $err) {
+		} catch (Exception $err) {
 			return false;
 		}
 
@@ -160,22 +160,22 @@ class EmailHelper {
 
 	/**
 	 *
-	 * @param string $localMailhogUrl
-	 * @param string $emailAddress
-	 * @param string $xRequestId
-	 * @param int $emailNumber which number of multiple emails to read (first email is 1)
-	 * @param int $waitTimeSec Time to wait for the email
-	 *
-	 * @throws \Exception
+	 * @param string|null $localMailhogUrl
+	 * @param string|null $emailAddress
+	 * @param string|null $xRequestId
+	 * @param int|null $emailNumber which number of multiple emails to read (first email is 1)
+	 * @param int|null $waitTimeSec Time to wait for the email
 	 *
 	 * @return mixed
+	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function getSenderOfEmail(
-		$localMailhogUrl,
-		$emailAddress,
-		$xRequestId = '',
-		$emailNumber = 1,
-		$waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
+		?string $localMailhogUrl,
+		?string $emailAddress,
+		?string $xRequestId = '',
+		?int $emailNumber = 1,
+		?int $waitTimeSec = EMAIL_WAIT_TIMEOUT_SEC
 	) {
 		$currentTime = \time();
 		$endTime = $currentTime + $waitTimeSec;
@@ -196,20 +196,21 @@ class EmailHelper {
 			\usleep(STANDARD_SLEEP_TIME_MICROSEC * 50);
 			$currentTime = \time();
 		}
-		throw new \Exception("Could not find the email to the address: " . $emailAddress);
+		throw new Exception("Could not find the email to the address: " . $emailAddress);
 	}
 
 	/**
 	 *
-	 * @param string $localMailhogUrl
-	 * @param string $xRequestId
+	 * @param string|null $localMailhogUrl
+	 * @param string|null $xRequestId
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function deleteAllMessages(
-		$localMailhogUrl,
-		$xRequestId
-	) {
+		?string $localMailhogUrl,
+		?string $xRequestId
+	):ResponseInterface {
 		return HttpRequestHelper::delete(
 			$localMailhogUrl . "/api/v1/messages",
 			$xRequestId
@@ -222,7 +223,7 @@ class EmailHelper {
 	 *
 	 * @return string
 	 */
-	public static function getMailhogHost() {
+	public static function getMailhogHost():string {
 		$mailhogHost = \getenv('MAILHOG_HOST');
 		if ($mailhogHost === false) {
 			$mailhogHost = "127.0.0.1";
@@ -236,7 +237,7 @@ class EmailHelper {
 	 *
 	 * @return string
 	 */
-	public static function getLocalMailhogHost() {
+	public static function getLocalMailhogHost():string {
 		$localMailhogHost = \getenv('LOCAL_MAILHOG_HOST');
 		if ($localMailhogHost === false) {
 			$localMailhogHost = self::getMailhogHost();
@@ -250,7 +251,7 @@ class EmailHelper {
 	 *
 	 * @return string
 	 */
-	public static function getLocalMailhogUrl() {
+	public static function getLocalMailhogUrl():string {
 		$localMailhogHost = self::getLocalMailhogHost();
 
 		$mailhogPort = \getenv('MAILHOG_PORT');

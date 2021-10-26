@@ -33,33 +33,33 @@ class MoveCopyHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl URL of owncloud
-	 *                        e.g. http://localhost:8080
-	 *                        should include the subfolder
-	 *                        if owncloud runs in a subfolder
-	 *                        e.g. http://localhost:8080/owncloud-core
-	 * @param string $user
-	 * @param string $password
-	 * @param string $fromFileName
-	 * @param string $toFileName
-	 * @param string $xRequestId
-	 * @param array  $headers
-	 * @param int    $davPathVersionToUse (1|2)
-	 * @param string $sourceIpAddress
+	 * @param string|null $baseUrl URL of owncloud
+	 *                        	   e.g. http://localhost:8080
+	 *                             should include the subfolder
+	 *                             if owncloud runs in a subfolder
+	 *                             e.g. http://localhost:8080/owncloud-core
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $fromFileName
+	 * @param string|null $toFileName
+	 * @param string|null $xRequestId
+	 * @param array|null $headers
+	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param string|null $sourceIpAddress
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function copy(
-		$baseUrl,
-		$user,
-		$password,
-		$fromFileName,
-		$toFileName,
-		$xRequestId = '',
-		$headers = [],
-		$davPathVersionToUse = 1,
-		$sourceIpAddress = null
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $fromFileName,
+		?string $toFileName,
+		?string $xRequestId = '',
+		?array $headers = [],
+		?int $davPathVersionToUse = 1,
+		?string $sourceIpAddress = null
+	):ResponseInterface {
 		return self::copyOrMove(
 			$baseUrl,
 			"copy",
@@ -76,33 +76,33 @@ class MoveCopyHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl URL of owncloud
-	 *                        e.g. http://localhost:8080
-	 *                        should include the subfolder
-	 *                        if owncloud runs in a subfolder
-	 *                        e.g. http://localhost:8080/owncloud-core
-	 * @param string $user
-	 * @param string $password
-	 * @param string $fromFileName
-	 * @param string $toFileName
-	 * @param string $xRequestId
-	 * @param array  $headers
-	 * @param int    $davPathVersionToUse (1|2)
-	 * @param string $sourceIpAddress
+	 * @param string|null $baseUrl URL of owncloud
+	 *                             e.g. http://localhost:8080
+	 *                             should include the subfolder
+	 *                             if owncloud runs in a subfolder
+	 *                             e.g. http://localhost:8080/owncloud-core
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $fromFileName
+	 * @param string|null $toFileName
+	 * @param string|null $xRequestId
+	 * @param array|null $headers
+	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param string|null $sourceIpAddress
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function move(
-		$baseUrl,
-		$user,
-		$password,
-		$fromFileName,
-		$toFileName,
-		$xRequestId = '',
-		$headers = [],
-		$davPathVersionToUse = 1,
-		$sourceIpAddress = null
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $fromFileName,
+		?string $toFileName,
+		?string $xRequestId = '',
+		?array$headers = [],
+		?int $davPathVersionToUse = 1,
+		?string $sourceIpAddress = null
+	):ResponseInterface {
 		return self::copyOrMove(
 			$baseUrl,
 			"move",
@@ -119,35 +119,35 @@ class MoveCopyHelper {
 
 	/**
 	 *
-	 * @param string $baseUrl URL of owncloud
-	 *                        e.g. http://localhost:8080
-	 *                        should include the subfolder
-	 *                        if owncloud runs in a subfolder
-	 *                        e.g. http://localhost:8080/owncloud-core
-	 * @param string $method copy|move
-	 * @param string $user
-	 * @param string $password
-	 * @param string $fromFileName
-	 * @param string $toFileName
-	 * @param string $xRequestId
-	 * @param array  $headers
-	 * @param int    $davPathVersionToUse (1|2)
-	 * @param string $sourceIpAddress
+	 * @param string|null $baseUrl URL of owncloud
+	 *                             e.g. http://localhost:8080
+	 *                             should include the subfolder
+	 *                             if owncloud runs in a subfolder
+	 *                             e.g. http://localhost:8080/owncloud-core
+	 * @param string|null $method copy|move
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $fromFileName
+	 * @param string|null $toFileName
+	 * @param string|null $xRequestId
+	 * @param array|null $headers
+	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param string|null $sourceIpAddress
 	 *
 	 * @return ResponseInterface
 	 */
 	private static function copyOrMove(
-		$baseUrl,
-		$method,
-		$user,
-		$password,
-		$fromFileName,
-		$toFileName,
-		$xRequestId = '',
-		$headers = [],
-		$davPathVersionToUse = 1,
-		$sourceIpAddress = null
-	) {
+		?string $baseUrl,
+		?string $method,
+		?string $user,
+		?string $password,
+		?string $fromFileName,
+		?string $toFileName,
+		?string $xRequestId = '',
+		?array $headers = [],
+		?int $davPathVersionToUse = 1,
+		?string $sourceIpAddress = null
+	):ResponseInterface {
 		$method = \strtoupper($method);
 		if ($method !== "COPY" && $method !== "MOVE") {
 			throw new \InvalidArgumentException(

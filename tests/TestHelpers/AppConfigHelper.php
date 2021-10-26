@@ -21,6 +21,7 @@
  */
 namespace TestHelpers;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -30,35 +31,36 @@ use Psr\Http\Message\ResponseInterface;
  */
 class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $capabilitiesApp the "app" name in the capabilities response
-	 * @param string $capabilitiesParameter the parameter name in the
-	 *                                      capabilities response
-	 * @param string $testingApp the "app" name as understood by "testing"
-	 * @param string $testingParameter the parameter name as understood by
-	 *                                 "testing"
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $capabilitiesApp the "app" name in the capabilities response
+	 * @param string|null $capabilitiesParameter the parameter name in the
+	 *                                           capabilities response
+	 * @param string|null $testingApp the "app" name as understood by "testing"
+	 * @param string|null $testingParameter the parameter name as understood by
+	 *                                      "testing"
 	 * @param boolean $testingState the on|off state the parameter must be set to for the test
-	 * @param string $savedCapabilitiesXml the original capabilities in XML format
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion (1|2)
+	 * @param string|null $savedCapabilitiesXml the original capabilities in XML format
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return array of the original state of the capability set
+	 * @throws Exception
 	 */
 	public static function setCapability(
-		$baseUrl,
-		$user,
-		$password,
-		$capabilitiesApp,
-		$capabilitiesParameter,
-		$testingApp,
-		$testingParameter,
-		$testingState,
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $capabilitiesApp,
+		?string $capabilitiesParameter,
+		?string $testingApp,
+		?string $testingParameter,
+		?bool $testingState,
 		$savedCapabilitiesXml,
-		$xRequestId = '',
-		$ocsApiVersion = 1
-	) {
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 1
+	):array {
 		$originalState = self::wasCapabilitySet(
 			$capabilitiesApp,
 			$capabilitiesParameter,
@@ -86,29 +88,31 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 			'value' => $originalState ? 'yes' : 'no'
 		];
 	}
+
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param array $capabilitiesArray with each array entry containing keys for:
-	 *                                 ['capabilitiesApp'] the "app" name in the capabilities response
-	 *                                 ['capabilitiesParameter'] the parameter name in the capabilities response
-	 *                                 ['testingApp'] the "app" name as understood by "testing"
-	 *                                 ['testingParameter'] the parameter name as understood by "testing"
-	 *                                 ['testingState'] boolean|string that the parameter must be set to for the test
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $capabilitiesArray with each array entry containing keys for:
+	 *                                      ['capabilitiesApp'] the "app" name in the capabilities response
+	 *                                 		['capabilitiesParameter'] the parameter name in the capabilities response
+	 *                                 		['testingApp'] the "app" name as understood by "testing"
+	 *                                 		['testingParameter'] the parameter name as understood by "testing"
+	 *                                 		['testingState'] boolean|string that the parameter must be set to for the test
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
-	 * @return array of the original state of each capability set
+	 * @return void of the original state of each capability set
+	 * @throws Exception
 	 */
 	public static function setCapabilities(
-		$baseUrl,
-		$user,
-		$password,
-		$capabilitiesArray,
-		$xRequestId = '',
-		$ocsApiVersion = 1
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?array $capabilitiesArray,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 1
+	):void {
 		$appParameterValues = [];
 
 		if (\is_array($capabilitiesArray)) {
@@ -142,17 +146,17 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $xml of the capabilities
-	 * @param string $capabilitiesApp the "app" name in the capabilities response
-	 * @param string $capabilitiesPath the path to the element
+	 * @param string|null $xml of the capabilities
+	 * @param string|null $capabilitiesApp the "app" name in the capabilities response
+	 * @param string|null $capabilitiesPath the path to the element
 	 *
 	 * @return string
 	 */
 	public static function getParameterValueFromXml(
 		$xml,
 		$capabilitiesApp,
-		$capabilitiesPath
-	) {
+		?string $capabilitiesPath
+	):string {
 		$pathToElement = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 		for ($i = 0; $i < \count($pathToElement); $i++) {
@@ -164,18 +168,18 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $capabilitiesApp the "app" name in the capabilities response
-	 * @param string $capabilitiesParameter the parameter name in the
-	 *                                      capabilities response
-	 * @param string $savedCapabilitiesXml the original capabilities in XML format
+	 * @param string|null $capabilitiesApp the "app" name in the capabilities response
+	 * @param string|null $capabilitiesParameter the parameter name in the
+	 *                                           capabilities response
+	 * @param string|null $savedCapabilitiesXml the original capabilities in XML format
 	 *
 	 * @return boolean
 	 */
 	public static function wasCapabilitySet(
-		$capabilitiesApp,
-		$capabilitiesParameter,
+		?string $capabilitiesApp,
+		?string $capabilitiesParameter,
 		$savedCapabilitiesXml
-	) {
+	):bool {
 		return (bool) self::getParameterValueFromXml(
 			$savedCapabilitiesXml,
 			$capabilitiesApp,
@@ -187,30 +191,31 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	 * Parses the xml answer to get ocs response which doesn't match with
 	 * http one in v1 of the api.
 	 *
-	 * @param ResponseInterface $response
+	 * @param ResponseInterface|null $response
 	 *
-	 * @return string
+	 * @return \SimpleXMLElement
+	 * @throws Exception
 	 */
-	public static function getOCSResponse($response) {
+	public static function getOCSResponse(?ResponseInterface $response):\SimpleXMLElement {
 		return HttpRequestHelper::getResponseXml($response, __METHOD__)->meta[0]->statuscode;
 	}
 
 	/**
 	 * retrieve the capabilities
 	 *
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $xRequestId
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function getCapabilities(
-		$baseUrl,
-		$user,
-		$password,
-		$xRequestId = ''
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $xRequestId = ''
+	):ResponseInterface {
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$user,
@@ -233,36 +238,38 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param ResponseInterface $response
+	 * @param ResponseInterface|null $response
 	 *
-	 * @return string retrieved capabilities in XML format
+	 * @return \SimpleXMLElement retrieved capabilities in XML format
+	 * @throws Exception
 	 */
-	public static function getCapabilitiesXml($response) {
+	public static function getCapabilitiesXml(?ResponseInterface $response):\SimpleXMLElement {
 		return HttpRequestHelper::getResponseXml($response, __METHOD__)->data->capabilities;
 	}
 
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $app
-	 * @param string $parameter
-	 * @param string $value
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $app
+	 * @param string|null $parameter
+	 * @param string|null $value
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public static function modifyAppConfig(
-		$baseUrl,
-		$user,
-		$password,
-		$app,
-		$parameter,
-		$value,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $app,
+		?string $parameter,
+		?string $value,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):void {
 		$body = ['value' => $value];
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
@@ -295,23 +302,24 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param array $appParameterValues 'appid' 'configkey' and 'value'
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $appParameterValues 'appid' 'configkey' and 'value'
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public static function modifyAppConfigs(
-		$baseUrl,
-		$user,
-		$password,
-		$appParameterValues,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?array 	$appParameterValues,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):void {
 		if (\is_array($appParameterValues)) {
 			foreach ($appParameterValues as $key => $value) {
 				if (isset($value['value']) && \is_array($value['value'])) {
@@ -351,24 +359,25 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $app
-	 * @param string $parameter
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $app
+	 * @param string|null $parameter
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public static function deleteAppConfig(
-		$baseUrl,
-		$user,
-		$password,
-		$app,
-		$parameter,
-		$xRequestId = '',
-		$ocsApiVersion = 2
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $app,
+		?string $parameter,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
 	) {
 		$body = [];
 		$response = OcsApiHelper::sendRequest(
@@ -402,23 +411,24 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param array $appParameterValues 'appid' and 'configkey' to delete
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param array|null $appParameterValues 'appid' and 'configkey' to delete
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public static function deleteAppConfigs(
-		$baseUrl,
-		$user,
-		$password,
-		$appParameterValues,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?array $appParameterValues,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):void {
 		$body = ['values' => $appParameterValues];
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
@@ -451,23 +461,24 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $app
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $app
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return array with 'configkey', 'value' and 'appid'
+	 * @throws Exception
 	 */
 	public static function getAppConfigs(
-		$baseUrl,
-		$user,
-		$password,
-		$app,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $app,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):array {
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$user,
@@ -503,25 +514,26 @@ class AppConfigHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $baseUrl
-	 * @param string $user
-	 * @param string $password
-	 * @param string $app
-	 * @param string $parameter
-	 * @param string $xRequestId
-	 * @param int $ocsApiVersion (1|2)
+	 * @param string|null $baseUrl
+	 * @param string|null $user
+	 * @param string|null $password
+	 * @param string|null $app
+	 * @param string|null $parameter
+	 * @param string|null $xRequestId
+	 * @param int|null $ocsApiVersion (1|2)
 	 *
 	 * @return array with 'configkey', 'value' and 'appid'
+	 * @throws Exception
 	 */
 	public static function getAppConfig(
-		$baseUrl,
-		$user,
-		$password,
-		$app,
-		$parameter,
-		$xRequestId = '',
-		$ocsApiVersion = 2
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $app,
+		?string $parameter,
+		?string $xRequestId = '',
+		?int $ocsApiVersion = 2
+	):array {
 		$response = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$user,
