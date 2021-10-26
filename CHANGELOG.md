@@ -526,10 +526,10 @@ Details
 
 * Change - Update JavaScript dependencies: [#39385](https://github.com/owncloud/core/pull/39385)
 
-   The following have been updated: - karma (4.4.1 to 6.3.4) - sinon (7.5.0 to 11.1.2) -
-   bower_components/handlebars (4.5.3 to 4.7.7) - bower_components/moment (2.24.0 to
-   2.29.1) - bower_components/base64 (1.0.2 to 1.1.0) - bower_components/clipboard (2.0.4 to
-   2.0.6)
+   The following have been updated: - karma (4.4.1 to 6.3.4) - minimist (1.2.3 to 1.2.5) - sinon
+   (7.5.0 to 11.1.2) - bower_components/base64 (1.0.2 to 1.1.0) - bower_components/clipboard
+   (2.0.4 to 2.0.6) - bower_components/handlebars (4.5.3 to 4.7.7) - bower_components/moment
+   (2.24.0 to 2.29.1)
 
    https://github.com/owncloud/core/pull/39385
    https://github.com/owncloud/core/pull/39145
@@ -537,17 +537,18 @@ Details
    https://github.com/owncloud/core/pull/38671
    https://github.com/owncloud/core/pull/39407
    https://github.com/owncloud/core/pull/36633
+   https://github.com/owncloud/core/pull/39421
 
 * Change - Update PHP dependencies: [#38907](https://github.com/owncloud/core/pull/38907)
 
    The following have been updated: - doctrine/cache (2.0.3 to 2.1.1) - doctrine/dbal (2.13.2 to
-   2.13.4) - egulias/email-validator (3.1.1 to 3.1.2) - laminas/laminas-stdlib (3.5.0 to
-   3.6.0) - laminas/laminas-validator (2.14.5 to 2.15.0) -
-   laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0) - league/flysystem (1.1.4 to
-   1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.13.0) -
-   pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.10) - punic/punic
-   (3.6.0 to 3.6.1) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0) - pimple/pimple (3.2.3 =>
-   3.4.0)
+   2.13.4) - egulias/email-validator (3.1.1 to 3.1.2) - laminas/laminas-filter (2.11.1 to
+   2.12.0) - laminas/laminas-stdlib (3.5.0 to 3.6.0) - laminas/laminas-validator (2.14.5 to
+   2.15.0) - laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0) - league/flysystem
+   (1.1.4 to 1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to
+   v4.13.0) - pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.10) -
+   punic/punic (3.6.0 to 3.6.1) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0) - pimple/pimple
+   (3.2.3 => 3.4.0)
 
    https://github.com/owncloud/core/pull/38907
    https://github.com/owncloud/core/pull/39030
@@ -560,6 +561,7 @@ Details
    https://github.com/owncloud/core/pull/39259
    https://github.com/owncloud/core/pull/39317
    https://github.com/owncloud/core/pull/39369
+   https://github.com/owncloud/core/pull/39422
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
