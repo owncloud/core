@@ -91,6 +91,8 @@ class Encryption extends Wrapper implements Storage\IVersionedStorage {
 
 	private static $disableWriteEncryption = false;
 
+	private $inCopyKeys = false;
+
 	/**
 	 * @param array $parameters
 	 * @param IManager $encryptionManager
@@ -309,7 +311,11 @@ class Encryption extends Wrapper implements Storage\IVersionedStorage {
 			$this->util->isExcluded($fullPath) === false &&
 			$this->encryptionManager->isEnabled()
 		) {
-			$this->keyStorage->deleteAllFileKeys($fullPath);
+			# TODO: stupid short cut - we better have an capabilities method or something
+			$keyPath = $this->storage->getEncryptionFileKeyDirectory('', $path);
+			if (!$keyPath) {
+				$this->keyStorage->deleteAllFileKeys($fullPath);
+			}
 		}
 
 		return $result;
@@ -1062,11 +1068,17 @@ class Encryption extends Wrapper implements Storage\IVersionedStorage {
 	 * @return bool
 	 */
 	protected function copyKeys($source, $target) {
-		if (!$this->util->isExcluded($source)) {
-			return $this->keyStorage->copyKeys($source, $target);
+		if ($this->inCopyKeys) {
+			return false;
 		}
+		if ($this->util->isExcluded($source)) {
+			return false;
+		}
+		$this->inCopyKeys = true;
 
-		return false;
+		$result = $this->keyStorage->copyKeys($source, $target);
+		$this->inCopyKeys = false;
+		return $result;
 	}
 
 	/**
