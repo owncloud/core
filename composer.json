@@ -37,7 +37,7 @@
         "bantu/ini-get-wrapper": "v1.0.1",
         "punic/punic": "^3.5",
         "pear/archive_tar": "1.4.14",
-        "symfony/console": "^4.4",
+        "symfony/console": "^5.3",
         "symfony/event-dispatcher": "^4.4",
         "symfony/routing": "^4.4",
         "symfony/process": "^4.4",
