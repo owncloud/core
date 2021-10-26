@@ -39,7 +39,7 @@ class OcsApiHelper {
 	 * @param string|null $method HTTP Method
 	 * @param string|null $path
 	 * @param string|null $xRequestId
-	 * @param array|null $body array of key, value pairs e.g ['value' => 'yes']
+	 * @param mixed $body array of key, value pairs e.g ['value' => 'yes']
 	 * @param int|null $ocsApiVersion (1|2) default 2
 	 * @param array|null $headers
 	 *
@@ -53,7 +53,7 @@ class OcsApiHelper {
 		?string $method,
 		?string $path,
 		?string $xRequestId = '',
-		?array $body = [],
+		$body = [],
 		?int $ocsApiVersion = 2,
 		?array $headers = []
 	):ResponseInterface {
@@ -73,7 +73,7 @@ class OcsApiHelper {
 	 * @param string|null $method HTTP Method
 	 * @param string|null $path
 	 * @param string|null $xRequestId
-	 * @param array|null $body array of key, value pairs e.g ['value' => 'yes']
+	 * @param mixed $body array of key, value pairs e.g ['value' => 'yes']
 	 * @param int|null $ocsApiVersion (1|2) default 2
 	 * @param array|null $headers
 	 *
@@ -84,7 +84,7 @@ class OcsApiHelper {
 		?string $method,
 		?string $path,
 		?string $xRequestId = '',
-		?array $body = [],
+		$body = [],
 		?int $ocsApiVersion = 2,
 		?array $headers = []
 	):RequestInterface {
