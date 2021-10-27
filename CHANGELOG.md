@@ -98,6 +98,7 @@ Summary
 * Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
 * Enhancement - Added needed code for webp thumbnail generation to occur: [#39358](https://github.com/owncloud/core/issues/39358)
 * Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
+* Enhancement - Add text to root element of breadcrumb: [#39367](https://github.com/owncloud/core/pull/39367)
 * Enhancement - Extend occ dav:cleanup-chunks command with local option: [#39394](https://github.com/owncloud/core/pull/39394)
 
 Details
@@ -547,7 +548,7 @@ Details
    2.12.0) - laminas/laminas-stdlib (3.5.0 to 3.6.0) - laminas/laminas-validator (2.14.5 to
    2.15.0) - laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0) - league/flysystem
    (1.1.4 to 1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to
-   v4.13.0) - pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.10) -
+   v4.13.0) - pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.11) -
    punic/punic (3.6.0 to 3.6.1) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0) - pimple/pimple
    (3.2.3 => 3.4.0)
 
@@ -563,6 +564,7 @@ Details
    https://github.com/owncloud/core/pull/39317
    https://github.com/owncloud/core/pull/39369
    https://github.com/owncloud/core/pull/39422
+   https://github.com/owncloud/core/pull/39427
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
@@ -871,6 +873,11 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4794
    https://github.com/owncloud/core/pull/39366
+
+* Enhancement - Add text to root element of breadcrumb: [#39367](https://github.com/owncloud/core/pull/39367)
+
+   https://github.com/owncloud/enterprise/issues/4807
+   https://github.com/owncloud/core/pull/39367
 
 * Enhancement - Extend occ dav:cleanup-chunks command with local option: [#39394](https://github.com/owncloud/core/pull/39394)
 
