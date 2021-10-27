@@ -868,6 +868,10 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function manuallyAddSkeletonFiles(array $usersAttributes):void {
+		if ($this->isEmptySkeleton()) {
+			// The empty skeleton has no files. There is nothing to do so return early.
+			return;
+		}
 		$skeletonDir = \getenv("SKELETON_DIR");
 		$revaRoot = \getenv("OCIS_REVA_DATA_ROOT");
 		$skeletonStrategy = \getenv("OCIS_SKELETON_STRATEGY");
@@ -1047,7 +1051,7 @@ trait Provisioning {
 			$this->manuallyAddSkeletonFiles($usersAttributes);
 		}
 
-		if ($initialize && !OcisHelper::isTestingOnOcis()) {
+		if ($initialize && ($this->isEmptySkeleton() || !OcisHelper::isTestingOnOcis())) {
 			// We need to initialize each user using the individual authentication of each user.
 			// That is not possible in Guzzle6 batch mode. So we do it with normal requests in serial.
 			$this->initializeUsers($users);
@@ -5581,6 +5585,17 @@ trait Provisioning {
 	}
 
 	/**
+	 * @return bool
+	 */
+	private function isEmptySkeleton(): string {
+		$skeletonDir = \getenv("SKELETON_DIR");
+		if (($skeletonDir !== false) && (\basename($skeletonDir) === $this->getSmallestSkeletonDirName() . "Skeleton")) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * sets the skeletondirectory according to the type
 	 *
 	 * @param string $skeletonType can be "tiny", "small", "large" OR empty.
@@ -5596,11 +5611,6 @@ trait Provisioning {
 			if ($skeletonType !== '') {
 				$skeletonDirName = $skeletonType . "Skeleton";
 				$newSkeletonPath = \dirname($originalSkeletonPath) . '/' . $skeletonDirName;
-				// We cannot have a really empty skeleton folder committed by git.
-				// So create it on-the-fly if a test scenario wants an empty skeleton.
-				if (($skeletonDirName === "emptySkeleton") && !\file_exists($newSkeletonPath)) {
-					\mkdir($newSkeletonPath);
-				}
 				\putenv(
 					"SKELETON_DIR=" . $newSkeletonPath
 				);
