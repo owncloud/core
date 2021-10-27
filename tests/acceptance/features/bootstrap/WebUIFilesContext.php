@@ -2407,7 +2407,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$actualFolder = explode(" ", $output);
 
 		if (!\in_array($expectedFolder, $actualFolder)) {
-			Assert::fail("could not find folder ' $expectedFolder' in downloads");
+			Assert::fail("Could not find folder '$expectedFolder' in downloads. The latest download found was '$folder'");
 		}
 	}
 
