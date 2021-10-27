@@ -46,7 +46,7 @@ class FilesPage extends FilesPageBasic {
 	protected $newFolderTooltipXpath = './/div[contains(@class, "newFileMenu")]//div[@class="tooltip-inner"]';
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $deleteAllSelectedMobileBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected mobile button']";
-	protected $homePageIconXpath = "//div[@class='breadcrumb']//img[@alt='Home']";
+	protected $homePageIconXpath = "//div[@class='breadcrumb']//div[contains(@class, 'img')]";
 	protected $folderBreadCrumbXpath = "//div[@class='breadcrumb']//a[contains(@href,'%s')]";
 	protected $uploadCreatePermissionDeniedMessageSelector = ".notCreatable.notPublic";
 	protected $sharingDialogXpath = "//h3[@data-original-title='%s']/ancestor::div[@id='app-sidebar']//div[@id='shareTabView']";
