@@ -2995,7 +2995,7 @@ trait Provisioning {
 		bool $initialize = true,
 		?string $method = null,
 		bool $setDefault = true,
-		?bool $skeleton = null
+		bool $skeleton = true
 	):void {
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
