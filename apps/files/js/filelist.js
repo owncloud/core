@@ -298,7 +298,9 @@
 				onClick: _.bind(this._onClickBreadCrumb, this),
 				getCrumbUrl: function(part) {
 					return self.linkTo(part.dir);
-				}
+				},
+				rootName: this.appName === t('files', 'Files') ? t('files', 'All files') : this.appName,
+				rootIconClass: 'nav-icon-' + this.id,
 			};
 			// if dropping on folders is allowed, then also allow on breadcrumbs
 			if (this._folderDropOptions) {

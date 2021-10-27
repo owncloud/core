@@ -45,7 +45,7 @@ describe('OCA.Files.BreadCrumb tests', function() {
 			$crumbs = bc.$el.find('.crumb');
 			expect($crumbs.length).toEqual(1);
 			expect($crumbs.eq(0).find('a').attr('href')).toEqual('/#0');
-			expect($crumbs.eq(0).find('img').length).toEqual(1);
+			expect($crumbs.eq(0).find('div.img').length).toEqual(1);
 			expect($crumbs.eq(0).attr('data-dir')).toEqual('/');
 		});
 		it('Renders root when switching to root', function() {
@@ -66,10 +66,10 @@ describe('OCA.Files.BreadCrumb tests', function() {
 			$crumbs = bc.$el.find('.crumb');
 			expect($crumbs.length).toEqual(2);
 			expect($crumbs.eq(0).find('a').attr('href')).toEqual('/#0');
-			expect($crumbs.eq(0).find('img').length).toEqual(1);
+			expect($crumbs.eq(0).find('div.img').length).toEqual(1);
 			expect($crumbs.eq(0).attr('data-dir')).toEqual('/');
 			expect($crumbs.eq(1).find('a').attr('href')).toEqual('/somedir#1');
-			expect($crumbs.eq(1).find('img').length).toEqual(0);
+			expect($crumbs.eq(1).find('div.img').length).toEqual(0);
 			expect($crumbs.eq(1).attr('data-dir')).toEqual('/somedir');
 		});
 		it('Renders multiple path sections and special chars', function() {
@@ -78,15 +78,15 @@ describe('OCA.Files.BreadCrumb tests', function() {
 			$crumbs = bc.$el.find('.crumb');
 			expect($crumbs.length).toEqual(4);
 			expect($crumbs.eq(0).find('a').attr('href')).toEqual('/#0');
-			expect($crumbs.eq(0).find('img').length).toEqual(1);
+			expect($crumbs.eq(0).find('div.img').length).toEqual(1);
 			expect($crumbs.eq(0).attr('data-dir')).toEqual('/');
 
 			expect($crumbs.eq(1).find('a').attr('href')).toEqual('/somedir#1');
-			expect($crumbs.eq(1).find('img').length).toEqual(0);
+			expect($crumbs.eq(1).find('div.img').length).toEqual(0);
 			expect($crumbs.eq(1).attr('data-dir')).toEqual('/somedir');
 
 			expect($crumbs.eq(2).find('a').attr('href')).toEqual('/somedir/with space#2');
-			expect($crumbs.eq(2).find('img').length).toEqual(0);
+			expect($crumbs.eq(2).find('div.img').length).toEqual(0);
 			expect($crumbs.eq(2).attr('data-dir')).toEqual('/somedir/with space');
 
 			expect($crumbs.eq(3).find('a').attr('href')).toEqual('/somedir/with space/abc#3');
@@ -99,23 +99,23 @@ describe('OCA.Files.BreadCrumb tests', function() {
 			$crumbs = bc.$el.find('.crumb');
 			expect($crumbs.length).toEqual(5);
 			expect($crumbs.eq(0).find('a').attr('href')).toEqual('/#0');
-			expect($crumbs.eq(0).find('img').length).toEqual(1);
+			expect($crumbs.eq(0).find('div.img').length).toEqual(1);
 			expect($crumbs.eq(0).attr('data-dir')).toEqual('/');
 
 			expect($crumbs.eq(1).find('a').attr('href')).toEqual('/somedir#1');
-			expect($crumbs.eq(1).find('img').length).toEqual(0);
+			expect($crumbs.eq(1).find('div.img').length).toEqual(0);
 			expect($crumbs.eq(1).attr('data-dir')).toEqual('/somedir');
 
 			expect($crumbs.eq(2).find('a').attr('href')).toEqual('/somedir/with#2');
-			expect($crumbs.eq(2).find('img').length).toEqual(0);
+			expect($crumbs.eq(2).find('div.img').length).toEqual(0);
 			expect($crumbs.eq(2).attr('data-dir')).toEqual('/somedir/with');
 
 			expect($crumbs.eq(3).find('a').attr('href')).toEqual('/somedir/with/mixed#3');
-			expect($crumbs.eq(3).find('img').length).toEqual(0);
+			expect($crumbs.eq(3).find('div.img').length).toEqual(0);
 			expect($crumbs.eq(3).attr('data-dir')).toEqual('/somedir/with/mixed');
 
 			expect($crumbs.eq(4).find('a').attr('href')).toEqual('/somedir/with/mixed/separators#4');
-			expect($crumbs.eq(4).find('img').length).toEqual(0);
+			expect($crumbs.eq(4).find('div.img').length).toEqual(0);
 			expect($crumbs.eq(4).attr('data-dir')).toEqual('/somedir/with/mixed/separators');
 		});
 	});

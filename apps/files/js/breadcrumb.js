@@ -45,6 +45,8 @@
 		if (options.getCrumbUrl) {
 			this.getCrumbUrl = options.getCrumbUrl;
 		}
+		this.rootName = options.rootName;
+		this.rootIconClass = options.rootIconClass;
 	};
 	/**
 	 * @memberof OCA.Files
@@ -64,6 +66,8 @@
 		onDrop: null,
 		onOver: null,
 		onOut: null,
+		rootName: null,
+		rootIconClass: null,
 
 		/**
 		 * Sets the directory to be displayed as breadcrumb.
@@ -101,18 +105,15 @@
 
 			for (var i = 0; i < parts.length; i++) {
 				var part = parts[i];
-				var $image;
 				var $link = $('<a></a>').attr('href', this.getCrumbUrl(part, i));
-				$link.text(part.name);
+				var $linkDiv = $('<div></div>').text(part.name);
+				$link.append($linkDiv);
 				$crumb = $('<div class="crumb svg"></div>');
 				$crumb.append($link);
 				$crumb.attr('data-dir', part.dir);
 
-				if (part.img) {
-					$image = $('<img class="svg"></img>');
-					$image.attr('src', part.img);
-					$image.attr('alt', part.alt);
-					$link.append($image);
+				if (part.isRoot) {
+					$linkDiv.attr('class', this.rootIconClass + ' img');
 				}
 				this.breadcrumbs.push($crumb);
 				this.$el.append($crumb);
@@ -159,9 +160,8 @@
 			// root part
 			crumbs.push({
 				dir: '/',
-				name: '',
-				alt: t('files', 'Home'),
-				img: OC.imagePath('core', 'places/home.svg')
+				name: this.rootName,
+				isRoot: true,
 			});
 			for (var i = 0; i < parts.length; i++) {
 				var part = parts[i];

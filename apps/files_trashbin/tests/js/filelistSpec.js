@@ -133,7 +133,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 			fakeServer.respond();
 			var $crumbs = fileList.$el.find('#controls .crumb');
 			expect($crumbs.length).toEqual(2);
-			expect($crumbs.eq(0).find('a').text()).toEqual('');
+			expect($crumbs.eq(0).find('a').text()).toEqual('Deleted files');
 			expect($crumbs.eq(0).find('a').attr('href'))
 				.toEqual(OC.webroot + '/index.php/apps/files?view=trashbin&dir=/');
 			expect($crumbs.eq(1).find('a').text()).toEqual('subdir');

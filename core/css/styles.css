@@ -1006,13 +1006,12 @@ div.crumb.hidden {
 div.crumb a,
 div.crumb span {
 	position: relative;
-	top: 12px;
-	padding: 14px 24px 14px 17px;
+	padding: 12px 24px 14px 17px;
 	color: #555;
+	display: flex;
 }
 div.crumb:first-child a {
 	position: relative;
-	top: 13px;
 }
 div.crumb.last {
 	font-weight: 600;
@@ -1022,6 +1021,11 @@ div.crumb a.ellipsislink {
 	padding: 0 !important;
 	position: relative;
 	top: 8px !important;
+}
+div.crumb .img {
+	background-position: 2px;
+	background-repeat: no-repeat;
+	padding-left: 26px;
 }
 
 /* some feedback for hover/tap on breadcrumbs */
