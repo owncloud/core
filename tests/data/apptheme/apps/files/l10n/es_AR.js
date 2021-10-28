@@ -5,7 +5,6 @@ OC.L10N.register(
     "Storage invalid" : "Almacenamiento invalido",
     "Unknown error" : "Error desconocido",
     "All files" : "Todos los archivos",
-    "Home" : "Particular",
     "Close" : "Cerrar",
     "Favorites" : "Favoritos",
     "Upload cancelled." : "La subida fue cancelada",

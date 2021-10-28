@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Neznámá chyba",
     "All files" : "Všechny soubory",
     "File could not be found" : "Soubor nelze nalézt",
-    "Home" : "Domů",
     "Close" : "Zavřít",
     "Favorites" : "Oblíbené",
     "Could not create folder \"{dir}\"" : "Nelze vytvořit adresář \"{dir}\"",

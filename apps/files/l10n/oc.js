@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Error Desconeguda ",
     "All files" : "Totes los fichièrs",
     "File could not be found" : "Aqueste fichièr es pas estat trobat.",
-    "Home" : "Mos fichièrs",
     "Close" : "Tampar",
     "Favorites" : "Favorits",
     "Could not create folder \"{dir}\"" : "Impossible de crear lo dorsièr \"{dir}\"",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Home" : "Rumah",
     "Close" : "Tutup",
     "Upload cancelled." : "Muatnaik dibatalkan.",
     "Download" : "Muat turun",

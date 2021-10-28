@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Bilinmeyen hata",
     "All files" : "Tüm dosyalar",
     "File could not be found" : "Dosya bulunamadı",
-    "Home" : "Ev",
     "Close" : "Kapat",
     "Favorites" : "Sık kullanılanlar",
     "Upload timeout for file \"{file}\"" : "\"{file}\" dosyası için yükleme zaman aşımı",

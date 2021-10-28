@@ -4,7 +4,6 @@ OC.L10N.register(
     "Storage invalid" : "Memoro ne validas",
     "Unknown error" : "Nekonata eraro",
     "All files" : "Ĉiuj dosieroj",
-    "Home" : "Hejmo",
     "Close" : "Fermi",
     "Favorites" : "Favoratoj",
     "Could not create folder \"{dir}\"" : "Ne eblas krei dosierujon “{dir}”",

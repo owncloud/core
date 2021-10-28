@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Kesalahan tidak diketahui",
     "All files" : "Semua berkas",
     "File could not be found" : "Berkas tidak dapat ditemukan",
-    "Home" : "Rumah",
     "Close" : "Tutup",
     "Favorites" : "Favorit",
     "Could not create folder \"{dir}\"" : "Tidak dapat membuat folder \"{dir}\"",

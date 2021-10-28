@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Home" : "නිවස",
     "Close" : "වසන්න",
     "Upload cancelled." : "උඩුගත කිරීම අත් හරින්න ලදී",
     "Uploading..." : "උඩුගත කෙරේ...",

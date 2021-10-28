@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Nezināma kļūda",
     "All files" : "Visas datnes",
     "File could not be found" : "Fails netika atrasts",
-    "Home" : "Mājas",
     "Close" : "Aizvērt",
     "Favorites" : "Iecienītie",
     "Unknown error \"{error}\" uploading file \"{file}\"" : "Nezināma kļūda \"{error}\" augšupielādējot failu \"{file}\"",

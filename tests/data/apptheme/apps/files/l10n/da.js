@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Ukendt fejl",
     "All files" : "Alle filer",
     "File could not be found" : "Fil kunne ikke findes",
-    "Home" : "Hjemme",
     "Close" : "Luk",
     "Favorites" : "Foretrukne",
     "Could not create folder \"{dir}\"" : "Kunne ikke oprette mappen \"{dir}\"",

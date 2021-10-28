@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Gabim i panjohur",
     "All files" : "Krejt kartelat",
     "File could not be found" : "Kartela s’u gjet dot",
-    "Home" : "Kreu",
     "Close" : "Mbylle",
     "Favorites" : "Të parapëlqyera",
     "Upload timeout for file \"{file}\"" : "Mbarim kohe ngarkimi për kartelën \"{file}\"",

@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Непозната грешка.",
     "All files" : "Всички файлове",
     "File could not be found" : "Файлът не може да бъде открит",
-    "Home" : "Домашен",
     "Close" : "Затвори",
     "Favorites" : "Любими",
     "Upload timeout for file \"{file}\"" : "Време за качване на файл \"{file}\"",

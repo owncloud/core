@@ -5,7 +5,6 @@ OC.L10N.register(
     "Unknown error" : "Tundmatu viga",
     "All files" : "Kõik failid",
     "File could not be found" : "Faili ei leitud",
-    "Home" : "Kodu",
     "Close" : "Sulge",
     "Favorites" : "Lemmikud",
     "Upload cancelled." : "Üleslaadimine tühistati.",

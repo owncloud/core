@@ -4,7 +4,6 @@ OC.L10N.register(
     "Storage invalid" : "Lưu trữ không hợp lệ",
     "Unknown error" : "Lỗi chưa biết",
     "All files" : "Tất cả tệp tin",
-    "Home" : "Nhà",
     "Close" : "Đóng",
     "Favorites" : "Ưa thích",
     "Could not create folder \"{dir}\"" : "Không thể tạo thư mục “{dir}”",

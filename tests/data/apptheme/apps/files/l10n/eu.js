@@ -5,7 +5,6 @@ OC.L10N.register(
     "Unknown error" : "Errore ezezaguna",
     "All files" : "Fitxategi guztiak",
     "File could not be found" : "Ezin izan da fitxategia topatu",
-    "Home" : "Etxekoa",
     "Close" : "Itxi",
     "Favorites" : "Gogokoak",
     "Upload cancelled." : "Igoera ezeztatuta",

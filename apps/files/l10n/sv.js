@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Okänt fel",
     "All files" : "Alla filer",
     "File could not be found" : "Filen ej funnen",
-    "Home" : "Hem",
     "Close" : "Stäng",
     "Favorites" : "Favoriter",
     "Upload timeout for file \"{file}\"" : "Uppadddnings-timeout för fil \"{file}\"",

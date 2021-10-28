@@ -4,7 +4,6 @@ OC.L10N.register(
     "Unknown error" : "Onbekende fout",
     "All files" : "Alle lêers",
     "File could not be found" : "Lêer kon nie gevind word nie",
-    "Home" : "Tuis",
     "Close" : "Sluit",
     "Favorites" : "Gunstelinge",
     "Upload cancelled." : "Oplaai gekanselleer.",

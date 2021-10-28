@@ -4,7 +4,6 @@ OC.L10N.register(
     "Storage invalid" : "Neispravno skladište",
     "Unknown error" : "Nepoznata greška",
     "All files" : "Svi fajlovi",
-    "Home" : "Početna",
     "Close" : "Zatvori",
     "Favorites" : "Omiljeni",
     "Upload cancelled." : "Otpremanje je otkazano.",

@@ -4,7 +4,6 @@ OC.L10N.register(
     "Storage invalid" : "Неисправно складиште",
     "Unknown error" : "Непозната грешка",
     "All files" : "Сви фајлови",
-    "Home" : "Почетна",
     "Close" : "Затвори",
     "Favorites" : "Омиљени",
     "Upload cancelled." : "Отпремање је отказано.",

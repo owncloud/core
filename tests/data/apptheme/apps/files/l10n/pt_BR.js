@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Erro desconhecido",
     "All files" : "Todos os arquivos",
     "File could not be found" : "O arquivo não foi encontrado",
-    "Home" : "Home",
     "Close" : "Fechar",
     "Favorites" : "Favoritos",
     "Upload timeout for file \"{file}\"" : "Tempo de envio do arquivo \"{file}\" expirou",

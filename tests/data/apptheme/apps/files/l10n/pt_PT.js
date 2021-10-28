@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Erro desconhecido",
     "All files" : "Todos os ficheiros",
     "File could not be found" : "Não foi possível encontrar o ficheiro",
-    "Home" : "Início",
     "Close" : "Fechar",
     "Favorites" : "Favoritos",
     "Could not create folder \"{dir}\"" : "Não foi possível criar a pasta \"{dir}\"",

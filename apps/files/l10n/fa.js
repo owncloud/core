@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "خطای نامشخص",
     "All files" : "تمامی فایل‌ها",
     "File could not be found" : "پرونده یافت نشد",
-    "Home" : "خانه",
     "Close" : "بستن",
     "Favorites" : "موارد محبوب",
     "Upload timeout for file \"{file}\"" : "زمان بارگذاری برای \"{file}\" به پایان رسید",

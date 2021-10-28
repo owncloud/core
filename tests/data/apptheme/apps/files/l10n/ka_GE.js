@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "უცნობი შეცდომა",
-    "Home" : "სახლი",
     "Close" : "დახურვა",
     "Favorites" : "ფავორიტები",
     "Upload cancelled." : "ატვირთვა შეჩერებულ იქნა.",

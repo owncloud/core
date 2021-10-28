@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Άγνωστο σφάλμα",
     "All files" : "Όλα τα αρχεία",
     "File could not be found" : "Το αρχείο δεν μπορεί να βρεθεί",
-    "Home" : "Αρχική",
     "Close" : "Κλείσιμο",
     "Favorites" : "Αγαπημένα",
     "Upload timeout for file \"{file}\"" : "Λήξη ορίου χρόνου για μεταφόρτωση του αρχείου \"{file}\"",

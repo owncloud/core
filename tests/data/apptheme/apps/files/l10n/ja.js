@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "不明なエラー",
     "All files" : "すべてのファイル",
     "File could not be found" : "ファイルは見つかりませんでした。",
-    "Home" : "ホーム",
     "Close" : "閉じる",
     "Favorites" : "お気に入り",
     "Upload timeout for file \"{file}\"" : "ファイル \"{file}\" アップロード時にタイムアウトしました",

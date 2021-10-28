@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Óþekkt villa",
     "All files" : "Allar skrár",
     "File could not be found" : "Þessi skrá fannst ekki",
-    "Home" : "Heim",
     "Close" : "Loka",
     "Favorites" : "Eftirlæti",
     "Upload timeout for file \"{file}\"" : "Tímamörk innsendingar fyrir skrána \"{file}\"",

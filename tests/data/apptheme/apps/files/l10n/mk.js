@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Непозната грешка",
     "All files" : "Сите датотеки",
     "File could not be found" : "Датотеката не е пронајдена",
-    "Home" : "Дома",
     "Close" : "Затвори",
     "Favorites" : "Омилени",
     "Upload timeout for file \"{file}\"" : "Истече времето за прикачување на датотеката \"{file}\"",

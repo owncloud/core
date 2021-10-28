@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Neznana napaka",
     "All files" : "Vse datoteke",
     "File could not be found" : "Datoteke ni mogoče najti",
-    "Home" : "Domači naslov",
     "Close" : "Zapri",
     "Favorites" : "Priljubljene",
     "Could not create folder \"{dir}\"" : "Ni mogoče ustvariti mape \"{dir}\"",

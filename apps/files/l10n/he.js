@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "שגיאה בלתי ידועה",
     "All files" : "כל הקבצים",
     "File could not be found" : "הקובץ לא ניתן לאיתור",
-    "Home" : "בית",
     "Close" : "סגירה",
     "Favorites" : "מועדפים",
     "Upload timeout for file \"{file}\"" : "פסק זמן בזמן העלאה של קובץ \"{file}\"",

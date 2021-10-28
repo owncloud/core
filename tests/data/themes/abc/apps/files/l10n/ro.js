@@ -4,7 +4,6 @@ OC.L10N.register(
     "Storage invalid" : "Spațiu de stocare invalid",
     "Unknown error" : "Eroare necunoscută",
     "All files" : "Toate fișierele.",
-    "Home" : "Acasă",
     "Close" : "Închide",
     "Favorites" : "Favorite",
     "Could not create folder \"{dir}\"" : "Nu s-a putut crea directorul \"{dir}\"",

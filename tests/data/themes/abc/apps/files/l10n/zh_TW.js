@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "未知的錯誤",
     "All files" : "所有檔案",
     "File could not be found" : "檔案找不到",
-    "Home" : "家目錄",
     "Close" : " 關閉",
     "Favorites" : "最愛",
     "Upload timeout for file \"{file}\"" : "文件上傳超時\"{file}\"",

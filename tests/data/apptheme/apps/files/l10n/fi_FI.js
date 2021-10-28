@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Tuntematon virhe",
     "All files" : "Kaikki tiedostot",
     "File could not be found" : "TIedostoa ei löytynyt",
-    "Home" : "Koti",
     "Close" : "Sulje",
     "Favorites" : "Suosikit",
     "Upload timeout for file \"{file}\"" : "Lähetyksen aikakatkaisu tiedostolle \"{file}\"",

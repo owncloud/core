@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Neatpažinta klaida",
     "All files" : "Visi failai",
     "File could not be found" : "Nepavyko rasti failo",
-    "Home" : "Namų",
     "Close" : "Užverti",
     "Favorites" : "Mėgstamiausi",
     "Could not create folder \"{dir}\"" : "Nepavyko sukurti aplanko \"{dir}\"",

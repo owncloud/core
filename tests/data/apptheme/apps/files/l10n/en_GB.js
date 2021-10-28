@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Unknown error",
     "All files" : "All files",
     "File could not be found" : "File could not be found",
-    "Home" : "Home",
     "Close" : "Close",
     "Favorites" : "Favourites",
     "Upload timeout for file \"{file}\"" : "Upload timeout for file \"{file}\"",

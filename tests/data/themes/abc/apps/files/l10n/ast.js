@@ -5,7 +5,6 @@ OC.L10N.register(
     "Unknown error" : "Fallu desconocíu",
     "All files" : "Tolos ficheros",
     "File could not be found" : "Nun s'atopó el ficheru",
-    "Home" : "Casa",
     "Close" : "Zarrar",
     "Favorites" : "Favoritos",
     "Could not create folder \"{dir}\"" : "Nun pudo crease la carpeta \"{dir}\"",

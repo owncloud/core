@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Home" : "அகம்",
     "Close" : "மூடுக",
     "Favorites" : "விருப்பங்கள்",
     "Upload cancelled." : "பதிவேற்றல் இரத்து செய்யப்பட்டுள்ளது",

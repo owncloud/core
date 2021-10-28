@@ -2,7 +2,6 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "يوچۇن خاتالىق",
-    "Home" : "ئۆي",
     "Close" : "ياپ",
     "Favorites" : "يىغقۇچ",
     "Upload cancelled." : "يۈكلەشتىن ۋاز كەچتى.",

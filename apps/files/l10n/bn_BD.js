@@ -4,7 +4,6 @@ OC.L10N.register(
     "Storage invalid" : "সংরক্ষণাগার বৈধ নয়",
     "Unknown error" : "অজানা জটিলতা",
     "All files" : "সব ফাইল",
-    "Home" : "নিবাস",
     "Close" : "বন্ধ",
     "Favorites" : "প্রিয়জন",
     "Upload cancelled." : "আপলোড বাতিল করা হয়েছে।",

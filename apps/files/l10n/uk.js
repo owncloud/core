@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Невідома помилка",
     "All files" : "Усі файли",
     "File could not be found" : "Файл не знайдено",
-    "Home" : "Домашня адреса",
     "Close" : "Закрити",
     "Favorites" : "Улюблені",
     "Could not create folder \"{dir}\"" : "Неможливо створити теку \"{dir}\"",

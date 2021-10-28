@@ -6,7 +6,6 @@ OC.L10N.register(
     "Unknown error" : "Ismeretlen hiba",
     "All files" : "Az összes állomány",
     "File could not be found" : "Az állomány nem található",
-    "Home" : "Otthoni",
     "Close" : "Bezárás",
     "Favorites" : "Kedvencek",
     "Upload timeout for file \"{file}\"" : "Időtúllépés az állomány feltöltésekor \"{file}\"",

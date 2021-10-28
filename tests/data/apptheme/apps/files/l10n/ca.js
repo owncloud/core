@@ -5,7 +5,6 @@ OC.L10N.register(
     "Storage invalid" : "Emmagatzemament no vàlid",
     "Unknown error" : "Error desconegut",
     "All files" : "Tots els fitxers",
-    "Home" : "Inici",
     "Close" : "Tanca",
     "Favorites" : "Preferits",
     "Upload cancelled." : "La pujada s'ha cancel·lat.",

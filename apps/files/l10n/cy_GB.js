@@ -1,7 +1,6 @@
 OC.L10N.register(
     "files",
     {
-    "Home" : "Cartref",
     "Close" : "Cau",
     "Upload cancelled." : "Diddymwyd llwytho i fyny.",
     "Uploading..." : "Yn llwytho i fyny...",
