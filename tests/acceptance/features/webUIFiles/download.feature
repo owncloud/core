@@ -20,7 +20,7 @@ Feature: Download resource
     And the user clicks the download button on the webUI
     Then folder "simple-folder.zip" should be downloaded
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: download multiple folders
     Given user "Alice" has created folder "simple-folder"
     And user "Alice" has created folder "simple-folder1"
@@ -32,7 +32,7 @@ Feature: Download resource
     And the user clicks the download button on the webUI
     Then folder "download.zip" should be downloaded
 
-
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: download all files and folder
     Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
     And user "Alice" has created folder "simple-folder"

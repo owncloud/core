@@ -514,7 +514,7 @@ Feature: Sharing files and folders with internal groups
       | share_with  | grp3                 |
       | permissions | 31                   |
 
-  @skipOnOcV10.6 @skipOnOcV10.7
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Reshares with groups where the same file ends up in different mountpoints that are renamed should have correct permissions
     Given these groups have been created:
       | groupname |
