@@ -114,24 +114,28 @@ class ActivityTest extends TestCase {
 	public function testNotificationTypes() {
 		$result = $this->activityExtension->getNotificationTypes('en');
 		$this->assertIsArray($result, 'Asserting getNotificationTypes() returns an array');
-		$this->assertCount(5, $result);
+		$this->assertCount(7, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CREATED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CHANGED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_FAVORITES, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_DELETED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_RESTORED, $result);
+		$this->assertArrayHasKey(Activity::TYPE_FILE_RENAMED, $result);
+		$this->assertArrayHasKey(Activity::TYPE_FILE_MOVED, $result);
 	}
 
 	public function testDefaultTypes() {
 		$result = $this->activityExtension->getDefaultTypes('stream');
 		$this->assertIsArray($result, 'Asserting getDefaultTypes(stream) returns an array');
-		$this->assertCount(4, $result);
+		$this->assertCount(6, $result);
 		$result = \array_flip($result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CREATED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CHANGED, $result);
 		$this->assertArrayNotHasKey(Activity::TYPE_FAVORITES, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_DELETED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_RESTORED, $result);
+		$this->assertArrayHasKey(Activity::TYPE_FILE_RENAMED, $result);
+		$this->assertArrayHasKey(Activity::TYPE_FILE_MOVED, $result);
 
 		$result = $this->activityExtension->getDefaultTypes('email');
 		$this->assertFalse($result, 'Asserting getDefaultTypes(email) returns false');
