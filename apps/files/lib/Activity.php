@@ -204,7 +204,7 @@ class Activity implements IExtension {
 			case 'renamed_by':
 				return (string) $l->t('%2$s renamed %3$s to %1$s', $params);
 			case 'moved_self':
-				return (string) $l->t('You moved %2$s to %1$s ', $params);
+				return (string) $l->t('You moved %2$s to %1$s', $params);
 			case 'moved_by':
 				return (string) $l->t('%2$s moved %3$s to %1$s', $params);
 			case 'moved_in_share_by':
@@ -275,7 +275,7 @@ class Activity implements IExtension {
 				case 'renamed_by':
 					return [
 						0 => 'file',
-						1 => 'user',
+						1 => 'username',
 						2 => 'file',
 					];
 				case 'moved_self':
@@ -286,18 +286,18 @@ class Activity implements IExtension {
 				case 'moved_by':
 					return [
 						0 => 'file',
-						1 => 'user',
+						1 => 'username',
 						2 => 'file',
 					];
 				case 'moved_in_share_by':
 					return [
 						0 => 'file',
-						1 => 'user',
+						1 => 'username',
 					];
 				case 'moved_out_share_by':
 					return [
 						0 => 'file',
-						1 => 'user',
+						1 => 'username',
 					];
 				case 'restored_by':
 					return [
