@@ -100,6 +100,7 @@ Summary
 * Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
 * Enhancement - Add text to root element of breadcrumb: [#39367](https://github.com/owncloud/core/pull/39367)
 * Enhancement - Extend occ dav:cleanup-chunks command with local option: [#39394](https://github.com/owncloud/core/pull/39394)
+* Enhancement - Add activity translations for rename and move actions: [#39430](https://github.com/owncloud/core/pull/39430)
 
 Details
 -------
@@ -893,6 +894,12 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4824
    https://github.com/owncloud/core/pull/39394
+
+* Enhancement - Add activity translations for rename and move actions: [#39430](https://github.com/owncloud/core/pull/39430)
+
+   https://github.com/owncloud/enterprise/issues/4806
+   https://github.com/owncloud/activity/issues/375
+   https://github.com/owncloud/core/pull/39430
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
