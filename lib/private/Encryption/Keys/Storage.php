@@ -96,6 +96,17 @@ class Storage implements IStorage {
 	 */
 	public function getFileKey($path, $keyId, $encryptionModuleId) {
 		$realFile = OC_Util::stripPartialFileExtension($path);
+		$mount = $this->mountManager->find($realFile);
+		if ($mount) {
+			$result = $mount->getStorage()->getFileKey($mount->getInternalPath($realFile), $keyId, $encryptionModuleId);
+			if ($result !== null) {
+				if ($result === '' && $realFile !== $path) {
+					return $mount->getStorage()->getFileKey($mount->getInternalPath($path), $keyId, $encryptionModuleId);
+				}
+				return $result;
+			}
+		}
+
 		$keyDir = $this->getFileKeyDir($encryptionModuleId, $realFile);
 		$key = $this->getKey($keyDir . $keyId);
 

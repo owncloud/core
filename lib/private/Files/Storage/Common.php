@@ -810,4 +810,8 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	public function getEncryptionFileKeyDirectory(string $encryptionModuleId, string $path): ?string {
 		return null;
 	}
+
+	public function getFileKey(string $path, string $keyId, string $encryptionModuleId): ?string {
+		return null;
+	}
 }

@@ -654,4 +654,8 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 	public function getEncryptionFileKeyDirectory(string $encryptionModuleId, string $path): ?string {
 		return $this->getWrapperStorage()->getEncryptionFileKeyDirectory($encryptionModuleId, $path);
 	}
+
+	public function getFileKey(string $path, string $keyId, string $encryptionModuleId): ?string {
+		return $this->getWrapperStorage()->getFileKey($path, $keyId, $encryptionModuleId);
+	}
 }
