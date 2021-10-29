@@ -386,6 +386,17 @@ class OccContext implements Context {
 	}
 
 	/**
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function cleanOrphanedRemoteStoragesUsingOccCommand():void {
+		$this->invokingTheCommand(
+			"sharing:cleanup-remote-storages"
+		);
+	}
+
+	/**
 	 * @param string $user
 	 *
 	 * @return void
@@ -957,6 +968,35 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Then :noOfOrphanedShare orphaned remote storage should have been cleared
+	 *
+	 * @param int $noOfOrphanedShare
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theOrphanedRemoteStorageShouldBeCleared(int $noOfOrphanedShare):void {
+		$this->theCommandShouldHaveBeenSuccessful();
+		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
+		// removing blank lines
+		$commandOutput = implode("\n", array_filter(explode("\n", $commandOutput)));
+		// splitting strings based on newline into an array
+		$outputLines = preg_split("/\r\n|\n|\r/", $commandOutput);
+		// first line of command output contains total remote storage scanned
+		$totalRemoteStorage = (int) filter_var($outputLines[0], FILTER_SANITIZE_NUMBER_INT);
+		echo "totalremotestorage: $totalRemoteStorage";
+		// calculating total no of shares deleted from remote storage: first getting total length of the array
+		// then minus 2 for first two lines of scan info message
+		// then divide by 2 because each share delete has message of two line
+		$totalSharesDeleted = ((\count($outputLines) - 2) / 2) / $totalRemoteStorage;
+		Assert::assertEquals(
+			$noOfOrphanedShare,
+			$totalSharesDeleted,
+			"The command was expected to delete '$noOfOrphanedShare' orphaned shares but only deleted '$totalSharesDeleted' orphaned shares."
+		);
+	}
+
+	/**
 	 * @Given the administrator has set the default folder for received shares to :folder
 	 *
 	 * @param string $folder
@@ -988,6 +1028,7 @@ class OccContext implements Context {
 	 * @param int $depth_infinity_allowed
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theAdministratorHasSetDepthInfinityAllowedTo($depth_infinity_allowed) {
 		$this->addSystemConfigKeyUsingTheOccCommand(
@@ -2208,10 +2249,10 @@ class OccContext implements Context {
 	 * @param string $folder
 	 * @param bool $mustExist
 	 *
-	 * @return integer
+	 * @return integer|bool
 	 * @throws Exception
 	 */
-	public function deleteLocalStorageFolderUsingTheOccCommand(string $folder, bool $mustExist = true):int {
+	public function deleteLocalStorageFolderUsingTheOccCommand(string $folder, bool $mustExist = true) {
 		$createdLocalStorage = [];
 		$this->listLocalStorageMount();
 		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
@@ -2533,6 +2574,16 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When the administrator cleanups all the orphaned remote storages of shares using the occ command
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdminCleanupsOrphanedRemoteStoragesOfSharesUsingOccCommand():void {
+		$this->cleanOrphanedRemoteStoragesUsingOccCommand();
+	}
+
+	/**
 	 * @When the administrator deletes all the versions for the following users:
 	 *
 	 * @param TableNode $usersTable
@@ -2793,10 +2844,10 @@ class OccContext implements Context {
 	 *
 	 * @param string $job
 	 *
-	 * @return string
+	 * @return string|bool
 	 * @throws Exception
 	 */
-	public function getLastJobIdForJob(string $job):string {
+	public function getLastJobIdForJob(string $job) {
 		$this->getAllJobsInBackgroundQueueUsingOccCommand();
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$lines = SetupHelper::findLines(
