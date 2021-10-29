@@ -210,7 +210,7 @@ class Storage {
 					if ($user !== null && !$users_view->file_exists($versionFileName . '.json')) {
 						$versions = self::getVersions($uid, $filename);
 						$metaDataKey =  sizeof($versions) == 1 ? Constants::CREATED_BY_USER_METADATA : MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
-						$metadata = [$metaDataKey => $user->getDisplayName()];
+						$metadata = [$metaDataKey => $user->getUID()];
 						$metadataJsonObject = \json_encode($metadata);
 						$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
 					}
@@ -239,6 +239,9 @@ class Storage {
 	 */
 	protected static function deleteVersion($view, $path) {
 		$view->unlink($path);
+		if ($view->file_exists($path . ".json")) {
+			$view->unlink($path . ".json");
+		}
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 * @var string $internalPath
