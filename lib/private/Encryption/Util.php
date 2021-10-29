@@ -99,6 +99,8 @@ class Util {
 		$this->config = $config;
 
 		$this->excludedPaths[] = 'files_encryption';
+		$this->excludedPaths[] = 'files_spaces';
+
 		// contains certificates
 		$this->excludedPaths[] = 'files_external';
 		$this->excludedPaths[] = 'avatars';
