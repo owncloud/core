@@ -800,7 +800,7 @@ class OccContext implements Context {
 		\system("./occ maintenance:singleuser --on");
 		\system("./occ encryption:decrypt-all -c yes", $status);
 
-		$this->featureContext->setResultOfOccCommand(["code" => $status, "stdOut" => null, "stdErr" => null]);
+		$this->featureContext->setResultOfOccCommand(["code" => $status, "stdOut" => "", "stdErr" => ""]);
 		\system("./occ maintenance:singleuser --off");
 	}
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -300,6 +300,8 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	private $lastStdErr;
 	/**
+	 * The codes are stored as strings, even though they are numbers
+	 *
 	 * @var array last http status codes
 	 */
 	private $lastHttpStatusCodesArray = [];
@@ -346,7 +348,7 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function pushToLastStatusCodesArrays():void {
 		$this->pushToLastHttpStatusCodesArray(
-			$this->getResponse()->getStatusCode()
+			(string) $this->getResponse()->getStatusCode()
 		);
 		try {
 			$this->pushToLastOcsCodesArray(
@@ -507,7 +509,7 @@ class FeatureContext extends BehatVariablesContext {
 			);
 			// Loop through the user replacements, and make entries for the lower
 			// and upper case forms. This allows for steps that specifically
-			// want to test that user names like "alice", "Alice" and "ALICE" all work.
+			// want to test that usernames like "alice", "Alice" and "ALICE" all work.
 			// Such steps will make useful replacements for each form.
 			foreach ($this->userReplacements as $key => $value) {
 				$lowerKey = \strtolower($key);
@@ -658,10 +660,7 @@ class FeatureContext extends BehatVariablesContext {
 		// '/somedir/anotherdir/core/apps/guests/tests/acceptance/features/bootstrap'
 		// and we want to know the 'apps/guests/tests/acceptance' part
 
-		// Sadly we have to support PHP 5.6 still.
-		// From PHP 7.0 we can go up 2 levels more directly:
-		// $path = dirname(__DIR__, 2);
-		$path = \dirname(\dirname($appTestCodeFullPath));
+		$path = \dirname($appTestCodeFullPath, 2);
 		$acceptanceDir = \basename($path);
 		$path = \dirname($path);
 		$testsDir = \basename($path);
@@ -788,7 +787,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getOcPath():string {
-		return (string) $this->ocPath;
+		return $this->ocPath;
 	}
 
 	/**
@@ -822,7 +821,13 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getBasePath():string {
-		return \ltrim(\parse_url($this->getBaseUrl(), PHP_URL_PATH), "/");
+		$parsedUrl = \parse_url($this->getBaseUrl(), PHP_URL_PATH);
+		// If the server-under-test is at the "top" of the domain then parse_url returns null.
+		// For example, testing a server at http://localhost:8080 or http://example.com
+		if ($parsedUrl === null) {
+			$parsedUrl = '';
+		}
+		return \ltrim($parsedUrl, "/");
 	}
 
 	/**
@@ -834,7 +839,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getOCSPath(string $ocsApiVersion):string {
-		return \ltrim($this->getBasePath() . "/ocs/v{$ocsApiVersion}.php", "/");
+		return \ltrim($this->getBasePath() . "/ocs/v$ocsApiVersion.php", "/");
 	}
 
 	/**
@@ -1238,7 +1243,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function getXMLKey1Key2Value(ResponseInterface $response, string $key1, string $key2):string {
-		return $this->getResponseXml($response, __METHOD__)->$key1->$key2;
+		return (string) $this->getResponseXml($response, __METHOD__)->$key1->$key2;
 	}
 
 	/**
@@ -1252,8 +1257,13 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function getXMLKey1Key2Key3Value(ResponseInterface $response, string $key1, string $key2, string $key3):string {
-		return $this->getResponseXml($response, __METHOD__)->$key1->$key2->$key3;
+	public function getXMLKey1Key2Key3Value(
+		ResponseInterface $response,
+		string $key1,
+		string $key2,
+		string $key3
+	):string {
+		return (string) $this->getResponseXml($response, __METHOD__)->$key1->$key2->$key3;
 	}
 
 	/**
@@ -1423,10 +1433,18 @@ class FeatureContext extends BehatVariablesContext {
 		}
 
 		if (OcisHelper::isTestingOnOcisOrReva()) {
-			return \preg_match("%^(#/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
+			$matchResult = \preg_match("%^(#/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
 		} else {
-			return \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
+			$matchResult = \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
 		}
+
+		// preg_match returns (int) 1 for a match, we want to return a boolean.
+		if ($matchResult === 1) {
+			$isPublicLinkUrl = true;
+		} else {
+			$isPublicLinkUrl = false;
+		}
+		return $isPublicLinkUrl;
 	}
 
 	/**
@@ -1471,7 +1489,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function thenTheHTTPStatusCodeShouldBe($statusCode):void {
-		$this->theHTTPStatusCodeShouldBe($statusCode, "");
+		$this->theHTTPStatusCodeShouldBe($statusCode);
 	}
 
 	/**
@@ -1603,11 +1621,12 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function theXMLKey1Key2ValueShouldBe(string $key1, string $key2, string $idText):void {
+		$actualValue = $this->getXMLKey1Key2Value($this->response, $key1, $key2);
 		Assert::assertEquals(
 			$idText,
-			$this->getXMLKey1Key2Value($this->response, $key1, $key2),
-			"Expected {$idText} but got "
-			. $this->getXMLKey1Key2Value($this->response, $key1, $key2)
+			$actualValue,
+			"Expected $idText but got "
+			. $actualValue
 		);
 	}
 
@@ -1628,11 +1647,12 @@ class FeatureContext extends BehatVariablesContext {
 		string $key3,
 		string $idText
 	) {
+		$actualValue = $this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3);
 		Assert::assertEquals(
 			$idText,
-			$this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3),
-			"Expected {$idText} but got "
-			. $this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3)
+			$actualValue,
+			"Expected $idText but got "
+			. $actualValue
 		);
 	}
 
@@ -1747,7 +1767,11 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @return void
 	 */
-	public function sendingAToWithRequesttoken(string $method, string $url, string $user):void {
+	public function sendingAToWithRequesttoken(
+		string $method,
+		string $url,
+		string $user
+	):void {
 		$headers = $this->guzzleClientHeaders;
 
 		$config = null;
@@ -1778,15 +1802,20 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * @Given the client has sent a :method to :url with requesttoken
+	 * @Given the client has sent a :method to :url of user :user with requesttoken
 	 *
 	 * @param string $method
 	 * @param string $url
+	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function theClientHasSentAToWithRequesttoken(string $method, string $url):void {
-		$this->sendingAToWithRequesttoken($method, $url);
+	public function theClientHasSentAToWithRequesttoken(
+		string $method,
+		string $url,
+		string $user
+	):void {
+		$this->sendingAToWithRequesttoken($method, $url, $user);
 		$this->theHTTPStatusCodeShouldBeSuccess();
 	}
 
@@ -1957,14 +1986,14 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return string
 	 */
 	public function getAdminUsername():string {
-		return (string) $this->adminUsername;
+		return $this->adminUsername;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getAdminPassword():string {
-		return (string) $this->adminPassword;
+		return $this->adminPassword;
 	}
 
 	/**
@@ -1973,7 +2002,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return void
 	 */
 	public function rememberNewAdminPassword(string $password):void {
-		$this->adminPassword = (string) $password;
+		$this->adminPassword = $password;
 	}
 
 	/**
@@ -1985,7 +2014,7 @@ class FeatureContext extends BehatVariablesContext {
 		$userNameNormalized = $this->normalizeUsername($userName);
 		$username = $this->getActualUsername($userNameNormalized);
 		if ($username === $this->getAdminUsername()) {
-			return (string) $this->getAdminPassword();
+			return $this->getAdminPassword();
 		} elseif (\array_key_exists($username, $this->createdUsers)) {
 			return (string) $this->createdUsers[$username]['password'];
 		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
@@ -2003,21 +2032,21 @@ class FeatureContext extends BehatVariablesContext {
 
 		// Fall back to the default password used for the well-known users.
 		if ($username === 'regularuser') {
-			return (string) $this->regularUserPassword;
+			return $this->regularUserPassword;
 		} elseif ($username === 'alice') {
-			return (string) $this->regularUserPassword;
+			return $this->regularUserPassword;
 		} elseif ($username === 'brian') {
-			return (string) $this->alt1UserPassword;
+			return $this->alt1UserPassword;
 		} elseif ($username === 'carol') {
-			return (string) $this->alt2UserPassword;
+			return $this->alt2UserPassword;
 		} elseif ($username === 'david') {
-			return (string) $this->alt3UserPassword;
+			return $this->alt3UserPassword;
 		} elseif ($username === 'emily') {
-			return (string) $this->alt4UserPassword;
+			return $this->alt4UserPassword;
 		} elseif ($username === 'usergrp') {
-			return (string) $this->regularUserPassword;
+			return $this->regularUserPassword;
 		} elseif ($username === 'sharee1') {
-			return (string) $this->regularUserPassword;
+			return $this->regularUserPassword;
 		}
 
 		// The user has not been created yet and is not one of the pre-known
@@ -2029,7 +2058,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * Get the display name of the user.
 	 *
 	 * For users that have already been created, return their display name.
-	 * For special known user names, return the display name that is also used by LDAP tests.
+	 * For special known usernames, return the display name that is also used by LDAP tests.
 	 * For other users, return null. They will not be assigned any particular
 	 * display name by this function.
 	 *
@@ -2044,13 +2073,13 @@ class FeatureContext extends BehatVariablesContext {
 			if (isset($this->createdUsers[$username]['displayname'])) {
 				return (string) $this->createdUsers[$username]['displayname'];
 			}
-			return (string) $userName;
+			return $userName;
 		}
 		if (\array_key_exists($username, $this->createdRemoteUsers)) {
 			if (isset($this->createdRemoteUsers[$username]['displayname'])) {
 				return (string) $this->createdRemoteUsers[$username]['displayname'];
 			}
-			return (string) $userName;
+			return $userName;
 		}
 
 		// The user has not been created yet, see if there is a replacement
@@ -2093,7 +2122,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * Get the email address of the user.
 	 *
 	 * For users that have already been created, return their email address.
-	 * For special known user names, return the email address that is also used by LDAP tests.
+	 * For special known usernames, return the email address that is also used by LDAP tests.
 	 * For other users, return null. They will not be assigned any particular
 	 * email address by this function.
 	 *
@@ -2166,7 +2195,7 @@ class FeatureContext extends BehatVariablesContext {
 			}
 		}
 		if ($functionalUsername === "%admin%") {
-			return (string) $this->getAdminUsername();
+			return $this->getAdminUsername();
 		}
 		return $functionalUsername;
 	}
@@ -2178,23 +2207,23 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	public function getActualPassword(?string $functionalPassword):?string {
 		if ($functionalPassword === "%regular%") {
-			return (string) $this->regularUserPassword;
+			return $this->regularUserPassword;
 		} elseif ($functionalPassword === "%alt1%") {
-			return (string) $this->alt1UserPassword;
+			return $this->alt1UserPassword;
 		} elseif ($functionalPassword === "%alt2%") {
-			return (string) $this->alt2UserPassword;
+			return $this->alt2UserPassword;
 		} elseif ($functionalPassword === "%alt3%") {
-			return (string) $this->alt3UserPassword;
+			return $this->alt3UserPassword;
 		} elseif ($functionalPassword === "%alt4%") {
-			return (string) $this->alt4UserPassword;
+			return $this->alt4UserPassword;
 		} elseif ($functionalPassword === "%subadmin%") {
-			return (string) $this->subAdminPassword;
+			return $this->subAdminPassword;
 		} elseif ($functionalPassword === "%admin%") {
-			return (string) $this->getAdminPassword();
+			return $this->getAdminPassword();
 		} elseif ($functionalPassword === "%altadmin%") {
-			return (string) $this->alternateAdminPassword;
+			return $this->alternateAdminPassword;
 		} elseif ($functionalPassword === "%public%") {
-			return (string) $this->publicLinkSharePassword;
+			return $this->publicLinkSharePassword;
 		} else {
 			return $functionalPassword;
 		}
@@ -2418,7 +2447,7 @@ class FeatureContext extends BehatVariablesContext {
 				__METHOD__ . " could not create '$fullPath' file exists"
 			);
 		}
-		UploadHelper::createFileSpecificSize($fullPath, (int) $size);
+		UploadHelper::createFileSpecificSize($fullPath, $size);
 		$this->createdFiles[] = $fullPath;
 	}
 
@@ -2462,7 +2491,7 @@ class FeatureContext extends BehatVariablesContext {
 		Assert::assertEquals(
 			$jsonExpectedEncoded,
 			$jsonRespondedEncoded,
-			"The json responded: {$jsonRespondedEncoded} does not match with json expected: {$jsonExpectedEncoded}"
+			"The json responded: $jsonRespondedEncoded does not match with json expected: $jsonExpectedEncoded"
 		);
 	}
 
@@ -2513,13 +2542,13 @@ class FeatureContext extends BehatVariablesContext {
 			Assert::assertEquals(
 				"version",
 				$version[0],
-				"Expected 'version' but got {$version[0]}"
+				"Expected 'version' but got $version[0]"
 			);
 			$versionString = \explode(": ", $output[4]);
 			Assert::assertEquals(
 				"versionstring",
 				$versionString[0],
-				"Expected 'versionstring' but got {$versionString[0]}"
+				"Expected 'versionstring' but got $versionString[0]"
 			);
 			$jsonExpectedDecoded['version'] = \trim($version[1]);
 			$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
@@ -2527,7 +2556,7 @@ class FeatureContext extends BehatVariablesContext {
 			Assert::assertEquals(
 				$jsonExpectedEncoded,
 				$jsonRespondedEncoded,
-				"The json responded: {$jsonRespondedEncoded} does not match with json expected: {$jsonExpectedEncoded}"
+				"The json responded: $jsonRespondedEncoded does not match with json expected: $jsonExpectedEncoded"
 			);
 		} else {
 			Assert::fail(
@@ -2549,7 +2578,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			'GET',
-			"/apps/testing/api/v1/file?file={$path}",
+			"/apps/testing/api/v1/file?file=$path",
 			$this->getStepLineRef()
 		);
 		$this->setResponse($response);
@@ -2568,7 +2597,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			'GET',
-			"/apps/testing/api/v1/dir?dir={$path}",
+			"/apps/testing/api/v1/dir?dir=$path",
 			$this->getStepLineRef()
 		);
 		$this->setResponse($response);
@@ -2588,7 +2617,7 @@ class FeatureContext extends BehatVariablesContext {
 		Assert::assertSame(
 			200,
 			$this->getResponse()->getStatusCode(),
-			"Failed to read the file {$path}"
+			"Failed to read the file $path"
 		);
 		$fileContent = HttpRequestHelper::getResponseXml(
 			$this->getResponse(),
@@ -2600,7 +2629,7 @@ class FeatureContext extends BehatVariablesContext {
 		Assert::assertSame(
 			$content,
 			$fileContent,
-			"The content of the file does not match with '{$content}'"
+			"The content of the file does not match with '$content'"
 		);
 	}
 
@@ -2629,7 +2658,7 @@ class FeatureContext extends BehatVariablesContext {
 		Assert::assertSame(
 			404,
 			$this->getResponse()->getStatusCode(),
-			"The file '{$path}' exists in the server root but was not expected to exist"
+			"The file '$path' exists in the server root but was not expected to exist"
 		);
 	}
 
@@ -2656,7 +2685,7 @@ class FeatureContext extends BehatVariablesContext {
 			$response = $this->getResponse();
 		}
 		return \json_decode(
-			$response->getBody(),
+			(string) $response->getBody(),
 			true
 		);
 	}
@@ -3020,7 +3049,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			'GET',
-			"/apps/testing/api/v1/app/{$appID}/{$key}",
+			"/apps/testing/api/v1/app/$appID/$key",
 			$this->getStepLineRef(),
 			[],
 			$this->getOcsApiVersion()
@@ -3029,7 +3058,7 @@ class FeatureContext extends BehatVariablesContext {
 		Assert::assertEquals(
 			$value,
 			$configkeyValue,
-			"The config key {$key} of app {$appID} was expected to have value {$value} but got {$configkeyValue}"
+			"The config key $key of app $appID was expected to have value $value but got $configkeyValue"
 		);
 	}
 
@@ -3041,7 +3070,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @return array
 	 */
 	public function parseConfigListFromResponseXml(SimpleXMLElement $responseXml):array {
-		$configkeyData = \json_decode(\json_encode($responseXml->data), 1);
+		$configkeyData = \json_decode(\json_encode($responseXml->data), true);
 		if (isset($configkeyData['element'])) {
 			$configkeyData = $configkeyData['element'];
 		} else {
@@ -3075,7 +3104,7 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			'GET',
-			"/apps/testing/api/v1/app/{$appID}",
+			"/apps/testing/api/v1/app/$appID",
 			$this->getStepLineRef(),
 			[],
 			$this->getOcsApiVersion()
@@ -3123,12 +3152,12 @@ class FeatureContext extends BehatVariablesContext {
 		if ($should) {
 			Assert::assertTrue(
 				$this->checkConfigKeyInApp($key, $appID),
-				"App {$appID} does not have config key {$key}"
+				"App $appID does not have config key $key"
 			);
 		} else {
 			Assert::assertFalse(
 				$this->checkConfigKeyInApp($key, $appID),
-				"App {$appID} has config key {$key} but was not expected to"
+				"App $appID has config key $key but was not expected to"
 			);
 		}
 	}
@@ -3177,7 +3206,7 @@ class FeatureContext extends BehatVariablesContext {
 			$asUser,
 			$password,
 			'POST',
-			"/cloud/user-sync/{$user}",
+			"/cloud/user-sync/$user",
 			$this->getStepLineRef(),
 			[],
 			$this->getOcsApiVersion()
@@ -3277,13 +3306,13 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @BeforeStep
 	 *
-	 * @param BeforeScenarioScope $scope
+	 * @param BeforeStepScope $scope
 	 *
 	 * @return void
 	 */
 	public function beforeEachStep(BeforeStepScope $scope):void {
 		if ($this->sendScenarioLineReferencesInXRequestId()) {
-			$this->stepLineRef = $this->scenarioString . '-' . (string) $scope->getStep()->getLine();
+			$this->stepLineRef = $this->scenarioString . '-' . $scope->getStep()->getLine();
 		} else {
 			$this->stepLineRef = '';
 		}
@@ -3302,7 +3331,13 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getStepLineRef()
 		);
 		$storageId = $result['storageId'];
-		$this->addStorageId($storageName, $storageId);
+		if (!is_numeric($storageId)) {
+			// pdd
+			throw new Exception(
+				__METHOD__ . " storageId '$storageId' is not numeric"
+			);
+		}
+		$this->addStorageId($storageName, (int) $storageId);
 		SetupHelper::runOcc(
 			[
 				'files_external:option',
@@ -3508,7 +3543,7 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @param callable $callback
 	 *
-	 * @return mixed[]
+	 * @return array
 	 */
 	public function runFunctionOnEveryServer(callable $callback):array {
 		$previousServer = $this->getCurrentServer();
@@ -3536,9 +3571,6 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function verifyTableNodeColumns(TableNode $table, ?array $requiredHeader = [], ?array $allowedHeader = []):void {
-		if (!($table instanceof TableNode)) {
-			throw new Exception("TableNode expected but got " . \gettype($table));
-		}
 		if (\count($table->getHash()) < 1) {
 			throw new Exception("Table should have at least one row.");
 		}
@@ -3572,9 +3604,6 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function verifyTableNodeRows(TableNode $table, array $requiredRows = [], array $allowedRows = []):void {
-		if (!($table instanceof TableNode)) {
-			throw new Exception("TableNode expected but got " . \gettype($table));
-		}
 		if (\count($table->getRows()) < 1) {
 			throw new Exception("Table should have at least one row.");
 		}
@@ -3607,9 +3636,6 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function verifyTableNodeColumnsCount(TableNode $table, int $count):void {
-		if (!($table instanceof TableNode)) {
-			throw new Exception("TableNode expected but got " . \gettype($table));
-		}
 		if (\count($table->getRows()) < 1) {
 			throw new Exception("Table should have at least one row.");
 		}
@@ -3639,7 +3665,7 @@ class FeatureContext extends BehatVariablesContext {
 	public function theAdministratorSetsTheLastLoginDateForUserToDaysAgoUsingTheTestingApi(string $user, string $days):void {
 		$user = $this->getActualUsername($user);
 		$adminUser = $this->getAdminUsername();
-		$baseUrl = "/apps/testing/api/v1/lastlogindate/{$user}";
+		$baseUrl = "/apps/testing/api/v1/lastlogindate/$user";
 		$response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
 			$adminUser,
@@ -3808,13 +3834,14 @@ class FeatureContext extends BehatVariablesContext {
 		$responseXmlObject = $this->listFolderAndReturnResponseXml(
 			$targetUser,
 			'',
-			1
+			'1'
 		);
 		$transferredElements = $responseXmlObject->xpath(
 			"//d:response/d:href[contains(., '/transferred%20from%20$sourceUser%20on%')]"
 		);
 		foreach ($transferredElements as $transferredElement) {
-			$path = \rawurldecode($transferredElement);
+			// $transferredElement is an XML object. We want to work with the string in the XML element.
+			$path = \rawurldecode((string) $transferredElement);
 			$parts = \explode(' ', $path);
 			// store timestamp as key
 			$foundPaths[] = [
