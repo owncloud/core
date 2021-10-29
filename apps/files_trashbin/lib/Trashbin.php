@@ -47,6 +47,7 @@ use OCP\Files\NotFoundException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Lock\LockedException;
 use OCP\User;
+use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -266,7 +267,7 @@ class Trashbin {
 		$query = \OC_DB::prepare("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)");
 		$result = $query->execute([$targetFilename, $timestamp, $targetLocation, $user]);
 		if (!$result) {
-			\OCP\Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated for the files owner', \OCP\Util::ERROR);
+			Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated for the files owner', Util::ERROR);
 		}
 	}
 
@@ -278,6 +279,7 @@ class Trashbin {
 	 * isn't any trashbin available
 	 */
 	public static function move2trash($file_path) {
+
 		// get the user for which the filesystem is setup
 		$root = Filesystem::getRoot();
 		list(, $user) = \explode('/', $root);
@@ -315,11 +317,25 @@ class Trashbin {
 		$timestamp = \time();
 
 		$trashPath = '/files_trashbin/files/' . $filename . '.d' . $timestamp;
+		$trashVersionsPath = '/files_trashbin/versions/' . $filename . '.d' . $timestamp;
 
 		/** @var \OC\Files\Storage\Storage $trashStorage */
 		list($trashStorage, $trashInternalPath) = $ownerView->resolvePath($trashPath);
+		list($trashVersionStorage, $trashVersionInternalPath) = $ownerView->resolvePath($trashVersionsPath);
 		/** @var \OC\Files\Storage\Storage $sourceStorage */
 		list($sourceStorage, $sourceInternalPath) = $ownerView->resolvePath('/files/' . $ownerPath);
+
+		Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'before_moveToTrash', [
+			'filePath' => Filesystem::normalizePath($file_path),
+			'trashPath' => Filesystem::normalizePath($filename . '.d' . $timestamp),
+			'sourceStorage' => $sourceStorage,
+			'sourceInternalPath' => $sourceInternalPath,
+			'trashStorage' => $trashStorage,
+			'trashInternalPath' => $trashInternalPath,
+			'trashVersionStorage' => $trashVersionStorage,
+			'trashVersionInternalPath' => $trashVersionInternalPath,
+		]);
+
 		try {
 			$moveSuccessful = true;
 			if ($trashStorage->file_exists($trashInternalPath)) {
@@ -331,7 +347,7 @@ class Trashbin {
 			if ($trashStorage->file_exists($trashInternalPath)) {
 				$trashStorage->unlink($trashInternalPath);
 			}
-			\OCP\Util::writeLog('files_trashbin', 'Couldn\'t move ' . $file_path . ' to the trash bin', \OCP\Util::ERROR);
+			Util::writeLog('files_trashbin', 'Couldn\'t move ' . $file_path . ' to the trash bin', Util::ERROR);
 		}
 
 		if ($sourceStorage->file_exists($sourceInternalPath)) { // failed to delete the original file, abort
@@ -349,9 +365,9 @@ class Trashbin {
 			$query = \OC_DB::prepare("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)");
 			$result = $query->execute([$filename, $timestamp, $location, $owner]);
 			if (!$result) {
-				\OCP\Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated', \OCP\Util::ERROR);
+				Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated', Util::ERROR);
 			}
-			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', ['filePath' => Filesystem::normalizePath($file_path),
+			Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', ['filePath' => Filesystem::normalizePath($file_path),
 				'trashPath' => Filesystem::normalizePath($filename . '.d' . $timestamp)]);
 
 			self::retainVersions($filename, $owner, $ownerPath, $timestamp, $sourceStorage);
@@ -558,8 +574,8 @@ class Trashbin {
 			if ($timestamp) {
 				$location = self::getLocation($user, $nameOfFileWithoutTimestamp, $timestamp);
 				if ($location === false) {
-					\OCP\Util::writeLog('files_trashbin', 'Original location of file ' . $filename .
-						' not found in database, hence restoring into user\'s root instead', \OCP\Util::DEBUG);
+					Util::writeLog('files_trashbin', 'Original location of file ' . $filename .
+						' not found in database, hence restoring into user\'s root instead', Util::DEBUG);
 				} else {
 					// if location no longer exists, restore file in the root directory
 					if ($location !== '/' &&
@@ -592,8 +608,10 @@ class Trashbin {
 			$view->chroot('/' . $user . '/files');
 			$view->touch('/' . $targetLocation, $mtime);
 			$view->chroot($fakeRoot);
-			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', ['filePath' => Filesystem::normalizePath('/' . $targetLocation),
-				'trashPath' => Filesystem::normalizePath($filename)]);
+			Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', [
+				'filePath' => Filesystem::normalizePath('/' . $targetLocation),
+				'trashPath' => Filesystem::normalizePath($filename)
+			]);
 
 			self::restoreVersionsFromTrashbin($view, $filename, $targetLocation);
 
@@ -715,7 +733,7 @@ class Trashbin {
 		// Array to store the relative path in (after the file is deleted, the view won't be able to relativise the path anymore)
 		$filePaths = [];
 		foreach ($fileInfos as $fileInfo) {
-			$filePaths[] = $view->getRelativePath($fileInfo->getPath());
+			$filePaths[$fileInfo->getId()] = $view->getRelativePath($fileInfo->getPath());
 		}
 		unset($fileInfos); // save memory
 
@@ -723,8 +741,8 @@ class Trashbin {
 		\OC_Hook::emit('\OCP\Trashbin', 'preDeleteAll', ['paths' => $filePaths]);
 
 		// Single-File Hooks
-		foreach ($filePaths as $path) {
-			self::emitTrashbinPreDelete($user, $path);
+		foreach ($filePaths as $fileId => $path) {
+			self::emitTrashbinPreDelete($user, $path, $fileId);
 		}
 
 		// actual file deletion
@@ -736,8 +754,8 @@ class Trashbin {
 		\OC_Hook::emit('\OCP\Trashbin', 'deleteAll', ['paths' => $filePaths]);
 
 		// Single-File Hooks
-		foreach ($filePaths as $path) {
-			self::emitTrashbinPostDelete($user, $path);
+		foreach ($filePaths as $fileId => $path) {
+			self::emitTrashbinPostDelete($user, $path, $fileId);
 		}
 
 		$view->mkdir('files_trashbin');
@@ -752,11 +770,15 @@ class Trashbin {
 	 * @param string $uid
 	 * @param string $path
 	 */
-	protected static function emitTrashbinPreDelete($uid, $path) {
+	protected static function emitTrashbinPreDelete($uid, $path, $fileId) {
 		\OC_Hook::emit(
 			'\OCP\Trashbin',
 			'preDelete',
-			['path' => $path, 'user' => $uid]
+			[
+				'path' => $path,
+				'user' => $uid,
+				'fileId' => $fileId
+			]
 		);
 	}
 
@@ -766,11 +788,14 @@ class Trashbin {
 	 * @param string $uid
 	 * @param string $path
 	 */
-	protected static function emitTrashbinPostDelete($uid, $path) {
+	protected static function emitTrashbinPostDelete($uid, $path, $fileId) {
 		\OC_Hook::emit(
 			'\OCP\Trashbin',
 			'delete',
-			['path' => $path, 'user' => $uid]
+			[
+				'path' => $path,
+				'user' => $uid,
+				'fileId' => $fileId]
 		);
 	}
 
@@ -811,9 +836,10 @@ class Trashbin {
 		} else {
 			$size += $view->filesize('/files_trashbin/files/' . $filename);
 		}
-		self::emitTrashbinPreDelete($user, "/files_trashbin/files/$filename");
+		$fileId = $view->getFileInfo('/files_trashbin/files/' . $filename);
+		self::emitTrashbinPreDelete($user, "/files_trashbin/files/$filename", $fileId);
 		$view->unlink('/files_trashbin/files/' . $filename);
-		self::emitTrashbinPostDelete($user, "/files_trashbin/files/$filename");
+		self::emitTrashbinPostDelete($user, "/files_trashbin/files/$filename", $fileId);
 
 		return $size;
 	}
@@ -1094,15 +1120,15 @@ class Trashbin {
 	 */
 	public static function registerHooks() {
 		// create storage wrapper on setup
-		\OCP\Util::connectHook('OC_Filesystem', 'preSetup', 'OCA\Files_Trashbin\Storage', 'setupStorage');
+		Util::connectHook('OC_Filesystem', 'preSetup', 'OCA\Files_Trashbin\Storage', 'setupStorage');
 		//Listen to delete user signal
-		\OCP\Util::connectHook('OC_User', 'pre_deleteUser', 'OCA\Files_Trashbin\Hooks', 'deleteUser_hook');
+		Util::connectHook('OC_User', 'pre_deleteUser', 'OCA\Files_Trashbin\Hooks', 'deleteUser_hook');
 		//Listen to post write hook
-		\OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Trashbin\Hooks', 'post_write_hook');
+		Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Trashbin\Hooks', 'post_write_hook');
 		// pre and post-rename, disable trash logic for the copy+unlink case
-		\OCP\Util::connectHook('OC_Filesystem', 'delete', 'OCA\Files_Trashbin\Trashbin', 'ensureFileScannedHook');
-		\OCP\Util::connectHook('OC_Filesystem', 'rename', 'OCA\Files_Trashbin\Storage', 'preRenameHook');
-		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Files_Trashbin\Storage', 'postRenameHook');
+		Util::connectHook('OC_Filesystem', 'delete', 'OCA\Files_Trashbin\Trashbin', 'ensureFileScannedHook');
+		Util::connectHook('OC_Filesystem', 'rename', 'OCA\Files_Trashbin\Storage', 'preRenameHook');
+		Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Files_Trashbin\Storage', 'postRenameHook');
 	}
 
 	/**
@@ -1159,6 +1185,6 @@ class Trashbin {
 	 * @return string
 	 */
 	public static function preview_icon($path) {
-		return \OCP\Util::linkToRoute('core_ajax_trashbin_preview', ['x' => 32, 'y' => 32, 'file' => $path]);
+		return Util::linkToRoute('core_ajax_trashbin_preview', ['x' => 32, 'y' => 32, 'file' => $path]);
 	}
 }
