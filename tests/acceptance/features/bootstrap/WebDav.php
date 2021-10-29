@@ -2852,6 +2852,41 @@ trait WebDav {
 	}
 
 	/**
+	 * @Given user :user has uploaded file :filename with content :content and mtime of :days days ago using the WebDAV API
+	 *
+	 * @param string $user
+	 * @param string $filename
+	 * @param string $content
+	 * @param string $days In days, e.g. "7"
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userUploadsFileWithContentAndWithMtimeOfDaysAgoUsingWebdavApi(
+		string $user,
+		string $filename,
+		string $content,
+		string $days
+	): void {
+		$today = new DateTime();
+		$interval = new DateInterval('P' . $days . 'D');
+		$mtime = $today->sub($interval)->format('U');
+
+		$user = $this->getActualUsername($user);
+
+		$this->response = WebDavHelper::makeDavRequest(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			"PUT",
+			$filename,
+			["X-OC-Mtime" => $mtime],
+			$this->getStepLineRef(),
+			$content
+		);
+	}
+
+	/**
 	 * @Then as :user the mtime of the file :resource should be :mtime
 	 *
 	 * @param string $user
