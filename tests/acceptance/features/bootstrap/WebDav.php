@@ -4539,6 +4539,50 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the (?:propfind|search) result of user "([^"]*)" should not contain any (?:files|entries)$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function thePropfindResultShouldNotContainAnyEntries(
+		string $user
+	):void {
+		$multistatusResults = $this->getMultistatusResultFromPropfindResult($user);
+		Assert::assertEmpty($multistatusResults, 'The propfind response was expected to be empty but was not');
+	}
+
+	/**
+	 * @Then /^the (?:propfind|search) result of user "([^"]*)" should contain only these (?:files|entries):$/
+	 *
+	 * @param string $user
+	 * @param TableNode $expectedFiles
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function thePropfindResultShouldContainOnlyEntries(
+		string $user,
+		TableNode $expectedFiles
+	):void {
+		$user = $this->getActualUsername($user);
+
+		Assert::assertEquals(
+			\count($expectedFiles->getTable()),
+			$this->getNumberOfEntriesInPropfindResponse(
+				$user
+			),
+			"The number of elements in the response doesn't matches with expected number of elements"
+		);
+		$this->propfindResultShouldContainEntries(
+			'',
+			$expectedFiles,
+			$user
+		);
+	}
+
+	/**
 	 * @Then the propfind/search result should contain :numFiles files/entries
 	 *
 	 * @param int $numFiles
@@ -4772,6 +4816,60 @@ trait WebDav {
 	 * parses a PROPFIND response from $this->response into xml
 	 * and returns found search results if found else returns false
 	 *
+	 * @param string|null $user
+	 *
+	 * @return int
+	 */
+	public function getNumberOfEntriesInPropfindResponse(
+		?string $user = null
+	):int {
+		$multistatusResults = $this->getMultistatusResultFromPropfindResult($user);
+		return \count($multistatusResults);
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response
+	 * and returns multistatus data from the response
+	 *
+	 * @param string|null $user
+	 *
+	 * @return array
+	 */
+	public function getMultistatusResultFromPropfindResult(
+		?string $user = null
+	):array {
+		//if we are using that step the second time in a scenario e.g. 'But ... should not'
+		//then don't parse the result again, because the result in a ResponseInterface
+		if (empty($this->responseXml)) {
+			$this->setResponseXml(
+				HttpRequestHelper::parseResponseAsXml($this->response)
+			);
+		}
+		Assert::assertNotEmpty($this->responseXml, __METHOD__ . ' Response is empty');
+		if ($user === null) {
+			$user = $this->getCurrentUser();
+		}
+
+		Assert::assertIsArray(
+			$this->responseXml,
+			__METHOD__ . " responseXml for user $user is not an array"
+		);
+		Assert::assertArrayHasKey(
+			"value",
+			$this->responseXml,
+			__METHOD__ . " responseXml for user $user does not have key 'value'"
+		);
+		$multistatus = $this->responseXml["value"];
+		if ($multistatus == null) {
+			$multistatus = [];
+		}
+		return $multistatus;
+	}
+
+	/**
+	 * parses a PROPFIND response from $this->response into xml
+	 * and returns found search results if found else returns false
+	 *
 	 * @param string $entryNameToSearch
 	 * @param string|null $user
 	 * @param string $type
@@ -4787,17 +4885,6 @@ trait WebDav {
 		?string $user = null,
 		string $type = "files"
 	) {
-		//if we are using that step the second time in a scenario e.g. 'But ... should not'
-		//then don't parse the result again, because the result in a ResponseInterface
-		if (empty($this->responseXml)) {
-			$this->setResponseXml(
-				HttpRequestHelper::parseResponseAsXml($this->response)
-			);
-		}
-		Assert::assertNotEmpty($this->responseXml, __METHOD__ . ' Response is empty');
-		if ($user === null) {
-			$user = $this->getCurrentUser();
-		}
 		// trim any leading "/" passed by the caller, we can just match the "raw" name
 		$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 
@@ -4816,16 +4903,7 @@ trait WebDav {
 			default:
 				throw new Exception("error");
 		}
-		Assert::assertIsArray(
-			$this->responseXml,
-			__METHOD__ . " responseXml for user $user is not an array"
-		);
-		Assert::assertArrayHasKey(
-			"value",
-			$this->responseXml,
-			__METHOD__ . " responseXml for user $user does not have key 'value'"
-		);
-		$multistatusResults = $this->responseXml["value"];
+		$multistatusResults = $this->getMultistatusResultFromPropfindResult($user);
 		$results = [];
 		if ($multistatusResults !== null) {
 			foreach ($multistatusResults as $multistatusResult) {
