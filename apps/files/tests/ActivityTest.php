@@ -34,7 +34,7 @@ use Test\TestCase;
  */
 class ActivityTest extends TestCase {
 
-	/** @var \OCP\Activity\IManager */
+	/** @var \OCP\Activity\IManager|\PHPUnit\Framework\MockObject\MockObject */
 	private $activityManager;
 
 	/** @var \OCP\IRequest|\PHPUnit\Framework\MockObject\MockObject */
@@ -71,11 +71,10 @@ class ActivityTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->activityManager = new \OC\Activity\Manager(
-			$this->request,
-			$this->session,
-			$this->config
-		);
+		$this->activityManager = $this->getMockBuilder('OC\Activity\Manager')
+			->setConstructorArgs([$this->request, $this->session, $this->config])
+			->setMethods(['isFormattingFilteredObject'])
+			->getMock();
 
 		$this->l10nFactory = $this->getMockBuilder('OCP\L10N\IFactory')
 			->disableOriginalConstructor()
@@ -114,61 +113,116 @@ class ActivityTest extends TestCase {
 	public function testNotificationTypes() {
 		$result = $this->activityExtension->getNotificationTypes('en');
 		$this->assertIsArray($result, 'Asserting getNotificationTypes() returns an array');
-		$this->assertCount(5, $result);
+		$this->assertCount(7, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CREATED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CHANGED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_FAVORITES, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_DELETED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_RESTORED, $result);
+		$this->assertArrayHasKey(Activity::TYPE_FILE_RENAMED, $result);
+		$this->assertArrayHasKey(Activity::TYPE_FILE_MOVED, $result);
 	}
 
 	public function testDefaultTypes() {
 		$result = $this->activityExtension->getDefaultTypes('stream');
 		$this->assertIsArray($result, 'Asserting getDefaultTypes(stream) returns an array');
-		$this->assertCount(4, $result);
+		$this->assertCount(6, $result);
 		$result = \array_flip($result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CREATED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CHANGED, $result);
 		$this->assertArrayNotHasKey(Activity::TYPE_FAVORITES, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_DELETED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_RESTORED, $result);
+		$this->assertArrayHasKey(Activity::TYPE_FILE_RENAMED, $result);
+		$this->assertArrayHasKey(Activity::TYPE_FILE_MOVED, $result);
 
 		$result = $this->activityExtension->getDefaultTypes('email');
 		$this->assertFalse($result, 'Asserting getDefaultTypes(email) returns false');
 	}
 
-	public function testTranslate() {
+	public function translateData() {
+		return [
+			// long translations
+			['created_self', ['file.txt'], 'You created file.txt', false],
+			['created_by', ['file.txt', 'user'], 'user created file.txt', false],
+			['created_public', ['file.txt'], 'file.txt was created in a public folder', false],
+			['changed_self', ['file.txt'], 'You changed file.txt', false],
+			['changed_by', ['file.txt', 'user'], 'user changed file.txt', false],
+			['deleted_self', ['file.txt'], 'You deleted file.txt', false],
+			['deleted_by', ['file.txt', 'user'], 'user deleted file.txt', false],
+			['restored_self', ['file.txt'], 'You restored file.txt', false],
+			['restored_by', ['file.txt', 'user'], 'user restored file.txt', false],
+			['renamed_self', ['fileRenamed.txt', 'file.txt'], 'You renamed file.txt to fileRenamed.txt', false],
+			['renamed_by', ['fileRenamed.txt', 'user', 'file.txt'], 'user renamed file.txt to fileRenamed.txt', false],
+			['moved_self', ['fileMoved.txt', 'file.txt'], 'You moved file.txt to fileMoved.txt', false],
+			['moved_by', ['fileMoved.txt', 'user', 'file.txt'], 'user moved file.txt to fileMoved.txt', false],
+			['moved_in_share_by', ['fileMoved.txt', 'user'], 'user moved fileMoved.txt into the share', false],
+			['moved_out_share_by', ['fileMoved.txt', 'user'], 'user moved fileMoved.txt out of the share', false],
+
+			// short translations
+			['changed_by', ['file.txt', 'user'], 'Changed by user', true],
+			['deleted_by', ['file.txt', 'user'], 'Deleted by user', true],
+			['restored_by', ['file.txt', 'user'], 'Restored by user', true],
+			['moved_self', ['fileMoved.txt'], 'You moved this file to fileMoved.txt', true],
+			['moved_by', ['fileMoved.txt', 'user'], 'user moved this file to fileMoved.txt', true],
+			['moved_in_share_by', ['fileMoved.txt', 'user'], 'user moved this file into the share', true],
+			['moved_out_share_by', ['fileMoved.txt', 'user'], 'user moved this file out of the share', true],
+		];
+	}
+
+	/**
+	 * @dataProvider translateData
+	 *
+	 * @param string $text
+	 * @param array $params
+	 * @param string $expected
+	 * @param boolean $lookForShortTranslation
+	 */
+	public function testTranslate($text, $params, $expected, $lookForShortTranslation) {
 		$this->assertFalse(
 			$this->activityExtension->translate('files_sharing', '', [], false, false, 'en'),
 			'Asserting that no translations are set for files_sharing'
 		);
 
-		// Test english
-		$this->assertNotFalse(
-			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'en'),
-			'Asserting that translations are set for files.deleted_self'
-		);
-		$this->assertStringStartsWith(
-			'You deleted ',
-			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'en')
-		);
-
-		// Test translation
-		$this->assertNotFalse(
-			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'de'),
-			'Asserting that translations are set for files.deleted_self'
-		);
-		$this->assertStringStartsWith(
-			'translate(You deleted ',
-			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'de')
-		);
+		$this->activityManager->method('isFormattingFilteredObject')->willReturn($lookForShortTranslation);
+		$translation = $this->activityExtension->translate(Activity::APP_FILES, $text, $params, false, false, 'en');
+		$this->assertEquals($expected, $translation);
 	}
 
-	public function testGetSpecialParameterList() {
+	public function specialParameterData() {
+		return [
+			['created_self', [0 => 'file', 1 => 'file']],
+			['created_by', [0 => 'file', 1 => 'file']],
+			['created_public', [0 => 'file', 1 => 'file']],
+			['changed_self', [0 => 'file', 1 => 'file']],
+			['changed_by', [0 => 'file', 1 => 'file']],
+			['deleted_self', [0 => 'file', 1 => 'file']],
+			['deleted_by', [0 => 'file', 1 => 'file']],
+			['restored_self', [0 => 'file', 1 => 'file']],
+			['renamed_self', [0 => 'file', 1 => 'file']],
+			['renamed_by', [0 => 'file', 1 => 'username', 2 => 'file']],
+			['moved_self', [0 => 'file', 1 => 'file']],
+			['moved_by', [0 => 'file', 1 => 'username', 2 => 'file']],
+			['moved_in_share_by', [0 => 'file', 1 => 'username']],
+			['moved_out_share_by', [0 => 'file', 1 => 'username']],
+			['restored_by', [0 => 'file', 1 => 'username']],
+		];
+	}
+
+	/**
+	 * @dataProvider specialParameterData
+	 *
+	 * @param string $text
+	 * @param string $expected
+	 */
+	public function testGetSpecialParameterList($text, $expected) {
 		$this->assertFalse(
 			$this->activityExtension->getSpecialParameterList('files_sharing', ''),
 			'Asserting that no special parameters are set for files_sharing'
 		);
+
+		$specialParameters = $this->activityExtension->getSpecialParameterList(Activity::APP_FILES, $text);
+		$this->assertEquals($expected, $specialParameters);
 	}
 
 	public function typeIconData() {
