@@ -260,13 +260,40 @@ class Activity implements IExtension {
 		if ($app === self::APP_FILES) {
 			switch ($text) {
 				case 'created_self':
+					return [
+						0 => 'file',
+					];
 				case 'created_by':
+					return [
+						0 => 'file',
+						1 => 'username',
+					];
 				case 'created_public':
+					return [
+						0 => 'file',
+					];
 				case 'changed_self':
+					return [
+						0 => 'file',
+					];
 				case 'changed_by':
+					return [
+						0 => 'file',
+						1 => 'username',
+					];
 				case 'deleted_self':
+					return [
+						0 => 'file',
+					];
 				case 'deleted_by':
+					return [
+						0 => 'file',
+						1 => 'username',
+					];
 				case 'restored_self':
+					return [
+						0 => 'file',
+					];
 				case 'renamed_self':
 					return [
 						0 => 'file',
