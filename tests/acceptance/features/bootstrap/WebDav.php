@@ -5046,13 +5046,12 @@ trait WebDav {
 		}
 		$this->runOcc(
 			[
-		'config:system:set',
-		'file_storage.save_version_author',
-		'--type',
-		'boolean',
-		'--value',
-		$value
-	  ]
+				'config:system:set',
+				'file_storage.save_version_author',
+				'--type',
+				'boolean',
+				'--value',
+				$value]
 		);
 	}
 	/**
@@ -5060,7 +5059,7 @@ trait WebDav {
 	 *
 	 * @param string $index
 	 * @param string $user
-   *
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
