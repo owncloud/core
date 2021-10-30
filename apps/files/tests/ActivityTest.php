@@ -191,14 +191,14 @@ class ActivityTest extends TestCase {
 
 	public function specialParameterData() {
 		return [
-			['created_self', [0 => 'file', 1 => 'file']],
-			['created_by', [0 => 'file', 1 => 'file']],
-			['created_public', [0 => 'file', 1 => 'file']],
-			['changed_self', [0 => 'file', 1 => 'file']],
-			['changed_by', [0 => 'file', 1 => 'file']],
-			['deleted_self', [0 => 'file', 1 => 'file']],
-			['deleted_by', [0 => 'file', 1 => 'file']],
-			['restored_self', [0 => 'file', 1 => 'file']],
+			['created_self', [0 => 'file']],
+			['created_by', [0 => 'file', 1 => 'username']],
+			['created_public', [0 => 'file']],
+			['changed_self', [0 => 'file']],
+			['changed_by', [0 => 'file', 1 => 'username']],
+			['deleted_self', [0 => 'file']],
+			['deleted_by', [0 => 'file', 1 => 'username']],
+			['restored_self', [0 => 'file']],
 			['renamed_self', [0 => 'file', 1 => 'file']],
 			['renamed_by', [0 => 'file', 1 => 'username', 2 => 'file']],
 			['moved_self', [0 => 'file', 1 => 'file']],
