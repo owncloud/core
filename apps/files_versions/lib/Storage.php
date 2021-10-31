@@ -68,17 +68,17 @@ class Storage {
 
 	private static $max_versions_per_interval = [
 		//first 10sec, one version every 2sec
-	1 => ['intervalEndsAfter' => 10,      'step' => 2],
+		1 => ['intervalEndsAfter' => 10,      'step' => 2],
 		//next minute, one version every 10sec
-	2 => ['intervalEndsAfter' => 60,      'step' => 10],
+		2 => ['intervalEndsAfter' => 60,      'step' => 10],
 		//next hour, one version every minute
-	3 => ['intervalEndsAfter' => 3600,    'step' => 60],
+		3 => ['intervalEndsAfter' => 3600,    'step' => 60],
 		//next 24h, one version every hour
-	4 => ['intervalEndsAfter' => 86400,   'step' => 3600],
+		4 => ['intervalEndsAfter' => 86400,   'step' => 3600],
 		//next 30days, one version per day
 		5 => ['intervalEndsAfter' => 2592000, 'step' => 86400],
 		//until the end one version per week
-	6 => ['intervalEndsAfter' => -1,      'step' => 604800],
+		6 => ['intervalEndsAfter' => -1,      'step' => 604800],
 	];
 
 	/** @var \OCA\Files_Versions\AppInfo\Application */
@@ -433,6 +433,7 @@ class Storage {
 
 		return ($result !== false);
 	}
+
 	/**
 	 * get a list of all available versions of a file in descending chronological order
 	 * @param string $uid user id from the owner of the file
@@ -785,7 +786,7 @@ class Storage {
 				$version = \current($allVersions);
 				$hookData = [
 					'user' => $uid,
-		  'path' => $version['path'].'.v'.$version['version'],
+					'path' => $version['path'].'.v'.$version['version'],
 					'original_path' => $version['path'],
 					'deleted_revision' => $version['version'],
 					'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED
