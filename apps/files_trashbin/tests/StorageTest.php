@@ -614,7 +614,7 @@ class StorageTest extends TestCase {
 
 		// check if file and versions are in trashbin for owner
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
-		$this->assertCount(1, $results, 'Files in owner\'s trashbin');
+		$this->assertCount(2, $results, 'Files in owner\'s trashbin');
 		// grab subdir name
 		$subDirName = $results[0]->getName();
 		$name = $results[1]->getName();
