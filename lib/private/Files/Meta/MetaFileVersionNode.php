@@ -58,7 +58,7 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 
 	/**
 	 * @var string
-   **/
+	 **/
 	private $editedBy = "";
 
 	/**

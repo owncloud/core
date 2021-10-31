@@ -63,9 +63,9 @@
 					id: revision,
 					name: revision,
 					fullPath: fullPath,
-					timestamp: moment(new Date(version.getlastmodified)).format('X'),
-					size: version.getcontentlength,
-					mimetype: version.getcontenttype,
+					timestamp: moment(new Date(version['{DAV:}getlastmodified'])).format('X'),
+					size: version['{DAV:}getcontentlength'],
+					mimetype: version['{DAV:}getcontenttype'],
 					editedBy: version['meta-version-edited-by'],
           editedByName: version['meta-version-edited-by-name'],
 					fileId: fileId

@@ -233,7 +233,7 @@ $CONFIG = [
 
 /**
  * Enforce token only authentication for apps and clients connecting to ownCloud
- * If enabled, all access requests using the users password are blocked for enhanced security.
+ * If enabled, all access requests using the user's password are blocked for enhanced security.
  * Users have to generate special app-passwords (tokens) for their apps or clients in their personal
  * settings which are further used for app or client authentication. Browser logon is not affected.
  */
@@ -283,7 +283,7 @@ $CONFIG = [
 /**
  * Define the directory where the skeleton files are located
  * These files will be copied to the data directory of new users.
- * Leave this directory empty if you do not want to copy any skeleton files.
+ * Set this to the empty string if you do not want to copy any skeleton files.
  * A valid path must be given for this key otherwise errors will be generated in owncloud.log.
  */
 'skeletondirectory' => '/path/to/owncloud/core/skeleton',
@@ -332,7 +332,7 @@ $CONFIG = [
  * users or groups in the share autocomplete form. Lower values increase search
  * time especially for large backends.
  * Any exact matches to a user or group will be returned, even though less than
- * the minimum characters have been entered. The search is case insensitive.
+ * the minimum characters have been entered. The search is case-insensitive.
  * For example, entering "tom" will always return "Tom" if there is an exact match.
  */
 'user.search_min_length' => 2,
@@ -352,7 +352,7 @@ $CONFIG = [
 
 /**
  * Define the email FROM address
- * FROM address that overrides the built-in `sharing-noreply` and
+ * The FROM address that overrides the built-in `sharing-noreply` and
  * `lostpassword-noreply` FROM addresses.
  */
 'mail_from_address' => 'owncloud',
@@ -482,7 +482,7 @@ $CONFIG = [
  * As an example, alerts shown in the browser to upgrade an app are triggered by
  * a cron background process and therefore uses the url of this key, even if the user
  * has logged on via a different domain defined in key `trusted_domains`. When the
- * user clicks an alert like this, he will be redirected to that URL and must logon again.
+ * user clicks an alert like this, they will be redirected to that URL and must logon again.
  */
 'overwrite.cli.url' => '',
 
@@ -544,7 +544,7 @@ $CONFIG = [
  * The format is: `username:password`.
  *
  * The username and the password need to be urlencoded to avoid breaking the
- * delimiter syntax "username:password@hostname:port
+ * delimiter syntax "username:password@hostname:port"
  *
  * Example: `usern@me` needs to be encoded as `usern%40ame`.
  */
@@ -614,8 +614,8 @@ $CONFIG = [
  * Define a list of file extensions to determine files that will skip the trashbin and therefore be deleted immediately.
  * Extension names are valid for all mount points, take care when selecting the names.
  *
- * Values must not have a leading ".", otherwise corresponding files wont be detected.
- * Values are case insensitive
+ * Values must not have a leading ".", otherwise corresponding files won't be detected.
+ * Values are case-insensitive
  *
  */
 'trashbin_skip_extensions' => [
@@ -690,7 +690,7 @@ $CONFIG = [
 
 /**
  * Define the updatechecker URL
- * URL that ownCloud should use to look for updates
+ * The URL that ownCloud should use to look for updates
  */
 'updater.server.url' => 'https://updates.owncloud.com/server/',
 
@@ -908,7 +908,7 @@ $CONFIG = [
  * `$previews_path/$user` where `$previews_path` is the configured previews base directory
  * and `$user` will be substituted with the user id automatically.
  *
- * For example if `previews_path` is `/var/cache/owncloud/thumbnails` then for a logged in
+ * For example if `previews_path` is `/var/cache/owncloud/thumbnails` then for a logged-in
  * user `user1` the thumbnail path will be `/var/cache/owncloud/thumbnails/user1`.
  */
 'previews_path' => '',
@@ -1069,7 +1069,7 @@ $CONFIG = [
   ],
 
 /**
- * Allow the configuration of system wide trusted certificates
+ * Allow the configuration of system-wide trusted certificates
  */
 'enable_certificate_management' => false,
 
@@ -1256,6 +1256,16 @@ $CONFIG = [
 'sharing.federation.allowHttpFallback' => false,
 
 /**
+ * Show a quick action for the public link creation
+ * Set this to true to display a quick action for creating public links
+ * in the filelist. A public link created this way will be read-only per default.
+ *
+ * Note: if enforced password protection for read-only links is enabled, the
+ * quick action will not be displayed!
+ */
+'sharing.showPublicLinkQuickAction' => false,
+
+/**
  * Save and display version of uploaded and edited files.
  */
 'file_storage.save_version_author' => false,
@@ -1266,7 +1276,7 @@ $CONFIG = [
 
 /**
  * Define additional database driver options
- * Additional driver options for the database connection, eg. to enable SSL
+ * Additional driver options for the database connection, e.g. to enable SSL
  * encryption in MySQL or specify a custom wait timeout on a cheap hoster.
  */
 'dbdriveroptions' => [
@@ -1391,7 +1401,7 @@ $CONFIG = [
 /**
  * Define excluded directories
  * Exclude specific directory names and disallow scanning, creating and renaming
- * using these names. The matching is case insensitive.
+ * using these names. The matching is case-insensitive.
  * Excluded directory names are queried at any path part like at the beginning,
  * in the middle or at the end and will not be further processed if found.
  * Please see the documentation for details and examples.
@@ -1408,7 +1418,7 @@ $CONFIG = [
  * Define excluded directories regular expression(s)
  * Exclude directory names that match any of the given regular expressions and
  * disallow scanning, creating and renaming using these names. The matching is
- * case insensitive.
+ * case-insensitive.
  * Excluded directory names are queried at any path part like at the beginning,
  * in the middle or at the end and will not be further processed if found.
  * Please see the documentation for details and examples.
@@ -1519,8 +1529,11 @@ $CONFIG = [
  * Define where part files are located
  * By default ownCloud will store the part files created during upload in the
  * same storage as the upload target. Setting this to false will store the part
- * files in the root of the users folder which might be required to work with certain
+ * files in the root of the user's folder which might be required to work with certain
  * external storage setups that have limited rename capabilities.
+ *
+ * Note that setting this to false causes issues with the following apps: Encryption,
+ * Document classification, Anti-Virus and Ransomware Protection.
  */
 'part_file_in_storage' => true,
 
@@ -1688,10 +1701,10 @@ $CONFIG = [
 
 /**
  * Link to get a demo key during active grace period
- * The admin will be directed to that web page if he clicks in the "get a demo key"
+ * The admin will be directed to that web page when they click on the "get a demo key"
  * link in the grace period popup. It's expected that the web page contains instructions
  * on how to get a valid demo key to be used in the ownCloud server.
- * If this key isn't present, ownCloud's default will be used
+ * If this key isn't present, ownCloud's default will be used.
  */
 'grace_period.demo_key.link' => 'https://owncloud.com/try-enterprise/',
 

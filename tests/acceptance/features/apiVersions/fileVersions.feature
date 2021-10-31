@@ -480,7 +480,7 @@ Feature: dav-versions
       When user "Alice" has uploaded file with content "uploaded content" to "/test/textfile0.txt"
       When user "Brian" has uploaded file with content "uploaded content new" to "/test/textfile0.txt"
       When user "Carol" has uploaded file with content "uploaded content new again" to "/test/textfile0.txt"
-      When user "Alice" gets the number of versions of file "/test/textfile0.txt" with edited by prop
+      When user "Alice" gets the number of versions of file "/test/textfile0.txt"
       Then the author of the created version with index "1" should be "Carol"
       Then the author of the created version with index "2" should be "Brian"
       Then the author of the created version with index "3" should be "Alice"

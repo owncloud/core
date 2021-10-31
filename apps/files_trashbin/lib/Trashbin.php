@@ -274,7 +274,8 @@ class Trashbin {
 	 * move file to the trash bin
 	 *
 	 * @param string $file_path path to the deleted file/directory relative to the files root directory
-	 * @return bool
+	 * @return bool|null true if the file is moved, false if there is an error, null if there
+	 * isn't any trashbin available
 	 */
 	public static function move2trash($file_path) {
 		// get the user for which the filesystem is setup
@@ -299,7 +300,7 @@ class Trashbin {
 			$user = $owner;
 			if (!self::setUpTrash($owner)) {
 				// nothing to do as no trash is available anywhere
-				return true;
+				return null;
 			}
 		}
 		if ($owner !== $user) {

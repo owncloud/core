@@ -53,8 +53,8 @@ use OCP\Lock\ILockingProvider;
 use OCP\User;
 
 class Storage {
-	public const DEFAULTENABLED = true;
-	public const DEFAULTMAXSIZE = 50; // unit: percentage; 50% of available disk space/quota
+	public const DEFAULTENABLED=true;
+	public const DEFAULTMAXSIZE=50; // unit: percentage; 50% of available disk space/quota
 	public const VERSIONS_ROOT = 'files_versions/';
 
 	public const DELETE_TRIGGER_MASTER_REMOVED = 0;
@@ -68,17 +68,17 @@ class Storage {
 
 	private static $max_versions_per_interval = [
 		//first 10sec, one version every 2sec
-		1 => ['intervalEndsAfter' => 10, 'step' => 2],
+	1 => ['intervalEndsAfter' => 10,      'step' => 2],
 		//next minute, one version every 10sec
-		2 => ['intervalEndsAfter' => 60, 'step' => 10],
+	2 => ['intervalEndsAfter' => 60,      'step' => 10],
 		//next hour, one version every minute
-		3 => ['intervalEndsAfter' => 3600, 'step' => 60],
+	3 => ['intervalEndsAfter' => 3600,    'step' => 60],
 		//next 24h, one version every hour
-		4 => ['intervalEndsAfter' => 86400, 'step' => 3600],
+	4 => ['intervalEndsAfter' => 86400,   'step' => 3600],
 		//next 30days, one version per day
 		5 => ['intervalEndsAfter' => 2592000, 'step' => 86400],
 		//until the end one version per week
-		6 => ['intervalEndsAfter' => -1, 'step' => 604800],
+	6 => ['intervalEndsAfter' => -1,      'step' => 604800],
 	];
 
 	/** @var \OCA\Files_Versions\AppInfo\Application */
@@ -104,7 +104,7 @@ class Storage {
 		Filesystem::initMountPoints($uid);
 		if ($uid != User::getUser()) {
 			$info = Filesystem::getFileInfo($filename);
-			$ownerView = new View('/' . $uid . '/files');
+			$ownerView = new View('/'.$uid.'/files');
 			try {
 				$filename = $ownerView->getPath($info['fileid']);
 				// make sure that the file name doesn't end with a trailing slash
@@ -148,7 +148,7 @@ class Storage {
 	 * store a new version of a file.
 	 */
 	public static function store($filename) {
-		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED) == 'true') {
+		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
 
 			// if the file gets streamed we need to remove the .part extension
 			// to get the right target
@@ -158,7 +158,7 @@ class Storage {
 			}
 
 			// we only handle existing files
-			if (!Filesystem::file_exists($filename) || Filesystem::is_dir($filename)) {
+			if (! Filesystem::file_exists($filename) || Filesystem::is_dir($filename)) {
 				return false;
 			}
 
@@ -176,8 +176,8 @@ class Storage {
 			}
 
 			// fallback implementation below - need to go into class Common
-			$files_view = new View('/' . $uid . '/files');
-			$users_view = new View('/' . $uid);
+			$files_view = new View('/'.$uid .'/files');
+			$users_view = new View('/'.$uid);
 
 			// no use making versions for empty files
 			if ($files_view->filesize($filename) === 0) {
@@ -221,7 +221,6 @@ class Storage {
 
 	/**
 	 * mark file as deleted so that we can remove the versions if the file is gone
-	 *
 	 * @param string $path
 	 */
 	public static function markDeletedFile($path) {
@@ -239,9 +238,6 @@ class Storage {
 	 */
 	protected static function deleteVersion($view, $path) {
 		$view->unlink($path);
-		if ($view->file_exists($path . ".json")) {
-			$view->unlink($path . ".json");
-		}
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 * @var string $internalPath
@@ -274,6 +270,9 @@ class Storage {
 					];
 					\OC_Hook::emit('\OCP\Versions', 'preDelete', $hookData);
 					self::deleteVersion($view, $filename . '.v' . $v['version']);
+					if ($view->file_exists($path . ".json")) {
+						$view->unlink($path . ".json");
+					}
 					\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
 				}
 			}
@@ -327,8 +326,8 @@ class Storage {
 			foreach ($versions as $v) {
 				// move each version one by one to the target directory
 				$rootView->$operation(
-					'/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'],
-					'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version']
+					'/' . $sourceOwner . '/files_versions/' . $sourcePath.'.v' . $v['version'],
+					'/' . $targetOwner . '/files_versions/' . $targetPath.'.v'.$v['version']
 				);
 				// move each version json file that holds the name of the user that've made an edit
 				$sourceMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json';
@@ -351,7 +350,7 @@ class Storage {
 		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {
 			return false;
 		}
-		$users_view = new View('/' . $uid);
+		$users_view = new View('/'.$uid);
 		if (!$users_view->isUpdatable("/files$filename")) {
 			return false;
 		}
@@ -359,9 +358,9 @@ class Storage {
 		$versionCreated = false;
 
 		//first create a new version
-		$version = 'files_versions' . $filename . '.v' . $users_view->filemtime('files' . $filename);
+		$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
 		if (!$users_view->file_exists($version)) {
-			$users_view->copy('files' . $filename, 'files_versions' . $filename . '.v' . $users_view->filemtime('files' . $filename));
+			$users_view->copy('files'.$filename, 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename));
 			$versionCreated = true;
 		}
 
@@ -436,7 +435,6 @@ class Storage {
 	}
 	/**
 	 * get a list of all available versions of a file in descending chronological order
-	 *
 	 * @param string $uid user id from the owner of the file
 	 * @param string $filename file to find versions of, relative to the user files dir
 	 *
@@ -510,7 +508,6 @@ class Storage {
 
 	/**
 	 * Expire versions that older than max version retention time
-	 *
 	 * @param string $uid
 	 */
 	public static function expireOlderThanMaxForUser($uid) {
@@ -523,7 +520,7 @@ class Storage {
 
 		$toDelete = [];
 		foreach (\array_reverse($versions['all']) as $key => $version) {
-			if (\intval($version['version']) < $threshold) {
+			if (\intval($version['version'])<$threshold) {
 				$toDelete[$key] = $version;
 			} else {
 				//Versions are sorted by time - nothing mo to iterate.
@@ -550,7 +547,6 @@ class Storage {
 
 	/**
 	 * translate a timestamp into a string like "5 days ago"
-	 *
 	 * @param int $timestamp
 	 * @return string for example "5 days ago"
 	 */
@@ -558,7 +554,7 @@ class Storage {
 		$diff = \time() - $timestamp;
 
 		if ($diff < 60) { // first minute
-			return $diff . " seconds ago";
+			return  $diff . " seconds ago";
 		} elseif ($diff < 3600) { //first hour
 			return \round($diff / 60) . " minutes ago";
 		} elseif ($diff < 86400) { // first day
@@ -576,7 +572,6 @@ class Storage {
 
 	/**
 	 * get list of files we want to expire
-	 *
 	 * @param array $versions list of versions
 	 * @param integer $time
 	 * @param bool $quotaExceeded is versions storage limit reached
@@ -635,7 +630,7 @@ class Storage {
 						//distance between two version too small, mark to delete
 						$toDelete[$key] = $version['path'] . '.v' . $version['version'];
 						$size += $version['size'];
-						\OCP\Util::writeLog('files_versions', 'Mark to expire ' . $version['path'] . ' next version should be ' . $nextVersion . " or smaller. (prevTimestamp: " . $prevTimestamp . "; step: " . $step, \OCP\Util::INFO);
+						\OCP\Util::writeLog('files_versions', 'Mark to expire '. $version['path'] .' next version should be ' . $nextVersion . " or smaller. (prevTimestamp: " . $prevTimestamp . "; step: " . $step, \OCP\Util::INFO);
 					} else {
 						$nextVersion = $version['version'] - $step;
 						$prevTimestamp = $version['version'];
@@ -687,7 +682,7 @@ class Storage {
 		$config = \OC::$server->getConfig();
 		$expiration = self::getExpiration();
 
-		if ($config->getSystemValue('files_versions', Storage::DEFAULTENABLED) == 'true' && $expiration->isEnabled()) {
+		if ($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' && $expiration->isEnabled()) {
 			// get available disk space for user
 			$user = \OC::$server->getUserManager()->get($uid);
 
@@ -707,7 +702,7 @@ class Storage {
 				// file maybe renamed or deleted
 				return false;
 			}
-			$versionsFileview = new View('/' . $uid . '/files_versions');
+			$versionsFileview = new View('/'.$uid.'/files_versions');
 
 			$softQuota = true;
 			$quota = \OC_Util::getUserQuota($user);
@@ -781,7 +776,7 @@ class Storage {
 			// Check if enough space is available after versions are rearranged.
 			// If not we delete the oldest versions until we meet the size limit for versions,
 			// but always keep the two latest versions
-			$numOfVersions = \count($allVersions) - 2;
+			$numOfVersions = \count($allVersions) -2 ;
 			$i = 0;
 			// sort oldest first and make sure that we start at the first element
 			\ksort($allVersions);
@@ -790,7 +785,7 @@ class Storage {
 				$version = \current($allVersions);
 				$hookData = [
 					'user' => $uid,
-					'path' => $version['path'] . '.v' . $version['version'],
+		  'path' => $version['path'].'.v'.$version['version'],
 					'original_path' => $version['path'],
 					'deleted_revision' => $version['version'],
 					'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED
@@ -798,7 +793,7 @@ class Storage {
 				\OC_Hook::emit('\OCP\Versions', 'preDelete', $hookData);
 				self::deleteVersion($versionsFileview, $version['path'] . '.v' . $version['version']);
 				\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
-				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'] . '.v' . $version['version'], \OCP\Util::INFO);
+				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'], \OCP\Util::INFO);
 				$versionsSize -= $version['size'];
 				$availableSpace += $version['size'];
 				\next($allVersions);
@@ -813,7 +808,6 @@ class Storage {
 
 	/**
 	 * Static workaround
-	 *
 	 * @return FileHelper
 	 */
 	protected static function getFileHelper() {
@@ -825,7 +819,6 @@ class Storage {
 
 	/**
 	 * Static workaround
-	 *
 	 * @return Expiration
 	 */
 	protected static function getExpiration() {
@@ -836,7 +829,7 @@ class Storage {
 	}
 
 	public static function getContentOfVersion($uid, $storage_location) {
-		$users_view = new View('/' . $uid);
+		$users_view = new View('/'.$uid);
 		return $users_view->fopen($storage_location, 'r');
 	}
 }
