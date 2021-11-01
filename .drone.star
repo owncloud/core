@@ -259,6 +259,7 @@ config = {
             },
             "emailNeeded": True,
             "useHttps": False,
+            "selUserNeeded": True,
         },
         "webUINotifications": {
             "suites": {
@@ -935,7 +936,7 @@ def litmus():
                          composerInstall(phpVersion) +
                          installServer(phpVersion, db, params["logLevel"], params["useHttps"]) +
                          setupLocalStorage(phpVersion) +
-                         fixPermissions(phpVersion, False) +
+                         fixPermissions(phpVersion, False, False) +
                          createShare(phpVersion) +
                          owncloudLog("server", "src") +
                          [
@@ -1099,7 +1100,7 @@ def dav():
                              composerInstall(phpVersion) +
                              installServer(phpVersion, db, params["logLevel"]) +
                              davInstall(phpVersion, scriptPath) +
-                             fixPermissions(phpVersion, False) +
+                             fixPermissions(phpVersion, False, False) +
                              owncloudLog("server", "src") +
                              [
                                  {
@@ -1370,7 +1371,7 @@ def phpTests(ctx, testType, withCoverage):
                                  installExtraApps(phpVersion, extraAppsDict, dir["server"]) +
                                  setupScality(phpVersion, needScality) +
                                  params["extraSetup"] +
-                                 fixPermissions(phpVersion, False) +
+                                 fixPermissions(phpVersion, False, False) +
                                  owncloudLog("server", "src") +
                                  [
                                      {
@@ -1516,6 +1517,7 @@ def acceptance(ctx):
         "testAgainstCoreTarball": False,
         "coreTarball": "daily-master-qa",
         "earlyFail": True,
+        "selUserNeeded": False,
     }
 
     if "defaults" in config:
@@ -1623,6 +1625,7 @@ def acceptance(ctx):
 
                                 environment["BEHAT_FILTER_TAGS"] = params["filterTags"]
                                 environment["REPLACE_USERNAMES"] = params["replaceUsernames"]
+                                environment["DOWNLOADS_DIRECTORY"] = "%s/downloads" % dir["server"]
 
                                 if (params["runAllSuites"] == False):
                                     environment["BEHAT_SUITE"] = suite
@@ -1698,9 +1701,9 @@ def acceptance(ctx):
                                              setupCeph(phpVersion, params["cephS3"]) +
                                              setupScality(phpVersion, params["scalityS3"]) +
                                              params["extraSetup"] +
-                                             fixPermissions(phpVersion, params["federatedServerNeeded"], pathOfServerUnderTest) +
                                              waitForServer(phpVersion, params["federatedServerNeeded"]) +
                                              waitForBrowserService(phpVersion, isWebUI) +
+                                             fixPermissions(phpVersion, params["federatedServerNeeded"], params["selUserNeeded"], pathOfServerUnderTest) +
                                              owncloudLog("server", pathOfServerUnderTest) +
                                              [
                                                  ({
@@ -1713,6 +1716,10 @@ def acceptance(ctx):
                                                          ". %s/saved-settings.sh" % dir["base"],
                                                          "%smake %s" % (suExecCommand, makeParameter),
                                                      ],
+                                                     "volumes": [{
+                                                         "name": "downloads",
+                                                         "path": "%s/downloads" % dir["server"],
+                                                     }],
                                                  }),
                                              ] + buildGithubCommentForBuildStopped(name, params["earlyFail"]) + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
                                     "services": databaseService(db) +
@@ -1735,6 +1742,10 @@ def acceptance(ctx):
                                             "refs/tags/**",
                                         ],
                                     },
+                                    "volumes": [{
+                                        "name": "downloads",
+                                        "temp": {},
+                                    }],
                                 }
 
                                 pipelines.append(result)
@@ -2021,6 +2032,10 @@ def browserService(browser):
             "environment": {
                 "JAVA_OPTS": "-Dselenium.LOGGER.level=WARNING",
             },
+            "volumes": [{
+                "name": "downloads",
+                "path": "/home/seluser/Downloads",
+            }],
         }]
 
     if browser == "firefox":
@@ -2032,6 +2047,10 @@ def browserService(browser):
                 "JAVA_OPTS": "-Dselenium.LOGGER.level=WARNING",
                 "SE_OPTS": "-enablePassThrough false",
             },
+            "volumes": [{
+                "name": "downloads",
+                "path": "/home/seluser/Downloads",
+            }],
         }]
 
     return []
@@ -2683,7 +2702,7 @@ def setupScality(phpVersion, scalityS3):
         ] if createExtraBuckets else []),
     }]
 
-def fixPermissions(phpVersion, federatedServerNeeded, pathOfServerUnderTest = dir["server"]):
+def fixPermissions(phpVersion, federatedServerNeeded, selUserNeeded, pathOfServerUnderTest = dir["server"]):
     return [{
         "name": "fix-permissions",
         "image": "owncloudci/php:%s" % phpVersion,
@@ -2692,7 +2711,13 @@ def fixPermissions(phpVersion, federatedServerNeeded, pathOfServerUnderTest = di
             "chown -R www-data %s" % pathOfServerUnderTest,
         ] + ([
             "chown -R www-data %s" % dir["federated"],
-        ] if federatedServerNeeded else []),
+        ] if federatedServerNeeded else []) + ([
+            "chmod 777 /home/seluser/Downloads/",
+        ] if selUserNeeded else []),
+        "volumes": [{
+            "name": "downloads",
+            "path": "/home/seluser/Downloads/",
+        }],
     }]
 
 def waitForServer(phpVersion, federatedServerNeeded):
