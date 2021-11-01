@@ -5332,6 +5332,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function afterScenario():void {
+		$this->waitForDavRequestsToFinish();
 		$this->restoreParametersAfterScenario();
 
 		if (OcisHelper::isTestingOnOcisOrReva() && $this->someUsersHaveBeenCreated()) {

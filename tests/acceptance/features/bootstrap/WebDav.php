@@ -77,6 +77,11 @@ trait WebDav {
 	private $oldDavSlowdownSetting = null;
 
 	/**
+	 * @var int
+	 */
+	private $newDavSlowdownSettingSeconds = 0;
+
+	/**
 	 * response content parsed from XML to an array
 	 *
 	 * @var array
@@ -530,6 +535,21 @@ trait WebDav {
 			"/apps/testing/api/v1/davslowdown/$method/$seconds",
 			$this->getStepLineRef()
 		);
+		$this->newDavSlowdownSettingSeconds = $seconds;
+	}
+
+	/**
+	 * Wait for possible slowed-down DAV requests to finish
+	 *
+	 * @return void
+	 */
+	public function waitForDavRequestsToFinish():void {
+		if ($this->newDavSlowdownSettingSeconds > 0) {
+			// There could be a slowed-down request still happening on the server
+			// Wait just-in-case so that we do not accidentally have an effect on
+			// the next scenario.
+			\sleep($this->newDavSlowdownSettingSeconds);
+		}
 	}
 
 	/**
