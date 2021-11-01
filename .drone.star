@@ -324,6 +324,7 @@ config = {
                 "webUIUpload": "",
                 "webUIWebdavLockProtection": "webUIWebdavLockProt",
                 "webUIWebdavLocks": "",
+                "webUIWithCLI": "",
             },
             "filterTags": "~@local_storage&&~@files_external-app-required",
             "emailNeeded": True,

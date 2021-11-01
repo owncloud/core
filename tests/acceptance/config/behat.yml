@@ -709,7 +709,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
-    
+
     cliCreateLocalStorage:
       paths:
         - '%paths.base%/../features/cliCreateLocalStorage'
@@ -764,6 +764,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
+        - CapabilitiesContext:
         - CalDavContext:
         - CardDavContext:
         - TransferOwnershipContext:
@@ -771,6 +772,7 @@ default:
         - WebDavPropertiesContext:
         - FilesVersionsContext:
         - PublicWebDavContext:
+        - AppConfigurationContext:
 
     cliManageApps:
       paths:
@@ -1265,6 +1267,29 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFileActionsMenuContext:
+
+    webUIWithCLI:
+      paths:
+        - '%paths.base%/../features/webUIWithCLI'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - EmailContext:
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIPersonalGeneralSettingsContext:
+        - WebUIPersonalSecuritySettingsContext:
+        - WebUIUserContext:
+        - OccContext:
+        - OccUsersGroupsContext:
+        - CapabilitiesContext:
+        - WebUIAdminAppsSettingsContext:
+        - WebUIAdminSharingSettingsContext:
+        - WebUIAdminGeneralSettingsContext:
+        - WebUIAdminStorageSettingsContext:
+        - WebUIHelpAndTipsContext:
+        - WebUISharingContext:
 
   extensions:
     rdx\behatvars\BehatVariablesExtension: ~

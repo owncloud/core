@@ -17,8 +17,8 @@ Feature: users cannot upload a file to a blacklisted name using old chunking
 
   @skipOnOcV10 @issue-36645
   Scenario: Upload a file to a banned filename using old chunking
-    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
-    And user "Alice" uploads file "filesForUpload/textfile.txt" to "blacklisted-file.txt" in 3 chunks using the WebDAV API
+    Given the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
+    When user "Alice" uploads file "filesForUpload/textfile.txt" to "blacklisted-file.txt" in 3 chunks using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "blacklisted-file.txt" should not exist
 

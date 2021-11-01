@@ -204,8 +204,8 @@ Feature: edit users
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their email address
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_mail_address" with value "true" and type "boolean" using the occ command
-    And user "Alice" changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_mail_address" with value "true" and type "boolean"
+    When user "Alice" changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the attributes of user "Alice" returned by the API should include
@@ -215,8 +215,8 @@ Feature: edit users
   @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin does not give access to users to change their email address
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
-    And user "Alice" tries to change the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_mail_address" with value "false" and type "boolean"
+    When user "Alice" tries to change the email of user "Alice" to "alice@gmail.com" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the attributes of user "Alice" returned by the API should include
@@ -281,8 +281,8 @@ Feature: edit users
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_display_name" with value "true" and type "boolean" using the occ command
-    And user "Alice" changes the display of user "Alice" to "Alice Wonderland" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_display_name" with value "true" and type "boolean"
+    When user "Alice" changes the display of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the attributes of user "Alice" returned by the API should include
@@ -292,8 +292,8 @@ Feature: edit users
   @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin does not give access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
-    And user "Alice" tries to change the display name of user "Alice" to "Alice Wonderland" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_display_name" with value "false" and type "boolean"
+    When user "Alice" tries to change the display name of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the attributes of user "Alice" returned by the API should include

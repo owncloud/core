@@ -32,11 +32,6 @@ Feature: capabilities
     When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "no"
     Then the capabilities setting of "files_sharing" path "group_sharing" should be ""
 
-  @skipOnOcis
-  Scenario: Check that search_min_length can be changed
-    When the administrator updates system config key "user.search_min_length" with value "4" using the occ command
-    Then the capabilities setting of "files_sharing" path "search_min_length" should be "4"
-
   @smokeTest @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1 @skipOnOcis
   Scenario: getting default capabilities with admin user
     When the administrator retrieves the capabilities using the capabilities API
@@ -192,8 +187,8 @@ Feature: capabilities
 
   @skipOnOcis
   Scenario: multiple files can be reported as blacklisted
-    When the administrator updates system config key "blacklisted_files" with value '["test.txt",".htaccess"]' and type "json" using the occ command
-    And the administrator retrieves the capabilities using the capabilities API
+    Given the administrator has updated system config key "blacklisted_files" with value '["test.txt",".htaccess"]' and type "json"
+    When the administrator retrieves the capabilities using the capabilities API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the capabilities should contain

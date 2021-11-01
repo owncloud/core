@@ -22,21 +22,6 @@ Feature: personal general settings
     Then the user should see "Details" file action translated to "विवरण" on the webUI
     And the user should see "Delete" file action translated to "हटाना" on the webUI
 
-  Scenario: change language using the occ command and check that file actions menu have been translated
-    Given the user has created folder "simple-folder"
-    When the administrator changes the language of user "Alice" to "fr" using the occ command
-    And the user browses to the files page
-    And the user opens the file action menu of folder "simple-folder" on the webUI
-    Then the user should see "Details" file action translated to "Détails" on the webUI
-    And the user should see "Delete" file action translated to "Supprimer" on the webUI
-
-  Scenario: change language to invalid language using the occ command and check that the language defaults back to english
-    Given the user has created folder "simple-folder"
-    When the administrator changes the language of user "Alice" to "not-valid-lan" using the occ command
-    And the user browses to the files page
-    And the user opens the file action menu of folder "simple-folder" on the webUI
-    Then the user should see "Details" file action translated to "Details" on the webUI
-    And the user should see "Delete" file action translated to "Delete" on the webUI
 
   Scenario: user sees displayed version number, groupnames and federated cloud ID on the personal general settings page
     Given group "new-group" has been created

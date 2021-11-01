@@ -3602,14 +3602,15 @@ trait Sharing {
 	 *
 	 * @param string $group
 	 *
-	 * @return void
+	 * @return int
 	 * @throws Exception
 	 */
-	public function administratorAddsGroupToExcludeFromReceivingSharesList(string $group):void {
+	public function administratorAddsGroupToExcludeFromReceivingSharesList(string $group): int {
 		//get current groups
 		$occExitCode = $this->runOcc(
 			['config:app:get files_sharing blacklisted_receiver_groups']
 		);
+
 		$occStdOut = $this->getStdOutOfOccCommand();
 		$occStdErr = $this->getStdErrOfOccCommand();
 
@@ -3636,16 +3637,28 @@ trait Sharing {
 		);
 
 		$currentGroups[] = $group;
-		$setSettingExitCode = $this->runOcc(
+		return $this->runOcc(
 			[
 				'config:app:set',
 				'files_sharing blacklisted_receiver_groups',
 				'--value=' . \json_encode($currentGroups)
 			]
 		);
+	}
+
+	/**
+	 * @Given the administrator has added group :group to the exclude groups from receiving shares list
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function administratorHasAddedGroupToExcludeFromReceivingSharesList(string $group):void {
+		$setSettingExitCode = $this->administratorAddsGroupToExcludeFromReceivingSharesList($group);
 		if ($setSettingExitCode !== 0) {
 			throw new Exception(
-				"could not set files_sharing blacklisted_receiver_groups " .
+				__METHOD__ . " could not set files_sharing blacklisted_receiver_groups " .
 				$setSettingExitCode . " " .
 				$this->getStdOutOfOccCommand() . " " .
 				$this->getStdErrOfOccCommand()
