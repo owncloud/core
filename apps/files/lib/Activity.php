@@ -207,10 +207,6 @@ class Activity implements IExtension {
 				return (string) $l->t('You moved %2$s to %1$s', $params);
 			case 'moved_by':
 				return (string) $l->t('%2$s moved %3$s to %1$s', $params);
-			case 'moved_in_share_by':
-				return (string) $l->t('%2$s moved %1$s into the share', $params);
-			case 'moved_out_share_by':
-				return (string) $l->t('%2$s moved %1$s out of the share', $params);
 
 			default:
 				return false;
@@ -235,10 +231,6 @@ class Activity implements IExtension {
 				return (string) $l->t('You moved this file to %1$s', $params);
 			case 'moved_by':
 				return (string) $l->t('%2$s moved this file to %1$s', $params);
-			case 'moved_in_share_by':
-				return (string) $l->t('%2$s moved this file into the share', $params);
-			case 'moved_out_share_by':
-				return (string) $l->t('%2$s moved this file out of the share', $params);
 
 			default:
 				return false;
@@ -315,16 +307,6 @@ class Activity implements IExtension {
 						0 => 'file',
 						1 => 'username',
 						2 => 'file',
-					];
-				case 'moved_in_share_by':
-					return [
-						0 => 'file',
-						1 => 'username',
-					];
-				case 'moved_out_share_by':
-					return [
-						0 => 'file',
-						1 => 'username',
 					];
 				case 'restored_by':
 					return [
