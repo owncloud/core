@@ -32,6 +32,9 @@ use OCP\Http\Client\IClientService;
 use OCP\IRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\Files\Filesystem;
+use OCA\Files_Sharing\Helper;
+use OCP\Files;
 
 /**
  * Class ExternalSharesController
@@ -91,13 +94,19 @@ class ExternalSharesController extends Controller {
 	public function create($id) {
 		$shareInfo = $this->externalManager->getShare($id);
 		if ($shareInfo !== false) {
+			$mountPoint = $this->externalManager->getShareRecipientMountPoint($shareInfo);
+			$fileId = $this->externalManager->getShareFileId($shareInfo, $mountPoint);
+
 			$event = new GenericEvent(
 				null,
 				[
 					'shareAcceptedFrom' => $shareInfo['owner'],
 					'sharedAcceptedBy' => $shareInfo['user'],
 					'sharedItem' => $shareInfo['name'],
-					'remoteUrl' => $shareInfo['remote']
+					'remoteUrl' => $shareInfo['remote'],
+					'shareId' => $id,
+					'fileId' => $fileId,
+					'shareRecipient' => $shareInfo['user'],
 				]
 			);
 			$this->dispatcher->dispatch('remoteshare.accepted', $event);
