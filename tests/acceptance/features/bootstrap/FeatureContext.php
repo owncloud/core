@@ -2861,7 +2861,7 @@ class FeatureContext extends BehatVariablesContext {
 					$this,
 					"getOCSPath"
 				],
-				"parameter" => [1]
+				"parameter" => ["1"]
 			],
 			[
 				"code" => "%ocs_path_v2%",
@@ -2869,7 +2869,7 @@ class FeatureContext extends BehatVariablesContext {
 					$this,
 					"getOCSPath"
 				],
-				"parameter" => [2]
+				"parameter" => ["2"]
 			],
 			[
 				"code" => "%productname%",
