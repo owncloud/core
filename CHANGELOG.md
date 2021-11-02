@@ -55,6 +55,7 @@ Summary
 * Bugfix - Clicking in the middle of the row in the file list downloads the file: [#39361](https://github.com/owncloud/core/pull/39361)
 * Bugfix - Adjust text of occ encryption command messages: [#39395](https://github.com/owncloud/core/pull/39395)
 * Bugfix - Faulty file list entry after accepting a remote share: [#39411](https://github.com/owncloud/core/pull/39411)
+* Bugfix - Add missing `remoteshare.accepted` event parameters: [#39449](https://github.com/owncloud/core/pull/39449)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -488,6 +489,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4823
    https://github.com/owncloud/core/pull/39411
+
+* Bugfix - Add missing `remoteshare.accepted` event parameters: [#39449](https://github.com/owncloud/core/pull/39449)
+
+   This fix adds missing parameters to the `remoteshare.accepted` event when triggered via
+   controller: `shareId`, `fileId`, `shareRecipient`. The bugfix is a complement to
+   https://github.com/owncloud/core/pull/38880.
+
+   https://github.com/owncloud/core/pull/39449
 
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
