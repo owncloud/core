@@ -366,12 +366,33 @@ class FeatureContext extends BehatVariablesContext {
 	 * @var Ldap
 	 */
 	private $ldap;
+	/**
+	 * @var string
+	 */
 	private $ldapBaseDN;
+	/**
+	 * @var string
+	 */
 	private $ldapHost;
+	/**
+	 * @var int
+	 */
 	private $ldapPort;
+	/**
+	 * @var string
+	 */
 	private $ldapAdminUser;
+	/**
+	 * @var string
+	 */
 	private $ldapAdminPassword;
+	/**
+	 * @var string
+	 */
 	private $ldapUsersOU;
+	/**
+	 * @var string
+	 */
 	private $ldapGroupsOU;
 	/**
 	 * @var array

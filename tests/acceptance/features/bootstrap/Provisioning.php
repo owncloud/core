@@ -566,7 +566,7 @@ trait Provisioning {
 
 			$this->ldapBaseDN = (string)$ldapConfig['ldapBase'][0];
 			$this->ldapHost = (string)$ldapConfig['ldapHost'];
-			$this->ldapPort = (string)$ldapConfig['ldapPort'];
+			$this->ldapPort = (int)$ldapConfig['ldapPort'];
 			$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
 		}
 		$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
