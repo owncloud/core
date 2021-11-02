@@ -1,7 +1,7 @@
 Change: Update JavaScript dependencies
 
 The following have been updated:
-- karma (4.4.1 to 6.3.4)
+- karma (4.4.1 to 6.3.7)
 - minimist (1.2.3 to 1.2.5)
 - sinon (7.5.0 to 11.1.2)
 - bower_components/base64 (1.0.2 to 1.1.0)
@@ -18,3 +18,4 @@ https://github.com/owncloud/core/pull/39407
 https://github.com/owncloud/core/pull/36633
 https://github.com/owncloud/core/pull/39421
 https://github.com/owncloud/core/pull/39417
+https://github.com/owncloud/core/pull/39445
