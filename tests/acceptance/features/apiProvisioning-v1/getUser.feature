@@ -17,7 +17,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Brand New User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.3
   Scenario Outline: admin gets an existing user with special characters in the username
@@ -30,11 +30,12 @@ Feature: get user
     And the display name returned by the API should be "<displayname>"
     And the email address returned by the API should be "<email>"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
     Examples:
       | username | displayname  | email               |
       | a@-+_.b  | A weird b    | a.b@example.com     |
       | a space  | A Space Name | a.space@example.com |
+
 
   Scenario: admin gets an existing user, providing uppercase username in the URL
     Given these users have been created with default attributes and without skeleton files:
@@ -45,7 +46,8 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Brand New User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
+
 
   Scenario: admin tries to get a nonexistent user
     When the administrator retrieves the information of user "not-a-user" using the provisioning API
@@ -67,7 +69,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
 
   @notToImplementOnOCIS
   Scenario: a subadmin tries to get information of a user not in their group
@@ -81,6 +83,7 @@ Feature: get user
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the API should not return any data
+
 
   Scenario: a normal user tries to get information of another user
     Given these users have been created with default attributes and without skeleton files:
@@ -102,7 +105,8 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
+
 
   Scenario: a normal user gets their own information, providing uppercase username as authentication
     Given these users have been created with default attributes and without skeleton files:
@@ -113,7 +117,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.3
   Scenario: a normal user gets their own information, providing uppercase username in the URL
@@ -125,7 +129,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.3
   Scenario: a mixed-case normal user gets their own information, providing lowercase username in the URL
@@ -137,7 +141,8 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
+
 
   Scenario: a mixed-case normal user gets their own information, providing the mixed-case username in the URL
     Given these users have been created with default attributes and without skeleton files:
@@ -148,7 +153,8 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
+
 
   Scenario: admin gets information of a user with admin permissions
     Given these users have been created with default attributes and without skeleton files:
@@ -160,7 +166,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Admin Alice"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
 
   @notToImplementOnOCIS
   Scenario: a subadmin should be able to get information of a user with subadmin permissions in their group
@@ -177,7 +183,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Regular User"
     And the quota definition returned by the API should be "default"
-    And the last login returned by the API should be "0"
+    And the last login returned by the API should be a current Unix timestamp
 
   @notToImplementOnOCIS
   Scenario: a subadmin should not be able to get information of another subadmin of same group
