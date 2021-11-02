@@ -1,0 +1,7 @@
+Bugfix: Add missing `remoteshare.accepted` event parameters
+
+This fix adds missing parameters to the `remoteshare.accepted` event
+when triggered via controller: `shareId`, `fileId`, `shareRecipient`.
+The bugfix is a complement to https://github.com/owncloud/core/pull/38880.
+
+https://github.com/owncloud/core/pull/39449

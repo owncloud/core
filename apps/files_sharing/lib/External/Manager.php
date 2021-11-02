@@ -185,6 +185,54 @@ class Manager {
 	}
 
 	/**
+	 * Get the file id for an accepted share. Returns null when
+	 * the file id cannot be determined.
+	 *
+	 * @param mixed $share
+	 * @param string $mountPoint
+	 * @return string|null
+	 */
+	public function getShareFileId($share, $mountPoint) {
+		$options = [
+			'remote'	=> $share['remote'],
+			'token'		=> $share['share_token'],
+			'mountpoint'	=> $mountPoint,
+			'owner'		=> $share['owner']
+		];
+
+		// We need to scan the new file/folder here to get its fileId
+		// which will be passed to the event for further processing.
+		$mount = $this->getMount($options);
+		$storage = $mount->getStorage();
+
+		if ($storage) {
+			$scanner = $storage->getScanner('');
+
+			// No need to scan all the folder contents as we only care about the root share
+			$file = $scanner->scanFile('');
+
+			if (isset($file['fileid'])) {
+				return $file['fileid'];
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get the mount point of a newly received share.
+	 *
+	 * @param mixed $share
+	 * @return string
+	 */
+	public function getShareRecipientMountPoint($share) {
+		\OC_Util::setupFS($share['user']);
+		$shareFolder = Helper::getShareFolder();
+		$mountPoint = Files::buildNotExistingFileName($shareFolder, $share['name']);
+		return Filesystem::normalizePath($mountPoint);
+	}
+
+	/**
 	 * accept server-to-server share
 	 *
 	 * @param int $id
@@ -194,10 +242,7 @@ class Manager {
 		$share = $this->getShare($id);
 
 		if ($share) {
-			\OC_Util::setupFS($share['user']);
-			$shareFolder = Helper::getShareFolder();
-			$mountPoint = Files::buildNotExistingFileName($shareFolder, $share['name']);
-			$mountPoint = Filesystem::normalizePath($mountPoint);
+			$mountPoint = $this->getShareRecipientMountPoint($share);
 			$hash = \md5($mountPoint);
 
 			$acceptShare = $this->connection->prepare('
@@ -208,29 +253,7 @@ class Manager {
 				WHERE `id` = ? AND `user` = ?');
 			$acceptShare->execute([1, $mountPoint, $hash, $id, $this->uid]);
 
-			$options = [
-				'remote'	=> $share['remote'],
-				'token'		=> $share['share_token'],
-				'mountpoint'	=> $mountPoint,
-				'owner'		=> $share['owner']
-			];
-
-			// We need to scan the new file/folder here to get its fileId
-			// which will be passed to the event for further processing.
-			$mount = $this->getMount($options);
-			$storage = $mount->getStorage();
-			$fileId = null;
-
-			if ($storage) {
-				$scanner = $storage->getScanner('');
-
-				// No need to scan all the folder contents as we only care about the root share
-				$file = $scanner->scanFile('');
-
-				if (isset($file['fileid'])) {
-					$fileId = $file['fileid'];
-				}
-			}
+			$fileId = $this->getShareFileId($share, $mountPoint);
 
 			$this->eventDispatcher->dispatch(
 				AcceptShare::class,

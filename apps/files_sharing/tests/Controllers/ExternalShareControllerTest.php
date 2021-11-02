@@ -95,6 +95,12 @@ class ExternalShareControllerTest extends \Test\TestCase {
 					'remote' => 'abc'
 				]
 			);
+		$this->externalManager
+			->method('getShareRecipientMountPoint')
+			->willReturn('/mountPoint');
+		$this->externalManager
+			->method('getShareFileId')
+			->willReturn('1');
 
 		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('remoteshare.accepted', function ($event) use (&$called) {
