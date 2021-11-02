@@ -72,9 +72,14 @@ trait WebDav {
 	 */
 	private $customDavPath = null;
 
-	private $oldAsyncSetting = null;
+	private $previousAsyncSetting = null;
 
-	private $oldDavSlowdownSetting = null;
+	private $previousDavSlowdownSetting = null;
+
+	/**
+	 * @var int
+	 */
+	private $currentDavSlowdownSettingSeconds = 0;
 
 	/**
 	 * response content parsed from XML to an array
@@ -475,12 +480,12 @@ trait WebDav {
 		} else {
 			$value = 'false';
 		}
-		if ($this->oldAsyncSetting === null) {
-			$oldAsyncSetting = SetupHelper::runOcc(
+		if ($this->previousAsyncSetting === null) {
+			$previousAsyncSetting = SetupHelper::runOcc(
 				['config:system:get', 'dav.enable.async'],
 				$this->getStepLineRef()
 			)['stdOut'];
-			$this->oldAsyncSetting = \trim($oldAsyncSetting);
+			$this->previousAsyncSetting = \trim($previousAsyncSetting);
 		}
 		$this->runOcc(
 			[
@@ -515,12 +520,12 @@ trait WebDav {
 	 * @throws Exception
 	 */
 	public function slowdownDavRequests(string $method, int $seconds):void {
-		if ($this->oldDavSlowdownSetting === null) {
-			$oldDavSlowdownSetting = SetupHelper::runOcc(
+		if ($this->previousDavSlowdownSetting === null) {
+			$previousDavSlowdownSetting = SetupHelper::runOcc(
 				['config:system:get', 'dav.slowdown'],
 				$this->getStepLineRef()
 			)['stdOut'];
-			$this->oldDavSlowdownSetting = \trim($oldDavSlowdownSetting);
+			$this->previousDavSlowdownSetting = \trim($previousDavSlowdownSetting);
 		}
 		OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
@@ -530,6 +535,21 @@ trait WebDav {
 			"/apps/testing/api/v1/davslowdown/$method/$seconds",
 			$this->getStepLineRef()
 		);
+		$this->currentDavSlowdownSettingSeconds = $seconds;
+	}
+
+	/**
+	 * Wait for possible slowed-down DAV requests to finish
+	 *
+	 * @return void
+	 */
+	public function waitForDavRequestsToFinish():void {
+		if ($this->currentDavSlowdownSettingSeconds > 0) {
+			// There could be a slowed-down request still happening on the server
+			// Wait just-in-case so that we do not accidentally have an effect on
+			// the next scenario.
+			\sleep($this->currentDavSlowdownSettingSeconds);
+		}
 	}
 
 	/**
@@ -4993,13 +5013,13 @@ trait WebDav {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function resetOldSettingsAfterScenario():void {
-		if ($this->oldAsyncSetting === "") {
+	public function resetPreviousSettingsAfterScenario():void {
+		if ($this->previousAsyncSetting === "") {
 			SetupHelper::runOcc(
 				['config:system:delete', 'dav.enable.async'],
 				$this->getStepLineRef()
 			);
-		} elseif ($this->oldAsyncSetting !== null) {
+		} elseif ($this->previousAsyncSetting !== null) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',
@@ -5007,23 +5027,23 @@ trait WebDav {
 					'--type',
 					'boolean',
 					'--value',
-					$this->oldAsyncSetting
+					$this->previousAsyncSetting
 				],
 				$this->getStepLineRef()
 			);
 		}
-		if ($this->oldDavSlowdownSetting === "") {
+		if ($this->previousDavSlowdownSetting === "") {
 			SetupHelper::runOcc(
 				['config:system:delete', 'dav.slowdown'],
 				$this->getStepLineRef()
 			);
-		} elseif ($this->oldDavSlowdownSetting !== null) {
+		} elseif ($this->previousDavSlowdownSetting !== null) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',
 					'dav.slowdown',
 					'--value',
-					$this->oldDavSlowdownSetting
+					$this->previousDavSlowdownSetting
 				],
 				$this->getStepLineRef()
 			);
