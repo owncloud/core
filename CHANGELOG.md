@@ -54,6 +54,7 @@ Summary
 * Bugfix - Prohibit email/displayname change via API when not allowed: [#39353](https://github.com/owncloud/core/pull/39353)
 * Bugfix - Clicking in the middle of the row in the file list downloads the file: [#39361](https://github.com/owncloud/core/pull/39361)
 * Bugfix - Adjust text of occ encryption command messages: [#39395](https://github.com/owncloud/core/pull/39395)
+* Bugfix - Faulty file list entry after accepting a remote share: [#39411](https://github.com/owncloud/core/pull/39411)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -478,6 +479,15 @@ Details
    The text of some encryption command messages has been improved.
 
    https://github.com/owncloud/core/pull/39395
+
+* Bugfix - Faulty file list entry after accepting a remote share: [#39411](https://github.com/owncloud/core/pull/39411)
+
+   With this change, we reload the shared with you file list if the user accepts or declines a share.
+   This solves the issue after accepting a remote share the table record was not pointing to the
+   correct location.
+
+   https://github.com/owncloud/enterprise/issues/4823
+   https://github.com/owncloud/core/pull/39411
 
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
