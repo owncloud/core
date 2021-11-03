@@ -224,6 +224,7 @@ class Users {
 		$data['displayname'] = $targetUserObject->getDisplayName();
 		$data['home'] = $targetUserObject->getHome();
 		$data['two_factor_auth_enabled'] = $this->twoFactorAuthManager->isTwoFactorAuthenticated($targetUserObject) ? 'true' : 'false';
+		$data['last_login'] = $targetUserObject->getLastLogin();
 
 		return new Result($data);
 	}

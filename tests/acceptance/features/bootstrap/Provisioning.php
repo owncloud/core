@@ -4913,6 +4913,18 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the last login returned by the API should be a current Unix timestamp$/
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theLastLoginReturnedByTheApiShouldBe():void {
+		$responseLastLogin = (string) $this->getResponseXml(null, __METHOD__)->data[0]->last_login;
+		Assert::assertIsNumeric($responseLastLogin);
+		Assert::assertGreaterThan($this->scenarioStartTime, (int) $responseLastLogin);
+	}
+
+	/**
 	 * Parses the xml answer to get the array of users returned.
 	 *
 	 * @param ResponseInterface $resp

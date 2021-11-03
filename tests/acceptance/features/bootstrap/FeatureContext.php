@@ -50,6 +50,11 @@ class FeatureContext extends BehatVariablesContext {
 	use WebDav;
 
 	/**
+	 * @var int Unix timestamp seconds
+	 */
+	private $scenarioStartTime;
+
+	/**
 	 * @var string
 	 */
 	private $adminUsername = '';
@@ -3284,6 +3289,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws Exception
 	 */
 	public function before(BeforeScenarioScope $scope):void {
+		$this->scenarioStartTime = \time();
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// registers context in every suite, as every suite has FeatureContext
