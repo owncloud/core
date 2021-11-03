@@ -156,8 +156,6 @@ class ActivityTest extends TestCase {
 			['renamed_by', ['fileRenamed.txt', 'user', 'file.txt'], 'user renamed file.txt to fileRenamed.txt', false],
 			['moved_self', ['fileMoved.txt', 'file.txt'], 'You moved file.txt to fileMoved.txt', false],
 			['moved_by', ['fileMoved.txt', 'user', 'file.txt'], 'user moved file.txt to fileMoved.txt', false],
-			['moved_in_share_by', ['fileMoved.txt', 'user'], 'user moved fileMoved.txt into the share', false],
-			['moved_out_share_by', ['fileMoved.txt', 'user'], 'user moved fileMoved.txt out of the share', false],
 
 			// short translations
 			['changed_by', ['file.txt', 'user'], 'Changed by user', true],
@@ -165,8 +163,6 @@ class ActivityTest extends TestCase {
 			['restored_by', ['file.txt', 'user'], 'Restored by user', true],
 			['moved_self', ['fileMoved.txt'], 'You moved this file to fileMoved.txt', true],
 			['moved_by', ['fileMoved.txt', 'user'], 'user moved this file to fileMoved.txt', true],
-			['moved_in_share_by', ['fileMoved.txt', 'user'], 'user moved this file into the share', true],
-			['moved_out_share_by', ['fileMoved.txt', 'user'], 'user moved this file out of the share', true],
 		];
 	}
 
@@ -203,8 +199,6 @@ class ActivityTest extends TestCase {
 			['renamed_by', [0 => 'file', 1 => 'username', 2 => 'file']],
 			['moved_self', [0 => 'file', 1 => 'file']],
 			['moved_by', [0 => 'file', 1 => 'username', 2 => 'file']],
-			['moved_in_share_by', [0 => 'file', 1 => 'username']],
-			['moved_out_share_by', [0 => 'file', 1 => 'username']],
 			['restored_by', [0 => 'file', 1 => 'username']],
 		];
 	}
