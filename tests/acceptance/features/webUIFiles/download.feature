@@ -32,7 +32,7 @@ Feature: Download resource
     And the user clicks the download button on the webUI
     Then file "download.zip" should be downloaded
     When the user unzips the file "download.zip"
-    Then following folders should exist in downloads folder
+    Then the following folders should exist in the downloads folder
       | folders        |
       | simple-folder  |
       | simple-folder1 |
@@ -52,7 +52,7 @@ Feature: Download resource
     And the user clicks the download button on the webUI
     Then file "download.zip" should be downloaded
     When the user unzips the file "download.zip"
-    Then following folders should exist in downloads folder
+    Then the following folders should exist in the downloads folder
       | folders        |
       | simple-folder  |
       | simple-folder1 |
@@ -93,10 +93,10 @@ Feature: Download resource
     And the user clicks the download button on the webUI
     Then file "parent.zip" should be downloaded
     When the user unzips the file "parent.zip"
-    Then following folders should exist in downloads folder
+    Then the following folders should exist in the downloads folder
       | folders |
       | parent  |
-    And following sub-folders should exist inside downloaded folder "parent"
+    And the following sub-folders should exist inside the downloaded folder "parent"
       | folders       |
       | sub-folder    |
       | sub-folder1   |
@@ -118,10 +118,10 @@ Feature: Download resource
     And the user clicks the download button on the webUI
     Then file "parent.zip" should be downloaded
     When the user unzips the file "parent.zip"
-    Then following folders should exist in downloads folder
+    Then the following folders should exist in the downloads folder
       | folders |
       | parent  |
-    And following sub-folders should exist inside downloaded folder "parent"
+    And the following sub-folders should exist inside the downloaded folder "parent"
       | folders       |
       | sub-folder    |
       | sub-folder1   |

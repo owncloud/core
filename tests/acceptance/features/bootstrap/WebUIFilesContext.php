@@ -2420,24 +2420,25 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		if (!$directory) {
 			$directory = getcwd() . "/tests/downloads/";
 		}
-		$res = $zip->open("{$directory}/{$file}");
+		$zipFile = "$directory/$file";
+		$res = $zip->open($zipFile);
 		if ($res === true) {
 			$zip->extractTo($directory);
 			$zip->close();
 			$files = array_diff(scandir($directory), ['.', '..']); // get all file names and remove '.', '..'
 		} else {
-			throw new Exception("Couldn't open the file");
+			throw new Exception("Couldn't open the file $zipFile");
 		}
 	}
 
 	/**
-	 * @Then following files/folders should exist in downloads folder
+	 * @Then the following files/folders should exist in the downloads folder
 	 *
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 */
-	public function followingFilesShouldExist(TableNode $table):void {
+	public function followingFilesShouldExistInTheDownloadsFolder(TableNode $table):void {
 		$directory = getenv("DOWNLOADS_DIRECTORY");
 		if (!$directory) {
 			$directory = getcwd() . "/tests/downloads/";
@@ -2453,14 +2454,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then following sub-folders should exist inside downloaded folder :parentFolder
+	 * @Then the following sub-folders should exist inside the downloaded folder :parentFolder
 	 *
 	 * @param string $parentFolder
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 */
-	public function followingSubFoldersShouldExistInsideFolder(string $parentFolder, TableNode $table):void {
+	public function followingSubFoldersShouldExistInsideDownloadedFolder(string $parentFolder, TableNode $table):void {
 		$directory = getenv("DOWNLOADS_DIRECTORY");
 		if (!$directory) {
 			$directory = getcwd() . "/tests/downloads/";
@@ -2469,7 +2470,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			if (!\in_array($row["folders"], $files)) {
 				Assert::assertFalse(
-					"{$row['folders']} not found in downloaded folder"
+					"{$row['folders']} not found in downloaded folder '$parentFolder'"
 				);
 			}
 		}
@@ -2676,12 +2677,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	/**
 	 * @AfterScenario @webUIDownload
 	 *
-	 * Delete uzipped and downloaded files
+	 * Delete unzipped and downloaded files
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function deleteUzippedAndDownloadedResources():void {
+	public function deleteUnzippedAndDownloadedResources():void {
 		$directory = getenv("DOWNLOADS_DIRECTORY");
 		if (!$directory) {
 			$directory = getcwd() . "/tests/downloads/";
