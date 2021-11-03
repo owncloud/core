@@ -923,6 +923,7 @@ Details
    https://github.com/owncloud/activity/issues/375
    https://github.com/owncloud/core/pull/39430
    https://github.com/owncloud/core/pull/39438
+   https://github.com/owncloud/core/pull/39450
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
