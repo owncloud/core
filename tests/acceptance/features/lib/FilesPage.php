@@ -577,5 +577,6 @@ class FilesPage extends FilesPageBasic {
 	public function userDownloadsResource() {
 		$download = $this->find("xpath", $this->downloadButtonXpath);
 		$download->click();
+		sleep(2); // a little pause to make sure that folder gets downloaded completely
 	}
 }

@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use GuzzleHttp\Exception\GuzzleException;
 use Page\ExternalStoragePage;
 use Page\FavoritesPage;
 use Page\FilesPage;
@@ -2275,6 +2276,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @When the user enables the setting to view hidden files/folders on the webUI
 	 * @Given the user has enabled the setting to view hidden files/folders on the webUI
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theUserEnablesTheSettingToViewHiddenFoldersOnTheWebUI() {
 		$this->filesPage->enableShowHiddenFilesSettings();
@@ -2299,6 +2301,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $fileName Name of the file/Folder
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 */
 	public function userDownloadsFile(string $fileName):void {
 		$session = $this->getSession();
@@ -2393,21 +2396,83 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function folderShouldBeDownloaded(string $expectedFolder):void {
-		$session = $this->getSession();
-		$session->visit("chrome://downloads/");
+		$directory = getenv("DOWNLOADS_DIRECTORY");
+		if (!$directory) {
+			$directory = getcwd() . "/tests/downloads/";
+		}
+		$files = array_diff(scandir($directory), ['.', '..']); // get all file names and remove '.', '..'
+		if (!\in_array($expectedFolder, $files)) {
+			Assert::fail("Could not find folder '$expectedFolder' in downloads.");
+		}
+	}
 
-		// get the name of recently downloaded folder from downloads list in chrome, google download has shadow-root dom
-		// that can't be accessed directly through php so JS is needed, this checks only the first element of the downloads list
-		sleep(5);
-		$folder = $session->evaluateScript("document.querySelector('downloads-manager').shadowRoot.querySelector('#downloadsList').querySelector('downloads-item').shadowRoot.querySelector('#content #details #title-area a').innerText");
+	/**
+	 * @When the user unzips the file :file
+	 *
+	 * @param string $file
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserUnzipsTheFolder(string $file):void {
+		$zip = new ZipArchive;
+		$directory = getenv("DOWNLOADS_DIRECTORY");
+		if (!$directory) {
+			$directory = getcwd() . "/tests/downloads/";
+		}
+		$zipFile = "$directory/$file";
+		$res = $zip->open($zipFile);
+		if ($res === true) {
+			$zip->extractTo($directory);
+			$zip->close();
+			$files = array_diff(scandir($directory), ['.', '..']); // get all file names and remove '.', '..'
+		} else {
+			throw new Exception("Couldn't open the file $zipFile");
+		}
+	}
 
-		// if the same folder gets downloaded more than once a number is added in the name i.e simple-folder(2).zip following line
-		// removes the number and bracket so that only simple-folder.zip remains
-		$output = trim(preg_replace('/\s*\([^)]+\)+/', "", $folder));
-		$actualFolder = explode(" ", $output);
+	/**
+	 * @Then the following files/folders should exist in the downloads folder
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function followingFilesShouldExistInTheDownloadsFolder(TableNode $table):void {
+		$directory = getenv("DOWNLOADS_DIRECTORY");
+		if (!$directory) {
+			$directory = getcwd() . "/tests/downloads/";
+		}
+		$files = array_diff(scandir($directory), ['.', '..']); // get all file names and remove '.', '..'
+		foreach ($table as $row) {
+			if (!\in_array($row["folders"], $files)) {
+				Assert::assertFalse(
+					"{$row['folders']} not found in downloaded folder"
+				);
+			}
+		}
+	}
 
-		if (!\in_array($expectedFolder, $actualFolder)) {
-			Assert::fail("Could not find folder '$expectedFolder' in downloads. The latest download found was '$folder'");
+	/**
+	 * @Then the following sub-folders should exist inside the downloaded folder :parentFolder
+	 *
+	 * @param string $parentFolder
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function followingSubFoldersShouldExistInsideDownloadedFolder(string $parentFolder, TableNode $table):void {
+		$directory = getenv("DOWNLOADS_DIRECTORY");
+		if (!$directory) {
+			$directory = getcwd() . "/tests/downloads/";
+		}
+		$files = array_diff(scandir("$directory/$parentFolder"), ['.', '..']); // get all file names and remove '.', '..'
+		foreach ($table as $row) {
+			if (!\in_array($row["folders"], $files)) {
+				Assert::assertFalse(
+					"{$row['folders']} not found in downloaded folder '$parentFolder'"
+				);
+			}
 		}
 	}
 
@@ -2469,6 +2534,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 *
 	 * @return void
+	 * @throws Exception
 	 */
 	public function theCommentShouldBeListedInTheCommentsTabInDetailsDialog(string $text, string $shouldOrNot):void {
 		$should = ($shouldOrNot !== "not");
@@ -2606,5 +2672,29 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			__METHOD__
 			. " The icon to upload or create files was expected not to be visible for the user, but is visible."
 		);
+	}
+
+	/**
+	 * @AfterScenario @webUIDownload
+	 *
+	 * Delete unzipped and downloaded files
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteUnzippedAndDownloadedResources():void {
+		$directory = getenv("DOWNLOADS_DIRECTORY");
+		if (!$directory) {
+			$directory = getcwd() . "/tests/downloads/";
+		}
+		$files = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ($files as $fileinfo) {
+			$todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+			$todo($fileinfo->getRealPath());
+		}
 	}
 }

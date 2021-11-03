@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @javascript @skipOnFIREFOX @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE
+@webUI @insulated @disablePreviews @javascript @skipOnFIREFOX @skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @webUIDownload
 Feature: Download resource
 
   Background:
@@ -18,7 +18,7 @@ Feature: Download resource
     And user "Alice" has logged in using the webUI
     When the user selects folder "simple-folder" using the webUI
     And the user clicks the download button on the webUI
-    Then folder "simple-folder.zip" should be downloaded
+    Then file "simple-folder.zip" should be downloaded
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: download multiple folders
@@ -30,7 +30,13 @@ Feature: Download resource
     And the user selects folder "simple-folder1" using the webUI
     And the user selects folder "simple-folder2" using the webUI
     And the user clicks the download button on the webUI
-    Then folder "download.zip" should be downloaded
+    Then file "download.zip" should be downloaded
+    When the user unzips the file "download.zip"
+    Then the following folders should exist in the downloads folder
+      | folders        |
+      | simple-folder  |
+      | simple-folder1 |
+      | simple-folder2 |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: download all files and folder
@@ -44,7 +50,14 @@ Feature: Download resource
     And the user selects folder "simple-folder2" using the webUI
     And the user selects file "textfile0.txt" using the webUI
     And the user clicks the download button on the webUI
-    Then folder "download.zip" should be downloaded
+    Then file "download.zip" should be downloaded
+    When the user unzips the file "download.zip"
+    Then the following folders should exist in the downloads folder
+      | folders        |
+      | simple-folder  |
+      | simple-folder1 |
+      | simple-folder2 |
+      | textfile0.txt  |
 
 
   Scenario: download a sub-file
@@ -64,7 +77,7 @@ Feature: Download resource
     When the user opens folder "parent" using the webUI
     And the user selects folder "sub-folder" using the webUI
     And the user clicks the download button on the webUI
-    Then folder "sub-folder.zip" should be downloaded
+    Then file "sub-folder.zip" should be downloaded
 
 
   Scenario: download multiple sub-folders
@@ -78,7 +91,16 @@ Feature: Download resource
     And the user selects folder "sub-folder1" using the webUI
     And the user selects folder "sub-folder2" using the webUI
     And the user clicks the download button on the webUI
-    Then folder "parent.zip" should be downloaded
+    Then file "parent.zip" should be downloaded
+    When the user unzips the file "parent.zip"
+    Then the following folders should exist in the downloads folder
+      | folders |
+      | parent  |
+    And the following sub-folders should exist inside the downloaded folder "parent"
+      | folders       |
+      | sub-folder    |
+      | sub-folder1   |
+      | sub-folder2   |
 
 
   Scenario: download all sub-files and sub-folders
@@ -94,4 +116,14 @@ Feature: Download resource
     And the user selects folder "sub-folder2" using the webUI
     And the user selects file "textfile0.txt" using the webUI
     And the user clicks the download button on the webUI
-    Then folder "parent.zip" should be downloaded
+    Then file "parent.zip" should be downloaded
+    When the user unzips the file "parent.zip"
+    Then the following folders should exist in the downloads folder
+      | folders |
+      | parent  |
+    And the following sub-folders should exist inside the downloaded folder "parent"
+      | folders       |
+      | sub-folder    |
+      | sub-folder1   |
+      | sub-folder2   |
+      | textfile0.txt |
