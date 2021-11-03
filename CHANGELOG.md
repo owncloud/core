@@ -97,6 +97,7 @@ Summary
 * Enhancement - Trim spaces while creating, uploading or renaming entities in webUI: [#39310](https://github.com/owncloud/core/pull/39310)
 * Enhancement - Bring back minimalistic view to occ app:list with '-m' option: [#39326](https://github.com/owncloud/core/pull/39326)
 * Enhancement - Add quality setting for JP(E)G preview images: [#39349](https://github.com/owncloud/core/pull/39349)
+* Enhancement - Add last_login to Provisioning API get user response: [#38351](https://github.com/owncloud/core/pull/38351)
 * Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
 * Enhancement - Added needed code for webp thumbnail generation to occur: [#39358](https://github.com/owncloud/core/issues/39358)
 * Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
@@ -878,6 +879,13 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4702
    https://github.com/owncloud/core/pull/39349
+
+* Enhancement - Add last_login to Provisioning API get user response: [#38351](https://github.com/owncloud/core/pull/38351)
+
+   The response to a Provisioning API GET request to the cloud/users/username endpoint now
+   includes the last_login time in the response. The value is a Unix timestamp in seconds.
+
+   https://github.com/owncloud/core/pull/38351
 
 * Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
 
