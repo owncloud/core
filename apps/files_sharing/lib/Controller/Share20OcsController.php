@@ -583,7 +583,10 @@ class Share20OcsController extends OCSController {
 		 * set or deny expiration date if the parent share has applying restrictions.
 		 */
 		if ($path->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
-			$parentShare = $path->getStorage()->getShare();
+			$parentStorage = $path->getStorage();
+			/** @var \OCA\Files_Sharing\SharedStorage $parentStorage */
+			'@phan-var \OCA\Files_Sharing\SharedStorage $parentStorage';
+			$parentShare = $parentStorage->getShare();
 			// $share does not have exp date set, care later
 			$fullShare = $this->getShareById($parentShare->getId());
 			$paramExpireDate = $this->request->getParam('expireDate', '');
@@ -988,7 +991,10 @@ class Share20OcsController extends OCSController {
 		$path = $uf->get($share->getTarget());
 
 		if ($path->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
-			$parentShare = $path->getStorage()->getShare();
+			$parentStorage = $path->getStorage();
+			/** @var \OCA\Files_Sharing\SharedStorage $parentStorage */
+			'@phan-var \OCA\Files_Sharing\SharedStorage $parentStorage';
+			$parentShare = $parentStorage->getShare();
 			// $share does not have exp date set, care later
 			$fullShare = $this->getShareById($parentShare->getId());
 			$paramExpireDate = $this->request->getParam('expireDate', '');
