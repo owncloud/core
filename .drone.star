@@ -936,7 +936,7 @@ def litmus():
                          composerInstall(phpVersion) +
                          installServer(phpVersion, db, params["logLevel"], params["useHttps"]) +
                          setupLocalStorage(phpVersion) +
-                         fixPermissions(phpVersion, False, False) +
+                         fixPermissions(phpVersion, False) +
                          createShare(phpVersion) +
                          owncloudLog("server", "src") +
                          [
@@ -1100,7 +1100,7 @@ def dav():
                              composerInstall(phpVersion) +
                              installServer(phpVersion, db, params["logLevel"]) +
                              davInstall(phpVersion, scriptPath) +
-                             fixPermissions(phpVersion, False, False) +
+                             fixPermissions(phpVersion, False) +
                              owncloudLog("server", "src") +
                              [
                                  {
@@ -1371,7 +1371,7 @@ def phpTests(ctx, testType, withCoverage):
                                  installExtraApps(phpVersion, extraAppsDict, dir["server"]) +
                                  setupScality(phpVersion, needScality) +
                                  params["extraSetup"] +
-                                 fixPermissions(phpVersion, False, False) +
+                                 fixPermissions(phpVersion, False) +
                                  owncloudLog("server", "src") +
                                  [
                                      {
@@ -2702,7 +2702,7 @@ def setupScality(phpVersion, scalityS3):
         ] if createExtraBuckets else []),
     }]
 
-def fixPermissions(phpVersion, federatedServerNeeded, selUserNeeded, pathOfServerUnderTest = dir["server"]):
+def fixPermissions(phpVersion, federatedServerNeeded, selUserNeeded = False, pathOfServerUnderTest = dir["server"]):
     return [{
         "name": "fix-permissions",
         "image": "owncloudci/php:%s" % phpVersion,
