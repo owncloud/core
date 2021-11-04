@@ -2749,16 +2749,16 @@
         },
         {
             "name": "sabre/event",
-            "version": "5.1.3",
+            "version": "5.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/event.git",
-                "reference": "6d86fd14779c58e956f0b2b0496cf3f7f06da177"
+                "reference": "d7da22897125d34d7eddf7977758191c06a74497"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/event/zipball/6d86fd14779c58e956f0b2b0496cf3f7f06da177",
-                "reference": "6d86fd14779c58e956f0b2b0496cf3f7f06da177",
+                "url": "https://api.github.com/repos/sabre-io/event/zipball/d7da22897125d34d7eddf7977758191c06a74497",
+                "reference": "d7da22897125d34d7eddf7977758191c06a74497",
                 "shasum": ""
             },
             "require": {
@@ -2811,20 +2811,20 @@
                 "issues": "https://github.com/sabre-io/event/issues",
                 "source": "https://github.com/fruux/sabre-event"
             },
-            "time": "2021-11-04T04:32:38+00:00"
+            "time": "2021-11-04T06:51:17+00:00"
         },
         {
             "name": "sabre/http",
-            "version": "5.1.2",
+            "version": "5.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/http.git",
-                "reference": "4ba11107898ca53901c5a84906a2c2b416ef5b75"
+                "reference": "315f592adfcba8aeb73c2fd64285205747acbbd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/http/zipball/4ba11107898ca53901c5a84906a2c2b416ef5b75",
-                "reference": "4ba11107898ca53901c5a84906a2c2b416ef5b75",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/315f592adfcba8aeb73c2fd64285205747acbbd7",
+                "reference": "315f592adfcba8aeb73c2fd64285205747acbbd7",
                 "shasum": ""
             },
             "require": {
@@ -2874,7 +2874,7 @@
                 "issues": "https://github.com/sabre-io/http/issues",
                 "source": "https://github.com/fruux/sabre-http"
             },
-            "time": "2021-11-03T07:27:56+00:00"
+            "time": "2021-11-04T07:02:36+00:00"
         },
         {
             "name": "sabre/uri",
@@ -2935,16 +2935,16 @@
         },
         {
             "name": "sabre/vobject",
-            "version": "4.3.6",
+            "version": "4.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/vobject.git",
-                "reference": "0bd8c87779d38cc867eea5977fe52c618e6f926b"
+                "reference": "c3fa8c8fec2fe4de91ae0c537748c22ecb0b6062"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/0bd8c87779d38cc867eea5977fe52c618e6f926b",
-                "reference": "0bd8c87779d38cc867eea5977fe52c618e6f926b",
+                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/c3fa8c8fec2fe4de91ae0c537748c22ecb0b6062",
+                "reference": "c3fa8c8fec2fe4de91ae0c537748c22ecb0b6062",
                 "shasum": ""
             },
             "require": {
@@ -3035,20 +3035,20 @@
                 "issues": "https://github.com/sabre-io/vobject/issues",
                 "source": "https://github.com/fruux/sabre-vobject"
             },
-            "time": "2021-11-03T07:45:38+00:00"
+            "time": "2021-11-04T07:08:20+00:00"
         },
         {
             "name": "sabre/xml",
-            "version": "2.2.4",
+            "version": "2.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "0aac08d165335a14f596868387f670374fa8ea0e"
+                "reference": "a6af111850e7536d200d9637c34885cd3c77a86c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/0aac08d165335a14f596868387f670374fa8ea0e",
-                "reference": "0aac08d165335a14f596868387f670374fa8ea0e",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/a6af111850e7536d200d9637c34885cd3c77a86c",
+                "reference": "a6af111850e7536d200d9637c34885cd3c77a86c",
                 "shasum": ""
             },
             "require": {
@@ -3104,7 +3104,7 @@
                 "issues": "https://github.com/sabre-io/xml/issues",
                 "source": "https://github.com/fruux/sabre-xml"
             },
-            "time": "2021-11-03T07:29:38+00:00"
+            "time": "2021-11-04T06:37:27+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
