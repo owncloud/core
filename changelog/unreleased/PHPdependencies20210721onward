@@ -16,6 +16,7 @@ The following have been updated:
 - phpseclib/phpseclib (3.0.9 to 3.0.11)
 - pimple/pimple (3.2.3 to 3.5.0)
 - punic/punic (3.6.0 to 3.6.1)
+- sabre/http (5.1.1 to 5.1.2)
 - swiftmailer/swiftmailer (v6.2.7 to v6.3.0)
 
 https://github.com/owncloud/core/pull/38907
@@ -33,3 +34,4 @@ https://github.com/owncloud/core/pull/39422
 https://github.com/owncloud/core/pull/39427
 https://github.com/owncloud/core/pull/39433
 https://github.com/owncloud/core/pull/39434
+https://github.com/owncloud/core/pull/39453
