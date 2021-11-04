@@ -7,6 +7,7 @@ OC.L10N.register(
     "Please select tags to filter by" : "Filtrelemek için etiketleri seçin",
     "No files found for the selected tags" : "Seçilen etiketler ile ilgili dosya bulunamadı",
     "<strong>System tags</strong> for a file have been modified" : "Bir dosya için <strong>sistem etiketleri</strong> değiştirildi",
+    "System tag %3$s was assigned to %2$s due to automation rule" : "Sistem etiketi %3$s, otomasyon kuralı nedeniyle %2$s'a atandı.",
     "You assigned system tag %3$s" : "%3$s sistem etiketini atadınız",
     "%1$s assigned system tag %3$s" : "%1$s, %3$s sistem etiketini atadı",
     "You unassigned system tag %3$s" : "%3$s sistem etiketini kaldırdınız",
