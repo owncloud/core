@@ -19,6 +19,7 @@ The following have been updated:
 - sabre/event (5.1.2 to 5.1.4)
 - sabre/http (5.1.1 to 5.1.3)
 - sabre/vobject (4.3.5 to 4.3.7)
+- sabre/uri (2.2.1 to 2.2.2)
 - sabre/xml (2.2.3 to 2.2.5)
 - swiftmailer/swiftmailer (v6.2.7 to v6.3.0)
 
@@ -38,3 +39,4 @@ https://github.com/owncloud/core/pull/39427
 https://github.com/owncloud/core/pull/39433
 https://github.com/owncloud/core/pull/39434
 https://github.com/owncloud/core/pull/39453
+https://github.com/owncloud/core/pull/39456

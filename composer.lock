@@ -2878,23 +2878,23 @@
         },
         {
             "name": "sabre/uri",
-            "version": "2.2.1",
+            "version": "2.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/uri.git",
-                "reference": "f502edffafea8d746825bd5f0b923a60fd2715ff"
+                "reference": "7cb0f489578afad5006e85cd60f18ff33f2d440d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/uri/zipball/f502edffafea8d746825bd5f0b923a60fd2715ff",
-                "reference": "f502edffafea8d746825bd5f0b923a60fd2715ff",
+                "url": "https://api.github.com/repos/sabre-io/uri/zipball/7cb0f489578afad5006e85cd60f18ff33f2d440d",
+                "reference": "7cb0f489578afad5006e85cd60f18ff33f2d440d",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1 || ^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "~2.16.1",
+                "friendsofphp/php-cs-fixer": "~2.17.1",
                 "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "^7.5 || ^8.5 || ^9.0"
             },
@@ -2931,7 +2931,7 @@
                 "issues": "https://github.com/sabre-io/uri/issues",
                 "source": "https://github.com/fruux/sabre-uri"
             },
-            "time": "2020-10-03T10:33:23+00:00"
+            "time": "2021-11-04T09:29:58+00:00"
         },
         {
             "name": "sabre/vobject",
