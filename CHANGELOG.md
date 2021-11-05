@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Security - Patch jquery ui: [#39451](https://github.com/owncloud/core/pull/39451)
 * Bugfix - Do not try to login via auth module if the user is disabled: [#36257](https://github.com/owncloud/core/pull/36257)
 * Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
@@ -107,6 +108,14 @@ Summary
 
 Details
 -------
+
+* Security - Patch jquery ui: [#39451](https://github.com/owncloud/core/pull/39451)
+
+   Patched jquery ui issues:
+
+   * CVE-2021-41182 * CVE-2021-41183 * CVE-2021-41184
+
+   https://github.com/owncloud/core/pull/39451
 
 * Bugfix - Do not try to login via auth module if the user is disabled: [#36257](https://github.com/owncloud/core/pull/36257)
 
