@@ -24,6 +24,7 @@ OC.L10N.register(
     "Periodically synchronize outdated federated shares for active users" : "Периодически синхронизировать устаревшие федеративные ресурсы для активных пользователей",
     "Allow users on this server to send shares to other servers" : "Разрешить пользователям делиться с пользователями других серверов",
     "Allow users on this server to receive shares from other servers" : "Разрешить пользователям использовать общие ресурсы с других серверов",
+    "Automatically accept federated shares from trusted servers" : "Автоматически принимать федеративные ресурсы доступа с доверенных серверов",
     "Federated Cloud" : "Объединение облачных хранилищ",
     "Your Federated Cloud ID:" : "Ваш ID в объединении облачных хранилищ:",
     "Share it:" : "Поделись этим:",
