@@ -585,6 +585,11 @@ Details
    sabre/http (5.1.1 to 5.1.3) - sabre/vobject (4.3.5 to 4.3.7) - sabre/uri (2.2.1 to 2.2.2) -
    sabre/xml (2.2.3 to 2.2.5) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0)
 
+   The following have been updated in files_external/3rdparty: - firebase/php-jwt (v5.4.0 to
+   v5.5.0) - google/apiclient (v2.9.2 to v2.11.0) - google/apiclient-services (v0.213.0 to
+   v0.220.0) - guzzlehttp/psr7 (1.8.2 to 1.8.3) - monolog/monolog (2.3.4 to 2.3.5) -
+   phpseclib/phpseclib (3.0.10 to 3.0.11)
+
    https://github.com/owncloud/core/pull/38907
    https://github.com/owncloud/core/pull/39030
    https://github.com/owncloud/core/pull/39047
