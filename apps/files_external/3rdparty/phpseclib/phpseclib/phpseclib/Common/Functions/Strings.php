@@ -70,6 +70,7 @@ abstract class Strings
      * C = byte
      * b = boolean (true/false)
      * N = uint32
+     * Q = uint64
      * s = string
      * i = mpint
      * L = name-list
@@ -100,6 +101,12 @@ abstract class Strings
                         throw new \LengthException('At least four byte needs to be present for successful N / i / s / L decodes');
                     }
                     break;
+                case 'Q':
+                    if (strlen($data) < 8) {
+                        throw new \LengthException('At least eight byte needs to be present for successful N / i / s / L decodes');
+                    }
+                    break;
+
                 default:
                     throw new \InvalidArgumentException('$format contains an invalid character');
             }
@@ -112,6 +119,19 @@ abstract class Strings
                     continue 2;
                 case 'N':
                     list(, $temp) = unpack('N', self::shift($data, 4));
+                    $result[] = $temp;
+                    continue 2;
+                case 'Q':
+                    // pack() added support for Q in PHP 5.6.3 and PHP 5.6 is phpseclib 3's minimum version
+                    // so in theory we could support this BUT, "64-bit format codes are not available for
+                    // 32-bit versions" and phpseclib works on 32-bit installs. on 32-bit installs
+                    // 64-bit floats can be used to get larger numbers then 32-bit signed ints would allow
+                    // for. sure, you're not gonna get the full precision of 64-bit numbers but just because
+                    // you need > 32-bit precision doesn't mean you need the full 64-bit precision
+                    extract(unpack('Nupper/Nlower', self::shift($data, 8)));
+                    $temp = $upper ? 4294967296 * $upper : 0;
+                    $temp+= $lower < 0 ? ($lower & 0x7FFFFFFFF) + 0x80000000 : $lower;
+                    // $temp = hexdec(bin2hex(self::shift($data, 8)));
                     $result[] = $temp;
                     continue 2;
             }
@@ -164,6 +184,13 @@ abstract class Strings
                         throw new \InvalidArgumentException('A boolean parameter was expected.');
                     }
                     $result.= $element ? "\1" : "\0";
+                    break;
+                case 'Q':
+                    if (!is_int($element) && !is_float($element)) {
+                        throw new \InvalidArgumentException('An integer was expected.');
+                    }
+                    // 4294967296 == 1 << 32
+                    $result.= pack('NN', $element / 4294967296, $element);
                     break;
                 case 'N':
                     if (is_float($element)) {

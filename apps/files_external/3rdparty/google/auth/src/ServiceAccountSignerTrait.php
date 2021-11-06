@@ -38,7 +38,7 @@ trait ServiceAccountSignerTrait
 
         $signedString = '';
         if (class_exists('\\phpseclib\\Crypt\\RSA') && !$forceOpenssl) {
-            $rsa = new RSA;
+            $rsa = new RSA();
             $rsa->loadKey($privateKey);
             $rsa->setSignatureMode(RSA::SIGNATURE_PKCS1);
             $rsa->setHash('sha256');

@@ -25,8 +25,8 @@ use Firebase\JWT\SignatureInvalidException;
 use Google\Auth\Cache\MemoryCacheItemPool;
 use Google\Auth\HttpHandler\HttpClientCache;
 use Google\Auth\HttpHandler\HttpHandlerFactory;
-use GuzzleHttp\Psr7;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
 use InvalidArgumentException;
 use phpseclib\Crypt\RSA;
 use phpseclib\Math\BigInteger;
@@ -300,7 +300,7 @@ class AccessToken
             }
         }
 
-        $body = Psr7\stream_for(http_build_query(['token' => $token]));
+        $body = Utils::streamFor(http_build_query(['token' => $token]));
         $request = new Request('POST', self::OAUTH2_REVOKE_URI, [
             'Cache-Control' => 'no-store',
             'Content-Type'  => 'application/x-www-form-urlencoded',

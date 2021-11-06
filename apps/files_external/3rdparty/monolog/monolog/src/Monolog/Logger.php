@@ -15,7 +15,9 @@ use DateTimeZone;
 use Monolog\Handler\HandlerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\InvalidArgumentException;
+use Psr\Log\LogLevel;
 use Throwable;
+use Stringable;
 
 /**
  * Monolog log channel
@@ -24,6 +26,10 @@ use Throwable;
  * and uses them to store records that are added to it.
  *
  * @author Jordi Boggiano <j.boggiano@seld.be>
+ *
+ * @phpstan-type Level Logger::DEBUG|Logger::INFO|Logger::NOTICE|Logger::WARNING|Logger::ERROR|Logger::CRITICAL|Logger::ALERT|Logger::EMERGENCY
+ * @phpstan-type LevelName 'DEBUG'|'INFO'|'NOTICE'|'WARNING'|'ERROR'|'CRITICAL'|'ALERT'|'EMERGENCY'
+ * @phpstan-type Record array{message: string, context: mixed[], level: Level, level_name: LevelName, channel: string, datetime: \DateTimeImmutable, extra: mixed[]}
  */
 class Logger implements LoggerInterface, ResettableInterface
 {
@@ -91,6 +97,8 @@ class Logger implements LoggerInterface, ResettableInterface
      * This is a static variable and not a constant to serve as an extension point for custom levels
      *
      * @var array<int, string> $levels Logging levels with the levels as key
+     *
+     * @phpstan-var array<Level, LevelName> $levels Logging levels with the levels as key
      */
     protected static $levels = [
         self::DEBUG     => 'DEBUG',
@@ -276,6 +284,8 @@ class Logger implements LoggerInterface, ResettableInterface
      * @param  string  $message The log message
      * @param  mixed[] $context The log context
      * @return bool    Whether the record has been processed
+     *
+     * @phpstan-param Level $level
      */
     public function addRecord(int $level, string $message, array $context = []): bool
     {
@@ -373,6 +383,7 @@ class Logger implements LoggerInterface, ResettableInterface
      * Gets all supported logging levels.
      *
      * @return array<string, int> Assoc array with human-readable level names => level codes.
+     * @phpstan-return array<LevelName, Level>
      */
     public static function getLevels(): array
     {
@@ -383,6 +394,9 @@ class Logger implements LoggerInterface, ResettableInterface
      * Gets the name of the logging level.
      *
      * @throws \Psr\Log\InvalidArgumentException If level is not defined
+     *
+     * @phpstan-param  Level     $level
+     * @phpstan-return LevelName
      */
     public static function getLevelName(int $level): string
     {
@@ -398,11 +412,15 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * @param  string|int                        $level Level number (monolog) or name (PSR-3)
      * @throws \Psr\Log\InvalidArgumentException If level is not defined
+     *
+     * @phpstan-param  Level|LevelName|LogLevel::* $level
+     * @phpstan-return Level
      */
     public static function toMonologLevel($level): int
     {
         if (is_string($level)) {
             if (is_numeric($level)) {
+                /** @phpstan-ignore-next-line */
                 return intval($level);
             }
 
@@ -413,11 +431,11 @@ class Logger implements LoggerInterface, ResettableInterface
                 return constant(__CLASS__ . '::' . $upper);
             }
 
-            throw new InvalidArgumentException('Level "'.$level.'" is not defined, use one of: '.implode(', ', array_keys(static::$levels)));
+            throw new InvalidArgumentException('Level "'.$level.'" is not defined, use one of: '.implode(', ', array_keys(static::$levels) + static::$levels));
         }
 
         if (!is_int($level)) {
-            throw new InvalidArgumentException('Level "'.var_export($level, true).'" is not defined, use one of: '.implode(', ', array_keys(static::$levels)));
+            throw new InvalidArgumentException('Level "'.var_export($level, true).'" is not defined, use one of: '.implode(', ', array_keys(static::$levels) + static::$levels));
         }
 
         return $level;
@@ -425,6 +443,8 @@ class Logger implements LoggerInterface, ResettableInterface
 
     /**
      * Checks whether the Logger has a handler that listens on the given level
+     *
+     * @phpstan-param Level $level
      */
     public function isHandling(int $level): bool
     {
@@ -463,12 +483,18 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param mixed   $level   The log level
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param mixed             $level   The log level
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
+     *
+     * @phpstan-param Level|LevelName|LogLevel::* $level
      */
     public function log($level, $message, array $context = []): void
     {
+        if (!is_int($level) && !is_string($level)) {
+            throw new \InvalidArgumentException('$level is expected to be a string or int');
+        }
+
         $level = static::toMonologLevel($level);
 
         $this->addRecord($level, (string) $message, $context);
@@ -479,8 +505,8 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
      */
     public function debug($message, array $context = []): void
     {
@@ -492,8 +518,8 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
      */
     public function info($message, array $context = []): void
     {
@@ -505,8 +531,8 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
      */
     public function notice($message, array $context = []): void
     {
@@ -518,8 +544,8 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
      */
     public function warning($message, array $context = []): void
     {
@@ -531,8 +557,8 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
      */
     public function error($message, array $context = []): void
     {
@@ -544,8 +570,8 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
      */
     public function critical($message, array $context = []): void
     {
@@ -557,8 +583,8 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
      */
     public function alert($message, array $context = []): void
     {
@@ -570,8 +596,8 @@ class Logger implements LoggerInterface, ResettableInterface
      *
      * This method allows for compatibility with common interfaces.
      *
-     * @param string  $message The log message
-     * @param mixed[] $context The log context
+     * @param string|Stringable $message The log message
+     * @param mixed[]           $context The log context
      */
     public function emergency($message, array $context = []): void
     {
@@ -599,6 +625,9 @@ class Logger implements LoggerInterface, ResettableInterface
     /**
      * Delegates exception management to the custom exception handler,
      * or throws the exception if no custom handler is set.
+     *
+     * @param array $record
+     * @phpstan-param Record $record
      */
     protected function handleException(Throwable $e, array $record): void
     {

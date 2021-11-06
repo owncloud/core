@@ -1,4 +1,4 @@
-# Monolog - Logging for PHP [![Build Status](https://travis-ci.org/Seldaek/monolog.svg?branch=master)](https://travis-ci.org/Seldaek/monolog)
+# Monolog - Logging for PHP [![Continuous Integration](https://github.com/Seldaek/monolog/workflows/Continuous%20Integration/badge.svg?branch=main)](https://github.com/Seldaek/monolog/actions)
 
 [![Total Downloads](https://img.shields.io/packagist/dt/monolog/monolog.svg)](https://packagist.org/packages/monolog/monolog)
 [![Latest Stable Version](https://img.shields.io/packagist/v/monolog/monolog.svg)](https://packagist.org/packages/monolog/monolog)
@@ -86,7 +86,7 @@ Bugs and feature request are tracked on [GitHub](https://github.com/Seldaek/mono
 - [Slim](http://www.slimframework.com/) is usable with Monolog via the [Slim-Monolog](https://github.com/Flynsarmy/Slim-Monolog) log writer.
 - [XOOPS 2.6](http://xoops.org/) comes out of the box with Monolog.
 - [Aura.Web_Project](https://github.com/auraphp/Aura.Web_Project) comes out of the box with Monolog.
-- [Nette Framework](http://nette.org/en/) can be used with Monolog via [contributte/monolog](https://github.com/contributte/monolog) extension.
+- [Nette Framework](http://nette.org/en/) is usable with Monolog via the [contributte/monolog](https://github.com/contributte/monolog) or [orisai/nette-monolog](https://github.com/orisai/nette-monolog) extensions.
 - [Proton Micro Framework](https://github.com/alexbilbie/Proton) comes out of the box with Monolog.
 - [FuelPHP](http://fuelphp.com/) comes out of the box with Monolog.
 - [Equip Framework](https://github.com/equip/framework) comes out of the box with Monolog.

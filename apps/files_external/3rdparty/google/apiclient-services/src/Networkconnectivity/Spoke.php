@@ -1,0 +1,146 @@
+<?php
+/*
+ * Copyright 2014 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
+namespace Google\Service\Networkconnectivity;
+
+class Spoke extends \Google\Model
+{
+  public $createTime;
+  public $description;
+  public $hub;
+  public $labels;
+  protected $linkedInterconnectAttachmentsType = LinkedInterconnectAttachments::class;
+  protected $linkedInterconnectAttachmentsDataType = '';
+  protected $linkedRouterApplianceInstancesType = LinkedRouterApplianceInstances::class;
+  protected $linkedRouterApplianceInstancesDataType = '';
+  protected $linkedVpnTunnelsType = LinkedVpnTunnels::class;
+  protected $linkedVpnTunnelsDataType = '';
+  public $name;
+  public $state;
+  public $uniqueId;
+  public $updateTime;
+
+  public function setCreateTime($createTime)
+  {
+    $this->createTime = $createTime;
+  }
+  public function getCreateTime()
+  {
+    return $this->createTime;
+  }
+  public function setDescription($description)
+  {
+    $this->description = $description;
+  }
+  public function getDescription()
+  {
+    return $this->description;
+  }
+  public function setHub($hub)
+  {
+    $this->hub = $hub;
+  }
+  public function getHub()
+  {
+    return $this->hub;
+  }
+  public function setLabels($labels)
+  {
+    $this->labels = $labels;
+  }
+  public function getLabels()
+  {
+    return $this->labels;
+  }
+  /**
+   * @param LinkedInterconnectAttachments
+   */
+  public function setLinkedInterconnectAttachments(LinkedInterconnectAttachments $linkedInterconnectAttachments)
+  {
+    $this->linkedInterconnectAttachments = $linkedInterconnectAttachments;
+  }
+  /**
+   * @return LinkedInterconnectAttachments
+   */
+  public function getLinkedInterconnectAttachments()
+  {
+    return $this->linkedInterconnectAttachments;
+  }
+  /**
+   * @param LinkedRouterApplianceInstances
+   */
+  public function setLinkedRouterApplianceInstances(LinkedRouterApplianceInstances $linkedRouterApplianceInstances)
+  {
+    $this->linkedRouterApplianceInstances = $linkedRouterApplianceInstances;
+  }
+  /**
+   * @return LinkedRouterApplianceInstances
+   */
+  public function getLinkedRouterApplianceInstances()
+  {
+    return $this->linkedRouterApplianceInstances;
+  }
+  /**
+   * @param LinkedVpnTunnels
+   */
+  public function setLinkedVpnTunnels(LinkedVpnTunnels $linkedVpnTunnels)
+  {
+    $this->linkedVpnTunnels = $linkedVpnTunnels;
+  }
+  /**
+   * @return LinkedVpnTunnels
+   */
+  public function getLinkedVpnTunnels()
+  {
+    return $this->linkedVpnTunnels;
+  }
+  public function setName($name)
+  {
+    $this->name = $name;
+  }
+  public function getName()
+  {
+    return $this->name;
+  }
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  public function getState()
+  {
+    return $this->state;
+  }
+  public function setUniqueId($uniqueId)
+  {
+    $this->uniqueId = $uniqueId;
+  }
+  public function getUniqueId()
+  {
+    return $this->uniqueId;
+  }
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
+  }
+}
+
+// Adding a class alias for backwards compatibility with the previous class name.
+class_alias(Spoke::class, 'Google_Service_Networkconnectivity_Spoke');

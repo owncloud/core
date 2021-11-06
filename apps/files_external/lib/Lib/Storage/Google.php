@@ -35,6 +35,8 @@
 
 namespace OCA\Files_External\Lib\Storage;
 
+use Google\Service\Drive;
+use Google\Service\Drive\DriveFile;
 use GuzzleHttp\Exception\RequestException;
 use Icewind\Streams\IteratorDirectory;
 use Icewind\Streams\RetryWrapper;
@@ -76,7 +78,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			$this->client->setAccessToken(\json_decode($params['token'], true));
 
 			// note: API connection is lazy
-			$this->service = new \Google_Service_Drive($this->client);
+			$this->service = new Drive($this->client);
 			$token = \json_decode($params['token'], true);
 			$this->id = 'google::'.\substr($params['client_id'], 0, 30).$token['created'];
 			$this->root = isset($params['root']) ? $params['root'] : '';
@@ -146,7 +148,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	 * The path is relative, in case a subfolder is used.
 	 * Returns false on failure.
 	 * @param string $path
-	 * @return \Google_Service_Drive_DriveFile|false
+	 * @return DriveFile|false
 	 */
 	private function getDriveFile($path) {
 		return $this->getInternalDriveFile($this->getAbsolutePath($path));
@@ -156,7 +158,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	 * Get the elements of the absolute path in case a subfolder is used.
 	 * Returns false on failure.
 	 * @param string $path
-	 * @return \Google_Service_Drive_DriveFile|false
+	 * @return DriveFile|false
 	 */
 	private function getInternalDriveFile($path) {
 		// Remove leading and trailing slashes
@@ -212,7 +214,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 							$pathWithoutExt = \substr($path, 0, $pos);
 							$file = $this->getInternalDriveFile($pathWithoutExt);
 							if ($file && $this->isGoogleDocFile($file)) {
-								// Switch cached Google_Service_Drive_DriveFile to the correct index
+								// Switch cached Google\Service\Drive\DriveFile to the correct index
 								unset($this->driveFiles[$pathWithoutExt]);
 								$this->driveFiles[$path] = $file;
 								$parentId = $file->getId();
@@ -230,18 +232,18 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	/**
-	 * Set the Google_Service_Drive_DriveFile object in the cache
+	 * Set the Google\Service\Drive\DriveFile object in the cache
 	 * @param string $path
-	 * @param \Google_Service_Drive_DriveFile|false $file
+	 * @param DriveFile|false $file
 	 */
 	private function setDriveFile($path, $file) {
 		$this->setDriveFileHelper($this->getAbsolutePath($path), $file);
 	}
 
 	/**
-	 * Set the Google_Service_Drive_DriveFile object in the cache
+	 * Set the Google\Service\Drive\DriveFile object in the cache
 	 * @param string $path
-	 * @param \Google_Service_Drive_DriveFile|false $file
+	 * @param DriveFile|false $file
 	 */
 	private function setDriveFileHelper($path, $file) {
 		$path = \trim($path, '/');
@@ -296,7 +298,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	/**
 	 * Returns whether the given drive file is a Google Doc file
 	 *
-	 * @param \Google_Service_Drive_DriveFile
+	 * @param DriveFile
 	 *
 	 * @return true if the file is a Google Doc file, false otherwise
 	 */
@@ -308,7 +310,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 		if (!$this->is_dir($path)) {
 			$parentFolder = $this->getDriveFile(\dirname($path));
 			if ($parentFolder) {
-				$folder = new \Google_Service_Drive_DriveFile();
+				$folder = new DriveFile();
 				$folder->setName(\basename($path));
 				$folder->setMimeType(self::FOLDER);
 				$folder->setParents([$parentFolder->getId()]);
@@ -390,7 +392,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 							$this->onDuplicateFileDetected($filepath);
 						}
 					} else {
-						// Cache the Google_Service_Drive_DriveFile for future use
+						// Cache the Google\Service\Drive\DriveFile for future use
 						$this->setDriveFile($filepath, $child);
 						$files[] = $name;
 					}
@@ -454,7 +456,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	public function unlink($path) {
 		$file = $this->getDriveFile($path);
 		if ($file) {
-			$toUpdate = new \Google_Service_Drive_DriveFile();
+			$toUpdate = new DriveFile();
 			$toUpdate->setTrashed(true);
 			// not interested in the 'fields' returned by the response
 			$result = $this->service->files->update($file->getId(), $toUpdate);
@@ -471,7 +473,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 		$file = $this->getDriveFile($path1);
 		if ($file) {
 			$newFile = $this->getDriveFile($path2);
-			$toUpdate = new \Google_Service_Drive_DriveFile();
+			$toUpdate = new DriveFile();
 			if (\dirname($path1) === \dirname($path2)) {
 				if ($newFile) {
 					// rename to the name of the target file, could be an office file without extension
@@ -605,11 +607,11 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					$this->client->setDefer($useChunking);
 					$request = $this->service->files->update(
 						$file->getId(),
-						new \Google_Service_Drive_DriveFile(),
+						new DriveFile(),
 						$params
 					);
 				} else {
-					$file = new \Google_Service_Drive_DriveFile();
+					$file = new DriveFile();
 					$file->setName(\basename($path));
 					$file->setMimeType($mimetype);
 					$file->setParents([$parentFolder->getId()]);
@@ -696,7 +698,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 
 	public function touch($path, $mtime = null) {
 		$file = $this->getDriveFile($path);
-		$toUpdate = new \Google_Service_Drive_DriveFile();
+		$toUpdate = new DriveFile();
 		$result = false;
 		if ($file) {
 			if (isset($mtime)) {

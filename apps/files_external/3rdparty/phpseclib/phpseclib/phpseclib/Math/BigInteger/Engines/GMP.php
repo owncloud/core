@@ -512,8 +512,6 @@ class GMP extends Engine
      */
     protected function normalize(GMP $result)
     {
-        unset($result->reduce);
-
         $result->precision = $this->precision;
         $result->bitmask = $this->bitmask;
 
@@ -683,10 +681,9 @@ class GMP extends Engine
     public function createRecurringModuloFunction()
     {
         $temp = $this->value;
-        $this->reduce = function(GMP $x) use ($temp) {
+        return function(GMP $x) use ($temp) {
             return new GMP($x->value % $temp);
         };
-        return $this->reduce;
     }
 
     /**
