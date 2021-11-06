@@ -304,7 +304,9 @@ class MigrationService {
 			case 'latest':
 				$this->ensureMigrationsAreLoaded();
 
-				return @\end($this->getAvailableVersions());
+				// A variable must be used because \end() must pass the array by reference
+				$availableVersionsArray = $this->getAvailableVersions();
+				return @\end($availableVersionsArray);
 		}
 		return '0';
 	}
@@ -336,7 +338,9 @@ class MigrationService {
 		if (\count($m) === 0) {
 			return '0';
 		}
-		return @\end(\array_values($m));
+		// A variable must be used because \end() must pass the array by reference
+		$migratedVersionsArray = \array_values($m);
+		return @\end($migratedVersionsArray);
 	}
 
 	/**
