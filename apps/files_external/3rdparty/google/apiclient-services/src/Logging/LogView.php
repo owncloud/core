@@ -23,8 +23,6 @@ class LogView extends \Google\Model
   public $description;
   public $filter;
   public $name;
-  protected $schemaType = TableSchema::class;
-  protected $schemaDataType = '';
   public $updateTime;
 
   public function setCreateTime($createTime)
@@ -58,20 +56,6 @@ class LogView extends \Google\Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param TableSchema
-   */
-  public function setSchema(TableSchema $schema)
-  {
-    $this->schema = $schema;
-  }
-  /**
-   * @return TableSchema
-   */
-  public function getSchema()
-  {
-    return $this->schema;
   }
   public function setUpdateTime($updateTime)
   {

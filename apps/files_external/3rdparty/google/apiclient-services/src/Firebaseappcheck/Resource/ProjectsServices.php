@@ -58,7 +58,8 @@ class ProjectsServices extends \Google\Service\Resource
    * ``` Note that the `service_id` element must be a supported service ID.
    * Currently, the following service IDs are supported: *
    * `firebasestorage.googleapis.com` (Cloud Storage for Firebase) *
-   * `firebasedatabase.googleapis.com` (Firebase Realtime Database)
+   * `firebasedatabase.googleapis.com` (Firebase Realtime Database) *
+   * `firestore.googleapis.com` (Cloud Firestore)
    * @param array $optParams Optional parameters.
    * @return GoogleFirebaseAppcheckV1betaService
    */
@@ -104,7 +105,7 @@ class ProjectsServices extends \Google\Service\Resource
    * `service_id` element must be a supported service ID. Currently, the following
    * service IDs are supported: * `firebasestorage.googleapis.com` (Cloud Storage
    * for Firebase) * `firebasedatabase.googleapis.com` (Firebase Realtime
-   * Database)
+   * Database) * `firestore.googleapis.com` (Cloud Firestore)
    * @param GoogleFirebaseAppcheckV1betaService $postBody
    * @param array $optParams Optional parameters.
    *

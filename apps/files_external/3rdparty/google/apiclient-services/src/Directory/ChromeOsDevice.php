@@ -27,6 +27,8 @@ class ChromeOsDevice extends \Google\Collection
   public $annotatedUser;
   public $autoUpdateExpiration;
   public $bootMode;
+  protected $cpuInfoType = ChromeOsDeviceCpuInfo::class;
+  protected $cpuInfoDataType = 'array';
   protected $cpuStatusReportsType = ChromeOsDeviceCpuStatusReports::class;
   protected $cpuStatusReportsDataType = 'array';
   protected $deviceFilesType = ChromeOsDeviceDeviceFiles::class;
@@ -120,6 +122,20 @@ class ChromeOsDevice extends \Google\Collection
   public function getBootMode()
   {
     return $this->bootMode;
+  }
+  /**
+   * @param ChromeOsDeviceCpuInfo[]
+   */
+  public function setCpuInfo($cpuInfo)
+  {
+    $this->cpuInfo = $cpuInfo;
+  }
+  /**
+   * @return ChromeOsDeviceCpuInfo[]
+   */
+  public function getCpuInfo()
+  {
+    return $this->cpuInfo;
   }
   /**
    * @param ChromeOsDeviceCpuStatusReports[]

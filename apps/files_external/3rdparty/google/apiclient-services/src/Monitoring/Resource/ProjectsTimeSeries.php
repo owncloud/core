@@ -53,6 +53,28 @@ class ProjectsTimeSeries extends \Google\Service\Resource
     return $this->call('create', [$params], MonitoringEmpty::class);
   }
   /**
+   * Creates or adds data to one or more service time series. A service time
+   * series is a time series for a metric from a Google Cloud service. The
+   * response is empty if all time series in the request were written. If any time
+   * series could not be written, a corresponding failure message is included in
+   * the error response. This endpoint rejects writes to user-defined metrics.
+   * This method is only for use by Google Cloud services. Use
+   * projects.timeSeries.create instead. (timeSeries.createService)
+   *
+   * @param string $name Required. The project
+   * (https://cloud.google.com/monitoring/api/v3#project_name) on which to execute
+   * the request. The format is: projects/[PROJECT_ID_OR_NUMBER]
+   * @param CreateTimeSeriesRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return MonitoringEmpty
+   */
+  public function createService($name, CreateTimeSeriesRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('createService', [$params], MonitoringEmpty::class);
+  }
+  /**
    * Lists time series that match a filter. This method does not require a
    * Workspace. (timeSeries.listProjectsTimeSeries)
    *

@@ -492,7 +492,11 @@ class RegionInstanceGroupManagers extends \Google\Service\Resource
    * if the instances in the group are still in the process of being patched. You
    * must separately verify the status of the individual instances with the
    * listmanagedinstances method. This method supports PATCH semantics and uses
-   * the JSON merge patch format and processing rules.
+   * the JSON merge patch format and processing rules. If you update your group to
+   * specify a new template or instance configuration, it's possible that your
+   * intended specification for each VM in the group is different from the current
+   * state of that VM. To learn how to apply an updated configuration to the VMs
+   * in a MIG, see Updating instances in a MIG.
    * (regionInstanceGroupManagers.patch)
    *
    * @param string $project Project ID for this request.

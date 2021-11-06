@@ -21,6 +21,8 @@ class AccountsLinkRequest extends \Google\Collection
 {
   protected $collection_key = 'services';
   public $action;
+  protected $eCommercePlatformLinkInfoType = ECommercePlatformLinkInfo::class;
+  protected $eCommercePlatformLinkInfoDataType = '';
   public $linkType;
   public $linkedAccountId;
   protected $paymentServiceProviderLinkInfoType = PaymentServiceProviderLinkInfo::class;
@@ -34,6 +36,20 @@ class AccountsLinkRequest extends \Google\Collection
   public function getAction()
   {
     return $this->action;
+  }
+  /**
+   * @param ECommercePlatformLinkInfo
+   */
+  public function setECommercePlatformLinkInfo(ECommercePlatformLinkInfo $eCommercePlatformLinkInfo)
+  {
+    $this->eCommercePlatformLinkInfo = $eCommercePlatformLinkInfo;
+  }
+  /**
+   * @return ECommercePlatformLinkInfo
+   */
+  public function getECommercePlatformLinkInfo()
+  {
+    return $this->eCommercePlatformLinkInfo;
   }
   public function setLinkType($linkType)
   {

@@ -21,6 +21,7 @@ class GoogleCloudContactcenterinsightsV1ConversationParticipant extends \Google\
 {
   public $dialogflowParticipant;
   public $dialogflowParticipantName;
+  public $obfuscatedExternalUserId;
   public $role;
   public $userId;
 
@@ -39,6 +40,14 @@ class GoogleCloudContactcenterinsightsV1ConversationParticipant extends \Google\
   public function getDialogflowParticipantName()
   {
     return $this->dialogflowParticipantName;
+  }
+  public function setObfuscatedExternalUserId($obfuscatedExternalUserId)
+  {
+    $this->obfuscatedExternalUserId = $obfuscatedExternalUserId;
+  }
+  public function getObfuscatedExternalUserId()
+  {
+    return $this->obfuscatedExternalUserId;
   }
   public function setRole($role)
   {

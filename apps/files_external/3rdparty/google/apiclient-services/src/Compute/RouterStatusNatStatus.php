@@ -26,6 +26,8 @@ class RouterStatusNatStatus extends \Google\Collection
   public $minExtraNatIpsNeeded;
   public $name;
   public $numVmEndpointsWithNatMappings;
+  protected $ruleStatusType = RouterStatusNatStatusNatRuleStatus::class;
+  protected $ruleStatusDataType = 'array';
   public $userAllocatedNatIpResources;
   public $userAllocatedNatIps;
 
@@ -76,6 +78,20 @@ class RouterStatusNatStatus extends \Google\Collection
   public function getNumVmEndpointsWithNatMappings()
   {
     return $this->numVmEndpointsWithNatMappings;
+  }
+  /**
+   * @param RouterStatusNatStatusNatRuleStatus[]
+   */
+  public function setRuleStatus($ruleStatus)
+  {
+    $this->ruleStatus = $ruleStatus;
+  }
+  /**
+   * @return RouterStatusNatStatusNatRuleStatus[]
+   */
+  public function getRuleStatus()
+  {
+    return $this->ruleStatus;
   }
   public function setUserAllocatedNatIpResources($userAllocatedNatIpResources)
   {

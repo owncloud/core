@@ -51,7 +51,9 @@ class OrganizationsLocationsBucketsViews extends \Google\Service\Resource
     return $this->call('create', [$params], LogView::class);
   }
   /**
-   * Deletes a view on a log bucket. (views.delete)
+   * Deletes a view on a log bucket. If an UNAVAILABLE error is returned, this
+   * indicates that system is not in a state where it can delete the view. If this
+   * occurs, please try again in a few minutes. (views.delete)
    *
    * @param string $name Required. The full resource name of the view to delete: "
    * projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW
@@ -106,7 +108,10 @@ class OrganizationsLocationsBucketsViews extends \Google\Service\Resource
   }
   /**
    * Updates a view on a log bucket. This method replaces the following fields in
-   * the existing view with values from the new view: filter. (views.patch)
+   * the existing view with values from the new view: filter. If an UNAVAILABLE
+   * error is returned, this indicates that system is not in a state where it can
+   * update the view. If this occurs, please try again in a few minutes.
+   * (views.patch)
    *
    * @param string $name Required. The full resource name of the view to update "p
    * rojects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_

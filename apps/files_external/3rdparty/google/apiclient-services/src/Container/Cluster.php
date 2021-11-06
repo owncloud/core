@@ -68,6 +68,8 @@ class Cluster extends \Google\Collection
   protected $masterAuthDataType = '';
   protected $masterAuthorizedNetworksConfigType = MasterAuthorizedNetworksConfig::class;
   protected $masterAuthorizedNetworksConfigDataType = '';
+  protected $meshCertificatesType = MeshCertificates::class;
+  protected $meshCertificatesDataType = '';
   protected $monitoringConfigType = MonitoringConfig::class;
   protected $monitoringConfigDataType = '';
   public $monitoringService;
@@ -458,6 +460,20 @@ class Cluster extends \Google\Collection
   public function getMasterAuthorizedNetworksConfig()
   {
     return $this->masterAuthorizedNetworksConfig;
+  }
+  /**
+   * @param MeshCertificates
+   */
+  public function setMeshCertificates(MeshCertificates $meshCertificates)
+  {
+    $this->meshCertificates = $meshCertificates;
+  }
+  /**
+   * @return MeshCertificates
+   */
+  public function getMeshCertificates()
+  {
+    return $this->meshCertificates;
   }
   /**
    * @param MonitoringConfig

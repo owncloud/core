@@ -24,6 +24,7 @@ class GoogleCloudDocumentaiV1ProcessorType extends \Google\Collection
   protected $availableLocationsType = GoogleCloudDocumentaiV1ProcessorTypeLocationInfo::class;
   protected $availableLocationsDataType = 'array';
   public $category;
+  public $launchStage;
   public $name;
   public $type;
 
@@ -56,6 +57,14 @@ class GoogleCloudDocumentaiV1ProcessorType extends \Google\Collection
   public function getCategory()
   {
     return $this->category;
+  }
+  public function setLaunchStage($launchStage)
+  {
+    $this->launchStage = $launchStage;
+  }
+  public function getLaunchStage()
+  {
+    return $this->launchStage;
   }
   public function setName($name)
   {

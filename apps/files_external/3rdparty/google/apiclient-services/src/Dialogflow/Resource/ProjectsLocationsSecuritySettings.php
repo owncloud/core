@@ -98,8 +98,10 @@ class ProjectsLocationsSecuritySettings extends \Google\Service\Resource
   /**
    * Updates the specified SecuritySettings. (securitySettings.patch)
    *
-   * @param string $name Required. Resource name of the settings. Format:
-   * `projects//locations//securitySettings/`.
+   * @param string $name Resource name of the settings. Required for the
+   * SecuritySettingsService.UpdateSecuritySettings method.
+   * SecuritySettingsService.CreateSecuritySettings populates the name
+   * automatically. Format: `projects//locations//securitySettings/`.
    * @param GoogleCloudDialogflowCxV3SecuritySettings $postBody
    * @param array $optParams Optional parameters.
    *

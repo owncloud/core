@@ -42,6 +42,7 @@ class Interconnect extends \Google\Collection
   public $peerIpAddress;
   public $provisionedLinkCount;
   public $requestedLinkCount;
+  public $satisfiesPzs;
   public $selfLink;
   public $state;
 
@@ -216,6 +217,14 @@ class Interconnect extends \Google\Collection
   public function getRequestedLinkCount()
   {
     return $this->requestedLinkCount;
+  }
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
   }
   public function setSelfLink($selfLink)
   {

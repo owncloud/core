@@ -50,6 +50,7 @@ class AndroidPublisher extends \Google\Service
   public $edits_tracks;
   public $inappproducts;
   public $internalappsharingartifacts;
+  public $monetization;
   public $orders;
   public $purchases_products;
   public $purchases_subscriptions;
@@ -982,6 +983,26 @@ class AndroidPublisher extends \Google\Service
               ],
             ],'uploadbundle' => [
               'path' => 'androidpublisher/v3/applications/internalappsharing/{packageName}/artifacts/bundle',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'packageName' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->monetization = new AndroidPublisher\Resource\Monetization(
+        $this,
+        $this->serviceName,
+        'monetization',
+        [
+          'methods' => [
+            'convertRegionPrices' => [
+              'path' => 'androidpublisher/v3/applications/{packageName}/pricing:convertRegionPrices',
               'httpMethod' => 'POST',
               'parameters' => [
                 'packageName' => [

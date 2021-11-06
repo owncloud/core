@@ -17,8 +17,19 @@
 
 namespace Google\Service\BigtableAdmin;
 
-class MultiClusterRoutingUseAny extends \Google\Model
+class MultiClusterRoutingUseAny extends \Google\Collection
 {
+  protected $collection_key = 'clusterIds';
+  public $clusterIds;
+
+  public function setClusterIds($clusterIds)
+  {
+    $this->clusterIds = $clusterIds;
+  }
+  public function getClusterIds()
+  {
+    return $this->clusterIds;
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

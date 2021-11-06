@@ -29,10 +29,13 @@ class RouterNat extends \Google\Collection
   public $name;
   public $natIpAllocateOption;
   public $natIps;
+  protected $rulesType = RouterNatRule::class;
+  protected $rulesDataType = 'array';
   public $sourceSubnetworkIpRangesToNat;
   protected $subnetworksType = RouterNatSubnetworkToNat::class;
   protected $subnetworksDataType = 'array';
   public $tcpEstablishedIdleTimeoutSec;
+  public $tcpTimeWaitTimeoutSec;
   public $tcpTransitoryIdleTimeoutSec;
   public $udpIdleTimeoutSec;
 
@@ -106,6 +109,20 @@ class RouterNat extends \Google\Collection
   {
     return $this->natIps;
   }
+  /**
+   * @param RouterNatRule[]
+   */
+  public function setRules($rules)
+  {
+    $this->rules = $rules;
+  }
+  /**
+   * @return RouterNatRule[]
+   */
+  public function getRules()
+  {
+    return $this->rules;
+  }
   public function setSourceSubnetworkIpRangesToNat($sourceSubnetworkIpRangesToNat)
   {
     $this->sourceSubnetworkIpRangesToNat = $sourceSubnetworkIpRangesToNat;
@@ -135,6 +152,14 @@ class RouterNat extends \Google\Collection
   public function getTcpEstablishedIdleTimeoutSec()
   {
     return $this->tcpEstablishedIdleTimeoutSec;
+  }
+  public function setTcpTimeWaitTimeoutSec($tcpTimeWaitTimeoutSec)
+  {
+    $this->tcpTimeWaitTimeoutSec = $tcpTimeWaitTimeoutSec;
+  }
+  public function getTcpTimeWaitTimeoutSec()
+  {
+    return $this->tcpTimeWaitTimeoutSec;
   }
   public function setTcpTransitoryIdleTimeoutSec($tcpTransitoryIdleTimeoutSec)
   {

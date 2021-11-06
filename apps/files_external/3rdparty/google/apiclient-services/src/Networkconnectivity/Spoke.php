@@ -17,17 +17,18 @@
 
 namespace Google\Service\Networkconnectivity;
 
-class Spoke extends \Google\Collection
+class Spoke extends \Google\Model
 {
-  protected $collection_key = 'linkedVpnTunnels';
   public $createTime;
   public $description;
   public $hub;
   public $labels;
-  public $linkedInterconnectAttachments;
-  protected $linkedRouterApplianceInstancesType = RouterApplianceInstance::class;
-  protected $linkedRouterApplianceInstancesDataType = 'array';
-  public $linkedVpnTunnels;
+  protected $linkedInterconnectAttachmentsType = LinkedInterconnectAttachments::class;
+  protected $linkedInterconnectAttachmentsDataType = '';
+  protected $linkedRouterApplianceInstancesType = LinkedRouterApplianceInstances::class;
+  protected $linkedRouterApplianceInstancesDataType = '';
+  protected $linkedVpnTunnelsType = LinkedVpnTunnels::class;
+  protected $linkedVpnTunnelsDataType = '';
   public $name;
   public $state;
   public $uniqueId;
@@ -65,32 +66,44 @@ class Spoke extends \Google\Collection
   {
     return $this->labels;
   }
-  public function setLinkedInterconnectAttachments($linkedInterconnectAttachments)
+  /**
+   * @param LinkedInterconnectAttachments
+   */
+  public function setLinkedInterconnectAttachments(LinkedInterconnectAttachments $linkedInterconnectAttachments)
   {
     $this->linkedInterconnectAttachments = $linkedInterconnectAttachments;
   }
+  /**
+   * @return LinkedInterconnectAttachments
+   */
   public function getLinkedInterconnectAttachments()
   {
     return $this->linkedInterconnectAttachments;
   }
   /**
-   * @param RouterApplianceInstance[]
+   * @param LinkedRouterApplianceInstances
    */
-  public function setLinkedRouterApplianceInstances($linkedRouterApplianceInstances)
+  public function setLinkedRouterApplianceInstances(LinkedRouterApplianceInstances $linkedRouterApplianceInstances)
   {
     $this->linkedRouterApplianceInstances = $linkedRouterApplianceInstances;
   }
   /**
-   * @return RouterApplianceInstance[]
+   * @return LinkedRouterApplianceInstances
    */
   public function getLinkedRouterApplianceInstances()
   {
     return $this->linkedRouterApplianceInstances;
   }
-  public function setLinkedVpnTunnels($linkedVpnTunnels)
+  /**
+   * @param LinkedVpnTunnels
+   */
+  public function setLinkedVpnTunnels(LinkedVpnTunnels $linkedVpnTunnels)
   {
     $this->linkedVpnTunnels = $linkedVpnTunnels;
   }
+  /**
+   * @return LinkedVpnTunnels
+   */
   public function getLinkedVpnTunnels()
   {
     return $this->linkedVpnTunnels;

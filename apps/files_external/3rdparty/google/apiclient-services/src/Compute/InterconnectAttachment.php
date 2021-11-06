@@ -46,6 +46,7 @@ class InterconnectAttachment extends \Google\Collection
   protected $privateInterconnectInfoDataType = '';
   public $region;
   public $router;
+  public $satisfiesPzs;
   public $selfLink;
   public $state;
   public $type;
@@ -254,6 +255,14 @@ class InterconnectAttachment extends \Google\Collection
   public function getRouter()
   {
     return $this->router;
+  }
+  public function setSatisfiesPzs($satisfiesPzs)
+  {
+    $this->satisfiesPzs = $satisfiesPzs;
+  }
+  public function getSatisfiesPzs()
+  {
+    return $this->satisfiesPzs;
   }
   public function setSelfLink($selfLink)
   {

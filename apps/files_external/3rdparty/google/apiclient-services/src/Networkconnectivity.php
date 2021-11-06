@@ -20,7 +20,7 @@ namespace Google\Service;
 use Google\Client;
 
 /**
- * Service definition for Networkconnectivity (v1alpha1).
+ * Service definition for Networkconnectivity (v1).
  *
  * <p>
  * The Network Connectivity API provides access to Network Connectivity Center.</p>
@@ -40,7 +40,7 @@ class Networkconnectivity extends \Google\Service
 
   public $projects_locations;
   public $projects_locations_global_hubs;
-  public $projects_locations_internalRanges;
+  public $projects_locations_global_policyBasedRoutes;
   public $projects_locations_operations;
   public $projects_locations_spokes;
 
@@ -57,7 +57,7 @@ class Networkconnectivity extends \Google\Service
     $this->rootUrl = $rootUrl ?: 'https://networkconnectivity.googleapis.com/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
-    $this->version = 'v1alpha1';
+    $this->version = 'v1';
     $this->serviceName = 'networkconnectivity';
 
     $this->projects_locations = new Networkconnectivity\Resource\ProjectsLocations(
@@ -67,7 +67,7 @@ class Networkconnectivity extends \Google\Service
         [
           'methods' => [
             'get' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -77,7 +77,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'v1alpha1/{+name}/locations',
+              'path' => 'v1/{+name}/locations',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -109,7 +109,7 @@ class Networkconnectivity extends \Google\Service
         [
           'methods' => [
             'create' => [
-              'path' => 'v1alpha1/{+parent}/hubs',
+              'path' => 'v1/{+parent}/hubs',
               'httpMethod' => 'POST',
               'parameters' => [
                 'parent' => [
@@ -127,7 +127,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'delete' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'name' => [
@@ -141,7 +141,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -151,7 +151,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'getIamPolicy' => [
-              'path' => 'v1alpha1/{+resource}:getIamPolicy',
+              'path' => 'v1/{+resource}:getIamPolicy',
               'httpMethod' => 'GET',
               'parameters' => [
                 'resource' => [
@@ -165,7 +165,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'v1alpha1/{+parent}/hubs',
+              'path' => 'v1/{+parent}/hubs',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -191,7 +191,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -209,7 +209,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'setIamPolicy' => [
-              'path' => 'v1alpha1/{+resource}:setIamPolicy',
+              'path' => 'v1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => [
                 'resource' => [
@@ -219,7 +219,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'testIamPermissions' => [
-              'path' => 'v1alpha1/{+resource}:testIamPermissions',
+              'path' => 'v1/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => [
                 'resource' => [
@@ -232,14 +232,14 @@ class Networkconnectivity extends \Google\Service
           ]
         ]
     );
-    $this->projects_locations_internalRanges = new Networkconnectivity\Resource\ProjectsLocationsInternalRanges(
+    $this->projects_locations_global_policyBasedRoutes = new Networkconnectivity\Resource\ProjectsLocationsNetworkconnectivityGlobalPolicyBasedRoutes(
         $this,
         $this->serviceName,
-        'internalRanges',
+        'policyBasedRoutes',
         [
           'methods' => [
             'getIamPolicy' => [
-              'path' => 'v1alpha1/{+resource}:getIamPolicy',
+              'path' => 'v1/{+resource}:getIamPolicy',
               'httpMethod' => 'GET',
               'parameters' => [
                 'resource' => [
@@ -253,7 +253,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'setIamPolicy' => [
-              'path' => 'v1alpha1/{+resource}:setIamPolicy',
+              'path' => 'v1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => [
                 'resource' => [
@@ -263,7 +263,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'testIamPermissions' => [
-              'path' => 'v1alpha1/{+resource}:testIamPermissions',
+              'path' => 'v1/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => [
                 'resource' => [
@@ -283,7 +283,7 @@ class Networkconnectivity extends \Google\Service
         [
           'methods' => [
             'cancel' => [
-              'path' => 'v1alpha1/{+name}:cancel',
+              'path' => 'v1/{+name}:cancel',
               'httpMethod' => 'POST',
               'parameters' => [
                 'name' => [
@@ -293,7 +293,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'delete' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'name' => [
@@ -303,7 +303,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -313,7 +313,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'v1alpha1/{+name}/operations',
+              'path' => 'v1/{+name}/operations',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -345,7 +345,7 @@ class Networkconnectivity extends \Google\Service
         [
           'methods' => [
             'create' => [
-              'path' => 'v1alpha1/{+parent}/spokes',
+              'path' => 'v1/{+parent}/spokes',
               'httpMethod' => 'POST',
               'parameters' => [
                 'parent' => [
@@ -363,7 +363,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'delete' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => [
                 'name' => [
@@ -377,7 +377,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'get' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
                 'name' => [
@@ -387,7 +387,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'getIamPolicy' => [
-              'path' => 'v1alpha1/{+resource}:getIamPolicy',
+              'path' => 'v1/{+resource}:getIamPolicy',
               'httpMethod' => 'GET',
               'parameters' => [
                 'resource' => [
@@ -401,7 +401,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'list' => [
-              'path' => 'v1alpha1/{+parent}/spokes',
+              'path' => 'v1/{+parent}/spokes',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [
@@ -427,7 +427,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'patch' => [
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [
@@ -445,7 +445,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'setIamPolicy' => [
-              'path' => 'v1alpha1/{+resource}:setIamPolicy',
+              'path' => 'v1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
               'parameters' => [
                 'resource' => [
@@ -455,7 +455,7 @@ class Networkconnectivity extends \Google\Service
                 ],
               ],
             ],'testIamPermissions' => [
-              'path' => 'v1alpha1/{+resource}:testIamPermissions',
+              'path' => 'v1/{+resource}:testIamPermissions',
               'httpMethod' => 'POST',
               'parameters' => [
                 'resource' => [

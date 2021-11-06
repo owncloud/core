@@ -40,8 +40,11 @@ class OSConfig extends \Google\Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $projects_locations_instances_inventories;
+  public $projects_locations_instances_osPolicyAssignments;
+  public $projects_locations_instances_osPolicyAssignments_reports;
   public $projects_locations_instances_vulnerabilityReports;
   public $projects_locations_osPolicyAssignments;
+  public $projects_locations_osPolicyAssignments_operations;
   public $projects_patchDeployments;
   public $projects_patchJobs;
   public $projects_patchJobs_instanceDetails;
@@ -104,6 +107,58 @@ class OSConfig extends \Google\Service
                   'type' => 'string',
                 ],
                 'view' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_instances_osPolicyAssignments = new OSConfig\Resource\ProjectsLocationsInstancesOsPolicyAssignments(
+        $this,
+        $this->serviceName,
+        'osPolicyAssignments',
+        [
+          'methods' => [
+            'getReport' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_instances_osPolicyAssignments_reports = new OSConfig\Resource\ProjectsLocationsInstancesOsPolicyAssignmentsReports(
+        $this,
+        $this->serviceName,
+        'reports',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/reports',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -242,6 +297,36 @@ class OSConfig extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_osPolicyAssignments_operations = new OSConfig\Resource\ProjectsLocationsOsPolicyAssignmentsOperations(
+        $this,
+        $this->serviceName,
+        'operations',
+        [
+          'methods' => [
+            'cancel' => [
+              'path' => 'v1/{+name}:cancel',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

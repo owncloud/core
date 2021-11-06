@@ -20,7 +20,6 @@ namespace Google\Service\Networkconnectivity;
 class RouterApplianceInstance extends \Google\Model
 {
   public $ipAddress;
-  public $networkInterface;
   public $virtualMachine;
 
   public function setIpAddress($ipAddress)
@@ -30,14 +29,6 @@ class RouterApplianceInstance extends \Google\Model
   public function getIpAddress()
   {
     return $this->ipAddress;
-  }
-  public function setNetworkInterface($networkInterface)
-  {
-    $this->networkInterface = $networkInterface;
-  }
-  public function getNetworkInterface()
-  {
-    return $this->networkInterface;
   }
   public function setVirtualMachine($virtualMachine)
   {

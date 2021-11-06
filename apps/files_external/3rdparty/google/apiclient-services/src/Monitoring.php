@@ -752,6 +752,16 @@ class Monitoring extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'createService' => [
+              'path' => 'v3/{+name}/timeSeries:createService',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'list' => [
               'path' => 'v3/{+name}/timeSeries',
               'httpMethod' => 'GET',

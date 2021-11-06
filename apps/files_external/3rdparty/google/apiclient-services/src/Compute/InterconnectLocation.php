@@ -36,6 +36,7 @@ class InterconnectLocation extends \Google\Collection
   protected $regionInfosDataType = 'array';
   public $selfLink;
   public $status;
+  public $supportsPzs;
 
   public function setAddress($address)
   {
@@ -162,6 +163,14 @@ class InterconnectLocation extends \Google\Collection
   public function getStatus()
   {
     return $this->status;
+  }
+  public function setSupportsPzs($supportsPzs)
+  {
+    $this->supportsPzs = $supportsPzs;
+  }
+  public function getSupportsPzs()
+  {
+    return $this->supportsPzs;
   }
 }
 

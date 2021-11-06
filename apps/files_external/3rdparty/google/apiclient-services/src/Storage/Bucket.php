@@ -19,13 +19,15 @@ namespace Google\Service\Storage;
 
 class Bucket extends \Google\Collection
 {
-  protected $collection_key = 'zoneAffinity';
+  protected $collection_key = 'defaultObjectAcl';
   protected $aclType = BucketAccessControl::class;
   protected $aclDataType = 'array';
   protected $billingType = BucketBilling::class;
   protected $billingDataType = '';
   protected $corsType = BucketCors::class;
   protected $corsDataType = 'array';
+  protected $customPlacementConfigType = BucketCustomPlacementConfig::class;
+  protected $customPlacementConfigDataType = '';
   public $defaultEventBasedHold;
   protected $defaultObjectAclType = ObjectAccessControl::class;
   protected $defaultObjectAclDataType = 'array';
@@ -60,7 +62,6 @@ class Bucket extends \Google\Collection
   protected $versioningDataType = '';
   protected $websiteType = BucketWebsite::class;
   protected $websiteDataType = '';
-  public $zoneAffinity;
 
   /**
    * @param BucketAccessControl[]
@@ -103,6 +104,20 @@ class Bucket extends \Google\Collection
   public function getCors()
   {
     return $this->cors;
+  }
+  /**
+   * @param BucketCustomPlacementConfig
+   */
+  public function setCustomPlacementConfig(BucketCustomPlacementConfig $customPlacementConfig)
+  {
+    $this->customPlacementConfig = $customPlacementConfig;
+  }
+  /**
+   * @return BucketCustomPlacementConfig
+   */
+  public function getCustomPlacementConfig()
+  {
+    return $this->customPlacementConfig;
   }
   public function setDefaultEventBasedHold($defaultEventBasedHold)
   {
@@ -357,14 +372,6 @@ class Bucket extends \Google\Collection
   public function getWebsite()
   {
     return $this->website;
-  }
-  public function setZoneAffinity($zoneAffinity)
-  {
-    $this->zoneAffinity = $zoneAffinity;
-  }
-  public function getZoneAffinity()
-  {
-    return $this->zoneAffinity;
   }
 }
 

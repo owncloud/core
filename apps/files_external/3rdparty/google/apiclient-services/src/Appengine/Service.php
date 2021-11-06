@@ -20,6 +20,7 @@ namespace Google\Service\Appengine;
 class Service extends \Google\Model
 {
   public $id;
+  public $labels;
   public $name;
   protected $networkSettingsType = NetworkSettings::class;
   protected $networkSettingsDataType = '';
@@ -33,6 +34,14 @@ class Service extends \Google\Model
   public function getId()
   {
     return $this->id;
+  }
+  public function setLabels($labels)
+  {
+    $this->labels = $labels;
+  }
+  public function getLabels()
+  {
+    return $this->labels;
   }
   public function setName($name)
   {

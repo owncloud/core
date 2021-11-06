@@ -19,9 +19,18 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1IssueModelInputDataConfig extends \Google\Model
 {
+  public $filter;
   public $medium;
   public $trainingConversationsCount;
 
+  public function setFilter($filter)
+  {
+    $this->filter = $filter;
+  }
+  public function getFilter()
+  {
+    return $this->filter;
+  }
   public function setMedium($medium)
   {
     $this->medium = $medium;

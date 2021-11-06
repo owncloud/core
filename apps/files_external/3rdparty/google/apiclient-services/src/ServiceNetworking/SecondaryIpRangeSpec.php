@@ -20,6 +20,7 @@ namespace Google\Service\ServiceNetworking;
 class SecondaryIpRangeSpec extends \Google\Model
 {
   public $ipPrefixLength;
+  public $outsideAllocationPublicIpRange;
   public $rangeName;
   public $requestedAddress;
 
@@ -30,6 +31,14 @@ class SecondaryIpRangeSpec extends \Google\Model
   public function getIpPrefixLength()
   {
     return $this->ipPrefixLength;
+  }
+  public function setOutsideAllocationPublicIpRange($outsideAllocationPublicIpRange)
+  {
+    $this->outsideAllocationPublicIpRange = $outsideAllocationPublicIpRange;
+  }
+  public function getOutsideAllocationPublicIpRange()
+  {
+    return $this->outsideAllocationPublicIpRange;
   }
   public function setRangeName($rangeName)
   {

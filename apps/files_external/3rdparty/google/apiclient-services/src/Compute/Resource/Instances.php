@@ -120,8 +120,10 @@ class Instances extends \Google\Service\Resource
     return $this->call('addResourcePolicies', [$params], Operation::class);
   }
   /**
-   * Retrieves aggregated list of all of the instances in your project across all
-   * regions and zones. (instances.aggregatedList)
+   * Retrieves an aggregated list of all of the instances in your project across
+   * all regions and zones. The performance of this method degrades when a filter
+   * is specified on a project that has a very large number of instances.
+   * (instances.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.

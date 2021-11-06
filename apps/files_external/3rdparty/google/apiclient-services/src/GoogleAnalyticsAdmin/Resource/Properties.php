@@ -17,6 +17,8 @@
 
 namespace Google\Service\GoogleAnalyticsAdmin\Resource;
 
+use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaAcknowledgeUserDataCollectionRequest;
+use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaAcknowledgeUserDataCollectionResponse;
 use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaDataRetentionSettings;
 use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaGoogleSignalsSettings;
 use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaListPropertiesResponse;
@@ -32,6 +34,24 @@ use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaProperty;
  */
 class Properties extends \Google\Service\Resource
 {
+  /**
+   * Acknowledges the terms of user data collection for the specified property.
+   * This acknowledgement must be completed (either in the Google Analytics UI or
+   * via this API) before MeasurementProtocolSecret resources may be created.
+   * (properties.acknowledgeUserDataCollection)
+   *
+   * @param string $property Required. The property for which to acknowledge user
+   * data collection.
+   * @param GoogleAnalyticsAdminV1alphaAcknowledgeUserDataCollectionRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleAnalyticsAdminV1alphaAcknowledgeUserDataCollectionResponse
+   */
+  public function acknowledgeUserDataCollection($property, GoogleAnalyticsAdminV1alphaAcknowledgeUserDataCollectionRequest $postBody, $optParams = [])
+  {
+    $params = ['property' => $property, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('acknowledgeUserDataCollection', [$params], GoogleAnalyticsAdminV1alphaAcknowledgeUserDataCollectionResponse::class);
+  }
   /**
    * Creates an "GA4" property with the specified location and attributes.
    * (properties.create)

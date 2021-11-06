@@ -17,6 +17,7 @@
 
 namespace Google\Service\Dialogflow\Resource;
 
+use Google\Service\Dialogflow\GoogleCloudDialogflowCxV3DeployFlowRequest;
 use Google\Service\Dialogflow\GoogleCloudDialogflowCxV3Environment;
 use Google\Service\Dialogflow\GoogleCloudDialogflowCxV3ListEnvironmentsResponse;
 use Google\Service\Dialogflow\GoogleCloudDialogflowCxV3LookupEnvironmentHistoryResponse;
@@ -67,6 +68,25 @@ class ProjectsLocationsAgentsEnvironments extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('delete', [$params], GoogleProtobufEmpty::class);
+  }
+  /**
+   * Deploys a flow to the specified Environment. This method is a [long-running
+   * operation](https://cloud.google.com/dialogflow/cx/docs/how/long-running-
+   * operation). The returned `Operation` type has the following method-specific
+   * fields: - `metadata`: DeployFlowMetadata - `response`: DeployFlowResponse
+   * (environments.deployFlow)
+   *
+   * @param string $environment Required. The environment to deploy the flow to.
+   * Format: `projects//locations//agents// environments/`.
+   * @param GoogleCloudDialogflowCxV3DeployFlowRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleLongrunningOperation
+   */
+  public function deployFlow($environment, GoogleCloudDialogflowCxV3DeployFlowRequest $postBody, $optParams = [])
+  {
+    $params = ['environment' => $environment, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('deployFlow', [$params], GoogleLongrunningOperation::class);
   }
   /**
    * Retrieves the specified Environment. (environments.get)

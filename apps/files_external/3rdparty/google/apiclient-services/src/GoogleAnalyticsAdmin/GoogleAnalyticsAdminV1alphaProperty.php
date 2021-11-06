@@ -19,6 +19,7 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 
 class GoogleAnalyticsAdminV1alphaProperty extends \Google\Model
 {
+  public $account;
   public $createTime;
   public $currencyCode;
   public $deleteTime;
@@ -31,6 +32,14 @@ class GoogleAnalyticsAdminV1alphaProperty extends \Google\Model
   public $timeZone;
   public $updateTime;
 
+  public function setAccount($account)
+  {
+    $this->account = $account;
+  }
+  public function getAccount()
+  {
+    return $this->account;
+  }
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;

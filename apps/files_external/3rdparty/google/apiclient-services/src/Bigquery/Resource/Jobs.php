@@ -55,13 +55,15 @@ class Jobs extends \Google\Service\Resource
     return $this->call('cancel', [$params], JobCancelResponse::class);
   }
   /**
-   * Requests that a job is deleted. This call will return when the job is
-   * deleted. This method is available in limited preview. (jobs.delete)
+   * Requests the deletion of the metadata of a job. This call returns when the
+   * job's metadata is deleted. (jobs.delete)
    *
-   * @param string $projectId Required. Project ID of the job to be deleted.
-   * @param string $jobId Required. Job ID of the job to be deleted. If this is a
-   * parent job which has child jobs, all child jobs will be deleted as well.
-   * Deletion of child jobs directly is not allowed.
+   * @param string $projectId Required. Project ID of the job for which metadata
+   * is to be deleted.
+   * @param string $jobId Required. Job ID of the job for which metadata is to be
+   * deleted. If this is a parent job which has child jobs, the metadata from all
+   * child jobs will be deleted as well. Direct deletion of the metadata of child
+   * jobs is not allowed.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string location The geographic location of the job. Required. See

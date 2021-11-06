@@ -24,6 +24,7 @@ class AddSubnetworkRequest extends \Google\Collection
   public $consumerNetwork;
   public $description;
   public $ipPrefixLength;
+  public $outsideAllocationPublicIpRange;
   public $privateIpv6GoogleAccess;
   public $region;
   public $requestedAddress;
@@ -64,6 +65,14 @@ class AddSubnetworkRequest extends \Google\Collection
   public function getIpPrefixLength()
   {
     return $this->ipPrefixLength;
+  }
+  public function setOutsideAllocationPublicIpRange($outsideAllocationPublicIpRange)
+  {
+    $this->outsideAllocationPublicIpRange = $outsideAllocationPublicIpRange;
+  }
+  public function getOutsideAllocationPublicIpRange()
+  {
+    return $this->outsideAllocationPublicIpRange;
   }
   public function setPrivateIpv6GoogleAccess($privateIpv6GoogleAccess)
   {

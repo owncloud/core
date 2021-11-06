@@ -75,8 +75,7 @@ class ProjectsServiceAccountsKeys extends \Google\Service\Resource
   }
   /**
    * Disable a ServiceAccountKey. A disabled service account key can be enabled
-   * through EnableServiceAccountKey. The API is currently in preview phase.
-   * (keys.disable)
+   * through EnableServiceAccountKey. (keys.disable)
    *
    * @param string $name Required. The resource name of the service account key in
    * the following format:
@@ -95,8 +94,7 @@ class ProjectsServiceAccountsKeys extends \Google\Service\Resource
     return $this->call('disable', [$params], IamEmpty::class);
   }
   /**
-   * Enable a ServiceAccountKey. The API is currently in preview phase.
-   * (keys.enable)
+   * Enable a ServiceAccountKey. (keys.enable)
    *
    * @param string $name Required. The resource name of the service account key in
    * the following format:

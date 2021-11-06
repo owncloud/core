@@ -19,6 +19,7 @@ namespace Google\Service\GKEHub;
 
 class ConfigManagementConfigSyncDeploymentState extends \Google\Model
 {
+  public $admissionWebhook;
   public $gitSync;
   public $importer;
   public $monitor;
@@ -26,6 +27,14 @@ class ConfigManagementConfigSyncDeploymentState extends \Google\Model
   public $rootReconciler;
   public $syncer;
 
+  public function setAdmissionWebhook($admissionWebhook)
+  {
+    $this->admissionWebhook = $admissionWebhook;
+  }
+  public function getAdmissionWebhook()
+  {
+    return $this->admissionWebhook;
+  }
   public function setGitSync($gitSync)
   {
     $this->gitSync = $gitSync;

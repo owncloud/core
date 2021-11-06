@@ -50,6 +50,8 @@ class Promotion extends \Google\Collection
   public $orderLimit;
   public $percentOff;
   public $productApplicability;
+  public $productType;
+  public $productTypeExclusion;
   public $promotionDestinationIds;
   public $promotionDisplayDates;
   public $promotionEffectiveDates;
@@ -287,6 +289,22 @@ class Promotion extends \Google\Collection
   public function getProductApplicability()
   {
     return $this->productApplicability;
+  }
+  public function setProductType($productType)
+  {
+    $this->productType = $productType;
+  }
+  public function getProductType()
+  {
+    return $this->productType;
+  }
+  public function setProductTypeExclusion($productTypeExclusion)
+  {
+    $this->productTypeExclusion = $productTypeExclusion;
+  }
+  public function getProductTypeExclusion()
+  {
+    return $this->productTypeExclusion;
   }
   public function setPromotionDestinationIds($promotionDestinationIds)
   {

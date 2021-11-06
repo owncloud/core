@@ -22,9 +22,14 @@ class GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegment 
   protected $collection_key = 'words';
   public $channelTag;
   public $confidence;
+  protected $dialogflowSegmentMetadataType = GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentDialogflowSegmentMetadata::class;
+  protected $dialogflowSegmentMetadataDataType = '';
   public $languageCode;
+  public $messageTime;
   protected $segmentParticipantType = GoogleCloudContactcenterinsightsV1ConversationParticipant::class;
   protected $segmentParticipantDataType = '';
+  protected $sentimentType = GoogleCloudContactcenterinsightsV1SentimentData::class;
+  protected $sentimentDataType = '';
   public $text;
   protected $wordsType = GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentWordInfo::class;
   protected $wordsDataType = 'array';
@@ -45,6 +50,20 @@ class GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegment 
   {
     return $this->confidence;
   }
+  /**
+   * @param GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentDialogflowSegmentMetadata
+   */
+  public function setDialogflowSegmentMetadata(GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentDialogflowSegmentMetadata $dialogflowSegmentMetadata)
+  {
+    $this->dialogflowSegmentMetadata = $dialogflowSegmentMetadata;
+  }
+  /**
+   * @return GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentDialogflowSegmentMetadata
+   */
+  public function getDialogflowSegmentMetadata()
+  {
+    return $this->dialogflowSegmentMetadata;
+  }
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
@@ -52,6 +71,14 @@ class GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegment 
   public function getLanguageCode()
   {
     return $this->languageCode;
+  }
+  public function setMessageTime($messageTime)
+  {
+    $this->messageTime = $messageTime;
+  }
+  public function getMessageTime()
+  {
+    return $this->messageTime;
   }
   /**
    * @param GoogleCloudContactcenterinsightsV1ConversationParticipant
@@ -66,6 +93,20 @@ class GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegment 
   public function getSegmentParticipant()
   {
     return $this->segmentParticipant;
+  }
+  /**
+   * @param GoogleCloudContactcenterinsightsV1SentimentData
+   */
+  public function setSentiment(GoogleCloudContactcenterinsightsV1SentimentData $sentiment)
+  {
+    $this->sentiment = $sentiment;
+  }
+  /**
+   * @return GoogleCloudContactcenterinsightsV1SentimentData
+   */
+  public function getSentiment()
+  {
+    return $this->sentiment;
   }
   public function setText($text)
   {

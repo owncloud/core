@@ -102,8 +102,7 @@ class GlobalOperations extends \Google\Service\Resource
     return $this->call('delete', [$params]);
   }
   /**
-   * Retrieves the specified Operations resource. Gets a list of operations by
-   * making a `list()` request. (globalOperations.get)
+   * Retrieves the specified Operations resource. (globalOperations.get)
    *
    * @param string $project Project ID for this request.
    * @param string $operation Name of the Operations resource to return.

@@ -47,6 +47,8 @@ class ClusterUpdate extends \Google\Collection
   protected $desiredMasterAuthorizedNetworksConfigType = MasterAuthorizedNetworksConfig::class;
   protected $desiredMasterAuthorizedNetworksConfigDataType = '';
   public $desiredMasterVersion;
+  protected $desiredMeshCertificatesType = MeshCertificates::class;
+  protected $desiredMeshCertificatesDataType = '';
   protected $desiredMonitoringConfigType = MonitoringConfig::class;
   protected $desiredMonitoringConfigDataType = '';
   public $desiredMonitoringService;
@@ -263,6 +265,20 @@ class ClusterUpdate extends \Google\Collection
   public function getDesiredMasterVersion()
   {
     return $this->desiredMasterVersion;
+  }
+  /**
+   * @param MeshCertificates
+   */
+  public function setDesiredMeshCertificates(MeshCertificates $desiredMeshCertificates)
+  {
+    $this->desiredMeshCertificates = $desiredMeshCertificates;
+  }
+  /**
+   * @return MeshCertificates
+   */
+  public function getDesiredMeshCertificates()
+  {
+    return $this->desiredMeshCertificates;
   }
   /**
    * @param MonitoringConfig

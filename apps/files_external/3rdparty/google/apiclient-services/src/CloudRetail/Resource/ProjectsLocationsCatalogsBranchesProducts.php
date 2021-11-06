@@ -197,7 +197,7 @@ class ProjectsLocationsCatalogsBranchesProducts extends \Google\Service\Resource
    *
    * @param string $name Immutable. Full resource name of the product, such as `pr
    * ojects/locations/global/catalogs/default_catalog/branches/default_branch/prod
-   * ucts/product_id`. The branch ID must be "default_branch".
+   * ucts/product_id`.
    * @param GoogleCloudRetailV2Product $postBody
    * @param array $optParams Optional parameters.
    *
@@ -265,7 +265,7 @@ class ProjectsLocationsCatalogsBranchesProducts extends \Google\Service\Resource
    *
    * @param string $name Immutable. Full resource name of the product, such as `pr
    * ojects/locations/global/catalogs/default_catalog/branches/default_branch/prod
-   * ucts/product_id`. The branch ID must be "default_branch".
+   * ucts/product_id`.
    * @param GoogleCloudRetailV2SetInventoryRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleLongrunningOperation

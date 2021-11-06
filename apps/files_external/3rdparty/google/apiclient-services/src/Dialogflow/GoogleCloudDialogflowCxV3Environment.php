@@ -23,6 +23,8 @@ class GoogleCloudDialogflowCxV3Environment extends \Google\Collection
   public $description;
   public $displayName;
   public $name;
+  protected $testCasesConfigType = GoogleCloudDialogflowCxV3EnvironmentTestCasesConfig::class;
+  protected $testCasesConfigDataType = '';
   public $updateTime;
   protected $versionConfigsType = GoogleCloudDialogflowCxV3EnvironmentVersionConfig::class;
   protected $versionConfigsDataType = 'array';
@@ -50,6 +52,20 @@ class GoogleCloudDialogflowCxV3Environment extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param GoogleCloudDialogflowCxV3EnvironmentTestCasesConfig
+   */
+  public function setTestCasesConfig(GoogleCloudDialogflowCxV3EnvironmentTestCasesConfig $testCasesConfig)
+  {
+    $this->testCasesConfig = $testCasesConfig;
+  }
+  /**
+   * @return GoogleCloudDialogflowCxV3EnvironmentTestCasesConfig
+   */
+  public function getTestCasesConfig()
+  {
+    return $this->testCasesConfig;
   }
   public function setUpdateTime($updateTime)
   {

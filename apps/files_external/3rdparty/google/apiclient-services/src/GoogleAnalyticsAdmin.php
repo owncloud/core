@@ -323,7 +323,17 @@ class GoogleAnalyticsAdmin extends \Google\Service
         'properties',
         [
           'methods' => [
-            'create' => [
+            'acknowledgeUserDataCollection' => [
+              'path' => 'v1alpha/{+property}:acknowledgeUserDataCollection',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'property' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'create' => [
               'path' => 'v1alpha/properties',
               'httpMethod' => 'POST',
               'parameters' => [],

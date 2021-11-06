@@ -20,6 +20,8 @@ namespace Google\Service\Compute;
 class Route extends \Google\Collection
 {
   protected $collection_key = 'warnings';
+  protected $asPathsType = RouteAsPath::class;
+  protected $asPathsDataType = 'array';
   public $creationTimestamp;
   public $description;
   public $destRange;
@@ -35,11 +37,26 @@ class Route extends \Google\Collection
   public $nextHopPeering;
   public $nextHopVpnTunnel;
   public $priority;
+  public $routeType;
   public $selfLink;
   public $tags;
   protected $warningsType = RouteWarnings::class;
   protected $warningsDataType = 'array';
 
+  /**
+   * @param RouteAsPath[]
+   */
+  public function setAsPaths($asPaths)
+  {
+    $this->asPaths = $asPaths;
+  }
+  /**
+   * @return RouteAsPath[]
+   */
+  public function getAsPaths()
+  {
+    return $this->asPaths;
+  }
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
@@ -159,6 +176,14 @@ class Route extends \Google\Collection
   public function getPriority()
   {
     return $this->priority;
+  }
+  public function setRouteType($routeType)
+  {
+    $this->routeType = $routeType;
+  }
+  public function getRouteType()
+  {
+    return $this->routeType;
   }
   public function setSelfLink($selfLink)
   {

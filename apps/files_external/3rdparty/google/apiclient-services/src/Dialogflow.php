@@ -47,6 +47,7 @@ class Dialogflow extends \Google\Service
   public $projects_locations_agents_entityTypes;
   public $projects_locations_agents_environments;
   public $projects_locations_agents_environments_continuousTestResults;
+  public $projects_locations_agents_environments_deployments;
   public $projects_locations_agents_environments_experiments;
   public $projects_locations_agents_environments_sessions;
   public $projects_locations_agents_environments_sessions_entityTypes;
@@ -356,6 +357,16 @@ class Dialogflow extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'deployFlow' => [
+              'path' => 'v3/{+environment}:deployFlow',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'environment' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'get' => [
               'path' => 'v3/{+name}',
               'httpMethod' => 'GET',
@@ -438,6 +449,44 @@ class Dialogflow extends \Google\Service
           'methods' => [
             'list' => [
               'path' => 'v3/{+parent}/continuousTestResults',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_agents_environments_deployments = new Dialogflow\Resource\ProjectsLocationsAgentsEnvironmentsDeployments(
+        $this,
+        $this->serviceName,
+        'deployments',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v3/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v3/{+parent}/deployments',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [

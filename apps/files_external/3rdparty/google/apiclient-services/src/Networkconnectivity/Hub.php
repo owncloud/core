@@ -19,12 +19,13 @@ namespace Google\Service\Networkconnectivity;
 
 class Hub extends \Google\Collection
 {
-  protected $collection_key = 'spokes';
+  protected $collection_key = 'routingVpcs';
   public $createTime;
   public $description;
   public $labels;
   public $name;
-  public $spokes;
+  protected $routingVpcsType = RoutingVPC::class;
+  protected $routingVpcsDataType = 'array';
   public $state;
   public $uniqueId;
   public $updateTime;
@@ -61,13 +62,19 @@ class Hub extends \Google\Collection
   {
     return $this->name;
   }
-  public function setSpokes($spokes)
+  /**
+   * @param RoutingVPC[]
+   */
+  public function setRoutingVpcs($routingVpcs)
   {
-    $this->spokes = $spokes;
+    $this->routingVpcs = $routingVpcs;
   }
-  public function getSpokes()
+  /**
+   * @return RoutingVPC[]
+   */
+  public function getRoutingVpcs()
   {
-    return $this->spokes;
+    return $this->routingVpcs;
   }
   public function setState($state)
   {

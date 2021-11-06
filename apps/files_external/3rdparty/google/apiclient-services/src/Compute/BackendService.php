@@ -63,6 +63,8 @@ class BackendService extends \Google\Collection
   protected $securitySettingsDataType = '';
   public $selfLink;
   public $sessionAffinity;
+  protected $subsettingType = Subsetting::class;
+  protected $subsettingDataType = '';
   public $timeoutSec;
 
   public function setAffinityCookieTtlSec($affinityCookieTtlSec)
@@ -386,6 +388,20 @@ class BackendService extends \Google\Collection
   public function getSessionAffinity()
   {
     return $this->sessionAffinity;
+  }
+  /**
+   * @param Subsetting
+   */
+  public function setSubsetting(Subsetting $subsetting)
+  {
+    $this->subsetting = $subsetting;
+  }
+  /**
+   * @return Subsetting
+   */
+  public function getSubsetting()
+  {
+    return $this->subsetting;
   }
   public function setTimeoutSec($timeoutSec)
   {

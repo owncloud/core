@@ -24,6 +24,7 @@ class SoftwareConfig extends \Google\Model
   public $imageVersion;
   public $pypiPackages;
   public $pythonVersion;
+  public $schedulerCount;
 
   public function setAirflowConfigOverrides($airflowConfigOverrides)
   {
@@ -64,6 +65,14 @@ class SoftwareConfig extends \Google\Model
   public function getPythonVersion()
   {
     return $this->pythonVersion;
+  }
+  public function setSchedulerCount($schedulerCount)
+  {
+    $this->schedulerCount = $schedulerCount;
+  }
+  public function getSchedulerCount()
+  {
+    return $this->schedulerCount;
   }
 }
 

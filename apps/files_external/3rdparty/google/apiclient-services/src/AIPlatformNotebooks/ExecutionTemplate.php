@@ -33,6 +33,8 @@ class ExecutionTemplate extends \Google\Model
   public $paramsYamlFile;
   public $scaleTier;
   public $serviceAccount;
+  protected $vertexAiParametersType = VertexAIParameters::class;
+  protected $vertexAiParametersDataType = '';
 
   /**
    * @param SchedulerAcceleratorConfig
@@ -141,6 +143,20 @@ class ExecutionTemplate extends \Google\Model
   public function getServiceAccount()
   {
     return $this->serviceAccount;
+  }
+  /**
+   * @param VertexAIParameters
+   */
+  public function setVertexAiParameters(VertexAIParameters $vertexAiParameters)
+  {
+    $this->vertexAiParameters = $vertexAiParameters;
+  }
+  /**
+   * @return VertexAIParameters
+   */
+  public function getVertexAiParameters()
+  {
+    return $this->vertexAiParameters;
   }
 }
 

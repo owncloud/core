@@ -247,8 +247,10 @@ class Files extends \Google\Service\Resource
     return $this->call('list', [$params], FileList::class);
   }
   /**
-   * Updates a file's metadata and/or content. This method supports patch
-   * semantics. (files.update)
+   * Updates a file's metadata and/or content. When calling this method, only
+   * populate fields in the request that you want to modify. When updating fields,
+   * some fields might change automatically, such as modifiedDate. This method
+   * supports patch semantics. (files.update)
    *
    * @param string $fileId The ID of the file.
    * @param DriveFile $postBody

@@ -117,7 +117,9 @@ class ProjectsLocationsEntryGroupsEntries extends \Google\Service\Resource
     return $this->call('getIamPolicy', [$params], Policy::class);
   }
   /**
-   * Lists entries. (entries.listProjectsLocationsEntryGroupsEntries)
+   * Lists entries. Note: Currently, this method can list only custom entries. To
+   * get a list of both custom and automatically created entries, use
+   * SearchCatalog. (entries.listProjectsLocationsEntryGroupsEntries)
    *
    * @param string $parent Required. The name of the entry group that contains the
    * entries to list. Can be provided in URL format.

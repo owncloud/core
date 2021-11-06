@@ -30,6 +30,7 @@ class GoogleCloudContactcenterinsightsV1PhraseMatcher extends \Google\Collection
   public $revisionId;
   public $roleMatch;
   public $type;
+  public $updateTime;
   public $versionTag;
 
   public function setActivationUpdateTime($activationUpdateTime)
@@ -109,6 +110,14 @@ class GoogleCloudContactcenterinsightsV1PhraseMatcher extends \Google\Collection
   public function getType()
   {
     return $this->type;
+  }
+  public function setUpdateTime($updateTime)
+  {
+    $this->updateTime = $updateTime;
+  }
+  public function getUpdateTime()
+  {
+    return $this->updateTime;
   }
   public function setVersionTag($versionTag)
   {

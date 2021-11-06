@@ -28,6 +28,7 @@ class ColumnDescription extends \Google\Collection
   protected $lookupDetailsDataType = '';
   public $multipleValuesDisallowed;
   public $name;
+  public $readonly;
   protected $relationshipDetailsType = RelationshipDetails::class;
   protected $relationshipDetailsDataType = '';
 
@@ -90,6 +91,14 @@ class ColumnDescription extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setReadonly($readonly)
+  {
+    $this->readonly = $readonly;
+  }
+  public function getReadonly()
+  {
+    return $this->readonly;
   }
   /**
    * @param RelationshipDetails

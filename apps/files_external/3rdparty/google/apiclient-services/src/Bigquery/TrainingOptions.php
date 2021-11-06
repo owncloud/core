@@ -24,7 +24,12 @@ class TrainingOptions extends \Google\Collection
   public $autoArima;
   public $autoArimaMaxOrder;
   public $batchSize;
+  public $boosterType;
   public $cleanSpikesAndDips;
+  public $colsampleBylevel;
+  public $colsampleBynode;
+  public $colsampleBytree;
+  public $dartNormalizeType;
   public $dataFrequency;
   public $dataSplitColumn;
   public $dataSplitEvalFraction;
@@ -53,11 +58,13 @@ class TrainingOptions extends \Google\Collection
   public $maxTreeDepth;
   public $minRelativeProgress;
   public $minSplitLoss;
+  public $minTreeChildWeight;
   public $modelUri;
   protected $nonSeasonalOrderType = ArimaOrder::class;
   protected $nonSeasonalOrderDataType = '';
   public $numClusters;
   public $numFactors;
+  public $numParallelTree;
   public $optimizationStrategy;
   public $preserveInputStructs;
   public $subsample;
@@ -65,6 +72,7 @@ class TrainingOptions extends \Google\Collection
   public $timeSeriesIdColumn;
   public $timeSeriesIdColumns;
   public $timeSeriesTimestampColumn;
+  public $treeMethod;
   public $userColumn;
   public $walsAlpha;
   public $warmStart;
@@ -101,6 +109,14 @@ class TrainingOptions extends \Google\Collection
   {
     return $this->batchSize;
   }
+  public function setBoosterType($boosterType)
+  {
+    $this->boosterType = $boosterType;
+  }
+  public function getBoosterType()
+  {
+    return $this->boosterType;
+  }
   public function setCleanSpikesAndDips($cleanSpikesAndDips)
   {
     $this->cleanSpikesAndDips = $cleanSpikesAndDips;
@@ -108,6 +124,38 @@ class TrainingOptions extends \Google\Collection
   public function getCleanSpikesAndDips()
   {
     return $this->cleanSpikesAndDips;
+  }
+  public function setColsampleBylevel($colsampleBylevel)
+  {
+    $this->colsampleBylevel = $colsampleBylevel;
+  }
+  public function getColsampleBylevel()
+  {
+    return $this->colsampleBylevel;
+  }
+  public function setColsampleBynode($colsampleBynode)
+  {
+    $this->colsampleBynode = $colsampleBynode;
+  }
+  public function getColsampleBynode()
+  {
+    return $this->colsampleBynode;
+  }
+  public function setColsampleBytree($colsampleBytree)
+  {
+    $this->colsampleBytree = $colsampleBytree;
+  }
+  public function getColsampleBytree()
+  {
+    return $this->colsampleBytree;
+  }
+  public function setDartNormalizeType($dartNormalizeType)
+  {
+    $this->dartNormalizeType = $dartNormalizeType;
+  }
+  public function getDartNormalizeType()
+  {
+    return $this->dartNormalizeType;
   }
   public function setDataFrequency($dataFrequency)
   {
@@ -333,6 +381,14 @@ class TrainingOptions extends \Google\Collection
   {
     return $this->minSplitLoss;
   }
+  public function setMinTreeChildWeight($minTreeChildWeight)
+  {
+    $this->minTreeChildWeight = $minTreeChildWeight;
+  }
+  public function getMinTreeChildWeight()
+  {
+    return $this->minTreeChildWeight;
+  }
   public function setModelUri($modelUri)
   {
     $this->modelUri = $modelUri;
@@ -370,6 +426,14 @@ class TrainingOptions extends \Google\Collection
   public function getNumFactors()
   {
     return $this->numFactors;
+  }
+  public function setNumParallelTree($numParallelTree)
+  {
+    $this->numParallelTree = $numParallelTree;
+  }
+  public function getNumParallelTree()
+  {
+    return $this->numParallelTree;
   }
   public function setOptimizationStrategy($optimizationStrategy)
   {
@@ -426,6 +490,14 @@ class TrainingOptions extends \Google\Collection
   public function getTimeSeriesTimestampColumn()
   {
     return $this->timeSeriesTimestampColumn;
+  }
+  public function setTreeMethod($treeMethod)
+  {
+    $this->treeMethod = $treeMethod;
+  }
+  public function getTreeMethod()
+  {
+    return $this->treeMethod;
   }
   public function setUserColumn($userColumn)
   {
