@@ -1,7 +1,7 @@
 parameters:
   bootstrapFiles:
     - %currentWorkingDirectory%/lib/base.php
-  excludes_analyse:
+  excludePaths:
     - %currentWorkingDirectory%/core/ajax/update.php
     - %currentWorkingDirectory%/apps/*/tests*
     - %currentWorkingDirectory%/apps/*/composer/*
