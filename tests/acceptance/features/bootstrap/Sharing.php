@@ -1939,11 +1939,14 @@ trait Sharing {
 	/**
 	 * Retrieves the id of the last shared file
 	 *
-	 * @return SimpleXMLElement|null
+	 * @return string|null
 	 */
-	public function getLastShareId():?SimpleXMLElement {
+	public function getLastShareId():?string {
 		if ($this->lastShareData && $this->lastShareData->data) {
-			return $this->lastShareData->data[0]->id;
+			// id is a SimpleXMLElement object that contains the share id
+			// which is a string.
+			// (It might be a numeric string or might not, either is fine.)
+			return (string) $this->lastShareData->data[0]->id;
 		} else {
 			return null;
 		}
