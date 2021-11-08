@@ -109,11 +109,12 @@ class LargeFileHelper {
 	*
 	* @param string $fileName Path to the file.
 	*
-	* @return null|int|float Number of bytes as number (float or int) or
-	*                        null on failure.
+	* @return mixed Number of bytes as number (float or int) or
+	*                        null on failure. (temp - returns open_basedir setting)
 	*/
 	public function getFileSizeViaCurl($fileName) {
-		if (\OC::$server->getIniWrapper()->getString('open_basedir') === '') {
+		$openBasedirSetting = \OC::$server->getIniWrapper()->getString('open_basedir');
+		if ($openBasedirSetting === '') {
 			$pathParts = \explode('/', $fileName);
 			$encodedPathParts = \array_map('rawurlencode', $pathParts);
 			$encodedFileName = \implode('/', $encodedPathParts);
@@ -131,7 +132,7 @@ class LargeFileHelper {
 				}
 			}
 		}
-		return null;
+		return $openBasedirSetting;
 	}
 
 	/**
