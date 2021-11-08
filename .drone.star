@@ -1702,6 +1702,7 @@ def acceptance(ctx):
                                              setupScality(phpVersion, params["scalityS3"]) +
                                              params["extraSetup"] +
                                              waitForServer(phpVersion, params["federatedServerNeeded"]) +
+                                             waitForOccUpgrade(phpVersion, isCLI) +
                                              waitForBrowserService(phpVersion, isWebUI) +
                                              fixPermissions(phpVersion, params["federatedServerNeeded"], params["selUserNeeded"], pathOfServerUnderTest) +
                                              owncloudLog("server", pathOfServerUnderTest) +
@@ -2744,6 +2745,19 @@ def waitForServer(phpVersion, federatedServerNeeded):
         ] + ([
             "wait-for-it -t 600 federated:80",
         ] if federatedServerNeeded else []),
+    }]
+
+def waitForOccUpgrade(phpVersion, needed):
+    if not needed:
+        return []
+
+    return [{
+        "name": "wait-for-occupgrade",
+        "image": "owncloudci/php:%s" % phpVersion,
+        "pull": "always",
+        "commands": [
+            "wait-for-it -t 600 occupgrade:8123",
+        ],
     }]
 
 def owncloudLog(server, folder):
