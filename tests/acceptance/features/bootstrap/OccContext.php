@@ -784,7 +784,10 @@ class OccContext implements Context {
 		// - running a version of PHP that is supported by the system-under-test
 		// - not processing the incoming request through oC10 code
 		//   (because oC10 code might reject because "the system is waiting for upgrade")
-		HttpRequestHelper::sendRequest('occupgrade:8123');
+		HttpRequestHelper::sendRequest(
+			'occupgrade:8123',
+			$this->featureContext->getStepLineRef()
+		);
 		//if (!$this->theOccCommandExitStatusWasSuccess()) {
 		// If the above command fails make sure to turn off maintenance mode.
 		// This uses the testing app to run the command for us. So it might
