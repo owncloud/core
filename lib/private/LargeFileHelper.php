@@ -130,7 +130,9 @@ class LargeFileHelper {
 				if (isset($matches[1])) {
 					return 0 + $matches[1];
 				}
+				return "Content-Length was not found in curl response";
 			}
+			return "curl_exec returned false";
 		}
 		return $openBasedirSetting;
 	}
