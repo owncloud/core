@@ -21,6 +21,7 @@ class ReportData extends \Google\Collection
 {
   protected $collection_key = 'totals';
   public $dataLastRefreshed;
+  public $emptyReason;
   public $isDataGolden;
   protected $maximumsType = DateRangeValues::class;
   protected $maximumsDataType = 'array';
@@ -41,6 +42,14 @@ class ReportData extends \Google\Collection
   public function getDataLastRefreshed()
   {
     return $this->dataLastRefreshed;
+  }
+  public function setEmptyReason($emptyReason)
+  {
+    $this->emptyReason = $emptyReason;
+  }
+  public function getEmptyReason()
+  {
+    return $this->emptyReason;
   }
   public function setIsDataGolden($isDataGolden)
   {

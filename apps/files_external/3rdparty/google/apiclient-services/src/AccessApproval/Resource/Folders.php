@@ -52,7 +52,8 @@ class Folders extends \Google\Service\Resource
    * Gets the settings associated with a project, folder, or organization.
    * (folders.getAccessApprovalSettings)
    *
-   * @param string $name Name of the AccessApprovalSettings to retrieve.
+   * @param string $name The name of the AccessApprovalSettings to retrieve.
+   * Format: "{projects|folders|organizations}/{id}/accessApprovalSettings"
    * @param array $optParams Optional parameters.
    * @return AccessApprovalSettings
    */

@@ -24,7 +24,10 @@ class GoogleCloudPaymentsResellerSubscriptionV1Promotion extends \Google\Collect
   public $endTime;
   protected $freeTrialDurationType = GoogleCloudPaymentsResellerSubscriptionV1Duration::class;
   protected $freeTrialDurationDataType = '';
+  protected $introductoryPricingDetailsType = GoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetails::class;
+  protected $introductoryPricingDetailsDataType = '';
   public $name;
+  public $promotionType;
   public $regionCodes;
   public $startTime;
   protected $titlesType = GoogleTypeLocalizedText::class;
@@ -60,6 +63,20 @@ class GoogleCloudPaymentsResellerSubscriptionV1Promotion extends \Google\Collect
   {
     return $this->freeTrialDuration;
   }
+  /**
+   * @param GoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetails
+   */
+  public function setIntroductoryPricingDetails(GoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetails $introductoryPricingDetails)
+  {
+    $this->introductoryPricingDetails = $introductoryPricingDetails;
+  }
+  /**
+   * @return GoogleCloudPaymentsResellerSubscriptionV1PromotionIntroductoryPricingDetails
+   */
+  public function getIntroductoryPricingDetails()
+  {
+    return $this->introductoryPricingDetails;
+  }
   public function setName($name)
   {
     $this->name = $name;
@@ -67,6 +84,14 @@ class GoogleCloudPaymentsResellerSubscriptionV1Promotion extends \Google\Collect
   public function getName()
   {
     return $this->name;
+  }
+  public function setPromotionType($promotionType)
+  {
+    $this->promotionType = $promotionType;
+  }
+  public function getPromotionType()
+  {
+    return $this->promotionType;
   }
   public function setRegionCodes($regionCodes)
   {

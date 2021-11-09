@@ -22,6 +22,8 @@ class NetworkConfig extends \Google\Model
   public $datapathProvider;
   protected $defaultSnatStatusType = DefaultSnatStatus::class;
   protected $defaultSnatStatusDataType = '';
+  protected $dnsConfigType = DNSConfig::class;
+  protected $dnsConfigDataType = '';
   public $enableIntraNodeVisibility;
   public $enableL4ilbSubsetting;
   public $network;
@@ -49,6 +51,20 @@ class NetworkConfig extends \Google\Model
   public function getDefaultSnatStatus()
   {
     return $this->defaultSnatStatus;
+  }
+  /**
+   * @param DNSConfig
+   */
+  public function setDnsConfig(DNSConfig $dnsConfig)
+  {
+    $this->dnsConfig = $dnsConfig;
+  }
+  /**
+   * @return DNSConfig
+   */
+  public function getDnsConfig()
+  {
+    return $this->dnsConfig;
   }
   public function setEnableIntraNodeVisibility($enableIntraNodeVisibility)
   {

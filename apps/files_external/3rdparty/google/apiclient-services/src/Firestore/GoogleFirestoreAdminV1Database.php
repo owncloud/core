@@ -20,6 +20,7 @@ namespace Google\Service\Firestore;
 class GoogleFirestoreAdminV1Database extends \Google\Model
 {
   public $concurrencyMode;
+  public $earliestVersionTime;
   public $etag;
   public $locationId;
   public $name;
@@ -32,6 +33,14 @@ class GoogleFirestoreAdminV1Database extends \Google\Model
   public function getConcurrencyMode()
   {
     return $this->concurrencyMode;
+  }
+  public function setEarliestVersionTime($earliestVersionTime)
+  {
+    $this->earliestVersionTime = $earliestVersionTime;
+  }
+  public function getEarliestVersionTime()
+  {
+    return $this->earliestVersionTime;
   }
   public function setEtag($etag)
   {

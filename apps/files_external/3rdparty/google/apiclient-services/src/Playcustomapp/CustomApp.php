@@ -17,9 +17,12 @@
 
 namespace Google\Service\Playcustomapp;
 
-class CustomApp extends \Google\Model
+class CustomApp extends \Google\Collection
 {
+  protected $collection_key = 'organizations';
   public $languageCode;
+  protected $organizationsType = Organization::class;
+  protected $organizationsDataType = 'array';
   public $packageName;
   public $title;
 
@@ -30,6 +33,20 @@ class CustomApp extends \Google\Model
   public function getLanguageCode()
   {
     return $this->languageCode;
+  }
+  /**
+   * @param Organization[]
+   */
+  public function setOrganizations($organizations)
+  {
+    $this->organizations = $organizations;
+  }
+  /**
+   * @return Organization[]
+   */
+  public function getOrganizations()
+  {
+    return $this->organizations;
   }
   public function setPackageName($packageName)
   {

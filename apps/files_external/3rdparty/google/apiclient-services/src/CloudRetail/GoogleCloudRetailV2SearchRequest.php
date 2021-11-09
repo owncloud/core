@@ -37,6 +37,7 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
   public $query;
   protected $queryExpansionSpecType = GoogleCloudRetailV2SearchRequestQueryExpansionSpec::class;
   protected $queryExpansionSpecDataType = '';
+  public $searchMode;
   protected $userInfoType = GoogleCloudRetailV2UserInfo::class;
   protected $userInfoDataType = '';
   public $variantRollupKeys;
@@ -169,6 +170,14 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
   public function getQueryExpansionSpec()
   {
     return $this->queryExpansionSpec;
+  }
+  public function setSearchMode($searchMode)
+  {
+    $this->searchMode = $searchMode;
+  }
+  public function getSearchMode()
+  {
+    return $this->searchMode;
   }
   /**
    * @param GoogleCloudRetailV2UserInfo

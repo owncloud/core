@@ -20,6 +20,7 @@ namespace Google\Service\Document;
 class GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata extends \Google\Model
 {
   public $createTime;
+  public $resource;
   public $state;
   public $stateMessage;
   public $updateTime;
@@ -31,6 +32,14 @@ class GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata extends \Google\Mode
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  public function setResource($resource)
+  {
+    $this->resource = $resource;
+  }
+  public function getResource()
+  {
+    return $this->resource;
   }
   public function setState($state)
   {

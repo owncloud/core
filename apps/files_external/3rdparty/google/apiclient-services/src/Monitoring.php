@@ -23,12 +23,7 @@ use Google\Client;
  * Service definition for Monitoring (v3).
  *
  * <p>
- * Manages your Cloud Monitoring data and configurations. Most projects must be
- * associated with a Workspace, with a few exceptions as noted on the individual
- * method pages. The table entries below are presented in alphabetical order,
- * not in order of common use. For explanations of the concepts found in the
- * table entries, read the Cloud Monitoring documentation
- * (https://cloud.google.com/monitoring/docs).</p>
+ * Manages your Cloud Monitoring data and configurations.</p>
  *
  * <p>
  * For more information about this service, see the API

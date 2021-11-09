@@ -26,6 +26,7 @@ class GenerateEphemeralCertRequest extends \Google\Model
   public $accessToken;
   public $publicKey;
   public $readTime;
+  public $validDuration;
 
   public function setAccessToken($accessToken)
   {
@@ -50,6 +51,14 @@ class GenerateEphemeralCertRequest extends \Google\Model
   public function getReadTime()
   {
     return $this->readTime;
+  }
+  public function setValidDuration($validDuration)
+  {
+    $this->validDuration = $validDuration;
+  }
+  public function getValidDuration()
+  {
+    return $this->validDuration;
   }
 }
 

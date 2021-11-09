@@ -40,6 +40,9 @@ class RecaptchaEnterprise extends \Google\Service
 
   public $projects_assessments;
   public $projects_keys;
+  public $projects_relatedaccountgroupmemberships;
+  public $projects_relatedaccountgroups;
+  public $projects_relatedaccountgroups_memberships;
 
   /**
    * Constructs the internal representation of the RecaptchaEnterprise service.
@@ -171,6 +174,82 @@ class RecaptchaEnterprise extends \Google\Service
                   'required' => true,
                 ],
                 'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_relatedaccountgroupmemberships = new RecaptchaEnterprise\Resource\ProjectsRelatedaccountgroupmemberships(
+        $this,
+        $this->serviceName,
+        'relatedaccountgroupmemberships',
+        [
+          'methods' => [
+            'search' => [
+              'path' => 'v1/{+parent}/relatedaccountgroupmemberships:search',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_relatedaccountgroups = new RecaptchaEnterprise\Resource\ProjectsRelatedaccountgroups(
+        $this,
+        $this->serviceName,
+        'relatedaccountgroups',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/relatedaccountgroups',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_relatedaccountgroups_memberships = new RecaptchaEnterprise\Resource\ProjectsRelatedaccountgroupsMemberships(
+        $this,
+        $this->serviceName,
+        'memberships',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/memberships',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],

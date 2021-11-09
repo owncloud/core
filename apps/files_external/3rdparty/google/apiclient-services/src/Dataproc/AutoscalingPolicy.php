@@ -22,6 +22,7 @@ class AutoscalingPolicy extends \Google\Model
   protected $basicAlgorithmType = BasicAutoscalingAlgorithm::class;
   protected $basicAlgorithmDataType = '';
   public $id;
+  public $labels;
   public $name;
   protected $secondaryWorkerConfigType = InstanceGroupAutoscalingPolicyConfig::class;
   protected $secondaryWorkerConfigDataType = '';
@@ -49,6 +50,14 @@ class AutoscalingPolicy extends \Google\Model
   public function getId()
   {
     return $this->id;
+  }
+  public function setLabels($labels)
+  {
+    $this->labels = $labels;
+  }
+  public function getLabels()
+  {
+    return $this->labels;
   }
   public function setName($name)
   {

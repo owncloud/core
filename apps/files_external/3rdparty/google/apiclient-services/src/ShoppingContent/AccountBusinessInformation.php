@@ -25,6 +25,7 @@ class AccountBusinessInformation extends \Google\Model
   protected $customerServiceDataType = '';
   public $koreanBusinessRegistrationNumber;
   public $phoneNumber;
+  public $phoneVerificationStatus;
 
   /**
    * @param AccountAddress
@@ -69,6 +70,14 @@ class AccountBusinessInformation extends \Google\Model
   public function getPhoneNumber()
   {
     return $this->phoneNumber;
+  }
+  public function setPhoneVerificationStatus($phoneVerificationStatus)
+  {
+    $this->phoneVerificationStatus = $phoneVerificationStatus;
+  }
+  public function getPhoneVerificationStatus()
+  {
+    return $this->phoneVerificationStatus;
   }
 }
 

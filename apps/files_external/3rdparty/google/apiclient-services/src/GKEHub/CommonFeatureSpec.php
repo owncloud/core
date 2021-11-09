@@ -19,9 +19,25 @@ namespace Google\Service\GKEHub;
 
 class CommonFeatureSpec extends \Google\Model
 {
+  protected $appdevexperienceType = AppDevExperienceFeatureSpec::class;
+  protected $appdevexperienceDataType = '';
   protected $multiclusteringressType = MultiClusterIngressFeatureSpec::class;
   protected $multiclusteringressDataType = '';
 
+  /**
+   * @param AppDevExperienceFeatureSpec
+   */
+  public function setAppdevexperience(AppDevExperienceFeatureSpec $appdevexperience)
+  {
+    $this->appdevexperience = $appdevexperience;
+  }
+  /**
+   * @return AppDevExperienceFeatureSpec
+   */
+  public function getAppdevexperience()
+  {
+    return $this->appdevexperience;
+  }
   /**
    * @param MultiClusterIngressFeatureSpec
    */

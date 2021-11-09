@@ -41,6 +41,8 @@ class Iam extends \Google\Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $iamPolicies;
+  public $locations_workforcePools_operations;
+  public $locations_workforcePools_providers_operations;
   public $organizations_roles;
   public $permissions;
   public $projects_locations_workloadIdentityPools;
@@ -82,6 +84,46 @@ class Iam extends \Google\Service
               'path' => 'v1/iamPolicies:queryAuditableServices',
               'httpMethod' => 'POST',
               'parameters' => [],
+            ],
+          ]
+        ]
+    );
+    $this->locations_workforcePools_operations = new Iam\Resource\LocationsWorkforcePoolsOperations(
+        $this,
+        $this->serviceName,
+        'operations',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->locations_workforcePools_providers_operations = new Iam\Resource\LocationsWorkforcePoolsProvidersOperations(
+        $this,
+        $this->serviceName,
+        'operations',
+        [
+          'methods' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],
           ]
         ]

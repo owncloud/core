@@ -20,10 +20,42 @@ namespace Google\Service\Speech;
 class LongRunningRecognizeResponse extends \Google\Collection
 {
   protected $collection_key = 'results';
+  protected $outputConfigType = TranscriptOutputConfig::class;
+  protected $outputConfigDataType = '';
+  protected $outputErrorType = Status::class;
+  protected $outputErrorDataType = '';
   protected $resultsType = SpeechRecognitionResult::class;
   protected $resultsDataType = 'array';
   public $totalBilledTime;
 
+  /**
+   * @param TranscriptOutputConfig
+   */
+  public function setOutputConfig(TranscriptOutputConfig $outputConfig)
+  {
+    $this->outputConfig = $outputConfig;
+  }
+  /**
+   * @return TranscriptOutputConfig
+   */
+  public function getOutputConfig()
+  {
+    return $this->outputConfig;
+  }
+  /**
+   * @param Status
+   */
+  public function setOutputError(Status $outputError)
+  {
+    $this->outputError = $outputError;
+  }
+  /**
+   * @return Status
+   */
+  public function getOutputError()
+  {
+    return $this->outputError;
+  }
   /**
    * @param SpeechRecognitionResult[]
    */

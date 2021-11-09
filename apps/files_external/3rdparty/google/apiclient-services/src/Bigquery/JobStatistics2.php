@@ -39,6 +39,8 @@ class JobStatistics2 extends \Google\Collection
   protected $dmlStatsType = DmlStatistics::class;
   protected $dmlStatsDataType = '';
   public $estimatedBytesProcessed;
+  protected $mlStatisticsType = MlStatistics::class;
+  protected $mlStatisticsDataType = '';
   protected $modelTrainingType = BigQueryModelTraining::class;
   protected $modelTrainingDataType = '';
   public $modelTrainingCurrentIteration;
@@ -202,6 +204,20 @@ class JobStatistics2 extends \Google\Collection
   public function getEstimatedBytesProcessed()
   {
     return $this->estimatedBytesProcessed;
+  }
+  /**
+   * @param MlStatistics
+   */
+  public function setMlStatistics(MlStatistics $mlStatistics)
+  {
+    $this->mlStatistics = $mlStatistics;
+  }
+  /**
+   * @return MlStatistics
+   */
+  public function getMlStatistics()
+  {
+    return $this->mlStatistics;
   }
   /**
    * @param BigQueryModelTraining

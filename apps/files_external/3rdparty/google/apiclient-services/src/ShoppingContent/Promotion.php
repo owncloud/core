@@ -54,7 +54,11 @@ class Promotion extends \Google\Collection
   public $productTypeExclusion;
   public $promotionDestinationIds;
   public $promotionDisplayDates;
+  protected $promotionDisplayTimePeriodType = TimePeriod::class;
+  protected $promotionDisplayTimePeriodDataType = '';
   public $promotionEffectiveDates;
+  protected $promotionEffectiveTimePeriodType = TimePeriod::class;
+  protected $promotionEffectiveTimePeriodDataType = '';
   public $promotionId;
   public $redemptionChannel;
   public $shippingServiceNames;
@@ -322,6 +326,20 @@ class Promotion extends \Google\Collection
   {
     return $this->promotionDisplayDates;
   }
+  /**
+   * @param TimePeriod
+   */
+  public function setPromotionDisplayTimePeriod(TimePeriod $promotionDisplayTimePeriod)
+  {
+    $this->promotionDisplayTimePeriod = $promotionDisplayTimePeriod;
+  }
+  /**
+   * @return TimePeriod
+   */
+  public function getPromotionDisplayTimePeriod()
+  {
+    return $this->promotionDisplayTimePeriod;
+  }
   public function setPromotionEffectiveDates($promotionEffectiveDates)
   {
     $this->promotionEffectiveDates = $promotionEffectiveDates;
@@ -329,6 +347,20 @@ class Promotion extends \Google\Collection
   public function getPromotionEffectiveDates()
   {
     return $this->promotionEffectiveDates;
+  }
+  /**
+   * @param TimePeriod
+   */
+  public function setPromotionEffectiveTimePeriod(TimePeriod $promotionEffectiveTimePeriod)
+  {
+    $this->promotionEffectiveTimePeriod = $promotionEffectiveTimePeriod;
+  }
+  /**
+   * @return TimePeriod
+   */
+  public function getPromotionEffectiveTimePeriod()
+  {
+    return $this->promotionEffectiveTimePeriod;
   }
   public function setPromotionId($promotionId)
   {

@@ -46,6 +46,24 @@ class Media extends \Google\Service\Resource
     $params = array_merge($params, $optParams);
     return $this->call('download', [$params], GoogleBytestreamMedia::class);
   }
+  /**
+   * Uploads media. Upload is supported on the URI
+   * `/upload/media/{resource_name=**}?upload_type=media.` **Note**: Upload
+   * requests will not be successful without including `upload_type=media` query
+   * string. (media.upload)
+   *
+   * @param string $resourceName Name of the media that is being downloaded. See
+   * ReadRequest.resource_name.
+   * @param GoogleBytestreamMedia $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleBytestreamMedia
+   */
+  public function upload($resourceName, GoogleBytestreamMedia $postBody, $optParams = [])
+  {
+    $params = ['resourceName' => $resourceName, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('upload', [$params], GoogleBytestreamMedia::class);
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

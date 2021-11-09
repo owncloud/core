@@ -101,6 +101,26 @@ class ProjectsPatchDeployments extends \Google\Service\Resource
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListPatchDeploymentsResponse::class);
   }
+  /**
+   * Update an OS Config patch deployment. (patchDeployments.patch)
+   *
+   * @param string $name Unique name for the patch deployment resource in a
+   * project. The patch deployment name is in the form:
+   * `projects/{project_id}/patchDeployments/{patch_deployment_id}`. This field is
+   * ignored when you create a new patch deployment.
+   * @param PatchDeployment $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Optional. Field mask that controls which fields
+   * of the patch deployment should be updated.
+   * @return PatchDeployment
+   */
+  public function patch($name, PatchDeployment $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], PatchDeployment::class);
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

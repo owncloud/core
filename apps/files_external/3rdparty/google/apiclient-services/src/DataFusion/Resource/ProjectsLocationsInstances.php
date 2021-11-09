@@ -40,12 +40,12 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * Creates a new Data Fusion instance in the specified project and location.
    * (instances.create)
    *
-   * @param string $parent The instance's project and location in the format
-   * projects/{project}/locations/{location}.
+   * @param string $parent Required. The instance's project and location in the
+   * format projects/{project}/locations/{location}.
    * @param Instance $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string instanceId The name of the instance to create.
+   * @opt_param string instanceId Required. The name of the instance to create.
    * @return Operation
    */
   public function create($parent, Instance $postBody, $optParams = [])
@@ -57,7 +57,7 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
   /**
    * Deletes a single Date Fusion instance. (instances.delete)
    *
-   * @param string $name The instance resource name in the format
+   * @param string $name Required. The instance resource name in the format
    * projects/{project}/locations/{location}/instances/{instance}
    * @param array $optParams Optional parameters.
    * @return Operation
@@ -71,7 +71,7 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
   /**
    * Gets details of a single Data Fusion instance. (instances.get)
    *
-   * @param string $name The instance resource name in the format
+   * @param string $name Required. The instance resource name in the format
    * projects/{project}/locations/{location}/instances/{instance}.
    * @param array $optParams Optional parameters.
    * @return Instance
@@ -111,10 +111,11 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * Lists Data Fusion instances in the specified project and location.
    * (instances.listProjectsLocationsInstances)
    *
-   * @param string $parent The project and location for which to retrieve instance
-   * information in the format projects/{project}/locations/{location}. If the
-   * location is specified as '-' (wildcard), then all regions available to the
-   * project are queried, and the results are aggregated.
+   * @param string $parent Required. The project and location for which to
+   * retrieve instance information in the format
+   * projects/{project}/locations/{location}. If the location is specified as '-'
+   * (wildcard), then all regions available to the project are queried, and the
+   * results are aggregated.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter List filter.
@@ -157,8 +158,8 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * Restart a single Data Fusion instance. At the end of an operation instance is
    * fully restarted. (instances.restart)
    *
-   * @param string $name Name of the Data Fusion instance which need to be
-   * restarted in the form of
+   * @param string $name Required. Name of the Data Fusion instance which need to
+   * be restarted in the form of
    * projects/{project}/locations/{location}/instances/{instance}
    * @param RestartInstanceRequest $postBody
    * @param array $optParams Optional parameters.

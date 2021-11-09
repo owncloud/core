@@ -19,6 +19,8 @@ namespace Google\Service\RecaptchaEnterprise;
 
 class GoogleCloudRecaptchaenterpriseV1Assessment extends \Google\Model
 {
+  protected $accountDefenderAssessmentType = GoogleCloudRecaptchaenterpriseV1AccountDefenderAssessment::class;
+  protected $accountDefenderAssessmentDataType = '';
   protected $eventType = GoogleCloudRecaptchaenterpriseV1Event::class;
   protected $eventDataType = '';
   public $name;
@@ -27,6 +29,20 @@ class GoogleCloudRecaptchaenterpriseV1Assessment extends \Google\Model
   protected $tokenPropertiesType = GoogleCloudRecaptchaenterpriseV1TokenProperties::class;
   protected $tokenPropertiesDataType = '';
 
+  /**
+   * @param GoogleCloudRecaptchaenterpriseV1AccountDefenderAssessment
+   */
+  public function setAccountDefenderAssessment(GoogleCloudRecaptchaenterpriseV1AccountDefenderAssessment $accountDefenderAssessment)
+  {
+    $this->accountDefenderAssessment = $accountDefenderAssessment;
+  }
+  /**
+   * @return GoogleCloudRecaptchaenterpriseV1AccountDefenderAssessment
+   */
+  public function getAccountDefenderAssessment()
+  {
+    return $this->accountDefenderAssessment;
+  }
   /**
    * @param GoogleCloudRecaptchaenterpriseV1Event
    */

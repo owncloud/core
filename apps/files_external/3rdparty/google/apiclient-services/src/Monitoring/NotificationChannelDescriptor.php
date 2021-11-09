@@ -19,13 +19,14 @@ namespace Google\Service\Monitoring;
 
 class NotificationChannelDescriptor extends \Google\Collection
 {
-  protected $collection_key = 'labels';
+  protected $collection_key = 'supportedTiers';
   public $description;
   public $displayName;
   protected $labelsType = LabelDescriptor::class;
   protected $labelsDataType = 'array';
   public $launchStage;
   public $name;
+  public $supportedTiers;
   public $type;
 
   public function setDescription($description)
@@ -73,6 +74,14 @@ class NotificationChannelDescriptor extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setSupportedTiers($supportedTiers)
+  {
+    $this->supportedTiers = $supportedTiers;
+  }
+  public function getSupportedTiers()
+  {
+    return $this->supportedTiers;
   }
   public function setType($type)
   {

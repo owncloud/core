@@ -116,8 +116,8 @@ class ProjectsAppsDebugTokens extends \Google\Service\Resource
    * cannot be updated, nor will it be populated in the response, but you can
    * revoke the debug token using DeleteDebugToken. (debugTokens.patch)
    *
-   * @param string $name The relative resource name of the debug token, in the
-   * format: ```
+   * @param string $name Required. The relative resource name of the debug token,
+   * in the format: ```
    * projects/{project_number}/apps/{app_id}/debugTokens/{debug_token_id} ```
    * @param GoogleFirebaseAppcheckV1betaDebugToken $postBody
    * @param array $optParams Optional parameters.

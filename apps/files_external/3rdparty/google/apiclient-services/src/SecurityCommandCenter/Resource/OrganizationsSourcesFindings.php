@@ -140,7 +140,8 @@ class OrganizationsSourcesFindings extends \Google\Service\Resource
    * `-source_properties.my_property : ""` * resource: * resource.name: `=`, `:` *
    * resource.parent_name: `=`, `:` * resource.parent_display_name: `=`, `:` *
    * resource.project_name: `=`, `:` * resource.project_display_name: `=`, `:` *
-   * resource.type: `=`, `:` * resource.folders.resource_folder: `=`, `:`
+   * resource.type: `=`, `:` * resource.folders.resource_folder: `=`, `:` *
+   * resource.display_name: `=`, `:`
    * @opt_param string orderBy Expression that defines what fields and order to
    * use for sorting. The string value should follow SQL syntax: comma separated
    * list of fields. For example: "name,resource_properties.a_property". The

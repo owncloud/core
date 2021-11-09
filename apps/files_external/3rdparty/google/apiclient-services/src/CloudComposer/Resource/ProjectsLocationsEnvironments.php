@@ -147,13 +147,15 @@ class ProjectsLocationsEnvironments extends \Google\Service\Resource
    * provided in the `config.nodeCount` field. Supported for Cloud Composer
    * environments in versions composer-1.*.*-airflow-*.*.*. *
    * `config.webServerNetworkAccessControl` * Replace the environment's current
-   * `WebServerNetworkAccessControl`. * `config.databaseConfig` Supported for
-   * Cloud Composer environments in versions composer-1.*.*-airflow-*.*.*. *
-   * Replace the environment's current `DatabaseConfig`. *
-   * `config.webServerConfig.machineType` * Machine type on which Airflow web
-   * server is running. It has to be one of: composer-n1-webserver-2,
-   * composer-n1-webserver-4 or composer-n1-webserver-8. Supported for Cloud
-   * Composer environments in versions composer-1.*.*-airflow-*.*.*. *
+   * `WebServerNetworkAccessControl`. * `config.databaseConfig.machineType` *
+   * Cloud SQL machine type used by Airflow database. It has to be one of:
+   * db-n1-standard-2, db-n1-standard-4, db-n1-standard-8 or db-n1-standard-16.
+   * Supported for Cloud Composer environments in versions
+   * composer-1.*.*-airflow-*.*.*. * `config.webServerConfig.machineType` *
+   * Machine type on which Airflow web server is running. It has to be one of:
+   * composer-n1-webserver-2, composer-n1-webserver-4 or composer-n1-webserver-8.
+   * Supported for Cloud Composer environments in versions
+   * composer-1.*.*-airflow-*.*.*. *
    * `config.softwareConfig.airflowConfigOverrides` * Replace all Apache Airflow
    * config overrides. If a replacement config overrides map is not included in
    * `environment`, all config overrides are cleared. It is an error to provide

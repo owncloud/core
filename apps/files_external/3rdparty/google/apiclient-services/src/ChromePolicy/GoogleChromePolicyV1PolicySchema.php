@@ -19,7 +19,7 @@ namespace Google\Service\ChromePolicy;
 
 class GoogleChromePolicyV1PolicySchema extends \Google\Collection
 {
-  protected $collection_key = 'notices';
+  protected $collection_key = 'validTargetResources';
   public $accessRestrictions;
   protected $additionalTargetKeyNamesType = GoogleChromePolicyV1AdditionalTargetKeyName::class;
   protected $additionalTargetKeyNamesDataType = 'array';
@@ -33,6 +33,7 @@ class GoogleChromePolicyV1PolicySchema extends \Google\Collection
   public $policyDescription;
   public $schemaName;
   public $supportUri;
+  public $validTargetResources;
 
   public function setAccessRestrictions($accessRestrictions)
   {
@@ -129,6 +130,14 @@ class GoogleChromePolicyV1PolicySchema extends \Google\Collection
   public function getSupportUri()
   {
     return $this->supportUri;
+  }
+  public function setValidTargetResources($validTargetResources)
+  {
+    $this->validTargetResources = $validTargetResources;
+  }
+  public function getValidTargetResources()
+  {
+    return $this->validTargetResources;
   }
 }
 

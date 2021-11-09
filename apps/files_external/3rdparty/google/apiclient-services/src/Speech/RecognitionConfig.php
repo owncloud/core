@@ -20,11 +20,15 @@ namespace Google\Service\Speech;
 class RecognitionConfig extends \Google\Collection
 {
   protected $collection_key = 'speechContexts';
+  public $alternativeLanguageCodes;
   public $audioChannelCount;
   protected $diarizationConfigType = SpeakerDiarizationConfig::class;
   protected $diarizationConfigDataType = '';
   public $enableAutomaticPunctuation;
   public $enableSeparateRecognitionPerChannel;
+  public $enableSpokenEmojis;
+  public $enableSpokenPunctuation;
+  public $enableWordConfidence;
   public $enableWordTimeOffsets;
   public $encoding;
   public $languageCode;
@@ -38,6 +42,14 @@ class RecognitionConfig extends \Google\Collection
   protected $speechContextsDataType = 'array';
   public $useEnhanced;
 
+  public function setAlternativeLanguageCodes($alternativeLanguageCodes)
+  {
+    $this->alternativeLanguageCodes = $alternativeLanguageCodes;
+  }
+  public function getAlternativeLanguageCodes()
+  {
+    return $this->alternativeLanguageCodes;
+  }
   public function setAudioChannelCount($audioChannelCount)
   {
     $this->audioChannelCount = $audioChannelCount;
@@ -75,6 +87,30 @@ class RecognitionConfig extends \Google\Collection
   public function getEnableSeparateRecognitionPerChannel()
   {
     return $this->enableSeparateRecognitionPerChannel;
+  }
+  public function setEnableSpokenEmojis($enableSpokenEmojis)
+  {
+    $this->enableSpokenEmojis = $enableSpokenEmojis;
+  }
+  public function getEnableSpokenEmojis()
+  {
+    return $this->enableSpokenEmojis;
+  }
+  public function setEnableSpokenPunctuation($enableSpokenPunctuation)
+  {
+    $this->enableSpokenPunctuation = $enableSpokenPunctuation;
+  }
+  public function getEnableSpokenPunctuation()
+  {
+    return $this->enableSpokenPunctuation;
+  }
+  public function setEnableWordConfidence($enableWordConfidence)
+  {
+    $this->enableWordConfidence = $enableWordConfidence;
+  }
+  public function getEnableWordConfidence()
+  {
+    return $this->enableWordConfidence;
   }
   public function setEnableWordTimeOffsets($enableWordTimeOffsets)
   {

@@ -35,6 +35,7 @@ class GoogleCloudApigeeV1Organization extends \Google\Collection
   public $expiresAt;
   public $lastModifiedAt;
   public $name;
+  public $portalDisabled;
   public $projectId;
   protected $propertiesType = GoogleCloudApigeeV1Properties::class;
   protected $propertiesDataType = '';
@@ -161,6 +162,14 @@ class GoogleCloudApigeeV1Organization extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setPortalDisabled($portalDisabled)
+  {
+    $this->portalDisabled = $portalDisabled;
+  }
+  public function getPortalDisabled()
+  {
+    return $this->portalDisabled;
   }
   public function setProjectId($projectId)
   {

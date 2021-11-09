@@ -19,8 +19,17 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class VertexAIParameters extends \Google\Model
 {
+  public $env;
   public $network;
 
+  public function setEnv($env)
+  {
+    $this->env = $env;
+  }
+  public function getEnv()
+  {
+    return $this->env;
+  }
   public function setNetwork($network)
   {
     $this->network = $network;

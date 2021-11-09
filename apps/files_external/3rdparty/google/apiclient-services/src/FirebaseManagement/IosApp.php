@@ -25,6 +25,7 @@ class IosApp extends \Google\Model
   public $displayName;
   public $name;
   public $projectId;
+  public $teamId;
 
   public function setAppId($appId)
   {
@@ -73,6 +74,14 @@ class IosApp extends \Google\Model
   public function getProjectId()
   {
     return $this->projectId;
+  }
+  public function setTeamId($teamId)
+  {
+    $this->teamId = $teamId;
+  }
+  public function getTeamId()
+  {
+    return $this->teamId;
   }
 }
 

@@ -19,6 +19,8 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1SearchCatalogResult extends \Google\Model
 {
+  public $description;
+  public $displayName;
   public $fullyQualifiedName;
   public $integratedSystem;
   public $linkedResource;
@@ -28,6 +30,22 @@ class GoogleCloudDatacatalogV1SearchCatalogResult extends \Google\Model
   public $searchResultType;
   public $userSpecifiedSystem;
 
+  public function setDescription($description)
+  {
+    $this->description = $description;
+  }
+  public function getDescription()
+  {
+    return $this->description;
+  }
+  public function setDisplayName($displayName)
+  {
+    $this->displayName = $displayName;
+  }
+  public function getDisplayName()
+  {
+    return $this->displayName;
+  }
   public function setFullyQualifiedName($fullyQualifiedName)
   {
     $this->fullyQualifiedName = $fullyQualifiedName;

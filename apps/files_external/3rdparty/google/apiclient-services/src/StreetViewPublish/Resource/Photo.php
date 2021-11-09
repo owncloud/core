@@ -131,7 +131,7 @@ class Photo extends \Google\Service\Resource
    * not exist. * google.rpc.Code.UNAVAILABLE if the requested Photo is still
    * being indexed. (photo.update)
    *
-   * @param string $id Required. A unique identifier for a photo.
+   * @param string $id A unique identifier for a photo.
    * @param PhotoModel $postBody
    * @param array $optParams Optional parameters.
    *
@@ -141,7 +141,7 @@ class Photo extends \Google\Service\Resource
    * invalid fields are specified. Multiple fields can be specified in a comma-
    * delimited list. The following fields are valid: * `pose.heading` *
    * `pose.latLngPair` * `pose.pitch` * `pose.roll` * `pose.level` *
-   * `pose.altitude` * `connections` * `places` *Note:* When updateMask contains
+   * `pose.altitude` * `connections` * `places` > Note: When updateMask contains
    * repeated fields, the entire set of repeated values get replaced with the new
    * contents. For example, if updateMask contains `connections` and
    * `UpdatePhotoRequest.photo.connections` is empty, all connections are removed.

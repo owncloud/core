@@ -156,11 +156,11 @@ class ProjectsServiceAccounts extends \Google\Service\Resource
   }
   /**
    * Gets the IAM policy that is attached to a ServiceAccount. This IAM policy
-   * specifies which members have access to the service account. This method does
-   * not tell you whether the service account has been granted any roles on other
-   * resources. To check whether a service account has role grants on a resource,
-   * use the `getIamPolicy` method for that resource. For example, to view the
-   * role grants for a project, call the Resource Manager API's
+   * specifies which principals have access to the service account. This method
+   * does not tell you whether the service account has been granted any roles on
+   * other resources. To check whether a service account has role grants on a
+   * resource, use the `getIamPolicy` method for that resource. For example, to
+   * view the role grants for a project, call the Resource Manager API's
    * [`projects.getIamPolicy`](https://cloud.google.com/resource-
    * manager/reference/rest/v1/projects/getIamPolicy) method.
    * (serviceAccounts.getIamPolicy)
@@ -235,15 +235,17 @@ class ProjectsServiceAccounts extends \Google\Service\Resource
   /**
    * Sets the IAM policy that is attached to a ServiceAccount. Use this method to
    * grant or revoke access to the service account. For example, you could grant a
-   * member the ability to impersonate the service account. This method does not
-   * enable the service account to access other resources. To grant roles to a
+   * principal the ability to impersonate the service account. This method does
+   * not enable the service account to access other resources. To grant roles to a
    * service account on a resource, follow these steps: 1. Call the resource's
    * `getIamPolicy` method to get its current IAM policy. 2. Edit the policy so
    * that it binds the service account to an IAM role for the resource. 3. Call
    * the resource's `setIamPolicy` method to update its IAM policy. For detailed
-   * instructions, see [Granting roles to a service account for specific
-   * resources](https://cloud.google.com/iam/help/service-accounts/granting-
-   * access-to-service-accounts). (serviceAccounts.setIamPolicy)
+   * instructions, see [Manage access to project, folders, and
+   * organizations](https://cloud.google.com/iam/help/service-accounts/granting-
+   * access-to-service-accounts) or [Manage access to other
+   * resources](https://cloud.google.com/iam/help/access/manage-other-resources).
+   * (serviceAccounts.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

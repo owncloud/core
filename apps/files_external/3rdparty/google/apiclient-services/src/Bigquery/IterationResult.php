@@ -17,47 +17,14 @@
 
 namespace Google\Service\Bigquery;
 
-class IterationResult extends \Google\Collection
+class IterationResult extends \Google\Model
 {
-  protected $collection_key = 'clusterInfos';
-  protected $arimaResultType = ArimaResult::class;
-  protected $arimaResultDataType = '';
-  protected $clusterInfosType = ClusterInfo::class;
-  protected $clusterInfosDataType = 'array';
   public $durationMs;
   public $evalLoss;
   public $index;
   public $learnRate;
   public $trainingLoss;
 
-  /**
-   * @param ArimaResult
-   */
-  public function setArimaResult(ArimaResult $arimaResult)
-  {
-    $this->arimaResult = $arimaResult;
-  }
-  /**
-   * @return ArimaResult
-   */
-  public function getArimaResult()
-  {
-    return $this->arimaResult;
-  }
-  /**
-   * @param ClusterInfo[]
-   */
-  public function setClusterInfos($clusterInfos)
-  {
-    $this->clusterInfos = $clusterInfos;
-  }
-  /**
-   * @return ClusterInfo[]
-   */
-  public function getClusterInfos()
-  {
-    return $this->clusterInfos;
-  }
   public function setDurationMs($durationMs)
   {
     $this->durationMs = $durationMs;

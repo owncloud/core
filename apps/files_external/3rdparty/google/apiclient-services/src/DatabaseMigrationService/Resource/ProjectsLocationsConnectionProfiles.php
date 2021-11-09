@@ -161,7 +161,8 @@ class ProjectsLocationsConnectionProfiles extends \Google\Service\Resource
    * (connectionProfiles.patch)
    *
    * @param string $name The name of this connection profile resource in the form
-   * of projects/{project}/locations/{location}/connectionProfiles/{instance}.
+   * of projects/{project}/locations/{location}/connectionProfiles/{connectionProf
+   * ile}.
    * @param ConnectionProfile $postBody
    * @param array $optParams Optional parameters.
    *

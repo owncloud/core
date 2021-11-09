@@ -22,6 +22,8 @@ class Bucket extends \Google\Collection
   protected $collection_key = 'defaultObjectAcl';
   protected $aclType = BucketAccessControl::class;
   protected $aclDataType = 'array';
+  protected $autoclassType = BucketAutoclass::class;
+  protected $autoclassDataType = '';
   protected $billingType = BucketBilling::class;
   protected $billingDataType = '';
   protected $corsType = BucketCors::class;
@@ -76,6 +78,20 @@ class Bucket extends \Google\Collection
   public function getAcl()
   {
     return $this->acl;
+  }
+  /**
+   * @param BucketAutoclass
+   */
+  public function setAutoclass(BucketAutoclass $autoclass)
+  {
+    $this->autoclass = $autoclass;
+  }
+  /**
+   * @return BucketAutoclass
+   */
+  public function getAutoclass()
+  {
+    return $this->autoclass;
   }
   /**
    * @param BucketBilling

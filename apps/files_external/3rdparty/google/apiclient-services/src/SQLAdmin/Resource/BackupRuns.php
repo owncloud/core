@@ -38,7 +38,8 @@ class BackupRuns extends \Google\Service\Resource
    * @param string $instance Cloud SQL instance ID. This does not include the
    * project ID.
    * @param string $id The ID of the backup run to delete. To find a backup run
-   * ID, use the list method.
+   * ID, use the [list](https://cloud.google.com/sql/docs/mysql/admin-
+   * api/rest/v1/backupRuns/list) method.
    * @param array $optParams Optional parameters.
    * @return Operation
    */

@@ -23,6 +23,8 @@ class GoogleCloudDialogflowCxV3QueryResult extends \Google\Collection
   protected $currentPageType = GoogleCloudDialogflowCxV3Page::class;
   protected $currentPageDataType = '';
   public $diagnosticInfo;
+  protected $dtmfType = GoogleCloudDialogflowCxV3DtmfInput::class;
+  protected $dtmfDataType = '';
   protected $intentType = GoogleCloudDialogflowCxV3Intent::class;
   protected $intentDataType = '';
   public $intentDetectionConfidence;
@@ -63,6 +65,20 @@ class GoogleCloudDialogflowCxV3QueryResult extends \Google\Collection
   public function getDiagnosticInfo()
   {
     return $this->diagnosticInfo;
+  }
+  /**
+   * @param GoogleCloudDialogflowCxV3DtmfInput
+   */
+  public function setDtmf(GoogleCloudDialogflowCxV3DtmfInput $dtmf)
+  {
+    $this->dtmf = $dtmf;
+  }
+  /**
+   * @return GoogleCloudDialogflowCxV3DtmfInput
+   */
+  public function getDtmf()
+  {
+    return $this->dtmf;
   }
   /**
    * @param GoogleCloudDialogflowCxV3Intent

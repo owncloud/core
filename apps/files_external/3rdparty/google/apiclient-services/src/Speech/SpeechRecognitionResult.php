@@ -23,6 +23,7 @@ class SpeechRecognitionResult extends \Google\Collection
   protected $alternativesType = SpeechRecognitionAlternative::class;
   protected $alternativesDataType = 'array';
   public $channelTag;
+  public $languageCode;
 
   /**
    * @param SpeechRecognitionAlternative[]
@@ -45,6 +46,14 @@ class SpeechRecognitionResult extends \Google\Collection
   public function getChannelTag()
   {
     return $this->channelTag;
+  }
+  public function setLanguageCode($languageCode)
+  {
+    $this->languageCode = $languageCode;
+  }
+  public function getLanguageCode()
+  {
+    return $this->languageCode;
   }
 }
 

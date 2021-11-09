@@ -17,8 +17,6 @@
 
 namespace Google\Service\OSConfig\Resource;
 
-use Google\Service\OSConfig\OSPolicyAssignmentReport;
-
 /**
  * The "osPolicyAssignments" collection of methods.
  * Typical usage is:
@@ -29,25 +27,6 @@ use Google\Service\OSConfig\OSPolicyAssignmentReport;
  */
 class ProjectsLocationsInstancesOsPolicyAssignments extends \Google\Service\Resource
 {
-  /**
-   * Get the OS policy asssignment report for the specified Compute Engine VM
-   * instance. (osPolicyAssignments.getReport)
-   *
-   * @param string $name Required. API resource name for OS policy assignment
-   * report. Format: `/projects/{project}/locations/{location}/instances/{instance
-   * }/osPolicyAssignments/{assignment}/report` For `{project}`, either `project-
-   * number` or `project-id` can be provided. For `{instance_id}`, either Compute
-   * Engine `instance-id` or `instance-name` can be provided. For
-   * `{assignment_id}`, the OSPolicyAssignment id must be provided.
-   * @param array $optParams Optional parameters.
-   * @return OSPolicyAssignmentReport
-   */
-  public function getReport($name, $optParams = [])
-  {
-    $params = ['name' => $name];
-    $params = array_merge($params, $optParams);
-    return $this->call('getReport', [$params], OSPolicyAssignmentReport::class);
-  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

@@ -83,6 +83,7 @@ class CloudSearch extends \Google\Service
   public $stats_query_searchapplications;
   public $stats_session_searchapplications;
   public $stats_user_searchapplications;
+  public $v1;
 
   /**
    * Constructs the internal representation of the CloudSearch service.
@@ -1028,6 +1029,20 @@ class CloudSearch extends \Google\Service
                   'type' => 'integer',
                 ],
               ],
+            ],
+          ]
+        ]
+    );
+    $this->v1 = new CloudSearch\Resource\V1(
+        $this,
+        $this->serviceName,
+        'v1',
+        [
+          'methods' => [
+            'initializeCustomer' => [
+              'path' => 'v1:initializeCustomer',
+              'httpMethod' => 'POST',
+              'parameters' => [],
             ],
           ]
         ]

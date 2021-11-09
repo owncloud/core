@@ -27,6 +27,8 @@ class Reservation extends \Google\Model
   public $name;
   public $satisfiesPzs;
   public $selfLink;
+  protected $shareSettingsType = ShareSettings::class;
+  protected $shareSettingsDataType = '';
   protected $specificReservationType = AllocationSpecificSKUReservation::class;
   protected $specificReservationDataType = '';
   public $specificReservationRequired;
@@ -96,6 +98,20 @@ class Reservation extends \Google\Model
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param ShareSettings
+   */
+  public function setShareSettings(ShareSettings $shareSettings)
+  {
+    $this->shareSettings = $shareSettings;
+  }
+  /**
+   * @return ShareSettings
+   */
+  public function getShareSettings()
+  {
+    return $this->shareSettings;
   }
   /**
    * @param AllocationSpecificSKUReservation

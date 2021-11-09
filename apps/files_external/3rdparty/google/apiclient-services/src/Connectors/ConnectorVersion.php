@@ -19,7 +19,7 @@ namespace Google\Service\Connectors;
 
 class ConnectorVersion extends \Google\Collection
 {
-  protected $collection_key = 'configVariableTemplates';
+  protected $collection_key = 'roleGrants';
   protected $authConfigTemplatesType = AuthConfigTemplate::class;
   protected $authConfigTemplatesDataType = 'array';
   protected $configVariableTemplatesType = ConfigVariableTemplate::class;
@@ -34,6 +34,8 @@ class ConnectorVersion extends \Google\Collection
   public $releaseVersion;
   protected $roleGrantType = RoleGrant::class;
   protected $roleGrantDataType = '';
+  protected $roleGrantsType = RoleGrant::class;
+  protected $roleGrantsDataType = 'array';
   protected $supportedRuntimeFeaturesType = SupportedRuntimeFeatures::class;
   protected $supportedRuntimeFeaturesDataType = '';
   public $updateTime;
@@ -141,6 +143,20 @@ class ConnectorVersion extends \Google\Collection
   public function getRoleGrant()
   {
     return $this->roleGrant;
+  }
+  /**
+   * @param RoleGrant[]
+   */
+  public function setRoleGrants($roleGrants)
+  {
+    $this->roleGrants = $roleGrants;
+  }
+  /**
+   * @return RoleGrant[]
+   */
+  public function getRoleGrants()
+  {
+    return $this->roleGrants;
   }
   /**
    * @param SupportedRuntimeFeatures

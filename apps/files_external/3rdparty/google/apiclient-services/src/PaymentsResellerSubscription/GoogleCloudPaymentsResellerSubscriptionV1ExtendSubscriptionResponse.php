@@ -21,6 +21,7 @@ class GoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionResponse extend
 {
   public $cycleEndTime;
   public $freeTrialEndTime;
+  public $renewalTime;
 
   public function setCycleEndTime($cycleEndTime)
   {
@@ -37,6 +38,14 @@ class GoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionResponse extend
   public function getFreeTrialEndTime()
   {
     return $this->freeTrialEndTime;
+  }
+  public function setRenewalTime($renewalTime)
+  {
+    $this->renewalTime = $renewalTime;
+  }
+  public function getRenewalTime()
+  {
+    return $this->renewalTime;
   }
 }
 

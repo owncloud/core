@@ -30,6 +30,8 @@ class TransferCounters extends \Google\Model
   public $directoriesFailedToListFromSource;
   public $directoriesFoundFromSource;
   public $directoriesSuccessfullyListedFromSource;
+  public $intermediateObjectsCleanedUp;
+  public $intermediateObjectsFailedCleanedUp;
   public $objectsCopiedToSink;
   public $objectsDeletedFromSink;
   public $objectsDeletedFromSource;
@@ -126,6 +128,22 @@ class TransferCounters extends \Google\Model
   public function getDirectoriesSuccessfullyListedFromSource()
   {
     return $this->directoriesSuccessfullyListedFromSource;
+  }
+  public function setIntermediateObjectsCleanedUp($intermediateObjectsCleanedUp)
+  {
+    $this->intermediateObjectsCleanedUp = $intermediateObjectsCleanedUp;
+  }
+  public function getIntermediateObjectsCleanedUp()
+  {
+    return $this->intermediateObjectsCleanedUp;
+  }
+  public function setIntermediateObjectsFailedCleanedUp($intermediateObjectsFailedCleanedUp)
+  {
+    $this->intermediateObjectsFailedCleanedUp = $intermediateObjectsFailedCleanedUp;
+  }
+  public function getIntermediateObjectsFailedCleanedUp()
+  {
+    return $this->intermediateObjectsFailedCleanedUp;
   }
   public function setObjectsCopiedToSink($objectsCopiedToSink)
   {

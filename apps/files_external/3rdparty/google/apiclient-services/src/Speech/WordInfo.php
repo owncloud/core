@@ -19,11 +19,20 @@ namespace Google\Service\Speech;
 
 class WordInfo extends \Google\Model
 {
+  public $confidence;
   public $endTime;
   public $speakerTag;
   public $startTime;
   public $word;
 
+  public function setConfidence($confidence)
+  {
+    $this->confidence = $confidence;
+  }
+  public function getConfidence()
+  {
+    return $this->confidence;
+  }
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;

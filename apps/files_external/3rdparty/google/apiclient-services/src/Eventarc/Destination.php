@@ -21,6 +21,8 @@ class Destination extends \Google\Model
 {
   protected $cloudRunType = CloudRun::class;
   protected $cloudRunDataType = '';
+  protected $gkeType = GKE::class;
+  protected $gkeDataType = '';
 
   /**
    * @param CloudRun
@@ -35,6 +37,20 @@ class Destination extends \Google\Model
   public function getCloudRun()
   {
     return $this->cloudRun;
+  }
+  /**
+   * @param GKE
+   */
+  public function setGke(GKE $gke)
+  {
+    $this->gke = $gke;
+  }
+  /**
+   * @return GKE
+   */
+  public function getGke()
+  {
+    return $this->gke;
   }
 }
 

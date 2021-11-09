@@ -25,6 +25,8 @@ class InAppProduct extends \Google\Model
   public $gracePeriod;
   protected $listingsType = InAppProductListing::class;
   protected $listingsDataType = 'map';
+  protected $managedProductTaxesAndComplianceSettingsType = ManagedProductTaxAndComplianceSettings::class;
+  protected $managedProductTaxesAndComplianceSettingsDataType = '';
   public $packageName;
   protected $pricesType = Price::class;
   protected $pricesDataType = 'map';
@@ -32,6 +34,8 @@ class InAppProduct extends \Google\Model
   public $sku;
   public $status;
   public $subscriptionPeriod;
+  protected $subscriptionTaxesAndComplianceSettingsType = SubscriptionTaxAndComplianceSettings::class;
+  protected $subscriptionTaxesAndComplianceSettingsDataType = '';
   public $trialPeriod;
 
   public function setDefaultLanguage($defaultLanguage)
@@ -77,6 +81,20 @@ class InAppProduct extends \Google\Model
   public function getListings()
   {
     return $this->listings;
+  }
+  /**
+   * @param ManagedProductTaxAndComplianceSettings
+   */
+  public function setManagedProductTaxesAndComplianceSettings(ManagedProductTaxAndComplianceSettings $managedProductTaxesAndComplianceSettings)
+  {
+    $this->managedProductTaxesAndComplianceSettings = $managedProductTaxesAndComplianceSettings;
+  }
+  /**
+   * @return ManagedProductTaxAndComplianceSettings
+   */
+  public function getManagedProductTaxesAndComplianceSettings()
+  {
+    return $this->managedProductTaxesAndComplianceSettings;
   }
   public function setPackageName($packageName)
   {
@@ -131,6 +149,20 @@ class InAppProduct extends \Google\Model
   public function getSubscriptionPeriod()
   {
     return $this->subscriptionPeriod;
+  }
+  /**
+   * @param SubscriptionTaxAndComplianceSettings
+   */
+  public function setSubscriptionTaxesAndComplianceSettings(SubscriptionTaxAndComplianceSettings $subscriptionTaxesAndComplianceSettings)
+  {
+    $this->subscriptionTaxesAndComplianceSettings = $subscriptionTaxesAndComplianceSettings;
+  }
+  /**
+   * @return SubscriptionTaxAndComplianceSettings
+   */
+  public function getSubscriptionTaxesAndComplianceSettings()
+  {
+    return $this->subscriptionTaxesAndComplianceSettings;
   }
   public function setTrialPeriod($trialPeriod)
   {

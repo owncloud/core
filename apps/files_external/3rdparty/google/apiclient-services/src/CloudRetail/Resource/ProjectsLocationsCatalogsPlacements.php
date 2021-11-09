@@ -61,9 +61,9 @@ class ProjectsLocationsCatalogsPlacements extends \Google\Service\Resource
    *
    * @param string $placement Required. The resource name of the search engine
    * placement, such as `projects/locations/global/catalogs/default_catalog/placem
-   * ents/default_search`. This field is used to identify the set of models that
-   * will be used to make the search. We currently support one placement with the
-   * following ID: * `default_search`.
+   * ents/default_search`. This field is used to identify the serving
+   * configuration name and the set of models that will be used to make the
+   * search.
    * @param GoogleCloudRetailV2SearchRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudRetailV2SearchResponse

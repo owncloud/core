@@ -19,10 +19,28 @@ namespace Google\Service\CloudKMS;
 
 class AsymmetricSignRequest extends \Google\Model
 {
+  public $data;
+  public $dataCrc32c;
   protected $digestType = Digest::class;
   protected $digestDataType = '';
   public $digestCrc32c;
 
+  public function setData($data)
+  {
+    $this->data = $data;
+  }
+  public function getData()
+  {
+    return $this->data;
+  }
+  public function setDataCrc32c($dataCrc32c)
+  {
+    $this->dataCrc32c = $dataCrc32c;
+  }
+  public function getDataCrc32c()
+  {
+    return $this->dataCrc32c;
+  }
   /**
    * @param Digest
    */

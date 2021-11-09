@@ -21,6 +21,7 @@ class GoogleCloudHealthcareV1DicomBigQueryDestination extends \Google\Model
 {
   public $force;
   public $tableUri;
+  public $writeDisposition;
 
   public function setForce($force)
   {
@@ -37,6 +38,14 @@ class GoogleCloudHealthcareV1DicomBigQueryDestination extends \Google\Model
   public function getTableUri()
   {
     return $this->tableUri;
+  }
+  public function setWriteDisposition($writeDisposition)
+  {
+    $this->writeDisposition = $writeDisposition;
+  }
+  public function getWriteDisposition()
+  {
+    return $this->writeDisposition;
   }
 }
 

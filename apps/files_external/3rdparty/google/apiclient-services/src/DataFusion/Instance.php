@@ -19,7 +19,7 @@ namespace Google\Service\DataFusion;
 
 class Instance extends \Google\Collection
 {
-  protected $collection_key = 'availableVersion';
+  protected $collection_key = 'disabledReason';
   protected $acceleratorsType = Accelerator::class;
   protected $acceleratorsDataType = 'array';
   public $apiEndpoint;
@@ -30,6 +30,7 @@ class Instance extends \Google\Collection
   protected $cryptoKeyConfigDataType = '';
   public $dataprocServiceAccount;
   public $description;
+  public $disabledReason;
   public $displayName;
   public $enableRbac;
   public $enableStackdriverLogging;
@@ -125,6 +126,14 @@ class Instance extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  public function setDisabledReason($disabledReason)
+  {
+    $this->disabledReason = $disabledReason;
+  }
+  public function getDisabledReason()
+  {
+    return $this->disabledReason;
   }
   public function setDisplayName($displayName)
   {

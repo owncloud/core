@@ -27,7 +27,7 @@ use Google\Client;
  *
  * <p>
  * For more information about this service, see the API
- * <a href="https://cloud.devsite.corp.google.com/apigee/docs/api-platform/connectors/about-connectors" target="_blank">Documentation</a>
+ * <a href="https://cloud.google.com/apigee/docs/api-platform/connectors/about-connectors" target="_blank">Documentation</a>
  * </p>
  *
  * @author Google, Inc.

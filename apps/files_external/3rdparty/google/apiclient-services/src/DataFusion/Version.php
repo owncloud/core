@@ -22,6 +22,7 @@ class Version extends \Google\Collection
   protected $collection_key = 'availableFeatures';
   public $availableFeatures;
   public $defaultVersion;
+  public $type;
   public $versionNumber;
 
   public function setAvailableFeatures($availableFeatures)
@@ -39,6 +40,14 @@ class Version extends \Google\Collection
   public function getDefaultVersion()
   {
     return $this->defaultVersion;
+  }
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+  public function getType()
+  {
+    return $this->type;
   }
   public function setVersionNumber($versionNumber)
   {

@@ -152,7 +152,8 @@ class ProjectsDatabasesDocuments extends \Google\Service\Resource
    * @opt_param bool currentDocument.exists When set to `true`, the target
    * document must exist. When set to `false`, the target document must not exist.
    * @opt_param string currentDocument.updateTime When set, the target document
-   * must exist and have been last updated at that time.
+   * must exist and have been last updated at that time. Timestamp must be
+   * microsecond aligned.
    * @return FirestoreEmpty
    */
   public function delete($name, $optParams = [])
@@ -280,7 +281,8 @@ class ProjectsDatabasesDocuments extends \Google\Service\Resource
    * @opt_param bool currentDocument.exists When set to `true`, the target
    * document must exist. When set to `false`, the target document must not exist.
    * @opt_param string currentDocument.updateTime When set, the target document
-   * must exist and have been last updated at that time.
+   * must exist and have been last updated at that time. Timestamp must be
+   * microsecond aligned.
    * @opt_param string mask.fieldPaths The list of field paths in the mask. See
    * Document.fields for a field path syntax reference.
    * @opt_param string updateMask.fieldPaths The list of field paths in the mask.

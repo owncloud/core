@@ -20,6 +20,7 @@ namespace Google\Service\ContainerAnalysis;
 class Version extends \Google\Model
 {
   public $epoch;
+  public $fullName;
   public $inclusive;
   public $kind;
   public $name;
@@ -32,6 +33,14 @@ class Version extends \Google\Model
   public function getEpoch()
   {
     return $this->epoch;
+  }
+  public function setFullName($fullName)
+  {
+    $this->fullName = $fullName;
+  }
+  public function getFullName()
+  {
+    return $this->fullName;
   }
   public function setInclusive($inclusive)
   {

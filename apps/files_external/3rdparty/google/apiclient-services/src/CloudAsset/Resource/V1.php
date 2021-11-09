@@ -61,7 +61,7 @@ class V1 extends \Google\Service\Resource
    * earlier than the current time; otherwise, an INVALID_ARGUMENT error will be
    * returned.
    * @opt_param string analysisQuery.identitySelector.identity Required. The
-   * identity appear in the form of members in [IAM policy
+   * identity appear in the form of principals in [IAM policy
    * binding](https://cloud.google.com/iam/reference/rest/v1/Binding). The
    * examples of supported forms are: "user:mike@example.com",
    * "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-
@@ -112,11 +112,11 @@ class V1 extends \Google\Service\Resource
    * the result will be determined by the selector, and this flag is not allowed
    * to set. Default is false.
    * @opt_param bool analysisQuery.options.outputGroupEdges Optional. If true, the
-   * result will output group identity edges, starting from the binding's group
-   * members, to any expanded identities. Default is false.
+   * result will output the relevant membership relationships between groups and
+   * other groups, and between groups and principals. Default is false.
    * @opt_param bool analysisQuery.options.outputResourceEdges Optional. If true,
-   * the result will output resource edges, starting from the policy attached
-   * resource, to any expanded resources. Default is false.
+   * the result will output the relevant parent/child relationships between
+   * resources. Default is false.
    * @opt_param string analysisQuery.resourceSelector.fullResourceName Required.
    * The [full resource name] (https://cloud.google.com/asset-inventory/docs
    * /resource-name-format) of a resource of [supported resource
@@ -316,7 +316,7 @@ class V1 extends \Google\Service\Resource
    * policies#how_to_construct_a_query) for more information. If not specified or
    * empty, it will search all the IAM policies within the specified `scope`. Note
    * that the query string is compared against each Cloud IAM policy binding,
-   * including its members, roles, and Cloud IAM conditions. The returned Cloud
+   * including its principals, roles, and Cloud IAM conditions. The returned Cloud
    * IAM policies will only contain the bindings that match your query. To learn
    * more about the IAM policy structure, see [IAM policy
    * doc](https://cloud.google.com/iam/docs/policies#structure). Examples: *
@@ -342,7 +342,7 @@ class V1 extends \Google\Service\Resource
    * that are set on resources "instance1" or "instance2" and also specify user
    * "amy". * `roles:roles/compute.admin` to find IAM policy bindings that specify
    * the Compute Admin role. * `memberTypes:user` to find IAM policy bindings that
-   * contain the "user" member type.
+   * contain the principal type "user".
    * @return SearchAllIamPoliciesResponse
    */
   public function searchAllIamPolicies($scope, $optParams = [])

@@ -40,7 +40,6 @@ class OSConfig extends \Google\Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $projects_locations_instances_inventories;
-  public $projects_locations_instances_osPolicyAssignments;
   public $projects_locations_instances_osPolicyAssignments_reports;
   public $projects_locations_instances_vulnerabilityReports;
   public $projects_locations_osPolicyAssignments;
@@ -115,13 +114,13 @@ class OSConfig extends \Google\Service
           ]
         ]
     );
-    $this->projects_locations_instances_osPolicyAssignments = new OSConfig\Resource\ProjectsLocationsInstancesOsPolicyAssignments(
+    $this->projects_locations_instances_osPolicyAssignments_reports = new OSConfig\Resource\ProjectsLocationsInstancesOsPolicyAssignmentsReports(
         $this,
         $this->serviceName,
-        'osPolicyAssignments',
+        'reports',
         [
           'methods' => [
-            'getReport' => [
+            'get' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -131,17 +130,7 @@ class OSConfig extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_instances_osPolicyAssignments_reports = new OSConfig\Resource\ProjectsLocationsInstancesOsPolicyAssignmentsReports(
-        $this,
-        $this->serviceName,
-        'reports',
-        [
-          'methods' => [
-            'list' => [
+            ],'list' => [
               'path' => 'v1/{+parent}/reports',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -387,6 +376,20 @@ class OSConfig extends \Google\Service
                   'type' => 'integer',
                 ],
                 'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
