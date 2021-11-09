@@ -29,15 +29,6 @@ config = {
             "databases": [
                 "sqlite",
                 "mariadb:10.2",
-                "mariadb:10.3",
-                "mariadb:10.4",
-                "mariadb:10.5",
-                "mariadb:10.6",
-                "mysql:5.5",
-                "mysql:5.7",
-                "mysql:8.0",
-                "postgres:9.4",
-                "postgres:10.3",
             ],
         },
         "slowDatabases": {
