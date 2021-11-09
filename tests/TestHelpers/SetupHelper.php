@@ -890,56 +890,66 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		}
 
 		$return = [];
-		$resultXml = \simplexml_load_string($result->getBody()->getContents());
+		$contents = $result->getBody()->getContents();
+		$resultXml = \simplexml_load_string($contents);
+
+		if ($resultXml === false) {
+			throw new Exception(
+				"Response is not valid XML after executing 'occ $args'. " .
+				$isTestingAppEnabledText .
+				$contents
+			);
+		}
+
 		$return['code'] = $resultXml->xpath("//ocs/data/code");
 		$return['stdOut'] = $resultXml->xpath("//ocs/data/stdOut");
 		$return['stdErr'] = $resultXml->xpath("//ocs/data/stdErr");
 
 		if (!isset($return['code'][0])) {
 			throw new Exception(
-				"Return code not found after executing 'occ'. " .
+				"Return code not found after executing 'occ $args'. " .
 				$isTestingAppEnabledText .
-				$result->getBody()
+				$contents
 			);
 		}
 
 		if (!isset($return['stdOut'][0])) {
 			throw new Exception(
-				"Return stdOut not found after executing 'occ'. " .
+				"Return stdOut not found after executing 'occ $args'. " .
 				$isTestingAppEnabledText .
-				$result->getBody()
+				$contents
 			);
 		}
 
 		if (!isset($return['stdErr'][0])) {
 			throw new Exception(
-				"Return stdOut not found after executing 'occ'. " .
+				"Return stdErr not found after executing 'occ $args'. " .
 				$isTestingAppEnabledText .
-				$result->getBody()
+				$contents
 			);
 		}
 
 		if (!\is_a($return['code'][0], "SimpleXMLElement")) {
 			throw new Exception(
-				"Return code is not a SimpleXMLElement after executing 'occ'. " .
+				"Return code is not a SimpleXMLElement after executing 'occ $args'. " .
 				$isTestingAppEnabledText .
-				$result->getBody()
+				$contents
 			);
 		}
 
 		if (!\is_a($return['stdOut'][0], "SimpleXMLElement")) {
 			throw new Exception(
-				"Return stdOut is not a SimpleXMLElement after executing 'occ'. " .
+				"Return stdOut is not a SimpleXMLElement after executing 'occ $args'. " .
 				$isTestingAppEnabledText .
-				$result->getBody()
+				$contents
 			);
 		}
 
 		if (!\is_a($return['stdErr'][0], "SimpleXMLElement")) {
 			throw new Exception(
-				"Return stdErr is not a SimpleXMLElement after executing 'occ'. " .
+				"Return stdErr is not a SimpleXMLElement after executing 'occ $args'. " .
 				$isTestingAppEnabledText .
-				$result->getBody()
+				$contents
 			);
 		}
 
