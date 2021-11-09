@@ -39,10 +39,10 @@ Feature: get file info using POST
   @issue-ocis-reva-179
   Scenario: send POST requests to another user's webDav endpoints as normal user
     When user "Brian" requests these endpoints with "POST" including body "doesnotmatter" about user "Alice"
-      | endpoint                                            |
-      | /remote.php/dav/files/%username%/textfile1.txt      |
-      | /remote.php/dav/files/%username%/PARENTS            |
-      | /remote.php/dav/files/%username%/PARENTS/parent.txt |
+      | endpoint                                           |
+      | /remote.php/dav/files/%username%/textfile1.txt     |
+      | /remote.php/dav/files/%username%/PARENT            |
+      | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "404"
 
   Scenario: send POST requests to webDav endpoints using invalid username but correct password
