@@ -41,11 +41,11 @@ Feature: get file info using PUT
     When user "Brian" requests these endpoints with "PUT" including body "doesnotmatter" about user "Alice"
       | endpoint                                       |
       | /remote.php/dav/files/%username%/textfile1.txt |
-      | /remote.php/dav/files/%username%/PARENTS       |
+      | /remote.php/dav/files/%username%/PARENT       |
     Then the HTTP status code of responses on all endpoints should be "403"
     When user "Brian" requests these endpoints with "PUT" including body "doesnotmatter" about user "Alice"
       | endpoint                                            |
-      | /remote.php/dav/files/%username%/PARENTS/parent.txt |
+      | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "409"
 
   Scenario: send PUT requests to webDav endpoints using invalid username but correct password
