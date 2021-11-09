@@ -586,9 +586,9 @@ Details
    sabre/xml (2.2.3 to 2.2.5) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0)
 
    The following have been updated in files_external/3rdparty: - firebase/php-jwt (v5.4.0 to
-   v5.5.0) - google/apiclient (v2.9.2 to v2.11.0) - google/apiclient-services (v0.213.0 to
-   v0.220.0) - guzzlehttp/psr7 (1.8.2 to 1.8.3) - monolog/monolog (2.3.4 to 2.3.5) -
-   phpseclib/phpseclib (3.0.10 to 3.0.11)
+   v5.5.1) - google/apiclient (v2.9.2 to v2.11.0) - google/apiclient-services (v0.213.0 to
+   v0.221.0) - guzzlehttp/psr7 (1.8.2 to 1.8.3) - icewind/smb (v3.4.1 to v3.5.1) -
+   monolog/monolog (2.3.4 to 2.3.5) - phpseclib/phpseclib (3.0.10 to 3.0.11)
 
    https://github.com/owncloud/core/pull/38907
    https://github.com/owncloud/core/pull/39030
@@ -607,6 +607,7 @@ Details
    https://github.com/owncloud/core/pull/39434
    https://github.com/owncloud/core/pull/39453
    https://github.com/owncloud/core/pull/39456
+   https://github.com/owncloud/core/pull/39466
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
