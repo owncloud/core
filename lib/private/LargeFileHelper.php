@@ -130,7 +130,11 @@ class LargeFileHelper {
 				if (isset($matches[1])) {
 					return 0 + $matches[1];
 				}
-				return "curl response was '$data'";
+				if ($data === '') {
+					return "curl response was an empty string";
+				}
+				$hex = \bin2hex($data);
+				return "curl response was '$hex'";
 			}
 			return "curl_exec returned false";
 		}
