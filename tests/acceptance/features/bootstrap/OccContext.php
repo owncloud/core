@@ -496,7 +496,7 @@ class OccContext implements Context {
 	public function deleteExpiredVersionsForMultipleUsersUsingOccCommand(string $users): void {
 		$this->deleteExpiredVersionsForUserUsingOccCommand($users);
 	}
-	
+
 	/**
 	 * @return void
 	 * @throws Exception
