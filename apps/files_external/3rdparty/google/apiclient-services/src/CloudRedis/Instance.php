@@ -36,10 +36,18 @@ class Instance extends \Google\Collection
   protected $maintenanceScheduleDataType = '';
   public $memorySizeGb;
   public $name;
+  protected $nodesType = NodeInfo::class;
+  protected $nodesDataType = 'array';
+  protected $persistenceConfigType = PersistenceConfig::class;
+  protected $persistenceConfigDataType = '';
   public $persistenceIamIdentity;
   public $port;
+  public $readEndpoint;
+  public $readEndpointPort;
+  public $readReplicasMode;
   public $redisConfigs;
   public $redisVersion;
+  public $replicaCount;
   public $reservedIpRange;
   protected $serverCaCertsType = TlsCertificate::class;
   protected $serverCaCertsDataType = 'array';
@@ -172,6 +180,34 @@ class Instance extends \Google\Collection
   {
     return $this->name;
   }
+  /**
+   * @param NodeInfo[]
+   */
+  public function setNodes($nodes)
+  {
+    $this->nodes = $nodes;
+  }
+  /**
+   * @return NodeInfo[]
+   */
+  public function getNodes()
+  {
+    return $this->nodes;
+  }
+  /**
+   * @param PersistenceConfig
+   */
+  public function setPersistenceConfig(PersistenceConfig $persistenceConfig)
+  {
+    $this->persistenceConfig = $persistenceConfig;
+  }
+  /**
+   * @return PersistenceConfig
+   */
+  public function getPersistenceConfig()
+  {
+    return $this->persistenceConfig;
+  }
   public function setPersistenceIamIdentity($persistenceIamIdentity)
   {
     $this->persistenceIamIdentity = $persistenceIamIdentity;
@@ -188,6 +224,30 @@ class Instance extends \Google\Collection
   {
     return $this->port;
   }
+  public function setReadEndpoint($readEndpoint)
+  {
+    $this->readEndpoint = $readEndpoint;
+  }
+  public function getReadEndpoint()
+  {
+    return $this->readEndpoint;
+  }
+  public function setReadEndpointPort($readEndpointPort)
+  {
+    $this->readEndpointPort = $readEndpointPort;
+  }
+  public function getReadEndpointPort()
+  {
+    return $this->readEndpointPort;
+  }
+  public function setReadReplicasMode($readReplicasMode)
+  {
+    $this->readReplicasMode = $readReplicasMode;
+  }
+  public function getReadReplicasMode()
+  {
+    return $this->readReplicasMode;
+  }
   public function setRedisConfigs($redisConfigs)
   {
     $this->redisConfigs = $redisConfigs;
@@ -203,6 +263,14 @@ class Instance extends \Google\Collection
   public function getRedisVersion()
   {
     return $this->redisVersion;
+  }
+  public function setReplicaCount($replicaCount)
+  {
+    $this->replicaCount = $replicaCount;
+  }
+  public function getReplicaCount()
+  {
+    return $this->replicaCount;
   }
   public function setReservedIpRange($reservedIpRange)
   {

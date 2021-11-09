@@ -48,6 +48,7 @@ class AndroidPublisher extends \Google\Service
   public $edits_listings;
   public $edits_testers;
   public $edits_tracks;
+  public $grants;
   public $inappproducts;
   public $internalappsharingartifacts;
   public $monetization;
@@ -57,6 +58,7 @@ class AndroidPublisher extends \Google\Service
   public $purchases_voidedpurchases;
   public $reviews;
   public $systemapks_variants;
+  public $users;
 
   /**
    * Constructs the internal representation of the AndroidPublisher service.
@@ -847,6 +849,50 @@ class AndroidPublisher extends \Google\Service
           ]
         ]
     );
+    $this->grants = new AndroidPublisher\Resource\Grants(
+        $this,
+        $this->serviceName,
+        'grants',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'androidpublisher/v3/{+parent}/grants',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'androidpublisher/v3/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'androidpublisher/v3/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->inappproducts = new AndroidPublisher\Resource\Inappproducts(
         $this,
         $this->serviceName,
@@ -1412,6 +1458,68 @@ class AndroidPublisher extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->users = new AndroidPublisher\Resource\Users(
+        $this,
+        $this->serviceName,
+        'users',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'androidpublisher/v3/{+parent}/users',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'androidpublisher/v3/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'androidpublisher/v3/{+parent}/users',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'androidpublisher/v3/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
                 ],
               ],
             ],

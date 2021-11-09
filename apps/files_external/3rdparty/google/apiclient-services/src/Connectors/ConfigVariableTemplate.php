@@ -23,6 +23,8 @@ class ConfigVariableTemplate extends \Google\Model
   public $displayName;
   public $key;
   public $required;
+  protected $roleGrantType = RoleGrant::class;
+  protected $roleGrantDataType = '';
   public $validationRegex;
   public $valueType;
 
@@ -57,6 +59,20 @@ class ConfigVariableTemplate extends \Google\Model
   public function getRequired()
   {
     return $this->required;
+  }
+  /**
+   * @param RoleGrant
+   */
+  public function setRoleGrant(RoleGrant $roleGrant)
+  {
+    $this->roleGrant = $roleGrant;
+  }
+  /**
+   * @return RoleGrant
+   */
+  public function getRoleGrant()
+  {
+    return $this->roleGrant;
   }
   public function setValidationRegex($validationRegex)
   {

@@ -43,6 +43,7 @@ class ChromeManagement extends \Google\Service
   const CHROME_MANAGEMENT_REPORTS_READONLY =
       "https://www.googleapis.com/auth/chrome.management.reports.readonly";
 
+  public $customers_apps;
   public $customers_apps_android;
   public $customers_apps_chrome;
   public $customers_apps_web;
@@ -64,6 +65,42 @@ class ChromeManagement extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'chromemanagement';
 
+    $this->customers_apps = new ChromeManagement\Resource\CustomersApps(
+        $this,
+        $this->serviceName,
+        'apps',
+        [
+          'methods' => [
+            'countChromeAppRequests' => [
+              'path' => 'v1/{+customer}/apps:countChromeAppRequests',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'customer' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'orderBy' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'orgUnitId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->customers_apps_android = new ChromeManagement\Resource\CustomersAppsAndroid(
         $this,
         $this->serviceName,

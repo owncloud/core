@@ -21,6 +21,7 @@ class GoogleCloudRecaptchaenterpriseV1AnnotateAssessmentRequest extends \Google\
 {
   protected $collection_key = 'reasons';
   public $annotation;
+  public $hashedAccountId;
   public $reasons;
 
   public function setAnnotation($annotation)
@@ -30,6 +31,14 @@ class GoogleCloudRecaptchaenterpriseV1AnnotateAssessmentRequest extends \Google\
   public function getAnnotation()
   {
     return $this->annotation;
+  }
+  public function setHashedAccountId($hashedAccountId)
+  {
+    $this->hashedAccountId = $hashedAccountId;
+  }
+  public function getHashedAccountId()
+  {
+    return $this->hashedAccountId;
   }
   public function setReasons($reasons)
   {

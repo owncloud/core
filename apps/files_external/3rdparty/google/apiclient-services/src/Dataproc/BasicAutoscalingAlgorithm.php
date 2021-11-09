@@ -20,6 +20,8 @@ namespace Google\Service\Dataproc;
 class BasicAutoscalingAlgorithm extends \Google\Model
 {
   public $cooldownPeriod;
+  protected $sparkStandaloneConfigType = SparkStandaloneAutoscalingConfig::class;
+  protected $sparkStandaloneConfigDataType = '';
   protected $yarnConfigType = BasicYarnAutoscalingConfig::class;
   protected $yarnConfigDataType = '';
 
@@ -30,6 +32,20 @@ class BasicAutoscalingAlgorithm extends \Google\Model
   public function getCooldownPeriod()
   {
     return $this->cooldownPeriod;
+  }
+  /**
+   * @param SparkStandaloneAutoscalingConfig
+   */
+  public function setSparkStandaloneConfig(SparkStandaloneAutoscalingConfig $sparkStandaloneConfig)
+  {
+    $this->sparkStandaloneConfig = $sparkStandaloneConfig;
+  }
+  /**
+   * @return SparkStandaloneAutoscalingConfig
+   */
+  public function getSparkStandaloneConfig()
+  {
+    return $this->sparkStandaloneConfig;
   }
   /**
    * @param BasicYarnAutoscalingConfig

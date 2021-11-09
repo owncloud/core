@@ -27,6 +27,7 @@ class Table extends \Google\Collection
   public $name;
   protected $savedViewsType = SavedView::class;
   protected $savedViewsDataType = 'array';
+  public $timeZone;
   public $updateTime;
 
   /**
@@ -80,6 +81,14 @@ class Table extends \Google\Collection
   public function getSavedViews()
   {
     return $this->savedViews;
+  }
+  public function setTimeZone($timeZone)
+  {
+    $this->timeZone = $timeZone;
+  }
+  public function getTimeZone()
+  {
+    return $this->timeZone;
   }
   public function setUpdateTime($updateTime)
   {

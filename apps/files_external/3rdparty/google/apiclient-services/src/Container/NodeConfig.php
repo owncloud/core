@@ -22,9 +22,13 @@ class NodeConfig extends \Google\Collection
   protected $collection_key = 'taints';
   protected $acceleratorsType = AcceleratorConfig::class;
   protected $acceleratorsDataType = 'array';
+  protected $advancedMachineFeaturesType = AdvancedMachineFeatures::class;
+  protected $advancedMachineFeaturesDataType = '';
   public $bootDiskKmsKey;
   public $diskSizeGb;
   public $diskType;
+  protected $gcfsConfigType = GcfsConfig::class;
+  protected $gcfsConfigDataType = '';
   protected $gvnicType = VirtualNIC::class;
   protected $gvnicDataType = '';
   public $imageType;
@@ -67,6 +71,20 @@ class NodeConfig extends \Google\Collection
   {
     return $this->accelerators;
   }
+  /**
+   * @param AdvancedMachineFeatures
+   */
+  public function setAdvancedMachineFeatures(AdvancedMachineFeatures $advancedMachineFeatures)
+  {
+    $this->advancedMachineFeatures = $advancedMachineFeatures;
+  }
+  /**
+   * @return AdvancedMachineFeatures
+   */
+  public function getAdvancedMachineFeatures()
+  {
+    return $this->advancedMachineFeatures;
+  }
   public function setBootDiskKmsKey($bootDiskKmsKey)
   {
     $this->bootDiskKmsKey = $bootDiskKmsKey;
@@ -90,6 +108,20 @@ class NodeConfig extends \Google\Collection
   public function getDiskType()
   {
     return $this->diskType;
+  }
+  /**
+   * @param GcfsConfig
+   */
+  public function setGcfsConfig(GcfsConfig $gcfsConfig)
+  {
+    $this->gcfsConfig = $gcfsConfig;
+  }
+  /**
+   * @return GcfsConfig
+   */
+  public function getGcfsConfig()
+  {
+    return $this->gcfsConfig;
   }
   /**
    * @param VirtualNIC

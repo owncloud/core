@@ -33,44 +33,48 @@ class OrganizationsHostStats extends \Google\Service\Resource
    * Retrieve metrics grouped by dimensions in host level. The types of metrics
    * you can retrieve include traffic, message counts, API call latency, response
    * size, and cache hits and counts. Dimensions let you view metrics in
-   * meaningful groups. The stats api does accept dimensions as path params. The
-   * dimensions are optional in which case the metrics are computed on the entire
-   * data for the given timerange. (hostStats.get)
+   * meaningful groups. You can optionally pass dimensions as path parameters to
+   * the `stats` API. If dimensions are not specified, the metrics are computed on
+   * the entire set of data for the given time range. (hostStats.get)
    *
-   * @param string $name Required. The resource name for which the interactive
-   * query will be executed. Must be of the form
-   * `organizations/{organization_id}/hostStats/{dimensions}`. Dimensions let you
-   * view metrics in meaningful groupings. E.g. apiproxy, target_host. The value
-   * of dimensions should be comma separated list as shown below
+   * @param string $name Required. Resource name for which the interactive query
+   * will be executed. Use the following format in your request:
+   * `organizations/{org}/hostStats/{dimensions}` Dimensions let you view metrics
+   * in meaningful groupings, such as `apiproxy`, `target_host`. The value of
+   * dimensions should be a comma-separated list as shown below
    * `organizations/{org}/hostStats/apiproxy,request_verb`
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string accuracy Legacy field: not used anymore.
-   * @opt_param string envgroupHostname Required. The hostname for which the
+   * @opt_param string accuracy No longer used by Apigee. Supported for backwards
+   * compatibility.
+   * @opt_param string envgroupHostname Required. Hostname for which the
    * interactive query will be executed.
-   * @opt_param string filter Enables drill-down on specific dimension values.
-   * @opt_param string limit This parameter is used to limit the number of result
-   * items. Default and the max value is 14400.
-   * @opt_param string offset Use offset with limit to enable pagination of
-   * results. For example, to display results 11-20, set limit to '10' and offset
-   * to '10'.
-   * @opt_param bool realtime Legacy field: not used anymore.
-   * @opt_param string select The select parameter contains a comma separated list
-   * of metrics. E.g. sum(message_count),sum(error_count)
-   * @opt_param string sort This parameter specifies if the sort order should be
-   * ascending or descending Supported values are DESC and ASC.
-   * @opt_param string sortby Comma separated list of columns to sort the final
+   * @opt_param string filter Flag that enables drill-down on specific dimension
+   * values.
+   * @opt_param string limit Maximum number of result items to return. The default
+   * and maximum value that can be returned is 14400.
+   * @opt_param string offset Offset value. Use `offset` with `limit` to enable
+   * pagination of results. For example, to display results 11-20, set limit to
+   * `10` and offset to `10`.
+   * @opt_param bool realtime No longer used by Apigee. Supported for backwards
+   * compatibility.
+   * @opt_param string select Comma-separated list of metrics. For example:
+   * `sum(message_count),sum(error_count)`
+   * @opt_param string sort Flag that specifies if the sort order should be
+   * ascending or descending. Valid values are `DESC` and `ASC`.
+   * @opt_param string sortby Comma-separated list of columns to sort the final
    * result.
    * @opt_param string timeRange Time interval for the interactive query. Time
-   * range is specified as start~end E.g. 04/15/2017 00:00~05/15/2017 23:59
-   * @opt_param string timeUnit A value of second, minute, hour, day, week, month.
-   * Time Unit specifies the granularity of metrics returned.
-   * @opt_param string topk Take 'top k' results from results, for example, to
-   * return the top 5 results 'topk=5'.
-   * @opt_param bool tsAscending Lists timestamps in ascending order if set to
-   * true. Recommend setting this value to true if you are using sortby with
-   * sort=DESC.
-   * @opt_param string tzo This parameters contains the timezone offset value.
+   * range is specified in GMT as `start~end`. For example: `04/15/2017
+   * 00:00~05/15/2017 23:59`
+   * @opt_param string timeUnit Granularity of metrics returned. Valid values
+   * include: `second`, `minute`, `hour`, `day`, `week`, or `month`.
+   * @opt_param string topk Top number of results to return. For example, to
+   * return the top 5 results, set `topk=5`.
+   * @opt_param bool tsAscending Flag that specifies whether to list timestamps in
+   * ascending (`true`) or descending (`false`) order. Apigee recommends that you
+   * set this value to `true` if you are using `sortby` with `sort=DESC`.
+   * @opt_param string tzo Timezone offset value.
    * @return GoogleCloudApigeeV1Stats
    */
   public function get($name, $optParams = [])

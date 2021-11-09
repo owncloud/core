@@ -21,6 +21,8 @@ class UpdateNodePoolRequest extends \Google\Collection
 {
   protected $collection_key = 'locations';
   public $clusterId;
+  protected $gcfsConfigType = GcfsConfig::class;
+  protected $gcfsConfigDataType = '';
   protected $gvnicType = VirtualNIC::class;
   protected $gvnicDataType = '';
   public $imageType;
@@ -46,6 +48,20 @@ class UpdateNodePoolRequest extends \Google\Collection
   public function getClusterId()
   {
     return $this->clusterId;
+  }
+  /**
+   * @param GcfsConfig
+   */
+  public function setGcfsConfig(GcfsConfig $gcfsConfig)
+  {
+    $this->gcfsConfig = $gcfsConfig;
+  }
+  /**
+   * @return GcfsConfig
+   */
+  public function getGcfsConfig()
+  {
+    return $this->gcfsConfig;
   }
   /**
    * @param VirtualNIC

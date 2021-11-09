@@ -32,9 +32,9 @@ use Google\Service\Logging\LoggingEmpty;
 class Exclusions extends \Google\Service\Resource
 {
   /**
-   * Creates a new exclusion in a specified parent resource. Only log entries
-   * belonging to that resource can be excluded. You can have up to 10 exclusions
-   * in a resource. (exclusions.create)
+   * Creates a new exclusion in the _Default sink in a specified parent resource.
+   * Only log entries belonging to that resource can be excluded. You can have up
+   * to 10 exclusions in a resource. (exclusions.create)
    *
    * @param string $parent Required. The parent resource in which to create the
    * exclusion: "projects/[PROJECT_ID]" "organizations/[ORGANIZATION_ID]"
@@ -51,7 +51,7 @@ class Exclusions extends \Google\Service\Resource
     return $this->call('create', [$params], LogExclusion::class);
   }
   /**
-   * Deletes an exclusion. (exclusions.delete)
+   * Deletes an exclusion in the _Default sink. (exclusions.delete)
    *
    * @param string $name Required. The resource name of an existing exclusion to
    * delete: "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
@@ -69,7 +69,7 @@ class Exclusions extends \Google\Service\Resource
     return $this->call('delete', [$params], LoggingEmpty::class);
   }
   /**
-   * Gets the description of an exclusion. (exclusions.get)
+   * Gets the description of an exclusion in the _Default sink. (exclusions.get)
    *
    * @param string $name Required. The resource name of an existing exclusion:
    * "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
@@ -87,7 +87,8 @@ class Exclusions extends \Google\Service\Resource
     return $this->call('get', [$params], LogExclusion::class);
   }
   /**
-   * Lists all the exclusions in a parent resource. (exclusions.listExclusions)
+   * Lists all the exclusions on the _Default sink in a parent resource.
+   * (exclusions.listExclusions)
    *
    * @param string $parent Required. The parent resource whose exclusions are to
    * be listed. "projects/[PROJECT_ID]" "organizations/[ORGANIZATION_ID]"
@@ -110,7 +111,8 @@ class Exclusions extends \Google\Service\Resource
     return $this->call('list', [$params], ListExclusionsResponse::class);
   }
   /**
-   * Changes one or more properties of an existing exclusion. (exclusions.patch)
+   * Changes one or more properties of an existing exclusion in the _Default sink.
+   * (exclusions.patch)
    *
    * @param string $name Required. The resource name of the exclusion to update:
    * "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"

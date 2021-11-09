@@ -20,13 +20,26 @@ namespace Google\Service\OnDemandScanning;
 class InTotoStatement extends \Google\Collection
 {
   protected $collection_key = 'subject';
+  protected $internal_gapi_mappings = [
+        "type" => "_type",
+  ];
+  public $type;
   public $predicateType;
   protected $provenanceType = InTotoProvenance::class;
   protected $provenanceDataType = '';
+  protected $slsaProvenanceType = SlsaProvenance::class;
+  protected $slsaProvenanceDataType = '';
   protected $subjectType = Subject::class;
   protected $subjectDataType = 'array';
-  public $type;
 
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+  public function getType()
+  {
+    return $this->type;
+  }
   public function setPredicateType($predicateType)
   {
     $this->predicateType = $predicateType;
@@ -50,6 +63,20 @@ class InTotoStatement extends \Google\Collection
     return $this->provenance;
   }
   /**
+   * @param SlsaProvenance
+   */
+  public function setSlsaProvenance(SlsaProvenance $slsaProvenance)
+  {
+    $this->slsaProvenance = $slsaProvenance;
+  }
+  /**
+   * @return SlsaProvenance
+   */
+  public function getSlsaProvenance()
+  {
+    return $this->slsaProvenance;
+  }
+  /**
    * @param Subject[]
    */
   public function setSubject($subject)
@@ -62,14 +89,6 @@ class InTotoStatement extends \Google\Collection
   public function getSubject()
   {
     return $this->subject;
-  }
-  public function setType($type)
-  {
-    $this->type = $type;
-  }
-  public function getType()
-  {
-    return $this->type;
   }
 }
 

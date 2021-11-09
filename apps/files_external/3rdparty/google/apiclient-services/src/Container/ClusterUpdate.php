@@ -24,8 +24,6 @@ class ClusterUpdate extends \Google\Collection
   protected $desiredAddonsConfigDataType = '';
   protected $desiredAuthenticatorGroupsConfigType = AuthenticatorGroupsConfig::class;
   protected $desiredAuthenticatorGroupsConfigDataType = '';
-  protected $desiredAutopilotType = Autopilot::class;
-  protected $desiredAutopilotDataType = '';
   protected $desiredBinaryAuthorizationType = BinaryAuthorization::class;
   protected $desiredBinaryAuthorizationDataType = '';
   protected $desiredClusterAutoscalingType = ClusterAutoscaling::class;
@@ -35,6 +33,10 @@ class ClusterUpdate extends \Google\Collection
   public $desiredDatapathProvider;
   protected $desiredDefaultSnatStatusType = DefaultSnatStatus::class;
   protected $desiredDefaultSnatStatusDataType = '';
+  protected $desiredDnsConfigType = DNSConfig::class;
+  protected $desiredDnsConfigDataType = '';
+  protected $desiredGcfsConfigType = GcfsConfig::class;
+  protected $desiredGcfsConfigDataType = '';
   public $desiredImageType;
   protected $desiredIntraNodeVisibilityConfigType = IntraNodeVisibilityConfig::class;
   protected $desiredIntraNodeVisibilityConfigDataType = '';
@@ -101,20 +103,6 @@ class ClusterUpdate extends \Google\Collection
     return $this->desiredAuthenticatorGroupsConfig;
   }
   /**
-   * @param Autopilot
-   */
-  public function setDesiredAutopilot(Autopilot $desiredAutopilot)
-  {
-    $this->desiredAutopilot = $desiredAutopilot;
-  }
-  /**
-   * @return Autopilot
-   */
-  public function getDesiredAutopilot()
-  {
-    return $this->desiredAutopilot;
-  }
-  /**
    * @param BinaryAuthorization
    */
   public function setDesiredBinaryAuthorization(BinaryAuthorization $desiredBinaryAuthorization)
@@ -177,6 +165,34 @@ class ClusterUpdate extends \Google\Collection
   public function getDesiredDefaultSnatStatus()
   {
     return $this->desiredDefaultSnatStatus;
+  }
+  /**
+   * @param DNSConfig
+   */
+  public function setDesiredDnsConfig(DNSConfig $desiredDnsConfig)
+  {
+    $this->desiredDnsConfig = $desiredDnsConfig;
+  }
+  /**
+   * @return DNSConfig
+   */
+  public function getDesiredDnsConfig()
+  {
+    return $this->desiredDnsConfig;
+  }
+  /**
+   * @param GcfsConfig
+   */
+  public function setDesiredGcfsConfig(GcfsConfig $desiredGcfsConfig)
+  {
+    $this->desiredGcfsConfig = $desiredGcfsConfig;
+  }
+  /**
+   * @return GcfsConfig
+   */
+  public function getDesiredGcfsConfig()
+  {
+    return $this->desiredGcfsConfig;
   }
   public function setDesiredImageType($desiredImageType)
   {

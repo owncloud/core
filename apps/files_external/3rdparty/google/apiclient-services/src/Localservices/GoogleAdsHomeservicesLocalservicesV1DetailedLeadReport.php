@@ -22,6 +22,8 @@ class GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport extends \Google\Mod
   public $accountId;
   protected $aggregatorInfoType = GoogleAdsHomeservicesLocalservicesV1AggregatorInfo::class;
   protected $aggregatorInfoDataType = '';
+  protected $bookingLeadType = GoogleAdsHomeservicesLocalservicesV1BookingLead::class;
+  protected $bookingLeadDataType = '';
   public $businessName;
   public $chargeStatus;
   public $currencyCode;
@@ -60,6 +62,20 @@ class GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport extends \Google\Mod
   public function getAggregatorInfo()
   {
     return $this->aggregatorInfo;
+  }
+  /**
+   * @param GoogleAdsHomeservicesLocalservicesV1BookingLead
+   */
+  public function setBookingLead(GoogleAdsHomeservicesLocalservicesV1BookingLead $bookingLead)
+  {
+    $this->bookingLead = $bookingLead;
+  }
+  /**
+   * @return GoogleAdsHomeservicesLocalservicesV1BookingLead
+   */
+  public function getBookingLead()
+  {
+    return $this->bookingLead;
   }
   public function setBusinessName($businessName)
   {

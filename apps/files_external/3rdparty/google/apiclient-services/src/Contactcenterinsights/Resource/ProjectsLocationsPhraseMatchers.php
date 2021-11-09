@@ -97,6 +97,23 @@ class ProjectsLocationsPhraseMatchers extends \Google\Service\Resource
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], GoogleCloudContactcenterinsightsV1ListPhraseMatchersResponse::class);
   }
+  /**
+   * Updates a phrase matcher. (phraseMatchers.patch)
+   *
+   * @param string $name The resource name of the phrase matcher. Format:
+   * projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}
+   * @param GoogleCloudContactcenterinsightsV1PhraseMatcher $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The list of fields to be updated.
+   * @return GoogleCloudContactcenterinsightsV1PhraseMatcher
+   */
+  public function patch($name, GoogleCloudContactcenterinsightsV1PhraseMatcher $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], GoogleCloudContactcenterinsightsV1PhraseMatcher::class);
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

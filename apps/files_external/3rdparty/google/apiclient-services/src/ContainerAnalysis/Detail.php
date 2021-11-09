@@ -19,29 +19,67 @@ namespace Google\Service\ContainerAnalysis;
 
 class Detail extends \Google\Model
 {
-  public $cpeUri;
+  public $affectedCpeUri;
+  public $affectedPackage;
+  protected $affectedVersionEndType = Version::class;
+  protected $affectedVersionEndDataType = '';
+  protected $affectedVersionStartType = Version::class;
+  protected $affectedVersionStartDataType = '';
   public $description;
-  protected $fixedLocationType = VulnerabilityLocation::class;
-  protected $fixedLocationDataType = '';
+  public $fixedCpeUri;
+  public $fixedPackage;
+  protected $fixedVersionType = Version::class;
+  protected $fixedVersionDataType = '';
   public $isObsolete;
-  protected $maxAffectedVersionType = Version::class;
-  protected $maxAffectedVersionDataType = '';
-  protected $minAffectedVersionType = Version::class;
-  protected $minAffectedVersionDataType = '';
-  public $package;
   public $packageType;
   public $severityName;
   public $source;
   public $sourceUpdateTime;
   public $vendor;
 
-  public function setCpeUri($cpeUri)
+  public function setAffectedCpeUri($affectedCpeUri)
   {
-    $this->cpeUri = $cpeUri;
+    $this->affectedCpeUri = $affectedCpeUri;
   }
-  public function getCpeUri()
+  public function getAffectedCpeUri()
   {
-    return $this->cpeUri;
+    return $this->affectedCpeUri;
+  }
+  public function setAffectedPackage($affectedPackage)
+  {
+    $this->affectedPackage = $affectedPackage;
+  }
+  public function getAffectedPackage()
+  {
+    return $this->affectedPackage;
+  }
+  /**
+   * @param Version
+   */
+  public function setAffectedVersionEnd(Version $affectedVersionEnd)
+  {
+    $this->affectedVersionEnd = $affectedVersionEnd;
+  }
+  /**
+   * @return Version
+   */
+  public function getAffectedVersionEnd()
+  {
+    return $this->affectedVersionEnd;
+  }
+  /**
+   * @param Version
+   */
+  public function setAffectedVersionStart(Version $affectedVersionStart)
+  {
+    $this->affectedVersionStart = $affectedVersionStart;
+  }
+  /**
+   * @return Version
+   */
+  public function getAffectedVersionStart()
+  {
+    return $this->affectedVersionStart;
   }
   public function setDescription($description)
   {
@@ -51,19 +89,35 @@ class Detail extends \Google\Model
   {
     return $this->description;
   }
-  /**
-   * @param VulnerabilityLocation
-   */
-  public function setFixedLocation(VulnerabilityLocation $fixedLocation)
+  public function setFixedCpeUri($fixedCpeUri)
   {
-    $this->fixedLocation = $fixedLocation;
+    $this->fixedCpeUri = $fixedCpeUri;
+  }
+  public function getFixedCpeUri()
+  {
+    return $this->fixedCpeUri;
+  }
+  public function setFixedPackage($fixedPackage)
+  {
+    $this->fixedPackage = $fixedPackage;
+  }
+  public function getFixedPackage()
+  {
+    return $this->fixedPackage;
   }
   /**
-   * @return VulnerabilityLocation
+   * @param Version
    */
-  public function getFixedLocation()
+  public function setFixedVersion(Version $fixedVersion)
   {
-    return $this->fixedLocation;
+    $this->fixedVersion = $fixedVersion;
+  }
+  /**
+   * @return Version
+   */
+  public function getFixedVersion()
+  {
+    return $this->fixedVersion;
   }
   public function setIsObsolete($isObsolete)
   {
@@ -72,42 +126,6 @@ class Detail extends \Google\Model
   public function getIsObsolete()
   {
     return $this->isObsolete;
-  }
-  /**
-   * @param Version
-   */
-  public function setMaxAffectedVersion(Version $maxAffectedVersion)
-  {
-    $this->maxAffectedVersion = $maxAffectedVersion;
-  }
-  /**
-   * @return Version
-   */
-  public function getMaxAffectedVersion()
-  {
-    return $this->maxAffectedVersion;
-  }
-  /**
-   * @param Version
-   */
-  public function setMinAffectedVersion(Version $minAffectedVersion)
-  {
-    $this->minAffectedVersion = $minAffectedVersion;
-  }
-  /**
-   * @return Version
-   */
-  public function getMinAffectedVersion()
-  {
-    return $this->minAffectedVersion;
-  }
-  public function setPackage($package)
-  {
-    $this->package = $package;
-  }
-  public function getPackage()
-  {
-    return $this->package;
   }
   public function setPackageType($packageType)
   {

@@ -26,6 +26,7 @@ class WarehouseBasedDeliveryTime extends \Google\Model
   public $originCountry;
   public $originPostalCode;
   public $originStreetAddress;
+  public $warehouseName;
 
   public function setCarrier($carrier)
   {
@@ -82,6 +83,14 @@ class WarehouseBasedDeliveryTime extends \Google\Model
   public function getOriginStreetAddress()
   {
     return $this->originStreetAddress;
+  }
+  public function setWarehouseName($warehouseName)
+  {
+    $this->warehouseName = $warehouseName;
+  }
+  public function getWarehouseName()
+  {
+    return $this->warehouseName;
   }
 }
 

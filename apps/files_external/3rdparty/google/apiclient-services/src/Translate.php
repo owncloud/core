@@ -116,7 +116,17 @@ class Translate extends \Google\Service
         'locations',
         [
           'methods' => [
-            'batchTranslateText' => [
+            'batchTranslateDocument' => [
+              'path' => 'v3/{+parent}:batchTranslateDocument',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'batchTranslateText' => [
               'path' => 'v3/{+parent}:batchTranslateText',
               'httpMethod' => 'POST',
               'parameters' => [
@@ -184,6 +194,16 @@ class Translate extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],'translateDocument' => [
+              'path' => 'v3/{+parent}:translateDocument',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],'translateText' => [

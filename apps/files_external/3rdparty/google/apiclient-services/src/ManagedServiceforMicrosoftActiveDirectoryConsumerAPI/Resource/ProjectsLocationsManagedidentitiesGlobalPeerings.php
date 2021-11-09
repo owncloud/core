@@ -44,7 +44,8 @@ class ProjectsLocationsManagedidentitiesGlobalPeerings extends \Google\Service\R
    * @param array $optParams Optional parameters.
    *
    * @opt_param string peeringId Required. Peering Id, unique name to identify
-   * peering.
+   * peering. It should follow the regex format
+   * "^(?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)$"
    * @return Operation
    */
   public function create($parent, Peering $postBody, $optParams = [])

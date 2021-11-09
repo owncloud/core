@@ -19,7 +19,7 @@ namespace Google\Service\TagManager;
 
 class Zone extends \Google\Collection
 {
-  protected $collection_key = 'childContainer';
+  protected $collection_key = 'parameter';
   public $accountId;
   protected $boundaryType = ZoneBoundary::class;
   protected $boundaryDataType = '';
@@ -29,6 +29,8 @@ class Zone extends \Google\Collection
   public $fingerprint;
   public $name;
   public $notes;
+  protected $parameterType = Parameter::class;
+  protected $parameterDataType = 'array';
   public $path;
   public $tagManagerUrl;
   protected $typeRestrictionType = ZoneTypeRestriction::class;
@@ -103,6 +105,20 @@ class Zone extends \Google\Collection
   public function getNotes()
   {
     return $this->notes;
+  }
+  /**
+   * @param Parameter[]
+   */
+  public function setParameter($parameter)
+  {
+    $this->parameter = $parameter;
+  }
+  /**
+   * @return Parameter[]
+   */
+  public function getParameter()
+  {
+    return $this->parameter;
   }
   public function setPath($path)
   {

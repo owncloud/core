@@ -19,9 +19,18 @@ namespace Google\Service\FirebaseManagement;
 
 class AnalyticsProperty extends \Google\Model
 {
+  public $analyticsAccountId;
   public $displayName;
   public $id;
 
+  public function setAnalyticsAccountId($analyticsAccountId)
+  {
+    $this->analyticsAccountId = $analyticsAccountId;
+  }
+  public function getAnalyticsAccountId()
+  {
+    return $this->analyticsAccountId;
+  }
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;

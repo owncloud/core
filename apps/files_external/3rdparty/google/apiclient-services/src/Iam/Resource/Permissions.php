@@ -32,7 +32,7 @@ class Permissions extends \Google\Service\Resource
 {
   /**
    * Lists every permission that you can test on a resource. A permission is
-   * testable if you can check whether a member has that permission on the
+   * testable if you can check whether a principal has that permission on the
    * resource. (permissions.queryTestablePermissions)
    *
    * @param QueryTestablePermissionsRequest $postBody

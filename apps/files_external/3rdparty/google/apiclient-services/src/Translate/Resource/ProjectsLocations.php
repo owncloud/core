@@ -17,6 +17,7 @@
 
 namespace Google\Service\Translate\Resource;
 
+use Google\Service\Translate\BatchTranslateDocumentRequest;
 use Google\Service\Translate\BatchTranslateTextRequest;
 use Google\Service\Translate\DetectLanguageRequest;
 use Google\Service\Translate\DetectLanguageResponse;
@@ -24,6 +25,8 @@ use Google\Service\Translate\ListLocationsResponse;
 use Google\Service\Translate\Location;
 use Google\Service\Translate\Operation;
 use Google\Service\Translate\SupportedLanguages;
+use Google\Service\Translate\TranslateDocumentRequest;
+use Google\Service\Translate\TranslateDocumentResponse;
 use Google\Service\Translate\TranslateTextRequest;
 use Google\Service\Translate\TranslateTextResponse;
 
@@ -37,6 +40,29 @@ use Google\Service\Translate\TranslateTextResponse;
  */
 class ProjectsLocations extends \Google\Service\Resource
 {
+  /**
+   * Translates a large volume of document in asynchronous batch mode. This
+   * function provides real-time output as the inputs are being processed. If
+   * caller cancels a request, the partial results (for an input file, it's all or
+   * nothing) may still be available on the specified output location. This call
+   * returns immediately and you can use google.longrunning.Operation.name to poll
+   * the status of the call. (locations.batchTranslateDocument)
+   *
+   * @param string $parent Required. Location to make a regional call. Format:
+   * `projects/{project-number-or-id}/locations/{location-id}`. The `global`
+   * location is not supported for batch translation. Only AutoML Translation
+   * models or glossaries within the same region (have the same location-id) can
+   * be used, otherwise an INVALID_ARGUMENT (400) error is returned.
+   * @param BatchTranslateDocumentRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function batchTranslateDocument($parent, BatchTranslateDocumentRequest $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('batchTranslateDocument', [$params], Operation::class);
+  }
   /**
    * Translates a large volume of text in asynchronous batch mode. This function
    * provides real-time output as the inputs are being processed. If caller
@@ -146,6 +172,26 @@ class ProjectsLocations extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListLocationsResponse::class);
+  }
+  /**
+   * Translates documents in synchronous mode. (locations.translateDocument)
+   *
+   * @param string $parent Required. Location to make a regional call. Format:
+   * `projects/{project-number-or-id}/locations/{location-id}`. For global calls,
+   * use `projects/{project-number-or-id}/locations/global` or `projects/{project-
+   * number-or-id}`. Non-global location is required for requests using AutoML
+   * models or custom glossaries. Models and glossaries must be within the same
+   * region (have the same location-id), otherwise an INVALID_ARGUMENT (400) error
+   * is returned.
+   * @param TranslateDocumentRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return TranslateDocumentResponse
+   */
+  public function translateDocument($parent, TranslateDocumentRequest $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('translateDocument', [$params], TranslateDocumentResponse::class);
   }
   /**
    * Translates input text and returns translated text. (locations.translateText)

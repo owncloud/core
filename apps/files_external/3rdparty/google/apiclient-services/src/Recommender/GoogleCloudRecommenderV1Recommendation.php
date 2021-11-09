@@ -36,6 +36,7 @@ class GoogleCloudRecommenderV1Recommendation extends \Google\Collection
   public $recommenderSubtype;
   protected $stateInfoType = GoogleCloudRecommenderV1RecommendationStateInfo::class;
   protected $stateInfoDataType = '';
+  public $xorGroupId;
 
   /**
    * @param GoogleCloudRecommenderV1Impact[]
@@ -154,6 +155,14 @@ class GoogleCloudRecommenderV1Recommendation extends \Google\Collection
   public function getStateInfo()
   {
     return $this->stateInfo;
+  }
+  public function setXorGroupId($xorGroupId)
+  {
+    $this->xorGroupId = $xorGroupId;
+  }
+  public function getXorGroupId()
+  {
+    return $this->xorGroupId;
   }
 }
 

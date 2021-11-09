@@ -28,6 +28,7 @@ class GoogleCloudApigeeV1ApiProxyRevision extends \Google\Collection
   public $description;
   public $displayName;
   public $entityMetaDataAsProperties;
+  public $integrationEndpoints;
   public $lastModifiedAt;
   public $name;
   public $policies;
@@ -106,6 +107,14 @@ class GoogleCloudApigeeV1ApiProxyRevision extends \Google\Collection
   public function getEntityMetaDataAsProperties()
   {
     return $this->entityMetaDataAsProperties;
+  }
+  public function setIntegrationEndpoints($integrationEndpoints)
+  {
+    $this->integrationEndpoints = $integrationEndpoints;
+  }
+  public function getIntegrationEndpoints()
+  {
+    return $this->integrationEndpoints;
   }
   public function setLastModifiedAt($lastModifiedAt)
   {

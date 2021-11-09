@@ -35,7 +35,7 @@ class SpacesMembers extends \Google\Service\Resource
    *
    * @param string $name Required. Resource name of the membership to be
    * retrieved, in the form "spaces/members". Example:
-   * spaces/AAAAMpdlehY/members/105115627578887013105
+   * spaces/AAAAAAAAAAAA/members/111111111111111111111
    * @param array $optParams Optional parameters.
    * @return Membership
    */
@@ -50,7 +50,7 @@ class SpacesMembers extends \Google\Service\Resource
    *
    * @param string $parent Required. The resource name of the space for which
    * membership list is to be fetched, in the form "spaces". Example:
-   * spaces/AAAAMpdlehY
+   * spaces/AAAAAAAAAAAA
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Requested page size. The value is capped at 1000.

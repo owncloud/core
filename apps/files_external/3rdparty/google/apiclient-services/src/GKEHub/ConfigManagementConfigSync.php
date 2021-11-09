@@ -19,10 +19,19 @@ namespace Google\Service\GKEHub;
 
 class ConfigManagementConfigSync extends \Google\Model
 {
+  public $enabled;
   protected $gitType = ConfigManagementGitConfig::class;
   protected $gitDataType = '';
   public $sourceFormat;
 
+  public function setEnabled($enabled)
+  {
+    $this->enabled = $enabled;
+  }
+  public function getEnabled()
+  {
+    return $this->enabled;
+  }
   /**
    * @param ConfigManagementGitConfig
    */

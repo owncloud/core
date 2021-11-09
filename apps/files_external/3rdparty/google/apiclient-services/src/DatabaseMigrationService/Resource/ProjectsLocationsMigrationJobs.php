@@ -182,7 +182,8 @@ class ProjectsLocationsMigrationJobs extends \Google\Service\Resource
    * Updates the parameters of a single migration job. (migrationJobs.patch)
    *
    * @param string $name The name (URI) of this migration job resource, in the
-   * form of: projects/{project}/locations/{location}/instances/{instance}.
+   * form of:
+   * projects/{project}/locations/{location}/migrationJobs/{migrationJob}.
    * @param MigrationJob $postBody
    * @param array $optParams Optional parameters.
    *

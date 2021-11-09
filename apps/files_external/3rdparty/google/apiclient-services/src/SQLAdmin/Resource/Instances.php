@@ -130,9 +130,10 @@ class Instances extends \Google\Service\Resource
   /**
    * Initiates a manual failover of a high availability (HA) primary instance to a
    * standby instance, which becomes the primary instance. Users are then rerouted
-   * to the new primary. For more information, see the Overview of high
-   * availability page in the Cloud SQL documentation. If using Legacy HA (MySQL
-   * only), this causes the instance to failover to its failover replica instance.
+   * to the new primary. For more information, see the [Overview of high
+   * availability](https://cloud.google.com/sql/docs/mysql/high-availability) page
+   * in the Cloud SQL documentation. If using Legacy HA (MySQL only), this causes
+   * the instance to failover to its failover replica instance.
    * (instances.failover)
    *
    * @param string $project ID of the project that contains the read replica.

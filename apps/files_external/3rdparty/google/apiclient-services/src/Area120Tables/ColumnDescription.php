@@ -21,6 +21,8 @@ class ColumnDescription extends \Google\Collection
 {
   protected $collection_key = 'labels';
   public $dataType;
+  protected $dateDetailsType = DateDetails::class;
+  protected $dateDetailsDataType = '';
   public $id;
   protected $labelsType = LabeledItem::class;
   protected $labelsDataType = 'array';
@@ -39,6 +41,20 @@ class ColumnDescription extends \Google\Collection
   public function getDataType()
   {
     return $this->dataType;
+  }
+  /**
+   * @param DateDetails
+   */
+  public function setDateDetails(DateDetails $dateDetails)
+  {
+    $this->dateDetails = $dateDetails;
+  }
+  /**
+   * @return DateDetails
+   */
+  public function getDateDetails()
+  {
+    return $this->dateDetails;
   }
   public function setId($id)
   {

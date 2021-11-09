@@ -20,6 +20,7 @@ namespace Google\Service\DataCatalog;
 class GoogleCloudDatacatalogV1BigQueryDateShardedSpec extends \Google\Model
 {
   public $dataset;
+  public $latestShardResource;
   public $shardCount;
   public $tablePrefix;
 
@@ -30,6 +31,14 @@ class GoogleCloudDatacatalogV1BigQueryDateShardedSpec extends \Google\Model
   public function getDataset()
   {
     return $this->dataset;
+  }
+  public function setLatestShardResource($latestShardResource)
+  {
+    $this->latestShardResource = $latestShardResource;
+  }
+  public function getLatestShardResource()
+  {
+    return $this->latestShardResource;
   }
   public function setShardCount($shardCount)
   {

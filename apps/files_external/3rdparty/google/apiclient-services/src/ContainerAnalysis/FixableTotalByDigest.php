@@ -20,8 +20,7 @@ namespace Google\Service\ContainerAnalysis;
 class FixableTotalByDigest extends \Google\Model
 {
   public $fixableCount;
-  protected $resourceType = ContaineranalysisResource::class;
-  protected $resourceDataType = '';
+  public $resourceUri;
   public $severity;
   public $totalCount;
 
@@ -33,19 +32,13 @@ class FixableTotalByDigest extends \Google\Model
   {
     return $this->fixableCount;
   }
-  /**
-   * @param ContaineranalysisResource
-   */
-  public function setResource(ContaineranalysisResource $resource)
+  public function setResourceUri($resourceUri)
   {
-    $this->resource = $resource;
+    $this->resourceUri = $resourceUri;
   }
-  /**
-   * @return ContaineranalysisResource
-   */
-  public function getResource()
+  public function getResourceUri()
   {
-    return $this->resource;
+    return $this->resourceUri;
   }
   public function setSeverity($severity)
   {

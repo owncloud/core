@@ -138,8 +138,8 @@ class Files extends \Google\Service\Resource
     return $this->call('emptyTrash', [$params]);
   }
   /**
-   * Exports a Google Doc to the requested MIME type and returns the exported
-   * content. Please note that the exported content is limited to 10MB.
+   * Exports a Google Workspace document to the requested MIME type and returns
+   * exported byte content. Note that the exported content is limited to 10MB.
    * (files.export)
    *
    * @param string $fileId The ID of the file.

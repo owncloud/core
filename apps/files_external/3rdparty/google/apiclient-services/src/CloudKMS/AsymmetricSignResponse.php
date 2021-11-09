@@ -23,6 +23,7 @@ class AsymmetricSignResponse extends \Google\Model
   public $protectionLevel;
   public $signature;
   public $signatureCrc32c;
+  public $verifiedDataCrc32c;
   public $verifiedDigestCrc32c;
 
   public function setName($name)
@@ -56,6 +57,14 @@ class AsymmetricSignResponse extends \Google\Model
   public function getSignatureCrc32c()
   {
     return $this->signatureCrc32c;
+  }
+  public function setVerifiedDataCrc32c($verifiedDataCrc32c)
+  {
+    $this->verifiedDataCrc32c = $verifiedDataCrc32c;
+  }
+  public function getVerifiedDataCrc32c()
+  {
+    return $this->verifiedDataCrc32c;
   }
   public function setVerifiedDigestCrc32c($verifiedDigestCrc32c)
   {

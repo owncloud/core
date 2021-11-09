@@ -89,7 +89,7 @@ class Photos extends \Google\Service\Resource
    * for specific failures that can occur per photo. Only the fields specified in
    * updateMask field are used. If `updateMask` is not present, the update applies
    * to all fields. The number of UpdatePhotoRequest messages in a
-   * BatchUpdatePhotosRequest must not exceed 20. *Note:* To update Pose.altitude,
+   * BatchUpdatePhotosRequest must not exceed 20. > Note: To update Pose.altitude,
    * Pose.latLngPair has to be filled as well. Otherwise, the request will fail.
    * (photos.batchUpdate)
    *
@@ -104,7 +104,7 @@ class Photos extends \Google\Service\Resource
     return $this->call('batchUpdate', [$params], BatchUpdatePhotosResponse::class);
   }
   /**
-   * Lists all the Photos that belong to the user. *Note:* Recently created photos
+   * Lists all the Photos that belong to the user. > Note: Recently created photos
    * that are still being indexed are not returned in the response.
    * (photos.listPhotos)
    *
@@ -112,20 +112,19 @@ class Photos extends \Google\Service\Resource
    *
    * @opt_param string filter Optional. The filter expression. For example:
    * `placeId=ChIJj61dQgK6j4AR4GeTYWZsKWw`. The filters supported at the moment
-   * are: `placeId`, `min_latitude`, `max_latitude`, `min_longitude`, and
-   * `max_longitude`.
-   * @opt_param string languageCode The BCP-47 language code, such as "en-US" or
-   * "sr-Latn". For more information, see
+   * are: `placeId`.
+   * @opt_param string languageCode Optional. The BCP-47 language code, such as
+   * "en-US" or "sr-Latn". For more information, see
    * http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. If
    * language_code is unspecified, the user's language preference for Google
    * services is used.
-   * @opt_param int pageSize The maximum number of photos to return. `pageSize`
-   * must be non-negative. If `pageSize` is zero or is not provided, the default
-   * page size of 100 is used. The number of photos returned in the response may
-   * be less than `pageSize` if the number of photos that belong to the user is
-   * less than `pageSize`.
-   * @opt_param string pageToken The nextPageToken value returned from a previous
-   * ListPhotos request, if any.
+   * @opt_param int pageSize Optional. The maximum number of photos to return.
+   * `pageSize` must be non-negative. If `pageSize` is zero or is not provided,
+   * the default page size of 100 is used. The number of photos returned in the
+   * response may be less than `pageSize` if the number of photos that belong to
+   * the user is less than `pageSize`.
+   * @opt_param string pageToken Optional. The nextPageToken value returned from a
+   * previous ListPhotos request, if any.
    * @opt_param string view Required. Specifies if a download URL for the photos
    * bytes should be returned in the Photos response.
    * @return ListPhotosResponse

@@ -20,7 +20,7 @@ namespace Google\Service\Bigquery;
 class DestinationTableProperties extends \Google\Model
 {
   public $description;
-  public $expirationTimestampMillis;
+  public $expirationTime;
   public $friendlyName;
   public $labels;
 
@@ -32,13 +32,13 @@ class DestinationTableProperties extends \Google\Model
   {
     return $this->description;
   }
-  public function setExpirationTimestampMillis($expirationTimestampMillis)
+  public function setExpirationTime($expirationTime)
   {
-    $this->expirationTimestampMillis = $expirationTimestampMillis;
+    $this->expirationTime = $expirationTime;
   }
-  public function getExpirationTimestampMillis()
+  public function getExpirationTime()
   {
-    return $this->expirationTimestampMillis;
+    return $this->expirationTime;
   }
   public function setFriendlyName($friendlyName)
   {

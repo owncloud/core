@@ -20,6 +20,7 @@ namespace Google\Service\SecurityCommandCenter;
 class SecuritycenterResource extends \Google\Collection
 {
   protected $collection_key = 'folders';
+  public $displayName;
   protected $foldersType = Folder::class;
   protected $foldersDataType = 'array';
   public $name;
@@ -27,7 +28,16 @@ class SecuritycenterResource extends \Google\Collection
   public $parentName;
   public $projectDisplayName;
   public $projectName;
+  public $type;
 
+  public function setDisplayName($displayName)
+  {
+    $this->displayName = $displayName;
+  }
+  public function getDisplayName()
+  {
+    return $this->displayName;
+  }
   /**
    * @param Folder[]
    */
@@ -81,6 +91,14 @@ class SecuritycenterResource extends \Google\Collection
   public function getProjectName()
   {
     return $this->projectName;
+  }
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+  public function getType()
+  {
+    return $this->type;
   }
 }
 

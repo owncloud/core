@@ -26,6 +26,7 @@ class ExecutionTemplate extends \Google\Model
   protected $dataprocParametersDataType = '';
   public $inputNotebookFile;
   public $jobType;
+  public $kernelSpec;
   public $labels;
   public $masterType;
   public $outputNotebookFolder;
@@ -87,6 +88,14 @@ class ExecutionTemplate extends \Google\Model
   public function getJobType()
   {
     return $this->jobType;
+  }
+  public function setKernelSpec($kernelSpec)
+  {
+    $this->kernelSpec = $kernelSpec;
+  }
+  public function getKernelSpec()
+  {
+    return $this->kernelSpec;
   }
   public function setLabels($labels)
   {

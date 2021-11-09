@@ -29,10 +29,12 @@ use Google\Service\CloudDomains\RegisterDomainRequest;
 use Google\Service\CloudDomains\Registration;
 use Google\Service\CloudDomains\ResetAuthorizationCodeRequest;
 use Google\Service\CloudDomains\RetrieveRegisterParametersResponse;
+use Google\Service\CloudDomains\RetrieveTransferParametersResponse;
 use Google\Service\CloudDomains\SearchDomainsResponse;
 use Google\Service\CloudDomains\SetIamPolicyRequest;
 use Google\Service\CloudDomains\TestIamPermissionsRequest;
 use Google\Service\CloudDomains\TestIamPermissionsResponse;
+use Google\Service\CloudDomains\TransferDomainRequest;
 
 /**
  * The "registrations" collection of methods.
@@ -96,14 +98,17 @@ class ProjectsLocationsRegistrations extends \Google\Service\Resource
     return $this->call('configureManagementSettings', [$params], Operation::class);
   }
   /**
-   * Deletes a `Registration` resource. For `Registration` resources , this method
-   * works if: * `state` is `EXPORTED` with `expire_time` in the past * `state` is
-   * `REGISTRATION_FAILED` When an active domain is successfully deleted, you can
-   * continue to use the domain in [Google Domains](https://domains.google/) until
-   * it expires. The calling user becomes the domain's sole owner in Google
-   * Domains, and permissions for the domain are subsequently managed there. The
-   * domain will not renew automatically unless the new owner sets up billing in
-   * Google Domains. (registrations.delete)
+   * Deletes a `Registration` resource. For `Registration` resources using usage
+   * billing, this method works if: * `state` is `EXPORTED` with `expire_time` in
+   * the past * `state` is `REGISTRATION_FAILED` * `state` is `TRANSFER_FAILED`
+   * This method works on any `Registration` resource using subscription billing,
+   * provided that the resource was created at least 1 day in the past. When an
+   * active domain is successfully deleted, you can continue to use the domain in
+   * [Google Domains](https://domains.google/) until it expires. The calling user
+   * becomes the domain's sole owner in Google Domains, and permissions for the
+   * domain are subsequently managed there. The domain will not renew
+   * automatically unless the new owner sets up billing in Google Domains.
+   * (registrations.delete)
    *
    * @param string $name Required. The name of the `Registration` to delete, in
    * the format `projects/locations/registrations`.
@@ -309,6 +314,26 @@ class ProjectsLocationsRegistrations extends \Google\Service\Resource
     return $this->call('retrieveRegisterParameters', [$params], RetrieveRegisterParametersResponse::class);
   }
   /**
+   * Gets parameters needed to transfer a domain name from another registrar to
+   * Cloud Domains. For domains managed by Google Domains, transferring to Cloud
+   * Domains is not yet supported. Use the returned values to call
+   * `TransferDomain`. (registrations.retrieveTransferParameters)
+   *
+   * @param string $location Required. The location. Must be in the format
+   * `projects/locations`.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string domainName Required. The domain name. Unicode domain names
+   * must be expressed in Punycode format.
+   * @return RetrieveTransferParametersResponse
+   */
+  public function retrieveTransferParameters($location, $optParams = [])
+  {
+    $params = ['location' => $location];
+    $params = array_merge($params, $optParams);
+    return $this->call('retrieveTransferParameters', [$params], RetrieveTransferParametersResponse::class);
+  }
+  /**
    * Searches for available domain names similar to the provided query.
    * Availability results from this method are approximate; call
    * `RetrieveRegisterParameters` on a domain before registering to confirm
@@ -366,6 +391,36 @@ class ProjectsLocationsRegistrations extends \Google\Service\Resource
     $params = ['resource' => $resource, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('testIamPermissions', [$params], TestIamPermissionsResponse::class);
+  }
+  /**
+   * Transfers a domain name from another registrar to Cloud Domains. For domains
+   * managed by Google Domains, transferring to Cloud Domains is not yet
+   * supported. Before calling this method, go to the domain's current registrar
+   * to unlock the domain for transfer and retrieve the domain's transfer
+   * authorization code. Then call `RetrieveTransferParameters` to confirm that
+   * the domain is unlocked and to get values needed to build a call to this
+   * method. A successful call creates a `Registration` resource in state
+   * `TRANSFER_PENDING`. It can take several days to complete the transfer
+   * process. The registrant can often speed up this process by approving the
+   * transfer through the current registrar, either by clicking a link in an email
+   * from the registrar or by visiting the registrar's website. A few minutes
+   * after transfer approval, the resource transitions to state `ACTIVE`,
+   * indicating that the transfer was successful. If the transfer is rejected or
+   * the request expires without being approved, the resource can end up in state
+   * `TRANSFER_FAILED`. If transfer fails, you can safely delete the resource and
+   * retry the transfer. (registrations.transfer)
+   *
+   * @param string $parent Required. The parent resource of the `Registration`.
+   * Must be in the format `projects/locations`.
+   * @param TransferDomainRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   */
+  public function transfer($parent, TransferDomainRequest $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('transfer', [$params], Operation::class);
   }
 }
 

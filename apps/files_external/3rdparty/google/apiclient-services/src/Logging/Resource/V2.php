@@ -31,8 +31,8 @@ class V2 extends \Google\Service\Resource
 {
   /**
    * Gets the Logs Router CMEK settings for the given resource.Note: CMEK for the
-   * Logs Router can currently only be configured for GCP organizations. Once
-   * configured, it applies to all projects and folders in the GCP
+   * Logs Router can currently only be configured for Google Cloud organizations.
+   * Once configured, it applies to all projects and folders in the Google Cloud
    * organization.See Enabling CMEK for Logs Router
    * (https://cloud.google.com/logging/docs/routing/managed-encryption) for more
    * information. (v2.getCmekSettings)
@@ -43,8 +43,8 @@ class V2 extends \Google\Service\Resource
    * "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
    * "folders/[FOLDER_ID]/cmekSettings" For
    * example:"organizations/12345/cmekSettings"Note: CMEK for the Logs Router can
-   * currently only be configured for GCP organizations. Once configured, it
-   * applies to all projects and folders in the GCP organization.
+   * currently only be configured for Google Cloud organizations. Once configured,
+   * it applies to all projects and folders in the Google Cloud organization.
    * @param array $optParams Optional parameters.
    * @return CmekSettings
    */
@@ -56,10 +56,10 @@ class V2 extends \Google\Service\Resource
   }
   /**
    * Updates the Logs Router CMEK settings for the given resource.Note: CMEK for
-   * the Logs Router can currently only be configured for GCP organizations. Once
-   * configured, it applies to all projects and folders in the GCP
-   * organization.UpdateCmekSettings will fail if 1) kms_key_name is invalid, or
-   * 2) the associated service account does not have the required
+   * the Logs Router can currently only be configured for Google Cloud
+   * organizations. Once configured, it applies to all projects and folders in the
+   * Google Cloud organization.UpdateCmekSettings will fail if 1) kms_key_name is
+   * invalid, or 2) the associated service account does not have the required
    * roles/cloudkms.cryptoKeyEncrypterDecrypter role assigned for the key, or 3)
    * access to the key is disabled.See Enabling CMEK for Logs Router
    * (https://cloud.google.com/logging/docs/routing/managed-encryption) for more
@@ -71,8 +71,8 @@ class V2 extends \Google\Service\Resource
    * "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
    * "folders/[FOLDER_ID]/cmekSettings" For
    * example:"organizations/12345/cmekSettings"Note: CMEK for the Logs Router can
-   * currently only be configured for GCP organizations. Once configured, it
-   * applies to all projects and folders in the GCP organization.
+   * currently only be configured for Google Cloud organizations. Once configured,
+   * it applies to all projects and folders in the Google Cloud organization.
    * @param CmekSettings $postBody
    * @param array $optParams Optional parameters.
    *

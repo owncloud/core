@@ -30,6 +30,7 @@ class SearchAnalyticsQueryRequest extends \Google\Collection
   public $searchType;
   public $startDate;
   public $startRow;
+  public $type;
 
   public function setAggregationType($aggregationType)
   {
@@ -108,6 +109,14 @@ class SearchAnalyticsQueryRequest extends \Google\Collection
   public function getStartRow()
   {
     return $this->startRow;
+  }
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+  public function getType()
+  {
+    return $this->type;
   }
 }
 

@@ -17,62 +17,34 @@
 
 namespace Google\Service\ContainerAnalysis;
 
-class PackageOccurrence extends \Google\Model
+class PackageOccurrence extends \Google\Collection
 {
-  public $comment;
-  public $filename;
-  public $id;
-  public $licenseComments;
-  public $licenseConcluded;
-  public $sourceInfo;
+  protected $collection_key = 'location';
+  protected $locationType = Location::class;
+  protected $locationDataType = 'array';
+  public $name;
 
-  public function setComment($comment)
+  /**
+   * @param Location[]
+   */
+  public function setLocation($location)
   {
-    $this->comment = $comment;
+    $this->location = $location;
   }
-  public function getComment()
+  /**
+   * @return Location[]
+   */
+  public function getLocation()
   {
-    return $this->comment;
+    return $this->location;
   }
-  public function setFilename($filename)
+  public function setName($name)
   {
-    $this->filename = $filename;
+    $this->name = $name;
   }
-  public function getFilename()
+  public function getName()
   {
-    return $this->filename;
-  }
-  public function setId($id)
-  {
-    $this->id = $id;
-  }
-  public function getId()
-  {
-    return $this->id;
-  }
-  public function setLicenseComments($licenseComments)
-  {
-    $this->licenseComments = $licenseComments;
-  }
-  public function getLicenseComments()
-  {
-    return $this->licenseComments;
-  }
-  public function setLicenseConcluded($licenseConcluded)
-  {
-    $this->licenseConcluded = $licenseConcluded;
-  }
-  public function getLicenseConcluded()
-  {
-    return $this->licenseConcluded;
-  }
-  public function setSourceInfo($sourceInfo)
-  {
-    $this->sourceInfo = $sourceInfo;
-  }
-  public function getSourceInfo()
-  {
-    return $this->sourceInfo;
+    return $this->name;
   }
 }
 

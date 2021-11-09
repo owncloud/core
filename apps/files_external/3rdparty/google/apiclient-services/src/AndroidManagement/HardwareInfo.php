@@ -26,6 +26,7 @@ class HardwareInfo extends \Google\Collection
   public $cpuShutdownTemperatures;
   public $cpuThrottlingTemperatures;
   public $deviceBasebandVersion;
+  public $enterpriseSpecificId;
   public $gpuShutdownTemperatures;
   public $gpuThrottlingTemperatures;
   public $hardware;
@@ -82,6 +83,14 @@ class HardwareInfo extends \Google\Collection
   public function getDeviceBasebandVersion()
   {
     return $this->deviceBasebandVersion;
+  }
+  public function setEnterpriseSpecificId($enterpriseSpecificId)
+  {
+    $this->enterpriseSpecificId = $enterpriseSpecificId;
+  }
+  public function getEnterpriseSpecificId()
+  {
+    return $this->enterpriseSpecificId;
   }
   public function setGpuShutdownTemperatures($gpuShutdownTemperatures)
   {

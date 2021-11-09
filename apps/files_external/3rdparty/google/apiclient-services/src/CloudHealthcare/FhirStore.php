@@ -30,6 +30,8 @@ class FhirStore extends \Google\Collection
   protected $notificationConfigDataType = '';
   protected $streamConfigsType = StreamConfig::class;
   protected $streamConfigsDataType = 'array';
+  protected $validationConfigType = ValidationConfig::class;
+  protected $validationConfigDataType = '';
   public $version;
 
   public function setDefaultSearchHandlingStrict($defaultSearchHandlingStrict)
@@ -107,6 +109,20 @@ class FhirStore extends \Google\Collection
   public function getStreamConfigs()
   {
     return $this->streamConfigs;
+  }
+  /**
+   * @param ValidationConfig
+   */
+  public function setValidationConfig(ValidationConfig $validationConfig)
+  {
+    $this->validationConfig = $validationConfig;
+  }
+  /**
+   * @return ValidationConfig
+   */
+  public function getValidationConfig()
+  {
+    return $this->validationConfig;
   }
   public function setVersion($version)
   {

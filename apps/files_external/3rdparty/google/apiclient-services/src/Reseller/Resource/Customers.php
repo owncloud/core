@@ -36,10 +36,11 @@ class Customers extends \Google\Service\Resource
    * response for existing customers, see [retrieving a customer account](/admin-
    * sdk/reseller/v1/how-tos/manage_customers#get_customer). (customers.get)
    *
-   * @param string $customerId Either the customer's primary domain name or the
-   * customer's unique identifier. If using the domain name, we do not recommend
-   * using a `customerId` as a key for persistent data. If the domain name for a
-   * `customerId` is changed, the Google system automatically updates.
+   * @param string $customerId This can be either the customer's primary domain
+   * name or the customer's unique identifier. If the domain name for a customer
+   * changes, the old domain name cannot be used to access the customer, but the
+   * customer's unique identifier (as returned by the API) can always be used. We
+   * recommend storing the unique identifier in your systems where applicable.
    * @param array $optParams Optional parameters.
    * @return Customer
    */
@@ -90,10 +91,11 @@ class Customers extends \Google\Service\Resource
    * more information, see [Verify your domain to unlock Essentials
    * features](https://support.google.com/a/answer/9122284). (customers.patch)
    *
-   * @param string $customerId Either the customer's primary domain name or the
-   * customer's unique identifier. If using the domain name, we do not recommend
-   * using a `customerId` as a key for persistent data. If the domain name for a
-   * `customerId` is changed, the Google system automatically updates.
+   * @param string $customerId This can be either the customer's primary domain
+   * name or the customer's unique identifier. If the domain name for a customer
+   * changes, the old domain name cannot be used to access the customer, but the
+   * customer's unique identifier (as returned by the API) can always be used. We
+   * recommend storing the unique identifier in your systems where applicable.
    * @param Customer $postBody
    * @param array $optParams Optional parameters.
    * @return Customer
@@ -111,10 +113,11 @@ class Customers extends \Google\Service\Resource
    * settings](/admin-sdk/reseller/v1/how-tos/manage_customers#update_customer).
    * (customers.update)
    *
-   * @param string $customerId Either the customer's primary domain name or the
-   * customer's unique identifier. If using the domain name, we do not recommend
-   * using a `customerId` as a key for persistent data. If the domain name for a
-   * `customerId` is changed, the Google system automatically updates.
+   * @param string $customerId This can be either the customer's primary domain
+   * name or the customer's unique identifier. If the domain name for a customer
+   * changes, the old domain name cannot be used to access the customer, but the
+   * customer's unique identifier (as returned by the API) can always be used. We
+   * recommend storing the unique identifier in your systems where applicable.
    * @param Customer $postBody
    * @param array $optParams Optional parameters.
    * @return Customer

@@ -20,6 +20,7 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2InfoType extends \Google\Model
 {
   public $name;
+  public $version;
 
   public function setName($name)
   {
@@ -28,6 +29,14 @@ class GooglePrivacyDlpV2InfoType extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  public function setVersion($version)
+  {
+    $this->version = $version;
+  }
+  public function getVersion()
+  {
+    return $this->version;
   }
 }
 

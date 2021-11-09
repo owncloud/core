@@ -46,6 +46,7 @@ class CloudRun extends \Google\Service
   public $namespaces_revisions;
   public $namespaces_routes;
   public $namespaces_services;
+  public $operations;
   public $projects_authorizeddomains;
   public $projects_locations;
   public $projects_locations_authorizeddomains;
@@ -503,6 +504,26 @@ class CloudRun extends \Google\Service
                 'dryRun' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->operations = new CloudRun\Resource\Operations(
+        $this,
+        $this->serviceName,
+        'operations',
+        [
+          'methods' => [
+            'cancel' => [
+              'path' => 'v1/{+name}:cancel',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

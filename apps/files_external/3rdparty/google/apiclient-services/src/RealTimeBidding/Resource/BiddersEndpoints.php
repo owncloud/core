@@ -65,6 +65,25 @@ class BiddersEndpoints extends \Google\Service\Resource
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListEndpointsResponse::class);
   }
+  /**
+   * Updates a bidder's endpoint. (endpoints.patch)
+   *
+   * @param string $name Output only. Name of the endpoint resource that must
+   * follow the pattern `bidders/{bidderAccountId}/endpoints/{endpointId}`, where
+   * {bidderAccountId} is the account ID of the bidder who operates this endpoint,
+   * and {endpointId} is a unique ID assigned by the server.
+   * @param Endpoint $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Field mask to use for partial in-place updates.
+   * @return Endpoint
+   */
+  public function patch($name, Endpoint $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], Endpoint::class);
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

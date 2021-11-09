@@ -19,12 +19,25 @@ namespace Google\Service\ShoppingContent;
 
 class OrderTrackingSignalLineItemDetails extends \Google\Model
 {
+  public $brand;
   public $gtin;
   public $lineItemId;
   public $mpn;
+  public $productDescription;
   public $productId;
+  public $productTitle;
   public $quantity;
+  public $sku;
+  public $upc;
 
+  public function setBrand($brand)
+  {
+    $this->brand = $brand;
+  }
+  public function getBrand()
+  {
+    return $this->brand;
+  }
   public function setGtin($gtin)
   {
     $this->gtin = $gtin;
@@ -49,6 +62,14 @@ class OrderTrackingSignalLineItemDetails extends \Google\Model
   {
     return $this->mpn;
   }
+  public function setProductDescription($productDescription)
+  {
+    $this->productDescription = $productDescription;
+  }
+  public function getProductDescription()
+  {
+    return $this->productDescription;
+  }
   public function setProductId($productId)
   {
     $this->productId = $productId;
@@ -57,6 +78,14 @@ class OrderTrackingSignalLineItemDetails extends \Google\Model
   {
     return $this->productId;
   }
+  public function setProductTitle($productTitle)
+  {
+    $this->productTitle = $productTitle;
+  }
+  public function getProductTitle()
+  {
+    return $this->productTitle;
+  }
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
@@ -64,6 +93,22 @@ class OrderTrackingSignalLineItemDetails extends \Google\Model
   public function getQuantity()
   {
     return $this->quantity;
+  }
+  public function setSku($sku)
+  {
+    $this->sku = $sku;
+  }
+  public function getSku()
+  {
+    return $this->sku;
+  }
+  public function setUpc($upc)
+  {
+    $this->upc = $upc;
+  }
+  public function getUpc()
+  {
+    return $this->upc;
   }
 }
 

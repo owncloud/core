@@ -220,7 +220,7 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * @opt_param string updateMask Required. Mask of fields to update. At least one
    * path must be supplied in this field. The elements of the repeated paths field
    * may only include these fields from Instance: * `displayName` * `labels` *
-   * `memorySizeGb` * `redisConfig`
+   * `memorySizeGb` * `redisConfig` * `replica_count`
    * @return Operation
    */
   public function patch($name, Instance $postBody, $optParams = [])
