@@ -430,6 +430,7 @@ trait WebDav {
 				$this->getResponse(),
 				__METHOD__
 			);
+			$this->setResponseXmlObject($resXml);
 		}
 		$xmlPart = $resXml->xpath("//d:getlastmodified");
 		$actualNumber = \count($xmlPart);
@@ -5051,5 +5052,80 @@ trait WebDav {
 				$this->getStepLineRef()
 			);
 		}
+	}
+
+	/**
+	 * @Given /^the administrator has (enabled|disabled) the file version storage feature/
+	 *
+	 * @param string $enabledOrDisabled
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasEnabledTheFileVersionStorage(string $enabledOrDisabled): void {
+		$switch = ($enabledOrDisabled !== "disabled");
+		if ($switch) {
+			$value = 'true';
+		} else {
+			$value = 'false';
+		}
+		$this->runOcc(
+			[
+				'config:system:set',
+				'file_storage.save_version_author',
+				'--type',
+				'boolean',
+				'--value',
+				$value]
+		);
+	}
+
+	/**
+	 * @Then the author of the created version with index :index should be :expectedUsername
+	 *
+	 * @param string $index
+	 * @param string $expectedUsername
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAuthorOfEditedVersionFile(string $index, string $expectedUsername): void {
+		$expectedUserDisplayName = $this->getUserDisplayName($expectedUsername);
+		$resXml = $this->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml(
+				$this->getResponse(),
+				__METHOD__
+			);
+			$this->setResponseXmlObject($resXml);
+		}
+
+		// the username should be in oc:meta-version-edited-by
+		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by//text()");
+		if (!isset($xmlPart[$index - 1])) {
+			Assert::fail(
+				'could not find version with index "' . $index . '" for oc:meta-version-edited-by property'
+			);
+		}
+		$actualUser = $xmlPart[$index - 1][0];
+		Assert::assertEquals(
+			$expectedUsername,
+			$actualUser,
+			"Expected user of version was '$expectedUsername', but got '$actualUser'"
+		);
+
+		// the user's display name should be in oc:meta-version-edited-by-name
+		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by-name//text()");
+		if (!isset($xmlPart[$index - 1])) {
+			Assert::fail(
+				'could not find version with index "' . $index . '" for oc:meta-version-edited-by-name property'
+			);
+		}
+		$actualUserDisplayName = $xmlPart[$index - 1][0];
+		Assert::assertEquals(
+			$expectedUserDisplayName,
+			$actualUserDisplayName,
+			"Expected user of version was '$expectedUsername', but got '$actualUser'"
+		);
 	}
 }
