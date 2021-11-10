@@ -119,6 +119,12 @@ class LargeFileHelper {
 			$encodedPathParts = \array_map('rawurlencode', $pathParts);
 			$encodedFileName = \implode('/', $encodedPathParts);
 			$ch = \curl_init("file://$encodedFileName");
+			$chType = \gettype($ch);
+			if (\is_object($ch)) {
+				$chClass = \get_class($ch);
+			} else {
+				$chClass = "not an object";
+			}
 			\curl_setopt($ch, CURLOPT_NOBODY, true);
 			\curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			\curl_setopt($ch, CURLOPT_HEADER, true);
@@ -131,7 +137,7 @@ class LargeFileHelper {
 					return 0 + $matches[1];
 				}
 				if ($data === '') {
-					return "curl response was an empty string";
+					return "curl response was an empty string - ch is $chType with class $chClass";
 				}
 				$hex = \bin2hex($data);
 				return "curl response was '$hex'";
