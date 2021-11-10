@@ -671,7 +671,7 @@ class UsersController extends Controller {
 			);
 		}
 
-		'@phan-var \OC\Group\Manager $this->groupManager';
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		if (!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user)) {
 			$this->log->error($currentUser->getUID() . " cannot resend invitation for $userId", ['app' => 'settings']);
 			return new JSONResponse(
