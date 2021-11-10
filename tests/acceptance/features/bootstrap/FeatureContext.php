@@ -2630,6 +2630,46 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * move file in server root
+	 *
+	 * @param string $path
+	 * @param string $target
+	 *
+	 * @return void
+	 */
+	public function moveFileInServerRoot(string $path, string $target):void {
+		$response = OcsApiHelper::sendRequest(
+			$this->getBaseUrl(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			"MOVE",
+			"/apps/testing/api/v1/file",
+			$this->getStepLineRef(),
+			[
+				'source' => $path,
+				'target' => $target
+			]
+		);
+
+		$this->setResponse($response);
+	}
+
+	/**
+	 * @When the local storage mount for :mount is renamed to :target
+	 *
+	 * @param string $mount
+	 * @param string $target
+	 *
+	 * @return void
+	 */
+	public function theLocalStorageMountForIsRenamedTo(string $mount, string $target):void {
+		$mountPath = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/" . ltrim($mount, '/');
+		$targetPath = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/" . ltrim($target, '/');
+
+		$this->moveFileInServerRoot($mountPath, $targetPath);
+	}
+
+	/**
 	 * @Then the file :path with content :content should exist in the server root
 	 *
 	 * @param string $path
