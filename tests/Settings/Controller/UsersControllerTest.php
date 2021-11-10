@@ -3009,7 +3009,9 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['UserManager']->expects($this->once())
 			->method('get')
 			->willReturn($user);
-
+		$this->container['GroupManager']->expects($this->once())
+			->method('getSubAdmin')
+			->willReturn(true);
 		$this->container['SecureRandom']->expects($this->once())
 			->method('generate')
 			->willReturn('foOBaZ1');
