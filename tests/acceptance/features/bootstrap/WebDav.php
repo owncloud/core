@@ -5052,4 +5052,62 @@ trait WebDav {
 			);
 		}
 	}
+
+	/**
+	 * @Given /^the administrator has (enabled|disabled) file version storage feature/
+	 *
+	 * @param string $enabledOrDisabled
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorHasEnabledTheFileVersionStorage($enabledOrDisabled) {
+		$switch = ($enabledOrDisabled !== "disabled");
+		if ($switch) {
+			$value = 'true';
+		} else {
+			$value = 'false';
+		}
+		$this->runOcc(
+			[
+				'config:system:set',
+				'file_storage.save_version_author',
+				'--type',
+				'boolean',
+				'--value',
+				$value]
+		);
+	}
+	/**
+	 * @Then the author of the created version with index :arg1 should be :arg2
+	 *
+	 * @param string $index
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAuthorOfEditedVersionFile($index, $user) {
+		$expectedUser = $this->getUserDisplayName($user);
+		$resXml = $this->getResponseXmlObject();
+		if ($resXml === null) {
+			$resXml = HttpRequestHelper::getResponseXml(
+				$this->getResponse(),
+				__METHOD__
+			);
+		}
+		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by//text()");
+		if (!isset($xmlPart[$index - 1])) {
+			Assert::fail(
+				'could not find version with index "' . $index . '"'
+			);
+		}
+		$actualUser = $xmlPart[$index - 1][0];
+		Assert::assertEquals(
+			$expectedUser,
+			$actualUser,
+			"Expected user of version was '$expectedUser', but got '$actualUser'"
+		);
+	}
 }
+
