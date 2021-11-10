@@ -652,13 +652,14 @@ class UsersController extends Controller {
 	}
 
 	/**
-	 * @AdminRequired
+	 * @NoAdminRequired
 	 *
 	 * @param $userId
 	 * @return JSONResponse
 	 */
 	public function resendInvitation($userId) {
 		$user = $this->userManager->get($userId);
+		$currentUser = $this->userSession->getUser();
 
 		if ($user === null) {
 			$this->log->error('User: ' . $userId . ' does not exist', ['app' => 'settings']);
@@ -667,6 +668,17 @@ class UsersController extends Controller {
 					"error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.')
 				],
 				HTTP::STATUS_NOT_FOUND
+			);
+		}
+
+		'@phan-var \OC\Group\Manager $this->groupManager';
+		if (!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user)) {
+			$this->log->error($currentUser->getUID() . " cannot resend invitation for $userId", ['app' => 'settings']);
+			return new JSONResponse(
+				[
+					"error" => $this->l10n->t('Failed to create activation link. Please contact your administrator.')
+				],
+				Http::STATUS_FORBIDDEN
 			);
 		}
 
@@ -1133,6 +1145,7 @@ class UsersController extends Controller {
 	}
 
 	/**
+	 * @NoAdminRequired
 	 *
 	 * @param string $id
 	 * @param string $mailAddress

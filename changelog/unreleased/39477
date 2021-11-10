@@ -1,0 +1,9 @@
+Bugfix: Group administrator permissions
+
+This fixes an issue where group administrators were
+unable to change email addresses and resend
+invitation emails for users in their groups.
+
+https://github.com/owncloud/core/pull/39477
+https://github.com/owncloud/core/issues/39475
+https://github.com/owncloud/core/issues/39476
