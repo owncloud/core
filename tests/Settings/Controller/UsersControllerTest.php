@@ -3009,9 +3009,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->container['UserManager']->expects($this->once())
 			->method('get')
 			->willReturn($user);
-		$this->container['GroupManager']->expects($this->once())
-			->method('getSubAdmin')
-			->willReturn(true);
+
 		$this->container['SecureRandom']->expects($this->once())
 			->method('generate')
 			->willReturn('foOBaZ1');
@@ -3047,6 +3045,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->with($message)
 			->willReturn([]);
 
+		$this->container['IsAdmin'] = true;
 		$result = $this->container['UsersController']->resendInvitation('foo');
 		$this->assertEquals(
 			new Http\JSONResponse(),
