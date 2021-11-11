@@ -57,6 +57,7 @@ Summary
 * Bugfix - Adjust text of occ encryption command messages: [#39395](https://github.com/owncloud/core/pull/39395)
 * Bugfix - Faulty file list entry after accepting a remote share: [#39411](https://github.com/owncloud/core/pull/39411)
 * Bugfix - Add missing `remoteshare.accepted` event parameters: [#39449](https://github.com/owncloud/core/pull/39449)
+* Bugfix - Group administrator permissions: [#39477](https://github.com/owncloud/core/pull/39477)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -508,6 +509,15 @@ Details
 
    https://github.com/owncloud/core/pull/39449
 
+* Bugfix - Group administrator permissions: [#39477](https://github.com/owncloud/core/pull/39477)
+
+   This fixes an issue where group administrators were unable to change email addresses and
+   resend invitation emails for users in their groups.
+
+   https://github.com/owncloud/core/issues/39475
+   https://github.com/owncloud/core/issues/39476
+   https://github.com/owncloud/core/pull/39477
+
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
    Propfind requests will now be streamed to reduce memory usage with large responses.
@@ -579,7 +589,7 @@ Details
    The following have been updated: - christophwurst/id3parser (0.1.2 to 0.1.3) -
    doctrine/cache (2.0.3 to 2.1.1) - doctrine/dbal (2.13.2 to 2.13.4) -
    egulias/email-validator (3.1.1 to 3.1.2) - laminas/laminas-filter (2.11.1 to 2.12.0) -
-   laminas/laminas-stdlib (3.5.0 to 3.6.0) - laminas/laminas-validator (2.14.5 to 2.15.0) -
+   laminas/laminas-stdlib (3.5.0 to 3.6.1) - laminas/laminas-validator (2.14.5 to 2.15.0) -
    laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0) - league/flysystem (1.1.4 to
    1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.13.0) -
    pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.11) -
@@ -610,6 +620,7 @@ Details
    https://github.com/owncloud/core/pull/39453
    https://github.com/owncloud/core/pull/39456
    https://github.com/owncloud/core/pull/39466
+   https://github.com/owncloud/core/pull/39479
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
