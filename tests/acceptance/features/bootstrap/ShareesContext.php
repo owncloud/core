@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -176,7 +176,7 @@ class ShareesContext implements Context {
 		string $shareeType
 	):array {
 		$elements = $this->featureContext->getResponseXml($response, __METHOD__)->data;
-		$elements = \json_decode(\json_encode($elements), 1);
+		$elements = \json_decode(\json_encode($elements), true);
 		if (\strpos($shareeType, 'exact ') === 0) {
 			$elements = $elements['exact'];
 			$shareeType = \substr($shareeType, 6);

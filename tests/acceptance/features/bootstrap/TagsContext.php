@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Sergio Bertolin <sbertolin@owncloud.com>
@@ -1273,7 +1273,7 @@ class TagsContext implements Context {
 			$fullPath,
 			$properties,
 			$this->featureContext->getStepLineRef(),
-			1,
+			'1',
 			'systemtags',
 			$this->featureContext->getDavPathVersion('systemtags')
 		);
@@ -1696,7 +1696,7 @@ class TagsContext implements Context {
 			null,
 			null,
 			"uploads",
-			$this->featureContext->getDavPathVersion('systemtags')
+			(string)$this->featureContext->getDavPathVersion('systemtags')
 		);
 		$this->featureContext->setResponse($response);
 	}

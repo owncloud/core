@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -269,7 +269,7 @@ class FavoritesContext implements Context {
 			$user,
 			$path,
 			$property,
-			$expectedValue
+			(string)$expectedValue
 		);
 	}
 
@@ -333,7 +333,7 @@ class FavoritesContext implements Context {
 			$this->featureContext->getPasswordForUser($user),
 			$path,
 			'favorite',
-			$favOrUnfav,
+			(string)$favOrUnfav,
 			$this->featureContext->getStepLineRef(),
 			"oc='http://owncloud.org/ns'",
 			$this->featureContext->getDavPathVersion()

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -293,7 +293,7 @@ class NotificationsCoreContext implements Context {
 	 * @return array
 	 */
 	public function getArrayOfNotificationsResponded(ResponseInterface $resp):array {
-		$jsonResponse = \json_decode($resp->getBody()->getContents(), 1);
+		$jsonResponse = \json_decode($resp->getBody()->getContents(), true);
 		return $jsonResponse['ocs']['data'];
 	}
 

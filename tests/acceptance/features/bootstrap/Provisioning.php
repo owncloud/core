@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  *
@@ -107,7 +107,7 @@ trait Provisioning {
 	 * @return string
 	 */
 	public function normalizeUsername(?string $username):string {
-		return \strtolower($username);
+		return \strtolower((string)$username);
 	}
 
 	/**
@@ -4936,7 +4936,7 @@ trait Provisioning {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->users[0]->element;
 		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), 1);
+			= \json_decode(\json_encode($listCheckedElements), true);
 		return $extractedElementsArray;
 	}
 
@@ -4952,7 +4952,7 @@ trait Provisioning {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->groups[0]->element;
 		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), 1);
+			= \json_decode(\json_encode($listCheckedElements), true);
 		return $extractedElementsArray;
 	}
 
@@ -4968,7 +4968,7 @@ trait Provisioning {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->apps[0]->element;
 		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), 1);
+			= \json_decode(\json_encode($listCheckedElements), true);
 		return $extractedElementsArray;
 	}
 
@@ -4984,7 +4984,7 @@ trait Provisioning {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0]->element;
 		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), 1);
+			= \json_decode(\json_encode($listCheckedElements), true);
 		return $extractedElementsArray;
 	}
 
@@ -5000,7 +5000,7 @@ trait Provisioning {
 		$listCheckedElements
 			= $this->getResponseXml($resp, __METHOD__)->data[0];
 		$extractedElementsArray
-			= \json_decode(\json_encode($listCheckedElements), 1);
+			= \json_decode(\json_encode($listCheckedElements), true);
 		return $extractedElementsArray;
 	}
 
@@ -5410,7 +5410,7 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			$this->cleanupGroup($group);
+			$this->cleanupGroup((string)$group);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
@@ -5600,7 +5600,7 @@ trait Provisioning {
 	/**
 	 * @return bool
 	 */
-	private function isEmptySkeleton(): string {
+	private function isEmptySkeleton(): bool {
 		$skeletonDir = \getenv("SKELETON_DIR");
 		if (($skeletonDir !== false) && (\basename($skeletonDir) === $this->getSmallestSkeletonDirName() . "Skeleton")) {
 			return true;

@@ -60,7 +60,7 @@ class LoginPage extends OwncloudPage {
 	 * @return Page
 	 * @throws \Behat\Mink\Exception\ElementNotFoundException
 	 */
-	public function loginAs(string $username, string $password, string $target = 'FilesPage'):Page {
+	public function loginAs(string $username, ?string $password, string $target = 'FilesPage'):Page {
 		$this->fillField($this->userInputId, $username);
 		$this->fillField($this->passwordInputId, $password);
 		$submitElement = $this->findById($this->submitLoginId);
