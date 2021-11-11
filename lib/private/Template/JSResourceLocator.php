@@ -40,6 +40,9 @@ class JSResourceLocator extends ResourceLocator {
 		}
 
 		if (\strpos($script, '/l10n/') !== false) {
+			$app = \substr($fullScript, 0, \strpos($fullScript, '/'));
+			$appFolderLocation = \explode('/', $this->appManager->getAppWebPath($app))[1] ?? 'apps';
+
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
@@ -47,7 +50,7 @@ class JSResourceLocator extends ResourceLocator {
 			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot);
 			$found += $this->appendOnceIfExist($this->serverroot, $fullScript);
 			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot);
-			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot);
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$appFolderLocation.'/'.$fullScript, $webRoot);
 
 			if ($found) {
 				return;
