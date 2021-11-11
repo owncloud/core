@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -749,7 +749,7 @@ trait Sharing {
 	 * @return string
 	 */
 	public function getMimeTypeOfLastSharedFile():string {
-		return \json_decode(\json_encode($this->lastShareData->data->mimetype), 1)[0];
+		return \json_decode(\json_encode($this->lastShareData->data->mimetype), true)[0];
 	}
 
 	/**
@@ -995,7 +995,7 @@ trait Sharing {
 		?string $path = null,
 		?string $shareType = null,
 		?string $shareWith = null,
-		?string $publicUpload = null,
+		?bool $publicUpload = null,
 		?string $sharePassword = null,
 		$permissions = null,
 		?string $linkName = null,
@@ -1344,7 +1344,7 @@ trait Sharing {
 			$this->createShare(
 				$user1,
 				$filepath,
-				0,
+				'0',
 				$user2Actual,
 				null,
 				null,
@@ -1610,7 +1610,7 @@ trait Sharing {
 			$this->createShare(
 				$user,
 				$filepath,
-				1,
+				'1',
 				$group,
 				null,
 				null,
@@ -1910,7 +1910,7 @@ trait Sharing {
 			$share_id = $this->getLastShareIdOf($user);
 		}
 		$language = TranslationHelper::getLanguage($language);
-		$this->getShareData($user, $share_id, $language);
+		$this->getShareData($user, (string)$share_id, $language);
 	}
 
 	/**
@@ -1921,10 +1921,10 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 *
-	 * @return int|null
+	 * @return string|null
 	 * @throws Exception
 	 */
-	public function getLastShareIdOf(string $user):?int {
+	public function getLastShareIdOf(string $user):?string {
 		$user = $this->getActualUsername($user);
 
 		$this->getListOfShares($user);
@@ -2231,7 +2231,7 @@ trait Sharing {
 	):void {
 		$user = $this->getActualUsername($user);
 		$this->verifyTableNodeRows($body, [], $this->shareResponseFields);
-		$this->getShareData($user, $this->lastShareData->data[0]->id);
+		$this->getShareData($user, (string)$this->lastShareData->data[0]->id);
 		$this->theHTTPStatusCodeShouldBe(
 			200,
 			"Error getting info of last share for user $user"
@@ -2335,7 +2335,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function checkingLastShareIDIsIncluded():void {
-		$share_id = $this->lastShareData->data[0]->id;
+		$share_id = (string)$this->lastShareData->data[0]->id;
 		if (!$this->isFieldInResponse('id', $share_id)) {
 			Assert::fail(
 				"Share id $share_id not found in response"
@@ -2350,7 +2350,7 @@ trait Sharing {
 	 * @throws Exception
 	 */
 	public function checkLastShareIDIsNotIncluded():void {
-		$share_id = $this->lastShareData->data[0]->id;
+		$share_id = (string) $this->lastShareData->data[0]->id;
 		if ($this->isFieldInResponse('id', $share_id, false)) {
 			Assert::fail(
 				"Share id $share_id has been found in response"
@@ -2832,7 +2832,7 @@ trait Sharing {
 		$dataResponded = $this->getShares($user, $path);
 		foreach ($dataResponded as $elementResponded) {
 			if ((string) $elementResponded->name[0] === $name) {
-				return $elementResponded->id[0];
+				return (string) $elementResponded->id[0];
 			}
 		}
 		return null;
@@ -3299,10 +3299,10 @@ trait Sharing {
 	 */
 	public function getLastShareToken():string {
 		if (\count($this->lastShareData->data->element) > 0) {
-			return $this->lastShareData->data[0]->token;
+			return (string)$this->lastShareData->data[0]->token;
 		}
 
-		return $this->lastShareData->data->token;
+		return (string)$this->lastShareData->data->token;
 	}
 
 	/**
@@ -3530,10 +3530,10 @@ trait Sharing {
 			if (\is_string($value) && !\is_numeric($value)) {
 				$value = $this->splitPermissionsString($value);
 			}
-			$value = SharingHelper::getPermissionSum($value);
+			$value = (string)SharingHelper::getPermissionSum($value);
 		}
 		if ($field === "share_type") {
-			$value = SharingHelper::getShareType($value);
+			$value = (string)SharingHelper::getShareType($value);
 		}
 		return $value;
 	}

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -323,7 +323,7 @@ class OccContext implements Context {
 			$mount,
 			$this->featureContext->getStepLineRef()
 		);
-		$storageId = $result['storageId'];
+		$storageId = (int)$result['storageId'];
 		$this->featureContext->setResultOfOccCommand($result);
 		$this->featureContext->addStorageId($mount, $storageId);
 	}
@@ -1047,7 +1047,7 @@ class OccContext implements Context {
 	public function theAdministratorHasSetDepthInfinityAllowedTo($depth_infinity_allowed) {
 		$this->addSystemConfigKeyUsingTheOccCommand(
 			"dav.propfind.depth_infinity",
-			$depth_infinity_allowed
+			(string) $depth_infinity_allowed
 		);
 	}
 
@@ -2741,12 +2741,14 @@ class OccContext implements Context {
 	public function theLastDeletedJobShouldNotBeListedInTheJobsQueue(string $job):void {
 		$jobId = $this->lastDeletedJobId;
 		$match = $this->getLastJobIdForJob($job);
-		Assert::assertNotEquals(
-			$jobId,
-			$match,
-			"job $job with jobId $jobId" .
-			" was not expected to be listed in background queue, but was"
-		);
+		if ($match) {
+			Assert::assertNotEquals(
+				$jobId,
+				$match,
+				"job $job with jobId $jobId" .
+				" was not expected to be listed in background queue, but was"
+			);
+		}
 	}
 
 	/**
@@ -2909,6 +2911,9 @@ class OccContext implements Context {
 			$commandOutput,
 			$job
 		);
+		if (!$lines) {
+			return false;
+		}
 		// find the jobId of the newest job among the jobs with given class
 		$success = \preg_match("/\d+/", \end($lines), $match);
 		if ($success) {
@@ -3202,7 +3207,7 @@ class OccContext implements Context {
 		// add to array of created storageIds
 		$commandOutput = $this->featureContext->getStdOutOfOccCommand();
 		$mountId = \preg_replace('/\D/', '', $commandOutput);
-		$this->featureContext->addStorageId($extMntSettings["mount_point"], $mountId);
+		$this->featureContext->addStorageId($extMntSettings["mount_point"], (int) $mountId);
 	}
 
 	/**

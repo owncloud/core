@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  *
@@ -370,7 +370,7 @@ trait WebDav {
 			$headers,
 			$this->getStepLineRef(),
 			$body,
-			$davPathVersion,
+			(int) $davPathVersion,
 			$type,
 			null,
 			"basic",
@@ -407,7 +407,7 @@ trait WebDav {
 			[],
 			null,
 			"files",
-			2,
+			'2',
 			false,
 			null,
 			$urlParameter,
@@ -1593,7 +1593,7 @@ trait WebDav {
 				['preg_quote' => ['/']]
 			);
 			Assert::assertNotFalse(
-				(bool) \preg_match($expectedValue, $result[$expectedKey]),
+				(bool) \preg_match($expectedValue, (string)$result[$expectedKey]),
 				"'$expectedValue' does not match '$result[$expectedKey]'"
 			);
 		}
@@ -1621,7 +1621,7 @@ trait WebDav {
 		$response = $this->listFolder(
 			$user,
 			$path,
-			0,
+			'0',
 			null,
 			$type
 		);
@@ -1700,7 +1700,7 @@ trait WebDav {
 		$this->responseXmlObject = $this->listFolderAndReturnResponseXml(
 			$user,
 			$path,
-			0,
+			'0',
 			null,
 			$type
 		);
@@ -1780,7 +1780,7 @@ trait WebDav {
 			$this->responseXmlObject = $this->listFolderAndReturnResponseXml(
 				$user,
 				$path,
-				0
+				'0'
 			);
 			if ($this->isEtagValid()) {
 				$numEntriesThatExist = $numEntriesThatExist + 1;
@@ -3478,9 +3478,9 @@ trait WebDav {
 	):void {
 		$this->verifyTableNodeColumns($chunkDetails, ['number', 'content']);
 		foreach ($chunkDetails->getHash() as $chunkDetail) {
-			$chunkNumber = $chunkDetail['number'];
+			$chunkNumber = (int)$chunkDetail['number'];
 			$chunkContent = $chunkDetail['content'];
-			$this->userUploadsChunkedFile($user, $chunkNumber, $total, $chunkContent, $file);
+			$this->userUploadsChunkedFile($user, $chunkNumber, (int) $total, $chunkContent, $file);
 		}
 	}
 
@@ -3510,9 +3510,9 @@ trait WebDav {
 	):void {
 		$this->verifyTableNodeColumns($chunkDetails, ['number', 'content']);
 		foreach ($chunkDetails->getHash() as $chunkDetail) {
-			$chunkNumber = $chunkDetail['number'];
+			$chunkNumber = (int) $chunkDetail['number'];
 			$chunkContent = $chunkDetail['content'];
-			$this->userHasUploadedChunkedFile($user, $chunkNumber, $total, $chunkContent, $file);
+			$this->userHasUploadedChunkedFile($user, $chunkNumber, (int) $total, $chunkContent, $file);
 		}
 	}
 
@@ -3541,7 +3541,7 @@ trait WebDav {
 		$total = \count($chunkDetails->getHash());
 		$this->userUploadsTheFollowingTotalChunksUsingOldChunking(
 			$user,
-			$total,
+			(string) $total,
 			$file,
 			$chunkDetails
 		);
@@ -3572,7 +3572,7 @@ trait WebDav {
 		$total = \count($chunkDetails->getRows());
 		$this->userHasUploadedTheFollowingTotalChunksUsingOldChunking(
 			$user,
-			$total,
+			(string) $total,
 			$file,
 			$chunkDetails
 		);
@@ -3775,7 +3775,7 @@ trait WebDav {
 			$this->userCreatesANewChunkingUploadWithId($user, $chunkingId);
 		}
 		foreach ($chunkDetails as $chunkDetail) {
-			$chunkNumber = $chunkDetail['number'];
+			$chunkNumber = (int)$chunkDetail['number'];
 			$chunkContent = $chunkDetail['content'];
 			if ($checkActions) {
 				$this->userHasUploadedNewChunkFileOfWithToId($user, $chunkNumber, $chunkContent, $chunkingId);
@@ -4286,13 +4286,14 @@ trait WebDav {
 		$responseXmlObject = $this->listFolderAndReturnResponseXml(
 			$user,
 			$folder,
-			1
+			'1'
 		);
 		$elementList = $responseXmlObject->xpath("//d:response/d:href");
 		if (\is_array($elementList) && \count($elementList)) {
 			\array_shift($elementList); //don't delete the folder itself
 			$davPrefix = "/" . $this->getFullDavFilesPath($user);
 			foreach ($elementList as $element) {
+				$element = (string)$element;
 				$element = \substr($element, \strlen($davPrefix));
 				if ($checkEachDelete) {
 					$this->userHasDeletedFile($user, "deleted", "file", $element);
@@ -4856,7 +4857,7 @@ trait WebDav {
 		$responseResources = [];
 		$hrefs = $responseXmlObj->xpath('//d:href');
 		foreach ($hrefs as $href) {
-			$hrefParts = \explode("/", $href[0]);
+			$hrefParts = \explode("/", (string)$href[0]);
 			if (\in_array($user, $hrefParts)) {
 				$entry = \urldecode(\end($hrefParts));
 				\array_push($responseResources, $entry);
@@ -4940,8 +4941,11 @@ trait WebDav {
 		?string $user = null,
 		string $type = "files"
 	) {
+		$trimmedEntryNameToSearch = '';
 		// trim any leading "/" passed by the caller, we can just match the "raw" name
-		$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
+		if ($entryNameToSearch) {
+			$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
+		}
 
 		// topWebDavPath should be something like /remote.php/webdav/ or
 		// /remote.php/dav/files/alice/

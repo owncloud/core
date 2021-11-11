@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -64,7 +64,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->listFolderAndReturnResponseXml(
 				$user,
 				$path,
-				0
+				'0'
 			)
 		);
 	}
@@ -117,7 +117,7 @@ class WebDavPropertiesContext implements Context {
 				$properties[] = $row["propertyName"];
 			}
 		}
-		$depth = 0;
+		$depth = '0';
 		if (\count($properties) > 1) {
 			$depth = 'infinity';
 			$this->featureContext->usingNewDavPath();
@@ -307,7 +307,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->listFolderAndReturnResponseXml(
 				$user,
 				$path,
-				0,
+				'0',
 				$properties,
 				"public-files"
 			)
@@ -868,7 +868,7 @@ class WebDavPropertiesContext implements Context {
 			$this->featureContext->listFolderAndReturnResponseXml(
 				$user,
 				$path,
-				0,
+				'0',
 				[$property]
 			)
 		);
@@ -1089,7 +1089,7 @@ class WebDavPropertiesContext implements Context {
 		$this->featureContext->verifyTableNodeColumns($expectedPropTable, ['resource', 'propertyName', 'propertyValue']);
 		$responseXmlObject = $this->featureContext->getResponseXmlObject();
 
-		$hrefSplittedUptoUsername = \explode("/", $responseXmlObject->xpath("//d:href")[0]);
+		$hrefSplittedUptoUsername = \explode("/", (string)$responseXmlObject->xpath("//d:href")[0]);
 		$xmlHrefSplittedArray = \array_slice(
 			$hrefSplittedUptoUsername,
 			0,

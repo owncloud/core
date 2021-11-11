@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author Artur Neumann <artur@jankaritech.com>
  *
@@ -190,7 +190,7 @@ class TUSContext implements Context {
 		);
 		$client->setMetadata($uploadMetadata);
 		$sourceFile = $this->featureContext->acceptanceTestsDirLocation() . $source;
-		$client->setKey(\rand())->file($sourceFile, $destination);
+		$client->setKey((string)rand())->file($sourceFile, $destination);
 		$this->featureContext->pauseUploadDelete();
 
 		if ($bytes !== null) {
