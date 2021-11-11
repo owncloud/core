@@ -140,7 +140,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the administrator (attempts to create|creates) a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)? using the webUI$/
+	 * @When /^the (?:administrator|subadmin|user) (attempts to create|creates) a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)? using the webUI$/
 	 *
 	 * @param string|null $attemptTo
 	 * @param string|null $username
@@ -221,7 +221,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^the administrator (attempts to create|creates) a user with the name "([^"]*)" and the email "([^"]*)" without a password(?: that is a member of these groups)? using the webUI$/
+	 * @When /^the (?:administrator|subadmin|user) (attempts to create|creates) a user with the name "([^"]*)" and the email "([^"]*)" without a password(?: that is a member of these groups)? using the webUI$/
 	 *
 	 * @param string $attemptTo
 	 * @param string $username
@@ -247,7 +247,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the administrator resends invitation email for user with the name :username using the webUI
+	 * @When the administrator/subadmin resends the invitation email for user :username using the webUI
 	 *
 	 * @param string $username
 	 *

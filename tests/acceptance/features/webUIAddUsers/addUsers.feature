@@ -94,7 +94,7 @@ Feature: add users
   @smokeTest @skipOnLDAP @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: user sets his own password after being created with an Email address only and invitation link resend
     When the administrator creates a user with the name "<username>" and the email "guiusr1@owncloud" without a password using the webUI
-    And the administrator resends invitation email for user with the name "<username>" using the webUI
+    And the administrator resends the invitation email for user "<username>" using the webUI
     And the administrator logs out of the webUI
     And the user follows the password set link received by "guiusr1@owncloud" in Email number 2 using the webUI
     Then the user should see an error message saying "The token provided is invalid."

@@ -3045,6 +3045,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->with($message)
 			->willReturn([]);
 
+		$this->container['IsAdmin'] = true;
 		$result = $this->container['UsersController']->resendInvitation('foo');
 		$this->assertEquals(
 			new Http\JSONResponse(),
