@@ -133,8 +133,6 @@ class Activity implements IExtension {
 			$settings[] = self::TYPE_SHARE_CHANGED;
 			$settings[] = self::TYPE_SHARE_DELETED;
 			$settings[] = self::TYPE_SHARE_RESTORED;
-			$settings[] = self::TYPE_FILE_RENAMED;
-			$settings[] = self::TYPE_FILE_MOVED;
 			return $settings;
 		}
 
