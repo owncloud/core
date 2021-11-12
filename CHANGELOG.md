@@ -587,7 +587,7 @@ Details
 * Change - Update PHP dependencies: [#38907](https://github.com/owncloud/core/pull/38907)
 
    The following have been updated: - christophwurst/id3parser (0.1.2 to 0.1.3) -
-   doctrine/cache (2.0.3 to 2.1.1) - doctrine/dbal (2.13.2 to 2.13.4) -
+   doctrine/cache (2.0.3 to 2.1.1) - doctrine/dbal (2.13.2 to 2.13.5) -
    egulias/email-validator (3.1.1 to 3.1.2) - laminas/laminas-filter (2.11.1 to 2.12.0) -
    laminas/laminas-stdlib (3.5.0 to 3.6.1) - laminas/laminas-validator (2.14.5 to 2.15.0) -
    laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0) - league/flysystem (1.1.4 to
@@ -621,6 +621,7 @@ Details
    https://github.com/owncloud/core/pull/39456
    https://github.com/owncloud/core/pull/39466
    https://github.com/owncloud/core/pull/39479
+   https://github.com/owncloud/core/pull/39485
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
