@@ -53,7 +53,7 @@ class JSResourceLocator extends ResourceLocator {
 
 			/**
 			 * Try to load translations from the app folder, there might be concurrent versions of the same app in the apps and apps-external folder,
-			 * loading the translations from the newest version
+			 * loading the translations from the active version
 			 **/
 			$found += $this->appendOnceIfExist($baseDirectory, $appFolderLocation.'/'.$fullScript, $webRoot);
 
@@ -62,7 +62,7 @@ class JSResourceLocator extends ResourceLocator {
 			 * theme-folder/apps/app-folder/l10n
 			 * theme translations will extend/overwrite native app translations
 			 **/
-			if($themeDirectory !== ""){
+			if (!empty($themeDirectory)) {
 				$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot);
 			}
 
