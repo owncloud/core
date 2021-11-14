@@ -310,7 +310,7 @@ $CONFIG = [
  * Tokens which are not JSON WebToken (JWT) may not have information like the
  * expiry. In these cases, the OpenID Connect Provider needs to call on the token
  * introspection endpoint to get this information. The default value is `false`. See
- * https://tools.ietf.org/html/rfc7662 for more information on token introspection.
+ * https://datatracker.ietf.org/doc/html/rfc7662 for more information on token introspection.
  */
 
 /**

@@ -1318,7 +1318,7 @@ $CONFIG = [
  * https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_large_prefix
  * https://mariadb.com/kb/en/mariadb/xtradbinnodb-server-system-variables/#innodb_large_prefix
  * http://www.tocker.ca/benchmarking-innodb-page-compression-performance.html
- * http://mechanics.flite.com/blog/2014/07/29/using-innodb-large-prefix-to-avoid-error-1071/
+ * https://titanwolf.org/Network/Articles/Article?AID=58c487d4-7e0f-4fbe-9262-4285553ef443 (Using innodb_large_prefix to avoid ERROR 1071)
  */
 'mysql.utf8mb4' => false,
 
