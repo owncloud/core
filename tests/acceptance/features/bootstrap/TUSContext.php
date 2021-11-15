@@ -146,13 +146,14 @@ class TUSContext implements Context {
 	 * @param string $checksum
 	 *
 	 * @return void
-	 * @throws ReflectionException
-	 * @throws GuzzleException
 	 * @throws ConnectionException
+	 * @throws GuzzleException
+	 * @throws JsonException
+	 * @throws ReflectionException
 	 * @throws TusException
 	 */
 	public function userUploadsUsingTusAFileTo(
-		string $user,
+		?string $user,
 		string $source,
 		string $destination,
 		array $uploadMetadata = [],
@@ -198,7 +199,7 @@ class TUSContext implements Context {
 		} elseif ($noOfChunks === 1 && $bytes === null) {
 			$client->file($sourceFile, $destination)->upload();
 		} else {
-			$bytesPerChunk = \ceil(\filesize($sourceFile) / $noOfChunks);
+			$bytesPerChunk = (int)\ceil(\filesize($sourceFile) / $noOfChunks);
 			for ($i = 0; $i < $noOfChunks; $i++) {
 				$client->upload($bytesPerChunk);
 			}
@@ -229,7 +230,7 @@ class TUSContext implements Context {
 				$destination
 			);
 		} catch (Exception $e) {
-			Assert::assertStringContainsString('TusPhp\Exception\FileException: Unable to create resource', $e);
+			Assert::assertStringContainsString('TusPhp\Exception\FileException: Unable to create resource', (string)$e);
 		}
 		\unlink($tmpfname);
 	}
@@ -237,22 +238,24 @@ class TUSContext implements Context {
 	/**
 	 * @When user :user uploads file with content :content in :noOfChunks chunks to :destination using the TUS protocol on the WebDAV API
 	 *
-	 * @param string $user
+	 * @param string|null $user
 	 * @param string $content
-	 * @param int $noOfChunks
+	 * @param int|null $noOfChunks
 	 * @param string $destination
 	 *
 	 * @return void
 	 * @throws ConnectionException
+	 * @throws GuzzleException
+	 * @throws JsonException
 	 * @throws ReflectionException
 	 * @throws TusException
 	 * @throws Exception
 	 * @throws GuzzleException
 	 */
 	public function userUploadsAFileWithContentInChunksUsingTus(
-		string $user,
+		?string $user,
 		string $content,
-		int $noOfChunks,
+		?int $noOfChunks,
 		string $destination
 	):void {
 		$tmpfname = $this->writeDataToTempFile($content);
