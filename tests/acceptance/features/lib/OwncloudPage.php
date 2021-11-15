@@ -594,7 +594,7 @@ class OwncloudPage extends Page {
 		$end = \microtime(true);
 		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
 		$timeout_msec = \max($timeout_msec, MINIMUM_UI_WAIT_TIMEOUT_MILLISEC);
-		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
+		$this->waitForOutstandingAjaxCalls($session, (int)$timeout_msec);
 	}
 
 	/**
@@ -713,7 +713,7 @@ class OwncloudPage extends Page {
 		if ($style) {
 			if (\preg_match(
 				"/(^{$property}:|; {$property}:) ([a-z0-9]+);/i",
-				$style,
+				(string) $style,
 				$matches
 			)
 			) {
