@@ -1,0 +1,11 @@
+Bugfix: Load l10n js files from the correct app folder
+
+With this PR, we ensure that the translations will be loaded from the correct
+app folder path.
+For example, if you have two versions of an app, where one version is in the
+apps folder and the other one in the apps-external folder.
+The change also ensures that theme translations will be loaded additionally
+instead of replacing the whole app translations.
+This has the advantage that the user can cherry-pick single words to translate.
+
+https://github.com/owncloud/core/pull/39482

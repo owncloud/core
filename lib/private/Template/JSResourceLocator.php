@@ -40,6 +40,9 @@ class JSResourceLocator extends ResourceLocator {
 		}
 
 		if (\strpos($script, '/l10n/') !== false) {
+			$app = \substr($fullScript, 0, \strpos($fullScript, '/'));
+			$appFolderLocation = \explode('/', $this->appManager->getAppWebPath($app))[1] ?? 'apps';
+
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
@@ -47,7 +50,21 @@ class JSResourceLocator extends ResourceLocator {
 			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot);
 			$found += $this->appendOnceIfExist($this->serverroot, $fullScript);
 			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot);
-			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot);
+
+			/**
+			 * Try to load translations from the app folder, there might be concurrent versions of the same app in the apps and apps-external folder,
+			 * loading the translations from the active version
+			 **/
+			$found += $this->appendOnceIfExist($baseDirectory, $appFolderLocation.'/'.$fullScript, $webRoot);
+
+			/**
+			 * Try to load translations from theme if exists, translations should be present in
+			 * theme-folder/apps/app-folder/l10n
+			 * theme translations will extend/overwrite native app translations
+			 **/
+			if (!empty($themeDirectory)) {
+				$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot);
+			}
 
 			if ($found) {
 				return;
