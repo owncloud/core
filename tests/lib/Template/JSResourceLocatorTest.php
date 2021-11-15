@@ -139,13 +139,14 @@ class JSResourceLocatorTest extends TestCase {
 			->with('randomapp')
 			->willReturn('/var/www/apps/randomapp');
 
-		$locator->expects($this->exactly(6))
+		$locator->expects($this->exactly(7))
 			->method('appendOnceIfExist')
 			->withConsecutive(
 				['/var/www/owncloud', 'core/randomapp/l10n/en_GB.js', ''],
 				['/var/www/apps', 'theme-best/core/randomapp/l10n/en_GB.js', ''],
 				['/var/www/owncloud', 'randomapp/l10n/en_GB.js', ''],
 				['/var/www/apps', 'theme-best/randomapp/l10n/en_GB.js', ''],
+				['/var/www/apps', 'apps/randomapp/l10n/en_GB.js', ''],
 				['/var/www/apps', 'theme-best/apps/randomapp/l10n/en_GB.js', ''],
 				['/var/www/apps/randomapp', 'l10n/en_GB.js', '']
 			);
