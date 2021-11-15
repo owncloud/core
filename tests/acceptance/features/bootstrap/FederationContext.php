@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -112,7 +112,7 @@ class FederationContext implements Context {
 		$this->featureContext->createShare(
 			$sharerUser,
 			$sharerPath,
-			6,
+			'6',
 			$shareWith,
 			null,
 			null,

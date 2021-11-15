@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -595,7 +595,7 @@ class WebDavLockingContext implements Context {
 			$password,
 			'GET',
 			"/apps/testing/api/v1/app/core/lock-breaker-groups",
-			$ocsApiVersion
+			(string) $ocsApiVersion
 		);
 
 		$responseXml = HttpRequestHelper::getResponseXml($response, __METHOD__)->data->element;

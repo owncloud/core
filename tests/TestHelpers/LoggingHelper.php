@@ -90,7 +90,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 * @param int|null $noOfLinesToRead
 	 *
-	 * @return SimpleXMLElement
+	 * @return array
 	 * @throws Exception
 	 */
 	public static function getLogFileContent(
@@ -99,7 +99,7 @@ class LoggingHelper {
 		?string $adminPassword,
 		?string $xRequestId = '',
 		?int $noOfLinesToRead = 0
-	):SimpleXMLElement {
+	):array {
 		$result = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUsername,
@@ -113,7 +113,13 @@ class LoggingHelper {
 				"could not get logfile content " . $result->getReasonPhrase()
 			);
 		}
-		return HttpRequestHelper::getResponseXml($result, __METHOD__)->data->element;
+		$response = HttpRequestHelper::getResponseXml($result, __METHOD__);
+
+		$result = [];
+		foreach ($response->data->element as $line) {
+			array_push($result, (string)$line);
+		}
+		return $result;
 	}
 
 	/**

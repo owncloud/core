@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Sergio Bertolin <sbertolin@owncloud.com>
@@ -270,7 +270,7 @@ class CommentsContext implements Context {
 			$user = $this->featureContext->getCurrentUser();
 		}
 		$user = $this->featureContext->getActualUsername($user);
-		$this->deleteComment($user, $this->lastFileId, $this->lastCommentId);
+		$this->deleteComment($user, (string)$this->lastFileId, (string)$this->lastCommentId);
 	}
 
 	/**
@@ -373,8 +373,8 @@ class CommentsContext implements Context {
 		$this->editAComment(
 			$user,
 			$content,
-			$this->lastFileId,
-			$this->lastCommentId
+			(string)$this->lastFileId,
+			(string)$this->lastCommentId
 		);
 	}
 
@@ -404,8 +404,8 @@ class CommentsContext implements Context {
 		$this->editAComment(
 			$this->featureContext->getCurrentUser(),
 			$content,
-			$this->lastFileId,
-			$this->lastCommentId
+			(string)$this->lastFileId,
+			(string)$this->lastCommentId
 		);
 	}
 

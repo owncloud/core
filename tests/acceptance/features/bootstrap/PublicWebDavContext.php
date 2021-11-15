@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -55,7 +55,7 @@ class PublicWebDavContext implements Context {
 	 */
 	public function downloadPublicFileWithRange(string $range, string $publicWebDAVAPIVersion, ?string $password = ""):void {
 		if ($publicWebDAVAPIVersion === "new") {
-			$path = $this->featureContext->getLastShareData()->data->file_target;
+			$path = (string)$this->featureContext->getLastShareData()->data->file_target;
 		} else {
 			$path = "";
 		}
@@ -173,7 +173,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function renameFileFromPublicShare(string $fileName, string $toFileName, string $publicWebDAVAPIVersion, ?string $password = ""):void {
-		$token = $this->featureContext->getLastShareData()->data->token;
+		$token = (string)$this->featureContext->getLastShareData()->data->token;
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -291,7 +291,7 @@ class PublicWebDavContext implements Context {
 	):void {
 		$path = \ltrim($path, "/");
 		$password = $this->featureContext->getActualPassword($password);
-		$token = $this->featureContext->getLastShareData()->data->token;
+		$token = (string) $this->featureContext->getLastShareData()->data->token;
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -402,7 +402,7 @@ class PublicWebDavContext implements Context {
 	 * @return void
 	 */
 	public function thePublicCopiesFileUsingTheWebDAVApi(string $source, string $destination, string $publicWebDAVAPIVersion):void {
-		$token = $this->featureContext->getLastShareData()->data->token;
+		$token = (string) $this->featureContext->getLastShareData()->data->token;
 		$davPath = WebDavHelper::getDavPath(
 			$token,
 			0,
@@ -1051,7 +1051,7 @@ class PublicWebDavContext implements Context {
 		$filename = "";
 
 		if ($publicWebDAVAPIVersion === "new") {
-			$filename = $this->featureContext->getLastShareData()->data[0]->file_target;
+			$filename = (string)$this->featureContext->getLastShareData()->data[0]->file_target;
 			$techPreviewHadToBeEnabled = $this->occContext->enableDAVTechPreview();
 		} else {
 			$techPreviewHadToBeEnabled = false;

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -246,14 +246,14 @@ class AppConfigurationContext implements Context {
 	}
 
 	/**
-	 * @param string $xml of the capabilities
+	 * @param SimpleXMLElement $xml of the capabilities
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
 	 *
 	 * @return boolean
 	 */
 	public function parameterValueExistsInXml(
-		string $xml,
+		SimpleXMLElement $xml,
 		string $capabilitiesApp,
 		string $capabilitiesPath
 	):bool {

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -247,9 +247,9 @@ class TrashbinContext implements Context {
 		$files = $this->getTrashbinContentFromResponseXml($responseXml);
 
 		foreach ($table->getHash() as $row) {
-			$path = trim($row['name'], "/");
+			$path = trim((string)$row['name'], "/");
 			foreach ($files as $file) {
-				if (trim($file['original-location'], "/") === $path) {
+				if (trim((string)$file['original-location'], "/") === $path) {
 					throw new Exception("file $path was not expected in trashbin response but was found");
 				}
 			}
@@ -274,7 +274,7 @@ class TrashbinContext implements Context {
 			$path = trim($row['name'], "/");
 			$found = false;
 			foreach ($files as $file) {
-				if (trim($file['original-location'], "/") === $path) {
+				if (trim((string)$file['original-location'], "/") === $path) {
 					$found = true;
 					break;
 				}
@@ -310,7 +310,7 @@ class TrashbinContext implements Context {
 				'd:getlastmodified'
 			],
 			$this->featureContext->getStepLineRef(),
-			1,
+			'1',
 			'trash-bin',
 			2
 		);
@@ -517,7 +517,7 @@ class TrashbinContext implements Context {
 					[],
 					null,
 					'trash-bin',
-					2,
+					'2',
 					false,
 					$password
 				);
@@ -676,7 +676,7 @@ class TrashbinContext implements Context {
 			$headers,
 			null,
 			'trash-bin',
-			2,
+			'2',
 			false,
 			$password
 		);
@@ -1020,9 +1020,9 @@ class TrashbinContext implements Context {
 		$responseMtime = '';
 
 		foreach ($files as $file) {
-			if (\ltrim($resource, "/") === \ltrim($file['original-location'], "/")) {
+			if (\ltrim((string)$resource, "/") === \ltrim((string)$file['original-location'], "/")) {
 				$responseMtime = $file['mtime'];
-				$mtime_difference = \abs((int)\trim($expectedMtime) - (int)\trim($responseMtime));
+				$mtime_difference = \abs((int)\trim((string)$expectedMtime) - (int)\trim($responseMtime));
 
 				if ($mtime_difference <= 2) {
 					$found = true;

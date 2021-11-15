@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  *

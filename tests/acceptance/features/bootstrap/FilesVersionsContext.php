@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -68,7 +68,7 @@ class FilesVersionsContext implements Context {
 			null,
 			null,
 			null,
-			2
+			'2'
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -92,7 +92,7 @@ class FilesVersionsContext implements Context {
 			null,
 			null,
 			null,
-			2
+			'2'
 		);
 		$this->featureContext->setResponse($response);
 	}
@@ -273,7 +273,7 @@ class FilesVersionsContext implements Context {
 			$this->getVersionsPathForFileId($fileId),
 			$properties,
 			$this->featureContext->getStepLineRef(),
-			$folderDepth,
+			(string) $folderDepth,
 			"versions"
 		);
 		return HttpRequestHelper::getResponseXml(
