@@ -1140,11 +1140,11 @@ class FeatureContext extends BehatVariablesContext {
 	 * let this class remember a response that was received elsewhere
 	 * so that steps in this class can be used to examine the response
 	 *
-	 * @param ResponseInterface $response
+	 * @param ResponseInterface|null $response
 	 *
 	 * @return void
 	 */
-	public function setResponse(ResponseInterface $response):void {
+	public function setResponse(?ResponseInterface $response):void {
 		$this->response = $response;
 		//after a new response reset the response xml
 		$this->responseXml = [];
@@ -2205,6 +2205,7 @@ class FeatureContext extends BehatVariablesContext {
 	 * @param string|null $functionalUsername
 	 *
 	 * @return string|null
+	 * @throws JsonException
 	 */
 	public function getActualUsername(?string $functionalUsername):?string {
 		if ($functionalUsername === null) {
