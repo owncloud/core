@@ -112,7 +112,7 @@ class FederationContext implements Context {
 		$this->featureContext->createShare(
 			$sharerUser,
 			$sharerPath,
-			(string) 6,
+			'6',
 			$shareWith,
 			null,
 			null,

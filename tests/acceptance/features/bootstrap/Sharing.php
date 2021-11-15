@@ -981,7 +981,7 @@ trait Sharing {
 	 * @param string|null $path
 	 * @param string|null $shareType
 	 * @param string|null $shareWith
-	 * @param string|null $publicUpload
+	 * @param bool|null $publicUpload
 	 * @param string|null $sharePassword
 	 * @param string|int|string[]|int[]|null $permissions
 	 * @param string|null $linkName

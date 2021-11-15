@@ -4293,8 +4293,7 @@ trait WebDav {
 			\array_shift($elementList); //don't delete the folder itself
 			$davPrefix = "/" . $this->getFullDavFilesPath($user);
 			foreach ($elementList as $element) {
-				$element = (string)$element;
-				$element = \substr($element, \strlen($davPrefix));
+				$element = \substr((string)$element, \strlen($davPrefix));
 				if ($checkEachDelete) {
 					$this->userHasDeletedFile($user, "deleted", "file", $element);
 				} else {
@@ -4943,7 +4942,7 @@ trait WebDav {
 	) {
 		$trimmedEntryNameToSearch = '';
 		// trim any leading "/" passed by the caller, we can just match the "raw" name
-		if ($entryNameToSearch) {
+		if ($entryNameToSearch != null) {
 			$trimmedEntryNameToSearch = \trim($entryNameToSearch, "/");
 		}
 

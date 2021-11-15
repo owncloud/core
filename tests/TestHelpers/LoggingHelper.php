@@ -90,7 +90,7 @@ class LoggingHelper {
 	 * @param string|null $xRequestId
 	 * @param int|null $noOfLinesToRead
 	 *
-	 * @return SimpleXMLElement
+	 * @return array
 	 * @throws Exception
 	 */
 	public static function getLogFileContent(
