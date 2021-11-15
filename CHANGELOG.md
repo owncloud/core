@@ -58,6 +58,7 @@ Summary
 * Bugfix - Faulty file list entry after accepting a remote share: [#39411](https://github.com/owncloud/core/pull/39411)
 * Bugfix - Add missing `remoteshare.accepted` event parameters: [#39449](https://github.com/owncloud/core/pull/39449)
 * Bugfix - Group administrator permissions: [#39477](https://github.com/owncloud/core/pull/39477)
+* Bugfix - Load l10n js files from the correct app folder: [#39482](https://github.com/owncloud/core/pull/39482)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -517,6 +518,16 @@ Details
    https://github.com/owncloud/core/issues/39475
    https://github.com/owncloud/core/issues/39476
    https://github.com/owncloud/core/pull/39477
+
+* Bugfix - Load l10n js files from the correct app folder: [#39482](https://github.com/owncloud/core/pull/39482)
+
+   With this PR, we ensure that the translations will be loaded from the correct app folder path.
+   For example, if you have two versions of an app, where one version is in the apps folder and the
+   other one in the apps-external folder. The change also ensures that theme translations will be
+   loaded additionally instead of replacing the whole app translations. This has the advantage
+   that the user can cherry-pick single words to translate.
+
+   https://github.com/owncloud/core/pull/39482
 
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 

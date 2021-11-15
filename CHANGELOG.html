@@ -56,6 +56,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Faulty file list entry after accepting a remote share: <a href="https://github.com/owncloud/core/pull/39411">#39411</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add missing `remoteshare.accepted` event parameters: <a href="https://github.com/owncloud/core/pull/39449">#39449</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Group administrator permissions: <a href="https://github.com/owncloud/core/pull/39477">#39477</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Load l10n js files from the correct app folder: <a href="https://github.com/owncloud/core/pull/39482">#39482</a></li>
         <li class="type-change changelog-item">Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
@@ -523,6 +524,16 @@
             <p>https://github.com/owncloud/core/issues/39475<br>https://github.com/owncloud/core/issues/39476<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39477<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Load l10n js files from the correct app folder: <a href="https://github.com/owncloud/core/pull/39482">#39482</a></p>
+            <p>With this PR, we ensure that the translations will be loaded from the correct app folder path.
+   For example, if you have two versions of an app, where one version is in the apps folder and the
+   other one in the apps-external folder. The change also ensures that theme translations will be
+   loaded additionally instead of replacing the whole app translations. This has the advantage
+   that the user can cherry-pick single words to translate.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39482<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></p>
