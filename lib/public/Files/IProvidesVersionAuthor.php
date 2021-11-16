@@ -30,16 +30,20 @@ namespace OCP\Files;
  */
 interface IProvidesVersionAuthor {
 	/**
-	 * Returns the version author's username
+	 * Returns the username of author which made this edit. Returns
+	 * empty string if this is the initial version @see IProvidesVersionAuthor::getCreatedBy()
+	 *
 	 * @return string
 	 * @since 10.9.0
 	 */
-	public function getEditedBy();
+	public function getEditedBy() : string;
 
 	/**
-	 * Returns the file author's username
+	 * Returns the file author's username if this is the initial version of the file,
+	 * else empty string.
+	 *
 	 * @return string
 	 * @since 10.9.0
 	 */
-	public function getCreatedBy();
+	public function getCreatedBy() : string;
 }

@@ -131,7 +131,7 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	/**
 	 * @return string
 	 */
-	public function getVersionAuthor() {
+	public function getVersionAuthor() : string {
 		if ($this->file instanceof IProvidesVersionAuthor) {
 			return $this->file->getCreatedBy() ?: $this->file->getEditedBy();
 		}
@@ -141,12 +141,12 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	/**
 	 * @return string
 	 */
-	public function getVersionAuthorName() {
+	public function getVersionAuthorName() : string {
 		if ($this->file instanceof IProvidesVersionAuthor) {
 			$uid =  $this->file->getCreatedBy() ?: $this->file->getEditedBy();
 			$manager = \OC::$server->getUserManager();
 			$user = $manager->get($uid);
-			return $user !== null ? $user->getDisplayName() : "";
+			return $user !== null ? $user->getDisplayName() : '';
 		}
 		return '';
 	}

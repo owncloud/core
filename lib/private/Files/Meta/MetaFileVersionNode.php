@@ -57,16 +57,6 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	private $versionInfo;
 
 	/**
-	 * @var string
-	 **/
-	private $editedBy = "";
-
-	/**
-	 * @var string
-	 **/
-	private $createdBy = "";
-
-	/**
 	 * MetaFileVersionNode constructor.
 	 *
 	 * @param MetaVersionCollection $parent
@@ -88,30 +78,22 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 		$this->storage = $storage;
 		$this->internalPath = $internalPath;
 		$this->root = $root;
-
-		if (isset($version['edited_by'])) {
-			$this->editedBy = $version['edited_by'];
-		}
-
-		if (isset($version['created_by'])) {
-			$this->createdBy = $version['created_by'];
-		}
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getEditedBy() {
-		return $this->editedBy;
+	public function getEditedBy() : string {
+		return $version['edited_by'] ?? '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getCreatedBy() {
-		return $this->createdBy;
+	public function getCreatedBy() : string {
+		return $version['created_by'] ?? '';
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 */

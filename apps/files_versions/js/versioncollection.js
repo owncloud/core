@@ -26,7 +26,7 @@
 
 		davProperties: {
 			'meta-version-edited-by':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY,
-      'meta-version-edited-by-name':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY_NAME,
+      		'meta-version-edited-by-name':	OC.Files.Client.PROPERTY_VERSION_EDITED_BY_NAME,
 			'id':	OC.Files.Client.PROPERTY_FILEID,
 			'getlastmodified': OC.Files.Client.PROPERTY_GETLASTMODIFIED,
 			'getcontentlength': OC.Files.Client.PROPERTY_GETCONTENTLENGTH,

@@ -238,6 +238,10 @@ class Storage {
 	 */
 	protected static function deleteVersion($view, $path) {
 		$view->unlink($path);
+		/**
+		 * @var \OC\Files\Storage\Storage $storage
+		 * @var string $internalPath
+		 */
 		list($storage, $internalPath) = $view->resolvePath($path);
 		$cache = $storage->getCache($internalPath);
 		$cache->remove($internalPath);
