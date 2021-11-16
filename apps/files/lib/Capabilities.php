@@ -25,6 +25,7 @@
 namespace OCA\Files;
 
 use OCP\Capabilities\ICapability;
+use OCP\Files\FileInfo;
 use OCP\IConfig;
 
 /**
@@ -61,6 +62,7 @@ class Capabilities implements ICapability {
 				'privateLinksDetailsParam' => true,
 				'bigfilechunking' => true,
 				'blacklisted_files' => $this->config->getSystemValue('blacklisted_files', ['.htaccess']),
+				'blacklisted_files_regex' => FileInfo::BLACKLIST_FILES_REGEX,
 				'favorites' => true,
 				'file_locking_support' => true,
 				'file_locking_enable_file_action' => (boolean)($this->config->getAppValue('files', 'enable_lock_file_action', 'no') === 'yes'),
