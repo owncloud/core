@@ -821,3 +821,12 @@ Feature: capabilities
       | files_sharing | user_enumeration@@@enabled            | 1                 |
       | files_sharing | user_enumeration@@@group_members_only | EMPTY             |
       | files         | bigfilechunking                       | 1                 |
+
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  # This is a new capability in 10.9
+  Scenario: blacklisted_files_regex is reported in capabilites
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability | path_to_element         | value    |
+      | files      | blacklisted_files_regex | \.(part\|filepart)$ |
+

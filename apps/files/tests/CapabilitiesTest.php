@@ -46,6 +46,8 @@ class CapabilitiesTest extends TestCase {
 		$this->assertArrayHasKey('checksums', $result);
 		$this->assertArrayHasKey('files', $result);
 		$this->assertArrayHasKey('privateLinksDetailsParam', $result['files']);
+		$this->assertArrayHasKey('blacklisted_files', $result['files']);
+		$this->assertArrayHasKey('blacklisted_files_regex', $result['files']);
 		$this->assertTrue($result['files']['privateLinksDetailsParam']);
 		$this->assertTrue($result['files']['favorites']);
 	}
