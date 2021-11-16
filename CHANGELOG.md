@@ -107,6 +107,7 @@ Summary
 * Enhancement - Add text to root element of breadcrumb: [#39367](https://github.com/owncloud/core/pull/39367)
 * Enhancement - Extend occ dav:cleanup-chunks command with local option: [#39394](https://github.com/owncloud/core/pull/39394)
 * Enhancement - Add activity translations for rename and move actions: [#39430](https://github.com/owncloud/core/pull/39430)
+* Enhancement - Add capability for blacklisted files regex: [#39493](https://github.com/owncloud/core/pull/39493)
 
 Details
 -------
@@ -977,6 +978,10 @@ Details
    https://github.com/owncloud/core/pull/39430
    https://github.com/owncloud/core/pull/39438
    https://github.com/owncloud/core/pull/39450
+
+* Enhancement - Add capability for blacklisted files regex: [#39493](https://github.com/owncloud/core/pull/39493)
+
+   https://github.com/owncloud/core/pull/39493
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
