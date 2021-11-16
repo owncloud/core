@@ -605,7 +605,7 @@ Details
    1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.13.0) -
    pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.11) -
    pimple/pimple (3.2.3 to 3.5.0) - punic/punic (3.6.0 to 3.6.1) - sabre/event (5.1.2 to 5.1.4) -
-   sabre/http (5.1.1 to 5.1.3) - sabre/vobject (4.3.5 to 4.3.8) - sabre/uri (2.2.1 to 2.2.2) -
+   sabre/http (5.1.1 to 5.1.3) - sabre/vobject (4.3.5 to 4.4.0) - sabre/uri (2.2.1 to 2.2.2) -
    sabre/xml (2.2.3 to 2.2.5) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0)
 
    The following have been updated in files_external/3rdparty: - firebase/php-jwt (v5.4.0 to
@@ -634,6 +634,7 @@ Details
    https://github.com/owncloud/core/pull/39479
    https://github.com/owncloud/core/pull/39485
    https://github.com/owncloud/core/pull/39487
+   https://github.com/owncloud/core/pull/39492
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
