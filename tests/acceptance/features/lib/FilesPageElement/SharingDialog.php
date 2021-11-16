@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * ownCloud
@@ -470,7 +470,7 @@ class SharingDialog extends OwncloudPage {
 		} else {
 			// For users having same display name we pass $shareReceiverName in the format "displayName (userName)"
 			// Let's hope display name of user in other cases is not in the above mentioned format, otherwise this will fail
-			if (\preg_match('/\(*\)/', $shareReceiverName)
+			if (\preg_match('/\(*\)/', (string)$shareReceiverName)
 				&& !\strpos($shareReceiverName, '(federated)')
 			) {
 				$nameDisplayNameArray = \explode('(', $shareReceiverName);
