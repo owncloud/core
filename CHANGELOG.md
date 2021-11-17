@@ -605,9 +605,10 @@ Details
    laminas/laminas-zendframework-bridge (1.3.0 to 1.4.0) - league/flysystem (1.1.4 to
    1.1.5) - mikey179/vfsstream (v1.6.8 to v1.6.9) - nikic/php-parser (v4.11.0 to v4.13.0) -
    pear/archive_tar (1.4.13 to 1.4.14) - phpseclib/phpseclib (3.0.9 to 3.0.11) -
-   pimple/pimple (3.2.3 to 3.5.0) - punic/punic (3.6.0 to 3.7.0) - sabre/event (5.1.2 to 5.1.4) -
-   sabre/http (5.1.1 to 5.1.3) - sabre/vobject (4.3.5 to 4.4.0) - sabre/uri (2.2.1 to 2.2.2) -
-   sabre/xml (2.2.3 to 2.2.5) - swiftmailer/swiftmailer (v6.2.7 to v6.3.0)
+   pimple/pimple (3.2.3 to 3.5.0) - punic/punic (3.6.0 to 3.7.0) - sabre/dav (4.1.5 to 4.2.0) -
+   sabre/event (5.1.2 to 5.1.4) - sabre/http (5.1.1 to 5.1.3) - sabre/vobject (4.3.5 to 4.4.0) -
+   sabre/uri (2.2.1 to 2.2.2) - sabre/xml (2.2.3 to 2.2.5) - swiftmailer/swiftmailer (v6.2.7 to
+   v6.3.0)
 
    The following have been updated in files_external/3rdparty: - firebase/php-jwt (v5.4.0 to
    v5.5.1) - google/apiclient (v2.9.2 to v2.11.0) - google/apiclient-services (v0.213.0 to
@@ -637,6 +638,7 @@ Details
    https://github.com/owncloud/core/pull/39487
    https://github.com/owncloud/core/pull/39492
    https://github.com/owncloud/core/pull/39495
+   https://github.com/owncloud/core/pull/39496
 
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 
