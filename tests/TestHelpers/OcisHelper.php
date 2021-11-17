@@ -66,7 +66,7 @@ class OcisHelper {
 	 */
 	public static function getDeleteUserDataCommand() {
 		$cmd = \getenv("DELETE_USER_DATA_CMD");
-		if (\trim($cmd) === "") {
+		if ($cmd === false || \trim($cmd) === "") {
 			return false;
 		}
 		return $cmd;
