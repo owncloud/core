@@ -141,6 +141,14 @@ class Storage implements IStorage {
 	 * @inheritdoc
 	 */
 	public function setFileKey($path, $keyId, $key, $encryptionModuleId) {
+		$mount = $this->mountManager->find($path);
+		if ($mount) {
+			$result = $mount->getStorage()->setFileKey($mount->getInternalPath($path), $keyId, $key, $encryptionModuleId);
+			if ($result !== null) {
+				return $result;
+			}
+		}
+
 		$keyDir = $this->getFileKeyDir($encryptionModuleId, $path);
 		return $this->setKey($keyDir . $keyId, $key);
 	}
