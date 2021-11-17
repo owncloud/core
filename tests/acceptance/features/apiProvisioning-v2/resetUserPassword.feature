@@ -139,3 +139,22 @@ Feature: reset user password
     And the HTTP status code should be "401"
     And the content of file "textfile0.txt" for user "another-subadmin" using password "%regular%" should be "ownCloud test text file 0" plus end-of-line
     But user "another-subadmin" using password "%alt1%" should not be able to download file "textfile0.txt"
+
+
+  Scenario: apps password is preserved when resetting login password
+    Given these users have been created with small skeleton files:
+      | username       | password  | displayname | email                    |
+      | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
+    And a new browser session for "brand-new-user" has been started
+    And the user has generated a new app password named "my-client"
+    When the user "brand-new-user" requests these endpoints with "PROPFIND" to get property "d:getetag" using basic auth and generated app password about user "brand-new-user"
+      | endpoint                                           |
+      | /remote.php/dav/files/%username%/textfile0.txt     |
+    Then the HTTP status code of responses on all endpoints should be "207"
+    When user "brand-new-user" resets the password of user "brand-new-user" to "%alt1%" using the provisioning API
+    Then the content of file "textfile0.txt" for user "brand-new-user" using password "%alt1%" should be "ownCloud test text file 0" plus end-of-line
+    When the user "brand-new-user" requests these endpoints with "PROPFIND" to get property "d:getetag" using basic auth and generated app password about user "brand-new-user"
+      | endpoint                                           |
+      | /remote.php/dav/files/%username%/textfile0.txt     |
+    Then the HTTP status code of responses on all endpoints should be "207"
+
