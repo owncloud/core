@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -171,7 +171,7 @@ class TagsHelper extends \PHPUnit\Framework\Assert {
 			'/systemtags/',
 			$properties,
 			$xRequestId,
-			1,
+			'1',
 			"systemtags"
 		);
 		return HttpRequestHelper::getResponseXml($response, __METHOD__);

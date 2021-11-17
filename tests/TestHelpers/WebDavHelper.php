@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -580,7 +580,7 @@ class WebDavHelper {
 			"/public-files/{$token}/{$fileName}",
 			['d:getlastmodified'],
 			$xRequestId,
-			1,
+			'1',
 			null,
 			$davVersionToUse
 		);
