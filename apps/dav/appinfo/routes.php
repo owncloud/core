@@ -1,6 +1,6 @@
 <?php
 return [
 	'routes' => [
-		['name' => 'MSOFBA#success', 'url' => '/msofba-success', 'verb' => 'GET'],
+		['name' => 'msofba#success', 'url' => '/msofba-success', 'verb' => 'GET'],
 	]
 ];
