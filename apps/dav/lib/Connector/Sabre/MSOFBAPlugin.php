@@ -67,8 +67,8 @@ class MSOFBAPlugin extends ServerPlugin {
 			return true;
 		}
 
-		$successUrl = $this->urlGenerator->linkToRoute('dav.MSOFBA.success');
-		$successUrlAbsolute = $this->urlGenerator->linkToRouteAbsolute('dav.MSOFBA.success');
+		$successUrl = $this->urlGenerator->linkToRoute('dav.msofba.success');
+		$successUrlAbsolute = $this->urlGenerator->linkToRouteAbsolute('dav.msofba.success');
 
 		# not logged in 403 with MS-OFBA headers - https://docs.microsoft.com/en-us/openspecs/sharepoint_protocols/ms-ofba/c2c4baef-c611-4e7b-9a4c-d009e678e3d2
 		$loginUrl = $this->urlGenerator->linkToRouteAbsolute(
