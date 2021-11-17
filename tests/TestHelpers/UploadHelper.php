@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ownCloud
  *
@@ -250,7 +250,7 @@ class UploadHelper extends \PHPUnit\Framework\Assert {
 		$chunks = [];
 		$fp = \fopen($file, 'r');
 		while (!\feof($fp) && \ftell($fp) < $size) {
-			$chunks[] = \fread($fp, $chunkSize);
+			$chunks[] = \fread($fp, (int)$chunkSize);
 		}
 		\fclose($fp);
 		if (\count($chunks) === 0) {

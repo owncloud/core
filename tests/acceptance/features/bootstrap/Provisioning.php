@@ -5621,6 +5621,9 @@ trait Provisioning {
 	private function setSkeletonDirByType(string $skeletonType): string {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$originalSkeletonPath = \getenv("SKELETON_DIR");
+			if ($originalSkeletonPath === false) {
+				$originalSkeletonPath = '';
+			}
 			if ($skeletonType !== '') {
 				$skeletonDirName = $skeletonType . "Skeleton";
 				$newSkeletonPath = \dirname($originalSkeletonPath) . '/' . $skeletonDirName;
