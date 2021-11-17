@@ -14,7 +14,7 @@ Feature: actions on a locked item are possible if the token is sent with the req
     And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Brian" moves file "PARENT/parent.txt" to "PARENT/renamed-file.txt" sending the locktoken of file "PARENT" of user "Alice" using the WebDAV API
-    Then the HTTP status code should be "403"
+    Then the HTTP status code should be "201"
     And as "Alice" file "/PARENT/parent.txt" should not exist
     But as "Alice" file "/PARENT/renamed-file.txt" should exist
     Examples:
