@@ -107,6 +107,7 @@ Summary
 * Enhancement - Extend occ dav:cleanup-chunks command with local option: [#39394](https://github.com/owncloud/core/pull/39394)
 * Enhancement - Add activity translations for rename and move actions: [#39430](https://github.com/owncloud/core/pull/39430)
 * Enhancement - Add capability for blacklisted files regex: [#39493](https://github.com/owncloud/core/pull/39493)
+* Enhancement - Change the size of the ownCloud logo in the mail header image: [#39501](https://github.com/owncloud/core/pull/39501)
 
 Details
 -------
@@ -975,6 +976,10 @@ Details
 * Enhancement - Add capability for blacklisted files regex: [#39493](https://github.com/owncloud/core/pull/39493)
 
    https://github.com/owncloud/core/pull/39493
+
+* Enhancement - Change the size of the ownCloud logo in the mail header image: [#39501](https://github.com/owncloud/core/pull/39501)
+
+   https://github.com/owncloud/core/pull/39501
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
