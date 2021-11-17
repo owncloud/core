@@ -45,7 +45,6 @@ use OCA\DAV\Connector\Sabre\FilesReportPlugin;
 use OCA\DAV\Connector\Sabre\FilesSearchReportPlugin;
 use OCA\DAV\Connector\Sabre\LockPlugin;
 use OCA\DAV\Connector\Sabre\MaintenancePlugin;
-use OCA\DAV\Connector\Sabre\MSOFBAPlugin;
 use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Connector\Sabre\SharesPlugin;
 use OCA\DAV\Connector\Sabre\TagsPlugin;
@@ -133,7 +132,6 @@ class Server {
 		$this->server->addPlugin(new ValidateRequestPlugin('dav'));
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
 		$this->server->addPlugin(new CorsPlugin(OC::$server->getUserSession()));
-		$this->server->addPlugin(new MSOFBAPlugin(OC::$server->getUserSession(), OC::$server->getURLGenerator()));
 		$authPlugin = new Plugin();
 		$isPublicAccess = false;
 		if ($this->isRequestForSubtree(['public-files'])
