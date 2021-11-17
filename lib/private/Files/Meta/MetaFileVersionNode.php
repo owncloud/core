@@ -88,13 +88,6 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 	}
 
 	/**
-	 * @return string
-	 */
-	public function getCreatedBy() : string {
-		return $this->versionInfo['created_by'] ?? '';
-	}
-
-	/**
 	 * @inheritdoc
 	 */
 	public function getName() {

@@ -197,7 +197,7 @@ class VersioningTest extends TestCase {
 			$m1 = $versionsFolder2 . '/test.txt.v' . $t1 . '.json';
 			$m2 = $versionsFolder2 . '/test.txt.v' . $t2 . '.json';
 
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user2]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
 		}
 
@@ -405,7 +405,7 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled) {
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user2]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
 		}
 
@@ -460,7 +460,7 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled) {
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user1]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 		}
 
@@ -532,7 +532,7 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled) {
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user1]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 		}
 
@@ -593,7 +593,7 @@ class VersioningTest extends TestCase {
 		if ($metaDataEnabled) {
 			$m1 = $v1 . '.json';
 			$m2 = $v2 . '.json';
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user2]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
 		}
 
@@ -655,7 +655,7 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled) {
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user1]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 		}
 
@@ -724,7 +724,7 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled) {
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user1]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 		}
 
@@ -792,7 +792,7 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($enableMetadata) {
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user1]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 		}
 
@@ -807,7 +807,7 @@ class VersioningTest extends TestCase {
 		}
 
 		if ($enableMetadata) {
-			$this->assertArrayHasKey('created_by', array_shift($versions));
+			$this->assertArrayHasKey('edited_by', array_shift($versions));
 			$this->assertArrayHasKey('edited_by', array_shift($versions));
 		}
 
@@ -934,7 +934,7 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled) {
-			$this->rootView->file_put_contents($m1, \json_encode([Constants::CREATED_BY_USER_METADATA => $this->user1]));
+			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
 		}
 

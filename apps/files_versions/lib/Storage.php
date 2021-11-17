@@ -208,8 +208,7 @@ class Storage {
 				if ($config->getSystemValue('file_storage.save_version_author', false) === true) {
 					$user = \OC::$server->getUserSession()->getUser();
 					if ($user !== null && !$users_view->file_exists($versionFileName . '.json')) {
-						$versions = self::getVersions($uid, $filename);
-						$metaDataKey =  \sizeof($versions) === 1 ? Constants::CREATED_BY_USER_METADATA : MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
+						$metaDataKey =  MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
 						$metadata = [$metaDataKey => $user->getUID()];
 						$metadataJsonObject = \json_encode($metadata);
 						$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
@@ -366,8 +365,7 @@ class Storage {
 
 			if ($metaDataEnabled === true) {
 				$metaTargetPath = $version . '.json';
-				$versions = self::getVersions($uid, $filename);
-				$metaDataKey = \sizeof($versions) == 1 ? Constants::CREATED_BY_USER_METADATA : MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
+				$metaDataKey = MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
 				$metadataJsonObject = \json_encode([$metaDataKey => $uid]);
 				$users_view->file_put_contents($metaTargetPath, $metadataJsonObject);
 			}
@@ -506,9 +504,7 @@ class Storage {
 						if ($view->file_exists($jsonMetadataFile)) {
 							$metaDataFileContents = $view->file_get_contents($jsonMetadataFile);
 							if ($decoded = \json_decode($metaDataFileContents, true)) {
-								if (isset($decoded[Constants::CREATED_BY_USER_METADATA])) {
-									$versions[$key]['created_by'] = $decoded[Constants::CREATED_BY_USER_METADATA];
-								} elseif ($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME] !== null) {
+								if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
 									$versions[$key]['edited_by'] = $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
 								}
 							}
