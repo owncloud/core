@@ -117,5 +117,7 @@ interface Storage extends \OCP\Files\Storage {
 
 	public function getEncryptionFileKeyDirectory(string $encryptionModuleId, string $path): ?string;
 
-	public function getFileKey(string $path, string $keyId, string $encryptionModuleId): ?string;
+	public function getFileKey(string $internalPath, string $keyId, string $encryptionModuleId): ?string;
+
+	public function setFileKey(string $internalPath, string $keyId, $key, string $encryptionModuleId): ?bool;
 }
