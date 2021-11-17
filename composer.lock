@@ -2663,16 +2663,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.1.5",
+            "version": "4.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "c1afdc77a95efea6ee40c03c45f57c3c0c80ec22"
+                "reference": "af125a40abdac787c438a6fed6da3451bcaa0886"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/c1afdc77a95efea6ee40c03c45f57c3c0c80ec22",
-                "reference": "c1afdc77a95efea6ee40c03c45f57c3c0c80ec22",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/af125a40abdac787c438a6fed6da3451bcaa0886",
+                "reference": "af125a40abdac787c438a6fed6da3451bcaa0886",
                 "shasum": ""
             },
             "require": {
@@ -2745,7 +2745,7 @@
                 "issues": "https://github.com/sabre-io/dav/issues",
                 "source": "https://github.com/fruux/sabre-dav"
             },
-            "time": "2021-02-12T07:54:23+00:00"
+            "time": "2021-11-17T04:45:57+00:00"
         },
         {
             "name": "sabre/event",
