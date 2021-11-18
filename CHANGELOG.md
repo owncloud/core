@@ -76,6 +76,7 @@ Summary
 * Enhancement - Add command to verify all available doc links: [#39026](https://github.com/owncloud/core/pull/39026)
 * Enhancement - Show create and cancel buttons in the 'New file menu': [#39056](https://github.com/owncloud/core/pull/39056)
 * Enhancement - Extend transfer ownership cmd with option to transfer entire user: [#39118](https://github.com/owncloud/core/pull/39118)
+* Enhancement - Save and display the author of a file version: [#4518](https://github.com/owncloud/enterprise/issues/4518)
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
 * Enhancement - Add console command to move a user's home folder: [#39136](https://github.com/owncloud/core/pull/39136)
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
@@ -726,6 +727,15 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4686
    https://github.com/owncloud/core/pull/39118
+
+* Enhancement - Save and display the author of a file version: [#4518](https://github.com/owncloud/enterprise/issues/4518)
+
+   The author attribute will be saved and shown in the version list grid for each new file version.
+   This will allow the users to see who performed the changes on a specific file and when. Also, the
+   author attribute will retain on renaming, copying, and deletion/restoration of the file.
+
+   https://github.com/owncloud/enterprise/issues/4518
+   https://github.com/owncloud/core/pull/39126
 
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
 
