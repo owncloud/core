@@ -993,7 +993,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $password
 	 * @param string $xRequestId
 	 *
-	 * @return ResponseInterface
+	 * @return ResponseInterface|null
 	 * @throws GuzzleException
 	 */
 	public static function resetOpcache(
@@ -1001,7 +1001,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		?string $user,
 		?string $password,
 		?string $xRequestId = ''
-	):ResponseInterface {
+	):?ResponseInterface {
 		try {
 			return OcsApiHelper::sendRequest(
 				$baseUrl,
@@ -1015,6 +1015,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 			echo "could not reset opcache, if tests fail try to set " .
 				"'opcache.revalidate_freq=0' in the php.ini file\n";
 		}
+		return null;
 	}
 
 	/**
