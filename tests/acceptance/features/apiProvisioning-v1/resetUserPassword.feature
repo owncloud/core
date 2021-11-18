@@ -140,7 +140,7 @@ Feature: reset user password
     And the content of file "textfile0.txt" for user "another-subadmin" using password "%regular%" should be "ownCloud test text file 0" plus end-of-line
     But user "another-subadmin" using password "%alt1%" should not be able to download file "textfile0.txt"
 
-
+  @notToImplementOnOCIS
   Scenario: apps password is preserved when resetting login password
     Given these users have been created with small skeleton files:
       | username       | password  | displayname | email                    |
