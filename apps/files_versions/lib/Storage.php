@@ -43,6 +43,8 @@ namespace OCA\Files_Versions;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OC\Share\Constants;
+use OCA\DAV\Meta\MetaPlugin;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Command\Expire;
 use OCP\Files\NotFoundException;
@@ -192,13 +194,26 @@ class Storage {
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
 			$sourceFileInfo = $users_view->getFileInfo("files/$filename");
-			if ($users_view->copy("files/$filename", "files_versions/$filename.v$mtime")) {
+
+			$versionFileName = "files_versions/$filename.v$mtime";
+			if ($users_view->copy("files/$filename", $versionFileName)) {
 				// call getFileInfo to enforce a file cache entry for the new version
-				$users_view->getFileInfo("files_versions/$filename.v$mtime");
+				$users_view->getFileInfo($versionFileName);
 				// update checksum of the version
-				$users_view->putFileInfo("files_versions/$filename.v$mtime", [
+				$users_view->putFileInfo($versionFileName, [
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
+
+				$config = \OC::$server->getConfig();
+				if ($config->getSystemValue('file_storage.save_version_author', false) === true) {
+					$user = \OC::$server->getUserSession()->getUser();
+					if ($user !== null && !$users_view->file_exists($versionFileName . '.json')) {
+						$metaDataKey =  MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
+						$metadata = [$metaDataKey => $user->getUID()];
+						$metadataJsonObject = \json_encode($metadata);
+						$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
+					}
+				}
 			}
 		}
 	}
@@ -254,6 +269,9 @@ class Storage {
 					];
 					\OC_Hook::emit('\OCP\Versions', 'preDelete', $hookData);
 					self::deleteVersion($view, $filename . '.v' . $v['version']);
+					if ($view->file_exists($path . ".json")) {
+						$view->unlink($path . ".json");
+					}
 					\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
 				}
 			}
@@ -310,6 +328,14 @@ class Storage {
 					'/' . $sourceOwner . '/files_versions/' . $sourcePath.'.v' . $v['version'],
 					'/' . $targetOwner . '/files_versions/' . $targetPath.'.v'.$v['version']
 				);
+				// move each version json file that holds the name of the user that've made an edit
+				$sourceMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json';
+				if ($rootView->file_exists($sourceMetaDataFile)) {
+					$rootView->$operation(
+						$sourceMetaDataFile,
+						'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json'
+					);
+				}
 			}
 		}
 
@@ -328,13 +354,21 @@ class Storage {
 			return false;
 		}
 
+		$metaDataEnabled = \OC::$server->getConfig()->getSystemValue('file_storage.save_version_author', false);
 		$versionCreated = false;
 
-		//first create a new version
+		//first create a new version and metadata if enabled
 		$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
 		if (!$users_view->file_exists($version)) {
-			$users_view->copy('files'.$filename, 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename));
+			$users_view->copy('files'.$filename, $version);
 			$versionCreated = true;
+
+			if ($metaDataEnabled === true) {
+				$metaTargetPath = $version . '.json';
+				$metaDataKey = MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
+				$metadataJsonObject = \json_encode([$metaDataKey => $uid]);
+				$users_view->file_put_contents($metaTargetPath, $metadataJsonObject);
+			}
 		}
 
 		// Restore encrypted version of the old file for the newly restored file
@@ -356,11 +390,20 @@ class Storage {
 		if (self::copyFileContents($users_view, $fileToRestore, 'files' . $filename)) {
 			$users_view->touch("/files$filename", $revision);
 			Storage::scheduleExpire($uid, $filename);
+
+			if ($metaDataEnabled && $users_view->file_exists($fileToRestore . '.json')) {
+				$users_view->unlink($fileToRestore . '.json');
+				list($storage, $internalPath) = $users_view->resolvePath($fileToRestore . '.json');
+				$cache = $storage->getCache($internalPath);
+				$cache->remove($internalPath);
+			}
+
 			\OC_Hook::emit('\OCP\Versions', 'rollback', [
 				'path' => $filename,
 				'user' => $uid,
 				'revision' => $revision,
 			]);
+
 			return true;
 		} elseif ($versionCreated) {
 			self::deleteVersion($users_view, $version);
@@ -456,6 +499,16 @@ class Storage {
 						$versions[$key]['etag'] = $view->getETag($dir . '/' . $entryName);
 						$versions[$key]['storage_location'] = "$dir/$entryName";
 						$versions[$key]['owner'] = $uid;
+
+						$jsonMetadataFile = $dir . '/' . $entryName . '.json';
+						if ($view->file_exists($jsonMetadataFile)) {
+							$metaDataFileContents = $view->file_get_contents($jsonMetadataFile);
+							if ($decoded = \json_decode($metaDataFileContents, true)) {
+								if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
+									$versions[$key]['edited_by'] = $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+								}
+							}
+						}
 					}
 				}
 			}
@@ -561,6 +614,7 @@ class Storage {
 
 	/**
 	 * get list of files we want to expire
+	 *
 	 * @param array $versions list of versions
 	 * @param integer $time
 	 * @return array containing the list of to deleted versions and the size of them

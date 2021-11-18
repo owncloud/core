@@ -28,6 +28,7 @@ use OCP\Files\ForbiddenException;
 use OCP\Files\IProvidesAdditionalHeaders;
 use OC\Preview;
 use OCA\Files_Sharing\SharedStorage;
+use OCP\Files\IProvidesVersionAuthor;
 use OCP\Files\IRootFolder;
 use OCP\Files\IPreviewNode;
 use OCP\Files\Storage\IVersionedStorage;
@@ -40,7 +41,7 @@ use OCP\IImage;
  *
  * @package OC\Files\Meta
  */
-class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders {
+class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvidesAdditionalHeaders, IProvidesVersionAuthor {
 
 	/** @var string */
 	private $versionId;
@@ -77,6 +78,13 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 		$this->storage = $storage;
 		$this->internalPath = $internalPath;
 		$this->root = $root;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEditedBy() : string {
+		return $this->versionInfo['edited_by'] ?? '';
 	}
 
 	/**
