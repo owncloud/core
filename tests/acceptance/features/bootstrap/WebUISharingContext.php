@@ -1014,7 +1014,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$oldMinCharactersForAutocomplete
 			);
 		}
-		$minCharacters = (int) $minCharacters;
 		SetupHelper::setSystemConfig(
 			'user.search_min_length',
 			$minCharacters,
