@@ -22,6 +22,7 @@
 namespace TestHelpers;
 
 use Behat\Testwork\Hook\Scope\HookScope;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ServerException;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -55,21 +56,22 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * creates a user
 	 *
-	 * @param string $userName
-	 * @param string $password
-	 * @param string $xRequestId
-	 * @param string $displayName
-	 * @param string $email
+	 * @param string|null $userName
+	 * @param string|null $password
+	 * @param string|null $xRequestId
+	 * @param string|null $displayName
+	 * @param string|null $email
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
 	public static function createUser(
-		$userName,
-		$password,
-		$xRequestId = '',
-		$displayName = null,
-		$email = null
-	) {
+		?string $userName,
+		?string   $password,
+		?string  $xRequestId = '',
+		?string  $displayName = null,
+		?string   $email = null
+	):array {
 		$occCommand = ['user:add', '--password-from-env'];
 		if ($displayName !== null) {
 			$occCommand = \array_merge($occCommand, ["--display-name", $displayName]);
@@ -87,15 +89,16 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * deletes a user
 	 *
-	 * @param string $userName
-	 * @param string $xRequestId
+	 * @param string|null $userName
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
 	public static function deleteUser(
-		$userName,
-		$xRequestId = ''
-	) {
+		?string $userName,
+		?string $xRequestId = ''
+	):array {
 		return self::runOcc(
 			['user:delete', $userName],
 			$xRequestId
@@ -104,21 +107,22 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $userName
-	 * @param string $app
-	 * @param string $key
-	 * @param string $value
-	 * @param string $xRequestId
+	 * @param string|null $userName
+	 * @param string|null $app
+	 * @param string|null $key
+	 * @param string|null $value
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[]
+	 * @throws Exception
 	 */
 	public static function changeUserSetting(
-		$userName,
-		$app,
-		$key,
-		$value,
-		$xRequestId = ''
-	) {
+		?string $userName,
+		?string $app,
+		?string $key,
+		?string $value,
+		?string $xRequestId = ''
+	):array {
 		return self::runOcc(
 			['user:setting', '--value ' . $value, $userName, $app, $key],
 			$xRequestId
@@ -128,15 +132,16 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * creates a group
 	 *
-	 * @param string $groupName
-	 * @param string $xRequestId
+	 * @param string|null $groupName
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
 	public static function createGroup(
-		$groupName,
-		$xRequestId = ''
-	) {
+		?string $groupName,
+		?string $xRequestId = ''
+	):array {
 		return self::runOcc(
 			['group:add', $groupName],
 			$xRequestId
@@ -146,17 +151,18 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * adds an existing user to a group, creating the group if it does not exist
 	 *
-	 * @param string $groupName
-	 * @param string $userName
-	 * @param string $xRequestId
+	 * @param string|null $groupName
+	 * @param string|null $userName
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
 	public static function addUserToGroup(
-		$groupName,
-		$userName,
-		$xRequestId = ''
-	) {
+		?string $groupName,
+		?string $userName,
+		?string $xRequestId = ''
+	):array {
 		return self::runOcc(
 			['group:add-member', '--member', $userName, $groupName],
 			$xRequestId
@@ -166,17 +172,18 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * removes a user from a group
 	 *
-	 * @param string $groupName
-	 * @param string $userName
-	 * @param string $xRequestId
+	 * @param string|null $groupName
+	 * @param string|null $userName
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
 	public static function removeUserFromGroup(
-		$groupName,
-		$userName,
-		$xRequestId = ''
-	) {
+		?string $groupName,
+		?string $userName,
+		?string $xRequestId = ''
+	):array {
 		return self::runOcc(
 			['group:remove-member', '--member', $userName, $groupName],
 			$xRequestId
@@ -186,15 +193,16 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * deletes a group
 	 *
-	 * @param string $groupName
-	 * @param string $xRequestId
+	 * @param string|null $groupName
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
 	public static function deleteGroup(
-		$groupName,
-		$xRequestId = ''
-	) {
+		?string $groupName,
+		?string $xRequestId = ''
+	):array {
 		return self::runOcc(
 			['group:delete', $groupName],
 			$xRequestId
@@ -203,13 +211,14 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $xRequestId
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[]
+	 * @throws Exception
 	 */
 	public static function getGroups(
-		$xRequestId = ''
-	) {
+		?string $xRequestId = ''
+	):array {
 		return \json_decode(
 			self::runOcc(
 				['group:list', '--output=json'],
@@ -223,7 +232,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 *
 	 * @return array of suite context parameters
 	 */
-	public static function getSuiteParameters(HookScope $scope) {
+	public static function getSuiteParameters(HookScope $scope):array {
 		return $scope->getEnvironment()->getSuite()
 			->getSettings() ['context'] ['parameters'];
 	}
@@ -232,29 +241,29 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * Fixup OC path so that it always starts with a "/" and does not end with
 	 * a "/".
 	 *
-	 * @param string $ocPath
+	 * @param string|null $ocPath
 	 *
 	 * @return string
 	 */
-	private static function normaliseOcPath($ocPath) {
+	private static function normaliseOcPath(?string $ocPath):string {
 		return '/' . \trim($ocPath, '/');
 	}
 
 	/**
 	 *
-	 * @param string $adminUsername
-	 * @param string $adminPassword
-	 * @param string $baseUrl
-	 * @param string $ocPath
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
 	 *
 	 * @return void
 	 */
 	public static function init(
-		$adminUsername,
-		$adminPassword,
-		$baseUrl,
-		$ocPath
-	) {
+		?string $adminUsername,
+		?string $adminPassword,
+		?string $baseUrl,
+		?string $ocPath
+	): void {
 		foreach (\func_get_args() as $variableToCheck) {
 			if (!\is_string($variableToCheck)) {
 				throw new \InvalidArgumentException(
@@ -274,7 +283,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @return string path to the testing app occ endpoint
 	 * @throws Exception if ocPath has not been set yet
 	 */
-	public static function getOcPath() {
+	public static function getOcPath():?string {
 		if (self::$ocPath === null) {
 			throw new Exception(
 				"getOcPath called before ocPath is set by init"
@@ -286,20 +295,20 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $adminUsername
-	 * @param string $adminPassword
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
 	 *
 	 * @return SimpleXMLElement
-	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public static function getSysInfo(
-		$baseUrl,
-		$adminUsername,
-		$adminPassword,
-		$xRequestId = ''
-	) {
+		?string $baseUrl,
+		?string $adminUsername,
+		?string $adminPassword,
+		?string $xRequestId = ''
+	):SimpleXMLElement {
 		$result = OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUsername,
@@ -318,20 +327,20 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $baseUrl
-	 * @param string $adminUsername
-	 * @param string $adminPassword
-	 * @param string $xRequestId
+	 * @param string|null $baseUrl
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $xRequestId
 	 *
 	 * @return string
-	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public static function getServerRoot(
-		$baseUrl,
-		$adminUsername,
-		$adminPassword,
-		$xRequestId = ''
-	) {
+		?string $baseUrl,
+		?string $adminUsername,
+		?string $adminPassword,
+		?string $xRequestId = ''
+	):string {
 		$sysInfo = self::getSysInfo(
 			$baseUrl,
 			$adminUsername,
@@ -345,12 +354,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @param string|null $adminUsername
-	 * @param string $callerName
+	 * @param string|null $callerName
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	private static function checkAdminUsername($adminUsername, $callerName) {
+	private static function checkAdminUsername(?string $adminUsername, ?string $callerName):?string {
 		if (self::$adminUsername === null
 			&& $adminUsername === null
 		) {
@@ -366,12 +375,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @param string|null $adminPassword
-	 * @param string $callerName
+	 * @param string|null $callerName
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	private static function checkAdminPassword($adminPassword, $callerName) {
+	private static function checkAdminPassword(?string $adminPassword, ?string $callerName):string {
 		if (self::$adminPassword === null
 			&& $adminPassword === null
 		) {
@@ -387,12 +396,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @param string|null $baseUrl
-	 * @param string $callerName
+	 * @param string|null $callerName
 	 *
 	 * @return string
 	 * @throws Exception
 	 */
-	private static function checkBaseUrl($baseUrl, $callerName) {
+	private static function checkBaseUrl(?string $baseUrl, ?string $callerName):?string {
 		if (self::$baseUrl === null
 			&& $baseUrl === null
 		) {
@@ -408,22 +417,23 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
-	 * @param string $xRequestId
+	 * @param string|null $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
+	 * @param string|null $xRequestId
 	 * @param string|null $baseUrl
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 * @throws Exception
 	 */
 	public static function mkDirOnServer(
-		$dirPathFromServerRoot,
-		$xRequestId = '',
-		$baseUrl = null,
-		$adminUsername = null,
-		$adminPassword = null
-	) {
+		?string $dirPathFromServerRoot,
+		?string $xRequestId = '',
+		?string $baseUrl = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null
+	):void {
 		$baseUrl = self::checkBaseUrl($baseUrl, "mkDirOnServer");
 		$adminUsername = self::checkAdminUsername($adminUsername, "mkDirOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "mkDirOnServer");
@@ -446,22 +456,23 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
-	 * @param string $xRequestId
+	 * @param string|null $dirPathFromServerRoot e.g. 'apps2/myapp/appinfo'
+	 * @param string|null $xRequestId
 	 * @param string|null $baseUrl
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 * @throws Exception
 	 */
 	public static function rmDirOnServer(
-		$dirPathFromServerRoot,
-		$xRequestId = '',
-		$baseUrl = null,
-		$adminUsername = null,
-		$adminPassword = null
-	) {
+		?string $dirPathFromServerRoot,
+		?string $xRequestId = '',
+		?string $baseUrl = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null
+	):void {
 		$baseUrl = self::checkBaseUrl($baseUrl, "rmDirOnServer");
 		$adminUsername = self::checkAdminUsername($adminUsername, "rmDirOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "rmDirOnServer");
@@ -484,24 +495,24 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
-	 * @param string $content
-	 * @param string $xRequestId
+	 * @param string|null $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
+	 * @param string|null $content
+	 * @param string|null $xRequestId
 	 * @param string|null $baseUrl
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public static function createFileOnServer(
-		$filePathFromServerRoot,
-		$content,
-		$xRequestId = '',
-		$baseUrl = null,
-		$adminUsername = null,
-		$adminPassword = null
-	) {
+		?string $filePathFromServerRoot,
+		?string $content,
+		?string $xRequestId = '',
+		?string $baseUrl = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null
+	):void {
 		$baseUrl = self::checkBaseUrl($baseUrl, "createFileOnServer");
 		$adminUsername = self::checkAdminUsername($adminUsername, "createFileOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "createFileOnServer");
@@ -527,22 +538,23 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 	/**
 	 *
-	 * @param string $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
-	 * @param string $xRequestId
+	 * @param string|null $filePathFromServerRoot e.g. 'app2/myapp/appinfo/info.xml'
+	 * @param string|null $xRequestId
 	 * @param string|null $baseUrl
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 *
 	 * @return void
+	 * @throws GuzzleException
 	 * @throws Exception
 	 */
 	public static function deleteFileOnServer(
-		$filePathFromServerRoot,
-		$xRequestId = '',
-		$baseUrl = null,
-		$adminUsername = null,
-		$adminPassword = null
-	) {
+		?string $filePathFromServerRoot,
+		?string $xRequestId = '',
+		?string $baseUrl = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null
+	):void {
 		$baseUrl = self::checkBaseUrl($baseUrl, "deleteFileOnServer");
 		$adminUsername = self::checkAdminUsername($adminUsername, "deleteFileOnServer");
 		$adminPassword = self::checkAdminPassword($adminPassword, "deleteFileOnServer");
@@ -566,22 +578,23 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	}
 
 	/**
-	 * @param string $fileInCore e.g. 'app2/myapp/appinfo/info.xml'
-	 * @param string $xRequestId
+	 * @param string|null $fileInCore e.g. 'app2/myapp/appinfo/info.xml'
+	 * @param string|null $xRequestId
 	 * @param string|null $baseUrl
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 *
 	 * @return string
+	 * @throws GuzzleException
 	 * @throws Exception
 	 */
 	public static function readFileFromServer(
-		$fileInCore,
-		$xRequestId = '',
-		$baseUrl  = null,
-		$adminUsername = null,
-		$adminPassword = null
-	) {
+		?string $fileInCore,
+		?string $xRequestId = '',
+		?string $baseUrl  = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null
+	):string {
 		$baseUrl = self::checkBaseUrl($baseUrl, "readFile");
 		$adminUsername = self::checkAdminUsername(
 			$adminUsername,
@@ -613,21 +626,23 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * returns the content of a file in a skeleton folder
 	 *
-	 * @param string $fileInSkeletonFolder
-	 * @param string $xRequestId
+	 * @param string|null $fileInSkeletonFolder
+	 * @param string|null $xRequestId
 	 * @param string|null $baseUrl
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 *
 	 * @return string content of the file
+	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function readSkeletonFile(
-		$fileInSkeletonFolder,
-		$xRequestId = '',
-		$baseUrl = null,
-		$adminUsername = null,
-		$adminPassword = null
-	) {
+		?string $fileInSkeletonFolder,
+		?string $xRequestId = '',
+		?string $baseUrl = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null
+	):string {
 		$baseUrl = self::checkBaseUrl($baseUrl, "readSkeletonFile");
 		$adminUsername = self::checkAdminUsername(
 			$adminUsername,
@@ -676,15 +691,16 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * enables an app
 	 *
-	 * @param string $appName
-	 * @param string $xRequestId
+	 * @param string|null $appName
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
 	public static function enableApp(
-		$appName,
-		$xRequestId = ''
-	) {
+		?string $appName,
+		?string $xRequestId = ''
+	):array {
 		return self::runOcc(
 			['app:enable', $appName],
 			$xRequestId
@@ -694,15 +710,16 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * disables an app
 	 *
-	 * @param string $appName
-	 * @param string $xRequestId
+	 * @param string|null $appName
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception
 	 */
 	public static function disableApp(
-		$appName,
-		$xRequestId = ''
-	) {
+		?string $appName,
+		?string $xRequestId = ''
+	):array {
 		return self::runOcc(
 			['app:disable', $appName],
 			$xRequestId
@@ -712,15 +729,16 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * checks if an app is currently enabled
 	 *
-	 * @param string $appName
-	 * @param string $xRequestId
+	 * @param string|null $appName
+	 * @param string|null $xRequestId
 	 *
 	 * @return bool true if enabled, false if disabled or nonexistent
+	 * @throws Exception
 	 */
 	public static function isAppEnabled(
-		$appName,
-		$xRequestId = ''
-	) {
+		?string $appName,
+		?string $xRequestId = ''
+	):bool {
 		$result = self::runOcc(
 			['app:list', '^' . $appName . '$'],
 			$xRequestId
@@ -731,15 +749,16 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * lists app status (enabled or disabled)
 	 *
-	 * @param string $appName
-	 * @param string $xRequestId
+	 * @param string|null $appName
+	 * @param string|null $xRequestId
 	 *
 	 * @return bool true if the app needed to be enabled, false otherwise
+	 * @throws Exception
 	 */
 	public static function enableAppIfNotEnabled(
-		$appName,
-		$xRequestId = ''
-	) {
+		?string $appName,
+		?string $xRequestId = ''
+	):bool {
 		if (!self::isAppEnabled($appName, $xRequestId)) {
 			self::enableApp(
 				$appName,
@@ -754,21 +773,23 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * Runs a list of occ commands at once
 	 *
-	 * @param Array $commands
-	 * @param string $xRequestId
+	 * @param array|null $commands
+	 * @param string|null $xRequestId
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 * @param string|null $baseUrl
 	 *
-	 * @return SimpleXMLElement
+	 * @return array
+	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function runBulkOcc(
-		$commands,
-		$xRequestId = '',
-		$adminUsername = null,
-		$adminPassword = null,
-		$baseUrl = null
-	) {
+		?array $commands,
+		?string $xRequestId = '',
+		?string $adminUsername = null,
+		?string $adminPassword = null,
+		?string $baseUrl = null
+	):array {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return [];
 		}
@@ -822,9 +843,9 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * invokes an OCC command
 	 *
-	 * @param array $args anything behind "occ".
-	 *                    For example: "files:transfer-ownership"
-	 * @param string $xRequestId
+	 * @param array|null $args anything behind "occ".
+	 *                    	   For example: "files:transfer-ownership"
+	 * @param string|null $xRequestId
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 * @param string|null $baseUrl
@@ -832,17 +853,18 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param array|null $envVariables
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function runOcc(
-		$args,
-		$xRequestId = '',
-		$adminUsername = null,
-		$adminPassword = null,
-		$baseUrl = null,
-		$ocPath = null,
-		$envVariables = null
-	) {
+		?array $args,
+		?string $xRequestId = '',
+		?string $adminUsername = null,
+		?string $adminPassword = null,
+		?string $baseUrl = null,
+		?string $ocPath = null,
+		?array $envVariables = null
+	):array {
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			return ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		}
@@ -972,13 +994,14 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string $xRequestId
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function resetOpcache(
-		$baseUrl,
-		$user,
-		$password,
-		$xRequestId = ''
-	) {
+		?string $baseUrl,
+		?string $user,
+		?string $password,
+		?string $xRequestId = ''
+	):ResponseInterface {
 		try {
 			return OcsApiHelper::sendRequest(
 				$baseUrl,
@@ -997,15 +1020,16 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * Create local storage mount
 	 *
-	 * @param string $mount (name of local storage mount)
-	 * @param string $xRequestId
+	 * @param string|null $mount (name of local storage mount)
+	 * @param string|null $xRequestId
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr", "storageId"
+	 * @throws GuzzleException
 	 */
 	public static function createLocalStorageMount(
-		$mount,
-		$xRequestId = ''
-	) {
+		?string $mount,
+		?string $xRequestId = ''
+	):array {
 		$mountPath = TEMPORARY_STORAGE_DIR_ON_REMOTE_SERVER . "/$mount";
 		SetupHelper::mkDirOnServer(
 			$mountPath,
@@ -1039,8 +1063,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * Get a system config setting, including status code, output and standard
 	 * error output.
 	 *
-	 * @param string $key
-	 * @param string $xRequestId
+	 * @param string|null $key
+	 * @param string|null $xRequestId
 	 * @param string|null $output e.g. json
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
@@ -1048,17 +1072,17 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $ocPath
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 * @throws GuzzleException
 	 */
 	public static function getSystemConfig(
-		$key,
-		$xRequestId = '',
-		$output = null,
-		$adminUsername = null,
-		$adminPassword = null,
-		$baseUrl = null,
-		$ocPath = null
-	) {
+		?string $key,
+		?string $xRequestId = '',
+		?string $output = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null,
+		?string $baseUrl = null,
+		?string $ocPath = null
+	):array {
 		$args = [];
 		$args[] = 'config:system:get';
 		$args[] = $key;
@@ -1083,9 +1107,9 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * Set a system config setting
 	 *
-	 * @param string $key
-	 * @param string $value
-	 * @param string $xRequestId
+	 * @param string|null $key
+	 * @param string|null $value
+	 * @param string|null $xRequestId
 	 * @param string|null $type e.g. boolean or json
 	 * @param string|null $output e.g. json
 	 * @param string|null $adminUsername
@@ -1094,19 +1118,19 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $ocPath
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 * @throws GuzzleException
 	 */
 	public static function setSystemConfig(
-		$key,
-		$value,
-		$xRequestId = '',
-		$type = null,
-		$output = null,
-		$adminUsername = null,
-		$adminPassword = null,
-		$baseUrl = null,
-		$ocPath = null
-	) {
+		?string $key,
+		?string $value,
+		?string $xRequestId = '',
+		?string $type = null,
+		?string $output = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null,
+		?string $baseUrl = null,
+		?string $ocPath = null
+	):array {
 		$args = [];
 		$args[] = 'config:system:set';
 		$args[] = $key;
@@ -1140,8 +1164,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * Get the value of a system config setting
 	 *
-	 * @param string $key
-	 * @param string $xRequestId
+	 * @param string|null $key
+	 * @param string|null $xRequestId
 	 * @param string|null $output e.g. json
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
@@ -1149,17 +1173,17 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	 * @param string|null $ocPath
 	 *
 	 * @return string
-	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 * @throws GuzzleException if parameters have not been provided yet or the testing app is not enabled
 	 */
 	public static function getSystemConfigValue(
-		$key,
-		$xRequestId = '',
-		$output = null,
-		$adminUsername = null,
-		$adminPassword = null,
-		$baseUrl = null,
-		$ocPath = null
-	) {
+		?string $key,
+		?string $xRequestId = '',
+		?string $output = null,
+		?string $adminUsername = null,
+		?string $adminPassword = null,
+		?string $baseUrl = null,
+		?string $ocPath = null
+	):string {
 		if ($baseUrl === null) {
 			$baseUrl = self::$baseUrl;
 		}
@@ -1177,12 +1201,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * Finds all lines containing the given text
 	 *
-	 * @param string $input stdout or stderr output
-	 * @param string $text text to search for
+	 * @param string|null $input stdout or stderr output
+	 * @param string|null $text text to search for
 	 *
 	 * @return array array of lines that matched
 	 */
-	public static function findLines($input, $text) {
+	public static function findLines(?string $input, ?string $text):array {
 		$results = [];
 		foreach (\explode("\n", $input) as $line) {
 			if (\strpos($line, $text) !== false) {
@@ -1195,24 +1219,24 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 	/**
 	 * Delete a system config setting
 	 *
-	 * @param string $key
-	 * @param string $xRequestId
+	 * @param string|null $key
+	 * @param string|null $xRequestId
 	 * @param string|null $adminUsername
 	 * @param string|null $adminPassword
 	 * @param string|null $baseUrl
 	 * @param string|null $ocPath
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
-	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
+	 * @throws GuzzleException if parameters have not been provided yet or the testing app is not enabled
 	 */
 	public static function deleteSystemConfig(
-		$key,
-		$xRequestId = '',
-		$adminUsername = null,
-		$adminPassword = null,
-		$baseUrl = null,
-		$ocPath = null
-	) {
+		?string $key,
+		?string $xRequestId = '',
+		?string $adminUsername = null,
+		?string $adminPassword = null,
+		?string $baseUrl = null,
+		?string $ocPath = null
+	):array {
 		$args = [];
 		$args[] = 'config:system:delete';
 		$args[] = $key;
