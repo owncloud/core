@@ -59,6 +59,7 @@ Summary
 * Bugfix - Add missing `remoteshare.accepted` event parameters: [#39449](https://github.com/owncloud/core/pull/39449)
 * Bugfix - Group administrator permissions: [#39477](https://github.com/owncloud/core/pull/39477)
 * Bugfix - Load l10n js files from the correct app folder: [#39482](https://github.com/owncloud/core/pull/39482)
+* Bugfix - Fix issue searching inside a shared external storage: [#39500](https://github.com/owncloud/core/pull/39500)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -530,6 +531,13 @@ Details
    that the user can cherry-pick single words to translate.
 
    https://github.com/owncloud/core/pull/39482
+
+* Bugfix - Fix issue searching inside a shared external storage: [#39500](https://github.com/owncloud/core/pull/39500)
+
+   Previously, if an external storage was shared with a user, that user wasn't able to search files
+   inside that share. Now, such user can search inside that share
+
+   https://github.com/owncloud/core/pull/39500
 
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
