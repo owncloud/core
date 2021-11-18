@@ -98,6 +98,37 @@ class FilesVersionsContext implements Context {
 	}
 
 	/**
+	 * @When user :user gets the version metadata of file :file
+	 *
+	 * @param string $user
+	 * @param string $file
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsVersionMetadataOfFile(string $user, string $file):void {
+		$user = $this->featureContext->getActualUsername($user);
+		$fileId = $this->featureContext->getFileIdForPath($user, $file);
+		$body = '<?xml version="1.0"?>
+<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+  <d:prop>
+    <oc:meta-version-edited-by />
+    <oc:meta-version-edited-by-name />
+  </d:prop>
+</d:propfind>';
+		$response = $this->featureContext->makeDavRequest(
+			$user,
+			"PROPFIND",
+			$this->getVersionsPathForFileId($fileId),
+			null,
+			$body,
+			null,
+			'2'
+		);
+		$this->featureContext->setResponse($response);
+	}
+
+	/**
 	 * @When user :user restores version index :versionIndex of file :path using the WebDAV API
 	 * @Given user :user has restored version index :versionIndex of file :path
 	 *
