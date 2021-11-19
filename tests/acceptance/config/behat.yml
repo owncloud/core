@@ -711,6 +711,7 @@ default:
         - FederationContext:
         - OccContext:
         - WebDavPropertiesContext:
+        - PublicWebDavContext:
 
     cliLocalStorage:
       paths:
