@@ -201,23 +201,19 @@ class OccContext implements Context {
 
 	/**
 	 * @param string $mountPoint
-	 * @param boolean $setting
+	 * @param boolean $enable
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function setExtStorageSharingUsingTheOccCommand(string $mountPoint, bool $setting = true):void {
+	public function setExtStorageSharingUsingTheOccCommand(string $mountPoint, bool $enable = true):void {
 		$command = "files_external:option";
 
 		$mountId = $this->featureContext->getStorageId($mountPoint);
 
 		$key = "enable_sharing";
 
-		if ($setting) {
-			$value = "true";
-		} else {
-			$value = "false";
-		}
+		$value = $enable ? "true" : "false";
 
 		$this->invokingTheCommand(
 			"$command $mountId $key $value"
@@ -1232,6 +1228,19 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @When /^the administrator (enables|disables) sharing for the external storage "([^"]*)" using the occ command$/
+	 *
+	 * @param string $action
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdminDisablesSharingForTheExtStorage(string $action, string $mountPoint):void {
+		$this->setExtStorageSharingUsingTheOccCommand($mountPoint, $action === "enables");
+	}
+
+	/**
 	 * @When the administrator sets the external storage :mountPoint to be never scanned automatically using the occ command
 	 *
 	 * @param string $mountPoint
@@ -1461,6 +1470,34 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @param string $mount
+	 * @param string $userOrGroup
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getListOfApplicableUserOrGroupForMount(string $mount, string $userOrGroup):array {
+		$validArgs = ["users", "groups"];
+		if (!\in_array($userOrGroup, $validArgs)) {
+			throw new Exception(
+				"Invalid key provided. Expected:" .
+				\implode(", ", $validArgs) .
+				"Found: " . $userOrGroup
+			);
+		}
+		$mountId = $this->getMountIdForLocalStorage($mount);
+		$this->featureContext->runOcc(
+			[
+				'files_external:applicable',
+				$mountId,
+				'--output=json'
+			]
+		);
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		return ($userOrGroup === "users") ? $commandOutput->users : $commandOutput->groups;
+	}
+
+	/**
 	 * @param string $action
 	 * @param string $userOrGroup
 	 * @param string $userOrGroupName
@@ -1560,6 +1597,62 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @Then /^the following (users|groups) should be listed as applicable for local storage mount "([^"]*)"$/
+	 *
+	 * @param string $usersOrGroups comma separated lists eg: Alice, Brian
+	 * @param string $localStorage
+	 * @param TableNode $applicable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theFollowingUsersOrGroupsShouldBeListedAsApplicable(string $usersOrGroups, string $localStorage, TableNode $applicable): void {
+		$this->featureContext->verifyTableNodeRows(
+			$applicable,
+			[],
+			["users", "groups"]
+		);
+		$expectedApplicableList = $applicable->getRowsHash();
+		$actualApplicableList = $this->getListOfApplicableUserOrGroupForMount($localStorage, $usersOrGroups);
+		foreach ($expectedApplicableList as $expectedApplicable) {
+			Assert::assertContains(
+				$expectedApplicable,
+				$actualApplicableList,
+				__METHOD__
+				. $usersOrGroups
+				. " not found!\nexpected: "
+				. $expectedApplicable
+				. " to be in the list ["
+				. \implode(", ", $actualApplicableList)
+				. "]."
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the applicable (users|groups) list should be empty for local storage mount "([^"]*)"$/
+	 *
+	 * @param string $usersOrGroups
+	 * @param string $localStorage
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theApplicableUsersOrGroupsListShouldBeEmptyForLocalStorageMount(string $usersOrGroups, string $localStorage): void {
+		$actualApplicableList = $this->getListOfApplicableUserOrGroupForMount($localStorage, $usersOrGroups);
+		Assert::assertEquals(
+			0,
+			\count($actualApplicableList),
+			__METHOD__
+			. "Expected empty list for applicable "
+			. $usersOrGroups
+			. " but found: ["
+			. \implode(", ", $actualApplicableList)
+			. "]."
+		);
+	}
+
+	/**
 	 * @When the administrator removes all from the applicable users and groups for local storage mount :localStorage using the occ command
 	 *
 	 * @param string $localStorage
@@ -1603,6 +1696,35 @@ class OccContext implements Context {
 			$mount
 		);
 		$this->theCommandShouldHaveBeenSuccessful();
+		// making plural "users" or "groups"
+		$userOrGroup = $userOrGroup . "s";
+		$actualApplicableList = $this->getListOfApplicableUserOrGroupForMount($mount, $userOrGroup);
+
+		if ($action === "added") {
+			Assert::assertContains(
+				$user,
+				$actualApplicableList,
+				__METHOD__
+				. " The expected applicable "
+				. $userOrGroup
+				. " is not present in the actual list of applicable "
+				. $userOrGroup
+				. " for mount point: "
+				. $mount . ".\n"
+			);
+		} else {
+			Assert::assertNotContains(
+				$user,
+				$actualApplicableList,
+				__METHOD__
+				. " The applicable "
+				. $userOrGroup
+				. " is present in the actual list of applicable "
+				. $userOrGroup
+				. " for mount point: "
+				. $mount . ".\n"
+			);
+		}
 	}
 
 	/**
@@ -2261,13 +2383,13 @@ class OccContext implements Context {
 
 	/**
 	 * @param string $folder
-	 * @param bool $mustExist
 	 *
-	 * @return integer|bool
+	 * @return integer|null
 	 * @throws Exception
 	 */
-	public function deleteLocalStorageFolderUsingTheOccCommand(string $folder, bool $mustExist = true) {
+	public function getMountIdForLocalStorage(string $folder): ?int {
 		$createdLocalStorage = [];
+		$mount_id = null;
 		$this->listLocalStorageMount();
 		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
 		foreach ($commandOutput as $i) {
@@ -2278,6 +2400,20 @@ class OccContext implements Context {
 				$mount_id = $key;
 			}
 		}
+
+		return (int) $mount_id;
+	}
+
+	/**
+	 * @param string $folder
+	 * @param bool $mustExist
+	 *
+	 * @return integer|bool
+	 * @throws Exception
+	 */
+	public function deleteLocalStorageFolderUsingTheOccCommand(string $folder, bool $mustExist = true) {
+		$mount_id = $this->getMountIdForLocalStorage($folder);
+
 		if (!isset($mount_id)) {
 			if ($mustExist) {
 				throw  new Exception("Id not found for folder to be deleted");
@@ -2285,7 +2421,7 @@ class OccContext implements Context {
 			return false;
 		}
 		$this->invokingTheCommand('files_external:delete --yes ' . $mount_id);
-		return (int) $mount_id;
+		return $mount_id;
 	}
 
 	/**
@@ -2313,7 +2449,7 @@ class OccContext implements Context {
 	}
 
 	/**
-	 * @When the administrator has exported the local storage mounts using the occ command
+	 * @Given the administrator has exported the local storage mounts using the occ command
 	 *
 	 * @return void
 	 * @throws Exception
@@ -2321,6 +2457,28 @@ class OccContext implements Context {
 	public function theAdministratorHasExportedTheMountsUsingTheOccCommand():void {
 		$this->invokingTheCommand('files_external:export');
 		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
+	 * @Then the command should output configuration for local storage mount :mount
+	 *
+	 * @param string $mount
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theOutputShouldContainConfigurationForMount(string $mount):void {
+		$actualConfig = null;
+
+		$commandOutput = \json_decode($this->featureContext->getStdOutOfOccCommand());
+		foreach ($commandOutput as $i) {
+			if ($mount === \ltrim($i->mount_point, '/')) {
+				$actualConfig = $i;
+				break;
+			}
+		}
+
+		Assert::assertNotNull($actualConfig, 'Configuration for local storage mount ' . $mount . ' not found.');
 	}
 
 	/**
@@ -3225,6 +3383,30 @@ class OccContext implements Context {
 	}
 
 	/**
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	private function deleteExternalMountPointUsingTheAdmin(string $mountPoint):void {
+		$mount_id = $this->administratorDeletesFolder($mountPoint);
+		$this->featureContext->popStorageId($mount_id);
+	}
+
+	/**
+	 * @Given the administrator has deleted external storage with mount point :mountPoint
+	 *
+	 * @param string $mountPoint
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function adminHasDeletedExternalMountPoint(string $mountPoint):void {
+		$this->deleteExternalMountPointUsingTheAdmin($mountPoint);
+		$this->theCommandShouldHaveBeenSuccessful();
+	}
+
+	/**
 	 * @When the administrator deletes external storage with mount point :mountPoint
 	 *
 	 * @param string $mountPoint
@@ -3233,8 +3415,7 @@ class OccContext implements Context {
 	 * @throws Exception
 	 */
 	public function adminDeletesExternalMountPoint(string $mountPoint):void {
-		$mount_id = $this->administratorDeletesFolder($mountPoint);
-		$this->featureContext->popStorageId($mount_id);
+		$this->deleteExternalMountPointUsingTheAdmin($mountPoint);
 	}
 
 	/**
