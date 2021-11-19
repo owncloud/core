@@ -77,11 +77,14 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 	});
 	\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper($previousLog);
 
-	OC_Util::setupFS($owner);
+	if (!OC_Util::setupFS($owner)) {
+		\OC::$server->getLogger()->error("Could not setup file system for $owner");
+	}
 	$ownerView = \OC\Files\Filesystem::getView();
 	try {
 		$path = $ownerView->getPath($fileId);
 	} catch (\OCP\Files\NotFoundException $e) {
+		\OC::$server->getLogger()->error("Could not get path for $fileId in files of user $owner");
 		throw new \Sabre\DAV\Exception\NotFound();
 	}
 	$fileInfo = $ownerView->getFileInfo($path);
