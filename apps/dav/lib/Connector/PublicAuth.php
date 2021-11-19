@@ -87,6 +87,7 @@ class PublicAuth extends AbstractBasic {
 		try {
 			$share = $this->shareManager->getShareByToken($username);
 		} catch (ShareNotFound $e) {
+			\OC::$server->getLogger()->error("PublicAuth: share for found $username");
 			return false;
 		}
 
