@@ -195,7 +195,10 @@ Feature: disable user
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     When the administrator disables user "Alice" using the provisioning API
-    Then as "Brian" file "/Shares/textfile0.txt" should exist
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "Alice" should be disabled
+    And as "Brian" file "/Shares/textfile0.txt" should exist
     And the content of file "/Shares/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
   @notToImplementOnOCIS
@@ -204,7 +207,10 @@ Feature: disable user
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has shared file "/textfile0.txt" with user "Brian"
     When the administrator disables user "Alice" using the provisioning API
-    Then as "Brian" file "/textfile0.txt" should exist
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "Alice" should be disabled
+    And as "Brian" file "/textfile0.txt" should exist
     And the content of file "/textfile0.txt" for user "Brian" should be "ownCloud test text file 0" plus end-of-line
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -218,7 +224,10 @@ Feature: disable user
     And user "Alice" has shared folder "/PARENT" with group "group0"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When the administrator disables user "Alice" using the provisioning API
-    Then as "Brian" folder "/Shares/PARENT" should exist
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "Alice" should be disabled
+    And as "Brian" folder "/Shares/PARENT" should exist
     And the content of file "/Shares/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
 
   @notToImplementOnOCIS
@@ -229,7 +238,10 @@ Feature: disable user
     And user "Brian" has been added to group "group0"
     And user "Alice" has shared folder "/PARENT" with group "group0"
     When the administrator disables user "Alice" using the provisioning API
-    Then as "Brian" folder "/PARENT" should exist
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "Alice" should be disabled
+    And as "Brian" folder "/PARENT" should exist
     And the content of file "/PARENT/parent.txt" for user "Brian" should be "ownCloud test text file parent" plus end-of-line
 
 
@@ -247,7 +259,10 @@ Feature: disable user
       | path        | /textfile0.txt |
       | permissions | read           |
     When the administrator disables user "Alice" using the provisioning API
-    Then the public should be able to download the last publicly shared file using the <dav_version> public WebDAV API without a password and the content should be "ownCloud test text file 0" plus end-of-line
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And user "Alice" should be disabled
+    And the public should be able to download the last publicly shared file using the <dav_version> public WebDAV API without a password and the content should be "ownCloud test text file 0" plus end-of-line
     Examples:
       | dav_version |
       | old         |
