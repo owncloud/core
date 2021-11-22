@@ -207,7 +207,7 @@ Feature: move (rename) file
     And user "Brian" has copied file "/fileToCopy.txt" to "/testshare/overwritethis.txt"
     When user "Alice" moves file "/textfile0.txt" to "/testshare/overwritethis.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "Alice" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/testshare/overwritethis.txt" for user "Alice" should be "Welcome to ownCloud"
     Examples:
       | dav_version |
       | old         |

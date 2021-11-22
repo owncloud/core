@@ -54,8 +54,8 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
-    And  the downloaded content when downloading file "/PARENT (2)/CHILD/child.txt" for user "Brian" with range "bytes=19-28" should be "file child"
-    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "Brian" with range "bytes=14-24" should be "file 0"
+    And the content of file "/PARENT (2)/CHILD/child.txt" for user "Brian" should be "ownCloud test text file child"
+    And the content of file "/textfile0 (2).txt" for user "Brian" should be "ownCloud text file 0"
     Examples:
       | permissions |
       | read        |
@@ -128,8 +128,8 @@ Feature: accept/decline shares coming from internal users
       | path               |
       | /PARENT (2)/       |
       | /textfile0 (2).txt |
-    And  the downloaded content when downloading file "/PARENT (2)/CHILD/child.txt" for user "Carol" with range "bytes=19-28" should be "file child"
-    And  the downloaded content when downloading file "/textfile0 (2).txt" for user "Carol" with range "bytes=14-24" should be "file 0"
+    And the content of file "/PARENT (2)/CHILD/child.txt" for user "Carol" should be "ownCloud test text file child"
+    And the content of file "/textfile0 (2).txt" for user "Carol" should be "ownCloud text file 0"
     Examples:
       | permissions |
       | read        |
