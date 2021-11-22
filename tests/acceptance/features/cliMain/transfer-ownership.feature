@@ -5,10 +5,10 @@ Feature: transfer-ownership
   Scenario: transferring ownership of a file
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/somefile.txt"
     When the administrator transfers ownership from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/somefile.txt" for user "Brian" with range "bytes=0-6" from the last received transfer folder should be "This is"
+    And the downloaded content when downloading file "/somefile.txt" for user "Brian" from the last received transfer folder should be "some data"
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership of a file after updating the file
@@ -22,28 +22,28 @@ Feature: transfer-ownership
       | 3      | CC      |
     When the administrator transfers ownership from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/PARENT/textfile0.txt" for user "Brian" with range "bytes=0-5" from the last received transfer folder should be "AABBCC"
+    And the downloaded content when downloading file "/PARENT/textfile0.txt" for user "Brian" from the last received transfer folder should be "AABBCC"
 
   @skipOnEncryptionType:user-keys
   Scenario: transferring ownership of a folder
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     When the administrator transfers ownership from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" with range "bytes=0-6" from the last received transfer folder should be "This is"
+    And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" from the last received transfer folder should be "some data"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of file shares
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Carol" has been created with default attributes and small skeleton files
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/somefile.txt"
     And user "Alice" has shared file "/somefile.txt" with user "Carol" with permissions "share,update,read"
     When the administrator transfers ownership from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
+    And the content of file "/somefile.txt" for user "Carol" should be "some data"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership when a folder is shared with third user
@@ -51,23 +51,23 @@ Feature: transfer-ownership
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Carol" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     And user "Alice" has shared folder "/test" with user "Carol" with permissions "all"
     When the administrator transfers ownership from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/test/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
+    And the content of file "/test/somefile.txt" for user "Carol" should be "some data"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required
   Scenario: transferring ownership when a folder is shared with transfer recipient
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     And user "Alice" has shared folder "/test" with user "Brian" with permissions "all"
     When the administrator transfers ownership from "Alice" to "Brian" using the occ command
     Then the command should have been successful
     And as "Brian" folder "/test" should not exist
-    And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" with range "bytes=0-6" from the last received transfer folder should be "This is"
+    And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" from the last received transfer folder should be "some data"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership when a folder is doubly shared with third user
@@ -77,12 +77,12 @@ Feature: transfer-ownership
     And user "Carol" has been created with default attributes and small skeleton files
     And user "Carol" has been added to group "group1"
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     And user "Alice" has shared folder "/test" with group "group1" with permissions "all"
     And user "Alice" has shared folder "/test" with user "Carol" with permissions "all"
     When the administrator transfers ownership from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/test/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
+    And the content of file "/test/somefile.txt" for user "Carol" should be "some data"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required
   Scenario: transferring ownership does not transfer received shares
@@ -154,10 +154,10 @@ Feature: transfer-ownership
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     When the administrator transfers ownership of path "test" from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" with range "bytes=0-6" from the last received transfer folder should be "This is"
+    And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" from the last received transfer folder should be "some data"
 
 
   Scenario: transferring ownership of only a single folder containing an empty folder
@@ -186,11 +186,11 @@ Feature: transfer-ownership
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Carol" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     And user "Alice" has shared file "/test/somefile.txt" with user "Carol" with permissions "share,update,read"
     When the administrator transfers ownership of path "test" from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
+    And the content of file "/somefile.txt" for user "Carol" should be "some data"
 
   @skipOnEncryptionType:user-keys @public_link_share-feature-required @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario Outline: transferring ownership of folder shares which has public link
@@ -220,23 +220,23 @@ Feature: transfer-ownership
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Carol" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     And user "Alice" has shared folder "/test" with user "Carol" with permissions "all"
     When the administrator transfers ownership of path "test" from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/test/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
+    And the content of file "/test/somefile.txt" for user "Carol" should be "some data"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required
   Scenario: transferring ownership of folder shared with transfer recipient
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     And user "Alice" has shared folder "/test" with user "Brian" with permissions "all"
     When the administrator transfers ownership of path "test" from "Alice" to "Brian" using the occ command
     Then the command should have been successful
     And as "Brian" folder "/test" should not exist
-    And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" with range "bytes=0-6" from the last received transfer folder should be "This is"
+    And the downloaded content when downloading file "/test/somefile.txt" for user "Brian" from the last received transfer folder should be "some data"
 
   @skipOnEncryptionType:user-keys @files_sharing-app-required @skipOnFilesClassifier @issue-files-classifier-292
   Scenario: transferring ownership of folder doubly shared with third user
@@ -246,12 +246,12 @@ Feature: transfer-ownership
     And user "Carol" has been created with default attributes and small skeleton files
     And user "Carol" has been added to group "group1"
     And user "Alice" has created folder "/test"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/test/somefile.txt"
+    And user "Alice" has uploaded file with content "some data" to "/test/somefile.txt"
     And user "Alice" has shared folder "/test" with group "group1" with permissions "all"
     And user "Alice" has shared folder "/test" with user "Carol" with permissions "all"
     When the administrator transfers ownership of path "test" from "Alice" to "Brian" using the occ command
     Then the command should have been successful
-    And the downloaded content when downloading file "/test/somefile.txt" for user "Carol" with range "bytes=0-6" should be "This is"
+    And the content of file "/test/somefile.txt" for user "Carol" should be "some data"
 
   @files_sharing-app-required
   Scenario: transferring ownership of a folder does not transfer received shares

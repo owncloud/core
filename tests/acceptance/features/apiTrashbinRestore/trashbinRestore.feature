@@ -169,7 +169,7 @@ Feature: Restore deleted files/folders
     When user "Alice" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
     And as "Alice" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
-    And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "Alice" with range "bytes=0-1" should be "AA"
+    And the content of file "/local_storage/tmp/textfile0.txt" for user "Alice" should be "AA"
 
   @local_storage
   @skipOnEncryptionType:user-keys @encryption-issue-42
@@ -187,7 +187,7 @@ Feature: Restore deleted files/folders
     When user "Alice" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the trashbin API
     Then the HTTP status code should be "201"
     And as "Alice" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in the trashbin
-    And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "Alice" with range "bytes=0-1" should be "AA"
+    And the content of file "/local_storage/tmp/textfile0.txt" for user "Alice" should be "AA"
 
   @smokeTest @skipOnOcV10.3
   Scenario Outline: A deleted file cannot be restored by a different user

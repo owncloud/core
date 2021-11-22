@@ -187,26 +187,24 @@ class TransferOwnershipContext implements Context {
 	}
 
 	/**
-	 * @Then /^the downloaded content when downloading file "([^"]*)" for user "([^"]*)" with range "([^"]*)" from the last received transfer folder should be "([^"]*)"$/
+	 * @Then /^the downloaded content when downloading file "([^"]*)" for user "([^"]*)" from the last received transfer folder should be "([^"]*)"$/
 	 *
 	 * @param string $fileSource
 	 * @param string $user
-	 * @param string $range
 	 * @param string $content
 	 *
 	 * @return void
 	 */
-	public function downloadedContentWhenDownloadingForUserWithRangeShouldBe(
+	public function downloadedContentWhenDownloadingForUserShouldBe(
 		string $fileSource,
 		string $user,
-		string $range,
 		string $content
 	):void {
 		$fileSource = $this->getLastTransferPath() . $fileSource;
 		$this->featureContext->downloadedContentWhenDownloadingForUserWithRangeShouldBe(
 			$fileSource,
 			$user,
-			$range,
+			"",
 			$content
 		);
 	}
