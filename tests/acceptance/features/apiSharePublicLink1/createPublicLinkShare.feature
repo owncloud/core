@@ -25,8 +25,8 @@ Feature: create a public link share
       | uid_file_owner         | %username%      |
       | uid_owner              | %username%      |
       | name                   |                 |
-    When the public downloads the last public shared file with range "bytes=0-9" using the <webdav_api_version> public WebDAV API
-    Then the downloaded content should be "Random dat"
+    When the public downloads the last public shared file using the <webdav_api_version> public WebDAV API
+    Then the downloaded content should be "Random data"
     And the public upload to the last publicly shared file using the <webdav_api_version> public WebDAV API should fail with HTTP status code "403"
 
     @notToImplementOnOCIS @issue-ocis-2079
@@ -162,10 +162,8 @@ Feature: create a public link share
       | uid_file_owner         | %username%           |
       | uid_owner              | %username%           |
       | name                   |                      |
-    When the public downloads file "/randomfile.txt" from inside the last public shared folder with range "bytes=1-7" using the <webdav_api_version> public WebDAV API
-    Then the downloaded content should be "andom d"
-    And the public should be able to download file "/randomfile.txt" from inside the last public shared folder using the <webdav_api_version> public WebDAV API with password "%regular%"
-    And the downloaded content should be "Random data"
+    When the public downloads file "/randomfile.txt" from inside the last public shared folder using the <webdav_api_version> public WebDAV API
+    Then the downloaded content should be "Random data"
     And the public upload to the last publicly shared folder using the <webdav_api_version> public WebDAV API should fail with HTTP status code "403"
 
     @notToImplementOnOCIS @issue-ocis-2079
