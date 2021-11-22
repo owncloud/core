@@ -84,7 +84,7 @@ Feature: copy file
     And user "Brian" has copied file "textfile1.txt" to "/testshare/overwritethis.txt"
     When user "Alice" copies file "/textfile0.txt" to "/Shares/testshare/overwritethis.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And the downloaded content when downloading file "/Shares/testshare/overwritethis.txt" for user "Alice" with range "bytes=0-6" should be "ownClou"
+    And the content of file "/Shares/testshare/overwritethis.txt" for user "Alice" should be "ownCloud test text file 1"
     Examples:
       | dav_version |
       | old         |

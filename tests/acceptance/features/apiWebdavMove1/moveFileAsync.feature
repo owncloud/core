@@ -20,7 +20,7 @@ Feature: move (rename) file
       | status | /^finished$/         |
       | fileId | /^[0-9a-z]{20,}$/    |
       | ETag   | /^"[0-9a-f]{1,32}"$/ |
-    And the downloaded content when downloading file "/FOLDER/<destination-file-name>" for user "Alice" with range "bytes=0-7" should be "ownCloud"
+    And the content of file "/FOLDER/<destination-file-name>" for user "Alice" should be "ownCloud test text file 0"
     And user "Alice" should not see the following elements
       | /textfile0.txt |
     Examples:
@@ -42,7 +42,7 @@ Feature: move (rename) file
       | status | /^finished$/         |
       | fileId | /^[0-9a-z]{20,}$/    |
       | ETag   | /^"[0-9a-f]{1,32}"$/ |
-    And the downloaded content when downloading file "/textfile0.txt" for user "Alice" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/textfile0.txt" for user "Alice" should be "Welcome to move"
     And user "Alice" should not see the following elements
       | /fileToMove.txt |
 
@@ -125,7 +125,7 @@ Feature: move (rename) file
     And the oc job status values of last request for user "Alice" should match these regular expressions
       | status    | /^error$/ |
       | errorCode | /^403$/   |
-    And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "Alice" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/testshare/overwritethis.txt" for user "Alice" should be "Welcome to overwrite"
     And user "Alice" should see the following elements
       | /textfile0.txt |
 
@@ -169,7 +169,7 @@ Feature: move (rename) file
     And the following headers should not be set
       | header                |
       | OC-JobStatus-Location |
-    And the downloaded content when downloading file "/FOLDER/fileToMove.txt" for user "Alice" with range "bytes=0-7" should be "ownCloud"
+    And the content of file "/FOLDER/fileToMove.txt" for user "Alice" should be "ownCloud test text file 0"
 
   Scenario Outline: enabling async operations does no difference to normal MOVE - Moving a file
     Given the administrator has enabled async operations
@@ -177,7 +177,7 @@ Feature: move (rename) file
     And using <dav_version> DAV path
     When user "Alice" moves file "/textfile0.txt" to "/FOLDER/fileToMove.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And the downloaded content when downloading file "/FOLDER/fileToMove.txt" for user "Alice" with range "bytes=0-7" should be "ownCloud"
+    And the content of file "/FOLDER/fileToMove.txt" for user "Alice" should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
@@ -189,7 +189,7 @@ Feature: move (rename) file
     And using <dav_version> DAV path
     When user "Alice" moves file "/fileToMove.txt" to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "204"
-    And the downloaded content when downloading file "/textfile0.txt" for user "Alice" with range "bytes=0-6" should be "Welcome"
+    And the content of file "/textfile0.txt" for user "Alice" should be "Welcome to ownCloud"
     Examples:
       | dav_version |
       | old         |
