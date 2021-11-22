@@ -387,6 +387,9 @@ class Trashbin {
 		if (\OCP\App::isEnabled('files_versions') && !empty($ownerPath)) {
 			$copyKeysResult = false;
 
+			$config = \OC::$server->getConfig();
+			$metaDataEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+
 			/**
 			 * In case if encryption is enabled then we need to retain the keys which were
 			 * deleted due to move operation to trashbin.
@@ -400,18 +403,32 @@ class Trashbin {
 			$rootView = new View('/');
 
 			if ($rootView->is_dir($owner . '/files_versions/' . $ownerPath)) {
-				$metadataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . '.json');
+				if ($metaDataEnabled) {
+					$metadataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . '.json');
+					$currentMetaDataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . '_CURRENT');
+				}
 
 				if ($owner !== $user || $forceCopy) {
 					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $rootView);
-					if ($metadataFileExists) {
-						self::copy_recursive($owner . '/files_versions/' . $ownerPath . '.json', $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.json' . '.d' . $timestamp, $rootView);
+					if ($metaDataEnabled) {
+						if ($metadataFileExists) {
+							self::copy_recursive($owner . '/files_versions/' . $ownerPath . '.json', $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.json' . '.d' . $timestamp, $rootView);
+						}
+						if ($currentMetaDataFileExists) {
+							self::copy_recursive($owner . '/files_versions/' . $ownerPath . '.json', $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.json' . '.d' . $timestamp, $rootView);
+						}
 					}
 				}
 				if (!$forceCopy) {
 					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
-					if ($metadataFileExists) {
-						self::move($rootView, $owner . '/files_versions/' . $ownerPath . '.json', $user . '/files_trashbin/versions/' . $filename . '.json' . '.d' . $timestamp);
+					if ($metaDataEnabled) {
+						if ($metadataFileExists) {
+							self::move($rootView, $owner . '/files_versions/' . $ownerPath . '.json', $user . '/files_trashbin/versions/' . $filename . '.json' . '.d' . $timestamp);
+						}
+
+						if ($currentMetaDataFileExists) {
+							self::move($rootView, $owner . '/files_versions/' . $ownerPath . '_CURRENT', $user . '/files_trashbin/versions/' . $filename . '_CURRENT' . '.d' . $timestamp);
+						}
 					}
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {

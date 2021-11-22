@@ -6,6 +6,7 @@
  * @author Carlos Damken <carlos@damken.com>
  * @author Felix Moeller <mail@felixmoeller.de>
  * @author Georg Ehrke <georg@owncloud.com>
+ * @author Ilja Neumann <ineumann@owncloud.com>
  * @author Joas Schilling <coding@schilljs.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
@@ -43,7 +44,6 @@ namespace OCA\Files_Versions;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
-use OC\Share\Constants;
 use OCA\DAV\Meta\MetaPlugin;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Command\Expire;
@@ -116,7 +116,6 @@ class Storage {
 		}
 		return [$uid, $filename];
 	}
-
 	/**
 	 * Remember the owner and the owner path of the source file
 	 *
@@ -148,7 +147,9 @@ class Storage {
 	 * store a new version of a file.
 	 */
 	public static function store($filename) {
+		$config = \OC::$server->getConfig();
 		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
+			$metaDataEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
 
 			// if the file gets streamed we need to remove the .part extension
 			// to get the right target
@@ -158,7 +159,7 @@ class Storage {
 			}
 
 			// we only handle existing files
-			if (! Filesystem::file_exists($filename) || Filesystem::is_dir($filename)) {
+			if (!Filesystem::file_exists($filename) || Filesystem::is_dir($filename)) {
 				return false;
 			}
 
@@ -176,8 +177,8 @@ class Storage {
 			}
 
 			// fallback implementation below - need to go into class Common
-			$files_view = new View('/'.$uid .'/files');
-			$users_view = new View('/'.$uid);
+			$files_view = new View('/' . $uid . '/files');
+			$users_view = new View('/' . $uid);
 
 			// no use making versions for empty files
 			if ($files_view->filesize($filename) === 0) {
@@ -186,7 +187,6 @@ class Storage {
 
 			// create all parent folders
 			self::getFileHelper()->createMissingDirectories($users_view, $filename);
-
 			self::scheduleExpire($uid, $filename);
 
 			$filename = \ltrim($filename, '/');
@@ -204,18 +204,39 @@ class Storage {
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
 
-				$config = \OC::$server->getConfig();
-				if ($config->getSystemValue('file_storage.save_version_author', false) === true) {
-					$user = \OC::$server->getUserSession()->getUser();
-					if ($user !== null && !$users_view->file_exists($versionFileName . '.json')) {
-						$metaDataKey =  MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
-						$metadata = [$metaDataKey => $user->getUID()];
-						$metadataJsonObject = \json_encode($metadata);
-						$users_view->file_put_contents($versionFileName . '.json', $metadataJsonObject);
+				if ($metaDataEnabled) {
+					$currentVersionMeta = self::pathToCurrentMetaFile($filename);
+					if ($users_view->copy($currentVersionMeta, "$versionFileName.json")) {
+						$users_view->getFileInfo("$versionFileName.json");
 					}
+				}
+
+				if ($metaDataEnabled) {
+					self::writeMetaDataFile($users_view, \OC_User::getUser(), $currentVersionMeta);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Writes a json file which contains the uid of the version author.
+	 * Versioning meta-data is stored in files_versions/$versionFileName.json
+	 */
+	private static function writeMetaDataFile(View $view, string $uid, string $path) : bool {
+		$metadata = [MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $uid];
+		$metadataJsonObject = \json_encode($metadata);
+		return $view->file_put_contents($path, $metadataJsonObject);
+	}
+
+	/**
+	 * The author of the current version is stored in files_versions/$filename.current.json
+	 * as we don't display the current version in the history.
+	 *
+	 * @param string $filepath
+	 * @return string The path to the location of the metadata-file for the current version
+	 */
+	private static function pathToCurrentMetaFile(string $filepath) : string {
+		return FileHelper::VERSIONS_RELATIVE_PATH . '/'. \ltrim($filepath, '/') . '_CURRENT';
 	}
 
 	/**
@@ -236,6 +257,8 @@ class Storage {
 	 * @param string $path
 	 */
 	protected static function deleteVersion($view, $path) {
+		$config = \OC::$server->getConfig();
+		$metaDataEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
 		$view->unlink($path);
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
@@ -244,12 +267,22 @@ class Storage {
 		list($storage, $internalPath) = $view->resolvePath($path);
 		$cache = $storage->getCache($internalPath);
 		$cache->remove($internalPath);
+
+		if ($metaDataEnabled) {
+			$view->unlink("$path.json");
+			list($storage, $internalPath) = $view->resolvePath("$path.json");
+			$cache = $storage->getCache($internalPath);
+			$cache->remove($internalPath);
+		}
 	}
 
 	/**
 	 * Delete versions of a file
 	 */
 	public static function delete($path) {
+		$config = \OC::$server->getConfig();
+		$metaDataEnabled = $config->getSystemValue('file_storage.save_version_author', false);
+
 		$deletedFile = self::$deletedFiles[$path];
 		$uid = $deletedFile['uid'];
 		$filename = $deletedFile['filename'];
@@ -269,10 +302,14 @@ class Storage {
 					];
 					\OC_Hook::emit('\OCP\Versions', 'preDelete', $hookData);
 					self::deleteVersion($view, $filename . '.v' . $v['version']);
-					if ($view->file_exists($path . ".json")) {
-						$view->unlink($path . ".json");
-					}
 					\OC_Hook::emit('\OCP\Versions', 'delete', $hookData);
+				}
+			}
+
+			if ($metaDataEnabled) {
+				$currentVersionPath = self::pathToCurrentMetaFile($path);
+				if ($view->file_exists($currentVersionPath)) {
+					$view->unlink($currentVersionPath);
 				}
 			}
 		}
@@ -289,6 +326,7 @@ class Storage {
 	 * @param string $operation can be 'copy' or 'rename'
 	 */
 	public static function renameOrCopy($sourcePath, $targetPath, $operation) {
+		$metaDataEnabled = \OC::$server->getConfig()->getSystemValue('file_storage.save_version_author', false);
 		list($sourceOwner, $sourcePath) = self::getSourcePathAndUser($sourcePath);
 
 		// it was a upload of a existing file if no old path exists
@@ -328,14 +366,27 @@ class Storage {
 					'/' . $sourceOwner . '/files_versions/' . $sourcePath.'.v' . $v['version'],
 					'/' . $targetOwner . '/files_versions/' . $targetPath.'.v'.$v['version']
 				);
-				// move each version json file that holds the name of the user that've made an edit
-				$sourceMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json';
-				if ($rootView->file_exists($sourceMetaDataFile)) {
-					$rootView->$operation(
-						$sourceMetaDataFile,
-						'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json'
-					);
+
+				if ($metaDataEnabled) {
+					// move each version json file that holds the name of the user that've made an edit
+					$sourceMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json';
+					if ($rootView->file_exists($sourceMetaDataFile)) {
+						$rootView->$operation(
+							$sourceMetaDataFile,
+							'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json'
+						);
+					}
 				}
+			}
+		}
+
+		if ($metaDataEnabled) {
+			$sourceInitialMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '_CURRENT';
+			if ($rootView->file_exists($sourceInitialMetaDataFile)) {
+				$rootView->$operation(
+					$sourceInitialMetaDataFile,
+					'/' . $targetOwner . '/files_versions/' . $targetPath . '_CURRENT'
+				);
 			}
 		}
 
@@ -365,9 +416,7 @@ class Storage {
 
 			if ($metaDataEnabled === true) {
 				$metaTargetPath = $version . '.json';
-				$metaDataKey = MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME;
-				$metadataJsonObject = \json_encode([$metaDataKey => $uid]);
-				$users_view->file_put_contents($metaTargetPath, $metadataJsonObject);
+				self::writeMetaDataFile($users_view, $uid, $metaTargetPath);
 			}
 		}
 
