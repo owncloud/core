@@ -77,6 +77,10 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 	});
 	\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper($previousLog);
 
+	# in case any fs is already mounted: tear it down
+	OC_Util::tearDownFS();
+
+	# setup fs for the share owner
 	if (!OC_Util::setupFS($owner)) {
 		\OC::$server->getLogger()->error("Could not setup file system for $owner");
 	}
