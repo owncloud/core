@@ -1,0 +1,14 @@
+Change: Update Symfony components
+
+The following Symfony components have been updated to:
+- console 4.4.34
+- event-dispatcher 4.4.34
+- event-dispatcher-contracts 4.4.34
+- process 4.4.34
+- routing 4.4.34
+- service-contracts 4.4.34
+- translation 4.4.32
+- translation-contracts 2.5.0
+
+https://symfony.com/blog/symfony-4-4-34-released
+https://github.com/owncloud/core/pull/39526
