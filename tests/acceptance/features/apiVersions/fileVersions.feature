@@ -475,31 +475,36 @@ Feature: dav-versions
     Given the administrator has enabled the file version storage feature
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Carol" has been created with default attributes and without skeleton files
+    And user "David" has been created with default attributes and without skeleton files
     And user "Alice" creates folder "/test" using the WebDAV API
     And user "Alice" shares folder "/test" with user "Brian" with permissions "all" using the sharing API
     And user "Alice" shares folder "/test" with user "Carol" with permissions "all" using the sharing API
-    And user "Alice" has uploaded file with content "uploaded content first" to "/test/textfile0.txt"
-    And user "Brian" has uploaded file with content "uploaded content changed" to "/test/textfile0.txt"
-    And user "Carol" has uploaded file with content "uploaded content latest" to "/test/textfile0.txt"
+    And user "Alice" shares folder "/test" with user "David" with permissions "all" using the sharing API
+    And user "Alice" has uploaded file with content "uploaded content alice" to "/test/textfile0.txt"
+    And user "Brian" has uploaded file with content "uploaded content brian" to "/test/textfile0.txt"
+    And user "Carol" has uploaded file with content "uploaded content carol" to "/test/textfile0.txt"
+    And user "David" has uploaded file with content "uploaded content david" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
-    Then the number of versions should be "2"
-    When user "Alice" gets the version metadata of file "/test/textfile0.txt"
-    Then the author of the created version with index "1" should be "Carol"
-    And the author of the created version with index "2" should be "Brian"
-    # Actually Alice was the author of the oldest version of the file,
-    # and Brian was the author of the 2nd-oldest version of the file,
-    # and Carol is the author of current file, which is not in the version history.
-    #Then the author of the created version with index "1" should be "Brian"
-    #And the author of the created version with index "2" should be "Alice"
+    Then the number of versions should be "3"
     When user "Alice" downloads the version of file "/test/textfile0.txt" with the index "1"
     Then the HTTP status code should be "200"
     And the following headers should be set
       | header              | value                                                                |
       | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content changed"
+    And the downloaded content should be "uploaded content carol"
     When user "Alice" downloads the version of file "test/textfile0.txt" with the index "2"
     Then the HTTP status code should be "200"
     And the following headers should be set
       | header              | value                                                                |
       | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content first"
+    And the downloaded content should be "uploaded content brian"
+    When user "Alice" downloads the version of file "test/textfile0.txt" with the index "3"
+    Then the HTTP status code should be "200"
+    And the following headers should be set
+      | header              | value                                                                |
+      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
+    And the downloaded content should be "uploaded content alice"
+    When user "Alice" gets the version metadata of file "/test/textfile0.txt"
+    Then the author of the created version with index "1" should be "Carol"
+    And the author of the created version with index "2" should be "Brian"
+    And the author of the created version with index "3" should be "Alice"
