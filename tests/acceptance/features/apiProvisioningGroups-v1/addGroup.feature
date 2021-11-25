@@ -154,28 +154,28 @@ Feature: add groups
     And the HTTP status code should be "401"
     And group "another-new-group" should not exist
 
-  @issue-39533 @skipOnOcV10
-  Scenario: admin creates a group that has white space at the end of the name
+
+  Scenario: admin tries to create a group that has white space at the end of the name
     When the administrator sends a group creation request for group "white-space-at-end " using the provisioning API
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "101"
     And the HTTP status code should be "200"
-    And group "white-space-at-end " should exist
+    And group "white-space-at-end " should not exist
     And group "white-space-at-end" should not exist
 
 
-  Scenario: admin creates a group that has white space at the start of the name
+  Scenario: admin tries to create a group that has white space at the start of the name
     When the administrator sends a group creation request for group " white-space-at-start" using the provisioning API
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "101"
     And the HTTP status code should be "200"
-    And group " white-space-at-start" should exist
+    And group " white-space-at-start" should not exist
     But group "white-space-at-start" should not exist
 
 
-  Scenario: admin creates a group that is a single space
+  Scenario: admin tries to create a group that is a single space
     When the administrator sends a group creation request for group " " using the provisioning API
-    Then the OCS status code should be "100"
+    Then the OCS status code should be "101"
     And the HTTP status code should be "200"
-    And group " " should exist
+    And group " " should not exist
 
 
   Scenario: admin tries to create a group that is the empty string

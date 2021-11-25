@@ -33,3 +33,28 @@ Feature: add group
     When the administrator creates group "brand-new-group" using the occ command
     Then the command should have failed with exit code 1
     And the command output should contain the text 'The group "brand-new-group" already exists'
+
+  Scenario: admin tries to create a group that has white space at the end of the name
+    When the administrator creates group "white-space-at-end " using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'Group "white-space-at-end " could not be created'
+    And group "white-space-at-end " should not exist
+    And group "white-space-at-end" should not exist
+
+  Scenario: admin tries to create a group that has white space at the start of the name
+    When the administrator creates group " white-space-at-start" using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'Group " white-space-at-start" could not be created'
+    And group " white-space-at-start" should not exist
+    And group "white-space-at-start" should not exist
+
+  Scenario: admin tries to create a group that is a single space
+    When the administrator creates group " " using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'Group " " could not be created'
+    And group " " should not exist
+
+  Scenario: admin tries to create a group that is the empty string
+    When the administrator creates group "" using the occ command
+    Then the command should have failed with exit code 1
+    And the command output should contain the text 'Group "" could not be created'

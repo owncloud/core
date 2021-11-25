@@ -1,0 +1,3 @@
+Bugfix: Prevent group names starting or ending with white space
+
+https://github.com/owncloud/core/pull/39540
