@@ -210,7 +210,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return \OC\Group\Group
 	 */
 	public function createGroup($gid) {
-		if ($gid === '' || $gid === null) {
+		if ($gid === '' || $gid === null || \trim($gid) !== $gid) {
 			return false;
 		} elseif ($group = $this->get($gid)) {
 			return $group;

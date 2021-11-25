@@ -243,6 +243,26 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertEquals('group1', $group->getGID());
 	}
 
+	public function dataCreateGroupWithInvalidName() {
+		return [
+			[''],
+			[' '],
+			[' white-space-at-start'],
+			['white-space-at-end '],
+			[' white-space-at-both-ends '],
+		];
+	}
+
+	/**
+	 * @dataProvider dataCreateGroupWithInvalidName
+	 *
+	 * @param string $groupName
+	 */
+	public function testCreateInvalidGroupName(string $groupName) {
+		$group = $this->manager->createGroup($groupName);
+		$this->assertFalse($group);
+	}
+
 	public function testCreateWithDispatcher() {
 		/**
 		 * @var \PHPUnit\Framework\MockObject\MockObject | \OC\Group\Backend $backend

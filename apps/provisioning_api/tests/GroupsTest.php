@@ -333,11 +333,26 @@ class GroupsTest extends \Test\TestCase {
 		$this->assertEquals([], $result->getData());
 	}
 
-	public function testAddGroupEmptyGroup() {
+	public function dataAddGroupWithInvalidName() {
+		return [
+			[''],
+			[' '],
+			[' white-space-at-start'],
+			['white-space-at-end '],
+			[' white-space-at-both-ends '],
+		];
+	}
+
+	/**
+	 * @dataProvider dataAddGroupWithInvalidName
+	 *
+	 * @param string $groupName
+	 */
+	public function testAddGroupWithInvalidName($groupName) {
 		$this->request
 			->method('getParam')
 			->with('groupid')
-			->willReturn('');
+			->willReturn($groupName);
 
 		$result = $this->api->addGroup([]);
 

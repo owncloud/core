@@ -422,6 +422,12 @@ class OccUsersGroupsContext implements Context {
 	 * @throws Exception
 	 */
 	public function theAdministratorCreatesGroupUsingTheOccCommand(string $group):void {
+		if (($group === '') || (\trim($group) !== $group)) {
+			// The group name is empty or has white space at the start or end.
+			// Quote the group name so that the white space is really sent to the
+			// occ command as part of the requested group name.
+			$group = "'$group'";
+		}
 		$this->occContext->invokingTheCommand(
 			"group:add $group"
 		);
