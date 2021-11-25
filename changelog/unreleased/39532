@@ -1,0 +1,8 @@
+Bugfix: Group select in user create panel allows empty and pre-existing groups
+
+Before this change, the admin could create groups with empty name or multiple
+times with the same name.
+This has been fixed with this change.
+
+https://github.com/owncloud/core/pull/39532
+https://github.com/owncloud/enterprise/issues/4890
