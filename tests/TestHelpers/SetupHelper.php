@@ -885,7 +885,8 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		}
 
 		$body = [];
-		$body['command'] = \implode(' ', $args);
+		$argsString = \implode(' ', $args);
+		$body['command'] = $argsString;
 
 		if ($envVariables !== null) {
 			$body['env_variables'] = $envVariables;
@@ -917,7 +918,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		if ($resultXml === false) {
 			throw new Exception(
-				"Response is not valid XML after executing 'occ $args'. " .
+				"Response is not valid XML after executing 'occ $argsString'. " .
 				$isTestingAppEnabledText .
 				$contents
 			);
@@ -929,7 +930,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		if (!isset($return['code'][0])) {
 			throw new Exception(
-				"Return code not found after executing 'occ $args'. " .
+				"Return code not found after executing 'occ $argsString'. " .
 				$isTestingAppEnabledText .
 				$contents
 			);
@@ -937,7 +938,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		if (!isset($return['stdOut'][0])) {
 			throw new Exception(
-				"Return stdOut not found after executing 'occ $args'. " .
+				"Return stdOut not found after executing 'occ $argsString'. " .
 				$isTestingAppEnabledText .
 				$contents
 			);
@@ -945,7 +946,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		if (!isset($return['stdErr'][0])) {
 			throw new Exception(
-				"Return stdErr not found after executing 'occ $args'. " .
+				"Return stdErr not found after executing 'occ $argsString'. " .
 				$isTestingAppEnabledText .
 				$contents
 			);
@@ -953,7 +954,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		if (!\is_a($return['code'][0], "SimpleXMLElement")) {
 			throw new Exception(
-				"Return code is not a SimpleXMLElement after executing 'occ $args'. " .
+				"Return code is not a SimpleXMLElement after executing 'occ $argsString'. " .
 				$isTestingAppEnabledText .
 				$contents
 			);
@@ -961,7 +962,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		if (!\is_a($return['stdOut'][0], "SimpleXMLElement")) {
 			throw new Exception(
-				"Return stdOut is not a SimpleXMLElement after executing 'occ $args'. " .
+				"Return stdOut is not a SimpleXMLElement after executing 'occ $argsString'. " .
 				$isTestingAppEnabledText .
 				$contents
 			);
@@ -969,7 +970,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 
 		if (!\is_a($return['stdErr'][0], "SimpleXMLElement")) {
 			throw new Exception(
-				"Return stdErr is not a SimpleXMLElement after executing 'occ $args'. " .
+				"Return stdErr is not a SimpleXMLElement after executing 'occ $argsString'. " .
 				$isTestingAppEnabledText .
 				$contents
 			);
