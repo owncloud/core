@@ -304,7 +304,7 @@ Feature: create a public link share
       | share_type  | public_link |
       | permissions | read        |
     And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
+    And the HTTP status code should be "200"
     And the public upload to the last publicly shared folder using the <webdav_api_version> public WebDAV API should fail with HTTP status code "403"
 
     @notToImplementOnOCIS @issue-ocis-2079 @issue-36442 @skipOnOcV10
@@ -332,7 +332,7 @@ Feature: create a public link share
       | share_type  | public_link |
       | permissions | read        |
     And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
+    And the HTTP status code should be "200"
     And the public upload to the last publicly shared folder using the <webdav_api_version> public WebDAV API should fail with HTTP status code "403"
 
     @notToImplementOnOCIS @issue-ocis-2079
@@ -362,7 +362,7 @@ Feature: create a public link share
       | share_type  | public_link |
       | permissions | read        |
     And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "<http_status_code>"
+    And the HTTP status code should be "200"
     And the public upload to the last publicly shared folder using the <webdav_api_version> public WebDAV API should fail with HTTP status code "403"
 
     @notToImplementOnOCIS @issue-ocis-2079
