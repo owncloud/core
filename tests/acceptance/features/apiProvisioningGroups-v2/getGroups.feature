@@ -1,4 +1,4 @@
-@api @provisioning_api-app-required @skipOnLDAP
+@api @provisioning_api-app-required @rememberGroupsThatExist @skipOnLDAP
 Feature: get groups
   As an admin
   I want to be able to get groups
@@ -7,69 +7,27 @@ Feature: get groups
   Background:
     Given using OCS API version "2"
 
-  @smokeTest @skipOnLdap @issue-ldap-500 @notToImplementOnOCIS
+  @smokeTest @skipOnLdap @issue-ldap-500
   Scenario: admin gets all the groups where admin group exists
     Given group "0" has been created
     And group "brand-new-group" has been created
     And group "España" has been created
     When the administrator gets all the groups using the provisioning API
-    Then the groups returned by the API should be
+    Then the extra groups returned by the API should be
       | España          |
-      | admin           |
       | brand-new-group |
       | 0               |
 
-  @skipOnLdap @issue-ldap-499 @notToImplementOnOCIS
+  @skipOnLdap @issue-ldap-499
   Scenario: admin gets all the groups, including groups with mixed case
     Given group "case-sensitive-group" has been created
     And group "Case-Sensitive-Group" has been created
     And group "CASE-SENSITIVE-GROUP" has been created
     When the administrator gets all the groups using the provisioning API
-    Then the groups returned by the API should be
-      | admin                |
+    Then the extra groups returned by the API should be
       | case-sensitive-group |
       | Case-Sensitive-Group |
       | CASE-SENSITIVE-GROUP |
-
-  @smokeTest @skipOnOcV10
-  Scenario: admin gets all the groups on ocis
-    Given group "0" has been created
-    And group "brand-new-group" has been created
-    And group "España" has been created
-    When the administrator gets all the groups using the provisioning API
-    Then the groups returned by the API should be
-      | España          |
-      | brand-new-group   |
-      | 0                 |
-      | philosophy-haters |
-      | physics-lovers    |
-      | polonium-lovers   |
-      | quantum-lovers    |
-      | radium-lovers     |
-      | violin-haters     |
-      | users             |
-      | sysusers          |
-      | sailing-lovers    |
-
-  @smokeTest @skipOnOcV10 @toImplementOnOCIS @issue-product-283
-  Scenario: admin gets all the groups, including groups with mixed case on ocis
-    Given group "case-sensitive-group" has been created
-    And group "Case-Sensitive-Group" has been created
-    And group "CASE-SENSITIVE-GROUP" has been created
-    When the administrator gets all the groups using the provisioning API
-    Then the groups returned by the API should be
-      | case-sensitive-group |
-      | Case-Sensitive-Group |
-      | CASE-SENSITIVE-GROUP |
-      | philosophy-haters |
-      | physics-lovers    |
-      | polonium-lovers   |
-      | quantum-lovers    |
-      | radium-lovers     |
-      | violin-haters     |
-      | users             |
-      | sysusers          |
-      | sailing-lovers    |
 
   @notToImplementOnOCIS
   Scenario: subadmin gets all the groups
@@ -81,9 +39,8 @@ Feature: get groups
     When user "subadmin" gets all the groups using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    And the groups returned by the API should be
+    And the extra groups returned by the API should be
       | España          |
-      | admin           |
       | brand-new-group |
       | 0               |
 

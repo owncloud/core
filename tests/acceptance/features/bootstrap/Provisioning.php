@@ -70,6 +70,11 @@ trait Provisioning {
 	/**
 	 * @var array
 	 */
+	private $startingGroups = [];
+
+	/**
+	 * @var array
+	 */
 	private $createdRemoteGroups = [];
 
 	/**
@@ -4595,6 +4600,28 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the extra groups returned by the API should be$/
+	 *
+	 * @param TableNode $groupsList
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theExtraGroupsShouldBe(TableNode $groupsList):void {
+		$this->verifyTableNodeColumnsCount($groupsList, 1);
+		$groups = $groupsList->getRows();
+		$groupsSimplified = $this->simplifyArray($groups);
+		$expectedGroups = \array_merge($this->startingGroups, $groupsSimplified);
+		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
+		\asort($expectedGroups);
+		\asort($respondedArray);
+		Assert::assertEqualsCanonicalizing(
+			$expectedGroups,
+			$respondedArray
+		);
+	}
+
+	/**
 	 * @Then /^the groups returned by the API should include "([^"]*)"$/
 	 *
 	 * @param string $group
@@ -5438,6 +5465,16 @@ trait Provisioning {
 			$this->enabledApps = \array_keys($apps["enabled"]);
 			$this->disabledApps = \array_keys($apps["disabled"]);
 		}
+	}
+
+	/**
+	 * @BeforeScenario @rememberGroupsThatExist
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function rememberGroupsThatExistAtTheStartOfTheScenario():void {
+		$this->startingGroups = $this->getArrayOfGroupsResponded($this->getAllGroups());
 	}
 
 	/**
