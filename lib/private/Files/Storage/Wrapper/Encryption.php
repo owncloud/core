@@ -479,11 +479,15 @@ class Encryption extends Wrapper implements Storage\IVersionedStorage {
 					return false;
 				}
 
+				$sourceFileOfRename = null;
 				if (isset($this->sourcePath[$path])) {
 					$sourceFileOfRename = $this->sourcePath[$path];
-				} else {
-					$sourceFileOfRename = null;
+					$mount = $this->mountManager->find($sourceFileOfRename);
+					if ($mount) {
+						$data = $mount->getStorage()->getCache()->get($mount->getInternalPath($sourceFileOfRename));
+					}
 				}
+				$encryptedVersion = $data['encryptedVersion'] ?? null;
 				$handle = \OC\Files\Stream\Encryption::wrap(
 					$source,
 					$path,
@@ -501,7 +505,7 @@ class Encryption extends Wrapper implements Storage\IVersionedStorage {
 					$headerSize,
 					$signed,
 					$sourceFileOfRename,
-					null # TODO: maybe fill it?
+					$encryptedVersion,
 				);
 				unset($this->sourcePath[$path]);
 
