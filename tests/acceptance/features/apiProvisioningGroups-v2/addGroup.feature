@@ -150,15 +150,13 @@ Feature: add groups
     And the HTTP status code should be "401"
     And group "another-new-group" should not exist
 
-
+  @issue-39533 @skipOnOcV10
   Scenario: admin creates a group that has white space at the end of the name
     When the administrator sends a group creation request for group "white-space-at-end " using the provisioning API
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
-    # Note: it seems that white space at the end of a group name gets stripped off
-    # Groups "white-space-at-end " and "white-space-at-end" seem to be effectively the same
     And group "white-space-at-end " should exist
-    And group "white-space-at-end" should exist
+    And group "white-space-at-end" should not exist
 
 
   Scenario: admin creates a group that has white space at the start of the name
