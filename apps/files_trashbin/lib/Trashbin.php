@@ -370,8 +370,10 @@ class Trashbin {
 			if (!$result) {
 				Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated', Util::ERROR);
 			}
-			Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', ['filePath' => Filesystem::normalizePath($file_path),
-				'trashPath' => Filesystem::normalizePath($filename . '.d' . $timestamp)]);
+			Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', [
+				'filePath' => Filesystem::normalizePath($file_path),
+				'trashPath' => Filesystem::normalizePath($filename . '.d' . $timestamp)
+			]);
 
 			self::retainVersions($filename, $owner, $ownerPath, $timestamp, $sourceStorage);
 
@@ -602,6 +604,12 @@ class Trashbin {
 		}
 		$mtime = $view->filemtime($source);
 
+		Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'pre_restore', [
+			'user' => $user,
+			'source' => $source,
+			'target' => $target
+		]);
+
 		// restore file
 		$restoreResult = $view->rename($source, $target);
 
@@ -797,7 +805,7 @@ class Trashbin {
 	 * @throws HintException
 	 * @throws ServerNotAvailableException
 	 */
-	protected static function emitTrashbinPostDelete($uid, $path, $fileInfo, $originalLocation) {
+	protected static function emitTrashbinPostDelete($uid, $path, $fileInfo, $originalLocation = null) {
 		\OC_Hook::emit(
 			'\OCP\Trashbin',
 			'delete',
