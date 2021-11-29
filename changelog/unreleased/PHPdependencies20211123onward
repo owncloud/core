@@ -1,7 +1,10 @@
 Change: Update PHP dependencies
 
 The following have been updated:
-- league/flysystem (1.1.5 to 1.1.6)
+- doctrine/dbal (2.13.5 => 2.13.6)
+- laminas/laminas-inputfilter (2.12.0 to 2.12.1)
+- league/flysystem (1.1.5 to 1.1.8)
 - league/mime-type-detection (1.8.0 to 1.9.0)
+- phpseclib/phpseclib (3.0.11 => 3.0.12)
 
 https://github.com/owncloud/core/pull/39526
