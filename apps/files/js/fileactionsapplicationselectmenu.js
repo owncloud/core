@@ -96,14 +96,8 @@
 				fileActions.getCurrentPermissions()
 			);
 
-			var items = [];
-
-			Object.keys(actions).forEach(function (actionKey) {
-				items.push(actions[actionKey]);
-			});
-
 			this.$el.html(this.template({
-				items: items
+				items: actions
 			}));
 		},
 
