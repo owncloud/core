@@ -44,6 +44,7 @@ namespace OCA\Files_Versions;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OCA\DataExporter\Model\File;
 use OCA\DAV\Meta\MetaPlugin;
 use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Command\Expire;
@@ -205,14 +206,7 @@ class Storage {
 				]);
 
 				if ($metaDataEnabled) {
-					$currentVersionMeta = self::pathToCurrentMetaFile($filename);
-					if ($users_view->copy($currentVersionMeta, "$versionFileName.json")) {
-						$users_view->getFileInfo("$versionFileName.json");
-					}
-				}
-
-				if ($metaDataEnabled) {
-					self::writeMetaDataFile($users_view, \OC_User::getUser(), $currentVersionMeta);
+					self::writeMetaDataForVersionFile($users_view, \OC_User::getUser(), $versionFileName);
 				}
 			}
 		}
@@ -222,10 +216,19 @@ class Storage {
 	 * Writes a json file which contains the uid of the version author.
 	 * Versioning meta-data is stored in files_versions/$versionFileName.json
 	 */
-	private static function writeMetaDataFile(View $view, string $uid, string $path) : bool {
+	private static function writeMetaDataForVersionFile(View $view, string $uid, string $versionPath) : bool {
+		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory');
+		$versionFileInfo = $view->getFileInfo($versionPath);
+		if ($versionFileInfo === false) {
+			\OC::$server->getLogger()->error("Could not find version $versionPath to write meta-data for it");
+			return false;
+		}
+
+		$versionFilePath = $versionFileInfo->getPath();
 		$metadata = [MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $uid];
 		$metadataJsonObject = \json_encode($metadata);
-		return $view->file_put_contents($path, $metadataJsonObject);
+
+		return \file_put_contents("$dataDir$versionFilePath.json", $metadataJsonObject);
 	}
 
 	/**
@@ -415,8 +418,8 @@ class Storage {
 			$versionCreated = true;
 
 			if ($metaDataEnabled === true) {
-				$metaTargetPath = $version . '.json';
-				self::writeMetaDataFile($users_view, $uid, $metaTargetPath);
+				$metaTargetPath = $version;
+				self::writeMetaDataForVersionFile($users_view, $uid, $metaTargetPath);
 			}
 		}
 
@@ -528,6 +531,10 @@ class Storage {
 			return $versions;
 		}
 
+		$config = \OC::$server->getConfig();
+		$metaDataEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory');
+
 		if (\is_resource($dirContent)) {
 			while (($entryName = \readdir($dirContent)) !== false) {
 				if (!Filesystem::isIgnoredDir($entryName)) {
@@ -549,12 +556,17 @@ class Storage {
 						$versions[$key]['storage_location'] = "$dir/$entryName";
 						$versions[$key]['owner'] = $uid;
 
-						$jsonMetadataFile = $dir . '/' . $entryName . '.json';
-						if ($view->file_exists($jsonMetadataFile)) {
-							$metaDataFileContents = $view->file_get_contents($jsonMetadataFile);
-							if ($decoded = \json_decode($metaDataFileContents, true)) {
-								if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
-									$versions[$key]['edited_by'] = $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+						if ($metaDataEnabled) {
+							$versionFile = $dir . '/' . $entryName;
+							$versionFileInfo = $view->getFileInfo($versionFile);
+							$metaDataFilePath = $dataDir . '/' . $versionFileInfo->getPath() . '.json';
+
+							if (\file_exists($metaDataFilePath)) {
+								$metaDataFileContents = \file_get_contents($metaDataFilePath);
+								if ($decoded = \json_decode($metaDataFileContents, true)) {
+									if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
+										$versions[$key]['edited_by'] = $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+									}
 								}
 							}
 						}
