@@ -61,6 +61,7 @@ Summary
 * Bugfix - Load l10n js files from the correct app folder: [#39482](https://github.com/owncloud/core/pull/39482)
 * Bugfix - Fix issue searching inside a shared external storage: [#39500](https://github.com/owncloud/core/pull/39500)
 * Bugfix - Fix favicon, cloud symbol on Safari not visible: [#39506](https://github.com/owncloud/core/pull/39506)
+* Bugfix - Properly setup share owner file system on public link shares: [#39518](https://github.com/owncloud/core/pull/39518)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -71,6 +72,7 @@ Summary
 * Change - Update PHP dependencies: [#38907](https://github.com/owncloud/core/pull/38907)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
 * Enhancement - Special user groups can break persistent locks: [#38222](https://github.com/owncloud/core/pull/38222)
+* Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 * Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: [#38991](https://github.com/owncloud/core/issues/38991)
 * Enhancement - Log number of mounts when moving encryption keys fails: [#39015](https://github.com/owncloud/core/pull/39015)
@@ -544,6 +546,10 @@ Details
 
    https://github.com/owncloud/core/pull/39506
 
+* Bugfix - Properly setup share owner file system on public link shares: [#39518](https://github.com/owncloud/core/pull/39518)
+
+   https://github.com/owncloud/core/pull/39518
+
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
    Propfind requests will now be streamed to reduce memory usage with large responses.
@@ -680,6 +686,10 @@ Details
    locks as well.
 
    https://github.com/owncloud/core/pull/38222
+
+* Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
+
+   https://github.com/owncloud/core/pull/38758
 
 * Enhancement - Add setting to limit public link share creation to certain groups: [#3632](https://github.com/owncloud/enterprise/issues/3632)
 
