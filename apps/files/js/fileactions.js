@@ -287,7 +287,7 @@
 			if (!defaultActions.length) {
 				return undefined;
 			}
-			return defaultActions.pop();
+			return defaultActions[defaultActions.length - 1];
 		},
 
 		/**
@@ -333,7 +333,7 @@
 				if (defaultNames.indexOf(action.name) >= 0) {
 					defaultActions.push(action)
 				}
-			})
+			});
 			return defaultActions;
 		},
 
