@@ -43,6 +43,7 @@
 namespace OCA\Files_Versions;
 
 use OC\Files\Filesystem;
+use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\View;
 use OCA\DataExporter\Model\File;
 use OCA\DAV\Meta\MetaPlugin;
@@ -199,13 +200,13 @@ class Storage {
 			$versionFileName = "files_versions/$filename.v$mtime";
 			if ($users_view->copy("files/$filename", $versionFileName)) {
 				// call getFileInfo to enforce a file cache entry for the new version
-				$users_view->getFileInfo($versionFileName);
+				$fileInfo = $users_view->getFileInfo($versionFileName);
 				// update checksum of the version
 				$users_view->putFileInfo($versionFileName, [
 					'checksum' => $sourceFileInfo->getChecksum(),
 				]);
 
-				if ($metaDataEnabled) {
+				if ($metaDataEnabled && !$fileInfo->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
 					self::writeMetaDataForVersionFile($users_view, \OC_User::getUser(), $versionFileName);
 				}
 			}
@@ -418,8 +419,10 @@ class Storage {
 			$versionCreated = true;
 
 			if ($metaDataEnabled === true) {
-				$metaTargetPath = $version;
-				self::writeMetaDataForVersionFile($users_view, $uid, $metaTargetPath);
+				$versionFileInfo = $users_view->getFileInfo($version);
+				if ($versionFileInfo && !$versionFileInfo->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
+					self::writeMetaDataForVersionFile($users_view, $uid, $version);
+				}
 			}
 		}
 

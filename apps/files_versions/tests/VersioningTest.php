@@ -806,9 +806,12 @@ class VersioningTest extends TestCase {
 			$this->assertSame($fileName, $version['name']);
 		}
 
-		if ($enableMetadata) {
-			$this->assertArrayHasKey('edited_by', array_shift($versions));
-			$this->assertArrayHasKey('edited_by', array_shift($versions));
+		$file = \OC::$server->getUserFolder($this->user1);
+		if (!$file->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
+			if ($enableMetadata) {
+				$this->assertArrayHasKey('edited_by', array_shift($versions));
+				$this->assertArrayHasKey('edited_by', array_shift($versions));
+			}
 		}
 
 		//cleanup
