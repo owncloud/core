@@ -3068,3 +3068,64 @@ $.datepicker._attachments = function (input, inst) {
 			$( document ).find( altField ).val( dateStr );
 		}
 	};
+
+	$.ui.dialog._setOption = function( key, value ) {
+		if (key === "disabled") {
+			return;
+		}
+		this._super(key, value);
+		if (key === "appendTo") {
+			this.uiDialog.appendTo(this._appendTo());
+		}
+		if (key === "buttons") {
+			this._createButtons();
+		}
+		if (key === "closeText") {
+			this.uiDialogTitlebarClose.button({
+				// Ensure that we always pass a string
+				label: $("<a>").text("" + this.options.closeText).html()
+			});
+		}
+	};
+
+	$.ui.dialog.dialog_createTitlebar = function() {
+	var uiDialogTitle;
+	this.uiDialogTitlebar = $( "<div>" );
+	this._addClass( this.uiDialogTitlebar,
+		"ui-dialog-titlebar", "ui-widget-header ui-helper-clearfix" );
+	this._on( this.uiDialogTitlebar, {
+		mousedown: function( event ) {
+			// Don't prevent click on close button (#8838)
+			// Focusing a dialog that is partially scrolled out of view
+			// causes the browser to scroll it into view, preventing the click event
+			if ( !$( event.target ).closest( ".ui-dialog-titlebar-close" ) ) {
+				// Dialog isn't getting focus when dragging (#8063)
+				this.uiDialog.trigger( "focus" );
+			}
+		}
+	} );
+	// Support: IE
+	// Use type="button" to prevent enter keypresses in textboxes from closing the
+	// dialog in IE (#9312)
+	this.uiDialogTitlebarClose = $( "<button type='button'></button>" )
+		.button( {
+			label: $( "<a>" ).text( this.options.closeText ).html(),
+			icon: "ui-icon-closethick",
+			showLabel: false
+		} )
+		.appendTo( this.uiDialogTitlebar );
+	this._addClass( this.uiDialogTitlebarClose, "ui-dialog-titlebar-close" );
+	this._on( this.uiDialogTitlebarClose, {
+		click: function( event ) {
+			event.preventDefault();
+			this.close( event );
+		}
+	} );
+	uiDialogTitle = $( "<span>" ).uniqueId().prependTo( this.uiDialogTitlebar );
+	this._addClass( uiDialogTitle, "ui-dialog-title" );
+	this._title( uiDialogTitle );
+	this.uiDialogTitlebar.prependTo( this.uiDialog );
+	this.uiDialog.attr( {
+		"aria-labelledby": uiDialogTitle.attr( "id" )
+	} );
+};
