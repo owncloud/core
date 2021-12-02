@@ -915,6 +915,9 @@ class VersioningTest extends TestCase {
 	}
 
 	private function doTestRestore(bool $metaDataEnabled) {
+		$file = \OC::$server->getUserFolder($this->user1);
+		$objectStoreEnabled = $file->getStorage()->instanceOfStorage(ObjectStoreStorage::class);
+
 		$filePath = $this->user1 . '/files/sub/test.txt';
 		$this->rootView->file_put_contents($filePath, 'test file');
 
@@ -1002,7 +1005,7 @@ class VersioningTest extends TestCase {
 			'Restored version file gone from files_version folder'
 		);
 
-		if ($metaDataEnabled) {
+		if ($metaDataEnabled && !$objectStoreEnabled) {
 			$this->assertTrue(
 				$this->rootView->file_exists($this->versionsRootOfUser1 . '/sub/test.txt.v' . $t0 . '.json'),
 				'A version metadata-file must be created for the file before restoration'
