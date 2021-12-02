@@ -90,20 +90,14 @@
 
 		render: function() {
 			var fileActions = this._context.fileActions;
-			var actions = fileActions.getActionsWithoutAll(
+			var actions = fileActions.getDefaultFileActions(
 				fileActions.getCurrentMimeType(),
 				fileActions.getCurrentType(),
 				fileActions.getCurrentPermissions()
 			);
 
-			var items = [];
-
-			Object.keys(actions).forEach(function (actionKey) {
-				items.push(actions[actionKey]);
-			});
-
 			this.$el.html(this.template({
-				items: items
+				items: actions
 			}));
 		},
 

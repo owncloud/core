@@ -63,7 +63,7 @@ describe('OCA.Trashbin.App tests', function() {
 			expect(fileActions.actions.all.Rename).not.toBeDefined();
 			expect(fileActions.actions.all.Download).not.toBeDefined();
 
-			expect(fileActions.defaults.dir).toEqual('Open');
+			expect(fileActions.defaults.dir).toEqual(['Open']);
 		});
 	});
 });

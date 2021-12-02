@@ -98,23 +98,23 @@
 				fileActions.getCurrentPermissions()
 			);
 
-			var defaultAction = fileActions.getDefaultFileAction(
+			var defaultActions = fileActions.getDefaultFileActions(
 				fileActions.getCurrentMimeType(),
 				fileActions.getCurrentType(),
 				fileActions.getCurrentPermissions()
 			);
+			var defaultActionNames = _.map(defaultActions, function(actionSpec) {
+				return actionSpec.name;
+			});
 
 			actions = fileActions._advancedFilter(actions, this._context);
 
 			// always show default actions for files but not for directories
 			var items = _.filter(actions, function(actionSpec) {
+				var isDefault = defaultActionNames.indexOf(actionSpec.name) >= 0;
 				return (
 					actionSpec.type === OCA.Files.FileActions.TYPE_DROPDOWN &&
-					(
-						!defaultAction ||
-						actionSpec.name !== defaultAction.name ||
-						fileActions.getCurrentType() !== 'dir'
-					)
+					(!isDefault || fileActions.getCurrentType() !== 'dir')
 				);
 			});
 			items = _.map(items, function(item) {
