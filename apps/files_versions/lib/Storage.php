@@ -152,6 +152,7 @@ class Storage {
 		$config = \OC::$server->getConfig();
 		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
 			$metaDataEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+			$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory');
 
 			// if the file gets streamed we need to remove the .part extension
 			// to get the right target
@@ -160,8 +161,27 @@ class Storage {
 				$filename = \substr($filename, 0, \strlen($filename) - 5);
 			}
 
-			// we only handle existing files
-			if (!Filesystem::file_exists($filename) || Filesystem::is_dir($filename)) {
+			// we don't support versioned directories
+			if (Filesystem::is_dir($filename)) {
+				return false;
+			}
+
+			// Write metadata of the current file in case we have a new file
+			if (!Filesystem::file_exists($filename)) {
+				if (!$metaDataEnabled) {
+					return false;
+				}
+
+				$uid = \OC_User::getUser();
+				$uv = new View('/' . $uid);
+				self::getFileHelper()->createMissingDirectories($uv, $filename);
+				$currentMetaFile = "$dataDir/$uid/files_versions$filename.current.json";
+
+				$metadata = [MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $uid];
+				$metadataJsonObject = \json_encode($metadata);
+
+				\file_put_contents($currentMetaFile, $metadataJsonObject);
+
 				return false;
 			}
 
@@ -207,7 +227,14 @@ class Storage {
 				]);
 
 				if ($metaDataEnabled && !$fileInfo->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
-					self::writeMetaDataForVersionFile($users_view, \OC_User::getUser(), $versionFileName);
+					$currentMetaFile = "$dataDir/$uid/files_versions/$filename.current.json";
+					$versionTarget = "$dataDir/$uid/$versionFileName.json";
+
+					if (\file_exists($currentMetaFile)) {
+						@\rename($currentMetaFile, $versionTarget);
+					} else {
+						self::writeMetaDataForVersionFile($users_view, \OC_User::getUser(), $versionFileName);
+					}
 				}
 			}
 		}
@@ -331,6 +358,8 @@ class Storage {
 	 */
 	public static function renameOrCopy($sourcePath, $targetPath, $operation) {
 		$metaDataEnabled = \OC::$server->getConfig()->getSystemValue('file_storage.save_version_author', false);
+		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory');
+
 		list($sourceOwner, $sourcePath) = self::getSourcePathAndUser($sourcePath);
 
 		// it was a upload of a existing file if no old path exists
@@ -368,29 +397,26 @@ class Storage {
 				// move each version one by one to the target directory
 				$rootView->$operation(
 					'/' . $sourceOwner . '/files_versions/' . $sourcePath.'.v' . $v['version'],
-					'/' . $targetOwner . '/files_versions/' . $targetPath.'.v'.$v['version']
+					'/' . $targetOwner . '/files_versions/' . $targetPath.'.v' . $v['version']
 				);
 
 				if ($metaDataEnabled) {
 					// move each version json file that holds the name of the user that've made an edit
-					$sourceMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json';
-					if ($rootView->file_exists($sourceMetaDataFile)) {
-						$rootView->$operation(
-							$sourceMetaDataFile,
-							'/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json'
-						);
+					$sourceMetaDataFile = $dataDir . '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.v' . $v['version'] . '.json';
+					$targetMetaDataFile = $dataDir . '/' . $targetOwner . '/files_versions/' . $targetPath . '.v' . $v['version'] . '.json';
+					if (\file_exists($sourceMetaDataFile)) {
+						$operation($sourceMetaDataFile, $targetMetaDataFile);
 					}
 				}
 			}
 		}
 
 		if ($metaDataEnabled) {
-			$sourceInitialMetaDataFile = '/' . $sourceOwner . '/files_versions/' . $sourcePath . '_CURRENT';
+			$sourceInitialMetaDataFile = $dataDir . '/' . $sourceOwner . '/files_versions/' . $sourcePath . '.current.json';
+			$targetInitialMetaDataFile = $dataDir . '/' . $targetOwner . '/files_versions/' . $targetPath . '.current.json';
+
 			if ($rootView->file_exists($sourceInitialMetaDataFile)) {
-				$rootView->$operation(
-					$sourceInitialMetaDataFile,
-					'/' . $targetOwner . '/files_versions/' . $targetPath . '_CURRENT'
-				);
+				$operation($sourceInitialMetaDataFile, $targetInitialMetaDataFile);
 			}
 		}
 
