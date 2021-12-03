@@ -18,8 +18,8 @@ Feature: copying from public link share
     And as "Alice" folder "/PARENT/testFolder" should exist
     And as "Alice" folder "/PARENT/copy1.txt" should exist
     And as "Alice" file "/PARENT/copy1.txt/testfile.txt" should exist
-    And the content of file "/PARENT/testFolder/testfile.txt" for user "Alice" should be "some data"
     And the content of file "/PARENT/copy1.txt/testfile.txt" for user "Alice" should be "some data"
+    And the content of file "/PARENT/testFolder/testfile.txt" for user "Alice" should be "some data"
 
   @issue-ocis-reva-373 @issue-37683
   Scenario: Copy file within a public link folder to a file with name same as an existing folder
