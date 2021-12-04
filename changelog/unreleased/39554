@@ -1,0 +1,6 @@
+Bugfix: An app config value of null could not be updated
+
+An app config value that is set to null can now be updated to a not-null value,
+for example, with the occ config:app:set command.
+
+https://github.com/owncloud/core/pull/39554
