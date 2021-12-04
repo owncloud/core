@@ -185,9 +185,16 @@ class AppConfig implements IAppConfig {
 			 * http://docs.oracle.com/cd/E11882_01/server.112/e26088/conditions002.htm#i1033286
 			 * > Large objects (LOBs) are not supported in comparison conditions.
 			 */
-			if (!($this->conn instanceof \OC\DB\OracleConnection)) {
-				// Only update the value when it is not the same
-				$sql->andWhere($sql->expr()->neq('configvalue', $sql->createParameter('configvalue')))
+			if (!($this->conn instanceof \OC\DB\OracleConnection) && ($value !== null)) {
+				// Only update the value if:
+				// - it is not the same as the value currently in the database, or
+				// - the value in the database is currently NULL
+				// Note: the SQL comparison operator "<>" neq() does not think that "string" is not equal to NULL.
+				//       so we need to also explicitly update if the current row value is null.
+				$or = $sql->expr()->orX();
+				$or->add($sql->expr()->neq('configvalue', $sql->createParameter('configvalue')));
+				$or->add($sql->expr()->isNull('configvalue'));
+				$sql->andWhere($or)
 					->setParameter('configvalue', $value);
 			}
 
