@@ -39,6 +39,8 @@ use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Storage\Temporary;
 use OC\Share\Constants;
 use OCA\DAV\Meta\MetaPlugin;
+use OCA\Files_Versions\FileHelper;
+use OCA\Files_Versions\MetaStorage;
 use OCP\Files\Storage;
 use OCP\IConfig;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -61,6 +63,8 @@ class VersioningTest extends TestCase {
 	private $versionsRootOfUser1;
 	/** @var IConfig|MockObject */
 	private $mockConfig;
+	/** @var string */
+	private $dataDir;
 
 	/**
 	 * @var \OC\Files\View
@@ -78,6 +82,7 @@ class VersioningTest extends TestCase {
 		parent::setUp();
 
 		\OC::$server->getEncryptionManager()->setupStorage();
+		$this->dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory');
 
 		// Generate random usernames for better isolation
 		$testId = \uniqid();
@@ -148,6 +153,12 @@ class VersioningTest extends TestCase {
 		// clear hooks
 		\OC_Hook::clear();
 		\OC::registerShareHooks();
+
+		\OCA\Files_Versions\Storage::enableMetaData(null);
+		if ($saveVersionAuthor) {
+			\OCA\Files_Versions\Storage::enableMetaData(new MetaStorage($this->dataDir, new FileHelper()));
+		}
+
 		\OCA\Files_Versions\Hooks::connectHooks();
 	}
 
@@ -940,8 +951,8 @@ class VersioningTest extends TestCase {
 		$this->rootView->file_put_contents($v2, 'version2');
 
 		if ($metaDataEnabled) {
-			$this->rootView->file_put_contents($m1, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
-			$this->rootView->file_put_contents($m2, \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
+			\file_put_contents("$this->dataDir/$m1", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user1]));
+			\file_put_contents("$this->dataDir/$m2", \json_encode([MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME => $this->user2]));
 		}
 
 		$oldVersions = \OCA\Files_Versions\Storage::getVersions(
@@ -1007,17 +1018,17 @@ class VersioningTest extends TestCase {
 
 		if ($metaDataEnabled && !$objectStoreEnabled) {
 			$this->assertTrue(
-				$this->rootView->file_exists($this->versionsRootOfUser1 . '/sub/test.txt.v' . $t0 . '.json'),
+				\file_exists("$this->dataDir/$this->versionsRootOfUser1/sub/test.txt.v$t0" . MetaStorage::VERSION_FILE_EXT),
 				'A version metadata-file must be created for the file before restoration'
 			);
 
 			$this->assertTrue(
-				$this->rootView->file_exists($m1),
+				\file_exists("$this->dataDir/$m1"),
 				'Untouched metadata-file is still there'
 			);
 
 			$this->assertFalse(
-				$this->rootView->file_exists($m2),
+				\file_exists("$this->dataDir/$m2"),
 				'Restored metadata file must be gone from files_version folder'
 			);
 		}
