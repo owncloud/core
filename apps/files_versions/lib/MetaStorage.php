@@ -60,6 +60,9 @@ class MetaStorage {
 	/** @var FileHelper  */
 	private $fileHelper;
 
+	/** @var boolean */
+	private $objectStoreEnabled;
+
 	/** @var string File-extension of the metadata of the current file  */
 	public const CURRENT_FILE_EXT = ".current.json";
 
@@ -73,6 +76,11 @@ class MetaStorage {
 	public function __construct(string $dataDir, FileHelper $fileHelper) {
 		$this->dataDir = $dataDir;
 		$this->fileHelper = $fileHelper;
+
+		$this->objectStoreEnabled = (new View(""))
+			->getFileInfo("/")
+			->getStorage()
+			->instanceOfStorage(ObjectStoreStorage::class);
 	}
 
 	/**
@@ -193,6 +201,13 @@ class MetaStorage {
 		if (\file_exists($src)) {
 			$op($src, $dst);
 		}
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isObjectStoreEnabled(): bool {
+		return $this->objectStoreEnabled;
 	}
 
 	/**
