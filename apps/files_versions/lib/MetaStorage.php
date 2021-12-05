@@ -2,7 +2,7 @@
 /**
  * @author Ilja Neumann <ineumann@owncloud.com>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2021, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -62,6 +62,7 @@ class MetaStorage {
 
 	/** @var string File-extension of the metadata of the current file  */
 	public const CURRENT_FILE_EXT = ".current.json";
+
 	/** @var string File-extension of the metadata file for a specific version */
 	public const VERSION_FILE_EXT = ".json";
 
@@ -75,7 +76,6 @@ class MetaStorage {
 	}
 
 	/**
-	 *
 	 * Creates or overwrites a metadata file for a current file. This is called
 	 * after every modification of a file to store the last author.
 	 *
@@ -143,7 +143,7 @@ class MetaStorage {
 		$uid = $versionsView->getOwner("/");
 		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$versionPath" . self::VERSION_FILE_EXT);
 		if (\file_exists($toDelete)) {
-			$r = \unlink($toDelete);
+			\unlink($toDelete);
 		}
 	}
 
@@ -155,6 +155,7 @@ class MetaStorage {
 	public function deleteCurrent(View $versionsView, string $filename) {
 		$uid = $versionsView->getOwner("/");
 		$toDelete = $this->pathToAbsDiskPath($uid, "files_versions$filename" . self::CURRENT_FILE_EXT);
+
 		if (\file_exists($toDelete)) {
 			\unlink($toDelete);
 		}
@@ -169,15 +170,15 @@ class MetaStorage {
 	 * @param $fileToRestore
 	 * @param $target
 	 */
-	public function restore($uid, $fileToRestore, $target) {
+	public function restore(string $uid, string $fileToRestore, string $target) {
 		$restoreDirName = \dirname($fileToRestore);
 		$restoreName = \basename($target);
 
 		$src = self::pathToAbsDiskPath($uid, $fileToRestore) . self::VERSION_FILE_EXT;
-		$tgt = self::pathToAbsDiskPath($uid, "$restoreDirName/$restoreName") . self::CURRENT_FILE_EXT;
+		$dst = self::pathToAbsDiskPath($uid, "$restoreDirName/$restoreName") . self::CURRENT_FILE_EXT;
 
 		if (\file_exists($src)) {
-			\rename($src, $tgt);
+			\rename($src, $dst);
 		}
 	}
 
@@ -186,10 +187,11 @@ class MetaStorage {
 			throw new \InvalidArgumentException('Only move and copy are supported');
 		}
 
-		$srcFile = self::pathToAbsDiskPath($srcOwnerUid, $src);
-		$dstFile = self::pathToAbsDiskPath($dstOwnerUid, $dst);
-		if (\file_exists($srcFile)) {
-			$op($srcFile, $dstFile);
+		$src = self::pathToAbsDiskPath($srcOwnerUid, $src);
+		$dst = self::pathToAbsDiskPath($dstOwnerUid, $dst);
+
+		if (\file_exists($src)) {
+			$op($src, $dst);
 		}
 	}
 
