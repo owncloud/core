@@ -23,8 +23,11 @@
 
 namespace OCA\Files_Versions\AppInfo;
 
+use OC\AllConfig;
 use OCA\Files_Versions\Expiration;
 use OCA\Files_Versions\FileHelper;
+use OCA\Files_Versions\MetaStorage;
+use OCA\Files_Versions\Storage;
 use OCP\AppFramework\App;
 
 class Application extends App {
@@ -57,5 +60,17 @@ class Application extends App {
 				return new FileHelper();
 			}
 		);
+
+		/** @var AllConfig $config */
+		$config = $container->query('ServerContainer')->getConfig();
+		$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+		$dataDir = $config->getSystemValue('datadirectory');
+
+		if ($metaEnabled) {
+			Storage::enableMetaData(new MetaStorage(
+				$dataDir,
+				$container->query('FileHelper')
+			));
+		}
 	}
 }
