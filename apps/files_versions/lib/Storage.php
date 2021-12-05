@@ -89,7 +89,7 @@ class Storage {
 	private static $metaData = null;
 
 	public static function metaEnabled() : bool {
-		return self::$metaData instanceof MetaStorage;
+		return self::$metaData instanceof MetaStorage && !self::$metaData->isObjectStoreEnabled();
 	}
 
 	public static function enableMetaData(?MetaStorage $instance) {
