@@ -54,6 +54,12 @@ use OCP\Files\FileInfo;
  */
 class MetaStorage {
 
+	/** @var string File-extension of the metadata of the current file  */
+	public const CURRENT_FILE_EXT = ".current.json";
+
+	/** @var string File-extension of the metadata file for a specific version */
+	public const VERSION_FILE_EXT = ".json";
+
 	/** @var string  */
 	private $dataDir;
 
@@ -63,11 +69,6 @@ class MetaStorage {
 	/** @var boolean */
 	private $objectStoreEnabled;
 
-	/** @var string File-extension of the metadata of the current file  */
-	public const CURRENT_FILE_EXT = ".current.json";
-
-	/** @var string File-extension of the metadata file for a specific version */
-	public const VERSION_FILE_EXT = ".json";
 
 	/**
 	 * @param string $dataDir Absolute path to the data-directory

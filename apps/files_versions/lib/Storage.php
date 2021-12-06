@@ -88,13 +88,25 @@ class Storage {
 	/** @var MetaStorage|null */
 	private static $metaData = null;
 
+
+	/**
+	 * Enables the "versioning-metadata"  feature by receiving
+	 * the non-static MetaStorage. Mostly a workaround to keep this class from getting
+	 * convoluted.
+	 *
+	 * @see MetaStorage
+	 */
+	public static function enableMetaData(?MetaStorage $metaStorage) {
+		self::$metaData = $metaStorage;
+	}
+
+	/**
+	 * Can only be enabled with LocalStorage, fails silently.
+	 */
 	public static function metaEnabled() : bool {
 		return self::$metaData instanceof MetaStorage && !self::$metaData->isObjectStoreEnabled();
 	}
 
-	public static function enableMetaData(?MetaStorage $instance) {
-		self::$metaData = $instance;
-	}
 
 	/**
 	 * get the UID of the owner of the file and the path to the file relative to
@@ -531,7 +543,7 @@ class Storage {
 						$versions[$key]['storage_location'] = "$dir/$entryName";
 						$versions[$key]['owner'] = $uid;
 
-						if ($metaDataEnabled) {
+						if (self::metaEnabled()) {
 							$versionFile = $dir . '/' . $entryName;
 							$versionFileInfo = $view->getFileInfo($versionFile);
 							$metaDataFilePath = $dataDir . '/' . $versionFileInfo->getPath() . MetaStorage::VERSION_FILE_EXT;
