@@ -1,3 +1,9 @@
+OC_CI_ALPINE = "owncloudci/alpine:latest"
+OC_CI_CORE_NODEJS = "owncloudci/core:nodejs14"
+OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
+OC_CI_NODEJS = "owncloudci/nodejs:14"
+OC_UBUNTU = "owncloud/ubuntu:20.04"
+
 dir = {
     "base": "/drone",
     "server": "/drone/src",
@@ -460,7 +466,6 @@ def dependencies(ctx):
 
     default = {
         "phpVersions": ["7.3"],
-        "nodeJsVersion": "14",
     }
 
     if "defaults" in config:
@@ -505,7 +510,7 @@ def dependencies(ctx):
                          vendorbinPhan(phpVersion) +
                          vendorbinPhpstan(phpVersion) +
                          vendorbinBehat() +
-                         yarnInstall(params["nodeJsVersion"]) +
+                         yarnInstall() +
                          cacheRebuildOnEventPush() +
                          cacheFlushOnEventPush(),
                 "depends_on": [],
@@ -641,7 +646,7 @@ def changelog(ctx):
             },
             {
                 "name": "diff",
-                "image": "owncloudci/alpine:latest",
+                "image": OC_CI_ALPINE,
                 "pull": "always",
                 "commands": [
                     "git diff",
@@ -1146,7 +1151,6 @@ def javascript(ctx, withCoverage):
         return pipelines
 
     default = {
-        "nodeJsVersion": "14",
         "coverage": True,
         "logLevel": "2",
         "skip": False,
@@ -1190,11 +1194,11 @@ def javascript(ctx, withCoverage):
             "path": "src",
         },
         "steps": cacheRestore() +
-                 yarnInstall(params["nodeJsVersion"]) +
+                 yarnInstall() +
                  [
                      {
                          "name": "test-js",
-                         "image": "owncloudci/nodejs:%s" % params["nodeJsVersion"],
+                         "image": OC_CI_NODEJS,
                          "pull": "always",
                          "commands": [
                              "make test-js",
@@ -1500,7 +1504,6 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
-        "nodeJsVersion": "14",
         "databases": ["mariadb:10.2"],
         "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
@@ -1707,7 +1710,7 @@ def acceptance(ctx):
                                     "steps": cacheRestore() +
                                              composerInstall(phpVersion) +
                                              vendorbinBehat() +
-                                             yarnInstall(params["nodeJsVersion"]) +
+                                             yarnInstall() +
                                              ((
                                                  installCoreFromTarball(params["coreTarball"], db, params["logLevel"], params["useHttps"], params["federatedServerNeeded"], params["proxyNeeded"], pathOfServerUnderTest)
                                              ) if params["testAgainstCoreTarball"] else (
@@ -1721,8 +1724,9 @@ def acceptance(ctx):
                                              setupCeph(phpVersion, params["cephS3"]) +
                                              setupScality(phpVersion, params["scalityS3"]) +
                                              params["extraSetup"] +
-                                             waitForServer(phpVersion, params["federatedServerNeeded"]) +
-                                             waitForBrowserService(phpVersion, isWebUI) +
+                                             waitForServer(params["federatedServerNeeded"]) +
+                                             waitForEmailService(params["emailNeeded"]) +
+                                             waitForBrowserService(browser) +
                                              fixPermissions(phpVersion, params["federatedServerNeeded"], params["selUserNeeded"], pathOfServerUnderTest) +
                                              owncloudLog("server", pathOfServerUnderTest) +
                                              [
@@ -1775,7 +1779,7 @@ def acceptance(ctx):
 
     return pipelines
 
-def sonarAnalysis(ctx, phpVersion = "7.4", nodeJsVersion = "14"):
+def sonarAnalysis(ctx, phpVersion = "7.4"):
     sonar_env = {
         "SONAR_TOKEN": {
             "from_secret": "sonar_token",
@@ -1806,7 +1810,7 @@ def sonarAnalysis(ctx, phpVersion = "7.4", nodeJsVersion = "14"):
         "steps": [
                      {
                          "name": "clone",
-                         "image": "owncloudci/alpine:latest",
+                         "image": OC_CI_ALPINE,
                          "commands": [
                              "git clone https://github.com/%s.git ." % (repo_slug),
                              "git checkout $DRONE_COMMIT",
@@ -1815,7 +1819,7 @@ def sonarAnalysis(ctx, phpVersion = "7.4", nodeJsVersion = "14"):
                  ] +
                  cacheRestore() +
                  composerInstall(phpVersion) +
-                 yarnInstall(nodeJsVersion) +
+                 yarnInstall() +
                  installServer(phpVersion, "sqlite") +
                  [
                      {
@@ -1953,7 +1957,7 @@ def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
     if (earlyFail):
         return [{
             "name": "build-github-comment-buildStop",
-            "image": "owncloud/ubuntu:16.04",
+            "image": OC_UBUNTU,
             "pull": "always",
             "commands": [
                 'echo ":boom: Acceptance tests pipeline <strong>%s</strong> failed. The build has been cancelled.\\n\\n${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1\\n" >> %s/comments.file' % (alternateSuiteName, dir["server"]),
@@ -2075,16 +2079,16 @@ def browserService(browser):
 
     return []
 
-def waitForBrowserService(phpVersion, isWebUi):
-    if isWebUi:
+def waitForBrowserService(browser):
+    if browser in ["chrome", "firefox"]:
         return [{
             "name": "wait-for-selenium",
-            "image": "owncloudci/php:%s" % phpVersion,
-            "pull": "always",
+            "image": OC_CI_WAIT_FOR,
             "commands": [
-                "wait-for-it -t 600 selenium:4444",
+                "wait-for -it selenium:4444 -t 600",
             ],
         }]
+
     return []
 
 def emailService(emailNeeded):
@@ -2093,6 +2097,18 @@ def emailService(emailNeeded):
             "name": "email",
             "image": "mailhog/mailhog",
             "pull": "always",
+        }]
+
+    return []
+
+def waitForEmailService(emailNeeded):
+    if emailNeeded:
+        return [{
+            "name": "wait-for-email",
+            "image": OC_CI_WAIT_FOR,
+            "commands": [
+                "wait-for -it email:8025 -t 600",
+            ],
         }]
 
     return []
@@ -2475,10 +2491,10 @@ def vendorbinBehat():
         ],
     }]
 
-def yarnInstall(nodeJsVersion):
+def yarnInstall():
     return [{
         "name": "yarn-install",
-        "image": "owncloudci/nodejs:%s" % nodeJsVersion,
+        "image": OC_CI_NODEJS,
         "pull": "always",
         "environment": {
             "NPM_CONFIG_CACHE": "%s/.cache/npm" % dir["server"],
@@ -2654,7 +2670,7 @@ def installFederated(ctx, federatedServerVersion, db, dbSuffix = "fed"):
 
     return {
         "name": "install-federated",
-        "image": "owncloudci/core:nodejs14",
+        "image": OC_CI_CORE_NODEJS,
         "pull": "always",
         "settings": installerSettings,
     }
@@ -2684,18 +2700,26 @@ def setupCeph(phpVersion, cephS3):
     if not cephS3:
         return []
 
-    return [{
-        "name": "setup-ceph",
-        "image": "owncloudci/php:%s" % phpVersion,
-        "pull": "always",
-        "commands": [
-            "wait-for-it -t 600 ceph:80",
-            "cd %s/apps/files_primary_s3" % dir["server"],
-            "cp tests/drone/ceph.config.php %s/config" % dir["server"],
-            "cd /var/www/owncloud/server",
-            "./apps/files_primary_s3/tests/drone/create-bucket.sh",
-        ],
-    }]
+    return [
+        {
+            "name": "wait-for-ceph",
+            "image": OC_CI_WAIT_FOR,
+            "commands": [
+                "wait-for -it ceph:80 -t 600",
+            ],
+        },
+        {
+            "name": "setup-ceph",
+            "image": "owncloudci/php:%s" % phpVersion,
+            "pull": "always",
+            "commands": [
+                "cd %s/apps/files_primary_s3" % dir["server"],
+                "cp tests/drone/ceph.config.php %s/config" % dir["server"],
+                "cd /var/www/owncloud/server",
+                "./apps/files_primary_s3/tests/drone/create-bucket.sh",
+            ],
+        },
+    ]
 
 def setupScality(phpVersion, scalityS3):
     if type(scalityS3) == "bool":
@@ -2709,18 +2733,26 @@ def setupScality(phpVersion, scalityS3):
     configFile = "scality%s.config.php" % specialConfig
     createExtraBuckets = scalityS3["createExtraBuckets"] if "createExtraBuckets" in scalityS3 else False
 
-    return [{
-        "name": "setup-scality",
-        "image": "owncloudci/php:%s" % phpVersion,
-        "pull": "always",
-        "commands": [
-            "wait-for-it -t 600 scality:8000",
-            "cp %s/apps/files_primary_s3/tests/drone/%s %s/config" % (dir["server"], configFile, dir["server"]),
-            "php occ s3:create-bucket owncloud --accept-warning",
-        ] + ([
-            "for I in $(seq 1 9); do php ./occ s3:create-bucket owncloud$I --accept-warning; done",
-        ] if createExtraBuckets else []),
-    }]
+    return [
+        {
+            "name": "wait-for-scality",
+            "image": OC_CI_WAIT_FOR,
+            "commands": [
+                "wait-for -it scality:8000 -t 600",
+            ],
+        },
+        {
+            "name": "setup-scality",
+            "image": "owncloudci/php:%s" % phpVersion,
+            "pull": "always",
+            "commands": [
+                "cp %s/apps/files_primary_s3/tests/drone/%s %s/config" % (dir["server"], configFile, dir["server"]),
+                "php occ s3:create-bucket owncloud --accept-warning",
+            ] + ([
+                "for I in $(seq 1 9); do php ./occ s3:create-bucket owncloud$I --accept-warning; done",
+            ] if createExtraBuckets else []),
+        },
+    ]
 
 def fixPermissions(phpVersion, federatedServerNeeded, selUserNeeded = False, pathOfServerUnderTest = dir["server"]):
     return [{
@@ -2740,22 +2772,22 @@ def fixPermissions(phpVersion, federatedServerNeeded, selUserNeeded = False, pat
         }],
     }]
 
-def waitForServer(phpVersion, federatedServerNeeded):
+def waitForServer(federatedServerNeeded):
     return [{
         "name": "wait-for-server",
-        "image": "owncloudci/php:%s" % phpVersion,
+        "image": OC_CI_WAIT_FOR,
         "pull": "always",
         "commands": [
-            "wait-for-it -t 600 server:80",
+            "wait-for -it server:80 -t 600",
         ] + ([
-            "wait-for-it -t 600 federated:80",
+            "wait-for -it federated:80 -t 600",
         ] if federatedServerNeeded else []),
     }]
 
 def owncloudLog(server, folder):
     return [{
         "name": "owncloud-log-%s" % server,
-        "image": "owncloud/ubuntu:18.04",
+        "image": OC_UBUNTU,
         "pull": "always",
         "detach": True,
         "commands": [
@@ -2828,7 +2860,7 @@ def installCoreFromTarball(version, db, logLevel = "2", ssl = False, federatedSe
 
     return [{
         "name": "install-tarball",
-        "image": "owncloudci/core:nodejs14",
+        "image": OC_CI_CORE_NODEJS,
         "pull": "always",
         "settings": {
             "version": version,
@@ -2883,7 +2915,7 @@ def installFederatedFromTarball(federatedServerVersion, phpVersion, logLevel, pr
     return [
         {
             "name": "install-federated",
-            "image": "owncloudci/core:nodejs14",
+            "image": OC_CI_CORE_NODEJS,
             "pull": "always",
             "settings": {
                 "version": federatedServerVersion,
