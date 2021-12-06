@@ -170,6 +170,7 @@ config = {
             "extraApps": {
                 "notifications": 'if [ -f "composer.json" ]; then composer install; fi',
             },
+            "skip": True,
         },
         "apiFederation": {
             "suites": [
@@ -180,6 +181,7 @@ config = {
             ],
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
+            "skip": True,
         },
         "cli": {
             "suites": [
@@ -190,12 +192,14 @@ config = {
                 "cliTrashbin",
             ],
             "emailNeeded": True,
+            "skip": True,
         },
         "cliAppManagement": {
             "suites": [
                 "cliAppManagement",
             ],
             "testingRemoteSystem": False,
+            "skip": True,
         },
         "cliEncryption": {
             "suites": [
@@ -223,6 +227,7 @@ config = {
                 "chown -R www-data data/owncloud-keys",
                 "chmod -R 0770 data/owncloud-keys",
             ],
+            "skip": True,
         },
         "cliDbConversion": {
             "suites": [
@@ -243,6 +248,7 @@ config = {
             ],
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
+            "skip": True,
         },
         "webUI": {
             "suites": {
@@ -279,6 +285,7 @@ config = {
             "emailNeeded": True,
             "useHttps": False,
             "selUserNeeded": True,
+            "debugSuites": ["webUIUpload"],
         },
         "webUINotifications": {
             "suites": {
@@ -289,6 +296,7 @@ config = {
             "extraApps": {
                 "notifications": "composer install",
             },
+            "skip": True,
         },
         "webUIFileActionsMenu": {
             "suites": {
@@ -299,6 +307,7 @@ config = {
                 "files_texteditor": "make vendor",
                 "richdocuments": "make vendor",
             },
+            "skip": True,
         },
         "webUIFederation": {
             "suites": {
@@ -307,6 +316,7 @@ config = {
             },
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
+            "skip": True,
         },
         "webUIFirefox": {
             "suites": {
@@ -320,6 +330,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 3,
+            "skip": True,
         },
         "webUIProxy": {
             "suites": {
@@ -334,6 +345,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 3,
+            "skip": True,
         },
         "webUIMobileSize": {
             "suites": {
@@ -351,6 +363,7 @@ config = {
                 "MOBILE_RESOLUTION": "375x812",
                 "OC_LANGUAGE": "en-EN",
             },
+            "skip": True,
         },
         "apiProxy": {
             "suites": {
@@ -361,6 +374,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 8,
+            "skip": True,
         },
         "apiOnSqlite": {
             "suites": {
@@ -370,6 +384,7 @@ config = {
             "useHttps": False,
             "filterTags": "@sqliteDB",
             "runAllSuites": True,
+            "skip": True,
         },
     },
 }
