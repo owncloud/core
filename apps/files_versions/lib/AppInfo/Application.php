@@ -66,11 +66,11 @@ class Application extends App {
 			$container->registerService(
 				MetaStorage::class,
 				function ($c) {
-				return new MetaStorage(
-					$c->query('ServerContainer')->getConfig()->getSystemValue('datadirectory'),
-					$c->query('FileHelper'),
-				);
-			}
+					return new MetaStorage(
+						$c->query('ServerContainer')->getConfig()->getSystemValue('datadirectory'),
+						$c->query('FileHelper'),
+					);
+				}
 			);
 
 			Storage::enableMetaData($container->query(MetaStorage::class));
