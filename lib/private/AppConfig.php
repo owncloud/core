@@ -150,6 +150,10 @@ class AppConfig implements IAppConfig {
 	 * @return bool True if the value was inserted or updated, false if the value was the same
 	 */
 	public function setValue($app, $key, $value) {
+		if ($value === null) {
+			$value = '';
+		}
+
 		return $this->emittingCall(function (&$afterArray) use (&$app, &$key, &$value) {
 			if (!$this->hasKey($app, $key)) {
 				$inserted = (bool) $this->conn->insertIfNotExist('*PREFIX*appconfig', [
@@ -185,7 +189,7 @@ class AppConfig implements IAppConfig {
 			 * http://docs.oracle.com/cd/E11882_01/server.112/e26088/conditions002.htm#i1033286
 			 * > Large objects (LOBs) are not supported in comparison conditions.
 			 */
-			if (!($this->conn instanceof \OC\DB\OracleConnection) && ($value !== null)) {
+			if (!($this->conn instanceof \OC\DB\OracleConnection)) {
 				// Only update the value if:
 				// - it is not the same as the value currently in the database, or
 				// - the value in the database is currently NULL
@@ -321,7 +325,7 @@ class AppConfig implements IAppConfig {
 			) {
 				$row['configvalue'] = '0.0.1';
 			}
-			$this->cache[$row['appid']][$row['configkey']] = $row['configvalue'];
+			$this->cache[$row['appid']][$row['configkey']] = ($row['configvalue'] === null) ? '' : $row['configvalue'];
 		}
 		$result->closeCursor();
 
