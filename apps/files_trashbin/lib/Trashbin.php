@@ -40,6 +40,7 @@ namespace OCA\Files_Trashbin;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCA\Files_Trashbin\Command\Expire;
+use OCA\Files_Versions\MetaStorage;
 use OCP\Encryption\Keys\IStorage;
 use OCP\Files\ForbiddenException;
 use OCP\Files\NotFoundException;
@@ -404,18 +405,18 @@ class Trashbin {
 
 			if ($rootView->is_dir($owner . '/files_versions/' . $ownerPath)) {
 				if ($metaDataEnabled) {
-					$metadataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . '.json');
-					$currentMetaDataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . '_CURRENT');
+					$metadataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . MetaStorage::VERSION_FILE_EXT);
+					$currentMetaDataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_EXT);
 				}
 
 				if ($owner !== $user || $forceCopy) {
 					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $rootView);
 					if ($metaDataEnabled) {
 						if ($metadataFileExists) {
-							self::copy_recursive($owner . '/files_versions/' . $ownerPath . '.json', $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.json' . '.d' . $timestamp, $rootView);
+							self::copy_recursive($owner . '/files_versions/' . $ownerPath . MetaStorage::VERSION_FILE_EXT, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp, $rootView);
 						}
 						if ($currentMetaDataFileExists) {
-							self::copy_recursive($owner . '/files_versions/' . $ownerPath . '.json', $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.json' . '.d' . $timestamp, $rootView);
+							self::copy_recursive($owner . '/files_versions/' . $ownerPath . MetaStorage::VERSION_FILE_EXT, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp, $rootView);
 						}
 					}
 				}
@@ -423,28 +424,28 @@ class Trashbin {
 					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
 					if ($metaDataEnabled) {
 						if ($metadataFileExists) {
-							self::move($rootView, $owner . '/files_versions/' . $ownerPath . '.json', $user . '/files_trashbin/versions/' . $filename . '.json' . '.d' . $timestamp);
+							self::move($rootView, $owner . '/files_versions/' . $ownerPath . MetaStorage::VERSION_FILE_EXT, $user . '/files_trashbin/versions/' . $filename . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp);
 						}
 
 						if ($currentMetaDataFileExists) {
-							self::move($rootView, $owner . '/files_versions/' . $ownerPath . '_CURRENT', $user . '/files_trashbin/versions/' . $filename . '_CURRENT' . '.d' . $timestamp);
+							self::move($rootView, $owner . '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_EXT, $user . '/files_trashbin/versions/' . $filename . MetaStorage::CURRENT_FILE_EXT . '.d' . $timestamp);
 						}
 					}
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
 				foreach ($versions as $v) {
-					$metaVersionExists = $rootView->file_exists($owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json');
+					$metaVersionExists = $rootView->file_exists($owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT);
 
 					if ($owner !== $user || $forceCopy) {
 						self::copy($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $owner . '/files_trashbin/versions/' . $v['name'] . '.v' . $v['version'] . '.d' . $timestamp);
 						if ($metaVersionExists) {
-							self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json', $owner . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
+							self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT, $owner . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp);
 						}
 					}
 					if (!$forceCopy) {
 						self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.d' . $timestamp);
 						if ($metaVersionExists) {
-							self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . '.json', $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.json' . '.d' . $timestamp);
+							self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT, $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp);
 						}
 					}
 				}

@@ -421,7 +421,6 @@ class Storage {
 			$users_view->touch("/files$filename", $revision);
 			Storage::scheduleExpire($uid, $filename);
 
-			// $users_view->file_exists($fileToRestore . '.json'
 			if (self::metaEnabled()) {
 				self::$metaData->restore($uid, $fileToRestore, 'files' . $filename);
 			}
@@ -535,7 +534,7 @@ class Storage {
 						if ($metaDataEnabled) {
 							$versionFile = $dir . '/' . $entryName;
 							$versionFileInfo = $view->getFileInfo($versionFile);
-							$metaDataFilePath = $dataDir . '/' . $versionFileInfo->getPath() . '.json';
+							$metaDataFilePath = $dataDir . '/' . $versionFileInfo->getPath() . MetaStorage::VERSION_FILE_EXT;
 
 							if (\file_exists($metaDataFilePath)) {
 								$metaDataFileContents = \file_get_contents($metaDataFilePath);
