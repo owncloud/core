@@ -69,7 +69,6 @@ class MetaStorage {
 	/** @var boolean */
 	private $objectStoreEnabled;
 
-
 	/**
 	 * @param string $dataDir Absolute path to the data-directory
 	 * @param FileHelper $fileHelper
@@ -77,7 +76,6 @@ class MetaStorage {
 	public function __construct(string $dataDir, FileHelper $fileHelper) {
 		$this->dataDir = $dataDir;
 		$this->fileHelper = $fileHelper;
-
 		$this->objectStoreEnabled = (new View(""))
 			->getFileInfo("/")
 			->getStorage()
@@ -144,6 +142,26 @@ class MetaStorage {
 	public function createForVersion(string $authorUid, FileInfo $version) {
 		$path = self::pathToAbsDiskPath($authorUid, $version->getInternalPath()) . self::VERSION_FILE_EXT;
 		self::writeMetaFile($authorUid, $path);
+	}
+
+	/**
+	 *  Retrieve the uid of the user that has authored a given version.
+	 *
+	 * @param FileInfo $versionFile
+	 * @return string|null null if no metadata is available
+	 */
+	public function getAuthorUid(FileInfo $versionFile) : ?string {
+		$metaDataFilePath = $this->dataDir . '/' . $versionFile->getPath() . MetaStorage::VERSION_FILE_EXT;
+		if (\file_exists($metaDataFilePath)) {
+			$json = \file_get_contents($metaDataFilePath);
+			if ($decoded = \json_decode($json, true)) {
+				if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
+					return $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
+				}
+			}
+		}
+
+		return null;
 	}
 
 	/**

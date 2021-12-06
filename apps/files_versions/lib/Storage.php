@@ -88,7 +88,6 @@ class Storage {
 	/** @var MetaStorage|null */
 	private static $metaData = null;
 
-
 	/**
 	 * Enables the "versioning-metadata"  feature by receiving
 	 * the non-static MetaStorage. Mostly a workaround to keep this class from getting
@@ -106,7 +105,6 @@ class Storage {
 	public static function metaEnabled() : bool {
 		return self::$metaData instanceof MetaStorage && !self::$metaData->isObjectStoreEnabled();
 	}
-
 
 	/**
 	 * get the UID of the owner of the file and the path to the file relative to
@@ -518,10 +516,6 @@ class Storage {
 			return $versions;
 		}
 
-		$config = \OC::$server->getConfig();
-		$metaDataEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
-		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory');
-
 		if (\is_resource($dirContent)) {
 			while (($entryName = \readdir($dirContent)) !== false) {
 				if (!Filesystem::isIgnoredDir($entryName)) {
@@ -543,17 +537,13 @@ class Storage {
 						$versions[$key]['storage_location'] = "$dir/$entryName";
 						$versions[$key]['owner'] = $uid;
 
+						// add author information if the feature is enabled
 						if (self::metaEnabled()) {
-							$versionFile = $dir . '/' . $entryName;
-							$versionFileInfo = $view->getFileInfo($versionFile);
-							$metaDataFilePath = $dataDir . '/' . $versionFileInfo->getPath() . MetaStorage::VERSION_FILE_EXT;
-
-							if (\file_exists($metaDataFilePath)) {
-								$metaDataFileContents = \file_get_contents($metaDataFilePath);
-								if ($decoded = \json_decode($metaDataFileContents, true)) {
-									if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
-										$versions[$key]['edited_by'] = $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
-									}
+							$versionFileInfo = $view->getFileInfo("$dir/$entryName");
+							if ($versionFileInfo) {
+								$uid = self::$metaData->getAuthorUid($versionFileInfo);
+								if ($uid !== null) {
+									$versions[$key]['edited_by'] = $uid;
 								}
 							}
 						}
