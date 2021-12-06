@@ -321,8 +321,6 @@ class Storage {
 	 * @param string $operation can be 'copy' or 'rename'
 	 */
 	public static function renameOrCopy($sourcePath, $targetPath, $operation) {
-		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory');
-
 		list($sourceOwner, $sourcePath) = self::getSourcePathAndUser($sourcePath);
 
 		// it was a upload of a existing file if no old path exists
@@ -367,7 +365,7 @@ class Storage {
 					// move each version json file that holds the name of the user that've made an edit
 					$src = '/files_versions/' . $sourcePath . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT;
 					$dst = '/files_versions/' . $targetPath . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT;
-					self::$metaData->moveOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
+					self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
 				}
 			}
 		}
@@ -376,7 +374,7 @@ class Storage {
 			// Also move/copy the current version
 			$src = '/files_versions/' . $sourcePath . MetaStorage::CURRENT_FILE_EXT;
 			$dst = '/files_versions/' . $targetPath . MetaStorage::CURRENT_FILE_EXT;
-			self::$metaData->moveOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
+			self::$metaData->renameOrCopy($operation, $src, $sourceOwner, $dst, $targetOwner);
 		}
 
 		// if we moved versions directly for a file, schedule expiration check for that file

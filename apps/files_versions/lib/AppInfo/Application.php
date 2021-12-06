@@ -54,23 +54,26 @@ class Application extends App {
 		/*
 		 * Register FileHelper
 		 */
-		$container->registerService(
-			'FileHelper',
-			function ($c) {
-				return new FileHelper();
-			}
-		);
+		$container->registerService('FileHelper', function ($c) {
+			return new FileHelper();
+		});
 
 		/** @var AllConfig $config */
 		$config = $container->query('ServerContainer')->getConfig();
 		$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
-		$dataDir = $config->getSystemValue('datadirectory');
 
 		if ($metaEnabled) {
-			Storage::enableMetaData(new MetaStorage(
-				$dataDir,
-				$container->query('FileHelper')
-			));
+			$container->registerService(
+				MetaStorage::class,
+				function ($c) {
+				return new MetaStorage(
+					$c->query('ServerContainer')->getConfig()->getSystemValue('datadirectory'),
+					$c->query('FileHelper'),
+				);
+			}
+			);
+
+			Storage::enableMetaData($container->query(MetaStorage::class));
 		}
 	}
 }

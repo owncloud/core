@@ -210,9 +210,9 @@ class MetaStorage {
 		}
 	}
 
-	public function moveOrCopy(string $op, string $src, string $srcOwnerUid, string $dst, string $dstOwnerUid) {
+	public function renameOrCopy(string $op, string $src, string $srcOwnerUid, string $dst, string $dstOwnerUid) {
 		if ($op !== 'copy' && $op !== 'rename') {
-			throw new \InvalidArgumentException('Only move and copy are supported');
+			throw new \InvalidArgumentException('Only move/rename and copy are supported');
 		}
 
 		$src = self::pathToAbsDiskPath($srcOwnerUid, $src);

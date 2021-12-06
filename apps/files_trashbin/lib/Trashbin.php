@@ -389,8 +389,9 @@ class Trashbin {
 			$copyKeysResult = false;
 
 			$config = \OC::$server->getConfig();
-			$metaDataEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
-
+			$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+			/** @var MetaStorage  $metaStorage */
+			$metaStorage = \OC::$server->query(MetaStorage::class);
 			/**
 			 * In case if encryption is enabled then we need to retain the keys which were
 			 * deleted due to move operation to trashbin.
@@ -404,48 +405,36 @@ class Trashbin {
 			$rootView = new View('/');
 
 			if ($rootView->is_dir($owner . '/files_versions/' . $ownerPath)) {
-				if ($metaDataEnabled) {
-					$metadataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . MetaStorage::VERSION_FILE_EXT);
-					$currentMetaDataFileExists = $rootView->file_exists($owner . '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_EXT);
-				}
-
 				if ($owner !== $user || $forceCopy) {
-					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $rootView);
-					if ($metaDataEnabled) {
-						if ($metadataFileExists) {
-							self::copy_recursive($owner . '/files_versions/' . $ownerPath . MetaStorage::VERSION_FILE_EXT, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp, $rootView);
-						}
-						if ($currentMetaDataFileExists) {
-							self::copy_recursive($owner . '/files_versions/' . $ownerPath . MetaStorage::VERSION_FILE_EXT, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp, $rootView);
-						}
-					}
+					$src = $owner . '/files_versions/' . $ownerPath;
+					$dst = $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp;
+					self::copy_recursive($src, $dst, $rootView);
 				}
 				if (!$forceCopy) {
-					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
-					if ($metaDataEnabled) {
-						if ($metadataFileExists) {
-							self::move($rootView, $owner . '/files_versions/' . $ownerPath . MetaStorage::VERSION_FILE_EXT, $user . '/files_trashbin/versions/' . $filename . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp);
-						}
-
-						if ($currentMetaDataFileExists) {
-							self::move($rootView, $owner . '/files_versions/' . $ownerPath . MetaStorage::CURRENT_FILE_EXT, $user . '/files_trashbin/versions/' . $filename . MetaStorage::CURRENT_FILE_EXT . '.d' . $timestamp);
-						}
+					$src = '/files_versions/' . $ownerPath;
+					$dst ='/files_trashbin/versions/' . $filename . '.d' . $timestamp;
+					self::move($rootView, "$owner$src", "$user$dst");
+					if ($metaEnabled) {
+						$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $owner, $dst . MetaStorage::VERSION_FILE_EXT, $user);
 					}
 				}
 			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
 				foreach ($versions as $v) {
-					$metaVersionExists = $rootView->file_exists($owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT);
-
 					if ($owner !== $user || $forceCopy) {
-						self::copy($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $owner . '/files_trashbin/versions/' . $v['name'] . '.v' . $v['version'] . '.d' . $timestamp);
-						if ($metaVersionExists) {
-							self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT, $owner . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp);
+						$src = '/files_versions' . $v['path'] . '.v' . $v['version'];
+						$dst = '/files_trashbin/versions/' . $v['name'] . '.v' . $v['version'] . '.d' . $timestamp;
+						self::copy($rootView, "$owner$src", "$owner$dst");
+						if ($metaEnabled) {
+							$metaStorage->renameOrCopy('copy', $src . MetaStorage::VERSION_FILE_EXT, $owner, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
 						}
 					}
 					if (!$forceCopy) {
-						self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.d' . $timestamp);
-						if ($metaVersionExists) {
-							self::move($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT, $user . '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . MetaStorage::VERSION_FILE_EXT . '.d' . $timestamp);
+						$src = '/files_versions' . $v['path'] . '.v' . $v['version'];
+						$dst = '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.d' . $timestamp;
+						self::move($rootView, "$owner$src", "$user$dst");
+						if ($metaEnabled) {
+							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $owner, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
+							;
 						}
 					}
 				}
@@ -606,14 +595,29 @@ class Trashbin {
 				$versionedFile = $file;
 			}
 
+			$config = \OC::$server->getConfig();
+			$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
+			/** @var MetaStorage  $metaStorage */
+			$metaStorage = \OC::$server->query(MetaStorage::class);
+
 			if ($view->is_dir('/files_trashbin/versions/' . $file)) {
 				$rootView->rename(Filesystem::normalizePath($user . '/files_trashbin/versions/' . $file), Filesystem::normalizePath($owner . '/files_versions/' . $ownerPath));
 			} elseif ($versions = self::getVersionsFromTrash($versionedFile, $timestamp, $user)) {
 				foreach ($versions as $v) {
 					if ($timestamp) {
-						$rootView->rename($user . '/files_trashbin/versions/' . $versionedFile . '.v' . $v . '.d' . $timestamp, $owner . '/files_versions/' . $ownerPath . '.v' . $v);
+						$src = '/files_trashbin/versions/' . $versionedFile . '.v' . $v . '.d' . $timestamp;
+						$dst = '/files_versions/' . $ownerPath . '.v' . $v;
+						$rootView->rename("$user$src", "$owner$dst");
+						if ($metaEnabled) {
+							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $user, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
+						}
 					} else {
-						$rootView->rename($user . '/files_trashbin/versions/' . $versionedFile . '.v' . $v, $owner . '/files_versions/' . $ownerPath . '.v' . $v);
+						$src = 	'/files_trashbin/versions/' . $versionedFile . '.v' . $v;
+						$dst =  '/files_versions/' . $ownerPath . '.v' . $v;
+						$rootView->rename("$user$src", "$owner$dst");
+						if ($metaEnabled) {
+							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $user, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
+						}
 					}
 				}
 			}
