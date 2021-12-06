@@ -388,10 +388,15 @@ class Trashbin {
 		if (\OCP\App::isEnabled('files_versions') && !empty($ownerPath)) {
 			$copyKeysResult = false;
 
+			// Temporary
 			$config = \OC::$server->getConfig();
 			$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
-			/** @var MetaStorage  $metaStorage */
-			$metaStorage = \OC::$server->query(MetaStorage::class);
+			/** @var MetaStorage|null  $metaStorage */
+			$metaStorage = null;
+
+			if ($metaEnabled) {
+				$metaStorage = \OC::$server->query(MetaStorage::class);
+			}
 			/**
 			 * In case if encryption is enabled then we need to retain the keys which were
 			 * deleted due to move operation to trashbin.
@@ -595,10 +600,15 @@ class Trashbin {
 				$versionedFile = $file;
 			}
 
+			// Temporary
 			$config = \OC::$server->getConfig();
 			$metaEnabled = $config->getSystemValue('file_storage.save_version_author', false) === true;
-			/** @var MetaStorage  $metaStorage */
-			$metaStorage = \OC::$server->query(MetaStorage::class);
+			/** @var MetaStorage|null  $metaStorage */
+			$metaStorage = null;
+
+			if ($metaEnabled) {
+				$metaStorage = \OC::$server->query(MetaStorage::class);
+			}
 
 			if ($view->is_dir('/files_trashbin/versions/' . $file)) {
 				$rootView->rename(Filesystem::normalizePath($user . '/files_trashbin/versions/' . $file), Filesystem::normalizePath($owner . '/files_versions/' . $ownerPath));
