@@ -2437,7 +2437,7 @@
 										t('files', 'The name "{targetName}" is already used in the folder "{dir}". Please choose a different name.',
 										{
 											targetName: newName,
-											dir: self.getCurrentDirectory(),
+											dir: path,
 										}),
 										{
 											type: 'error'
