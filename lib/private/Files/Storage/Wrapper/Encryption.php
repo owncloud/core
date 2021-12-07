@@ -998,6 +998,12 @@ class Encryption extends Wrapper {
 			}
 		}
 
+		// Don't try to decrypt files which are marked unencrypted in file-cache
+		$info = $this->getCache()->get($path);
+		if (!isset($info['encrypted']) || $info['encrypted'] === false) {
+			return [];
+		}
+
 		$firstBlock = $this->readFirstBlock($path);
 		$result = $this->parseRawHeader($firstBlock);
 
