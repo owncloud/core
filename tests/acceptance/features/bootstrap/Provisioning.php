@@ -5426,7 +5426,7 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function rememberAppEnabledDisabledState():void {
-		if (!OcisHelper::isTestingOnOcisOrReva() && !$this->isRunningForDbConversion()) {
+		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			SetupHelper::init(
 				$this->getAdminUsername(),
 				$this->getAdminPassword(),
@@ -5447,34 +5447,26 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function restoreAppEnabledDisabledState():void {
-		if (!OcisHelper::isTestingOnOcisOrReva() && !$this->isRunningForDbConversion()) {
+		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$this->runOcc(['app:list', '--output json']);
-			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
-			$currentlyEnabledApps = \array_keys($apps["enabled"]);
-			$currentlyDisabledApps = \array_keys($apps["disabled"]);
 
-			foreach ($currentlyDisabledApps as $disabledApp) {
-				if (\in_array($disabledApp, $this->enabledApps)) {
-					$this->adminEnablesOrDisablesApp('enables', $disabledApp);
+			if (!$this->getStdErrOfOccCommand()) {
+				$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+				$currentlyEnabledApps = \array_keys($apps["enabled"]);
+				$currentlyDisabledApps = \array_keys($apps["disabled"]);
+
+				foreach ($currentlyDisabledApps as $disabledApp) {
+					if (\in_array($disabledApp, $this->enabledApps)) {
+						$this->adminEnablesOrDisablesApp('enables', $disabledApp);
+					}
+				}
+
+				foreach ($currentlyEnabledApps as $enabledApp) {
+					if (\in_array($enabledApp, $this->disabledApps)) {
+						$this->adminEnablesOrDisablesApp('disables', $enabledApp);
+					}
 				}
 			}
-
-			foreach ($currentlyEnabledApps as $enabledApp) {
-				if (\in_array($enabledApp, $this->disabledApps)) {
-					$this->adminEnablesOrDisablesApp('disables', $enabledApp);
-				}
-			}
-		}
-	}
-
-	/**
-	 * @AfterScenario @dbConversion
-	 *
-	 * @return void
-	 */
-	public function unsetDbConversionState():void {
-		if ($this->isRunningForDbConversion()) {
-			$this->setDbConversionState(false);
 		}
 	}
 
