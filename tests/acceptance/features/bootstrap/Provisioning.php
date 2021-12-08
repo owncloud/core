@@ -5449,22 +5449,22 @@ trait Provisioning {
 	public function restoreAppEnabledDisabledState():void {
 		if (!OcisHelper::isTestingOnOcisOrReva()) {
 			$this->runOcc(['app:list', '--output json']);
+			\var_dump($this->getStdErrOfOccCommand());
+			\var_dump($this->getStdOutOfOccCommand());
 
-			if (!$this->getStdErrOfOccCommand()) {
-				$apps = \json_decode($this->getStdOutOfOccCommand(), true);
-				$currentlyEnabledApps = \array_keys($apps["enabled"]);
-				$currentlyDisabledApps = \array_keys($apps["disabled"]);
+			$apps = \json_decode($this->getStdOutOfOccCommand(), true);
+			$currentlyEnabledApps = \array_keys($apps["enabled"]);
+			$currentlyDisabledApps = \array_keys($apps["disabled"]);
 
-				foreach ($currentlyDisabledApps as $disabledApp) {
-					if (\in_array($disabledApp, $this->enabledApps)) {
-						$this->adminEnablesOrDisablesApp('enables', $disabledApp);
-					}
+			foreach ($currentlyDisabledApps as $disabledApp) {
+				if (\in_array($disabledApp, $this->enabledApps)) {
+					$this->adminEnablesOrDisablesApp('enables', $disabledApp);
 				}
+			}
 
-				foreach ($currentlyEnabledApps as $enabledApp) {
-					if (\in_array($enabledApp, $this->disabledApps)) {
-						$this->adminEnablesOrDisablesApp('disables', $enabledApp);
-					}
+			foreach ($currentlyEnabledApps as $enabledApp) {
+				if (\in_array($enabledApp, $this->disabledApps)) {
+					$this->adminEnablesOrDisablesApp('disables', $enabledApp);
 				}
 			}
 		}
