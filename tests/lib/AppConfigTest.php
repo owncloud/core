@@ -8,6 +8,7 @@
  */
 
 namespace Test;
+use OC\DB\OracleConnection;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -198,7 +199,7 @@ class AppConfigTest extends TestCase {
 		$this->assertConfigKey('testapp', 'installed_version', '1.2.3');
 
 		$wasModified = $config->setValue('testapp', 'installed_version', '1.2.3');
-		if (!(\OC::$server->getDatabaseConnection() instanceof \OC\DB\OracleConnection)) {
+		if (!(\OC::$server->getDatabaseConnection() instanceof OracleConnection)) {
 			$this->assertFalse($wasModified);
 		}
 
@@ -241,30 +242,45 @@ class AppConfigTest extends TestCase {
 		$this->assertConfigKey('testapp', 'installed_version', '1.33.7');
 	}
 
-	public function dataSetValueUpdateEmptyValues() {
+	public function dataSetValueUpdateValues() {
 		return [
-			[null, ''],
-			[null, 'non-empty'],
-			['', null],
-			['', 'non-empty'],
-			['non-empty', ''],
-			['non-empty', null],
-			['non-empty', 'different-non-empty-string'],
+			[null, null, '', null],
+			[null, null, 'non-empty', 'non-empty'],
+			['', null, null, null],
+			['', null, 'non-empty', 'non-empty'],
+			['non-empty', 'non-empty', '', null],
+			['non-empty', 'non-empty', null, null],
+			['non-empty', 'non-empty', 'different-non-empty-string', 'different-non-empty-string'],
 		];
 	}
 
 	/**
-	 * @dataProvider dataSetValueUpdateEmptyValues
+	 * @dataProvider dataSetValueUpdateValues
 	 * @param string|null $firstValue
+	 * @param string|null $firstOracleResult
 	 * @param string|null $updatedValue
+	 * @param string|null $updatedOracleResult
 	 */
-	public function testSetValueUpdateEmptyValues($firstValue, $updatedValue) {
+	public function testSetValueUpdateValues(
+		$firstValue,
+		$firstOracleResult,
+		$updatedValue,
+		$updatedOracleResult
+	) {
 		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
 
 		$config->setValue('someapp', 'somekey', $firstValue);
-		$this->assertConfigKey('someapp', 'somekey', $firstValue);
+		if (\OC::$server->getDatabaseConnection() instanceof OracleConnection) {
+			$this->assertConfigKey('someapp', 'somekey', $firstOracleResult);
+		} else {
+			$this->assertConfigKey('someapp', 'somekey', $firstValue);
+		}
 		$config->setValue('someapp', 'somekey', $updatedValue);
-		$this->assertConfigKey('someapp', 'somekey', $updatedValue);
+		if (\OC::$server->getDatabaseConnection() instanceof OracleConnection) {
+			$this->assertConfigKey('someapp', 'somekey', $updatedOracleResult);
+		} else {
+			$this->assertConfigKey('someapp', 'somekey', $updatedValue);
+		}
 	}
 
 	public function testSetValueInsert() {
@@ -310,7 +326,7 @@ class AppConfigTest extends TestCase {
 		$this->assertConfigKey('someapp', 'somekey', 'somevalue');
 
 		$wasInserted = $config->setValue('someapp', 'somekey', 'somevalue');
-		if (!(\OC::$server->getDatabaseConnection() instanceof \OC\DB\OracleConnection)) {
+		if (!(\OC::$server->getDatabaseConnection() instanceof OracleConnection)) {
 			$this->assertFalse($wasInserted);
 		}
 	}
