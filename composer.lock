@@ -1329,16 +1329,16 @@
         },
         {
             "name": "laminas/laminas-stdlib",
-            "version": "3.6.1",
+            "version": "3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-stdlib.git",
-                "reference": "db581851a092246ad99e12d4fddf105184924c71"
+                "reference": "6fe0842909638ca6bea8401b7e8168fb154bffb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/db581851a092246ad99e12d4fddf105184924c71",
-                "reference": "db581851a092246ad99e12d4fddf105184924c71",
+                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/6fe0842909638ca6bea8401b7e8168fb154bffb5",
+                "reference": "6fe0842909638ca6bea8401b7e8168fb154bffb5",
                 "shasum": ""
             },
             "require": {
@@ -1384,7 +1384,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-11-10T11:33:52+00:00"
+            "time": "2021-12-07T21:06:58+00:00"
         },
         {
             "name": "laminas/laminas-validator",
@@ -5565,12 +5565,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "e26f8fefe293849248fb3414805684d0ba1f94f3"
+                "reference": "48f62899325ede08503d5532d9e1c98d7983df55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/e26f8fefe293849248fb3414805684d0ba1f94f3",
-                "reference": "e26f8fefe293849248fb3414805684d0ba1f94f3",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/48f62899325ede08503d5532d9e1c98d7983df55",
+                "reference": "48f62899325ede08503d5532d9e1c98d7983df55",
                 "shasum": ""
             },
             "conflict": {
@@ -5786,6 +5786,7 @@
                 "prestashop/autoupgrade": ">=4,<4.10.1",
                 "prestashop/contactform": ">1.0.1,<4.3",
                 "prestashop/gamification": "<2.3.2",
+                "prestashop/prestashop": ">=1.7.5,<=1.7.8.1",
                 "prestashop/productcomments": ">=4,<4.2.1",
                 "prestashop/ps_emailsubscription": "<2.6.1",
                 "prestashop/ps_facetedsearch": "<3.4.1",
@@ -5983,7 +5984,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-12-06T18:19:48+00:00"
+            "time": "2021-12-07T22:15:12+00:00"
         },
         {
             "name": "sebastian/cli-parser",
