@@ -84,7 +84,7 @@ Summary
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 * Enhancement - Add tooltips for group names in user settings and sharing overview: [#4695](https://github.com/owncloud/enterprise/issues/4695)
 * Enhancement - Display clickable links during web UI upgrade process: [#39184](https://github.com/owncloud/core/pull/39184)
-* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/compare/issues/39183)
+* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core//issues/39183)
 * Enhancement - Hide accept and decline share text on mobile view: [#39224](https://github.com/owncloud/core/pull/39224)
 * Enhancement - Add option to hide the upload estimation in WebUI: [#39228](https://github.com/owncloud/core/pull/39228)
 * Enhancement - Allow skeletondirectory to be an empty string: [#39230](https://github.com/owncloud/core/pull/39230)
@@ -102,7 +102,7 @@ Summary
 * Enhancement - Trim spaces while creating, uploading or renaming entities in webUI: [#39310](https://github.com/owncloud/core/pull/39310)
 * Enhancement - Bring back minimalistic view to occ app:list with '-m' option: [#39326](https://github.com/owncloud/core/pull/39326)
 * Enhancement - Add quality setting for JP(E)G preview images: [#39349](https://github.com/owncloud/core/pull/39349)
-* Enhancement - Add last_login to Provisioning API get user response: [#38351](https://github.com/owncloud/core/pull/38351)
+* Enhancement - Add last_login to Provisioning API get user response: [#39351](https://github.com/owncloud/core/pull/39351)
 * Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
 * Enhancement - Added needed code for webp thumbnail generation to occur: [#39358](https://github.com/owncloud/core/issues/39358)
 * Enhancement - Add show-all-attributes option to occ user:list command: [#39366](https://github.com/owncloud/core/pull/39366)
@@ -787,12 +787,11 @@ Details
    https://github.com/owncloud/core/issues/39178
    https://github.com/owncloud/core/pull/39184
 
-* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/compare/issues/39183)
+* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/issues/39183)
 
    With this PR the update section in Settings->Admin->General will be not shown if setting
    'upgrade.disable-web' is set to true.
 
-   https://github.com/owncloud/core/compare/issues/39183
    https://github.com/owncloud/core/issues/39183
 
 * Enhancement - Hide accept and decline share text on mobile view: [#39224](https://github.com/owncloud/core/pull/39224)
