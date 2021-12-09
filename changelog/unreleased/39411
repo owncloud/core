@@ -1,8 +1,8 @@
-Bugfix: Faulty file list entry after accepting a remote share
+Bugfix: Faulty file list entry after accepting a federated share
 
 With this change, we reload the shared with you file list if the user accepts
 or declines a share.
-This solves the issue after accepting a remote share the table record was not
+This solves the issue after accepting a federated share the table record was not
 pointing to the correct location.
 
 https://github.com/owncloud/core/pull/39411

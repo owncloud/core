@@ -312,9 +312,9 @@ class Activity implements IExtension {
 			case self::SUBJECT_REMOTE_SHARE_RECEIVED:
 				if (\sizeof($params) > 1) {
 					// New activity ownCloud 8.2+
-					return (string) $l->t('Received remote share from %1$s', $params);
+					return (string) $l->t('Received federated share from %1$s', $params);
 				}
-				return (string) $l->t('Received remote share from %s', $params);
+				return (string) $l->t('Received federated share from %s', $params);
 
 			default:
 				return false;
