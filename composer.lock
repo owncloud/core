@@ -2663,16 +2663,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.2.1",
+            "version": "4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "5e651f9ddc2b05745f5b28cd697c8e8c6a0b6146"
+                "reference": "5d739875d624e064018b4709ab544063df42d749"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/5e651f9ddc2b05745f5b28cd697c8e8c6a0b6146",
-                "reference": "5e651f9ddc2b05745f5b28cd697c8e8c6a0b6146",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/5d739875d624e064018b4709ab544063df42d749",
+                "reference": "5d739875d624e064018b4709ab544063df42d749",
                 "shasum": ""
             },
             "require": {
@@ -2687,7 +2687,7 @@
                 "ext-spl": "*",
                 "lib-libxml": ">=2.7.0",
                 "php": "^7.1.0 || ^8.0",
-                "psr/log": "^1.0",
+                "psr/log": "^1.0 || ^2.0 || ^3.0",
                 "sabre/event": "^5.0",
                 "sabre/http": "^5.0.5",
                 "sabre/uri": "^2.0",
@@ -2745,7 +2745,7 @@
                 "issues": "https://github.com/sabre-io/dav/issues",
                 "source": "https://github.com/fruux/sabre-dav"
             },
-            "time": "2021-11-30T13:53:16+00:00"
+            "time": "2021-12-09T06:15:57+00:00"
         },
         {
             "name": "sabre/event",
