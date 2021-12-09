@@ -239,9 +239,57 @@ class AppConfigTest extends TestCase {
 
 		$this->assertEquals('1.33.7', $config->getValue('testapp', 'installed_version'));
 		$this->assertConfigKey('testapp', 'installed_version', '1.33.7');
+	}
 
-		$config->setValue('someapp', 'somekey', 'somevalue');
-		$this->assertConfigKey('someapp', 'somekey', 'somevalue');
+	public function dataSetValue() {
+		return [
+			[null, ''],
+			['', ''],
+			['non-empty', 'non-empty'],
+		];
+	}
+
+	/**
+	 * @dataProvider dataSetValue
+	 * @param string|null $inputValue
+	 * @param string|null $returnedValue
+	 */
+	public function testSetValue($inputValue, $returnedValue) {
+		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+
+		$config->setValue('someapp', 'somekey', $inputValue);
+		$this->assertSame(
+			$returnedValue,
+			$config->getValue('someapp', 'somekey', $returnedValue)
+		);
+	}
+
+	public function dataSetValueUpdateValues() {
+		return [
+			['', 'non-empty'],
+			['non-empty', ''],
+			['non-empty', 'different-non-empty-string'],
+		];
+	}
+
+	/**
+	 * @dataProvider dataSetValueUpdateValues
+	 * @param string|null $firstValue
+	 * @param string|null $updatedValue
+	 */
+	public function testSetValueUpdateValues($firstValue, $updatedValue) {
+		$config = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+
+		$config->setValue('someapp', 'somekey', $firstValue);
+		$this->assertSame(
+			$firstValue,
+			$config->getValue('someapp', 'somekey', $firstValue)
+		);
+		$config->setValue('someapp', 'somekey', $updatedValue);
+		$this->assertSame(
+			$updatedValue,
+			$config->getValue('someapp', 'somekey', $updatedValue)
+		);
 	}
 
 	public function testSetValueInsert() {
@@ -456,6 +504,6 @@ class AppConfigTest extends TestCase {
 		$actual = $query->fetch();
 		$query->closeCursor();
 
-		$this->assertEquals($expected, $actual['configvalue']);
+		$this->assertSame($expected, $actual['configvalue']);
 	}
 }
