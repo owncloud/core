@@ -414,6 +414,9 @@ class Trashbin {
 					$src = $owner . '/files_versions/' . $ownerPath;
 					$dst = $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp;
 					self::copy_recursive($src, $dst, $rootView);
+					if ($metaEnabled) {
+						$metaStorage->copyRecursiveMetaDataFiles('/files_versions/' . $ownerPath, $owner, '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $owner);
+					}
 				}
 				if (!$forceCopy) {
 					$src = '/files_versions/' . $ownerPath;

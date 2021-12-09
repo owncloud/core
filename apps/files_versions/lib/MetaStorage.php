@@ -48,9 +48,9 @@ use OCP\Files\FileInfo;
  *	├── files
  *  │	├── Hello.txt                  # Current file
  *  └── files_versions
- * 		├── Hello.txt.current.json     # Meta for the current file in files
- *      ├── Hello.txt.v1638547177.json # Meta of prev. version
- *      └── Hello.txt.v1638547177      # Content of the prev. version
+ *  	├── Hello.txt.current.json     # Meta for the current file in files
+ *  	├── Hello.txt.v1638547177.json # Meta of prev. version
+ *  	└── Hello.txt.v1638547177      # Content of the prev. version
  */
 class MetaStorage {
 
@@ -210,6 +210,13 @@ class MetaStorage {
 		}
 	}
 
+	/**
+	 * @param string $op
+	 * @param string $src
+	 * @param string $srcOwnerUid
+	 * @param string $dst
+	 * @param string $dstOwnerUid
+	 */
 	public function renameOrCopy(string $op, string $src, string $srcOwnerUid, string $dst, string $dstOwnerUid) {
 		if ($op !== 'copy' && $op !== 'rename') {
 			throw new \InvalidArgumentException('Only move/rename and copy are supported');
@@ -220,6 +227,40 @@ class MetaStorage {
 
 		if (\file_exists($src)) {
 			$op($src, $dst);
+		}
+	}
+
+	/**
+	 * Copy all meta data files from a given folder to a destination folder
+	 * recursively. This method presumes that the folder structure in the
+	 * destination folder has already been created.
+	 *
+	 * @param string $src
+	 * @param string $srcOwnerUid
+	 * @param string $dst
+	 * @param string $dstOwnerUid
+	 */
+	public function copyRecursiveMetaDataFiles(string $src, string $srcOwnerUid, string $dst, string $dstOwnerUid) {
+		$absSrc = self::pathToAbsDiskPath($srcOwnerUid, $src);
+		$absDst = self::pathToAbsDiskPath($dstOwnerUid, $dst);
+
+		if (\is_dir($absSrc)) {
+			return;
+		}
+
+		foreach (\scandir($absSrc) as $filePath) {
+			if ($filePath === '.' || $filePath === '..') {
+				continue;
+			}
+
+			if (\pathinfo($filePath, PATHINFO_EXTENSION) === 'json') {
+				\copy("$absSrc/$filePath", "$absDst/$filePath");
+				continue;
+			}
+
+			if (\is_dir($filePath)) {
+				$this->copyRecursiveMetaDataFiles("$srcOwnerUid/$filePath", $srcOwnerUid, "$dstOwnerUid/$filePath", $dstOwnerUid);
+			}
 		}
 	}
 
