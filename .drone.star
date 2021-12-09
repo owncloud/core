@@ -462,7 +462,7 @@ def stagePipelines(ctx):
     if (litmusPipelines == False) or (davPipelines == False) or (acceptancePipelines == False):
         return False
 
-    return litmusPipelines + davPipelines + acceptancePipelines
+    return acceptancePipelines
 
 def afterCoveragePipelines(ctx):
     return [
