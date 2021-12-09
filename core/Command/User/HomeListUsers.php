@@ -1,0 +1,71 @@
+<?php
+/**
+ * @author Jannik Stehle <jstehle@owncloud.com>
+ *
+ * @copyright Copyright (c) 2021, ownCloud GmbH
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
+
+namespace OC\Core\Command\User;
+
+use OC\Core\Command\Base;
+use OCP\IDBConnection;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
+class HomeListUsers extends Base {
+	/** @var IDBConnection */
+	protected $connection;
+
+	/**
+	 * @param IDBConnection $connection
+	 */
+	public function __construct(IDBConnection $connection) {
+		parent::__construct();
+		$this->connection = $connection;
+	}
+
+	protected function configure() {
+		parent::configure();
+
+		$this
+			->setName('user:home:list-users')
+			->setDescription('List all users that have their home in a given path')
+			->addArgument(
+				'path',
+				InputArgument::REQUIRED,
+				'Path where the user home must be located'
+			);
+	}
+
+	protected function execute(InputInterface $input, OutputInterface $output) {
+		$path = $input->getArgument('path');
+		$query = $this->connection->getQueryBuilder();
+		$query->select('*')
+			->from('accounts')
+			->where($query->expr()->like('home', $query->createNamedParameter("$path%")));
+
+		$result = $query->execute();
+		$users = [];
+		while ($row = $result->fetch()) {
+			$users[] = $row['user_id'];
+		}
+		$result->closeCursor();
+		parent::writeArrayInOutputFormat($input, $output, $users, self::DEFAULT_OUTPUT_PREFIX);
+		return 0;
+	}
+}
