@@ -540,7 +540,7 @@ class OwncloudPage extends Page {
 	 */
 	public function waitForAjaxCallsToStart(
 		Session $session,
-		int $timeout_msec = 2000
+		int $timeout_msec = 1000
 	): void {
 		$timeout_msec = (int) $timeout_msec;
 		if ($timeout_msec <= 0) {

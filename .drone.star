@@ -18,7 +18,6 @@ config = {
     "branches": [
         "master",
     ],
-    "dependencies": True,
     "acceptance": {
         "api": {
             "suites": [
