@@ -1069,6 +1069,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$dialogs = $this->getCurrentPageObject()->getOcDialogs();
 		$isConflictDialog = false;
 		foreach ($dialogs as $dialog) {
+			var_dump($isConflictDialog);
 			$isConflictDialog = \strstr(
 				$dialog->getTitle(),
 				$this->uploadConflictDialogTitle
@@ -1079,6 +1080,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				break;
 			}
 		}
+		var_dump($isConflictDialog);
 		if ($isConflictDialog === false) {
 			throw new Exception(
 				__METHOD__ .
