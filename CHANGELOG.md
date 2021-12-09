@@ -1,14 +1,15 @@
-Changelog for ownCloud Core [unreleased] (UNRELEASED)
+Changelog for ownCloud Core [10.9.0] (2021-12-09)
 =======================================
-The following sections list the changes in ownCloud core unreleased relevant to
+The following sections list the changes in ownCloud core 10.9.0 relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.8.0...master
+[10.9.0]: https://github.com/owncloud/core/compare/v10.8.0...v10.9.0
 
 Summary
 -------
 
 * Security - Patch jquery ui: [#39451](https://github.com/owncloud/core/pull/39451)
+* Security - Patch jquery ui CVE-2016-7103: [#39545](https://github.com/owncloud/core/pull/39545)
 * Bugfix - Do not try to login via auth module if the user is disabled: [#36257](https://github.com/owncloud/core/pull/36257)
 * Bugfix - Do not allow empty system or app config keys: [#38996](https://github.com/owncloud/core/pull/38996)
 * Bugfix - Allow subadministrators to add users to groups they manage: [#39013](https://github.com/owncloud/core/pull/39013)
@@ -55,18 +56,25 @@ Summary
 * Bugfix - Prohibit email/displayname change via API when not allowed: [#39353](https://github.com/owncloud/core/pull/39353)
 * Bugfix - Clicking in the middle of the row in the file list downloads the file: [#39361](https://github.com/owncloud/core/pull/39361)
 * Bugfix - Adjust text of occ encryption command messages: [#39395](https://github.com/owncloud/core/pull/39395)
-* Bugfix - Faulty file list entry after accepting a remote share: [#39411](https://github.com/owncloud/core/pull/39411)
+* Bugfix - Faulty file list entry after accepting a federated share: [#39411](https://github.com/owncloud/core/pull/39411)
 * Bugfix - Add missing `remoteshare.accepted` event parameters: [#39449](https://github.com/owncloud/core/pull/39449)
 * Bugfix - Group administrator permissions: [#39477](https://github.com/owncloud/core/pull/39477)
 * Bugfix - Load l10n js files from the correct app folder: [#39482](https://github.com/owncloud/core/pull/39482)
 * Bugfix - Fix issue searching inside a shared external storage: [#39500](https://github.com/owncloud/core/pull/39500)
 * Bugfix - Fix favicon, cloud symbol on Safari not visible: [#39506](https://github.com/owncloud/core/pull/39506)
+* Bugfix - Clicking the eye icon in password input field does not show the password: [#39528](https://github.com/owncloud/core/pull/39528)
+* Bugfix - Group select in user create panel allows empty and pre-existing groups: [#39532](https://github.com/owncloud/core/pull/39532)
+* Bugfix - An app config value of null could be entered but not updated: [#39554](https://github.com/owncloud/core/pull/39554)
+* Bugfix - Directory name in error message when file name already exists: [#39569](https://github.com/owncloud/core/pull/39569)
+* Bugfix - Prohibit username htaccesstest.txt: [#39572](https://github.com/owncloud/core/pull/39572)
+* Bugfix - Use ViewOnlyPlugin when requesting a meta endpoint using WebDAV v2: [#39575](https://github.com/owncloud/core/pull/39575)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
-* Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
+* Change - Use "federated" rather than "remote" for shares: [#39578](https://github.com/owncloud/core/pull/39578)
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
 * Change - Clarify days parameter of the occ dav:cleanup-chunks command: [#39090](https://github.com/owncloud/core/pull/39090)
 * Change - Add index.html to invalid username list: [#39206](https://github.com/owncloud/core/pull/39206)
+* Change - Allow setting multiple default file actions: [#39541](https://github.com/owncloud/core/pull/39541)
 * Change - Update JavaScript dependencies: [#39385](https://github.com/owncloud/core/pull/39385)
 * Change - Update PHP dependencies: [#38907](https://github.com/owncloud/core/pull/38907)
 * Change - Update Symfony components: [#39061](https://github.com/owncloud/core/pull/39061)
@@ -84,7 +92,7 @@ Summary
 * Enhancement - Confirmation dialog for deleting tags: [#39157](https://github.com/owncloud/core/issues/39157)
 * Enhancement - Add tooltips for group names in user settings and sharing overview: [#4695](https://github.com/owncloud/enterprise/issues/4695)
 * Enhancement - Display clickable links during web UI upgrade process: [#39184](https://github.com/owncloud/core/pull/39184)
-* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core//issues/39183)
+* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39185](https://github.com/owncloud/core/pull/39185)
 * Enhancement - Hide accept and decline share text on mobile view: [#39224](https://github.com/owncloud/core/pull/39224)
 * Enhancement - Add option to hide the upload estimation in WebUI: [#39228](https://github.com/owncloud/core/pull/39228)
 * Enhancement - Allow skeletondirectory to be an empty string: [#39230](https://github.com/owncloud/core/pull/39230)
@@ -111,6 +119,7 @@ Summary
 * Enhancement - Add activity translations for rename and move actions: [#39430](https://github.com/owncloud/core/pull/39430)
 * Enhancement - Add capability for blacklisted files regex: [#39493](https://github.com/owncloud/core/pull/39493)
 * Enhancement - Change the size of the ownCloud logo in the mail header image: [#39501](https://github.com/owncloud/core/pull/39501)
+* Enhancement - Add user:home:list-dirs and user:home:list-users commands: [#39579](https://github.com/owncloud/core/pull/39579)
 
 Details
 -------
@@ -122,6 +131,13 @@ Details
    * CVE-2021-41182 * CVE-2021-41183 * CVE-2021-41184
 
    https://github.com/owncloud/core/pull/39451
+
+* Security - Patch jquery ui CVE-2016-7103: [#39545](https://github.com/owncloud/core/pull/39545)
+
+   Patched a CVE regarding the jquery dialog widget. This widget is currently not being used so
+   this is a preventive patch.
+
+   https://github.com/owncloud/core/pull/39545
 
 * Bugfix - Do not try to login via auth module if the user is disabled: [#36257](https://github.com/owncloud/core/pull/36257)
 
@@ -252,6 +268,8 @@ Details
    (div instead of span)
 
    https://github.com/owncloud/core/pull/39146
+   https://github.com/owncloud/core/pull/39517
+   https://github.com/owncloud/core/pull/39563
 
 * Bugfix - Keep pagination active with empty search queries: [#39155](https://github.com/owncloud/core/pull/39155)
 
@@ -497,10 +515,10 @@ Details
 
    https://github.com/owncloud/core/pull/39395
 
-* Bugfix - Faulty file list entry after accepting a remote share: [#39411](https://github.com/owncloud/core/pull/39411)
+* Bugfix - Faulty file list entry after accepting a federated share: [#39411](https://github.com/owncloud/core/pull/39411)
 
    With this change, we reload the shared with you file list if the user accepts or declines a share.
-   This solves the issue after accepting a remote share the table record was not pointing to the
+   This solves the issue after accepting a federated share the table record was not pointing to the
    correct location.
 
    https://github.com/owncloud/enterprise/issues/4823
@@ -544,6 +562,54 @@ Details
 
    https://github.com/owncloud/core/pull/39506
 
+* Bugfix - Clicking the eye icon in password input field does not show the password: [#39528](https://github.com/owncloud/core/pull/39528)
+
+   During the installation, the user should be able to click the eye icon in the admin user and
+   database password field to see the password, this recently stopped to work and has been fixed
+   with this change.
+
+   https://github.com/owncloud/core/issues/39527
+   https://github.com/owncloud/core/pull/39528
+
+* Bugfix - Group select in user create panel allows empty and pre-existing groups: [#39532](https://github.com/owncloud/core/pull/39532)
+
+   Before this change, the admin could create groups with empty name or multiple times with the
+   same name. This has been fixed with this change.
+
+   https://github.com/owncloud/enterprise/issues/4890
+   https://github.com/owncloud/core/pull/39532
+
+* Bugfix - An app config value of null could be entered but not updated: [#39554](https://github.com/owncloud/core/pull/39554)
+
+   An app config value now cannot be set to null. Any existing null values are now treated as the
+   empty string.
+
+   https://github.com/owncloud/core/pull/39554
+
+* Bugfix - Directory name in error message when file name already exists: [#39569](https://github.com/owncloud/core/pull/39569)
+
+   This fixes an issue where the wrong directory name was shown when trying to rename a file to a name
+   that already exists in the same directory.
+
+   https://github.com/owncloud/core/issues/39552
+   https://github.com/owncloud/core/pull/39569
+
+* Bugfix - Prohibit username htaccesstest.txt: [#39572](https://github.com/owncloud/core/pull/39572)
+
+   Htaccesstest.txt is a special file that can be in the data directory. That is not allowed as a
+   username.
+
+   https://github.com/owncloud/core/issues/39570
+   https://github.com/owncloud/core/pull/39572
+
+* Bugfix - Use ViewOnlyPlugin when requesting a meta endpoint using WebDAV v2: [#39575](https://github.com/owncloud/core/pull/39575)
+
+   This fixes an issue where versions of shared files were downloadable using the new WebDAV API
+   despite missing permissions, e.g. when shared via secure view.
+
+   https://github.com/owncloud/enterprise/issues/4916
+   https://github.com/owncloud/core/pull/39575
+
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
    Propfind requests will now be streamed to reduce memory usage with large responses.
@@ -561,7 +627,7 @@ Details
    https://github.com/owncloud/core/pull/38697
    https://www.php.net/supported-versions.php
 
-* Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
+* Change - Use "federated" rather than "remote" for shares: [#39578](https://github.com/owncloud/core/pull/39578)
 
    Shares from one ownCloud to another ownCloud were referred to in some places as remote shares
    and in other places as federated shares. References to remote shares in error messages and on
@@ -569,6 +635,7 @@ Details
    now calls these federated shares.
 
    https://github.com/owncloud/core/issues/38871
+   https://github.com/owncloud/core/pull/39578
    https://github.com/owncloud/core/pull/38877
 
 * Change - Update url for sync client button and docs: [#38962](https://github.com/owncloud/core/pull/38962)
@@ -590,6 +657,17 @@ Details
 
    https://github.com/owncloud/core/issues/39205
    https://github.com/owncloud/core/pull/39206
+
+* Change - Allow setting multiple default file actions: [#39541](https://github.com/owncloud/core/pull/39541)
+
+   This change allows a mime type to have multiple default file actions. In the past, registering
+   an action as default would overwrite existing defaults.
+
+   In case multiple file actions apply to a mime type, clicking on a file will show the app drawer
+   context menu.
+
+   https://github.com/owncloud/enterprise/issues/4634
+   https://github.com/owncloud/core/pull/39541
 
 * Change - Update JavaScript dependencies: [#39385](https://github.com/owncloud/core/pull/39385)
 
@@ -749,6 +827,7 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4518
    https://github.com/owncloud/core/pull/39126
+   https://github.com/owncloud/core/pull/39516
 
 * Enhancement - Quick action for creating public links: [#4718](https://github.com/owncloud/enterprise/issues/4718)
 
@@ -787,12 +866,13 @@ Details
    https://github.com/owncloud/core/issues/39178
    https://github.com/owncloud/core/pull/39184
 
-* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39183](https://github.com/owncloud/core/issues/39183)
+* Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: [#39185](https://github.com/owncloud/core/pull/39185)
 
    With this PR the update section in Settings->Admin->General will be not shown if setting
    'upgrade.disable-web' is set to true.
 
    https://github.com/owncloud/core/issues/39183
+   https://github.com/owncloud/core/pull/39185
 
 * Enhancement - Hide accept and decline share text on mobile view: [#39224](https://github.com/owncloud/core/pull/39224)
 
@@ -942,12 +1022,12 @@ Details
    https://github.com/owncloud/enterprise/issues/4702
    https://github.com/owncloud/core/pull/39349
 
-* Enhancement - Add last_login to Provisioning API get user response: [#38351](https://github.com/owncloud/core/pull/38351)
+* Enhancement - Add last_login to Provisioning API get user response: [#39351](https://github.com/owncloud/core/pull/39351)
 
    The response to a Provisioning API GET request to the cloud/users/username endpoint now
    includes the last_login time in the response. The value is a Unix timestamp in seconds.
 
-   https://github.com/owncloud/core/pull/38351
+   https://github.com/owncloud/core/pull/39351
 
 * Enhancement - Add priority for JavaScript plugins: [#39359](https://github.com/owncloud/core/pull/39359)
 
@@ -1002,6 +1082,16 @@ Details
 * Enhancement - Change the size of the ownCloud logo in the mail header image: [#39501](https://github.com/owncloud/core/pull/39501)
 
    https://github.com/owncloud/core/pull/39501
+
+* Enhancement - Add user:home:list-dirs and user:home:list-users commands: [#39579](https://github.com/owncloud/core/pull/39579)
+
+   Added two new users commands:
+
+   * `occ user:home:list-dirs` List all homes which are currently used by users * `occ
+   user:home:list-users <path>` List all users who have their home in a given path
+
+   https://github.com/owncloud/core/issues/39502
+   https://github.com/owncloud/core/pull/39579
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
