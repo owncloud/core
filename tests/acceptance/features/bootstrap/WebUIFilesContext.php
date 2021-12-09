@@ -1070,6 +1070,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$isConflictDialog = false;
 		foreach ($dialogs as $dialog) {
 			var_dump($isConflictDialog);
+			var_dump($dialog);
 			$isConflictDialog = \strstr(
 				$dialog->getTitle(),
 				$this->uploadConflictDialogTitle
