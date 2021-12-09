@@ -37,6 +37,10 @@ class Hooks {
 		// Listen to write signals
 		\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');
 
+		if (\OC::$server->getConfig()->getSystemValue('file_storage.save_version_author', false) === true) {
+			\OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Versions\Hooks', 'post_write_hook');
+		}
+
 		// Listen to delete and rename signals
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', 'OCA\Files_Versions\Hooks', 'remove_hook');
 		\OCP\Util::connectHook('OC_Filesystem', 'delete', 'OCA\Files_Versions\Hooks', 'pre_remove_hook');
@@ -57,6 +61,18 @@ class Hooks {
 			$path = $params[\OC\Files\Filesystem::signal_param_path];
 			if ($path<>'') {
 				Storage::store($path);
+			}
+		}
+	}
+
+	/**
+	 * writes metadata for the current file
+	 */
+	public static function post_write_hook($params) {
+		if (\OCP\App::isEnabled('files_versions')) {
+			$path = $params[\OC\Files\Filesystem::signal_param_path];
+			if ($path<>'') {
+				Storage::storeMetaForCurrentFile($path);
 			}
 		}
 	}
