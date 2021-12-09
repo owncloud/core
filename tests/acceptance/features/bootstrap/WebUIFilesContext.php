@@ -1074,7 +1074,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$dialog->getTitle(),
 				$this->uploadConflictDialogTitle
 			);
-			var_dump("title:".$dialog->getTitle());
+			var_dump(" title: ".$dialog->getTitle());
 			var_dump($isConflictDialog);
 			if ($isConflictDialog !== false) {
 				$this->conflictDialog->setElement($dialog->getOwnElement());
