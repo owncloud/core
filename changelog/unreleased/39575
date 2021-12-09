@@ -1,0 +1,7 @@
+Bugfix: Use ViewOnlyPlugin when requesting a meta endpoint using WebDAV v2
+
+This fixes an issue where versions of shared files were downloadable using the
+new WebDAV API despite missing permissions, e.g. when shared via secure view.
+
+https://github.com/owncloud/core/pull/39575
+https://github.com/owncloud/enterprise/issues/4916
