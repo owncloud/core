@@ -539,9 +539,9 @@ class Storage {
 						if (self::metaEnabled()) {
 							$versionFileInfo = $view->getFileInfo("$dir/$entryName");
 							if ($versionFileInfo) {
-								$uid = self::$metaData->getAuthorUid($versionFileInfo);
-								if ($uid !== null) {
-									$versions[$key]['edited_by'] = $uid;
+								$authorUid = self::$metaData->getAuthorUid($versionFileInfo);
+								if ($authorUid !== null) {
+									$versions[$key]['edited_by'] = $authorUid;
 								}
 							}
 						}
