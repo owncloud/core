@@ -438,7 +438,7 @@ class Trashbin {
 						$dst = '/files_trashbin/versions/' . $filename . '.v' . $v['version'] . '.d' . $timestamp;
 						self::move($rootView, "$owner$src", "$user$dst");
 						if ($metaEnabled) {
-							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $owner, $dst . MetaStorage::VERSION_FILE_EXT, $owner);
+							$metaStorage->renameOrCopy('rename', $src . MetaStorage::VERSION_FILE_EXT, $owner, $dst . MetaStorage::VERSION_FILE_EXT, $user);
 							;
 						}
 					}
