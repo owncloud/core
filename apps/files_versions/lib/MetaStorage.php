@@ -244,7 +244,7 @@ class MetaStorage {
 		$absSrc = self::pathToAbsDiskPath($srcOwnerUid, $src);
 		$absDst = self::pathToAbsDiskPath($dstOwnerUid, $dst);
 
-		if (\is_dir($absSrc)) {
+		if (!\is_dir($absSrc)) {
 			return;
 		}
 
