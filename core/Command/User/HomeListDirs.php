@@ -43,7 +43,7 @@ class HomeListDirs extends Base {
 
 		$this
 			->setName('user:home:list-dirs')
-			->setDescription('List all available user home directories that are currently in use');
+			->setDescription('List all available root directories for user homes that are currently in use');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
