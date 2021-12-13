@@ -488,7 +488,13 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			}
 
 			$renameOkay = $this->fileView->rename($sourcePath, $destinationPath);
+
 			if (!$renameOkay) {
+				list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($destinationPath);
+				if ($isMovableMount === true && $targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage') !== true) {
+					throw new SabreForbidden('It is not allowed to move one mount point into another one');
+				}
+
 				throw new SabreForbidden('There was an error while renaming the file or directory');
 			}
 		} catch (StorageNotAvailableException $e) {
