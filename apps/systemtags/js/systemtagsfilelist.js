@@ -142,6 +142,8 @@
 			 * Event handler for when the URL changed
 			 */
 			_onUrlChanged: function (e) {
+				this.setPageTitle()
+
 				if (e.dir) {
 					var tags = _.filter(e.dir.split('/'), function (val) {
 						return val.trim() !== '';
