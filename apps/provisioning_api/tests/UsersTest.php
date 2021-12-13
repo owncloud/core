@@ -723,6 +723,10 @@ class UsersTest extends OriginalTest {
 			->will($this->returnValue(['DummyValue']));
 		$targetUser
 			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('UserToGet'));
+		$targetUser
+			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('Demo User'));
 		$targetUser
@@ -797,6 +801,10 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('Demo User'));
+		$targetUser
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('UserToGet'));
 		$targetUser
 			->expects($this->once())
 			->method('isEnabled')
@@ -903,6 +911,10 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('getDisplayName')
 			->will($this->returnValue('Subadmin User'));
+		$targetUser
+			->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('subadmin'));
 		$targetUser
 			->expects($this->once())
 			->method('getEMailAddress')
