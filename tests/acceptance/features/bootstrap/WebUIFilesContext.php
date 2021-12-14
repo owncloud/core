@@ -1067,7 +1067,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function choiceInUploadConflictDialogWebUI(string $choice):void {
 		$dialogs = $this->getCurrentPageObject()->getOcDialogs();
-		sleep(5);
 		$isConflictDialog = false;
 		foreach ($dialogs as $dialog) {
 			$isConflictDialog = \strstr(
