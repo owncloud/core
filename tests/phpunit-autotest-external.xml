@@ -16,7 +16,6 @@
   </testsuites>
   <!-- filters for code coverage -->
   <coverage>
-    <!-- whitelist processUncoveredFilesFromWhitelist="true" -->
     <include>
       <file>../lib/private/Files/Storage/DAV.php</file>
       <directory suffix=".php">../apps/files_external</directory>
