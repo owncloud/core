@@ -48,6 +48,7 @@
 	"exe": ["application/x-ms-dos-executable"],
 	"flac": ["audio/flac"],
 	"flv": ["video/x-flv"],
+	"fodg": ["application/vnd.oasis.opendocument.graphics-flat-xml"],
 	"gif": ["image/gif"],
 	"gz": ["application/x-gzip", "application/gzip"],
 	"gzip": ["application/x-gzip", "application/gzip"],
