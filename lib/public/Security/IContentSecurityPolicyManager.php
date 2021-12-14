@@ -40,7 +40,7 @@ interface IContentSecurityPolicyManager {
 	 * $policy has to be of type `\OCP\AppFramework\Http\ContentSecurityPolicy`.
 	 *
 	 * WARNING: Using this API incorrectly may make the instance more insecure.
-	 * Do think twice before adding whitelisting resources. Please do also note
+	 * Do think twice before adding allowed resources. Please do also note
 	 * that it is not possible to use the `disallowXYZ` functions.
 	 *
 	 * @param EmptyContentSecurityPolicy $policy

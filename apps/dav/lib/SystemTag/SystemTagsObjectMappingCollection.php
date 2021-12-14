@@ -98,7 +98,7 @@ class SystemTagsObjectMappingCollection implements ICollection {
 				throw new Forbidden('No permission to assign tag ' . $tagId);
 			}
 			/**
-			 * regular user who do not belong to whitelisted groups of static tags
+			 * regular user who does not belong to allowed groups of static tags
 			 * can not assign static tags
 			 */
 			if ((!$tag->isUserEditable() && $tag->isUserAssignable())

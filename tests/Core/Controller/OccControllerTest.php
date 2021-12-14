@@ -58,7 +58,7 @@ class OccControllerTest extends TestCase {
 		$this->assertEquals('Web executor is not allowed to run from a host ' . $fakeHost, $responseData['details']);
 	}
 
-	public function testNotWhiteListedCommand() {
+	public function testNotAllowedCommand() {
 		$this->getControllerMock('localhost');
 
 		$response = $this->controller->execute('missing_command', '');

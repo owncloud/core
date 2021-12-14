@@ -92,7 +92,7 @@ class EmptyContentSecurityPolicy {
 	/**
 	 * Allows to execute JavaScript files from a specific domain. Use * to
 	 * allow JavaScript from all domains.
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */
@@ -127,7 +127,7 @@ class EmptyContentSecurityPolicy {
 	/**
 	 * Allows to execute CSS files from a specific domain. Use * to allow
 	 * CSS from all domains.
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */
@@ -151,7 +151,7 @@ class EmptyContentSecurityPolicy {
 	/**
 	 * Allows using fonts from a specific domain. Use * to allow
 	 * fonts from all domains.
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */
@@ -175,7 +175,7 @@ class EmptyContentSecurityPolicy {
 	/**
 	 * Allows embedding images from a specific domain. Use * to allow
 	 * images from all domains.
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */
@@ -198,7 +198,7 @@ class EmptyContentSecurityPolicy {
 
 	/**
 	 * To which remote domains the JS connect to.
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */
@@ -221,7 +221,7 @@ class EmptyContentSecurityPolicy {
 
 	/**
 	 * From which domains media elements can be embedded.
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */
@@ -244,7 +244,7 @@ class EmptyContentSecurityPolicy {
 
 	/**
 	 * From which domains objects such as <object>, <embed> or <applet> are executed
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */
@@ -267,7 +267,7 @@ class EmptyContentSecurityPolicy {
 
 	/**
 	 * Which domains can be embedded in an iframe
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */
@@ -290,7 +290,7 @@ class EmptyContentSecurityPolicy {
 
 	/**
 	 * Domains from which web-workers and nested browsing content can load elements
-	 * @param string $domain Domain to whitelist. Any passed value needs to be properly sanitized.
+	 * @param string $domain Domain to allow. Any passed value needs to be properly sanitized.
 	 * @return $this
 	 * @since 8.1.0
 	 */

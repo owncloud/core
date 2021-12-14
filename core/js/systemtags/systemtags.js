@@ -44,7 +44,7 @@
 			}
 			if (tag.userVisible === true && tag.userEditable === false && tag.userAssignable === true) {
 				/**
-				 * Users can edit the tag, if they are admin or belong to whitelisted
+				 * Users can edit the tag, if they are admin or belong to an allowed
 				 * group by the edit tag.
 				 */
 				scope = t('core', 'Static')

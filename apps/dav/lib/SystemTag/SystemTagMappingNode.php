@@ -161,7 +161,7 @@ class SystemTagMappingNode implements \Sabre\DAV\INode {
 			}
 			/**
 			 * static tags cannot be unassigned by users who are not part of the group
-			 * whitelisted in the static tags.
+			 * allowed in the static tags.
 			 */
 			if ((!$this->tag->isUserEditable() && $this->tag->isUserAssignable())
 				&& !$this->tagManager->canUserUseStaticTagInGroup($this->tag, $this->user)) {

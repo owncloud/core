@@ -29,7 +29,7 @@ use OCP\IConfig;
 use OCP\IUserSession;
 
 /**
- * This controller is responsible for managing white-listed domains for CORS
+ * This controller is responsible for managing allowed domains for CORS
  *
  * @package OC\Settings\Controller
  */
@@ -83,12 +83,12 @@ class CorsController extends Controller {
 	}
 
 	/**
-	 * Gets all White-listed domains
+	 * Gets all allowed domains
 	 *
 	 * @NoAdminRequired
 	 * @NoSubadminRequired
 	 *
-	 * @return JSONResponse All the White-listed domains
+	 * @return JSONResponse All the allowed domains
 	 */
 	public function getDomains() {
 		$userId = $this->userId;
@@ -97,12 +97,12 @@ class CorsController extends Controller {
 	}
 
 	/**
-	 * WhiteLists a domain for CORS
+	 * Allows a domain for CORS
 	 *
 	 * @NoAdminRequired
 	 * @NoSubadminRequired
 	 *
-	 * @param string $domain The domain to whitelist
+	 * @param string $domain The domain to allow
 	 * @return JSONResponse
 	 */
 	public function addDomain($domain) {
@@ -119,7 +119,7 @@ class CorsController extends Controller {
 			$domainsString = \json_encode($domains);
 
 			$this->config->setUserValue($userId, 'core', 'domains', $domainsString);
-			$this->logger->debug("The domain {$domain} has been white-listed.", ['app' => $this->appName]);
+			$this->logger->debug("The domain {$domain} has been allowed.", ['app' => $this->appName]);
 			return new JSONResponse([ 'domains' => $domains]);
 		} else {
 			$errorMsg = $this->l10n->t("Invalid url '%s'. Urls should be set up like 'http://www.example.com' or 'https://www.example.com'", \strip_tags($domain));
@@ -128,7 +128,7 @@ class CorsController extends Controller {
 	}
 
 	/**
-	 * Removes a WhiteListed Domain
+	 * Removes an allowed Domain
 	 *
 	 * @NoAdminRequired
 	 * @NoSubadminRequired

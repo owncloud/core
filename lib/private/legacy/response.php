@@ -269,7 +269,7 @@ class OC_Response {
 	}
 
 	/**
-	 * This function adds the CORS headers if the requester domain is white-listed
+	 * This function adds the CORS headers if the requester domain is allowed
 	 *
 	 * @param string $userId
 	 * @param string $domain

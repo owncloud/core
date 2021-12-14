@@ -93,7 +93,7 @@ class CorsControllerTest extends TestCase {
 
 	public function testAddDomainWithNoProto() {
 		// Since this domain is invalid,
-		// the success message that the domain is white-listed, wouldn't be triggered
+		// the success message that the domain is allowed, wouldn't be triggered
 		$this->logger
 			->expects($this->never())
 			->method('debug');
@@ -117,7 +117,7 @@ class CorsControllerTest extends TestCase {
 
 	public function testAddInvalidDomain() {
 		// Since this domain is invalid,
-		// the success message that the domain is white-listed, wouldn't be triggered
+		// the success message that the domain is allowed, wouldn't be triggered
 		$this->logger
 			->expects($this->never())
 			->method('debug');
@@ -141,7 +141,7 @@ class CorsControllerTest extends TestCase {
 
 	public function testAddValidDomain() {
 		// Since this domain is valid,
-		// the success message that the domain is white-listed, would be triggered exactly once
+		// the success message that the domain is allowed, would be triggered exactly once
 		$this->logger
 			->expects($this->once())
 			->method('debug');
@@ -158,7 +158,7 @@ class CorsControllerTest extends TestCase {
 	}
 	public function testAddInvalidDomainWithPaths() {
 		// Since this domain is invalid,
-		// the success message that the domain is white-listed, wouldn't be triggered
+		// the success message that the domain is allowed, wouldn't be triggered
 		$this->logger
 			->expects($this->never())
 			->method('debug');
@@ -182,7 +182,7 @@ class CorsControllerTest extends TestCase {
 
 	public function testAddInvalidDomainWithQueryParams() {
 		// Since this domain is invalid,
-		// the success message that the domain is white-listed, wouldn't be triggered
+		// the success message that the domain is allowed, wouldn't be triggered
 		$this->logger
 			->expects($this->never())
 			->method('debug');
@@ -206,7 +206,7 @@ class CorsControllerTest extends TestCase {
 
 	public function testAddInvalidProtocol() {
 		// Since this domain is invalid,
-		// the success message that the domain is white-listed, wouldn't be triggered
+		// the success message that the domain is allowed, wouldn't be triggered
 		$this->logger
 			->expects($this->never())
 			->method('debug');
@@ -235,7 +235,7 @@ class CorsControllerTest extends TestCase {
 			->expects($this->never())
 			->method("setUserValue");
 
-		// The argument for removing domain is the ID of the white-listed domain
+		// The argument for removing domain is the ID of the allowed domain
 		// and not the domain itself
 		$response = $this->corsController->removeDomain('nonexistent.domain');
 
