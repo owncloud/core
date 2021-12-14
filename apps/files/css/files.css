@@ -969,6 +969,7 @@ html.ie8 #controls .button.new {
 #app-content-sharingout table td.filename .nametext {
 	position: static;
 	left: inherit;
+	min-width: 50px;
 }
 
 #app-content-files.has-favorites #fileList td.filename a.name,
