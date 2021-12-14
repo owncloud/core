@@ -24,7 +24,7 @@ script('settings', 'panels/cors');
 	<h2 class="app-name">CORS</h2>
 	<span class="app-name">Cross-Origin Resource Sharing</span>
 
-	<h3><?php p($l->t('White-listed Domains')); ?></h3>
+	<h3><?php p($l->t('Allowed Domains')); ?></h3>
 	<p id="noDomains" <?php if (!empty($_['domains'])) { ?>class="hidden"<?php } ?>>
 		<?php p($l->t('No Domains.')); ?>
 	</p>

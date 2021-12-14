@@ -41,7 +41,7 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	 * System internal paths which should not be protected
 	 * @var array
 	 */
-	private $whitelist = [
+	private $allowedList = [
 		'uploads',
 		'cache',
 		'files_zsync'
@@ -63,10 +63,10 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	protected function formatCacheEntry($entry) {
 		$storageId = $entry->getStorageId();
 
-		// Give all permissions to whitelisted "internal" paths and their
+		// Give all permissions to allowed "internal" paths and their
 		// subdirectories
 		if ($this->isHomeStorage($storageId)) {
-			foreach ($this->whitelist as $path) {
+			foreach ($this->allowedList as $path) {
 				if ($this->startsWith($entry->getPath(), $path)) {
 					$entry['permissions'] = Constants::PERMISSION_ALL;
 					return $entry;

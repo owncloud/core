@@ -17,7 +17,7 @@
 		PROPERTY_USERVISIBLE:	'{' + OC.Files.Client.NS_OWNCLOUD + '}user-visible',
 		PROPERTY_USEREDITABLE:'{' + OC.Files.Client.NS_OWNCLOUD + '}user-editable',
 		PROPERTY_USERASSIGNABLE:'{' + OC.Files.Client.NS_OWNCLOUD + '}user-assignable',
-		PROPERTY_WHITELISTEDINGROUP:'{' + OC.Files.Client.NS_OWNCLOUD + '}editable-in-group'
+		PROPERTY_ALLOWEDINGROUP:'{' + OC.Files.Client.NS_OWNCLOUD + '}editable-in-group'
 	});
 
 	/**
@@ -43,7 +43,7 @@
 			'userVisible': 	OC.Files.Client.PROPERTY_USERVISIBLE,
 			'userEditable':  OC.Files.Client.PROPERTY_USEREDITABLE,
 			'userAssignable': 	OC.Files.Client.PROPERTY_USERASSIGNABLE,
-			'editableInGroup':	OC.Files.Client.PROPERTY_WHITELISTEDINGROUP,
+			'editableInGroup':	OC.Files.Client.PROPERTY_ALLOWEDINGROUP,
 			// read-only, effective permissions computed by the server,
 			'canAssign': OC.Files.Client.PROPERTY_CAN_ASSIGN
 		},

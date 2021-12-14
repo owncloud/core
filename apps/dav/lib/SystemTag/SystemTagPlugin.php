@@ -54,7 +54,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	public const USERASSIGNABLE_PROPERTYNAME = '{http://owncloud.org/ns}user-assignable';
 	public const GROUPS_PROPERTYNAME = '{http://owncloud.org/ns}groups';
 	public const CANASSIGN_PROPERTYNAME = '{http://owncloud.org/ns}can-assign';
-	public const WHITELISTEDINGROUP = '{http://owncloud.org/ns}editable-in-group';
+	public const ALLOWEDINGROUP = '{http://owncloud.org/ns}editable-in-group';
 
 	/**
 	 * @var \Sabre\DAV\Server $server
@@ -274,7 +274,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			return \implode('|', $groups);
 		});
 
-		$propFind->handle(self::WHITELISTEDINGROUP, function () use ($node) {
+		$propFind->handle(self::ALLOWEDINGROUP, function () use ($node) {
 			return $this->tagManager->canUserUseStaticTagInGroup($node->getSystemTag(), $this->userSession->getUser()) ? 'true' : 'false';
 		});
 	}

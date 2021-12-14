@@ -40,7 +40,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 	public const CANASSIGN_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::CANASSIGN_PROPERTYNAME;
 	public const GROUPS_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::GROUPS_PROPERTYNAME;
 	public const USEREDITABLE_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::USEREDITABLE_PROPERTYNAME;
-	public const WHITELISTEDINGROUP = \OCA\DAV\SystemTag\SystemTagPlugin::WHITELISTEDINGROUP;
+	public const ALLOWEDINGROUP = \OCA\DAV\SystemTag\SystemTagPlugin::WHITELISTEDINGROUP;
 
 	/**
 	 * @var \Sabre\DAV\Server
@@ -163,14 +163,14 @@ class SystemTagPluginTest extends \Test\TestCase {
 					self::ID_PROPERTYNAME,
 					self::GROUPS_PROPERTYNAME,
 					self::USEREDITABLE_PROPERTYNAME,
-					self::WHITELISTEDINGROUP,
+					self::ALLOWEDINGROUP,
 				],
 				[
 					self::ID_PROPERTYNAME => '1',
 					// groups only returned when userAssignable is false
 					self::GROUPS_PROPERTYNAME => '',
 					self::USEREDITABLE_PROPERTYNAME => 'true',
-					self::WHITELISTEDINGROUP => 'false'
+					self::ALLOWEDINGROUP => 'false'
 				]
 			],
 		];
