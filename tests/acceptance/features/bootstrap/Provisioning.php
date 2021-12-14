@@ -4883,6 +4883,47 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the free, used, total and relative quota returned by the API should exist and be valid numbers$/
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theQuotaFieldsReturnedByTheApiShouldBValid():void {
+		$quotaData = $this->getResponseXml(null, __METHOD__)->data[0]->quota;
+		$missingQuotaDataString = "";
+		if (!isset($quotaData->free)) {
+			$missingQuotaDataString .= "free ";
+		}
+		if (!isset($quotaData->used)) {
+			$missingQuotaDataString .= "used ";
+		}
+		if (!isset($quotaData->total)) {
+			$missingQuotaDataString .= "total ";
+		}
+		if (!isset($quotaData->relative)) {
+			$missingQuotaDataString .= "relative ";
+		}
+		Assert::assertSame(
+			"",
+			$missingQuotaDataString,
+			"These quota data items are missing: $missingQuotaDataString"
+		);
+		$freeQuota = (string) $quotaData->free;
+		Assert::assertIsNumeric($freeQuota, "free quota '$freeQuota' is not numeric");
+		$usedQuota = (string) $quotaData->used;
+		Assert::assertIsNumeric($usedQuota, "used quota '$usedQuota' is not numeric");
+		$totalQuota = (string) $quotaData->total;
+		Assert::assertIsNumeric($totalQuota, "total quota '$totalQuota' is not numeric");
+		$relativeQuota = (string) $quotaData->relative;
+		Assert::assertIsNumeric($relativeQuota, "free quota '$relativeQuota' is not numeric");
+		Assert::assertSame(
+			(int) $freeQuota + (int) $usedQuota,
+			(int) $totalQuota,
+			"free $freeQuota plus used $usedQuota quota is not equal to total quota $totalQuota"
+		);
+	}
+
+	/**
 	 * @Then /^the quota definition returned by the API should be "([^"]*)"$/
 	 *
 	 * @param string $expectedQuotaDefinition a string that describes the quota

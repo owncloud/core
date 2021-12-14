@@ -17,6 +17,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Brand New User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -30,6 +31,7 @@ Feature: get user
     And the display name returned by the API should be "<displayname>"
     And the email address returned by the API should be "<email>"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
     Examples:
       | username | displayname  | email               |
@@ -46,6 +48,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Brand New User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
 
@@ -69,6 +72,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @notToImplementOnOCIS
@@ -105,6 +109,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -117,6 +122,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -129,6 +135,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -141,6 +148,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -153,6 +161,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -166,6 +175,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Admin Alice"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -183,6 +193,7 @@ Feature: get user
     And the HTTP status code should be "200"
     And the display name returned by the API should be "Regular User"
     And the quota definition returned by the API should be "default"
+    And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
 
   @notToImplementOnOCIS
