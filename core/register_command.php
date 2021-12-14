@@ -166,7 +166,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\LastSeen(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUsers(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\HomeListDirs(\OC::$server->getUserManager()));
-	$application->add(new OC\Core\Command\User\HomeListUsers(\OC::$server->getDatabaseConnection()));
+	$application->add(new OC\Core\Command\User\HomeListUsers(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUserGroups(\OC::$server->getUserManager(), \OC::$server->getGroupManager()));
 	$application->add(new OC\Core\Command\User\Report(\OC::$server->getUserManager(), new UserTypeHelper()));
 	$application->add(new OC\Core\Command\User\ResetPassword(

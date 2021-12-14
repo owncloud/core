@@ -23,6 +23,7 @@ namespace Tests\Core\Command\User;
 
 use Doctrine\DBAL\ForwardCompatibility\DriverStatement;
 use OC\Core\Command\User\HomeListUsers;
+use OC\User\AccountMapper;
 use OCP\IDBConnection;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
@@ -39,17 +40,26 @@ class HomeListUsersTest extends TestCase {
 	/** @var IDBConnection | \PHPUnit\Framework\MockObject\MockObject */
 	private $connection;
 
+	/** @var \OCP\IUserManager | \PHPUnit\Framework\MockObject\MockObject */
+	protected $userManager;
+
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->connection = $this->getMockBuilder('\OC\DB\Connection')
 			->disableOriginalConstructor()
 			->getMock();
-		$command = new HomeListUsers($this->connection);
+		$this->userManager = $this->getMockBuilder('\OC\User\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+		$command = new HomeListUsers(
+			$this->connection,
+			$this->userManager
+		);
 		$this->commandTester = new CommandTester($command);
 	}
 
-	public function testCommandInput() {
+	public function testCommandInputForHomePath() {
 		$homePath = '/path/to/homes';
 		$uid = 'user1';
 
@@ -65,5 +75,32 @@ class HomeListUsersTest extends TestCase {
 		$this->commandTester->execute(['path' => $homePath]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertStringContainsString($uid, $output);
+	}
+
+	public function testCommandInputAll() {
+		$uid = 'testhomeuser';
+		$path = '/some/path';
+		$userObject = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$userObject->method('getHome')->willReturn($path . '/' . $uid);
+		$userObject->method('getUID')->willReturn($uid);
+		$this->userManager->method('search')->willReturn([$uid => $userObject]);
+
+		$this->commandTester->execute(['--all' => true]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertSame("  - $path:\n    - $uid\n", $output);
+	}
+
+	public function testCommandInputBoth() {
+		$this->commandTester->execute(['--all' => true, 'path' => '/some/path']);
+		$output = $this->commandTester->getDisplay();
+		$this->assertStringContainsString('--all and path option cannot be given together', $output);
+	}
+
+	public function testCommandInputNone() {
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertStringContainsString('Not enough arguments (missing: "path").', $output);
 	}
 }

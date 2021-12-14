@@ -23,20 +23,29 @@ namespace OC\Core\Command\User;
 
 use OC\Core\Command\Base;
 use OCP\IDBConnection;
+use OCP\IUserManager;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class HomeListUsers extends Base {
 	/** @var IDBConnection */
 	protected $connection;
 
+	/** @var \OCP\IUserManager */
+	protected $userManager;
+
 	/**
 	 * @param IDBConnection $connection
 	 */
-	public function __construct(IDBConnection $connection) {
+	public function __construct(
+		IDBConnection $connection,
+		IUserManager $userManager
+	) {
 		parent::__construct();
 		$this->connection = $connection;
+		$this->userManager = $userManager;
 	}
 
 	protected function configure() {
@@ -47,25 +56,51 @@ class HomeListUsers extends Base {
 			->setDescription('List all users that have their home in a given path')
 			->addArgument(
 				'path',
-				InputArgument::REQUIRED,
+				InputArgument::OPTIONAL,
 				'Path where the user home must be located'
+			)
+			->addOption(
+				'all',
+				null,
+				InputOption::VALUE_NONE,
+				'List all users for every home path.'
 			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$path = $input->getArgument('path');
-		$query = $this->connection->getQueryBuilder();
-		$query->select('*')
-			->from('accounts')
-			->where($query->expr()->like('home', $query->createNamedParameter("$path%")));
-
-		$result = $query->execute();
-		$users = [];
-		while ($row = $result->fetch()) {
-			$users[] = $row['user_id'];
+		if ($input->getOption('all')) {
+			if ($path !== null) {
+				$output->writeln('<error>--all and path option cannot be given together</error>');
+				return 1;
+			}
+			$users = $this->userManager->search(null, null, null, true);
+			$outputData = [];
+			foreach ($users as $user) {
+				$home = $user->getHome();
+				// Strip away the UID at the end of the path
+				$strippedHome = substr($home, 0, strrpos($home, '/'));
+				$uid = $user->getUID();
+				$outputData[$strippedHome][] = $uid;
+			}
+		} else {
+			if ($path === null) {
+				$output->writeln("<error>\n\n  Not enough arguments (missing: \"path\").\n</error>\n");
+				return 1;
+			}
+			$query = $this->connection->getQueryBuilder();
+			$query->select('*')
+				->from('accounts')
+				->where($query->expr()->like('home', $query->createNamedParameter("$path%")));
+			$result = $query->execute();
+			$outputData = [];
+			while ($row = $result->fetch()) {
+				$outputData[] = $row['user_id'];
+			}
+			$result->closeCursor();
 		}
-		$result->closeCursor();
-		parent::writeArrayInOutputFormat($input, $output, $users, self::DEFAULT_OUTPUT_PREFIX);
+		parent::writeArrayInOutputFormat($input, $output, $outputData, self::DEFAULT_OUTPUT_PREFIX);
+
 		return 0;
 	}
 }
