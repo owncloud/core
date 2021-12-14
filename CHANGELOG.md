@@ -114,6 +114,7 @@ Summary
 * Enhancement - Add activity translations for rename and move actions: [#39430](https://github.com/owncloud/core/pull/39430)
 * Enhancement - Add capability for blacklisted files regex: [#39493](https://github.com/owncloud/core/pull/39493)
 * Enhancement - Change the size of the ownCloud logo in the mail header image: [#39501](https://github.com/owncloud/core/pull/39501)
+* Enhancement - Expand file name area to click: [#39592](https://github.com/owncloud/core/pull/39592)
 
 Details
 -------
@@ -1019,6 +1020,14 @@ Details
 * Enhancement - Change the size of the ownCloud logo in the mail header image: [#39501](https://github.com/owncloud/core/pull/39501)
 
    https://github.com/owncloud/core/pull/39501
+
+* Enhancement - Expand file name area to click: [#39592](https://github.com/owncloud/core/pull/39592)
+
+   With this change, the file name area to click will expand, this is helpful with very small file or
+   folder names (e.g. single digit).
+
+   https://github.com/owncloud/core/issues/39591
+   https://github.com/owncloud/core/pull/39592
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
