@@ -62,6 +62,7 @@ Summary
 * Bugfix - Fix issue searching inside a shared external storage: [#39500](https://github.com/owncloud/core/pull/39500)
 * Bugfix - Fix favicon, cloud symbol on Safari not visible: [#39506](https://github.com/owncloud/core/pull/39506)
 * Bugfix - Properly setup share owner file system on public link shares: [#39518](https://github.com/owncloud/core/pull/39518)
+* Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -549,6 +550,11 @@ Details
 * Bugfix - Properly setup share owner file system on public link shares: [#39518](https://github.com/owncloud/core/pull/39518)
 
    https://github.com/owncloud/core/pull/39518
+
+* Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
+
+   https://github.com/owncloud/core/issues/39556
+   https://github.com/owncloud/core/pull/39585
 
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
