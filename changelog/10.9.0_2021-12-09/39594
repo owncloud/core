@@ -1,0 +1,4 @@
+Enhancement: Add support for the x-office/drawing mimetype
+
+https://github.com/owncloud/core/pull/39594
+https://github.com/owncloud/core/issues/39593
