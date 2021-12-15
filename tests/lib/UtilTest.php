@@ -362,6 +362,25 @@ class UtilTest extends \Test\TestCase {
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/apps/files/', OC_Util::getDefaultPageUrl());
 	}
 
+	public function testGetDefaultPageUrlWithUserConfig() {
+		$uid = $this->getUniqueID();
+		$userDefaultApp = 'user_default_app';
+		\OC_User::setUserId($uid);
+		\OC::$server->getConfig()->setUserValue($uid, 'core', 'defaultapp', $userDefaultApp);
+
+		$appManager = $this->createMock(IAppManager::class);
+		$appManager->expects($this->any())
+			->method('isEnabledForUser')
+			->willReturn(true);
+		Dummy_OC_Util::$appManager = $appManager;
+
+		\putenv('front_controller_active=true');
+		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
+		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/apps/' . $userDefaultApp . '/', Dummy_OC_Util::getDefaultPageUrl());
+		\OC::$server->getConfig()->deleteUserValue($uid, 'core', 'defaultapp');
+		\OC_User::setUserId(null);
+	}
+
 	/**
 	 * Test needUpgrade() when the core version is increased
 	 */

@@ -1175,7 +1175,17 @@ class OC_Util {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
 				$appId = 'files';
-				$defaultApps = \explode(',', \OC::$server->getConfig()->getSystemValue('defaultapp', 'files'));
+				$uid = \OC_User::getUser();
+				$config = \OC::$server->getConfig();
+				$defaultApps = \explode(',', $config->getSystemValue('defaultapp', 'files'));
+
+				if ($uid) {
+					$userDefaultApp = $config->getUserValue($uid, 'core', 'defaultapp', null);
+					if ($userDefaultApp) {
+						\array_unshift($defaultApps, $userDefaultApp);
+					}
+				}
+
 				// find the first app that is enabled for the current user
 				foreach ($defaultApps as $defaultApp) {
 					$defaultApp = OC_App::cleanAppId(\strip_tags($defaultApp));
