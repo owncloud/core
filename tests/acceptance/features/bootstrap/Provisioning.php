@@ -589,9 +589,16 @@ trait Provisioning {
 		];
 		$this->ldap = new Ldap($options);
 		$this->ldap->bind();
-		$this->importLdifFile(
-			__DIR__ . (string)$suiteParameters['ldapInitialUserFilePath']
-		);
+
+		$ldifFile = __DIR__ . (string)$suiteParameters['ldapInitialUserFilePath'];
+		if (OcisHelper::isTestingParallelDeployment()) {
+			$behatYml = \getenv("BEHAT_YML");
+			if ($behatYml) {
+				$configPath = \dirname($behatYml);
+				$ldifFile = $configPath . "/" . \basename($ldifFile);
+			}
+		}
+		$this->importLdifFile($ldifFile);
 		$this->theLdapUsersHaveBeenResynced();
 	}
 
@@ -602,7 +609,8 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theLdapUsersHaveBeenReSynced():void {
-		if (!OcisHelper::isTestingOnOcisOrReva()) {
+		// we need to sync ldap users when testing for parallel deployment
+		if (!OcisHelper::isTestingOnOcisOrReva() || OcisHelper::isTestingParallelDeployment()) {
 			$occResult = SetupHelper::runOcc(
 				['user:sync', 'OCA\User_LDAP\User_Proxy', '-m', 'remove'],
 				$this->getStepLineRef()
@@ -672,6 +680,20 @@ trait Provisioning {
 	}
 
 	/**
+	 * Generates UUIDV4
+	 * Example: 123e4567-e89b-12d3-a456-426614174000
+	 *
+	 * @return string
+	 */
+	public function generateUUIDv4(): string {
+		$data = random_bytes(16);
+		$data[6] = \chr(\ord($data[6]) & 0x0f | 0x40);
+		$data[8] = \chr(\ord($data[8]) & 0x3f | 0x80);
+
+		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+
+	/**
 	 * creates a user in the ldap server
 	 * the created user is added to `createdUsersList`
 	 * ldap users are re-synced after creating a new user
@@ -706,6 +728,16 @@ trait Provisioning {
 		}
 		$entry['gidNumber'] = 5000;
 		$entry['uidNumber'] = $uidNumber;
+
+		if (OcisHelper::isTestingParallelDeployment()) {
+			$entry['objectclass'][] = 'organizationalPerson';
+			$entry['objectclass'][] = 'ownCloud';
+			$entry['objectclass'][] = 'person';
+			$entry['objectclass'][] = 'top';
+			$entry['uid'] = $setting["userid"];
+			$entry['ownCloudSelector'] = $this->getOCSelector();
+			$entry['ownCloudUUID'] = $this->generateUUIDv4();
+		}
 
 		if ($this->federatedServerExists()) {
 			if (!\in_array($setting['userid'], $this->ldapCreatedUsers)) {
@@ -3141,7 +3173,10 @@ trait Provisioning {
 			// So use admin account to list the user
 			// https://github.com/owncloud/ocis/issues/820
 			// The special code can be reverted once the issue is fixed
-			if (OcisHelper::isTestingOnOcis()) {
+			if (OcisHelper::isTestingParallelDeployment()) {
+				$requestingUser = $this->getActualUsername($user);
+				$requestingPassword = $this->getPasswordForUser($user);
+			} elseif (OcisHelper::isTestingOnOcis()) {
 				$requestingUser = 'moss';
 				$requestingPassword = 'vista';
 			} else {
