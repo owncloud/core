@@ -2519,6 +2519,31 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * fetches personal space id for provided user
+	 *
+	 * @param string $user
+	 * @param string|null $password
+	 *
+	 * @return mixed
+	 * @throws GuzzleException
+	 */
+	public function getPersonalSpaceIdForUser(string $user, string $password = null):string {
+		$fullUrl = $this->getBaseUrl() . '/graph/v1.0/me/drives';
+		if (!$password) {
+			$password = $this->getPasswordForUser($user);
+		}
+		$response = HttpRequestHelper::get(
+			$fullUrl,
+			$this->getStepLineRef(),
+			$user,
+			$password
+		);
+		$json = \json_decode($response->getBody()->getContents());
+		// assuming the first space is the personal space
+		return $json->value[0]->id;
+	}
+
+	/**
 	 * @Then the json responded should match with
 	 *
 	 * @param PyStringNode $jsonExpected
