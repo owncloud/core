@@ -23,6 +23,7 @@ namespace TestHelpers;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -363,6 +364,7 @@ class WebDavHelper {
 	}
 
 	/**
+	 * sends a DAV request
 	 *
 	 * @param string|null $baseUrl
 	 * URL of owncloud e.g. http://localhost:8080
@@ -385,8 +387,11 @@ class WebDavHelper {
 	 * @param Client|null $client
 	 * @param array|null $urlParameter to concatenate with path
 	 * @param string|null $doDavRequestAsUser run the DAV as this user, if null its same as $user
+	 * @param bool|null $usingSpacesDavPath to send request with spaces dav
+	 * @param string|null $spaceId space id to perform action on
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function makeDavRequest(
 		?string $baseUrl,
@@ -397,7 +402,7 @@ class WebDavHelper {
 		?array $headers,
 		?string $xRequestId = '',
 		$body = null,
-		?int $davPathVersionToUse = 1,
+		?int $davPathVersionToUse = null,
 		?string $type = "files",
 		?string $sourceIpAddress = null,
 		?string $authType = "basic",
@@ -405,14 +410,23 @@ class WebDavHelper {
 		?int $timeout = 0,
 		?Client $client = null,
 		?array $urlParameter = [],
-		?string $doDavRequestAsUser = null
+		?string $doDavRequestAsUser = null,
+		?bool $usingSpacesDavPath = false,
+		?string $spaceId = null
 	):ResponseInterface {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
-		if ($doDavRequestAsUser === null) {
-			$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
-		} else {
-			$davPath = self::getDavPath($doDavRequestAsUser, $davPathVersionToUse, $type);
+
+		// set default dav version as 1
+		if (!$usingSpacesDavPath && !$davPathVersionToUse) {
+			$davPathVersionToUse = 1;
 		}
+
+		if ($doDavRequestAsUser === null) {
+			$davPath = self::getDavPath($user, $davPathVersionToUse, $type, $usingSpacesDavPath, $spaceId);
+		} else {
+			$davPath = self::getDavPath($doDavRequestAsUser, $davPathVersionToUse, $type, $usingSpacesDavPath, $spaceId);
+		}
+
 		//replace %, # and ? and in the path, Guzzle will not encode them
 		$urlSpecialChar = [['%', '#', '?'], ['%25', '%23', '%3F']];
 		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
@@ -475,13 +489,17 @@ class WebDavHelper {
 	 * @param string|null $user
 	 * @param int|null $davPathVersionToUse (1|2)
 	 * @param string|null $type
+	 * @param bool $usingSpaces
+	 * @param string|null $spaceId
 	 *
 	 * @return string
 	 */
 	public static function getDavPath(
 		?string $user,
-		?int $davPathVersionToUse = 1,
-		?string $type = "files"
+		?int $davPathVersionToUse = null,
+		?string $type = "files",
+		?bool $usingSpaces = false,
+		?string $spaceId = null
 	):string {
 		if ($type === "public-files" || $type === "public-files-old") {
 			return "public.php/webdav/";
@@ -495,20 +513,24 @@ class WebDavHelper {
 		if ($type === "customgroups") {
 			return "remote.php/dav/";
 		}
-		if ($davPathVersionToUse === 1) {
-			$path = "remote.php/webdav/";
-			return $path;
-		} elseif ($davPathVersionToUse === 2) {
-			if ($type === "files") {
-				$path = 'remote.php/dav/files/';
-				return $path . $user . '/';
-			} else {
-				return "remote.php/dav";
-			}
+		if ($usingSpaces) {
+			return "dav/spaces/" . $spaceId . '/';
 		} else {
-			throw new InvalidArgumentException(
-				"DAV path version $davPathVersionToUse is unknown"
-			);
+			if ($davPathVersionToUse === 1) {
+				$path = "remote.php/webdav/";
+				return $path;
+			} elseif ($davPathVersionToUse === 2) {
+				if ($type === "files") {
+					$path = 'remote.php/dav/files/';
+					return $path . $user . '/';
+				} else {
+					return "remote.php/dav";
+				}
+			} else {
+				throw new InvalidArgumentException(
+					"DAV path version $davPathVersionToUse is unknown"
+				);
+			}
 		}
 	}
 

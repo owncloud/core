@@ -51,6 +51,11 @@ trait WebDav {
 	private $usingOldDavPath = true;
 
 	/**
+	 * @var boolean
+	 */
+	private $usingSpacesDavPath = false;
+
+	/**
 	 * @var ResponseInterface[]
 	 */
 	private $uploadResponses;
@@ -212,17 +217,26 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^using (old|new) (?:dav|DAV) path$/
+	 * @return string
+	 */
+	public function getSpacesDavPath():string {
+		return "dav/spaces";
+	}
+
+	/**
+	 * @Given /^using (old|new|spaces) (?:dav|DAV) path$/
 	 *
-	 * @param string $oldOrNewDavPath
+	 * @param string $davChoice
 	 *
 	 * @return void
 	 */
-	public function usingOldOrNewDavPath(string $oldOrNewDavPath):void {
-		if ($oldOrNewDavPath === 'old') {
+	public function usingOldOrNewDavPath(string $davChoice):void {
+		if ($davChoice === 'old') {
 			$this->usingOldDavPath();
-		} else {
+		} elseif ($davChoice === 'new') {
 			$this->usingNewDavPath();
+		} else {
+			$this->usingSpacesDavPath();
 		}
 	}
 
@@ -246,6 +260,19 @@ trait WebDav {
 		$this->davPath = $this->getNewDavPath();
 		$this->usingOldDavPath = false;
 		$this->customDavPath = null;
+		$this->usingSpacesDavPath = false;
+	}
+
+	/**
+	 * Select the spaces dav path as the default for later scenario steps
+	 *
+	 * @return void
+	 */
+	public function usingSpacesDavPath():void {
+		$this->davPath = $this->getSpacesDavPath();
+		$this->usingOldDavPath = false;
+		$this->customDavPath = null;
+		$this->usingSpacesDavPath = true;
 	}
 
 	/**
@@ -285,9 +312,13 @@ trait WebDav {
 	 *
 	 * @param string|null $for the category of endpoint that the DAV path will be used for
 	 *
-	 * @return int DAV path version (1 or 2) selected, or appropriate for the endpoint
+	 * @return int|null DAV path version (1 or 2) selected, or appropriate for the endpoint
+	 * null if spaces dav path is used
 	 */
-	public function getDavPathVersion(?string $for = null):int {
+	public function getDavPathVersion(?string $for = null):?int {
+		if ($this->usingSpacesDavPath) {
+			return null;
+		}
 		if ($for === 'systemtags') {
 			// systemtags only exists since DAV v2
 			return 2;
@@ -336,6 +367,7 @@ trait WebDav {
 	 * @param string|null $doDavRequestAsUser
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException|JsonException
 	 */
 	public function makeDavRequest(
 		?string $user,
@@ -355,12 +387,19 @@ trait WebDav {
 			$path = $this->customDavPath . $path;
 		}
 
-		if ($davPathVersion === null) {
-			$davPathVersion = $this->getDavPathVersion();
-		}
-
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
+		}
+
+		if ($this->usingSpacesDavPath) {
+			$spaceId = $this->getPersonalSpaceIdForUser($user, $password);
+		} else {
+			if ($davPathVersion === null) {
+				$davPathVersion = $this->getDavPathVersion();
+			} else {
+				$davPathVersion = (int)$davPathVersion;
+			}
+			$spaceId = null;
 		}
 		return WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(),
@@ -371,7 +410,7 @@ trait WebDav {
 			$headers,
 			$this->getStepLineRef(),
 			$body,
-			(int) $davPathVersion,
+			$davPathVersion,
 			$type,
 			null,
 			"basic",
@@ -379,7 +418,9 @@ trait WebDav {
 			$this->httpRequestTimeout,
 			null,
 			$urlParameter,
-			$doDavRequestAsUser
+			$doDavRequestAsUser,
+			$this->usingSpacesDavPath,
+			$spaceId
 		);
 	}
 
