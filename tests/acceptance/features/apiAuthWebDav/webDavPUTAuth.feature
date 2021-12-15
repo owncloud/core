@@ -36,7 +36,7 @@ Feature: get file info using PUT
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
-  @issue-ocis-reva-9 @issue-ocis-reva-197 @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
+  @skipOnOcV10
   Scenario: send PUT requests to another user's webDav endpoints as normal user
     When user "Brian" requests these endpoints with "PUT" including body "doesnotmatter" about user "Alice"
       | endpoint                                       |
@@ -46,7 +46,8 @@ Feature: get file info using PUT
     When user "Brian" requests these endpoints with "PUT" including body "doesnotmatter" about user "Alice"
       | endpoint                                           |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
-    Then the HTTP status code of responses on all endpoints should be "409"
+    Then the HTTP status code of responses on all endpoints should be "403"
+
 
   Scenario: send PUT requests to webDav endpoints using invalid username but correct password
     When user "usero" requests these endpoints with "PUT" including body "doesnotmatter" using the password of user "Alice"
@@ -58,6 +59,7 @@ Feature: get file info using PUT
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
+    
   Scenario: send PUT requests to webDav endpoints using valid password and username of different user
     When user "Brian" requests these endpoints with "PUT" including body "doesnotmatter" using the password of user "Alice"
       | endpoint                                           |
