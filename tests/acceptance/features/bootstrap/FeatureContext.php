@@ -605,7 +605,7 @@ class FeatureContext extends BehatVariablesContext {
 		$this->cookieJar = new CookieJar();
 		$this->ocPath = $ocPath;
 
-		// PARALLEL DEPLOY: ownCloud selector
+		// PARALLEL DEPLOYMENT: ownCloud selector
 		$this->oCSelector = "oc10";
 
 		// These passwords are referenced in tests and can be overridden by
@@ -4193,17 +4193,5 @@ class FeatureContext extends BehatVariablesContext {
 			$this->getAdminPassword(),
 			$this->getBaseUrl()
 		);
-	}
-
-	/**
-	 * @Given using :selector as owncloud selector
-	 *
-	 * @param string $selector	'ocis' or 'oc10'
-	 *
-	 * @return void
-	 */
-	public function usingOwncloudSelector(string $selector): void {
-		$this->setOCSelector($selector);
-		HttpRequestHelper::setOCSelectorCookie("owncloud-selector=$selector;path=/;");
 	}
 }
