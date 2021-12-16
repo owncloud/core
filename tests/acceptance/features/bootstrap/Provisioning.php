@@ -590,9 +590,7 @@ trait Provisioning {
 			$behatYml = \getenv("BEHAT_YML");
 			if($behatYml){
 				$configPath = \dirname($behatYml);
-				var_dump($configPath);
 				$ldifFile = $configPath . "/" . \basename($ldifFile);
-				var_dump($ldifFile);
 			}
 		}
 		$this->importLdifFile($ldifFile);

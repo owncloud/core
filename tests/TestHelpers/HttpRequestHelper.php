@@ -328,7 +328,6 @@ class HttpRequestHelper {
 			// change server to oC10 if the request url has `/apps/testing`
 			if(strpos($url, "/apps/testing") !== false){
 				$url = str_replace($oCISServerUrl, $oC10ServerUrl, $url);
-				var_dump($url);
 			} else {
 				// set 'owncloud-server' selector cookie for oCIS requests
 				$headers['Cookie'] = self::getOCSelectorCookie();

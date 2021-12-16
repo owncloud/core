@@ -865,7 +865,7 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		?string $ocPath = null,
 		?array $envVariables = null
 	):array {
-		if (OcisHelper::isTestingOnOcisOrReva()) {
+		if (OcisHelper::isTestingOnOcisOrReva() && !OcisHelper::isTestingParallelDeployment()) {
 			return ['code' => '', 'stdOut' => '', 'stdErr' => '' ];
 		}
 		$baseUrl = self::checkBaseUrl($baseUrl, "runOcc");
