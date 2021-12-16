@@ -61,6 +61,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix favicon, cloud symbol on Safari not visible: <a href="https://github.com/owncloud/core/pull/39506">#39506</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></li>
         <li class="type-change changelog-item">Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
@@ -563,6 +564,15 @@
             <p>https://github.com/owncloud/core/issues/39556<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39585<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></p>
+            <p>With this change the resend invitation mail action in the user management UI for guest users has
+   been removed, it is not appropriate for this type of user.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4868<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39602<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></p>

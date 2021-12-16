@@ -63,6 +63,7 @@ Summary
 * Bugfix - Fix favicon, cloud symbol on Safari not visible: [#39506](https://github.com/owncloud/core/pull/39506)
 * Bugfix - Properly setup share owner file system on public link shares: [#39518](https://github.com/owncloud/core/pull/39518)
 * Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
+* Bugfix - Don't resend invitation mail if a user is guest: [#39602](https://github.com/owncloud/core/pull/39602)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#38877](https://github.com/owncloud/core/pull/38877)
@@ -556,6 +557,14 @@ Details
 
    https://github.com/owncloud/core/issues/39556
    https://github.com/owncloud/core/pull/39585
+
+* Bugfix - Don't resend invitation mail if a user is guest: [#39602](https://github.com/owncloud/core/pull/39602)
+
+   With this change the resend invitation mail action in the user management UI for guest users has
+   been removed, it is not appropriate for this type of user.
+
+   https://github.com/owncloud/enterprise/issues/4868
+   https://github.com/owncloud/core/pull/39602
 
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
