@@ -115,7 +115,7 @@ var UserList = {
 		/**
 		 * resend invitation email action
 		 */
-		if (user.lastLogin === 0) {
+		if (user.lastLogin === 0 && user.isGuest !== true) {
 			var resendImage = $('<img class="action">').attr({
 				src: OC.imagePath('core', 'actions/mail')
 			});
