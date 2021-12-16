@@ -1,0 +1,8 @@
+Bugfix: Don't resend invitation mail if a user is guest
+
+With this change the resend invitation mail action in the user management
+UI for guest users has been removed, it is not appropriate for this type
+of user.
+
+https://github.com/owncloud/core/pull/39602
+https://github.com/owncloud/enterprise/issues/4868
