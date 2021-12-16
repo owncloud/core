@@ -31,6 +31,7 @@
 namespace OC\Settings\Controller;
 
 use OC\AppFramework\Http;
+use OC\Helper\UserTypeHelper;
 use OC\User\Session;
 use OC\User\User;
 use OCP\App\IAppManager;
@@ -94,6 +95,8 @@ class UsersController extends Controller {
 	protected $timeFactory;
 	/** @var EventDispatcherInterface */
 	private $eventDispatcher;
+	/** @var UserTypeHelper */
+	private $userTypeHelper;
 
 	/**
 	 * @param string $appName
@@ -151,6 +154,7 @@ class UsersController extends Controller {
 		$this->urlGenerator = $urlGenerator;
 		$this->avatarManager = $avatarManager;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->userTypeHelper = new UserTypeHelper($this->config);
 
 		// check for encryption state - TODO see formatUserForIndex
 		if ($appManager->isEnabledForUser('encryption')) {
@@ -222,6 +226,7 @@ class UsersController extends Controller {
 			'email' => $displayName,
 			'isRestoreDisabled' => !$restorePossible,
 			'isAvatarAvailable' => $avatarAvailable,
+			'isGuest' => $this->userTypeHelper->isGuestUser($user->getUID()),
 		];
 	}
 
