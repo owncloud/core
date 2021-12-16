@@ -584,9 +584,18 @@ trait Provisioning {
 		];
 		$this->ldap = new Ldap($options);
 		$this->ldap->bind();
-		$this->importLdifFile(
-			__DIR__ . (string)$suiteParameters['ldapInitialUserFilePath']
-		);
+
+		$ldifFile = __DIR__ . (string)$suiteParameters['ldapInitialUserFilePath'];
+		if (OcisHelper::isTestingParallelDeployment()) {
+			$behatYml = \getenv("BEHAT_YML");
+			if($behatYml){
+				$configPath = \dirname($behatYml);
+				var_dump($configPath);
+				$ldifFile = $configPath . "/" . \basename($ldifFile);
+				var_dump($ldifFile);
+			}
+		}
+		$this->importLdifFile($ldifFile);
 		$this->theLdapUsersHaveBeenResynced();
 	}
 
