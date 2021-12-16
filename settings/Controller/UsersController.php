@@ -666,7 +666,7 @@ class UsersController extends Controller {
 		$user = $this->userManager->get($userId);
 		$currentUser = $this->userSession->getUser();
 
-		if ($user === null || $this->userTypeHelper->isGuestUser($userId)) {
+		if ($user === null || $this->userTypeHelper->isGuestUser($userId) === true) {
 			$this->log->error('User: ' . $userId . ' does not exist', ['app' => 'settings']);
 			return new JSONResponse(
 				[
