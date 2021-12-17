@@ -323,7 +323,7 @@ class HttpRequestHelper {
 			// oCIS cannot handle '/apps/testing' endpoints
 			// so those requests must be redirected to oC10 server
 			// change server to oC10 if the request url has `/apps/testing`
-			if(strpos($url, "/apps/testing") !== false){
+			if (strpos($url, "/apps/testing") !== false) {
 				$oCISServerUrl = \getenv('TEST_SERVER_URL');
 				$oC10ServerUrl = \getenv('TEST_OC10_URL');
 	
