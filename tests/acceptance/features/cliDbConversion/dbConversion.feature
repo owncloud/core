@@ -1,4 +1,4 @@
-@cli @dbConversion
+@cli @dbConversion @skipOnEncryption
 Feature: Change from one database to another
   As an admin
   I want to be able to convert database from one type to another
