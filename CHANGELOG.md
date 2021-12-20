@@ -68,6 +68,7 @@ Summary
 * Bugfix - Directory name in error message when file name already exists: [#39569](https://github.com/owncloud/core/pull/39569)
 * Bugfix - Prohibit username htaccesstest.txt: [#39572](https://github.com/owncloud/core/pull/39572)
 * Bugfix - Use ViewOnlyPlugin when requesting a meta endpoint using WebDAV v2: [#39575](https://github.com/owncloud/core/pull/39575)
+* Bugfix - Provisioning API quota is incomplete when username casing is not exact: [#39586](https://github.com/owncloud/core/pull/39586)
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 * Change - Drop PHP 7.2 support across the platform: [#39134](https://github.com/owncloud/core/issues/39134)
 * Change - Use "federated" rather than "remote" for shares: [#39578](https://github.com/owncloud/core/pull/39578)
@@ -120,6 +121,8 @@ Summary
 * Enhancement - Add capability for blacklisted files regex: [#39493](https://github.com/owncloud/core/pull/39493)
 * Enhancement - Change the size of the ownCloud logo in the mail header image: [#39501](https://github.com/owncloud/core/pull/39501)
 * Enhancement - Add user:home:list-dirs and user:home:list-users commands: [#39579](https://github.com/owncloud/core/pull/39579)
+* Enhancement - Expand file name area to click: [#39592](https://github.com/owncloud/core/pull/39592)
+* Enhancement - Add support for the x-office/drawing mimetype: [#39594](https://github.com/owncloud/core/pull/39594)
 
 Details
 -------
@@ -610,6 +613,14 @@ Details
    https://github.com/owncloud/enterprise/issues/4916
    https://github.com/owncloud/core/pull/39575
 
+* Bugfix - Provisioning API quota is incomplete when username casing is not exact: [#39586](https://github.com/owncloud/core/pull/39586)
+
+   The Provisioning API now returns all the quota information for a user even when the username
+   casing is different in the API request.
+
+   https://github.com/owncloud/core/issues/39577
+   https://github.com/owncloud/core/pull/39586
+
 * Change - Enable streaming for propfind requests: [#38583](https://github.com/owncloud/core/pull/38583)
 
    Propfind requests will now be streamed to reduce memory usage with large responses.
@@ -1088,10 +1099,25 @@ Details
    Added two new users commands:
 
    * `occ user:home:list-dirs` List all homes which are currently used by users * `occ
-   user:home:list-users <path>` List all users who have their home in a given path
+   user:home:list-users <path>` List all users who have their home in a given path * `occ
+   user:home:list-users --all` List all users for every home path
 
    https://github.com/owncloud/core/issues/39502
    https://github.com/owncloud/core/pull/39579
+   https://github.com/owncloud/core/pull/39583
+
+* Enhancement - Expand file name area to click: [#39592](https://github.com/owncloud/core/pull/39592)
+
+   With this change, the file name area to click will expand, this is helpful with very small file or
+   folder names (e.g. single digit).
+
+   https://github.com/owncloud/core/issues/39591
+   https://github.com/owncloud/core/pull/39592
+
+* Enhancement - Add support for the x-office/drawing mimetype: [#39594](https://github.com/owncloud/core/pull/39594)
+
+   https://github.com/owncloud/core/issues/39593
+   https://github.com/owncloud/core/pull/39594
 
 Changelog for ownCloud Core [10.8.0] (2021-07-15)
 =======================================
