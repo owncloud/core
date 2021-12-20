@@ -1,4 +1,4 @@
-Changelog for ownCloud Core [10.9.0] (2021-12-09)
+Changelog for ownCloud Core [10.9.0] (2021-12-20)
 =======================================
 The following sections list the changes in ownCloud core 10.9.0 relevant to
 ownCloud admins and users.
