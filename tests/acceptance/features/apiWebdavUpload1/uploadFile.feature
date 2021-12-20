@@ -26,6 +26,11 @@ Feature: upload file
       | old         | /s,a,m,p,l,e.txt  |
       | new         | /s,a,m,p,l,e.txt  |
 
+    @skipOnOcV10
+    Examples:
+      | dav_version | file_name   |
+      | spaces      | /upload.txt |
+
 
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
