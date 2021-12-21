@@ -12,7 +12,6 @@ Summary
 * Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
 * Bugfix - Don't resend invitation mail if a user is guest: [#39602](https://github.com/owncloud/core/pull/39602)
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
-* Enhancement - Expand file name area to click: [#39592](https://github.com/owncloud/core/pull/39592)
 
 Details
 -------
@@ -37,14 +36,6 @@ Details
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 
    https://github.com/owncloud/core/pull/38758
-
-* Enhancement - Expand file name area to click: [#39592](https://github.com/owncloud/core/pull/39592)
-
-   With this change, the file name area to click will expand, this is helpful with very small file or
-   folder names (e.g. single digit).
-
-   https://github.com/owncloud/core/issues/39591
-   https://github.com/owncloud/core/pull/39592
 
 Changelog for ownCloud Core [10.9.0] (2021-12-09)
 =======================================
