@@ -2351,7 +2351,7 @@ describe('OCA.Files.FileList tests', function() {
 			expect(context.fileActions).toBeDefined();
 			expect(context.dir).toEqual('/subdir');
 		});
-		it('clicking on a file name will render the app drawer context menu if more than one action applies for this mime type', function() {
+		it('clicking on a file name will render the app drawer context menu if more than one action is default for this mime type', function() {
 			var actionStub = sinon.stub();
 			fileList.setFiles(testFiles);
 			fileList.fileActions.registerAction({
@@ -2375,6 +2375,7 @@ describe('OCA.Files.FileList tests', function() {
 			});
 
 			fileList.fileActions.setDefault('text/plain', 'View file');
+			fileList.fileActions.setDefault('text/plain', 'Edit file');
 			var $tr = fileList.findFileEl('One.txt');
 			$tr.find('td.filename .nametext').click();
 			expect(actionStub.calledOnce).toEqual(false);

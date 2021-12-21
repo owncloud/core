@@ -47,6 +47,9 @@ OC.MimeTypeList={
     "application/vnd.oasis.opendocument.text-master": "x-office/document",
     "application/vnd.oasis.opendocument.text-template": "x-office/document",
     "application/vnd.oasis.opendocument.text-web": "x-office/document",
+    "application/vnd.oasis.opendocument.graphics-flat-xml": "x-office/drawing",
+    "application/vnd.oasis.opendocument.graphics": "x-office/drawing",
+    "application/vnd.oasis.opendocument.graphics-template": "x-office/drawing",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation": "x-office/presentation",
     "application/vnd.openxmlformats-officedocument.presentationml.slideshow": "x-office/presentation",
     "application/vnd.openxmlformats-officedocument.presentationml.template": "x-office/presentation",
@@ -108,6 +111,7 @@ OC.MimeTypeList={
     "video",
     "x-office-document",
     "x-office-presentation",
+    "x-office-drawing",
     "x-office-spreadsheet"
 ],
 	themes: []

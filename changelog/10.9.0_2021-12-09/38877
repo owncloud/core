@@ -6,5 +6,6 @@ shares in error messages and on the user interface have been changed to
 references to federated shares. All user-facing text now calls these federated
 shares.
 
+https://github.com/owncloud/core/pull/39578
 https://github.com/owncloud/core/pull/38877
 https://github.com/owncloud/core/issues/38871

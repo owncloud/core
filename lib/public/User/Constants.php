@@ -55,6 +55,7 @@ class Constants {
 	public const FILES_THAT_ARE_NOT_USERS = [
 		'.htaccess',
 		'.ocdata',
+		'htaccesstest.txt',
 		'owncloud.db',
 		'owncloud.log',
 		'index.html'

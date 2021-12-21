@@ -1,0 +1,7 @@
+Bugfix: Provisioning API quota is incomplete when username casing is not exact
+
+The Provisioning API now returns all the quota information for a user even when
+the username casing is different in the API request.
+
+https://github.com/owncloud/core/pull/39586
+https://github.com/owncloud/core/issues/39577

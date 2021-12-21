@@ -150,6 +150,10 @@ class AppConfig implements IAppConfig {
 	 * @return bool True if the value was inserted or updated, false if the value was the same
 	 */
 	public function setValue($app, $key, $value) {
+		if ($value === null) {
+			$value = '';
+		}
+
 		return $this->emittingCall(function (&$afterArray) use (&$app, &$key, &$value) {
 			if (!$this->hasKey($app, $key)) {
 				$inserted = (bool) $this->conn->insertIfNotExist('*PREFIX*appconfig', [
@@ -186,8 +190,15 @@ class AppConfig implements IAppConfig {
 			 * > Large objects (LOBs) are not supported in comparison conditions.
 			 */
 			if (!($this->conn instanceof \OC\DB\OracleConnection)) {
-				// Only update the value when it is not the same
-				$sql->andWhere($sql->expr()->neq('configvalue', $sql->createParameter('configvalue')))
+				// Only update the value if:
+				// - it is not the same as the value currently in the database, or
+				// - the value in the database is currently NULL
+				// Note: the SQL comparison operator "<>" neq() does not think that "string" is not equal to NULL.
+				//       so we need to also explicitly update if the current row value is null.
+				$or = $sql->expr()->orX();
+				$or->add($sql->expr()->neq('configvalue', $sql->createParameter('configvalue')));
+				$or->add($sql->expr()->isNull('configvalue'));
+				$sql->andWhere($or)
 					->setParameter('configvalue', $value);
 			}
 
@@ -314,7 +325,7 @@ class AppConfig implements IAppConfig {
 			) {
 				$row['configvalue'] = '0.0.1';
 			}
-			$this->cache[$row['appid']][$row['configkey']] = $row['configvalue'];
+			$this->cache[$row['appid']][$row['configkey']] = ($row['configvalue'] === null) ? '' : $row['configvalue'];
 		}
 		$result->closeCursor();
 

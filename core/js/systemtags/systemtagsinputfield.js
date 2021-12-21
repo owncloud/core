@@ -135,7 +135,7 @@
 				renameLabel: t('core', 'Rename')
 			}));
 			$item.find('.label').after($renameForm);
-			$item.find('.label, .systemtags-actions').addClass('hidden');
+			$item.find('.label, .systemtags-actions').css('display','none');
 			$item.closest('.select2-result').addClass('has-form');
 
 			$renameForm.find('[title]').tooltip({
@@ -166,7 +166,7 @@
 				// TODO: spinner, and only change text after finished saving
 				$item.find('.label').text(newName);
 			}
-			$item.find('.label, .systemtags-actions').removeClass('hidden');
+			$item.find('.label, .systemtags-actions').css('display','flex');
 			$form.remove();
 			$item.closest('.select2-result').removeClass('has-form');
 		},

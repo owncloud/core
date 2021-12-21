@@ -1,0 +1,7 @@
+Bugfix: Prohibit username htaccesstest.txt
+
+htaccesstest.txt is a special file that can be in the data directory.
+That is not allowed as a username.
+
+https://github.com/owncloud/core/pull/39572
+https://github.com/owncloud/core/issues/39570

@@ -37,6 +37,7 @@ $templateManager->registerTemplate('text/html', 'core/templates/filetemplates/te
 $templateManager->registerTemplate('application/vnd.oasis.opendocument.presentation', 'core/templates/filetemplates/template.odp');
 $templateManager->registerTemplate('application/vnd.oasis.opendocument.text', 'core/templates/filetemplates/template.odt');
 $templateManager->registerTemplate('application/vnd.oasis.opendocument.spreadsheet', 'core/templates/filetemplates/template.ods');
+$templateManager->registerTemplate('application/vnd.oasis.opendocument.graphics', 'core/templates/filetemplates/template.odg');
 
 \OCA\Files\App::getNavigationManager()->add(function () {
 	$l = \OC::$server->getL10N('files');

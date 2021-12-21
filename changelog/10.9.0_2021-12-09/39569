@@ -1,0 +1,7 @@
+Bugfix: Directory name in error message when file name already exists
+
+This fixes an issue where the wrong directory name was shown when trying to
+rename a file to a name that already exists in the same directory.
+
+https://github.com/owncloud/core/pull/39569
+https://github.com/owncloud/core/issues/39552

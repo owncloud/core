@@ -58,7 +58,7 @@ describe('OCA.Files.FavoritesPlugin tests', function() {
 			expect(fileActions.actions.all.Rename).toBeDefined();
 			expect(fileActions.actions.all.Download).toBeDefined();
 
-			expect(fileActions.defaults.dir).toEqual('Open');
+			expect(fileActions.defaults.dir).toEqual(['Open']);
 		});
 		it('provides custom file actions', function() {
 			var actionStub = sinon.stub();

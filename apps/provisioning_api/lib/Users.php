@@ -218,7 +218,7 @@ class Users {
 		}
 
 		// Find the data
-		$data['quota'] = $this->fillStorageInfo($userId);
+		$data['quota'] = $this->fillStorageInfo($targetUserObject->getUID());
 		$data['quota']['definition'] = $targetUserObject->getQuota();
 		$data['email'] = $targetUserObject->getEMailAddress();
 		$data['displayname'] = $targetUserObject->getDisplayName();

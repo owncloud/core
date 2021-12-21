@@ -1,0 +1,7 @@
+Enhancement: Expand file name area to click
+
+With this change, the file name area to click will expand, this is helpful
+with very small file or folder names (e.g. single digit).
+
+https://github.com/owncloud/core/pull/39592
+https://github.com/owncloud/core/issues/39591

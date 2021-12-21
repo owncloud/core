@@ -4,4 +4,4 @@ The response to a Provisioning API GET request to the cloud/users/username
 endpoint now includes the last_login time in the response.
 The value is a Unix timestamp in seconds.
 
-https://github.com/owncloud/core/pull/38351
+https://github.com/owncloud/core/pull/39351

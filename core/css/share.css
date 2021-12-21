@@ -303,5 +303,9 @@ a.toggleShareDetails:hover {
 }
 
 .select2-container-multi .select2-choices .select2-search-choice {
+	padding: 3px 18px 3px 5px;
+}
+
+.systemTagsInputFieldContainer .select2-container-multi .select2-choices .select2-search-choice {
 	padding: .2em 0.6em;
 }

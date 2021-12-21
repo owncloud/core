@@ -499,7 +499,28 @@ var UserList = {
 			};
 		}
 		var addGroup = function (select, group) {
-			GroupList.addGroup(escapeHTML(group));
+			group = escapeHTML(group).trim();
+			if (GroupList.isGroupNameValid(group) !== true) {
+				return false;
+			}
+
+			var groupAlreadyInList = false;
+
+			select.parent().find('li').each(function (index, entry) {
+				if ($(entry).find('label').attr('title') === group) {
+					groupAlreadyInList = true;
+					return false;
+				}
+			});
+
+			if (groupAlreadyInList) {
+				OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {
+					message: t('settings', 'Group already exists')
+				}));
+				return false;
+			}
+
+			GroupList.addGroup(group);
 		};
 		var label;
 		if (oc_isadmin) {

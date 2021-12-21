@@ -1148,6 +1148,8 @@ class FeatureContext extends BehatVariablesContext {
 		$this->response = $response;
 		//after a new response reset the response xml
 		$this->responseXml = [];
+		//after a new response reset the response xml object
+		$this->responseXmlObject = null;
 	}
 
 	/**

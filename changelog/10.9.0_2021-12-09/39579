@@ -1,0 +1,11 @@
+Enhancement: Add user:home:list-dirs and user:home:list-users commands
+
+Added two new users commands:
+
+* `occ user:home:list-dirs` List all homes which are currently used by users
+* `occ user:home:list-users <path>` List all users who have their home in a given path
+* `occ user:home:list-users --all` List all users for every home path
+
+https://github.com/owncloud/core/pull/39579
+https://github.com/owncloud/core/pull/39583
+https://github.com/owncloud/core/issues/39502

@@ -6,3 +6,5 @@ This PR add small CSS fixes to the Tags selection dialogue:
 - Use correct HTML elements (div instead of span)
 
 https://github.com/owncloud/core/pull/39146
+https://github.com/owncloud/core/pull/39517
+https://github.com/owncloud/core/pull/39563
