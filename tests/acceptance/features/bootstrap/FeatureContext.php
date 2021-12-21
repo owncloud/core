@@ -2562,7 +2562,8 @@ class FeatureContext extends BehatVariablesContext {
 	 * @throws GuzzleException
 	 */
 	public function getPersonalSpaceIdForUser(string $user, string $password = null):string {
-		$fullUrl = $this->getBaseUrl() . '/graph/v1.0/me/drives';
+		$drivesPath = '/graph/v1.0/me/drives';
+		$fullUrl = $this->getBaseUrl() . $drivesPath;
 		if (!$password) {
 			$password = $this->getPasswordForUser($user);
 		}
@@ -2572,7 +2573,15 @@ class FeatureContext extends BehatVariablesContext {
 			$user,
 			$password
 		);
-		$json = \json_decode($response->getBody()->getContents());
+		$this->setResponse($response);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+		$bodyContents = $response->getBody()->getContents();
+		Assert::assertNotEmpty($bodyContents, "The response body of the request to $drivesPath was empty");
+		$json = \json_decode($bodyContents);
+		Assert::assertNotNull(
+			$json,
+			"There was an error decoding the response of the request to $drivesPath\nThe response content was:\n$bodyContents"
+		);
 		// assuming the first space is the personal space
 		return $json->value[0]->id;
 	}
@@ -3472,7 +3481,6 @@ class FeatureContext extends BehatVariablesContext {
 		);
 		$storageId = $result['storageId'];
 		if (!is_numeric($storageId)) {
-			// pdd
 			throw new Exception(
 				__METHOD__ . " storageId '$storageId' is not numeric"
 			);
