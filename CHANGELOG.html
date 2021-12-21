@@ -2,11 +2,60 @@
 <h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
     <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.8.0...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.9.0...master">Full list of changes in unreleased </a>
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Expand file name area to click: <a href="https://github.com/owncloud/core/pull/39592">#39592</a></li>
+    </ul>
+    <h3 id="unreleased-details">Details</h3>
+    <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></p>
+            <p>https://github.com/owncloud/core/pull/39518<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></p>
+            <p>https://github.com/owncloud/core/issues/39556<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39585<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></p>
+            <p>With this change the resend invitation mail action in the user management UI for guest users has
+   been removed, it is not appropriate for this type of user.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4868<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39602<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></p>
+            <p>https://github.com/owncloud/core/pull/38758<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Expand file name area to click: <a href="https://github.com/owncloud/core/pull/39592">#39592</a></p>
+            <p>With this change, the file name area to click will expand, this is helpful with very small file or
+   folder names (e.g. single digit).
+            </p>
+            <p>https://github.com/owncloud/core/issues/39591<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39592<br></p>
+        </li>
+    </ul>
+    <h2 id="10.9.0" class="version"> Changelog for ownCloud Core [10.9.0] (2021-12-09)</h2>
+    <p>The following sections list the changes in ownCloud core 10.9.0 relevant to ownCloud admins and users.</p>
+    <p>
+    <a href="https://github.com/owncloud/core/compare/v10.8.0...v10.9.0">Full list of changes in 10.9.0</a>
+    </p>
+    <h3 id="10.9.0-summary">Summary</h3>
+    <ul class="summary">
         <li class="type-security changelog-item">Security - Patch jquery ui: <a href="https://github.com/owncloud/core/pull/39451">#39451</a></li>
+        <li class="type-security changelog-item">Security - Patch jquery ui CVE-2016-7103: <a href="https://github.com/owncloud/core/pull/39545">#39545</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Do not try to login via auth module if the user is disabled: <a href="https://github.com/owncloud/core/pull/36257">#36257</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Do not allow empty system or app config keys: <a href="https://github.com/owncloud/core/pull/38996">#38996</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Allow subadministrators to add users to groups they manage: <a href="https://github.com/owncloud/core/pull/39013">#39013</a></li>
@@ -53,26 +102,30 @@
         <li class="type-bugfix changelog-item">Bugfix - Prohibit email/displayname change via API when not allowed: <a href="https://github.com/owncloud/core/pull/39353">#39353</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Clicking in the middle of the row in the file list downloads the file: <a href="https://github.com/owncloud/core/pull/39361">#39361</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Adjust text of occ encryption command messages: <a href="https://github.com/owncloud/core/pull/39395">#39395</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Faulty file list entry after accepting a remote share: <a href="https://github.com/owncloud/core/pull/39411">#39411</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Faulty file list entry after accepting a federated share: <a href="https://github.com/owncloud/core/pull/39411">#39411</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Add missing `remoteshare.accepted` event parameters: <a href="https://github.com/owncloud/core/pull/39449">#39449</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Group administrator permissions: <a href="https://github.com/owncloud/core/pull/39477">#39477</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Load l10n js files from the correct app folder: <a href="https://github.com/owncloud/core/pull/39482">#39482</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix issue searching inside a shared external storage: <a href="https://github.com/owncloud/core/pull/39500">#39500</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix favicon, cloud symbol on Safari not visible: <a href="https://github.com/owncloud/core/pull/39506">#39506</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Clicking the eye icon in password input field does not show the password: <a href="https://github.com/owncloud/core/pull/39528">#39528</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Group select in user create panel allows empty and pre-existing groups: <a href="https://github.com/owncloud/core/pull/39532">#39532</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - An app config value of null could be entered but not updated: <a href="https://github.com/owncloud/core/pull/39554">#39554</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Directory name in error message when file name already exists: <a href="https://github.com/owncloud/core/pull/39569">#39569</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prohibit username htaccesstest.txt: <a href="https://github.com/owncloud/core/pull/39572">#39572</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Use ViewOnlyPlugin when requesting a meta endpoint using WebDAV v2: <a href="https://github.com/owncloud/core/pull/39575">#39575</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Provisioning API quota is incomplete when username casing is not exact: <a href="https://github.com/owncloud/core/pull/39586">#39586</a></li>
         <li class="type-change changelog-item">Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
-        <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
+        <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/39578">#39578</a></li>
         <li class="type-change changelog-item">Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></li>
         <li class="type-change changelog-item">Change - Clarify days parameter of the occ dav:cleanup-chunks command: <a href="https://github.com/owncloud/core/pull/39090">#39090</a></li>
         <li class="type-change changelog-item">Change - Add index.html to invalid username list: <a href="https://github.com/owncloud/core/pull/39206">#39206</a></li>
+        <li class="type-change changelog-item">Change - Allow setting multiple default file actions: <a href="https://github.com/owncloud/core/pull/39541">#39541</a></li>
         <li class="type-change changelog-item">Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39385">#39385</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38907">#38907</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39061">#39061</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Special user groups can break persistent locks: <a href="https://github.com/owncloud/core/pull/38222">#38222</a></li>
-        <li class="type-enhancement changelog-item">Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add setting to limit public link share creation to certain groups: <a href="https://github.com/owncloud/enterprise/issues/3632">#3632</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: <a href="https://github.com/owncloud/core/issues/38991">#38991</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></li>
@@ -86,7 +139,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Confirmation dialog for deleting tags: <a href="https://github.com/owncloud/core/issues/39157">#39157</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add tooltips for group names in user settings and sharing overview: <a href="https://github.com/owncloud/enterprise/issues/4695">#4695</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Display clickable links during web UI upgrade process: <a href="https://github.com/owncloud/core/pull/39184">#39184</a></li>
-        <li class="type-enhancement changelog-item">Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: <a href="https://github.com/owncloud/core/compare/issues/39183">#39183</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: <a href="https://github.com/owncloud/core/pull/39185">#39185</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Hide accept and decline share text on mobile view: <a href="https://github.com/owncloud/core/pull/39224">#39224</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add option to hide the upload estimation in WebUI: <a href="https://github.com/owncloud/core/pull/39228">#39228</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow skeletondirectory to be an empty string: <a href="https://github.com/owncloud/core/pull/39230">#39230</a></li>
@@ -104,7 +157,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Trim spaces while creating, uploading or renaming entities in webUI: <a href="https://github.com/owncloud/core/pull/39310">#39310</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Bring back minimalistic view to occ app:list with '-m' option: <a href="https://github.com/owncloud/core/pull/39326">#39326</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add quality setting for JP(E)G preview images: <a href="https://github.com/owncloud/core/pull/39349">#39349</a></li>
-        <li class="type-enhancement changelog-item">Enhancement - Add last_login to Provisioning API get user response: <a href="https://github.com/owncloud/core/pull/38351">#38351</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add last_login to Provisioning API get user response: <a href="https://github.com/owncloud/core/pull/39351">#39351</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add priority for JavaScript plugins: <a href="https://github.com/owncloud/core/pull/39359">#39359</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Added needed code for webp thumbnail generation to occur: <a href="https://github.com/owncloud/core/issues/39358">#39358</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add show-all-attributes option to occ user:list command: <a href="https://github.com/owncloud/core/pull/39366">#39366</a></li>
@@ -113,15 +166,24 @@
         <li class="type-enhancement changelog-item">Enhancement - Add activity translations for rename and move actions: <a href="https://github.com/owncloud/core/pull/39430">#39430</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add capability for blacklisted files regex: <a href="https://github.com/owncloud/core/pull/39493">#39493</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Change the size of the ownCloud logo in the mail header image: <a href="https://github.com/owncloud/core/pull/39501">#39501</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add user:home:list-dirs and user:home:list-users commands: <a href="https://github.com/owncloud/core/pull/39579">#39579</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Expand file name area to click: <a href="https://github.com/owncloud/core/pull/39592">#39592</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Add support for the x-office/drawing mimetype: <a href="https://github.com/owncloud/core/pull/39594">#39594</a></li>
     </ul>
-    <h3 id="unreleased-details">Details</h3>
+    <h3 id="10.9.0-details">Details</h3>
     <ul class="details">
         <li class="type-security changelog-item">
             <p>Security - Patch jquery ui: <a href="https://github.com/owncloud/core/pull/39451">#39451</a></p>
             <p>Patched jquery ui issues:* CVE-2021-41182 * CVE-2021-41183 * CVE-2021-41184
             </p>
             <p>https://github.com/owncloud/core/pull/39451<br></p>
+        </li>
+        <li class="type-security changelog-item">
+            <p>Security - Patch jquery ui CVE-2016-7103: <a href="https://github.com/owncloud/core/pull/39545">#39545</a></p>
+            <p>Patched a CVE regarding the jquery dialog widget. This widget is currently not being used so
+   this is a preventive patch.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39545<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Do not try to login via auth module if the user is disabled: <a href="https://github.com/owncloud/core/pull/36257">#36257</a></p>
@@ -246,7 +308,7 @@
    (x) is not displayed - Align checkmark in selection list vertically - Use correct HTML elements
    (div instead of span)
             </p>
-            <p>https://github.com/owncloud/core/pull/39146<br></p>
+            <p>https://github.com/owncloud/core/pull/39146<br>https://github.com/owncloud/core/pull/39517<br>https://github.com/owncloud/core/pull/39563<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Keep pagination active with empty search queries: <a href="https://github.com/owncloud/core/pull/39155">#39155</a></p>
@@ -508,9 +570,9 @@
             <p>https://github.com/owncloud/core/pull/39395<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Faulty file list entry after accepting a remote share: <a href="https://github.com/owncloud/core/pull/39411">#39411</a></p>
+            <p>Bugfix - Faulty file list entry after accepting a federated share: <a href="https://github.com/owncloud/core/pull/39411">#39411</a></p>
             <p>With this change, we reload the shared with you file list if the user accepts or declines a share.
-   This solves the issue after accepting a remote share the table record was not pointing to the
+   This solves the issue after accepting a federated share the table record was not pointing to the
    correct location.
             </p>
             <p>https://github.com/owncloud/enterprise/issues/4823<br>
@@ -556,23 +618,66 @@
             <p>https://github.com/owncloud/core/pull/39506<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></p>
-            <p>https://github.com/owncloud/core/pull/39518<br></p>
+            <p>Bugfix - Clicking the eye icon in password input field does not show the password: <a href="https://github.com/owncloud/core/pull/39528">#39528</a></p>
+            <p>During the installation, the user should be able to click the eye icon in the admin user and
+   database password field to see the password, this recently stopped to work and has been fixed
+   with this change.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39527<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39528<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></p>
-            <p>https://github.com/owncloud/core/issues/39556<br>
+            <p>Bugfix - Group select in user create panel allows empty and pre-existing groups: <a href="https://github.com/owncloud/core/pull/39532">#39532</a></p>
+            <p>Before this change, the admin could create groups with empty name or multiple times with the
+   same name. This has been fixed with this change.
             </p>
-            <p>https://github.com/owncloud/core/pull/39585<br></p>
+            <p>https://github.com/owncloud/enterprise/issues/4890<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39532<br></p>
         </li>
         <li class="type-bugfix changelog-item">
-            <p>Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></p>
-            <p>With this change the resend invitation mail action in the user management UI for guest users has
-   been removed, it is not appropriate for this type of user.
+            <p>Bugfix - An app config value of null could be entered but not updated: <a href="https://github.com/owncloud/core/pull/39554">#39554</a></p>
+            <p>An app config value now cannot be set to null. Any existing null values are now treated as the
+   empty string.
             </p>
-            <p>https://github.com/owncloud/enterprise/issues/4868<br>
+            <p>https://github.com/owncloud/core/pull/39554<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Directory name in error message when file name already exists: <a href="https://github.com/owncloud/core/pull/39569">#39569</a></p>
+            <p>This fixes an issue where the wrong directory name was shown when trying to rename a file to a name
+   that already exists in the same directory.
             </p>
-            <p>https://github.com/owncloud/core/pull/39602<br></p>
+            <p>https://github.com/owncloud/core/issues/39552<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39569<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prohibit username htaccesstest.txt: <a href="https://github.com/owncloud/core/pull/39572">#39572</a></p>
+            <p>Htaccesstest.txt is a special file that can be in the data directory. That is not allowed as a
+   username.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39570<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39572<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Use ViewOnlyPlugin when requesting a meta endpoint using WebDAV v2: <a href="https://github.com/owncloud/core/pull/39575">#39575</a></p>
+            <p>This fixes an issue where versions of shared files were downloadable using the new WebDAV API
+   despite missing permissions, e.g. when shared via secure view.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4916<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39575<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Provisioning API quota is incomplete when username casing is not exact: <a href="https://github.com/owncloud/core/pull/39586">#39586</a></p>
+            <p>The Provisioning API now returns all the quota information for a user even when the username
+   casing is different in the API request.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39577<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39586<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></p>
@@ -593,7 +698,7 @@
             <p>https://www.php.net/supported-versions.php<br></p>
         </li>
         <li class="type-change changelog-item">
-            <p>Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></p>
+            <p>Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/39578">#39578</a></p>
             <p>Shares from one ownCloud to another ownCloud were referred to in some places as remote shares
    and in other places as federated shares. References to remote shares in error messages and on
    the user interface have been changed to references to federated shares. All user-facing text
@@ -601,7 +706,7 @@
             </p>
             <p>https://github.com/owncloud/core/issues/38871<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/38877<br></p>
+            <p>https://github.com/owncloud/core/pull/39578<br>https://github.com/owncloud/core/pull/38877<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update url for sync client button and docs: <a href="https://github.com/owncloud/core/pull/38962">#38962</a></p>
@@ -624,6 +729,16 @@
             <p>https://github.com/owncloud/core/issues/39205<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39206<br></p>
+        </li>
+        <li class="type-change changelog-item">
+            <p>Change - Allow setting multiple default file actions: <a href="https://github.com/owncloud/core/pull/39541">#39541</a></p>
+            <p>This change allows a mime type to have multiple default file actions. In the past, registering
+   an action as default would overwrite existing defaults.In case multiple file actions apply to a mime type, clicking on a file will show the app drawer
+   context menu.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4634<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39541<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39385">#39385</a></p>
@@ -668,10 +783,6 @@
    locks as well.
             </p>
             <p>https://github.com/owncloud/core/pull/38222<br></p>
-        </li>
-        <li class="type-enhancement changelog-item">
-            <p>Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></p>
-            <p>https://github.com/owncloud/core/pull/38758<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add setting to limit public link share creation to certain groups: <a href="https://github.com/owncloud/enterprise/issues/3632">#3632</a></p>
@@ -744,7 +855,7 @@
             </p>
             <p>https://github.com/owncloud/enterprise/issues/4518<br>
             </p>
-            <p>https://github.com/owncloud/core/pull/39126<br></p>
+            <p>https://github.com/owncloud/core/pull/39126<br>https://github.com/owncloud/core/pull/39516<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Quick action for creating public links: <a href="https://github.com/owncloud/enterprise/issues/4718">#4718</a></p>
@@ -786,12 +897,13 @@
             <p>https://github.com/owncloud/core/pull/39184<br></p>
         </li>
         <li class="type-enhancement changelog-item">
-            <p>Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: <a href="https://github.com/owncloud/core/compare/issues/39183">#39183</a></p>
+            <p>Enhancement - Don't show updater if setting 'upgrade.disable-web' is set to true: <a href="https://github.com/owncloud/core/pull/39185">#39185</a></p>
             <p>With this PR the update section in Settings-&gt;Admin-&gt;General will be not shown if
    setting 'upgrade.disable-web' is set to true.
             </p>
-            <p>https://github.com/owncloud/core/compare/issues/39183<br>https://github.com/owncloud/core/issues/39183<br>
+            <p>https://github.com/owncloud/core/issues/39183<br>
             </p>
+            <p>https://github.com/owncloud/core/pull/39185<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Hide accept and decline share text on mobile view: <a href="https://github.com/owncloud/core/pull/39224">#39224</a></p>
@@ -944,11 +1056,11 @@
             <p>https://github.com/owncloud/core/pull/39349<br></p>
         </li>
         <li class="type-enhancement changelog-item">
-            <p>Enhancement - Add last_login to Provisioning API get user response: <a href="https://github.com/owncloud/core/pull/38351">#38351</a></p>
+            <p>Enhancement - Add last_login to Provisioning API get user response: <a href="https://github.com/owncloud/core/pull/39351">#39351</a></p>
             <p>The response to a Provisioning API GET request to the cloud/users/username endpoint now
    includes the last_login time in the response. The value is a Unix timestamp in seconds.
             </p>
-            <p>https://github.com/owncloud/core/pull/38351<br></p>
+            <p>https://github.com/owncloud/core/pull/39351<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add priority for JavaScript plugins: <a href="https://github.com/owncloud/core/pull/39359">#39359</a></p>
@@ -1007,6 +1119,16 @@
             <p>https://github.com/owncloud/core/pull/39501<br></p>
         </li>
         <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add user:home:list-dirs and user:home:list-users commands: <a href="https://github.com/owncloud/core/pull/39579">#39579</a></p>
+            <p>Added two new users commands:* `occ user:home:list-dirs` List all homes which are currently used by users * `occ
+   user:home:list-users &lt;path&gt;` List all users who have their home in a given path * `occ
+   user:home:list-users --all` List all users for every home path
+            </p>
+            <p>https://github.com/owncloud/core/issues/39502<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39579<br>https://github.com/owncloud/core/pull/39583<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
             <p>Enhancement - Expand file name area to click: <a href="https://github.com/owncloud/core/pull/39592">#39592</a></p>
             <p>With this change, the file name area to click will expand, this is helpful with very small file or
    folder names (e.g. single digit).
@@ -1014,6 +1136,12 @@
             <p>https://github.com/owncloud/core/issues/39591<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39592<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Add support for the x-office/drawing mimetype: <a href="https://github.com/owncloud/core/pull/39594">#39594</a></p>
+            <p>https://github.com/owncloud/core/issues/39593<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39594<br></p>
         </li>
     </ul>
     <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>
