@@ -59,6 +59,9 @@
         <li class="type-bugfix changelog-item">Bugfix - Load l10n js files from the correct app folder: <a href="https://github.com/owncloud/core/pull/39482">#39482</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix issue searching inside a shared external storage: <a href="https://github.com/owncloud/core/pull/39500">#39500</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix favicon, cloud symbol on Safari not visible: <a href="https://github.com/owncloud/core/pull/39506">#39506</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></li>
         <li class="type-change changelog-item">Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></li>
         <li class="type-change changelog-item">Change - Drop PHP 7.2 support across the platform: <a href="https://github.com/owncloud/core/issues/39134">#39134</a></li>
         <li class="type-change changelog-item">Change - Use "federated" rather than "remote" for shares: <a href="https://github.com/owncloud/core/pull/38877">#38877</a></li>
@@ -69,6 +72,7 @@
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/38907">#38907</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39061">#39061</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Special user groups can break persistent locks: <a href="https://github.com/owncloud/core/pull/38222">#38222</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add setting to limit public link share creation to certain groups: <a href="https://github.com/owncloud/enterprise/issues/3632">#3632</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow oc_sessionPassphrase cookie to expire with session_lifetime: <a href="https://github.com/owncloud/core/issues/38991">#38991</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Log number of mounts when moving encryption keys fails: <a href="https://github.com/owncloud/core/pull/39015">#39015</a></li>
@@ -109,6 +113,7 @@
         <li class="type-enhancement changelog-item">Enhancement - Add activity translations for rename and move actions: <a href="https://github.com/owncloud/core/pull/39430">#39430</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Add capability for blacklisted files regex: <a href="https://github.com/owncloud/core/pull/39493">#39493</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Change the size of the ownCloud logo in the mail header image: <a href="https://github.com/owncloud/core/pull/39501">#39501</a></li>
+        <li class="type-enhancement changelog-item">Enhancement - Expand file name area to click: <a href="https://github.com/owncloud/core/pull/39592">#39592</a></li>
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
@@ -550,6 +555,25 @@
             <p>Bugfix - Fix favicon, cloud symbol on Safari not visible: <a href="https://github.com/owncloud/core/pull/39506">#39506</a></p>
             <p>https://github.com/owncloud/core/pull/39506<br></p>
         </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></p>
+            <p>https://github.com/owncloud/core/pull/39518<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></p>
+            <p>https://github.com/owncloud/core/issues/39556<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39585<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></p>
+            <p>With this change the resend invitation mail action in the user management UI for guest users has
+   been removed, it is not appropriate for this type of user.
+            </p>
+            <p>https://github.com/owncloud/enterprise/issues/4868<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39602<br></p>
+        </li>
         <li class="type-change changelog-item">
             <p>Change - Enable streaming for propfind requests: <a href="https://github.com/owncloud/core/pull/38583">#38583</a></p>
             <p>Propfind requests will now be streamed to reduce memory usage with large responses.
@@ -644,6 +668,10 @@
    locks as well.
             </p>
             <p>https://github.com/owncloud/core/pull/38222<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></p>
+            <p>https://github.com/owncloud/core/pull/38758<br></p>
         </li>
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Add setting to limit public link share creation to certain groups: <a href="https://github.com/owncloud/enterprise/issues/3632">#3632</a></p>
@@ -977,6 +1005,15 @@
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Change the size of the ownCloud logo in the mail header image: <a href="https://github.com/owncloud/core/pull/39501">#39501</a></p>
             <p>https://github.com/owncloud/core/pull/39501<br></p>
+        </li>
+        <li class="type-enhancement changelog-item">
+            <p>Enhancement - Expand file name area to click: <a href="https://github.com/owncloud/core/pull/39592">#39592</a></p>
+            <p>With this change, the file name area to click will expand, this is helpful with very small file or
+   folder names (e.g. single digit).
+            </p>
+            <p>https://github.com/owncloud/core/issues/39591<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39592<br></p>
         </li>
     </ul>
     <h2 id="10.8.0" class="version"> Changelog for ownCloud Core [10.8.0] (2021-07-15)</h2>

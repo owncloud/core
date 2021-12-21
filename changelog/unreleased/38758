@@ -1,0 +1,3 @@
+Enhancement: Allow OPTIONS request handling in framework controllers
+
+https://github.com/owncloud/core/pull/38758
