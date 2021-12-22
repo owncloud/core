@@ -82,6 +82,7 @@ OC.L10N.register(
     "never" : "mai",
     "deleted {userName}" : "eliminat {userName}",
     "Delete user" : "Esborra usuari",
+    "Group already exists" : "El grup ja existeix",
     "add group" : "afegeix grup",
     "enabled" : "habilitat",
     "disabled" : "inhabilitat",

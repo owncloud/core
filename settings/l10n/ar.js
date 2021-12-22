@@ -126,6 +126,7 @@ OC.L10N.register(
     "deleted {userName}" : "{userName} محذوف",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "أنت على وشك حذف مستخدم. هذا الإجراء نهائي ولا يمكن التراجع عنه. وسيتم حذف جميع بيانات المستخدم وملفاته ومشاركاته. هل أنت متأكد من رغبتك في حذف {userName} نهائيًا؟",
     "Delete user" : "حذف المستخدم",
+    "Group already exists" : "المجموعة موجودة مسبقاً",
     "add group" : "إضافة مجموعة",
     "Invalid quota value \"{val}\"" : "قيمة الحصة النسبية غير صالحة \"{val}\"",
     "enabled" : "مُفعَّل",

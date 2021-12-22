@@ -114,6 +114,7 @@ OC.L10N.register(
     "Delete group" : "グループを削除",
     "never" : "なし",
     "deleted {userName}" : "{userName} を削除しました",
+    "Group already exists" : "グループはすでに存在します",
     "add group" : "グループを追加",
     "Invalid quota value \"{val}\"" : "クオータ \"{val}\" は不正な値です。",
     "enabled" : "有効",

@@ -35,6 +35,7 @@ OC.L10N.register(
     "undo" : "angra",
     "Delete group" : "Slett gruppe",
     "never" : "aldri",
+    "Group already exists" : "Gruppa finst allereie",
     "add group" : "legg til gruppe",
     "A valid username must be provided" : "Du må oppgje eit gyldig brukarnamn",
     "A valid password must be provided" : "Du må oppgje eit gyldig passord",

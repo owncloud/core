@@ -63,6 +63,7 @@ OC.L10N.register(
     "undo" : "geriyə",
     "never" : "heç vaxt",
     "deleted {userName}" : "{userName} silindi",
+    "Group already exists" : "Qrup artıq mövcuddur",
     "add group" : "qrupu əlavə et",
     "enabled" : "fəallaşdırıldı",
     "disabled" : "ləğv edildi",

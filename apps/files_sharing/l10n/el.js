@@ -92,8 +92,6 @@ OC.L10N.register(
     "Public link expired" : "Έληξε ο δημόσιος σύνδεσμος",
     "Public link of %2$s expired" : "Έληξε ο δημόσιος σύνδεσμος του %2$s",
     "Shared by %2$s" : "Διαμοιράστηκε από %2$s",
-    "Received remote share from %1$s" : "Ελήφθη απομακρυσμένο κοινόχρηστο από %1$s",
-    "Received remote share from %s" : "Ελήφθη απομακρυσμένο κοινόχρηστο από %s",
     "Shares" : "Κοινόχρηστα",
     "File sharing" : "Διαμοιρασμός αρχείων",
     "Public link" : "Δημόσιος σύνδεσμος",

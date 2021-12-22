@@ -75,8 +75,6 @@
     "Public link expired" : "ลิงก์สาธารณะหมดอายุแล้ว",
     "Public link of %2$s expired" : "ลิงก์สาธารณะของ %2$s หมดอายุแล้ว",
     "Shared by %2$s" : "แชร์โดย %2$s",
-    "Received remote share from %1$s" : "Received remote share from %1$s",
-    "Received remote share from %s" : "ได้รับการแชร์รีโมทจาก %s",
     "Shares" : "แชร์",
     "File sharing" : "กำลังแชร์ไฟล์",
     "Public link" : "ลิงก์สาธารณะ",

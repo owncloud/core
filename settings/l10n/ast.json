@@ -87,6 +87,7 @@
     "undo" : "desfacer",
     "never" : "enxamás",
     "deleted {userName}" : "desaniciáu {userName}",
+    "Group already exists" : "El grupu yá esiste",
     "add group" : "amestar Grupu",
     "Invalid quota value \"{val}\"" : "Valor \"{val}\" de cuota inválidu ",
     "enabled" : "activáu",

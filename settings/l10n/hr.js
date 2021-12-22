@@ -48,6 +48,7 @@ OC.L10N.register(
     "undo" : "poništite",
     "never" : "nikad",
     "deleted {userName}" : "izbrisano {userName}",
+    "Group already exists" : "Grupa već postoji",
     "add group" : "dodajte grupu",
     "A valid username must be provided" : "Nužno je navesti ispravno korisničko ime",
     "A valid password must be provided" : "Nužno je navesti ispravnu lozinku",

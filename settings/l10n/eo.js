@@ -42,6 +42,7 @@ OC.L10N.register(
     "Delete group" : "Forigi grupon",
     "never" : "neniam",
     "deleted {userName}" : "{userName} foriĝis",
+    "Group already exists" : "La grupo jam ekzistas",
     "add group" : "aldoni grupon",
     "enabled" : "kapabligita",
     "disabled" : "malkapabligita",

@@ -104,6 +104,7 @@ OC.L10N.register(
     "Delete group" : "Slet gruppe",
     "never" : "aldrig",
     "deleted {userName}" : "slettede {userName}",
+    "Group already exists" : "Gruppen findes allerede",
     "add group" : "Tilføj gruppe",
     "Invalid quota value \"{val}\"" : "Ugyldig kvote værdi \"{val}\"",
     "enabled" : "aktiveret",

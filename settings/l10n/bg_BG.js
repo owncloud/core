@@ -101,6 +101,7 @@ OC.L10N.register(
     "undo" : "възстановяване",
     "never" : "никога",
     "deleted {userName}" : "{userName}  е изтрит",
+    "Group already exists" : "Групата вече съществува",
     "add group" : "добавяне на група",
     "Invalid quota value \"{val}\"" : "Невалидна стойност на квотата \"{val}\"",
     "enabled" : "включен",

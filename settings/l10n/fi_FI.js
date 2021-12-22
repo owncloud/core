@@ -96,6 +96,7 @@ OC.L10N.register(
     "Delete group" : "Poista ryhmä",
     "never" : "ei koskaan",
     "deleted {userName}" : "poistettu {userName}",
+    "Group already exists" : "Ryhmä on jo olemassa",
     "add group" : "lisää ryhmä",
     "Invalid quota value \"{val}\"" : "Virheellinen kiintiöarvo \"{val}\"",
     "enabled" : "Käytössä",

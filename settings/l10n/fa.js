@@ -106,6 +106,7 @@ OC.L10N.register(
     "Delete group" : "حذف گروه",
     "never" : "هرگز",
     "deleted {userName}" : "کاربر {userName} حذف شد",
+    "Group already exists" : "این گروه در حال حاضر موجود است",
     "add group" : "افزودن گروه",
     "enabled" : "فعال شده",
     "disabled" : "غیر فعال شده",

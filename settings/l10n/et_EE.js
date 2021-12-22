@@ -82,6 +82,7 @@ OC.L10N.register(
     "never" : "mitte kunagi",
     "deleted {userName}" : "kustutatud {userName}",
     "Delete user" : "Kustuta kasutaja",
+    "Group already exists" : "Grupp on juba olemas",
     "add group" : "lisa grupp",
     "enabled" : "sisse lülitatud",
     "disabled" : "välja lülitatud",

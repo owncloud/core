@@ -98,6 +98,7 @@ OC.L10N.register(
     "Delete group" : "Izbriši skupino",
     "never" : "nikoli",
     "deleted {userName}" : "izbrisano {userName}",
+    "Group already exists" : "Skupina že obstaja",
     "add group" : "dodaj skupino",
     "Invalid quota value \"{val}\"" : "Neveljavna vrednost količinske omejitve \"{val}\"",
     "enabled" : "omogočeno",

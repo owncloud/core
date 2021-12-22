@@ -89,6 +89,7 @@ OC.L10N.register(
     "Delete group" : "Trinti grupę",
     "never" : "niekada",
     "deleted {userName}" : "{userName} ištrintas",
+    "Group already exists" : "Grupė jau egzistuoja",
     "add group" : "pridėti grupę",
     "enabled" : "įjungtas",
     "disabled" : "išjungtas",

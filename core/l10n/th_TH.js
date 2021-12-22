@@ -116,7 +116,7 @@ OC.L10N.register(
     "Password can not be changed. Please contact your administrator." : "หากคุณไม่สามารถเปลี่ยนแปลงรหัสผ่าน กรุณาติดต่อผู้ดูแลระบบ",
     "Passwords do not match" : "รหัสผ่านไม่ตรงกัน",
     "Error adding {addItem}: {addItem} already exists" : "เกิดข้อผิดพลาดขณะกำลังเพิ่ม {addItem}: {addItem} ที่มีอยู่แล้ว",
-    "No" : "ไม่ตกลง",
+    "No" : "ปฏิเสธ",
     "Yes" : "ตกลง",
     "Choose" : "เลือก",
     "Error loading file picker template: {error}" : "เกิดข้อผิดพลาดขณะกำลังโหลดไฟล์เทมเพลต: {error}",

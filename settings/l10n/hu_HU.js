@@ -111,6 +111,7 @@ OC.L10N.register(
     "never" : "soha",
     "deleted {userName}" : "törölve: {userName}",
     "Delete user" : "Felhasználó törlése",
+    "Group already exists" : "A csoport már létezik",
     "add group" : "csoport hozzáadása",
     "Invalid quota value \"{val}\"" : "Érvénytelen kvótaérték \"{val}\"",
     "enabled" : "Bekapcsolva",

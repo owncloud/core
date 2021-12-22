@@ -87,6 +87,7 @@ OC.L10N.register(
     "never" : "ніколи",
     "deleted {userName}" : "видалено {userName}",
     "Delete user" : "Видалити користувача",
+    "Group already exists" : "Група вже існує",
     "add group" : "додати групу",
     "enabled" : "увімкнено",
     "disabled" : "вимкнено",

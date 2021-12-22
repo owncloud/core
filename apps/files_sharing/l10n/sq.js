@@ -92,8 +92,6 @@ OC.L10N.register(
     "Public link expired" : "Lidhja publike skadoi",
     "Public link of %2$s expired" : "Lidhja publike e %2$s skadoi",
     "Shared by %2$s" : "U nda nga %2$s",
-    "Received remote share from %1$s" : "U mor ndarje e largët prej %1$s",
-    "Received remote share from %s" : "U mor ndarje e largët prej %s",
     "Shares" : "Ndarje",
     "File sharing" : "Ndarje kartelash me të tjerët",
     "Public link" : "Lidhje publike",

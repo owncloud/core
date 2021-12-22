@@ -116,6 +116,7 @@ OC.L10N.register(
     "never" : "aldrei",
     "deleted {userName}" : "eyddi {userName}",
     "Delete user" : "Eyða notanda",
+    "Group already exists" : "Hópur er þegar til",
     "add group" : "bæta við hópi",
     "Invalid quota value \"{val}\"" : "Óleyfilegt gildi kvóta \"{val}\"",
     "enabled" : "virkt",

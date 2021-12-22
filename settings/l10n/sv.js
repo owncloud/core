@@ -96,6 +96,7 @@ OC.L10N.register(
     "Delete group" : "Radera grupp",
     "never" : "aldrig",
     "deleted {userName}" : "raderade {userName}",
+    "Group already exists" : "Gruppen finns redan",
     "add group" : "lägg till grupp",
     "Invalid quota value \"{val}\"" : "Felaktigt gränsvärde \"{val}\"",
     "enabled" : "aktiverad",

@@ -109,6 +109,8 @@ OC.L10N.register(
     "Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>" : "จำกัดการแจ้งเตือนเกี่ยวกับการสร้างและการเปลี่ยนแปลง <strong>ไฟล์ที่ชื่นชอบ</strong> ของคุณ <em>(สตรีมเท่านั้น)</em>",
     "A file or folder has been <strong>deleted</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูก <strong>ลบ</strong>",
     "A file or folder has been <strong>restored</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูก <strong>กู้คืน</strong>",
+    "A file or folder has been <strong>renamed</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูก <strong>เปลี่ยนชื่อ</strong>",
+    "A file or folder has been <strong>moved</strong>" : "เมื่อไฟล์หรือโฟลเดอร์ถูก <strong>ย้าย</strong>",
     "You created %1$s" : "คุณสร้าง %1$s",
     "%2$s created %1$s" : "%2$s สร้าง %1$s",
     "%1$s was created in a public folder" : "%1$s ถูกสร้างขึ้นในโฟลเดอร์สาธารณะ",

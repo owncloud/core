@@ -84,6 +84,7 @@ OC.L10N.register(
     "Delete group" : "D'Grupp läaschen",
     "never" : "Ni",
     "deleted {userName}" : "Geläscht  {Benotzernumm}",
+    "Group already exists" : "Group existeiert schon.",
     "add group" : "Grupp bäisetzen",
     "no group" : "Keng Grupp",
     "Changing the password will result in data loss, because data recovery is not available for this user" : "D'Passwuert ännere wäert e Verloscht vun den Daten provozéiere, well Daten zeréck gewannen ass net disponibel fir dëse Benotzer",

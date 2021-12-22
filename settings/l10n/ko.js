@@ -122,6 +122,7 @@ OC.L10N.register(
     "never" : "없음",
     "deleted {userName}" : "{userName} 삭제됨",
     "Delete user" : "사용자 삭제",
+    "Group already exists" : "그룹이 이미 존재함",
     "add group" : "그룹 추가",
     "Invalid quota value \"{val}\"" : "잘못된 할당량 값 \"{val}\"",
     "enabled" : "활성화됨",

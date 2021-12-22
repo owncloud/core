@@ -126,6 +126,7 @@ OC.L10N.register(
     "deleted {userName}" : "{userName} silindi",
     "You are about to delete a user. This action can't be undone and is permanent. All user data, files and shares will be deleted. Are you sure that you want to permanently delete {userName}?" : "Bir kullanıcıyı silmek üzeresiniz. Bu işlem geri alınamaz ve kalıcıdır. Tüm kullanıcı verileri, dosyalar ve paylaşımlar silinecek. {UserName} adlı kullanıcıyı kalıcı olarak silmek istediğinize emin misiniz?",
     "Delete user" : "Kullanıcıyı sil",
+    "Group already exists" : "Grup zaten mevcut",
     "add group" : "grup ekle",
     "Invalid quota value \"{val}\"" : "Geçersiz kalan alan değeri \"{val}\"",
     "enabled" : "etkin",
