@@ -136,6 +136,10 @@ class Groups {
 			\OCP\Util::writeLog('provisioning_api', 'Group name not supplied', \OCP\Util::ERROR);
 			return new OC_OCS_Result(null, 101, 'Invalid group name');
 		}
+		if (\trim($groupId) !== $groupId) {
+			\OCP\Util::writeLog('provisioning_api', 'Group name must not start or end with white space', \OCP\Util::ERROR);
+			return new OC_OCS_Result(null, 101, 'Invalid group name');
+		}
 		// Check if it exists
 		if ($this->groupManager->groupExists($groupId)) {
 			return new OC_OCS_Result(null, 102);
