@@ -470,7 +470,7 @@ Feature: dav-versions
       | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
     And the downloaded content should be "uploaded content"
 
-
+  @skip_on_objectstore
   Scenario: enable file versioning and check the history of changes from multiple users
     Given the administrator has enabled the file version storage feature
     And user "Brian" has been created with default attributes and without skeleton files
