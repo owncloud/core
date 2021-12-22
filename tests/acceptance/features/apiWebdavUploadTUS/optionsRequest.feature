@@ -10,11 +10,11 @@ Feature: OPTIONS request
       | /remote.php/webdav/               |
       | /remote.php/dav/files/%username%/ |
     Then the following headers should be set
-      | header                 | value                                  |
-      | Tus-Resumable          | 1.0.0                                  |
-      | Tus-Version            | 1.0.0                                  |
-      | Tus-Extension          | creation,creation-with-upload,checksum |
-      | Tus-Checksum-Algorithm | md5,sha1,adler32                       |
+      | header                 | value                                             |
+      | Tus-Resumable          | 1.0.0                                             |
+      | Tus-Version            | 1.0.0                                             |
+      | Tus-Extension          | creation,creation-with-upload,checksum,expiration |
+      | Tus-Checksum-Algorithm | md5,sha1,adler32                                  |
 
 
   Scenario: send OPTIONS request to webDav endpoints using the TUS protocol without any authentication
@@ -23,11 +23,11 @@ Feature: OPTIONS request
       | /remote.php/webdav/               |
       | /remote.php/dav/files/%username%/ |
     Then the following headers should be set
-      | header                 | value                                  |
-      | Tus-Resumable          | 1.0.0                                  |
-      | Tus-Version            | 1.0.0                                  |
-      | Tus-Extension          | creation,creation-with-upload,checksum |
-      | Tus-Checksum-Algorithm | md5,sha1,adler32                       |
+      | header                 | value                                             |
+      | Tus-Resumable          | 1.0.0                                             |
+      | Tus-Version            | 1.0.0                                             |
+      | Tus-Extension          | creation,creation-with-upload,checksum,expiration |
+      | Tus-Checksum-Algorithm | md5,sha1,adler32                                  |
 
 
   Scenario: send OPTIONS request to webDav endpoints using the TUS protocol with valid username and wrong password
@@ -36,11 +36,11 @@ Feature: OPTIONS request
       | /remote.php/webdav/               |
       | /remote.php/dav/files/%username%/ |
     Then the following headers should be set
-      | header                 | value                                  |
-      | Tus-Resumable          | 1.0.0                                  |
-      | Tus-Version            | 1.0.0                                  |
-      | Tus-Extension          | creation,creation-with-upload,checksum |
-      | Tus-Checksum-Algorithm | md5,sha1,adler32                       |
+      | header                 | value                                             |
+      | Tus-Resumable          | 1.0.0                                             |
+      | Tus-Version            | 1.0.0                                             |
+      | Tus-Extension          | creation,creation-with-upload,checksum,expiration |
+      | Tus-Checksum-Algorithm | md5,sha1,adler32                                  |
 
 
   Scenario: send OPTIONS requests to webDav endpoints using valid password and username of different user
@@ -50,8 +50,8 @@ Feature: OPTIONS request
       | /remote.php/webdav/               |
       | /remote.php/dav/files/%username%/ |
     Then the following headers should be set
-      | header                 | value                                  |
-      | Tus-Resumable          | 1.0.0                                  |
-      | Tus-Version            | 1.0.0                                  |
-      | Tus-Extension          | creation,creation-with-upload,checksum |
-      | Tus-Checksum-Algorithm | md5,sha1,adler32                       |
+      | header                 | value                                             |
+      | Tus-Resumable          | 1.0.0                                             |
+      | Tus-Version            | 1.0.0                                             |
+      | Tus-Extension          | creation,creation-with-upload,checksum,expiration |
+      | Tus-Checksum-Algorithm | md5,sha1,adler32                                  |
