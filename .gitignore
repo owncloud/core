@@ -3,6 +3,7 @@
 /owncloud
 /config/config.php
 /config/*.config.php
+/config/config.json
 /config/mount.php
 /config/mimetypealiases.json
 /config/mimetypemapping.json
