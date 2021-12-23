@@ -90,6 +90,8 @@
     "Public link expired" : "O link público expirou",
     "Public link of %2$s expired" : "O link público de %2$s expirou",
     "Shared by %2$s" : "Compartilhado por %2$s",
+    "Received federated share from %1$s" : "Compartilhamento federado recebido de %1$s",
+    "Received federated share from %s" : "Compartilhamento federado recebido de %s",
     "Shares" : "Compartilhamentos",
     "File sharing" : "Compartilhamento de arquivo",
     "Public link" : "Linque público",
