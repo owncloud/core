@@ -90,6 +90,8 @@
     "Public link expired" : "Lidhja publike skadoi",
     "Public link of %2$s expired" : "Lidhja publike e %2$s skadoi",
     "Shared by %2$s" : "U nda nga %2$s",
+    "Received federated share from %1$s" : "Nga %1$s u mor ndarje e federuar",
+    "Received federated share from %s" : "Nga %s u mor ndarje e federuar",
     "Shares" : "Ndarje",
     "File sharing" : "Ndarje kartelash me të tjerët",
     "Public link" : "Lidhje publike",
