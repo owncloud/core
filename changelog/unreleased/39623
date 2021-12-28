@@ -1,0 +1,7 @@
+Bugfix: Prevent encrypted files from being corrupted when overwriting them
+
+Fixed an issue where overwriting an encrypted file by a share recipient
+would corrupt it. This is a regression which was introduced by #39516.
+
+https://github.com/owncloud/core/pull/39623
+https://github.com/owncloud/encryption/issues/315
