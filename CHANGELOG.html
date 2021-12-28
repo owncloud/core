@@ -10,6 +10,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Prevent group names starting or ending with white space: <a href="https://github.com/owncloud/core/pull/39540">#39540</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent encrypted files from being corrupted when overwriting them: <a href="https://github.com/owncloud/core/pull/39623">#39623</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
         <li class="type-enhancement changelog-item">Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></li>
@@ -38,6 +39,15 @@
             <p>https://github.com/owncloud/enterprise/issues/4868<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39602<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent encrypted files from being corrupted when overwriting them: <a href="https://github.com/owncloud/core/pull/39623">#39623</a></p>
+            <p>Fixed an issue where overwriting an encrypted file by a share recipient would corrupt it. This
+   is a regression which was introduced by #39516.
+            </p>
+            <p>https://github.com/owncloud/encryption/issues/315<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39623<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></p>
