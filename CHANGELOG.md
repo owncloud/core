@@ -1,4 +1,27 @@
-Changelog for ownCloud Core [10.9.0] (2021-12-20)
+Changelog for ownCloud Core [10.9.1] (2021-12-28)
+=======================================
+The following sections list the changes in ownCloud core 10.9.1 relevant to
+ownCloud admins and users.
+
+[10.9.1]: https://github.com/owncloud/core/compare/v10.9.0...v10.9.1
+
+Summary
+-------
+
+* Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
+
+Details
+-------
+
+* Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
+
+   Fixed an issue where overwriting an encrypted file by a share recipient would corrupt it. This
+   is a regression which was introduced by #39516.
+
+   https://github.com/owncloud/encryption/issues/315
+   https://github.com/owncloud/core/pull/39623
+
+Changelog for ownCloud Core [10.9.0] (2021-12-09)
 =======================================
 The following sections list the changes in ownCloud core 10.9.0 relevant to
 ownCloud admins and users.
