@@ -3551,6 +3551,7 @@ class OccContext implements Context {
 		$this->deleteLocalStorageFolderUsingTheOccCommand('local_storage', false);
 		$this->deleteLocalStorageFolderUsingTheOccCommand('local_storage2', false);
 		$this->deleteLocalStorageFolderUsingTheOccCommand('local_storage3', false);
+		$this->deleteLocalStorageFolderUsingTheOccCommand('TestMountPoint', false);
 	}
 
 	/**
