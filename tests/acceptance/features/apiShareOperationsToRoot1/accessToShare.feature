@@ -68,3 +68,41 @@ Feature: sharing
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
       | 2               | 200             |
+
+
+  Scenario Outline: user should not be able to access a pending share (file)
+    Given using OCS API version "<ocs_api_version>"
+    And auto-accept shares has been disabled
+    And user "Alice" has uploaded file with content "test data" to "/textfile1.txt"
+    When user "Alice" shares file "/textfile1.txt" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" file "textfile1.txt" should not exist
+    And the sharing API should report to user "Brian" that these shares are in the pending state
+      | path           |
+      | /textfile1.txt |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
+
+
+  Scenario Outline: user should not be able to access a pending share (folder)
+    Given using OCS API version "<ocs_api_version>"
+    And auto-accept shares has been disabled
+    And user "Alice" has created folder "simple-folder"
+    And user "Alice" has created folder "simple-folder/sub"
+    And user "Alice" has uploaded file with content "test data" to "/simple-folder/textfile1.txt"
+    When user "Alice" shares file "/simple-folder" with user "Brian" using the sharing API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And as "Brian" folder "simple-folder/" should not exist
+    And as "Brian" folder "simple-folder/sub" should not exist
+    And as "Brian" file "simple-folder/textfile1.txt" should not exist
+    And the sharing API should report to user "Brian" that these shares are in the pending state
+      | path           |
+      | /simple-folder |
+    Examples:
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
