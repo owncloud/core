@@ -5104,28 +5104,28 @@ trait WebDav {
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by//text()");
 		if (!isset($xmlPart[$index - 1])) {
 			Assert::fail(
-				'could not find version with index "' . $index . '" for oc:meta-version-edited-by property'
+				'could not find version with index "' . $index . '" for oc:meta-version-edited-by property in response to user "' . $this->responseUser . '"'
 			);
 		}
 		$actualUser = $xmlPart[$index - 1][0];
 		Assert::assertEquals(
 			$expectedUsername,
 			$actualUser,
-			"Expected user of version was '$expectedUsername', but got '$actualUser'"
+			"Expected user of version with index $index in response to user '$this->responseUser' was '$expectedUsername', but got '$actualUser'"
 		);
 
 		// the user's display name should be in oc:meta-version-edited-by-name
 		$xmlPart = $resXml->xpath("//oc:meta-version-edited-by-name//text()");
 		if (!isset($xmlPart[$index - 1])) {
 			Assert::fail(
-				'could not find version with index "' . $index . '" for oc:meta-version-edited-by-name property'
+				'could not find version with index "' . $index . '" for oc:meta-version-edited-by-name property in response to user "' . $this->responseUser . '"'
 			);
 		}
 		$actualUserDisplayName = $xmlPart[$index - 1][0];
 		Assert::assertEquals(
 			$expectedUserDisplayName,
 			$actualUserDisplayName,
-			"Expected user of version was '$expectedUsername', but got '$actualUser'"
+			"Expected display name of version with index $index in response to user '$this->responseUser' was '$expectedUsername', but got '$actualUser'"
 		);
 	}
 }
