@@ -6,13 +6,13 @@ Feature: file versions remember the author of each version
     Given using OCS API version "2"
     And using new DAV path
     And user "Alice" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And the administrator has enabled the file version storage feature
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes from multiple users
-    Given the administrator has enabled the file version storage feature
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
-    And user "David" has been created with default attributes and without skeleton files
+    Given user "David" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "/test"
     And user "Alice" has shared folder "/test" with user "Brian" with permissions "all"
     And user "Alice" has shared folder "/test" with user "Carol" with permissions "all"
@@ -23,35 +23,18 @@ Feature: file versions remember the author of each version
     And user "David" has uploaded file with content "uploaded content david" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the number of versions should be "3"
-    When user "Alice" downloads the version of file "/test/textfile0.txt" with the index "1"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content carol"
-    When user "Alice" downloads the version of file "test/textfile0.txt" with the index "2"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content brian"
-    When user "Alice" downloads the version of file "test/textfile0.txt" with the index "3"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content alice"
-    When user "Alice" gets the version metadata of file "/test/textfile0.txt"
-    Then the author of the created version with index "1" should be "Carol"
-    And the author of the created version with index "2" should be "Brian"
-    And the author of the created version with index "3" should be "Alice"
+    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
+    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol,David" the authors of the versions of file "/test/textfile0.txt" should be:
+      | index | author |
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes from multiple users for shared folder in the group
-    Given the administrator has enabled the file version storage feature
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/test"
+    Given user "Alice" has created folder "/test"
     And group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
@@ -62,28 +45,16 @@ Feature: file versions remember the author of each version
     And user "Carol" has uploaded file with content "uploaded content carol" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the number of versions should be "2"
-    When user "Alice" downloads the version of file "test/textfile0.txt" with the index "1"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content brian"
-    When user "Alice" downloads the version of file "test/textfile0.txt" with the index "2"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content alice"
-    When user "Alice" gets the version metadata of file "/test/textfile0.txt"
-    Then the author of the created version with index "1" should be "Brian"
-    And the author of the created version with index "2" should be "Alice"
+    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol" the authors of the versions of file "/test/textfile0.txt" should be:
+      | index | author |
+      | 1     | Brian  |
+      | 2     | Alice  |
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes from multiple users for shared file in the group
-    Given the administrator has enabled the file version storage feature
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
-    And group "grp1" has been created
+    Given group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
@@ -93,28 +64,16 @@ Feature: file versions remember the author of each version
     And user "Carol" has uploaded file with content "uploaded content carol" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the number of versions should be "2"
-    When user "Alice" downloads the version of file "/textfile0.txt" with the index "1"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content brian"
-    When user "Alice" downloads the version of file "/textfile0.txt" with the index "2"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content alice"
-    When user "Alice" gets the version metadata of file "/textfile0.txt"
-    Then the author of the created version with index "1" should be "Brian"
-    And the author of the created version with index "2" should be "Alice"
+    And the content of version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol" the authors of the versions of file "/textfile0.txt" should be:
+      | index | author |
+      | 1     | Brian  |
+      | 2     | Alice  |
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes from multiple users while moving file in/out of a subfolder
-    Given the administrator has enabled the file version storage feature
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/test"
+    Given user "Alice" has created folder "/test"
     And group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
@@ -129,35 +88,18 @@ Feature: file versions remember the author of each version
     Then as "Alice" file "/test/textfile0.txt" should exist
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the number of versions should be "3"
-    When user "Alice" downloads the version of file "/test/textfile0.txt" with the index "1"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content carol"
-    When user "Alice" downloads the version of file "/test/textfile0.txt" with the index "2"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content brian"
-    When user "Alice" downloads the version of file "/test/textfile0.txt" with the index "3"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content alice"
-    When user "Alice" gets the version metadata of file "/test/textfile0.txt"
-    Then the author of the created version with index "1" should be "Carol"
-    And the author of the created version with index "2" should be "Brian"
-    And the author of the created version with index "3" should be "Alice"
+    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
+    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol" the authors of the versions of file "/test/textfile0.txt" should be:
+      | index | author |
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes from multiple users after renaming file by sharer
-    Given the administrator has enabled the file version storage feature
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
-    And group "grp1" has been created
+    Given group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
@@ -171,28 +113,20 @@ Feature: file versions remember the author of each version
     And as "Carol" file "/textfile0.txt" should not exist
     When user "Alice" gets the number of versions of file "textfile0.txt"
     Then the number of versions should be "2"
-    When user "Alice" downloads the version of file "/textfile0.txt" with the index "1"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content brian"
-    When user "Alice" downloads the version of file "/textfile0.txt" with the index "2"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content alice"
-    When user "Alice" gets the version metadata of file "/textfile0.txt"
-    Then the author of the created version with index "1" should be "Brian"
-    And the author of the created version with index "2" should be "Alice"
+    And the content of version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as user "Alice" the authors of the versions of file "/textfile0.txt" should be:
+      | index | author |
+      | 1     | Brian  |
+      | 2     | Alice  |
+    And as users "Brian,Carol" the authors of the versions of file "/exist.txt" should be:
+      | index | author |
+      | 1     | Brian  |
+      | 2     | Alice  |
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes in sharer after renaming file by sharee
-    Given the administrator has enabled the file version storage feature
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
-    And group "grp1" has been created
+    Given group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
     And user "Carol" has been added to group "grp1"
@@ -206,28 +140,20 @@ Feature: file versions remember the author of each version
     And as "Carol" file "/textfile0.txt" should not exist
     When user "Alice" gets the number of versions of file "exist.txt"
     Then the number of versions should be "2"
-    When user "Alice" downloads the version of file "/exist.txt" with the index "1"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''exist.txt; filename="exist.txt" |
-    And the downloaded content should be "uploaded content brian"
-    When user "Alice" downloads the version of file "/exist.txt" with the index "2"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''exist.txt; filename="exist.txt" |
-    And the downloaded content should be "uploaded content alice"
-    When user "Alice" gets the version metadata of file "/exist.txt"
-    Then the author of the created version with index "1" should be "Brian"
-    And the author of the created version with index "2" should be "Alice"
+    And the content of version index "1" of file "/exist.txt" for user "Alice" should be "uploaded content brian"
+    And the content of version index "2" of file "/exist.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Carol" the authors of the versions of file "/exist.txt" should be:
+      | index | author |
+      | 1     | Brian  |
+      | 2     | Alice  |
+    And as user "Brian" the authors of the versions of file "/textfile0.txt" should be:
+      | index | author |
+      | 1     | Brian  |
+      | 2     | Alice  |
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes from multiple users when reshared after unshared by sharer
-    Given the administrator has enabled the file version storage feature
-    And user "Brian" has been created with default attributes and without skeleton files
-    And user "Carol" has been created with default attributes and without skeleton files
-    And user "Alice" creates folder "/test" using the WebDAV API
+    Given user "Alice" creates folder "/test" using the WebDAV API
     And group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
@@ -241,25 +167,11 @@ Feature: file versions remember the author of each version
     And user "Alice" shares folder "/test" with group "grp1" using the sharing API
     And user "Alice" gets the number of versions of file "/test/textfile0.txt"
     Then the number of versions should be "3"
-    When user "Alice" downloads the version of file "/test/textfile0.txt" with the index "1"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content carol"
-    When user "Alice" downloads the version of file "/test/textfile0.txt" with the index "2"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content brian"
-    When user "Alice" downloads the version of file "/test/textfile0.txt" with the index "3"
-    Then the HTTP status code should be "200"
-    And the following headers should be set
-      | header              | value                                                                |
-      | Content-Disposition | attachment; filename*=UTF-8''textfile0.txt; filename="textfile0.txt" |
-    And the downloaded content should be "uploaded content alice"
-    When user "Alice" gets the version metadata of file "/test/textfile0.txt"
-    Then the author of the created version with index "1" should be "Carol"
-    And the author of the created version with index "2" should be "Brian"
-    And the author of the created version with index "3" should be "Alice"
+    And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
+    And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
+    And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
+    And as users "Alice,Brian,Carol" the authors of the versions of file "/test/textfile0.txt" should be:
+      | index | author |
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |
