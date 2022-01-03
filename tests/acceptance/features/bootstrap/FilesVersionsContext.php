@@ -22,6 +22,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\WebDavHelper;
@@ -61,6 +62,7 @@ class FilesVersionsContext implements Context {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileOwner = $this->featureContext->getActualUsername($fileOwner);
 		$fileId = $this->featureContext->getFileIdForPath($fileOwner, $file);
+		Assert::assertNotNull($fileId, __METHOD__ . " fileid of file $file user $fileOwner not found (the file may not exist)");
 		$response = $this->featureContext->makeDavRequest(
 			$user,
 			"PROPFIND",
@@ -70,7 +72,7 @@ class FilesVersionsContext implements Context {
 			null,
 			'2'
 		);
-		$this->featureContext->setResponse($response);
+		$this->featureContext->setResponse($response, $user);
 	}
 
 	/**
@@ -85,6 +87,7 @@ class FilesVersionsContext implements Context {
 	public function userGetsFileVersions(string $user, string $file):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $file);
+		Assert::assertNotNull($fileId, __METHOD__ . " fileid of file $file user $user not found (the file may not exist)");
 		$response = $this->featureContext->makeDavRequest(
 			$user,
 			"PROPFIND",
@@ -94,7 +97,7 @@ class FilesVersionsContext implements Context {
 			null,
 			'2'
 		);
-		$this->featureContext->setResponse($response);
+		$this->featureContext->setResponse($response, $user);
 	}
 
 	/**
@@ -109,6 +112,7 @@ class FilesVersionsContext implements Context {
 	public function userGetsVersionMetadataOfFile(string $user, string $file):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $file);
+		Assert::assertNotNull($fileId, __METHOD__ . " fileid of file $file user $user not found (the file may not exist)");
 		$body = '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
   <d:prop>
@@ -125,7 +129,7 @@ class FilesVersionsContext implements Context {
 			null,
 			'2'
 		);
-		$this->featureContext->setResponse($response);
+		$this->featureContext->setResponse($response, $user);
 	}
 
 	/**
@@ -142,6 +146,7 @@ class FilesVersionsContext implements Context {
 	public function userRestoresVersionIndexOfFile(string $user, int $versionIndex, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
+		Assert::assertNotNull($fileId, __METHOD__ . " fileid of file $path user $user not found (the file may not exist)");
 		$responseXml = $this->listVersionFolder($user, $fileId, 1);
 		$xmlPart = $responseXml->xpath("//d:response/d:href");
 		//restoring the version only works with DAV path v2
@@ -176,7 +181,7 @@ class FilesVersionsContext implements Context {
 	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
-		Assert::assertNotNull($fileId, "file $path not found");
+		Assert::assertNotNull($fileId, __METHOD__ . " file $path user $user not found (the file may not exist)");
 		$this->theVersionFolderOfFileIdShouldContainElements($fileId, $user, $count);
 	}
 
@@ -223,6 +228,7 @@ class FilesVersionsContext implements Context {
 	):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
+		Assert::assertNotNull($fileId, __METHOD__ . " fileid of file $path user $user not found (the file may not exist)");
 		$responseXml = $this->listVersionFolder(
 			$user,
 			$fileId,
@@ -239,6 +245,39 @@ class FilesVersionsContext implements Context {
 	}
 
 	/**
+	 * @Then /^as (?:users|user) "([^"]*)" the authors of the versions of file "([^"]*)" should be:$/
+	 *
+	 * @param string $users comma-separated list of usernames
+	 * @param string $filename
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function asUsersAuthorsOfVersionsOfFileShouldBe(
+		string $users,
+		string $filename,
+		TableNode $table
+	): void {
+		$this->featureContext->verifyTableNodeColumns(
+			$table,
+			['index', 'author']
+		);
+		$requiredVersionMetadata = $table->getHash();
+		$usersArray = \explode(",", $users);
+		foreach ($usersArray as $username) {
+			$actualUsername = $this->featureContext->getActualUsername($username);
+			$this->userGetsVersionMetadataOfFile($actualUsername, $filename);
+			foreach ($requiredVersionMetadata as $versionMetadata) {
+				$this->featureContext->theAuthorOfEditedVersionFile(
+					$versionMetadata['index'],
+					$versionMetadata['author']
+				);
+			}
+		}
+	}
+
+	/**
 	 * @When user :user downloads the version of file :path with the index :index
 	 *
 	 * @param string $user
@@ -251,6 +290,7 @@ class FilesVersionsContext implements Context {
 	public function downloadVersion(string $user, string $path, string $index):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$fileId = $this->featureContext->getFileIdForPath($user, $path);
+		Assert::assertNotNull($fileId, __METHOD__ . " fileid of file $path user $user not found (the file may not exist)");
 		$index = (int)$index;
 		$responseXml = $this->listVersionFolder($user, $fileId, 1);
 		$xmlPart = $responseXml->xpath("//d:response/d:href");
@@ -269,7 +309,29 @@ class FilesVersionsContext implements Context {
 			$user,
 			$this->featureContext->getPasswordForUser($user)
 		);
-		$this->featureContext->setResponse($response);
+		$this->featureContext->setResponse($response, $user);
+	}
+
+	/**
+	 * @Then /^the content of version index "([^"]*)" of file "([^"]*)" for user "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $index
+	 * @param string $path
+	 * @param string $user
+	 * @param string $content
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theContentOfVersionIndexOfFileForUserShouldBe(
+		string $index,
+		string $path,
+		string $user,
+		string $content
+	): void {
+		$this->downloadVersion($user, $path, $index);
+		$this->featureContext->theHTTPStatusCodeShouldBe("200");
+		$this->featureContext->downloadedContentShouldBe($content);
 	}
 
 	/**
