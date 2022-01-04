@@ -53,21 +53,24 @@ Details
 
    The following have been updated: - christophwurst/id3parser (v0.1.3 to v0.1.4) -
    doctrine/dbal (2.13.5 => 2.13.6) - laminas/laminas-inputfilter (2.12.0 to 2.12.1) -
-   laminas/laminas-stdlib (3.6.1 to 3.6.2) - laminas/laminas-validator (2.15.0 to 2.15.1) -
+   laminas/laminas-stdlib (3.6.1 to 3.6.4) - laminas/laminas-validator (2.15.0 to 2.15.1) -
    laminas/laminas-zendframework-bridge (1.4.0 to 1.4.1) - league/flysystem (1.1.5 to
    1.1.9) - league/mime-type-detection (1.8.0 to 1.9.0) - phpseclib/phpseclib (3.0.11 =>
    3.0.12) - sabre/dav (4.2.0 to 4.3.0) - sabre/vobject (4.4.0 to 4.4.1)
 
    https://github.com/owncloud/core/pull/39526
+   https://github.com/owncloud/core/pull/39631
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
-   The following Symfony components have been updated to: - console 4.4.34 - event-dispatcher
-   4.4.34 - event-dispatcher-contracts 4.4.34 - process 4.4.35 - routing 4.4.34 -
+   The following Symfony components have been updated to: - console 4.4.36 - event-dispatcher
+   4.4.34 - event-dispatcher-contracts 4.4.34 - process 4.4.36 - routing 4.4.34 -
    service-contracts 4.4.34 - translation 4.4.32 - translation-contracts 2.5.0
 
    https://github.com/owncloud/core/pull/39526
+   https://github.com/owncloud/core/pull/39631
    https://symfony.com/blog/symfony-4-4-34-released
+   https://symfony.com/blog/symfony-4-4-36-released
 
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 
