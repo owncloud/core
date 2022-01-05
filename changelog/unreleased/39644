@@ -5,3 +5,4 @@ With this change, the BOM will be removed and the preview will be rendered
 correctly.
 
 https://github.com/owncloud/core/pull/39644
+https://github.com/owncloud/core/issues/39645
