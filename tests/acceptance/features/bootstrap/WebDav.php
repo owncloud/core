@@ -312,12 +312,11 @@ trait WebDav {
 	 *
 	 * @param string|null $for the category of endpoint that the DAV path will be used for
 	 *
-	 * @return int|null DAV path version (1 or 2) selected, or appropriate for the endpoint
-	 * null if spaces dav path is used
+	 * @return int DAV path version (1, 2 or 3) selected, or appropriate for the endpoint
 	 */
 	public function getDavPathVersion(?string $for = null):?int {
 		if ($this->usingSpacesDavPath) {
-			return null;
+			return 3;
 		}
 		if ($for === 'systemtags') {
 			// systemtags only exists since DAV v2
@@ -387,20 +386,16 @@ trait WebDav {
 			$path = $this->customDavPath . $path;
 		}
 
+		if ($davPathVersion === null) {
+			$davPathVersion = $this->getDavPathVersion();
+		} else {
+			$davPathVersion = (int) $davPathVersion;
+		}
+
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
 		}
 
-		if ($this->usingSpacesDavPath) {
-			$spaceId = $this->getPersonalSpaceIdForUser($user, $password);
-		} else {
-			if ($davPathVersion === null) {
-				$davPathVersion = $this->getDavPathVersion();
-			} else {
-				$davPathVersion = (int)$davPathVersion;
-			}
-			$spaceId = null;
-		}
 		return WebDavHelper::makeDavRequest(
 			$this->getBaseUrl(),
 			$user,
@@ -418,9 +413,7 @@ trait WebDav {
 			$this->httpRequestTimeout,
 			null,
 			$urlParameter,
-			$doDavRequestAsUser,
-			$this->usingSpacesDavPath,
-			$spaceId
+			$doDavRequestAsUser
 		);
 	}
 
