@@ -1,0 +1,7 @@
+Bugfix: Text file previews have faulty content if a byte order mark is present
+
+While having a valid byte order mark in a text file, the preview was corrupt.
+With this change, the BOM will be removed and the preview will be rendered
+correctly.
+
+https://github.com/owncloud/core/pull/39644
