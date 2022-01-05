@@ -364,6 +364,38 @@ class WebDavHelper {
 	}
 
 	/**
+	 * fetches personal space id for provided user
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param string $xRequestId
+	 *
+	 * @return string
+	 * @throws GuzzleException
+	 */
+	public static function getPersonalSpaceIdForUser(string $baseUrl, string $user, string $password, string $xRequestId):string {
+		$drivesPath = 'graph/v1.0/me/drives';
+		$fullUrl = $baseUrl . $drivesPath;
+		$response = HttpRequestHelper::get(
+			$fullUrl,
+			$xRequestId,
+			$user,
+			$password
+		);
+		$bodyContents = $response->getBody()->getContents();
+		$json = \json_decode($bodyContents);
+		$personalSpaceId = '';
+		foreach ($json->value as $spaces) {
+			if ($spaces->driveType === "personal") {
+				$personalSpaceId = $spaces->id;
+				break;
+			}
+		}
+		return $personalSpaceId;
+	}
+
+	/**
 	 * sends a DAV request
 	 *
 	 * @param string|null $baseUrl
@@ -377,7 +409,7 @@ class WebDavHelper {
 	 * @param array|null $headers
 	 * @param string|null $xRequestId
 	 * @param string|null|resource|StreamInterface $body
-	 * @param int|null $davPathVersionToUse (1|2)
+	 * @param int|null $davPathVersionToUse (1|2|3)
 	 * @param string|null $type of request
 	 * @param string|null $sourceIpAddress to initiate the request from
 	 * @param string|null $authType basic|bearer
@@ -387,8 +419,6 @@ class WebDavHelper {
 	 * @param Client|null $client
 	 * @param array|null $urlParameter to concatenate with path
 	 * @param string|null $doDavRequestAsUser run the DAV as this user, if null its same as $user
-	 * @param bool|null $usingSpacesDavPath to send request with spaces dav
-	 * @param string|null $spaceId space id to perform action on
 	 *
 	 * @return ResponseInterface
 	 * @throws GuzzleException
@@ -402,7 +432,7 @@ class WebDavHelper {
 		?array $headers,
 		?string $xRequestId = '',
 		$body = null,
-		?int $davPathVersionToUse = null,
+		?int $davPathVersionToUse = 1,
 		?string $type = "files",
 		?string $sourceIpAddress = null,
 		?string $authType = "basic",
@@ -410,15 +440,16 @@ class WebDavHelper {
 		?int $timeout = 0,
 		?Client $client = null,
 		?array $urlParameter = [],
-		?string $doDavRequestAsUser = null,
-		?bool $usingSpacesDavPath = false,
-		?string $spaceId = null
+		?string $doDavRequestAsUser = null
 	):ResponseInterface {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 
-		// set default dav version as 1
-		if (!$usingSpacesDavPath && !$davPathVersionToUse) {
-			$davPathVersionToUse = 1;
+		$usingSpacesDavPath = false;
+		$spaceId = null;
+		// get space id if testing with spaces dav
+		if ($davPathVersionToUse === 3) {
+			$usingSpacesDavPath = true;
+			$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
 		}
 
 		if ($doDavRequestAsUser === null) {
