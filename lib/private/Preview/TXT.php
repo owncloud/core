@@ -54,6 +54,9 @@ class TXT implements IProvider2 {
 		$content = \stream_get_contents($stream, 2048);
 		\fclose($stream);
 
+		// Remove byte order mark
+		$content = \str_replace("\xEF\xBB\xBF", '', $content);
+
 		//don't create previews of empty text files
 		if (\trim($content) === '') {
 			return false;
