@@ -630,6 +630,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 			$appNavToggleBtn->click();
 			// waiting for side navigation to open properly before next step executes
 			$this->waitForOutstandingAjaxCalls($this->getSession());
+			$this->waitTillXpathIsVisible($this->appSettingsXpath);
 		}
 		$appSettingsButton = $this->find('xpath', $this->appSettingsXpath);
 		$this->assertElementNotNull(
