@@ -36,6 +36,12 @@ use DateTime;
  *
  */
 class WebDavHelper {
+
+	/**
+	 * @var array of users with their different spaces ids
+	 */
+	public static $spacesIdRef = [];
+
 	/**
 	 * returns the id of a file
 	 *
@@ -373,8 +379,12 @@ class WebDavHelper {
 	 *
 	 * @return string
 	 * @throws GuzzleException
+	 * @throws Exception
 	 */
 	public static function getPersonalSpaceIdForUser(string $baseUrl, string $user, string $password, string $xRequestId):string {
+		if (\array_key_exists($user, self::$spacesIdRef) && \array_key_exists("personal", self::$spacesIdRef[$user])) {
+			return self::$spacesIdRef[$user]["personal"];
+		}
 		$drivesPath = 'graph/v1.0/me/drives';
 		$fullUrl = $baseUrl . $drivesPath;
 		$response = HttpRequestHelper::get(
@@ -392,7 +402,13 @@ class WebDavHelper {
 				break;
 			}
 		}
-		return $personalSpaceId;
+
+		if ($personalSpaceId) {
+			self::$spacesIdRef[$user] = [];
+			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
+			return $personalSpaceId;
+		}
+		throw new Exception("Personal space not found for user " . $user);
 	}
 
 	/**
