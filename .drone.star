@@ -1504,7 +1504,7 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
-        "databases": ["mariadb:10.2"],
+        "databases": ["mysql:5.7"],
         "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
         "federatedDb": "",
