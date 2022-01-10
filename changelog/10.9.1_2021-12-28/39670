@@ -1,0 +1,8 @@
+Bugfix: Getting the file owner for share recipients
+
+Fixed a bug where a wrong file owner was retrieved when saving version authors.
+This scenario happened for share recipients if they had a file with the same
+name as the shared file.
+
+https://github.com/owncloud/core/pull/39670
+https://github.com/owncloud/core/issues/39662

@@ -103,12 +103,14 @@ class MetaStorage {
 			return false;
 		}
 
-		$userPath = "/files_versions$currentFileName" . MetaStorage::CURRENT_FILE_EXT;
-		$owner = Filesystem::getOwner($currentFileName);
+		list($owner, $fileName) = Storage::getUidAndFilename($currentFileName);
+
+		$userPath = "/files_versions$fileName" . MetaStorage::CURRENT_FILE_EXT;
+
 		$author = \OC_User::getUser();
 		$absPathOnDisk = $this->pathToAbsDiskPath($owner, $userPath);
 		$userView = $this->fileHelper->getUserView($owner);
-		$this->fileHelper->createMissingDirectories($userView, $currentFileName);
+		$this->fileHelper->createMissingDirectories($userView, $fileName);
 
 		return $this->writeMetaFile($author, $absPathOnDisk) !== false;
 	}
@@ -121,9 +123,9 @@ class MetaStorage {
 	 *
 	 * @param string $currentFileName
 	 * @param FileInfo $versionFile
+	 * @param string $uid
 	 */
-	public function moveCurrentToVersion(string $currentFileName, FileInfo $versionFile) {
-		$uid = Filesystem::getOwner($currentFileName);
+	public function moveCurrentToVersion(string $currentFileName, FileInfo $versionFile, string $uid) {
 		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_EXT);
 		$targetMetaFile = $this->dataDir . $versionFile->getPath() . self::VERSION_FILE_EXT;
 
