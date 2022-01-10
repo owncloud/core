@@ -326,7 +326,7 @@ class HttpRequestHelper {
 			if (strpos($url, "/apps/testing") !== false) {
 				$oCISServerUrl = \getenv('TEST_SERVER_URL');
 				$oC10ServerUrl = \getenv('TEST_OC10_URL');
-	
+
 				$url = str_replace($oCISServerUrl, $oC10ServerUrl, $url);
 			} else {
 				// set 'owncloud-server' selector cookie for oCIS requests
