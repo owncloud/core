@@ -52,7 +52,7 @@ Details
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 
    The following have been updated: - christophwurst/id3parser (v0.1.3 to v0.1.4) -
-   doctrine/dbal (2.13.5 => 2.13.6) - laminas/laminas-inputfilter (2.12.0 to 2.12.1) -
+   doctrine/dbal (2.13.5 => 2.13.7) - laminas/laminas-inputfilter (2.12.0 to 2.12.1) -
    laminas/laminas-stdlib (3.6.1 to 3.6.4) - laminas/laminas-validator (2.15.0 to 2.15.1) -
    laminas/laminas-zendframework-bridge (1.4.0 to 1.4.1) - league/flysystem (1.1.5 to
    1.1.9) - league/mime-type-detection (1.8.0 to 1.9.0) - phpseclib/phpseclib (3.0.11 =>
@@ -60,6 +60,7 @@ Details
 
    https://github.com/owncloud/core/pull/39526
    https://github.com/owncloud/core/pull/39631
+   https://github.com/owncloud/core/pull/39649
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
