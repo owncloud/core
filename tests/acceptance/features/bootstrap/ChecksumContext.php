@@ -168,15 +168,17 @@ class ChecksumContext implements Context {
 				$user,
 				$this->featureContext->getDavPathVersion()
 			) . $path;
-		$url = WebDavHelper::sanitizeUrl($url);
-		$response = HttpRequestHelper::sendRequest(
-			$url,
-			$this->featureContext->getStepLineRef(),
-			'PROPFIND',
+		$password = $this->featureContext->getPasswordForUser($user);
+		$response = WebDavHelper::makeDavRequest(
+			$this->featureContext->getBaseUrl(),
 			$user,
-			$this->featureContext->getPasswordForUser($user),
+			$password,
+			'PROPFIND',
+			$path,
 			null,
-			$body
+			$this->featureContext->getStepLineRef(),
+			$body,
+			$this->featureContext->getDavPathVersion()
 		);
 		$this->featureContext->setResponse($response);
 	}
