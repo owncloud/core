@@ -218,6 +218,7 @@ config = {
                     "cd /drone/core",
                     "php occ maintenance:singleuser --on",
                     "php occ encryption:enable",
+                    "php occ encryption:list-modules",
                     "php occ encryption:set-default-module OC_DEFAULT_MODULE",
                     "php occ encryption:select-encryption-type masterkey --yes",
                     "php occ encryption:encrypt-all --yes",
