@@ -460,11 +460,9 @@ class WebDavHelper {
 	):ResponseInterface {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 
-		$usingSpacesDavPath = false;
 		$spaceId = null;
 		// get space id if testing with spaces dav
 		if ($davPathVersionToUse === 3) {
-			$usingSpacesDavPath = true;
 			$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
 		}
 
