@@ -1,0 +1,7 @@
+Bugfix: Text previews had faulty content if BOM was present
+
+The BOM was incorrectly detected and was causing ownCloud to choose
+the wrong font for the text, showing unexpected results.
+The BOM is now processed correctly and the preview is shown as expected
+
+https://github.com/owncloud/core/pull/39669
