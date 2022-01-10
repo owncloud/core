@@ -214,6 +214,8 @@ config = {
                 "image": "owncloudci/php:7.4",
                 "pull": "always",
                 "commands": [
+                    "pwd",
+                    "cd /drone/core",
                     "php occ maintenance:singleuser --on",
                     "php occ encryption:enable",
                     "php occ encryption:select-encryption-type masterkey --yes",
