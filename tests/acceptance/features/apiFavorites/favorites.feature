@@ -28,6 +28,11 @@ Feature: favorite
       | old         |
       | new         |
 
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @issue-ocis-reva-276
   Scenario Outline: Favorite and unfavorite a folder
     Given using <dav_version> DAV path
@@ -44,6 +49,11 @@ Feature: favorite
       | old         |
       | new         |
 
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @smokeTest @issue-ocis-reva-276
   Scenario Outline: Favorite a file
     Given using <dav_version> DAV path
@@ -58,6 +68,11 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @smokeTest @issue-ocis-reva-276
   Scenario Outline: Favorite and unfavorite a file
@@ -75,6 +90,11 @@ Feature: favorite
       | old         |
       | new         |
 
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @smokeTest
   Scenario Outline: Get favorited elements of a folder
     Given using <dav_version> DAV path
@@ -90,6 +110,11 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
 
   Scenario Outline: Get favorited elements of a subfolder
     Given using <dav_version> DAV path
@@ -111,6 +136,11 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @files_sharing-app-required
   Scenario Outline: moving a favorite file out of a share keeps favorite state
