@@ -2566,6 +2566,49 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
+	 * fetches personal space id for provided user
+	 *
+	 * @param string $user
+	 * @param string|null $password
+	 *
+	 * @return mixed
+	 * @throws GuzzleException
+	 * @throws Exception
+	 */
+	public function getPersonalSpaceIdForUser(string $user, string $password = null):string {
+		$drivesPath = '/graph/v1.0/me/drives';
+		$fullUrl = $this->getBaseUrl() . $drivesPath;
+		if (!$password) {
+			$password = $this->getPasswordForUser($user);
+		}
+		$response = HttpRequestHelper::get(
+			$fullUrl,
+			$this->getStepLineRef(),
+			$user,
+			$password
+		);
+		$this->setResponse($response);
+		$this->theHTTPStatusCodeShouldBeSuccess();
+		$bodyContents = $response->getBody()->getContents();
+		Assert::assertNotEmpty($bodyContents, "The response body of the request to $drivesPath was empty");
+		$json = \json_decode($bodyContents);
+		Assert::assertNotNull(
+			$json,
+			"There was an error decoding the response of the request to $drivesPath\nThe response content was:\n$bodyContents"
+		);
+		// Search for the personal space in the spaces list
+		foreach($json->value as $space) {
+			if ($space->driveType === "personal"){
+				return $space->id;
+			}
+		}
+		throw new \Exception(
+			__METHOD__
+			. "No personal space found for user: " . $user
+		);
+	}
+
+	/**
 	 * @Then the json responded should match with
 	 *
 	 * @param PyStringNode $jsonExpected
