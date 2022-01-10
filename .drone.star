@@ -2760,8 +2760,10 @@ def fixPermissions(phpVersion, federatedServerNeeded, selUserNeeded = False, pat
         "image": "owncloudci/php:%s" % phpVersion,
         "pull": "always",
         "commands": [
-            "chown -R www-data %s" % pathOfServerUnderTest,
+            "chown -R www-data %s" % dir["server"],
         ] + ([
+            "chown -R www-data %s" % pathOfServerUnderTest,
+        ] if (pathOfServerUnderTest != dir["server"]) else []) + ([
             "chown -R www-data %s" % dir["federated"],
         ] if federatedServerNeeded else []) + ([
             "chmod 777 /home/seluser/Downloads/",
