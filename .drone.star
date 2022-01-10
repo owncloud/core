@@ -2760,8 +2760,10 @@ def fixPermissions(phpVersion, federatedServerNeeded, selUserNeeded = False, pat
         "image": "owncloudci/php:%s" % phpVersion,
         "pull": "always",
         "commands": [
-            "chown -R www-data %s" % pathOfServerUnderTest,
+            "chown -R www-data %s" % dir["server"],
         ] + ([
+            "chown -R www-data %s" % pathOfServerUnderTest,
+        ] if (pathOfServerUnderTest != dir["server"]) else []) + ([
             "chown -R www-data %s" % dir["federated"],
         ] if federatedServerNeeded else []) + ([
             "chmod 777 /home/seluser/Downloads/",
@@ -2883,6 +2885,7 @@ def installCoreFromTarball(version, db, logLevel = "2", ssl = False, federatedSe
             "php occ config:system:set trusted_domains 1 --value=server",
         ] + ([
             "php occ config:system:set trusted_domains 2 --value=federated",
+            "php occ config:system:set csrf.disabled --value=true",
         ] if federatedServerNeeded else []) + [
         ] + ([
             "php occ config:system:set trusted_domains 3 --value=proxy",
