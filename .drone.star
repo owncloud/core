@@ -200,9 +200,11 @@ config = {
             "suites": [
                 "cliEncryption",
             ],
-            "extraApps": {
-                "encryption": "composer install",
-            },
+            # When testing against a release tarball, the app already has its
+            # dependencies installed. There is no composer.json file and we do not need it.
+            #"extraApps": {
+            #    "encryption": "composer install",
+            #},
             "testingRemoteSystem": False,
             "extraSetup": [{
                 "name": "configure-encryption",
@@ -285,9 +287,11 @@ config = {
             },
             "emailNeeded": True,
             "useHttps": False,
-            "extraApps": {
-                "notifications": "composer install",
-            },
+            # When testing against a release tarball, the app already has its
+            # dependencies installed. There is no composer.json file and we do not need it.
+            #"extraApps": {
+            #    "notifications": "composer install",
+            #},
         },
         "webUIFileActionsMenu": {
             "suites": {
