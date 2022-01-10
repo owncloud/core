@@ -2883,6 +2883,7 @@ def installCoreFromTarball(version, db, logLevel = "2", ssl = False, federatedSe
             "php occ config:system:set trusted_domains 1 --value=server",
         ] + ([
             "php occ config:system:set trusted_domains 2 --value=federated",
+            "php occ config:system:set csrf.disabled --value=true",
         ] if federatedServerNeeded else []) + [
         ] + ([
             "php occ config:system:set trusted_domains 3 --value=proxy",
