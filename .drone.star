@@ -190,12 +190,15 @@ config = {
             ],
             "emailNeeded": True,
         },
-        "cliAppManagement": {
-            "suites": [
-                "cliAppManagement",
-            ],
-            "testingRemoteSystem": False,
-        },
+        # These tests require the test-runner and system-under-test to be
+        # the same dir tree. They need to "see" the underneath dirs and files.
+        #
+        #"cliAppManagement": {
+        #    "suites": [
+        #        "cliAppManagement",
+        #    ],
+        #    "testingRemoteSystem": False,
+        #},
         "cliEncryption": {
             "suites": [
                 "cliEncryption",
