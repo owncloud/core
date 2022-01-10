@@ -593,10 +593,20 @@ trait WebDav {
 	 * @param string $fileDestination
 	 *
 	 * @return string
+	 * @throws GuzzleException
 	 */
 	public function destinationHeaderValue(string $user, string $fileDestination):string {
+		$spaceId = null;
+		if ($this->getDavPathVersion() === 3) {
+			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				$this->getStepLineRef()
+			);
+		}
 		$fullUrl = $this->getBaseUrl() . '/' .
-			WebDavHelper::getDavPath($user, $this->getDavPathVersion());
+			WebDavHelper::getDavPath($user, $this->getDavPathVersion(), "files", $spaceId);
 		return \rtrim($fullUrl, '/') . '/' . \ltrim($fileDestination, '/');
 	}
 

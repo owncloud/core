@@ -158,6 +158,11 @@ Feature: favorite
       | old         |
       | new         |
 
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @issue-33840 @skipOnOcV10
   Scenario Outline: Get favorited elements and limit count of entries
     Given using <dav_version> DAV path
@@ -177,6 +182,7 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+      | spaces      |
 
   @issue-33840 @skipOnOcV10
   Scenario Outline: Get favorited elements paginated in subfolder
@@ -205,6 +211,7 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+      | spaces      |
 
   @files_sharing-app-required @notToImplementOnOCIS
   Scenario Outline: sharer file favorite state should not change the favorite state of sharee
@@ -246,6 +253,11 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @files_sharing-app-required @notToImplementOnOCIS
   Scenario Outline: favorite a file inside of a received share

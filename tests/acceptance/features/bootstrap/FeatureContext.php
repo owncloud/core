@@ -38,6 +38,7 @@ use TestHelpers\HttpRequestHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\OcisHelper;
 use Laminas\Ldap\Ldap;
+use TestHelpers\WebDavHelper;
 
 require_once 'bootstrap.php';
 
@@ -3607,6 +3608,20 @@ class FeatureContext extends BehatVariablesContext {
 			if ($this->remoteBaseUrl !== $this->localBaseUrl) {
 				$this->clearFileLocksForServer($this->getRemoteBaseUrl());
 			}
+		}
+	}
+
+	/**
+	 * @AfterScenario
+	 *
+	 * clear space id reference
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function clearSpaceId():void {
+		if (WebDavHelper::$spacesIdRef) {
+			WebDavHelper::$spacesIdRef = [];
 		}
 	}
 
