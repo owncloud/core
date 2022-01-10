@@ -138,6 +138,7 @@ class TXT implements IProvider2 {
 			'Hangul' => 'NotoSansCJKkr/NotoSansMonoCJKkr-Regular.otf',  // korean
 			'Devanagari' => 'NotoSansDevanagari/NotoSansDevanagari-Regular.ttf',  // devanagari
 			'Arabic' => 'NotoSansArabic/NotoSansArabic-Regular.ttf',  // arabic
+			'Latin' => 'NotoSans/NotoSans-Regular.ttf',  // latin
 		];
 
 		$countInfo = $info['count'];
