@@ -2,7 +2,7 @@
 <h2 id="unreleased" class="version"> Changelog for ownCloud Core [unreleased] (UNRELEASED)</h2>
     <p>The following sections list the changes in ownCloud core unreleased relevant to ownCloud admins and users.</p>
     <p>
-    <a href="https://github.com/owncloud/core/compare/v10.9.0...master">Full list of changes in unreleased </a>
+    <a href="https://github.com/owncloud/core/compare/v10.9.1...master">Full list of changes in unreleased </a>
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
@@ -76,6 +76,37 @@
         <li class="type-enhancement changelog-item">
             <p>Enhancement - Allow OPTIONS request handling in framework controllers: <a href="https://github.com/owncloud/core/pull/38758">#38758</a></p>
             <p>https://github.com/owncloud/core/pull/38758<br></p>
+        </li>
+    </ul>
+    <h2 id="10.9.1" class="version"> Changelog for ownCloud Core [10.9.1] (2021-12-28)</h2>
+    <p>The following sections list the changes in ownCloud core 10.9.1 relevant to ownCloud admins and users.</p>
+    <p>
+    <a href="https://github.com/owncloud/core/compare/v10.9.0...v10.9.1">Full list of changes in 10.9.1</a>
+    </p>
+    <h3 id="10.9.1-summary">Summary</h3>
+    <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Getting the file owner for share recipients: <a href="https://github.com/owncloud/core/pull/39670">#39670</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Prevent version author from being overwritten with wrong uid: <a href="https://github.com/owncloud/core/pull/39673">#39673</a></li>
+    </ul>
+    <h3 id="10.9.1-details">Details</h3>
+    <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Getting the file owner for share recipients: <a href="https://github.com/owncloud/core/pull/39670">#39670</a></p>
+            <p>Fixed a bug where a wrong file owner was retrieved when saving version authors. This scenario
+   happened for share recipients if they had a file with the same name as the shared file.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39662<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39670<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent version author from being overwritten with wrong uid: <a href="https://github.com/owncloud/core/pull/39673">#39673</a></p>
+            <p>Fixed an issue where restoring a previous version could lead to a wrong version author being
+   saved, basically overwriting the correct author.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39672<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39673<br></p>
         </li>
     </ul>
     <h2 id="10.9.0" class="version"> Changelog for ownCloud Core [10.9.0] (2021-12-20)</h2>

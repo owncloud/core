@@ -3,7 +3,7 @@ Changelog for ownCloud Core [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud core unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/core/compare/v10.9.0...master
+[unreleased]: https://github.com/owncloud/core/compare/v10.9.1...master
 
 Summary
 -------
@@ -83,6 +83,38 @@ Details
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 
    https://github.com/owncloud/core/pull/38758
+
+Changelog for ownCloud Core [10.9.1] (2021-12-28)
+=======================================
+The following sections list the changes in ownCloud core 10.9.1 relevant to
+ownCloud admins and users.
+
+[10.9.1]: https://github.com/owncloud/core/compare/v10.9.0...v10.9.1
+
+Summary
+-------
+
+* Bugfix - Getting the file owner for share recipients: [#39670](https://github.com/owncloud/core/pull/39670)
+* Bugfix - Prevent version author from being overwritten with wrong uid: [#39673](https://github.com/owncloud/core/pull/39673)
+
+Details
+-------
+
+* Bugfix - Getting the file owner for share recipients: [#39670](https://github.com/owncloud/core/pull/39670)
+
+   Fixed a bug where a wrong file owner was retrieved when saving version authors. This scenario
+   happened for share recipients if they had a file with the same name as the shared file.
+
+   https://github.com/owncloud/core/issues/39662
+   https://github.com/owncloud/core/pull/39670
+
+* Bugfix - Prevent version author from being overwritten with wrong uid: [#39673](https://github.com/owncloud/core/pull/39673)
+
+   Fixed an issue where restoring a previous version could lead to a wrong version author being
+   saved, basically overwriting the correct author.
+
+   https://github.com/owncloud/core/issues/39672
+   https://github.com/owncloud/core/pull/39673
 
 Changelog for ownCloud Core [10.9.0] (2021-12-20)
 =======================================
