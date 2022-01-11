@@ -404,7 +404,10 @@ class Storage {
 			if (self::metaEnabled()) {
 				$versionFileInfo = $users_view->getFileInfo($version);
 				if ($versionFileInfo && !$versionFileInfo->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
-					self::$metaData->createForVersion($uid, $versionFileInfo);
+					$versionAuthor = self::$metaData->getCurrentVersionAuthorUid($uid, $filename);
+					if ($versionAuthor) {
+						self::$metaData->createForVersion($versionAuthor, $uid, $versionFileInfo);
+					}
 				}
 			}
 		}
