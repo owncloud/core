@@ -103,12 +103,14 @@ class MetaStorage {
 			return false;
 		}
 
-		$userPath = "/files_versions$currentFileName" . MetaStorage::CURRENT_FILE_EXT;
-		$owner = Filesystem::getOwner($currentFileName);
+		list($owner, $fileName) = Storage::getUidAndFilename($currentFileName);
+
+		$userPath = "/files_versions$fileName" . MetaStorage::CURRENT_FILE_EXT;
+
 		$author = \OC_User::getUser();
 		$absPathOnDisk = $this->pathToAbsDiskPath($owner, $userPath);
 		$userView = $this->fileHelper->getUserView($owner);
-		$this->fileHelper->createMissingDirectories($userView, $currentFileName);
+		$this->fileHelper->createMissingDirectories($userView, $fileName);
 
 		return $this->writeMetaFile($author, $absPathOnDisk) !== false;
 	}
@@ -121,9 +123,9 @@ class MetaStorage {
 	 *
 	 * @param string $currentFileName
 	 * @param FileInfo $versionFile
+	 * @param string $uid
 	 */
-	public function moveCurrentToVersion(string $currentFileName, FileInfo $versionFile) {
-		$uid = Filesystem::getOwner($currentFileName);
+	public function moveCurrentToVersion(string $currentFileName, FileInfo $versionFile, string $uid) {
 		$currentMetaFile = $this->pathToAbsDiskPath($uid, "/files_versions/$currentFileName" . self::CURRENT_FILE_EXT);
 		$targetMetaFile = $this->dataDir . $versionFile->getPath() . self::VERSION_FILE_EXT;
 
@@ -137,15 +139,16 @@ class MetaStorage {
 	 * metadata.
 	 *
 	 * @param string $authorUid
+	 * @param string $fileOwner
 	 * @param FileInfo $version
 	 */
-	public function createForVersion(string $authorUid, FileInfo $version) {
-		$path = self::pathToAbsDiskPath($authorUid, $version->getInternalPath()) . self::VERSION_FILE_EXT;
+	public function createForVersion(string $authorUid, string $fileOwner, FileInfo $version) {
+		$path = self::pathToAbsDiskPath($fileOwner, $version->getInternalPath()) . self::VERSION_FILE_EXT;
 		self::writeMetaFile($authorUid, $path);
 	}
 
 	/**
-	 *  Retrieve the uid of the user that has authored a given version.
+	 * Retrieve the uid of the user that has authored a given version.
 	 *
 	 * @param FileInfo $versionFile
 	 * @return string|null null if no metadata is available
@@ -153,11 +156,39 @@ class MetaStorage {
 	public function getAuthorUid(FileInfo $versionFile) : ?string {
 		$metaDataFilePath = $this->dataDir . '/' . $versionFile->getPath() . MetaStorage::VERSION_FILE_EXT;
 		if (\file_exists($metaDataFilePath)) {
-			$json = \file_get_contents($metaDataFilePath);
-			if ($decoded = \json_decode($json, true)) {
-				if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
-					return $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
-				}
+			return $this->getVersionAuthorByPath($metaDataFilePath);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the uid of the user that has authored the current version.
+	 *
+	 * @param string $uid
+	 * @param string $filename
+	 * @return string|null null if no metadata is available
+	 */
+	public function getCurrentVersionAuthorUid(string $uid, string $filename) : ?string {
+		$metaDataFilePath = $this->pathToAbsDiskPath($uid, "files_versions$filename" . self::CURRENT_FILE_EXT);
+		if (\file_exists($metaDataFilePath)) {
+			return $this->getVersionAuthorByPath($metaDataFilePath);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieve the uid of a given version file path. Presumes that the file exists.
+	 *
+	 * @param string $path
+	 * @return string|null
+	 */
+	protected function getVersionAuthorByPath(string $path) : ?string {
+		$json = \file_get_contents($path);
+		if ($decoded = \json_decode($json, true)) {
+			if (isset($decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME])) {
+				return $decoded[MetaPlugin::VERSION_EDITED_BY_PROPERTYNAME];
 			}
 		}
 
@@ -190,13 +221,12 @@ class MetaStorage {
 	}
 
 	/**
-	 *
 	 * After a version is restored, the version's metadata is also restored
 	 * and becomes the current metadata of the file.
 	 *
-	 * @param $uid
-	 * @param $fileToRestore
-	 * @param $target
+	 * @param string $uid
+	 * @param string $fileToRestore
+	 * @param string $target
 	 */
 	public function restore(string $uid, string $fileToRestore, string $target) {
 		$restoreDirName = \dirname($fileToRestore);
@@ -207,6 +237,9 @@ class MetaStorage {
 
 		if (\file_exists($src)) {
 			\rename($src, $dst);
+		} elseif (\file_exists($dst)) {
+			// Remove current author file in case there is no author to restore
+			\unlink($dst);
 		}
 	}
 
