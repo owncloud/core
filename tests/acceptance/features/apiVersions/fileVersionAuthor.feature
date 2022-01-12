@@ -71,7 +71,7 @@ Feature: file versions remember the author of each version
       | 1     | Brian  |
       | 2     | Alice  |
 
-  @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @skipOnEncryption @issue-encryption-321
   Scenario: enable file versioning and check the history of changes from multiple users while moving file in/out of a subfolder
     Given user "Alice" has created folder "/test"
     And group "grp1" has been created
