@@ -13,6 +13,7 @@ Summary
 * Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
 * Bugfix - Don't resend invitation mail if a user is guest: [#39602](https://github.com/owncloud/core/pull/39602)
 * Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
+* Bugfix - Fix files:checksums:verify for a single file: [#39683](https://github.com/owncloud/core/pull/39683)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
@@ -48,6 +49,12 @@ Details
 
    https://github.com/owncloud/encryption/issues/315
    https://github.com/owncloud/core/pull/39623
+
+* Bugfix - Fix files:checksums:verify for a single file: [#39683](https://github.com/owncloud/core/pull/39683)
+
+   Fixed an issue where running files:checksums:verify for a single file would fail.
+
+   https://github.com/owncloud/core/pull/39683
 
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 
