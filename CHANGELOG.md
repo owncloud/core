@@ -1,4 +1,4 @@
-Changelog for ownCloud Core [10.9.1] (2021-12-28)
+Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
 The following sections list the changes in ownCloud core 10.9.1 relevant to
 ownCloud admins and users.
@@ -9,6 +9,8 @@ Summary
 -------
 
 * Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
+* Bugfix - Getting the file owner for share recipients: [#39670](https://github.com/owncloud/core/pull/39670)
+* Bugfix - Prevent version author from being overwritten with wrong uid: [#39673](https://github.com/owncloud/core/pull/39673)
 
 Details
 -------
@@ -20,6 +22,22 @@ Details
 
    https://github.com/owncloud/encryption/issues/315
    https://github.com/owncloud/core/pull/39623
+
+* Bugfix - Getting the file owner for share recipients: [#39670](https://github.com/owncloud/core/pull/39670)
+
+   Fixed a bug where a wrong file owner was retrieved when saving version authors. This scenario
+   happened for share recipients if they had a file with the same name as the shared file.
+
+   https://github.com/owncloud/core/issues/39662
+   https://github.com/owncloud/core/pull/39670
+
+* Bugfix - Prevent version author from being overwritten with wrong uid: [#39673](https://github.com/owncloud/core/pull/39673)
+
+   Fixed an issue where restoring a previous version could lead to a wrong version author being
+   saved, basically overwriting the correct author.
+
+   https://github.com/owncloud/core/issues/39672
+   https://github.com/owncloud/core/pull/39673
 
 Changelog for ownCloud Core [10.9.0] (2021-12-09)
 =======================================
