@@ -117,7 +117,7 @@ class VerifyChecksumsTest extends TestCase {
 	 * @return bool|IUser
 	 */
 	private function createRandomUser($number) {
-		$userName = $this->getUniqueID("$number-verifycheksums");
+		$userName = $this->getUniqueID("$number-verifychecksums");
 		$user = $this->createUser($userName);
 		$this->loginAsUser($userName);
 
@@ -269,6 +269,32 @@ class VerifyChecksumsTest extends TestCase {
 		]);
 
 		$this->assertEquals(self::BROKEN_CHECKSUM_STRING, $file4->getChecksum());
+	}
+
+	/**
+	 * @depends testBrokenFilesAreRepairedWithRepairArgument
+	 */
+	public function testSingleFileInGivenPathArgumentIsRepaired() {
+
+		/** @var File $file1 */
+		$file1 = $this->testFiles[0]['file'];
+		/** @var File $file2 */
+		$file2 = $this->testFiles[1]['file'];
+
+		$this->breakChecksum($file1);
+		$this->breakChecksum($file2);
+
+		$this->cmd->execute([
+			'-r' => null,
+			'-u' => $this->user1,
+			'-p' => "dir/nested/somefile.txt"
+		]);
+
+		$this->assertChecksumsAreCorrect([
+			$this->testFiles[0],
+		]);
+
+		$this->assertEquals(self::BROKEN_CHECKSUM_STRING, $file2->getChecksum());
 	}
 
 	public function testOnlyFilesOfAGivenUserAreRepaired() {

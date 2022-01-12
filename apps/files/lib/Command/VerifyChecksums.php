@@ -115,7 +115,7 @@ class VerifyChecksums extends Command {
 					$this->exitStatus = self::EXIT_INVALID_ARGS;
 					return $this->exitStatus;
 				}
-				if ($node === FileInfo::TYPE_FILE) {
+				if ($node->getType() === FileInfo::TYPE_FILE) {
 					$this->verifyChecksumsForFile($node, $input, $output);
 				} else {
 					$this->verifyChecksumsForFolder($node, $input, $output);
