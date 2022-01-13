@@ -95,6 +95,21 @@ class UsersTest extends OriginalTest {
 			->getMock();
 	}
 
+	private function setupSubadminMock($loggedInUser, $targetUser, $isUserAccessible = false) {
+		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$subAdminManager
+			->expects($this->once())
+			->method('isUserAccessible')
+			->with($loggedInUser, $targetUser)
+			->will($this->returnValue($isUserAccessible));
+		$this->groupManager
+			->expects($this->once())
+			->method('getSubAdmin')
+			->will($this->returnValue($subAdminManager));
+	}
+
 	public function testGetUsersNotLoggedIn() {
 		$this->userSession
 			->expects($this->once())
@@ -961,6 +976,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('UserToEdit')
 			->will($this->returnValue($targetUser));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 		$targetUser
 			->expects($this->once())
 			->method('setDisplayName')
@@ -986,6 +1002,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('UserToEdit')
 			->will($this->returnValue($targetUser));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 		$targetUser
 			->expects($this->once())
 			->method('setDisplayName')
@@ -1008,6 +1025,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('UserToEdit')
 			->will($this->returnValue($targetUser));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 		$this->config
 			->method('getSystemValue')
 			->withConsecutive(
@@ -1036,6 +1054,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('UserToEdit')
 			->will($this->returnValue($targetUser));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 		$targetUser
 			->expects($this->once())
 			->method('setEMailAddress')
@@ -1058,6 +1077,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('UserToEdit')
 			->will($this->returnValue($targetUser));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 		$this->config
 			->method('getSystemValue')
 			->withConsecutive(
@@ -1090,6 +1110,7 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('setEMailAddress')
 			->with('');
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => '']]));
@@ -1111,6 +1132,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('UserToEdit')
 			->will($this->returnValue($targetUser));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 
 		$expected = new Result(null, 102);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'email', 'value' => 'demo.org']]));
@@ -1136,6 +1158,7 @@ class UsersTest extends OriginalTest {
 			->expects($this->once())
 			->method('setPassword')
 			->with('NewPassword');
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'password', 'value' => 'NewPassword']]));
@@ -1157,6 +1180,7 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('UserToEdit')
 			->will($this->returnValue($targetUser));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => 'NewQuota']]));
@@ -1181,6 +1205,7 @@ class UsersTest extends OriginalTest {
 		$this->twoFactorAuthManager
 			->expects($this->once())
 			->method('enableTwoFactorAuthentication');
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'two_factor_auth_enabled', 'value' => true]]));
@@ -1210,6 +1235,7 @@ class UsersTest extends OriginalTest {
 			->method('isAdmin')
 			->with('UserToEdit')
 			->will($this->returnValue(true));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => '3042824']]));
@@ -1236,6 +1262,7 @@ class UsersTest extends OriginalTest {
 			->method('isAdmin')
 			->with('UserToEdit')
 			->will($this->returnValue(true));
+		$this->setupSubadminMock($loggedInUser, $targetUser);
 
 		$expected = new Result(null, 103, 'Invalid quota value ABC');
 		$this->assertEquals($expected, $this->api->editUser(['userid' => 'UserToEdit', '_put' => ['key' => 'quota', 'value' => 'ABC']]));

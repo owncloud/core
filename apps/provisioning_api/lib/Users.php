@@ -252,6 +252,9 @@ class Users {
 
 		$emailChangeAllowed = $this->config->getSystemValue('allow_user_to_change_mail_address', true) !== false;
 		$displayNameChangeAllowed = $this->config->getSystemValue('allow_user_to_change_display_name', true) !== false;
+		$subAdminManager = $this->groupManager->getSubAdmin();
+		$isAdmin = $this->groupManager->isAdmin($currentLoggedInUser->getUID());
+		$hasPermissionsOverTargetUser = ($subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser) || $isAdmin);
 
 		if ($targetUserId === $currentLoggedInUser->getUID()) {
 			// Editing self (display, email)
@@ -259,31 +262,25 @@ class Users {
 			$permittedFields[] = 'password';
 			$permittedFields[] = 'two_factor_auth_enabled';
 			// If admin they can edit their own quota
-			if ($this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
+			if ($isAdmin) {
 				$permittedFields[] = 'quota';
 			}
-			if ($emailChangeAllowed) {
+			if ($emailChangeAllowed || $hasPermissionsOverTargetUser) {
 				$permittedFields[] = 'email';
 			}
-			if ($displayNameChangeAllowed) {
+			if ($displayNameChangeAllowed || $hasPermissionsOverTargetUser) {
 				$permittedFields[] = 'displayname';
 			}
 		} else {
 			// Check if admin / subadmin
-			$subAdminManager = $this->groupManager->getSubAdmin();
-			if ($subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)
-			|| $this->groupManager->isAdmin($currentLoggedInUser->getUID())) {
-				// They have permissions over the user
+			if ($hasPermissionsOverTargetUser) {
+				// They have permissions over the user, so they can edit any field
 				$permittedFields[] = 'display';
 				$permittedFields[] = 'quota';
 				$permittedFields[] = 'password';
 				$permittedFields[] = 'two_factor_auth_enabled';
-				if ($emailChangeAllowed) {
-					$permittedFields[] = 'email';
-				}
-				if ($displayNameChangeAllowed) {
-					$permittedFields[] = 'displayname';
-				}
+				$permittedFields[] = 'email';
+				$permittedFields[] = 'displayname';
 			} else {
 				// No rights
 				return new Result(null, 997);
