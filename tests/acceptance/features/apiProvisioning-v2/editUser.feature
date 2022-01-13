@@ -223,6 +223,17 @@ Feature: edit users
       | email | alice@example.org |
     And the email address of user "Alice" should not have changed
 
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: Admin does not give access to users to change their email address, admin can still change the email address
+    Given user "Alice" has been created with default attributes and without skeleton files
+    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
+    And the administrator changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the attributes of user "Alice" returned by the API should include
+      | email | alice@gmail.com |
+    And the email address of user "Alice" should be "alice@gmail.com"
+
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
@@ -244,3 +255,14 @@ Feature: edit users
     And the attributes of user "Alice" returned by the API should include
       | displayname | Alice Hansen |
     And the display name of user "Alice" should not have changed
+
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: Admin does not give access to users to change their display name, admin can still change display name
+    Given user "Alice" has been created with default attributes and without skeleton files
+    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
+    And the administrator changes the display name of user "Alice" to "Alice Wonderland" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the attributes of user "Alice" returned by the API should include
+      | displayname | Alice Wonderland |
+    And the display name of user "Alice" should be "Alice Wonderland"
