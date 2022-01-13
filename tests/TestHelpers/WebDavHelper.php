@@ -460,18 +460,16 @@ class WebDavHelper {
 	):ResponseInterface {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 
-		$usingSpacesDavPath = false;
 		$spaceId = null;
 		// get space id if testing with spaces dav
 		if ($davPathVersionToUse === 3) {
-			$usingSpacesDavPath = true;
 			$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
 		}
 
 		if ($doDavRequestAsUser === null) {
-			$davPath = self::getDavPath($user, $davPathVersionToUse, $type, $usingSpacesDavPath, $spaceId);
+			$davPath = self::getDavPath($user, $davPathVersionToUse, $type, $spaceId);
 		} else {
-			$davPath = self::getDavPath($doDavRequestAsUser, $davPathVersionToUse, $type, $usingSpacesDavPath, $spaceId);
+			$davPath = self::getDavPath($doDavRequestAsUser, $davPathVersionToUse, $type, $spaceId);
 		}
 
 		//replace %, # and ? and in the path, Guzzle will not encode them
@@ -536,7 +534,6 @@ class WebDavHelper {
 	 * @param string|null $user
 	 * @param int|null $davPathVersionToUse (1|2)
 	 * @param string|null $type
-	 * @param bool $usingSpaces
 	 * @param string|null $spaceId
 	 *
 	 * @return string
@@ -545,7 +542,6 @@ class WebDavHelper {
 		?string $user,
 		?int $davPathVersionToUse = null,
 		?string $type = "files",
-		?bool $usingSpaces = false,
 		?string $spaceId = null
 	):string {
 		if ($type === "public-files" || $type === "public-files-old") {
@@ -560,7 +556,7 @@ class WebDavHelper {
 		if ($type === "customgroups") {
 			return "remote.php/dav/";
 		}
-		if ($usingSpaces) {
+		if ($davPathVersionToUse === 3) {
 			return "dav/spaces/" . $spaceId . '/';
 		} else {
 			if ($davPathVersionToUse === 1) {

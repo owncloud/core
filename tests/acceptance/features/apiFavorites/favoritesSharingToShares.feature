@@ -21,6 +21,11 @@ Feature: favorite
       | old         |
       | new         |
 
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: favorite a folder inside of a received share
     Given using <dav_version> DAV path
@@ -35,6 +40,11 @@ Feature: favorite
       | old         |
       | new         |
 
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: favorite a received share itself
     Given using <dav_version> DAV path
@@ -47,6 +57,11 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: moving a favorite file out of a share keeps favorite state
@@ -62,6 +77,11 @@ Feature: favorite
       | old         |
       | new         |
 
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
@@ -75,3 +95,8 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | spaces      |
