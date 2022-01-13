@@ -229,7 +229,7 @@ class Storage {
 				]);
 
 				if (self::metaEnabled()) {
-					self::$metaData->moveCurrentToVersion($filename, $fileInfo, $uid);
+					self::$metaData->moveCurrentToVersion($filename, $fileInfo);
 				}
 			}
 		}
