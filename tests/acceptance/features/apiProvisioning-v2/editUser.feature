@@ -234,6 +234,16 @@ Feature: edit users
       | email | alice@gmail.com |
     And the email address of user "Alice" should be "alice@gmail.com"
 
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: Admin does not give access to users to change their email address, admin can still change their own email address
+    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
+    And the administrator changes the email of user "admin" to "something@example.com" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the attributes of user "admin" returned by the API should include
+      | email | something@example.com |
+    And the email address of user "admin" should be "something@example.com"
+
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
@@ -266,3 +276,13 @@ Feature: edit users
     And the attributes of user "Alice" returned by the API should include
       | displayname | Alice Wonderland |
     And the display name of user "Alice" should be "Alice Wonderland"
+
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: Admin does not give access to users to change their display name, admin can still change their own display name
+    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
+    And the administrator changes the display name of user "admin" to "The Administrator" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the attributes of user "admin" returned by the API should include
+      | displayname | The Administrator |
+    And the display name of user "admin" should be "The Administrator"
