@@ -15,7 +15,7 @@ Feature: get file info using PROPFIND
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has uploaded file with content "some data" to "/local_storage3/PARENT/PARENT.txt"
 
-
+  @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on root folder with external storage with depth 1
     Given using <dav_version> DAV path
     When user "Alice" lists the resources in "/" with depth "1" using the WebDAV API
@@ -31,6 +31,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
+  @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on root folder with external storage using depth infinity
     Given using <dav_version> DAV path
     When user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
@@ -51,7 +52,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-
+  @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on external storage with depth 1
     Given using <dav_version> DAV path
     When user "Alice" lists the resources in "/local_storage2" with depth "1" using the WebDAV API
@@ -65,7 +66,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-
+  @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on external storage with depth infinity
     Given using <dav_version> DAV path
     When user "Alice" lists the resources in "/local_storage2" with depth "infinity" using the WebDAV API
@@ -80,7 +81,7 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @skipOnOcV10
+  @skipOnOcV10 @skipOnEncryptionType:user-keys @issue-encryption-320
   Scenario Outline: list files on external storage that is currently unavailable
     Given using <dav_version> DAV path
     When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
@@ -92,8 +93,8 @@ Feature: get file info using PROPFIND
       | old         |
       | new         |
 
-  @skipOnOcV10
-  Scenario Outline: list files on root folder with depth infinity when the exernal storage folder is unavailable
+  @skipOnOcV10 @skipOnEncryptionType:user-keys @issue-encryption-320
+  Scenario Outline: list files on root folder with depth infinity when the external storage folder is unavailable
     Given using <dav_version> DAV path
     When the local storage mount for "/local_storage2" is renamed to "/new_local_storage"
     And user "Alice" lists the resources in "/" with depth "infinity" using the WebDAV API
@@ -109,4 +110,3 @@ Feature: get file info using PROPFIND
       | dav_version |
       | old         |
       | new         |
-
