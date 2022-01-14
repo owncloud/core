@@ -10,7 +10,6 @@
         <li class="type-bugfix changelog-item">Bugfix - Prevent group names starting or ending with white space: <a href="https://github.com/owncloud/core/pull/39540">#39540</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Don't resend invitation mail if a user is guest: <a href="https://github.com/owncloud/core/pull/39602">#39602</a></li>
-        <li class="type-bugfix changelog-item">Bugfix - Prevent encrypted files from being corrupted when overwriting them: <a href="https://github.com/owncloud/core/pull/39623">#39623</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix files:checksums:verify for a single file: <a href="https://github.com/owncloud/core/pull/39683">#39683</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
         <li class="type-change changelog-item">Change - Update Symfony components: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
@@ -40,15 +39,6 @@
             <p>https://github.com/owncloud/enterprise/issues/4868<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39602<br></p>
-        </li>
-        <li class="type-bugfix changelog-item">
-            <p>Bugfix - Prevent encrypted files from being corrupted when overwriting them: <a href="https://github.com/owncloud/core/pull/39623">#39623</a></p>
-            <p>Fixed an issue where overwriting an encrypted file by a share recipient would corrupt it. This
-   is a regression which was introduced by #39516.
-            </p>
-            <p>https://github.com/owncloud/encryption/issues/315<br>
-            </p>
-            <p>https://github.com/owncloud/core/pull/39623<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Fix files:checksums:verify for a single file: <a href="https://github.com/owncloud/core/pull/39683">#39683</a></p>
@@ -85,18 +75,28 @@
             <p>https://github.com/owncloud/core/pull/38758<br></p>
         </li>
     </ul>
-    <h2 id="10.9.1" class="version"> Changelog for ownCloud Core [10.9.1] (2021-12-28)</h2>
+    <h2 id="10.9.1" class="version"> Changelog for ownCloud Core [10.9.1] (2022-01-12)</h2>
     <p>The following sections list the changes in ownCloud core 10.9.1 relevant to ownCloud admins and users.</p>
     <p>
     <a href="https://github.com/owncloud/core/compare/v10.9.0...v10.9.1">Full list of changes in 10.9.1</a>
     </p>
     <h3 id="10.9.1-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-bugfix changelog-item">Bugfix - Prevent encrypted files from being corrupted when overwriting them: <a href="https://github.com/owncloud/core/pull/39623">#39623</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Getting the file owner for share recipients: <a href="https://github.com/owncloud/core/pull/39670">#39670</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Prevent version author from being overwritten with wrong uid: <a href="https://github.com/owncloud/core/pull/39673">#39673</a></li>
     </ul>
     <h3 id="10.9.1-details">Details</h3>
     <ul class="details">
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Prevent encrypted files from being corrupted when overwriting them: <a href="https://github.com/owncloud/core/pull/39623">#39623</a></p>
+            <p>Fixed an issue where overwriting an encrypted file by a share recipient would corrupt it. This
+   is a regression which was introduced by #39516.
+            </p>
+            <p>https://github.com/owncloud/encryption/issues/315<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39623<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Getting the file owner for share recipients: <a href="https://github.com/owncloud/core/pull/39670">#39670</a></p>
             <p>Fixed a bug where a wrong file owner was retrieved when saving version authors. This scenario

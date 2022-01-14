@@ -12,7 +12,6 @@ Summary
 * Bugfix - Prevent group names starting or ending with white space: [#39540](https://github.com/owncloud/core/pull/39540)
 * Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
 * Bugfix - Don't resend invitation mail if a user is guest: [#39602](https://github.com/owncloud/core/pull/39602)
-* Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
 * Bugfix - Fix files:checksums:verify for a single file: [#39683](https://github.com/owncloud/core/pull/39683)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -41,14 +40,6 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4868
    https://github.com/owncloud/core/pull/39602
-
-* Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
-
-   Fixed an issue where overwriting an encrypted file by a share recipient would corrupt it. This
-   is a regression which was introduced by #39516.
-
-   https://github.com/owncloud/encryption/issues/315
-   https://github.com/owncloud/core/pull/39623
 
 * Bugfix - Fix files:checksums:verify for a single file: [#39683](https://github.com/owncloud/core/pull/39683)
 
@@ -91,7 +82,7 @@ Details
 
    https://github.com/owncloud/core/pull/38758
 
-Changelog for ownCloud Core [10.9.1] (2021-12-28)
+Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
 The following sections list the changes in ownCloud core 10.9.1 relevant to
 ownCloud admins and users.
@@ -101,11 +92,20 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
 * Bugfix - Getting the file owner for share recipients: [#39670](https://github.com/owncloud/core/pull/39670)
 * Bugfix - Prevent version author from being overwritten with wrong uid: [#39673](https://github.com/owncloud/core/pull/39673)
 
 Details
 -------
+
+* Bugfix - Prevent encrypted files from being corrupted when overwriting them: [#39623](https://github.com/owncloud/core/pull/39623)
+
+   Fixed an issue where overwriting an encrypted file by a share recipient would corrupt it. This
+   is a regression which was introduced by #39516.
+
+   https://github.com/owncloud/encryption/issues/315
+   https://github.com/owncloud/core/pull/39623
 
 * Bugfix - Getting the file owner for share recipients: [#39670](https://github.com/owncloud/core/pull/39670)
 
