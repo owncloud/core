@@ -261,7 +261,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @return OCDialog[]
 	 */
-	public function getOcDialogs(): array {
+	public function getOcDialogs(Session $session): array {
 		$ocDialogs = [];
 		$ocDialogElements = $this->findAll("xpath", $this->ocDialogXpath);
 		foreach ($ocDialogElements as $element) {
@@ -273,7 +273,7 @@ class OwncloudPage extends Page {
 			$ocDialog->setElement($element);
 			$ocDialogs[] = $ocDialog;
 		}
-		sleep(5);
+		$this->waitForAjaxCallsToStartAndFinish($session);
 		return $ocDialogs;
 	}
 
