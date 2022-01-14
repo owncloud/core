@@ -273,7 +273,7 @@ class OwncloudPage extends Page {
 			$ocDialog->setElement($element);
 			$ocDialogs[] = $ocDialog;
 		}
-		sleep(3);
+		sleep(1);
 		return $ocDialogs;
 	}
 
