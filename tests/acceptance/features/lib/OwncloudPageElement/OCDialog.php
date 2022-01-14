@@ -85,6 +85,7 @@ class OCDialog extends OwncloudPage {
 			" xpath $this->titleClassXpath " .
 			"could not find title"
 		);
+		sleep(2);
 		return $this->getTrimmedText($title);
 	}
 
