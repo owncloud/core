@@ -75,7 +75,7 @@ config = {
                 "apiWebdavUpload1",
                 "apiWebdavUpload2",
             ],
-            "skip": true,
+            "skip": True,
         },
         "apiNotifications": {
             "suites": [
@@ -85,7 +85,7 @@ config = {
             "extraApps": {
                 "notifications": 'if [ -f "composer.json" ]; then composer install; fi',
             },
-            "skip": true,
+            "skip": True,
         },
         "apiFederation": {
             "suites": [
@@ -96,7 +96,7 @@ config = {
             ],
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
-            "skip": true,
+            "skip": True,
         },
         "cli": {
             "suites": [
@@ -107,14 +107,14 @@ config = {
                 "cliTrashbin",
             ],
             "emailNeeded": True,
-            "skip": true,
+            "skip": True,
         },
         "cliAppManagement": {
             "suites": [
                 "cliAppManagement",
             ],
             "testingRemoteSystem": False,
-            "skip": true,
+            "skip": True,
         },
         "cliEncryption": {
             "suites": [
@@ -142,7 +142,7 @@ config = {
                 "chown -R www-data data/owncloud-keys",
                 "chmod -R 0770 data/owncloud-keys",
             ],
-            "skip": true,
+            "skip": True,
         },
         "cliDbConversion": {
             "suites": [
@@ -156,7 +156,7 @@ config = {
                 "mysql:8.0",
                 "postgres:10.3",
             ],
-            "skip": true,
+            "skip": True,
         },
         "cliExternalStorage": {
             "suites": [
@@ -164,7 +164,7 @@ config = {
             ],
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
-            "skip": true,
+            "skip": True,
         },
         "webUI": {
             "suites": {
@@ -213,7 +213,7 @@ config = {
             "extraApps": {
                 "notifications": "composer install",
             },
-            "skip": true,
+            "skip": True,
         },
         "webUIFileActionsMenu": {
             "suites": {
@@ -224,7 +224,7 @@ config = {
                 "files_texteditor": "make vendor",
                 "richdocuments": "make vendor",
             },
-            "skip": true,
+            "skip": True,
         },
         "webUIFederation": {
             "suites": {
@@ -233,7 +233,7 @@ config = {
             },
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
-            "skip": true,
+            "skip": True,
         },
         "webUIFirefox": {
             "suites": {
@@ -247,7 +247,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 3,
-            "skip": true,
+            "skip": True,
         },
         "webUIProxy": {
             "suites": {
@@ -262,7 +262,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 3,
-            "skip": true,
+            "skip": True,
         },
         "webUIMobileSize": {
             "suites": {
@@ -280,7 +280,7 @@ config = {
                 "MOBILE_RESOLUTION": "375x812",
                 "OC_LANGUAGE": "en-EN",
             },
-            "skip": true,
+            "skip": True,
         },
         "apiProxy": {
             "suites": {
@@ -291,7 +291,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 8,
-            "skip": true,
+            "skip": True,
         },
         "apiOnSqlite": {
             "suites": {
@@ -301,7 +301,7 @@ config = {
             "useHttps": False,
             "filterTags": "@sqliteDB",
             "runAllSuites": True,
-            "skip": true,
+            "skip": True,
         },
     },
 }
