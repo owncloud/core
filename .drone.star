@@ -18,91 +18,6 @@ config = {
     "branches": [
         "master",
     ],
-    "dependencies": True,
-    "codestyle": True,
-    "phpstan": True,
-    "phan": True,
-    "javascript": True,
-    "litmus": True,
-    "dav": True,
-    "phpunit": {
-        "mostDatabases": {
-            "phpVersions": [
-                "7.3",
-            ],
-            # Gather coverage for all databases except Oracle
-            "coverage": True,
-            "databases": [
-                "sqlite",
-                "mariadb:10.2",
-                "mariadb:10.3",
-                "mariadb:10.4",
-                "mariadb:10.5",
-                "mariadb:10.6",
-                "mysql:5.5",
-                "mysql:5.7",
-                "mysql:8.0",
-                "postgres:9.4",
-                "postgres:10.3",
-            ],
-        },
-        "slowDatabases": {
-            "phpVersions": [
-                "7.3",
-            ],
-            # Oracle takes a long time to start and run
-            # So do not collect coverage for that
-            # This helps the SonarCloud analysis to be ready much more quickly
-            "coverage": False,
-            "databases": [
-                "oracle",
-            ],
-        },
-        "reducedDatabases": {
-            "phpVersions": [
-                "7.4",
-            ],
-            "databases": [
-                "sqlite",
-                "mariadb:10.2",
-            ],
-        },
-        "external-samba-windows": {
-            "phpVersions": [
-                "7.3",
-                "7.4",
-            ],
-            "databases": [
-                "sqlite",
-            ],
-            "externalTypes": [
-                "samba",
-            ],
-            "coverage": True,
-            "extraCommandsBeforeTestRun": [
-                "ls -l /var/cache",
-                "mkdir /var/cache/samba",
-                "ls -l /var/cache",
-                "ls -l /var/cache/samba",
-            ],
-        },
-        "external-other": {
-            "phpVersions": [
-                "7.3",
-                "7.4",
-            ],
-            "databases": [
-                "sqlite",
-            ],
-            "externalTypes": [
-                "webdav",
-                "sftp",
-                "scality",
-                "owncloud",
-            ],
-            "coverage": True,
-        },
-    },
     "acceptance": {
         "api": {
             "suites": [
@@ -160,6 +75,7 @@ config = {
                 "apiWebdavUpload1",
                 "apiWebdavUpload2",
             ],
+            "skip": true,
         },
         "apiNotifications": {
             "suites": [
@@ -169,6 +85,7 @@ config = {
             "extraApps": {
                 "notifications": 'if [ -f "composer.json" ]; then composer install; fi',
             },
+            "skip": true,
         },
         "apiFederation": {
             "suites": [
@@ -179,6 +96,7 @@ config = {
             ],
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
+            "skip": true,
         },
         "cli": {
             "suites": [
@@ -189,12 +107,14 @@ config = {
                 "cliTrashbin",
             ],
             "emailNeeded": True,
+            "skip": true,
         },
         "cliAppManagement": {
             "suites": [
                 "cliAppManagement",
             ],
             "testingRemoteSystem": False,
+            "skip": true,
         },
         "cliEncryption": {
             "suites": [
@@ -222,6 +142,7 @@ config = {
                 "chown -R www-data data/owncloud-keys",
                 "chmod -R 0770 data/owncloud-keys",
             ],
+            "skip": true,
         },
         "cliDbConversion": {
             "suites": [
@@ -235,6 +156,7 @@ config = {
                 "mysql:8.0",
                 "postgres:10.3",
             ],
+            "skip": true,
         },
         "cliExternalStorage": {
             "suites": [
@@ -242,9 +164,11 @@ config = {
             ],
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
+            "skip": true,
         },
         "webUI": {
             "suites": {
+                "webUIDebug": "",
                 "webUIAddUsers": "",
                 "webUIAdminSettings": "",
                 "webUIComments": "",
@@ -278,6 +202,7 @@ config = {
             "emailNeeded": True,
             "useHttps": False,
             "selUserNeeded": True,
+            "debugSuites": ["webUIDebug"],
         },
         "webUINotifications": {
             "suites": {
@@ -288,6 +213,7 @@ config = {
             "extraApps": {
                 "notifications": "composer install",
             },
+            "skip": true,
         },
         "webUIFileActionsMenu": {
             "suites": {
@@ -298,6 +224,7 @@ config = {
                 "files_texteditor": "make vendor",
                 "richdocuments": "make vendor",
             },
+            "skip": true,
         },
         "webUIFederation": {
             "suites": {
@@ -306,6 +233,7 @@ config = {
             },
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
+            "skip": true,
         },
         "webUIFirefox": {
             "suites": {
@@ -319,6 +247,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 3,
+            "skip": true,
         },
         "webUIProxy": {
             "suites": {
@@ -333,6 +262,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 3,
+            "skip": true,
         },
         "webUIMobileSize": {
             "suites": {
@@ -350,6 +280,7 @@ config = {
                 "MOBILE_RESOLUTION": "375x812",
                 "OC_LANGUAGE": "en-EN",
             },
+            "skip": true,
         },
         "apiProxy": {
             "suites": {
@@ -360,6 +291,7 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 8,
+            "skip": true,
         },
         "apiOnSqlite": {
             "suites": {
@@ -369,6 +301,7 @@ config = {
             "useHttps": False,
             "filterTags": "@sqliteDB",
             "runAllSuites": True,
+            "skip": true,
         },
     },
 }
@@ -445,7 +378,7 @@ def stagePipelines(ctx):
     if (litmusPipelines == False) or (davPipelines == False) or (acceptancePipelines == False):
         return False
 
-    return litmusPipelines + davPipelines + acceptancePipelines
+    return acceptancePipelines
 
 def afterCoveragePipelines(ctx):
     return [

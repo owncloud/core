@@ -67,7 +67,7 @@ fi
 # Default to re-run failed webUI scenarios
 if [ -z "${RERUN_FAILED_WEBUI_SCENARIOS}" ]
 then
-	RERUN_FAILED_WEBUI_SCENARIOS=true
+	RERUN_FAILED_WEBUI_SCENARIOS=false
 fi
 
 # Allow callers to specify NORERUN=true as an environment variable

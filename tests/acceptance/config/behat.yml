@@ -691,7 +691,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - OccContext:
-    
+
     cliDbConversion:
       paths:
         - '%paths.base%/../features/cliDbConversion'
@@ -1229,6 +1229,19 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFileActionsMenuContext:
+
+    webUIDebug:
+      paths:
+        - '%paths.base%/../features/webUIDebug'
+      context: *common_ldap_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIFilesContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUISharingContext:
+        - OccContext:
+        - PublicWebDavContext:
 
   extensions:
     jarnaiz\JUnitFormatter\JUnitFormatterExtension:
