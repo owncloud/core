@@ -285,8 +285,22 @@ trait WebDav {
 	 * @return string
 	 */
 	public function getFullDavFilesPath(string $user):string {
-		$path = $this->getBasePath() . "/" .
-			WebDavHelper::getDavPath($user, $this->getDavPathVersion());
+		$spaceId = null;
+		$spaceDavPath = null;
+		if ($this->getDavPathVersion() === 3) {
+			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				$this->getStepLineRef()
+			);
+			$spaceDavPath = "dav/spaces/users/" . $spaceId . '/';
+			$path = $this->getBasePath() . "/" .
+				$spaceDavPath;
+		} else {
+			$path = $this->getBasePath() . "/" .
+				WebDavHelper::getDavPath($user, $this->getDavPathVersion());
+		}
 		$path = WebDavHelper::sanitizeUrl($path);
 		return \ltrim($path, "/");
 	}
@@ -593,10 +607,20 @@ trait WebDav {
 	 * @param string $fileDestination
 	 *
 	 * @return string
+	 * @throws GuzzleException
 	 */
 	public function destinationHeaderValue(string $user, string $fileDestination):string {
+		$spaceId = null;
+		if ($this->getDavPathVersion() === 3) {
+			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				$this->getStepLineRef()
+			);
+		}
 		$fullUrl = $this->getBaseUrl() . '/' .
-			WebDavHelper::getDavPath($user, $this->getDavPathVersion());
+			WebDavHelper::getDavPath($user, $this->getDavPathVersion(), "files", $spaceId);
 		return \rtrim($fullUrl, '/') . '/' . \ltrim($fileDestination, '/');
 	}
 
