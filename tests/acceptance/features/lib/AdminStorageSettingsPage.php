@@ -96,7 +96,7 @@ class AdminStorageSettingsPage extends OwncloudPage {
 			$this->externalStorageCheckboxXpath,
 			$this->externalStorageCheckboxId
 		);
-		$ocDialogs = $this->getOcDialogs();
+		$ocDialogs = $this->getOcDialogs($session);
 		$ocDialog = \end($ocDialogs);
 		$ocDialog->clickButton($session, "Yes");
 	}

@@ -397,7 +397,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$count = null,
 		TableNode $table = null
 	):void {
-		$dialogs = $this->owncloudPage->getOcDialogs();
+		$dialogs = $this->owncloudPage->getOcDialogs($this->getSession());
 		//check if the correct number of dialogs are open
 		if ($count !== null) {
 			if ($count === "no") {
@@ -410,7 +410,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			while ($currentTime <= $end && ($count !== \count($dialogs))) {
 				\usleep(STANDARD_SLEEP_TIME_MICROSEC);
 				$currentTime = \microtime(true);
-				$dialogs = $this->owncloudPage->getOcDialogs();
+				$dialogs = $this->owncloudPage->getOcDialogs($this->getSession());
 			}
 			Assert::assertEquals(
 				$count,

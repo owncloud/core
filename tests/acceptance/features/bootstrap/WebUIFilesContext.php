@@ -1066,7 +1066,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function choiceInUploadConflictDialogWebUI(string $choice):void {
-		$dialogs = $this->getCurrentPageObject()->getOcDialogs();
+		$dialogs = $this->getCurrentPageObject()->getOcDialogs($this->getSession($this->getSession()));
 		$isConflictDialog = false;
 		foreach ($dialogs as $dialog) {
 			$isConflictDialog = \strstr(
@@ -1106,7 +1106,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theUserChoosesToInTheUploadDialog(string $label):void {
 		$pageObject = $this->getCurrentPageObject();
-		$dialogs = $pageObject->getOcDialogs();
+		$dialogs = $pageObject->getOcDialogs($this->getSession());
 		$dialog = \end($dialogs);
 		$this->conflictDialog->setElement($dialog->getOwnElement());
 		$this->conflictDialog->clickButton($this->getSession(), $label);

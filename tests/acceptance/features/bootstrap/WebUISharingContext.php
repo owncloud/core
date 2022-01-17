@@ -989,7 +989,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserAcceptsTheOfferedFederatedShares():void {
-		foreach (\array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
+		foreach (\array_reverse($this->filesPage->getOcDialogs($this->getSession())) as $ocDialog) {
 			$ocDialog->accept($this->getSession());
 		}
 	}
@@ -1053,7 +1053,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserDeclinesTheOfferedFederatedShares():void {
-		foreach (\array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
+		foreach (\array_reverse($this->filesPage->getOcDialogs($this->getSession())) as $ocDialog) {
 			$ocDialog->clickButton($this->getSession(), 'Cancel');
 		}
 	}

@@ -822,7 +822,7 @@ class SharingDialog extends OwncloudPage {
 	 * @return OCDialog
 	 */
 	private function getLastOcDialog(Session $session): OCDialog {
-		$ocDialogs = $this->getOcDialogs();
+		$ocDialogs = $this->getOcDialogs($session);
 		return \end($ocDialogs);
 	}
 
