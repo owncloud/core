@@ -244,6 +244,40 @@ Feature: edit users
       | email | something@example.com |
     And the email address of user "admin" should be "something@example.com"
 
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: Admin does not give access to users to change their email address, subadmin can still change the email address of a user they are subadmin of
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | subadmin |
+      | Alice    |
+    And group "new-group" has been created
+    And user "Alice" has been added to group "new-group"
+    And user "subadmin" has been made a subadmin of group "new-group"
+    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
+    And user "subadmin" changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+    And the attributes of user "Alice" returned by the API should include
+      | email | alice@gmail.com |
+    And the email address of user "Alice" should be "alice@gmail.com"
+
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: Admin does not give access to users to change their email address, subadmin cannot change the email address of a user they are not subadmin of
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | subadmin |
+      | Alice    |
+    And group "new-group" has been created
+    And user "subadmin" has been made a subadmin of group "new-group"
+    # Note: Alice is not a member of new-group, so subadmin does not a priv to change the email address of Alice
+    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
+    And user "subadmin" tries to change the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And the attributes of user "Alice" returned by the API should include
+      | email | alice@example.org |
+    And the email address of user "Alice" should not have changed
+
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
@@ -286,3 +320,36 @@ Feature: edit users
     And the attributes of user "admin" returned by the API should include
       | displayname | The Administrator |
     And the display name of user "admin" should be "The Administrator"
+
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: Admin does not give access to users to change their display name, subadmin can still change the display name of a user they are subadmin of
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | subadmin |
+      | Alice    |
+    And group "new-group" has been created
+    And user "Alice" has been added to group "new-group"
+    And user "subadmin" has been made a subadmin of group "new-group"
+    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
+    And user "subadmin" changes the display name of user "Alice" to "Alice Wonderland" using the provisioning API
+    Then the OCS status code should be "200"
+    And the HTTP status code should be "200"
+      | displayname | Alice Wonderland |
+    And the display name of user "Alice" should be "Alice Wonderland"
+
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: Admin does not give access to users to change their display name, subadmin cannot change the display name of a user they are not subadmin of
+    Given these users have been created with default attributes and without skeleton files:
+      | username |
+      | subadmin |
+      | Alice    |
+    And group "new-group" has been created
+    And user "subadmin" has been made a subadmin of group "new-group"
+    # Note: Alice is not a member of new-group, so subadmin does not a priv to change the email address of Alice
+    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
+    And user "subadmin" tries to change the display name of user "Alice" to "Alice Wonderland" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And the attributes of user "Alice" returned by the API should include
+      | displayname | Alice Hansen |
+    And the display name of user "Alice" should not have changed
