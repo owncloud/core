@@ -142,7 +142,7 @@ Feature: favorite
       | dav_version |
       | spaces      |
 
-  @files_sharing-app-required @issue_ocis_2968
+  @files_sharing-app-required @issue-ocis-2968
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
