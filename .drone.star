@@ -77,7 +77,6 @@ config = {
             ],
             "externalTypes": [
                 "samba",
-                "windows",
             ],
             "coverage": True,
             "extraCommandsBeforeTestRun": [
