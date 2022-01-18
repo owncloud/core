@@ -1541,7 +1541,7 @@ def acceptance(ctx):
         "debugSuites": [],
         "skipExceptParts": [],
         "testAgainstCoreTarball": True,
-        "coreTarball": "10.9.1RC1",
+        "coreTarball": "10.9.1",
         "earlyFail": True,
         "selUserNeeded": False,
         "dbServices": [],
