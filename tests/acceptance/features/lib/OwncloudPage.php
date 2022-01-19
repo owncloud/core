@@ -262,6 +262,9 @@ class OwncloudPage extends Page {
 	 * @return OCDialog[]
 	 */
 	public function getOcDialogs(): array {
+		//in CI due to timing issue the $ocDialogs returns empty sometimes
+		//due with this test for upload overwriting a file fails on CI
+		sleep(1);
 		$ocDialogs = [];
 		$ocDialogElements = $this->findAll("xpath", $this->ocDialogXpath);
 		foreach ($ocDialogElements as $element) {
