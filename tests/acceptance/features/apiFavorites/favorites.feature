@@ -28,7 +28,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -49,7 +49,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -69,7 +69,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -90,7 +90,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -111,7 +111,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -137,7 +137,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -158,7 +158,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -182,6 +182,10 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
+    @personalSpace
+    Examples:
+      | dav_version |
       | spaces      |
 
   @issue-33840 @skipOnOcV10
@@ -211,6 +215,10 @@ Feature: favorite
       | dav_version |
       | old         |
       | new         |
+
+    @personalSpace
+    Examples:
+      | dav_version |
       | spaces      |
 
   @files_sharing-app-required @notToImplementOnOCIS
@@ -254,7 +262,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |

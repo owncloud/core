@@ -21,7 +21,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -40,7 +40,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -58,7 +58,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -77,7 +77,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
@@ -96,7 +96,7 @@ Feature: favorite
       | old         |
       | new         |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version |
       | spaces      |
