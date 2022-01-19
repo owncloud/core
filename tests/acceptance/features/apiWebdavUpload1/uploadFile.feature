@@ -26,7 +26,7 @@ Feature: upload file
       | old         | /s,a,m,p,l,e.txt  |
       | new         | /s,a,m,p,l,e.txt  |
 
-    @skipOnOcV10
+    @skipOnOcV10 @personalSpace
     Examples:
       | dav_version | file_name   |
       | spaces      | /upload.txt |
