@@ -4,14 +4,14 @@ Feature: favorite
   Background:
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
-    And user "Alice" has been created with default attributes and without skeleton files
+    And user "Alice" has been created with default attributes and without skeleton files and with log
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
 
   @issue-ocis-2968
   Scenario Outline: favorite a file inside of a received share
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files and with log
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When user "Brian" favorites element "/Shares/PARENT/parent.txt" using the WebDAV API
@@ -29,7 +29,7 @@ Feature: favorite
   @issue-ocis-2968
   Scenario Outline: favorite a folder inside of a received share
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files and with log
     And user "Alice" has created folder "/PARENT/sub-folder"
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
@@ -48,7 +48,7 @@ Feature: favorite
   @issue-ocis-2968
   Scenario Outline: favorite a received share itself
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files and with log
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When user "Brian" favorites element "/Shares/PARENT" using the WebDAV API
@@ -66,7 +66,7 @@ Feature: favorite
   @issue-ocis-2968
   Scenario Outline: moving a favorite file out of a share keeps favorite state
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files and with log
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Brian" has favorited element "/Shares/PARENT/parent.txt"
@@ -85,7 +85,7 @@ Feature: favorite
   @issue-ocis-2968
   Scenario Outline: sharee file favorite state should not change the favorite state of sharer
     Given using <dav_version> DAV path
-    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has been created with default attributes and without skeleton files and with log
     And user "Alice" has shared file "/PARENT/parent.txt" with user "Brian"
     And user "Brian" has accepted share "/parent.txt" offered by user "Alice"
     When user "Brian" favorites element "/Shares/parent.txt" using the WebDAV API

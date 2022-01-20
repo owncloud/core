@@ -395,6 +395,7 @@ trait Provisioning {
 	 * @param string $user
 	 * @param string $skeletonType
 	 * @param boolean $skeleton
+	 * @param boolean $log
 	 *
 	 * @return void
 	 * @throws Exception
@@ -402,7 +403,8 @@ trait Provisioning {
 	public function userHasBeenCreatedWithDefaultAttributes(
 		string $user,
 		string $skeletonType = "",
-		bool $skeleton = true
+		bool $skeleton = true,
+		bool $log = false
 	):void {
 		if ($skeletonType === "") {
 			$skeletonType = $this->getSmallestSkeletonDirName();
@@ -419,7 +421,8 @@ trait Provisioning {
 				true,
 				null,
 				true,
-				$skeleton
+				$skeleton,
+				$log
 			);
 			$this->userShouldExist($user);
 		} finally {
@@ -437,6 +440,18 @@ trait Provisioning {
 	 */
 	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles(string $user):void {
 		$this->userHasBeenCreatedWithDefaultAttributes($user);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has been created with default attributes and without skeleton files and with log$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userHasBeenCreatedWithDefaultAttributesAndWithoutSkeletonFiles2(string $user):void {
+		$this->userHasBeenCreatedWithDefaultAttributes($user, "", true, true);
 	}
 
 	/**
@@ -961,6 +976,7 @@ trait Provisioning {
 	 * @param array|null $usersAttributes
 	 * @param string|null $method create the user with "ldap" or "api"
 	 * @param boolean $skeleton
+	 * @param boolean $log
 	 *
 	 * @return void
 	 * @throws Exception
@@ -969,7 +985,8 @@ trait Provisioning {
 		bool $initialize,
 		?array $usersAttributes,
 		?string $method = null,
-		?bool $skeleton = true
+		?bool $skeleton = true,
+		?bool $log = false
 	) {
 		$requests = [];
 		$client = HttpRequestHelper::createClient(
@@ -1023,8 +1040,12 @@ trait Provisioning {
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 			// Retrieve all failures.
 			foreach ($results as $e) {
+				$responseXml = $this->getResponseXml($e->getResponse(), __METHOD__);
+				if ($log) {
+					\var_dump($responseXml);
+				}
 				if ($e instanceof ClientException) {
-					$responseXml = $this->getResponseXml($e->getResponse(), __METHOD__);
+					//$responseXml = $this->getResponseXml($e->getResponse(), __METHOD__);
 					$messageText = (string) $responseXml->xpath("/ocs/meta/message")[0];
 					$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
 					$httpStatusCode = $e->getResponse()->getStatusCode();
@@ -3024,6 +3045,7 @@ trait Provisioning {
 	 * @param string|null $method how to create the user api|occ, default api
 	 * @param bool $setDefault sets the missing values to some default
 	 * @param bool $skeleton
+	 * @param bool $log
 	 *
 	 * @return void
 	 * @throws Exception
@@ -3036,7 +3058,8 @@ trait Provisioning {
 		bool $initialize = true,
 		?string $method = null,
 		bool $setDefault = true,
-		bool $skeleton = true
+		bool $skeleton = true,
+		bool $log = false
 	):void {
 		if ($password === null) {
 			$password = $this->getPasswordForUser($user);
@@ -3096,7 +3119,8 @@ trait Provisioning {
 						$initialize,
 						$settings,
 						$method,
-						$skeleton
+						$skeleton,
+						$log
 					);
 				} catch (LdapException $exception) {
 					throw new Exception(
