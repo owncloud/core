@@ -433,3 +433,27 @@ Feature: move (rename) file
       | new         | texta         | 1           | textb         | file.txt    |
       | new         | texta         | file.txt    | textb         | 0           |
       | new         | texta         | file.txt    | textb         | 1           |
+
+  Scenario Outline: Moving a file from a folder to the root
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "<source_folder>"
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/<source_folder>/<source_file>"
+    When user "Alice" moves file "/<source_folder>/<source_file>" to "/<target_file>" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions for user "Alice"
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
+    And the content of file "/<target_file>" for user "Alice" should be "ownCloud test text file 0"
+    Examples:
+      | dav_version | source_folder | source_file | target_file |
+      | old         | 0             | file.txt    | file.txt    |
+      | old         | 1             | file.txt    | file.txt    |
+      | old         | texta         | 0           | file.txt    |
+      | old         | texta         | 1           | file.txt    |
+      | old         | texta         | file.txt    | 0           |
+      | old         | texta         | file.txt    | 1           |
+      | new         | 0             | file.txt    | file.txt    |
+      | new         | 1             | file.txt    | file.txt    |
+      | new         | texta         | 0           | file.txt    |
+      | new         | texta         | 1           | file.txt    |
+      | new         | texta         | file.txt    | 0           |
+      | new         | texta         | file.txt    | 1           |
