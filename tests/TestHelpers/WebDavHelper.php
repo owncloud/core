@@ -397,10 +397,24 @@ class WebDavHelper {
 		$bodyContents = $response->getBody()->getContents();
 		$json = \json_decode($bodyContents);
 		$personalSpaceId = '';
-		foreach ($json->value as $spaces) {
-			if ($spaces->driveType === "personal") {
-				$personalSpaceId = $spaces->id;
-				break;
+		if ($json === null) {
+			// the graph endpoint did not give a useful answer
+			// try getting the user information
+			$fullUrl = $baseUrl . 'ocs/v1.php/cloud/users/' . $user;
+			$response = HttpRequestHelper::get(
+				$fullUrl,
+				$xRequestId,
+				$user,
+				$password
+			);
+			$bodyContents = $response->getBody()->getContents();
+			\var_dump($bodyContents);
+		} else {
+			foreach ($json->value as $spaces) {
+				if ($spaces->driveType === "personal") {
+					$personalSpaceId = $spaces->id;
+					break;
+				}
 			}
 		}
 
