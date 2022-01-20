@@ -1004,8 +1004,14 @@ trait Provisioning {
 
 		foreach ($usersAttributes as $i => $userAttributes) {
 			if ($useLdap) {
+				if ($log) {
+					echo "calling createLdapUser to create users";
+				}
 				$this->createLdapUser($userAttributes);
 			} else {
+				if ($log) {
+					echo "using $method to create users";
+				}
 				$attributesToCreateUser['userid'] = $userAttributes['userid'];
 				$attributesToCreateUser['password'] = $userAttributes['password'];
 				$attributesToCreateUser['displayname'] = $userAttributes['displayName'];
