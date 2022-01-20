@@ -408,6 +408,16 @@ class WebDavHelper {
 			self::$spacesIdRef[$user] = [];
 			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
 			return $personalSpaceId;
+		} else {
+			$fullUrl = $baseUrl . 'ocs/v1.php/cloud/users/' . $user;
+			$response = HttpRequestHelper::get(
+				$fullUrl,
+				$xRequestId,
+				$user,
+				$password
+			);
+			$bodyContents = $response->getBody()->getContents();
+			\var_dump($bodyContents);
 		}
 		throw new Exception("Personal space not found for user " . $user);
 	}
