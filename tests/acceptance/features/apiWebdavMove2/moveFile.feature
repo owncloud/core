@@ -404,3 +404,32 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
+
+  Scenario Outline: Moving a file (deep moves with various folder and file names)
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "<source_folder>"
+    And user "Alice" has created folder "<target_folder>"
+    And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/<source_folder>/<source_file>"
+    When user "Alice" moves file "/<source_folder>/<source_file>" to "/<target_folder>/<target_file>" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions for user "Alice"
+      | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
+    And the content of file "/<target_folder>/<target_file>" for user "Alice" should be "ownCloud test text file 0"
+    Examples:
+      | dav_version | source_folder | source_file | target_folder | target_file |
+      | old         | text          | file.txt    | 0             | file.txt    |
+      | old         | text          | file.txt    | 1             | file.txt    |
+      | old         | 0             | file.txt    | text          | file.txt    |
+      | old         | 1             | file.txt    | text          | file.txt    |
+      | old         | texta         | 0           | textb         | file.txt    |
+      | old         | texta         | 1           | textb         | file.txt    |
+      | old         | texta         | file.txt    | textb         | 0           |
+      | old         | texta         | file.txt    | textb         | 1           |
+      | new         | text          | file.txt    | 0             | file.txt    |
+      | new         | text          | file.txt    | 1             | file.txt    |
+      | new         | 0             | file.txt    | text          | file.txt    |
+      | new         | 1             | file.txt    | text          | file.txt    |
+      | new         | texta         | 0           | textb         | file.txt    |
+      | new         | texta         | 1           | textb         | file.txt    |
+      | new         | texta         | file.txt    | textb         | 0           |
+      | new         | texta         | file.txt    | textb         | 1           |
