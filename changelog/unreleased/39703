@@ -1,0 +1,6 @@
+Bugfix: Moving a file from one folder into a folder that is a number fails
+
+The issue is fixed by updating sabre/dav from 4.3.0 to 4.3.1
+
+https://github.com/owncloud/core/issues/39702
+https://github.com/owncloud/core/pull/39703
