@@ -13,6 +13,7 @@ Summary
 * Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
 * Bugfix - Don't resend invitation mail if a user is guest: [#39602](https://github.com/owncloud/core/pull/39602)
 * Bugfix - Fix files:checksums:verify for a single file: [#39683](https://github.com/owncloud/core/pull/39683)
+* Bugfix - Moving a file from one folder into a folder that is a number fails: [#39702](https://github.com/owncloud/core/issues/39702)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
@@ -47,6 +48,13 @@ Details
 
    https://github.com/owncloud/core/pull/39683
 
+* Bugfix - Moving a file from one folder into a folder that is a number fails: [#39702](https://github.com/owncloud/core/issues/39702)
+
+   The issue is fixed by updating sabre/dav from 4.3.0 to 4.3.1
+
+   https://github.com/owncloud/core/issues/39702
+   https://github.com/owncloud/core/pull/39703
+
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 
    The following have been updated: - christophwurst/id3parser (v0.1.3 to v0.1.4) -
@@ -55,13 +63,14 @@ Details
    - laminas/laminas-validator (2.15.0 to 2.15.1) - laminas/laminas-zendframework-bridge
    (1.4.0 to 1.4.1) - league/flysystem (1.1.5 to 1.1.9) - league/mime-type-detection (1.8.0 to
    1.9.0) - paragonie/constant_time_encoding (2.4.0 to 2.5.0) - phpseclib/phpseclib (3.0.11
-   => 3.0.12) - sabre/dav (4.2.0 to 4.3.0) - sabre/vobject (4.4.0 to 4.4.1)
+   => 3.0.12) - sabre/dav (4.2.0 to 4.3.1) - sabre/vobject (4.4.0 to 4.4.1)
 
    https://github.com/owncloud/core/pull/39526
    https://github.com/owncloud/core/pull/39631
    https://github.com/owncloud/core/pull/39649
    https://github.com/owncloud/core/pull/39693
    https://github.com/owncloud/core/pull/39695
+   https://github.com/owncloud/core/pull/39703
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
