@@ -14,6 +14,7 @@ Summary
 * Bugfix - Don't resend invitation mail if a user is guest: [#39602](https://github.com/owncloud/core/pull/39602)
 * Bugfix - Fix files:checksums:verify for a single file: [#39683](https://github.com/owncloud/core/pull/39683)
 * Bugfix - Moving a file from one folder into a folder that is a number fails: [#39702](https://github.com/owncloud/core/issues/39702)
+* Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
@@ -54,6 +55,12 @@ Details
 
    https://github.com/owncloud/core/issues/39702
    https://github.com/owncloud/core/pull/39703
+
+* Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
+
+   The following have been updated: - log4js (6.3.0 to 6.4.1)
+
+   https://github.com/owncloud/core/pull/39709
 
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 
