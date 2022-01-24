@@ -191,7 +191,8 @@ Feature: checksums
     When user "Alice" shares file "/myChecksumFile.txt" with user "Brian" using the sharing API
     And user "Brian" accepts share "/myChecksumFile.txt" offered by user "Alice" using the sharing API
     And user "Brian" requests the checksum of "/Shares/myChecksumFile.txt" via propfind
-    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    Then the HTTP status code should be "207"
+    And the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
     Examples:
       | dav_version |
       | new         |
