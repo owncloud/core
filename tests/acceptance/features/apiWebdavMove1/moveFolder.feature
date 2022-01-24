@@ -94,7 +94,7 @@ Feature: move (rename) folder
       | new         | /...          |
       | new         | /..upload     |
 
-
+  @issue-ocis-3023
   Scenario Outline: Moving a folder into a sub-folder of itself
     Given using <dav_version> DAV path
     And user "Alice" has created folder "PARENT"
