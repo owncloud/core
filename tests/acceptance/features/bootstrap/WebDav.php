@@ -2145,7 +2145,7 @@ trait WebDav {
 				$destination,
 				$this->getStepLineRef(),
 				$headers,
-				($this->usingOldDavPath) ? 1 : 2,
+				$this->getDavPathVersion(),
 				$chunkingVersion,
 				$noOfChunks
 			);
@@ -2188,7 +2188,7 @@ trait WebDav {
 		);
 		//use the chunking version that works with the set DAV version
 		if ($chunkingVersion === null) {
-			if ($this->usingOldDavPath) {
+			if ($this->usingOldDavPath || $this->usingSpacesDavPath) {
 				$chunkingVersion = "v1";
 			} else {
 				$chunkingVersion = "v2";
@@ -2197,7 +2197,7 @@ trait WebDav {
 		$this->useSpecificChunking($chunkingVersion);
 		Assert::assertTrue(
 			WebDavHelper::isValidDavChunkingCombination(
-				($this->usingOldDavPath) ? 1 : 2,
+				$this->getDavPathVersion(),
 				$this->chunkingToUse
 			),
 			"invalid chunking/webdav version combination"

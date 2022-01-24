@@ -613,6 +613,10 @@ class WebDavHelper {
 		$davPathVersion,
 		$chunkingVersion
 	): bool {
+		if ($davPathVersion === 3) {
+			// allow only old chunking version when using the spaces dav
+			return $chunkingVersion === 1;
+		}
 		return (
 			($chunkingVersion === 'no' || $chunkingVersion === null) ||
 			($davPathVersion === $chunkingVersion)
