@@ -3090,6 +3090,14 @@ class FeatureContext extends BehatVariablesContext {
 						"getEmailAddressForUser"
 					],
 					"parameter" => [$user]
+				],
+				[
+					"code" => "%spaceid%",
+					"function" => [
+						$this,
+						"getPersonalSpaceIdForUser",
+					],
+					"parameter" => [$user]
 				]
 			);
 		}
@@ -3120,6 +3128,23 @@ class FeatureContext extends BehatVariablesContext {
 			);
 		}
 		return $value;
+	}
+
+	/**
+	 * returns personal space id for user
+	 *
+	 * @param string $user
+	 *
+	 * @return string
+	 * @throws GuzzleException
+	 */
+	public function getPersonalSpaceIdForUser(string $user):string {
+		return WebDavHelper::getPersonalSpaceIdForUser(
+			$this->getBaseUrl(),
+			$user,
+			$this->getPasswordForUser($user),
+			$this->getStepLineRef()
+		);
 	}
 
 	/**
