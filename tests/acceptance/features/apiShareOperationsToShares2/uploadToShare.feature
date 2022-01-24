@@ -41,6 +41,11 @@ Feature: sharing
       | old      |
       | new      |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
+
 
   Scenario Outline: Uploading file to a user upload-only share folder works
     Given using <dav-path> DAV path
@@ -66,6 +71,11 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: Uploading file to a group upload-only share folder works
@@ -95,6 +105,11 @@ Feature: sharing
       | old      |
       | new      |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
+
   @smokeTest
   Scenario Outline: Uploading file to a user read/write share folder works
     Given using <dav-path> DAV path
@@ -118,6 +133,11 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: Uploading file to a group read/write share folder works
@@ -145,6 +165,11 @@ Feature: sharing
       | old      |
       | new      |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
+
   @smokeTest
   Scenario Outline: Check quota of owners parent directory of a shared file
     Given using <dav-path> DAV path
@@ -168,6 +193,11 @@ Feature: sharing
       | old      |
       | new      |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
+
 
   Scenario Outline: Uploading to a user shared folder with read/write permission when the sharer has unsufficient quota does not work
     Given using <dav-path> DAV path
@@ -187,6 +217,11 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: Uploading to a group shared folder with read/write permission when the sharer has unsufficient quota does not work
@@ -210,6 +245,11 @@ Feature: sharing
       | old      |
       | new      |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
+
 
   Scenario Outline: Uploading to a user shared folder with upload-only permission when the sharer has insufficient quota does not work
     Given using <dav-path> DAV path
@@ -229,6 +269,11 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
 
   Scenario Outline: Uploading to a group shared folder with upload-only permission when the sharer has insufficient quota does not work
@@ -251,6 +296,11 @@ Feature: sharing
       | dav-path |
       | old      |
       | new      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
 
   @notToImplementOnOCIS @newChunking @issue-ocis-1321
   Scenario: Uploading a file in to a shared folder without edit permissions
@@ -289,3 +339,9 @@ Feature: sharing
       | dav-path | permissions |
       | old      | change      |
       | new      | create      |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path | permissions |
+      | spaces   | change      |
+      | spaces   | create      |
