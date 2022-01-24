@@ -405,6 +405,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario Outline: Moving a file (deep moves with various folder and file names)
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<source_folder>"
@@ -434,6 +435,7 @@ Feature: move (rename) file
       | new         | texta         | file.txt    | textb         | 0           |
       | new         | texta         | file.txt    | textb         | 1           |
 
+  @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario Outline: Moving a file from a folder to the root
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<source_folder>"
