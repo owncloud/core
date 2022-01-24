@@ -93,3 +93,19 @@ Feature: move (rename) folder
       | new         | /upload...1.. |
       | new         | /...          |
       | new         | /..upload     |
+
+
+  Scenario Outline: Moving a folder into a sub-folder of itself
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "PARENT"
+    And user "Alice" has created folder "PARENT/CHILD"
+    And user "Alice" has uploaded file with content "parent text" to "/PARENT/parent.txt"
+    And user "Alice" has uploaded file with content "child text" to "/PARENT/CHILD/child.txt"
+    When user "Alice" moves folder "/PARENT" to "/PARENT/CHILD/PARENT" using the WebDAV API
+    Then the HTTP status code should be "409"
+    And the content of file "/PARENT/parent.txt" for user "Alice" should be "parent text"
+    And the content of file "/PARENT/CHILD/child.txt" for user "Alice" should be "child text"
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
