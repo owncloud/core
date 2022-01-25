@@ -9,10 +9,23 @@ Feature: auth
     When a user requests "/remote.php/webdav" with "PROPFIND" and no authentication
     Then the HTTP status code should be "401"
 
+  @smokeTest @skipOnOcV10 @personalSpace
+  Scenario: using spaces WebDAV anonymously
+    When user "Alice" requests "/dav/spaces/%spaceid%" with "PROPFIND" and no authentication
+    Then the HTTP status code should be "401"
+
   @smokeTest
-  Scenario: using WebDAV with basic auth
-    When user "Alice" requests "/remote.php/webdav" with "PROPFIND" using basic auth
+  Scenario Outline: using WebDAV with basic auth
+    When user "Alice" requests "<dav_path>" with "PROPFIND" using basic auth
     Then the HTTP status code should be "207"
+    Examples:
+      | dav_path           |
+      | /remote.php/webdav |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_path              |
+      | /dav/spaces/%spaceid% |
 
   @smokeTest @notToImplementOnOCIS @issue-ocis-reva-28
   Scenario: using WebDAV with token auth

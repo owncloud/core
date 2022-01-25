@@ -134,6 +134,22 @@ class AuthContext implements Context {
 	}
 
 	/**
+	 * @When user :user requests :url with :method and no authentication
+	 *
+	 * @param string $user
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 * @throws JsonException
+	 */
+	public function userRequestsURLWithNoAuth(string $user, string $url, string $method):void {
+		$userRenamed = $this->featureContext->getActualUsername($user);
+		$url = $this->featureContext->substituteInLineCodes($url, $userRenamed);
+		$this->sendRequest($url, $method);
+	}
+
+	/**
 	 * @Given a user has requested :url with :method and no authentication
 	 *
 	 * @param string $url

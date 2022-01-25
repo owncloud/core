@@ -385,8 +385,8 @@ class WebDavHelper {
 		if (\array_key_exists($user, self::$spacesIdRef) && \array_key_exists("personal", self::$spacesIdRef[$user])) {
 			return self::$spacesIdRef[$user]["personal"];
 		}
-		$drivesPath = 'graph/v1.0/me/drives';
-		$fullUrl = $baseUrl . $drivesPath;
+		$drivesPath = '/graph/v1.0/me/drives';
+		$fullUrl = \trim($baseUrl, "/") . $drivesPath;
 		$response = HttpRequestHelper::get(
 			$fullUrl,
 			$xRequestId,
