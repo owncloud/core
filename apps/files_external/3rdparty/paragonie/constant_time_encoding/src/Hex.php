@@ -41,15 +41,12 @@ abstract class Hex implements EncoderInterface
      */
     public static function encode(string $binString): string
     {
-        /** @var string $hex */
         $hex = '';
         $len = Binary::safeStrlen($binString);
         for ($i = 0; $i < $len; ++$i) {
             /** @var array<int, int> $chunk */
             $chunk = \unpack('C', Binary::safeSubstr($binString, $i, 1));
-            /** @var int $c */
             $c = $chunk[1] & 0xf;
-            /** @var int $b */
             $b = $chunk[1] >> 4;
 
             $hex .= pack(
@@ -71,17 +68,13 @@ abstract class Hex implements EncoderInterface
      */
     public static function encodeUpper(string $binString): string
     {
-        /** @var string $hex */
         $hex = '';
-        /** @var int $len */
         $len = Binary::safeStrlen($binString);
 
         for ($i = 0; $i < $len; ++$i) {
             /** @var array<int, int> $chunk */
             $chunk = \unpack('C', Binary::safeSubstr($binString, $i, 2));
-            /** @var int $c */
             $c = $chunk[1] & 0xf;
-            /** @var int $b */
             $b = $chunk[1] >> 4;
 
             $hex .= pack(
@@ -104,15 +97,10 @@ abstract class Hex implements EncoderInterface
      */
     public static function decode(string $encodedString, bool $strictPadding = false): string
     {
-        /** @var int $hex_pos */
         $hex_pos = 0;
-        /** @var string $bin */
         $bin = '';
-        /** @var int $c_acc */
         $c_acc = 0;
-        /** @var int $hex_len */
         $hex_len = Binary::safeStrlen($encodedString);
-        /** @var int $state */
         $state = 0;
         if (($hex_len & 1) !== 0) {
             if ($strictPadding) {
@@ -129,15 +117,10 @@ abstract class Hex implements EncoderInterface
         $chunk = \unpack('C*', $encodedString);
         while ($hex_pos < $hex_len) {
             ++$hex_pos;
-            /** @var int $c */
             $c = $chunk[$hex_pos];
-            /** @var int $c_num */
             $c_num = $c ^ 48;
-            /** @var int $c_num0 */
             $c_num0 = ($c_num - 10) >> 8;
-            /** @var int $c_alpha */
             $c_alpha = ($c & ~32) - 55;
-            /** @var int $c_alpha0 */
             $c_alpha0 = (($c_alpha - 10) ^ ($c_alpha - 16)) >> 8;
 
             if (($c_num0 | $c_alpha0) === 0) {
@@ -145,7 +128,6 @@ abstract class Hex implements EncoderInterface
                     'Expected hexadecimal character'
                 );
             }
-            /** @var int $c_val */
             $c_val = ($c_num0 & $c_num) | ($c_alpha & $c_alpha0);
             if ($state === 0) {
                 $c_acc = $c_val * 16;

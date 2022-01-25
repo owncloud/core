@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../',
         'aliases' => array(),
-        'reference' => '5ba729dd7df74dfb6810ec0fab8f3b0753f7c018',
+        'reference' => '3f7e40789df762a540d89fe0b84ae3b6b0582a41',
         'name' => 'files_external/3rdparty',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../',
             'aliases' => array(),
-            'reference' => '5ba729dd7df74dfb6810ec0fab8f3b0753f7c018',
+            'reference' => '3f7e40789df762a540d89fe0b84ae3b6b0582a41',
             'dev_requirement' => false,
         ),
         'firebase/php-jwt' => array(
@@ -119,12 +119,12 @@
             'dev_requirement' => false,
         ),
         'paragonie/constant_time_encoding' => array(
-            'pretty_version' => 'v2.4.0',
-            'version' => '2.4.0.0',
+            'pretty_version' => 'v2.5.0',
+            'version' => '2.5.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../paragonie/constant_time_encoding',
             'aliases' => array(),
-            'reference' => 'f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c',
+            'reference' => '9229e15f2e6ba772f0c55dd6986c563b937170a8',
             'dev_requirement' => false,
         ),
         'paragonie/random_compat' => array(
