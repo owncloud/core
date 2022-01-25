@@ -66,8 +66,8 @@ Details
 
    The following have been updated: - christophwurst/id3parser (v0.1.3 to v0.1.4) -
    doctrine/dbal (2.13.5 => 2.13.7) - doctrine/lexer (1.2.1 => 1.2.2) -
-   laminas/laminas-inputfilter (2.12.0 to 2.12.1) - laminas/laminas-stdlib (3.6.1 to 3.7.0)
-   - laminas/laminas-validator (2.15.0 to 2.15.1) - laminas/laminas-zendframework-bridge
+   laminas/laminas-inputfilter (2.12.0 to 2.12.1) - laminas/laminas-stdlib (3.6.1 to 3.7.1)
+   - laminas/laminas-validator (2.15.0 to 2.16.0) - laminas/laminas-zendframework-bridge
    (1.4.0 to 1.4.1) - league/flysystem (1.1.5 to 1.1.9) - league/mime-type-detection (1.8.0 to
    1.9.0) - paragonie/constant_time_encoding (2.4.0 to 2.5.0) - phpseclib/phpseclib (3.0.11
    => 3.0.12) - sabre/dav (4.2.0 to 4.3.1) - sabre/vobject (4.4.0 to 4.4.1)
@@ -78,6 +78,7 @@ Details
    https://github.com/owncloud/core/pull/39693
    https://github.com/owncloud/core/pull/39695
    https://github.com/owncloud/core/pull/39703
+   https://github.com/owncloud/core/pull/39713
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
