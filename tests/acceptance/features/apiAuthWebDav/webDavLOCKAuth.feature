@@ -24,6 +24,15 @@ Feature: LOCK file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
+  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
+  Scenario: send LOCK requests to webDav endpoints as normal user with wrong password using the spaces WebDAV API
+    When user "Alice" requests these endpoints with "LOCK" including body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send LOCK requests to webDav endpoints as normal user with no password
@@ -34,6 +43,15 @@ Feature: LOCK file/folder
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
+  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
+  Scenario: send LOCK requests to webDav endpoints as normal user with no password using the spaces WebDAV API
+    When user "Alice" requests these endpoints with "LOCK" including body "doesnotmatter" using password "" about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
   @issue-ocis-reva-9 @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
@@ -48,6 +66,18 @@ Feature: LOCK file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "409"
 
+  @issue-ocis-reva-9 @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5 @skipOnOcV10 @personalSpace
+  Scenario: send LOCK requests to another user's webDav endpoints as normal user using the spaces WebDAV API
+    When user "Brian" requests these endpoints with "LOCK" to get property "d:shared" about user "Alice"
+      | endpoint                                       |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt |
+      | /remote.php/dav/spaces/%spaceid%/PARENT        |
+    Then the HTTP status code of responses on all endpoints should be "403"
+    When user "Brian" requests these endpoints with "LOCK" to get property "d:shared" about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "409"
+
   Scenario: send LOCK requests to webDav endpoints using invalid username but correct password
     When user "usero" requests these endpoints with "LOCK" including body "doesnotmatter" using the password of user "Alice"
       | endpoint                                           |
@@ -56,6 +86,15 @@ Feature: LOCK file/folder
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
+  @skipOnOcV10 @personalSpace
+  Scenario: send LOCK requests to webDav endpoints using invalid username but correct password using the spaces WebDAV API
+    When user "usero" requests these endpoints with "LOCK" including body "doesnotmatter" using the password of user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send LOCK requests to webDav endpoints using valid password and username of different user
@@ -68,6 +107,15 @@ Feature: LOCK file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
+  @skipOnOcV10 @personalSpace
+  Scenario: send LOCK requests to webDav endpoints using valid password and username of different user using the spaces WebDAV API
+    When user "Brian" requests these endpoints with "LOCK" including body "doesnotmatter" using the password of user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
   @smokeTest
   @skipOnBruteForceProtection @issue-brute_force_protection-112
   Scenario: send LOCK requests to webDav endpoints without any authentication
@@ -78,6 +126,15 @@ Feature: LOCK file/folder
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
+  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
+  Scenario: send LOCK requests to webDav endpoints without any authentication using the spaces WebDAV API
+    When a user requests these endpoints with "LOCK" with body "doesnotmatter" and no authentication about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
   @notToImplementOnOCIS @issue-ocis-reva-37

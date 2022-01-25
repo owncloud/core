@@ -21,7 +21,17 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/textfile0.txt     |
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/PARENT            |
+      | /remote.php/webdav/PARENT/parent.txt               |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
+  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
+  Scenario: send DELETE requests to webDav endpoints as normal user with wrong password using the spaces WebDAV API
+    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "invalid" about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
   Scenario: send DELETE requests to webDav endpoints as normal user with no password
@@ -31,7 +41,17 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/textfile0.txt     |
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/PARENT            |
+      | /remote.php/webdav/PARENT/parent.txt               |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
+  @skipOnOcV10 @personalSpace
+  Scenario: send DELETE requests to webDav endpoints as normal user with no password using the spaces WebDAV API
+    When user "Alice" requests these endpoints with "DELETE" including body "doesnotmatter" using password "" about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
   @issue-ocis-reva-13
@@ -41,6 +61,15 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/textfile0.txt     |
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "404"
+
+  @issue-ocis-reva-13 @skipOnOcV10 @personalSpace
+  Scenario: send DELETE requests to another user's webDav endpoints as normal user using the spaces WebDAV API
+    When user "Brian" requests these endpoints with "DELETE" including body "doesnotmatter" about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "404"
 
   @smokeTest
@@ -54,6 +83,15 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
+  @smokeTest @skipOnOcV10 @personalSpace
+  Scenario: send DELETE requests to webDav endpoints using invalid username but correct password using the spaces WebDAV API
+    When user "usero" requests these endpoints with "DELETE" including body "doesnotmatter" using the password of user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
   Scenario: send DELETE requests to webDav endpoints using valid password and username of different user
     When user "Brian" requests these endpoints with "DELETE" including body "doesnotmatter" using the password of user "Alice"
       | endpoint                                           |
@@ -62,6 +100,15 @@ Feature: delete file/folder
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
+  @skipOnOcV10 @personalSpace
+  Scenario: send DELETE requests to webDav endpoints using valid password and username of different user using the spaces WebDAV API
+    When user "Brian" requests these endpoints with "DELETE" including body "doesnotmatter" using the password of user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
   @smokeTest
@@ -74,6 +121,15 @@ Feature: delete file/folder
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/PARENT            |
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
+  @smokeTest @skipOnBruteForceProtection @issue-brute_force_protection-112 @skipOnOcV10 @personalSpace
+  Scenario: send DELETE requests to webDav endpoints without any authentication using the spaces WebDAV API
+    When a user requests these endpoints with "DELETE" with body "doesnotmatter" and no authentication about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
   @issue-ocis-reva-60
@@ -90,6 +146,18 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "401"
 
+  @issue-ocis-reva-60 @skipOnOcV10 @personalSpace
+  Scenario: send DELETE requests to webDav endpoints using token authentication should not work using the spaces WebDAV API
+    Given token auth has been enforced
+    And a new browser session for "Alice" has been started
+    And the user has generated a new app password named "my-client"
+    When the user requests these endpoints with "DELETE" using the generated app password about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
+    Then the HTTP status code of responses on all endpoints should be "401"
+
   @issue-ocis-reva-60
   Scenario: send DELETE requests to webDav endpoints using app password token as password
     Given token auth has been enforced
@@ -102,4 +170,16 @@ Feature: delete file/folder
       | /remote.php/dav/files/%username%/PARENT/parent.txt |
       | /remote.php/webdav/PARENT                          |
       | /remote.php/dav/files/%username%/FOLDER            |
+    Then the HTTP status code of responses on all endpoints should be "204"
+
+  @issue-ocis-reva-60 @skipOnOcV10 @personalSpace
+  Scenario: send DELETE requests to webDav endpoints using app password token as password using the spaces WebDAV API
+    Given token auth has been enforced
+    And a new browser session for "Alice" has been started
+    And the user has generated a new app password named "my-client"
+    When the user "Alice" requests these endpoints with "DELETE" with body "doesnotmatter" using basic auth and generated app password about user "Alice"
+      | endpoint                                           |
+      | /remote.php/dav/spaces/%spaceid%/textfile0.txt     |
+      | /remote.php/dav/spaces/%spaceid%/PARENT            |
+      | /remote.php/dav/spaces/%spaceid%/PARENT/parent.txt |
     Then the HTTP status code of responses on all endpoints should be "204"
