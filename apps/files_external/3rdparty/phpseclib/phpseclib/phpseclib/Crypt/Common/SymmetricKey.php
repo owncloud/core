@@ -3288,4 +3288,17 @@ abstract class SymmetricKey
         $mask = "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF";
         return strrev($r->toBytes()) & $mask;
     }
+
+    /**
+     * Return the mode
+     *
+     * You can do $obj instanceof AES or whatever to get the cipher but you can't do that to get the mode
+     *
+     * @access public
+     * @return string
+     */
+    public function getMode()
+    {
+        return array_flip(self::MODE_MAP)[$this->mode];
+    }
 }

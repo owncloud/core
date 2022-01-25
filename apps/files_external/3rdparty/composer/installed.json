@@ -520,17 +520,17 @@
         },
         {
             "name": "icewind/smb",
-            "version": "v3.5.1",
-            "version_normalized": "3.5.1.0",
+            "version": "v3.5.2",
+            "version_normalized": "3.5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/SMB.git",
-                "reference": "c1ce4fbb2ff1786846d9d0b3850b395ca94cf563"
+                "reference": "0a425bd21acf7ae112b135dca34640e1b1a825c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/c1ce4fbb2ff1786846d9d0b3850b395ca94cf563",
-                "reference": "c1ce4fbb2ff1786846d9d0b3850b395ca94cf563",
+                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/0a425bd21acf7ae112b135dca34640e1b1a825c3",
+                "reference": "0a425bd21acf7ae112b135dca34640e1b1a825c3",
                 "shasum": ""
             },
             "require": {
@@ -543,7 +543,7 @@
                 "phpunit/phpunit": "^8.5|^9.3.8",
                 "psalm/phar": "^4.3"
             },
-            "time": "2021-11-04T14:28:18+00:00",
+            "time": "2022-01-20T14:51:51+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -564,7 +564,7 @@
             "description": "php wrapper for smbclient and libsmbclient-php",
             "support": {
                 "issues": "https://github.com/icewind1991/SMB/issues",
-                "source": "https://github.com/icewind1991/SMB/tree/v3.5.1"
+                "source": "https://github.com/icewind1991/SMB/tree/v3.5.2"
             },
             "install-path": "../icewind/smb"
         },
@@ -720,17 +720,17 @@
         },
         {
             "name": "paragonie/constant_time_encoding",
-            "version": "v2.4.0",
-            "version_normalized": "2.4.0.0",
+            "version": "v2.5.0",
+            "version_normalized": "2.5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/constant_time_encoding.git",
-                "reference": "f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c"
+                "reference": "9229e15f2e6ba772f0c55dd6986c563b937170a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c",
-                "reference": "f34c2b11eb9d2c9318e13540a1dbc2a3afbd939c",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/9229e15f2e6ba772f0c55dd6986c563b937170a8",
+                "reference": "9229e15f2e6ba772f0c55dd6986c563b937170a8",
                 "shasum": ""
             },
             "require": {
@@ -740,7 +740,7 @@
                 "phpunit/phpunit": "^6|^7|^8|^9",
                 "vimeo/psalm": "^1|^2|^3|^4"
             },
-            "time": "2020-12-06T15:14:20+00:00",
+            "time": "2022-01-17T05:32:27+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -843,17 +843,17 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.11",
-            "version_normalized": "3.0.11.0",
+            "version": "3.0.12",
+            "version_normalized": "3.0.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "6e794226a35159eb06f355efe59a0075a16551dd"
+                "reference": "89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/6e794226a35159eb06f355efe59a0075a16551dd",
-                "reference": "6e794226a35159eb06f355efe59a0075a16551dd",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb",
+                "reference": "89bfb45bd8b1abc3b37e910d57f5dbd3174f40fb",
                 "shasum": ""
             },
             "require": {
@@ -872,7 +872,7 @@
                 "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
                 "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations."
             },
-            "time": "2021-10-27T03:01:46+00:00",
+            "time": "2021-11-28T23:46:03+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -937,7 +937,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.11"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.12"
             },
             "funding": [
                 {

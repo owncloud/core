@@ -15,7 +15,6 @@
 
 namespace phpseclib3\Crypt\EC\Curves;
 
-use phpseclib3\Math\Common\FiniteField\Integer;
 use phpseclib3\Crypt\EC\BaseCurves\Montgomery;
 use phpseclib3\Math\BigInteger;
 
@@ -48,7 +47,7 @@ class Curve25519 extends Montgomery
      *
      * @return array
      */
-    public function multiplyPoint(array $p, Integer $d)
+    public function multiplyPoint(array $p, BigInteger $d)
     {
         //$r = strrev(sodium_crypto_scalarmult($d->toBytes(), strrev($p[0]->toBytes())));
         //return [$this->factory->newInteger(new BigInteger($r, 256))];
@@ -57,8 +56,28 @@ class Curve25519 extends Montgomery
         $d&= "\xF8" . str_repeat("\xFF", 30) . "\x7F";
         $d = strrev($d);
         $d|= "\x40";
-        $d = $this->factory->newInteger(new BigInteger($d, -256));
+        $d = new BigInteger($d, -256);
 
         return parent::multiplyPoint($p, $d);
+    }
+
+    /**
+     * Creates a random scalar multiplier
+     *
+     * @return BigInteger
+     */
+    public function createRandomMultiplier()
+    {
+        return BigInteger::random(256);
+    }
+
+    /**
+     * Performs range check
+     */
+    public function rangeCheck(BigInteger $x)
+    {
+        if ($x->getLength() > 256 || $x->isNegative()) {
+            throw new \RangeException('x must be a positive integer less than 256 bytes in length');
+        }
     }
 }

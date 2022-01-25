@@ -108,8 +108,8 @@ class PublicKey extends EC implements Common\PublicKey
 
             $qa = $curve->convertToInternal($this->QA);
 
-            $lhs = $curve->multiplyPoint($curve->getBasePoint(), $curve->convertInteger($S));
-            $rhs = $curve->multiplyPoint($qa, $curve->convertInteger($k));
+            $lhs = $curve->multiplyPoint($curve->getBasePoint(), $S);
+            $rhs = $curve->multiplyPoint($qa, $k);
             $rhs = $curve->addPoint($rhs, $R);
             $rhs = $curve->convertToAffine($rhs);
 

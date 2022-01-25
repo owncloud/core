@@ -208,6 +208,7 @@ jobs:
     name: Psalm static analysis
 
     strategy:
+      fail-fast: false
       matrix:
         php-version:
           - "7.2"

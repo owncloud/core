@@ -27,7 +27,6 @@
 
 namespace phpseclib3\Crypt\EC\Formats\Keys;
 
-use phpseclib3\Math\Common\FiniteField\Integer;
 use phpseclib3\Crypt\Common\Formats\Keys\PKCS1 as Progenitor;
 use phpseclib3\File\ASN1;
 use phpseclib3\File\ASN1\Maps;
@@ -107,8 +106,8 @@ abstract class PKCS1 extends Progenitor
                 $components['curve'] = $ecParams;
             }
 
-            $temp = new BigInteger($ecPrivate['privateKey'], 256);
-            $components['dA'] = $components['curve']->convertInteger($temp);
+            $components['dA'] = new BigInteger($ecPrivate['privateKey'], 256);
+            $components['curve']->rangeCheck($components['dA']);
             $components['QA'] = isset($ecPrivate['publicKey']) ?
                 self::extractPoint($ecPrivate['publicKey'], $components['curve']) :
                 $components['curve']->multiplyPoint($components['curve']->getBasePoint(), $components['dA']);
@@ -138,8 +137,7 @@ abstract class PKCS1 extends Progenitor
 
         $components = [];
         $components['curve'] = self::loadCurveByParam($key['parameters']);
-        $temp = new BigInteger($key['privateKey'], 256);
-        $components['dA'] = $components['curve']->convertInteger($temp);
+        $components['dA'] = new BigInteger($key['privateKey'], 256);
         $components['QA'] = isset($ecPrivate['publicKey']) ?
             self::extractPoint($ecPrivate['publicKey'], $components['curve']) :
             $components['curve']->multiplyPoint($components['curve']->getBasePoint(), $components['dA']);
@@ -172,14 +170,14 @@ abstract class PKCS1 extends Progenitor
      * Convert a private key to the appropriate format.
      *
      * @access public
-     * @param \phpseclib3\Math\Common\FiniteField\Integer $privateKey
+     * @param \phpseclib3\Math\BigInteger $privateKey
      * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $password optional
      * @param array $options optional
      * @return string
      */
-    public static function savePrivateKey(Integer $privateKey, BaseCurve $curve, array $publicKey, $password = '', array $options = [])
+    public static function savePrivateKey(BigInteger $privateKey, BaseCurve $curve, array $publicKey, $password = '', array $options = [])
     {
         self::initialize_static_variables();
 

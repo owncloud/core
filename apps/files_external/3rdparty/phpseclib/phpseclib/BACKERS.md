@@ -6,3 +6,4 @@ phpseclib ongoing development is made possible by [Tidelift](https://tidelift.co
 
 - Zane Hooper
 - [Setasign](https://www.setasign.com/)
+- Allan Simon

@@ -24,7 +24,6 @@ use phpseclib3\Crypt\Common\Formats\Keys\OpenSSH as Progenitor;
 use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
 use phpseclib3\Exception\UnsupportedCurveException;
 use phpseclib3\Crypt\EC\Curves\Ed25519;
-use phpseclib3\Math\Common\FiniteField\Integer;
 
 /**
  * OpenSSH Formatted EC Key Handler
@@ -75,9 +74,10 @@ abstract class OpenSSH extends Progenitor
             }
             list($curveName, $publicKey, $privateKey, $comment) = Strings::unpackSSH2('ssis', $paddedKey);
             $curve = self::loadCurveByParam(['namedCurve' => $curveName]);
+            $curve->rangeCheck($privateKey);
             return [
                 'curve' => $curve,
-                'dA' => $curve->convertInteger($privateKey),
+                'dA' => $privateKey,
                 'QA' => self::extractPoint("\0$publicKey", $curve),
                 'comment' => $comment
             ];
@@ -179,14 +179,14 @@ abstract class OpenSSH extends Progenitor
      * Convert a private key to the appropriate format.
      *
      * @access public
-     * @param \phpseclib3\Math\Common\FiniteField\Integer $privateKey
+     * @param \phpseclib3\Math\BigInteger $privateKey
      * @param \phpseclib3\Crypt\EC\Curves\Ed25519 $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $password optional
      * @param array $options optional
      * @return string
      */
-    public static function savePrivateKey(Integer $privateKey, BaseCurve $curve, array $publicKey, $password = '', array $options = [])
+    public static function savePrivateKey(BigInteger $privateKey, BaseCurve $curve, array $publicKey, $password = '', array $options = [])
     {
         if ($curve instanceof Ed25519) {
             if (!isset($privateKey->secret)) {

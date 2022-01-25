@@ -1097,6 +1097,14 @@ class SSH2
     private $regenerate_decompression_context = false;
 
     /**
+     * Smart multi-factor authentication flag
+     *
+     * @var bool
+     * @access private
+     */
+    private $smartMFA = true;
+
+    /**
      * Default Constructor.
      *
      * $host can either be a string, representing the host, or a stream resource.
@@ -2163,9 +2171,57 @@ class SSH2
             return $this->login_helper($username);
         }
 
-        foreach ($args as $arg) {
-            if ($this->login_helper($username, $arg)) {
-                return true;
+        while (count($args)) {
+            if (!$this->auth_methods_to_continue || !$this->smartMFA) {
+                $newargs = $args;
+                $args = [];
+            } else {
+                $newargs = [];
+                foreach ($this->auth_methods_to_continue as $method) {
+                    switch ($method) {
+                        case 'publickey':
+                            foreach ($args as $key => $arg) {
+                                if ($arg instanceof PrivateKey || $arg instanceof Agent) {
+                                    $newargs[] = $arg;
+                                    unset($args[$key]);
+                                    break;
+                                }
+                            }
+                            break;
+                        case 'keyboard-interactive':
+                            $hasArray = $hasString = false;
+                            foreach ($args as $arg) {
+                                if ($hasArray || is_array($arg)) {
+                                    $hasArray = true;
+                                    break;
+                                }
+                                if ($hasString || is_string($arg)) {
+                                    $hasString = true;
+                                    break;
+                                }
+                            }
+                            if ($hasArray && $hasString) {
+                                foreach ($args as $key => $arg) {
+                                    if (is_array($arg)) {
+                                        $newargs[] = $arg;
+                                        break 2;
+                                    }
+                                }
+                            }
+                        case 'password':
+                            foreach ($args as $key => $arg) {
+                                $newargs[] = $arg;
+                                unset($args[$key]);
+                                break;
+                            }
+                    }
+                }
+            }
+
+            foreach ($newargs as $arg) {
+                if ($this->login_helper($username, $arg)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -3279,7 +3335,8 @@ class SSH2
         $raw = stream_get_contents($this->fsock, $this->decrypt_block_size);
 
         if (!strlen($raw)) {
-            return '';
+            $this->bitmap = 0;
+            throw new ConnectionClosedException('No data received from server');
         }
 
         if ($this->decrypt) {
@@ -5084,5 +5141,21 @@ class SSH2
     public function getAuthMethodsToContinue()
     {
         return $this->auth_methods_to_continue;
+    }
+
+    /**
+     * Enables "smart" multi-factor authentication (MFA)
+     */
+    public function enableSmartMFA()
+    {
+        $this->smartMFA = true;
+    }
+
+    /**
+     * Disables "smart" multi-factor authentication (MFA)
+     */
+    public function disableSmartMFA()
+    {
+        $this->smartMFA = false;
     }
 }

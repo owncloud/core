@@ -46,6 +46,8 @@ abstract class Binary
     public static function safeStrlen(string $str): int
     {
         if (\function_exists('mb_strlen')) {
+            // mb_strlen in PHP 7.x can return false.
+            /** @psalm-suppress RedundantCast */
             return (int) \mb_strlen($str, '8bit');
         } else {
             return \strlen($str);
@@ -60,7 +62,7 @@ abstract class Binary
      * @staticvar boolean $exists
      * @param string $str
      * @param int $start
-     * @param int $length
+     * @param ?int $length
      * @return string
      * @throws \TypeError
      */

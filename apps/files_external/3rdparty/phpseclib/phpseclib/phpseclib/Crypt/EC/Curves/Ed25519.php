@@ -180,7 +180,6 @@ class Ed25519 extends TwistedEdwards
         // 3.  Interpret the buffer as the little-endian integer, forming a
         //     secret scalar s.
         $dA = new BigInteger($h, 256);
-        $dA = $this->factory->newInteger($dA);
 
         $dA->secret = $str;
         return $dA;

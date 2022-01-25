@@ -49,48 +49,125 @@ abstract class Raw
         if (!is_array($key)) {
             throw new \UnexpectedValueException('Key should be a array - not a ' . gettype($key));
         }
-        if (isset($key['isPublicKey']) && isset($key['modulus'])) {
-            if (isset($key['privateExponent']) || isset($key['publicExponent'])) {
-                if (!isset($key['primes'])) {
-                    return $key;
-                }
-                if (isset($key['exponents']) && isset($key['coefficients']) && isset($key['publicExponent']) && isset($key['privateExponent'])) {
-                    return $key;
+
+        $key = array_change_key_case($key, CASE_LOWER);
+
+        $components = ['isPublicKey' => false];
+
+        foreach (['e', 'exponent', 'publicexponent', 0, 'privateexponent', 'd'] as $index) {
+            if (isset($key[$index])) {
+                $components['publicExponent'] = $key[$index];
+                break;
+            }
+        }
+
+        foreach (['n', 'modulo', 'modulus', 1] as $index) {
+            if (isset($key[$index])) {
+                $components['modulus'] = $key[$index];
+                break;
+            }
+        }
+
+        if (!isset($components['publicExponent']) || !isset($components['modulus'])) {
+            throw new \UnexpectedValueException('Modulus / exponent not present');
+        }
+
+        if (isset($key['primes'])) {
+            $components['primes'] = $key['primes'];
+        } else if (isset($key['p']) && isset($key['q'])) {
+            $indices = [
+                ['p', 'q'],
+                ['prime1', 'prime2']
+            ];
+            foreach ($indices as $index) {
+                list($i0, $i1) = $index;
+                if (isset($key[$i0]) && isset($key[$i1])) {
+                    $components['primes'] = [1 => $key[$i0], $key[$i1]];
                 }
             }
         }
-        $components = ['isPublicKey' => true];
-        switch (true) {
-            case isset($key['e']):
-                $components['publicExponent'] = $key['e'];
-                break;
-            case isset($key['exponent']):
-                $components['publicExponent'] = $key['exponent'];
-                break;
-            case isset($key['publicExponent']):
-                $components['publicExponent'] = $key['publicExponent'];
-                break;
-            case isset($key[0]):
-                $components['publicExponent'] = $key[0];
+
+        if (isset($key['exponents'])) {
+            $components['exponents'] = $key['exponents'];
+        } else {
+            $indices = [
+                ['dp', 'dq'],
+                ['exponent1', 'exponent2']
+            ];
+            foreach ($indices as $index) {
+                list($i0, $i1) = $index;
+                if (isset($key[$i0]) && isset($key[$i1])) {
+                    $components['exponents'] = [1 => $key[$i0], $key[$i1]];
+                }
+            }
         }
-        switch (true) {
-            case isset($key['n']):
-                $components['modulus'] = $key['n'];
-                break;
-            case isset($key['modulo']):
-                $components['modulus'] = $key['modulo'];
-                break;
-            case isset($key['modulus']):
-                $components['modulus'] = $key['modulus'];
-                break;
-            case isset($key[1]):
-                $components['modulus'] = $key[1];
+
+        if (isset($key['coefficients'])) {
+            $components['coefficients'] = $key['coefficients'];
+        } else {
+            foreach (['inverseq', 'q\'', 'coefficient'] as $index) {
+                if (isset($key[$index])) {
+                    $components['coefficients'] = [2 => $key[$index]];
+                }
+            }
         }
-        if (isset($components['modulus']) && isset($components['publicExponent'])) {
+
+        if (!isset($components['primes'])) {
+            $components['isPublicKey'] = true;
             return $components;
         }
 
-        throw new \UnexpectedValueException('Modulus / exponent not present');
+        if (!isset($components['exponents'])) {
+            $one = new BigInteger(1);
+            $temp = $components['primes'][1]->subtract($one);
+            $exponents = [1 => $components['publicExponent']->modInverse($temp)];
+            $temp = $components['primes'][2]->subtract($one);
+            $exponents[] = $components['publicExponent']->modInverse($temp);
+            $components['exponents'] = $exponents;
+        }
+
+        if (!isset($components['coefficients'])) {
+            $components['coefficients'] = [2 => $components['primes'][2]->modInverse($components['primes'][1])];
+        }
+
+        foreach (['privateexponent', 'd'] as $index) {
+            if (isset($key[$index])) {
+                $components['privateExponent'] = $key[$index];
+                break;
+            }
+        }
+
+        return $components;
+    }
+
+    /**
+     * Convert a private key to the appropriate format.
+     *
+     * @access public
+     * @param \phpseclib3\Math\BigInteger $n
+     * @param \phpseclib3\Math\BigInteger $e
+     * @param \phpseclib3\Math\BigInteger $d
+     * @param array $primes
+     * @param array $exponents
+     * @param array $coefficients
+     * @param string $password optional
+     * @param array $options optional
+     * @return array
+     */
+    public static function savePrivateKey(BigInteger $n, BigInteger $e, BigInteger $d, array $primes, array $exponents, array $coefficients, $password = '', array $options = [])
+    {
+        if (!empty($password) && is_string($password)) {
+            throw new UnsupportedFormatException('Raw private keys do not support encryption');
+        }
+
+        return [
+            'e' => clone $e,
+            'n' => clone $n,
+            'd' => clone $d,
+            'primes' => array_map(function($var) { return clone $var; }, $primes),
+            'exponents' => array_map(function($var) { return clone $var; }, $exponents),
+            'coefficients' => array_map(function($var) { return clone $var; }, $coefficients)
+        ];
     }
 
     /**

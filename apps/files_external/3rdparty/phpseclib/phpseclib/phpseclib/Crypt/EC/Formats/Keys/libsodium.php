@@ -20,7 +20,7 @@
 namespace phpseclib3\Crypt\EC\Formats\Keys;
 
 use phpseclib3\Crypt\EC\Curves\Ed25519;
-use phpseclib3\Math\Common\FiniteField\Integer;
+use phpseclib3\Math\BigInteger;
 use phpseclib3\Exception\UnsupportedFormatException;
 
 /**
@@ -78,7 +78,6 @@ abstract class libsodium
         $components['QA'] = isset($public) ?
             self::extractPoint($public, $curve) :
             $curve->multiplyPoint($curve->getBasePoint(), $components['dA']);
-        
 
         return $components;
     }
@@ -100,13 +99,13 @@ abstract class libsodium
      * Convert a private key to the appropriate format.
      *
      * @access public
-     * @param \phpseclib3\Math\Common\FiniteField\Integer $privateKey
+     * @param \phpseclib3\Math\BigInteger $privateKey
      * @param \phpseclib3\Crypt\EC\Curves\Ed25519 $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $password optional
      * @return string
      */
-    public static function savePrivateKey(Integer $privateKey, Ed25519 $curve, array $publicKey, $password = '')
+    public static function savePrivateKey(BigInteger $privateKey, Ed25519 $curve, array $publicKey, $password = '')
     {
         if (!isset($privateKey->secret)) {
             throw new \RuntimeException('Private Key does not have a secret set');
