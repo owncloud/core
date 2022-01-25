@@ -20,7 +20,6 @@ use phpseclib3\Math\BigInteger;
 use phpseclib3\Common\Functions\Strings;
 use phpseclib3\Crypt\Common\Formats\Keys\PuTTY as Progenitor;
 use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
-use phpseclib3\Math\Common\FiniteField\Integer;
 use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
 
 /**
@@ -81,8 +80,8 @@ abstract class PuTTY extends Progenitor
             }
             $components['dA'] = $components['curve']->extractSecret($private);
         } else {
-            list($temp) = Strings::unpackSSH2('i', $private);
-            $components['dA'] = $components['curve']->convertInteger($temp);
+            list($components['dA']) = Strings::unpackSSH2('i', $private);
+            $components['curve']->rangeCheck($components['dA']);
         }
 
         return $components;
@@ -92,14 +91,14 @@ abstract class PuTTY extends Progenitor
      * Convert a private key to the appropriate format.
      *
      * @access public
-     * @param \phpseclib3\Math\Common\FiniteField\Integer $privateKey
+     * @param \phpseclib3\Math\BigInteger $privateKey
      * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $password optional
      * @param array $options optional
      * @return string
      */
-    public static function savePrivateKey(Integer $privateKey, BaseCurve $curve, array $publicKey, $password = false, array $options = [])
+    public static function savePrivateKey(BigInteger $privateKey, BaseCurve $curve, array $publicKey, $password = false, array $options = [])
     {
         self::initialize_static_variables();
 

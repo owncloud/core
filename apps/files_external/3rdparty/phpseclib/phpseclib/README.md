@@ -66,6 +66,12 @@ Need Support?
 * [Create a Support Ticket on GitHub](https://github.com/phpseclib/phpseclib/issues/new)
 * [Browse the Support Forum](http://www.frostjedi.com/phpbb/viewforum.php?f=46) (no longer in use)
 
+## Special Thanks
+
+Special Thanks to our Patreon sponsors!:
+
+- Allan Simon
+
 ## Contributing
 
 1. Fork the Project

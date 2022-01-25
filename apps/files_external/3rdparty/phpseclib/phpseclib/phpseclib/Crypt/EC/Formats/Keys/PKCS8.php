@@ -32,7 +32,6 @@ use phpseclib3\File\ASN1\Maps;
 use phpseclib3\Crypt\EC\BaseCurves\Base as BaseCurve;
 use phpseclib3\Crypt\EC\BaseCurves\TwistedEdwards as TwistedEdwardsCurve;
 use phpseclib3\Crypt\EC\BaseCurves\Montgomery as MontgomeryCurve;
-use phpseclib3\Math\Common\FiniteField\Integer;
 use phpseclib3\Crypt\EC\Curves\Ed25519;
 use phpseclib3\Crypt\EC\Curves\Ed448;
 use phpseclib3\Exception\UnsupportedCurveException;
@@ -126,10 +125,11 @@ abstract class PKCS8 extends Progenitor
             throw new \RuntimeException('The PKCS8 parameter field does not match the private key parameter field');
         }
 
-        $temp = new BigInteger($key['privateKey'], 256);
-        $components['dA'] = $components['curve']->convertInteger($temp);
-
-        $components['QA'] = self::extractPoint($key['publicKey'], $components['curve']);
+        $components['dA'] = new BigInteger($key['privateKey'], 256);
+        $components['curve']->rangeCheck($components['dA']);
+        $components['QA'] = isset($key['publicKey']) ?
+            self::extractPoint($key['publicKey'], $components['curve']) :
+            $components['curve']->multiplyPoint($components['curve']->getBasePoint(), $components['dA']);
 
         return $components;
     }
@@ -205,14 +205,14 @@ abstract class PKCS8 extends Progenitor
      * Convert a private key to the appropriate format.
      *
      * @access public
-     * @param \phpseclib3\Math\Common\FiniteField\Integer $privateKey
+     * @param \phpseclib3\Math\BigInteger $privateKey
      * @param \phpseclib3\Crypt\EC\BaseCurves\Base $curve
      * @param \phpseclib3\Math\Common\FiniteField\Integer[] $publicKey
      * @param string $password optional
      * @param array $options optional
      * @return string
      */
-    public static function savePrivateKey(Integer $privateKey, BaseCurve $curve, array $publicKey, $password = '', array $options = [])
+    public static function savePrivateKey(BigInteger $privateKey, BaseCurve $curve, array $publicKey, $password = '', array $options = [])
     {
         self::initialize_static_variables();
 
