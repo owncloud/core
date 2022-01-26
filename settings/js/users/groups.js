@@ -45,12 +45,13 @@ var GroupList;
 		},
 
 		setUserCount: function (groupLiElement, usercount) {
+			var $groupLiElement = $(groupLiElement);
 			if (this.$sortGroupBy !== 1) {
 				// If we don't sort by group count we don't display them either
+				$groupLiElement.find('span.usercount.tag').remove();
 				return;
 			}
 
-			var $groupLiElement = $(groupLiElement);
 			if (usercount === undefined || usercount === 0 || usercount < 0) {
 				usercount = 0;
 				$groupLiElement.data('usercount', 0);
@@ -342,12 +343,10 @@ $(document).ready( function () {
 	if ($sortGroupBy === 1) {
 		// Disabled due to performance issues, when we don't need it for sorting
 		GroupList.getEveryoneCount();
+	} else {
+		$userGroupList.find('span.usercount.tag').remove();
 	}
 
-	if ($('#everyonecount').text().trim() === '') {
-		// remove the count to match the rest of the groups
-		$('#everyonecount').remove();
-	}
 	// Display or hide of Create Group List Element
 	$('#newgroup-form').hide();
 	$('#newgroup-init').on('click', function (e) {
