@@ -129,10 +129,11 @@ var GroupList;
 			});
 
 			var items = [];
+			var self = this;
 			$.each(lis, function (index, li) {
 				items.push(li);
 				if (items.length === 100) {
-					this.$userGroupList.append(items);
+					self.$userGroupList.append(items);
 					items = [];
 				}
 			});
