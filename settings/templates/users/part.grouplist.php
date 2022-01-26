@@ -35,9 +35,11 @@
 				<span class="groupname" title="<?php p($l->t('Admins')); ?>">
 					<?php p($l->t('Admins')); ?>
 				</span>
+				<?php if ($adminGroup['usercount'] > 0): ?>
 				<span class="usercount tag">
 					<?php p($adminGroup['usercount']); ?>
 				</span>
+				<?php endif; ?>
 			</a>
 			<span class="utils">
 			</span>
@@ -51,9 +53,11 @@
 				<span class="groupname" title="<?php p($group['name']); ?>">
 					<?php p($group['name']); ?>
 				</span>
+				<?php if ($group['usercount'] > 0): ?>
 				<span class="usercount tag">
 						<?php p($group['usercount']); ?>
 				</span>
+				<?php endif; ?>
 			</a>
 			<span class="utils">
 					<?php if ($_['isAdmin']): ?>

@@ -344,6 +344,10 @@ $(document).ready( function () {
 		GroupList.getEveryoneCount();
 	}
 
+	if ($('#everyonecount').text().trim() === '') {
+		// remove the count to match the rest of the groups
+		$('#everyonecount').remove();
+	}
 	// Display or hide of Create Group List Element
 	$('#newgroup-form').hide();
 	$('#newgroup-init').on('click', function (e) {
