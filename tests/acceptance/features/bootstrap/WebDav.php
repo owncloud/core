@@ -1885,7 +1885,7 @@ trait WebDav {
 			$this->getStepLineRef(),
 			$properties,
 			$type,
-			($this->usingOldDavPath) ? 1 : 2
+			$this->getDavPathVersion()
 		);
 	}
 
