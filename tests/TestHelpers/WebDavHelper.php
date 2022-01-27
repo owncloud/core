@@ -274,11 +274,12 @@ class WebDavHelper {
 	 * @param string $path
 	 * @param array|null $propertiesArray
 	 * @param string|null $xRequestId
+	 * @param int|null $davPathVersion
 	 * @param string|null $namespaceString
-	 * @param int|null $davPathVersionToUse
 	 * @param string|null $type
 	 *
 	 * @return ResponseInterface
+	 * @throws GuzzleException
 	 */
 	public static function proppatchWithMultipleProps(
 		?string  $baseUrl,
@@ -287,8 +288,8 @@ class WebDavHelper {
 		string  $path,
 		?array $propertiesArray,
 		?string $xRequestId = '',
+		?int  $davPathVersion = null,
 		?string  $namespaceString = "oc='http://owncloud.org/ns'",
-		?int     $davPathVersionToUse = 2,
 		?string  $type="files"
 	):ResponseInterface {
 		$propertyBody = "";
@@ -320,7 +321,7 @@ class WebDavHelper {
 			[],
 			$xRequestId,
 			$body,
-			$davPathVersionToUse,
+			$davPathVersion,
 			$type
 		);
 	}
@@ -557,7 +558,7 @@ class WebDavHelper {
 			return "remote.php/dav/";
 		}
 		if ($davPathVersionToUse === 3) {
-			return "dav/spaces/" . $spaceId . '/';
+			return "remote.php/dav/spaces/" . $spaceId . '/';
 		} else {
 			if ($davPathVersionToUse === 1) {
 				$path = "remote.php/webdav/";

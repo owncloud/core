@@ -120,7 +120,6 @@ class WebDavPropertiesContext implements Context {
 		$depth = '0';
 		if (\count($properties) > 1) {
 			$depth = 'infinity';
-			$this->featureContext->usingNewDavPath();
 		}
 		$this->featureContext->setResponseXmlObject(
 			$this->featureContext->listFolderAndReturnResponseXml(
@@ -247,7 +246,8 @@ class WebDavPropertiesContext implements Context {
 				$this->featureContext->getPasswordForUser($username),
 				$path,
 				$properties,
-				$this->featureContext->getStepLineRef()
+				$this->featureContext->getStepLineRef(),
+				$this->featureContext->getDavPathVersion()
 			)
 		);
 		$this->featureContext->theHTTPStatusCodeShouldBeSuccess();

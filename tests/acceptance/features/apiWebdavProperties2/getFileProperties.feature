@@ -18,12 +18,20 @@ Feature: get file properties
       | dav_version | file_name         |
       | old         | /upload.txt       |
       | old         | /strängé file.txt |
-      | old         | /नेपाली.txt       |
+      | old         | /नेपाली.txt         |
+      | old         | s,a,m,p,l,e.txt   |
       | new         | /upload.txt       |
       | new         | /strängé file.txt |
-      | new         | /नेपाली.txt       |
-      | old         | s,a,m,p,l,e.txt   |
+      | new         | /नेपाली.txt         |
       | new         | s,a,m,p,l,e.txt   |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | file_name         |
+      | spaces      | /upload.txt       |
+      | spaces      | /strängé file.txt |
+      | spaces      | /नेपाली.txt         |
+      | spaces      | s,a,m,p,l,e.txt   |
 
   @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various file names
@@ -43,6 +51,14 @@ Feature: get file properties
       | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3[fF]2\.txt       |
       | new         | /file &2.txt  | dav\/files\/%username%\/file%20%262\.txt          |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | file_name     | expected_href                                     |
+      | spaces      | /C++ file.cpp | dav\/spaces\/%spaceid%\/C%2[bB]%2[bB]%20file\.cpp |
+      | spaces      | /file #2.txt  | dav\/spaces\/%spaceid%\/file%20%232\.txt          |
+      | spaces      | /file ?2.txt  | dav\/spaces\/%spaceid%\/file%20%3[fF]2\.txt       |
+      | spaces      | /file &2.txt  | dav\/spaces\/%spaceid%\/file%20%262\.txt          |
+
   @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various folder names
     Given using <dav_version> DAV path
@@ -58,17 +74,29 @@ Feature: get file properties
       | old         | /upload         | webdav\/upload                                                                                                           |
       | old         | /strängé folder | webdav\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                                           |
       | old         | /C++ folder     | webdav\/C%2[bB]%2[bB]%20folder                                                                                           |
-      | old         | /नेपाली         | webdav\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80                 |
+      | old         | /नेपाली           | webdav\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80                 |
       | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                                                               |
       | old         | /folder ?2.txt  | webdav\/folder%20%3[fF]2\.txt                                                                                            |
       | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                                                               |
       | new         | /upload         | dav\/files\/%username%\/upload                                                                                           |
       | new         | /strängé folder | dav\/files\/%username%\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                           |
       | new         | /C++ folder     | dav\/files\/%username%\/C%2[bB]%2[bB]%20folder                                                                           |
-      | new         | /नेपाली         | dav\/files\/%username%\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80 |
+      | new         | /नेपाली           | dav\/files\/%username%\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80 |
       | new         | /folder #2.txt  | dav\/files\/%username%\/folder%20%232\.txt                                                                               |
       | new         | /folder ?2.txt  | dav\/files\/%username%\/folder%20%3[fF]2\.txt                                                                            |
       | new         | /folder &2.txt  | dav\/files\/%username%\/folder%20%262\.txt                                                                               |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | folder_name     | expected_href                                                                                                            |
+      | spaces      | /upload         | dav\/spaces\/%spaceid%\/upload                                                                                           |
+      | spaces      | /strängé folder | dav\/spaces\/%spaceid%\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                           |
+      | spaces      | /C++ folder     | dav\/spaces\/%spaceid%\/C%2[bB]%2[bB]%20folder                                                                           |
+      | spaces      | /नेपाली           | dav\/spaces\/%spaceid%\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80 |
+      | spaces      | /folder #2.txt  | dav\/spaces\/%spaceid%\/folder%20%232\.txt                                                                               |
+      | spaces      | /folder ?2.txt  | dav\/spaces\/%spaceid%\/folder%20%3[fF]2\.txt                                                                            |
+      | spaces      | /folder &2.txt  | dav\/spaces\/%spaceid%\/folder%20%262\.txt                                                                               |
+
 
   Scenario Outline: Do a PROPFIND of various files inside various folders
     Given using <dav_version> DAV path
@@ -81,13 +109,22 @@ Feature: get file properties
       | old         | /upload                          | abc.txt                       |
       | old         | /strängé folder                  | strängé file.txt              |
       | old         | /C++ folder                      | C++ file.cpp                  |
-      | old         | /नेपाली                          | नेपाली                        |
+      | old         | /नेपाली                            | नेपाली                          |
       | old         | /folder #2.txt                   | file #2.txt                   |
       | new         | /upload                          | abc.txt                       |
       | new         | /strängé folder (duplicate #2 &) | strängé file (duplicate #2 &) |
       | new         | /C++ folder                      | C++ file.cpp                  |
-      | new         | /नेपाली                          | नेपाली                        |
+      | new         | /नेपाली                            | नेपाली                          |
       | new         | /folder #2.txt                   | file #2.txt                   |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | folder_name     | file_name        |
+      | spaces      | /upload         | abc.txt          |
+      | spaces      | /strängé folder | strängé file.txt |
+      | spaces      | /C++ folder     | C++ file.cpp     |
+      | spaces      | /नेपाली           | नेपाली             |
+      | spaces      | /folder #2.txt  | file #2.txt      |
 
   @issue-ocis-reva-265
   #after fixing all issues delete this Scenario and merge with the one above
@@ -102,6 +139,12 @@ Feature: get file properties
       | old         | /folder ?2.txt | file ?2.txt |
       | new         | /folder ?2.txt | file ?2.txt |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | folder_name    | file_name   |
+      | spaces      | /folder ?2.txt | file ?2.txt |
+
+
   Scenario Outline: A file that is not shared does not have a share-types property
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/test"
@@ -114,6 +157,10 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a user has a share-types property
@@ -135,6 +182,10 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: A file that is shared to a group has a share-types property
@@ -156,6 +207,10 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: A file that is shared by link has a share-types property
@@ -174,6 +229,10 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @skipOnLDAP @user_ldap-issue-268 @public_link_share-feature-required @files_sharing-app-required @issue-ocis-reva-11
   Scenario Outline: A file that is shared by user,group and link has a share-types property
@@ -206,6 +265,11 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @notToImplementOnOCIS
   Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
     Given using <dav_version> DAV path
@@ -217,7 +281,6 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
-
 
   @smokeTest @issue-ocis-reva-216
   Scenario Outline: Retrieving private link
@@ -231,6 +294,11 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: Do a PROPFIND to a nonexistent URL
@@ -250,9 +318,16 @@ Feature: get file properties
       | /remote.php/dav/files/does-not-exist | Principal with name does-not-exist not found |          |
       | /remote.php/dav/does-not-exist       | File not found: does-not-exist in 'root'     |          |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | url                                             | message1                           | message2 |
+      | /remote.php/dav/spaces/%spaceid%/does-not-exist | Resource /does-not-exist not found |          |
+      | /remote.php/dav/spaces/%spaceid%/file1.txt      | Resource /file1.txt not found      |          |
+
   @issue-ocis-reva-217
-  Scenario: add, receive multiple custom meta properties to a file
-    Given user "Alice" has created folder "/TestFolder"
+  Scenario Outline: add, receive multiple custom meta properties to a file
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/TestFolder"
     And user "Alice" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
     And user "Alice" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
       | propertyName | propertyValue |
@@ -268,11 +343,25 @@ Feature: get file properties
       | /TestFolder/test1.txt | testprop1    | AAAAA           |
       | /TestFolder/test1.txt | testprop2    | BBBBB           |
       | /TestFolder/test1.txt | status       | HTTP/1.1 200 OK |
+    Examples:
+      | dav_version |
+      | new         |
+
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | old         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @issue-36920
   @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-reva-217
-  Scenario: add multiple properties to files inside a folder and do a propfind of the parent folder
-    Given user "Alice" has created folder "/TestFolder"
+  Scenario Outline: add multiple properties to files inside a folder and do a propfind of the parent folder
+    Given using <dav_version> DAV path
+    And user "Alice" has created folder "/TestFolder"
     And user "Alice" has uploaded file with content "test data one" to "/TestFolder/test1.txt"
     And user "Alice" has uploaded file with content "test data two" to "/TestFolder/test2.txt"
     And user "Alice" has set the following properties of file "/TestFolder/test1.txt" using the WebDav API
@@ -295,6 +384,19 @@ Feature: get file properties
       | /TestFolder/test2.txt | testprop1    | CCCCC                  |
       | /TestFolder/test2.txt | testprop2    | DDDDD                  |
       | /TestFolder/          | status       | HTTP/1.1 404 Not Found |
+    Examples:
+      | dav_version |
+      | new         |
+
+    @skipOnOcV10
+    Examples:
+      | dav_version |
+      | old         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: Propfind the last modified date of a folder using webdav api
@@ -309,6 +411,11 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: Propfind the content type of a folder using webdav api
     Given using <dav_version> DAV path
@@ -321,6 +428,11 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: Propfind the content type of a file using webdav api
@@ -335,6 +447,12 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: Propfind the etag of a file using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
@@ -346,6 +464,12 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: Propfind the resource type of a file using webdav api
     Given using <dav_version> DAV path
@@ -359,6 +483,12 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: Propfind the size of a file using webdav api
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "file.txt"
@@ -370,6 +500,11 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: Propfind the size of a folder using webdav api
@@ -384,6 +519,11 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: Propfind the file id of a file using webdav api
     Given using <dav_version> DAV path
@@ -396,6 +536,11 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: Propfind the file id of a folder using webdav api
@@ -410,6 +555,11 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: Propfind the owner display name of a file using webdav api
     Given using <dav_version> DAV path
@@ -422,6 +572,11 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: Propfind the owner display name of a folder using webdav api
@@ -436,6 +591,11 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: Propfind the permissions on a file using webdav api
     Given using <dav_version> DAV path
@@ -449,6 +609,11 @@ Feature: get file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: Propfind the permissions on a folder using webdav api
     Given using <dav_version> DAV path
@@ -461,3 +626,8 @@ Feature: get file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
