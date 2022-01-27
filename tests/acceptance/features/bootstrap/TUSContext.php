@@ -48,31 +48,32 @@ class TUSContext implements Context {
 	/**
 	 * @When user :user creates a new TUS resource on the WebDAV API with these headers:
 	 *
-	 * @param string    $user
+	 * @param string $user
 	 * @param TableNode $headers
 	 * @param string $content
 	 *
 	 * @return void
 	 *
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
-	public function createNewTUSresourceWithHeaders(string $user, TableNode $headers, string $content = ''):void {
+	public function createNewTUSResourceWithHeaders(string $user, TableNode $headers, string $content = ''):void {
 		$this->featureContext->verifyTableNodeColumnsCount($headers, 2);
 		$user = $this->featureContext->getActualUsername($user);
 		$password = $this->featureContext->getUserPassword($user);
 		$this->resourceLocation = null;
+
 		$this->featureContext->setResponse(
-			HttpRequestHelper::post(
-				$this->featureContext->getBaseUrl() . "/" .
-				WebDavHelper::getDavPath(
-					$user,
-					$this->featureContext->getDavPathVersion()
-				),
-				$this->featureContext->getStepLineRef(),
+			$this->featureContext->makeDavRequest(
 				$user,
-				$password,
+				"POST",
+				null,
 				$headers->getRowsHash(),
-				$content
+				$content,
+				"files",
+				null,
+				false,
+				$password
 			)
 		);
 		$locationHeader = $this->featureContext->getResponse()->getHeader('Location');
@@ -84,17 +85,18 @@ class TUSContext implements Context {
 	/**
 	 * @Given user :user has created a new TUS resource on the WebDAV API with these headers:
 	 *
-	 * @param string    $user
+	 * @param string $user
 	 * @param TableNode $headers Tus-Resumable: 1.0.0 header is added automatically
 	 *
 	 * @return void
 	 *
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
-	public function createNewTUSresource(string $user, TableNode $headers):void {
+	public function createNewTUSResource(string $user, TableNode $headers):void {
 		$rows = $headers->getRows();
 		$rows[] = ['Tus-Resumable', '1.0.0'];
-		$this->createNewTUSresourceWithHeaders($user, new TableNode($rows));
+		$this->createNewTUSResourceWithHeaders($user, new TableNode($rows));
 		$this->featureContext->theHTTPStatusCodeShouldBe(201);
 	}
 
@@ -187,7 +189,12 @@ class TUSContext implements Context {
 			]
 		);
 		$client->setApiPath(
-			WebDavHelper::getDavPath($user, $this->featureContext->getDavPathVersion())
+			WebDavHelper::getDavPath(
+				$user,
+				$this->featureContext->getDavPathVersion(),
+				"files",
+				$this->featureContext->getPersonalSpaceIdForUser($user)
+			)
 		);
 		$client->setMetadata($uploadMetadata);
 		$sourceFile = $this->featureContext->acceptanceTestsDirLocation() . $source;
@@ -350,7 +357,7 @@ class TUSContext implements Context {
 		string $content,
 		TableNode $headers
 	):void {
-		$this->createNewTUSresourceWithHeaders($user, $headers, $content);
+		$this->createNewTUSResourceWithHeaders($user, $headers, $content);
 	}
 
 	/**
@@ -468,7 +475,7 @@ class TUSContext implements Context {
 	 * @throws Exception
 	 */
 	public function userOverwritesFileWithChecksum(string $user, string $offset, string $data, string  $checksum, TableNode $headers):void {
-		$this->createNewTUSresource($user, $headers);
+		$this->createNewTUSResource($user, $headers);
 		$this->userHasUploadedChunkFileWithChecksum($user, $offset, $data, $checksum);
 	}
 }

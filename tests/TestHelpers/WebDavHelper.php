@@ -25,6 +25,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use InvalidArgumentException;
+use PHPUnit\Framework\Assert;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use DateTime;
@@ -671,6 +672,7 @@ class WebDavHelper {
 	 * @param string|null $baseUrl
 	 * @param string|null $resource
 	 * @param string|null $xRequestId
+	 * @param int|null $davPathVersionToUse
 	 *
 	 * @return string
 	 * @throws Exception
@@ -680,7 +682,8 @@ class WebDavHelper {
 		?string $password,
 		?string $baseUrl,
 		?string $resource,
-		?string $xRequestId = ''
+		?string $xRequestId = '',
+		?int $davPathVersionToUse = 2
 	):string {
 		$response = self::propfind(
 			$baseUrl,
@@ -688,13 +691,21 @@ class WebDavHelper {
 			$password,
 			$resource,
 			["getlastmodified"],
-			$xRequestId
+			$xRequestId,
+			"0",
+			"files",
+			$davPathVersionToUse
 		);
 		$responseXmlObject = HttpRequestHelper::getResponseXml(
 			$response,
 			__METHOD__
 		);
 		$xmlpart = $responseXmlObject->xpath("//d:getlastmodified");
+		Assert::assertArrayHasKey(
+			0,
+			$xmlpart,
+			__METHOD__ . " XML part does not have key 0. Expected a value at index 0 of 'xmlPart' but, found: " . (string) json_encode($xmlpart)
+		);
 		$mtime = new DateTime($xmlpart[0]->__toString());
 		return $mtime->format('U');
 	}
