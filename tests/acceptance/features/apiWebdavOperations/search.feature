@@ -42,6 +42,12 @@ Feature: Search
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: search for entries by only some letters from the middle of the entry name
     Given using <dav_version> DAV path
     And user "Alice" has created folder "FOLDER"
@@ -57,6 +63,12 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: search for files by extension
     Given using <dav_version> DAV path
@@ -75,6 +87,12 @@ Feature: Search
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: search with empty field
     Given using <dav_version> DAV path
     When user "Alice" searches for "" using the WebDAV API
@@ -83,6 +101,12 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: limit returned search entries
     Given using <dav_version> DAV path
@@ -102,6 +126,12 @@ Feature: Search
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: limit returned search entries to only 1 entry
     Given using <dav_version> DAV path
     When user "Alice" searches for "upload" and limits the results to "1" items using the WebDAV API
@@ -119,6 +149,11 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   Scenario Outline: limit returned search entries to more entires than there are
     Given using <dav_version> DAV path
@@ -138,6 +173,12 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: report extra properties in search entries for a file
     Given using <dav_version> DAV path
@@ -166,6 +207,12 @@ Feature: Search
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: report extra properties in search entries for a folder
     Given using <dav_version> DAV path
     When user "Alice" searches for "upload" using the WebDAV API requesting these properties:
@@ -192,6 +239,12 @@ Feature: Search
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: search for entry with emoji by pattern
     Given using <dav_version> DAV path
     When user "Alice" searches for "😀 😁" using the WebDAV API
@@ -210,6 +263,12 @@ Feature: Search
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario: search for entry by tags using REPORT method
     Given user "Alice" has created a "normal" tag with name "JustARegularTag1"

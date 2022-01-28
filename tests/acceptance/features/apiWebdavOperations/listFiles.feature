@@ -59,6 +59,7 @@ Feature: list files
       | simple-folder/                                            |
       | simple-folder/textfile0.txt                               |
       | simple-folder/welcome.txt                                 |
+      | simple-folder/simple-empty-folder/                        |
       | simple-folder/simple-folder1/                             |
       | simple-folder/simple-folder1/simple-folder2               |
       | simple-folder/simple-folder1/textfile0.txt                |
@@ -69,6 +70,11 @@ Feature: list files
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: Get the list of resources in a folder
@@ -115,6 +121,11 @@ Feature: list files
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: Get the list of resources in a folder shared through public link

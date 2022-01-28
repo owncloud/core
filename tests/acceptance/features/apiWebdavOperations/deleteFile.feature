@@ -19,6 +19,12 @@ Feature: delete file
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: delete a file when 2 files exist with different case
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "to delete" to "/textfile1.txt"
@@ -32,6 +38,12 @@ Feature: delete file
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: delete file from folder with dots in the path
     Given using <dav_version> DAV path
@@ -47,6 +59,8 @@ Feature: delete file
       | old         | /upload.1     | abc.txt     |
       | old         | /upload...1.. | abc...txt.. |
       | old         | /...          | ...         |
+      | old         | /..upload     | abc         |
+      | old         | /..upload     | ..abc       |
       | new         | /upload.      | abc.        |
       | new         | /upload.      | abc .       |
       | new         | /upload.1     | abc.txt     |
@@ -54,6 +68,18 @@ Feature: delete file
       | new         | /...          | ...         |
       | new         | /..upload     | abc         |
       | new         | /..upload     | ..abc       |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version    | folder_name   | file_name   |
+      | spaces         | /upload.      | abc.        |
+      | spaces         | /upload...1.. | abc...txt.. |
+      | spaces         | /upload.1     | abc.txt     |
+      | spaces         | /upload.      | abc .       |
+      | spaces         | /...          | ...         |
+      | spaces         | /..upload     | abc         |
+      | spaces         | /..upload     | ...abc      |
+
 
   Scenario Outline: delete a file with comma in the filename
     Given using <dav_version> DAV path
@@ -69,6 +95,14 @@ Feature: delete file
       | new         | "sample,1.txt" |
       | new         | ",,,.txt"      |
       | new         | ",,,.,"        |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version    | filename       |
+      | spaces         | "sample,1.txt" |
+      | spaces         | ",,,.txt"      |
+      | spaces         | ",,,.,"        |
+
 
   Scenario Outline: delete a hidden file
     Given using <dav_version> DAV path
@@ -90,3 +124,8 @@ Feature: delete file
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version    |
+      | spaces         |

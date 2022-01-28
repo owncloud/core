@@ -9,6 +9,7 @@ Feature: refuse access
 
   @smokeTest
   Scenario Outline: Unauthenticated call
+    # cannot perform with spaces WebDAV due to the absence of user
     Given using <dav_version> DAV path
     When an unauthenticated client connects to the DAV endpoint using the WebDAV API
     Then the HTTP status code should be "401"
@@ -33,3 +34,8 @@ Feature: refuse access
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version    |
+      | spaces         |
