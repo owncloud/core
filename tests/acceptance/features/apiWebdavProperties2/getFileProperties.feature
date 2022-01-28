@@ -39,17 +39,17 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
     When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
     Then the properties response should contain an etag
-    And the value of the item "//d:response/d:href" in the response to user "Alice" should match "/remote\.php\/<expected_href>/"
+    And the value of the item "//d:response/d:href" in the response to user "Alice" should match "/<expected_href>/"
     Examples:
-      | dav_version | file_name     | expected_href                                     |
-      | old         | /C++ file.cpp | webdav\/C%2[bB]%2[bB]%20file\.cpp                 |
-      | old         | /file #2.txt  | webdav\/file%20%232\.txt                          |
-      | old         | /file ?2.txt  | webdav\/file%20%3[fF]2\.txt                       |
-      | old         | /file &2.txt  | webdav\/file%20%262\.txt                          |
-      | new         | /C++ file.cpp | dav\/files\/%username%\/C%2[bB]%2[bB]%20file\.cpp |
-      | new         | /file #2.txt  | dav\/files\/%username%\/file%20%232\.txt          |
-      | new         | /file ?2.txt  | dav\/files\/%username%\/file%20%3[fF]2\.txt       |
-      | new         | /file &2.txt  | dav\/files\/%username%\/file%20%262\.txt          |
+      | dav_version | file_name     | expected_href                                                  |
+      | old         | /C++ file.cpp | remote\.php\/webdav\/C%2[bB]%2[bB]%20file\.cpp                 |
+      | old         | /file #2.txt  | remote\.php\/webdav\/file%20%232\.txt                          |
+      | old         | /file ?2.txt  | remote\.php\/webdav\/file%20%3[fF]2\.txt                       |
+      | old         | /file &2.txt  | remote\.php\/webdav\/file%20%262\.txt                          |
+      | new         | /C++ file.cpp | remote\.php\/dav\/files\/%username%\/C%2[bB]%2[bB]%20file\.cpp |
+      | new         | /file #2.txt  | remote\.php\/dav\/files\/%username%\/file%20%232\.txt          |
+      | new         | /file ?2.txt  | remote\.php\/dav\/files\/%username%\/file%20%3[fF]2\.txt       |
+      | new         | /file &2.txt  | remote\.php\/dav\/files\/%username%\/file%20%262\.txt          |
 
     @skipOnOcV10 @personalSpace
     Examples:
@@ -66,25 +66,25 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
     When user "Alice" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
-    Then there should be an entry with href matching "/remote\.php\/<expected_href>\//" in the response to user "Alice"
-    And there should be an entry with href matching "/remote\.php\/<expected_href>\/file1.txt/" in the response to user "Alice"
-    And there should be an entry with href matching "/remote\.php\/<expected_href>\/file2.txt/" in the response to user "Alice"
+    Then there should be an entry with href matching "/<expected_href>\//" in the response to user "Alice"
+    And there should be an entry with href matching "/<expected_href>\/file1.txt/" in the response to user "Alice"
+    And there should be an entry with href matching "/<expected_href>\/file2.txt/" in the response to user "Alice"
     Examples:
       | dav_version | folder_name     | expected_href                                                                                                            |
-      | old         | /upload         | webdav\/upload                                                                                                           |
-      | old         | /strängé folder | webdav\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                                           |
-      | old         | /C++ folder     | webdav\/C%2[bB]%2[bB]%20folder                                                                                           |
-      | old         | /नेपाली           | webdav\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80                 |
-      | old         | /folder #2.txt  | webdav\/folder%20%232\.txt                                                                                               |
-      | old         | /folder ?2.txt  | webdav\/folder%20%3[fF]2\.txt                                                                                            |
-      | old         | /folder &2.txt  | webdav\/folder%20%262\.txt                                                                                               |
-      | new         | /upload         | dav\/files\/%username%\/upload                                                                                           |
-      | new         | /strängé folder | dav\/files\/%username%\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                           |
-      | new         | /C++ folder     | dav\/files\/%username%\/C%2[bB]%2[bB]%20folder                                                                           |
-      | new         | /नेपाली           | dav\/files\/%username%\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80 |
-      | new         | /folder #2.txt  | dav\/files\/%username%\/folder%20%232\.txt                                                                               |
-      | new         | /folder ?2.txt  | dav\/files\/%username%\/folder%20%3[fF]2\.txt                                                                            |
-      | new         | /folder &2.txt  | dav\/files\/%username%\/folder%20%262\.txt                                                                               |
+      | old         | /upload         | remote\.php\/webdav\/upload                                                                                                           |
+      | old         | /strängé folder | remote\.php\/webdav\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                                           |
+      | old         | /C++ folder     | remote\.php\/webdav\/C%2[bB]%2[bB]%20folder                                                                                           |
+      | old         | /नेपाली           | remote\.php\/webdav\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80                 |
+      | old         | /folder #2.txt  | remote\.php\/webdav\/folder%20%232\.txt                                                                                               |
+      | old         | /folder ?2.txt  | remote\.php\/webdav\/folder%20%3[fF]2\.txt                                                                                            |
+      | old         | /folder &2.txt  | remote\.php\/webdav\/folder%20%262\.txt                                                                                               |
+      | new         | /upload         | remote\.php\/dav\/files\/%username%\/upload                                                                                           |
+      | new         | /strängé folder | remote\.php\/dav\/files\/%username%\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                           |
+      | new         | /C++ folder     | remote\.php\/dav\/files\/%username%\/C%2[bB]%2[bB]%20folder                                                                           |
+      | new         | /नेपाली           | remote\.php\/dav\/files\/%username%\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80 |
+      | new         | /folder #2.txt  | remote\.php\/dav\/files\/%username%\/folder%20%232\.txt                                                                               |
+      | new         | /folder ?2.txt  | remote\.php\/dav\/files\/%username%\/folder%20%3[fF]2\.txt                                                                            |
+      | new         | /folder &2.txt  | remote\.php\/dav\/files\/%username%\/folder%20%262\.txt                                                                               |
 
     @skipOnOcV10 @personalSpace
     Examples:

@@ -558,7 +558,7 @@ class WebDavHelper {
 			return "remote.php/dav/";
 		}
 		if ($davPathVersionToUse === 3) {
-			return "remote.php/dav/spaces/" . $spaceId . '/';
+			return "dav/spaces/" . $spaceId . '/';
 		} else {
 			if ($davPathVersionToUse === 1) {
 				$path = "remote.php/webdav/";
