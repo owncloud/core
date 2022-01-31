@@ -545,7 +545,7 @@ $CONFIG = [
  * The timeout (in ms) for all the operations against the backend.
  * The same timeout will be applied for all the connections.
  *
- * Increase it if requests to the server sometimes time out. This can happen when SMB3 
+ * Increase it if requests to the server sometimes time out. This can happen when SMB3
  * encryption is selected and smbclient is overwhelming the server with requests.
  */
 'wnd.connector.opts.timeout' => 20000,  // 20 seconds
