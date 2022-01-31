@@ -439,10 +439,10 @@ class WebDavHelper {
 			echo __METHOD__ . " B) webdav get to $fullUrl for $user returned $status:\n";
 			\var_dump($bodyContents);
 		}
-		echo "backtrace:\n";
-		$x = \debug_backtrace();
-		\var_dump($x);
-		sleep(10);
+		//echo "backtrace:\n";
+		//$x = \debug_backtrace();
+		//\var_dump($x);
+		//sleep(10);
 		throw new Exception("Personal space not found for user " . $user);
 	}
 
