@@ -77,6 +77,12 @@ class MessageServiceTest extends TestCase {
 			'daysLeft' => 15,
 		];
 
+		$demoLicenseExpiresTodayInfo = [
+			'licenseState' => ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE,
+			'licenseType' => ILicense::LICENSE_TYPE_DEMO,
+			'daysLeft' => 1,
+		];
+
 		$licenseAboutToExpireInfo = [
 			'licenseState' => ILicenseManager::LICENSE_STATE_ABOUT_TO_EXPIRE,
 			'licenseType' => ILicense::LICENSE_TYPE_NORMAL,
@@ -172,6 +178,18 @@ class MessageServiceTest extends TestCase {
 					],
 					'translated_message' => [
 						'Evaluation - Expires In 15 Days.',
+					],
+					'contains_html' => [],
+				]
+			],
+			[
+				$demoLicenseExpiresTodayInfo,
+				[
+					'raw_message' => [
+						'Evaluation - expires today.',
+					],
+					'translated_message' => [
+						'Evaluation - Expires Today.',
 					],
 					'contains_html' => [],
 				]

@@ -130,12 +130,19 @@ class MessageService {
 
 		// licenses valid and about-to-expire
 		if ($info['licenseType'] === ILicense::LICENSE_TYPE_DEMO) {
+			if ($info['daysLeft'] < 2) {
+				$rawMessage = "Evaluation - expires today.";
+				$translatedMessage = $l->t("Evaluation - expires today.");
+			} else {
+				$rawMessage = "Evaluation - expires in {$info['daysLeft']} days.";
+				$translatedMessage = $l->t('Evaluation - expires in %d days.', [$info['daysLeft']]);
+			}
 			return [
 				'raw_message' => [
-					"Evaluation - expires in {$info['daysLeft']} days.",
+					$rawMessage,
 				],
 				'translated_message' => [
-					$l->t('Evaluation - expires in %d days.', [$info['daysLeft']]),
+					$translatedMessage,
 				],
 				'contains_html' => [],
 			];
