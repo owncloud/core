@@ -1043,6 +1043,9 @@ trait Provisioning {
 
 		$exceptionToThrow = null;
 		if (!$useLdap) {
+			if ($log) {
+				echo "calling sendBatchRequest to create users\n";
+			}
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
 			// Retrieve all failures.
 			foreach ($results as $e) {
@@ -1071,10 +1074,16 @@ trait Provisioning {
 		$users = [];
 		$editData = [];
 		foreach ($usersAttributes as $userAttributes) {
+			if ($log) {
+				echo "calling addUserToCreatedUsersList for user " . $userAttributes['userid'] . "\n";
+			}
 			\array_push($users, $userAttributes['userid']);
 			$this->addUserToCreatedUsersList($userAttributes['userid'], $userAttributes['password'], $userAttributes['displayName'], $userAttributes['email']);
 
 			if (OcisHelper::isTestingOnOcisOrReva()) {
+				if ($log) {
+					echo "calling createEOSStorageHome for user " . $userAttributes['userid'] . "\n";
+				}
 				OcisHelper::createEOSStorageHome(
 					$this->getBaseUrl(),
 					$userAttributes['userid'],
@@ -1094,6 +1103,9 @@ trait Provisioning {
 		}
 		// Edit the users in parallel to make the process faster.
 		if (!OcisHelper::isTestingOnOcisOrReva() && !$useLdap && \count($editData) > 0) {
+			if ($log) {
+				echo "calling editUserBatch\n";
+			}
 			UserHelper::editUserBatch(
 				$this->getBaseUrl(),
 				$editData,
@@ -1112,10 +1124,16 @@ trait Provisioning {
 		// When testing on ownCloud 10 the user is already getting whatever
 		// skeleton dir is defined in the server-under-test.
 		if ($skeleton && OcisHelper::isTestingOnOcisOrReva()) {
+			if ($log) {
+				echo "calling manuallyAddSkeletonFiles\n";
+			}
 			$this->manuallyAddSkeletonFiles($usersAttributes);
 		}
 
 		if ($initialize && ($this->isEmptySkeleton() || !OcisHelper::isTestingOnOcis())) {
+			if ($log) {
+				echo "calling initializeUsers\n";
+			}
 			// We need to initialize each user using the individual authentication of each user.
 			// That is not possible in Guzzle6 batch mode. So we do it with normal requests in serial.
 			$this->initializeUsers($users);
