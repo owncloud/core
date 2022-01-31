@@ -20,6 +20,11 @@ Feature: set file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @skipOnOcV10.3 @skipOnOcV10.4 @issue-ocis-reva-217
   Scenario Outline: Setting custom complex DAV property and reading it
     Given using <dav_version> DAV path
@@ -31,6 +36,11 @@ Feature: set file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @issue-ocis-reva-276
   Scenario Outline: Setting custom DAV property and reading it after the file is renamed
@@ -44,6 +54,11 @@ Feature: set file properties
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @files_sharing-app-required @issue-ocis-reva-217
   Scenario Outline: Setting custom DAV property on a shared file as an owner and reading as a recipient
@@ -63,6 +78,11 @@ Feature: set file properties
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @issue-ocis-reva-276
   Scenario Outline: Setting custom DAV property using one endpoint and reading it with other endpoint
     Given using <action_dav_version> DAV path
@@ -76,11 +96,10 @@ Feature: set file properties
       | old                | new               |
       | new                | old               |
 
-  @issue-ocis-reva-276
-  Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
-    Given using old DAV path
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/testoldnew.txt"
-    And user "Alice" has set property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testoldnew.txt" to "constant"
-    And using new DAV path
-    When user "Alice" gets a custom property "very-custom-prop" with namespace "x1='http://whatever.org/ns'" of file "/testoldnew.txt"
-    Then the response should contain a custom "very-custom-prop" property with namespace "x1='http://whatever.org/ns'" and value "constant"
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | action_dav_version | other_dav_version |
+      | spaces             | new               |
+      | spaces             | old               |
+      | new                | spaces            |
+      | old                | spaces            |
