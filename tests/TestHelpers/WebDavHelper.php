@@ -386,8 +386,9 @@ class WebDavHelper {
 		if (\array_key_exists($user, self::$spacesIdRef) && \array_key_exists("personal", self::$spacesIdRef[$user])) {
 			return self::$spacesIdRef[$user]["personal"];
 		}
+		$trimmedBaseUrl = \trim($baseUrl, "/");
 		$drivesPath = '/graph/v1.0/me/drives';
-		$fullUrl = \trim($baseUrl, "/") . $drivesPath;
+		$fullUrl = $trimmedBaseUrl . $drivesPath;
 		$response = HttpRequestHelper::get(
 			$fullUrl,
 			$xRequestId,
@@ -399,8 +400,8 @@ class WebDavHelper {
 		$personalSpaceId = '';
 		if ($json === null) {
 			// the graph endpoint did not give a useful answer
-			// try getting the user information
-			$fullUrl = $baseUrl . 'ocs/v1.php/cloud/users/' . $user;
+			// try getting the information from the webdav endpoint
+			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav';
 			$response = HttpRequestHelper::get(
 				$fullUrl,
 				$xRequestId,
@@ -408,6 +409,7 @@ class WebDavHelper {
 				$password
 			);
 			$bodyContents = $response->getBody()->getContents();
+			echo __METHOD__ . "A) webdav for $user returned:\n";
 			\var_dump($bodyContents);
 		} else {
 			foreach ($json->value as $spaces) {
@@ -423,7 +425,8 @@ class WebDavHelper {
 			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
 			return $personalSpaceId;
 		} else {
-			$fullUrl = $baseUrl . 'ocs/v1.php/cloud/users/' . $user;
+			// try getting the information from the webdav endpoint
+			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav';
 			$response = HttpRequestHelper::get(
 				$fullUrl,
 				$xRequestId,
@@ -431,6 +434,7 @@ class WebDavHelper {
 				$password
 			);
 			$bodyContents = $response->getBody()->getContents();
+			echo __METHOD__ . "A) webdav for $user returned:\n";
 			\var_dump($bodyContents);
 		}
 		throw new Exception("Personal space not found for user " . $user);
