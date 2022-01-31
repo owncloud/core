@@ -409,7 +409,8 @@ class WebDavHelper {
 				$password
 			);
 			$bodyContents = $response->getBody()->getContents();
-			echo __METHOD__ . "A) webdav for $user returned:\n";
+			$status = $response->getStatusCode();
+			echo __METHOD__ . "A) webdav for $user returned $status:\n";
 			\var_dump($bodyContents);
 		} else {
 			foreach ($json->value as $spaces) {
@@ -434,7 +435,8 @@ class WebDavHelper {
 				$password
 			);
 			$bodyContents = $response->getBody()->getContents();
-			echo __METHOD__ . "A) webdav for $user returned:\n";
+			$status = $response->getStatusCode();
+			echo __METHOD__ . "B) webdav for $user returned $status:\n";
 			\var_dump($bodyContents);
 		}
 		throw new Exception("Personal space not found for user " . $user);
