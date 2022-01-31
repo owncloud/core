@@ -24,7 +24,7 @@ use OCP\License\AbstractLicense;
 class BasicLicense extends AbstractLicense {
 	private $rawLicense;
 	private $org;
-	private $date = 0;  // to ensure an integer as expiration value
+	private $expirationDateTimestamp = 0;  // to ensure an integer as expiration value
 	private $rawCodes;
 	private $codes;
 	private $checksum;
@@ -38,7 +38,7 @@ class BasicLicense extends AbstractLicense {
 			// require 4 parts to initialize the object properly
 			// otherwise the "isValid" will return false, and the "expirationTime" will be 0
 			$this->org = $parts[0];
-			$this->date = \strtotime(\substr($parts[1], 0, 4) . '-' . \substr($parts[1], 4, 2) . '-' . \substr($parts[1], 6));
+			$this->expirationDateTimestamp = \strtotime(\substr($parts[1], 0, 4) . '-' . \substr($parts[1], 4, 2) . '-' . \substr($parts[1], 6));
 			$this->rawCodes = $parts[2];
 			$this->codes = \str_split(\strtoupper($this->rawCodes), 8);
 			$this->checksum = $parts[3];
@@ -56,7 +56,7 @@ class BasicLicense extends AbstractLicense {
 	 * @inheritDoc
 	 */
 	public function isValid(): bool {
-		$dateString = \date('Ymd', $this->date);
+		$dateString = \date('Ymd', $this->expirationDateTimestamp);
 
 		$checksum = \sprintf('%x', \crc32(\strtolower($this->org) . 'zz' . \strtolower($this->rawCodes) . 'zz' . $dateString));
 		$dateCode = \strtoupper(\hash("crc32b", $dateString));
@@ -68,7 +68,9 @@ class BasicLicense extends AbstractLicense {
 	 * @inheritDoc
 	 */
 	public function getExpirationTime(): int {
-		return $this->date;
+		// The license expires at the end of the expiration date.
+		// So add 1 day of seconds to the expiration date timestamp.
+		return $this->expirationDateTimestamp + (24 * 60 * 60);
 	}
 
 	/**
