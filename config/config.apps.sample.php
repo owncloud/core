@@ -428,6 +428,8 @@ $CONFIG = [
  *
  * Possible keys: `wnd.groupmembership.checkUserFirst` BOOL
  *
+ * Possible keys: `wnd.connector.opts.timeout` INTEGER
+ *
  * *Note* With WND 2.1.0, key `wnd.storage.testForHiddenMount` is obsolete and has been removed completely.
  */
 
@@ -538,6 +540,15 @@ $CONFIG = [
  * recommended to enable this option only if there are a high number of ACLs targeting users.
  */
 'wnd.groupmembership.checkUserFirst' => false,
+
+/**
+ * The timeout (in ms) for all the operations against the backend.
+ * The same timeout will be applied for all the connections.
+ *
+ * Increase it if requests to the server sometimes time out. This can happen when SMB3
+ * encryption is selected and smbclient is overwhelming the server with requests.
+ */
+'wnd.connector.opts.timeout' => 20000,  // 20 seconds
 
 /**
  * App: Workflow / Tagging
