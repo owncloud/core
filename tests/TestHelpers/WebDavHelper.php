@@ -401,7 +401,7 @@ class WebDavHelper {
 		if ($json === null) {
 			// the graph endpoint did not give a useful answer
 			// try getting the information from the webdav endpoint
-			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav';
+			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav/';
 			$response = HttpRequestHelper::get(
 				$fullUrl,
 				$xRequestId,
@@ -427,7 +427,7 @@ class WebDavHelper {
 			return $personalSpaceId;
 		} else {
 			// try getting the information from the webdav endpoint
-			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav';
+			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav/';
 			$response = HttpRequestHelper::get(
 				$fullUrl,
 				$xRequestId,
