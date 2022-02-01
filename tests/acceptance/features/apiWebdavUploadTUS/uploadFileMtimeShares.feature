@@ -26,6 +26,10 @@ Feature: upload file
       | old         |
       | new         |
 
+    @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   Scenario Outline: upload file with mtime to a send share
     Given using <dav_version> DAV path
@@ -39,6 +43,11 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+    @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: overwriting a file with mtime in a received share
@@ -55,6 +64,11 @@ Feature: upload file
       | old         |
       | new         |
 
+    @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: overwriting a file with mtime in a send share
     Given using <dav_version> DAV path
@@ -69,3 +83,8 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+    @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |

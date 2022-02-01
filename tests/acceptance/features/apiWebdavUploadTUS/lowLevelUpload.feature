@@ -20,6 +20,12 @@ Feature: low level tests for upload of chunks
       | old         |
       | new         |
 
+    @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
 
   Scenario Outline: finalize file upload after uploading a chunk twice
     Given using <dav_version> DAV path
@@ -37,6 +43,10 @@ Feature: low level tests for upload of chunks
       | old         |
       | new         |
 
+    @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   Scenario Outline: send last chunk twice
     Given using <dav_version> DAV path
@@ -54,6 +64,10 @@ Feature: low level tests for upload of chunks
       | old         |
       | new         |
 
+    @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   Scenario Outline: start with uploading not at the beginning of the file
     Given using <dav_version> DAV path
@@ -68,3 +82,8 @@ Feature: low level tests for upload of chunks
       | dav_version |
       | old         |
       | new         |
+
+    @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |

@@ -158,11 +158,11 @@ class ChecksumContext implements Context {
 	public function userRequestsTheChecksumOfViaPropfind(string $user, string $path):void {
 		$user = $this->featureContext->getActualUsername($user);
 		$body = '<?xml version="1.0"?>
-<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:prop>
-    <oc:checksums />
-  </d:prop>
-</d:propfind>';
+			<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+			  <d:prop>
+				<oc:checksums />
+			  </d:prop>
+			</d:propfind>';
 		$url = $this->featureContext->getBaseUrl() . '/' .
 			WebDavHelper::getDavPath(
 				$user,
@@ -209,7 +209,7 @@ class ChecksumContext implements Context {
 
 		Assert::assertIsArray(
 			$parsed,
-			__METHOD__ . " could not parse response as XML: " . $bodyContents
+			__METHOD__ . " could not parse response as XML. Expected parsed XML to be an array but found " . $bodyContents
 		);
 		Assert::assertArrayHasKey(
 			0,

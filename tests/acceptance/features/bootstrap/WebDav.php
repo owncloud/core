@@ -2993,7 +2993,8 @@ trait WebDav {
 				$password,
 				$baseUrl,
 				$resource,
-				$this->getStepLineRef()
+				$this->getStepLineRef(),
+				$this->getDavPathVersion()
 			)
 		);
 	}
@@ -3025,7 +3026,8 @@ trait WebDav {
 				$password,
 				$baseUrl,
 				$resource,
-				$this->getStepLineRef()
+				$this->getStepLineRef(),
+				$this->getDavPathVersion()
 			)
 		);
 	}
