@@ -413,6 +413,12 @@ class WebDavHelper {
 			$status = $response->getStatusCode();
 			echo __METHOD__ . " A) webdav propfind to $fullUrl for $user returned $status:\n";
 			\var_dump($bodyContents);
+			$responseXmlObject = HttpRequestHelper::getResponseXml(
+				$response,
+				__METHOD__
+			);
+			$xmlPart = $responseXmlObject->xpath("/d:multistatus/d:response[1]/d:propstat/d:prop/oc:id");
+			\var_dump($xmlPart);
 		} else {
 			foreach ($json->value as $spaces) {
 				if ($spaces->driveType === "personal") {
