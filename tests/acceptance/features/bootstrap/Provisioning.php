@@ -1005,9 +1005,12 @@ trait Provisioning {
 		foreach ($usersAttributes as $i => $userAttributes) {
 			if ($useLdap) {
 				if ($log) {
-					echo "calling createLdapUser to create users";
+					echo "calling createLdapUser to create users\n";
 				}
 				$this->createLdapUser($userAttributes);
+				if ($log) {
+					echo "returned from createLdapUser\n";
+				}
 			} else {
 				if ($log) {
 					echo "using $method to create users";
@@ -1136,7 +1139,13 @@ trait Provisioning {
 			}
 			// We need to initialize each user using the individual authentication of each user.
 			// That is not possible in Guzzle6 batch mode. So we do it with normal requests in serial.
-			$this->initializeUsers($users);
+			$this->initializeUsers($users, $log);
+			if ($log) {
+				echo "returned from initializeUsers\n";
+			}
+		}
+		if ($log) {
+			echo "returned from usersHaveBeenCreated\n";
 		}
 	}
 
@@ -2952,9 +2961,12 @@ trait Provisioning {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function initializeUsers(array $users):void {
+	public function initializeUsers(array $users, bool $log = false):void {
 		$url = "/cloud/users/%s";
 		foreach ($users as $user) {
+			if ($log) {
+				echo "calling sendRequest to initialize user $user\n";
+			}
 			$response = OcsApiHelper::sendRequest(
 				$this->getBaseUrl(),
 				$user,
@@ -2965,6 +2977,9 @@ trait Provisioning {
 			);
 			$this->setResponse($response);
 			$this->theHTTPStatusCodeShouldBe(200);
+			if ($log) {
+				echo "returned from sendRequest to initialize user $user\n";
+			}
 		}
 	}
 
