@@ -8,23 +8,14 @@ Feature: favorite
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "some data" to "/PARENT/parent.txt"
 
-  @issue-ocis-2968
-  Scenario Outline: favorite a file inside of a received share
-    Given using <dav_version> DAV path
+  @issue-ocis-2968 @skipOnOcV10 @personalSpace
+  Scenario: favorite a file inside of a received share
+    Given using "spaces" DAV path
     And user "Brian" has been created with default attributes and without skeleton files and with log
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     When user "Brian" favorites element "/Shares/PARENT/parent.txt" using the WebDAV API
     Then as user "Brian" file "/Shares/PARENT/parent.txt" should be favorited
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
-    @skipOnOcV10 @personalSpace
-    Examples:
-      | dav_version |
-      | spaces      |
 
   @issue-ocis-2968
   Scenario Outline: favorite a folder inside of a received share

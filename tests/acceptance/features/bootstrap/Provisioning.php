@@ -3153,6 +3153,9 @@ trait Provisioning {
 				$setting["password"] = $password;
 				$setting["email"] = $email;
 				\array_push($settings, $setting);
+				if ($log) {
+					echo "calling usersHaveBeenCreated to create users\n";
+				}
 				try {
 					$this->usersHaveBeenCreated(
 						$initialize,
@@ -3166,6 +3169,9 @@ trait Provisioning {
 						__METHOD__ . " cannot create a LDAP user with provided data. Error: {$exception}"
 					);
 				}
+				if ($log) {
+					echo "after usersHaveBeenCreated\n";
+				}
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -3175,7 +3181,16 @@ trait Provisioning {
 
 		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
 		if ($initialize) {
+			if ($log) {
+				echo __METHOD__ . " calling initializeUser\n";
+			}
 			$this->initializeUser($user, $password);
+			if ($log) {
+				echo __METHOD__ . " returned from initializeUser\n";
+			}
+		}
+		if ($log) {
+			echo __METHOD__ . " returned from createUser\n";
 		}
 	}
 
