@@ -401,7 +401,7 @@ class WebDavHelper {
 		if ($json === null) {
 			// the graph endpoint did not give a useful answer
 			// try getting the information from the webdav endpoint
-			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav/';
+			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav';
 			$response = HttpRequestHelper::sendRequest(
 				$fullUrl,
 				$xRequestId,
@@ -409,22 +409,35 @@ class WebDavHelper {
 				$user,
 				$password
 			);
-			$bodyContents = $response->getBody()->getContents();
+			// we expect to get a multipart XMP response with status 207
 			$status = $response->getStatusCode();
-			echo __METHOD__ . " A) webdav propfind to $fullUrl for $user returned $status:\n";
-			\var_dump($bodyContents);
+			if ($status !== 207) {
+				throw new Exception(
+					__METHOD__ . " webdav propfind for user $user failed with status $status - so the personal space id cannot be discovered"
+				);
+			}
 			$responseXmlObject = HttpRequestHelper::getResponseXml(
 				$response,
 				__METHOD__
 			);
 			$xmlPart = $responseXmlObject->xpath("/d:multistatus/d:response[1]/d:propstat/d:prop/oc:id");
-			\var_dump($xmlPart);
+			if ($xmlPart === false) {
+				throw new Exception(
+					__METHOD__ . " oc:id not found in webdav propfind for user $user - so the personal space id cannot be discovered"
+				);
+			}
+			// oc:id should be some base64 encoded string like:
+			// "NzQ2NGNhZjYtMTc5OS0xMDNjLTkwNDYtYzdiNzRkZWI1ZjYzOjc0NjRjYWY2LTE3OTktMTAzYy05MDQ2LWM3Yjc0ZGViNWY2Mw=="
 			$idBase64 = $xmlPart[0]->__toString();
-			\var_dump($idBase64);
+			// That should decode to something like:
+			// "7464caf6-1799-103c-9046-c7b74deb5f63:7464caf6-1799-103c-9046-c7b74deb5f63"
 			$decodedId = base64_decode($idBase64);
-			\var_dump($decodedId);
 			$decodedIdParts = \explode(":", $decodedId);
-			\var_dump($decodedIdParts);
+			if (\count($decodedIdParts) !== 2) {
+				throw new Exception(
+					__METHOD__ . " the decoded oc:id $decodedId for user $user does not have 2 parts separated by a colon, so the personal space id cannot be discovered"
+				);
+			}
 			$personalSpaceId = $decodedIdParts[0];
 			\var_dump($personalSpaceId);
 		} else {
@@ -440,21 +453,8 @@ class WebDavHelper {
 			self::$spacesIdRef[$user] = [];
 			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
 			return $personalSpaceId;
-		} else {
-			// try getting the information from the webdav endpoint
-			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav/';
-			$response = HttpRequestHelper::sendRequest(
-				$fullUrl,
-				$xRequestId,
-				'PROPFIND',
-				$user,
-				$password
-			);
-			$bodyContents = $response->getBody()->getContents();
-			$status = $response->getStatusCode();
-			echo __METHOD__ . " B) webdav propfind to $fullUrl for $user returned $status:\n";
-			\var_dump($bodyContents);
 		}
+
 		throw new Exception("Personal space not found for user " . $user);
 	}
 
