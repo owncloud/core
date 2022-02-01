@@ -390,8 +390,9 @@ class WebDavHelper {
 		if (\array_key_exists($user, self::$spacesIdRef) && \array_key_exists("personal", self::$spacesIdRef[$user])) {
 			return self::$spacesIdRef[$user]["personal"];
 		}
+		$trimmedBaseUrl = \trim($baseUrl, "/");
 		$drivesPath = '/graph/v1.0/me/drives';
-		$fullUrl = \trim($baseUrl, "/") . $drivesPath;
+		$fullUrl = $trimmedBaseUrl . $drivesPath;
 		$response = HttpRequestHelper::get(
 			$fullUrl,
 			$xRequestId,
@@ -401,10 +402,54 @@ class WebDavHelper {
 		$bodyContents = $response->getBody()->getContents();
 		$json = \json_decode($bodyContents);
 		$personalSpaceId = '';
-		foreach ($json->value as $spaces) {
-			if ($spaces->driveType === "personal") {
-				$personalSpaceId = $spaces->id;
-				break;
+		if ($json === null) {
+			// the graph endpoint did not give a useful answer
+			// try getting the information from the webdav endpoint
+			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav';
+			$response = HttpRequestHelper::sendRequest(
+				$fullUrl,
+				$xRequestId,
+				'PROPFIND',
+				$user,
+				$password
+			);
+			// we expect to get a multipart XML response with status 207
+			$status = $response->getStatusCode();
+			if ($status !== 207) {
+				throw new Exception(
+					__METHOD__ . " webdav propfind for user $user failed with status $status - so the personal space id cannot be discovered"
+				);
+			}
+			$responseXmlObject = HttpRequestHelper::getResponseXml(
+				$response,
+				__METHOD__
+			);
+			$xmlPart = $responseXmlObject->xpath("/d:multistatus/d:response[1]/d:propstat/d:prop/oc:id");
+			if ($xmlPart === false) {
+				throw new Exception(
+					__METHOD__ . " oc:id not found in webdav propfind for user $user - so the personal space id cannot be discovered"
+				);
+			}
+			// oc:id should be some base64 encoded string like:
+			// "NzQ2NGNhZjYtMTc5OS0xMDNjLTkwNDYtYzdiNzRkZWI1ZjYzOjc0NjRjYWY2LTE3OTktMTAzYy05MDQ2LWM3Yjc0ZGViNWY2Mw=="
+			$idBase64 = $xmlPart[0]->__toString();
+			// That should decode to something like:
+			// "7464caf6-1799-103c-9046-c7b74deb5f63:7464caf6-1799-103c-9046-c7b74deb5f63"
+			$decodedId = base64_decode($idBase64);
+			$decodedIdParts = \explode(":", $decodedId);
+			if (\count($decodedIdParts) !== 2) {
+				throw new Exception(
+					__METHOD__ . " the decoded oc:id $decodedId for user $user does not have 2 parts separated by a colon, so the personal space id cannot be discovered"
+				);
+			}
+			$personalSpaceId = $decodedIdParts[0];
+			\var_dump($personalSpaceId);
+		} else {
+			foreach ($json->value as $spaces) {
+				if ($spaces->driveType === "personal") {
+					$personalSpaceId = $spaces->id;
+					break;
+				}
 			}
 		}
 
