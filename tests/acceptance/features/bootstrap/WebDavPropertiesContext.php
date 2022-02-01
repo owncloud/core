@@ -281,7 +281,10 @@ class WebDavPropertiesContext implements Context {
 				$this->featureContext->getUserPassword($user),
 				$path,
 				$properties,
-				$this->featureContext->getStepLineRef()
+				$this->featureContext->getStepLineRef(),
+				"0",
+				"files",
+				$this->featureContext->getDavPathVersion()
 			)
 		);
 	}
