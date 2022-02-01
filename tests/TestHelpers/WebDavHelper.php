@@ -419,6 +419,14 @@ class WebDavHelper {
 			);
 			$xmlPart = $responseXmlObject->xpath("/d:multistatus/d:response[1]/d:propstat/d:prop/oc:id");
 			\var_dump($xmlPart);
+			$idBase64 = $xmlPart[0]->__toString();
+			\var_dump($idBase64);
+			$decodedId = base64_decode($idBase64);
+			\var_dump($decodedId);
+			$decodedIdParts = \explode(":", $decodedId);
+			\var_dump($decodedIdParts);
+			$personalSpaceId = $decodedIdParts[0];
+			\var_dump($personalSpaceId);
 		} else {
 			foreach ($json->value as $spaces) {
 				if ($spaces->driveType === "personal") {
@@ -447,10 +455,6 @@ class WebDavHelper {
 			echo __METHOD__ . " B) webdav propfind to $fullUrl for $user returned $status:\n";
 			\var_dump($bodyContents);
 		}
-		//echo "backtrace:\n";
-		//$x = \debug_backtrace();
-		//\var_dump($x);
-		//sleep(10);
 		throw new Exception("Personal space not found for user " . $user);
 	}
 
