@@ -402,15 +402,16 @@ class WebDavHelper {
 			// the graph endpoint did not give a useful answer
 			// try getting the information from the webdav endpoint
 			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav/';
-			$response = HttpRequestHelper::get(
+			$response = HttpRequestHelper::sendRequest(
 				$fullUrl,
 				$xRequestId,
+				'PROPFIND',
 				$user,
 				$password
 			);
 			$bodyContents = $response->getBody()->getContents();
 			$status = $response->getStatusCode();
-			echo __METHOD__ . " A) webdav get to $fullUrl for $user returned $status:\n";
+			echo __METHOD__ . " A) webdav propfind to $fullUrl for $user returned $status:\n";
 			\var_dump($bodyContents);
 		} else {
 			foreach ($json->value as $spaces) {
@@ -428,15 +429,16 @@ class WebDavHelper {
 		} else {
 			// try getting the information from the webdav endpoint
 			$fullUrl = $trimmedBaseUrl . '/remote.php/webdav/';
-			$response = HttpRequestHelper::get(
+			$response = HttpRequestHelper::sendRequest(
 				$fullUrl,
 				$xRequestId,
+				'PROPFIND',
 				$user,
 				$password
 			);
 			$bodyContents = $response->getBody()->getContents();
 			$status = $response->getStatusCode();
-			echo __METHOD__ . " B) webdav get to $fullUrl for $user returned $status:\n";
+			echo __METHOD__ . " B) webdav propfind to $fullUrl for $user returned $status:\n";
 			\var_dump($bodyContents);
 		}
 		//echo "backtrace:\n";
