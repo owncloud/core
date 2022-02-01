@@ -10,7 +10,7 @@ Feature: favorite
 
   @issue-ocis-2968 @skipOnOcV10 @personalSpace
   Scenario: favorite a file inside of a received share
-    Given using "spaces" DAV path
+    Given using spaces DAV path
     And user "Brian" has been created with default attributes and without skeleton files and with log
     And user "Alice" has shared folder "/PARENT" with user "Brian"
     And user "Brian" has accepted share "/PARENT" offered by user "Alice"
