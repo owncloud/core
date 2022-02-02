@@ -48,8 +48,8 @@ Feature: poll incoming shares
     And user "Alice" has been created with default attributes and small skeleton files
     And user "Alice" has created folder "/shareFolder/"
     And using server "LOCAL"
-    And user "Brian" has stored etag of element "/"
     And user "Brian" has been created with default attributes and small skeleton files
+    And user "Brian" has stored etag of element "/"
     And user "Alice" from server "REMOTE" has shared "/shareFolder" with user "Brian" from server "LOCAL"
     And user "Brian" from server "LOCAL" has accepted the last pending share
     And using server "LOCAL"
