@@ -23,6 +23,11 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: overwriting a file inside a folder changes its etag
     Given using <dav_version> DAV path
@@ -41,6 +46,11 @@ Feature: propagation of etags when uploading data
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as share receiver uploading a file inside a received shared folder should update etags for all collaborators
@@ -66,6 +76,11 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @skipOnOcis-OC-Storage @issue-product-280 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as sharer uploading a file inside a shared folder should update etags for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -89,6 +104,11 @@ Feature: propagation of etags when uploading data
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as share receiver overwriting a file inside a received shared folder should update etags for all collaborators
@@ -115,6 +135,11 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario Outline: as sharer overwriting a file inside a shared folder should update etags for all collaborators
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -140,9 +165,15 @@ Feature: propagation of etags when uploading data
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @skipOnOcis-OC-Storage @issue-product-280
-  Scenario: uploading a file into a publicly shared folder changes its etag for the sharer
-    Given user "Alice" has created a public link share with settings
+  Scenario Outline: uploading a file into a publicly shared folder changes its etag for the sharer
+    Given using <dav_version> DAV path
+    And user "Alice" has created a public link share with settings
       | path        | upload |
       | permissions | create |
     And user "Alice" has stored etag of element "/"
@@ -152,3 +183,12 @@ Feature: propagation of etags when uploading data
       | user  | path    |
       | Alice | /       |
       | Alice | /upload |
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |

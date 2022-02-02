@@ -1034,7 +1034,7 @@ class WebDavPropertiesContext implements Context {
 		if ($storePath == "") {
 			$storePath = $path;
 		}
-		if ($this->storedETAG[$user][$storePath] === null) {
+		if ($this->storedETAG[$user][$storePath] === null || $this->storedETAG[$user][$path] === "") {
 			throw new Exception("Expected stored etag to be some string but found null!");
 		}
 	}
