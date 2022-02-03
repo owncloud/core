@@ -37,6 +37,9 @@ use DateTime;
  *
  */
 class WebDavHelper {
+	public const DAV_VERSION_OLD = 1;
+	public const DAV_VERSION_NEW = 2;
+	public const DAV_VERSION_SPACES = 3;
 
 	/**
 	 * @var array of users with their different spaces ids
@@ -124,7 +127,7 @@ class WebDavHelper {
 		?string $xRequestId = '',
 		?string $folderDepth = '0',
 		?string $type = "files",
-		?int $davPathVersionToUse = 2
+		?int $davPathVersionToUse = self::DAV_VERSION_NEW
 	):ResponseInterface {
 		$propertyBody = "";
 		$extraNamespaces = "";
@@ -201,7 +204,7 @@ class WebDavHelper {
 		?string $propertyValue,
 		?string $xRequestId = '',
 		?string $namespaceString = "oc='http://owncloud.org/ns'",
-		?int $davPathVersionToUse = 2,
+		?int $davPathVersionToUse = self::DAV_VERSION_NEW,
 		?string $type="files"
 	):ResponseInterface {
 		$matches = [];
@@ -351,7 +354,7 @@ class WebDavHelper {
 		?string $xRequestId = '',
 		?array $properties = null,
 		?string $type = "files",
-		?int $davPathVersionToUse = 2
+		?int $davPathVersionToUse = self::DAV_VERSION_NEW
 	):ResponseInterface {
 		if (!$properties) {
 			$properties = [
@@ -450,7 +453,7 @@ class WebDavHelper {
 		?array $headers,
 		?string $xRequestId = '',
 		$body = null,
-		?int $davPathVersionToUse = 1,
+		?int $davPathVersionToUse = self::DAV_VERSION_OLD,
 		?string $type = "files",
 		?string $sourceIpAddress = null,
 		?string $authType = "basic",
@@ -464,7 +467,7 @@ class WebDavHelper {
 
 		$spaceId = null;
 		// get space id if testing with spaces dav
-		if ($davPathVersionToUse === 3) {
+		if ($davPathVersionToUse === self::DAV_VERSION_SPACES) {
 			$spaceId = self::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
 		}
 
@@ -558,13 +561,18 @@ class WebDavHelper {
 		if ($type === "customgroups") {
 			return "remote.php/dav/";
 		}
-		if ($davPathVersionToUse === 3) {
+		if ($davPathVersionToUse === self::DAV_VERSION_SPACES) {
+			if (($spaceId === null) || (\strlen($spaceId) === 0)) {
+				throw new InvalidArgumentException(
+					__METHOD__ . " A spaceId must be passed when using DAV path version 3 (spaces)"
+				);
+			}
 			return "dav/spaces/" . $spaceId . '/';
 		} else {
-			if ($davPathVersionToUse === 1) {
+			if ($davPathVersionToUse === self::DAV_VERSION_OLD) {
 				$path = "remote.php/webdav/";
 				return $path;
-			} elseif ($davPathVersionToUse === 2) {
+			} elseif ($davPathVersionToUse === self::DAV_VERSION_NEW) {
 				if ($type === "files") {
 					$path = 'remote.php/dav/files/';
 					return $path . $user . '/';
@@ -615,7 +623,7 @@ class WebDavHelper {
 		$davPathVersion,
 		$chunkingVersion
 	): bool {
-		if ($davPathVersion === 3) {
+		if ($davPathVersion === self::DAV_VERSION_SPACES) {
 			// allow only old chunking version when using the spaces dav
 			return $chunkingVersion === 1;
 		}
@@ -642,7 +650,7 @@ class WebDavHelper {
 		?string $fileName,
 		?string $token,
 		?string $xRequestId = '',
-		?int $davVersionToUse = 2
+		?int $davVersionToUse = self::DAV_VERSION_NEW
 	):string {
 		$response = self::propfind(
 			$baseUrl,
@@ -683,7 +691,7 @@ class WebDavHelper {
 		?string $baseUrl,
 		?string $resource,
 		?string $xRequestId = '',
-		?int $davPathVersionToUse = 2
+		?int $davPathVersionToUse = self::DAV_VERSION_NEW
 	):string {
 		$response = self::propfind(
 			$baseUrl,

@@ -39,7 +39,6 @@ use TestHelpers\Asserts\WebDav as WebDavAssert;
  * WebDav functions
  */
 trait WebDav {
-
 	/**
 	 * @var string
 	 */
@@ -285,15 +284,8 @@ trait WebDav {
 	 * @return string
 	 */
 	public function getFullDavFilesPath(string $user):string {
-		$spaceId = null;
-		$spaceDavPath = null;
-		if ($this->getDavPathVersion() === 3) {
-			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$this->getStepLineRef()
-			);
+		if ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES) {
+			$spaceId = $this->getPersonalSpaceIdForUser($user);
 			$spaceDavPath = "dav/spaces/users/" . $spaceId . '/';
 			$path = $this->getBasePath() . "/" .
 				$spaceDavPath;
@@ -330,20 +322,20 @@ trait WebDav {
 	 */
 	public function getDavPathVersion(?string $for = null):?int {
 		if ($this->usingSpacesDavPath) {
-			return 3;
+			return WebDavHelper::DAV_VERSION_SPACES;
 		}
 		if ($for === 'systemtags') {
 			// systemtags only exists since DAV v2
-			return 2;
+			return WebDavHelper::DAV_VERSION_NEW;
 		}
 		if ($for === 'file_versions') {
 			// file_versions only exists since DAV v2
-			return 2;
+			return WebDavHelper::DAV_VERSION_NEW;
 		}
 		if ($this->usingOldDavPath === true) {
-			return 1;
+			return WebDavHelper::DAV_VERSION_OLD;
 		} else {
-			return 2;
+			return WebDavHelper::DAV_VERSION_NEW;
 		}
 	}
 
@@ -358,11 +350,16 @@ trait WebDav {
 	 * @return string DAV path selected, or appropriate for the endpoint
 	 */
 	public function getDavPath(?string $for = null):string {
-		if ($this->getDavPathVersion($for) === 1) {
+		$davPathVersion = $this->getDavPathVersion($for);
+		if ($davPathVersion === WebDavHelper::DAV_VERSION_OLD) {
 			return $this->getOldDavPath();
 		}
 
-		return $this->getNewDavPath();
+		if ($davPathVersion === WebDavHelper::DAV_VERSION_NEW) {
+			return $this->getNewDavPath();
+		}
+
+		return $this->getSpacesDavPath();
 	}
 
 	/**
@@ -610,15 +607,7 @@ trait WebDav {
 	 * @throws GuzzleException
 	 */
 	public function destinationHeaderValue(string $user, string $fileDestination):string {
-		$spaceId = null;
-		if ($this->getDavPathVersion() === 3) {
-			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
-				$this->getBaseUrl(),
-				$user,
-				$this->getPasswordForUser($user),
-				$this->getStepLineRef()
-			);
-		}
+		$spaceId = $this->getPersonalSpaceIdForUser($user);
 		$fullUrl = $this->getBaseUrl() . '/' .
 			WebDavHelper::getDavPath($user, $this->getDavPathVersion(), "files", $spaceId);
 		return \rtrim($fullUrl, '/') . '/' . \ltrim($fileDestination, '/');

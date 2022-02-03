@@ -154,8 +154,13 @@ class MoveCopyHelper {
 				'$method has to be "copy" or "move"'
 			);
 		}
+		$spaceId = null;
+		// get space id if testing with spaces dav
+		if ($davPathVersionToUse === WebDavHelper::DAV_VERSION_SPACES) {
+			$spaceId = WebDavHelper::getPersonalSpaceIdForUser($baseUrl, $user, $password, $xRequestId);
+		}
 		$baseUrl = WebDavHelper::sanitizeUrl($baseUrl, true);
-		$davPath = WebDavHelper::getDavPath($user, $davPathVersionToUse);
+		$davPath = WebDavHelper::getDavPath($user, $davPathVersionToUse, "files", $spaceId);
 		$fullDestUrl = WebDavHelper::sanitizeUrl(
 			$baseUrl . $davPath . $toFileName
 		);
