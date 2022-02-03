@@ -163,11 +163,6 @@ class ChecksumContext implements Context {
 				<oc:checksums />
 			  </d:prop>
 			</d:propfind>';
-		$url = $this->featureContext->getBaseUrl() . '/' .
-			WebDavHelper::getDavPath(
-				$user,
-				$this->featureContext->getDavPathVersion()
-			) . $path;
 		$password = $this->featureContext->getPasswordForUser($user);
 		$response = WebDavHelper::makeDavRequest(
 			$this->featureContext->getBaseUrl(),

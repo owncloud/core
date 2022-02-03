@@ -3097,7 +3097,7 @@ class FeatureContext extends BehatVariablesContext {
 						$this,
 						"getPersonalSpaceIdForUser",
 					],
-					"parameter" => [$user]
+					"parameter" => [$user, true]
 				]
 			);
 		}
@@ -3131,20 +3131,26 @@ class FeatureContext extends BehatVariablesContext {
 	}
 
 	/**
-	 * returns personal space id for user
+	 * returns personal space id for user if the test is using the spaces dav path
+	 * or if alwaysDoIt is set to true,
+	 * otherwise it returns null.
 	 *
 	 * @param string $user
+	 * @param bool $alwaysDoIt default false. Set to true
 	 *
-	 * @return string
+	 * @return string|null
 	 * @throws GuzzleException
 	 */
-	public function getPersonalSpaceIdForUser(string $user):string {
-		return WebDavHelper::getPersonalSpaceIdForUser(
-			$this->getBaseUrl(),
-			$user,
-			$this->getPasswordForUser($user),
-			$this->getStepLineRef()
-		);
+	public function getPersonalSpaceIdForUser(string $user, bool $alwaysDoIt = false): ?string {
+		if ($alwaysDoIt || ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES)) {
+			return WebDavHelper::getPersonalSpaceIdForUser(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				$this->getStepLineRef()
+			);
+		}
+		return null;
 	}
 
 	/**
