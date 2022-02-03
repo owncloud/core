@@ -20,6 +20,13 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
+
   Scenario Outline: if a parent resource is exclusively locked a child resource cannot be locked again
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -37,6 +44,13 @@ Feature: there can be only one exclusive lock on a resource
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
 
   Scenario Outline: if a parent resource is exclusively locked with depth 0 a child resource can be locked again
     Given using <dav-path> DAV path
@@ -57,6 +71,12 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
   @skipOnOcV10 @issue-34358
   Scenario Outline: if a child resource is exclusively locked a parent resource cannot be locked again
     Given using <dav-path> DAV path
@@ -76,6 +96,13 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
+
   Scenario Outline: if a child resource is exclusively locked a parent resource can be locked with depth 0
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
@@ -94,6 +121,12 @@ Feature: there can be only one exclusive lock on a resource
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
 
   @files_sharing-app-required
   Scenario Outline: a share receiver cannot lock a resource exclusively locked by itself
@@ -116,6 +149,12 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
   @files_sharing-app-required
   Scenario Outline: a share receiver cannot lock a resource exclusively locked by the owner
     Given using <dav-path> DAV path
@@ -137,6 +176,12 @@ Feature: there can be only one exclusive lock on a resource
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
   @files_sharing-app-required
   Scenario Outline: a share owner cannot lock a resource exclusively locked by a share receiver
     Given using <dav-path> DAV path
@@ -157,3 +202,9 @@ Feature: there can be only one exclusive lock on a resource
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
