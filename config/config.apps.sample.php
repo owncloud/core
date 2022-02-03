@@ -342,7 +342,14 @@ $CONFIG = [
 		  // defines the claim which holds the picture of the user - must be a URL
 		'picture-claim' => 'picture',
 		  // defines a list of groups to which the newly created user will be added automatically
-		'groups' => ['admin', 'guests', 'employees']
+		'groups' => ['admin', 'guests', 'employees'],
+		  // sets a claim which is defined at the IDP. the IDP will return a single value or an array like:
+		  // "allowed_applications": ["erp", "owncloud"],
+		'provisioning-claim' => 'allowed_applications',
+		  // defines the matching case for the provisioning. the attribute can only be a single value
+		  // in case no match is found against the IDP response, no provisioning will be made,
+		  // "User not found" will be returned
+		'provisioning-attribute' => 'owncloud'
 	],
 	  // `mode` and `search-attribute` will be used to create a unique user in ownCloud
 	'mode' => 'email',
