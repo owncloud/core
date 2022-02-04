@@ -62,6 +62,7 @@
     "Please contact your administrator or %s for a new license key." : "Entre em contato com seu administrador %s para uma nova chave de licença.",
     "Your Enterprise license key has expired." : "Sua chave de licença corporativa expirou.",
     "Enterprise features have been disabled." : "Os recursos da empresa foram desativados.",
+    "Evaluation - expires today." : "Avaliação - expira hoje.",
     "Evaluation - expires in %d days." : "Avaliação - expira em %d dias.",
     "Your Enterprise license key is about to expire (days remaining: %d)." : "Sua chave de licença Enterprise está prestes a expirar (dias restantes: %d).",
     "The registered enterprise license key expires in %d days" : "A chave de licença corporativa registrada expira em %d dias",
