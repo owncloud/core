@@ -170,13 +170,29 @@ class GroupsController extends Controller {
 		$assignableGroups = [];
 		$removableGroups = [];
 
-		foreach ($this->groupManager->getBackends() as $backend) {
-			$groups = $backend->getGroups();
-			if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
-				\array_push($assignableGroups, ...$groups);
+		$currentUser = $this->userSession->getUser();
+		$subAdmin = $this->groupManager->getSubAdmin();
+
+		if ($this->groupManager->isAdmin($currentUser->getUID())) {
+			foreach ($this->groupManager->getBackends() as $backend) {
+				$groups = $backend->getGroups();
+				if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
+					\array_push($assignableGroups, ...$groups);
+				}
+				if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
+					\array_push($removableGroups, ...$groups);
+				}
 			}
-			if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
-				\array_push($removableGroups, ...$groups);
+		} elseif ($subAdmin->isSubAdmin($currentUser)) {
+			$subAdminGroups = $subAdmin->getSubAdminsGroups($currentUser);
+			foreach ($subAdminGroups as $subAdminGroup) {
+				$backend = $subAdminGroup->getBackend();
+				if ($backend->implementsActions($backend::ADD_TO_GROUP)) {
+					$assignableGroups[] = $subAdminGroup->getGID();
+				}
+				if ($backend->implementsActions($backend::REMOVE_FROM_GROUP)) {
+					$removableGroups[] = $subAdminGroup->getGID();
+				}
 			}
 		}
 
