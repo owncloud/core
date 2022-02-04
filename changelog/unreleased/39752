@@ -1,0 +1,7 @@
+Bugfix: Subadmin will be shown only his assignable groups in the users page
+
+Previously, the subadmin could see all groups even if he could only assign
+users to a bunch of them. Now the subadmin will see the groups he can assign
+to the user
+
+https://github.com/owncloud/core/pull/39752
