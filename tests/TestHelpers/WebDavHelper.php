@@ -443,7 +443,6 @@ class WebDavHelper {
 				);
 			}
 			$personalSpaceId = $decodedIdParts[0];
-			\var_dump($personalSpaceId);
 		} else {
 			foreach ($json->value as $spaces) {
 				if ($spaces->driveType === "personal") {
@@ -454,6 +453,11 @@ class WebDavHelper {
 		}
 
 		if ($personalSpaceId) {
+			// If env var LOG_PERSONAL_SPACE_ID is defined, then output the details of the personal space id.
+			// This is a useful debugging tool to have confidence that the personal space id is found correctly.
+			if (\getenv('LOG_PERSONAL_SPACE_ID') !== false) {
+				echo __METHOD__ . " personal space id of user $user is $personalSpaceId\n";
+			}
 			self::$spacesIdRef[$user] = [];
 			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
 			return $personalSpaceId;
