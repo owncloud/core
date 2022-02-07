@@ -19,10 +19,18 @@ Feature: translate messages in api response to preferred language
     Examples:
       | dav_version | language |
       | old         | de-DE    |
-      | new         | de-DE    |
-      | old         | zh-CN    |
-      | new         | zh-CN    |
-      | old         | fr-FR    |
-      | new         | fr-FR    |
       | old         | es-ES    |
+      | old         | zh-CN    |
+      | old         | fr-FR    |
+      | new         | de-DE    |
       | new         | es-ES    |
+      | new         | zh-CN    |
+      | new         | fr-FR    |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | language |
+      | spaces      | de-DE    |
+      | spaces      | es-ES    |
+      | spaces      | zh-CN    |
+      | spaces      | fr-FR    |
