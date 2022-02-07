@@ -171,6 +171,7 @@ class GroupsController extends Controller {
 		$removableGroups = [];
 
 		$currentUser = $this->userSession->getUser();
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$subAdmin = $this->groupManager->getSubAdmin();
 
 		if ($this->groupManager->isAdmin($currentUser->getUID())) {
