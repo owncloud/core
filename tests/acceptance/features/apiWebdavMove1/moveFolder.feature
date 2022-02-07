@@ -8,7 +8,7 @@ Feature: move (rename) folder
     Given using OCS API version "1"
     And user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-ocis-reva-211
+
   Scenario Outline: Renaming a folder to a backslash should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -21,7 +21,12 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-211
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: Renaming a folder beginning with a backslash should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -34,7 +39,12 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
-  @issue-ocis-reva-211
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: Renaming a folder including a backslash encoded should return an error
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -46,6 +56,12 @@ Feature: move (rename) folder
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: Move a folder into an other one
     Given using <dav_version> DAV path
@@ -62,6 +78,12 @@ Feature: move (rename) folder
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
+
   Scenario Outline: Move a folder into a nonexistent one
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
@@ -73,6 +95,12 @@ Feature: move (rename) folder
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: renaming folder with dots in the path
     Given using <dav_version> DAV path
@@ -94,6 +122,15 @@ Feature: move (rename) folder
       | new         | /...          |
       | new         | /..upload     |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | folder_name   |
+      | spaces      | /upload.      |
+      | spaces      | /upload.1     |
+      | spaces      | /upload...1.. |
+      | spaces      | /...          |
+      | spaces      | /..upload     |
+
   @issue-ocis-3023
   Scenario Outline: Moving a folder into a sub-folder of itself
     Given using <dav_version> DAV path
@@ -109,3 +146,8 @@ Feature: move (rename) folder
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |

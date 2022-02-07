@@ -282,17 +282,15 @@ trait WebDav {
 	 * @param string $user
 	 *
 	 * @return string
+	 * @throws GuzzleException
 	 */
 	public function getFullDavFilesPath(string $user):string {
+		$spaceId = null;
 		if ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES) {
 			$spaceId = $this->getPersonalSpaceIdForUser($user);
-			$spaceDavPath = "dav/spaces/users/" . $spaceId . '/';
-			$path = $this->getBasePath() . "/" .
-				$spaceDavPath;
-		} else {
-			$path = $this->getBasePath() . "/" .
-				WebDavHelper::getDavPath($user, $this->getDavPathVersion());
 		}
+		$path = $this->getBasePath() . "/" .
+			WebDavHelper::getDavPath($user, $this->getDavPathVersion(), 'files', $spaceId);
 		$path = WebDavHelper::sanitizeUrl($path);
 		return \ltrim($path, "/");
 	}
