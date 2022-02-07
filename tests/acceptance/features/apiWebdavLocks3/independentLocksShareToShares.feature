@@ -29,6 +29,12 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
 
   Scenario Outline: locking a received share does not lock other shares that had the same name on the sharer side (shares from the same user)
     Given using <dav-path> DAV path
@@ -50,6 +56,12 @@ Feature: independent locks
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
 
 
   Scenario Outline: locking a file in a received share does not lock other items with the same name in other received shares (shares from different users)
@@ -74,6 +86,12 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
 
   Scenario Outline: locking a file in a received share does not lock other items with the same name in other received shares (shares from same user)
     Given using <dav-path> DAV path
@@ -95,3 +113,9 @@ Feature: independent locks
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |

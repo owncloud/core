@@ -26,6 +26,12 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
 
   Scenario Outline: locking a folder on the root level does not lock other folders with the same name in other parts of the file system
     Given using <dav-path> DAV path
@@ -45,6 +51,12 @@ Feature: independent locks
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
 
   Scenario Outline: locking a file does not lock other items with the same name in other parts of the file system
     Given using <dav-path> DAV path
@@ -63,6 +75,12 @@ Feature: independent locks
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
 
 
   Scenario Outline: locking a file/folder with git specific names does not lock other items with the same name in other parts of the file system
@@ -89,3 +107,10 @@ Feature: independent locks
       | new      | exclusive  | .git       | config   | .git        |
       | new      | exclusive  | .git       | config   | .git/config |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope | foldername | filename | to-lock     |
+      | spaces   | shared     | .git       | config   | .git        |
+      | spaces   | shared     | .git       | config   | .git/config |
+      | spaces   | exclusive  | .git       | config   | .git        |
+      | spaces   | exclusive  | .git       | config   | .git/config |
