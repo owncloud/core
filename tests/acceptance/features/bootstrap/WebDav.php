@@ -287,10 +287,15 @@ trait WebDav {
 	public function getFullDavFilesPath(string $user):string {
 		$spaceId = null;
 		if ($this->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES) {
-			$spaceId = $this->getPersonalSpaceIdForUser($user);
+			$spaceId = WebDavHelper::getPersonalSpaceIdForUser(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				$this->getStepLineRef()
+			);
 		}
 		$path = $this->getBasePath() . "/" .
-			WebDavHelper::getDavPath($user, $this->getDavPathVersion(), 'files', $spaceId);
+			WebDavHelper::getDavPath($user, $this->getDavPathVersion(), "files", $spaceId);
 		$path = WebDavHelper::sanitizeUrl($path);
 		return \ltrim($path, "/");
 	}
@@ -1517,7 +1522,10 @@ trait WebDav {
 			$password,
 			$resource,
 			[],
-			$this->getStepLineRef()
+			$this->getStepLineRef(),
+			"0",
+			"files",
+			$this->getDavPathVersion()
 		);
 	}
 

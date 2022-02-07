@@ -451,7 +451,6 @@ class WebDavHelper {
 				}
 			}
 		}
-
 		if ($personalSpaceId) {
 			// If env var LOG_PERSONAL_SPACE_ID is defined, then output the details of the personal space id.
 			// This is a useful debugging tool to have confidence that the personal space id is found correctly.
@@ -462,7 +461,7 @@ class WebDavHelper {
 			self::$spacesIdRef[$user]["personal"] = $personalSpaceId;
 			return $personalSpaceId;
 		}
-		throw new Exception("Personal space not found for user " . $user);
+		throw new Exception(__METHOD__ . " Personal space not found for user " . $user);
 	}
 
 	/**

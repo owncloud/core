@@ -24,9 +24,14 @@ Feature: delete folder contents
       | /textfile1.txt |
     And user "Alice" should not see the following elements
       | /FOLDER/SUBFOLDER/              |
-      | /FOLDER/fileToDelete.txt             |
+      | /FOLDER/fileToDelete.txt        |
       | /FOLDER/SUBFOLDER/testfile0.txt |
     Examples:
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
