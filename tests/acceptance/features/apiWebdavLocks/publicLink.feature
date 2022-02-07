@@ -34,6 +34,16 @@ Feature: persistent-locking in case of a public link
       | new      | shared     | new                |
       | new      | exclusive  | new                |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav-path | lock-scope | webdav_api_version |
+      | spaces   | shared     | old                |
+      | spaces   | exclusive  | old                |
+      | spaces   | shared     | new                |
+      | spaces   | exclusive  | new                |
+      | spaces   | shared     | spaces             |
+      | spaces   | exclusive  | spaces             |
+
   @skipOnOcV10.6 @skipOnOcV10.7
   Scenario Outline: Uploading a file into a locked subfolder of a public folder
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
@@ -100,7 +110,6 @@ Feature: persistent-locking in case of a public link
       | public-webdav-api-version | lock-scope |
       | old                       | shared     |
       | old                       | exclusive  |
-
 
     Examples:
       | public-webdav-api-version | lock-scope |

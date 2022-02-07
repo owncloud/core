@@ -22,6 +22,12 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
   @smokeTest
   Scenario Outline: move a file into a locked folder
     Given using <dav-path> DAV path
@@ -40,6 +46,12 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
 
   @smokeTest
   Scenario Outline: move a file into a locked folder is impossible when using the wrong token
@@ -63,16 +75,23 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
   @skipOnOcV10 @issue-34338 @files_sharing-app-required
   Scenario Outline: share receiver cannot rename a file in a folder locked by the owner even when sending the locktoken
     Given using <dav-path> DAV path
     And user "Alice" has created folder "PARENT"
-    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "PARENT/parent.txt"
+    And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/PARENT/parent.txt"
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has shared folder "PARENT" with user "Brian"
+    And user "Alice" has shared folder "/PARENT" with user "Brian"
+    And user "Brian" has accepted share "/PARENT" offered by user "Alice"
     And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
-    When user "Brian" moves file "PARENT/parent.txt" to "PARENT/renamed-file.txt" sending the locktoken of file "PARENT" of user "Alice" using the WebDAV API
+    When user "Brian" moves file "Shares/PARENT/parent.txt" to "Shares/PARENT/renamed-file.txt" sending the locktoken of file "PARENT" of user "Alice" using the WebDAV API
     Then the HTTP status code should be "423"
     And as "Alice" file "/PARENT/parent.txt" should exist
     But as "Alice" file "/PARENT/renamed-file.txt" should not exist
@@ -82,6 +101,12 @@ Feature: actions on a locked item are possible if the token is sent with the req
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
 
   @files_sharing-app-required
   Scenario Outline: public cannot overwrite a file in a folder locked by the owner even when sending the locktoken
@@ -112,20 +137,26 @@ Feature: actions on a locked item are possible if the token is sent with the req
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "some data" to "textfile0.txt"
     And user "Brian" has uploaded file with content "some data" to "textfile0.txt"
-    And user "Alice" has shared file "textfile0.txt" with user "Brian"
+    And user "Alice" has shared file "/textfile0.txt" with user "Brian"
+    And user "Brian" has accepted share "/textfile0.txt" offered by user "Alice"
     And user "Alice" has locked file "textfile0.txt" setting the following properties
       | lockscope | shared |
-    And user "Brian" has locked file "textfile0 (2).txt" setting the following properties
+    And user "Brian" has locked file "Shares/textfile0.txt" setting the following properties
       | lockscope | shared |
     When user "Alice" uploads file with content "from user 0" to "textfile0.txt" sending the locktoken of file "textfile0.txt" using the WebDAV API
-    Then the HTTP status code should be "200"
+    Then the HTTP status code should be "204"
     And the content of file "textfile0.txt" for user "Alice" should be "from user 0"
-    And the content of file "textfile0 (2).txt" for user "Brian" should be "from user 0"
-    When user "Brian" uploads file with content "from user 1" to "textfile0 (2).txt" sending the locktoken of file "textfile0 (2).txt" using the WebDAV API
-    Then the HTTP status code should be "200"
+    And the content of file "Shares/textfile0.txt" for user "Brian" should be "from user 0"
+    When user "Brian" uploads file with content "from user 1" to "Shares/textfile0.txt" sending the locktoken of file "Shares/textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
     And the content of file "textfile0.txt" for user "Alice" should be "from user 1"
-    And the content of file "textfile0 (2).txt" for user "Brian" should be "from user 1"
+    And the content of file "Shares/textfile0.txt" for user "Brian" should be "from user 1"
     Examples:
       | dav-path |
       | old      |
       | new      |
+
+    @personalSpace
+    Examples:
+      | dav-path |
+      | spaces   |
