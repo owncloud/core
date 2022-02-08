@@ -22,6 +22,7 @@
 namespace OC\Core\Command\User;
 
 use OC\Core\Command\Base;
+use OC\Files\Filesystem;
 use OCP\IUserManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,6 +48,10 @@ class HomeListDirs extends Base {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		if (Filesystem::isPrimaryObjectStorageEnabled() === true) {
+			$output->writeln('<info>We detected that the instance is running on a S3 primary object storage, home directories might not be accurate</info>');
+		}
+
 		$users = $this->userManager->search(null);
 		$homePaths = [];
 		foreach ($users as $user) {

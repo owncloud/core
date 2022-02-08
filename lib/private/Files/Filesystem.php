@@ -1089,4 +1089,19 @@ class Filesystem {
 	public static function getETag($path) {
 		return self::$defaultInstance->getETag($path);
 	}
+
+	/**
+	 * Determines whether primary object storage is enabled on the instance
+	 *
+	 * @return bool
+	 */
+	public static function isPrimaryObjectStorageEnabled(): bool {
+		$config = \OC::$server->getConfig();
+		$appManager = \OC::$server->getAppManager();
+
+		$objectStorageAppEnabled = $appManager->isEnabledForUser('files_primary_s3');
+		$objectStorage = $config->getSystemValue('objectstore', null);
+
+		return $objectStorageAppEnabled && $objectStorage !== null;
+	}
 }

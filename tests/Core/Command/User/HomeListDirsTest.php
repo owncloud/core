@@ -41,11 +41,29 @@ class HomeListDirsTest extends TestCase {
 		parent::setUp();
 
 		$this->userManager = $this->createMock(IUserManager::class);
+
 		$command = new HomeListDirs($this->userManager);
 		$this->commandTester = new CommandTester($command);
 	}
 
-	public function testCommandInput() {
+	public function objectStorageProvider() {
+		return [
+			[true],
+			[false],
+		];
+	}
+
+	/**
+	 * @dataProvider objectStorageProvider
+	 * @param bool $objectStorageUsed
+	 * @return void
+	 */
+	public function testCommandInput($objectStorageUsed) {
+		if ($objectStorageUsed) {
+			$this->overwriteConfigWithObjectStorage();
+			$this->overwriteAppManagerWithObjectStorage();
+		}
+
 		$homePath = '/path/to/homes';
 		$user1Mock = $this->createMock(IUser::class);
 		$user1Mock->method('getHome')->willReturn("$homePath/user1");
@@ -56,5 +74,33 @@ class HomeListDirsTest extends TestCase {
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 		$this->assertStringContainsString($homePath, $output);
+
+		if ($objectStorageUsed) {
+			$this->assertStringContainsString('We detected that the instance is running on a S3 primary object storage, home directories might not be accurate', $output);
+		}
+	}
+
+	protected function tearDown(): void {
+		$this->restoreService('AllConfig');
+		$this->restoreService('AppManager');
+		parent::tearDown();
+	}
+
+	private function overwriteConfigWithObjectStorage() {
+		$config = $this->createMock('\OCP\IConfig');
+		$config->expects($this->any())
+			->method('getSystemValue')
+			->willReturn(['objectstore' => true]);
+
+		$this->overwriteService('AllConfig', $config);
+	}
+
+	private function overwriteAppManagerWithObjectStorage() {
+		$config = $this->createMock('\OCP\App\IAppManager');
+		$config->expects($this->any())
+			->method('isEnabledForUser')
+			->willReturn(true);
+
+		$this->overwriteService('AppManager', $config);
 	}
 }
