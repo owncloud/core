@@ -19,6 +19,7 @@ Summary
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
+* Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
 
 Details
 -------
@@ -114,6 +115,15 @@ Details
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 
    https://github.com/owncloud/core/pull/38758
+
+* Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
+
+   The following commands are affected:
+
+   * `user:home:list-users` * `user:home:list-homes` * `user:move` * `user:report`
+
+   https://github.com/owncloud/core/issues/39590
+   https://github.com/owncloud/core/pull/39604
 
 Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
