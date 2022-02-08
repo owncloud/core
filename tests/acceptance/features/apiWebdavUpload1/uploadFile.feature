@@ -20,16 +20,19 @@ Feature: upload file
       | old         | /upload.txt       |
       | old         | /नेपाली.txt       |
       | old         | /strängé file.txt |
-      | new         | /upload.txt       |
-      | new         | /strängé file.txt |
-      | new         | /नेपाली.txt       |
       | old         | /s,a,m,p,l,e.txt  |
+      | new         | /upload.txt       |
+      | new         | /नेपाली.txt       |
+      | new         | /strängé file.txt |
       | new         | /s,a,m,p,l,e.txt  |
 
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav_version | file_name   |
-      | spaces      | /upload.txt |
+      | dav_version | file_name         |
+      | spaces      | /upload.txt       |
+      | spaces      | /नेपाली.txt       |
+      | spaces      | /strängé file.txt |
+      | spaces      | /s,a,m,p,l,e.txt  |
 
 
   Scenario Outline: upload a file and check download content
@@ -42,6 +45,12 @@ Feature: upload file
       | old         | "file #2.txt"  |
       | new         | "C++ file.cpp" |
       | new         | "file #2.txt"  |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | file_name      |
+      | spaces      | "C++ file.cpp" |
+      | spaces      | "file #2.txt"  |
 
   @issue-ocis-reva-265
   #after fixing all issues delete this Scenario and merge with the one above
@@ -58,6 +67,13 @@ Feature: upload file
       | new         | " ?fi=le&%#2 . txt" |
       | new         | " # %ab ab?=ed "    |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | file_name           |
+      | spaces      | "file ?2.txt"       |
+      | spaces      | " ?fi=le&%#2 . txt" |
+      | spaces      | " # %ab ab?=ed "    |
+
 
   Scenario Outline: upload a file with comma in the filename and check download content
     Given using <dav_version> DAV path
@@ -71,6 +87,13 @@ Feature: upload file
       | new         | "sample,1.txt" |
       | new         | ",,,.txt"      |
       | new         | ",,,.,"        |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | file_name      |
+      | spaces      | "sample,1.txt" |
+      | spaces      | ",,,.txt"      |
+      | spaces      | ",,,.,"        |
 
 
   Scenario Outline: upload a file into a folder and check download content
@@ -91,6 +114,15 @@ Feature: upload file
       | new         | /नेपाली                          | नेपाली                        |
       | new         | /folder #2.txt                   | file #2.txt                   |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | folder_name     | file_name        |
+      | spaces      | /strängé folder | strängé file.txt |
+      | spaces      | /upload         | abc.txt          |
+      | spaces      | /C++ folder     | C++ file.cpp     |
+      | spaces      | /नेपाली         | नेपाली           |
+      | spaces      | /folder #2.txt  | file #2.txt      |
+
   @issue-ocis-reva-265
     #after fixing all issues delete this Scenario and merge with the one above
   Scenario Outline: upload a file into a folder and check download content
@@ -105,6 +137,12 @@ Feature: upload file
       | new         | /folder ?2.txt    | file ?2.txt  |
       | new         | /?fi=le&%#2 . txt | # %ab ab?=ed |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | folder_name       | file_name    |
+      | spaces      | /folder ?2.txt    | file ?2.txt  |
+      | spaces      | /?fi=le&%#2 . txt | # %ab ab?=ed |
+
   @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario Outline: attempt to upload a file into a nonexistent folder
     Given using <dav_version> DAV path
@@ -116,6 +154,11 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @issue-ocis-reva-15
   Scenario Outline: Uploading file to path with extension .part should not be possible
@@ -131,6 +174,11 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
   Scenario Outline: upload a file into a folder with dots in the path and check download content
@@ -153,6 +201,15 @@ Feature: upload file
       | new         | /upload...1.. | abc...txt.. |
       | new         | /...          | ...         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version | folder_name   | file_name   |
+      | spaces      | /upload.      | abc.        |
+      | spaces      | /upload.      | abc .       |
+      | spaces      | /upload.1     | abc.txt     |
+      | spaces      | /upload...1.. | abc...txt.. |
+      | spaces      | /...          | ...         |
+
   @issue-ocis-reva-174
   Scenario Outline: upload file with mtime
     Given using <dav_version> DAV path
@@ -164,6 +221,11 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @issue-ocis-reva-174
   Scenario Outline: upload a file with mtime in a folder
@@ -177,6 +239,11 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @issue-ocis-reva-174
   Scenario Outline: moving a file does not change its mtime
@@ -192,6 +259,11 @@ Feature: upload file
       | old         |
       | new         |
 
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
   @issue-ocis-reva-174
   Scenario Outline: overwriting a file changes its mtime
     Given using <dav_version> DAV path
@@ -204,6 +276,12 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+
 
   Scenario Outline: upload a hidden file and check download content
     Given using <dav_version> DAV path
@@ -225,3 +303,8 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
