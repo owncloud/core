@@ -74,14 +74,15 @@ class MoveHomeTest extends TestCase {
 		$file = \OC::$server->getUserFolder($this->user->getUID())->newFile('hello.txt');
 		$file->putContent('1234567890');
 
-		if ($file->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
-			$this->markTestSkipped('user:move-home is only implemented for posix file systems');
-		}
-
 		$exitCode = $this->commandTester->execute([
 			'user_id' => 'test-user',
 			'new_location' => $this->newLocation
 		]);
+
+		if ($file->getStorage()->instanceOfStorage(ObjectStoreStorage::class)) {
+			self::assertEquals(1, $exitCode, $this->commandTester->getDisplay());
+			return;
+		}
 
 		# assert command output
 		self::assertEquals(0, $exitCode, $this->commandTester->getDisplay());

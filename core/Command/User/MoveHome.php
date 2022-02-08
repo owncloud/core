@@ -22,7 +22,8 @@
 namespace OC\Core\Command\User;
 
 use InvalidArgumentException;
-use OC\User\AccountMapper;
+use OC\Files\Filesystem;
+use OC\Files\ObjectStore\ObjectStoreStorage;
 use OCP\IUser;
 use OCP\IUserManager;
 use RuntimeException;
@@ -57,6 +58,12 @@ class MoveHome extends Command {
 		$user = $this->getUser($input);
 		$userId = $user->getUID();
 		$oldHome = $user->getHome();
+
+		$storage = Filesystem::getStorage($userId);
+		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
+			$output->writeln('<error>This command is not supported on an S3 primary object storage</error>');
+			return 1;
+		}
 
 		$newLocation = $this->getNewLocationForUser($input, $user);
 		$output->writeln("Move $userId from $oldHome to $newLocation");

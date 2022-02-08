@@ -70,7 +70,24 @@ class ReportTest extends TestCase {
 		$this->loginAsUser('admin');
 	}
 
-	public function testCommandInput() {
+	public function objectStorageProvider() {
+		return [
+			[true],
+			[false],
+		];
+	}
+
+	/**
+	 * @param bool $objectStorageUsed
+	 * @dataProvider objectStorageProvider
+	 * @return void
+	 */
+	public function testCommandInput($objectStorageUsed) {
+		if ($objectStorageUsed) {
+			$this->overwriteConfigWithObjectStorage();
+			$this->overwriteAppManagerWithObjectStorage();
+		}
+
 		$this->commandTester->execute([]);
 		$output = $this->commandTester->getDisplay();
 
@@ -110,6 +127,30 @@ EOS;
 EOS;
 		}
 
-		$this->assertEquals($expectedOutput, $output);
+		$this->assertStringContainsString($expectedOutput, $output);
+
+		if ($objectStorageUsed) {
+			$this->assertStringContainsString('We detected that the instance is running on a S3 primary object storage, user directories count might not be accurate', $output);
+			$this->restoreService('AllConfig');
+			$this->restoreService('AppManager');
+		}
+	}
+
+	private function overwriteConfigWithObjectStorage() {
+		$config = $this->createMock('\OCP\IConfig');
+		$config->expects($this->any())
+			->method('getSystemValue')
+			->willReturn(['objectstore' => true]);
+
+		$this->overwriteService('AllConfig', $config);
+	}
+
+	private function overwriteAppManagerWithObjectStorage() {
+		$config = $this->createMock('\OCP\App\IAppManager');
+		$config->expects($this->any())
+			->method('isEnabledForUser')
+			->willReturn(true);
+
+		$this->overwriteService('AppManager', $config);
 	}
 }

@@ -25,11 +25,9 @@
 
 namespace OC\Core\Command\User;
 
-use OC\Files\FileInfo;
-use OC\Files\View;
+use OC\Files\Filesystem;
 use OC\Helper\UserTypeHelper;
 use OCP\IUser;
-use OCP\User;
 use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,6 +58,10 @@ class Report extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		if (Filesystem::isPrimaryObjectStorageEnabled() === true) {
+			$output->writeln('<info>We detected that the instance is running on a S3 primary object storage, user directories count might not be accurate</info>');
+		}
+
 		$table = new Table($output);
 		$table->setHeaders(['User Report', '']);
 		$userCountArray = $this->countUsers();
@@ -87,9 +89,8 @@ class Report extends Command {
 			$rows[] = ['No backend enabled that supports user counting', ''];
 		}
 
-		$userDirectoryCount = $this->countUserDirectories();
 		$rows[] = [' '];
-		$rows[] = ['user directories', $userDirectoryCount];
+		$rows[] = ['user directories', $this->countUserDirectories()];
 
 		$table->setRows($rows);
 		$table->render($output);
