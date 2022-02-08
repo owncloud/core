@@ -917,10 +917,12 @@ class SetupHelper extends \PHPUnit\Framework\Assert {
 		$resultXml = \simplexml_load_string($contents);
 
 		if ($resultXml === false) {
+			$status = $result->getStatusCode();
 			throw new Exception(
 				"Response is not valid XML after executing 'occ $argsString'. " .
+				"HTTP status was $status. " .
 				$isTestingAppEnabledText .
-				$contents
+				"Response contents were '$contents'"
 			);
 		}
 
