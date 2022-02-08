@@ -1,5 +1,6 @@
 @api @comments-app-required @issue-ocis-reva-38
 Feature: Comments
+  As a user, I want to run the tests that are in the release-10.9.1 branch
 
   Background:
     Given using new DAV path
