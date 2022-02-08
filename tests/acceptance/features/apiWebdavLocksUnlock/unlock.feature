@@ -13,7 +13,8 @@ Feature: UNLOCK locked items
     And user "Alice" has locked folder "PARENT" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" unlocks the last created lock of folder "PARENT" using the WebDAV API
-    Then 0 locks should be reported for folder "PARENT" of user "Alice" by the WebDAV API
+    Then the HTTP status code should be "204"
+    And 0 locks should be reported for folder "PARENT" of user "Alice" by the WebDAV API
     And 0 locks should be reported for folder "PARENT/CHILD" of user "Alice" by the WebDAV API
     And 0 locks should be reported for file "PARENT/parent.txt" of user "Alice" by the WebDAV API
     Examples:
@@ -23,6 +24,13 @@ Feature: UNLOCK locked items
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
+
   Scenario Outline: unlock one of multiple locks set by the user itself
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
@@ -31,11 +39,18 @@ Feature: UNLOCK locked items
     And user "Alice" has locked file "textfile0.txt" setting the following properties
       | lockscope | shared |
     When user "Alice" unlocks the last created lock of file "textfile0.txt" using the WebDAV API
-    Then 1 locks should be reported for file "textfile0.txt" of user "Alice" by the WebDAV API
+    Then the HTTP status code should be "204"
+    And 1 locks should be reported for file "textfile0.txt" of user "Alice" by the WebDAV API
     Examples:
       | dav-path |
       | old      |
       | new      |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path |
+      | spaces   |
+
 
   Scenario Outline: unlocking a file that was locked by the user locking the folder above is not possible
     Given using <dav-path> DAV path
@@ -45,7 +60,8 @@ Feature: UNLOCK locked items
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
     When user "Alice" unlocks file "PARENT/CHILD/child.txt" with the last created lock of folder "PARENT/CHILD" using the WebDAV API
-    Then 1 locks should be reported for file "PARENT/CHILD/child.txt" of user "Alice" by the WebDAV API
+    Then the HTTP status code should be "204"
+    And 1 locks should be reported for file "PARENT/CHILD/child.txt" of user "Alice" by the WebDAV API
     And 2 locks should be reported for folder "PARENT/CHILD" of user "Alice" by the WebDAV API
     Examples:
       | dav-path | lock-scope |
@@ -53,6 +69,12 @@ Feature: UNLOCK locked items
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
 
   @skipOnOcV10 @issue-34302 @files_sharing-app-required @skipOnOcV10.3
   Scenario Outline: as public unlocking a file in a share that was locked by the file owner is not possible. To unlock use the owners locktoken
@@ -96,6 +118,12 @@ Feature: UNLOCK locked items
       | new      | shared     |
       | new      | exclusive  |
 
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
+
 
   Scenario Outline: unlocking a file or folder does not unlock another file with the same name in another part of the file system
     Given using <dav-path> DAV path
@@ -120,3 +148,9 @@ Feature: UNLOCK locked items
       | old      | exclusive  |
       | new      | shared     |
       | new      | exclusive  |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | lock-scope |
+      | spaces   | shared     |
+      | spaces   | exclusive  |
