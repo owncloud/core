@@ -4572,7 +4572,8 @@ trait WebDav {
 				$user,
 				$this->getPasswordForUser($user),
 				$path,
-				$this->getStepLineRef()
+				$this->getStepLineRef(),
+				$this->getDavPathVersion()
 			);
 		} catch (Exception $e) {
 			return null;
@@ -4580,33 +4581,36 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has stored id of file "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has stored id of (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" stores id of (file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
+	 * @param string $fileOrFolder
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function userStoresFileIdForPath(string $user, string $path):void {
+	public function userStoresFileIdForPath(string $user, string $fileOrFolder, string $path):void {
 		$this->storedFileID = $this->getFileIdForPath($user, $path);
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" file "([^"]*)" should have the previously stored id$/
+	 * @Then /^user "([^"]*)" (file|folder) "([^"]*)" should have the previously stored id$/
 	 *
 	 * @param string $user
+	 * @param string $fileOrFolder
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function userFileShouldHaveStoredId(string $user, string $path):void {
+	public function userFileShouldHaveStoredId(string $user, string $fileOrFolder, string $path):void {
 		$user = $this->getActualUsername($user);
 		$currentFileID = $this->getFileIdForPath($user, $path);
 		Assert::assertEquals(
 			$currentFileID,
 			$this->storedFileID,
 			__METHOD__
-			. " User '$user' file '$path' does not have the previously stored id '{$this->storedFileID}', but has '$currentFileID'."
+			. " User '$user' $fileOrFolder '$path' does not have the previously stored id '{$this->storedFileID}', but has '$currentFileID'."
 		);
 	}
 
