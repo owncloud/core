@@ -866,6 +866,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					SetupHelper::setSystemConfig(
 						'enable_previews',
 						$this->oldPreviewSetting[$server],
+						$this->featureContext->getStepLineRef(),
 						'boolean'
 					);
 				}
