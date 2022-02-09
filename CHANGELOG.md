@@ -64,9 +64,10 @@ Details
 
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 
-   The following have been updated: - log4js (6.3.0 to 6.4.1)
+   The following have been updated: - karma (6.3.8 to 6.3.15) - log4js (6.3.0 to 6.4.1)
 
    https://github.com/owncloud/core/pull/39709
+   https://github.com/owncloud/core/pull/39764
 
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 
