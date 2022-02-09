@@ -2922,7 +2922,8 @@ trait WebDav {
 			$this->acceptanceTestsDirLocation() . $source,
 			$destination,
 			$this->getStepLineRef(),
-			["X-OC-Mtime" => $mtime]
+			["X-OC-Mtime" => $mtime],
+			$this->getDavPathVersion()
 		);
 	}
 
