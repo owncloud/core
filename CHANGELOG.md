@@ -82,11 +82,12 @@ Details
    - phpseclib/phpseclib (3.0.11 to 3.0.13) - sabre/dav (4.2.0 to 4.3.1) - sabre/vobject (4.4.0
    to 4.4.1)
 
-   The following have been updated in apps/files_external/3rdparty: - icewind/smb (3.5.1 to
-   3.5.2) - paragonie/constant_time_encoding (v2.4.0 to v2.5.0) - phpseclib/phpseclib
-   (3.0.11 to 3.0.12)
+   The following have been updated in apps/files_external/3rdparty: - google/apiclient
+   (2.11.0 to 2.12.1) - icewind/smb (3.5.1 to 3.5.2) - paragonie/constant_time_encoding
+   (v2.4.0 to v2.5.0) - phpseclib/phpseclib (3.0.11 to 3.0.12)
 
    https://github.com/owncloud/core/pull/39526
+   https://github.com/owncloud/core/pull/39567
    https://github.com/owncloud/core/pull/39631
    https://github.com/owncloud/core/pull/39649
    https://github.com/owncloud/core/pull/39693
