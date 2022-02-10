@@ -83,8 +83,9 @@ Details
    to 4.4.1)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
-   (2.11.0 to 2.12.1) - icewind/smb (3.5.1 to 3.5.2) - paragonie/constant_time_encoding
-   (v2.4.0 to v2.5.0) - phpseclib/phpseclib (3.0.11 to 3.0.12)
+   (2.11.0 to 2.12.1) - google/apiclient-services (0.231.0 to 0.234.0) - icewind/smb (3.5.1 to
+   3.5.2) - paragonie/constant_time_encoding (v2.4.0 to v2.5.0) - phpseclib/phpseclib
+   (3.0.11 to 3.0.13)
 
    https://github.com/owncloud/core/pull/39526
    https://github.com/owncloud/core/pull/39567
@@ -96,6 +97,7 @@ Details
    https://github.com/owncloud/core/pull/39713
    https://github.com/owncloud/core/pull/39717
    https://github.com/owncloud/core/pull/39731
+   https://github.com/owncloud/core/pull/39780
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
