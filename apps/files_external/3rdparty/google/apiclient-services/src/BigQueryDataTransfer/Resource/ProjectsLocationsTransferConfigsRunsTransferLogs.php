@@ -30,7 +30,7 @@ use Google\Service\BigQueryDataTransfer\ListTransferLogsResponse;
 class ProjectsLocationsTransferConfigsRunsTransferLogs extends \Google\Service\Resource
 {
   /**
-   * Returns user facing log messages for the data transfer run.
+   * Returns log messages for the transfer run.
    * (transferLogs.listProjectsLocationsTransferConfigsRunsTransferLogs)
    *
    * @param string $parent Required. Transfer run name in the form:

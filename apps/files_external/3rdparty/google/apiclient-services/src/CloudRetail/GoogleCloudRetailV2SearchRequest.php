@@ -58,6 +58,8 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
    * @var string
    */
   public $pageToken;
+  protected $personalizationSpecType = GoogleCloudRetailV2SearchRequestPersonalizationSpec::class;
+  protected $personalizationSpecDataType = '';
   /**
    * @var string
    */
@@ -232,6 +234,20 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
   public function getPageToken()
   {
     return $this->pageToken;
+  }
+  /**
+   * @param GoogleCloudRetailV2SearchRequestPersonalizationSpec
+   */
+  public function setPersonalizationSpec(GoogleCloudRetailV2SearchRequestPersonalizationSpec $personalizationSpec)
+  {
+    $this->personalizationSpec = $personalizationSpec;
+  }
+  /**
+   * @return GoogleCloudRetailV2SearchRequestPersonalizationSpec
+   */
+  public function getPersonalizationSpec()
+  {
+    return $this->personalizationSpec;
   }
   /**
    * @param string

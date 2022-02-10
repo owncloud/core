@@ -672,6 +672,33 @@ class Instances extends \Google\Service\Resource
     return $this->call('reset', [$params], Operation::class);
   }
   /**
+   * Resumes an instance that was suspended using the instances().suspend method.
+   * (instances.resume)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name of the instance resource to resume.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
+   * @return Operation
+   */
+  public function resume($project, $zone, $instance, $optParams = [])
+  {
+    $params = ['project' => $project, 'zone' => $zone, 'instance' => $instance];
+    $params = array_merge($params, $optParams);
+    return $this->call('resume', [$params], Operation::class);
+  }
+  /**
    * Sends diagnostic interrupt to the instance.
    * (instances.sendDiagnosticInterrupt)
    *
@@ -906,8 +933,9 @@ class Instances extends \Google\Service\Resource
   /**
    * Sets an instance's scheduling options. You can only call this method on a
    * stopped instance, that is, a VM instance that is in a `TERMINATED` state. See
-   * Instance Life Cycle for more information on the possible instance states.
-   * (instances.setScheduling)
+   * Instance Life Cycle for more information on the possible instance states. For
+   * more information about setting scheduling options for a VM, see Set VM
+   * availability policies. (instances.setScheduling)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -1021,8 +1049,8 @@ class Instances extends \Google\Service\Resource
     return $this->call('setTags', [$params], Operation::class);
   }
   /**
-   * Simulates a maintenance event on the instance.
-   * (instances.simulateMaintenanceEvent)
+   * Simulates a host maintenance event on a VM. For more information, see
+   * Simulate a host maintenance event. (instances.simulateMaintenanceEvent)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -1121,6 +1149,38 @@ class Instances extends \Google\Service\Resource
     $params = ['project' => $project, 'zone' => $zone, 'instance' => $instance];
     $params = array_merge($params, $optParams);
     return $this->call('stop', [$params], Operation::class);
+  }
+  /**
+   * This method suspends a running instance, saving its state to persistent
+   * storage, and allows you to resume the instance at a later time. Suspended
+   * instances have no compute costs (cores or RAM), and incur only storage
+   * charges for the saved VM memory and localSSD data. Any charged resources the
+   * virtual machine was using, such as persistent disks and static IP addresses,
+   * will continue to be charged while the instance is suspended. For more
+   * information, see Suspending and resuming an instance. (instances.suspend)
+   *
+   * @param string $project Project ID for this request.
+   * @param string $zone The name of the zone for this request.
+   * @param string $instance Name of the instance resource to suspend.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string requestId An optional request ID to identify requests.
+   * Specify a unique request ID so that if you must retry your request, the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
+   * request times out. If you make the request again with the same request ID,
+   * the server can check if original operation with the same request ID was
+   * received, and if so, will ignore the second request. This prevents clients
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
+   * @return Operation
+   */
+  public function suspend($project, $zone, $instance, $optParams = [])
+  {
+    $params = ['project' => $project, 'zone' => $zone, 'instance' => $instance];
+    $params = array_merge($params, $optParams);
+    return $this->call('suspend', [$params], Operation::class);
   }
   /**
    * Returns permissions that a caller has on the specified resource.

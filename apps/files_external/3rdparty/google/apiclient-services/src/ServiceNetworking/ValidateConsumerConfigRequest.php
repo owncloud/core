@@ -20,6 +20,10 @@ namespace Google\Service\ServiceNetworking;
 class ValidateConsumerConfigRequest extends \Google\Model
 {
   /**
+   * @var bool
+   */
+  public $checkServiceNetworkingUsePermission;
+  /**
    * @var string
    */
   public $consumerNetwork;
@@ -32,6 +36,20 @@ class ValidateConsumerConfigRequest extends \Google\Model
    */
   public $validateNetwork;
 
+  /**
+   * @param bool
+   */
+  public function setCheckServiceNetworkingUsePermission($checkServiceNetworkingUsePermission)
+  {
+    $this->checkServiceNetworkingUsePermission = $checkServiceNetworkingUsePermission;
+  }
+  /**
+   * @return bool
+   */
+  public function getCheckServiceNetworkingUsePermission()
+  {
+    return $this->checkServiceNetworkingUsePermission;
+  }
   /**
    * @param string
    */

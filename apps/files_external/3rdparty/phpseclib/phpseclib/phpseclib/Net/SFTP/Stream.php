@@ -338,7 +338,7 @@ class Stream
      * Write to stream
      *
      * @param string $data
-     * @return mixed
+     * @return int|false
      * @access public
      */
     private function _stream_write($data)

@@ -47,6 +47,10 @@ class TeamDrive extends \Google\Model
    * @var string
    */
   public $name;
+  /**
+   * @var string
+   */
+  public $orgUnitId;
   protected $restrictionsType = TeamDriveRestrictions::class;
   protected $restrictionsDataType = '';
   /**
@@ -165,6 +169,20 @@ class TeamDrive extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setOrgUnitId($orgUnitId)
+  {
+    $this->orgUnitId = $orgUnitId;
+  }
+  /**
+   * @return string
+   */
+  public function getOrgUnitId()
+  {
+    return $this->orgUnitId;
   }
   /**
    * @param TeamDriveRestrictions

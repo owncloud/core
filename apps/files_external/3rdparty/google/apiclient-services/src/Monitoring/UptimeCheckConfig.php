@@ -20,6 +20,10 @@ namespace Google\Service\Monitoring;
 class UptimeCheckConfig extends \Google\Collection
 {
   protected $collection_key = 'selectedRegions';
+  /**
+   * @var string
+   */
+  public $checkerType;
   protected $contentMatchersType = ContentMatcher::class;
   protected $contentMatchersDataType = 'array';
   /**
@@ -57,6 +61,20 @@ class UptimeCheckConfig extends \Google\Collection
    */
   public $timeout;
 
+  /**
+   * @param string
+   */
+  public function setCheckerType($checkerType)
+  {
+    $this->checkerType = $checkerType;
+  }
+  /**
+   * @return string
+   */
+  public function getCheckerType()
+  {
+    return $this->checkerType;
+  }
   /**
    * @param ContentMatcher[]
    */

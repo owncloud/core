@@ -34,6 +34,10 @@ class ResponseMetaData extends \Google\Model
   protected $schemaRestrictionResponseType = SchemaRestrictionResponse::class;
   protected $schemaRestrictionResponseDataType = '';
   /**
+   * @var bool
+   */
+  public $subjectToThresholding;
+  /**
    * @var string
    */
   public $timeZone;
@@ -93,6 +97,20 @@ class ResponseMetaData extends \Google\Model
   public function getSchemaRestrictionResponse()
   {
     return $this->schemaRestrictionResponse;
+  }
+  /**
+   * @param bool
+   */
+  public function setSubjectToThresholding($subjectToThresholding)
+  {
+    $this->subjectToThresholding = $subjectToThresholding;
+  }
+  /**
+   * @return bool
+   */
+  public function getSubjectToThresholding()
+  {
+    return $this->subjectToThresholding;
   }
   /**
    * @param string

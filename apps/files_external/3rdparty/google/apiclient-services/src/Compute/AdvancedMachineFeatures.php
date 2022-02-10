@@ -24,6 +24,10 @@ class AdvancedMachineFeatures extends \Google\Model
    */
   public $enableNestedVirtualization;
   /**
+   * @var bool
+   */
+  public $enableUefiNetworking;
+  /**
    * @var int
    */
   public $threadsPerCore;
@@ -41,6 +45,20 @@ class AdvancedMachineFeatures extends \Google\Model
   public function getEnableNestedVirtualization()
   {
     return $this->enableNestedVirtualization;
+  }
+  /**
+   * @param bool
+   */
+  public function setEnableUefiNetworking($enableUefiNetworking)
+  {
+    $this->enableUefiNetworking = $enableUefiNetworking;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableUefiNetworking()
+  {
+    return $this->enableUefiNetworking;
   }
   /**
    * @param int

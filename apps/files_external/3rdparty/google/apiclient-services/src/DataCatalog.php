@@ -294,6 +294,26 @@ class DataCatalog extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'modifyEntryContacts' => [
+              'path' => 'v1/{+name}:modifyEntryContacts',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'modifyEntryOverview' => [
+              'path' => 'v1/{+name}:modifyEntryOverview',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'patch' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'PATCH',

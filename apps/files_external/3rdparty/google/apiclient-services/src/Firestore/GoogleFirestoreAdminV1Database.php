@@ -26,10 +26,6 @@ class GoogleFirestoreAdminV1Database extends \Google\Model
   /**
    * @var string
    */
-  public $earliestVersionTime;
-  /**
-   * @var string
-   */
   public $etag;
   /**
    * @var string
@@ -57,20 +53,6 @@ class GoogleFirestoreAdminV1Database extends \Google\Model
   public function getConcurrencyMode()
   {
     return $this->concurrencyMode;
-  }
-  /**
-   * @param string
-   */
-  public function setEarliestVersionTime($earliestVersionTime)
-  {
-    $this->earliestVersionTime = $earliestVersionTime;
-  }
-  /**
-   * @return string
-   */
-  public function getEarliestVersionTime()
-  {
-    return $this->earliestVersionTime;
   }
   /**
    * @param string

@@ -35,10 +35,13 @@ use Google\Service\ApiKeysService\V2UndeleteKeyRequest;
 class ProjectsLocationsKeys extends \Google\Service\Resource
 {
   /**
-   * Clones the existing key's restriction and display name to a new API key. The
-   * service account must have the `apikeys.keys.get` and `apikeys.keys.create`
-   * permissions in the project. NOTE: Key is a global resource; hence the only
-   * supported value for location is `global`. (keys.cloneProjectsLocationsKeys)
+   * DEPRECATED: API customers can call `GetKey` and then `CreateKey` methods to
+   * create a copy of an existing key. Retire `CloneKey` method to eliminate the
+   * unnessary method from API Keys API. Clones the existing key's restriction and
+   * display name to a new API key. The service account must have the
+   * `apikeys.keys.get` and `apikeys.keys.create` permissions in the project.
+   * NOTE: Key is a global resource; hence the only supported value for location
+   * is `global`. (keys.cloneProjectsLocationsKeys)
    *
    * @param string $name Required. The resource name of the API key to be cloned
    * in the same project.
@@ -132,12 +135,16 @@ class ProjectsLocationsKeys extends \Google\Service\Resource
    * project.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. Only list keys that conform to the
-   * specified filter. The allowed filter strings are `state:ACTIVE` and
-   * `state:DELETED`. By default, ListKeys returns only active keys.
+   * @opt_param string filter Optional. Deprecated: Use `show_deleted` instead.
+   * Only list keys that conform to the specified filter. The allowed filter
+   * strings are `state:ACTIVE` and `state:DELETED`. By default, ListKeys returns
+   * only active keys.
    * @opt_param int pageSize Optional. Specifies the maximum number of results to
    * be returned at a time.
    * @opt_param string pageToken Optional. Requests a specific page of results.
+   * @opt_param bool showDeleted Optional. Indicate that keys are marked as
+   * deleted within 30 days should also be returned. Normally only active keys are
+   * returned.
    * @return V2ListKeysResponse
    */
   public function listProjectsLocationsKeys($parent, $optParams = [])

@@ -46,6 +46,10 @@ class Provider extends \Google\Model
   /**
    * @var string
    */
+  public $launchStage;
+  /**
+   * @var string
+   */
   public $name;
   /**
    * @var string
@@ -139,6 +143,20 @@ class Provider extends \Google\Model
   public function getLabels()
   {
     return $this->labels;
+  }
+  /**
+   * @param string
+   */
+  public function setLaunchStage($launchStage)
+  {
+    $this->launchStage = $launchStage;
+  }
+  /**
+   * @return string
+   */
+  public function getLaunchStage()
+  {
+    return $this->launchStage;
   }
   /**
    * @param string

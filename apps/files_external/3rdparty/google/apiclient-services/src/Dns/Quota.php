@@ -25,6 +25,10 @@ class Quota extends \Google\Collection
    */
   public $dnsKeysPerManagedZone;
   /**
+   * @var int
+   */
+  public $itemsPerRoutingPolicy;
+  /**
    * @var string
    */
   public $kind;
@@ -44,6 +48,10 @@ class Quota extends \Google\Collection
    * @var int
    */
   public $networksPerPolicy;
+  /**
+   * @var int
+   */
+  public $peeringZonesPerTargetNetwork;
   /**
    * @var int
    */
@@ -92,6 +100,20 @@ class Quota extends \Google\Collection
   public function getDnsKeysPerManagedZone()
   {
     return $this->dnsKeysPerManagedZone;
+  }
+  /**
+   * @param int
+   */
+  public function setItemsPerRoutingPolicy($itemsPerRoutingPolicy)
+  {
+    $this->itemsPerRoutingPolicy = $itemsPerRoutingPolicy;
+  }
+  /**
+   * @return int
+   */
+  public function getItemsPerRoutingPolicy()
+  {
+    return $this->itemsPerRoutingPolicy;
   }
   /**
    * @param string
@@ -162,6 +184,20 @@ class Quota extends \Google\Collection
   public function getNetworksPerPolicy()
   {
     return $this->networksPerPolicy;
+  }
+  /**
+   * @param int
+   */
+  public function setPeeringZonesPerTargetNetwork($peeringZonesPerTargetNetwork)
+  {
+    $this->peeringZonesPerTargetNetwork = $peeringZonesPerTargetNetwork;
+  }
+  /**
+   * @return int
+   */
+  public function getPeeringZonesPerTargetNetwork()
+  {
+    return $this->peeringZonesPerTargetNetwork;
   }
   /**
    * @param int

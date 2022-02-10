@@ -27,6 +27,10 @@ class Database extends \Google\Collection
   /**
    * @var string
    */
+  public $databaseDialect;
+  /**
+   * @var string
+   */
   public $defaultLeader;
   /**
    * @var string
@@ -64,6 +68,20 @@ class Database extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setDatabaseDialect($databaseDialect)
+  {
+    $this->databaseDialect = $databaseDialect;
+  }
+  /**
+   * @return string
+   */
+  public function getDatabaseDialect()
+  {
+    return $this->databaseDialect;
   }
   /**
    * @param string

@@ -1,6 +1,6 @@
 # phpseclib - PHP Secure Communications Library
 
-[![Build Status](https://travis-ci.com/phpseclib/phpseclib.svg?branch=3.0)](https://travis-ci.com/phpseclib/phpseclib)
+[![Build Status](https://travis-ci.com/phpseclib/phpseclib.svg?branch=3.0)](https://travis-ci.com/github/phpseclib/phpseclib)
 
 ## Supporting phpseclib
 
@@ -52,7 +52,7 @@ SSH-2, SFTP, X.509, an arbitrary-precision integer arithmetic library, Ed25519 /
 * Composer compatible (PSR-0 autoloading)
 * Install using Composer: `composer require phpseclib/phpseclib:~1.0`
 * Install using PEAR: See [phpseclib PEAR Channel Documentation](http://phpseclib.sourceforge.net/pear.htm)
-* [Download 1.0.19 as ZIP](http://sourceforge.net/projects/phpseclib/files/phpseclib1.0.19.zip/download)
+* [Download 1.0.20 as ZIP](http://sourceforge.net/projects/phpseclib/files/phpseclib1.0.20.zip/download)
 
 ## Security contact information
 

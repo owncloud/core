@@ -5014,6 +5014,30 @@ class Compute extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'resume' => [
+              'path' => 'projects/{project}/zones/{zone}/instances/{instance}/resume',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'project' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'zone' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'instance' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'requestId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
             ],'sendDiagnosticInterrupt' => [
               'path' => 'projects/{project}/zones/{zone}/instances/{instance}/sendDiagnosticInterrupt',
               'httpMethod' => 'POST',
@@ -5402,6 +5426,30 @@ class Compute extends \Google\Service
               ],
             ],'stop' => [
               'path' => 'projects/{project}/zones/{zone}/instances/{instance}/stop',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'project' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'zone' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'instance' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'requestId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'suspend' => [
+              'path' => 'projects/{project}/zones/{zone}/instances/{instance}/suspend',
               'httpMethod' => 'POST',
               'parameters' => [
                 'project' => [

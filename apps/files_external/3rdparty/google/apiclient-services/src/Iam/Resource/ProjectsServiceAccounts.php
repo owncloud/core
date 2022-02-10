@@ -355,7 +355,7 @@ class ProjectsServiceAccounts extends \Google\Service\Resource
   /**
    * **Note:** We are in the process of deprecating this method. Use
    * PatchServiceAccount instead. Updates a ServiceAccount. You can update only
-   * the `display_name` and `description` fields. (serviceAccounts.update)
+   * the `display_name` field. (serviceAccounts.update)
    *
    * @param string $name The resource name of the service account. Use one of the
    * following formats: * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}`

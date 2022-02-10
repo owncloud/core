@@ -26,6 +26,8 @@ class ClusterConfig extends \Google\Collection
    * @var string
    */
   public $configBucket;
+  protected $dataprocMetricConfigType = DataprocMetricConfig::class;
+  protected $dataprocMetricConfigDataType = '';
   protected $encryptionConfigType = EncryptionConfig::class;
   protected $encryptionConfigDataType = '';
   protected $endpointConfigType = EndpointConfig::class;
@@ -82,6 +84,20 @@ class ClusterConfig extends \Google\Collection
   public function getConfigBucket()
   {
     return $this->configBucket;
+  }
+  /**
+   * @param DataprocMetricConfig
+   */
+  public function setDataprocMetricConfig(DataprocMetricConfig $dataprocMetricConfig)
+  {
+    $this->dataprocMetricConfig = $dataprocMetricConfig;
+  }
+  /**
+   * @return DataprocMetricConfig
+   */
+  public function getDataprocMetricConfig()
+  {
+    return $this->dataprocMetricConfig;
   }
   /**
    * @param EncryptionConfig

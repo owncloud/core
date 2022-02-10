@@ -38,9 +38,13 @@ class CloudBuild extends \Google\Service
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
+  public $locations;
   public $operations;
   public $projects_builds;
   public $projects_githubEnterpriseConfigs;
+  public $projects_locations_bitbucketServerConfigs;
+  public $projects_locations_bitbucketServerConfigs_connectedRepositories;
+  public $projects_locations_bitbucketServerConfigs_repos;
   public $projects_locations_builds;
   public $projects_locations_githubEnterpriseConfigs;
   public $projects_locations_operations;
@@ -65,6 +69,30 @@ class CloudBuild extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'cloudbuild';
 
+    $this->locations = new CloudBuild\Resource\Locations(
+        $this,
+        $this->serviceName,
+        'locations',
+        [
+          'methods' => [
+            'regionalWebhook' => [
+              'path' => 'v1/{+location}/regionalWebhook',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'location' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'webhookKey' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->operations = new CloudBuild\Resource\Operations(
         $this,
         $this->serviceName,
@@ -288,6 +316,150 @@ class CloudBuild extends \Google\Service
                   'required' => true,
                 ],
                 'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_bitbucketServerConfigs = new CloudBuild\Resource\ProjectsLocationsBitbucketServerConfigs(
+        $this,
+        $this->serviceName,
+        'bitbucketServerConfigs',
+        [
+          'methods' => [
+            'addBitbucketServerConnectedRepository' => [
+              'path' => 'v1/{+config}:addBitbucketServerConnectedRepository',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'config' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'create' => [
+              'path' => 'v1/{+parent}/bitbucketServerConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'bitbucketServerConfigId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/bitbucketServerConfigs',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'removeBitbucketServerConnectedRepository' => [
+              'path' => 'v1/{+config}:removeBitbucketServerConnectedRepository',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'config' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_bitbucketServerConfigs_connectedRepositories = new CloudBuild\Resource\ProjectsLocationsBitbucketServerConfigsConnectedRepositories(
+        $this,
+        $this->serviceName,
+        'connectedRepositories',
+        [
+          'methods' => [
+            'batchCreate' => [
+              'path' => 'v1/{+parent}/connectedRepositories:batchCreate',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_bitbucketServerConfigs_repos = new CloudBuild\Resource\ProjectsLocationsBitbucketServerConfigsRepos(
+        $this,
+        $this->serviceName,
+        'repos',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/repos',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],

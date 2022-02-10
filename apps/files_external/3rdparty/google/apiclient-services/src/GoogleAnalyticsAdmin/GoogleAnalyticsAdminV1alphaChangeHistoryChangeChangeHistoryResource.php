@@ -21,8 +21,6 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
 {
   protected $accountType = GoogleAnalyticsAdminV1alphaAccount::class;
   protected $accountDataType = '';
-  protected $androidAppDataStreamType = GoogleAnalyticsAdminV1alphaAndroidAppDataStream::class;
-  protected $androidAppDataStreamDataType = '';
   protected $conversionEventType = GoogleAnalyticsAdminV1alphaConversionEvent::class;
   protected $conversionEventDataType = '';
   protected $customDimensionType = GoogleAnalyticsAdminV1alphaCustomDimension::class;
@@ -31,6 +29,8 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
   protected $customMetricDataType = '';
   protected $dataRetentionSettingsType = GoogleAnalyticsAdminV1alphaDataRetentionSettings::class;
   protected $dataRetentionSettingsDataType = '';
+  protected $dataStreamType = GoogleAnalyticsAdminV1alphaDataStream::class;
+  protected $dataStreamDataType = '';
   protected $displayVideo360AdvertiserLinkType = GoogleAnalyticsAdminV1alphaDisplayVideo360AdvertiserLink::class;
   protected $displayVideo360AdvertiserLinkDataType = '';
   protected $displayVideo360AdvertiserLinkProposalType = GoogleAnalyticsAdminV1alphaDisplayVideo360AdvertiserLinkProposal::class;
@@ -41,14 +41,10 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
   protected $googleAdsLinkDataType = '';
   protected $googleSignalsSettingsType = GoogleAnalyticsAdminV1alphaGoogleSignalsSettings::class;
   protected $googleSignalsSettingsDataType = '';
-  protected $iosAppDataStreamType = GoogleAnalyticsAdminV1alphaIosAppDataStream::class;
-  protected $iosAppDataStreamDataType = '';
   protected $measurementProtocolSecretType = GoogleAnalyticsAdminV1alphaMeasurementProtocolSecret::class;
   protected $measurementProtocolSecretDataType = '';
   protected $propertyType = GoogleAnalyticsAdminV1alphaProperty::class;
   protected $propertyDataType = '';
-  protected $webDataStreamType = GoogleAnalyticsAdminV1alphaWebDataStream::class;
-  protected $webDataStreamDataType = '';
 
   /**
    * @param GoogleAnalyticsAdminV1alphaAccount
@@ -63,20 +59,6 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
   public function getAccount()
   {
     return $this->account;
-  }
-  /**
-   * @param GoogleAnalyticsAdminV1alphaAndroidAppDataStream
-   */
-  public function setAndroidAppDataStream(GoogleAnalyticsAdminV1alphaAndroidAppDataStream $androidAppDataStream)
-  {
-    $this->androidAppDataStream = $androidAppDataStream;
-  }
-  /**
-   * @return GoogleAnalyticsAdminV1alphaAndroidAppDataStream
-   */
-  public function getAndroidAppDataStream()
-  {
-    return $this->androidAppDataStream;
   }
   /**
    * @param GoogleAnalyticsAdminV1alphaConversionEvent
@@ -133,6 +115,20 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
   public function getDataRetentionSettings()
   {
     return $this->dataRetentionSettings;
+  }
+  /**
+   * @param GoogleAnalyticsAdminV1alphaDataStream
+   */
+  public function setDataStream(GoogleAnalyticsAdminV1alphaDataStream $dataStream)
+  {
+    $this->dataStream = $dataStream;
+  }
+  /**
+   * @return GoogleAnalyticsAdminV1alphaDataStream
+   */
+  public function getDataStream()
+  {
+    return $this->dataStream;
   }
   /**
    * @param GoogleAnalyticsAdminV1alphaDisplayVideo360AdvertiserLink
@@ -205,20 +201,6 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
     return $this->googleSignalsSettings;
   }
   /**
-   * @param GoogleAnalyticsAdminV1alphaIosAppDataStream
-   */
-  public function setIosAppDataStream(GoogleAnalyticsAdminV1alphaIosAppDataStream $iosAppDataStream)
-  {
-    $this->iosAppDataStream = $iosAppDataStream;
-  }
-  /**
-   * @return GoogleAnalyticsAdminV1alphaIosAppDataStream
-   */
-  public function getIosAppDataStream()
-  {
-    return $this->iosAppDataStream;
-  }
-  /**
    * @param GoogleAnalyticsAdminV1alphaMeasurementProtocolSecret
    */
   public function setMeasurementProtocolSecret(GoogleAnalyticsAdminV1alphaMeasurementProtocolSecret $measurementProtocolSecret)
@@ -245,20 +227,6 @@ class GoogleAnalyticsAdminV1alphaChangeHistoryChangeChangeHistoryResource extend
   public function getProperty()
   {
     return $this->property;
-  }
-  /**
-   * @param GoogleAnalyticsAdminV1alphaWebDataStream
-   */
-  public function setWebDataStream(GoogleAnalyticsAdminV1alphaWebDataStream $webDataStream)
-  {
-    $this->webDataStream = $webDataStream;
-  }
-  /**
-   * @return GoogleAnalyticsAdminV1alphaWebDataStream
-   */
-  public function getWebDataStream()
-  {
-    return $this->webDataStream;
   }
 }
 

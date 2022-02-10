@@ -23,6 +23,10 @@ class SecretPayload extends \Google\Model
    * @var string
    */
   public $data;
+  /**
+   * @var string
+   */
+  public $dataCrc32c;
 
   /**
    * @param string
@@ -37,6 +41,20 @@ class SecretPayload extends \Google\Model
   public function getData()
   {
     return $this->data;
+  }
+  /**
+   * @param string
+   */
+  public function setDataCrc32c($dataCrc32c)
+  {
+    $this->dataCrc32c = $dataCrc32c;
+  }
+  /**
+   * @return string
+   */
+  public function getDataCrc32c()
+  {
+    return $this->dataCrc32c;
   }
 }
 

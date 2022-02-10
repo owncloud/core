@@ -21,14 +21,6 @@ class SasPortalDeployment extends \Google\Collection
 {
   protected $collection_key = 'sasUserIds';
   /**
-   * @var string[]
-   */
-  public $allowedBillingModes;
-  /**
-   * @var string
-   */
-  public $defaultBillingMode;
-  /**
    * @var string
    */
   public $displayName;
@@ -45,34 +37,6 @@ class SasPortalDeployment extends \Google\Collection
    */
   public $sasUserIds;
 
-  /**
-   * @param string[]
-   */
-  public function setAllowedBillingModes($allowedBillingModes)
-  {
-    $this->allowedBillingModes = $allowedBillingModes;
-  }
-  /**
-   * @return string[]
-   */
-  public function getAllowedBillingModes()
-  {
-    return $this->allowedBillingModes;
-  }
-  /**
-   * @param string
-   */
-  public function setDefaultBillingMode($defaultBillingMode)
-  {
-    $this->defaultBillingMode = $defaultBillingMode;
-  }
-  /**
-   * @return string
-   */
-  public function getDefaultBillingMode()
-  {
-    return $this->defaultBillingMode;
-  }
   /**
    * @param string
    */

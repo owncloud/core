@@ -20,15 +20,41 @@ namespace Google\Service\CloudDeploy;
 class ExecutionConfig extends \Google\Collection
 {
   protected $collection_key = 'usages';
+  /**
+   * @var string
+   */
+  public $artifactStorage;
   protected $defaultPoolType = DefaultPool::class;
   protected $defaultPoolDataType = '';
   protected $privatePoolType = PrivatePool::class;
   protected $privatePoolDataType = '';
   /**
+   * @var string
+   */
+  public $serviceAccount;
+  /**
    * @var string[]
    */
   public $usages;
+  /**
+   * @var string
+   */
+  public $workerPool;
 
+  /**
+   * @param string
+   */
+  public function setArtifactStorage($artifactStorage)
+  {
+    $this->artifactStorage = $artifactStorage;
+  }
+  /**
+   * @return string
+   */
+  public function getArtifactStorage()
+  {
+    return $this->artifactStorage;
+  }
   /**
    * @param DefaultPool
    */
@@ -58,6 +84,20 @@ class ExecutionConfig extends \Google\Collection
     return $this->privatePool;
   }
   /**
+   * @param string
+   */
+  public function setServiceAccount($serviceAccount)
+  {
+    $this->serviceAccount = $serviceAccount;
+  }
+  /**
+   * @return string
+   */
+  public function getServiceAccount()
+  {
+    return $this->serviceAccount;
+  }
+  /**
    * @param string[]
    */
   public function setUsages($usages)
@@ -70,6 +110,20 @@ class ExecutionConfig extends \Google\Collection
   public function getUsages()
   {
     return $this->usages;
+  }
+  /**
+   * @param string
+   */
+  public function setWorkerPool($workerPool)
+  {
+    $this->workerPool = $workerPool;
+  }
+  /**
+   * @return string
+   */
+  public function getWorkerPool()
+  {
+    return $this->workerPool;
   }
 }
 

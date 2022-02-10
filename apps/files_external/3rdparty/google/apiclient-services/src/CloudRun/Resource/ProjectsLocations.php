@@ -17,8 +17,6 @@
 
 namespace Google\Service\CloudRun\Resource;
 
-use Google\Service\CloudRun\ListLocationsResponse;
-
 /**
  * The "locations" collection of methods.
  * Typical usage is:
@@ -29,29 +27,6 @@ use Google\Service\CloudRun\ListLocationsResponse;
  */
 class ProjectsLocations extends \Google\Service\Resource
 {
-  /**
-   * Lists information about the supported locations for this service.
-   * (locations.listProjectsLocations)
-   *
-   * @param string $name The resource that owns the locations collection, if
-   * applicable.
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param string filter A filter to narrow down results to a preferred
-   * subset. The filtering language accepts strings like "displayName=tokyo", and
-   * is documented in more detail in [AIP-160](https://google.aip.dev/160).
-   * @opt_param int pageSize The maximum number of results to return. If not set,
-   * the service selects a default.
-   * @opt_param string pageToken A page token received from the `next_page_token`
-   * field in the response. Send that page token to receive the subsequent page.
-   * @return ListLocationsResponse
-   */
-  public function listProjectsLocations($name, $optParams = [])
-  {
-    $params = ['name' => $name];
-    $params = array_merge($params, $optParams);
-    return $this->call('list', [$params], ListLocationsResponse::class);
-  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

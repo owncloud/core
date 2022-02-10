@@ -18,6 +18,7 @@
 namespace Google\Service\GoogleAnalyticsAdmin\Resource;
 
 use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaDataStream;
+use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaGlobalSiteTag;
 use Google\Service\GoogleAnalyticsAdmin\GoogleAnalyticsAdminV1alphaListDataStreamsResponse;
 use Google\Service\GoogleAnalyticsAdmin\GoogleProtobufEmpty;
 
@@ -72,6 +73,23 @@ class PropertiesDataStreams extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], GoogleAnalyticsAdminV1alphaDataStream::class);
+  }
+  /**
+   * Returns the Site Tag for the specified web stream. Site Tags are immutable
+   * singletons. (dataStreams.getGlobalSiteTag)
+   *
+   * @param string $name Required. The name of the site tag to lookup. Note that
+   * site tags are singletons and do not have unique IDs. Format:
+   * properties/{property_id}/dataStreams/{stream_id}/globalSiteTag Example:
+   * "properties/123/dataStreams/456/globalSiteTag"
+   * @param array $optParams Optional parameters.
+   * @return GoogleAnalyticsAdminV1alphaGlobalSiteTag
+   */
+  public function getGlobalSiteTag($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getGlobalSiteTag', [$params], GoogleAnalyticsAdminV1alphaGlobalSiteTag::class);
   }
   /**
    * Lists DataStreams on a property. (dataStreams.listPropertiesDataStreams)

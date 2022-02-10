@@ -32,6 +32,10 @@ class Endpoint extends \Google\Model
    */
   public $name;
   /**
+   * @var string
+   */
+  public $network;
+  /**
    * @var int
    */
   public $port;
@@ -77,6 +81,20 @@ class Endpoint extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setNetwork($network)
+  {
+    $this->network = $network;
+  }
+  /**
+   * @return string
+   */
+  public function getNetwork()
+  {
+    return $this->network;
   }
   /**
    * @param int

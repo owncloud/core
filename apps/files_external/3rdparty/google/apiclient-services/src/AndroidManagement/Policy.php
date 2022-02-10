@@ -71,6 +71,10 @@ class Policy extends \Google\Collection
    */
   public $bluetoothDisabled;
   /**
+   * @var string
+   */
+  public $cameraAccess;
+  /**
    * @var bool
    */
   public $cameraDisabled;
@@ -158,6 +162,10 @@ class Policy extends \Google\Collection
    * @var string
    */
   public $maximumTimeToLock;
+  /**
+   * @var string
+   */
+  public $microphoneAccess;
   /**
    * @var int
    */
@@ -512,6 +520,20 @@ class Policy extends \Google\Collection
     return $this->bluetoothDisabled;
   }
   /**
+   * @param string
+   */
+  public function setCameraAccess($cameraAccess)
+  {
+    $this->cameraAccess = $cameraAccess;
+  }
+  /**
+   * @return string
+   */
+  public function getCameraAccess()
+  {
+    return $this->cameraAccess;
+  }
+  /**
    * @param bool
    */
   public function setCameraDisabled($cameraDisabled)
@@ -860,6 +882,20 @@ class Policy extends \Google\Collection
   public function getMaximumTimeToLock()
   {
     return $this->maximumTimeToLock;
+  }
+  /**
+   * @param string
+   */
+  public function setMicrophoneAccess($microphoneAccess)
+  {
+    $this->microphoneAccess = $microphoneAccess;
+  }
+  /**
+   * @return string
+   */
+  public function getMicrophoneAccess()
+  {
+    return $this->microphoneAccess;
   }
   /**
    * @param int

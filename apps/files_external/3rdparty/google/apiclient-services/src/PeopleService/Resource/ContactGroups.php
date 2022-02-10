@@ -60,8 +60,9 @@ class ContactGroups extends \Google\Service\Resource
   /**
    * Create a new contact group owned by the authenticated user. Created contact
    * group names must be unique to the users contact groups. Attempting to create
-   * a group with a duplicate name will return a HTTP 409 error.
-   * (contactGroups.create)
+   * a group with a duplicate name will return a HTTP 409 error. Mutate requests
+   * for the same user should be sent sequentially to avoid increased latency and
+   * failures. (contactGroups.create)
    *
    * @param CreateContactGroupRequest $postBody
    * @param array $optParams Optional parameters.
@@ -75,7 +76,9 @@ class ContactGroups extends \Google\Service\Resource
   }
   /**
    * Delete an existing contact group owned by the authenticated user by
-   * specifying a contact group resource name. (contactGroups.delete)
+   * specifying a contact group resource name. Mutate requests for the same user
+   * should be sent sequentially to avoid increased latency and failures.
+   * (contactGroups.delete)
    *
    * @param string $resourceName Required. The resource name of the contact group
    * to delete.
@@ -145,7 +148,8 @@ class ContactGroups extends \Google\Service\Resource
    * Update the name of an existing contact group owned by the authenticated user.
    * Updated contact group names must be unique to the users contact groups.
    * Attempting to create a group with a duplicate name will return a HTTP 409
-   * error. (contactGroups.update)
+   * error. Mutate requests for the same user should be sent sequentially to avoid
+   * increased latency and failures. (contactGroups.update)
    *
    * @param string $resourceName The resource name for the contact group, assigned
    * by the server. An ASCII string, in the form of

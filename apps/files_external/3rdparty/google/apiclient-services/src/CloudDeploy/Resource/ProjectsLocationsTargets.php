@@ -176,8 +176,7 @@ class ProjectsLocationsTargets extends \Google\Service\Resource
    * Updates the parameters of a single Target. (targets.patch)
    *
    * @param string $name Optional. Name of the `Target`. Format is
-   * projects/{project}/locations/{location}/
-   * deliveryPipelines/{deliveryPipeline}/targets/a-z{0,62}.
+   * projects/{project}/locations/{location}/targets/a-z{0,62}.
    * @param Target $postBody
    * @param array $optParams Optional parameters.
    *

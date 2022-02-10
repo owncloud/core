@@ -24,6 +24,10 @@ class CreateDatabaseRequest extends \Google\Collection
    * @var string
    */
   public $createStatement;
+  /**
+   * @var string
+   */
+  public $databaseDialect;
   protected $encryptionConfigType = EncryptionConfig::class;
   protected $encryptionConfigDataType = '';
   /**
@@ -44,6 +48,20 @@ class CreateDatabaseRequest extends \Google\Collection
   public function getCreateStatement()
   {
     return $this->createStatement;
+  }
+  /**
+   * @param string
+   */
+  public function setDatabaseDialect($databaseDialect)
+  {
+    $this->databaseDialect = $databaseDialect;
+  }
+  /**
+   * @return string
+   */
+  public function getDatabaseDialect()
+  {
+    return $this->databaseDialect;
   }
   /**
    * @param EncryptionConfig

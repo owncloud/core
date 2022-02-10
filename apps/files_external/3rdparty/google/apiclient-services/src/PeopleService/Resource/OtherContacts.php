@@ -34,6 +34,8 @@ class OtherContacts extends \Google\Service\Resource
 {
   /**
    * Copies an "Other contact" to a new contact in the user's "myContacts" group
+   * Mutate requests for the same user should be sent sequentially to avoid
+   * increased latency and failures.
    * (otherContacts.copyOtherContactToMyContactsGroup)
    *
    * @param string $resourceName Required. The resource name of the "Other

@@ -25,8 +25,10 @@ class DatasetAccessEntry extends \Google\Collection
   ];
   protected $datasetType = DatasetReference::class;
   protected $datasetDataType = '';
-  protected $targetTypesType = DatasetAccessEntryTargetTypes::class;
-  protected $targetTypesDataType = 'array';
+  /**
+   * @var string[]
+   */
+  public $targetTypes;
 
   /**
    * @param DatasetReference
@@ -43,14 +45,14 @@ class DatasetAccessEntry extends \Google\Collection
     return $this->dataset;
   }
   /**
-   * @param DatasetAccessEntryTargetTypes[]
+   * @param string[]
    */
   public function setTargetTypes($targetTypes)
   {
     $this->targetTypes = $targetTypes;
   }
   /**
-   * @return DatasetAccessEntryTargetTypes[]
+   * @return string[]
    */
   public function getTargetTypes()
   {

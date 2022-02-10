@@ -26,6 +26,10 @@ class CryptoKey extends \Google\Model
   /**
    * @var string
    */
+  public $cryptoKeyBackend;
+  /**
+   * @var string
+   */
   public $destroyScheduledDuration;
   /**
    * @var bool
@@ -69,6 +73,20 @@ class CryptoKey extends \Google\Model
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setCryptoKeyBackend($cryptoKeyBackend)
+  {
+    $this->cryptoKeyBackend = $cryptoKeyBackend;
+  }
+  /**
+   * @return string
+   */
+  public function getCryptoKeyBackend()
+  {
+    return $this->cryptoKeyBackend;
   }
   /**
    * @param string

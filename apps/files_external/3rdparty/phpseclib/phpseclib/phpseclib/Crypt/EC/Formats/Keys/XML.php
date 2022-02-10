@@ -152,7 +152,9 @@ abstract class XML
         }
         $node = $nodes->item(0);
         $ns_name = $node->lookupPrefix($ns);
-        $node->removeAttributeNS($ns, $ns_name);
+        if ($ns_name) {
+            $node->removeAttributeNS($ns, $ns_name);
+        }
         return $dom->saveXML($node);
     }
 

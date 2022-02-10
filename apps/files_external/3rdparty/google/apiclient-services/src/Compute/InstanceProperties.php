@@ -63,6 +63,10 @@ class InstanceProperties extends \Google\Collection
   /**
    * @var string[]
    */
+  public $resourceManagerTags;
+  /**
+   * @var string[]
+   */
   public $resourcePolicies;
   protected $schedulingType = Scheduling::class;
   protected $schedulingDataType = '';
@@ -268,6 +272,20 @@ class InstanceProperties extends \Google\Collection
   public function getReservationAffinity()
   {
     return $this->reservationAffinity;
+  }
+  /**
+   * @param string[]
+   */
+  public function setResourceManagerTags($resourceManagerTags)
+  {
+    $this->resourceManagerTags = $resourceManagerTags;
+  }
+  /**
+   * @return string[]
+   */
+  public function getResourceManagerTags()
+  {
+    return $this->resourceManagerTags;
   }
   /**
    * @param string[]

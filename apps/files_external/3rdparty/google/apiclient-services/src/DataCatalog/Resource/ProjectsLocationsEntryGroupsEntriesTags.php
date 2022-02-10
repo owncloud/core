@@ -71,7 +71,7 @@ class ProjectsLocationsEntryGroupsEntriesTags extends \Google\Service\Resource
     return $this->call('delete', [$params], DatacatalogEmpty::class);
   }
   /**
-   * Lists tags assigned to an Entry.
+   * Lists tags assigned to an Entry. The columns in the response are lowercased.
    * (tags.listProjectsLocationsEntryGroupsEntriesTags)
    *
    * @param string $parent Required. The name of the Data Catalog resource to list

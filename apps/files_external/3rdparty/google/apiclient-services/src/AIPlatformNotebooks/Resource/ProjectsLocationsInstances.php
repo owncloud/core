@@ -36,6 +36,8 @@ use Google\Service\AIPlatformNotebooks\StopInstanceRequest;
 use Google\Service\AIPlatformNotebooks\TestIamPermissionsRequest;
 use Google\Service\AIPlatformNotebooks\TestIamPermissionsResponse;
 use Google\Service\AIPlatformNotebooks\UpdateInstanceConfigRequest;
+use Google\Service\AIPlatformNotebooks\UpdateInstanceMetadataItemsRequest;
+use Google\Service\AIPlatformNotebooks\UpdateInstanceMetadataItemsResponse;
 use Google\Service\AIPlatformNotebooks\UpdateShieldedInstanceConfigRequest;
 use Google\Service\AIPlatformNotebooks\UpgradeInstanceInternalRequest;
 use Google\Service\AIPlatformNotebooks\UpgradeInstanceRequest;
@@ -105,12 +107,16 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * field.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
-   * invalid value will be rejected. Requests for policies with any conditional
-   * bindings must specify version 3. Policies without any conditional bindings
-   * may specify any valid value or leave the field unset. To learn which
-   * resources support conditions in their IAM policies, see the [IAM
+   * @opt_param int options.requestedPolicyVersion Optional. The maximum policy
+   * version that will be used to format the policy. Valid values are 0, 1, and 3.
+   * Requests specifying an invalid value will be rejected. Requests for policies
+   * with any conditional role bindings must specify version 3. Policies with no
+   * conditional role bindings may specify any valid value or leave the field
+   * unset. The policy in the response might use the policy version that you
+   * specified, or it might use a lower policy version. For example, if you
+   * specify version 3, but the policy has no conditional role bindings, the
+   * response uses version 1. To learn which resources support conditions in their
+   * IAM policies, see the [IAM
    * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Policy
@@ -141,6 +147,9 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * @param string $notebookInstance Required. Format:
    * `projects/{project_id}/locations/{location}/instances/{instance_id}`
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string type Optional. The optional UpgradeType. Setting this field
+   * will search for additional compute images to upgrade this instance.
    * @return IsInstanceUpgradeableResponse
    */
   public function isUpgradeable($notebookInstance, $optParams = [])
@@ -362,6 +371,21 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('updateConfig', [$params], Operation::class);
+  }
+  /**
+   * Add/update metadata items for an instance. (instances.updateMetadataItems)
+   *
+   * @param string $name Required. Format:
+   * `projects/{project_id}/locations/{location}/instances/{instance_id}`
+   * @param UpdateInstanceMetadataItemsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return UpdateInstanceMetadataItemsResponse
+   */
+  public function updateMetadataItems($name, UpdateInstanceMetadataItemsRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('updateMetadataItems', [$params], UpdateInstanceMetadataItemsResponse::class);
   }
   /**
    * Updates the Shielded instance configuration of a single Instance.

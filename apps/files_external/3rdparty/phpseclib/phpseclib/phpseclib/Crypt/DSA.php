@@ -129,7 +129,7 @@ abstract class DSA extends AsymmetricKey
               SSH DSA implementations only support keys with an N of 160.
               puttygen let's you set the size of L (but not the size of N) and uses 2048 as the
               default L value. that's not really compliant with any of the FIPS standards, however,
-              for the purposes of maintaining compatibility with puttygen, we'll support it 
+              for the purposes of maintaining compatibility with puttygen, we'll support it
             */
             //case ($L >= 512 || $L <= 1024) && (($L & 0x3F) == 0) && $N == 160:
             // FIPS 186-3 changed this as follows:

@@ -112,6 +112,10 @@ class Instance extends \Google\Collection
    * @var string
    */
   public $reservedIpRange;
+  /**
+   * @var string
+   */
+  public $secondaryIpRange;
   protected $serverCaCertsType = TlsCertificate::class;
   protected $serverCaCertsDataType = 'array';
   /**
@@ -480,6 +484,20 @@ class Instance extends \Google\Collection
   public function getReservedIpRange()
   {
     return $this->reservedIpRange;
+  }
+  /**
+   * @param string
+   */
+  public function setSecondaryIpRange($secondaryIpRange)
+  {
+    $this->secondaryIpRange = $secondaryIpRange;
+  }
+  /**
+   * @return string
+   */
+  public function getSecondaryIpRange()
+  {
+    return $this->secondaryIpRange;
   }
   /**
    * @param TlsCertificate[]

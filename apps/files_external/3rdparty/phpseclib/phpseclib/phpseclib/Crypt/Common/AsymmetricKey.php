@@ -124,6 +124,12 @@ abstract class AsymmetricKey
     private $comment;
 
     /**
+     * @param string $type
+     * @return string
+     */
+    abstract public function toString($type, array $options = []);
+
+    /**
      * The constructor
      */
     protected function __construct()
@@ -245,7 +251,7 @@ abstract class AsymmetricKey
      * @param string $type
      * @param string $key
      * @param string $password optional
-     * @return AsymmetricKey
+     * @return static
      */
     public static function loadFormat($type, $key, $password = false)
     {

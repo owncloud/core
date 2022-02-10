@@ -23,6 +23,10 @@ class PatchConfig extends \Google\Model
   protected $aptDataType = '';
   protected $gooType = GooSettings::class;
   protected $gooDataType = '';
+  /**
+   * @var bool
+   */
+  public $migInstancesAllowed;
   protected $postStepType = ExecStep::class;
   protected $postStepDataType = '';
   protected $preStepType = ExecStep::class;
@@ -65,6 +69,20 @@ class PatchConfig extends \Google\Model
   public function getGoo()
   {
     return $this->goo;
+  }
+  /**
+   * @param bool
+   */
+  public function setMigInstancesAllowed($migInstancesAllowed)
+  {
+    $this->migInstancesAllowed = $migInstancesAllowed;
+  }
+  /**
+   * @return bool
+   */
+  public function getMigInstancesAllowed()
+  {
+    return $this->migInstancesAllowed;
   }
   /**
    * @param ExecStep

@@ -54,6 +54,22 @@ class InstanceGroupManagerActionsSummary extends \Google\Model
   /**
    * @var int
    */
+  public $resuming;
+  /**
+   * @var int
+   */
+  public $starting;
+  /**
+   * @var int
+   */
+  public $stopping;
+  /**
+   * @var int
+   */
+  public $suspending;
+  /**
+   * @var int
+   */
   public $verifying;
 
   /**
@@ -167,6 +183,62 @@ class InstanceGroupManagerActionsSummary extends \Google\Model
   public function getRestarting()
   {
     return $this->restarting;
+  }
+  /**
+   * @param int
+   */
+  public function setResuming($resuming)
+  {
+    $this->resuming = $resuming;
+  }
+  /**
+   * @return int
+   */
+  public function getResuming()
+  {
+    return $this->resuming;
+  }
+  /**
+   * @param int
+   */
+  public function setStarting($starting)
+  {
+    $this->starting = $starting;
+  }
+  /**
+   * @return int
+   */
+  public function getStarting()
+  {
+    return $this->starting;
+  }
+  /**
+   * @param int
+   */
+  public function setStopping($stopping)
+  {
+    $this->stopping = $stopping;
+  }
+  /**
+   * @return int
+   */
+  public function getStopping()
+  {
+    return $this->stopping;
+  }
+  /**
+   * @param int
+   */
+  public function setSuspending($suspending)
+  {
+    $this->suspending = $suspending;
+  }
+  /**
+   * @return int
+   */
+  public function getSuspending()
+  {
+    return $this->suspending;
   }
   /**
    * @param int

@@ -27,6 +27,10 @@ class Type extends \Google\Model
   public $code;
   protected $structTypeType = StructType::class;
   protected $structTypeDataType = '';
+  /**
+   * @var string
+   */
+  public $typeAnnotation;
 
   /**
    * @param Type
@@ -69,6 +73,20 @@ class Type extends \Google\Model
   public function getStructType()
   {
     return $this->structType;
+  }
+  /**
+   * @param string
+   */
+  public function setTypeAnnotation($typeAnnotation)
+  {
+    $this->typeAnnotation = $typeAnnotation;
+  }
+  /**
+   * @return string
+   */
+  public function getTypeAnnotation()
+  {
+    return $this->typeAnnotation;
   }
 }
 

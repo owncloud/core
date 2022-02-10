@@ -62,13 +62,13 @@ class ProjectsApps extends \Google\Service\Resource
     return $this->call('exchangeAppAttestAssertion', [$params], GoogleFirebaseAppcheckV1betaAttestationTokenResponse::class);
   }
   /**
-   * Accepts an App Attest CBOR attestation and verifies it with Apple using the
-   * developer's preconfigured team and bundle IDs. If valid, returns an
-   * attestation artifact that can later be exchanged for an
-   * AttestationTokenResponse using ExchangeAppAttestAssertion. For convenience
-   * and performance, this method's response object will also contain an App Check
-   * token encapsulated in an AttestationTokenResponse (if the verification is
-   * successful). (apps.exchangeAppAttestAttestation)
+   * Accepts an App Attest CBOR attestation and verifies it with Apple using your
+   * preconfigured team and bundle IDs. If valid, returns an attestation artifact
+   * that can later be exchanged for an AttestationTokenResponse using
+   * ExchangeAppAttestAssertion. For convenience and performance, this method's
+   * response object will also contain an App Check token encapsulated in an
+   * AttestationTokenResponse (if the verification is successful).
+   * (apps.exchangeAppAttestAttestation)
    *
    * @param string $app Required. The relative resource name of the iOS app, in
    * the format: ``` projects/{project_number}/apps/{app_id} ``` If necessary, the

@@ -42,6 +42,10 @@ class GoogleCloudApigeeV1Instance extends \Google\Model
   /**
    * @var string
    */
+  public $ipRange;
+  /**
+   * @var string
+   */
   public $lastModifiedAt;
   /**
    * @var string
@@ -137,6 +141,20 @@ class GoogleCloudApigeeV1Instance extends \Google\Model
   public function getHost()
   {
     return $this->host;
+  }
+  /**
+   * @param string
+   */
+  public function setIpRange($ipRange)
+  {
+    $this->ipRange = $ipRange;
+  }
+  /**
+   * @return string
+   */
+  public function getIpRange()
+  {
+    return $this->ipRange;
   }
   /**
    * @param string

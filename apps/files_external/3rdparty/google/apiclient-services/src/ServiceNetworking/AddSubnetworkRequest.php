@@ -21,6 +21,10 @@ class AddSubnetworkRequest extends \Google\Collection
 {
   protected $collection_key = 'subnetworkUsers';
   /**
+   * @var bool
+   */
+  public $checkServiceNetworkingUsePermission;
+  /**
    * @var string
    */
   public $consumer;
@@ -71,6 +75,20 @@ class AddSubnetworkRequest extends \Google\Collection
    */
   public $subnetworkUsers;
 
+  /**
+   * @param bool
+   */
+  public function setCheckServiceNetworkingUsePermission($checkServiceNetworkingUsePermission)
+  {
+    $this->checkServiceNetworkingUsePermission = $checkServiceNetworkingUsePermission;
+  }
+  /**
+   * @return bool
+   */
+  public function getCheckServiceNetworkingUsePermission()
+  {
+    return $this->checkServiceNetworkingUsePermission;
+  }
   /**
    * @param string
    */

@@ -19,7 +19,7 @@ namespace Google\Service\Bigquery;
 
 class Dataset extends \Google\Collection
 {
-  protected $collection_key = 'access';
+  protected $collection_key = 'tags';
   protected $accessType = DatasetAccess::class;
   protected $accessDataType = 'array';
   /**
@@ -86,6 +86,8 @@ class Dataset extends \Google\Collection
    * @var string
    */
   public $selfLink;
+  protected $tagsType = DatasetTags::class;
+  protected $tagsDataType = 'array';
 
   /**
    * @param DatasetAccess[]
@@ -338,6 +340,20 @@ class Dataset extends \Google\Collection
   public function getSelfLink()
   {
     return $this->selfLink;
+  }
+  /**
+   * @param DatasetTags[]
+   */
+  public function setTags($tags)
+  {
+    $this->tags = $tags;
+  }
+  /**
+   * @return DatasetTags[]
+   */
+  public function getTags()
+  {
+    return $this->tags;
   }
 }
 

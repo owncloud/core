@@ -26,6 +26,10 @@ class GoogleCloudApigeeV1DebugSession extends \Google\Model
   /**
    * @var string
    */
+  public $createTime;
+  /**
+   * @var string
+   */
   public $filter;
   /**
    * @var string
@@ -57,6 +61,20 @@ class GoogleCloudApigeeV1DebugSession extends \Google\Model
   public function getCount()
   {
     return $this->count;
+  }
+  /**
+   * @param string
+   */
+  public function setCreateTime($createTime)
+  {
+    $this->createTime = $createTime;
+  }
+  /**
+   * @return string
+   */
+  public function getCreateTime()
+  {
+    return $this->createTime;
   }
   /**
    * @param string

@@ -23,7 +23,8 @@ use Google\Client;
  * Service definition for Connectors (v1).
  *
  * <p>
-</p>
+ * Enables users to create and manage connections to Google Cloud services and
+ * third-party business applications using the Connectors interface.</p>
  *
  * <p>
  * For more information about this service, see the API

@@ -45,6 +45,7 @@ class SearchConsole extends \Google\Service
   public $searchanalytics;
   public $sitemaps;
   public $sites;
+  public $urlInspection_index;
   public $urlTestingTools_mobileFriendlyTest;
 
   /**
@@ -191,6 +192,20 @@ class SearchConsole extends \Google\Service
             ],'list' => [
               'path' => 'webmasters/v3/sites',
               'httpMethod' => 'GET',
+              'parameters' => [],
+            ],
+          ]
+        ]
+    );
+    $this->urlInspection_index = new SearchConsole\Resource\UrlInspectionIndex(
+        $this,
+        $this->serviceName,
+        'index',
+        [
+          'methods' => [
+            'inspect' => [
+              'path' => 'v1/urlInspection/index:inspect',
+              'httpMethod' => 'POST',
               'parameters' => [],
             ],
           ]

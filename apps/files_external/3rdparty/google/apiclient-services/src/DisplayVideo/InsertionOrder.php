@@ -65,6 +65,10 @@ class InsertionOrder extends \Google\Collection
   /**
    * @var string
    */
+  public $reservationType;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -262,6 +266,20 @@ class InsertionOrder extends \Google\Collection
   public function getPerformanceGoal()
   {
     return $this->performanceGoal;
+  }
+  /**
+   * @param string
+   */
+  public function setReservationType($reservationType)
+  {
+    $this->reservationType = $reservationType;
+  }
+  /**
+   * @return string
+   */
+  public function getReservationType()
+  {
+    return $this->reservationType;
   }
   /**
    * @param string

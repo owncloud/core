@@ -21,6 +21,10 @@ class GoogleCloudDocumentaiV1ReviewDocumentOperationMetadata extends \Google\Mod
 {
   protected $commonMetadataType = GoogleCloudDocumentaiV1CommonOperationMetadata::class;
   protected $commonMetadataDataType = '';
+  /**
+   * @var string
+   */
+  public $questionId;
 
   /**
    * @param GoogleCloudDocumentaiV1CommonOperationMetadata
@@ -35,6 +39,20 @@ class GoogleCloudDocumentaiV1ReviewDocumentOperationMetadata extends \Google\Mod
   public function getCommonMetadata()
   {
     return $this->commonMetadata;
+  }
+  /**
+   * @param string
+   */
+  public function setQuestionId($questionId)
+  {
+    $this->questionId = $questionId;
+  }
+  /**
+   * @return string
+   */
+  public function getQuestionId()
+  {
+    return $this->questionId;
   }
 }
 

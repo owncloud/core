@@ -28,6 +28,10 @@ class GoogleCloudDocumentaiV1beta3ReviewDocumentOperationMetadata extends \Googl
   /**
    * @var string
    */
+  public $questionId;
+  /**
+   * @var string
+   */
   public $state;
   /**
    * @var string
@@ -65,6 +69,20 @@ class GoogleCloudDocumentaiV1beta3ReviewDocumentOperationMetadata extends \Googl
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setQuestionId($questionId)
+  {
+    $this->questionId = $questionId;
+  }
+  /**
+   * @return string
+   */
+  public function getQuestionId()
+  {
+    return $this->questionId;
   }
   /**
    * @param string

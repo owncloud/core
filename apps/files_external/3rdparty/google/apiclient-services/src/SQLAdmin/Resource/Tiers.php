@@ -30,8 +30,8 @@ use Google\Service\SQLAdmin\TiersListResponse;
 class Tiers extends \Google\Service\Resource
 {
   /**
-   * Lists all available machine types (tiers) for Cloud SQL, for example, db-
-   * custom-1-3840. For more information, see
+   * Lists all available machine types (tiers) for Cloud SQL, for example, `db-
+   * custom-1-3840`. For more information, see
    * https://cloud.google.com/sql/pricing. (tiers.listTiers)
    *
    * @param string $project Project ID of the project for which to list tiers.

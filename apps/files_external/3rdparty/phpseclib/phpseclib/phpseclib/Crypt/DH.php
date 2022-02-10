@@ -78,7 +78,7 @@ abstract class DH extends AsymmetricKey
      *  - a string (eg. diffie-hellman-group14-sha1)
      *
      * @access public
-     * @return \phpseclib3\Crypt\DH|bool
+     * @return Parameters
      */
     public static function createParameters(...$args)
     {

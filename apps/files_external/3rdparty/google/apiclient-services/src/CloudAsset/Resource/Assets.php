@@ -33,10 +33,11 @@ class Assets extends \Google\Service\Resource
    * Lists assets with time and resource types and returns paged results in
    * response. (assets.listAssets)
    *
-   * @param string $parent Required. Name of the organization or project the
-   * assets belong to. Format: "organizations/[organization-number]" (such as
+   * @param string $parent Required. Name of the organization, folder, or project
+   * the assets belong to. Format: "organizations/[organization-number]" (such as
    * "organizations/123"), "projects/[project-id]" (such as "projects/my-project-
-   * id"), or "projects/[project-number]" (such as "projects/12345").
+   * id"), "projects/[project-number]" (such as "projects/12345"), or "folders
+   * /[folder-number]" (such as "folders/12345").
    * @param array $optParams Optional parameters.
    *
    * @opt_param string assetTypes A list of asset types to take a snapshot for.

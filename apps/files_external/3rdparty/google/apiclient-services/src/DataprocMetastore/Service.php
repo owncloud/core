@@ -27,6 +27,10 @@ class Service extends \Google\Model
    * @var string
    */
   public $createTime;
+  /**
+   * @var string
+   */
+  public $databaseType;
   protected $encryptionConfigType = EncryptionConfig::class;
   protected $encryptionConfigDataType = '';
   /**
@@ -111,6 +115,20 @@ class Service extends \Google\Model
   public function getCreateTime()
   {
     return $this->createTime;
+  }
+  /**
+   * @param string
+   */
+  public function setDatabaseType($databaseType)
+  {
+    $this->databaseType = $databaseType;
+  }
+  /**
+   * @return string
+   */
+  public function getDatabaseType()
+  {
+    return $this->databaseType;
   }
   /**
    * @param EncryptionConfig

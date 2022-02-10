@@ -46,6 +46,7 @@ class CertificateAuthorityService extends \Google\Service
   public $projects_locations_caPools_certificateAuthorities_certificateRevocationLists;
   public $projects_locations_caPools_certificates;
   public $projects_locations_certificateTemplates;
+  public $projects_locations_managedPkis;
   public $projects_locations_operations;
 
   /**
@@ -719,6 +720,30 @@ class CertificateAuthorityService extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_managedPkis = new CertificateAuthorityService\Resource\ProjectsLocationsManagedPkis(
+        $this,
+        $this->serviceName,
+        'managedPkis',
+        [
+          'methods' => [
+            'getIamPolicy' => [
+              'path' => 'v1/{+resource}:getIamPolicy',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'resource' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'options.requestedPolicyVersion' => [
+                  'location' => 'query',
+                  'type' => 'integer',
                 ],
               ],
             ],

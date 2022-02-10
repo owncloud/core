@@ -243,7 +243,8 @@ class OrganizationsEnvironments extends \Google\Service\Resource
    * existing properties to the API, even if they are not being changed. If you
    * omit properties from the payload, the properties are removed. To get the
    * current list of properties for the environment, use the [Get Environment
-   * API](get). (environments.update)
+   * API](get). **Note**: Both `PUT` and `POST` methods are supported for updating
+   * an existing environment. (environments.update)
    *
    * @param string $name Required. Name of the environment. Use the following
    * structure in your request: `organizations/{org}/environments/{env}`
@@ -283,7 +284,8 @@ class OrganizationsEnvironments extends \Google\Service\Resource
    * existing properties to the API, even if they are not being changed. If you
    * omit properties from the payload, the properties are removed. To get the
    * current list of properties for the environment, use the [Get Environment
-   * API](get). (environments.updateEnvironment)
+   * API](get). **Note**: Both `PUT` and `POST` methods are supported for updating
+   * an existing environment. (environments.updateEnvironment)
    *
    * @param string $name Required. Name of the environment. Use the following
    * structure in your request: `organizations/{org}/environments/{env}`

@@ -24,6 +24,8 @@ class Target extends \Google\Collection
    * @var string[]
    */
   public $annotations;
+  protected $anthosClusterType = AnthosCluster::class;
+  protected $anthosClusterDataType = '';
   /**
    * @var string
    */
@@ -78,6 +80,20 @@ class Target extends \Google\Collection
   public function getAnnotations()
   {
     return $this->annotations;
+  }
+  /**
+   * @param AnthosCluster
+   */
+  public function setAnthosCluster(AnthosCluster $anthosCluster)
+  {
+    $this->anthosCluster = $anthosCluster;
+  }
+  /**
+   * @return AnthosCluster
+   */
+  public function getAnthosCluster()
+  {
+    return $this->anthosCluster;
   }
   /**
    * @param string

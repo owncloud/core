@@ -33,7 +33,11 @@ class AdvertisersAssets extends \Google\Service\Resource
   /**
    * Uploads an asset. Returns the ID of the newly uploaded asset if successful.
    * The asset file size should be no more than 10 MB for images, 200 MB for ZIP
-   * files, and 1 GB for videos. (assets.upload)
+   * files, and 1 GB for videos. Must be used within the [multipart media upload
+   * process](/display-video/api/guides/how-tos/upload#multipart). Examples using
+   * provided client libraries can be found in our [Creating Creatives guide
+   * ](/display-video/api/guides/creating-creatives/overview#upload_an_asset).
+   * (assets.upload)
    *
    * @param string $advertiserId Required. The ID of the advertiser this asset
    * belongs to.

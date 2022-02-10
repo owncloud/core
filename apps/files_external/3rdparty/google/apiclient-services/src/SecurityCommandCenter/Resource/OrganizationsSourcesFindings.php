@@ -243,7 +243,8 @@ class OrganizationsSourcesFindings extends \Google\Service\Resource
    *
    * @opt_param string startTime The time at which the updated SecurityMarks take
    * effect. If not set uses current server time. Updates will be applied to the
-   * SecurityMarks that are active immediately preceding this time.
+   * SecurityMarks that are active immediately preceding this time. Must be
+   * smaller or equal to the server time.
    * @opt_param string updateMask The FieldMask to use when updating the security
    * marks resource. The field mask must not contain duplicate fields. If empty or
    * set to "marks", all marks will be replaced. Individual marks can be updated
