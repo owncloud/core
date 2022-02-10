@@ -149,6 +149,10 @@ class Datastream extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'validateOnly' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
               ],
             ],'delete' => [
               'path' => 'v1/{+name}',
@@ -230,6 +234,10 @@ class Datastream extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+                'validateOnly' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ],
               ],
             ],

@@ -103,7 +103,7 @@ class TransferJobs extends \Google\Service\Resource
   /**
    * Attempts to start a new TransferOperation for the current TransferJob. A
    * TransferJob has a maximum of one active TransferOperation. If this method is
-   * called while a TransferOperation is active, an error wil be returned.
+   * called while a TransferOperation is active, an error will be returned.
    * (transferJobs.run)
    *
    * @param string $jobName Required. The name of the transfer job.

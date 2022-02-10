@@ -22,8 +22,26 @@ class ExternalProtectionLevelOptions extends \Google\Model
   /**
    * @var string
    */
+  public $ekmConnectionKeyPath;
+  /**
+   * @var string
+   */
   public $externalKeyUri;
 
+  /**
+   * @param string
+   */
+  public function setEkmConnectionKeyPath($ekmConnectionKeyPath)
+  {
+    $this->ekmConnectionKeyPath = $ekmConnectionKeyPath;
+  }
+  /**
+   * @return string
+   */
+  public function getEkmConnectionKeyPath()
+  {
+    return $this->ekmConnectionKeyPath;
+  }
   /**
    * @param string
    */

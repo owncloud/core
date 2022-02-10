@@ -23,6 +23,8 @@ class GoogleCloudDatacatalogV1Entry extends \Google\Model
   protected $bigqueryDateShardedSpecDataType = '';
   protected $bigqueryTableSpecType = GoogleCloudDatacatalogV1BigQueryTableSpec::class;
   protected $bigqueryTableSpecDataType = '';
+  protected $businessContextType = GoogleCloudDatacatalogV1BusinessContext::class;
+  protected $businessContextDataType = '';
   protected $dataSourceType = GoogleCloudDatacatalogV1DataSource::class;
   protected $dataSourceDataType = '';
   protected $dataSourceConnectionSpecType = GoogleCloudDatacatalogV1DataSourceConnectionSpec::class;
@@ -109,6 +111,20 @@ class GoogleCloudDatacatalogV1Entry extends \Google\Model
   public function getBigqueryTableSpec()
   {
     return $this->bigqueryTableSpec;
+  }
+  /**
+   * @param GoogleCloudDatacatalogV1BusinessContext
+   */
+  public function setBusinessContext(GoogleCloudDatacatalogV1BusinessContext $businessContext)
+  {
+    $this->businessContext = $businessContext;
+  }
+  /**
+   * @return GoogleCloudDatacatalogV1BusinessContext
+   */
+  public function getBusinessContext()
+  {
+    return $this->businessContext;
   }
   /**
    * @param GoogleCloudDatacatalogV1DataSource

@@ -28,6 +28,8 @@ class ResourceRecordSet extends \Google\Collection
    * @var string
    */
   public $name;
+  protected $routingPolicyType = RRSetRoutingPolicy::class;
+  protected $routingPolicyDataType = '';
   /**
    * @var string[]
    */
@@ -72,6 +74,20 @@ class ResourceRecordSet extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param RRSetRoutingPolicy
+   */
+  public function setRoutingPolicy(RRSetRoutingPolicy $routingPolicy)
+  {
+    $this->routingPolicy = $routingPolicy;
+  }
+  /**
+   * @return RRSetRoutingPolicy
+   */
+  public function getRoutingPolicy()
+  {
+    return $this->routingPolicy;
   }
   /**
    * @param string[]

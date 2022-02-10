@@ -38,11 +38,7 @@ class Texttospeech extends \Google\Service
   /** See, edit, configure, and delete your Google Cloud data and see the email address for your Google Account.. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
-  /** View, manage and query your Dialogflow agents. */
-  const DIALOGFLOW =
-      "https://www.googleapis.com/auth/dialogflow";
 
-  public $projects_locations_datasets;
   public $text;
   public $voices;
 
@@ -62,26 +58,6 @@ class Texttospeech extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'texttospeech';
 
-    $this->projects_locations_datasets = new Texttospeech\Resource\ProjectsLocationsDatasets(
-        $this,
-        $this->serviceName,
-        'datasets',
-        [
-          'methods' => [
-            'import' => [
-              'path' => 'v1/{+name}:import',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
     $this->text = new Texttospeech\Resource\Text(
         $this,
         $this->serviceName,

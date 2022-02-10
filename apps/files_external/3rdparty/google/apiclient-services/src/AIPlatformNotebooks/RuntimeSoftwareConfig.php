@@ -17,8 +17,9 @@
 
 namespace Google\Service\AIPlatformNotebooks;
 
-class RuntimeSoftwareConfig extends \Google\Model
+class RuntimeSoftwareConfig extends \Google\Collection
 {
+  protected $collection_key = 'kernels';
   /**
    * @var string
    */
@@ -39,6 +40,8 @@ class RuntimeSoftwareConfig extends \Google\Model
    * @var bool
    */
   public $installGpuDriver;
+  protected $kernelsType = ContainerImage::class;
+  protected $kernelsDataType = 'array';
   /**
    * @var string
    */
@@ -117,6 +120,20 @@ class RuntimeSoftwareConfig extends \Google\Model
   public function getInstallGpuDriver()
   {
     return $this->installGpuDriver;
+  }
+  /**
+   * @param ContainerImage[]
+   */
+  public function setKernels($kernels)
+  {
+    $this->kernels = $kernels;
+  }
+  /**
+   * @return ContainerImage[]
+   */
+  public function getKernels()
+  {
+    return $this->kernels;
   }
   /**
    * @param string

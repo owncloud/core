@@ -98,7 +98,7 @@ class Users extends \Google\Service\Resource
    * `customerId` is also returned as part of the [Users resource](/admin-
    * sdk/directory/v1/reference/users). Either the `customer` or the `domain`
    * parameter must be provided.
-   * @opt_param string domain The domain name. Use this field to get fields from
+   * @opt_param string domain The domain name. Use this field to get groups from
    * only one domain. To return all domains for a customer account, use the
    * `customer` query parameter instead. Either the `customer` or the `domain`
    * parameter must be provided.
@@ -114,7 +114,7 @@ class Users extends \Google\Service\Resource
    * @opt_param string showDeleted If set to `true`, retrieves the list of deleted
    * users. (Default: `false`)
    * @opt_param string sortOrder Whether to return results in ascending or
-   * descending order.
+   * descending order, ignoring case.
    * @opt_param string viewType Whether to fetch the administrator-only or domain-
    * wide public view of the user. For more information, see [Retrieve a user as a
    * non-administrator](/admin-sdk/directory/v1/guides/manage-

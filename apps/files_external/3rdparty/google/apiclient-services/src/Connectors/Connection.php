@@ -49,10 +49,6 @@ class Connection extends \Google\Collection
    */
   public $imageLocation;
   /**
-   * @var bool
-   */
-  public $inactive;
-  /**
    * @var string[]
    */
   public $labels;
@@ -72,6 +68,10 @@ class Connection extends \Google\Collection
   public $serviceDirectory;
   protected $statusType = ConnectionStatus::class;
   protected $statusDataType = '';
+  /**
+   * @var bool
+   */
+  public $suspended;
   /**
    * @var string
    */
@@ -190,20 +190,6 @@ class Connection extends \Google\Collection
     return $this->imageLocation;
   }
   /**
-   * @param bool
-   */
-  public function setInactive($inactive)
-  {
-    $this->inactive = $inactive;
-  }
-  /**
-   * @return bool
-   */
-  public function getInactive()
-  {
-    return $this->inactive;
-  }
-  /**
    * @param string[]
    */
   public function setLabels($labels)
@@ -286,6 +272,20 @@ class Connection extends \Google\Collection
   public function getStatus()
   {
     return $this->status;
+  }
+  /**
+   * @param bool
+   */
+  public function setSuspended($suspended)
+  {
+    $this->suspended = $suspended;
+  }
+  /**
+   * @return bool
+   */
+  public function getSuspended()
+  {
+    return $this->suspended;
   }
   /**
    * @param string

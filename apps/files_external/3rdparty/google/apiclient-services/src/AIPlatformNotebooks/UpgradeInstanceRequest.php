@@ -19,6 +19,25 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class UpgradeInstanceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $type;
+
+  /**
+   * @param string
+   */
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+  /**
+   * @return string
+   */
+  public function getType()
+  {
+    return $this->type;
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

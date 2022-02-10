@@ -19,6 +19,8 @@ namespace Google\Service\OrgPolicyAPI;
 
 class GoogleCloudOrgpolicyV2Policy extends \Google\Model
 {
+  protected $alternateType = GoogleCloudOrgpolicyV2AlternatePolicySpec::class;
+  protected $alternateDataType = '';
   /**
    * @var string
    */
@@ -26,6 +28,20 @@ class GoogleCloudOrgpolicyV2Policy extends \Google\Model
   protected $specType = GoogleCloudOrgpolicyV2PolicySpec::class;
   protected $specDataType = '';
 
+  /**
+   * @param GoogleCloudOrgpolicyV2AlternatePolicySpec
+   */
+  public function setAlternate(GoogleCloudOrgpolicyV2AlternatePolicySpec $alternate)
+  {
+    $this->alternate = $alternate;
+  }
+  /**
+   * @return GoogleCloudOrgpolicyV2AlternatePolicySpec
+   */
+  public function getAlternate()
+  {
+    return $this->alternate;
+  }
   /**
    * @param string
    */

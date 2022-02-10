@@ -17,12 +17,25 @@
 
 namespace Google\Service\ShoppingContent;
 
-class PosStore extends \Google\Model
+class PosStore extends \Google\Collection
 {
+  protected $collection_key = 'gcidCategory';
+  /**
+   * @var string[]
+   */
+  public $gcidCategory;
   /**
    * @var string
    */
   public $kind;
+  /**
+   * @var string
+   */
+  public $phoneNumber;
+  /**
+   * @var string
+   */
+  public $placeId;
   /**
    * @var string
    */
@@ -31,7 +44,29 @@ class PosStore extends \Google\Model
    * @var string
    */
   public $storeCode;
+  /**
+   * @var string
+   */
+  public $storeName;
+  /**
+   * @var string
+   */
+  public $websiteUrl;
 
+  /**
+   * @param string[]
+   */
+  public function setGcidCategory($gcidCategory)
+  {
+    $this->gcidCategory = $gcidCategory;
+  }
+  /**
+   * @return string[]
+   */
+  public function getGcidCategory()
+  {
+    return $this->gcidCategory;
+  }
   /**
    * @param string
    */
@@ -45,6 +80,34 @@ class PosStore extends \Google\Model
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param string
+   */
+  public function setPhoneNumber($phoneNumber)
+  {
+    $this->phoneNumber = $phoneNumber;
+  }
+  /**
+   * @return string
+   */
+  public function getPhoneNumber()
+  {
+    return $this->phoneNumber;
+  }
+  /**
+   * @param string
+   */
+  public function setPlaceId($placeId)
+  {
+    $this->placeId = $placeId;
+  }
+  /**
+   * @return string
+   */
+  public function getPlaceId()
+  {
+    return $this->placeId;
   }
   /**
    * @param string
@@ -73,6 +136,34 @@ class PosStore extends \Google\Model
   public function getStoreCode()
   {
     return $this->storeCode;
+  }
+  /**
+   * @param string
+   */
+  public function setStoreName($storeName)
+  {
+    $this->storeName = $storeName;
+  }
+  /**
+   * @return string
+   */
+  public function getStoreName()
+  {
+    return $this->storeName;
+  }
+  /**
+   * @param string
+   */
+  public function setWebsiteUrl($websiteUrl)
+  {
+    $this->websiteUrl = $websiteUrl;
+  }
+  /**
+   * @return string
+   */
+  public function getWebsiteUrl()
+  {
+    return $this->websiteUrl;
   }
 }
 

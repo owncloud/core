@@ -18,6 +18,7 @@
 namespace Google\Service\Logging\Resource;
 
 use Google\Service\Logging\CmekSettings;
+use Google\Service\Logging\Settings;
 
 /**
  * The "projects" collection of methods.
@@ -54,6 +55,33 @@ class Projects extends \Google\Service\Resource
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('getCmekSettings', [$params], CmekSettings::class);
+  }
+  /**
+   * Gets the Log Router settings for the given resource.Note: Settings for the
+   * Log Router can be get for Google Cloud projects, folders, organizations and
+   * billing accounts. Currently it can only be configured for organizations. Once
+   * configured for an organization, it applies to all projects and folders in the
+   * Google Cloud organization.See Enabling CMEK for Log Router
+   * (https://cloud.google.com/logging/docs/routing/managed-encryption) for more
+   * information. (projects.getSettings)
+   *
+   * @param string $name Required. The resource for which to retrieve settings.
+   * "projects/[PROJECT_ID]/settings" "organizations/[ORGANIZATION_ID]/settings"
+   * "billingAccounts/[BILLING_ACCOUNT_ID]/settings"
+   * "folders/[FOLDER_ID]/settings" For
+   * example:"organizations/12345/settings"Note: Settings for the Log Router can
+   * be get for Google Cloud projects, folders, organizations and billing
+   * accounts. Currently it can only be configured for organizations. Once
+   * configured for an organization, it applies to all projects and folders in the
+   * Google Cloud organization.
+   * @param array $optParams Optional parameters.
+   * @return Settings
+   */
+  public function getSettings($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getSettings', [$params], Settings::class);
   }
 }
 

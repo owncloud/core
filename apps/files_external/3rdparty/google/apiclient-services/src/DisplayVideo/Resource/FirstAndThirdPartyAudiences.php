@@ -17,6 +17,8 @@
 
 namespace Google\Service\DisplayVideo\Resource;
 
+use Google\Service\DisplayVideo\EditCustomerMatchMembersRequest;
+use Google\Service\DisplayVideo\EditCustomerMatchMembersResponse;
 use Google\Service\DisplayVideo\FirstAndThirdPartyAudience;
 use Google\Service\DisplayVideo\ListFirstAndThirdPartyAudiencesResponse;
 
@@ -30,6 +32,42 @@ use Google\Service\DisplayVideo\ListFirstAndThirdPartyAudiencesResponse;
  */
 class FirstAndThirdPartyAudiences extends \Google\Service\Resource
 {
+  /**
+   * Creates a FirstAndThirdPartyAudience. Only supported for the following
+   * audience_type: * `CUSTOMER_MATCH_CONTACT_INFO` * `CUSTOMER_MATCH_DEVICE_ID`
+   * (firstAndThirdPartyAudiences.create)
+   *
+   * @param FirstAndThirdPartyAudience $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string advertiserId Required. The ID of the advertiser under whom
+   * the FirstAndThirdPartyAudience will be created.
+   * @return FirstAndThirdPartyAudience
+   */
+  public function create(FirstAndThirdPartyAudience $postBody, $optParams = [])
+  {
+    $params = ['postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], FirstAndThirdPartyAudience::class);
+  }
+  /**
+   * Updates the member list of a Customer Match audience. Only supported for the
+   * following audience_type: * `CUSTOMER_MATCH_CONTACT_INFO` *
+   * `CUSTOMER_MATCH_DEVICE_ID`
+   * (firstAndThirdPartyAudiences.editCustomerMatchMembers)
+   *
+   * @param string $firstAndThirdPartyAudienceId Required. The ID of the Customer
+   * Match FirstAndThirdPartyAudience whose members will be edited.
+   * @param EditCustomerMatchMembersRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return EditCustomerMatchMembersResponse
+   */
+  public function editCustomerMatchMembers($firstAndThirdPartyAudienceId, EditCustomerMatchMembersRequest $postBody, $optParams = [])
+  {
+    $params = ['firstAndThirdPartyAudienceId' => $firstAndThirdPartyAudienceId, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('editCustomerMatchMembers', [$params], EditCustomerMatchMembersResponse::class);
+  }
   /**
    * Gets a first and third party audience. (firstAndThirdPartyAudiences.get)
    *
@@ -85,6 +123,28 @@ class FirstAndThirdPartyAudiences extends \Google\Service\Resource
     $params = [];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListFirstAndThirdPartyAudiencesResponse::class);
+  }
+  /**
+   * Updates an existing FirstAndThirdPartyAudience. Only supported for the
+   * following audience_type: * `CUSTOMER_MATCH_CONTACT_INFO` *
+   * `CUSTOMER_MATCH_DEVICE_ID` (firstAndThirdPartyAudiences.patch)
+   *
+   * @param string $firstAndThirdPartyAudienceId Output only. The unique ID of the
+   * first and third party audience. Assigned by the system.
+   * @param FirstAndThirdPartyAudience $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string advertiserId Required. The ID of the owner advertiser of
+   * the updated FirstAndThirdPartyAudience.
+   * @opt_param string updateMask Required. The mask to control which fields to
+   * update.
+   * @return FirstAndThirdPartyAudience
+   */
+  public function patch($firstAndThirdPartyAudienceId, FirstAndThirdPartyAudience $postBody, $optParams = [])
+  {
+    $params = ['firstAndThirdPartyAudienceId' => $firstAndThirdPartyAudienceId, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], FirstAndThirdPartyAudience::class);
   }
 }
 

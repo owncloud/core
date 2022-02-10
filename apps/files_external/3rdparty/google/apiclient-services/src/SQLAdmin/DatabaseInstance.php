@@ -21,6 +21,10 @@ class DatabaseInstance extends \Google\Collection
 {
   protected $collection_key = 'suspensionReason';
   /**
+   * @var string[]
+   */
+  public $availableMaintenanceVersions;
+  /**
    * @var string
    */
   public $backendType;
@@ -72,6 +76,10 @@ class DatabaseInstance extends \Google\Collection
    * @var string
    */
   public $kind;
+  /**
+   * @var string
+   */
+  public $maintenanceVersion;
   /**
    * @var string
    */
@@ -137,6 +145,20 @@ class DatabaseInstance extends \Google\Collection
    */
   public $suspensionReason;
 
+  /**
+   * @param string[]
+   */
+  public function setAvailableMaintenanceVersions($availableMaintenanceVersions)
+  {
+    $this->availableMaintenanceVersions = $availableMaintenanceVersions;
+  }
+  /**
+   * @return string[]
+   */
+  public function getAvailableMaintenanceVersions()
+  {
+    return $this->availableMaintenanceVersions;
+  }
   /**
    * @param string
    */
@@ -346,6 +368,20 @@ class DatabaseInstance extends \Google\Collection
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param string
+   */
+  public function setMaintenanceVersion($maintenanceVersion)
+  {
+    $this->maintenanceVersion = $maintenanceVersion;
+  }
+  /**
+   * @return string
+   */
+  public function getMaintenanceVersion()
+  {
+    return $this->maintenanceVersion;
   }
   /**
    * @param string

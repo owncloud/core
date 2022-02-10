@@ -82,7 +82,7 @@ class Groups extends \Google\Service\Resource
    * can also use the `my_customer` alias to represent your account's
    * `customerId`. The `customerId` is also returned as part of the [Users
    * ](/admin-sdk/directory/v1/reference/users)
-   * @opt_param string domain The domain name. Use this field to get fields from
+   * @opt_param string domain The domain name. Use this field to get groups from
    * only one domain. To return all domains for a customer account, use the
    * `customer` query parameter instead.
    * @opt_param int maxResults Maximum number of results to return. Max allowed

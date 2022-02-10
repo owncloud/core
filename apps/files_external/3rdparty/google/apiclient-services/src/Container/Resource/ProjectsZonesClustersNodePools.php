@@ -157,8 +157,8 @@ class ProjectsZonesClustersNodePools extends \Google\Service\Resource
    * been deprecated and replaced by the parent field.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string parent The parent (project, location, cluster id) where the
-   * node pools will be listed. Specified in the format
+   * @opt_param string parent The parent (project, location, cluster name) where
+   * the node pools will be listed. Specified in the format
    * `projects/locations/clusters`.
    * @return ListNodePoolsResponse
    */

@@ -52,7 +52,7 @@ class ProjectsLocationsStreams extends \Google\Service\Resource
    * valid UUID with the exception that zero UUID is not supported
    * (00000000-0000-0000-0000-000000000000).
    * @opt_param string streamId Required. The stream identifier.
-   * @opt_param bool validateOnly Optional. Only validate the stream, but do not
+   * @opt_param bool validateOnly Optional. Only validate the stream, but don't
    * create any resources. The default is false.
    * @return Operation
    */
@@ -132,7 +132,7 @@ class ProjectsLocationsStreams extends \Google\Service\Resource
    * @param Stream $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool force Optional. Create the stream without validating it.
+   * @opt_param bool force Optional. Update the stream without validating it.
    * @opt_param string requestId Optional. A request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed. The

@@ -31,8 +31,8 @@ use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaRecaptchaEnterpr
 class ProjectsAppsRecaptchaEnterpriseConfig extends \Google\Service\Resource
 {
   /**
-   * Gets the RecaptchaEnterpriseConfigs for the specified list of apps
-   * atomically. (recaptchaEnterpriseConfig.batchGet)
+   * Atomically gets the RecaptchaEnterpriseConfigs for the specified list of
+   * apps. (recaptchaEnterpriseConfig.batchGet)
    *
    * @param string $parent Required. The parent project name shared by all
    * RecaptchaEnterpriseConfigs being retrieved, in the format ```

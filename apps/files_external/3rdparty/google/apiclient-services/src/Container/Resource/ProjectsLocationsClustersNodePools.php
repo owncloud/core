@@ -40,7 +40,7 @@ class ProjectsLocationsClustersNodePools extends \Google\Service\Resource
   /**
    * Creates a node pool for a cluster. (nodePools.create)
    *
-   * @param string $parent The parent (project, location, cluster id) where the
+   * @param string $parent The parent (project, location, cluster name) where the
    * node pool will be created. Specified in the format
    * `projects/locations/clusters`.
    * @param CreateNodePoolRequest $postBody
@@ -113,7 +113,7 @@ class ProjectsLocationsClustersNodePools extends \Google\Service\Resource
    * Lists the node pools for a cluster.
    * (nodePools.listProjectsLocationsClustersNodePools)
    *
-   * @param string $parent The parent (project, location, cluster id) where the
+   * @param string $parent The parent (project, location, cluster name) where the
    * node pools will be listed. Specified in the format
    * `projects/locations/clusters`.
    * @param array $optParams Optional parameters.

@@ -20,6 +20,10 @@ namespace Google\Service\SecretManager;
 class SecretVersion extends \Google\Model
 {
   /**
+   * @var bool
+   */
+  public $clientSpecifiedPayloadChecksum;
+  /**
    * @var string
    */
   public $createTime;
@@ -42,6 +46,20 @@ class SecretVersion extends \Google\Model
    */
   public $state;
 
+  /**
+   * @param bool
+   */
+  public function setClientSpecifiedPayloadChecksum($clientSpecifiedPayloadChecksum)
+  {
+    $this->clientSpecifiedPayloadChecksum = $clientSpecifiedPayloadChecksum;
+  }
+  /**
+   * @return bool
+   */
+  public function getClientSpecifiedPayloadChecksum()
+  {
+    return $this->clientSpecifiedPayloadChecksum;
+  }
   /**
    * @param string
    */

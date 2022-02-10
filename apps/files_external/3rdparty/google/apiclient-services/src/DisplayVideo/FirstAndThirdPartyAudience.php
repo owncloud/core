@@ -26,11 +26,17 @@ class FirstAndThirdPartyAudience extends \Google\Model
   /**
    * @var string
    */
+  public $appId;
+  /**
+   * @var string
+   */
   public $audienceSource;
   /**
    * @var string
    */
   public $audienceType;
+  protected $contactInfoListType = ContactInfoList::class;
+  protected $contactInfoListDataType = '';
   /**
    * @var string
    */
@@ -71,6 +77,8 @@ class FirstAndThirdPartyAudience extends \Google\Model
    * @var string
    */
   public $membershipDurationDays;
+  protected $mobileDeviceIdListType = MobileDeviceIdList::class;
+  protected $mobileDeviceIdListDataType = '';
   /**
    * @var string
    */
@@ -93,6 +101,20 @@ class FirstAndThirdPartyAudience extends \Google\Model
   public function getActiveDisplayAudienceSize()
   {
     return $this->activeDisplayAudienceSize;
+  }
+  /**
+   * @param string
+   */
+  public function setAppId($appId)
+  {
+    $this->appId = $appId;
+  }
+  /**
+   * @return string
+   */
+  public function getAppId()
+  {
+    return $this->appId;
   }
   /**
    * @param string
@@ -121,6 +143,20 @@ class FirstAndThirdPartyAudience extends \Google\Model
   public function getAudienceType()
   {
     return $this->audienceType;
+  }
+  /**
+   * @param ContactInfoList
+   */
+  public function setContactInfoList(ContactInfoList $contactInfoList)
+  {
+    $this->contactInfoList = $contactInfoList;
+  }
+  /**
+   * @return ContactInfoList
+   */
+  public function getContactInfoList()
+  {
+    return $this->contactInfoList;
   }
   /**
    * @param string
@@ -261,6 +297,20 @@ class FirstAndThirdPartyAudience extends \Google\Model
   public function getMembershipDurationDays()
   {
     return $this->membershipDurationDays;
+  }
+  /**
+   * @param MobileDeviceIdList
+   */
+  public function setMobileDeviceIdList(MobileDeviceIdList $mobileDeviceIdList)
+  {
+    $this->mobileDeviceIdList = $mobileDeviceIdList;
+  }
+  /**
+   * @return MobileDeviceIdList
+   */
+  public function getMobileDeviceIdList()
+  {
+    return $this->mobileDeviceIdList;
   }
   /**
    * @param string

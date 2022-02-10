@@ -23,6 +23,8 @@ class MembershipFeatureState extends \Google\Model
   protected $appdevexperienceDataType = '';
   protected $configmanagementType = ConfigManagementMembershipState::class;
   protected $configmanagementDataType = '';
+  protected $policycontrollerType = PolicyControllerMembershipState::class;
+  protected $policycontrollerDataType = '';
   protected $stateType = FeatureState::class;
   protected $stateDataType = '';
 
@@ -53,6 +55,20 @@ class MembershipFeatureState extends \Google\Model
   public function getConfigmanagement()
   {
     return $this->configmanagement;
+  }
+  /**
+   * @param PolicyControllerMembershipState
+   */
+  public function setPolicycontroller(PolicyControllerMembershipState $policycontroller)
+  {
+    $this->policycontroller = $policycontroller;
+  }
+  /**
+   * @return PolicyControllerMembershipState
+   */
+  public function getPolicycontroller()
+  {
+    return $this->policycontroller;
   }
   /**
    * @param FeatureState

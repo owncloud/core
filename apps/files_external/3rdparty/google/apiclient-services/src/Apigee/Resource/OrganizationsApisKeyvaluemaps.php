@@ -30,11 +30,11 @@ use Google\Service\Apigee\GoogleCloudApigeeV1KeyValueMap;
 class OrganizationsApisKeyvaluemaps extends \Google\Service\Resource
 {
   /**
-   * Creates a key value map in an api proxy. (keyvaluemaps.create)
+   * Creates a key value map in an API proxy. (keyvaluemaps.create)
    *
-   * @param string $parent Required. The name of the environment in which to
-   * create the key value map. Must be of the form
-   * `organizations/{organization}/apis/{api}`.
+   * @param string $parent Required. Name of the environment in which to create
+   * the key value map. Use the following structure in your request:
+   * `organizations/{org}/apis/{api}`
    * @param GoogleCloudApigeeV1KeyValueMap $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1KeyValueMap
@@ -46,10 +46,11 @@ class OrganizationsApisKeyvaluemaps extends \Google\Service\Resource
     return $this->call('create', [$params], GoogleCloudApigeeV1KeyValueMap::class);
   }
   /**
-   * Delete a key value map in an api proxy. (keyvaluemaps.delete)
+   * Deletes a key value map from an API proxy. (keyvaluemaps.delete)
    *
-   * @param string $name Required. The name of the key value map. Must be of the
-   * form `organizations/{organization}/apis/{api}/keyvaluemaps/{keyvaluemap}`.
+   * @param string $name Required. Name of the key value map. Use the following
+   * structure in your request:
+   * `organizations/{org}/apis/{api}/keyvaluemaps/{keyvaluemap}`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1KeyValueMap
    */

@@ -54,6 +54,8 @@ class CourseWork extends \Google\Collection
   protected $dueDateDataType = '';
   protected $dueTimeType = TimeOfDay::class;
   protected $dueTimeDataType = '';
+  protected $gradeCategoryType = GradeCategory::class;
+  protected $gradeCategoryDataType = '';
   /**
    * @var string
    */
@@ -233,6 +235,20 @@ class CourseWork extends \Google\Collection
   public function getDueTime()
   {
     return $this->dueTime;
+  }
+  /**
+   * @param GradeCategory
+   */
+  public function setGradeCategory(GradeCategory $gradeCategory)
+  {
+    $this->gradeCategory = $gradeCategory;
+  }
+  /**
+   * @return GradeCategory
+   */
+  public function getGradeCategory()
+  {
+    return $this->gradeCategory;
   }
   /**
    * @param string

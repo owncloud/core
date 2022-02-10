@@ -30,6 +30,8 @@ class Account extends \Google\Collection
    * @var bool
    */
   public $adultContent;
+  protected $automaticImprovementsType = AccountAutomaticImprovements::class;
+  protected $automaticImprovementsDataType = '';
   /**
    * @var string[]
    */
@@ -112,6 +114,20 @@ class Account extends \Google\Collection
   public function getAdultContent()
   {
     return $this->adultContent;
+  }
+  /**
+   * @param AccountAutomaticImprovements
+   */
+  public function setAutomaticImprovements(AccountAutomaticImprovements $automaticImprovements)
+  {
+    $this->automaticImprovements = $automaticImprovements;
+  }
+  /**
+   * @return AccountAutomaticImprovements
+   */
+  public function getAutomaticImprovements()
+  {
+    return $this->automaticImprovements;
   }
   /**
    * @param string[]

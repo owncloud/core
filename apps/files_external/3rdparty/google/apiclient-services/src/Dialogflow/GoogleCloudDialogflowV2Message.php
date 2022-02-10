@@ -45,6 +45,12 @@ class GoogleCloudDialogflowV2Message extends \Google\Model
    * @var string
    */
   public $participantRole;
+  /**
+   * @var string
+   */
+  public $sendTime;
+  protected $sentimentAnalysisType = GoogleCloudDialogflowV2SentimentAnalysisResult::class;
+  protected $sentimentAnalysisDataType = '';
 
   /**
    * @param string
@@ -143,6 +149,34 @@ class GoogleCloudDialogflowV2Message extends \Google\Model
   public function getParticipantRole()
   {
     return $this->participantRole;
+  }
+  /**
+   * @param string
+   */
+  public function setSendTime($sendTime)
+  {
+    $this->sendTime = $sendTime;
+  }
+  /**
+   * @return string
+   */
+  public function getSendTime()
+  {
+    return $this->sendTime;
+  }
+  /**
+   * @param GoogleCloudDialogflowV2SentimentAnalysisResult
+   */
+  public function setSentimentAnalysis(GoogleCloudDialogflowV2SentimentAnalysisResult $sentimentAnalysis)
+  {
+    $this->sentimentAnalysis = $sentimentAnalysis;
+  }
+  /**
+   * @return GoogleCloudDialogflowV2SentimentAnalysisResult
+   */
+  public function getSentimentAnalysis()
+  {
+    return $this->sentimentAnalysis;
   }
 }
 

@@ -28,6 +28,10 @@ class DiskConfig extends \Google\Model
    */
   public $bootDiskType;
   /**
+   * @var string
+   */
+  public $localSsdInterface;
+  /**
    * @var int
    */
   public $numLocalSsds;
@@ -59,6 +63,20 @@ class DiskConfig extends \Google\Model
   public function getBootDiskType()
   {
     return $this->bootDiskType;
+  }
+  /**
+   * @param string
+   */
+  public function setLocalSsdInterface($localSsdInterface)
+  {
+    $this->localSsdInterface = $localSsdInterface;
+  }
+  /**
+   * @return string
+   */
+  public function getLocalSsdInterface()
+  {
+    return $this->localSsdInterface;
   }
   /**
    * @param int

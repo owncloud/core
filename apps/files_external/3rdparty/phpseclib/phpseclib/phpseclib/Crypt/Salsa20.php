@@ -341,7 +341,9 @@ class Salsa20 extends StreamCipher
         } else {
             $buffer = &$this->debuffer;
         }
-        if (strlen($buffer['ciphertext'])) {
+        if (!strlen($buffer['ciphertext'])) {
+            $ciphertext = '';
+        } else {
             $ciphertext = $text ^ Strings::shift($buffer['ciphertext'], strlen($text));
             $text = substr($text, strlen($ciphertext));
             if (!strlen($text)) {
@@ -478,7 +480,7 @@ class Salsa20 extends StreamCipher
     {
         $z = $x = unpack('V*', $x);
         for ($i = 0; $i < 10; $i++) {
-            static::doubleRound(...$z);
+            static::doubleRound($z[1], $z[2], $z[3], $z[4], $z[5], $z[6], $z[7], $z[8], $z[9], $z[10], $z[11], $z[12], $z[13], $z[14], $z[15], $z[16]);
         }
 
         for ($i = 1; $i <= 16; $i++) {

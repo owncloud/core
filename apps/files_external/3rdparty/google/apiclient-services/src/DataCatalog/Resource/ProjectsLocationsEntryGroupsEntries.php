@@ -19,8 +19,12 @@ namespace Google\Service\DataCatalog\Resource;
 
 use Google\Service\DataCatalog\DatacatalogEmpty;
 use Google\Service\DataCatalog\GetIamPolicyRequest;
+use Google\Service\DataCatalog\GoogleCloudDatacatalogV1Contacts;
 use Google\Service\DataCatalog\GoogleCloudDatacatalogV1Entry;
+use Google\Service\DataCatalog\GoogleCloudDatacatalogV1EntryOverview;
 use Google\Service\DataCatalog\GoogleCloudDatacatalogV1ListEntriesResponse;
+use Google\Service\DataCatalog\GoogleCloudDatacatalogV1ModifyEntryContactsRequest;
+use Google\Service\DataCatalog\GoogleCloudDatacatalogV1ModifyEntryOverviewRequest;
 use Google\Service\DataCatalog\GoogleCloudDatacatalogV1StarEntryRequest;
 use Google\Service\DataCatalog\GoogleCloudDatacatalogV1StarEntryResponse;
 use Google\Service\DataCatalog\GoogleCloudDatacatalogV1UnstarEntryRequest;
@@ -145,6 +149,38 @@ class ProjectsLocationsEntryGroupsEntries extends \Google\Service\Resource
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], GoogleCloudDatacatalogV1ListEntriesResponse::class);
+  }
+  /**
+   * Modifies contacts, part of the business context of an Entry. To call this
+   * method, you must have the `datacatalog.entries.updateContacts` IAM permission
+   * on the corresponding project. (entries.modifyEntryContacts)
+   *
+   * @param string $name Required. The full resource name of the entry.
+   * @param GoogleCloudDatacatalogV1ModifyEntryContactsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudDatacatalogV1Contacts
+   */
+  public function modifyEntryContacts($name, GoogleCloudDatacatalogV1ModifyEntryContactsRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('modifyEntryContacts', [$params], GoogleCloudDatacatalogV1Contacts::class);
+  }
+  /**
+   * Modifies entry overview, part of the business context of an Entry. To call
+   * this method, you must have the `datacatalog.entries.updateOverview` IAM
+   * permission on the corresponding project. (entries.modifyEntryOverview)
+   *
+   * @param string $name Required. The full resource name of the entry.
+   * @param GoogleCloudDatacatalogV1ModifyEntryOverviewRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudDatacatalogV1EntryOverview
+   */
+  public function modifyEntryOverview($name, GoogleCloudDatacatalogV1ModifyEntryOverviewRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('modifyEntryOverview', [$params], GoogleCloudDatacatalogV1EntryOverview::class);
   }
   /**
    * Updates an existing entry. You must enable the Data Catalog API in the

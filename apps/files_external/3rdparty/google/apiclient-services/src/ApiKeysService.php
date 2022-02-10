@@ -185,6 +185,10 @@ class ApiKeysService extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
+                'showDeleted' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ],
               ],
             ],'patch' => [
               'path' => 'v2/{+name}',

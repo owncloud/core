@@ -47,6 +47,10 @@ class CloudsupportCase extends \Google\Collection
   /**
    * @var string
    */
+  public $priority;
+  /**
+   * @var string
+   */
   public $severity;
   /**
    * @var string
@@ -166,6 +170,20 @@ class CloudsupportCase extends \Google\Collection
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setPriority($priority)
+  {
+    $this->priority = $priority;
+  }
+  /**
+   * @return string
+   */
+  public function getPriority()
+  {
+    return $this->priority;
   }
   /**
    * @param string

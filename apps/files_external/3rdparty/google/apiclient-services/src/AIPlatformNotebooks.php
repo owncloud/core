@@ -309,6 +309,10 @@ class AIPlatformNotebooks extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
+                'type' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
               ],
             ],'list' => [
               'path' => 'v1/{+parent}/instances',
@@ -440,6 +444,16 @@ class AIPlatformNotebooks extends \Google\Service
               ],
             ],'updateConfig' => [
               'path' => 'v1/{+name}:updateConfig',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'updateMetadataItems' => [
+              'path' => 'v1/{+name}:updateMetadataItems',
               'httpMethod' => 'PATCH',
               'parameters' => [
                 'name' => [

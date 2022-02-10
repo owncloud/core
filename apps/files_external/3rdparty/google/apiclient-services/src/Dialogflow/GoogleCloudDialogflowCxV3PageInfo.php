@@ -23,6 +23,10 @@ class GoogleCloudDialogflowCxV3PageInfo extends \Google\Model
    * @var string
    */
   public $currentPage;
+  /**
+   * @var string
+   */
+  public $displayName;
   protected $formInfoType = GoogleCloudDialogflowCxV3PageInfoFormInfo::class;
   protected $formInfoDataType = '';
 
@@ -39,6 +43,20 @@ class GoogleCloudDialogflowCxV3PageInfo extends \Google\Model
   public function getCurrentPage()
   {
     return $this->currentPage;
+  }
+  /**
+   * @param string
+   */
+  public function setDisplayName($displayName)
+  {
+    $this->displayName = $displayName;
+  }
+  /**
+   * @return string
+   */
+  public function getDisplayName()
+  {
+    return $this->displayName;
   }
   /**
    * @param GoogleCloudDialogflowCxV3PageInfoFormInfo

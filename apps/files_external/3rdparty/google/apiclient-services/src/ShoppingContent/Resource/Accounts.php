@@ -64,9 +64,10 @@ class Accounts extends \Google\Service\Resource
    * @param string $accountId The ID of the account whose website is claimed.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool overwrite Only available to selected merchants. When set to
-   * `True`, this flag removes any existing claim on the requested website by
-   * another account and replaces it with a claim from this account.
+   * @opt_param bool overwrite Only available to selected merchants, for example
+   * multi-client accounts (MCAs) and their sub-accounts. When set to `True`, this
+   * flag removes any existing claim on the requested website and replaces it with
+   * a claim from the account that makes the request.
    * @return AccountsClaimWebsiteResponse
    */
   public function claimwebsite($merchantId, $accountId, $optParams = [])

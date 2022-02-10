@@ -19,6 +19,10 @@ namespace Google\Service\SQLAdmin;
 
 class CloneContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $allocatedIpRange;
   protected $binLogCoordinatesType = BinLogCoordinates::class;
   protected $binLogCoordinatesDataType = '';
   /**
@@ -38,6 +42,20 @@ class CloneContext extends \Google\Model
    */
   public $pointInTime;
 
+  /**
+   * @param string
+   */
+  public function setAllocatedIpRange($allocatedIpRange)
+  {
+    $this->allocatedIpRange = $allocatedIpRange;
+  }
+  /**
+   * @return string
+   */
+  public function getAllocatedIpRange()
+  {
+    return $this->allocatedIpRange;
+  }
   /**
    * @param BinLogCoordinates
    */

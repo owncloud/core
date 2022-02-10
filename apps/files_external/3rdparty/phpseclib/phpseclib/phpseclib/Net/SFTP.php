@@ -116,6 +116,18 @@ class SFTP extends SSH2
      */
     private $status_codes = [];
 
+    /** @var array<int, string> */
+    private $attributes;
+
+    /** @var array<int, string> */
+    private $open_flags;
+
+    /** @var array<int, string> */
+    private $open_flags5;
+
+    /** @var array<int, string> */
+    private $file_types;
+
     /**
      * The Request ID
      *
@@ -188,7 +200,7 @@ class SFTP extends SSH2
     /**
      * Current working directory
      *
-     * @var string
+     * @var string|bool
      * @see self::realpath()
      * @see self::chdir()
      * @access private
@@ -242,7 +254,7 @@ class SFTP extends SSH2
      *
      * @see self::__construct()
      * @see self::get()
-     * @var array
+     * @var int
      * @access private
      */
     private $max_sftp_packet;
@@ -341,7 +353,6 @@ class SFTP extends SSH2
      * @param string $host
      * @param int $port
      * @param int $timeout
-     * @return \phpseclib3\Net\SFTP
      * @access public
      */
     public function __construct($host, $port = 22, $timeout = 10)
@@ -782,7 +793,7 @@ class SFTP extends SSH2
     /**
      * Returns the current directory name
      *
-     * @return mixed
+     * @return string|bool
      * @access public
      */
     public function pwd()
@@ -952,7 +963,7 @@ class SFTP extends SSH2
      *
      * @param string $dir
      * @param bool $recursive
-     * @return mixed
+     * @return array|false
      * @access public
      */
     public function nlist($dir = '.', $recursive = false)
@@ -966,7 +977,7 @@ class SFTP extends SSH2
      * @param string $dir
      * @param bool $recursive
      * @param string $relativeDir
-     * @return mixed
+     * @return array|false
      * @access private
      */
     private function nlist_helper($dir, $recursive, $relativeDir)
@@ -1000,7 +1011,7 @@ class SFTP extends SSH2
      *
      * @param string $dir
      * @param bool $recursive
-     * @return mixed
+     * @return array|false
      * @access public
      */
     public function rawlist($dir = '.', $recursive = false)
@@ -1044,7 +1055,7 @@ class SFTP extends SSH2
      *
      * @param string $dir
      * @param bool $raw
-     * @return mixed
+     * @return array|false
      * @throws \UnexpectedValueException on receipt of unexpected packets
      * @access private
      */
@@ -1227,7 +1238,7 @@ class SFTP extends SSH2
      * $sftp->setListOrder();
      *    Don't do any sort of sorting
      *
-     * @param string[] ...$args
+     * @param string ...$args
      * @access public
      */
     public function setListOrder(...$args)
@@ -1349,7 +1360,7 @@ class SFTP extends SSH2
      * Returns an array on success and false otherwise.
      *
      * @param string $filename
-     * @return mixed
+     * @return array|false
      * @access public
      */
     public function stat($filename)
@@ -1406,7 +1417,7 @@ class SFTP extends SSH2
      * Returns an array on success and false otherwise.
      *
      * @param string $filename
-     * @return mixed
+     * @return array|false
      * @access public
      */
     public function lstat($filename)
@@ -1474,7 +1485,7 @@ class SFTP extends SSH2
      * @param string $filename
      * @param int $type
      * @throws \UnexpectedValueException on receipt of unexpected packets
-     * @return mixed
+     * @return array|false
      * @access private
      */
     private function stat_helper($filename, $type)
@@ -1635,7 +1646,7 @@ class SFTP extends SSH2
     public function chgrp($filename, $gid, $recursive = false)
     {
         $attr = $this->version < 4 ?
-            pack('N3', NET_SFTP_ATTR_UIDGID, $gid, -1) :
+            pack('N3', NET_SFTP_ATTR_UIDGID, -1, $gid) :
             Strings::packSSH2('Nss', NET_SFTP_ATTR_OWNERGROUP, '', $gid);
 
         return $this->setstat($filename, $attr, $recursive);
@@ -1810,7 +1821,7 @@ class SFTP extends SSH2
         $packet = Strings::packSSH2('s', $path);
         $packet.= $this->version >= 4 ?
             pack('Ca*', NET_SFTP_TYPE_UNKNOWN, $attr) :
-            $atr;
+            $attr;
         $this->send_sftp_packet(NET_SFTP_SETSTAT, $packet);
 
         $i++;
@@ -2344,7 +2355,7 @@ class SFTP extends SSH2
      * @param int $length
      * @param callable|null $progressCallback
      * @throws \UnexpectedValueException on receipt of unexpected packets
-     * @return mixed
+     * @return string|false
      * @access public
      */
     public function get($remote_file, $local_file = false, $offset = 0, $length = -1, $progressCallback = null)
@@ -2846,7 +2857,7 @@ class SFTP extends SSH2
      * Gets file type
      *
      * @param string $path
-     * @return mixed
+     * @return string|false
      * @access public
      */
     public function filetype($path)
@@ -3132,7 +3143,7 @@ class SFTP extends SSH2
                     // see https://datatracker.ietf.org/doc/html/draft-ietf-secsh-filexfer-13#section-7.4
                     // represents the number of bytes that the file consumes on the disk. will
                     // usually be larger than the 'size' field
-                    list($attr['allocation-size']) = Strings::unpack('Q', $response);
+                    list($attr['allocation-size']) = Strings::unpackSSH2('Q', $response);
                     break;
                 case NET_SFTP_ATTR_TEXT_HINT:        // 0x00000800
                     // https://datatracker.ietf.org/doc/html/draft-ietf-secsh-filexfer-13#section-7.10
@@ -3147,7 +3158,7 @@ class SFTP extends SSH2
                     break;
                 case NET_SFTP_ATTR_LINK_COUNT:       // 0x00002000
                     // see https://datatracker.ietf.org/doc/html/draft-ietf-secsh-filexfer-13#section-7.12
-                    list($attr['link-count']) = Strings::unpackSS2('N', $response);
+                    list($attr['link-count']) = Strings::unpackSSH2('N', $response);
                     break;
                 case NET_SFTP_ATTR_UNTRANSLATED_NAME:// 0x00004000
                     // see https://datatracker.ietf.org/doc/html/draft-ietf-secsh-filexfer-13#section-7.13
@@ -3500,7 +3511,7 @@ class SFTP extends SSH2
     /**
      * Get supported SFTP versions
      *
-     * @return array
+     * @return int|false
      * @access public
      */
     public function getNegotiatedVersion()
@@ -3531,13 +3542,13 @@ class SFTP extends SSH2
      * Disconnect
      *
      * @param int $reason
-     * @return bool
+     * @return false
      * @access protected
      */
     protected function disconnect_helper($reason)
     {
         $this->pwd = false;
-        parent::disconnect_helper($reason);
+        return parent::disconnect_helper($reason);
     }
 
     /**

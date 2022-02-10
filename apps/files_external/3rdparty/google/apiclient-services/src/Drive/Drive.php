@@ -51,6 +51,10 @@ class Drive extends \Google\Model
    * @var string
    */
   public $name;
+  /**
+   * @var string
+   */
+  public $orgUnitId;
   protected $restrictionsType = DriveRestrictions::class;
   protected $restrictionsDataType = '';
   /**
@@ -183,6 +187,20 @@ class Drive extends \Google\Model
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param string
+   */
+  public function setOrgUnitId($orgUnitId)
+  {
+    $this->orgUnitId = $orgUnitId;
+  }
+  /**
+   * @return string
+   */
+  public function getOrgUnitId()
+  {
+    return $this->orgUnitId;
   }
   /**
    * @param DriveRestrictions

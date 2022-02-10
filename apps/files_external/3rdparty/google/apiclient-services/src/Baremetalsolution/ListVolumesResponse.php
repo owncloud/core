@@ -20,23 +20,41 @@ namespace Google\Service\Baremetalsolution;
 class ListVolumesResponse extends \Google\Collection
 {
   protected $collection_key = 'volumes';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $unreachable;
   protected $volumesType = Volume::class;
   protected $volumesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setUnreachable($unreachable)
   {
     $this->unreachable = $unreachable;
   }
+  /**
+   * @return string[]
+   */
   public function getUnreachable()
   {
     return $this->unreachable;

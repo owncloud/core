@@ -28,6 +28,10 @@ class Backup extends \Google\Collection
    * @var string
    */
   public $database;
+  /**
+   * @var string
+   */
+  public $databaseDialect;
   protected $encryptionInfoType = EncryptionInfo::class;
   protected $encryptionInfoDataType = '';
   /**
@@ -82,6 +86,20 @@ class Backup extends \Google\Collection
   public function getDatabase()
   {
     return $this->database;
+  }
+  /**
+   * @param string
+   */
+  public function setDatabaseDialect($databaseDialect)
+  {
+    $this->databaseDialect = $databaseDialect;
+  }
+  /**
+   * @return string
+   */
+  public function getDatabaseDialect()
+  {
+    return $this->databaseDialect;
   }
   /**
    * @param EncryptionInfo

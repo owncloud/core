@@ -87,7 +87,7 @@ class ProjectsLocationsStreamsObjects extends \Google\Service\Resource
     return $this->call('lookup', [$params], StreamObject::class);
   }
   /**
-   * Starts backfill job for the specified stream object.
+   * Use this method to start a backfill job for the specified stream object.
    * (objects.startBackfillJob)
    *
    * @param string $object Required. The name of the stream object resource to
@@ -103,7 +103,7 @@ class ProjectsLocationsStreamsObjects extends \Google\Service\Resource
     return $this->call('startBackfillJob', [$params], StartBackfillJobResponse::class);
   }
   /**
-   * Stops the backfill job for the specified stream object.
+   * Use this method to stop a backfill job for the specified stream object.
    * (objects.stopBackfillJob)
    *
    * @param string $object Required. The name of the stream object resource to

@@ -32,8 +32,8 @@ use Google\Service\Datastream\Route;
 class ProjectsLocationsPrivateConnectionsRoutes extends \Google\Service\Resource
 {
   /**
-   * Use this method to create a route for a private connectivity in a project and
-   * location. (routes.create)
+   * Use this method to create a route for a private connectivity configuration in
+   * a project and location. (routes.create)
    *
    * @param string $parent Required. The parent that owns the collection of
    * Routes.
@@ -99,8 +99,9 @@ class ProjectsLocationsPrivateConnectionsRoutes extends \Google\Service\Resource
     return $this->call('get', [$params], Route::class);
   }
   /**
-   * Use this method to list routes created for a private connectivity in a
-   * project and location. (routes.listProjectsLocationsPrivateConnectionsRoutes)
+   * Use this method to list routes created for a private connectivity
+   * configuration in a project and location.
+   * (routes.listProjectsLocationsPrivateConnectionsRoutes)
    *
    * @param string $parent Required. The parent that owns the collection of
    * Routess.

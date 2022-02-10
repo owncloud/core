@@ -23,6 +23,8 @@ class ContaineranalysisGoogleDevtoolsCloudbuildV1BuildOptionsPoolOption extends 
    * @var string
    */
   public $name;
+  protected $workerConfigType = ContaineranalysisGoogleDevtoolsCloudbuildV1BuildOptionsPoolOptionWorkerConfig::class;
+  protected $workerConfigDataType = '';
 
   /**
    * @param string
@@ -37,6 +39,20 @@ class ContaineranalysisGoogleDevtoolsCloudbuildV1BuildOptionsPoolOption extends 
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param ContaineranalysisGoogleDevtoolsCloudbuildV1BuildOptionsPoolOptionWorkerConfig
+   */
+  public function setWorkerConfig(ContaineranalysisGoogleDevtoolsCloudbuildV1BuildOptionsPoolOptionWorkerConfig $workerConfig)
+  {
+    $this->workerConfig = $workerConfig;
+  }
+  /**
+   * @return ContaineranalysisGoogleDevtoolsCloudbuildV1BuildOptionsPoolOptionWorkerConfig
+   */
+  public function getWorkerConfig()
+  {
+    return $this->workerConfig;
   }
 }
 

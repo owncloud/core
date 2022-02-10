@@ -2122,7 +2122,26 @@ class DisplayVideo extends \Google\Service
         'firstAndThirdPartyAudiences',
         [
           'methods' => [
-            'get' => [
+            'create' => [
+              'path' => 'v1/firstAndThirdPartyAudiences',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'advertiserId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'editCustomerMatchMembers' => [
+              'path' => 'v1/firstAndThirdPartyAudiences/{+firstAndThirdPartyAudienceId}:editCustomerMatchMembers',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'firstAndThirdPartyAudienceId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
               'path' => 'v1/firstAndThirdPartyAudiences/{+firstAndThirdPartyAudienceId}',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -2165,6 +2184,24 @@ class DisplayVideo extends \Google\Service
                   'type' => 'string',
                 ],
                 'partnerId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/firstAndThirdPartyAudiences/{+firstAndThirdPartyAudienceId}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'firstAndThirdPartyAudienceId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'advertiserId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],

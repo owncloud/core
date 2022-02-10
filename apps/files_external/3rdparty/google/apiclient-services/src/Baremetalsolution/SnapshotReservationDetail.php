@@ -19,30 +19,57 @@ namespace Google\Service\Baremetalsolution;
 
 class SnapshotReservationDetail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $reservedSpaceGib;
+  /**
+   * @var string
+   */
   public $reservedSpaceRemainingGib;
+  /**
+   * @var int
+   */
   public $reservedSpaceUsedPercent;
 
+  /**
+   * @param string
+   */
   public function setReservedSpaceGib($reservedSpaceGib)
   {
     $this->reservedSpaceGib = $reservedSpaceGib;
   }
+  /**
+   * @return string
+   */
   public function getReservedSpaceGib()
   {
     return $this->reservedSpaceGib;
   }
+  /**
+   * @param string
+   */
   public function setReservedSpaceRemainingGib($reservedSpaceRemainingGib)
   {
     $this->reservedSpaceRemainingGib = $reservedSpaceRemainingGib;
   }
+  /**
+   * @return string
+   */
   public function getReservedSpaceRemainingGib()
   {
     return $this->reservedSpaceRemainingGib;
   }
+  /**
+   * @param int
+   */
   public function setReservedSpaceUsedPercent($reservedSpaceUsedPercent)
   {
     $this->reservedSpaceUsedPercent = $reservedSpaceUsedPercent;
   }
+  /**
+   * @return int
+   */
   public function getReservedSpaceUsedPercent()
   {
     return $this->reservedSpaceUsedPercent;

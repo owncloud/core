@@ -36,8 +36,8 @@ class ProjectsLocationsClustersWellKnown extends \Google\Service\Resource
    * use, and is not available for all clusters. (well-
    * known.getOpenidConfiguration)
    *
-   * @param string $parent The cluster (project, location, cluster id) to get the
-   * discovery document for. Specified in the format
+   * @param string $parent The cluster (project, location, cluster name) to get
+   * the discovery document for. Specified in the format
    * `projects/locations/clusters`.
    * @param array $optParams Optional parameters.
    * @return GetOpenIDConfigResponse

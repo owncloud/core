@@ -32,7 +32,8 @@ use Google\Service\Document\GoogleCloudLocationLocation;
 class ProjectsLocations extends \Google\Service\Resource
 {
   /**
-   * Fetches processor types. (locations.fetchProcessorTypes)
+   * Fetches processor types. Note that we do not use ListProcessorTypes here
+   * because it is not paginated. (locations.fetchProcessorTypes)
    *
    * @param string $parent Required. The project of processor type to list. The
    * available processor types may depend on the allow-listing on projects.

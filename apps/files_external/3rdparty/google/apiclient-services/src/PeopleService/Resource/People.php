@@ -44,8 +44,8 @@ class People extends \Google\Service\Resource
 {
   /**
    * Create a batch of new contacts and return the PersonResponses for the newly
-   * created contacts. Limited to 10 parallel requests per user.
-   * (people.batchCreateContacts)
+   * Mutate requests for the same user should be sent sequentially to avoid
+   * increased latency and failures. (people.batchCreateContacts)
    *
    * @param BatchCreateContactsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -58,8 +58,9 @@ class People extends \Google\Service\Resource
     return $this->call('batchCreateContacts', [$params], BatchCreateContactsResponse::class);
   }
   /**
-   * Delete a batch of contacts. Any non-contact data will not be deleted. Limited
-   * to 10 parallel requests per user. (people.batchDeleteContacts)
+   * Delete a batch of contacts. Any non-contact data will not be deleted. Mutate
+   * requests for the same user should be sent sequentially to avoid increased
+   * latency and failures. (people.batchDeleteContacts)
    *
    * @param BatchDeleteContactsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -73,8 +74,9 @@ class People extends \Google\Service\Resource
   }
   /**
    * Update a batch of contacts and return a map of resource names to
-   * PersonResponses for the updated contacts. Limited to 10 parallel requests per
-   * user. (people.batchUpdateContacts)
+   * PersonResponses for the updated contacts. Mutate requests for the same user
+   * should be sent sequentially to avoid increased latency and failures.
+   * (people.batchUpdateContacts)
    *
    * @param BatchUpdateContactsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -90,7 +92,8 @@ class People extends \Google\Service\Resource
    * Create a new contact and return the person resource for that contact. The
    * request returns a 400 error if more than one field is specified on a field
    * that is a singleton for contact sources: * biographies * birthdays * genders
-   * * names (people.createContact)
+   * * names Mutate requests for the same user should be sent sequentially to
+   * avoid increased latency and failures. (people.createContact)
    *
    * @param Person $postBody
    * @param array $optParams Optional parameters.
@@ -114,8 +117,9 @@ class People extends \Google\Service\Resource
     return $this->call('createContact', [$params], Person::class);
   }
   /**
-   * Delete a contact person. Any non-contact data will not be deleted.
-   * (people.deleteContact)
+   * Delete a contact person. Any non-contact data will not be deleted. Mutate
+   * requests for the same user should be sent sequentially to avoid increased
+   * latency and failures. (people.deleteContact)
    *
    * @param string $resourceName Required. The resource name of the contact to
    * delete.
@@ -129,7 +133,8 @@ class People extends \Google\Service\Resource
     return $this->call('deleteContact', [$params], PeopleEmpty::class);
   }
   /**
-   * Delete a contact's photo. (people.deleteContactPhoto)
+   * Delete a contact's photo. Mutate requests for the same user should be done
+   * sequentially to avoid // lock contention. (people.deleteContactPhoto)
    *
    * @param string $resourceName Required. The resource name of the contact whose
    * photo will be deleted.
@@ -360,8 +365,9 @@ class People extends \Google\Service\Resource
    * returns a 400 error if `memberships` are being updated and there are no
    * contact group memberships specified on the person. The server returns a 400
    * error if more than one field is specified on a field that is a singleton for
-   * contact sources: * biographies * birthdays * genders * names
-   * (people.updateContact)
+   * contact sources: * biographies * birthdays * genders * names Mutate requests
+   * for the same user should be sent sequentially to avoid increased latency and
+   * failures. (people.updateContact)
    *
    * @param string $resourceName The resource name for the person, assigned by the
    * server. An ASCII string with a max length of 27 characters, in the form of
@@ -396,7 +402,9 @@ class People extends \Google\Service\Resource
     return $this->call('updateContact', [$params], Person::class);
   }
   /**
-   * Update a contact's photo. (people.updateContactPhoto)
+   * Update a contact's photo. Mutate requests for the same user should be sent
+   * sequentially to avoid increased latency and failures.
+   * (people.updateContactPhoto)
    *
    * @param string $resourceName Required. Person resource name
    * @param UpdateContactPhotoRequest $postBody

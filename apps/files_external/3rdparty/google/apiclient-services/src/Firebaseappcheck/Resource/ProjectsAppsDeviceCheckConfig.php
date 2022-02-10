@@ -31,7 +31,7 @@ use Google\Service\Firebaseappcheck\GoogleFirebaseAppcheckV1betaDeviceCheckConfi
 class ProjectsAppsDeviceCheckConfig extends \Google\Service\Resource
 {
   /**
-   * Gets the DeviceCheckConfigs for the specified list of apps atomically. For
+   * Atomically gets the DeviceCheckConfigs for the specified list of apps. For
    * security reasons, the `private_key` field is never populated in the response.
    * (deviceCheckConfig.batchGet)
    *

@@ -39,6 +39,8 @@ class Repository extends \Google\Model
    * @var string[]
    */
   public $labels;
+  protected $mavenConfigType = MavenRepositoryConfig::class;
+  protected $mavenConfigDataType = '';
   /**
    * @var string
    */
@@ -117,6 +119,20 @@ class Repository extends \Google\Model
   public function getLabels()
   {
     return $this->labels;
+  }
+  /**
+   * @param MavenRepositoryConfig
+   */
+  public function setMavenConfig(MavenRepositoryConfig $mavenConfig)
+  {
+    $this->mavenConfig = $mavenConfig;
+  }
+  /**
+   * @return MavenRepositoryConfig
+   */
+  public function getMavenConfig()
+  {
+    return $this->mavenConfig;
   }
   /**
    * @param string

@@ -271,6 +271,16 @@ class DataprocMetastore extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'removeIamPolicy' => [
+              'path' => 'v1beta/{+resource}:removeIamPolicy',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'resource' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'restore' => [
               'path' => 'v1beta/{+service}:restore',
               'httpMethod' => 'POST',

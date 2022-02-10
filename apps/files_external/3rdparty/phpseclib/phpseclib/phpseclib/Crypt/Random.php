@@ -51,7 +51,7 @@ abstract class Random
         }
 
         try {
-            return \random_bytes($length);
+            return random_bytes($length);
         } catch (\Exception $e) {
             // random_compat will throw an Exception, which in PHP 5 does not implement Throwable
         } catch (\Throwable $e) {

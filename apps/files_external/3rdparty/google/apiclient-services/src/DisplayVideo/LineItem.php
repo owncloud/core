@@ -46,6 +46,10 @@ class LineItem extends \Google\Collection
    * @var string
    */
   public $entityStatus;
+  /**
+   * @var bool
+   */
+  public $excludeNewExchanges;
   protected $flightType = LineItemFlight::class;
   protected $flightDataType = '';
   protected $frequencyCapType = FrequencyCap::class;
@@ -80,6 +84,10 @@ class LineItem extends \Google\Collection
   protected $partnerCostsDataType = 'array';
   protected $partnerRevenueModelType = PartnerRevenueModel::class;
   protected $partnerRevenueModelDataType = '';
+  /**
+   * @var string
+   */
+  public $reservationType;
   protected $targetingExpansionType = TargetingExpansionConfig::class;
   protected $targetingExpansionDataType = '';
   /**
@@ -202,6 +210,20 @@ class LineItem extends \Google\Collection
   public function getEntityStatus()
   {
     return $this->entityStatus;
+  }
+  /**
+   * @param bool
+   */
+  public function setExcludeNewExchanges($excludeNewExchanges)
+  {
+    $this->excludeNewExchanges = $excludeNewExchanges;
+  }
+  /**
+   * @return bool
+   */
+  public function getExcludeNewExchanges()
+  {
+    return $this->excludeNewExchanges;
   }
   /**
    * @param LineItemFlight
@@ -370,6 +392,20 @@ class LineItem extends \Google\Collection
   public function getPartnerRevenueModel()
   {
     return $this->partnerRevenueModel;
+  }
+  /**
+   * @param string
+   */
+  public function setReservationType($reservationType)
+  {
+    $this->reservationType = $reservationType;
+  }
+  /**
+   * @return string
+   */
+  public function getReservationType()
+  {
+    return $this->reservationType;
   }
   /**
    * @param TargetingExpansionConfig

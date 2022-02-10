@@ -26,6 +26,10 @@ class GoogleCloudRecaptchaenterpriseV1Event extends \Google\Model
   /**
    * @var string
    */
+  public $hashedAccountId;
+  /**
+   * @var string
+   */
   public $siteKey;
   /**
    * @var string
@@ -53,6 +57,20 @@ class GoogleCloudRecaptchaenterpriseV1Event extends \Google\Model
   public function getExpectedAction()
   {
     return $this->expectedAction;
+  }
+  /**
+   * @param string
+   */
+  public function setHashedAccountId($hashedAccountId)
+  {
+    $this->hashedAccountId = $hashedAccountId;
+  }
+  /**
+   * @return string
+   */
+  public function getHashedAccountId()
+  {
+    return $this->hashedAccountId;
   }
   /**
    * @param string

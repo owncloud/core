@@ -22,7 +22,15 @@ class MetadataOptions extends \Google\Model
   /**
    * @var string
    */
+  public $acl;
+  /**
+   * @var string
+   */
   public $gid;
+  /**
+   * @var string
+   */
+  public $kmsKey;
   /**
    * @var string
    */
@@ -30,12 +38,34 @@ class MetadataOptions extends \Google\Model
   /**
    * @var string
    */
+  public $storageClass;
+  /**
+   * @var string
+   */
   public $symlink;
+  /**
+   * @var string
+   */
+  public $temporaryHold;
   /**
    * @var string
    */
   public $uid;
 
+  /**
+   * @param string
+   */
+  public function setAcl($acl)
+  {
+    $this->acl = $acl;
+  }
+  /**
+   * @return string
+   */
+  public function getAcl()
+  {
+    return $this->acl;
+  }
   /**
    * @param string
    */
@@ -49,6 +79,20 @@ class MetadataOptions extends \Google\Model
   public function getGid()
   {
     return $this->gid;
+  }
+  /**
+   * @param string
+   */
+  public function setKmsKey($kmsKey)
+  {
+    $this->kmsKey = $kmsKey;
+  }
+  /**
+   * @return string
+   */
+  public function getKmsKey()
+  {
+    return $this->kmsKey;
   }
   /**
    * @param string
@@ -67,6 +111,20 @@ class MetadataOptions extends \Google\Model
   /**
    * @param string
    */
+  public function setStorageClass($storageClass)
+  {
+    $this->storageClass = $storageClass;
+  }
+  /**
+   * @return string
+   */
+  public function getStorageClass()
+  {
+    return $this->storageClass;
+  }
+  /**
+   * @param string
+   */
   public function setSymlink($symlink)
   {
     $this->symlink = $symlink;
@@ -77,6 +135,20 @@ class MetadataOptions extends \Google\Model
   public function getSymlink()
   {
     return $this->symlink;
+  }
+  /**
+   * @param string
+   */
+  public function setTemporaryHold($temporaryHold)
+  {
+    $this->temporaryHold = $temporaryHold;
+  }
+  /**
+   * @return string
+   */
+  public function getTemporaryHold()
+  {
+    return $this->temporaryHold;
   }
   /**
    * @param string

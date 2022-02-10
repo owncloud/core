@@ -92,8 +92,10 @@ class Mobiledevices extends \Google\Service\Resource
     return $this->call('get', [$params], MobileDevice::class);
   }
   /**
-   * Retrieves a paginated list of all mobile devices for an account.
-   * (mobiledevices.listMobiledevices)
+   * Retrieves a paginated list of all user-owned mobile devices for an account.
+   * To retrieve a list that includes company-owned devices, use the Cloud
+   * Identity [Devices API](https://cloud.google.com/identity/docs/concepts
+   * /overview-devices) instead. (mobiledevices.listMobiledevices)
    *
    * @param string $customerId The unique ID for the customer's Google Workspace
    * account. As an account administrator, you can also use the `my_customer`

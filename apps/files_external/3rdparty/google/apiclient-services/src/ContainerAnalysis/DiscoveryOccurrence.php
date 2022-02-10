@@ -28,6 +28,10 @@ class DiscoveryOccurrence extends \Google\Model
   /**
    * @var string
    */
+  public $archiveTime;
+  /**
+   * @var string
+   */
   public $continuousAnalysis;
   /**
    * @var string
@@ -65,6 +69,20 @@ class DiscoveryOccurrence extends \Google\Model
   public function getAnalysisStatusError()
   {
     return $this->analysisStatusError;
+  }
+  /**
+   * @param string
+   */
+  public function setArchiveTime($archiveTime)
+  {
+    $this->archiveTime = $archiveTime;
+  }
+  /**
+   * @return string
+   */
+  public function getArchiveTime()
+  {
+    return $this->archiveTime;
   }
   /**
    * @param string

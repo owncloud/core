@@ -18,6 +18,7 @@
 namespace Google\Service\Baremetalsolution\Resource;
 
 use Google\Service\Baremetalsolution\ListVolumesResponse;
+use Google\Service\Baremetalsolution\Operation;
 use Google\Service\Baremetalsolution\Volume;
 
 /**
@@ -31,7 +32,7 @@ use Google\Service\Baremetalsolution\Volume;
 class ProjectsLocationsVolumes extends \Google\Service\Resource
 {
   /**
-   * Gets details of a single Volume. (volumes.get)
+   * Get details of a single storage volume. (volumes.get)
    *
    * @param string $name Required. Name of the resource.
    * @param array $optParams Optional parameters.
@@ -44,18 +45,18 @@ class ProjectsLocationsVolumes extends \Google\Service\Resource
     return $this->call('get', [$params], Volume::class);
   }
   /**
-   * Lists Volumes in a given project and location.
+   * List storage volumes in a given project and location.
    * (volumes.listProjectsLocationsVolumes)
    *
    * @param string $parent Required. Parent value for ListVolumesRequest.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Filtering results.
-   * @opt_param string orderBy Hint for how to order the results.
-   * @opt_param int pageSize Requested page size. Server may return fewer items
-   * than requested. If unspecified, server will pick an appropriate default.
-   * @opt_param string pageToken A token identifying a page of results the server
-   * should return.
+   * @opt_param string filter List filter.
+   * @opt_param int pageSize Requested page size. The server might return fewer
+   * items than requested. If unspecified, server will pick an appropriate
+   * default.
+   * @opt_param string pageToken A token identifying a page of results from the
+   * server.
    * @return ListVolumesResponse
    */
   public function listProjectsLocationsVolumes($parent, $optParams = [])
@@ -63,6 +64,27 @@ class ProjectsLocationsVolumes extends \Google\Service\Resource
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
     return $this->call('list', [$params], ListVolumesResponse::class);
+  }
+  /**
+   * Update details of a single storage volume. (volumes.patch)
+   *
+   * @param string $name Output only. The resource name of this `Volume`. Resource
+   * names are schemeless URIs that follow the conventions in
+   * https://cloud.google.com/apis/design/resource_names. Format:
+   * `projects/{project}/locations/{location}/volumes/{volume}`
+   * @param Volume $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask The list of fields to update. The only currently
+   * supported fields are: `snapshot_auto_delete_behavior`
+   * `snapshot_schedule_policy_name` 'labels'
+   * @return Operation
+   */
+  public function patch($name, Volume $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', [$params], Operation::class);
   }
 }
 

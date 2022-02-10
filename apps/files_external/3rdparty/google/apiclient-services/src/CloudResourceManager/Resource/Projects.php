@@ -259,15 +259,15 @@ class Projects extends \Google\Service\Resource
    * be granted the owner role using the Cloud Platform Console and must
    * explicitly accept the invitation. + Invitations to grant the owner role
    * cannot be sent using `setIamPolicy()`; they must be sent only using the Cloud
-   * Platform Console. + Membership changes that leave the project without any
-   * owners that have accepted the Terms of Service (ToS) will be rejected. + If
-   * the project is not part of an organization, there must be at least one owner
-   * who has accepted the Terms of Service (ToS) agreement in the policy. Calling
-   * `setIamPolicy()` to remove the last ToS-accepted owner from the policy will
-   * fail. This restriction also applies to legacy projects that no longer have
-   * owners who have accepted the ToS. Edits to IAM policies will be rejected
-   * until the lack of a ToS-accepting owner is rectified. + Calling this method
-   * requires enabling the App Engine Admin API. (projects.setIamPolicy)
+   * Platform Console. + If the project is not part of an organization, there must
+   * be at least one owner who has accepted the Terms of Service (ToS) agreement
+   * in the policy. Calling `setIamPolicy()` to remove the last ToS-accepted owner
+   * from the policy will fail. This restriction also applies to legacy projects
+   * that no longer have owners who have accepted the ToS. Edits to IAM policies
+   * will be rejected until the lack of a ToS-accepting owner is rectified. If the
+   * project is part of an organization, you can remove all owners, potentially
+   * making the organization inaccessible. + Calling this method requires enabling
+   * the App Engine Admin API. (projects.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this

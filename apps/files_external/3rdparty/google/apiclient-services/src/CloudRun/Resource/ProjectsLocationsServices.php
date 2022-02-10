@@ -17,13 +17,13 @@
 
 namespace Google\Service\CloudRun\Resource;
 
-use Google\Service\CloudRun\ListServicesResponse;
-use Google\Service\CloudRun\Policy;
-use Google\Service\CloudRun\Service;
-use Google\Service\CloudRun\SetIamPolicyRequest;
-use Google\Service\CloudRun\Status;
-use Google\Service\CloudRun\TestIamPermissionsRequest;
-use Google\Service\CloudRun\TestIamPermissionsResponse;
+use Google\Service\CloudRun\GoogleCloudRunOpV2ListServicesResponse;
+use Google\Service\CloudRun\GoogleCloudRunOpV2Service;
+use Google\Service\CloudRun\GoogleIamV1Policy;
+use Google\Service\CloudRun\GoogleIamV1SetIamPolicyRequest;
+use Google\Service\CloudRun\GoogleIamV1TestIamPermissionsRequest;
+use Google\Service\CloudRun\GoogleIamV1TestIamPermissionsResponse;
+use Google\Service\CloudRun\GoogleLongrunningOperation;
 
 /**
  * The "services" collection of methods.
@@ -36,68 +36,64 @@ use Google\Service\CloudRun\TestIamPermissionsResponse;
 class ProjectsLocationsServices extends \Google\Service\Resource
 {
   /**
-   * Create a service. (services.create)
+   * Creates a new Service in a given project and location. (services.create)
    *
-   * @param string $parent The namespace in which the service should be created.
-   * For Cloud Run (fully managed), replace {namespace_id} with the project ID or
-   * number.
-   * @param Service $postBody
+   * @param string $parent Required. The location and project in which this
+   * service should be created. Format:
+   * projects/{projectnumber}/locations/{location}
+   * @param GoogleCloudRunOpV2Service $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string dryRun Indicates that the server should validate the
-   * request and populate default values without persisting the request. Supported
-   * values: `all`
-   * @return Service
+   * @opt_param string serviceId Required. The unique identifier for the Service.
+   * The name of the service becomes {parent}/services/{service_id}.
+   * @opt_param bool validateOnly Indicates that the request should be validated
+   * and default values populated, without persisting the request or creating any
+   * resources.
+   * @return GoogleLongrunningOperation
    */
-  public function create($parent, Service $postBody, $optParams = [])
+  public function create($parent, GoogleCloudRunOpV2Service $postBody, $optParams = [])
   {
     $params = ['parent' => $parent, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('create', [$params], Service::class);
+    return $this->call('create', [$params], GoogleLongrunningOperation::class);
   }
   /**
-   * Delete a service. This will cause the Service to stop serving traffic and
-   * will delete the child entities like Routes, Configurations and Revisions.
-   * (services.delete)
+   * Deletes a Service. This will cause the Service to stop serving traffic and
+   * will delete all revisions. (services.delete)
    *
-   * @param string $name The name of the service to delete. For Cloud Run (fully
-   * managed), replace {namespace_id} with the project ID or number.
+   * @param string $name Required. The full name of the Service. Format:
+   * projects/{projectnumber}/locations/{location}/services/{service}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string apiVersion Cloud Run currently ignores this parameter.
-   * @opt_param string dryRun Indicates that the server should validate the
-   * request and populate default values without persisting the request. Supported
-   * values: `all`
-   * @opt_param string kind Cloud Run currently ignores this parameter.
-   * @opt_param string propagationPolicy Specifies the propagation policy of
-   * delete. Cloud Run currently ignores this setting, and deletes in the
-   * background. Please see kubernetes.io/docs/concepts/workloads/controllers
-   * /garbage-collection/ for more information.
-   * @return Status
+   * @opt_param string etag A system-generated fingerprint for this version of the
+   * resource. May be used to detect modification conflict during updates.
+   * @opt_param bool validateOnly Indicates that the request should be validated
+   * without actually deleting any resources.
+   * @return GoogleLongrunningOperation
    */
   public function delete($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('delete', [$params], Status::class);
+    return $this->call('delete', [$params], GoogleLongrunningOperation::class);
   }
   /**
-   * Get information about a service. (services.get)
+   * Gets information about a Service. (services.get)
    *
-   * @param string $name The name of the service to retrieve. For Cloud Run (fully
-   * managed), replace {namespace_id} with the project ID or number.
+   * @param string $name Required. The full name of the Service. Format:
+   * projects/{projectnumber}/locations/{location}/services/{service}
    * @param array $optParams Optional parameters.
-   * @return Service
+   * @return GoogleCloudRunOpV2Service
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
-    return $this->call('get', [$params], Service::class);
+    return $this->call('get', [$params], GoogleCloudRunOpV2Service::class);
   }
   /**
    * Get the IAM Access Control policy currently in effect for the given Cloud Run
-   * service. This result does not include any inherited policies.
+   * Service. This result does not include any inherited policies.
    * (services.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
@@ -117,65 +113,58 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * IAM policies, see the [IAM
    * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
-   * @return Policy
+   * @return GoogleIamV1Policy
    */
   public function getIamPolicy($resource, $optParams = [])
   {
     $params = ['resource' => $resource];
     $params = array_merge($params, $optParams);
-    return $this->call('getIamPolicy', [$params], Policy::class);
+    return $this->call('getIamPolicy', [$params], GoogleIamV1Policy::class);
   }
   /**
-   * List services. (services.listProjectsLocationsServices)
+   * List Services. (services.listProjectsLocationsServices)
    *
-   * @param string $parent The namespace from which the services should be listed.
-   * For Cloud Run (fully managed), replace {namespace_id} with the project ID or
-   * number.
+   * @param string $parent Required. The location and project to list resources
+   * on. Format: projects/{projectnumber}/locations/{location}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string continue Optional. Encoded string to continue paging.
-   * @opt_param string fieldSelector Allows to filter resources based on a
-   * specific value for a field name. Send this in a query string format. i.e.
-   * 'metadata.name%3Dlorem'. Not currently used by Cloud Run.
-   * @opt_param bool includeUninitialized Not currently used by Cloud Run.
-   * @opt_param string labelSelector Allows to filter resources based on a label.
-   * Supported operations are =, !=, exists, in, and notIn.
-   * @opt_param int limit Optional. The maximum number of records that should be
-   * returned.
-   * @opt_param string resourceVersion The baseline resource version from which
-   * the list or watch operation should start. Not currently used by Cloud Run.
-   * @opt_param bool watch Flag that indicates that the client expects to watch
-   * this resource as well. Not currently used by Cloud Run.
-   * @return ListServicesResponse
+   * @opt_param int pageSize Maximum number of Services to return in this call.
+   * @opt_param string pageToken A page token received from a previous call to
+   * ListServices. All other parameters must match.
+   * @opt_param bool showDeleted If true, returns deleted (but unexpired)
+   * resources along with active ones.
+   * @return GoogleCloudRunOpV2ListServicesResponse
    */
   public function listProjectsLocationsServices($parent, $optParams = [])
   {
     $params = ['parent' => $parent];
     $params = array_merge($params, $optParams);
-    return $this->call('list', [$params], ListServicesResponse::class);
+    return $this->call('list', [$params], GoogleCloudRunOpV2ListServicesResponse::class);
   }
   /**
-   * Replace a service. Only the spec and metadata labels and annotations are
-   * modifiable. After the Update request, Cloud Run will work to make the
-   * 'status' match the requested 'spec'. May provide metadata.resourceVersion to
-   * enforce update from last read for optimistic concurrency control.
-   * (services.replaceService)
+   * Updates a Service. (services.patch)
    *
-   * @param string $name The name of the service being replaced. For Cloud Run
-   * (fully managed), replace {namespace_id} with the project ID or number.
-   * @param Service $postBody
+   * @param string $name The fully qualified name of this Service. In
+   * CreateServiceRequest, this field is ignored, and instead composed from
+   * CreateServiceRequest.parent and CreateServiceRequest.service_id. Format:
+   * projects/{project}/locations/{location}/services/{service_id}
+   * @param GoogleCloudRunOpV2Service $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string dryRun Indicates that the server should validate the
-   * request and populate default values without persisting the request. Supported
-   * values: `all`
-   * @return Service
+   * @opt_param bool allowMissing If set to true, and if the Service does not
+   * exist, it will create a new one. Caller must have both create and update
+   * permissions for this call if this is set to true.
+   * @opt_param string updateMask The list of fields to be updated.
+   * @opt_param bool validateOnly Indicates that the request should be validated
+   * and default values populated, without persisting the request or updating any
+   * resources.
+   * @return GoogleLongrunningOperation
    */
-  public function replaceService($name, Service $postBody, $optParams = [])
+  public function patch($name, GoogleCloudRunOpV2Service $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('replaceService', [$params], Service::class);
+    return $this->call('patch', [$params], GoogleLongrunningOperation::class);
   }
   /**
    * Sets the IAM Access control policy for the specified Service. Overwrites any
@@ -184,15 +173,15 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * @param string $resource REQUIRED: The resource for which the policy is being
    * specified. See the operation documentation for the appropriate value for this
    * field.
-   * @param SetIamPolicyRequest $postBody
+   * @param GoogleIamV1SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return Policy
+   * @return GoogleIamV1Policy
    */
-  public function setIamPolicy($resource, SetIamPolicyRequest $postBody, $optParams = [])
+  public function setIamPolicy($resource, GoogleIamV1SetIamPolicyRequest $postBody, $optParams = [])
   {
     $params = ['resource' => $resource, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('setIamPolicy', [$params], Policy::class);
+    return $this->call('setIamPolicy', [$params], GoogleIamV1Policy::class);
   }
   /**
    * Returns permissions that a caller has on the specified Project. There are no
@@ -201,15 +190,15 @@ class ProjectsLocationsServices extends \Google\Service\Resource
    * @param string $resource REQUIRED: The resource for which the policy detail is
    * being requested. See the operation documentation for the appropriate value
    * for this field.
-   * @param TestIamPermissionsRequest $postBody
+   * @param GoogleIamV1TestIamPermissionsRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return TestIamPermissionsResponse
+   * @return GoogleIamV1TestIamPermissionsResponse
    */
-  public function testIamPermissions($resource, TestIamPermissionsRequest $postBody, $optParams = [])
+  public function testIamPermissions($resource, GoogleIamV1TestIamPermissionsRequest $postBody, $optParams = [])
   {
     $params = ['resource' => $resource, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('testIamPermissions', [$params], TestIamPermissionsResponse::class);
+    return $this->call('testIamPermissions', [$params], GoogleIamV1TestIamPermissionsResponse::class);
   }
 }
 

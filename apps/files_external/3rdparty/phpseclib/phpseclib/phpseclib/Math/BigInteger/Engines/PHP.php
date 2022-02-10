@@ -578,6 +578,11 @@ abstract class PHP extends Engine
             $lhs =  new static();
             $rhs =  new static();
         }
+	if (static::class != get_class($temp)) {
+            $temp = new static();
+            $lhs =  new static();
+            $rhs =  new static();
+        }
         $temp_value = &$temp->value;
         $rhs_value =  &$rhs->value;
 

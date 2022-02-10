@@ -54,6 +54,8 @@ class Course extends \Google\Collection
    * @var string
    */
   public $enrollmentCode;
+  protected $gradebookSettingsType = GradebookSettings::class;
+  protected $gradebookSettingsDataType = '';
   /**
    * @var bool
    */
@@ -214,6 +216,20 @@ class Course extends \Google\Collection
   public function getEnrollmentCode()
   {
     return $this->enrollmentCode;
+  }
+  /**
+   * @param GradebookSettings
+   */
+  public function setGradebookSettings(GradebookSettings $gradebookSettings)
+  {
+    $this->gradebookSettings = $gradebookSettings;
+  }
+  /**
+   * @return GradebookSettings
+   */
+  public function getGradebookSettings()
+  {
+    return $this->gradebookSettings;
   }
   /**
    * @param bool
