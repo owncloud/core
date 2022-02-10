@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class AccountYouTubeChannelLink extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

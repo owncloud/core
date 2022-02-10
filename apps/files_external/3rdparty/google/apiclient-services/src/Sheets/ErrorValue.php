@@ -19,21 +19,39 @@ namespace Google\Service\Sheets;
 
 class ErrorValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $message;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

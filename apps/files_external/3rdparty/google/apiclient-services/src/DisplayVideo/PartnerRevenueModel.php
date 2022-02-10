@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class PartnerRevenueModel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $markupAmount;
+  /**
+   * @var string
+   */
   public $markupType;
 
+  /**
+   * @param string
+   */
   public function setMarkupAmount($markupAmount)
   {
     $this->markupAmount = $markupAmount;
   }
+  /**
+   * @return string
+   */
   public function getMarkupAmount()
   {
     return $this->markupAmount;
   }
+  /**
+   * @param string
+   */
   public function setMarkupType($markupType)
   {
     $this->markupType = $markupType;
   }
+  /**
+   * @return string
+   */
   public function getMarkupType()
   {
     return $this->markupType;

@@ -39,7 +39,11 @@ use Google\Service\BigtableAdmin\TestIamPermissionsResponse;
 class ProjectsInstances extends \Google\Service\Resource
 {
   /**
-   * Create an instance within a project. (instances.create)
+   * Create an instance within a project. Note that exactly one of
+   * Cluster.serve_nodes and Cluster.cluster_config.cluster_autoscaling_config can
+   * be set. If serve_nodes is set to non-zero, then the cluster is manually
+   * scaled. If cluster_config.cluster_autoscaling_config is non-empty, then
+   * autoscaling is enabled. (instances.create)
    *
    * @param string $parent Required. The unique name of the project in which to
    * create the new instance. Values are of the form `projects/{project}`.

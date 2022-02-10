@@ -19,57 +19,111 @@ namespace Google\Service\MyBusinessLodging;
 
 class Business extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $businessCenter;
+  /**
+   * @var string
+   */
   public $businessCenterException;
+  /**
+   * @var bool
+   */
   public $meetingRooms;
+  /**
+   * @var int
+   */
   public $meetingRoomsCount;
+  /**
+   * @var string
+   */
   public $meetingRoomsCountException;
+  /**
+   * @var string
+   */
   public $meetingRoomsException;
 
+  /**
+   * @param bool
+   */
   public function setBusinessCenter($businessCenter)
   {
     $this->businessCenter = $businessCenter;
   }
+  /**
+   * @return bool
+   */
   public function getBusinessCenter()
   {
     return $this->businessCenter;
   }
+  /**
+   * @param string
+   */
   public function setBusinessCenterException($businessCenterException)
   {
     $this->businessCenterException = $businessCenterException;
   }
+  /**
+   * @return string
+   */
   public function getBusinessCenterException()
   {
     return $this->businessCenterException;
   }
+  /**
+   * @param bool
+   */
   public function setMeetingRooms($meetingRooms)
   {
     $this->meetingRooms = $meetingRooms;
   }
+  /**
+   * @return bool
+   */
   public function getMeetingRooms()
   {
     return $this->meetingRooms;
   }
+  /**
+   * @param int
+   */
   public function setMeetingRoomsCount($meetingRoomsCount)
   {
     $this->meetingRoomsCount = $meetingRoomsCount;
   }
+  /**
+   * @return int
+   */
   public function getMeetingRoomsCount()
   {
     return $this->meetingRoomsCount;
   }
+  /**
+   * @param string
+   */
   public function setMeetingRoomsCountException($meetingRoomsCountException)
   {
     $this->meetingRoomsCountException = $meetingRoomsCountException;
   }
+  /**
+   * @return string
+   */
   public function getMeetingRoomsCountException()
   {
     return $this->meetingRoomsCountException;
   }
+  /**
+   * @param string
+   */
   public function setMeetingRoomsException($meetingRoomsException)
   {
     $this->meetingRoomsException = $meetingRoomsException;
   }
+  /**
+   * @return string
+   */
   public function getMeetingRoomsException()
   {
     return $this->meetingRoomsException;

@@ -22,6 +22,9 @@ class GoogleAnalyticsAdminV1alphaListCustomDimensionsResponse extends \Google\Co
   protected $collection_key = 'customDimensions';
   protected $customDimensionsType = GoogleAnalyticsAdminV1alphaCustomDimension::class;
   protected $customDimensionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAnalyticsAdminV1alphaListCustomDimensionsResponse extends \Google\Co
   {
     return $this->customDimensions;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

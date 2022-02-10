@@ -22,6 +22,9 @@ class ListInventoriesResponse extends \Google\Collection
   protected $collection_key = 'inventories';
   protected $inventoriesType = Inventory::class;
   protected $inventoriesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListInventoriesResponse extends \Google\Collection
   {
     return $this->inventories;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

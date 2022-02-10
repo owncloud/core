@@ -19,21 +19,39 @@ namespace Google\Service\Storage;
 
 class BucketLifecycleRuleAction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $storageClass;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setStorageClass($storageClass)
   {
     $this->storageClass = $storageClass;
   }
+  /**
+   * @return string
+   */
   public function getStorageClass()
   {
     return $this->storageClass;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

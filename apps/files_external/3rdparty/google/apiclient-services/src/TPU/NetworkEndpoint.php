@@ -19,21 +19,39 @@ namespace Google\Service\TPU;
 
 class NetworkEndpoint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var int
+   */
   public $port;
 
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;

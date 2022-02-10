@@ -23,6 +23,9 @@ class RoboStartingIntent extends \Google\Model
   protected $launcherActivityDataType = '';
   protected $startActivityType = StartActivityIntent::class;
   protected $startActivityDataType = '';
+  /**
+   * @var string
+   */
   public $timeout;
 
   /**
@@ -53,10 +56,16 @@ class RoboStartingIntent extends \Google\Model
   {
     return $this->startActivity;
   }
+  /**
+   * @param string
+   */
   public function setTimeout($timeout)
   {
     $this->timeout = $timeout;
   }
+  /**
+   * @return string
+   */
   public function getTimeout()
   {
     return $this->timeout;

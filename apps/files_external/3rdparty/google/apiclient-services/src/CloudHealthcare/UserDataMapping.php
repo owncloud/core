@@ -20,42 +20,81 @@ namespace Google\Service\CloudHealthcare;
 class UserDataMapping extends \Google\Collection
 {
   protected $collection_key = 'resourceAttributes';
+  /**
+   * @var string
+   */
   public $archiveTime;
+  /**
+   * @var bool
+   */
   public $archived;
+  /**
+   * @var string
+   */
   public $dataId;
+  /**
+   * @var string
+   */
   public $name;
   protected $resourceAttributesType = Attribute::class;
   protected $resourceAttributesDataType = 'array';
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setArchiveTime($archiveTime)
   {
     $this->archiveTime = $archiveTime;
   }
+  /**
+   * @return string
+   */
   public function getArchiveTime()
   {
     return $this->archiveTime;
   }
+  /**
+   * @param bool
+   */
   public function setArchived($archived)
   {
     $this->archived = $archived;
   }
+  /**
+   * @return bool
+   */
   public function getArchived()
   {
     return $this->archived;
   }
+  /**
+   * @param string
+   */
   public function setDataId($dataId)
   {
     $this->dataId = $dataId;
   }
+  /**
+   * @return string
+   */
   public function getDataId()
   {
     return $this->dataId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -74,10 +113,16 @@ class UserDataMapping extends \Google\Collection
   {
     return $this->resourceAttributes;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

@@ -19,30 +19,57 @@ namespace Google\Service\BigtableAdmin;
 
 class OperationProgress extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var int
+   */
   public $progressPercent;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param int
+   */
   public function setProgressPercent($progressPercent)
   {
     $this->progressPercent = $progressPercent;
   }
+  /**
+   * @return int
+   */
   public function getProgressPercent()
   {
     return $this->progressPercent;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

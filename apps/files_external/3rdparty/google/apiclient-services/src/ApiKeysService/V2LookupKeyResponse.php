@@ -19,21 +19,39 @@ namespace Google\Service\ApiKeysService;
 
 class V2LookupKeyResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parent;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;

@@ -21,6 +21,9 @@ class PrivateAuctionTerms extends \Google\Model
 {
   protected $floorPriceType = Price::class;
   protected $floorPriceDataType = '';
+  /**
+   * @var bool
+   */
   public $openAuctionAllowed;
 
   /**
@@ -37,10 +40,16 @@ class PrivateAuctionTerms extends \Google\Model
   {
     return $this->floorPrice;
   }
+  /**
+   * @param bool
+   */
   public function setOpenAuctionAllowed($openAuctionAllowed)
   {
     $this->openAuctionAllowed = $openAuctionAllowed;
   }
+  /**
+   * @return bool
+   */
   public function getOpenAuctionAllowed()
   {
     return $this->openAuctionAllowed;

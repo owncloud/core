@@ -19,48 +19,93 @@ namespace Google\Service\FirebaseRules;
 
 class SourcePosition extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $column;
+  /**
+   * @var int
+   */
   public $currentOffset;
+  /**
+   * @var int
+   */
   public $endOffset;
+  /**
+   * @var string
+   */
   public $fileName;
+  /**
+   * @var int
+   */
   public $line;
 
+  /**
+   * @param int
+   */
   public function setColumn($column)
   {
     $this->column = $column;
   }
+  /**
+   * @return int
+   */
   public function getColumn()
   {
     return $this->column;
   }
+  /**
+   * @param int
+   */
   public function setCurrentOffset($currentOffset)
   {
     $this->currentOffset = $currentOffset;
   }
+  /**
+   * @return int
+   */
   public function getCurrentOffset()
   {
     return $this->currentOffset;
   }
+  /**
+   * @param int
+   */
   public function setEndOffset($endOffset)
   {
     $this->endOffset = $endOffset;
   }
+  /**
+   * @return int
+   */
   public function getEndOffset()
   {
     return $this->endOffset;
   }
+  /**
+   * @param string
+   */
   public function setFileName($fileName)
   {
     $this->fileName = $fileName;
   }
+  /**
+   * @return string
+   */
   public function getFileName()
   {
     return $this->fileName;
   }
+  /**
+   * @param int
+   */
   public function setLine($line)
   {
     $this->line = $line;
   }
+  /**
+   * @return int
+   */
   public function getLine()
   {
     return $this->line;

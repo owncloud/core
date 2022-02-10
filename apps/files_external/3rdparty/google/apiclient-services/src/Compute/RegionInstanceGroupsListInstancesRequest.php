@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class RegionInstanceGroupsListInstancesRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $instanceState;
+  /**
+   * @var string
+   */
   public $portName;
 
+  /**
+   * @param string
+   */
   public function setInstanceState($instanceState)
   {
     $this->instanceState = $instanceState;
   }
+  /**
+   * @return string
+   */
   public function getInstanceState()
   {
     return $this->instanceState;
   }
+  /**
+   * @param string
+   */
   public function setPortName($portName)
   {
     $this->portName = $portName;
   }
+  /**
+   * @return string
+   */
   public function getPortName()
   {
     return $this->portName;

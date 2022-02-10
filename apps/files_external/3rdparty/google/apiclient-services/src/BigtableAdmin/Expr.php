@@ -19,39 +19,75 @@ namespace Google\Service\BigtableAdmin;
 
 class Expr extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $expression;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setExpression($expression)
   {
     $this->expression = $expression;
   }
+  /**
+   * @return string
+   */
   public function getExpression()
   {
     return $this->expression;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

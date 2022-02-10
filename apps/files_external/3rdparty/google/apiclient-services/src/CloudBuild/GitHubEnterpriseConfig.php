@@ -19,61 +19,121 @@ namespace Google\Service\CloudBuild;
 
 class GitHubEnterpriseConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appId;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $hostUrl;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $peeredNetwork;
   protected $secretsType = GitHubEnterpriseSecrets::class;
   protected $secretsDataType = '';
+  /**
+   * @var string
+   */
   public $sslCa;
+  /**
+   * @var string
+   */
   public $webhookKey;
 
+  /**
+   * @param string
+   */
   public function setAppId($appId)
   {
     $this->appId = $appId;
   }
+  /**
+   * @return string
+   */
   public function getAppId()
   {
     return $this->appId;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setHostUrl($hostUrl)
   {
     $this->hostUrl = $hostUrl;
   }
+  /**
+   * @return string
+   */
   public function getHostUrl()
   {
     return $this->hostUrl;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPeeredNetwork($peeredNetwork)
   {
     $this->peeredNetwork = $peeredNetwork;
   }
+  /**
+   * @return string
+   */
   public function getPeeredNetwork()
   {
     return $this->peeredNetwork;
@@ -92,18 +152,30 @@ class GitHubEnterpriseConfig extends \Google\Model
   {
     return $this->secrets;
   }
+  /**
+   * @param string
+   */
   public function setSslCa($sslCa)
   {
     $this->sslCa = $sslCa;
   }
+  /**
+   * @return string
+   */
   public function getSslCa()
   {
     return $this->sslCa;
   }
+  /**
+   * @param string
+   */
   public function setWebhookKey($webhookKey)
   {
     $this->webhookKey = $webhookKey;
   }
+  /**
+   * @return string
+   */
   public function getWebhookKey()
   {
     return $this->webhookKey;

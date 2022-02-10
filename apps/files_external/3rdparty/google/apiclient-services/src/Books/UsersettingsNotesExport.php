@@ -19,21 +19,39 @@ namespace Google\Service\Books;
 
 class UsersettingsNotesExport extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $folderName;
+  /**
+   * @var bool
+   */
   public $isEnabled;
 
+  /**
+   * @param string
+   */
   public function setFolderName($folderName)
   {
     $this->folderName = $folderName;
   }
+  /**
+   * @return string
+   */
   public function getFolderName()
   {
     return $this->folderName;
   }
+  /**
+   * @param bool
+   */
   public function setIsEnabled($isEnabled)
   {
     $this->isEnabled = $isEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getIsEnabled()
   {
     return $this->isEnabled;

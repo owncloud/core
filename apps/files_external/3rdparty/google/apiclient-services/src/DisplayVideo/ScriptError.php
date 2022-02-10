@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class ScriptError extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $column;
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string
+   */
   public $line;
 
+  /**
+   * @param string
+   */
   public function setColumn($column)
   {
     $this->column = $column;
   }
+  /**
+   * @return string
+   */
   public function getColumn()
   {
     return $this->column;
   }
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string
+   */
   public function setLine($line)
   {
     $this->line = $line;
   }
+  /**
+   * @return string
+   */
   public function getLine()
   {
     return $this->line;

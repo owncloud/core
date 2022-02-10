@@ -21,6 +21,9 @@ class DeleteRangeRequest extends \Google\Model
 {
   protected $rangeType = GridRange::class;
   protected $rangeDataType = '';
+  /**
+   * @var string
+   */
   public $shiftDimension;
 
   /**
@@ -37,10 +40,16 @@ class DeleteRangeRequest extends \Google\Model
   {
     return $this->range;
   }
+  /**
+   * @param string
+   */
   public function setShiftDimension($shiftDimension)
   {
     $this->shiftDimension = $shiftDimension;
   }
+  /**
+   * @return string
+   */
   public function getShiftDimension()
   {
     return $this->shiftDimension;

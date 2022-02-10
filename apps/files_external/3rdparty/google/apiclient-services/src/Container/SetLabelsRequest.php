@@ -19,57 +19,111 @@ namespace Google\Service\Container;
 
 class SetLabelsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterId;
+  /**
+   * @var string
+   */
   public $labelFingerprint;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string[]
+   */
   public $resourceLabels;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string
+   */
   public function setClusterId($clusterId)
   {
     $this->clusterId = $clusterId;
   }
+  /**
+   * @return string
+   */
   public function getClusterId()
   {
     return $this->clusterId;
   }
+  /**
+   * @param string
+   */
   public function setLabelFingerprint($labelFingerprint)
   {
     $this->labelFingerprint = $labelFingerprint;
   }
+  /**
+   * @return string
+   */
   public function getLabelFingerprint()
   {
     return $this->labelFingerprint;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string[]
+   */
   public function setResourceLabels($resourceLabels)
   {
     $this->resourceLabels = $resourceLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceLabels()
   {
     return $this->resourceLabels;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

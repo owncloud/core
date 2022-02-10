@@ -19,20 +19,41 @@ namespace Google\Service\Script;
 
 class ScriptFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
   protected $functionSetType = GoogleAppsScriptTypeFunctionSet::class;
   protected $functionSetDataType = '';
   protected $lastModifyUserType = GoogleAppsScriptTypeUser::class;
   protected $lastModifyUserDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $source;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -65,34 +86,58 @@ class ScriptFile extends \Google\Model
   {
     return $this->lastModifyUser;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

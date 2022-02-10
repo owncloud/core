@@ -19,48 +19,93 @@ namespace Google\Service\Blogger;
 
 class PostPerUserInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $blogId;
+  /**
+   * @var bool
+   */
   public $hasEditAccess;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $postId;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setBlogId($blogId)
   {
     $this->blogId = $blogId;
   }
+  /**
+   * @return string
+   */
   public function getBlogId()
   {
     return $this->blogId;
   }
+  /**
+   * @param bool
+   */
   public function setHasEditAccess($hasEditAccess)
   {
     $this->hasEditAccess = $hasEditAccess;
   }
+  /**
+   * @return bool
+   */
   public function getHasEditAccess()
   {
     return $this->hasEditAccess;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPostId($postId)
   {
     $this->postId = $postId;
   }
+  /**
+   * @return string
+   */
   public function getPostId()
   {
     return $this->postId;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

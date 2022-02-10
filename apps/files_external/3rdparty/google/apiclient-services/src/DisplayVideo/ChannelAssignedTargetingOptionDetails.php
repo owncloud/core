@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class ChannelAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var bool
+   */
   public $negative;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param bool
+   */
   public function setNegative($negative)
   {
     $this->negative = $negative;
   }
+  /**
+   * @return bool
+   */
   public function getNegative()
   {
     return $this->negative;

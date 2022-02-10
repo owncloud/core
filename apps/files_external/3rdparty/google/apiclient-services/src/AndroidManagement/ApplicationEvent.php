@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class ApplicationEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $eventType;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;

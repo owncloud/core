@@ -19,21 +19,39 @@ namespace Google\Service\CloudSupport;
 
 class CaseClassification extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $id;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

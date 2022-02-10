@@ -19,12 +19,21 @@ namespace Google\Service\Iam;
 
 class UploadServiceAccountKeyRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $publicKeyData;
 
+  /**
+   * @param string
+   */
   public function setPublicKeyData($publicKeyData)
   {
     $this->publicKeyData = $publicKeyData;
   }
+  /**
+   * @return string
+   */
   public function getPublicKeyData()
   {
     return $this->publicKeyData;

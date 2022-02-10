@@ -19,12 +19,21 @@ namespace Google\Service\ShoppingContent;
 
 class OnboardBuyOnGoogleProgramRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customerServiceEmail;
 
+  /**
+   * @param string
+   */
   public function setCustomerServiceEmail($customerServiceEmail)
   {
     $this->customerServiceEmail = $customerServiceEmail;
   }
+  /**
+   * @return string
+   */
   public function getCustomerServiceEmail()
   {
     return $this->customerServiceEmail;

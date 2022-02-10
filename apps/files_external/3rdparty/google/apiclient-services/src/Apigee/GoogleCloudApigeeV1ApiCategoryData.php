@@ -19,39 +19,75 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1ApiCategoryData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $siteId;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSiteId($siteId)
   {
     $this->siteId = $siteId;
   }
+  /**
+   * @return string
+   */
   public function getSiteId()
   {
     return $this->siteId;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

@@ -20,48 +20,93 @@ namespace Google\Service\AndroidManagement;
 class AdvancedSecurityOverrides extends \Google\Collection
 {
   protected $collection_key = 'personalAppsThatCanReadWorkNotifications';
+  /**
+   * @var string
+   */
   public $commonCriteriaMode;
+  /**
+   * @var string
+   */
   public $developerSettings;
+  /**
+   * @var string
+   */
   public $googlePlayProtectVerifyApps;
+  /**
+   * @var string[]
+   */
   public $personalAppsThatCanReadWorkNotifications;
+  /**
+   * @var string
+   */
   public $untrustedAppsPolicy;
 
+  /**
+   * @param string
+   */
   public function setCommonCriteriaMode($commonCriteriaMode)
   {
     $this->commonCriteriaMode = $commonCriteriaMode;
   }
+  /**
+   * @return string
+   */
   public function getCommonCriteriaMode()
   {
     return $this->commonCriteriaMode;
   }
+  /**
+   * @param string
+   */
   public function setDeveloperSettings($developerSettings)
   {
     $this->developerSettings = $developerSettings;
   }
+  /**
+   * @return string
+   */
   public function getDeveloperSettings()
   {
     return $this->developerSettings;
   }
+  /**
+   * @param string
+   */
   public function setGooglePlayProtectVerifyApps($googlePlayProtectVerifyApps)
   {
     $this->googlePlayProtectVerifyApps = $googlePlayProtectVerifyApps;
   }
+  /**
+   * @return string
+   */
   public function getGooglePlayProtectVerifyApps()
   {
     return $this->googlePlayProtectVerifyApps;
   }
+  /**
+   * @param string[]
+   */
   public function setPersonalAppsThatCanReadWorkNotifications($personalAppsThatCanReadWorkNotifications)
   {
     $this->personalAppsThatCanReadWorkNotifications = $personalAppsThatCanReadWorkNotifications;
   }
+  /**
+   * @return string[]
+   */
   public function getPersonalAppsThatCanReadWorkNotifications()
   {
     return $this->personalAppsThatCanReadWorkNotifications;
   }
+  /**
+   * @param string
+   */
   public function setUntrustedAppsPolicy($untrustedAppsPolicy)
   {
     $this->untrustedAppsPolicy = $untrustedAppsPolicy;
   }
+  /**
+   * @return string
+   */
   public function getUntrustedAppsPolicy()
   {
     return $this->untrustedAppsPolicy;

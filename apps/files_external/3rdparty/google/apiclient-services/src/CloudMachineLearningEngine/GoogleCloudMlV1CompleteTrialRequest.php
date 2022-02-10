@@ -21,7 +21,13 @@ class GoogleCloudMlV1CompleteTrialRequest extends \Google\Model
 {
   protected $finalMeasurementType = GoogleCloudMlV1Measurement::class;
   protected $finalMeasurementDataType = '';
+  /**
+   * @var string
+   */
   public $infeasibleReason;
+  /**
+   * @var bool
+   */
   public $trialInfeasible;
 
   /**
@@ -38,18 +44,30 @@ class GoogleCloudMlV1CompleteTrialRequest extends \Google\Model
   {
     return $this->finalMeasurement;
   }
+  /**
+   * @param string
+   */
   public function setInfeasibleReason($infeasibleReason)
   {
     $this->infeasibleReason = $infeasibleReason;
   }
+  /**
+   * @return string
+   */
   public function getInfeasibleReason()
   {
     return $this->infeasibleReason;
   }
+  /**
+   * @param bool
+   */
   public function setTrialInfeasible($trialInfeasible)
   {
     $this->trialInfeasible = $trialInfeasible;
   }
+  /**
+   * @return bool
+   */
   public function getTrialInfeasible()
   {
     return $this->trialInfeasible;

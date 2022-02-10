@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class ComponentSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $originalTransformOrCollection;
+  /**
+   * @var string
+   */
   public $userName;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOriginalTransformOrCollection($originalTransformOrCollection)
   {
     $this->originalTransformOrCollection = $originalTransformOrCollection;
   }
+  /**
+   * @return string
+   */
   public function getOriginalTransformOrCollection()
   {
     return $this->originalTransformOrCollection;
   }
+  /**
+   * @param string
+   */
   public function setUserName($userName)
   {
     $this->userName = $userName;
   }
+  /**
+   * @return string
+   */
   public function getUserName()
   {
     return $this->userName;

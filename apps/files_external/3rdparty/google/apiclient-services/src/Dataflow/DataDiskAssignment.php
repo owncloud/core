@@ -20,21 +20,39 @@ namespace Google\Service\Dataflow;
 class DataDiskAssignment extends \Google\Collection
 {
   protected $collection_key = 'dataDisks';
+  /**
+   * @var string[]
+   */
   public $dataDisks;
+  /**
+   * @var string
+   */
   public $vmInstance;
 
+  /**
+   * @param string[]
+   */
   public function setDataDisks($dataDisks)
   {
     $this->dataDisks = $dataDisks;
   }
+  /**
+   * @return string[]
+   */
   public function getDataDisks()
   {
     return $this->dataDisks;
   }
+  /**
+   * @param string
+   */
   public function setVmInstance($vmInstance)
   {
     $this->vmInstance = $vmInstance;
   }
+  /**
+   * @return string
+   */
   public function getVmInstance()
   {
     return $this->vmInstance;

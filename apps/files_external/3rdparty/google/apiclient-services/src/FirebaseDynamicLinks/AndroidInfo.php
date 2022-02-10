@@ -19,39 +19,75 @@ namespace Google\Service\FirebaseDynamicLinks;
 
 class AndroidInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $androidFallbackLink;
+  /**
+   * @var string
+   */
   public $androidLink;
+  /**
+   * @var string
+   */
   public $androidMinPackageVersionCode;
+  /**
+   * @var string
+   */
   public $androidPackageName;
 
+  /**
+   * @param string
+   */
   public function setAndroidFallbackLink($androidFallbackLink)
   {
     $this->androidFallbackLink = $androidFallbackLink;
   }
+  /**
+   * @return string
+   */
   public function getAndroidFallbackLink()
   {
     return $this->androidFallbackLink;
   }
+  /**
+   * @param string
+   */
   public function setAndroidLink($androidLink)
   {
     $this->androidLink = $androidLink;
   }
+  /**
+   * @return string
+   */
   public function getAndroidLink()
   {
     return $this->androidLink;
   }
+  /**
+   * @param string
+   */
   public function setAndroidMinPackageVersionCode($androidMinPackageVersionCode)
   {
     $this->androidMinPackageVersionCode = $androidMinPackageVersionCode;
   }
+  /**
+   * @return string
+   */
   public function getAndroidMinPackageVersionCode()
   {
     return $this->androidMinPackageVersionCode;
   }
+  /**
+   * @param string
+   */
   public function setAndroidPackageName($androidPackageName)
   {
     $this->androidPackageName = $androidPackageName;
   }
+  /**
+   * @return string
+   */
   public function getAndroidPackageName()
   {
     return $this->androidPackageName;

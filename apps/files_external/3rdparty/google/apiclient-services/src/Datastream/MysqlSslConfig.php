@@ -19,57 +19,111 @@ namespace Google\Service\Datastream;
 
 class MysqlSslConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $caCertificate;
+  /**
+   * @var bool
+   */
   public $caCertificateSet;
+  /**
+   * @var string
+   */
   public $clientCertificate;
+  /**
+   * @var bool
+   */
   public $clientCertificateSet;
+  /**
+   * @var string
+   */
   public $clientKey;
+  /**
+   * @var bool
+   */
   public $clientKeySet;
 
+  /**
+   * @param string
+   */
   public function setCaCertificate($caCertificate)
   {
     $this->caCertificate = $caCertificate;
   }
+  /**
+   * @return string
+   */
   public function getCaCertificate()
   {
     return $this->caCertificate;
   }
+  /**
+   * @param bool
+   */
   public function setCaCertificateSet($caCertificateSet)
   {
     $this->caCertificateSet = $caCertificateSet;
   }
+  /**
+   * @return bool
+   */
   public function getCaCertificateSet()
   {
     return $this->caCertificateSet;
   }
+  /**
+   * @param string
+   */
   public function setClientCertificate($clientCertificate)
   {
     $this->clientCertificate = $clientCertificate;
   }
+  /**
+   * @return string
+   */
   public function getClientCertificate()
   {
     return $this->clientCertificate;
   }
+  /**
+   * @param bool
+   */
   public function setClientCertificateSet($clientCertificateSet)
   {
     $this->clientCertificateSet = $clientCertificateSet;
   }
+  /**
+   * @return bool
+   */
   public function getClientCertificateSet()
   {
     return $this->clientCertificateSet;
   }
+  /**
+   * @param string
+   */
   public function setClientKey($clientKey)
   {
     $this->clientKey = $clientKey;
   }
+  /**
+   * @return string
+   */
   public function getClientKey()
   {
     return $this->clientKey;
   }
+  /**
+   * @param bool
+   */
   public function setClientKeySet($clientKeySet)
   {
     $this->clientKeySet = $clientKeySet;
   }
+  /**
+   * @return bool
+   */
   public function getClientKeySet()
   {
     return $this->clientKeySet;

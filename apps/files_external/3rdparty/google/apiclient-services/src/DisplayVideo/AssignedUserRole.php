@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class AssignedUserRole extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var string
+   */
   public $assignedUserRoleId;
+  /**
+   * @var string
+   */
   public $partnerId;
+  /**
+   * @var string
+   */
   public $userRole;
 
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param string
+   */
   public function setAssignedUserRoleId($assignedUserRoleId)
   {
     $this->assignedUserRoleId = $assignedUserRoleId;
   }
+  /**
+   * @return string
+   */
   public function getAssignedUserRoleId()
   {
     return $this->assignedUserRoleId;
   }
+  /**
+   * @param string
+   */
   public function setPartnerId($partnerId)
   {
     $this->partnerId = $partnerId;
   }
+  /**
+   * @return string
+   */
   public function getPartnerId()
   {
     return $this->partnerId;
   }
+  /**
+   * @param string
+   */
   public function setUserRole($userRole)
   {
     $this->userRole = $userRole;
   }
+  /**
+   * @return string
+   */
   public function getUserRole()
   {
     return $this->userRole;

@@ -19,14 +19,23 @@ namespace Google\Service\Docs;
 
 class CreateParagraphBulletsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bulletPreset;
   protected $rangeType = Range::class;
   protected $rangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBulletPreset($bulletPreset)
   {
     $this->bulletPreset = $bulletPreset;
   }
+  /**
+   * @return string
+   */
   public function getBulletPreset()
   {
     return $this->bulletPreset;

@@ -21,20 +21,47 @@ class PacketMirroring extends \Google\Model
 {
   protected $collectorIlbType = PacketMirroringForwardingRuleInfo::class;
   protected $collectorIlbDataType = '';
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $enable;
   protected $filterType = PacketMirroringFilter::class;
   protected $filterDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
   protected $mirroredResourcesType = PacketMirroringMirroredResourceInfo::class;
   protected $mirroredResourcesDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $networkType = PacketMirroringNetworkInfo::class;
   protected $networkDataType = '';
+  /**
+   * @var string
+   */
   public $priority;
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $selfLink;
 
   /**
@@ -51,26 +78,44 @@ class PacketMirroring extends \Google\Model
   {
     return $this->collectorIlb;
   }
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setEnable($enable)
   {
     $this->enable = $enable;
   }
+  /**
+   * @return string
+   */
   public function getEnable()
   {
     return $this->enable;
@@ -89,18 +134,30 @@ class PacketMirroring extends \Google\Model
   {
     return $this->filter;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -119,10 +176,16 @@ class PacketMirroring extends \Google\Model
   {
     return $this->mirroredResources;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -141,26 +204,44 @@ class PacketMirroring extends \Google\Model
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return string
+   */
   public function getPriority()
   {
     return $this->priority;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

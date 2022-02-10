@@ -20,68 +20,143 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2Intent extends \Google\Collection
 {
   protected $collection_key = 'trainingPhrases';
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string[]
+   */
   public $defaultResponsePlatforms;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $endInteraction;
+  /**
+   * @var string[]
+   */
   public $events;
   protected $followupIntentInfoType = GoogleCloudDialogflowV2IntentFollowupIntentInfo::class;
   protected $followupIntentInfoDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $inputContextNames;
+  /**
+   * @var bool
+   */
   public $isFallback;
+  /**
+   * @var bool
+   */
   public $liveAgentHandoff;
   protected $messagesType = GoogleCloudDialogflowV2IntentMessage::class;
   protected $messagesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $mlDisabled;
+  /**
+   * @var string
+   */
   public $name;
   protected $outputContextsType = GoogleCloudDialogflowV2Context::class;
   protected $outputContextsDataType = 'array';
   protected $parametersType = GoogleCloudDialogflowV2IntentParameter::class;
   protected $parametersDataType = 'array';
+  /**
+   * @var string
+   */
   public $parentFollowupIntentName;
+  /**
+   * @var int
+   */
   public $priority;
+  /**
+   * @var bool
+   */
   public $resetContexts;
+  /**
+   * @var string
+   */
   public $rootFollowupIntentName;
   protected $trainingPhrasesType = GoogleCloudDialogflowV2IntentTrainingPhrase::class;
   protected $trainingPhrasesDataType = 'array';
+  /**
+   * @var string
+   */
   public $webhookState;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string[]
+   */
   public function setDefaultResponsePlatforms($defaultResponsePlatforms)
   {
     $this->defaultResponsePlatforms = $defaultResponsePlatforms;
   }
+  /**
+   * @return string[]
+   */
   public function getDefaultResponsePlatforms()
   {
     return $this->defaultResponsePlatforms;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setEndInteraction($endInteraction)
   {
     $this->endInteraction = $endInteraction;
   }
+  /**
+   * @return bool
+   */
   public function getEndInteraction()
   {
     return $this->endInteraction;
   }
+  /**
+   * @param string[]
+   */
   public function setEvents($events)
   {
     $this->events = $events;
   }
+  /**
+   * @return string[]
+   */
   public function getEvents()
   {
     return $this->events;
@@ -100,26 +175,44 @@ class GoogleCloudDialogflowV2Intent extends \Google\Collection
   {
     return $this->followupIntentInfo;
   }
+  /**
+   * @param string[]
+   */
   public function setInputContextNames($inputContextNames)
   {
     $this->inputContextNames = $inputContextNames;
   }
+  /**
+   * @return string[]
+   */
   public function getInputContextNames()
   {
     return $this->inputContextNames;
   }
+  /**
+   * @param bool
+   */
   public function setIsFallback($isFallback)
   {
     $this->isFallback = $isFallback;
   }
+  /**
+   * @return bool
+   */
   public function getIsFallback()
   {
     return $this->isFallback;
   }
+  /**
+   * @param bool
+   */
   public function setLiveAgentHandoff($liveAgentHandoff)
   {
     $this->liveAgentHandoff = $liveAgentHandoff;
   }
+  /**
+   * @return bool
+   */
   public function getLiveAgentHandoff()
   {
     return $this->liveAgentHandoff;
@@ -138,18 +231,30 @@ class GoogleCloudDialogflowV2Intent extends \Google\Collection
   {
     return $this->messages;
   }
+  /**
+   * @param bool
+   */
   public function setMlDisabled($mlDisabled)
   {
     $this->mlDisabled = $mlDisabled;
   }
+  /**
+   * @return bool
+   */
   public function getMlDisabled()
   {
     return $this->mlDisabled;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -182,34 +287,58 @@ class GoogleCloudDialogflowV2Intent extends \Google\Collection
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setParentFollowupIntentName($parentFollowupIntentName)
   {
     $this->parentFollowupIntentName = $parentFollowupIntentName;
   }
+  /**
+   * @return string
+   */
   public function getParentFollowupIntentName()
   {
     return $this->parentFollowupIntentName;
   }
+  /**
+   * @param int
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return int
+   */
   public function getPriority()
   {
     return $this->priority;
   }
+  /**
+   * @param bool
+   */
   public function setResetContexts($resetContexts)
   {
     $this->resetContexts = $resetContexts;
   }
+  /**
+   * @return bool
+   */
   public function getResetContexts()
   {
     return $this->resetContexts;
   }
+  /**
+   * @param string
+   */
   public function setRootFollowupIntentName($rootFollowupIntentName)
   {
     $this->rootFollowupIntentName = $rootFollowupIntentName;
   }
+  /**
+   * @return string
+   */
   public function getRootFollowupIntentName()
   {
     return $this->rootFollowupIntentName;
@@ -228,10 +357,16 @@ class GoogleCloudDialogflowV2Intent extends \Google\Collection
   {
     return $this->trainingPhrases;
   }
+  /**
+   * @param string
+   */
   public function setWebhookState($webhookState)
   {
     $this->webhookState = $webhookState;
   }
+  /**
+   * @return string
+   */
   public function getWebhookState()
   {
     return $this->webhookState;

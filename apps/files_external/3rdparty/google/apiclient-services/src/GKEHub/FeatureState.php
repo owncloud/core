@@ -19,30 +19,57 @@ namespace Google\Service\GKEHub;
 
 class FeatureState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

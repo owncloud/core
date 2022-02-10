@@ -27,6 +27,9 @@ class RestrictItem extends \Google\Model
   protected $driveMimeTypeRestrictDataType = '';
   protected $driveTimeSpanRestrictType = DriveTimeSpanRestrict::class;
   protected $driveTimeSpanRestrictDataType = '';
+  /**
+   * @var string
+   */
   public $searchOperator;
 
   /**
@@ -85,10 +88,16 @@ class RestrictItem extends \Google\Model
   {
     return $this->driveTimeSpanRestrict;
   }
+  /**
+   * @param string
+   */
   public function setSearchOperator($searchOperator)
   {
     $this->searchOperator = $searchOperator;
   }
+  /**
+   * @return string
+   */
   public function getSearchOperator()
   {
     return $this->searchOperator;

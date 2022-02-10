@@ -20,14 +20,23 @@ namespace Google\Service\ToolResults;
 class ListPerfSamplesResponse extends \Google\Collection
 {
   protected $collection_key = 'perfSamples';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $perfSamplesType = PerfSample::class;
   protected $perfSamplesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

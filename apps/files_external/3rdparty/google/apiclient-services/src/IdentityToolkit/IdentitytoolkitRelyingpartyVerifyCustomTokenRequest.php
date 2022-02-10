@@ -19,39 +19,75 @@ namespace Google\Service\IdentityToolkit;
 
 class IdentitytoolkitRelyingpartyVerifyCustomTokenRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $delegatedProjectNumber;
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var bool
+   */
   public $returnSecureToken;
+  /**
+   * @var string
+   */
   public $token;
 
+  /**
+   * @param string
+   */
   public function setDelegatedProjectNumber($delegatedProjectNumber)
   {
     $this->delegatedProjectNumber = $delegatedProjectNumber;
   }
+  /**
+   * @return string
+   */
   public function getDelegatedProjectNumber()
   {
     return $this->delegatedProjectNumber;
   }
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param bool
+   */
   public function setReturnSecureToken($returnSecureToken)
   {
     $this->returnSecureToken = $returnSecureToken;
   }
+  /**
+   * @return bool
+   */
   public function getReturnSecureToken()
   {
     return $this->returnSecureToken;
   }
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;

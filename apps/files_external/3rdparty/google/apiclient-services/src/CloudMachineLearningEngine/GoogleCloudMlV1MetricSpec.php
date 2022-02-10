@@ -19,21 +19,39 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1MetricSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $target;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return int
+   */
   public function getTarget()
   {
     return $this->target;

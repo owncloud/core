@@ -19,12 +19,21 @@ namespace Google\Service\Texttospeech;
 
 class SynthesizeSpeechResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audioContent;
 
+  /**
+   * @param string
+   */
   public function setAudioContent($audioContent)
   {
     $this->audioContent = $audioContent;
   }
+  /**
+   * @return string
+   */
   public function getAudioContent()
   {
     return $this->audioContent;

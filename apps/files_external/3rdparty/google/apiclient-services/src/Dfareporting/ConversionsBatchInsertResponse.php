@@ -20,23 +20,41 @@ namespace Google\Service\Dfareporting;
 class ConversionsBatchInsertResponse extends \Google\Collection
 {
   protected $collection_key = 'status';
+  /**
+   * @var bool
+   */
   public $hasFailures;
+  /**
+   * @var string
+   */
   public $kind;
   protected $statusType = ConversionStatus::class;
   protected $statusDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setHasFailures($hasFailures)
   {
     $this->hasFailures = $hasFailures;
   }
+  /**
+   * @return bool
+   */
   public function getHasFailures()
   {
     return $this->hasFailures;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

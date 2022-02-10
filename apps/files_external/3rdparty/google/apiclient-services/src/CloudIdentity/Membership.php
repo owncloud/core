@@ -20,27 +20,51 @@ namespace Google\Service\CloudIdentity;
 class Membership extends \Google\Collection
 {
   protected $collection_key = 'roles';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $name;
   protected $preferredMemberKeyType = EntityKey::class;
   protected $preferredMemberKeyDataType = '';
   protected $rolesType = MembershipRole::class;
   protected $rolesDataType = 'array';
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -73,18 +97,30 @@ class Membership extends \Google\Collection
   {
     return $this->roles;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

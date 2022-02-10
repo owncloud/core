@@ -19,14 +19,23 @@ namespace Google\Service\Compute;
 
 class InstanceGroupManagerStatusStateful extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $hasStatefulConfig;
   protected $perInstanceConfigsType = InstanceGroupManagerStatusStatefulPerInstanceConfigs::class;
   protected $perInstanceConfigsDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setHasStatefulConfig($hasStatefulConfig)
   {
     $this->hasStatefulConfig = $hasStatefulConfig;
   }
+  /**
+   * @return bool
+   */
   public function getHasStatefulConfig()
   {
     return $this->hasStatefulConfig;

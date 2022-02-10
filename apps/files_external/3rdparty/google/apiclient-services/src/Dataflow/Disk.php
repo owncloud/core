@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class Disk extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $diskType;
+  /**
+   * @var string
+   */
   public $mountPoint;
+  /**
+   * @var int
+   */
   public $sizeGb;
 
+  /**
+   * @param string
+   */
   public function setDiskType($diskType)
   {
     $this->diskType = $diskType;
   }
+  /**
+   * @return string
+   */
   public function getDiskType()
   {
     return $this->diskType;
   }
+  /**
+   * @param string
+   */
   public function setMountPoint($mountPoint)
   {
     $this->mountPoint = $mountPoint;
   }
+  /**
+   * @return string
+   */
   public function getMountPoint()
   {
     return $this->mountPoint;
   }
+  /**
+   * @param int
+   */
   public function setSizeGb($sizeGb)
   {
     $this->sizeGb = $sizeGb;
   }
+  /**
+   * @return int
+   */
   public function getSizeGb()
   {
     return $this->sizeGb;

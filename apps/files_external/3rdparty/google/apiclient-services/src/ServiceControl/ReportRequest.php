@@ -22,6 +22,9 @@ class ReportRequest extends \Google\Collection
   protected $collection_key = 'operations';
   protected $operationsType = AttributeContext::class;
   protected $operationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $serviceConfigId;
 
   /**
@@ -38,10 +41,16 @@ class ReportRequest extends \Google\Collection
   {
     return $this->operations;
   }
+  /**
+   * @param string
+   */
   public function setServiceConfigId($serviceConfigId)
   {
     $this->serviceConfigId = $serviceConfigId;
   }
+  /**
+   * @return string
+   */
   public function getServiceConfigId()
   {
     return $this->serviceConfigId;

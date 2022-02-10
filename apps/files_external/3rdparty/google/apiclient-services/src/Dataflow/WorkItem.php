@@ -20,16 +20,37 @@ namespace Google\Service\Dataflow;
 class WorkItem extends \Google\Collection
 {
   protected $collection_key = 'packages';
+  /**
+   * @var string
+   */
   public $configuration;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $initialReportIndex;
+  /**
+   * @var string
+   */
   public $jobId;
+  /**
+   * @var string
+   */
   public $leaseExpireTime;
   protected $mapTaskType = MapTask::class;
   protected $mapTaskDataType = '';
   protected $packagesType = Package::class;
   protected $packagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $reportStatusInterval;
   protected $seqMapTaskType = SeqMapTask::class;
   protected $seqMapTaskDataType = '';
@@ -44,42 +65,72 @@ class WorkItem extends \Google\Collection
   protected $streamingSetupTaskType = StreamingSetupTask::class;
   protected $streamingSetupTaskDataType = '';
 
+  /**
+   * @param string
+   */
   public function setConfiguration($configuration)
   {
     $this->configuration = $configuration;
   }
+  /**
+   * @return string
+   */
   public function getConfiguration()
   {
     return $this->configuration;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setInitialReportIndex($initialReportIndex)
   {
     $this->initialReportIndex = $initialReportIndex;
   }
+  /**
+   * @return string
+   */
   public function getInitialReportIndex()
   {
     return $this->initialReportIndex;
   }
+  /**
+   * @param string
+   */
   public function setJobId($jobId)
   {
     $this->jobId = $jobId;
   }
+  /**
+   * @return string
+   */
   public function getJobId()
   {
     return $this->jobId;
   }
+  /**
+   * @param string
+   */
   public function setLeaseExpireTime($leaseExpireTime)
   {
     $this->leaseExpireTime = $leaseExpireTime;
   }
+  /**
+   * @return string
+   */
   public function getLeaseExpireTime()
   {
     return $this->leaseExpireTime;
@@ -112,18 +163,30 @@ class WorkItem extends \Google\Collection
   {
     return $this->packages;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setReportStatusInterval($reportStatusInterval)
   {
     $this->reportStatusInterval = $reportStatusInterval;
   }
+  /**
+   * @return string
+   */
   public function getReportStatusInterval()
   {
     return $this->reportStatusInterval;

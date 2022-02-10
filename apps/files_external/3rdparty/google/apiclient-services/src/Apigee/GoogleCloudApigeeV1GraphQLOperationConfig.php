@@ -20,6 +20,9 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1GraphQLOperationConfig extends \Google\Collection
 {
   protected $collection_key = 'operations';
+  /**
+   * @var string
+   */
   public $apiSource;
   protected $attributesType = GoogleCloudApigeeV1Attribute::class;
   protected $attributesDataType = 'array';
@@ -28,10 +31,16 @@ class GoogleCloudApigeeV1GraphQLOperationConfig extends \Google\Collection
   protected $quotaType = GoogleCloudApigeeV1Quota::class;
   protected $quotaDataType = '';
 
+  /**
+   * @param string
+   */
   public function setApiSource($apiSource)
   {
     $this->apiSource = $apiSource;
   }
+  /**
+   * @return string
+   */
   public function getApiSource()
   {
     return $this->apiSource;

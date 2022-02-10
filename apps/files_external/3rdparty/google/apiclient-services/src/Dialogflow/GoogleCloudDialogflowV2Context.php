@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2Context extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $lifespanCount;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var array[]
+   */
   public $parameters;
 
+  /**
+   * @param int
+   */
   public function setLifespanCount($lifespanCount)
   {
     $this->lifespanCount = $lifespanCount;
   }
+  /**
+   * @return int
+   */
   public function getLifespanCount()
   {
     return $this->lifespanCount;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param array[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return array[]
+   */
   public function getParameters()
   {
     return $this->parameters;

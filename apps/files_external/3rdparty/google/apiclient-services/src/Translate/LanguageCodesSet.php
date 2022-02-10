@@ -20,12 +20,21 @@ namespace Google\Service\Translate;
 class LanguageCodesSet extends \Google\Collection
 {
   protected $collection_key = 'languageCodes';
+  /**
+   * @var string[]
+   */
   public $languageCodes;
 
+  /**
+   * @param string[]
+   */
   public function setLanguageCodes($languageCodes)
   {
     $this->languageCodes = $languageCodes;
   }
+  /**
+   * @return string[]
+   */
   public function getLanguageCodes()
   {
     return $this->languageCodes;

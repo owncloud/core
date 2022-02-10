@@ -22,9 +22,21 @@ class GoogleCloudDatalabelingV1beta1AnnotationSpecSet extends \Google\Collection
   protected $collection_key = 'blockingResources';
   protected $annotationSpecsType = GoogleCloudDatalabelingV1beta1AnnotationSpec::class;
   protected $annotationSpecsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $blockingResources;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -41,34 +53,58 @@ class GoogleCloudDatalabelingV1beta1AnnotationSpecSet extends \Google\Collection
   {
     return $this->annotationSpecs;
   }
+  /**
+   * @param string[]
+   */
   public function setBlockingResources($blockingResources)
   {
     $this->blockingResources = $blockingResources;
   }
+  /**
+   * @return string[]
+   */
   public function getBlockingResources()
   {
     return $this->blockingResources;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

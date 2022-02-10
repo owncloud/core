@@ -19,21 +19,39 @@ namespace Google\Service\YouTubeAnalytics;
 
 class GroupSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $publishedAt;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setPublishedAt($publishedAt)
   {
     $this->publishedAt = $publishedAt;
   }
+  /**
+   * @return string
+   */
   public function getPublishedAt()
   {
     return $this->publishedAt;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

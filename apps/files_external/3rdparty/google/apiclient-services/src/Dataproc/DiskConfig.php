@@ -19,30 +19,57 @@ namespace Google\Service\Dataproc;
 
 class DiskConfig extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $bootDiskSizeGb;
+  /**
+   * @var string
+   */
   public $bootDiskType;
+  /**
+   * @var int
+   */
   public $numLocalSsds;
 
+  /**
+   * @param int
+   */
   public function setBootDiskSizeGb($bootDiskSizeGb)
   {
     $this->bootDiskSizeGb = $bootDiskSizeGb;
   }
+  /**
+   * @return int
+   */
   public function getBootDiskSizeGb()
   {
     return $this->bootDiskSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setBootDiskType($bootDiskType)
   {
     $this->bootDiskType = $bootDiskType;
   }
+  /**
+   * @return string
+   */
   public function getBootDiskType()
   {
     return $this->bootDiskType;
   }
+  /**
+   * @param int
+   */
   public function setNumLocalSsds($numLocalSsds)
   {
     $this->numLocalSsds = $numLocalSsds;
   }
+  /**
+   * @return int
+   */
   public function getNumLocalSsds()
   {
     return $this->numLocalSsds;

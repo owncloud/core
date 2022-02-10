@@ -20,14 +20,23 @@ namespace Google\Service\YouTube;
 class VideoAbuseReportReasonSnippet extends \Google\Collection
 {
   protected $collection_key = 'secondaryReasons';
+  /**
+   * @var string
+   */
   public $label;
   protected $secondaryReasonsType = VideoAbuseReportSecondaryReason::class;
   protected $secondaryReasonsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;

@@ -20,9 +20,21 @@ namespace Google\Service\ShoppingContent;
 class MerchantOrderReturn extends \Google\Collection
 {
   protected $collection_key = 'returnShipments';
+  /**
+   * @var string
+   */
   public $creationDate;
+  /**
+   * @var string
+   */
   public $merchantOrderId;
+  /**
+   * @var string
+   */
   public $orderId;
+  /**
+   * @var string
+   */
   public $orderReturnId;
   protected $returnItemsType = MerchantOrderReturnItem::class;
   protected $returnItemsDataType = 'array';
@@ -31,34 +43,58 @@ class MerchantOrderReturn extends \Google\Collection
   protected $returnShipmentsType = ReturnShipment::class;
   protected $returnShipmentsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCreationDate($creationDate)
   {
     $this->creationDate = $creationDate;
   }
+  /**
+   * @return string
+   */
   public function getCreationDate()
   {
     return $this->creationDate;
   }
+  /**
+   * @param string
+   */
   public function setMerchantOrderId($merchantOrderId)
   {
     $this->merchantOrderId = $merchantOrderId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantOrderId()
   {
     return $this->merchantOrderId;
   }
+  /**
+   * @param string
+   */
   public function setOrderId($orderId)
   {
     $this->orderId = $orderId;
   }
+  /**
+   * @return string
+   */
   public function getOrderId()
   {
     return $this->orderId;
   }
+  /**
+   * @param string
+   */
   public function setOrderReturnId($orderReturnId)
   {
     $this->orderReturnId = $orderReturnId;
   }
+  /**
+   * @return string
+   */
   public function getOrderReturnId()
   {
     return $this->orderReturnId;

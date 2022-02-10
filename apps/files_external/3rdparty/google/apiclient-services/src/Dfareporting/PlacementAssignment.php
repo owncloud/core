@@ -19,24 +19,45 @@ namespace Google\Service\Dfareporting;
 
 class PlacementAssignment extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $active;
+  /**
+   * @var string
+   */
   public $placementId;
   protected $placementIdDimensionValueType = DimensionValue::class;
   protected $placementIdDimensionValueDataType = '';
+  /**
+   * @var bool
+   */
   public $sslRequired;
 
+  /**
+   * @param bool
+   */
   public function setActive($active)
   {
     $this->active = $active;
   }
+  /**
+   * @return bool
+   */
   public function getActive()
   {
     return $this->active;
   }
+  /**
+   * @param string
+   */
   public function setPlacementId($placementId)
   {
     $this->placementId = $placementId;
   }
+  /**
+   * @return string
+   */
   public function getPlacementId()
   {
     return $this->placementId;
@@ -55,10 +76,16 @@ class PlacementAssignment extends \Google\Model
   {
     return $this->placementIdDimensionValue;
   }
+  /**
+   * @param bool
+   */
   public function setSslRequired($sslRequired)
   {
     $this->sslRequired = $sslRequired;
   }
+  /**
+   * @return bool
+   */
   public function getSslRequired()
   {
     return $this->sslRequired;

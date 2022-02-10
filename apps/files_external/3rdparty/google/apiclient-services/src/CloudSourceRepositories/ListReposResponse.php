@@ -20,14 +20,23 @@ namespace Google\Service\CloudSourceRepositories;
 class ListReposResponse extends \Google\Collection
 {
   protected $collection_key = 'repos';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $reposType = Repo::class;
   protected $reposDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

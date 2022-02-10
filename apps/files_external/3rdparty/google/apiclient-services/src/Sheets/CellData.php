@@ -30,8 +30,17 @@ class CellData extends \Google\Collection
   protected $effectiveFormatDataType = '';
   protected $effectiveValueType = ExtendedValue::class;
   protected $effectiveValueDataType = '';
+  /**
+   * @var string
+   */
   public $formattedValue;
+  /**
+   * @var string
+   */
   public $hyperlink;
+  /**
+   * @var string
+   */
   public $note;
   protected $pivotTableType = PivotTable::class;
   protected $pivotTableDataType = '';
@@ -112,26 +121,44 @@ class CellData extends \Google\Collection
   {
     return $this->effectiveValue;
   }
+  /**
+   * @param string
+   */
   public function setFormattedValue($formattedValue)
   {
     $this->formattedValue = $formattedValue;
   }
+  /**
+   * @return string
+   */
   public function getFormattedValue()
   {
     return $this->formattedValue;
   }
+  /**
+   * @param string
+   */
   public function setHyperlink($hyperlink)
   {
     $this->hyperlink = $hyperlink;
   }
+  /**
+   * @return string
+   */
   public function getHyperlink()
   {
     return $this->hyperlink;
   }
+  /**
+   * @param string
+   */
   public function setNote($note)
   {
     $this->note = $note;
   }
+  /**
+   * @return string
+   */
   public function getNote()
   {
     return $this->note;

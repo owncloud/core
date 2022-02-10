@@ -19,30 +19,57 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class FrequencyCap extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxImpressions;
+  /**
+   * @var int
+   */
   public $numTimeUnits;
+  /**
+   * @var string
+   */
   public $timeUnitType;
 
+  /**
+   * @param int
+   */
   public function setMaxImpressions($maxImpressions)
   {
     $this->maxImpressions = $maxImpressions;
   }
+  /**
+   * @return int
+   */
   public function getMaxImpressions()
   {
     return $this->maxImpressions;
   }
+  /**
+   * @param int
+   */
   public function setNumTimeUnits($numTimeUnits)
   {
     $this->numTimeUnits = $numTimeUnits;
   }
+  /**
+   * @return int
+   */
   public function getNumTimeUnits()
   {
     return $this->numTimeUnits;
   }
+  /**
+   * @param string
+   */
   public function setTimeUnitType($timeUnitType)
   {
     $this->timeUnitType = $timeUnitType;
   }
+  /**
+   * @return string
+   */
   public function getTimeUnitType()
   {
     return $this->timeUnitType;

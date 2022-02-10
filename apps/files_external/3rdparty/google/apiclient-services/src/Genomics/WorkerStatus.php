@@ -23,8 +23,17 @@ class WorkerStatus extends \Google\Model
   protected $attachedDisksDataType = 'map';
   protected $bootDiskType = DiskStatus::class;
   protected $bootDiskDataType = '';
+  /**
+   * @var string
+   */
   public $freeRamBytes;
+  /**
+   * @var string
+   */
   public $totalRamBytes;
+  /**
+   * @var string
+   */
   public $uptimeSeconds;
 
   /**
@@ -55,26 +64,44 @@ class WorkerStatus extends \Google\Model
   {
     return $this->bootDisk;
   }
+  /**
+   * @param string
+   */
   public function setFreeRamBytes($freeRamBytes)
   {
     $this->freeRamBytes = $freeRamBytes;
   }
+  /**
+   * @return string
+   */
   public function getFreeRamBytes()
   {
     return $this->freeRamBytes;
   }
+  /**
+   * @param string
+   */
   public function setTotalRamBytes($totalRamBytes)
   {
     $this->totalRamBytes = $totalRamBytes;
   }
+  /**
+   * @return string
+   */
   public function getTotalRamBytes()
   {
     return $this->totalRamBytes;
   }
+  /**
+   * @param string
+   */
   public function setUptimeSeconds($uptimeSeconds)
   {
     $this->uptimeSeconds = $uptimeSeconds;
   }
+  /**
+   * @return string
+   */
   public function getUptimeSeconds()
   {
     return $this->uptimeSeconds;

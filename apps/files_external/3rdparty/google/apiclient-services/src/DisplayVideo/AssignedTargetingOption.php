@@ -25,9 +25,14 @@ class AssignedTargetingOption extends \Google\Model
   protected $appCategoryDetailsDataType = '';
   protected $appDetailsType = AppAssignedTargetingOptionDetails::class;
   protected $appDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $assignedTargetingOptionId;
   protected $audienceGroupDetailsType = AudienceGroupAssignedTargetingOptionDetails::class;
   protected $audienceGroupDetailsDataType = '';
+  protected $audioContentTypeDetailsType = AudioContentTypeAssignedTargetingOptionDetails::class;
+  protected $audioContentTypeDetailsDataType = '';
   protected $authorizedSellerStatusDetailsType = AuthorizedSellerStatusAssignedTargetingOptionDetails::class;
   protected $authorizedSellerStatusDetailsDataType = '';
   protected $browserDetailsType = BrowserAssignedTargetingOptionDetails::class;
@@ -62,6 +67,9 @@ class AssignedTargetingOption extends \Google\Model
   protected $geoRegionDetailsDataType = '';
   protected $householdIncomeDetailsType = HouseholdIncomeAssignedTargetingOptionDetails::class;
   protected $householdIncomeDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $inheritance;
   protected $inventorySourceDetailsType = InventorySourceAssignedTargetingOptionDetails::class;
   protected $inventorySourceDetailsDataType = '';
@@ -71,6 +79,9 @@ class AssignedTargetingOption extends \Google\Model
   protected $keywordDetailsDataType = '';
   protected $languageDetailsType = LanguageAssignedTargetingOptionDetails::class;
   protected $languageDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $nativeContentPositionDetailsType = NativeContentPositionAssignedTargetingOptionDetails::class;
   protected $nativeContentPositionDetailsDataType = '';
@@ -94,6 +105,9 @@ class AssignedTargetingOption extends \Google\Model
   protected $sensitiveCategoryExclusionDetailsDataType = '';
   protected $subExchangeDetailsType = SubExchangeAssignedTargetingOptionDetails::class;
   protected $subExchangeDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $targetingType;
   protected $thirdPartyVerifierDetailsType = ThirdPartyVerifierAssignedTargetingOptionDetails::class;
   protected $thirdPartyVerifierDetailsDataType = '';
@@ -148,10 +162,16 @@ class AssignedTargetingOption extends \Google\Model
   {
     return $this->appDetails;
   }
+  /**
+   * @param string
+   */
   public function setAssignedTargetingOptionId($assignedTargetingOptionId)
   {
     $this->assignedTargetingOptionId = $assignedTargetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getAssignedTargetingOptionId()
   {
     return $this->assignedTargetingOptionId;
@@ -169,6 +189,20 @@ class AssignedTargetingOption extends \Google\Model
   public function getAudienceGroupDetails()
   {
     return $this->audienceGroupDetails;
+  }
+  /**
+   * @param AudioContentTypeAssignedTargetingOptionDetails
+   */
+  public function setAudioContentTypeDetails(AudioContentTypeAssignedTargetingOptionDetails $audioContentTypeDetails)
+  {
+    $this->audioContentTypeDetails = $audioContentTypeDetails;
+  }
+  /**
+   * @return AudioContentTypeAssignedTargetingOptionDetails
+   */
+  public function getAudioContentTypeDetails()
+  {
+    return $this->audioContentTypeDetails;
   }
   /**
    * @param AuthorizedSellerStatusAssignedTargetingOptionDetails
@@ -408,10 +442,16 @@ class AssignedTargetingOption extends \Google\Model
   {
     return $this->householdIncomeDetails;
   }
+  /**
+   * @param string
+   */
   public function setInheritance($inheritance)
   {
     $this->inheritance = $inheritance;
   }
+  /**
+   * @return string
+   */
   public function getInheritance()
   {
     return $this->inheritance;
@@ -472,10 +512,16 @@ class AssignedTargetingOption extends \Google\Model
   {
     return $this->languageDetails;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -634,10 +680,16 @@ class AssignedTargetingOption extends \Google\Model
   {
     return $this->subExchangeDetails;
   }
+  /**
+   * @param string
+   */
   public function setTargetingType($targetingType)
   {
     $this->targetingType = $targetingType;
   }
+  /**
+   * @return string
+   */
   public function getTargetingType()
   {
     return $this->targetingType;

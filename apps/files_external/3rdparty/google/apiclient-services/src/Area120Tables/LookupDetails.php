@@ -19,21 +19,39 @@ namespace Google\Service\Area120Tables;
 
 class LookupDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $relationshipColumn;
+  /**
+   * @var string
+   */
   public $relationshipColumnId;
 
+  /**
+   * @param string
+   */
   public function setRelationshipColumn($relationshipColumn)
   {
     $this->relationshipColumn = $relationshipColumn;
   }
+  /**
+   * @return string
+   */
   public function getRelationshipColumn()
   {
     return $this->relationshipColumn;
   }
+  /**
+   * @param string
+   */
   public function setRelationshipColumnId($relationshipColumnId)
   {
     $this->relationshipColumnId = $relationshipColumnId;
   }
+  /**
+   * @return string
+   */
   public function getRelationshipColumnId()
   {
     return $this->relationshipColumnId;

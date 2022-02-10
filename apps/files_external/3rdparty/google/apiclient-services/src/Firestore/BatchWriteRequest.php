@@ -20,14 +20,23 @@ namespace Google\Service\Firestore;
 class BatchWriteRequest extends \Google\Collection
 {
   protected $collection_key = 'writes';
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $writesType = Write::class;
   protected $writesDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

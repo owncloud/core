@@ -19,21 +19,39 @@ namespace Google\Service\Translate;
 
 class LanguageCodePair extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sourceLanguageCode;
+  /**
+   * @var string
+   */
   public $targetLanguageCode;
 
+  /**
+   * @param string
+   */
   public function setSourceLanguageCode($sourceLanguageCode)
   {
     $this->sourceLanguageCode = $sourceLanguageCode;
   }
+  /**
+   * @return string
+   */
   public function getSourceLanguageCode()
   {
     return $this->sourceLanguageCode;
   }
+  /**
+   * @param string
+   */
   public function setTargetLanguageCode($targetLanguageCode)
   {
     $this->targetLanguageCode = $targetLanguageCode;
   }
+  /**
+   * @return string
+   */
   public function getTargetLanguageCode()
   {
     return $this->targetLanguageCode;

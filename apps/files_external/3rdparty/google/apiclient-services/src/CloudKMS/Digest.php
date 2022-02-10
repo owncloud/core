@@ -19,30 +19,57 @@ namespace Google\Service\CloudKMS;
 
 class Digest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sha256;
+  /**
+   * @var string
+   */
   public $sha384;
+  /**
+   * @var string
+   */
   public $sha512;
 
+  /**
+   * @param string
+   */
   public function setSha256($sha256)
   {
     $this->sha256 = $sha256;
   }
+  /**
+   * @return string
+   */
   public function getSha256()
   {
     return $this->sha256;
   }
+  /**
+   * @param string
+   */
   public function setSha384($sha384)
   {
     $this->sha384 = $sha384;
   }
+  /**
+   * @return string
+   */
   public function getSha384()
   {
     return $this->sha384;
   }
+  /**
+   * @param string
+   */
   public function setSha512($sha512)
   {
     $this->sha512 = $sha512;
   }
+  /**
+   * @return string
+   */
   public function getSha512()
   {
     return $this->sha512;

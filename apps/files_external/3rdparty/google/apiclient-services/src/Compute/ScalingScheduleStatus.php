@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class ScalingScheduleStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastStartTime;
+  /**
+   * @var string
+   */
   public $nextStartTime;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setLastStartTime($lastStartTime)
   {
     $this->lastStartTime = $lastStartTime;
   }
+  /**
+   * @return string
+   */
   public function getLastStartTime()
   {
     return $this->lastStartTime;
   }
+  /**
+   * @param string
+   */
   public function setNextStartTime($nextStartTime)
   {
     $this->nextStartTime = $nextStartTime;
   }
+  /**
+   * @return string
+   */
   public function getNextStartTime()
   {
     return $this->nextStartTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

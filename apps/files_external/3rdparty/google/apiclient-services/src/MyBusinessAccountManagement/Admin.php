@@ -19,39 +19,75 @@ namespace Google\Service\MyBusinessAccountManagement;
 
 class Admin extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $admin;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $pendingInvitation;
+  /**
+   * @var string
+   */
   public $role;
 
+  /**
+   * @param string
+   */
   public function setAdmin($admin)
   {
     $this->admin = $admin;
   }
+  /**
+   * @return string
+   */
   public function getAdmin()
   {
     return $this->admin;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setPendingInvitation($pendingInvitation)
   {
     $this->pendingInvitation = $pendingInvitation;
   }
+  /**
+   * @return bool
+   */
   public function getPendingInvitation()
   {
     return $this->pendingInvitation;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;

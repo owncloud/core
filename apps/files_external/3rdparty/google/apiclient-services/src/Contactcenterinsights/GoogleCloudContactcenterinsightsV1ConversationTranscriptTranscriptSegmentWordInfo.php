@@ -19,39 +19,75 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentWordInfo extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $endOffset;
+  /**
+   * @var string
+   */
   public $startOffset;
+  /**
+   * @var string
+   */
   public $word;
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setEndOffset($endOffset)
   {
     $this->endOffset = $endOffset;
   }
+  /**
+   * @return string
+   */
   public function getEndOffset()
   {
     return $this->endOffset;
   }
+  /**
+   * @param string
+   */
   public function setStartOffset($startOffset)
   {
     $this->startOffset = $startOffset;
   }
+  /**
+   * @return string
+   */
   public function getStartOffset()
   {
     return $this->startOffset;
   }
+  /**
+   * @param string
+   */
   public function setWord($word)
   {
     $this->word = $word;
   }
+  /**
+   * @return string
+   */
   public function getWord()
   {
     return $this->word;

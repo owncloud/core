@@ -19,30 +19,57 @@ namespace Google\Service\Docs;
 
 class RichLinkProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

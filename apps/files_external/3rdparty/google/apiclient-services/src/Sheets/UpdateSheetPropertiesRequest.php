@@ -19,14 +19,23 @@ namespace Google\Service\Sheets;
 
 class UpdateSheetPropertiesRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fields;
   protected $propertiesType = SheetProperties::class;
   protected $propertiesDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

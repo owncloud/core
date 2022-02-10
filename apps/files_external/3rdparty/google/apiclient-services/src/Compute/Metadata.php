@@ -20,15 +20,27 @@ namespace Google\Service\Compute;
 class Metadata extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var string
+   */
   public $fingerprint;
   protected $itemsType = MetadataItems::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
@@ -47,10 +59,16 @@ class Metadata extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

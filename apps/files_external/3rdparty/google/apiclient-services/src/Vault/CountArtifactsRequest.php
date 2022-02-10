@@ -21,6 +21,9 @@ class CountArtifactsRequest extends \Google\Model
 {
   protected $queryType = Query::class;
   protected $queryDataType = '';
+  /**
+   * @var string
+   */
   public $view;
 
   /**
@@ -37,10 +40,16 @@ class CountArtifactsRequest extends \Google\Model
   {
     return $this->query;
   }
+  /**
+   * @param string
+   */
   public function setView($view)
   {
     $this->view = $view;
   }
+  /**
+   * @return string
+   */
   public function getView()
   {
     return $this->view;

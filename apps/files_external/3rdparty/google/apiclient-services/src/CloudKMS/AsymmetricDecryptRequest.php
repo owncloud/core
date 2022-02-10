@@ -19,21 +19,39 @@ namespace Google\Service\CloudKMS;
 
 class AsymmetricDecryptRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ciphertext;
+  /**
+   * @var string
+   */
   public $ciphertextCrc32c;
 
+  /**
+   * @param string
+   */
   public function setCiphertext($ciphertext)
   {
     $this->ciphertext = $ciphertext;
   }
+  /**
+   * @return string
+   */
   public function getCiphertext()
   {
     return $this->ciphertext;
   }
+  /**
+   * @param string
+   */
   public function setCiphertextCrc32c($ciphertextCrc32c)
   {
     $this->ciphertextCrc32c = $ciphertextCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getCiphertextCrc32c()
   {
     return $this->ciphertextCrc32c;

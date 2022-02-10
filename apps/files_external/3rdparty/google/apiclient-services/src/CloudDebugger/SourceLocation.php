@@ -19,30 +19,57 @@ namespace Google\Service\CloudDebugger;
 
 class SourceLocation extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $column;
+  /**
+   * @var int
+   */
   public $line;
+  /**
+   * @var string
+   */
   public $path;
 
+  /**
+   * @param int
+   */
   public function setColumn($column)
   {
     $this->column = $column;
   }
+  /**
+   * @return int
+   */
   public function getColumn()
   {
     return $this->column;
   }
+  /**
+   * @param int
+   */
   public function setLine($line)
   {
     $this->line = $line;
   }
+  /**
+   * @return int
+   */
   public function getLine()
   {
     return $this->line;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

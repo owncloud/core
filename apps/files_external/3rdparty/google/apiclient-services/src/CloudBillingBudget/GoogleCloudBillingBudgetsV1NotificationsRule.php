@@ -20,39 +20,75 @@ namespace Google\Service\CloudBillingBudget;
 class GoogleCloudBillingBudgetsV1NotificationsRule extends \Google\Collection
 {
   protected $collection_key = 'monitoringNotificationChannels';
+  /**
+   * @var bool
+   */
   public $disableDefaultIamRecipients;
+  /**
+   * @var string[]
+   */
   public $monitoringNotificationChannels;
+  /**
+   * @var string
+   */
   public $pubsubTopic;
+  /**
+   * @var string
+   */
   public $schemaVersion;
 
+  /**
+   * @param bool
+   */
   public function setDisableDefaultIamRecipients($disableDefaultIamRecipients)
   {
     $this->disableDefaultIamRecipients = $disableDefaultIamRecipients;
   }
+  /**
+   * @return bool
+   */
   public function getDisableDefaultIamRecipients()
   {
     return $this->disableDefaultIamRecipients;
   }
+  /**
+   * @param string[]
+   */
   public function setMonitoringNotificationChannels($monitoringNotificationChannels)
   {
     $this->monitoringNotificationChannels = $monitoringNotificationChannels;
   }
+  /**
+   * @return string[]
+   */
   public function getMonitoringNotificationChannels()
   {
     return $this->monitoringNotificationChannels;
   }
+  /**
+   * @param string
+   */
   public function setPubsubTopic($pubsubTopic)
   {
     $this->pubsubTopic = $pubsubTopic;
   }
+  /**
+   * @return string
+   */
   public function getPubsubTopic()
   {
     return $this->pubsubTopic;
   }
+  /**
+   * @param string
+   */
   public function setSchemaVersion($schemaVersion)
   {
     $this->schemaVersion = $schemaVersion;
   }
+  /**
+   * @return string
+   */
   public function getSchemaVersion()
   {
     return $this->schemaVersion;

@@ -22,6 +22,9 @@ class ClusterState extends \Google\Collection
   protected $collection_key = 'encryptionInfo';
   protected $encryptionInfoType = EncryptionInfo::class;
   protected $encryptionInfoDataType = 'array';
+  /**
+   * @var string
+   */
   public $replicationState;
 
   /**
@@ -38,10 +41,16 @@ class ClusterState extends \Google\Collection
   {
     return $this->encryptionInfo;
   }
+  /**
+   * @param string
+   */
   public function setReplicationState($replicationState)
   {
     $this->replicationState = $replicationState;
   }
+  /**
+   * @return string
+   */
   public function getReplicationState()
   {
     return $this->replicationState;

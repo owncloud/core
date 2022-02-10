@@ -19,12 +19,21 @@ namespace Google\Service\GKEHub;
 
 class MultiClusterIngressFeatureSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $configMembership;
 
+  /**
+   * @param string
+   */
   public function setConfigMembership($configMembership)
   {
     $this->configMembership = $configMembership;
   }
+  /**
+   * @return string
+   */
   public function getConfigMembership()
   {
     return $this->configMembership;

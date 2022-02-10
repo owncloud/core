@@ -20,21 +20,39 @@ namespace Google\Service\ServiceConsumerManagement;
 class PolicyBinding extends \Google\Collection
 {
   protected $collection_key = 'members';
+  /**
+   * @var string[]
+   */
   public $members;
+  /**
+   * @var string
+   */
   public $role;
 
+  /**
+   * @param string[]
+   */
   public function setMembers($members)
   {
     $this->members = $members;
   }
+  /**
+   * @return string[]
+   */
   public function getMembers()
   {
     return $this->members;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;

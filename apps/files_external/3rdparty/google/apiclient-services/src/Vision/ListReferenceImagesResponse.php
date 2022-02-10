@@ -20,23 +20,41 @@ namespace Google\Service\Vision;
 class ListReferenceImagesResponse extends \Google\Collection
 {
   protected $collection_key = 'referenceImages';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var int
+   */
   public $pageSize;
   protected $referenceImagesType = ReferenceImage::class;
   protected $referenceImagesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;

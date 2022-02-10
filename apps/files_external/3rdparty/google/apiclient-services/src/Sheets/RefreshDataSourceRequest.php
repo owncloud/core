@@ -19,32 +19,59 @@ namespace Google\Service\Sheets;
 
 class RefreshDataSourceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataSourceId;
+  /**
+   * @var bool
+   */
   public $force;
+  /**
+   * @var bool
+   */
   public $isAll;
   protected $referencesType = DataSourceObjectReferences::class;
   protected $referencesDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDataSourceId($dataSourceId)
   {
     $this->dataSourceId = $dataSourceId;
   }
+  /**
+   * @return string
+   */
   public function getDataSourceId()
   {
     return $this->dataSourceId;
   }
+  /**
+   * @param bool
+   */
   public function setForce($force)
   {
     $this->force = $force;
   }
+  /**
+   * @return bool
+   */
   public function getForce()
   {
     return $this->force;
   }
+  /**
+   * @param bool
+   */
   public function setIsAll($isAll)
   {
     $this->isAll = $isAll;
   }
+  /**
+   * @return bool
+   */
   public function getIsAll()
   {
     return $this->isAll;

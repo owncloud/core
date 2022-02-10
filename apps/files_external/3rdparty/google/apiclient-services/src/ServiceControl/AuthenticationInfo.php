@@ -20,34 +20,67 @@ namespace Google\Service\ServiceControl;
 class AuthenticationInfo extends \Google\Collection
 {
   protected $collection_key = 'serviceAccountDelegationInfo';
+  /**
+   * @var string
+   */
   public $authoritySelector;
+  /**
+   * @var string
+   */
   public $principalEmail;
+  /**
+   * @var string
+   */
   public $principalSubject;
   protected $serviceAccountDelegationInfoType = ServiceAccountDelegationInfo::class;
   protected $serviceAccountDelegationInfoDataType = 'array';
+  /**
+   * @var string
+   */
   public $serviceAccountKeyName;
+  /**
+   * @var array[]
+   */
   public $thirdPartyPrincipal;
 
+  /**
+   * @param string
+   */
   public function setAuthoritySelector($authoritySelector)
   {
     $this->authoritySelector = $authoritySelector;
   }
+  /**
+   * @return string
+   */
   public function getAuthoritySelector()
   {
     return $this->authoritySelector;
   }
+  /**
+   * @param string
+   */
   public function setPrincipalEmail($principalEmail)
   {
     $this->principalEmail = $principalEmail;
   }
+  /**
+   * @return string
+   */
   public function getPrincipalEmail()
   {
     return $this->principalEmail;
   }
+  /**
+   * @param string
+   */
   public function setPrincipalSubject($principalSubject)
   {
     $this->principalSubject = $principalSubject;
   }
+  /**
+   * @return string
+   */
   public function getPrincipalSubject()
   {
     return $this->principalSubject;
@@ -66,18 +99,30 @@ class AuthenticationInfo extends \Google\Collection
   {
     return $this->serviceAccountDelegationInfo;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccountKeyName($serviceAccountKeyName)
   {
     $this->serviceAccountKeyName = $serviceAccountKeyName;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccountKeyName()
   {
     return $this->serviceAccountKeyName;
   }
+  /**
+   * @param array[]
+   */
   public function setThirdPartyPrincipal($thirdPartyPrincipal)
   {
     $this->thirdPartyPrincipal = $thirdPartyPrincipal;
   }
+  /**
+   * @return array[]
+   */
   public function getThirdPartyPrincipal()
   {
     return $this->thirdPartyPrincipal;

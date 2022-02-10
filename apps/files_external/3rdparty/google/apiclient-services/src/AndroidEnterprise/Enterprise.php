@@ -22,8 +22,17 @@ class Enterprise extends \Google\Collection
   protected $collection_key = 'administrator';
   protected $administratorType = Administrator::class;
   protected $administratorDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $primaryDomain;
 
   /**
@@ -40,26 +49,44 @@ class Enterprise extends \Google\Collection
   {
     return $this->administrator;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPrimaryDomain($primaryDomain)
   {
     $this->primaryDomain = $primaryDomain;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryDomain()
   {
     return $this->primaryDomain;

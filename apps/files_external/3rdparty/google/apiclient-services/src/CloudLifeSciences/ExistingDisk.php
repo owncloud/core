@@ -19,12 +19,21 @@ namespace Google\Service\CloudLifeSciences;
 
 class ExistingDisk extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $disk;
 
+  /**
+   * @param string
+   */
   public function setDisk($disk)
   {
     $this->disk = $disk;
   }
+  /**
+   * @return string
+   */
   public function getDisk()
   {
     return $this->disk;

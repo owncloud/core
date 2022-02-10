@@ -19,34 +19,67 @@ namespace Google\Service\Storage;
 
 class RewriteResponse extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $done;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $objectSize;
   protected $resourceType = StorageObject::class;
   protected $resourceDataType = '';
+  /**
+   * @var string
+   */
   public $rewriteToken;
+  /**
+   * @var string
+   */
   public $totalBytesRewritten;
 
+  /**
+   * @param bool
+   */
   public function setDone($done)
   {
     $this->done = $done;
   }
+  /**
+   * @return bool
+   */
   public function getDone()
   {
     return $this->done;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setObjectSize($objectSize)
   {
     $this->objectSize = $objectSize;
   }
+  /**
+   * @return string
+   */
   public function getObjectSize()
   {
     return $this->objectSize;
@@ -65,18 +98,30 @@ class RewriteResponse extends \Google\Model
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setRewriteToken($rewriteToken)
   {
     $this->rewriteToken = $rewriteToken;
   }
+  /**
+   * @return string
+   */
   public function getRewriteToken()
   {
     return $this->rewriteToken;
   }
+  /**
+   * @param string
+   */
   public function setTotalBytesRewritten($totalBytesRewritten)
   {
     $this->totalBytesRewritten = $totalBytesRewritten;
   }
+  /**
+   * @return string
+   */
   public function getTotalBytesRewritten()
   {
     return $this->totalBytesRewritten;

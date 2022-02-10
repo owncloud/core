@@ -19,21 +19,39 @@ namespace Google\Service\IAMCredentials;
 
 class SignJwtResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyId;
+  /**
+   * @var string
+   */
   public $signedJwt;
 
+  /**
+   * @param string
+   */
   public function setKeyId($keyId)
   {
     $this->keyId = $keyId;
   }
+  /**
+   * @return string
+   */
   public function getKeyId()
   {
     return $this->keyId;
   }
+  /**
+   * @param string
+   */
   public function setSignedJwt($signedJwt)
   {
     $this->signedJwt = $signedJwt;
   }
+  /**
+   * @return string
+   */
   public function getSignedJwt()
   {
     return $this->signedJwt;

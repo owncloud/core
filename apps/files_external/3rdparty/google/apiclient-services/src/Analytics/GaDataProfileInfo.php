@@ -19,57 +19,111 @@ namespace Google\Service\Analytics;
 
 class GaDataProfileInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $internalWebPropertyId;
+  /**
+   * @var string
+   */
   public $profileId;
+  /**
+   * @var string
+   */
   public $profileName;
+  /**
+   * @var string
+   */
   public $tableId;
+  /**
+   * @var string
+   */
   public $webPropertyId;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setInternalWebPropertyId($internalWebPropertyId)
   {
     $this->internalWebPropertyId = $internalWebPropertyId;
   }
+  /**
+   * @return string
+   */
   public function getInternalWebPropertyId()
   {
     return $this->internalWebPropertyId;
   }
+  /**
+   * @param string
+   */
   public function setProfileId($profileId)
   {
     $this->profileId = $profileId;
   }
+  /**
+   * @return string
+   */
   public function getProfileId()
   {
     return $this->profileId;
   }
+  /**
+   * @param string
+   */
   public function setProfileName($profileName)
   {
     $this->profileName = $profileName;
   }
+  /**
+   * @return string
+   */
   public function getProfileName()
   {
     return $this->profileName;
   }
+  /**
+   * @param string
+   */
   public function setTableId($tableId)
   {
     $this->tableId = $tableId;
   }
+  /**
+   * @return string
+   */
   public function getTableId()
   {
     return $this->tableId;
   }
+  /**
+   * @param string
+   */
   public function setWebPropertyId($webPropertyId)
   {
     $this->webPropertyId = $webPropertyId;
   }
+  /**
+   * @return string
+   */
   public function getWebPropertyId()
   {
     return $this->webPropertyId;

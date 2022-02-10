@@ -27,7 +27,13 @@ class GoogleCloudPolicysimulatorV1ReplayResult extends \Google\Model
   protected $errorDataType = '';
   protected $lastSeenDateType = GoogleTypeDate::class;
   protected $lastSeenDateDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parent;
 
   /**
@@ -86,18 +92,30 @@ class GoogleCloudPolicysimulatorV1ReplayResult extends \Google\Model
   {
     return $this->lastSeenDate;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;

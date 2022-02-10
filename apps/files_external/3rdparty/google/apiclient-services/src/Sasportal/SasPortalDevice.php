@@ -26,16 +26,31 @@ class SasPortalDevice extends \Google\Collection
   protected $currentChannelsDataType = 'array';
   protected $deviceMetadataType = SasPortalDeviceMetadata::class;
   protected $deviceMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $fccId;
   protected $grantRangeAllowlistsType = SasPortalFrequencyRange::class;
   protected $grantRangeAllowlistsDataType = 'array';
   protected $grantsType = SasPortalDeviceGrant::class;
   protected $grantsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $preloadedConfigType = SasPortalDeviceConfig::class;
   protected $preloadedConfigDataType = '';
+  /**
+   * @var string
+   */
   public $serialNumber;
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -80,18 +95,30 @@ class SasPortalDevice extends \Google\Collection
   {
     return $this->deviceMetadata;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setFccId($fccId)
   {
     $this->fccId = $fccId;
   }
+  /**
+   * @return string
+   */
   public function getFccId()
   {
     return $this->fccId;
@@ -124,10 +151,16 @@ class SasPortalDevice extends \Google\Collection
   {
     return $this->grants;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -146,18 +179,30 @@ class SasPortalDevice extends \Google\Collection
   {
     return $this->preloadedConfig;
   }
+  /**
+   * @param string
+   */
   public function setSerialNumber($serialNumber)
   {
     $this->serialNumber = $serialNumber;
   }
+  /**
+   * @return string
+   */
   public function getSerialNumber()
   {
     return $this->serialNumber;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

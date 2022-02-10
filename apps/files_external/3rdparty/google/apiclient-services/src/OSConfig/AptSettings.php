@@ -20,30 +20,57 @@ namespace Google\Service\OSConfig;
 class AptSettings extends \Google\Collection
 {
   protected $collection_key = 'exclusivePackages';
+  /**
+   * @var string[]
+   */
   public $excludes;
+  /**
+   * @var string[]
+   */
   public $exclusivePackages;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setExcludes($excludes)
   {
     $this->excludes = $excludes;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludes()
   {
     return $this->excludes;
   }
+  /**
+   * @param string[]
+   */
   public function setExclusivePackages($exclusivePackages)
   {
     $this->exclusivePackages = $exclusivePackages;
   }
+  /**
+   * @return string[]
+   */
   public function getExclusivePackages()
   {
     return $this->exclusivePackages;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -22,6 +22,9 @@ class McfDataRows extends \Google\Collection
   protected $collection_key = 'conversionPathValue';
   protected $conversionPathValueType = McfDataRowsConversionPathValue::class;
   protected $conversionPathValueDataType = 'array';
+  /**
+   * @var string
+   */
   public $primitiveValue;
 
   /**
@@ -38,10 +41,16 @@ class McfDataRows extends \Google\Collection
   {
     return $this->conversionPathValue;
   }
+  /**
+   * @param string
+   */
   public function setPrimitiveValue($primitiveValue)
   {
     $this->primitiveValue = $primitiveValue;
   }
+  /**
+   * @return string
+   */
   public function getPrimitiveValue()
   {
     return $this->primitiveValue;

@@ -20,39 +20,75 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1beta1OperatorMetadata extends \Google\Collection
 {
   protected $collection_key = 'comments';
+  /**
+   * @var string[]
+   */
   public $comments;
+  /**
+   * @var int
+   */
   public $labelVotes;
+  /**
+   * @var float
+   */
   public $score;
+  /**
+   * @var int
+   */
   public $totalVotes;
 
+  /**
+   * @param string[]
+   */
   public function setComments($comments)
   {
     $this->comments = $comments;
   }
+  /**
+   * @return string[]
+   */
   public function getComments()
   {
     return $this->comments;
   }
+  /**
+   * @param int
+   */
   public function setLabelVotes($labelVotes)
   {
     $this->labelVotes = $labelVotes;
   }
+  /**
+   * @return int
+   */
   public function getLabelVotes()
   {
     return $this->labelVotes;
   }
+  /**
+   * @param float
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return float
+   */
   public function getScore()
   {
     return $this->score;
   }
+  /**
+   * @param int
+   */
   public function setTotalVotes($totalVotes)
   {
     $this->totalVotes = $totalVotes;
   }
+  /**
+   * @return int
+   */
   public function getTotalVotes()
   {
     return $this->totalVotes;

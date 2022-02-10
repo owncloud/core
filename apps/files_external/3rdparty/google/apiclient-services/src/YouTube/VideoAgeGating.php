@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class VideoAgeGating extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $alcoholContent;
+  /**
+   * @var bool
+   */
   public $restricted;
+  /**
+   * @var string
+   */
   public $videoGameRating;
 
+  /**
+   * @param bool
+   */
   public function setAlcoholContent($alcoholContent)
   {
     $this->alcoholContent = $alcoholContent;
   }
+  /**
+   * @return bool
+   */
   public function getAlcoholContent()
   {
     return $this->alcoholContent;
   }
+  /**
+   * @param bool
+   */
   public function setRestricted($restricted)
   {
     $this->restricted = $restricted;
   }
+  /**
+   * @return bool
+   */
   public function getRestricted()
   {
     return $this->restricted;
   }
+  /**
+   * @param string
+   */
   public function setVideoGameRating($videoGameRating)
   {
     $this->videoGameRating = $videoGameRating;
   }
+  /**
+   * @return string
+   */
   public function getVideoGameRating()
   {
     return $this->videoGameRating;

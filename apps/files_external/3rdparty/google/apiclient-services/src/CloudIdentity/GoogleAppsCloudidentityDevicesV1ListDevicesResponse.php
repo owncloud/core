@@ -22,6 +22,9 @@ class GoogleAppsCloudidentityDevicesV1ListDevicesResponse extends \Google\Collec
   protected $collection_key = 'devices';
   protected $devicesType = GoogleAppsCloudidentityDevicesV1Device::class;
   protected $devicesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAppsCloudidentityDevicesV1ListDevicesResponse extends \Google\Collec
   {
     return $this->devices;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

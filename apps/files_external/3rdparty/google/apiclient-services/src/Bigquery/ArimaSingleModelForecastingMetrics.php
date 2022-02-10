@@ -22,14 +22,35 @@ class ArimaSingleModelForecastingMetrics extends \Google\Collection
   protected $collection_key = 'timeSeriesIds';
   protected $arimaFittingMetricsType = ArimaFittingMetrics::class;
   protected $arimaFittingMetricsDataType = '';
+  /**
+   * @var bool
+   */
   public $hasDrift;
+  /**
+   * @var bool
+   */
   public $hasHolidayEffect;
+  /**
+   * @var bool
+   */
   public $hasSpikesAndDips;
+  /**
+   * @var bool
+   */
   public $hasStepChanges;
   protected $nonSeasonalOrderType = ArimaOrder::class;
   protected $nonSeasonalOrderDataType = '';
+  /**
+   * @var string[]
+   */
   public $seasonalPeriods;
+  /**
+   * @var string
+   */
   public $timeSeriesId;
+  /**
+   * @var string[]
+   */
   public $timeSeriesIds;
 
   /**
@@ -46,34 +67,58 @@ class ArimaSingleModelForecastingMetrics extends \Google\Collection
   {
     return $this->arimaFittingMetrics;
   }
+  /**
+   * @param bool
+   */
   public function setHasDrift($hasDrift)
   {
     $this->hasDrift = $hasDrift;
   }
+  /**
+   * @return bool
+   */
   public function getHasDrift()
   {
     return $this->hasDrift;
   }
+  /**
+   * @param bool
+   */
   public function setHasHolidayEffect($hasHolidayEffect)
   {
     $this->hasHolidayEffect = $hasHolidayEffect;
   }
+  /**
+   * @return bool
+   */
   public function getHasHolidayEffect()
   {
     return $this->hasHolidayEffect;
   }
+  /**
+   * @param bool
+   */
   public function setHasSpikesAndDips($hasSpikesAndDips)
   {
     $this->hasSpikesAndDips = $hasSpikesAndDips;
   }
+  /**
+   * @return bool
+   */
   public function getHasSpikesAndDips()
   {
     return $this->hasSpikesAndDips;
   }
+  /**
+   * @param bool
+   */
   public function setHasStepChanges($hasStepChanges)
   {
     $this->hasStepChanges = $hasStepChanges;
   }
+  /**
+   * @return bool
+   */
   public function getHasStepChanges()
   {
     return $this->hasStepChanges;
@@ -92,26 +137,44 @@ class ArimaSingleModelForecastingMetrics extends \Google\Collection
   {
     return $this->nonSeasonalOrder;
   }
+  /**
+   * @param string[]
+   */
   public function setSeasonalPeriods($seasonalPeriods)
   {
     $this->seasonalPeriods = $seasonalPeriods;
   }
+  /**
+   * @return string[]
+   */
   public function getSeasonalPeriods()
   {
     return $this->seasonalPeriods;
   }
+  /**
+   * @param string
+   */
   public function setTimeSeriesId($timeSeriesId)
   {
     $this->timeSeriesId = $timeSeriesId;
   }
+  /**
+   * @return string
+   */
   public function getTimeSeriesId()
   {
     return $this->timeSeriesId;
   }
+  /**
+   * @param string[]
+   */
   public function setTimeSeriesIds($timeSeriesIds)
   {
     $this->timeSeriesIds = $timeSeriesIds;
   }
+  /**
+   * @return string[]
+   */
   public function getTimeSeriesIds()
   {
     return $this->timeSeriesIds;

@@ -19,21 +19,39 @@ namespace Google\Service\ServiceManagement;
 
 class FlowErrorDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exceptionType;
+  /**
+   * @var string
+   */
   public $flowStepId;
 
+  /**
+   * @param string
+   */
   public function setExceptionType($exceptionType)
   {
     $this->exceptionType = $exceptionType;
   }
+  /**
+   * @return string
+   */
   public function getExceptionType()
   {
     return $this->exceptionType;
   }
+  /**
+   * @param string
+   */
   public function setFlowStepId($flowStepId)
   {
     $this->flowStepId = $flowStepId;
   }
+  /**
+   * @return string
+   */
   public function getFlowStepId()
   {
     return $this->flowStepId;

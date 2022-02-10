@@ -19,75 +19,147 @@ namespace Google\Service\NetworkManagement;
 
 class Endpoint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cloudSqlInstance;
+  /**
+   * @var string
+   */
   public $gkeMasterCluster;
+  /**
+   * @var string
+   */
   public $instance;
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string
+   */
   public $networkType;
+  /**
+   * @var int
+   */
   public $port;
+  /**
+   * @var string
+   */
   public $projectId;
 
+  /**
+   * @param string
+   */
   public function setCloudSqlInstance($cloudSqlInstance)
   {
     $this->cloudSqlInstance = $cloudSqlInstance;
   }
+  /**
+   * @return string
+   */
   public function getCloudSqlInstance()
   {
     return $this->cloudSqlInstance;
   }
+  /**
+   * @param string
+   */
   public function setGkeMasterCluster($gkeMasterCluster)
   {
     $this->gkeMasterCluster = $gkeMasterCluster;
   }
+  /**
+   * @return string
+   */
   public function getGkeMasterCluster()
   {
     return $this->gkeMasterCluster;
   }
+  /**
+   * @param string
+   */
   public function setInstance($instance)
   {
     $this->instance = $instance;
   }
+  /**
+   * @return string
+   */
   public function getInstance()
   {
     return $this->instance;
   }
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setNetworkType($networkType)
   {
     $this->networkType = $networkType;
   }
+  /**
+   * @return string
+   */
   public function getNetworkType()
   {
     return $this->networkType;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;

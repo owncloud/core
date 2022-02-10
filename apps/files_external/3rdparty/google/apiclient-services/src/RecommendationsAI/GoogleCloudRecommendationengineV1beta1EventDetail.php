@@ -22,10 +22,25 @@ class GoogleCloudRecommendationengineV1beta1EventDetail extends \Google\Collecti
   protected $collection_key = 'experimentIds';
   protected $eventAttributesType = GoogleCloudRecommendationengineV1beta1FeatureMap::class;
   protected $eventAttributesDataType = '';
+  /**
+   * @var string[]
+   */
   public $experimentIds;
+  /**
+   * @var string
+   */
   public $pageViewId;
+  /**
+   * @var string
+   */
   public $recommendationToken;
+  /**
+   * @var string
+   */
   public $referrerUri;
+  /**
+   * @var string
+   */
   public $uri;
 
   /**
@@ -42,42 +57,72 @@ class GoogleCloudRecommendationengineV1beta1EventDetail extends \Google\Collecti
   {
     return $this->eventAttributes;
   }
+  /**
+   * @param string[]
+   */
   public function setExperimentIds($experimentIds)
   {
     $this->experimentIds = $experimentIds;
   }
+  /**
+   * @return string[]
+   */
   public function getExperimentIds()
   {
     return $this->experimentIds;
   }
+  /**
+   * @param string
+   */
   public function setPageViewId($pageViewId)
   {
     $this->pageViewId = $pageViewId;
   }
+  /**
+   * @return string
+   */
   public function getPageViewId()
   {
     return $this->pageViewId;
   }
+  /**
+   * @param string
+   */
   public function setRecommendationToken($recommendationToken)
   {
     $this->recommendationToken = $recommendationToken;
   }
+  /**
+   * @return string
+   */
   public function getRecommendationToken()
   {
     return $this->recommendationToken;
   }
+  /**
+   * @param string
+   */
   public function setReferrerUri($referrerUri)
   {
     $this->referrerUri = $referrerUri;
   }
+  /**
+   * @return string
+   */
   public function getReferrerUri()
   {
     return $this->referrerUri;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

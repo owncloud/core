@@ -19,57 +19,111 @@ namespace Google\Service\Dfareporting;
 
 class Browser extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $browserVersionId;
+  /**
+   * @var string
+   */
   public $dartId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $majorVersion;
+  /**
+   * @var string
+   */
   public $minorVersion;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setBrowserVersionId($browserVersionId)
   {
     $this->browserVersionId = $browserVersionId;
   }
+  /**
+   * @return string
+   */
   public function getBrowserVersionId()
   {
     return $this->browserVersionId;
   }
+  /**
+   * @param string
+   */
   public function setDartId($dartId)
   {
     $this->dartId = $dartId;
   }
+  /**
+   * @return string
+   */
   public function getDartId()
   {
     return $this->dartId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMajorVersion($majorVersion)
   {
     $this->majorVersion = $majorVersion;
   }
+  /**
+   * @return string
+   */
   public function getMajorVersion()
   {
     return $this->majorVersion;
   }
+  /**
+   * @param string
+   */
   public function setMinorVersion($minorVersion)
   {
     $this->minorVersion = $minorVersion;
   }
+  /**
+   * @return string
+   */
   public function getMinorVersion()
   {
     return $this->minorVersion;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

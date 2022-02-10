@@ -20,6 +20,9 @@ namespace Google\Service\Sheets;
 class ThemeColorPair extends \Google\Model
 {
   protected $colorDataType = '';
+  /**
+   * @var string
+   */
   public $colorType;
 
   /**
@@ -36,10 +39,16 @@ class ThemeColorPair extends \Google\Model
   {
     return $this->color;
   }
+  /**
+   * @param string
+   */
   public function setColorType($colorType)
   {
     $this->colorType = $colorType;
   }
+  /**
+   * @return string
+   */
   public function getColorType()
   {
     return $this->colorType;

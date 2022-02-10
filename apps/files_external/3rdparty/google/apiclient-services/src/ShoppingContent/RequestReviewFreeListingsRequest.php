@@ -19,12 +19,21 @@ namespace Google\Service\ShoppingContent;
 
 class RequestReviewFreeListingsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $regionCode;
 
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;

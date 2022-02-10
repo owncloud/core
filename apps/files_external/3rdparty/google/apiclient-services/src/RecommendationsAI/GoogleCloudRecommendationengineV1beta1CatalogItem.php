@@ -22,15 +22,33 @@ class GoogleCloudRecommendationengineV1beta1CatalogItem extends \Google\Collecti
   protected $collection_key = 'tags';
   protected $categoryHierarchiesType = GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy::class;
   protected $categoryHierarchiesDataType = 'array';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
   protected $itemAttributesType = GoogleCloudRecommendationengineV1beta1FeatureMap::class;
   protected $itemAttributesDataType = '';
+  /**
+   * @var string
+   */
   public $itemGroupId;
+  /**
+   * @var string
+   */
   public $languageCode;
   protected $productMetadataType = GoogleCloudRecommendationengineV1beta1ProductCatalogItem::class;
   protected $productMetadataDataType = '';
+  /**
+   * @var string[]
+   */
   public $tags;
+  /**
+   * @var string
+   */
   public $title;
 
   /**
@@ -47,18 +65,30 @@ class GoogleCloudRecommendationengineV1beta1CatalogItem extends \Google\Collecti
   {
     return $this->categoryHierarchies;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -77,18 +107,30 @@ class GoogleCloudRecommendationengineV1beta1CatalogItem extends \Google\Collecti
   {
     return $this->itemAttributes;
   }
+  /**
+   * @param string
+   */
   public function setItemGroupId($itemGroupId)
   {
     $this->itemGroupId = $itemGroupId;
   }
+  /**
+   * @return string
+   */
   public function getItemGroupId()
   {
     return $this->itemGroupId;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
@@ -107,18 +149,30 @@ class GoogleCloudRecommendationengineV1beta1CatalogItem extends \Google\Collecti
   {
     return $this->productMetadata;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

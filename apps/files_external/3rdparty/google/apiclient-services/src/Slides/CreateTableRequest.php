@@ -19,16 +19,31 @@ namespace Google\Service\Slides;
 
 class CreateTableRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $columns;
   protected $elementPropertiesType = PageElementProperties::class;
   protected $elementPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var int
+   */
   public $rows;
 
+  /**
+   * @param int
+   */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
+  /**
+   * @return int
+   */
   public function getColumns()
   {
     return $this->columns;
@@ -47,18 +62,30 @@ class CreateTableRequest extends \Google\Model
   {
     return $this->elementProperties;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param int
+   */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
+  /**
+   * @return int
+   */
   public function getRows()
   {
     return $this->rows;

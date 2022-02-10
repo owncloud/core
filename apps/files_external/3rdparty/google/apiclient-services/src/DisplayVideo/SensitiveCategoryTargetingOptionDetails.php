@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class SensitiveCategoryTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sensitiveCategory;
 
+  /**
+   * @param string
+   */
   public function setSensitiveCategory($sensitiveCategory)
   {
     $this->sensitiveCategory = $sensitiveCategory;
   }
+  /**
+   * @return string
+   */
   public function getSensitiveCategory()
   {
     return $this->sensitiveCategory;

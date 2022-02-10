@@ -21,20 +21,41 @@ class RepricingRule extends \Google\Model
 {
   protected $cogsBasedRuleType = RepricingRuleCostOfGoodsSaleRule::class;
   protected $cogsBasedRuleDataType = '';
+  /**
+   * @var string
+   */
   public $countryCode;
   protected $effectiveTimePeriodType = RepricingRuleEffectiveTime::class;
   protected $effectiveTimePeriodDataType = '';
   protected $eligibleOfferMatcherType = RepricingRuleEligibleOfferMatcher::class;
   protected $eligibleOfferMatcherDataType = '';
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $merchantId;
+  /**
+   * @var bool
+   */
   public $paused;
   protected $restrictionType = RepricingRuleRestriction::class;
   protected $restrictionDataType = '';
+  /**
+   * @var string
+   */
   public $ruleId;
   protected $statsBasedRuleType = RepricingRuleStatsBasedRule::class;
   protected $statsBasedRuleDataType = '';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -51,10 +72,16 @@ class RepricingRule extends \Google\Model
   {
     return $this->cogsBasedRule;
   }
+  /**
+   * @param string
+   */
   public function setCountryCode($countryCode)
   {
     $this->countryCode = $countryCode;
   }
+  /**
+   * @return string
+   */
   public function getCountryCode()
   {
     return $this->countryCode;
@@ -87,26 +114,44 @@ class RepricingRule extends \Google\Model
   {
     return $this->eligibleOfferMatcher;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;
   }
+  /**
+   * @param bool
+   */
   public function setPaused($paused)
   {
     $this->paused = $paused;
   }
+  /**
+   * @return bool
+   */
   public function getPaused()
   {
     return $this->paused;
@@ -125,10 +170,16 @@ class RepricingRule extends \Google\Model
   {
     return $this->restriction;
   }
+  /**
+   * @param string
+   */
   public function setRuleId($ruleId)
   {
     $this->ruleId = $ruleId;
   }
+  /**
+   * @return string
+   */
   public function getRuleId()
   {
     return $this->ruleId;
@@ -147,18 +198,30 @@ class RepricingRule extends \Google\Model
   {
     return $this->statsBasedRule;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

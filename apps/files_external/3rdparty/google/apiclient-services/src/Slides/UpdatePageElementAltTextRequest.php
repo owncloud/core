@@ -19,30 +19,57 @@ namespace Google\Service\Slides;
 
 class UpdatePageElementAltTextRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

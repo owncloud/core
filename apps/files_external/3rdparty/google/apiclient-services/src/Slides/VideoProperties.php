@@ -19,33 +19,63 @@ namespace Google\Service\Slides;
 
 class VideoProperties extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $autoPlay;
+  /**
+   * @var string
+   */
   public $end;
+  /**
+   * @var bool
+   */
   public $mute;
   protected $outlineType = Outline::class;
   protected $outlineDataType = '';
+  /**
+   * @var string
+   */
   public $start;
 
+  /**
+   * @param bool
+   */
   public function setAutoPlay($autoPlay)
   {
     $this->autoPlay = $autoPlay;
   }
+  /**
+   * @return bool
+   */
   public function getAutoPlay()
   {
     return $this->autoPlay;
   }
+  /**
+   * @param string
+   */
   public function setEnd($end)
   {
     $this->end = $end;
   }
+  /**
+   * @return string
+   */
   public function getEnd()
   {
     return $this->end;
   }
+  /**
+   * @param bool
+   */
   public function setMute($mute)
   {
     $this->mute = $mute;
   }
+  /**
+   * @return bool
+   */
   public function getMute()
   {
     return $this->mute;
@@ -64,10 +94,16 @@ class VideoProperties extends \Google\Model
   {
     return $this->outline;
   }
+  /**
+   * @param string
+   */
   public function setStart($start)
   {
     $this->start = $start;
   }
+  /**
+   * @return string
+   */
   public function getStart()
   {
     return $this->start;

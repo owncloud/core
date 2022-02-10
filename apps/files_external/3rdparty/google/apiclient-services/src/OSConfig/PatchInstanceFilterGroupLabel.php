@@ -19,12 +19,21 @@ namespace Google\Service\OSConfig;
 
 class PatchInstanceFilterGroupLabel extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $labels;
 
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

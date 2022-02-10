@@ -23,13 +23,25 @@ class ApprovalRequest extends \Google\Model
   protected $approveDataType = '';
   protected $dismissType = DismissDecision::class;
   protected $dismissDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $requestTime;
+  /**
+   * @var string
+   */
   public $requestedExpiration;
   protected $requestedLocationsType = AccessLocations::class;
   protected $requestedLocationsDataType = '';
   protected $requestedReasonType = AccessReason::class;
   protected $requestedReasonDataType = '';
+  /**
+   * @var string
+   */
   public $requestedResourceName;
   protected $requestedResourcePropertiesType = ResourceProperties::class;
   protected $requestedResourcePropertiesDataType = '';
@@ -62,26 +74,44 @@ class ApprovalRequest extends \Google\Model
   {
     return $this->dismiss;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRequestTime($requestTime)
   {
     $this->requestTime = $requestTime;
   }
+  /**
+   * @return string
+   */
   public function getRequestTime()
   {
     return $this->requestTime;
   }
+  /**
+   * @param string
+   */
   public function setRequestedExpiration($requestedExpiration)
   {
     $this->requestedExpiration = $requestedExpiration;
   }
+  /**
+   * @return string
+   */
   public function getRequestedExpiration()
   {
     return $this->requestedExpiration;
@@ -114,10 +144,16 @@ class ApprovalRequest extends \Google\Model
   {
     return $this->requestedReason;
   }
+  /**
+   * @param string
+   */
   public function setRequestedResourceName($requestedResourceName)
   {
     $this->requestedResourceName = $requestedResourceName;
   }
+  /**
+   * @return string
+   */
   public function getRequestedResourceName()
   {
     return $this->requestedResourceName;

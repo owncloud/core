@@ -22,7 +22,13 @@ class Domains2 extends \Google\Collection
   protected $collection_key = 'domains';
   protected $domainsType = Domains::class;
   protected $domainsDataType = 'array';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -39,18 +45,30 @@ class Domains2 extends \Google\Collection
   {
     return $this->domains;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

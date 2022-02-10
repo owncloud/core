@@ -20,25 +20,49 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2CategoricalStatsHistogramBucket extends \Google\Collection
 {
   protected $collection_key = 'bucketValues';
+  /**
+   * @var string
+   */
   public $bucketSize;
+  /**
+   * @var string
+   */
   public $bucketValueCount;
   protected $bucketValuesType = GooglePrivacyDlpV2ValueFrequency::class;
   protected $bucketValuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $valueFrequencyLowerBound;
+  /**
+   * @var string
+   */
   public $valueFrequencyUpperBound;
 
+  /**
+   * @param string
+   */
   public function setBucketSize($bucketSize)
   {
     $this->bucketSize = $bucketSize;
   }
+  /**
+   * @return string
+   */
   public function getBucketSize()
   {
     return $this->bucketSize;
   }
+  /**
+   * @param string
+   */
   public function setBucketValueCount($bucketValueCount)
   {
     $this->bucketValueCount = $bucketValueCount;
   }
+  /**
+   * @return string
+   */
   public function getBucketValueCount()
   {
     return $this->bucketValueCount;
@@ -57,18 +81,30 @@ class GooglePrivacyDlpV2CategoricalStatsHistogramBucket extends \Google\Collecti
   {
     return $this->bucketValues;
   }
+  /**
+   * @param string
+   */
   public function setValueFrequencyLowerBound($valueFrequencyLowerBound)
   {
     $this->valueFrequencyLowerBound = $valueFrequencyLowerBound;
   }
+  /**
+   * @return string
+   */
   public function getValueFrequencyLowerBound()
   {
     return $this->valueFrequencyLowerBound;
   }
+  /**
+   * @param string
+   */
   public function setValueFrequencyUpperBound($valueFrequencyUpperBound)
   {
     $this->valueFrequencyUpperBound = $valueFrequencyUpperBound;
   }
+  /**
+   * @return string
+   */
   public function getValueFrequencyUpperBound()
   {
     return $this->valueFrequencyUpperBound;

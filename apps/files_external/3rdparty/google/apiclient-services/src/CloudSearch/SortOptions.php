@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class SortOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $operatorName;
+  /**
+   * @var string
+   */
   public $sortOrder;
 
+  /**
+   * @param string
+   */
   public function setOperatorName($operatorName)
   {
     $this->operatorName = $operatorName;
   }
+  /**
+   * @return string
+   */
   public function getOperatorName()
   {
     return $this->operatorName;
   }
+  /**
+   * @param string
+   */
   public function setSortOrder($sortOrder)
   {
     $this->sortOrder = $sortOrder;
   }
+  /**
+   * @return string
+   */
   public function getSortOrder()
   {
     return $this->sortOrder;

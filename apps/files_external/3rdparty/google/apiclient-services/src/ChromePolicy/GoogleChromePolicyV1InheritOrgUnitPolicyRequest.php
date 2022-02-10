@@ -19,14 +19,23 @@ namespace Google\Service\ChromePolicy;
 
 class GoogleChromePolicyV1InheritOrgUnitPolicyRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $policySchema;
   protected $policyTargetKeyType = GoogleChromePolicyV1PolicyTargetKey::class;
   protected $policyTargetKeyDataType = '';
 
+  /**
+   * @param string
+   */
   public function setPolicySchema($policySchema)
   {
     $this->policySchema = $policySchema;
   }
+  /**
+   * @return string
+   */
   public function getPolicySchema()
   {
     return $this->policySchema;

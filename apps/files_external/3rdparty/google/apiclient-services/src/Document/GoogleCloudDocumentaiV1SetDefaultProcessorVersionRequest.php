@@ -19,12 +19,21 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1SetDefaultProcessorVersionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $defaultProcessorVersion;
 
+  /**
+   * @param string
+   */
   public function setDefaultProcessorVersion($defaultProcessorVersion)
   {
     $this->defaultProcessorVersion = $defaultProcessorVersion;
   }
+  /**
+   * @return string
+   */
   public function getDefaultProcessorVersion()
   {
     return $this->defaultProcessorVersion;

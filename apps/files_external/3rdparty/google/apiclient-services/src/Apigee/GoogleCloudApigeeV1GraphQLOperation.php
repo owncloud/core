@@ -20,21 +20,39 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1GraphQLOperation extends \Google\Collection
 {
   protected $collection_key = 'operationTypes';
+  /**
+   * @var string
+   */
   public $operation;
+  /**
+   * @var string[]
+   */
   public $operationTypes;
 
+  /**
+   * @param string
+   */
   public function setOperation($operation)
   {
     $this->operation = $operation;
   }
+  /**
+   * @return string
+   */
   public function getOperation()
   {
     return $this->operation;
   }
+  /**
+   * @param string[]
+   */
   public function setOperationTypes($operationTypes)
   {
     $this->operationTypes = $operationTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getOperationTypes()
   {
     return $this->operationTypes;

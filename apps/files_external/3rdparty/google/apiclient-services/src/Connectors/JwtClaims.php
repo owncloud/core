@@ -19,30 +19,57 @@ namespace Google\Service\Connectors;
 
 class JwtClaims extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audience;
+  /**
+   * @var string
+   */
   public $issuer;
+  /**
+   * @var string
+   */
   public $subject;
 
+  /**
+   * @param string
+   */
   public function setAudience($audience)
   {
     $this->audience = $audience;
   }
+  /**
+   * @return string
+   */
   public function getAudience()
   {
     return $this->audience;
   }
+  /**
+   * @param string
+   */
   public function setIssuer($issuer)
   {
     $this->issuer = $issuer;
   }
+  /**
+   * @return string
+   */
   public function getIssuer()
   {
     return $this->issuer;
   }
+  /**
+   * @param string
+   */
   public function setSubject($subject)
   {
     $this->subject = $subject;
   }
+  /**
+   * @return string
+   */
   public function getSubject()
   {
     return $this->subject;

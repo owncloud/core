@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class IosTestLoop extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bundleId;
 
+  /**
+   * @param string
+   */
   public function setBundleId($bundleId)
   {
     $this->bundleId = $bundleId;
   }
+  /**
+   * @return string
+   */
   public function getBundleId()
   {
     return $this->bundleId;

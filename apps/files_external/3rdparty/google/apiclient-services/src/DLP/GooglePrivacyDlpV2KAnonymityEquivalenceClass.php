@@ -20,14 +20,23 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2KAnonymityEquivalenceClass extends \Google\Collection
 {
   protected $collection_key = 'quasiIdsValues';
+  /**
+   * @var string
+   */
   public $equivalenceClassSize;
   protected $quasiIdsValuesType = GooglePrivacyDlpV2Value::class;
   protected $quasiIdsValuesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setEquivalenceClassSize($equivalenceClassSize)
   {
     $this->equivalenceClassSize = $equivalenceClassSize;
   }
+  /**
+   * @return string
+   */
   public function getEquivalenceClassSize()
   {
     return $this->equivalenceClassSize;

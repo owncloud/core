@@ -21,6 +21,9 @@ class AnalyzeEntitiesRequest extends \Google\Model
 {
   protected $documentType = Document::class;
   protected $documentDataType = '';
+  /**
+   * @var string
+   */
   public $encodingType;
 
   /**
@@ -37,10 +40,16 @@ class AnalyzeEntitiesRequest extends \Google\Model
   {
     return $this->document;
   }
+  /**
+   * @param string
+   */
   public function setEncodingType($encodingType)
   {
     $this->encodingType = $encodingType;
   }
+  /**
+   * @return string
+   */
   public function getEncodingType()
   {
     return $this->encodingType;

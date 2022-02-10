@@ -20,14 +20,23 @@ namespace Google\Service\Calendar;
 class FreeBusyGroup extends \Google\Collection
 {
   protected $collection_key = 'errors';
+  /**
+   * @var string[]
+   */
   public $calendars;
   protected $errorsType = Error::class;
   protected $errorsDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setCalendars($calendars)
   {
     $this->calendars = $calendars;
   }
+  /**
+   * @return string[]
+   */
   public function getCalendars()
   {
     return $this->calendars;

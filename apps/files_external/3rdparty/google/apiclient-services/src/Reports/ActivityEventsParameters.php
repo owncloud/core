@@ -20,29 +20,59 @@ namespace Google\Service\Reports;
 class ActivityEventsParameters extends \Google\Collection
 {
   protected $collection_key = 'multiValue';
+  /**
+   * @var bool
+   */
   public $boolValue;
+  /**
+   * @var string
+   */
   public $intValue;
   protected $messageValueType = ActivityEventsParametersMessageValue::class;
   protected $messageValueDataType = '';
+  /**
+   * @var string[]
+   */
   public $multiIntValue;
   protected $multiMessageValueType = ActivityEventsParametersMultiMessageValue::class;
   protected $multiMessageValueDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $multiValue;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
   }
+  /**
+   * @param string
+   */
   public function setIntValue($intValue)
   {
     $this->intValue = $intValue;
   }
+  /**
+   * @return string
+   */
   public function getIntValue()
   {
     return $this->intValue;
@@ -61,10 +91,16 @@ class ActivityEventsParameters extends \Google\Collection
   {
     return $this->messageValue;
   }
+  /**
+   * @param string[]
+   */
   public function setMultiIntValue($multiIntValue)
   {
     $this->multiIntValue = $multiIntValue;
   }
+  /**
+   * @return string[]
+   */
   public function getMultiIntValue()
   {
     return $this->multiIntValue;
@@ -83,26 +119,44 @@ class ActivityEventsParameters extends \Google\Collection
   {
     return $this->multiMessageValue;
   }
+  /**
+   * @param string[]
+   */
   public function setMultiValue($multiValue)
   {
     $this->multiValue = $multiValue;
   }
+  /**
+   * @return string[]
+   */
   public function getMultiValue()
   {
     return $this->multiValue;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

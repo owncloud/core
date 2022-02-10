@@ -19,12 +19,21 @@ namespace Google\Service\Recommender;
 
 class GoogleCloudRecommenderV1ValueMatcher extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $matchesPattern;
 
+  /**
+   * @param string
+   */
   public function setMatchesPattern($matchesPattern)
   {
     $this->matchesPattern = $matchesPattern;
   }
+  /**
+   * @return string
+   */
   public function getMatchesPattern()
   {
     return $this->matchesPattern;

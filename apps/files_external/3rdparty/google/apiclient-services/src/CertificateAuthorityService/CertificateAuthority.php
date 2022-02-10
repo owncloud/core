@@ -26,21 +26,57 @@ class CertificateAuthority extends \Google\Collection
   protected $caCertificateDescriptionsDataType = 'array';
   protected $configType = CertificateConfig::class;
   protected $configDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $deleteTime;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $gcsBucket;
   protected $keySpecType = KeyVersionSpec::class;
   protected $keySpecDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $lifetime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $pemCaCertificates;
+  /**
+   * @var string
+   */
   public $state;
   protected $subordinateConfigType = SubordinateConfig::class;
   protected $subordinateConfigDataType = '';
+  /**
+   * @var string
+   */
   public $tier;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -85,34 +121,58 @@ class CertificateAuthority extends \Google\Collection
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDeleteTime($deleteTime)
   {
     $this->deleteTime = $deleteTime;
   }
+  /**
+   * @return string
+   */
   public function getDeleteTime()
   {
     return $this->deleteTime;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setGcsBucket($gcsBucket)
   {
     $this->gcsBucket = $gcsBucket;
   }
+  /**
+   * @return string
+   */
   public function getGcsBucket()
   {
     return $this->gcsBucket;
@@ -131,42 +191,72 @@ class CertificateAuthority extends \Google\Collection
   {
     return $this->keySpec;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLifetime($lifetime)
   {
     $this->lifetime = $lifetime;
   }
+  /**
+   * @return string
+   */
   public function getLifetime()
   {
     return $this->lifetime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setPemCaCertificates($pemCaCertificates)
   {
     $this->pemCaCertificates = $pemCaCertificates;
   }
+  /**
+   * @return string[]
+   */
   public function getPemCaCertificates()
   {
     return $this->pemCaCertificates;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
@@ -185,26 +275,44 @@ class CertificateAuthority extends \Google\Collection
   {
     return $this->subordinateConfig;
   }
+  /**
+   * @param string
+   */
   public function setTier($tier)
   {
     $this->tier = $tier;
   }
+  /**
+   * @return string
+   */
   public function getTier()
   {
     return $this->tier;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

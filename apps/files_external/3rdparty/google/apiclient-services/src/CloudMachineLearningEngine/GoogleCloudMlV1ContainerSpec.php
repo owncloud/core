@@ -20,26 +20,47 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1ContainerSpec extends \Google\Collection
 {
   protected $collection_key = 'ports';
+  /**
+   * @var string[]
+   */
   public $args;
+  /**
+   * @var string[]
+   */
   public $command;
   protected $envType = GoogleCloudMlV1EnvVar::class;
   protected $envDataType = 'array';
+  /**
+   * @var string
+   */
   public $image;
   protected $portsType = GoogleCloudMlV1ContainerPort::class;
   protected $portsDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setArgs($args)
   {
     $this->args = $args;
   }
+  /**
+   * @return string[]
+   */
   public function getArgs()
   {
     return $this->args;
   }
+  /**
+   * @param string[]
+   */
   public function setCommand($command)
   {
     $this->command = $command;
   }
+  /**
+   * @return string[]
+   */
   public function getCommand()
   {
     return $this->command;
@@ -58,10 +79,16 @@ class GoogleCloudMlV1ContainerSpec extends \Google\Collection
   {
     return $this->env;
   }
+  /**
+   * @param string
+   */
   public function setImage($image)
   {
     $this->image = $image;
   }
+  /**
+   * @return string
+   */
   public function getImage()
   {
     return $this->image;

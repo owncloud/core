@@ -19,57 +19,111 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2FaqAnswer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $answer;
+  /**
+   * @var string
+   */
   public $answerRecord;
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string[]
+   */
   public $metadata;
+  /**
+   * @var string
+   */
   public $question;
+  /**
+   * @var string
+   */
   public $source;
 
+  /**
+   * @param string
+   */
   public function setAnswer($answer)
   {
     $this->answer = $answer;
   }
+  /**
+   * @return string
+   */
   public function getAnswer()
   {
     return $this->answer;
   }
+  /**
+   * @param string
+   */
   public function setAnswerRecord($answerRecord)
   {
     $this->answerRecord = $answerRecord;
   }
+  /**
+   * @return string
+   */
   public function getAnswerRecord()
   {
     return $this->answerRecord;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setQuestion($question)
   {
     $this->question = $question;
   }
+  /**
+   * @return string
+   */
   public function getQuestion()
   {
     return $this->question;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;

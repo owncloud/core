@@ -19,84 +19,165 @@ namespace Google\Service\ChromePolicy;
 
 class Proto2FieldDescriptorProto extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $defaultValue;
+  /**
+   * @var string
+   */
   public $jsonName;
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $number;
+  /**
+   * @var int
+   */
   public $oneofIndex;
+  /**
+   * @var bool
+   */
   public $proto3Optional;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $typeName;
 
+  /**
+   * @param string
+   */
   public function setDefaultValue($defaultValue)
   {
     $this->defaultValue = $defaultValue;
   }
+  /**
+   * @return string
+   */
   public function getDefaultValue()
   {
     return $this->defaultValue;
   }
+  /**
+   * @param string
+   */
   public function setJsonName($jsonName)
   {
     $this->jsonName = $jsonName;
   }
+  /**
+   * @return string
+   */
   public function getJsonName()
   {
     return $this->jsonName;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setNumber($number)
   {
     $this->number = $number;
   }
+  /**
+   * @return int
+   */
   public function getNumber()
   {
     return $this->number;
   }
+  /**
+   * @param int
+   */
   public function setOneofIndex($oneofIndex)
   {
     $this->oneofIndex = $oneofIndex;
   }
+  /**
+   * @return int
+   */
   public function getOneofIndex()
   {
     return $this->oneofIndex;
   }
+  /**
+   * @param bool
+   */
   public function setProto3Optional($proto3Optional)
   {
     $this->proto3Optional = $proto3Optional;
   }
+  /**
+   * @return bool
+   */
   public function getProto3Optional()
   {
     return $this->proto3Optional;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setTypeName($typeName)
   {
     $this->typeName = $typeName;
   }
+  /**
+   * @return string
+   */
   public function getTypeName()
   {
     return $this->typeName;

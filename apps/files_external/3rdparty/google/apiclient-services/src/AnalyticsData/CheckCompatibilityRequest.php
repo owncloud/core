@@ -20,6 +20,9 @@ namespace Google\Service\AnalyticsData;
 class CheckCompatibilityRequest extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var string
+   */
   public $compatibilityFilter;
   protected $dimensionFilterType = FilterExpression::class;
   protected $dimensionFilterDataType = '';
@@ -30,10 +33,16 @@ class CheckCompatibilityRequest extends \Google\Collection
   protected $metricsType = Metric::class;
   protected $metricsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCompatibilityFilter($compatibilityFilter)
   {
     $this->compatibilityFilter = $compatibilityFilter;
   }
+  /**
+   * @return string
+   */
   public function getCompatibilityFilter()
   {
     return $this->compatibilityFilter;

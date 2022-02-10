@@ -20,12 +20,21 @@ namespace Google\Service\CloudHealthcare;
 class Resources extends \Google\Collection
 {
   protected $collection_key = 'resources';
+  /**
+   * @var string[]
+   */
   public $resources;
 
+  /**
+   * @param string[]
+   */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
+  /**
+   * @return string[]
+   */
   public function getResources()
   {
     return $this->resources;

@@ -20,30 +20,57 @@ namespace Google\Service\Testing;
 class Orientation extends \Google\Collection
 {
   protected $collection_key = 'tags';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $tags;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;

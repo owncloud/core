@@ -19,21 +19,39 @@ namespace Google\Service\CloudSupport;
 
 class DownloadParameters extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowGzipCompression;
+  /**
+   * @var bool
+   */
   public $ignoreRange;
 
+  /**
+   * @param bool
+   */
   public function setAllowGzipCompression($allowGzipCompression)
   {
     $this->allowGzipCompression = $allowGzipCompression;
   }
+  /**
+   * @return bool
+   */
   public function getAllowGzipCompression()
   {
     return $this->allowGzipCompression;
   }
+  /**
+   * @param bool
+   */
   public function setIgnoreRange($ignoreRange)
   {
     $this->ignoreRange = $ignoreRange;
   }
+  /**
+   * @return bool
+   */
   public function getIgnoreRange()
   {
     return $this->ignoreRange;

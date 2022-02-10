@@ -20,39 +20,75 @@ namespace Google\Service\Digitalassetlinks;
 class CheckResponse extends \Google\Collection
 {
   protected $collection_key = 'errorCode';
+  /**
+   * @var string
+   */
   public $debugString;
+  /**
+   * @var string[]
+   */
   public $errorCode;
+  /**
+   * @var bool
+   */
   public $linked;
+  /**
+   * @var string
+   */
   public $maxAge;
 
+  /**
+   * @param string
+   */
   public function setDebugString($debugString)
   {
     $this->debugString = $debugString;
   }
+  /**
+   * @return string
+   */
   public function getDebugString()
   {
     return $this->debugString;
   }
+  /**
+   * @param string[]
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string[]
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param bool
+   */
   public function setLinked($linked)
   {
     $this->linked = $linked;
   }
+  /**
+   * @return bool
+   */
   public function getLinked()
   {
     return $this->linked;
   }
+  /**
+   * @param string
+   */
   public function setMaxAge($maxAge)
   {
     $this->maxAge = $maxAge;
   }
+  /**
+   * @return string
+   */
   public function getMaxAge()
   {
     return $this->maxAge;

@@ -19,12 +19,27 @@ namespace Google\Service\OSConfig;
 
 class RecurringSchedule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $frequency;
+  /**
+   * @var string
+   */
   public $lastExecuteTime;
   protected $monthlyType = MonthlySchedule::class;
   protected $monthlyDataType = '';
+  /**
+   * @var string
+   */
   public $nextExecuteTime;
+  /**
+   * @var string
+   */
   public $startTime;
   protected $timeOfDayType = TimeOfDay::class;
   protected $timeOfDayDataType = '';
@@ -33,26 +48,44 @@ class RecurringSchedule extends \Google\Model
   protected $weeklyType = WeeklySchedule::class;
   protected $weeklyDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setFrequency($frequency)
   {
     $this->frequency = $frequency;
   }
+  /**
+   * @return string
+   */
   public function getFrequency()
   {
     return $this->frequency;
   }
+  /**
+   * @param string
+   */
   public function setLastExecuteTime($lastExecuteTime)
   {
     $this->lastExecuteTime = $lastExecuteTime;
   }
+  /**
+   * @return string
+   */
   public function getLastExecuteTime()
   {
     return $this->lastExecuteTime;
@@ -71,18 +104,30 @@ class RecurringSchedule extends \Google\Model
   {
     return $this->monthly;
   }
+  /**
+   * @param string
+   */
   public function setNextExecuteTime($nextExecuteTime)
   {
     $this->nextExecuteTime = $nextExecuteTime;
   }
+  /**
+   * @return string
+   */
   public function getNextExecuteTime()
   {
     return $this->nextExecuteTime;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

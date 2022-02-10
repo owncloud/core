@@ -133,10 +133,10 @@ class ProjectsLocationsTagTemplates extends \Google\Service\Resource
    * tag template. Currently, only `display_name` and `is_publicly_readable` can
    * be overwritten. If this parameter is absent or empty, all modifiable fields
    * are overwritten. If such fields are non-required and omitted in the request
-   * body, their values are emptied. Note: Updating the ``is_publicly_readable``
+   * body, their values are emptied. Note: Updating the `is_publicly_readable`
    * field may require up to 12 hours to take effect in search results.
-   * Additionally, it also requires the ``tagTemplates.getIamPolicy`` and
-   * ``tagTemplates.setIamPolicy`` permissions.
+   * Additionally, it also requires the `tagTemplates.getIamPolicy` and
+   * `tagTemplates.setIamPolicy` permissions.
    * @return GoogleCloudDatacatalogV1TagTemplate
    */
   public function patch($name, GoogleCloudDatacatalogV1TagTemplate $postBody, $optParams = [])

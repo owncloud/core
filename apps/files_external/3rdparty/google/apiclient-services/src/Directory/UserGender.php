@@ -19,30 +19,57 @@ namespace Google\Service\Directory;
 
 class UserGender extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $addressMeAs;
+  /**
+   * @var string
+   */
   public $customGender;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAddressMeAs($addressMeAs)
   {
     $this->addressMeAs = $addressMeAs;
   }
+  /**
+   * @return string
+   */
   public function getAddressMeAs()
   {
     return $this->addressMeAs;
   }
+  /**
+   * @param string
+   */
   public function setCustomGender($customGender)
   {
     $this->customGender = $customGender;
   }
+  /**
+   * @return string
+   */
   public function getCustomGender()
   {
     return $this->customGender;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

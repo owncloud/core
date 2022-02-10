@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class ResourcePolicyWeeklyCycleDayOfWeek extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $day;
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param string
+   */
   public function setDay($day)
   {
     $this->day = $day;
   }
+  /**
+   * @return string
+   */
   public function getDay()
   {
     return $this->day;
   }
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

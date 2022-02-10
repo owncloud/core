@@ -21,6 +21,9 @@ class ContactSettings extends \Google\Model
 {
   protected $adminContactType = Contact::class;
   protected $adminContactDataType = '';
+  /**
+   * @var string
+   */
   public $privacy;
   protected $registrantContactType = Contact::class;
   protected $registrantContactDataType = '';
@@ -41,10 +44,16 @@ class ContactSettings extends \Google\Model
   {
     return $this->adminContact;
   }
+  /**
+   * @param string
+   */
   public function setPrivacy($privacy)
   {
     $this->privacy = $privacy;
   }
+  /**
+   * @return string
+   */
   public function getPrivacy()
   {
     return $this->privacy;

@@ -19,21 +19,39 @@ namespace Google\Service\DataFusion;
 
 class NetworkConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipAllocation;
+  /**
+   * @var string
+   */
   public $network;
 
+  /**
+   * @param string
+   */
   public function setIpAllocation($ipAllocation)
   {
     $this->ipAllocation = $ipAllocation;
   }
+  /**
+   * @return string
+   */
   public function getIpAllocation()
   {
     return $this->ipAllocation;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;

@@ -20,15 +20,27 @@ namespace Google\Service\ServiceDirectory;
 class Service extends \Google\Collection
 {
   protected $collection_key = 'endpoints';
+  /**
+   * @var string[]
+   */
   public $annotations;
   protected $endpointsType = Endpoint::class;
   protected $endpointsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string[]
+   */
   public function setAnnotations($annotations)
   {
     $this->annotations = $annotations;
   }
+  /**
+   * @return string[]
+   */
   public function getAnnotations()
   {
     return $this->annotations;
@@ -47,10 +59,16 @@ class Service extends \Google\Collection
   {
     return $this->endpoints;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -20,32 +20,59 @@ namespace Google\Service\ShoppingContent;
 class ShipmentInvoiceLineItemInvoice extends \Google\Collection
 {
   protected $collection_key = 'shipmentUnitIds';
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string[]
+   */
   public $shipmentUnitIds;
   protected $unitInvoiceType = UnitInvoice::class;
   protected $unitInvoiceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string[]
+   */
   public function setShipmentUnitIds($shipmentUnitIds)
   {
     $this->shipmentUnitIds = $shipmentUnitIds;
   }
+  /**
+   * @return string[]
+   */
   public function getShipmentUnitIds()
   {
     return $this->shipmentUnitIds;

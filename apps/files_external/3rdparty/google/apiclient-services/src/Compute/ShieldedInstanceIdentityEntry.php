@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class ShieldedInstanceIdentityEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ekCert;
+  /**
+   * @var string
+   */
   public $ekPub;
 
+  /**
+   * @param string
+   */
   public function setEkCert($ekCert)
   {
     $this->ekCert = $ekCert;
   }
+  /**
+   * @return string
+   */
   public function getEkCert()
   {
     return $this->ekCert;
   }
+  /**
+   * @param string
+   */
   public function setEkPub($ekPub)
   {
     $this->ekPub = $ekPub;
   }
+  /**
+   * @return string
+   */
   public function getEkPub()
   {
     return $this->ekPub;

@@ -19,12 +19,21 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2TableLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rowIndex;
 
+  /**
+   * @param string
+   */
   public function setRowIndex($rowIndex)
   {
     $this->rowIndex = $rowIndex;
   }
+  /**
+   * @return string
+   */
   public function getRowIndex()
   {
     return $this->rowIndex;

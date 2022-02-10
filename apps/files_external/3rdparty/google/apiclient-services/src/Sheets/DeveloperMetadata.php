@@ -21,9 +21,21 @@ class DeveloperMetadata extends \Google\Model
 {
   protected $locationType = DeveloperMetadataLocation::class;
   protected $locationDataType = '';
+  /**
+   * @var int
+   */
   public $metadataId;
+  /**
+   * @var string
+   */
   public $metadataKey;
+  /**
+   * @var string
+   */
   public $metadataValue;
+  /**
+   * @var string
+   */
   public $visibility;
 
   /**
@@ -40,34 +52,58 @@ class DeveloperMetadata extends \Google\Model
   {
     return $this->location;
   }
+  /**
+   * @param int
+   */
   public function setMetadataId($metadataId)
   {
     $this->metadataId = $metadataId;
   }
+  /**
+   * @return int
+   */
   public function getMetadataId()
   {
     return $this->metadataId;
   }
+  /**
+   * @param string
+   */
   public function setMetadataKey($metadataKey)
   {
     $this->metadataKey = $metadataKey;
   }
+  /**
+   * @return string
+   */
   public function getMetadataKey()
   {
     return $this->metadataKey;
   }
+  /**
+   * @param string
+   */
   public function setMetadataValue($metadataValue)
   {
     $this->metadataValue = $metadataValue;
   }
+  /**
+   * @return string
+   */
   public function getMetadataValue()
   {
     return $this->metadataValue;
   }
+  /**
+   * @param string
+   */
   public function setVisibility($visibility)
   {
     $this->visibility = $visibility;
   }
+  /**
+   * @return string
+   */
   public function getVisibility()
   {
     return $this->visibility;

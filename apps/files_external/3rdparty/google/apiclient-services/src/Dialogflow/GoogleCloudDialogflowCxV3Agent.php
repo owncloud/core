@@ -22,18 +22,51 @@ class GoogleCloudDialogflowCxV3Agent extends \Google\Collection
   protected $collection_key = 'supportedLanguageCodes';
   protected $advancedSettingsType = GoogleCloudDialogflowCxV3AdvancedSettings::class;
   protected $advancedSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $avatarUri;
+  /**
+   * @var string
+   */
   public $defaultLanguageCode;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $enableSpellCorrection;
+  /**
+   * @var bool
+   */
   public $enableStackdriverLogging;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $securitySettings;
   protected $speechToTextSettingsType = GoogleCloudDialogflowCxV3SpeechToTextSettings::class;
   protected $speechToTextSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $startFlow;
+  /**
+   * @var string[]
+   */
   public $supportedLanguageCodes;
+  /**
+   * @var string
+   */
   public $timeZone;
 
   /**
@@ -50,66 +83,114 @@ class GoogleCloudDialogflowCxV3Agent extends \Google\Collection
   {
     return $this->advancedSettings;
   }
+  /**
+   * @param string
+   */
   public function setAvatarUri($avatarUri)
   {
     $this->avatarUri = $avatarUri;
   }
+  /**
+   * @return string
+   */
   public function getAvatarUri()
   {
     return $this->avatarUri;
   }
+  /**
+   * @param string
+   */
   public function setDefaultLanguageCode($defaultLanguageCode)
   {
     $this->defaultLanguageCode = $defaultLanguageCode;
   }
+  /**
+   * @return string
+   */
   public function getDefaultLanguageCode()
   {
     return $this->defaultLanguageCode;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setEnableSpellCorrection($enableSpellCorrection)
   {
     $this->enableSpellCorrection = $enableSpellCorrection;
   }
+  /**
+   * @return bool
+   */
   public function getEnableSpellCorrection()
   {
     return $this->enableSpellCorrection;
   }
+  /**
+   * @param bool
+   */
   public function setEnableStackdriverLogging($enableStackdriverLogging)
   {
     $this->enableStackdriverLogging = $enableStackdriverLogging;
   }
+  /**
+   * @return bool
+   */
   public function getEnableStackdriverLogging()
   {
     return $this->enableStackdriverLogging;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSecuritySettings($securitySettings)
   {
     $this->securitySettings = $securitySettings;
   }
+  /**
+   * @return string
+   */
   public function getSecuritySettings()
   {
     return $this->securitySettings;
@@ -128,26 +209,44 @@ class GoogleCloudDialogflowCxV3Agent extends \Google\Collection
   {
     return $this->speechToTextSettings;
   }
+  /**
+   * @param string
+   */
   public function setStartFlow($startFlow)
   {
     $this->startFlow = $startFlow;
   }
+  /**
+   * @return string
+   */
   public function getStartFlow()
   {
     return $this->startFlow;
   }
+  /**
+   * @param string[]
+   */
   public function setSupportedLanguageCodes($supportedLanguageCodes)
   {
     $this->supportedLanguageCodes = $supportedLanguageCodes;
   }
+  /**
+   * @return string[]
+   */
   public function getSupportedLanguageCodes()
   {
     return $this->supportedLanguageCodes;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;

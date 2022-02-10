@@ -20,12 +20,21 @@ namespace Google\Service\AdExchangeBuyerII;
 class ResumeProposalDealsRequest extends \Google\Collection
 {
   protected $collection_key = 'externalDealIds';
+  /**
+   * @var string[]
+   */
   public $externalDealIds;
 
+  /**
+   * @param string[]
+   */
   public function setExternalDealIds($externalDealIds)
   {
     $this->externalDealIds = $externalDealIds;
   }
+  /**
+   * @return string[]
+   */
   public function getExternalDealIds()
   {
     return $this->externalDealIds;

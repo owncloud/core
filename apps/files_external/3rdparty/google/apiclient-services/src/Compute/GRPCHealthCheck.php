@@ -19,39 +19,75 @@ namespace Google\Service\Compute;
 
 class GRPCHealthCheck extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $grpcServiceName;
+  /**
+   * @var int
+   */
   public $port;
+  /**
+   * @var string
+   */
   public $portName;
+  /**
+   * @var string
+   */
   public $portSpecification;
 
+  /**
+   * @param string
+   */
   public function setGrpcServiceName($grpcServiceName)
   {
     $this->grpcServiceName = $grpcServiceName;
   }
+  /**
+   * @return string
+   */
   public function getGrpcServiceName()
   {
     return $this->grpcServiceName;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;
   }
+  /**
+   * @param string
+   */
   public function setPortName($portName)
   {
     $this->portName = $portName;
   }
+  /**
+   * @return string
+   */
   public function getPortName()
   {
     return $this->portName;
   }
+  /**
+   * @param string
+   */
   public function setPortSpecification($portSpecification)
   {
     $this->portSpecification = $portSpecification;
   }
+  /**
+   * @return string
+   */
   public function getPortSpecification()
   {
     return $this->portSpecification;

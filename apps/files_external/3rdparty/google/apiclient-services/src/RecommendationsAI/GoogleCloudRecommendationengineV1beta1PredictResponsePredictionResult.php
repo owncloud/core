@@ -19,21 +19,39 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1PredictResponsePredictionResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var array[]
+   */
   public $itemMetadata;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param array[]
+   */
   public function setItemMetadata($itemMetadata)
   {
     $this->itemMetadata = $itemMetadata;
   }
+  /**
+   * @return array[]
+   */
   public function getItemMetadata()
   {
     return $this->itemMetadata;

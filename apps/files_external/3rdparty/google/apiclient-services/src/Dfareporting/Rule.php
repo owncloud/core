@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class Rule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $assetId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $targetingTemplateId;
 
+  /**
+   * @param string
+   */
   public function setAssetId($assetId)
   {
     $this->assetId = $assetId;
   }
+  /**
+   * @return string
+   */
   public function getAssetId()
   {
     return $this->assetId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTargetingTemplateId($targetingTemplateId)
   {
     $this->targetingTemplateId = $targetingTemplateId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingTemplateId()
   {
     return $this->targetingTemplateId;

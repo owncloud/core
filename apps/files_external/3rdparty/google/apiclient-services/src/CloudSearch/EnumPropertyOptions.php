@@ -22,6 +22,9 @@ class EnumPropertyOptions extends \Google\Collection
   protected $collection_key = 'possibleValues';
   protected $operatorOptionsType = EnumOperatorOptions::class;
   protected $operatorOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $orderedRanking;
   protected $possibleValuesType = EnumValuePair::class;
   protected $possibleValuesDataType = 'array';
@@ -40,10 +43,16 @@ class EnumPropertyOptions extends \Google\Collection
   {
     return $this->operatorOptions;
   }
+  /**
+   * @param string
+   */
   public function setOrderedRanking($orderedRanking)
   {
     $this->orderedRanking = $orderedRanking;
   }
+  /**
+   * @return string
+   */
   public function getOrderedRanking()
   {
     return $this->orderedRanking;

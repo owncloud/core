@@ -19,12 +19,21 @@ namespace Google\Service\AndroidPublisher;
 
 class SubscriptionPurchasesDeferResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $newExpiryTimeMillis;
 
+  /**
+   * @param string
+   */
   public function setNewExpiryTimeMillis($newExpiryTimeMillis)
   {
     $this->newExpiryTimeMillis = $newExpiryTimeMillis;
   }
+  /**
+   * @return string
+   */
   public function getNewExpiryTimeMillis()
   {
     return $this->newExpiryTimeMillis;

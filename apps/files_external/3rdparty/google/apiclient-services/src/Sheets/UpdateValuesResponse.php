@@ -19,34 +19,67 @@ namespace Google\Service\Sheets;
 
 class UpdateValuesResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $spreadsheetId;
+  /**
+   * @var int
+   */
   public $updatedCells;
+  /**
+   * @var int
+   */
   public $updatedColumns;
   protected $updatedDataType = ValueRange::class;
   protected $updatedDataDataType = '';
+  /**
+   * @var string
+   */
   public $updatedRange;
+  /**
+   * @var int
+   */
   public $updatedRows;
 
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;
   }
+  /**
+   * @param int
+   */
   public function setUpdatedCells($updatedCells)
   {
     $this->updatedCells = $updatedCells;
   }
+  /**
+   * @return int
+   */
   public function getUpdatedCells()
   {
     return $this->updatedCells;
   }
+  /**
+   * @param int
+   */
   public function setUpdatedColumns($updatedColumns)
   {
     $this->updatedColumns = $updatedColumns;
   }
+  /**
+   * @return int
+   */
   public function getUpdatedColumns()
   {
     return $this->updatedColumns;
@@ -65,18 +98,30 @@ class UpdateValuesResponse extends \Google\Model
   {
     return $this->updatedData;
   }
+  /**
+   * @param string
+   */
   public function setUpdatedRange($updatedRange)
   {
     $this->updatedRange = $updatedRange;
   }
+  /**
+   * @return string
+   */
   public function getUpdatedRange()
   {
     return $this->updatedRange;
   }
+  /**
+   * @param int
+   */
   public function setUpdatedRows($updatedRows)
   {
     $this->updatedRows = $updatedRows;
   }
+  /**
+   * @return int
+   */
   public function getUpdatedRows()
   {
     return $this->updatedRows;

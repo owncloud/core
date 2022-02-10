@@ -19,21 +19,39 @@ namespace Google\Service\Pubsub;
 
 class SchemaSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $encoding;
+  /**
+   * @var string
+   */
   public $schema;
 
+  /**
+   * @param string
+   */
   public function setEncoding($encoding)
   {
     $this->encoding = $encoding;
   }
+  /**
+   * @return string
+   */
   public function getEncoding()
   {
     return $this->encoding;
   }
+  /**
+   * @param string
+   */
   public function setSchema($schema)
   {
     $this->schema = $schema;
   }
+  /**
+   * @return string
+   */
   public function getSchema()
   {
     return $this->schema;

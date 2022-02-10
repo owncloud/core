@@ -20,68 +20,131 @@ namespace Google\Service\Directory;
 class Role extends \Google\Collection
 {
   protected $collection_key = 'rolePrivileges';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var bool
+   */
   public $isSuperAdminRole;
+  /**
+   * @var bool
+   */
   public $isSystemRole;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $roleDescription;
+  /**
+   * @var string
+   */
   public $roleId;
+  /**
+   * @var string
+   */
   public $roleName;
   protected $rolePrivilegesType = RoleRolePrivileges::class;
   protected $rolePrivilegesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param bool
+   */
   public function setIsSuperAdminRole($isSuperAdminRole)
   {
     $this->isSuperAdminRole = $isSuperAdminRole;
   }
+  /**
+   * @return bool
+   */
   public function getIsSuperAdminRole()
   {
     return $this->isSuperAdminRole;
   }
+  /**
+   * @param bool
+   */
   public function setIsSystemRole($isSystemRole)
   {
     $this->isSystemRole = $isSystemRole;
   }
+  /**
+   * @return bool
+   */
   public function getIsSystemRole()
   {
     return $this->isSystemRole;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setRoleDescription($roleDescription)
   {
     $this->roleDescription = $roleDescription;
   }
+  /**
+   * @return string
+   */
   public function getRoleDescription()
   {
     return $this->roleDescription;
   }
+  /**
+   * @param string
+   */
   public function setRoleId($roleId)
   {
     $this->roleId = $roleId;
   }
+  /**
+   * @return string
+   */
   public function getRoleId()
   {
     return $this->roleId;
   }
+  /**
+   * @param string
+   */
   public function setRoleName($roleName)
   {
     $this->roleName = $roleName;
   }
+  /**
+   * @return string
+   */
   public function getRoleName()
   {
     return $this->roleName;

@@ -19,14 +19,23 @@ namespace Google\Service\CloudHealthcare;
 
 class ImportResourcesRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentStructure;
   protected $gcsSourceType = GoogleCloudHealthcareV1FhirGcsSource::class;
   protected $gcsSourceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setContentStructure($contentStructure)
   {
     $this->contentStructure = $contentStructure;
   }
+  /**
+   * @return string
+   */
   public function getContentStructure()
   {
     return $this->contentStructure;

@@ -19,16 +19,25 @@ namespace Google\Service\PolicySimulator;
 
 class GoogleCloudPolicysimulatorV1AccessStateDiff extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessChange;
   protected $baselineType = GoogleCloudPolicysimulatorV1ExplainedAccess::class;
   protected $baselineDataType = '';
   protected $simulatedType = GoogleCloudPolicysimulatorV1ExplainedAccess::class;
   protected $simulatedDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAccessChange($accessChange)
   {
     $this->accessChange = $accessChange;
   }
+  /**
+   * @return string
+   */
   public function getAccessChange()
   {
     return $this->accessChange;

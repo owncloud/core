@@ -19,41 +19,77 @@ namespace Google\Service\SecurityCommandCenter;
 
 class NotificationConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $pubsubTopic;
+  /**
+   * @var string
+   */
   public $serviceAccount;
   protected $streamingConfigType = StreamingConfig::class;
   protected $streamingConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPubsubTopic($pubsubTopic)
   {
     $this->pubsubTopic = $pubsubTopic;
   }
+  /**
+   * @return string
+   */
   public function getPubsubTopic()
   {
     return $this->pubsubTopic;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;

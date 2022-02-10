@@ -22,7 +22,13 @@ class ExportContextSqlExportOptions extends \Google\Collection
   protected $collection_key = 'tables';
   protected $mysqlExportOptionsType = ExportContextSqlExportOptionsMysqlExportOptions::class;
   protected $mysqlExportOptionsDataType = '';
+  /**
+   * @var bool
+   */
   public $schemaOnly;
+  /**
+   * @var string[]
+   */
   public $tables;
 
   /**
@@ -39,18 +45,30 @@ class ExportContextSqlExportOptions extends \Google\Collection
   {
     return $this->mysqlExportOptions;
   }
+  /**
+   * @param bool
+   */
   public function setSchemaOnly($schemaOnly)
   {
     $this->schemaOnly = $schemaOnly;
   }
+  /**
+   * @return bool
+   */
   public function getSchemaOnly()
   {
     return $this->schemaOnly;
   }
+  /**
+   * @param string[]
+   */
   public function setTables($tables)
   {
     $this->tables = $tables;
   }
+  /**
+   * @return string[]
+   */
   public function getTables()
   {
     return $this->tables;

@@ -19,66 +19,129 @@ namespace Google\Service\DisplayVideo;
 
 class ManualTrigger extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $activationDurationMinutes;
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $latestActivationTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $triggerId;
 
+  /**
+   * @param string
+   */
   public function setActivationDurationMinutes($activationDurationMinutes)
   {
     $this->activationDurationMinutes = $activationDurationMinutes;
   }
+  /**
+   * @return string
+   */
   public function getActivationDurationMinutes()
   {
     return $this->activationDurationMinutes;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setLatestActivationTime($latestActivationTime)
   {
     $this->latestActivationTime = $latestActivationTime;
   }
+  /**
+   * @return string
+   */
   public function getLatestActivationTime()
   {
     return $this->latestActivationTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setTriggerId($triggerId)
   {
     $this->triggerId = $triggerId;
   }
+  /**
+   * @return string
+   */
   public function getTriggerId()
   {
     return $this->triggerId;

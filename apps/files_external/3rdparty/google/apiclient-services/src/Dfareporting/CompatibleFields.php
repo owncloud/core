@@ -23,6 +23,9 @@ class CompatibleFields extends \Google\Model
   protected $crossDimensionReachReportCompatibleFieldsDataType = '';
   protected $floodlightReportCompatibleFieldsType = FloodlightReportCompatibleFields::class;
   protected $floodlightReportCompatibleFieldsDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $pathAttributionReportCompatibleFieldsType = PathReportCompatibleFields::class;
   protected $pathAttributionReportCompatibleFieldsDataType = '';
@@ -63,10 +66,16 @@ class CompatibleFields extends \Google\Model
   {
     return $this->floodlightReportCompatibleFields;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

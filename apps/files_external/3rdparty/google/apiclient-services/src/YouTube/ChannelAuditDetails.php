@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class ChannelAuditDetails extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $communityGuidelinesGoodStanding;
+  /**
+   * @var bool
+   */
   public $contentIdClaimsGoodStanding;
+  /**
+   * @var bool
+   */
   public $copyrightStrikesGoodStanding;
 
+  /**
+   * @param bool
+   */
   public function setCommunityGuidelinesGoodStanding($communityGuidelinesGoodStanding)
   {
     $this->communityGuidelinesGoodStanding = $communityGuidelinesGoodStanding;
   }
+  /**
+   * @return bool
+   */
   public function getCommunityGuidelinesGoodStanding()
   {
     return $this->communityGuidelinesGoodStanding;
   }
+  /**
+   * @param bool
+   */
   public function setContentIdClaimsGoodStanding($contentIdClaimsGoodStanding)
   {
     $this->contentIdClaimsGoodStanding = $contentIdClaimsGoodStanding;
   }
+  /**
+   * @return bool
+   */
   public function getContentIdClaimsGoodStanding()
   {
     return $this->contentIdClaimsGoodStanding;
   }
+  /**
+   * @param bool
+   */
   public function setCopyrightStrikesGoodStanding($copyrightStrikesGoodStanding)
   {
     $this->copyrightStrikesGoodStanding = $copyrightStrikesGoodStanding;
   }
+  /**
+   * @return bool
+   */
   public function getCopyrightStrikesGoodStanding()
   {
     return $this->copyrightStrikesGoodStanding;

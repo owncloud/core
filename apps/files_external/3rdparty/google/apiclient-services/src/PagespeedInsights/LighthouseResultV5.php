@@ -30,12 +30,27 @@ class LighthouseResultV5 extends \Google\Collection
   protected $configSettingsDataType = '';
   protected $environmentType = Environment::class;
   protected $environmentDataType = '';
+  /**
+   * @var string
+   */
   public $fetchTime;
+  /**
+   * @var string
+   */
   public $finalUrl;
   protected $i18nType = I18n::class;
   protected $i18nDataType = '';
+  /**
+   * @var string
+   */
   public $lighthouseVersion;
+  /**
+   * @var string
+   */
   public $requestedUrl;
+  /**
+   * @var array[]
+   */
   public $runWarnings;
   protected $runtimeErrorType = RuntimeError::class;
   protected $runtimeErrorDataType = '';
@@ -43,6 +58,9 @@ class LighthouseResultV5 extends \Google\Collection
   protected $stackPacksDataType = 'array';
   protected $timingType = Timing::class;
   protected $timingDataType = '';
+  /**
+   * @var string
+   */
   public $userAgent;
 
   /**
@@ -115,18 +133,30 @@ class LighthouseResultV5 extends \Google\Collection
   {
     return $this->environment;
   }
+  /**
+   * @param string
+   */
   public function setFetchTime($fetchTime)
   {
     $this->fetchTime = $fetchTime;
   }
+  /**
+   * @return string
+   */
   public function getFetchTime()
   {
     return $this->fetchTime;
   }
+  /**
+   * @param string
+   */
   public function setFinalUrl($finalUrl)
   {
     $this->finalUrl = $finalUrl;
   }
+  /**
+   * @return string
+   */
   public function getFinalUrl()
   {
     return $this->finalUrl;
@@ -145,26 +175,44 @@ class LighthouseResultV5 extends \Google\Collection
   {
     return $this->i18n;
   }
+  /**
+   * @param string
+   */
   public function setLighthouseVersion($lighthouseVersion)
   {
     $this->lighthouseVersion = $lighthouseVersion;
   }
+  /**
+   * @return string
+   */
   public function getLighthouseVersion()
   {
     return $this->lighthouseVersion;
   }
+  /**
+   * @param string
+   */
   public function setRequestedUrl($requestedUrl)
   {
     $this->requestedUrl = $requestedUrl;
   }
+  /**
+   * @return string
+   */
   public function getRequestedUrl()
   {
     return $this->requestedUrl;
   }
+  /**
+   * @param array[]
+   */
   public function setRunWarnings($runWarnings)
   {
     $this->runWarnings = $runWarnings;
   }
+  /**
+   * @return array[]
+   */
   public function getRunWarnings()
   {
     return $this->runWarnings;
@@ -211,10 +259,16 @@ class LighthouseResultV5 extends \Google\Collection
   {
     return $this->timing;
   }
+  /**
+   * @param string
+   */
   public function setUserAgent($userAgent)
   {
     $this->userAgent = $userAgent;
   }
+  /**
+   * @return string
+   */
   public function getUserAgent()
   {
     return $this->userAgent;

@@ -19,30 +19,57 @@ namespace Google\Service\Genomics;
 
 class Event extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var array[]
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $timestamp;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param array[]
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return array[]
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

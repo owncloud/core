@@ -19,42 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class RemarketingList extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var bool
+   */
   public $active;
+  /**
+   * @var string
+   */
   public $advertiserId;
   protected $advertiserIdDimensionValueType = DimensionValue::class;
   protected $advertiserIdDimensionValueDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $lifeSpan;
   protected $listPopulationRuleType = ListPopulationRule::class;
   protected $listPopulationRuleDataType = '';
+  /**
+   * @var string
+   */
   public $listSize;
+  /**
+   * @var string
+   */
   public $listSource;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $subaccountId;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param bool
+   */
   public function setActive($active)
   {
     $this->active = $active;
   }
+  /**
+   * @return bool
+   */
   public function getActive()
   {
     return $this->active;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
@@ -73,34 +124,58 @@ class RemarketingList extends \Google\Model
   {
     return $this->advertiserIdDimensionValue;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLifeSpan($lifeSpan)
   {
     $this->lifeSpan = $lifeSpan;
   }
+  /**
+   * @return string
+   */
   public function getLifeSpan()
   {
     return $this->lifeSpan;
@@ -119,34 +194,58 @@ class RemarketingList extends \Google\Model
   {
     return $this->listPopulationRule;
   }
+  /**
+   * @param string
+   */
   public function setListSize($listSize)
   {
     $this->listSize = $listSize;
   }
+  /**
+   * @return string
+   */
   public function getListSize()
   {
     return $this->listSize;
   }
+  /**
+   * @param string
+   */
   public function setListSource($listSource)
   {
     $this->listSource = $listSource;
   }
+  /**
+   * @return string
+   */
   public function getListSource()
   {
     return $this->listSource;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSubaccountId($subaccountId)
   {
     $this->subaccountId = $subaccountId;
   }
+  /**
+   * @return string
+   */
   public function getSubaccountId()
   {
     return $this->subaccountId;

@@ -20,30 +20,57 @@ namespace Google\Service\ShoppingContent;
 class PubsubNotificationSettings extends \Google\Collection
 {
   protected $collection_key = 'registeredEvents';
+  /**
+   * @var string
+   */
   public $cloudTopicName;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $registeredEvents;
 
+  /**
+   * @param string
+   */
   public function setCloudTopicName($cloudTopicName)
   {
     $this->cloudTopicName = $cloudTopicName;
   }
+  /**
+   * @return string
+   */
   public function getCloudTopicName()
   {
     return $this->cloudTopicName;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setRegisteredEvents($registeredEvents)
   {
     $this->registeredEvents = $registeredEvents;
   }
+  /**
+   * @return string[]
+   */
   public function getRegisteredEvents()
   {
     return $this->registeredEvents;

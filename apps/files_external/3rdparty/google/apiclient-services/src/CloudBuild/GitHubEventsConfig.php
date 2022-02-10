@@ -19,43 +19,79 @@ namespace Google\Service\CloudBuild;
 
 class GitHubEventsConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $enterpriseConfigResourceName;
+  /**
+   * @var string
+   */
   public $installationId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $owner;
   protected $pullRequestType = PullRequestFilter::class;
   protected $pullRequestDataType = '';
   protected $pushType = PushFilter::class;
   protected $pushDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEnterpriseConfigResourceName($enterpriseConfigResourceName)
   {
     $this->enterpriseConfigResourceName = $enterpriseConfigResourceName;
   }
+  /**
+   * @return string
+   */
   public function getEnterpriseConfigResourceName()
   {
     return $this->enterpriseConfigResourceName;
   }
+  /**
+   * @param string
+   */
   public function setInstallationId($installationId)
   {
     $this->installationId = $installationId;
   }
+  /**
+   * @return string
+   */
   public function getInstallationId()
   {
     return $this->installationId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOwner($owner)
   {
     $this->owner = $owner;
   }
+  /**
+   * @return string
+   */
   public function getOwner()
   {
     return $this->owner;

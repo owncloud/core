@@ -22,6 +22,9 @@ class ListInvoicesResponse extends \Google\Collection
   protected $collection_key = 'invoices';
   protected $invoicesType = Invoice::class;
   protected $invoicesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListInvoicesResponse extends \Google\Collection
   {
     return $this->invoices;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

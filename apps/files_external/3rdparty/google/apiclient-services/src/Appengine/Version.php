@@ -26,19 +26,43 @@ class Version extends \Google\Collection
   protected $automaticScalingDataType = '';
   protected $basicScalingType = BasicScaling::class;
   protected $basicScalingDataType = '';
+  /**
+   * @var string[]
+   */
   public $betaSettings;
+  /**
+   * @var string[]
+   */
   public $buildEnvVariables;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $createdBy;
+  /**
+   * @var string
+   */
   public $defaultExpiration;
   protected $deploymentType = Deployment::class;
   protected $deploymentDataType = '';
+  /**
+   * @var string
+   */
   public $diskUsageBytes;
   protected $endpointsApiServiceType = EndpointsApiService::class;
   protected $endpointsApiServiceDataType = '';
   protected $entrypointType = Entrypoint::class;
   protected $entrypointDataType = '';
+  /**
+   * @var string
+   */
   public $env;
+  /**
+   * @var string[]
+   */
   public $envVariables;
   protected $errorHandlersType = ErrorHandler::class;
   protected $errorHandlersDataType = 'array';
@@ -46,8 +70,17 @@ class Version extends \Google\Collection
   protected $handlersDataType = 'array';
   protected $healthCheckType = HealthCheck::class;
   protected $healthCheckDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string[]
+   */
   public $inboundServices;
+  /**
+   * @var string
+   */
   public $instanceClass;
   protected $librariesType = Library::class;
   protected $librariesDataType = 'array';
@@ -55,25 +88,61 @@ class Version extends \Google\Collection
   protected $livenessCheckDataType = '';
   protected $manualScalingType = ManualScaling::class;
   protected $manualScalingDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $networkType = Network::class;
   protected $networkDataType = '';
+  /**
+   * @var string
+   */
   public $nobuildFilesRegex;
   protected $readinessCheckType = ReadinessCheck::class;
   protected $readinessCheckDataType = '';
   protected $resourcesType = Resources::class;
   protected $resourcesDataType = '';
+  /**
+   * @var string
+   */
   public $runtime;
+  /**
+   * @var string
+   */
   public $runtimeApiVersion;
+  /**
+   * @var string
+   */
   public $runtimeChannel;
+  /**
+   * @var string
+   */
   public $runtimeMainExecutablePath;
+  /**
+   * @var string
+   */
   public $serviceAccount;
+  /**
+   * @var string
+   */
   public $servingStatus;
+  /**
+   * @var bool
+   */
   public $threadsafe;
+  /**
+   * @var string
+   */
   public $versionUrl;
+  /**
+   * @var bool
+   */
   public $vm;
   protected $vpcAccessConnectorType = VpcAccessConnector::class;
   protected $vpcAccessConnectorDataType = '';
+  /**
+   * @var string[]
+   */
   public $zones;
 
   /**
@@ -118,42 +187,72 @@ class Version extends \Google\Collection
   {
     return $this->basicScaling;
   }
+  /**
+   * @param string[]
+   */
   public function setBetaSettings($betaSettings)
   {
     $this->betaSettings = $betaSettings;
   }
+  /**
+   * @return string[]
+   */
   public function getBetaSettings()
   {
     return $this->betaSettings;
   }
+  /**
+   * @param string[]
+   */
   public function setBuildEnvVariables($buildEnvVariables)
   {
     $this->buildEnvVariables = $buildEnvVariables;
   }
+  /**
+   * @return string[]
+   */
   public function getBuildEnvVariables()
   {
     return $this->buildEnvVariables;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setCreatedBy($createdBy)
   {
     $this->createdBy = $createdBy;
   }
+  /**
+   * @return string
+   */
   public function getCreatedBy()
   {
     return $this->createdBy;
   }
+  /**
+   * @param string
+   */
   public function setDefaultExpiration($defaultExpiration)
   {
     $this->defaultExpiration = $defaultExpiration;
   }
+  /**
+   * @return string
+   */
   public function getDefaultExpiration()
   {
     return $this->defaultExpiration;
@@ -172,10 +271,16 @@ class Version extends \Google\Collection
   {
     return $this->deployment;
   }
+  /**
+   * @param string
+   */
   public function setDiskUsageBytes($diskUsageBytes)
   {
     $this->diskUsageBytes = $diskUsageBytes;
   }
+  /**
+   * @return string
+   */
   public function getDiskUsageBytes()
   {
     return $this->diskUsageBytes;
@@ -208,18 +313,30 @@ class Version extends \Google\Collection
   {
     return $this->entrypoint;
   }
+  /**
+   * @param string
+   */
   public function setEnv($env)
   {
     $this->env = $env;
   }
+  /**
+   * @return string
+   */
   public function getEnv()
   {
     return $this->env;
   }
+  /**
+   * @param string[]
+   */
   public function setEnvVariables($envVariables)
   {
     $this->envVariables = $envVariables;
   }
+  /**
+   * @return string[]
+   */
   public function getEnvVariables()
   {
     return $this->envVariables;
@@ -266,26 +383,44 @@ class Version extends \Google\Collection
   {
     return $this->healthCheck;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string[]
+   */
   public function setInboundServices($inboundServices)
   {
     $this->inboundServices = $inboundServices;
   }
+  /**
+   * @return string[]
+   */
   public function getInboundServices()
   {
     return $this->inboundServices;
   }
+  /**
+   * @param string
+   */
   public function setInstanceClass($instanceClass)
   {
     $this->instanceClass = $instanceClass;
   }
+  /**
+   * @return string
+   */
   public function getInstanceClass()
   {
     return $this->instanceClass;
@@ -332,10 +467,16 @@ class Version extends \Google\Collection
   {
     return $this->manualScaling;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -354,10 +495,16 @@ class Version extends \Google\Collection
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setNobuildFilesRegex($nobuildFilesRegex)
   {
     $this->nobuildFilesRegex = $nobuildFilesRegex;
   }
+  /**
+   * @return string
+   */
   public function getNobuildFilesRegex()
   {
     return $this->nobuildFilesRegex;
@@ -390,74 +537,128 @@ class Version extends \Google\Collection
   {
     return $this->resources;
   }
+  /**
+   * @param string
+   */
   public function setRuntime($runtime)
   {
     $this->runtime = $runtime;
   }
+  /**
+   * @return string
+   */
   public function getRuntime()
   {
     return $this->runtime;
   }
+  /**
+   * @param string
+   */
   public function setRuntimeApiVersion($runtimeApiVersion)
   {
     $this->runtimeApiVersion = $runtimeApiVersion;
   }
+  /**
+   * @return string
+   */
   public function getRuntimeApiVersion()
   {
     return $this->runtimeApiVersion;
   }
+  /**
+   * @param string
+   */
   public function setRuntimeChannel($runtimeChannel)
   {
     $this->runtimeChannel = $runtimeChannel;
   }
+  /**
+   * @return string
+   */
   public function getRuntimeChannel()
   {
     return $this->runtimeChannel;
   }
+  /**
+   * @param string
+   */
   public function setRuntimeMainExecutablePath($runtimeMainExecutablePath)
   {
     $this->runtimeMainExecutablePath = $runtimeMainExecutablePath;
   }
+  /**
+   * @return string
+   */
   public function getRuntimeMainExecutablePath()
   {
     return $this->runtimeMainExecutablePath;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
   }
+  /**
+   * @param string
+   */
   public function setServingStatus($servingStatus)
   {
     $this->servingStatus = $servingStatus;
   }
+  /**
+   * @return string
+   */
   public function getServingStatus()
   {
     return $this->servingStatus;
   }
+  /**
+   * @param bool
+   */
   public function setThreadsafe($threadsafe)
   {
     $this->threadsafe = $threadsafe;
   }
+  /**
+   * @return bool
+   */
   public function getThreadsafe()
   {
     return $this->threadsafe;
   }
+  /**
+   * @param string
+   */
   public function setVersionUrl($versionUrl)
   {
     $this->versionUrl = $versionUrl;
   }
+  /**
+   * @return string
+   */
   public function getVersionUrl()
   {
     return $this->versionUrl;
   }
+  /**
+   * @param bool
+   */
   public function setVm($vm)
   {
     $this->vm = $vm;
   }
+  /**
+   * @return bool
+   */
   public function getVm()
   {
     return $this->vm;
@@ -476,10 +677,16 @@ class Version extends \Google\Collection
   {
     return $this->vpcAccessConnector;
   }
+  /**
+   * @param string[]
+   */
   public function setZones($zones)
   {
     $this->zones = $zones;
   }
+  /**
+   * @return string[]
+   */
   public function getZones()
   {
     return $this->zones;

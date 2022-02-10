@@ -19,21 +19,39 @@ namespace Google\Service\HomeGraphService;
 
 class RequestSyncDevicesRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $agentUserId;
+  /**
+   * @var bool
+   */
   public $async;
 
+  /**
+   * @param string
+   */
   public function setAgentUserId($agentUserId)
   {
     $this->agentUserId = $agentUserId;
   }
+  /**
+   * @return string
+   */
   public function getAgentUserId()
   {
     return $this->agentUserId;
   }
+  /**
+   * @param bool
+   */
   public function setAsync($async)
   {
     $this->async = $async;
   }
+  /**
+   * @return bool
+   */
   public function getAsync()
   {
     return $this->async;

@@ -20,104 +20,203 @@ namespace Google\Service\Compute;
 class SslPolicy extends \Google\Collection
 {
   protected $collection_key = 'warnings';
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string[]
+   */
   public $customFeatures;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string[]
+   */
   public $enabledFeatures;
+  /**
+   * @var string
+   */
   public $fingerprint;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $minTlsVersion;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $profile;
+  /**
+   * @var string
+   */
   public $selfLink;
   protected $warningsType = SslPolicyWarnings::class;
   protected $warningsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string[]
+   */
   public function setCustomFeatures($customFeatures)
   {
     $this->customFeatures = $customFeatures;
   }
+  /**
+   * @return string[]
+   */
   public function getCustomFeatures()
   {
     return $this->customFeatures;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string[]
+   */
   public function setEnabledFeatures($enabledFeatures)
   {
     $this->enabledFeatures = $enabledFeatures;
   }
+  /**
+   * @return string[]
+   */
   public function getEnabledFeatures()
   {
     return $this->enabledFeatures;
   }
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMinTlsVersion($minTlsVersion)
   {
     $this->minTlsVersion = $minTlsVersion;
   }
+  /**
+   * @return string
+   */
   public function getMinTlsVersion()
   {
     return $this->minTlsVersion;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProfile($profile)
   {
     $this->profile = $profile;
   }
+  /**
+   * @return string
+   */
   public function getProfile()
   {
     return $this->profile;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

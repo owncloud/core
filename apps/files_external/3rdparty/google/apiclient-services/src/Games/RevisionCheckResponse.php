@@ -19,30 +19,57 @@ namespace Google\Service\Games;
 
 class RevisionCheckResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiVersion;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $revisionStatus;
 
+  /**
+   * @param string
+   */
   public function setApiVersion($apiVersion)
   {
     $this->apiVersion = $apiVersion;
   }
+  /**
+   * @return string
+   */
   public function getApiVersion()
   {
     return $this->apiVersion;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setRevisionStatus($revisionStatus)
   {
     $this->revisionStatus = $revisionStatus;
   }
+  /**
+   * @return string
+   */
   public function getRevisionStatus()
   {
     return $this->revisionStatus;

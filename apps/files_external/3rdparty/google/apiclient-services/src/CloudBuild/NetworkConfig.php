@@ -19,21 +19,39 @@ namespace Google\Service\CloudBuild;
 
 class NetworkConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $egressOption;
+  /**
+   * @var string
+   */
   public $peeredNetwork;
 
+  /**
+   * @param string
+   */
   public function setEgressOption($egressOption)
   {
     $this->egressOption = $egressOption;
   }
+  /**
+   * @return string
+   */
   public function getEgressOption()
   {
     return $this->egressOption;
   }
+  /**
+   * @param string
+   */
   public function setPeeredNetwork($peeredNetwork)
   {
     $this->peeredNetwork = $peeredNetwork;
   }
+  /**
+   * @return string
+   */
   public function getPeeredNetwork()
   {
     return $this->peeredNetwork;

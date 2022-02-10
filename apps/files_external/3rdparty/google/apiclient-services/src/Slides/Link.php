@@ -19,39 +19,75 @@ namespace Google\Service\Slides;
 
 class Link extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pageObjectId;
+  /**
+   * @var string
+   */
   public $relativeLink;
+  /**
+   * @var int
+   */
   public $slideIndex;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setPageObjectId($pageObjectId)
   {
     $this->pageObjectId = $pageObjectId;
   }
+  /**
+   * @return string
+   */
   public function getPageObjectId()
   {
     return $this->pageObjectId;
   }
+  /**
+   * @param string
+   */
   public function setRelativeLink($relativeLink)
   {
     $this->relativeLink = $relativeLink;
   }
+  /**
+   * @return string
+   */
   public function getRelativeLink()
   {
     return $this->relativeLink;
   }
+  /**
+   * @param int
+   */
   public function setSlideIndex($slideIndex)
   {
     $this->slideIndex = $slideIndex;
   }
+  /**
+   * @return int
+   */
   public function getSlideIndex()
   {
     return $this->slideIndex;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

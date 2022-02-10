@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class DiskEncryptionConfiguration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $kmsKeyName;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;

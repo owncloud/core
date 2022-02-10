@@ -19,75 +19,147 @@ namespace Google\Service\DataFusion;
 
 class OperationMetadata extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $additionalStatus;
+  /**
+   * @var string
+   */
   public $apiVersion;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var bool
+   */
   public $requestedCancellation;
+  /**
+   * @var string
+   */
   public $statusDetail;
+  /**
+   * @var string
+   */
   public $target;
+  /**
+   * @var string
+   */
   public $verb;
 
+  /**
+   * @param string[]
+   */
   public function setAdditionalStatus($additionalStatus)
   {
     $this->additionalStatus = $additionalStatus;
   }
+  /**
+   * @return string[]
+   */
   public function getAdditionalStatus()
   {
     return $this->additionalStatus;
   }
+  /**
+   * @param string
+   */
   public function setApiVersion($apiVersion)
   {
     $this->apiVersion = $apiVersion;
   }
+  /**
+   * @return string
+   */
   public function getApiVersion()
   {
     return $this->apiVersion;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param bool
+   */
   public function setRequestedCancellation($requestedCancellation)
   {
     $this->requestedCancellation = $requestedCancellation;
   }
+  /**
+   * @return bool
+   */
   public function getRequestedCancellation()
   {
     return $this->requestedCancellation;
   }
+  /**
+   * @param string
+   */
   public function setStatusDetail($statusDetail)
   {
     $this->statusDetail = $statusDetail;
   }
+  /**
+   * @return string
+   */
   public function getStatusDetail()
   {
     return $this->statusDetail;
   }
+  /**
+   * @param string
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return string
+   */
   public function getTarget()
   {
     return $this->target;
   }
+  /**
+   * @param string
+   */
   public function setVerb($verb)
   {
     $this->verb = $verb;
   }
+  /**
+   * @return string
+   */
   public function getVerb()
   {
     return $this->verb;

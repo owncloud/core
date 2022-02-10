@@ -19,21 +19,39 @@ namespace Google\Service\AndroidPublisher;
 
 class LocalizedText extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $language;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

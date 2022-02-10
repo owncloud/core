@@ -19,14 +19,23 @@ namespace Google\Service\Connectors;
 
 class ExtractionRule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $extractionRegex;
   protected $sourceType = Source::class;
   protected $sourceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setExtractionRegex($extractionRegex)
   {
     $this->extractionRegex = $extractionRegex;
   }
+  /**
+   * @return string
+   */
   public function getExtractionRegex()
   {
     return $this->extractionRegex;

@@ -19,12 +19,21 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1alpha1OperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $operationType;
 
+  /**
+   * @param string
+   */
   public function setOperationType($operationType)
   {
     $this->operationType = $operationType;
   }
+  /**
+   * @return string
+   */
   public function getOperationType()
   {
     return $this->operationType;

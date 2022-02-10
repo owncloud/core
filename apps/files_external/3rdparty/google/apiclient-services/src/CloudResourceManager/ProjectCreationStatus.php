@@ -19,30 +19,57 @@ namespace Google\Service\CloudResourceManager;
 
 class ProjectCreationStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var bool
+   */
   public $gettable;
+  /**
+   * @var bool
+   */
   public $ready;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param bool
+   */
   public function setGettable($gettable)
   {
     $this->gettable = $gettable;
   }
+  /**
+   * @return bool
+   */
   public function getGettable()
   {
     return $this->gettable;
   }
+  /**
+   * @param bool
+   */
   public function setReady($ready)
   {
     $this->ready = $ready;
   }
+  /**
+   * @return bool
+   */
   public function getReady()
   {
     return $this->ready;

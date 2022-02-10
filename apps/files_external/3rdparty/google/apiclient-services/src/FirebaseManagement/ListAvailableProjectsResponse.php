@@ -20,14 +20,23 @@ namespace Google\Service\FirebaseManagement;
 class ListAvailableProjectsResponse extends \Google\Collection
 {
   protected $collection_key = 'projectInfo';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $projectInfoType = ProjectInfo::class;
   protected $projectInfoDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

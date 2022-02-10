@@ -21,12 +21,33 @@ class Backup extends \Google\Model
 {
   protected $encryptionInfoType = EncryptionInfo::class;
   protected $encryptionInfoDataType = '';
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $sizeBytes;
+  /**
+   * @var string
+   */
   public $sourceTable;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -43,58 +64,100 @@ class Backup extends \Google\Model
   {
     return $this->encryptionInfo;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSizeBytes($sizeBytes)
   {
     $this->sizeBytes = $sizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getSizeBytes()
   {
     return $this->sizeBytes;
   }
+  /**
+   * @param string
+   */
   public function setSourceTable($sourceTable)
   {
     $this->sourceTable = $sourceTable;
   }
+  /**
+   * @return string
+   */
   public function getSourceTable()
   {
     return $this->sourceTable;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

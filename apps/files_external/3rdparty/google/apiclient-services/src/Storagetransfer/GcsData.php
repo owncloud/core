@@ -19,21 +19,39 @@ namespace Google\Service\Storagetransfer;
 
 class GcsData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bucketName;
+  /**
+   * @var string
+   */
   public $path;
 
+  /**
+   * @param string
+   */
   public function setBucketName($bucketName)
   {
     $this->bucketName = $bucketName;
   }
+  /**
+   * @return string
+   */
   public function getBucketName()
   {
     return $this->bucketName;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

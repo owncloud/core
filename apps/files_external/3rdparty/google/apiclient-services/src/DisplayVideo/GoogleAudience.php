@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class GoogleAudience extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $googleAudienceId;
+  /**
+   * @var string
+   */
   public $googleAudienceType;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setGoogleAudienceId($googleAudienceId)
   {
     $this->googleAudienceId = $googleAudienceId;
   }
+  /**
+   * @return string
+   */
   public function getGoogleAudienceId()
   {
     return $this->googleAudienceId;
   }
+  /**
+   * @param string
+   */
   public function setGoogleAudienceType($googleAudienceType)
   {
     $this->googleAudienceType = $googleAudienceType;
   }
+  /**
+   * @return string
+   */
   public function getGoogleAudienceType()
   {
     return $this->googleAudienceType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

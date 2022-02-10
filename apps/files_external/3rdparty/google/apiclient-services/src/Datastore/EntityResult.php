@@ -19,15 +19,27 @@ namespace Google\Service\Datastore;
 
 class EntityResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cursor;
   protected $entityType = Entity::class;
   protected $entityDataType = '';
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setCursor($cursor)
   {
     $this->cursor = $cursor;
   }
+  /**
+   * @return string
+   */
   public function getCursor()
   {
     return $this->cursor;
@@ -46,10 +58,16 @@ class EntityResult extends \Google\Model
   {
     return $this->entity;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

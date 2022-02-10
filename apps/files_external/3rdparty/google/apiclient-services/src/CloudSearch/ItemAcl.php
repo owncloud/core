@@ -20,19 +20,31 @@ namespace Google\Service\CloudSearch;
 class ItemAcl extends \Google\Collection
 {
   protected $collection_key = 'readers';
+  /**
+   * @var string
+   */
   public $aclInheritanceType;
   protected $deniedReadersType = Principal::class;
   protected $deniedReadersDataType = 'array';
+  /**
+   * @var string
+   */
   public $inheritAclFrom;
   protected $ownersType = Principal::class;
   protected $ownersDataType = 'array';
   protected $readersType = Principal::class;
   protected $readersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAclInheritanceType($aclInheritanceType)
   {
     $this->aclInheritanceType = $aclInheritanceType;
   }
+  /**
+   * @return string
+   */
   public function getAclInheritanceType()
   {
     return $this->aclInheritanceType;
@@ -51,10 +63,16 @@ class ItemAcl extends \Google\Collection
   {
     return $this->deniedReaders;
   }
+  /**
+   * @param string
+   */
   public function setInheritAclFrom($inheritAclFrom)
   {
     $this->inheritAclFrom = $inheritAclFrom;
   }
+  /**
+   * @return string
+   */
   public function getInheritAclFrom()
   {
     return $this->inheritAclFrom;

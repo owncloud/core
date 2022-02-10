@@ -20,57 +20,111 @@ namespace Google\Service\DisplayVideo;
 class CmHybridConfig extends \Google\Collection
 {
   protected $collection_key = 'cmSyncableSiteIds';
+  /**
+   * @var string
+   */
   public $cmAccountId;
+  /**
+   * @var string
+   */
   public $cmFloodlightConfigId;
+  /**
+   * @var bool
+   */
   public $cmFloodlightLinkingAuthorized;
+  /**
+   * @var string[]
+   */
   public $cmSyncableSiteIds;
+  /**
+   * @var bool
+   */
   public $dv360ToCmCostReportingEnabled;
+  /**
+   * @var bool
+   */
   public $dv360ToCmDataSharingEnabled;
 
+  /**
+   * @param string
+   */
   public function setCmAccountId($cmAccountId)
   {
     $this->cmAccountId = $cmAccountId;
   }
+  /**
+   * @return string
+   */
   public function getCmAccountId()
   {
     return $this->cmAccountId;
   }
+  /**
+   * @param string
+   */
   public function setCmFloodlightConfigId($cmFloodlightConfigId)
   {
     $this->cmFloodlightConfigId = $cmFloodlightConfigId;
   }
+  /**
+   * @return string
+   */
   public function getCmFloodlightConfigId()
   {
     return $this->cmFloodlightConfigId;
   }
+  /**
+   * @param bool
+   */
   public function setCmFloodlightLinkingAuthorized($cmFloodlightLinkingAuthorized)
   {
     $this->cmFloodlightLinkingAuthorized = $cmFloodlightLinkingAuthorized;
   }
+  /**
+   * @return bool
+   */
   public function getCmFloodlightLinkingAuthorized()
   {
     return $this->cmFloodlightLinkingAuthorized;
   }
+  /**
+   * @param string[]
+   */
   public function setCmSyncableSiteIds($cmSyncableSiteIds)
   {
     $this->cmSyncableSiteIds = $cmSyncableSiteIds;
   }
+  /**
+   * @return string[]
+   */
   public function getCmSyncableSiteIds()
   {
     return $this->cmSyncableSiteIds;
   }
+  /**
+   * @param bool
+   */
   public function setDv360ToCmCostReportingEnabled($dv360ToCmCostReportingEnabled)
   {
     $this->dv360ToCmCostReportingEnabled = $dv360ToCmCostReportingEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getDv360ToCmCostReportingEnabled()
   {
     return $this->dv360ToCmCostReportingEnabled;
   }
+  /**
+   * @param bool
+   */
   public function setDv360ToCmDataSharingEnabled($dv360ToCmDataSharingEnabled)
   {
     $this->dv360ToCmDataSharingEnabled = $dv360ToCmDataSharingEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getDv360ToCmDataSharingEnabled()
   {
     return $this->dv360ToCmDataSharingEnabled;

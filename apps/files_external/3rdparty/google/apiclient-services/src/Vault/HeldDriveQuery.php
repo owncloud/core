@@ -19,21 +19,39 @@ namespace Google\Service\Vault;
 
 class HeldDriveQuery extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $includeSharedDriveFiles;
+  /**
+   * @var bool
+   */
   public $includeTeamDriveFiles;
 
+  /**
+   * @param bool
+   */
   public function setIncludeSharedDriveFiles($includeSharedDriveFiles)
   {
     $this->includeSharedDriveFiles = $includeSharedDriveFiles;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeSharedDriveFiles()
   {
     return $this->includeSharedDriveFiles;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeTeamDriveFiles($includeTeamDriveFiles)
   {
     $this->includeTeamDriveFiles = $includeTeamDriveFiles;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeTeamDriveFiles()
   {
     return $this->includeTeamDriveFiles;

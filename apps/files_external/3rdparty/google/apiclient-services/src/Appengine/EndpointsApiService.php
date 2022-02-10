@@ -19,39 +19,75 @@ namespace Google\Service\Appengine;
 
 class EndpointsApiService extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $configId;
+  /**
+   * @var bool
+   */
   public $disableTraceSampling;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $rolloutStrategy;
 
+  /**
+   * @param string
+   */
   public function setConfigId($configId)
   {
     $this->configId = $configId;
   }
+  /**
+   * @return string
+   */
   public function getConfigId()
   {
     return $this->configId;
   }
+  /**
+   * @param bool
+   */
   public function setDisableTraceSampling($disableTraceSampling)
   {
     $this->disableTraceSampling = $disableTraceSampling;
   }
+  /**
+   * @return bool
+   */
   public function getDisableTraceSampling()
   {
     return $this->disableTraceSampling;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRolloutStrategy($rolloutStrategy)
   {
     $this->rolloutStrategy = $rolloutStrategy;
   }
+  /**
+   * @return string
+   */
   public function getRolloutStrategy()
   {
     return $this->rolloutStrategy;

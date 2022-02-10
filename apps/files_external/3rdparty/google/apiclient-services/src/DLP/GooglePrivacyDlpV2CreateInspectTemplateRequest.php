@@ -21,7 +21,13 @@ class GooglePrivacyDlpV2CreateInspectTemplateRequest extends \Google\Model
 {
   protected $inspectTemplateType = GooglePrivacyDlpV2InspectTemplate::class;
   protected $inspectTemplateDataType = '';
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $templateId;
 
   /**
@@ -38,18 +44,30 @@ class GooglePrivacyDlpV2CreateInspectTemplateRequest extends \Google\Model
   {
     return $this->inspectTemplate;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setTemplateId($templateId)
   {
     $this->templateId = $templateId;
   }
+  /**
+   * @return string
+   */
   public function getTemplateId()
   {
     return $this->templateId;

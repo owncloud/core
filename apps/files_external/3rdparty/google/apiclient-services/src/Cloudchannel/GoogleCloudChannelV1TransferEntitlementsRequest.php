@@ -20,15 +20,27 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1TransferEntitlementsRequest extends \Google\Collection
 {
   protected $collection_key = 'entitlements';
+  /**
+   * @var string
+   */
   public $authToken;
   protected $entitlementsType = GoogleCloudChannelV1Entitlement::class;
   protected $entitlementsDataType = 'array';
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setAuthToken($authToken)
   {
     $this->authToken = $authToken;
   }
+  /**
+   * @return string
+   */
   public function getAuthToken()
   {
     return $this->authToken;
@@ -47,10 +59,16 @@ class GoogleCloudChannelV1TransferEntitlementsRequest extends \Google\Collection
   {
     return $this->entitlements;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

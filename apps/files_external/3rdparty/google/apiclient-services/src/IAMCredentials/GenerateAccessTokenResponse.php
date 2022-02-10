@@ -19,21 +19,39 @@ namespace Google\Service\IAMCredentials;
 
 class GenerateAccessTokenResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessToken;
+  /**
+   * @var string
+   */
   public $expireTime;
 
+  /**
+   * @param string
+   */
   public function setAccessToken($accessToken)
   {
     $this->accessToken = $accessToken;
   }
+  /**
+   * @return string
+   */
   public function getAccessToken()
   {
     return $this->accessToken;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;

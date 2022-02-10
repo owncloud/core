@@ -20,21 +20,39 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1IntentMessageQuickReplies extends \Google\Collection
 {
   protected $collection_key = 'quickReplies';
+  /**
+   * @var string[]
+   */
   public $quickReplies;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string[]
+   */
   public function setQuickReplies($quickReplies)
   {
     $this->quickReplies = $quickReplies;
   }
+  /**
+   * @return string[]
+   */
   public function getQuickReplies()
   {
     return $this->quickReplies;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

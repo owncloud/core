@@ -19,21 +19,39 @@ namespace Google\Service\Docs;
 
 class WeightedFontFamily extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fontFamily;
+  /**
+   * @var int
+   */
   public $weight;
 
+  /**
+   * @param string
+   */
   public function setFontFamily($fontFamily)
   {
     $this->fontFamily = $fontFamily;
   }
+  /**
+   * @return string
+   */
   public function getFontFamily()
   {
     return $this->fontFamily;
   }
+  /**
+   * @param int
+   */
   public function setWeight($weight)
   {
     $this->weight = $weight;
   }
+  /**
+   * @return int
+   */
   public function getWeight()
   {
     return $this->weight;

@@ -20,21 +20,39 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1IntentMessageSelectItemInfo extends \Google\Collection
 {
   protected $collection_key = 'synonyms';
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string[]
+   */
   public $synonyms;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string[]
+   */
   public function setSynonyms($synonyms)
   {
     $this->synonyms = $synonyms;
   }
+  /**
+   * @return string[]
+   */
   public function getSynonyms()
   {
     return $this->synonyms;

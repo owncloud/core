@@ -19,59 +19,113 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1PredictRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $dryRun;
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var array[]
+   */
   public $params;
   protected $userEventType = GoogleCloudRecommendationengineV1beta1UserEvent::class;
   protected $userEventDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setDryRun($dryRun)
   {
     $this->dryRun = $dryRun;
   }
+  /**
+   * @return bool
+   */
   public function getDryRun()
   {
     return $this->dryRun;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param array[]
+   */
   public function setParams($params)
   {
     $this->params = $params;
   }
+  /**
+   * @return array[]
+   */
   public function getParams()
   {
     return $this->params;

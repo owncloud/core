@@ -22,8 +22,17 @@ class ChangeList extends \Google\Collection
   protected $collection_key = 'changes';
   protected $changesType = Change::class;
   protected $changesDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $newStartPageToken;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -40,26 +49,44 @@ class ChangeList extends \Google\Collection
   {
     return $this->changes;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNewStartPageToken($newStartPageToken)
   {
     $this->newStartPageToken = $newStartPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNewStartPageToken()
   {
     return $this->newStartPageToken;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

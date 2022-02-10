@@ -19,21 +19,39 @@ namespace Google\Service\Pubsub;
 
 class DeadLetterPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deadLetterTopic;
+  /**
+   * @var int
+   */
   public $maxDeliveryAttempts;
 
+  /**
+   * @param string
+   */
   public function setDeadLetterTopic($deadLetterTopic)
   {
     $this->deadLetterTopic = $deadLetterTopic;
   }
+  /**
+   * @return string
+   */
   public function getDeadLetterTopic()
   {
     return $this->deadLetterTopic;
   }
+  /**
+   * @param int
+   */
   public function setMaxDeliveryAttempts($maxDeliveryAttempts)
   {
     $this->maxDeliveryAttempts = $maxDeliveryAttempts;
   }
+  /**
+   * @return int
+   */
   public function getMaxDeliveryAttempts()
   {
     return $this->maxDeliveryAttempts;

@@ -19,21 +19,39 @@ namespace Google\Service\GroupsMigration;
 
 class Groups extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $responseCode;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setResponseCode($responseCode)
   {
     $this->responseCode = $responseCode;
   }
+  /**
+   * @return string
+   */
   public function getResponseCode()
   {
     return $this->responseCode;

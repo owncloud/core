@@ -19,39 +19,75 @@ namespace Google\Service\DatabaseMigrationService;
 
 class SqlAclEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $ttl;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return string
+   */
   public function getTtl()
   {
     return $this->ttl;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

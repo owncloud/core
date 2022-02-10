@@ -20,24 +20,45 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1WebhookResponse extends \Google\Collection
 {
   protected $collection_key = 'sessionEntityTypes';
+  /**
+   * @var bool
+   */
   public $endInteraction;
   protected $followupEventInputType = GoogleCloudDialogflowV2beta1EventInput::class;
   protected $followupEventInputDataType = '';
   protected $fulfillmentMessagesType = GoogleCloudDialogflowV2beta1IntentMessage::class;
   protected $fulfillmentMessagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $fulfillmentText;
+  /**
+   * @var bool
+   */
   public $liveAgentHandoff;
   protected $outputContextsType = GoogleCloudDialogflowV2beta1Context::class;
   protected $outputContextsDataType = 'array';
+  /**
+   * @var array[]
+   */
   public $payload;
   protected $sessionEntityTypesType = GoogleCloudDialogflowV2beta1SessionEntityType::class;
   protected $sessionEntityTypesDataType = 'array';
+  /**
+   * @var string
+   */
   public $source;
 
+  /**
+   * @param bool
+   */
   public function setEndInteraction($endInteraction)
   {
     $this->endInteraction = $endInteraction;
   }
+  /**
+   * @return bool
+   */
   public function getEndInteraction()
   {
     return $this->endInteraction;
@@ -70,18 +91,30 @@ class GoogleCloudDialogflowV2beta1WebhookResponse extends \Google\Collection
   {
     return $this->fulfillmentMessages;
   }
+  /**
+   * @param string
+   */
   public function setFulfillmentText($fulfillmentText)
   {
     $this->fulfillmentText = $fulfillmentText;
   }
+  /**
+   * @return string
+   */
   public function getFulfillmentText()
   {
     return $this->fulfillmentText;
   }
+  /**
+   * @param bool
+   */
   public function setLiveAgentHandoff($liveAgentHandoff)
   {
     $this->liveAgentHandoff = $liveAgentHandoff;
   }
+  /**
+   * @return bool
+   */
   public function getLiveAgentHandoff()
   {
     return $this->liveAgentHandoff;
@@ -100,10 +133,16 @@ class GoogleCloudDialogflowV2beta1WebhookResponse extends \Google\Collection
   {
     return $this->outputContexts;
   }
+  /**
+   * @param array[]
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return array[]
+   */
   public function getPayload()
   {
     return $this->payload;
@@ -122,10 +161,16 @@ class GoogleCloudDialogflowV2beta1WebhookResponse extends \Google\Collection
   {
     return $this->sessionEntityTypes;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;

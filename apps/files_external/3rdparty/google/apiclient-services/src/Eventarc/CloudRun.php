@@ -19,30 +19,57 @@ namespace Google\Service\Eventarc;
 
 class CloudRun extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

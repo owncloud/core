@@ -21,8 +21,17 @@ class BatchGetDocumentsResponse extends \Google\Model
 {
   protected $foundType = Document::class;
   protected $foundDataType = '';
+  /**
+   * @var string
+   */
   public $missing;
+  /**
+   * @var string
+   */
   public $readTime;
+  /**
+   * @var string
+   */
   public $transaction;
 
   /**
@@ -39,26 +48,44 @@ class BatchGetDocumentsResponse extends \Google\Model
   {
     return $this->found;
   }
+  /**
+   * @param string
+   */
   public function setMissing($missing)
   {
     $this->missing = $missing;
   }
+  /**
+   * @return string
+   */
   public function getMissing()
   {
     return $this->missing;
   }
+  /**
+   * @param string
+   */
   public function setReadTime($readTime)
   {
     $this->readTime = $readTime;
   }
+  /**
+   * @return string
+   */
   public function getReadTime()
   {
     return $this->readTime;
   }
+  /**
+   * @param string
+   */
   public function setTransaction($transaction)
   {
     $this->transaction = $transaction;
   }
+  /**
+   * @return string
+   */
   public function getTransaction()
   {
     return $this->transaction;

@@ -19,12 +19,21 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1GcsPrefix extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsUriPrefix;
 
+  /**
+   * @param string
+   */
   public function setGcsUriPrefix($gcsUriPrefix)
   {
     $this->gcsUriPrefix = $gcsUriPrefix;
   }
+  /**
+   * @return string
+   */
   public function getGcsUriPrefix()
   {
     return $this->gcsUriPrefix;

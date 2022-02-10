@@ -26,12 +26,21 @@ class Execution extends \Google\Collection
   protected $creationTimeDataType = '';
   protected $dimensionDefinitionsType = MatrixDimensionDefinition::class;
   protected $dimensionDefinitionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $executionId;
   protected $outcomeType = Outcome::class;
   protected $outcomeDataType = '';
   protected $specificationType = Specification::class;
   protected $specificationDataType = '';
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $testExecutionMatrixId;
 
   /**
@@ -76,10 +85,16 @@ class Execution extends \Google\Collection
   {
     return $this->dimensionDefinitions;
   }
+  /**
+   * @param string
+   */
   public function setExecutionId($executionId)
   {
     $this->executionId = $executionId;
   }
+  /**
+   * @return string
+   */
   public function getExecutionId()
   {
     return $this->executionId;
@@ -112,18 +127,30 @@ class Execution extends \Google\Collection
   {
     return $this->specification;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setTestExecutionMatrixId($testExecutionMatrixId)
   {
     $this->testExecutionMatrixId = $testExecutionMatrixId;
   }
+  /**
+   * @return string
+   */
   public function getTestExecutionMatrixId()
   {
     return $this->testExecutionMatrixId;

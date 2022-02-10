@@ -19,21 +19,39 @@ namespace Google\Service\BinaryAuthorization;
 
 class PkixPublicKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $publicKeyPem;
+  /**
+   * @var string
+   */
   public $signatureAlgorithm;
 
+  /**
+   * @param string
+   */
   public function setPublicKeyPem($publicKeyPem)
   {
     $this->publicKeyPem = $publicKeyPem;
   }
+  /**
+   * @return string
+   */
   public function getPublicKeyPem()
   {
     return $this->publicKeyPem;
   }
+  /**
+   * @param string
+   */
   public function setSignatureAlgorithm($signatureAlgorithm)
   {
     $this->signatureAlgorithm = $signatureAlgorithm;
   }
+  /**
+   * @return string
+   */
   public function getSignatureAlgorithm()
   {
     return $this->signatureAlgorithm;

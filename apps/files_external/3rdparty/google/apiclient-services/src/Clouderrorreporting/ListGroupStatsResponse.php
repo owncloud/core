@@ -22,7 +22,13 @@ class ListGroupStatsResponse extends \Google\Collection
   protected $collection_key = 'errorGroupStats';
   protected $errorGroupStatsType = ErrorGroupStats::class;
   protected $errorGroupStatsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $timeRangeBegin;
 
   /**
@@ -39,18 +45,30 @@ class ListGroupStatsResponse extends \Google\Collection
   {
     return $this->errorGroupStats;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setTimeRangeBegin($timeRangeBegin)
   {
     $this->timeRangeBegin = $timeRangeBegin;
   }
+  /**
+   * @return string
+   */
   public function getTimeRangeBegin()
   {
     return $this->timeRangeBegin;

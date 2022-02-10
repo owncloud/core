@@ -19,12 +19,21 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1TableSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $groupedEntry;
 
+  /**
+   * @param string
+   */
   public function setGroupedEntry($groupedEntry)
   {
     $this->groupedEntry = $groupedEntry;
   }
+  /**
+   * @return string
+   */
   public function getGroupedEntry()
   {
     return $this->groupedEntry;

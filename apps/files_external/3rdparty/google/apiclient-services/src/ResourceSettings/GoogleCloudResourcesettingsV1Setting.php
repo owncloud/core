@@ -21,11 +21,17 @@ class GoogleCloudResourcesettingsV1Setting extends \Google\Model
 {
   protected $effectiveValueType = GoogleCloudResourcesettingsV1Value::class;
   protected $effectiveValueDataType = '';
+  /**
+   * @var string
+   */
   public $etag;
   protected $localValueType = GoogleCloudResourcesettingsV1Value::class;
   protected $localValueDataType = '';
   protected $metadataType = GoogleCloudResourcesettingsV1SettingMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -42,10 +48,16 @@ class GoogleCloudResourcesettingsV1Setting extends \Google\Model
   {
     return $this->effectiveValue;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
@@ -78,10 +90,16 @@ class GoogleCloudResourcesettingsV1Setting extends \Google\Model
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

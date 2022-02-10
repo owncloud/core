@@ -22,7 +22,13 @@ class ListSessionsResponse extends \Google\Collection
   protected $collection_key = 'session';
   protected $deletedSessionType = Session::class;
   protected $deletedSessionDataType = 'array';
+  /**
+   * @var bool
+   */
   public $hasMoreData;
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $sessionType = Session::class;
   protected $sessionDataType = 'array';
@@ -41,18 +47,30 @@ class ListSessionsResponse extends \Google\Collection
   {
     return $this->deletedSession;
   }
+  /**
+   * @param bool
+   */
   public function setHasMoreData($hasMoreData)
   {
     $this->hasMoreData = $hasMoreData;
   }
+  /**
+   * @return bool
+   */
   public function getHasMoreData()
   {
     return $this->hasMoreData;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

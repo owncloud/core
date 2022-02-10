@@ -20,23 +20,41 @@ namespace Google\Service\AdExchangeBuyerII;
 class DeliveryControl extends \Google\Collection
 {
   protected $collection_key = 'frequencyCaps';
+  /**
+   * @var string
+   */
   public $creativeBlockingLevel;
+  /**
+   * @var string
+   */
   public $deliveryRateType;
   protected $frequencyCapsType = FrequencyCap::class;
   protected $frequencyCapsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCreativeBlockingLevel($creativeBlockingLevel)
   {
     $this->creativeBlockingLevel = $creativeBlockingLevel;
   }
+  /**
+   * @return string
+   */
   public function getCreativeBlockingLevel()
   {
     return $this->creativeBlockingLevel;
   }
+  /**
+   * @param string
+   */
   public function setDeliveryRateType($deliveryRateType)
   {
     $this->deliveryRateType = $deliveryRateType;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryRateType()
   {
     return $this->deliveryRateType;

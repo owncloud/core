@@ -21,9 +21,21 @@ class GerritSourceContext extends \Google\Model
 {
   protected $aliasContextType = AliasContext::class;
   protected $aliasContextDataType = '';
+  /**
+   * @var string
+   */
   public $aliasName;
+  /**
+   * @var string
+   */
   public $gerritProject;
+  /**
+   * @var string
+   */
   public $hostUri;
+  /**
+   * @var string
+   */
   public $revisionId;
 
   /**
@@ -40,34 +52,58 @@ class GerritSourceContext extends \Google\Model
   {
     return $this->aliasContext;
   }
+  /**
+   * @param string
+   */
   public function setAliasName($aliasName)
   {
     $this->aliasName = $aliasName;
   }
+  /**
+   * @return string
+   */
   public function getAliasName()
   {
     return $this->aliasName;
   }
+  /**
+   * @param string
+   */
   public function setGerritProject($gerritProject)
   {
     $this->gerritProject = $gerritProject;
   }
+  /**
+   * @return string
+   */
   public function getGerritProject()
   {
     return $this->gerritProject;
   }
+  /**
+   * @param string
+   */
   public function setHostUri($hostUri)
   {
     $this->hostUri = $hostUri;
   }
+  /**
+   * @return string
+   */
   public function getHostUri()
   {
     return $this->hostUri;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;

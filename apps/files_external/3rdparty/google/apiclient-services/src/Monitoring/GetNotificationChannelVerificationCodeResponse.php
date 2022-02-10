@@ -19,21 +19,39 @@ namespace Google\Service\Monitoring;
 
 class GetNotificationChannelVerificationCodeResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var string
+   */
   public $expireTime;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;

@@ -20,14 +20,23 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1IntentMessageBrowseCarouselCard extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var string
+   */
   public $imageDisplayOptions;
   protected $itemsType = GoogleCloudDialogflowV2beta1IntentMessageBrowseCarouselCardBrowseCarouselCardItem::class;
   protected $itemsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setImageDisplayOptions($imageDisplayOptions)
   {
     $this->imageDisplayOptions = $imageDisplayOptions;
   }
+  /**
+   * @return string
+   */
   public function getImageDisplayOptions()
   {
     return $this->imageDisplayOptions;

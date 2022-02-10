@@ -19,39 +19,75 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3IntentParameter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $entityType;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var bool
+   */
   public $isList;
+  /**
+   * @var bool
+   */
   public $redact;
 
+  /**
+   * @param string
+   */
   public function setEntityType($entityType)
   {
     $this->entityType = $entityType;
   }
+  /**
+   * @return string
+   */
   public function getEntityType()
   {
     return $this->entityType;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param bool
+   */
   public function setIsList($isList)
   {
     $this->isList = $isList;
   }
+  /**
+   * @return bool
+   */
   public function getIsList()
   {
     return $this->isList;
   }
+  /**
+   * @param bool
+   */
   public function setRedact($redact)
   {
     $this->redact = $redact;
   }
+  /**
+   * @return bool
+   */
   public function getRedact()
   {
     return $this->redact;

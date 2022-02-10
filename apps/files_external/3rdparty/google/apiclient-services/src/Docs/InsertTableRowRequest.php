@@ -19,14 +19,23 @@ namespace Google\Service\Docs;
 
 class InsertTableRowRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $insertBelow;
   protected $tableCellLocationType = TableCellLocation::class;
   protected $tableCellLocationDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setInsertBelow($insertBelow)
   {
     $this->insertBelow = $insertBelow;
   }
+  /**
+   * @return bool
+   */
   public function getInsertBelow()
   {
     return $this->insertBelow;

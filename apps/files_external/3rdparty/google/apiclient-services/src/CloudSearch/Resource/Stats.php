@@ -19,6 +19,7 @@ namespace Google\Service\CloudSearch\Resource;
 
 use Google\Service\CloudSearch\GetCustomerIndexStatsResponse;
 use Google\Service\CloudSearch\GetCustomerQueryStatsResponse;
+use Google\Service\CloudSearch\GetCustomerSearchApplicationStatsResponse;
 use Google\Service\CloudSearch\GetCustomerSessionStatsResponse;
 use Google\Service\CloudSearch\GetCustomerUserStatsResponse;
 
@@ -77,6 +78,28 @@ class Stats extends \Google\Service\Resource
     $params = [];
     $params = array_merge($params, $optParams);
     return $this->call('getQuery', [$params], GetCustomerQueryStatsResponse::class);
+  }
+  /**
+   * Get search application stats for customer. **Note:** This API requires a
+   * standard end user account to execute. (stats.getSearchapplication)
+   *
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param int endDate.day Day of month. Must be from 1 to 31 and valid for
+   * the year and month.
+   * @opt_param int endDate.month Month of date. Must be from 1 to 12.
+   * @opt_param int endDate.year Year of date. Must be from 1 to 9999.
+   * @opt_param int startDate.day Day of month. Must be from 1 to 31 and valid for
+   * the year and month.
+   * @opt_param int startDate.month Month of date. Must be from 1 to 12.
+   * @opt_param int startDate.year Year of date. Must be from 1 to 9999.
+   * @return GetCustomerSearchApplicationStatsResponse
+   */
+  public function getSearchapplication($optParams = [])
+  {
+    $params = [];
+    $params = array_merge($params, $optParams);
+    return $this->call('getSearchapplication', [$params], GetCustomerSearchApplicationStatsResponse::class);
   }
   /**
    * Get the # of search sessions, % of successful sessions with a click query

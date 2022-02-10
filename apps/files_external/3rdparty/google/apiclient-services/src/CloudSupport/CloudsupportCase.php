@@ -22,18 +22,51 @@ class CloudsupportCase extends \Google\Collection
   protected $collection_key = 'subscriberEmailAddresses';
   protected $classificationType = CaseClassification::class;
   protected $classificationDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
   protected $creatorType = Actor::class;
   protected $creatorDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $escalated;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $severity;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string[]
+   */
   public $subscriberEmailAddresses;
+  /**
+   * @var bool
+   */
   public $testCase;
+  /**
+   * @var string
+   */
   public $timeZone;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -50,10 +83,16 @@ class CloudsupportCase extends \Google\Collection
   {
     return $this->classification;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -72,82 +111,142 @@ class CloudsupportCase extends \Google\Collection
   {
     return $this->creator;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setEscalated($escalated)
   {
     $this->escalated = $escalated;
   }
+  /**
+   * @return bool
+   */
   public function getEscalated()
   {
     return $this->escalated;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string[]
+   */
   public function setSubscriberEmailAddresses($subscriberEmailAddresses)
   {
     $this->subscriberEmailAddresses = $subscriberEmailAddresses;
   }
+  /**
+   * @return string[]
+   */
   public function getSubscriberEmailAddresses()
   {
     return $this->subscriberEmailAddresses;
   }
+  /**
+   * @param bool
+   */
   public function setTestCase($testCase)
   {
     $this->testCase = $testCase;
   }
+  /**
+   * @return bool
+   */
   public function getTestCase()
   {
     return $this->testCase;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

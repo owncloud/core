@@ -19,39 +19,75 @@ namespace Google\Service\Bigquery;
 
 class RowAccessPolicyReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $datasetId;
+  /**
+   * @var string
+   */
   public $policyId;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $tableId;
 
+  /**
+   * @param string
+   */
   public function setDatasetId($datasetId)
   {
     $this->datasetId = $datasetId;
   }
+  /**
+   * @return string
+   */
   public function getDatasetId()
   {
     return $this->datasetId;
   }
+  /**
+   * @param string
+   */
   public function setPolicyId($policyId)
   {
     $this->policyId = $policyId;
   }
+  /**
+   * @return string
+   */
   public function getPolicyId()
   {
     return $this->policyId;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setTableId($tableId)
   {
     $this->tableId = $tableId;
   }
+  /**
+   * @return string
+   */
   public function getTableId()
   {
     return $this->tableId;

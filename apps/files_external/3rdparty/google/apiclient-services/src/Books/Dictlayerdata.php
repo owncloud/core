@@ -23,6 +23,9 @@ class Dictlayerdata extends \Google\Model
   protected $commonDataType = '';
   protected $dictType = DictlayerdataDict::class;
   protected $dictDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -53,10 +56,16 @@ class Dictlayerdata extends \Google\Model
   {
     return $this->dict;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

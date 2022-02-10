@@ -20,21 +20,39 @@ namespace Google\Service\CloudVideoIntelligence;
 class GoogleCloudVideointelligenceV1TextDetectionConfig extends \Google\Collection
 {
   protected $collection_key = 'languageHints';
+  /**
+   * @var string[]
+   */
   public $languageHints;
+  /**
+   * @var string
+   */
   public $model;
 
+  /**
+   * @param string[]
+   */
   public function setLanguageHints($languageHints)
   {
     $this->languageHints = $languageHints;
   }
+  /**
+   * @return string[]
+   */
   public function getLanguageHints()
   {
     return $this->languageHints;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;

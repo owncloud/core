@@ -20,12 +20,21 @@ namespace Google\Service\CloudHealthcare;
 class ConsentList extends \Google\Collection
 {
   protected $collection_key = 'consents';
+  /**
+   * @var string[]
+   */
   public $consents;
 
+  /**
+   * @param string[]
+   */
   public function setConsents($consents)
   {
     $this->consents = $consents;
   }
+  /**
+   * @return string[]
+   */
   public function getConsents()
   {
     return $this->consents;

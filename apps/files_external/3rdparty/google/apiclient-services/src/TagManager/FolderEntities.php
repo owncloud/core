@@ -20,6 +20,9 @@ namespace Google\Service\TagManager;
 class FolderEntities extends \Google\Collection
 {
   protected $collection_key = 'variable';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $tagType = Tag::class;
   protected $tagDataType = 'array';
@@ -28,10 +31,16 @@ class FolderEntities extends \Google\Collection
   protected $variableType = Variable::class;
   protected $variableDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

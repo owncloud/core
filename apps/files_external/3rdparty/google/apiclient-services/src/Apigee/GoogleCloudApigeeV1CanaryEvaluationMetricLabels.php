@@ -22,30 +22,57 @@ class GoogleCloudApigeeV1CanaryEvaluationMetricLabels extends \Google\Model
   protected $internal_gapi_mappings = [
         "instanceId" => "instance_id",
   ];
+  /**
+   * @var string
+   */
   public $env;
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var string
+   */
   public $location;
 
+  /**
+   * @param string
+   */
   public function setEnv($env)
   {
     $this->env = $env;
   }
+  /**
+   * @return string
+   */
   public function getEnv()
   {
     return $this->env;
   }
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;

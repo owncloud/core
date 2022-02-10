@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class OrderCustomerMarketingRightsInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $explicitMarketingPreference;
+  /**
+   * @var string
+   */
   public $lastUpdatedTimestamp;
+  /**
+   * @var string
+   */
   public $marketingEmailAddress;
 
+  /**
+   * @param string
+   */
   public function setExplicitMarketingPreference($explicitMarketingPreference)
   {
     $this->explicitMarketingPreference = $explicitMarketingPreference;
   }
+  /**
+   * @return string
+   */
   public function getExplicitMarketingPreference()
   {
     return $this->explicitMarketingPreference;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdatedTimestamp($lastUpdatedTimestamp)
   {
     $this->lastUpdatedTimestamp = $lastUpdatedTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdatedTimestamp()
   {
     return $this->lastUpdatedTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setMarketingEmailAddress($marketingEmailAddress)
   {
     $this->marketingEmailAddress = $marketingEmailAddress;
   }
+  /**
+   * @return string
+   */
   public function getMarketingEmailAddress()
   {
     return $this->marketingEmailAddress;

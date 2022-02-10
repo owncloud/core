@@ -19,12 +19,21 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1ActivateEntitlementRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

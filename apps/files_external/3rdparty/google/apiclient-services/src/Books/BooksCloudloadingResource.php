@@ -19,39 +19,75 @@ namespace Google\Service\Books;
 
 class BooksCloudloadingResource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $author;
+  /**
+   * @var string
+   */
   public $processingState;
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $volumeId;
 
+  /**
+   * @param string
+   */
   public function setAuthor($author)
   {
     $this->author = $author;
   }
+  /**
+   * @return string
+   */
   public function getAuthor()
   {
     return $this->author;
   }
+  /**
+   * @param string
+   */
   public function setProcessingState($processingState)
   {
     $this->processingState = $processingState;
   }
+  /**
+   * @return string
+   */
   public function getProcessingState()
   {
     return $this->processingState;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setVolumeId($volumeId)
   {
     $this->volumeId = $volumeId;
   }
+  /**
+   * @return string
+   */
   public function getVolumeId()
   {
     return $this->volumeId;

@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class SubnetworksExpandIpCidrRangeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipCidrRange;
 
+  /**
+   * @param string
+   */
   public function setIpCidrRange($ipCidrRange)
   {
     $this->ipCidrRange = $ipCidrRange;
   }
+  /**
+   * @return string
+   */
   public function getIpCidrRange()
   {
     return $this->ipCidrRange;

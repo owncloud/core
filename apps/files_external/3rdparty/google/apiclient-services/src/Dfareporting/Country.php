@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class Country extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $countryCode;
+  /**
+   * @var string
+   */
   public $dartId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $sslEnabled;
 
+  /**
+   * @param string
+   */
   public function setCountryCode($countryCode)
   {
     $this->countryCode = $countryCode;
   }
+  /**
+   * @return string
+   */
   public function getCountryCode()
   {
     return $this->countryCode;
   }
+  /**
+   * @param string
+   */
   public function setDartId($dartId)
   {
     $this->dartId = $dartId;
   }
+  /**
+   * @return string
+   */
   public function getDartId()
   {
     return $this->dartId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setSslEnabled($sslEnabled)
   {
     $this->sslEnabled = $sslEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getSslEnabled()
   {
     return $this->sslEnabled;

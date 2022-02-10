@@ -19,21 +19,39 @@ namespace Google\Service\AlertCenter;
 
 class CloudPubsubTopic extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $payloadFormat;
+  /**
+   * @var string
+   */
   public $topicName;
 
+  /**
+   * @param string
+   */
   public function setPayloadFormat($payloadFormat)
   {
     $this->payloadFormat = $payloadFormat;
   }
+  /**
+   * @return string
+   */
   public function getPayloadFormat()
   {
     return $this->payloadFormat;
   }
+  /**
+   * @param string
+   */
   public function setTopicName($topicName)
   {
     $this->topicName = $topicName;
   }
+  /**
+   * @return string
+   */
   public function getTopicName()
   {
     return $this->topicName;

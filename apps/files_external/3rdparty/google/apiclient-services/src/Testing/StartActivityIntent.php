@@ -20,30 +20,57 @@ namespace Google\Service\Testing;
 class StartActivityIntent extends \Google\Collection
 {
   protected $collection_key = 'categories';
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string[]
+   */
   public $categories;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string[]
+   */
   public function setCategories($categories)
   {
     $this->categories = $categories;
   }
+  /**
+   * @return string[]
+   */
   public function getCategories()
   {
     return $this->categories;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

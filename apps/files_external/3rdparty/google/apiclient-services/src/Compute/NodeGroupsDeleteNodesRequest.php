@@ -20,12 +20,21 @@ namespace Google\Service\Compute;
 class NodeGroupsDeleteNodesRequest extends \Google\Collection
 {
   protected $collection_key = 'nodes';
+  /**
+   * @var string[]
+   */
   public $nodes;
 
+  /**
+   * @param string[]
+   */
   public function setNodes($nodes)
   {
     $this->nodes = $nodes;
   }
+  /**
+   * @return string[]
+   */
   public function getNodes()
   {
     return $this->nodes;

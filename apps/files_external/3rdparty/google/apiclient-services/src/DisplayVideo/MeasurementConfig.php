@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class MeasurementConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $dv360ToCmCostReportingEnabled;
+  /**
+   * @var bool
+   */
   public $dv360ToCmDataSharingEnabled;
 
+  /**
+   * @param bool
+   */
   public function setDv360ToCmCostReportingEnabled($dv360ToCmCostReportingEnabled)
   {
     $this->dv360ToCmCostReportingEnabled = $dv360ToCmCostReportingEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getDv360ToCmCostReportingEnabled()
   {
     return $this->dv360ToCmCostReportingEnabled;
   }
+  /**
+   * @param bool
+   */
   public function setDv360ToCmDataSharingEnabled($dv360ToCmDataSharingEnabled)
   {
     $this->dv360ToCmDataSharingEnabled = $dv360ToCmDataSharingEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getDv360ToCmDataSharingEnabled()
   {
     return $this->dv360ToCmDataSharingEnabled;

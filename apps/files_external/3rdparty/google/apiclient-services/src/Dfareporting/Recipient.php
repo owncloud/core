@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class Recipient extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deliveryType;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setDeliveryType($deliveryType)
   {
     $this->deliveryType = $deliveryType;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryType()
   {
     return $this->deliveryType;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

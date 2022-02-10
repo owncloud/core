@@ -22,7 +22,13 @@ class BlogPosts extends \Google\Collection
   protected $collection_key = 'items';
   protected $itemsType = Post::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var int
+   */
   public $totalItems;
 
   /**
@@ -39,18 +45,30 @@ class BlogPosts extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param int
+   */
   public function setTotalItems($totalItems)
   {
     $this->totalItems = $totalItems;
   }
+  /**
+   * @return int
+   */
   public function getTotalItems()
   {
     return $this->totalItems;

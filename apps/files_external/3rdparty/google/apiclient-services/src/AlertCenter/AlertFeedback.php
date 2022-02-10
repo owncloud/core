@@ -19,57 +19,111 @@ namespace Google\Service\AlertCenter;
 
 class AlertFeedback extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alertId;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $customerId;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $feedbackId;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAlertId($alertId)
   {
     $this->alertId = $alertId;
   }
+  /**
+   * @return string
+   */
   public function getAlertId()
   {
     return $this->alertId;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerId()
   {
     return $this->customerId;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setFeedbackId($feedbackId)
   {
     $this->feedbackId = $feedbackId;
   }
+  /**
+   * @return string
+   */
   public function getFeedbackId()
   {
     return $this->feedbackId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -20,26 +20,47 @@ namespace Google\Service\OSConfig;
 class OSPolicyAssignmentReportOSPolicyComplianceOSPolicyResourceCompliance extends \Google\Collection
 {
   protected $collection_key = 'configSteps';
+  /**
+   * @var string
+   */
   public $complianceState;
+  /**
+   * @var string
+   */
   public $complianceStateReason;
   protected $configStepsType = OSPolicyAssignmentReportOSPolicyComplianceOSPolicyResourceComplianceOSPolicyResourceConfigStep::class;
   protected $configStepsDataType = 'array';
   protected $execResourceOutputType = OSPolicyAssignmentReportOSPolicyComplianceOSPolicyResourceComplianceExecResourceOutput::class;
   protected $execResourceOutputDataType = '';
+  /**
+   * @var string
+   */
   public $osPolicyResourceId;
 
+  /**
+   * @param string
+   */
   public function setComplianceState($complianceState)
   {
     $this->complianceState = $complianceState;
   }
+  /**
+   * @return string
+   */
   public function getComplianceState()
   {
     return $this->complianceState;
   }
+  /**
+   * @param string
+   */
   public function setComplianceStateReason($complianceStateReason)
   {
     $this->complianceStateReason = $complianceStateReason;
   }
+  /**
+   * @return string
+   */
   public function getComplianceStateReason()
   {
     return $this->complianceStateReason;
@@ -72,10 +93,16 @@ class OSPolicyAssignmentReportOSPolicyComplianceOSPolicyResourceCompliance exten
   {
     return $this->execResourceOutput;
   }
+  /**
+   * @param string
+   */
   public function setOsPolicyResourceId($osPolicyResourceId)
   {
     $this->osPolicyResourceId = $osPolicyResourceId;
   }
+  /**
+   * @return string
+   */
   public function getOsPolicyResourceId()
   {
     return $this->osPolicyResourceId;

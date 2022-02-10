@@ -21,7 +21,13 @@ class CreateShapeRequest extends \Google\Model
 {
   protected $elementPropertiesType = PageElementProperties::class;
   protected $elementPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var string
+   */
   public $shapeType;
 
   /**
@@ -38,18 +44,30 @@ class CreateShapeRequest extends \Google\Model
   {
     return $this->elementProperties;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param string
+   */
   public function setShapeType($shapeType)
   {
     $this->shapeType = $shapeType;
   }
+  /**
+   * @return string
+   */
   public function getShapeType()
   {
     return $this->shapeType;

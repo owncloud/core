@@ -19,12 +19,21 @@ namespace Google\Service\ChromeManagement;
 
 class GoogleChromeManagementV1ChromeAppSiteAccess extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hostMatch;
 
+  /**
+   * @param string
+   */
   public function setHostMatch($hostMatch)
   {
     $this->hostMatch = $hostMatch;
   }
+  /**
+   * @return string
+   */
   public function getHostMatch()
   {
     return $this->hostMatch;

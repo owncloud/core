@@ -19,21 +19,39 @@ namespace Google\Service\FirebaseManagement;
 
 class AddGoogleAnalyticsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $analyticsAccountId;
+  /**
+   * @var string
+   */
   public $analyticsPropertyId;
 
+  /**
+   * @param string
+   */
   public function setAnalyticsAccountId($analyticsAccountId)
   {
     $this->analyticsAccountId = $analyticsAccountId;
   }
+  /**
+   * @return string
+   */
   public function getAnalyticsAccountId()
   {
     return $this->analyticsAccountId;
   }
+  /**
+   * @param string
+   */
   public function setAnalyticsPropertyId($analyticsPropertyId)
   {
     $this->analyticsPropertyId = $analyticsPropertyId;
   }
+  /**
+   * @return string
+   */
   public function getAnalyticsPropertyId()
   {
     return $this->analyticsPropertyId;

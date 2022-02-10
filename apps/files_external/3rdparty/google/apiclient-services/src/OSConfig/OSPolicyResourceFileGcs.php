@@ -19,30 +19,57 @@ namespace Google\Service\OSConfig;
 
 class OSPolicyResourceFileGcs extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bucket;
+  /**
+   * @var string
+   */
   public $generation;
+  /**
+   * @var string
+   */
   public $object;
 
+  /**
+   * @param string
+   */
   public function setBucket($bucket)
   {
     $this->bucket = $bucket;
   }
+  /**
+   * @return string
+   */
   public function getBucket()
   {
     return $this->bucket;
   }
+  /**
+   * @param string
+   */
   public function setGeneration($generation)
   {
     $this->generation = $generation;
   }
+  /**
+   * @return string
+   */
   public function getGeneration()
   {
     return $this->generation;
   }
+  /**
+   * @param string
+   */
   public function setObject($object)
   {
     $this->object = $object;
   }
+  /**
+   * @return string
+   */
   public function getObject()
   {
     return $this->object;

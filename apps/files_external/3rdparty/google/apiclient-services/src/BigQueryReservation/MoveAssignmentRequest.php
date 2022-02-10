@@ -19,12 +19,21 @@ namespace Google\Service\BigQueryReservation;
 
 class MoveAssignmentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destinationId;
 
+  /**
+   * @param string
+   */
   public function setDestinationId($destinationId)
   {
     $this->destinationId = $destinationId;
   }
+  /**
+   * @return string
+   */
   public function getDestinationId()
   {
     return $this->destinationId;

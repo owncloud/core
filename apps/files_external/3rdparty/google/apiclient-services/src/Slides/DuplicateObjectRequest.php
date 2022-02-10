@@ -19,21 +19,39 @@ namespace Google\Service\Slides;
 
 class DuplicateObjectRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var string[]
+   */
   public $objectIds;
 
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param string[]
+   */
   public function setObjectIds($objectIds)
   {
     $this->objectIds = $objectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getObjectIds()
   {
     return $this->objectIds;

@@ -21,6 +21,9 @@ class GoogleCloudApigeeV1CreditDeveloperBalanceRequest extends \Google\Model
 {
   protected $transactionAmountType = GoogleTypeMoney::class;
   protected $transactionAmountDataType = '';
+  /**
+   * @var string
+   */
   public $transactionId;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudApigeeV1CreditDeveloperBalanceRequest extends \Google\Model
   {
     return $this->transactionAmount;
   }
+  /**
+   * @param string
+   */
   public function setTransactionId($transactionId)
   {
     $this->transactionId = $transactionId;
   }
+  /**
+   * @return string
+   */
   public function getTransactionId()
   {
     return $this->transactionId;

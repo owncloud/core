@@ -19,21 +19,39 @@ namespace Google\Service\CloudFunctions;
 
 class HttpsTrigger extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $securityLevel;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setSecurityLevel($securityLevel)
   {
     $this->securityLevel = $securityLevel;
   }
+  /**
+   * @return string
+   */
   public function getSecurityLevel()
   {
     return $this->securityLevel;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

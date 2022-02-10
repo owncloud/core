@@ -19,12 +19,21 @@ namespace Google\Service\Dataflow;
 
 class DebugOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableHotKeyLogging;
 
+  /**
+   * @param bool
+   */
   public function setEnableHotKeyLogging($enableHotKeyLogging)
   {
     $this->enableHotKeyLogging = $enableHotKeyLogging;
   }
+  /**
+   * @return bool
+   */
   public function getEnableHotKeyLogging()
   {
     return $this->enableHotKeyLogging;

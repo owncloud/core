@@ -26,6 +26,9 @@ class PivotTable extends \Google\Collection
   protected $criteriaDataType = 'map';
   protected $dataExecutionStatusType = DataExecutionStatus::class;
   protected $dataExecutionStatusDataType = '';
+  /**
+   * @var string
+   */
   public $dataSourceId;
   protected $filterSpecsType = PivotFilterSpec::class;
   protected $filterSpecsDataType = 'array';
@@ -33,6 +36,9 @@ class PivotTable extends \Google\Collection
   protected $rowsDataType = 'array';
   protected $sourceType = GridRange::class;
   protected $sourceDataType = '';
+  /**
+   * @var string
+   */
   public $valueLayout;
   protected $valuesType = PivotValue::class;
   protected $valuesDataType = 'array';
@@ -79,10 +85,16 @@ class PivotTable extends \Google\Collection
   {
     return $this->dataExecutionStatus;
   }
+  /**
+   * @param string
+   */
   public function setDataSourceId($dataSourceId)
   {
     $this->dataSourceId = $dataSourceId;
   }
+  /**
+   * @return string
+   */
   public function getDataSourceId()
   {
     return $this->dataSourceId;
@@ -129,10 +141,16 @@ class PivotTable extends \Google\Collection
   {
     return $this->source;
   }
+  /**
+   * @param string
+   */
   public function setValueLayout($valueLayout)
   {
     $this->valueLayout = $valueLayout;
   }
+  /**
+   * @return string
+   */
   public function getValueLayout()
   {
     return $this->valueLayout;

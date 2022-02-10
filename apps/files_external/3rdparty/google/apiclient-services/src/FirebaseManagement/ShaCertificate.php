@@ -19,30 +19,57 @@ namespace Google\Service\FirebaseManagement;
 
 class ShaCertificate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certType;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $shaHash;
 
+  /**
+   * @param string
+   */
   public function setCertType($certType)
   {
     $this->certType = $certType;
   }
+  /**
+   * @return string
+   */
   public function getCertType()
   {
     return $this->certType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setShaHash($shaHash)
   {
     $this->shaHash = $shaHash;
   }
+  /**
+   * @return string
+   */
   public function getShaHash()
   {
     return $this->shaHash;

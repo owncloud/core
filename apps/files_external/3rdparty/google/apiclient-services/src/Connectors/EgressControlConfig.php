@@ -19,14 +19,23 @@ namespace Google\Service\Connectors;
 
 class EgressControlConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backends;
   protected $extractionRulesType = ExtractionRules::class;
   protected $extractionRulesDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBackends($backends)
   {
     $this->backends = $backends;
   }
+  /**
+   * @return string
+   */
   public function getBackends()
   {
     return $this->backends;

@@ -19,14 +19,23 @@ namespace Google\Service\Sheets;
 
 class AddConditionalFormatRuleRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $index;
   protected $ruleType = ConditionalFormatRule::class;
   protected $ruleDataType = '';
 
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;

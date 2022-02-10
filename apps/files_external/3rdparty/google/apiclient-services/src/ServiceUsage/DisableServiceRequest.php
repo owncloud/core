@@ -19,21 +19,39 @@ namespace Google\Service\ServiceUsage;
 
 class DisableServiceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $checkIfServiceHasUsage;
+  /**
+   * @var bool
+   */
   public $disableDependentServices;
 
+  /**
+   * @param string
+   */
   public function setCheckIfServiceHasUsage($checkIfServiceHasUsage)
   {
     $this->checkIfServiceHasUsage = $checkIfServiceHasUsage;
   }
+  /**
+   * @return string
+   */
   public function getCheckIfServiceHasUsage()
   {
     return $this->checkIfServiceHasUsage;
   }
+  /**
+   * @param bool
+   */
   public function setDisableDependentServices($disableDependentServices)
   {
     $this->disableDependentServices = $disableDependentServices;
   }
+  /**
+   * @return bool
+   */
   public function getDisableDependentServices()
   {
     return $this->disableDependentServices;

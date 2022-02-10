@@ -19,12 +19,21 @@ namespace Google\Service\CloudIAP;
 
 class CsmSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rctokenAud;
 
+  /**
+   * @param string
+   */
   public function setRctokenAud($rctokenAud)
   {
     $this->rctokenAud = $rctokenAud;
   }
+  /**
+   * @return string
+   */
   public function getRctokenAud()
   {
     return $this->rctokenAud;

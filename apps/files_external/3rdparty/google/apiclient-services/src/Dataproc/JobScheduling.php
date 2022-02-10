@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class JobScheduling extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxFailuresPerHour;
+  /**
+   * @var int
+   */
   public $maxFailuresTotal;
 
+  /**
+   * @param int
+   */
   public function setMaxFailuresPerHour($maxFailuresPerHour)
   {
     $this->maxFailuresPerHour = $maxFailuresPerHour;
   }
+  /**
+   * @return int
+   */
   public function getMaxFailuresPerHour()
   {
     return $this->maxFailuresPerHour;
   }
+  /**
+   * @param int
+   */
   public function setMaxFailuresTotal($maxFailuresTotal)
   {
     $this->maxFailuresTotal = $maxFailuresTotal;
   }
+  /**
+   * @return int
+   */
   public function getMaxFailuresTotal()
   {
     return $this->maxFailuresTotal;

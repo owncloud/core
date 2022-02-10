@@ -20,12 +20,21 @@ namespace Google\Service\NetworkServices;
 class TrafficPortSelector extends \Google\Collection
 {
   protected $collection_key = 'ports';
+  /**
+   * @var string[]
+   */
   public $ports;
 
+  /**
+   * @param string[]
+   */
   public function setPorts($ports)
   {
     $this->ports = $ports;
   }
+  /**
+   * @return string[]
+   */
   public function getPorts()
   {
     return $this->ports;

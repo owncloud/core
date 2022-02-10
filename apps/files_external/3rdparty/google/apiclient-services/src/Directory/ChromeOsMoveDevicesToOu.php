@@ -20,12 +20,21 @@ namespace Google\Service\Directory;
 class ChromeOsMoveDevicesToOu extends \Google\Collection
 {
   protected $collection_key = 'deviceIds';
+  /**
+   * @var string[]
+   */
   public $deviceIds;
 
+  /**
+   * @param string[]
+   */
   public function setDeviceIds($deviceIds)
   {
     $this->deviceIds = $deviceIds;
   }
+  /**
+   * @return string[]
+   */
   public function getDeviceIds()
   {
     return $this->deviceIds;

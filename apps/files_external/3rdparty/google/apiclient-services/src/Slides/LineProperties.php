@@ -19,7 +19,13 @@ namespace Google\Service\Slides;
 
 class LineProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dashStyle;
+  /**
+   * @var string
+   */
   public $endArrow;
   protected $endConnectionType = LineConnection::class;
   protected $endConnectionDataType = '';
@@ -27,24 +33,39 @@ class LineProperties extends \Google\Model
   protected $lineFillDataType = '';
   protected $linkType = Link::class;
   protected $linkDataType = '';
+  /**
+   * @var string
+   */
   public $startArrow;
   protected $startConnectionType = LineConnection::class;
   protected $startConnectionDataType = '';
   protected $weightType = Dimension::class;
   protected $weightDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDashStyle($dashStyle)
   {
     $this->dashStyle = $dashStyle;
   }
+  /**
+   * @return string
+   */
   public function getDashStyle()
   {
     return $this->dashStyle;
   }
+  /**
+   * @param string
+   */
   public function setEndArrow($endArrow)
   {
     $this->endArrow = $endArrow;
   }
+  /**
+   * @return string
+   */
   public function getEndArrow()
   {
     return $this->endArrow;
@@ -91,10 +112,16 @@ class LineProperties extends \Google\Model
   {
     return $this->link;
   }
+  /**
+   * @param string
+   */
   public function setStartArrow($startArrow)
   {
     $this->startArrow = $startArrow;
   }
+  /**
+   * @return string
+   */
   public function getStartArrow()
   {
     return $this->startArrow;

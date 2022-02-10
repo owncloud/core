@@ -19,12 +19,21 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentMessageTelephonyPlayAudio extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audioUri;
 
+  /**
+   * @param string
+   */
   public function setAudioUri($audioUri)
   {
     $this->audioUri = $audioUri;
   }
+  /**
+   * @return string
+   */
   public function getAudioUri()
   {
     return $this->audioUri;

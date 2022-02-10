@@ -22,9 +22,21 @@ class ReplaceAllShapesWithImageRequest extends \Google\Collection
   protected $collection_key = 'pageObjectIds';
   protected $containsTextType = SubstringMatchCriteria::class;
   protected $containsTextDataType = '';
+  /**
+   * @var string
+   */
   public $imageReplaceMethod;
+  /**
+   * @var string
+   */
   public $imageUrl;
+  /**
+   * @var string[]
+   */
   public $pageObjectIds;
+  /**
+   * @var string
+   */
   public $replaceMethod;
 
   /**
@@ -41,34 +53,58 @@ class ReplaceAllShapesWithImageRequest extends \Google\Collection
   {
     return $this->containsText;
   }
+  /**
+   * @param string
+   */
   public function setImageReplaceMethod($imageReplaceMethod)
   {
     $this->imageReplaceMethod = $imageReplaceMethod;
   }
+  /**
+   * @return string
+   */
   public function getImageReplaceMethod()
   {
     return $this->imageReplaceMethod;
   }
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;
   }
+  /**
+   * @param string[]
+   */
   public function setPageObjectIds($pageObjectIds)
   {
     $this->pageObjectIds = $pageObjectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPageObjectIds()
   {
     return $this->pageObjectIds;
   }
+  /**
+   * @param string
+   */
   public function setReplaceMethod($replaceMethod)
   {
     $this->replaceMethod = $replaceMethod;
   }
+  /**
+   * @return string
+   */
   public function getReplaceMethod()
   {
     return $this->replaceMethod;

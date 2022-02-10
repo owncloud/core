@@ -19,14 +19,23 @@ namespace Google\Service\Dataflow;
 
 class IntegerGauge extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $timestamp;
   protected $valueType = SplitInt64::class;
   protected $valueDataType = '';
 
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

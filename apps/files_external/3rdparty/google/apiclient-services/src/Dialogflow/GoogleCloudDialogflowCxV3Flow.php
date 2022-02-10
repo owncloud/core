@@ -20,29 +20,53 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3Flow extends \Google\Collection
 {
   protected $collection_key = 'transitionRoutes';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $eventHandlersType = GoogleCloudDialogflowCxV3EventHandler::class;
   protected $eventHandlersDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $nluSettingsType = GoogleCloudDialogflowCxV3NluSettings::class;
   protected $nluSettingsDataType = '';
+  /**
+   * @var string[]
+   */
   public $transitionRouteGroups;
   protected $transitionRoutesType = GoogleCloudDialogflowCxV3TransitionRoute::class;
   protected $transitionRoutesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -61,10 +85,16 @@ class GoogleCloudDialogflowCxV3Flow extends \Google\Collection
   {
     return $this->eventHandlers;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -83,10 +113,16 @@ class GoogleCloudDialogflowCxV3Flow extends \Google\Collection
   {
     return $this->nluSettings;
   }
+  /**
+   * @param string[]
+   */
   public function setTransitionRouteGroups($transitionRouteGroups)
   {
     $this->transitionRouteGroups = $transitionRouteGroups;
   }
+  /**
+   * @return string[]
+   */
   public function getTransitionRouteGroups()
   {
     return $this->transitionRouteGroups;

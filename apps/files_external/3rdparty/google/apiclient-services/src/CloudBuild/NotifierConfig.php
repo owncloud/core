@@ -19,25 +19,43 @@ namespace Google\Service\CloudBuild;
 
 class NotifierConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiVersion;
+  /**
+   * @var string
+   */
   public $kind;
   protected $metadataType = NotifierMetadata::class;
   protected $metadataDataType = '';
   protected $specType = NotifierSpec::class;
   protected $specDataType = '';
 
+  /**
+   * @param string
+   */
   public function setApiVersion($apiVersion)
   {
     $this->apiVersion = $apiVersion;
   }
+  /**
+   * @return string
+   */
   public function getApiVersion()
   {
     return $this->apiVersion;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

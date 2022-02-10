@@ -19,21 +19,39 @@ namespace Google\Service\Pubsub;
 
 class PullRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxMessages;
+  /**
+   * @var bool
+   */
   public $returnImmediately;
 
+  /**
+   * @param int
+   */
   public function setMaxMessages($maxMessages)
   {
     $this->maxMessages = $maxMessages;
   }
+  /**
+   * @return int
+   */
   public function getMaxMessages()
   {
     return $this->maxMessages;
   }
+  /**
+   * @param bool
+   */
   public function setReturnImmediately($returnImmediately)
   {
     $this->returnImmediately = $returnImmediately;
   }
+  /**
+   * @return bool
+   */
   public function getReturnImmediately()
   {
     return $this->returnImmediately;

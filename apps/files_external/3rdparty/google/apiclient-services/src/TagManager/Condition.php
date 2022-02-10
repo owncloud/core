@@ -22,6 +22,9 @@ class Condition extends \Google\Collection
   protected $collection_key = 'parameter';
   protected $parameterType = Parameter::class;
   protected $parameterDataType = 'array';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -38,10 +41,16 @@ class Condition extends \Google\Collection
   {
     return $this->parameter;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

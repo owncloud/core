@@ -21,8 +21,17 @@ class GoogleCloudContactcenterinsightsV1Analysis extends \Google\Model
 {
   protected $analysisResultType = GoogleCloudContactcenterinsightsV1AnalysisResult::class;
   protected $analysisResultDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $requestTime;
 
   /**
@@ -39,26 +48,44 @@ class GoogleCloudContactcenterinsightsV1Analysis extends \Google\Model
   {
     return $this->analysisResult;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRequestTime($requestTime)
   {
     $this->requestTime = $requestTime;
   }
+  /**
+   * @return string
+   */
   public function getRequestTime()
   {
     return $this->requestTime;

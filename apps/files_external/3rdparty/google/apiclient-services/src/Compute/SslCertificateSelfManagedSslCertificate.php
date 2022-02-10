@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class SslCertificateSelfManagedSslCertificate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certificate;
+  /**
+   * @var string
+   */
   public $privateKey;
 
+  /**
+   * @param string
+   */
   public function setCertificate($certificate)
   {
     $this->certificate = $certificate;
   }
+  /**
+   * @return string
+   */
   public function getCertificate()
   {
     return $this->certificate;
   }
+  /**
+   * @param string
+   */
   public function setPrivateKey($privateKey)
   {
     $this->privateKey = $privateKey;
   }
+  /**
+   * @return string
+   */
   public function getPrivateKey()
   {
     return $this->privateKey;

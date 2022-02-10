@@ -20,21 +20,39 @@ namespace Google\Service\Analytics;
 class EntityUserLinkPermissions extends \Google\Collection
 {
   protected $collection_key = 'local';
+  /**
+   * @var string[]
+   */
   public $effective;
+  /**
+   * @var string[]
+   */
   public $local;
 
+  /**
+   * @param string[]
+   */
   public function setEffective($effective)
   {
     $this->effective = $effective;
   }
+  /**
+   * @return string[]
+   */
   public function getEffective()
   {
     return $this->effective;
   }
+  /**
+   * @param string[]
+   */
   public function setLocal($local)
   {
     $this->local = $local;
   }
+  /**
+   * @return string[]
+   */
   public function getLocal()
   {
     return $this->local;

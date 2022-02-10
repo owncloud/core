@@ -20,21 +20,39 @@ namespace Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI;
 class ReconfigureTrustRequest extends \Google\Collection
 {
   protected $collection_key = 'targetDnsIpAddresses';
+  /**
+   * @var string[]
+   */
   public $targetDnsIpAddresses;
+  /**
+   * @var string
+   */
   public $targetDomainName;
 
+  /**
+   * @param string[]
+   */
   public function setTargetDnsIpAddresses($targetDnsIpAddresses)
   {
     $this->targetDnsIpAddresses = $targetDnsIpAddresses;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetDnsIpAddresses()
   {
     return $this->targetDnsIpAddresses;
   }
+  /**
+   * @param string
+   */
   public function setTargetDomainName($targetDomainName)
   {
     $this->targetDomainName = $targetDomainName;
   }
+  /**
+   * @return string
+   */
   public function getTargetDomainName()
   {
     return $this->targetDomainName;

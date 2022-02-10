@@ -19,45 +19,87 @@ namespace Google\Service\NetworkSecurity;
 
 class ServerTlsPolicy extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowOpen;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $mtlsPolicyType = MTLSPolicy::class;
   protected $mtlsPolicyDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $serverCertificateType = GoogleCloudNetworksecurityV1CertificateProvider::class;
   protected $serverCertificateDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param bool
+   */
   public function setAllowOpen($allowOpen)
   {
     $this->allowOpen = $allowOpen;
   }
+  /**
+   * @return bool
+   */
   public function getAllowOpen()
   {
     return $this->allowOpen;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -76,10 +118,16 @@ class ServerTlsPolicy extends \Google\Model
   {
     return $this->mtlsPolicy;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -98,10 +146,16 @@ class ServerTlsPolicy extends \Google\Model
   {
     return $this->serverCertificate;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

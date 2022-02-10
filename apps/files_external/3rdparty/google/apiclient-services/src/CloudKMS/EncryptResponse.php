@@ -19,57 +19,111 @@ namespace Google\Service\CloudKMS;
 
 class EncryptResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ciphertext;
+  /**
+   * @var string
+   */
   public $ciphertextCrc32c;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $protectionLevel;
+  /**
+   * @var bool
+   */
   public $verifiedAdditionalAuthenticatedDataCrc32c;
+  /**
+   * @var bool
+   */
   public $verifiedPlaintextCrc32c;
 
+  /**
+   * @param string
+   */
   public function setCiphertext($ciphertext)
   {
     $this->ciphertext = $ciphertext;
   }
+  /**
+   * @return string
+   */
   public function getCiphertext()
   {
     return $this->ciphertext;
   }
+  /**
+   * @param string
+   */
   public function setCiphertextCrc32c($ciphertextCrc32c)
   {
     $this->ciphertextCrc32c = $ciphertextCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getCiphertextCrc32c()
   {
     return $this->ciphertextCrc32c;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProtectionLevel($protectionLevel)
   {
     $this->protectionLevel = $protectionLevel;
   }
+  /**
+   * @return string
+   */
   public function getProtectionLevel()
   {
     return $this->protectionLevel;
   }
+  /**
+   * @param bool
+   */
   public function setVerifiedAdditionalAuthenticatedDataCrc32c($verifiedAdditionalAuthenticatedDataCrc32c)
   {
     $this->verifiedAdditionalAuthenticatedDataCrc32c = $verifiedAdditionalAuthenticatedDataCrc32c;
   }
+  /**
+   * @return bool
+   */
   public function getVerifiedAdditionalAuthenticatedDataCrc32c()
   {
     return $this->verifiedAdditionalAuthenticatedDataCrc32c;
   }
+  /**
+   * @param bool
+   */
   public function setVerifiedPlaintextCrc32c($verifiedPlaintextCrc32c)
   {
     $this->verifiedPlaintextCrc32c = $verifiedPlaintextCrc32c;
   }
+  /**
+   * @return bool
+   */
   public function getVerifiedPlaintextCrc32c()
   {
     return $this->verifiedPlaintextCrc32c;

@@ -19,16 +19,31 @@ namespace Google\Service\YouTube;
 
 class LiveChatBanSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $banDurationSeconds;
   protected $bannedUserDetailsType = ChannelProfileDetails::class;
   protected $bannedUserDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $liveChatId;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setBanDurationSeconds($banDurationSeconds)
   {
     $this->banDurationSeconds = $banDurationSeconds;
   }
+  /**
+   * @return string
+   */
   public function getBanDurationSeconds()
   {
     return $this->banDurationSeconds;
@@ -47,18 +62,30 @@ class LiveChatBanSnippet extends \Google\Model
   {
     return $this->bannedUserDetails;
   }
+  /**
+   * @param string
+   */
   public function setLiveChatId($liveChatId)
   {
     $this->liveChatId = $liveChatId;
   }
+  /**
+   * @return string
+   */
   public function getLiveChatId()
   {
     return $this->liveChatId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

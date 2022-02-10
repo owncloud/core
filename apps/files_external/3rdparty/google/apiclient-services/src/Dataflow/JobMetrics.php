@@ -20,14 +20,23 @@ namespace Google\Service\Dataflow;
 class JobMetrics extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var string
+   */
   public $metricTime;
   protected $metricsType = MetricUpdate::class;
   protected $metricsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setMetricTime($metricTime)
   {
     $this->metricTime = $metricTime;
   }
+  /**
+   * @return string
+   */
   public function getMetricTime()
   {
     return $this->metricTime;

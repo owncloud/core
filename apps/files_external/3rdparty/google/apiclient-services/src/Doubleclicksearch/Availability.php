@@ -19,57 +19,111 @@ namespace Google\Service\Doubleclicksearch;
 
 class Availability extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var string
+   */
   public $agencyId;
+  /**
+   * @var string
+   */
   public $availabilityTimestamp;
+  /**
+   * @var string
+   */
   public $segmentationId;
+  /**
+   * @var string
+   */
   public $segmentationName;
+  /**
+   * @var string
+   */
   public $segmentationType;
 
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param string
+   */
   public function setAgencyId($agencyId)
   {
     $this->agencyId = $agencyId;
   }
+  /**
+   * @return string
+   */
   public function getAgencyId()
   {
     return $this->agencyId;
   }
+  /**
+   * @param string
+   */
   public function setAvailabilityTimestamp($availabilityTimestamp)
   {
     $this->availabilityTimestamp = $availabilityTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getAvailabilityTimestamp()
   {
     return $this->availabilityTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setSegmentationId($segmentationId)
   {
     $this->segmentationId = $segmentationId;
   }
+  /**
+   * @return string
+   */
   public function getSegmentationId()
   {
     return $this->segmentationId;
   }
+  /**
+   * @param string
+   */
   public function setSegmentationName($segmentationName)
   {
     $this->segmentationName = $segmentationName;
   }
+  /**
+   * @return string
+   */
   public function getSegmentationName()
   {
     return $this->segmentationName;
   }
+  /**
+   * @param string
+   */
   public function setSegmentationType($segmentationType)
   {
     $this->segmentationType = $segmentationType;
   }
+  /**
+   * @return string
+   */
   public function getSegmentationType()
   {
     return $this->segmentationType;

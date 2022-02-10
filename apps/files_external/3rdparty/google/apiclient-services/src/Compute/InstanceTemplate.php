@@ -19,54 +19,105 @@ namespace Google\Service\Compute;
 
 class InstanceTemplate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $propertiesType = InstanceProperties::class;
   protected $propertiesDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $sourceInstance;
   protected $sourceInstanceParamsType = SourceInstanceParams::class;
   protected $sourceInstanceParamsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -85,18 +136,30 @@ class InstanceTemplate extends \Google\Model
   {
     return $this->properties;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setSourceInstance($sourceInstance)
   {
     $this->sourceInstance = $sourceInstance;
   }
+  /**
+   * @return string
+   */
   public function getSourceInstance()
   {
     return $this->sourceInstance;

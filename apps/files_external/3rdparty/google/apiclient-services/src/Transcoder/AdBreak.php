@@ -19,12 +19,21 @@ namespace Google\Service\Transcoder;
 
 class AdBreak extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $startTimeOffset;
 
+  /**
+   * @param string
+   */
   public function setStartTimeOffset($startTimeOffset)
   {
     $this->startTimeOffset = $startTimeOffset;
   }
+  /**
+   * @return string
+   */
   public function getStartTimeOffset()
   {
     return $this->startTimeOffset;

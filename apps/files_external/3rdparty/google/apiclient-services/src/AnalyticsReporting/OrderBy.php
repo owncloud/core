@@ -19,30 +19,57 @@ namespace Google\Service\AnalyticsReporting;
 
 class OrderBy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fieldName;
+  /**
+   * @var string
+   */
   public $orderType;
+  /**
+   * @var string
+   */
   public $sortOrder;
 
+  /**
+   * @param string
+   */
   public function setFieldName($fieldName)
   {
     $this->fieldName = $fieldName;
   }
+  /**
+   * @return string
+   */
   public function getFieldName()
   {
     return $this->fieldName;
   }
+  /**
+   * @param string
+   */
   public function setOrderType($orderType)
   {
     $this->orderType = $orderType;
   }
+  /**
+   * @return string
+   */
   public function getOrderType()
   {
     return $this->orderType;
   }
+  /**
+   * @param string
+   */
   public function setSortOrder($sortOrder)
   {
     $this->sortOrder = $sortOrder;
   }
+  /**
+   * @return string
+   */
   public function getSortOrder()
   {
     return $this->sortOrder;

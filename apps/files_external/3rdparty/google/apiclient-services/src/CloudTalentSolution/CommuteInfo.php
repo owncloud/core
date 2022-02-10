@@ -21,6 +21,9 @@ class CommuteInfo extends \Google\Model
 {
   protected $jobLocationType = Location::class;
   protected $jobLocationDataType = '';
+  /**
+   * @var string
+   */
   public $travelDuration;
 
   /**
@@ -37,10 +40,16 @@ class CommuteInfo extends \Google\Model
   {
     return $this->jobLocation;
   }
+  /**
+   * @param string
+   */
   public function setTravelDuration($travelDuration)
   {
     $this->travelDuration = $travelDuration;
   }
+  /**
+   * @return string
+   */
   public function getTravelDuration()
   {
     return $this->travelDuration;

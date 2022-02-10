@@ -19,21 +19,39 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p3beta1TextAnnotationDetectedLanguage extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $languageCode;
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;

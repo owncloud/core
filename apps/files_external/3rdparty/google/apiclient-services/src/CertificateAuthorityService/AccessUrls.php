@@ -20,21 +20,39 @@ namespace Google\Service\CertificateAuthorityService;
 class AccessUrls extends \Google\Collection
 {
   protected $collection_key = 'crlAccessUrls';
+  /**
+   * @var string
+   */
   public $caCertificateAccessUrl;
+  /**
+   * @var string[]
+   */
   public $crlAccessUrls;
 
+  /**
+   * @param string
+   */
   public function setCaCertificateAccessUrl($caCertificateAccessUrl)
   {
     $this->caCertificateAccessUrl = $caCertificateAccessUrl;
   }
+  /**
+   * @return string
+   */
   public function getCaCertificateAccessUrl()
   {
     return $this->caCertificateAccessUrl;
   }
+  /**
+   * @param string[]
+   */
   public function setCrlAccessUrls($crlAccessUrls)
   {
     $this->crlAccessUrls = $crlAccessUrls;
   }
+  /**
+   * @return string[]
+   */
   public function getCrlAccessUrls()
   {
     return $this->crlAccessUrls;

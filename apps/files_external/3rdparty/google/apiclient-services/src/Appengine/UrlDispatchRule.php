@@ -19,30 +19,57 @@ namespace Google\Service\Appengine;
 
 class UrlDispatchRule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $domain;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

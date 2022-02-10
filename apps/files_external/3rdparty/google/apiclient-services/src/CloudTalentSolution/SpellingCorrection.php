@@ -19,30 +19,57 @@ namespace Google\Service\CloudTalentSolution;
 
 class SpellingCorrection extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $corrected;
+  /**
+   * @var string
+   */
   public $correctedHtml;
+  /**
+   * @var string
+   */
   public $correctedText;
 
+  /**
+   * @param bool
+   */
   public function setCorrected($corrected)
   {
     $this->corrected = $corrected;
   }
+  /**
+   * @return bool
+   */
   public function getCorrected()
   {
     return $this->corrected;
   }
+  /**
+   * @param string
+   */
   public function setCorrectedHtml($correctedHtml)
   {
     $this->correctedHtml = $correctedHtml;
   }
+  /**
+   * @return string
+   */
   public function getCorrectedHtml()
   {
     return $this->correctedHtml;
   }
+  /**
+   * @param string
+   */
   public function setCorrectedText($correctedText)
   {
     $this->correctedText = $correctedText;
   }
+  /**
+   * @return string
+   */
   public function getCorrectedText()
   {
     return $this->correctedText;

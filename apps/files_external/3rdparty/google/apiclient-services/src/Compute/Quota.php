@@ -20,7 +20,13 @@ namespace Google\Service\Compute;
 class Quota extends \Google\Model
 {
   public $limit;
+  /**
+   * @var string
+   */
   public $metric;
+  /**
+   * @var string
+   */
   public $owner;
   public $usage;
 
@@ -32,18 +38,30 @@ class Quota extends \Google\Model
   {
     return $this->limit;
   }
+  /**
+   * @param string
+   */
   public function setMetric($metric)
   {
     $this->metric = $metric;
   }
+  /**
+   * @return string
+   */
   public function getMetric()
   {
     return $this->metric;
   }
+  /**
+   * @param string
+   */
   public function setOwner($owner)
   {
     $this->owner = $owner;
   }
+  /**
+   * @return string
+   */
   public function getOwner()
   {
     return $this->owner;

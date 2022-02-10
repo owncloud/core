@@ -19,14 +19,23 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2BigQueryKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rowNumber;
   protected $tableReferenceType = GooglePrivacyDlpV2BigQueryTable::class;
   protected $tableReferenceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setRowNumber($rowNumber)
   {
     $this->rowNumber = $rowNumber;
   }
+  /**
+   * @return string
+   */
   public function getRowNumber()
   {
     return $this->rowNumber;

@@ -20,66 +20,129 @@ namespace Google\Service\AdExperienceReport;
 class PlatformSummary extends \Google\Collection
 {
   protected $collection_key = 'region';
+  /**
+   * @var string
+   */
   public $betterAdsStatus;
+  /**
+   * @var string
+   */
   public $enforcementTime;
+  /**
+   * @var string
+   */
   public $filterStatus;
+  /**
+   * @var string
+   */
   public $lastChangeTime;
+  /**
+   * @var string[]
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $reportUrl;
+  /**
+   * @var bool
+   */
   public $underReview;
 
+  /**
+   * @param string
+   */
   public function setBetterAdsStatus($betterAdsStatus)
   {
     $this->betterAdsStatus = $betterAdsStatus;
   }
+  /**
+   * @return string
+   */
   public function getBetterAdsStatus()
   {
     return $this->betterAdsStatus;
   }
+  /**
+   * @param string
+   */
   public function setEnforcementTime($enforcementTime)
   {
     $this->enforcementTime = $enforcementTime;
   }
+  /**
+   * @return string
+   */
   public function getEnforcementTime()
   {
     return $this->enforcementTime;
   }
+  /**
+   * @param string
+   */
   public function setFilterStatus($filterStatus)
   {
     $this->filterStatus = $filterStatus;
   }
+  /**
+   * @return string
+   */
   public function getFilterStatus()
   {
     return $this->filterStatus;
   }
+  /**
+   * @param string
+   */
   public function setLastChangeTime($lastChangeTime)
   {
     $this->lastChangeTime = $lastChangeTime;
   }
+  /**
+   * @return string
+   */
   public function getLastChangeTime()
   {
     return $this->lastChangeTime;
   }
+  /**
+   * @param string[]
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string[]
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setReportUrl($reportUrl)
   {
     $this->reportUrl = $reportUrl;
   }
+  /**
+   * @return string
+   */
   public function getReportUrl()
   {
     return $this->reportUrl;
   }
+  /**
+   * @param bool
+   */
   public function setUnderReview($underReview)
   {
     $this->underReview = $underReview;
   }
+  /**
+   * @return bool
+   */
   public function getUnderReview()
   {
     return $this->underReview;

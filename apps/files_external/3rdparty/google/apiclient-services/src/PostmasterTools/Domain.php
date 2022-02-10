@@ -19,30 +19,57 @@ namespace Google\Service\PostmasterTools;
 
 class Domain extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $permission;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string
+   */
   public function getPermission()
   {
     return $this->permission;

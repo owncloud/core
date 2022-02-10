@@ -19,12 +19,21 @@ namespace Google\Service\AnalyticsData;
 
 class MetricOrderBy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $metricName;
 
+  /**
+   * @param string
+   */
   public function setMetricName($metricName)
   {
     $this->metricName = $metricName;
   }
+  /**
+   * @return string
+   */
   public function getMetricName()
   {
     return $this->metricName;

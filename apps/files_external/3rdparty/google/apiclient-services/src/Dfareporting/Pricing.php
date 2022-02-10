@@ -20,26 +20,53 @@ namespace Google\Service\Dfareporting;
 class Pricing extends \Google\Collection
 {
   protected $collection_key = 'flights';
+  /**
+   * @var string
+   */
   public $capCostType;
+  /**
+   * @var string
+   */
   public $endDate;
   protected $flightsType = Flight::class;
   protected $flightsDataType = 'array';
+  /**
+   * @var string
+   */
   public $groupType;
+  /**
+   * @var string
+   */
   public $pricingType;
+  /**
+   * @var string
+   */
   public $startDate;
 
+  /**
+   * @param string
+   */
   public function setCapCostType($capCostType)
   {
     $this->capCostType = $capCostType;
   }
+  /**
+   * @return string
+   */
   public function getCapCostType()
   {
     return $this->capCostType;
   }
+  /**
+   * @param string
+   */
   public function setEndDate($endDate)
   {
     $this->endDate = $endDate;
   }
+  /**
+   * @return string
+   */
   public function getEndDate()
   {
     return $this->endDate;
@@ -58,26 +85,44 @@ class Pricing extends \Google\Collection
   {
     return $this->flights;
   }
+  /**
+   * @param string
+   */
   public function setGroupType($groupType)
   {
     $this->groupType = $groupType;
   }
+  /**
+   * @return string
+   */
   public function getGroupType()
   {
     return $this->groupType;
   }
+  /**
+   * @param string
+   */
   public function setPricingType($pricingType)
   {
     $this->pricingType = $pricingType;
   }
+  /**
+   * @return string
+   */
   public function getPricingType()
   {
     return $this->pricingType;
   }
+  /**
+   * @param string
+   */
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
   }
+  /**
+   * @return string
+   */
   public function getStartDate()
   {
     return $this->startDate;

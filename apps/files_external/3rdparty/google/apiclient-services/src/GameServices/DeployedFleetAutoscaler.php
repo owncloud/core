@@ -19,23 +19,41 @@ namespace Google\Service\GameServices;
 
 class DeployedFleetAutoscaler extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $autoscaler;
+  /**
+   * @var string
+   */
   public $fleetAutoscalerSpec;
   protected $specSourceType = SpecSource::class;
   protected $specSourceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAutoscaler($autoscaler)
   {
     $this->autoscaler = $autoscaler;
   }
+  /**
+   * @return string
+   */
   public function getAutoscaler()
   {
     return $this->autoscaler;
   }
+  /**
+   * @param string
+   */
   public function setFleetAutoscalerSpec($fleetAutoscalerSpec)
   {
     $this->fleetAutoscalerSpec = $fleetAutoscalerSpec;
   }
+  /**
+   * @return string
+   */
   public function getFleetAutoscalerSpec()
   {
     return $this->fleetAutoscalerSpec;

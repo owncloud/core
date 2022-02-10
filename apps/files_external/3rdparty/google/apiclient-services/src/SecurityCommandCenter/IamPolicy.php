@@ -19,12 +19,21 @@ namespace Google\Service\SecurityCommandCenter;
 
 class IamPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $policyBlob;
 
+  /**
+   * @param string
+   */
   public function setPolicyBlob($policyBlob)
   {
     $this->policyBlob = $policyBlob;
   }
+  /**
+   * @return string
+   */
   public function getPolicyBlob()
   {
     return $this->policyBlob;

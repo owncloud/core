@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class InjectCredentialsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterUuid;
+  /**
+   * @var string
+   */
   public $credentialsCiphertext;
 
+  /**
+   * @param string
+   */
   public function setClusterUuid($clusterUuid)
   {
     $this->clusterUuid = $clusterUuid;
   }
+  /**
+   * @return string
+   */
   public function getClusterUuid()
   {
     return $this->clusterUuid;
   }
+  /**
+   * @param string
+   */
   public function setCredentialsCiphertext($credentialsCiphertext)
   {
     $this->credentialsCiphertext = $credentialsCiphertext;
   }
+  /**
+   * @return string
+   */
   public function getCredentialsCiphertext()
   {
     return $this->credentialsCiphertext;

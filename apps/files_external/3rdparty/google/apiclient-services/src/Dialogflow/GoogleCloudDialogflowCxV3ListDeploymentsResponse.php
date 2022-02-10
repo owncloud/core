@@ -22,6 +22,9 @@ class GoogleCloudDialogflowCxV3ListDeploymentsResponse extends \Google\Collectio
   protected $collection_key = 'deployments';
   protected $deploymentsType = GoogleCloudDialogflowCxV3Deployment::class;
   protected $deploymentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudDialogflowCxV3ListDeploymentsResponse extends \Google\Collectio
   {
     return $this->deployments;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

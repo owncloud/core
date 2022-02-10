@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class ProductApprovalEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $approved;
+  /**
+   * @var string
+   */
   public $productId;
 
+  /**
+   * @param string
+   */
   public function setApproved($approved)
   {
     $this->approved = $approved;
   }
+  /**
+   * @return string
+   */
   public function getApproved()
   {
     return $this->approved;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;

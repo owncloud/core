@@ -19,30 +19,57 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta3HumanReviewStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $humanReviewOperation;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $stateMessage;
 
+  /**
+   * @param string
+   */
   public function setHumanReviewOperation($humanReviewOperation)
   {
     $this->humanReviewOperation = $humanReviewOperation;
   }
+  /**
+   * @return string
+   */
   public function getHumanReviewOperation()
   {
     return $this->humanReviewOperation;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStateMessage($stateMessage)
   {
     $this->stateMessage = $stateMessage;
   }
+  /**
+   * @return string
+   */
   public function getStateMessage()
   {
     return $this->stateMessage;

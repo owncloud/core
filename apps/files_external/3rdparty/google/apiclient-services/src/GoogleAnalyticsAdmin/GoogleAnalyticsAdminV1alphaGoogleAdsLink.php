@@ -19,66 +19,129 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 
 class GoogleAnalyticsAdminV1alphaGoogleAdsLink extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $adsPersonalizationEnabled;
+  /**
+   * @var bool
+   */
   public $canManageClients;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $creatorEmailAddress;
+  /**
+   * @var string
+   */
   public $customerId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param bool
+   */
   public function setAdsPersonalizationEnabled($adsPersonalizationEnabled)
   {
     $this->adsPersonalizationEnabled = $adsPersonalizationEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getAdsPersonalizationEnabled()
   {
     return $this->adsPersonalizationEnabled;
   }
+  /**
+   * @param bool
+   */
   public function setCanManageClients($canManageClients)
   {
     $this->canManageClients = $canManageClients;
   }
+  /**
+   * @return bool
+   */
   public function getCanManageClients()
   {
     return $this->canManageClients;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setCreatorEmailAddress($creatorEmailAddress)
   {
     $this->creatorEmailAddress = $creatorEmailAddress;
   }
+  /**
+   * @return string
+   */
   public function getCreatorEmailAddress()
   {
     return $this->creatorEmailAddress;
   }
+  /**
+   * @param string
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerId()
   {
     return $this->customerId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

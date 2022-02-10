@@ -20,32 +20,59 @@ namespace Google\Service\Digitalassetlinks;
 class ListResponse extends \Google\Collection
 {
   protected $collection_key = 'statements';
+  /**
+   * @var string
+   */
   public $debugString;
+  /**
+   * @var string[]
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $maxAge;
   protected $statementsType = Statement::class;
   protected $statementsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDebugString($debugString)
   {
     $this->debugString = $debugString;
   }
+  /**
+   * @return string
+   */
   public function getDebugString()
   {
     return $this->debugString;
   }
+  /**
+   * @param string[]
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string[]
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setMaxAge($maxAge)
   {
     $this->maxAge = $maxAge;
   }
+  /**
+   * @return string
+   */
   public function getMaxAge()
   {
     return $this->maxAge;

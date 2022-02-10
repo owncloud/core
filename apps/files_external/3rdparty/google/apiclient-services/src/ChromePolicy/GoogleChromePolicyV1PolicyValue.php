@@ -19,21 +19,39 @@ namespace Google\Service\ChromePolicy;
 
 class GoogleChromePolicyV1PolicyValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $policySchema;
+  /**
+   * @var array[]
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setPolicySchema($policySchema)
   {
     $this->policySchema = $policySchema;
   }
+  /**
+   * @return string
+   */
   public function getPolicySchema()
   {
     return $this->policySchema;
   }
+  /**
+   * @param array[]
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array[]
+   */
   public function getValue()
   {
     return $this->value;

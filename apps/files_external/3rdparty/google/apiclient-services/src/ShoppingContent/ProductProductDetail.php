@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class ProductProductDetail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $attributeName;
+  /**
+   * @var string
+   */
   public $attributeValue;
+  /**
+   * @var string
+   */
   public $sectionName;
 
+  /**
+   * @param string
+   */
   public function setAttributeName($attributeName)
   {
     $this->attributeName = $attributeName;
   }
+  /**
+   * @return string
+   */
   public function getAttributeName()
   {
     return $this->attributeName;
   }
+  /**
+   * @param string
+   */
   public function setAttributeValue($attributeValue)
   {
     $this->attributeValue = $attributeValue;
   }
+  /**
+   * @return string
+   */
   public function getAttributeValue()
   {
     return $this->attributeValue;
   }
+  /**
+   * @param string
+   */
   public function setSectionName($sectionName)
   {
     $this->sectionName = $sectionName;
   }
+  /**
+   * @return string
+   */
   public function getSectionName()
   {
     return $this->sectionName;

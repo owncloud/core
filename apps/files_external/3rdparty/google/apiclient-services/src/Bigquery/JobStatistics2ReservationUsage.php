@@ -19,21 +19,39 @@ namespace Google\Service\Bigquery;
 
 class JobStatistics2ReservationUsage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $slotMs;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSlotMs($slotMs)
   {
     $this->slotMs = $slotMs;
   }
+  /**
+   * @return string
+   */
   public function getSlotMs()
   {
     return $this->slotMs;

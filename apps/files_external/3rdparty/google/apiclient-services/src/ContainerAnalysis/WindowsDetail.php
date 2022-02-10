@@ -20,24 +20,45 @@ namespace Google\Service\ContainerAnalysis;
 class WindowsDetail extends \Google\Collection
 {
   protected $collection_key = 'fixingKbs';
+  /**
+   * @var string
+   */
   public $cpeUri;
+  /**
+   * @var string
+   */
   public $description;
   protected $fixingKbsType = KnowledgeBase::class;
   protected $fixingKbsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setCpeUri($cpeUri)
   {
     $this->cpeUri = $cpeUri;
   }
+  /**
+   * @return string
+   */
   public function getCpeUri()
   {
     return $this->cpeUri;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -56,10 +77,16 @@ class WindowsDetail extends \Google\Collection
   {
     return $this->fixingKbs;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

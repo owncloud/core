@@ -20,30 +20,57 @@ namespace Google\Service\DoubleClickBidManager;
 class PathQueryOptionsFilter extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string
+   */
   public $match;
+  /**
+   * @var string[]
+   */
   public $values;
 
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string
+   */
   public function setMatch($match)
   {
     $this->match = $match;
   }
+  /**
+   * @return string
+   */
   public function getMatch()
   {
     return $this->match;
   }
+  /**
+   * @param string[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return string[]
+   */
   public function getValues()
   {
     return $this->values;

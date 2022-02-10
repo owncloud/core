@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class Dimensions extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $heightPixels;
+  /**
+   * @var int
+   */
   public $widthPixels;
 
+  /**
+   * @param int
+   */
   public function setHeightPixels($heightPixels)
   {
     $this->heightPixels = $heightPixels;
   }
+  /**
+   * @return int
+   */
   public function getHeightPixels()
   {
     return $this->heightPixels;
   }
+  /**
+   * @param int
+   */
   public function setWidthPixels($widthPixels)
   {
     $this->widthPixels = $widthPixels;
   }
+  /**
+   * @return int
+   */
   public function getWidthPixels()
   {
     return $this->widthPixels;

@@ -19,39 +19,75 @@ namespace Google\Service\Transcoder;
 
 class Pad extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $bottomPixels;
+  /**
+   * @var int
+   */
   public $leftPixels;
+  /**
+   * @var int
+   */
   public $rightPixels;
+  /**
+   * @var int
+   */
   public $topPixels;
 
+  /**
+   * @param int
+   */
   public function setBottomPixels($bottomPixels)
   {
     $this->bottomPixels = $bottomPixels;
   }
+  /**
+   * @return int
+   */
   public function getBottomPixels()
   {
     return $this->bottomPixels;
   }
+  /**
+   * @param int
+   */
   public function setLeftPixels($leftPixels)
   {
     $this->leftPixels = $leftPixels;
   }
+  /**
+   * @return int
+   */
   public function getLeftPixels()
   {
     return $this->leftPixels;
   }
+  /**
+   * @param int
+   */
   public function setRightPixels($rightPixels)
   {
     $this->rightPixels = $rightPixels;
   }
+  /**
+   * @return int
+   */
   public function getRightPixels()
   {
     return $this->rightPixels;
   }
+  /**
+   * @param int
+   */
   public function setTopPixels($topPixels)
   {
     $this->topPixels = $topPixels;
   }
+  /**
+   * @return int
+   */
   public function getTopPixels()
   {
     return $this->topPixels;

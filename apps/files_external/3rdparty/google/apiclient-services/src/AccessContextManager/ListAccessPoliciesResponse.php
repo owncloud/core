@@ -22,6 +22,9 @@ class ListAccessPoliciesResponse extends \Google\Collection
   protected $collection_key = 'accessPolicies';
   protected $accessPoliciesType = AccessPolicy::class;
   protected $accessPoliciesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListAccessPoliciesResponse extends \Google\Collection
   {
     return $this->accessPolicies;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

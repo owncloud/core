@@ -20,16 +20,25 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3TransitionRouteGroupCoverageCoverage extends \Google\Collection
 {
   protected $collection_key = 'transitions';
+  /**
+   * @var float
+   */
   public $coverageScore;
   protected $routeGroupType = GoogleCloudDialogflowCxV3TransitionRouteGroup::class;
   protected $routeGroupDataType = '';
   protected $transitionsType = GoogleCloudDialogflowCxV3TransitionRouteGroupCoverageCoverageTransition::class;
   protected $transitionsDataType = 'array';
 
+  /**
+   * @param float
+   */
   public function setCoverageScore($coverageScore)
   {
     $this->coverageScore = $coverageScore;
   }
+  /**
+   * @return float
+   */
   public function getCoverageScore()
   {
     return $this->coverageScore;

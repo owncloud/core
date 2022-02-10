@@ -19,14 +19,23 @@ namespace Google\Service\Spanner;
 
 class BatchCreateSessionsRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $sessionCount;
   protected $sessionTemplateType = Session::class;
   protected $sessionTemplateDataType = '';
 
+  /**
+   * @param int
+   */
   public function setSessionCount($sessionCount)
   {
     $this->sessionCount = $sessionCount;
   }
+  /**
+   * @return int
+   */
   public function getSessionCount()
   {
     return $this->sessionCount;

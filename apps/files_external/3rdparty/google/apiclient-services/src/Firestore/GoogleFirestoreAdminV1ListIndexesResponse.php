@@ -22,6 +22,9 @@ class GoogleFirestoreAdminV1ListIndexesResponse extends \Google\Collection
   protected $collection_key = 'indexes';
   protected $indexesType = GoogleFirestoreAdminV1Index::class;
   protected $indexesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleFirestoreAdminV1ListIndexesResponse extends \Google\Collection
   {
     return $this->indexes;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

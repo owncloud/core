@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class FailoverContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $settingsVersion;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setSettingsVersion($settingsVersion)
   {
     $this->settingsVersion = $settingsVersion;
   }
+  /**
+   * @return string
+   */
   public function getSettingsVersion()
   {
     return $this->settingsVersion;

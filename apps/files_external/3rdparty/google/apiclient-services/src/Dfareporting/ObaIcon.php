@@ -19,52 +19,103 @@ namespace Google\Service\Dfareporting;
 
 class ObaIcon extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $iconClickThroughUrl;
+  /**
+   * @var string
+   */
   public $iconClickTrackingUrl;
+  /**
+   * @var string
+   */
   public $iconViewTrackingUrl;
+  /**
+   * @var string
+   */
   public $program;
+  /**
+   * @var string
+   */
   public $resourceUrl;
   protected $sizeType = Size::class;
   protected $sizeDataType = '';
+  /**
+   * @var string
+   */
   public $xPosition;
+  /**
+   * @var string
+   */
   public $yPosition;
 
+  /**
+   * @param string
+   */
   public function setIconClickThroughUrl($iconClickThroughUrl)
   {
     $this->iconClickThroughUrl = $iconClickThroughUrl;
   }
+  /**
+   * @return string
+   */
   public function getIconClickThroughUrl()
   {
     return $this->iconClickThroughUrl;
   }
+  /**
+   * @param string
+   */
   public function setIconClickTrackingUrl($iconClickTrackingUrl)
   {
     $this->iconClickTrackingUrl = $iconClickTrackingUrl;
   }
+  /**
+   * @return string
+   */
   public function getIconClickTrackingUrl()
   {
     return $this->iconClickTrackingUrl;
   }
+  /**
+   * @param string
+   */
   public function setIconViewTrackingUrl($iconViewTrackingUrl)
   {
     $this->iconViewTrackingUrl = $iconViewTrackingUrl;
   }
+  /**
+   * @return string
+   */
   public function getIconViewTrackingUrl()
   {
     return $this->iconViewTrackingUrl;
   }
+  /**
+   * @param string
+   */
   public function setProgram($program)
   {
     $this->program = $program;
   }
+  /**
+   * @return string
+   */
   public function getProgram()
   {
     return $this->program;
   }
+  /**
+   * @param string
+   */
   public function setResourceUrl($resourceUrl)
   {
     $this->resourceUrl = $resourceUrl;
   }
+  /**
+   * @return string
+   */
   public function getResourceUrl()
   {
     return $this->resourceUrl;
@@ -83,18 +134,30 @@ class ObaIcon extends \Google\Model
   {
     return $this->size;
   }
+  /**
+   * @param string
+   */
   public function setXPosition($xPosition)
   {
     $this->xPosition = $xPosition;
   }
+  /**
+   * @return string
+   */
   public function getXPosition()
   {
     return $this->xPosition;
   }
+  /**
+   * @param string
+   */
   public function setYPosition($yPosition)
   {
     $this->yPosition = $yPosition;
   }
+  /**
+   * @return string
+   */
   public function getYPosition()
   {
     return $this->yPosition;

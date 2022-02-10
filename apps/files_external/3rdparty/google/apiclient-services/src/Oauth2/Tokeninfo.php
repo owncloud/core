@@ -25,66 +25,129 @@ class Tokeninfo extends \Google\Model
         "userId" => "user_id",
         "verifiedEmail" => "verified_email",
   ];
+  /**
+   * @var string
+   */
   public $audience;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var int
+   */
   public $expiresIn;
+  /**
+   * @var string
+   */
   public $issuedTo;
+  /**
+   * @var string
+   */
   public $scope;
+  /**
+   * @var string
+   */
   public $userId;
+  /**
+   * @var bool
+   */
   public $verifiedEmail;
 
+  /**
+   * @param string
+   */
   public function setAudience($audience)
   {
     $this->audience = $audience;
   }
+  /**
+   * @return string
+   */
   public function getAudience()
   {
     return $this->audience;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param int
+   */
   public function setExpiresIn($expiresIn)
   {
     $this->expiresIn = $expiresIn;
   }
+  /**
+   * @return int
+   */
   public function getExpiresIn()
   {
     return $this->expiresIn;
   }
+  /**
+   * @param string
+   */
   public function setIssuedTo($issuedTo)
   {
     $this->issuedTo = $issuedTo;
   }
+  /**
+   * @return string
+   */
   public function getIssuedTo()
   {
     return $this->issuedTo;
   }
+  /**
+   * @param string
+   */
   public function setScope($scope)
   {
     $this->scope = $scope;
   }
+  /**
+   * @return string
+   */
   public function getScope()
   {
     return $this->scope;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;
   }
+  /**
+   * @param bool
+   */
   public function setVerifiedEmail($verifiedEmail)
   {
     $this->verifiedEmail = $verifiedEmail;
   }
+  /**
+   * @return bool
+   */
   public function getVerifiedEmail()
   {
     return $this->verifiedEmail;

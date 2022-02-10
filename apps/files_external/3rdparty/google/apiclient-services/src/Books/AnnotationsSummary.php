@@ -20,14 +20,23 @@ namespace Google\Service\Books;
 class AnnotationsSummary extends \Google\Collection
 {
   protected $collection_key = 'layers';
+  /**
+   * @var string
+   */
   public $kind;
   protected $layersType = AnnotationsSummaryLayers::class;
   protected $layersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

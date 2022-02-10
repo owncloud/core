@@ -21,7 +21,13 @@ class UpdateRowRequest extends \Google\Model
 {
   protected $rowType = Row::class;
   protected $rowDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
+  /**
+   * @var string
+   */
   public $view;
 
   /**
@@ -38,18 +44,30 @@ class UpdateRowRequest extends \Google\Model
   {
     return $this->row;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;
   }
+  /**
+   * @param string
+   */
   public function setView($view)
   {
     $this->view = $view;
   }
+  /**
+   * @return string
+   */
   public function getView()
   {
     return $this->view;

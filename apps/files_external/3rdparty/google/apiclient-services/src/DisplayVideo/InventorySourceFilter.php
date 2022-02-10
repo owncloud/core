@@ -20,12 +20,21 @@ namespace Google\Service\DisplayVideo;
 class InventorySourceFilter extends \Google\Collection
 {
   protected $collection_key = 'inventorySourceIds';
+  /**
+   * @var string[]
+   */
   public $inventorySourceIds;
 
+  /**
+   * @param string[]
+   */
   public function setInventorySourceIds($inventorySourceIds)
   {
     $this->inventorySourceIds = $inventorySourceIds;
   }
+  /**
+   * @return string[]
+   */
   public function getInventorySourceIds()
   {
     return $this->inventorySourceIds;

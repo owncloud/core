@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class GraphicsStatsBucket extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $frameCount;
+  /**
+   * @var string
+   */
   public $renderMillis;
 
+  /**
+   * @param string
+   */
   public function setFrameCount($frameCount)
   {
     $this->frameCount = $frameCount;
   }
+  /**
+   * @return string
+   */
   public function getFrameCount()
   {
     return $this->frameCount;
   }
+  /**
+   * @param string
+   */
   public function setRenderMillis($renderMillis)
   {
     $this->renderMillis = $renderMillis;
   }
+  /**
+   * @return string
+   */
   public function getRenderMillis()
   {
     return $this->renderMillis;

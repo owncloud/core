@@ -22,10 +22,19 @@ class GoogleCloudVisionV1p2beta1WebDetectionWebPage extends \Google\Collection
   protected $collection_key = 'partialMatchingImages';
   protected $fullMatchingImagesType = GoogleCloudVisionV1p2beta1WebDetectionWebImage::class;
   protected $fullMatchingImagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $pageTitle;
   protected $partialMatchingImagesType = GoogleCloudVisionV1p2beta1WebDetectionWebImage::class;
   protected $partialMatchingImagesDataType = 'array';
+  /**
+   * @var float
+   */
   public $score;
+  /**
+   * @var string
+   */
   public $url;
 
   /**
@@ -42,10 +51,16 @@ class GoogleCloudVisionV1p2beta1WebDetectionWebPage extends \Google\Collection
   {
     return $this->fullMatchingImages;
   }
+  /**
+   * @param string
+   */
   public function setPageTitle($pageTitle)
   {
     $this->pageTitle = $pageTitle;
   }
+  /**
+   * @return string
+   */
   public function getPageTitle()
   {
     return $this->pageTitle;
@@ -64,18 +79,30 @@ class GoogleCloudVisionV1p2beta1WebDetectionWebPage extends \Google\Collection
   {
     return $this->partialMatchingImages;
   }
+  /**
+   * @param float
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return float
+   */
   public function getScore()
   {
     return $this->score;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

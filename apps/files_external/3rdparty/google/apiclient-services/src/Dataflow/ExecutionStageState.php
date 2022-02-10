@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class ExecutionStageState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currentStateTime;
+  /**
+   * @var string
+   */
   public $executionStageName;
+  /**
+   * @var string
+   */
   public $executionStageState;
 
+  /**
+   * @param string
+   */
   public function setCurrentStateTime($currentStateTime)
   {
     $this->currentStateTime = $currentStateTime;
   }
+  /**
+   * @return string
+   */
   public function getCurrentStateTime()
   {
     return $this->currentStateTime;
   }
+  /**
+   * @param string
+   */
   public function setExecutionStageName($executionStageName)
   {
     $this->executionStageName = $executionStageName;
   }
+  /**
+   * @return string
+   */
   public function getExecutionStageName()
   {
     return $this->executionStageName;
   }
+  /**
+   * @param string
+   */
   public function setExecutionStageState($executionStageState)
   {
     $this->executionStageState = $executionStageState;
   }
+  /**
+   * @return string
+   */
   public function getExecutionStageState()
   {
     return $this->executionStageState;

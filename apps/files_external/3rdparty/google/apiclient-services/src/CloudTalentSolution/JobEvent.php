@@ -20,21 +20,39 @@ namespace Google\Service\CloudTalentSolution;
 class JobEvent extends \Google\Collection
 {
   protected $collection_key = 'jobs';
+  /**
+   * @var string[]
+   */
   public $jobs;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setJobs($jobs)
   {
     $this->jobs = $jobs;
   }
+  /**
+   * @return string[]
+   */
   public function getJobs()
   {
     return $this->jobs;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

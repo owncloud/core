@@ -22,20 +22,53 @@ class Certificate extends \Google\Collection
   protected $collection_key = 'pemCertificateChain';
   protected $certificateDescriptionType = CertificateDescription::class;
   protected $certificateDescriptionDataType = '';
+  /**
+   * @var string
+   */
   public $certificateTemplate;
   protected $configType = CertificateConfig::class;
   protected $configDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $issuerCertificateAuthority;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $lifetime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $pemCertificate;
+  /**
+   * @var string[]
+   */
   public $pemCertificateChain;
+  /**
+   * @var string
+   */
   public $pemCsr;
   protected $revocationDetailsType = RevocationDetails::class;
   protected $revocationDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $subjectMode;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -52,10 +85,16 @@ class Certificate extends \Google\Collection
   {
     return $this->certificateDescription;
   }
+  /**
+   * @param string
+   */
   public function setCertificateTemplate($certificateTemplate)
   {
     $this->certificateTemplate = $certificateTemplate;
   }
+  /**
+   * @return string
+   */
   public function getCertificateTemplate()
   {
     return $this->certificateTemplate;
@@ -74,66 +113,114 @@ class Certificate extends \Google\Collection
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setIssuerCertificateAuthority($issuerCertificateAuthority)
   {
     $this->issuerCertificateAuthority = $issuerCertificateAuthority;
   }
+  /**
+   * @return string
+   */
   public function getIssuerCertificateAuthority()
   {
     return $this->issuerCertificateAuthority;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLifetime($lifetime)
   {
     $this->lifetime = $lifetime;
   }
+  /**
+   * @return string
+   */
   public function getLifetime()
   {
     return $this->lifetime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPemCertificate($pemCertificate)
   {
     $this->pemCertificate = $pemCertificate;
   }
+  /**
+   * @return string
+   */
   public function getPemCertificate()
   {
     return $this->pemCertificate;
   }
+  /**
+   * @param string[]
+   */
   public function setPemCertificateChain($pemCertificateChain)
   {
     $this->pemCertificateChain = $pemCertificateChain;
   }
+  /**
+   * @return string[]
+   */
   public function getPemCertificateChain()
   {
     return $this->pemCertificateChain;
   }
+  /**
+   * @param string
+   */
   public function setPemCsr($pemCsr)
   {
     $this->pemCsr = $pemCsr;
   }
+  /**
+   * @return string
+   */
   public function getPemCsr()
   {
     return $this->pemCsr;
@@ -152,18 +239,30 @@ class Certificate extends \Google\Collection
   {
     return $this->revocationDetails;
   }
+  /**
+   * @param string
+   */
   public function setSubjectMode($subjectMode)
   {
     $this->subjectMode = $subjectMode;
   }
+  /**
+   * @return string
+   */
   public function getSubjectMode()
   {
     return $this->subjectMode;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

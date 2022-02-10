@@ -19,21 +19,39 @@ namespace Google\Service\Calendar;
 
 class ColorDefinition extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $background;
+  /**
+   * @var string
+   */
   public $foreground;
 
+  /**
+   * @param string
+   */
   public function setBackground($background)
   {
     $this->background = $background;
   }
+  /**
+   * @return string
+   */
   public function getBackground()
   {
     return $this->background;
   }
+  /**
+   * @param string
+   */
   public function setForeground($foreground)
   {
     $this->foreground = $foreground;
   }
+  /**
+   * @return string
+   */
   public function getForeground()
   {
     return $this->foreground;

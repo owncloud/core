@@ -19,23 +19,41 @@ namespace Google\Service\CloudSourceRepositories;
 
 class ProjectConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enablePrivateKeyCheck;
+  /**
+   * @var string
+   */
   public $name;
   protected $pubsubConfigsType = PubsubConfig::class;
   protected $pubsubConfigsDataType = 'map';
 
+  /**
+   * @param bool
+   */
   public function setEnablePrivateKeyCheck($enablePrivateKeyCheck)
   {
     $this->enablePrivateKeyCheck = $enablePrivateKeyCheck;
   }
+  /**
+   * @return bool
+   */
   public function getEnablePrivateKeyCheck()
   {
     return $this->enablePrivateKeyCheck;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

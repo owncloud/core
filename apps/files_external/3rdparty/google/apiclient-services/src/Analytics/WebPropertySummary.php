@@ -20,52 +20,103 @@ namespace Google\Service\Analytics;
 class WebPropertySummary extends \Google\Collection
 {
   protected $collection_key = 'profiles';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $internalWebPropertyId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $level;
+  /**
+   * @var string
+   */
   public $name;
   protected $profilesType = ProfileSummary::class;
   protected $profilesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $starred;
+  /**
+   * @var string
+   */
   public $websiteUrl;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setInternalWebPropertyId($internalWebPropertyId)
   {
     $this->internalWebPropertyId = $internalWebPropertyId;
   }
+  /**
+   * @return string
+   */
   public function getInternalWebPropertyId()
   {
     return $this->internalWebPropertyId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLevel($level)
   {
     $this->level = $level;
   }
+  /**
+   * @return string
+   */
   public function getLevel()
   {
     return $this->level;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -84,18 +135,30 @@ class WebPropertySummary extends \Google\Collection
   {
     return $this->profiles;
   }
+  /**
+   * @param bool
+   */
   public function setStarred($starred)
   {
     $this->starred = $starred;
   }
+  /**
+   * @return bool
+   */
   public function getStarred()
   {
     return $this->starred;
   }
+  /**
+   * @param string
+   */
   public function setWebsiteUrl($websiteUrl)
   {
     $this->websiteUrl = $websiteUrl;
   }
+  /**
+   * @return string
+   */
   public function getWebsiteUrl()
   {
     return $this->websiteUrl;

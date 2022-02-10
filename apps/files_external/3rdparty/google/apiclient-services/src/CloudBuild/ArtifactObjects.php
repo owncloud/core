@@ -20,23 +20,41 @@ namespace Google\Service\CloudBuild;
 class ArtifactObjects extends \Google\Collection
 {
   protected $collection_key = 'paths';
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string[]
+   */
   public $paths;
   protected $timingType = TimeSpan::class;
   protected $timingDataType = '';
 
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string[]
+   */
   public function setPaths($paths)
   {
     $this->paths = $paths;
   }
+  /**
+   * @return string[]
+   */
   public function getPaths()
   {
     return $this->paths;

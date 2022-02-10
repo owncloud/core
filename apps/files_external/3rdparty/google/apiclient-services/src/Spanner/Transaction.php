@@ -19,21 +19,39 @@ namespace Google\Service\Spanner;
 
 class Transaction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $readTimestamp;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setReadTimestamp($readTimestamp)
   {
     $this->readTimestamp = $readTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getReadTimestamp()
   {
     return $this->readTimestamp;

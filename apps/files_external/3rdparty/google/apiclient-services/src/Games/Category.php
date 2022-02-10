@@ -19,30 +19,57 @@ namespace Google\Service\Games;
 
 class Category extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $category;
+  /**
+   * @var string
+   */
   public $experiencePoints;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
   }
+  /**
+   * @param string
+   */
   public function setExperiencePoints($experiencePoints)
   {
     $this->experiencePoints = $experiencePoints;
   }
+  /**
+   * @return string
+   */
   public function getExperiencePoints()
   {
     return $this->experiencePoints;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

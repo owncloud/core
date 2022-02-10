@@ -19,21 +19,39 @@ namespace Google\Service\TagManager;
 
 class ContainerAccess extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $containerId;
+  /**
+   * @var string
+   */
   public $permission;
 
+  /**
+   * @param string
+   */
   public function setContainerId($containerId)
   {
     $this->containerId = $containerId;
   }
+  /**
+   * @return string
+   */
   public function getContainerId()
   {
     return $this->containerId;
   }
+  /**
+   * @param string
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string
+   */
   public function getPermission()
   {
     return $this->permission;

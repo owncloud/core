@@ -19,21 +19,39 @@ namespace Google\Service\Genomics;
 
 class Secret extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cipherText;
+  /**
+   * @var string
+   */
   public $keyName;
 
+  /**
+   * @param string
+   */
   public function setCipherText($cipherText)
   {
     $this->cipherText = $cipherText;
   }
+  /**
+   * @return string
+   */
   public function getCipherText()
   {
     return $this->cipherText;
   }
+  /**
+   * @param string
+   */
   public function setKeyName($keyName)
   {
     $this->keyName = $keyName;
   }
+  /**
+   * @return string
+   */
   public function getKeyName()
   {
     return $this->keyName;

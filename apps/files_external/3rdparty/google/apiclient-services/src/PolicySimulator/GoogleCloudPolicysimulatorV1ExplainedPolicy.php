@@ -20,18 +20,33 @@ namespace Google\Service\PolicySimulator;
 class GoogleCloudPolicysimulatorV1ExplainedPolicy extends \Google\Collection
 {
   protected $collection_key = 'bindingExplanations';
+  /**
+   * @var string
+   */
   public $access;
   protected $bindingExplanationsType = GoogleCloudPolicysimulatorV1BindingExplanation::class;
   protected $bindingExplanationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $fullResourceName;
   protected $policyType = GoogleIamV1Policy::class;
   protected $policyDataType = '';
+  /**
+   * @var string
+   */
   public $relevance;
 
+  /**
+   * @param string
+   */
   public function setAccess($access)
   {
     $this->access = $access;
   }
+  /**
+   * @return string
+   */
   public function getAccess()
   {
     return $this->access;
@@ -50,10 +65,16 @@ class GoogleCloudPolicysimulatorV1ExplainedPolicy extends \Google\Collection
   {
     return $this->bindingExplanations;
   }
+  /**
+   * @param string
+   */
   public function setFullResourceName($fullResourceName)
   {
     $this->fullResourceName = $fullResourceName;
   }
+  /**
+   * @return string
+   */
   public function getFullResourceName()
   {
     return $this->fullResourceName;
@@ -72,10 +93,16 @@ class GoogleCloudPolicysimulatorV1ExplainedPolicy extends \Google\Collection
   {
     return $this->policy;
   }
+  /**
+   * @param string
+   */
   public function setRelevance($relevance)
   {
     $this->relevance = $relevance;
   }
+  /**
+   * @return string
+   */
   public function getRelevance()
   {
     return $this->relevance;

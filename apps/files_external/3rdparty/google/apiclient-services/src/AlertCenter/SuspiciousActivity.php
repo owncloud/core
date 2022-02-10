@@ -20,14 +20,23 @@ namespace Google\Service\AlertCenter;
 class SuspiciousActivity extends \Google\Collection
 {
   protected $collection_key = 'events';
+  /**
+   * @var string
+   */
   public $email;
   protected $eventsType = SuspiciousActivitySecurityDetail::class;
   protected $eventsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;

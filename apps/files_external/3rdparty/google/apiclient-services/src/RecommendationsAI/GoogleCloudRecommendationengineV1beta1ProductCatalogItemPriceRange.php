@@ -19,21 +19,39 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1ProductCatalogItemPriceRange extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $max;
+  /**
+   * @var float
+   */
   public $min;
 
+  /**
+   * @param float
+   */
   public function setMax($max)
   {
     $this->max = $max;
   }
+  /**
+   * @return float
+   */
   public function getMax()
   {
     return $this->max;
   }
+  /**
+   * @param float
+   */
   public function setMin($min)
   {
     $this->min = $min;
   }
+  /**
+   * @return float
+   */
   public function getMin()
   {
     return $this->min;

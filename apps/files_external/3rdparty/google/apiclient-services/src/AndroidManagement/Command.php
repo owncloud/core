@@ -20,66 +20,129 @@ namespace Google\Service\AndroidManagement;
 class Command extends \Google\Collection
 {
   protected $collection_key = 'resetPasswordFlags';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $newPassword;
+  /**
+   * @var string[]
+   */
   public $resetPasswordFlags;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $userName;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setNewPassword($newPassword)
   {
     $this->newPassword = $newPassword;
   }
+  /**
+   * @return string
+   */
   public function getNewPassword()
   {
     return $this->newPassword;
   }
+  /**
+   * @param string[]
+   */
   public function setResetPasswordFlags($resetPasswordFlags)
   {
     $this->resetPasswordFlags = $resetPasswordFlags;
   }
+  /**
+   * @return string[]
+   */
   public function getResetPasswordFlags()
   {
     return $this->resetPasswordFlags;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUserName($userName)
   {
     $this->userName = $userName;
   }
+  /**
+   * @return string
+   */
   public function getUserName()
   {
     return $this->userName;

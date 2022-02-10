@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class ExchangeReviewStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exchange;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setExchange($exchange)
   {
     $this->exchange = $exchange;
   }
+  /**
+   * @return string
+   */
   public function getExchange()
   {
     return $this->exchange;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

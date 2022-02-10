@@ -20,15 +20,27 @@ namespace Google\Service\Spanner;
 class CreateDatabaseRequest extends \Google\Collection
 {
   protected $collection_key = 'extraStatements';
+  /**
+   * @var string
+   */
   public $createStatement;
   protected $encryptionConfigType = EncryptionConfig::class;
   protected $encryptionConfigDataType = '';
+  /**
+   * @var string[]
+   */
   public $extraStatements;
 
+  /**
+   * @param string
+   */
   public function setCreateStatement($createStatement)
   {
     $this->createStatement = $createStatement;
   }
+  /**
+   * @return string
+   */
   public function getCreateStatement()
   {
     return $this->createStatement;
@@ -47,10 +59,16 @@ class CreateDatabaseRequest extends \Google\Collection
   {
     return $this->encryptionConfig;
   }
+  /**
+   * @param string[]
+   */
   public function setExtraStatements($extraStatements)
   {
     $this->extraStatements = $extraStatements;
   }
+  /**
+   * @return string[]
+   */
   public function getExtraStatements()
   {
     return $this->extraStatements;

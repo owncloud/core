@@ -19,66 +19,129 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3Changelog extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $resource;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $userEmail;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUserEmail($userEmail)
   {
     $this->userEmail = $userEmail;
   }
+  /**
+   * @return string
+   */
   public function getUserEmail()
   {
     return $this->userEmail;

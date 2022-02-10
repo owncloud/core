@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class VideoAbuseReportSecondaryReason extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $label;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;

@@ -20,27 +20,51 @@ namespace Google\Service\CloudIdentity;
 class GroupRelation extends \Google\Collection
 {
   protected $collection_key = 'roles';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $group;
   protected $groupKeyType = EntityKey::class;
   protected $groupKeyDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $relationType;
   protected $rolesType = TransitiveMembershipRole::class;
   protected $rolesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setGroup($group)
   {
     $this->group = $group;
   }
+  /**
+   * @return string
+   */
   public function getGroup()
   {
     return $this->group;
@@ -59,18 +83,30 @@ class GroupRelation extends \Google\Collection
   {
     return $this->groupKey;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setRelationType($relationType)
   {
     $this->relationType = $relationType;
   }
+  /**
+   * @return string
+   */
   public function getRelationType()
   {
     return $this->relationType;

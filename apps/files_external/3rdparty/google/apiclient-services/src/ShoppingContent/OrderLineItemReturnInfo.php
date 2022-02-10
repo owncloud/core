@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class OrderLineItemReturnInfo extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $daysToReturn;
+  /**
+   * @var bool
+   */
   public $isReturnable;
+  /**
+   * @var string
+   */
   public $policyUrl;
 
+  /**
+   * @param int
+   */
   public function setDaysToReturn($daysToReturn)
   {
     $this->daysToReturn = $daysToReturn;
   }
+  /**
+   * @return int
+   */
   public function getDaysToReturn()
   {
     return $this->daysToReturn;
   }
+  /**
+   * @param bool
+   */
   public function setIsReturnable($isReturnable)
   {
     $this->isReturnable = $isReturnable;
   }
+  /**
+   * @return bool
+   */
   public function getIsReturnable()
   {
     return $this->isReturnable;
   }
+  /**
+   * @param string
+   */
   public function setPolicyUrl($policyUrl)
   {
     $this->policyUrl = $policyUrl;
   }
+  /**
+   * @return string
+   */
   public function getPolicyUrl()
   {
     return $this->policyUrl;

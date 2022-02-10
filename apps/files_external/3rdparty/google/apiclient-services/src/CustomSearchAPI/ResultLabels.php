@@ -22,30 +22,57 @@ class ResultLabels extends \Google\Model
   protected $internal_gapi_mappings = [
         "labelWithOp" => "label_with_op",
   ];
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $labelWithOp;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setLabelWithOp($labelWithOp)
   {
     $this->labelWithOp = $labelWithOp;
   }
+  /**
+   * @return string
+   */
   public function getLabelWithOp()
   {
     return $this->labelWithOp;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

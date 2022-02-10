@@ -19,9 +19,15 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3TransitionCoverageTransition extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $covered;
   protected $eventHandlerType = GoogleCloudDialogflowCxV3EventHandler::class;
   protected $eventHandlerDataType = '';
+  /**
+   * @var int
+   */
   public $index;
   protected $sourceType = GoogleCloudDialogflowCxV3TransitionCoverageTransitionNode::class;
   protected $sourceDataType = '';
@@ -30,10 +36,16 @@ class GoogleCloudDialogflowCxV3TransitionCoverageTransition extends \Google\Mode
   protected $transitionRouteType = GoogleCloudDialogflowCxV3TransitionRoute::class;
   protected $transitionRouteDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setCovered($covered)
   {
     $this->covered = $covered;
   }
+  /**
+   * @return bool
+   */
   public function getCovered()
   {
     return $this->covered;
@@ -52,10 +64,16 @@ class GoogleCloudDialogflowCxV3TransitionCoverageTransition extends \Google\Mode
   {
     return $this->eventHandler;
   }
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;

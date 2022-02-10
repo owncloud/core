@@ -19,23 +19,41 @@ namespace Google\Service\Sheets;
 
 class AppendValuesResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $spreadsheetId;
+  /**
+   * @var string
+   */
   public $tableRange;
   protected $updatesType = UpdateValuesResponse::class;
   protected $updatesDataType = '';
 
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;
   }
+  /**
+   * @param string
+   */
   public function setTableRange($tableRange)
   {
     $this->tableRange = $tableRange;
   }
+  /**
+   * @return string
+   */
   public function getTableRange()
   {
     return $this->tableRange;

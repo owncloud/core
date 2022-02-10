@@ -19,21 +19,39 @@ namespace Google\Service\Pubsub;
 
 class RetryPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maximumBackoff;
+  /**
+   * @var string
+   */
   public $minimumBackoff;
 
+  /**
+   * @param string
+   */
   public function setMaximumBackoff($maximumBackoff)
   {
     $this->maximumBackoff = $maximumBackoff;
   }
+  /**
+   * @return string
+   */
   public function getMaximumBackoff()
   {
     return $this->maximumBackoff;
   }
+  /**
+   * @param string
+   */
   public function setMinimumBackoff($minimumBackoff)
   {
     $this->minimumBackoff = $minimumBackoff;
   }
+  /**
+   * @return string
+   */
   public function getMinimumBackoff()
   {
     return $this->minimumBackoff;

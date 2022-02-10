@@ -19,39 +19,75 @@ namespace Google\Service\FirebaseManagement;
 
 class AdminSdkConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $databaseURL;
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $storageBucket;
 
+  /**
+   * @param string
+   */
   public function setDatabaseURL($databaseURL)
   {
     $this->databaseURL = $databaseURL;
   }
+  /**
+   * @return string
+   */
   public function getDatabaseURL()
   {
     return $this->databaseURL;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setStorageBucket($storageBucket)
   {
     $this->storageBucket = $storageBucket;
   }
+  /**
+   * @return string
+   */
   public function getStorageBucket()
   {
     return $this->storageBucket;

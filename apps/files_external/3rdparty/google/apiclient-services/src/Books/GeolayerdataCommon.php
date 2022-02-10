@@ -19,48 +19,93 @@ namespace Google\Service\Books;
 
 class GeolayerdataCommon extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lang;
+  /**
+   * @var string
+   */
   public $previewImageUrl;
+  /**
+   * @var string
+   */
   public $snippet;
+  /**
+   * @var string
+   */
   public $snippetUrl;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setLang($lang)
   {
     $this->lang = $lang;
   }
+  /**
+   * @return string
+   */
   public function getLang()
   {
     return $this->lang;
   }
+  /**
+   * @param string
+   */
   public function setPreviewImageUrl($previewImageUrl)
   {
     $this->previewImageUrl = $previewImageUrl;
   }
+  /**
+   * @return string
+   */
   public function getPreviewImageUrl()
   {
     return $this->previewImageUrl;
   }
+  /**
+   * @param string
+   */
   public function setSnippet($snippet)
   {
     $this->snippet = $snippet;
   }
+  /**
+   * @return string
+   */
   public function getSnippet()
   {
     return $this->snippet;
   }
+  /**
+   * @param string
+   */
   public function setSnippetUrl($snippetUrl)
   {
     $this->snippetUrl = $snippetUrl;
   }
+  /**
+   * @return string
+   */
   public function getSnippetUrl()
   {
     return $this->snippetUrl;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

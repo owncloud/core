@@ -20,30 +20,57 @@ namespace Google\Service\ContainerAnalysis;
 class Artifact extends \Google\Collection
 {
   protected $collection_key = 'names';
+  /**
+   * @var string
+   */
   public $checksum;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string[]
+   */
   public $names;
 
+  /**
+   * @param string
+   */
   public function setChecksum($checksum)
   {
     $this->checksum = $checksum;
   }
+  /**
+   * @return string
+   */
   public function getChecksum()
   {
     return $this->checksum;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string[]
+   */
   public function setNames($names)
   {
     $this->names = $names;
   }
+  /**
+   * @return string[]
+   */
   public function getNames()
   {
     return $this->names;

@@ -19,21 +19,39 @@ namespace Google\Service\Monitoring;
 
 class MutationRecord extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mutateTime;
+  /**
+   * @var string
+   */
   public $mutatedBy;
 
+  /**
+   * @param string
+   */
   public function setMutateTime($mutateTime)
   {
     $this->mutateTime = $mutateTime;
   }
+  /**
+   * @return string
+   */
   public function getMutateTime()
   {
     return $this->mutateTime;
   }
+  /**
+   * @param string
+   */
   public function setMutatedBy($mutatedBy)
   {
     $this->mutatedBy = $mutatedBy;
   }
+  /**
+   * @return string
+   */
   public function getMutatedBy()
   {
     return $this->mutatedBy;

@@ -19,39 +19,75 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1BigQueryDateShardedSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataset;
+  /**
+   * @var string
+   */
   public $latestShardResource;
+  /**
+   * @var string
+   */
   public $shardCount;
+  /**
+   * @var string
+   */
   public $tablePrefix;
 
+  /**
+   * @param string
+   */
   public function setDataset($dataset)
   {
     $this->dataset = $dataset;
   }
+  /**
+   * @return string
+   */
   public function getDataset()
   {
     return $this->dataset;
   }
+  /**
+   * @param string
+   */
   public function setLatestShardResource($latestShardResource)
   {
     $this->latestShardResource = $latestShardResource;
   }
+  /**
+   * @return string
+   */
   public function getLatestShardResource()
   {
     return $this->latestShardResource;
   }
+  /**
+   * @param string
+   */
   public function setShardCount($shardCount)
   {
     $this->shardCount = $shardCount;
   }
+  /**
+   * @return string
+   */
   public function getShardCount()
   {
     return $this->shardCount;
   }
+  /**
+   * @param string
+   */
   public function setTablePrefix($tablePrefix)
   {
     $this->tablePrefix = $tablePrefix;
   }
+  /**
+   * @return string
+   */
   public function getTablePrefix()
   {
     return $this->tablePrefix;

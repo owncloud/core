@@ -19,21 +19,39 @@ namespace Google\Service\OSConfig;
 
 class OSPolicyAssignmentReportOSPolicyComplianceOSPolicyResourceComplianceOSPolicyResourceConfigStep extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

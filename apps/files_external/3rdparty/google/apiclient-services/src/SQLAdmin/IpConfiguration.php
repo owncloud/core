@@ -20,17 +20,35 @@ namespace Google\Service\SQLAdmin;
 class IpConfiguration extends \Google\Collection
 {
   protected $collection_key = 'authorizedNetworks';
+  /**
+   * @var string
+   */
   public $allocatedIpRange;
   protected $authorizedNetworksType = AclEntry::class;
   protected $authorizedNetworksDataType = 'array';
+  /**
+   * @var bool
+   */
   public $ipv4Enabled;
+  /**
+   * @var string
+   */
   public $privateNetwork;
+  /**
+   * @var bool
+   */
   public $requireSsl;
 
+  /**
+   * @param string
+   */
   public function setAllocatedIpRange($allocatedIpRange)
   {
     $this->allocatedIpRange = $allocatedIpRange;
   }
+  /**
+   * @return string
+   */
   public function getAllocatedIpRange()
   {
     return $this->allocatedIpRange;
@@ -49,26 +67,44 @@ class IpConfiguration extends \Google\Collection
   {
     return $this->authorizedNetworks;
   }
+  /**
+   * @param bool
+   */
   public function setIpv4Enabled($ipv4Enabled)
   {
     $this->ipv4Enabled = $ipv4Enabled;
   }
+  /**
+   * @return bool
+   */
   public function getIpv4Enabled()
   {
     return $this->ipv4Enabled;
   }
+  /**
+   * @param string
+   */
   public function setPrivateNetwork($privateNetwork)
   {
     $this->privateNetwork = $privateNetwork;
   }
+  /**
+   * @return string
+   */
   public function getPrivateNetwork()
   {
     return $this->privateNetwork;
   }
+  /**
+   * @param bool
+   */
   public function setRequireSsl($requireSsl)
   {
     $this->requireSsl = $requireSsl;
   }
+  /**
+   * @return bool
+   */
   public function getRequireSsl()
   {
     return $this->requireSsl;

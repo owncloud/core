@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class PlacementTag extends \Google\Collection
 {
   protected $collection_key = 'tagDatas';
+  /**
+   * @var string
+   */
   public $placementId;
   protected $tagDatasType = TagData::class;
   protected $tagDatasDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setPlacementId($placementId)
   {
     $this->placementId = $placementId;
   }
+  /**
+   * @return string
+   */
   public function getPlacementId()
   {
     return $this->placementId;

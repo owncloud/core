@@ -20,21 +20,39 @@ namespace Google\Service\Classroom;
 class ModifyIndividualStudentsOptions extends \Google\Collection
 {
   protected $collection_key = 'removeStudentIds';
+  /**
+   * @var string[]
+   */
   public $addStudentIds;
+  /**
+   * @var string[]
+   */
   public $removeStudentIds;
 
+  /**
+   * @param string[]
+   */
   public function setAddStudentIds($addStudentIds)
   {
     $this->addStudentIds = $addStudentIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAddStudentIds()
   {
     return $this->addStudentIds;
   }
+  /**
+   * @param string[]
+   */
   public function setRemoveStudentIds($removeStudentIds)
   {
     $this->removeStudentIds = $removeStudentIds;
   }
+  /**
+   * @return string[]
+   */
   public function getRemoveStudentIds()
   {
     return $this->removeStudentIds;

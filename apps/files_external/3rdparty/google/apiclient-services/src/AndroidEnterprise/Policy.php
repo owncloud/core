@@ -20,26 +20,47 @@ namespace Google\Service\AndroidEnterprise;
 class Policy extends \Google\Collection
 {
   protected $collection_key = 'productPolicy';
+  /**
+   * @var string
+   */
   public $autoUpdatePolicy;
+  /**
+   * @var string
+   */
   public $deviceReportPolicy;
   protected $maintenanceWindowType = MaintenanceWindow::class;
   protected $maintenanceWindowDataType = '';
+  /**
+   * @var string
+   */
   public $productAvailabilityPolicy;
   protected $productPolicyType = ProductPolicy::class;
   protected $productPolicyDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAutoUpdatePolicy($autoUpdatePolicy)
   {
     $this->autoUpdatePolicy = $autoUpdatePolicy;
   }
+  /**
+   * @return string
+   */
   public function getAutoUpdatePolicy()
   {
     return $this->autoUpdatePolicy;
   }
+  /**
+   * @param string
+   */
   public function setDeviceReportPolicy($deviceReportPolicy)
   {
     $this->deviceReportPolicy = $deviceReportPolicy;
   }
+  /**
+   * @return string
+   */
   public function getDeviceReportPolicy()
   {
     return $this->deviceReportPolicy;
@@ -58,10 +79,16 @@ class Policy extends \Google\Collection
   {
     return $this->maintenanceWindow;
   }
+  /**
+   * @param string
+   */
   public function setProductAvailabilityPolicy($productAvailabilityPolicy)
   {
     $this->productAvailabilityPolicy = $productAvailabilityPolicy;
   }
+  /**
+   * @return string
+   */
   public function getProductAvailabilityPolicy()
   {
     return $this->productAvailabilityPolicy;

@@ -20,15 +20,27 @@ namespace Google\Service\ShoppingContent;
 class LiaSettings extends \Google\Collection
 {
   protected $collection_key = 'countrySettings';
+  /**
+   * @var string
+   */
   public $accountId;
   protected $countrySettingsType = LiaCountrySettings::class;
   protected $countrySettingsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -47,10 +59,16 @@ class LiaSettings extends \Google\Collection
   {
     return $this->countrySettings;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

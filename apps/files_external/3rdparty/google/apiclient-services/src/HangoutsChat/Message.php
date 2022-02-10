@@ -24,15 +24,35 @@ class Message extends \Google\Collection
   protected $actionResponseDataType = '';
   protected $annotationsType = Annotation::class;
   protected $annotationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $argumentText;
   protected $attachmentType = Attachment::class;
   protected $attachmentDataType = 'array';
   protected $cardsType = Card::class;
   protected $cardsDataType = 'array';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $fallbackText;
+  /**
+   * @var string
+   */
   public $lastUpdateTime;
+  protected $matchedUrlType = MatchedUrl::class;
+  protected $matchedUrlDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $previewText;
   protected $senderType = User::class;
   protected $senderDataType = '';
@@ -40,6 +60,9 @@ class Message extends \Google\Collection
   protected $slashCommandDataType = '';
   protected $spaceType = Space::class;
   protected $spaceDataType = '';
+  /**
+   * @var string
+   */
   public $text;
   protected $threadType = Thread::class;
   protected $threadDataType = '';
@@ -72,10 +95,16 @@ class Message extends \Google\Collection
   {
     return $this->annotations;
   }
+  /**
+   * @param string
+   */
   public function setArgumentText($argumentText)
   {
     $this->argumentText = $argumentText;
   }
+  /**
+   * @return string
+   */
   public function getArgumentText()
   {
     return $this->argumentText;
@@ -108,42 +137,86 @@ class Message extends \Google\Collection
   {
     return $this->cards;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setFallbackText($fallbackText)
   {
     $this->fallbackText = $fallbackText;
   }
+  /**
+   * @return string
+   */
   public function getFallbackText()
   {
     return $this->fallbackText;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdateTime($lastUpdateTime)
   {
     $this->lastUpdateTime = $lastUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateTime()
   {
     return $this->lastUpdateTime;
   }
+  /**
+   * @param MatchedUrl
+   */
+  public function setMatchedUrl(MatchedUrl $matchedUrl)
+  {
+    $this->matchedUrl = $matchedUrl;
+  }
+  /**
+   * @return MatchedUrl
+   */
+  public function getMatchedUrl()
+  {
+    return $this->matchedUrl;
+  }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPreviewText($previewText)
   {
     $this->previewText = $previewText;
   }
+  /**
+   * @return string
+   */
   public function getPreviewText()
   {
     return $this->previewText;
@@ -190,10 +263,16 @@ class Message extends \Google\Collection
   {
     return $this->space;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

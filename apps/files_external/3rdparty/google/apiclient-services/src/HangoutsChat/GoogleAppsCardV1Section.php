@@ -20,32 +20,59 @@ namespace Google\Service\HangoutsChat;
 class GoogleAppsCardV1Section extends \Google\Collection
 {
   protected $collection_key = 'widgets';
+  /**
+   * @var bool
+   */
   public $collapsible;
+  /**
+   * @var string
+   */
   public $header;
+  /**
+   * @var int
+   */
   public $uncollapsibleWidgetsCount;
   protected $widgetsType = GoogleAppsCardV1Widget::class;
   protected $widgetsDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setCollapsible($collapsible)
   {
     $this->collapsible = $collapsible;
   }
+  /**
+   * @return bool
+   */
   public function getCollapsible()
   {
     return $this->collapsible;
   }
+  /**
+   * @param string
+   */
   public function setHeader($header)
   {
     $this->header = $header;
   }
+  /**
+   * @return string
+   */
   public function getHeader()
   {
     return $this->header;
   }
+  /**
+   * @param int
+   */
   public function setUncollapsibleWidgetsCount($uncollapsibleWidgetsCount)
   {
     $this->uncollapsibleWidgetsCount = $uncollapsibleWidgetsCount;
   }
+  /**
+   * @return int
+   */
   public function getUncollapsibleWidgetsCount()
   {
     return $this->uncollapsibleWidgetsCount;

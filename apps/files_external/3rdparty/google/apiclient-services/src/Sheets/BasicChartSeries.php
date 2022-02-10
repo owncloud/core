@@ -34,7 +34,13 @@ class BasicChartSeries extends \Google\Collection
   protected $seriesDataType = '';
   protected $styleOverridesType = BasicSeriesDataPointStyleOverride::class;
   protected $styleOverridesDataType = 'array';
+  /**
+   * @var string
+   */
   public $targetAxis;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -135,18 +141,30 @@ class BasicChartSeries extends \Google\Collection
   {
     return $this->styleOverrides;
   }
+  /**
+   * @param string
+   */
   public function setTargetAxis($targetAxis)
   {
     $this->targetAxis = $targetAxis;
   }
+  /**
+   * @return string
+   */
   public function getTargetAxis()
   {
     return $this->targetAxis;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

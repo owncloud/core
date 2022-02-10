@@ -19,34 +19,67 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2BigQuerySource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataSchema;
+  /**
+   * @var string
+   */
   public $datasetId;
+  /**
+   * @var string
+   */
   public $gcsStagingDir;
   protected $partitionDateType = GoogleTypeDate::class;
   protected $partitionDateDataType = '';
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $tableId;
 
+  /**
+   * @param string
+   */
   public function setDataSchema($dataSchema)
   {
     $this->dataSchema = $dataSchema;
   }
+  /**
+   * @return string
+   */
   public function getDataSchema()
   {
     return $this->dataSchema;
   }
+  /**
+   * @param string
+   */
   public function setDatasetId($datasetId)
   {
     $this->datasetId = $datasetId;
   }
+  /**
+   * @return string
+   */
   public function getDatasetId()
   {
     return $this->datasetId;
   }
+  /**
+   * @param string
+   */
   public function setGcsStagingDir($gcsStagingDir)
   {
     $this->gcsStagingDir = $gcsStagingDir;
   }
+  /**
+   * @return string
+   */
   public function getGcsStagingDir()
   {
     return $this->gcsStagingDir;
@@ -65,18 +98,30 @@ class GoogleCloudRetailV2BigQuerySource extends \Google\Model
   {
     return $this->partitionDate;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setTableId($tableId)
   {
     $this->tableId = $tableId;
   }
+  /**
+   * @return string
+   */
   public function getTableId()
   {
     return $this->tableId;

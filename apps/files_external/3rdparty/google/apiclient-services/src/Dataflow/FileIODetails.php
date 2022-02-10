@@ -19,12 +19,21 @@ namespace Google\Service\Dataflow;
 
 class FileIODetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $filePattern;
 
+  /**
+   * @param string
+   */
   public function setFilePattern($filePattern)
   {
     $this->filePattern = $filePattern;
   }
+  /**
+   * @return string
+   */
   public function getFilePattern()
   {
     return $this->filePattern;

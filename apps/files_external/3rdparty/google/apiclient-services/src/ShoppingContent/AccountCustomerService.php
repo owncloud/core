@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class AccountCustomerService extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $phoneNumber;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setPhoneNumber($phoneNumber)
   {
     $this->phoneNumber = $phoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getPhoneNumber()
   {
     return $this->phoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

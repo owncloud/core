@@ -19,21 +19,39 @@ namespace Google\Service\VersionHistory;
 
 class Platform extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $platformType;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPlatformType($platformType)
   {
     $this->platformType = $platformType;
   }
+  /**
+   * @return string
+   */
   public function getPlatformType()
   {
     return $this->platformType;

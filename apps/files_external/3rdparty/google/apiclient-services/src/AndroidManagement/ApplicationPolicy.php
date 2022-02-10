@@ -20,68 +20,137 @@ namespace Google\Service\AndroidManagement;
 class ApplicationPolicy extends \Google\Collection
 {
   protected $collection_key = 'permissionGrants';
+  /**
+   * @var string[]
+   */
   public $accessibleTrackIds;
+  /**
+   * @var string
+   */
   public $autoUpdateMode;
+  /**
+   * @var string
+   */
   public $connectedWorkAndPersonalApp;
+  /**
+   * @var string
+   */
   public $defaultPermissionPolicy;
+  /**
+   * @var string[]
+   */
   public $delegatedScopes;
+  /**
+   * @var bool
+   */
   public $disabled;
   protected $extensionConfigType = ExtensionConfig::class;
   protected $extensionConfigDataType = '';
+  /**
+   * @var string
+   */
   public $installType;
+  /**
+   * @var bool
+   */
   public $lockTaskAllowed;
+  /**
+   * @var array[]
+   */
   public $managedConfiguration;
   protected $managedConfigurationTemplateType = ManagedConfigurationTemplate::class;
   protected $managedConfigurationTemplateDataType = '';
+  /**
+   * @var int
+   */
   public $minimumVersionCode;
+  /**
+   * @var string
+   */
   public $packageName;
   protected $permissionGrantsType = PermissionGrant::class;
   protected $permissionGrantsDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setAccessibleTrackIds($accessibleTrackIds)
   {
     $this->accessibleTrackIds = $accessibleTrackIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAccessibleTrackIds()
   {
     return $this->accessibleTrackIds;
   }
+  /**
+   * @param string
+   */
   public function setAutoUpdateMode($autoUpdateMode)
   {
     $this->autoUpdateMode = $autoUpdateMode;
   }
+  /**
+   * @return string
+   */
   public function getAutoUpdateMode()
   {
     return $this->autoUpdateMode;
   }
+  /**
+   * @param string
+   */
   public function setConnectedWorkAndPersonalApp($connectedWorkAndPersonalApp)
   {
     $this->connectedWorkAndPersonalApp = $connectedWorkAndPersonalApp;
   }
+  /**
+   * @return string
+   */
   public function getConnectedWorkAndPersonalApp()
   {
     return $this->connectedWorkAndPersonalApp;
   }
+  /**
+   * @param string
+   */
   public function setDefaultPermissionPolicy($defaultPermissionPolicy)
   {
     $this->defaultPermissionPolicy = $defaultPermissionPolicy;
   }
+  /**
+   * @return string
+   */
   public function getDefaultPermissionPolicy()
   {
     return $this->defaultPermissionPolicy;
   }
+  /**
+   * @param string[]
+   */
   public function setDelegatedScopes($delegatedScopes)
   {
     $this->delegatedScopes = $delegatedScopes;
   }
+  /**
+   * @return string[]
+   */
   public function getDelegatedScopes()
   {
     return $this->delegatedScopes;
   }
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;
@@ -100,26 +169,44 @@ class ApplicationPolicy extends \Google\Collection
   {
     return $this->extensionConfig;
   }
+  /**
+   * @param string
+   */
   public function setInstallType($installType)
   {
     $this->installType = $installType;
   }
+  /**
+   * @return string
+   */
   public function getInstallType()
   {
     return $this->installType;
   }
+  /**
+   * @param bool
+   */
   public function setLockTaskAllowed($lockTaskAllowed)
   {
     $this->lockTaskAllowed = $lockTaskAllowed;
   }
+  /**
+   * @return bool
+   */
   public function getLockTaskAllowed()
   {
     return $this->lockTaskAllowed;
   }
+  /**
+   * @param array[]
+   */
   public function setManagedConfiguration($managedConfiguration)
   {
     $this->managedConfiguration = $managedConfiguration;
   }
+  /**
+   * @return array[]
+   */
   public function getManagedConfiguration()
   {
     return $this->managedConfiguration;
@@ -138,18 +225,30 @@ class ApplicationPolicy extends \Google\Collection
   {
     return $this->managedConfigurationTemplate;
   }
+  /**
+   * @param int
+   */
   public function setMinimumVersionCode($minimumVersionCode)
   {
     $this->minimumVersionCode = $minimumVersionCode;
   }
+  /**
+   * @return int
+   */
   public function getMinimumVersionCode()
   {
     return $this->minimumVersionCode;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;

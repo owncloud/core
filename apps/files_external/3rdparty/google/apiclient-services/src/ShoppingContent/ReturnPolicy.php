@@ -20,55 +20,103 @@ namespace Google\Service\ShoppingContent;
 class ReturnPolicy extends \Google\Collection
 {
   protected $collection_key = 'seasonalOverrides';
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $nonFreeReturnReasons;
   protected $policyType = ReturnPolicyPolicy::class;
   protected $policyDataType = '';
+  /**
+   * @var string
+   */
   public $returnPolicyId;
   protected $returnShippingFeeType = Price::class;
   protected $returnShippingFeeDataType = '';
   protected $seasonalOverridesType = ReturnPolicySeasonalOverride::class;
   protected $seasonalOverridesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setNonFreeReturnReasons($nonFreeReturnReasons)
   {
     $this->nonFreeReturnReasons = $nonFreeReturnReasons;
   }
+  /**
+   * @return string[]
+   */
   public function getNonFreeReturnReasons()
   {
     return $this->nonFreeReturnReasons;
@@ -87,10 +135,16 @@ class ReturnPolicy extends \Google\Collection
   {
     return $this->policy;
   }
+  /**
+   * @param string
+   */
   public function setReturnPolicyId($returnPolicyId)
   {
     $this->returnPolicyId = $returnPolicyId;
   }
+  /**
+   * @return string
+   */
   public function getReturnPolicyId()
   {
     return $this->returnPolicyId;

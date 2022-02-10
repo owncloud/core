@@ -22,19 +22,55 @@ class GoogleCloudApigeeV1SharedFlowRevision extends \Google\Collection
   protected $collection_key = 'sharedFlows';
   protected $configurationVersionType = GoogleCloudApigeeV1ConfigVersion::class;
   protected $configurationVersionDataType = '';
+  /**
+   * @var string
+   */
   public $contextInfo;
+  /**
+   * @var string
+   */
   public $createdAt;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string[]
+   */
   public $entityMetaDataAsProperties;
+  /**
+   * @var string
+   */
   public $lastModifiedAt;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $policies;
   protected $resourceFilesType = GoogleCloudApigeeV1ResourceFiles::class;
   protected $resourceFilesDataType = '';
+  /**
+   * @var string[]
+   */
   public $resources;
+  /**
+   * @var string
+   */
   public $revision;
+  /**
+   * @var string[]
+   */
   public $sharedFlows;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -51,66 +87,114 @@ class GoogleCloudApigeeV1SharedFlowRevision extends \Google\Collection
   {
     return $this->configurationVersion;
   }
+  /**
+   * @param string
+   */
   public function setContextInfo($contextInfo)
   {
     $this->contextInfo = $contextInfo;
   }
+  /**
+   * @return string
+   */
   public function getContextInfo()
   {
     return $this->contextInfo;
   }
+  /**
+   * @param string
+   */
   public function setCreatedAt($createdAt)
   {
     $this->createdAt = $createdAt;
   }
+  /**
+   * @return string
+   */
   public function getCreatedAt()
   {
     return $this->createdAt;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string[]
+   */
   public function setEntityMetaDataAsProperties($entityMetaDataAsProperties)
   {
     $this->entityMetaDataAsProperties = $entityMetaDataAsProperties;
   }
+  /**
+   * @return string[]
+   */
   public function getEntityMetaDataAsProperties()
   {
     return $this->entityMetaDataAsProperties;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedAt($lastModifiedAt)
   {
     $this->lastModifiedAt = $lastModifiedAt;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedAt()
   {
     return $this->lastModifiedAt;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setPolicies($policies)
   {
     $this->policies = $policies;
   }
+  /**
+   * @return string[]
+   */
   public function getPolicies()
   {
     return $this->policies;
@@ -129,34 +213,58 @@ class GoogleCloudApigeeV1SharedFlowRevision extends \Google\Collection
   {
     return $this->resourceFiles;
   }
+  /**
+   * @param string[]
+   */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
+  /**
+   * @return string[]
+   */
   public function getResources()
   {
     return $this->resources;
   }
+  /**
+   * @param string
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return string
+   */
   public function getRevision()
   {
     return $this->revision;
   }
+  /**
+   * @param string[]
+   */
   public function setSharedFlows($sharedFlows)
   {
     $this->sharedFlows = $sharedFlows;
   }
+  /**
+   * @return string[]
+   */
   public function getSharedFlows()
   {
     return $this->sharedFlows;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

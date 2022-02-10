@@ -19,21 +19,39 @@ namespace Google\Service\CloudIot;
 
 class BindDeviceToGatewayRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceId;
+  /**
+   * @var string
+   */
   public $gatewayId;
 
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
   }
+  /**
+   * @param string
+   */
   public function setGatewayId($gatewayId)
   {
     $this->gatewayId = $gatewayId;
   }
+  /**
+   * @return string
+   */
   public function getGatewayId()
   {
     return $this->gatewayId;

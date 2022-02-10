@@ -20,32 +20,65 @@ namespace Google\Service\Compute;
 class UrlMap extends \Google\Collection
 {
   protected $collection_key = 'tests';
+  /**
+   * @var string
+   */
   public $creationTimestamp;
   protected $defaultRouteActionType = HttpRouteAction::class;
   protected $defaultRouteActionDataType = '';
+  /**
+   * @var string
+   */
   public $defaultService;
   protected $defaultUrlRedirectType = HttpRedirectAction::class;
   protected $defaultUrlRedirectDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $fingerprint;
   protected $headerActionType = HttpHeaderAction::class;
   protected $headerActionDataType = '';
   protected $hostRulesType = HostRule::class;
   protected $hostRulesDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $pathMatchersType = PathMatcher::class;
   protected $pathMatchersDataType = 'array';
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $selfLink;
   protected $testsType = UrlMapTest::class;
   protected $testsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
@@ -64,10 +97,16 @@ class UrlMap extends \Google\Collection
   {
     return $this->defaultRouteAction;
   }
+  /**
+   * @param string
+   */
   public function setDefaultService($defaultService)
   {
     $this->defaultService = $defaultService;
   }
+  /**
+   * @return string
+   */
   public function getDefaultService()
   {
     return $this->defaultService;
@@ -86,18 +125,30 @@ class UrlMap extends \Google\Collection
   {
     return $this->defaultUrlRedirect;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
@@ -130,26 +181,44 @@ class UrlMap extends \Google\Collection
   {
     return $this->hostRules;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -168,18 +237,30 @@ class UrlMap extends \Google\Collection
   {
     return $this->pathMatchers;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

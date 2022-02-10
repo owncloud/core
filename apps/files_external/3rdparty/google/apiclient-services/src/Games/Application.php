@@ -24,27 +24,63 @@ class Application extends \Google\Collection
         "achievementCount" => "achievement_count",
         "leaderboardCount" => "leaderboard_count",
   ];
+  /**
+   * @var int
+   */
   public $achievementCount;
   protected $assetsType = ImageAsset::class;
   protected $assetsDataType = 'array';
+  /**
+   * @var string
+   */
   public $author;
   protected $categoryType = ApplicationCategory::class;
   protected $categoryDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string[]
+   */
   public $enabledFeatures;
+  /**
+   * @var string
+   */
   public $id;
   protected $instancesType = Instance::class;
   protected $instancesDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $lastUpdatedTimestamp;
+  /**
+   * @var int
+   */
   public $leaderboardCount;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $themeColor;
 
+  /**
+   * @param int
+   */
   public function setAchievementCount($achievementCount)
   {
     $this->achievementCount = $achievementCount;
   }
+  /**
+   * @return int
+   */
   public function getAchievementCount()
   {
     return $this->achievementCount;
@@ -63,10 +99,16 @@ class Application extends \Google\Collection
   {
     return $this->assets;
   }
+  /**
+   * @param string
+   */
   public function setAuthor($author)
   {
     $this->author = $author;
   }
+  /**
+   * @return string
+   */
   public function getAuthor()
   {
     return $this->author;
@@ -85,26 +127,44 @@ class Application extends \Google\Collection
   {
     return $this->category;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string[]
+   */
   public function setEnabledFeatures($enabledFeatures)
   {
     $this->enabledFeatures = $enabledFeatures;
   }
+  /**
+   * @return string[]
+   */
   public function getEnabledFeatures()
   {
     return $this->enabledFeatures;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -123,42 +183,72 @@ class Application extends \Google\Collection
   {
     return $this->instances;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdatedTimestamp($lastUpdatedTimestamp)
   {
     $this->lastUpdatedTimestamp = $lastUpdatedTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdatedTimestamp()
   {
     return $this->lastUpdatedTimestamp;
   }
+  /**
+   * @param int
+   */
   public function setLeaderboardCount($leaderboardCount)
   {
     $this->leaderboardCount = $leaderboardCount;
   }
+  /**
+   * @return int
+   */
   public function getLeaderboardCount()
   {
     return $this->leaderboardCount;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setThemeColor($themeColor)
   {
     $this->themeColor = $themeColor;
   }
+  /**
+   * @return string
+   */
   public function getThemeColor()
   {
     return $this->themeColor;

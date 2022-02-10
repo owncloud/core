@@ -19,16 +19,31 @@ namespace Google\Service\CloudHealthcare;
 
 class ParserConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowNullHeader;
   protected $schemaType = SchemaPackage::class;
   protected $schemaDataType = '';
+  /**
+   * @var string
+   */
   public $segmentTerminator;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param bool
+   */
   public function setAllowNullHeader($allowNullHeader)
   {
     $this->allowNullHeader = $allowNullHeader;
   }
+  /**
+   * @return bool
+   */
   public function getAllowNullHeader()
   {
     return $this->allowNullHeader;
@@ -47,18 +62,30 @@ class ParserConfig extends \Google\Model
   {
     return $this->schema;
   }
+  /**
+   * @param string
+   */
   public function setSegmentTerminator($segmentTerminator)
   {
     $this->segmentTerminator = $segmentTerminator;
   }
+  /**
+   * @return string
+   */
   public function getSegmentTerminator()
   {
     return $this->segmentTerminator;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

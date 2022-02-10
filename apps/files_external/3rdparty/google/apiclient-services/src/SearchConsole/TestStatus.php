@@ -19,21 +19,39 @@ namespace Google\Service\SearchConsole;
 
 class TestStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return string
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

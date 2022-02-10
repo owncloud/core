@@ -19,14 +19,23 @@ namespace Google\Service\DisplayVideo;
 
 class CampaignGoal extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $campaignGoalType;
   protected $performanceGoalType = PerformanceGoal::class;
   protected $performanceGoalDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCampaignGoalType($campaignGoalType)
   {
     $this->campaignGoalType = $campaignGoalType;
   }
+  /**
+   * @return string
+   */
   public function getCampaignGoalType()
   {
     return $this->campaignGoalType;

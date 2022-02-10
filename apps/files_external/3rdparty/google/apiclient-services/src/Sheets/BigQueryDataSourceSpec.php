@@ -19,16 +19,25 @@ namespace Google\Service\Sheets;
 
 class BigQueryDataSourceSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $projectId;
   protected $querySpecType = BigQueryQuerySpec::class;
   protected $querySpecDataType = '';
   protected $tableSpecType = BigQueryTableSpec::class;
   protected $tableSpecDataType = '';
 
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;

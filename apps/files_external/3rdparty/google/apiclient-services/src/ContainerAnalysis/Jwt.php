@@ -19,12 +19,21 @@ namespace Google\Service\ContainerAnalysis;
 
 class Jwt extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $compactJwt;
 
+  /**
+   * @param string
+   */
   public function setCompactJwt($compactJwt)
   {
     $this->compactJwt = $compactJwt;
   }
+  /**
+   * @return string
+   */
   public function getCompactJwt()
   {
     return $this->compactJwt;

@@ -106,7 +106,8 @@ class ProjectsLocationsCatalogsCatalogItems extends \Google\Service\Resource
    * `projects/locations/global/catalogs/default_catalog`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Optional. A filter to apply on the list results.
+   * @opt_param string filter Optional. Use of this field is not supported by
+   * version v1beta1.
    * @opt_param int pageSize Optional. Maximum number of results to return per
    * page. If zero, the service will choose a reasonable default.
    * @opt_param string pageToken Optional. The previous

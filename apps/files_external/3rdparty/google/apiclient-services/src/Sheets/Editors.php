@@ -20,30 +20,57 @@ namespace Google\Service\Sheets;
 class Editors extends \Google\Collection
 {
   protected $collection_key = 'users';
+  /**
+   * @var bool
+   */
   public $domainUsersCanEdit;
+  /**
+   * @var string[]
+   */
   public $groups;
+  /**
+   * @var string[]
+   */
   public $users;
 
+  /**
+   * @param bool
+   */
   public function setDomainUsersCanEdit($domainUsersCanEdit)
   {
     $this->domainUsersCanEdit = $domainUsersCanEdit;
   }
+  /**
+   * @return bool
+   */
   public function getDomainUsersCanEdit()
   {
     return $this->domainUsersCanEdit;
   }
+  /**
+   * @param string[]
+   */
   public function setGroups($groups)
   {
     $this->groups = $groups;
   }
+  /**
+   * @return string[]
+   */
   public function getGroups()
   {
     return $this->groups;
   }
+  /**
+   * @param string[]
+   */
   public function setUsers($users)
   {
     $this->users = $users;
   }
+  /**
+   * @return string[]
+   */
   public function getUsers()
   {
     return $this->users;

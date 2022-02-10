@@ -19,30 +19,57 @@ namespace Google\Service\ServiceNetworking;
 
 class GoogleCloudServicenetworkingV1ConsumerConfigReservedRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $address;
+  /**
+   * @var int
+   */
   public $ipPrefixLength;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setAddress($address)
   {
     $this->address = $address;
   }
+  /**
+   * @return string
+   */
   public function getAddress()
   {
     return $this->address;
   }
+  /**
+   * @param int
+   */
   public function setIpPrefixLength($ipPrefixLength)
   {
     $this->ipPrefixLength = $ipPrefixLength;
   }
+  /**
+   * @return int
+   */
   public function getIpPrefixLength()
   {
     return $this->ipPrefixLength;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

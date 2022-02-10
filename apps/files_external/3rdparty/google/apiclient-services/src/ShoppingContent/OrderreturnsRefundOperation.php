@@ -19,17 +19,35 @@ namespace Google\Service\ShoppingContent;
 
 class OrderreturnsRefundOperation extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $fullRefund;
   protected $partialRefundType = OrderreturnsPartialRefund::class;
   protected $partialRefundDataType = '';
+  /**
+   * @var string
+   */
   public $paymentType;
+  /**
+   * @var string
+   */
   public $reasonText;
+  /**
+   * @var string
+   */
   public $returnRefundReason;
 
+  /**
+   * @param bool
+   */
   public function setFullRefund($fullRefund)
   {
     $this->fullRefund = $fullRefund;
   }
+  /**
+   * @return bool
+   */
   public function getFullRefund()
   {
     return $this->fullRefund;
@@ -48,26 +66,44 @@ class OrderreturnsRefundOperation extends \Google\Model
   {
     return $this->partialRefund;
   }
+  /**
+   * @param string
+   */
   public function setPaymentType($paymentType)
   {
     $this->paymentType = $paymentType;
   }
+  /**
+   * @return string
+   */
   public function getPaymentType()
   {
     return $this->paymentType;
   }
+  /**
+   * @param string
+   */
   public function setReasonText($reasonText)
   {
     $this->reasonText = $reasonText;
   }
+  /**
+   * @return string
+   */
   public function getReasonText()
   {
     return $this->reasonText;
   }
+  /**
+   * @param string
+   */
   public function setReturnRefundReason($returnRefundReason)
   {
     $this->returnRefundReason = $returnRefundReason;
   }
+  /**
+   * @return string
+   */
   public function getReturnRefundReason()
   {
     return $this->returnRefundReason;

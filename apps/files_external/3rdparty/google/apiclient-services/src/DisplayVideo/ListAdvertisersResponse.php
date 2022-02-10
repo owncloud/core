@@ -22,6 +22,9 @@ class ListAdvertisersResponse extends \Google\Collection
   protected $collection_key = 'advertisers';
   protected $advertisersType = Advertiser::class;
   protected $advertisersDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListAdvertisersResponse extends \Google\Collection
   {
     return $this->advertisers;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

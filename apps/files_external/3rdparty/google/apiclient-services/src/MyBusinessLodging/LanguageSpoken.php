@@ -19,30 +19,57 @@ namespace Google\Service\MyBusinessLodging;
 
 class LanguageSpoken extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var bool
+   */
   public $spoken;
+  /**
+   * @var string
+   */
   public $spokenException;
 
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param bool
+   */
   public function setSpoken($spoken)
   {
     $this->spoken = $spoken;
   }
+  /**
+   * @return bool
+   */
   public function getSpoken()
   {
     return $this->spoken;
   }
+  /**
+   * @param string
+   */
   public function setSpokenException($spokenException)
   {
     $this->spokenException = $spokenException;
   }
+  /**
+   * @return string
+   */
   public function getSpokenException()
   {
     return $this->spokenException;

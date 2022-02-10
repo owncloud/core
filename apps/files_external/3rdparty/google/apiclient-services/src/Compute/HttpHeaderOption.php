@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class HttpHeaderOption extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $headerName;
+  /**
+   * @var string
+   */
   public $headerValue;
+  /**
+   * @var bool
+   */
   public $replace;
 
+  /**
+   * @param string
+   */
   public function setHeaderName($headerName)
   {
     $this->headerName = $headerName;
   }
+  /**
+   * @return string
+   */
   public function getHeaderName()
   {
     return $this->headerName;
   }
+  /**
+   * @param string
+   */
   public function setHeaderValue($headerValue)
   {
     $this->headerValue = $headerValue;
   }
+  /**
+   * @return string
+   */
   public function getHeaderValue()
   {
     return $this->headerValue;
   }
+  /**
+   * @param bool
+   */
   public function setReplace($replace)
   {
     $this->replace = $replace;
   }
+  /**
+   * @return bool
+   */
   public function getReplace()
   {
     return $this->replace;

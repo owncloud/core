@@ -20,21 +20,39 @@ namespace Google\Service\RealTimeBidding;
 class NumericTargetingDimension extends \Google\Collection
 {
   protected $collection_key = 'includedIds';
+  /**
+   * @var string[]
+   */
   public $excludedIds;
+  /**
+   * @var string[]
+   */
   public $includedIds;
 
+  /**
+   * @param string[]
+   */
   public function setExcludedIds($excludedIds)
   {
     $this->excludedIds = $excludedIds;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludedIds()
   {
     return $this->excludedIds;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludedIds($includedIds)
   {
     $this->includedIds = $includedIds;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludedIds()
   {
     return $this->includedIds;

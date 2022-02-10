@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class Duration extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $nanos;
+  /**
+   * @var string
+   */
   public $seconds;
 
+  /**
+   * @param int
+   */
   public function setNanos($nanos)
   {
     $this->nanos = $nanos;
   }
+  /**
+   * @return int
+   */
   public function getNanos()
   {
     return $this->nanos;
   }
+  /**
+   * @param string
+   */
   public function setSeconds($seconds)
   {
     $this->seconds = $seconds;
   }
+  /**
+   * @return string
+   */
   public function getSeconds()
   {
     return $this->seconds;

@@ -19,30 +19,57 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaExchangeAppAttestAssertionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $artifact;
+  /**
+   * @var string
+   */
   public $assertion;
+  /**
+   * @var string
+   */
   public $challenge;
 
+  /**
+   * @param string
+   */
   public function setArtifact($artifact)
   {
     $this->artifact = $artifact;
   }
+  /**
+   * @return string
+   */
   public function getArtifact()
   {
     return $this->artifact;
   }
+  /**
+   * @param string
+   */
   public function setAssertion($assertion)
   {
     $this->assertion = $assertion;
   }
+  /**
+   * @return string
+   */
   public function getAssertion()
   {
     return $this->assertion;
   }
+  /**
+   * @param string
+   */
   public function setChallenge($challenge)
   {
     $this->challenge = $challenge;
   }
+  /**
+   * @return string
+   */
   public function getChallenge()
   {
     return $this->challenge;

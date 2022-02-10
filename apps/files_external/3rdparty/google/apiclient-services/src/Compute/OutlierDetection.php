@@ -21,16 +21,43 @@ class OutlierDetection extends \Google\Model
 {
   protected $baseEjectionTimeType = Duration::class;
   protected $baseEjectionTimeDataType = '';
+  /**
+   * @var int
+   */
   public $consecutiveErrors;
+  /**
+   * @var int
+   */
   public $consecutiveGatewayFailure;
+  /**
+   * @var int
+   */
   public $enforcingConsecutiveErrors;
+  /**
+   * @var int
+   */
   public $enforcingConsecutiveGatewayFailure;
+  /**
+   * @var int
+   */
   public $enforcingSuccessRate;
   protected $intervalType = Duration::class;
   protected $intervalDataType = '';
+  /**
+   * @var int
+   */
   public $maxEjectionPercent;
+  /**
+   * @var int
+   */
   public $successRateMinimumHosts;
+  /**
+   * @var int
+   */
   public $successRateRequestVolume;
+  /**
+   * @var int
+   */
   public $successRateStdevFactor;
 
   /**
@@ -47,42 +74,72 @@ class OutlierDetection extends \Google\Model
   {
     return $this->baseEjectionTime;
   }
+  /**
+   * @param int
+   */
   public function setConsecutiveErrors($consecutiveErrors)
   {
     $this->consecutiveErrors = $consecutiveErrors;
   }
+  /**
+   * @return int
+   */
   public function getConsecutiveErrors()
   {
     return $this->consecutiveErrors;
   }
+  /**
+   * @param int
+   */
   public function setConsecutiveGatewayFailure($consecutiveGatewayFailure)
   {
     $this->consecutiveGatewayFailure = $consecutiveGatewayFailure;
   }
+  /**
+   * @return int
+   */
   public function getConsecutiveGatewayFailure()
   {
     return $this->consecutiveGatewayFailure;
   }
+  /**
+   * @param int
+   */
   public function setEnforcingConsecutiveErrors($enforcingConsecutiveErrors)
   {
     $this->enforcingConsecutiveErrors = $enforcingConsecutiveErrors;
   }
+  /**
+   * @return int
+   */
   public function getEnforcingConsecutiveErrors()
   {
     return $this->enforcingConsecutiveErrors;
   }
+  /**
+   * @param int
+   */
   public function setEnforcingConsecutiveGatewayFailure($enforcingConsecutiveGatewayFailure)
   {
     $this->enforcingConsecutiveGatewayFailure = $enforcingConsecutiveGatewayFailure;
   }
+  /**
+   * @return int
+   */
   public function getEnforcingConsecutiveGatewayFailure()
   {
     return $this->enforcingConsecutiveGatewayFailure;
   }
+  /**
+   * @param int
+   */
   public function setEnforcingSuccessRate($enforcingSuccessRate)
   {
     $this->enforcingSuccessRate = $enforcingSuccessRate;
   }
+  /**
+   * @return int
+   */
   public function getEnforcingSuccessRate()
   {
     return $this->enforcingSuccessRate;
@@ -101,34 +158,58 @@ class OutlierDetection extends \Google\Model
   {
     return $this->interval;
   }
+  /**
+   * @param int
+   */
   public function setMaxEjectionPercent($maxEjectionPercent)
   {
     $this->maxEjectionPercent = $maxEjectionPercent;
   }
+  /**
+   * @return int
+   */
   public function getMaxEjectionPercent()
   {
     return $this->maxEjectionPercent;
   }
+  /**
+   * @param int
+   */
   public function setSuccessRateMinimumHosts($successRateMinimumHosts)
   {
     $this->successRateMinimumHosts = $successRateMinimumHosts;
   }
+  /**
+   * @return int
+   */
   public function getSuccessRateMinimumHosts()
   {
     return $this->successRateMinimumHosts;
   }
+  /**
+   * @param int
+   */
   public function setSuccessRateRequestVolume($successRateRequestVolume)
   {
     $this->successRateRequestVolume = $successRateRequestVolume;
   }
+  /**
+   * @return int
+   */
   public function getSuccessRateRequestVolume()
   {
     return $this->successRateRequestVolume;
   }
+  /**
+   * @param int
+   */
   public function setSuccessRateStdevFactor($successRateStdevFactor)
   {
     $this->successRateStdevFactor = $successRateStdevFactor;
   }
+  /**
+   * @return int
+   */
   public function getSuccessRateStdevFactor()
   {
     return $this->successRateStdevFactor;

@@ -19,7 +19,13 @@ namespace Google\Service\Slides;
 
 class ImageProperties extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $brightness;
+  /**
+   * @var float
+   */
   public $contrast;
   protected $cropPropertiesType = CropProperties::class;
   protected $cropPropertiesDataType = '';
@@ -31,20 +37,35 @@ class ImageProperties extends \Google\Model
   protected $recolorDataType = '';
   protected $shadowType = Shadow::class;
   protected $shadowDataType = '';
+  /**
+   * @var float
+   */
   public $transparency;
 
+  /**
+   * @param float
+   */
   public function setBrightness($brightness)
   {
     $this->brightness = $brightness;
   }
+  /**
+   * @return float
+   */
   public function getBrightness()
   {
     return $this->brightness;
   }
+  /**
+   * @param float
+   */
   public function setContrast($contrast)
   {
     $this->contrast = $contrast;
   }
+  /**
+   * @return float
+   */
   public function getContrast()
   {
     return $this->contrast;
@@ -119,10 +140,16 @@ class ImageProperties extends \Google\Model
   {
     return $this->shadow;
   }
+  /**
+   * @param float
+   */
   public function setTransparency($transparency)
   {
     $this->transparency = $transparency;
   }
+  /**
+   * @return float
+   */
   public function getTransparency()
   {
     return $this->transparency;

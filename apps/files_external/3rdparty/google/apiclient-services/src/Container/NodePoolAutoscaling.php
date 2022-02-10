@@ -19,39 +19,75 @@ namespace Google\Service\Container;
 
 class NodePoolAutoscaling extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $autoprovisioned;
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var int
+   */
   public $maxNodeCount;
+  /**
+   * @var int
+   */
   public $minNodeCount;
 
+  /**
+   * @param bool
+   */
   public function setAutoprovisioned($autoprovisioned)
   {
     $this->autoprovisioned = $autoprovisioned;
   }
+  /**
+   * @return bool
+   */
   public function getAutoprovisioned()
   {
     return $this->autoprovisioned;
   }
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param int
+   */
   public function setMaxNodeCount($maxNodeCount)
   {
     $this->maxNodeCount = $maxNodeCount;
   }
+  /**
+   * @return int
+   */
   public function getMaxNodeCount()
   {
     return $this->maxNodeCount;
   }
+  /**
+   * @param int
+   */
   public function setMinNodeCount($minNodeCount)
   {
     $this->minNodeCount = $minNodeCount;
   }
+  /**
+   * @return int
+   */
   public function getMinNodeCount()
   {
     return $this->minNodeCount;

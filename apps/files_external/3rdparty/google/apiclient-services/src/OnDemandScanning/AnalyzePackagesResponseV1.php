@@ -19,12 +19,21 @@ namespace Google\Service\OnDemandScanning;
 
 class AnalyzePackagesResponseV1 extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $scan;
 
+  /**
+   * @param string
+   */
   public function setScan($scan)
   {
     $this->scan = $scan;
   }
+  /**
+   * @return string
+   */
   public function getScan()
   {
     return $this->scan;

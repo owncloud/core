@@ -19,30 +19,57 @@ namespace Google\Service\AndroidEnterprise;
 
 class Install extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $installState;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var int
+   */
   public $versionCode;
 
+  /**
+   * @param string
+   */
   public function setInstallState($installState)
   {
     $this->installState = $installState;
   }
+  /**
+   * @return string
+   */
   public function getInstallState()
   {
     return $this->installState;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param int
+   */
   public function setVersionCode($versionCode)
   {
     $this->versionCode = $versionCode;
   }
+  /**
+   * @return int
+   */
   public function getVersionCode()
   {
     return $this->versionCode;

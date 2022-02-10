@@ -20,14 +20,23 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3ListTransitionRouteGroupsResponse extends \Google\Collection
 {
   protected $collection_key = 'transitionRouteGroups';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $transitionRouteGroupsType = GoogleCloudDialogflowCxV3TransitionRouteGroup::class;
   protected $transitionRouteGroupsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

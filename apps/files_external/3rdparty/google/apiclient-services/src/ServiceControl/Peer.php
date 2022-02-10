@@ -19,48 +19,93 @@ namespace Google\Service\ServiceControl;
 
 class Peer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ip;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $port;
+  /**
+   * @var string
+   */
   public $principal;
+  /**
+   * @var string
+   */
   public $regionCode;
 
+  /**
+   * @param string
+   */
   public function setIp($ip)
   {
     $this->ip = $ip;
   }
+  /**
+   * @return string
+   */
   public function getIp()
   {
     return $this->ip;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return string
+   */
   public function getPort()
   {
     return $this->port;
   }
+  /**
+   * @param string
+   */
   public function setPrincipal($principal)
   {
     $this->principal = $principal;
   }
+  /**
+   * @return string
+   */
   public function getPrincipal()
   {
     return $this->principal;
   }
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;

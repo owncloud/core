@@ -20,23 +20,41 @@ namespace Google\Service\AnalyticsReporting;
 class PivotHeaderEntry extends \Google\Collection
 {
   protected $collection_key = 'dimensionValues';
+  /**
+   * @var string[]
+   */
   public $dimensionNames;
+  /**
+   * @var string[]
+   */
   public $dimensionValues;
   protected $metricType = MetricHeaderEntry::class;
   protected $metricDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setDimensionNames($dimensionNames)
   {
     $this->dimensionNames = $dimensionNames;
   }
+  /**
+   * @return string[]
+   */
   public function getDimensionNames()
   {
     return $this->dimensionNames;
   }
+  /**
+   * @param string[]
+   */
   public function setDimensionValues($dimensionValues)
   {
     $this->dimensionValues = $dimensionValues;
   }
+  /**
+   * @return string[]
+   */
   public function getDimensionValues()
   {
     return $this->dimensionValues;

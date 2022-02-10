@@ -19,30 +19,57 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2HybridInspectStatistics extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $abortedCount;
+  /**
+   * @var string
+   */
   public $pendingCount;
+  /**
+   * @var string
+   */
   public $processedCount;
 
+  /**
+   * @param string
+   */
   public function setAbortedCount($abortedCount)
   {
     $this->abortedCount = $abortedCount;
   }
+  /**
+   * @return string
+   */
   public function getAbortedCount()
   {
     return $this->abortedCount;
   }
+  /**
+   * @param string
+   */
   public function setPendingCount($pendingCount)
   {
     $this->pendingCount = $pendingCount;
   }
+  /**
+   * @return string
+   */
   public function getPendingCount()
   {
     return $this->pendingCount;
   }
+  /**
+   * @param string
+   */
   public function setProcessedCount($processedCount)
   {
     $this->processedCount = $processedCount;
   }
+  /**
+   * @return string
+   */
   public function getProcessedCount()
   {
     return $this->processedCount;

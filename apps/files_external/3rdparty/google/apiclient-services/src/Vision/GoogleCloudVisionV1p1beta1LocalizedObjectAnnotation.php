@@ -21,9 +21,21 @@ class GoogleCloudVisionV1p1beta1LocalizedObjectAnnotation extends \Google\Model
 {
   protected $boundingPolyType = GoogleCloudVisionV1p1beta1BoundingPoly::class;
   protected $boundingPolyDataType = '';
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $mid;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var float
+   */
   public $score;
 
   /**
@@ -40,34 +52,58 @@ class GoogleCloudVisionV1p1beta1LocalizedObjectAnnotation extends \Google\Model
   {
     return $this->boundingPoly;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setMid($mid)
   {
     $this->mid = $mid;
   }
+  /**
+   * @return string
+   */
   public function getMid()
   {
     return $this->mid;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param float
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return float
+   */
   public function getScore()
   {
     return $this->score;

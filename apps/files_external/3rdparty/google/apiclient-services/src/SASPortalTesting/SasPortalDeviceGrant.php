@@ -20,29 +20,56 @@ namespace Google\Service\SASPortalTesting;
 class SasPortalDeviceGrant extends \Google\Collection
 {
   protected $collection_key = 'suspensionReason';
+  /**
+   * @var string
+   */
   public $channelType;
+  /**
+   * @var string
+   */
   public $expireTime;
   protected $frequencyRangeType = SasPortalFrequencyRange::class;
   protected $frequencyRangeDataType = '';
+  /**
+   * @var string
+   */
   public $grantId;
   public $maxEirp;
   protected $moveListType = SasPortalDpaMoveList::class;
   protected $moveListDataType = 'array';
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string[]
+   */
   public $suspensionReason;
 
+  /**
+   * @param string
+   */
   public function setChannelType($channelType)
   {
     $this->channelType = $channelType;
   }
+  /**
+   * @return string
+   */
   public function getChannelType()
   {
     return $this->channelType;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
@@ -61,10 +88,16 @@ class SasPortalDeviceGrant extends \Google\Collection
   {
     return $this->frequencyRange;
   }
+  /**
+   * @param string
+   */
   public function setGrantId($grantId)
   {
     $this->grantId = $grantId;
   }
+  /**
+   * @return string
+   */
   public function getGrantId()
   {
     return $this->grantId;
@@ -91,18 +124,30 @@ class SasPortalDeviceGrant extends \Google\Collection
   {
     return $this->moveList;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string[]
+   */
   public function setSuspensionReason($suspensionReason)
   {
     $this->suspensionReason = $suspensionReason;
   }
+  /**
+   * @return string[]
+   */
   public function getSuspensionReason()
   {
     return $this->suspensionReason;

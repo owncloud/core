@@ -19,30 +19,57 @@ namespace Google\Service\Vault;
 
 class HeldGroupsQuery extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $terms;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setTerms($terms)
   {
     $this->terms = $terms;
   }
+  /**
+   * @return string
+   */
   public function getTerms()
   {
     return $this->terms;

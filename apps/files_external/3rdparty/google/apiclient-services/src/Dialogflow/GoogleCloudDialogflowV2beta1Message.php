@@ -19,38 +19,77 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1Message extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $languageCode;
   protected $messageAnnotationType = GoogleCloudDialogflowV2beta1MessageAnnotation::class;
   protected $messageAnnotationDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $participant;
+  /**
+   * @var string
+   */
   public $participantRole;
+  /**
+   * @var string
+   */
   public $sendTime;
   protected $sentimentAnalysisType = GoogleCloudDialogflowV2beta1SentimentAnalysisResult::class;
   protected $sentimentAnalysisDataType = '';
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
@@ -69,34 +108,58 @@ class GoogleCloudDialogflowV2beta1Message extends \Google\Model
   {
     return $this->messageAnnotation;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParticipant($participant)
   {
     $this->participant = $participant;
   }
+  /**
+   * @return string
+   */
   public function getParticipant()
   {
     return $this->participant;
   }
+  /**
+   * @param string
+   */
   public function setParticipantRole($participantRole)
   {
     $this->participantRole = $participantRole;
   }
+  /**
+   * @return string
+   */
   public function getParticipantRole()
   {
     return $this->participantRole;
   }
+  /**
+   * @param string
+   */
   public function setSendTime($sendTime)
   {
     $this->sendTime = $sendTime;
   }
+  /**
+   * @return string
+   */
   public function getSendTime()
   {
     return $this->sendTime;

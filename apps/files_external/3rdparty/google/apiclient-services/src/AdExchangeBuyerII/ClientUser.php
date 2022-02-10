@@ -19,39 +19,75 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class ClientUser extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clientAccountId;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setClientAccountId($clientAccountId)
   {
     $this->clientAccountId = $clientAccountId;
   }
+  /**
+   * @return string
+   */
   public function getClientAccountId()
   {
     return $this->clientAccountId;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

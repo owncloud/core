@@ -19,12 +19,21 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class PauseProposalRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

@@ -42,12 +42,16 @@ class ChromeManagement extends \Google\Service
   /** See reports about devices and Chrome browsers managed within your organization. */
   const CHROME_MANAGEMENT_REPORTS_READONLY =
       "https://www.googleapis.com/auth/chrome.management.reports.readonly";
+  /** See basic device and telemetry information collected from Chrome OS devices or users managed within your organization. */
+  const CHROME_MANAGEMENT_TELEMETRY_READONLY =
+      "https://www.googleapis.com/auth/chrome.management.telemetry.readonly";
 
   public $customers_apps;
   public $customers_apps_android;
   public $customers_apps_chrome;
   public $customers_apps_web;
   public $customers_reports;
+  public $customers_telemetry_devices;
 
   /**
    * Constructs the internal representation of the ChromeManagement service.
@@ -257,6 +261,42 @@ class ChromeManagement extends \Google\Service
                   'type' => 'integer',
                 ],
                 'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->customers_telemetry_devices = new ChromeManagement\Resource\CustomersTelemetryDevices(
+        $this,
+        $this->serviceName,
+        'devices',
+        [
+          'methods' => [
+            'list' => [
+              'path' => 'v1/{+parent}/telemetry/devices',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'filter' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'readMask' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],

@@ -20,12 +20,21 @@ namespace Google\Service\Analytics;
 class AccountPermissions extends \Google\Collection
 {
   protected $collection_key = 'effective';
+  /**
+   * @var string[]
+   */
   public $effective;
 
+  /**
+   * @param string[]
+   */
   public function setEffective($effective)
   {
     $this->effective = $effective;
   }
+  /**
+   * @return string[]
+   */
   public function getEffective()
   {
     return $this->effective;

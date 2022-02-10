@@ -20,23 +20,41 @@ namespace Google\Service\CloudAsset;
 class GoogleIdentityAccesscontextmanagerV1IngressFrom extends \Google\Collection
 {
   protected $collection_key = 'sources';
+  /**
+   * @var string[]
+   */
   public $identities;
+  /**
+   * @var string
+   */
   public $identityType;
   protected $sourcesType = GoogleIdentityAccesscontextmanagerV1IngressSource::class;
   protected $sourcesDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setIdentities($identities)
   {
     $this->identities = $identities;
   }
+  /**
+   * @return string[]
+   */
   public function getIdentities()
   {
     return $this->identities;
   }
+  /**
+   * @param string
+   */
   public function setIdentityType($identityType)
   {
     $this->identityType = $identityType;
   }
+  /**
+   * @return string
+   */
   public function getIdentityType()
   {
     return $this->identityType;

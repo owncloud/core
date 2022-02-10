@@ -20,12 +20,21 @@ namespace Google\Service\Vault;
 class HeldVoiceQuery extends \Google\Collection
 {
   protected $collection_key = 'coveredData';
+  /**
+   * @var string[]
+   */
   public $coveredData;
 
+  /**
+   * @param string[]
+   */
   public function setCoveredData($coveredData)
   {
     $this->coveredData = $coveredData;
   }
+  /**
+   * @return string[]
+   */
   public function getCoveredData()
   {
     return $this->coveredData;

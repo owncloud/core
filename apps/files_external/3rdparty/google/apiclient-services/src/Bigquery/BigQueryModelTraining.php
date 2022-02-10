@@ -19,21 +19,39 @@ namespace Google\Service\Bigquery;
 
 class BigQueryModelTraining extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $currentIteration;
+  /**
+   * @var string
+   */
   public $expectedTotalIterations;
 
+  /**
+   * @param int
+   */
   public function setCurrentIteration($currentIteration)
   {
     $this->currentIteration = $currentIteration;
   }
+  /**
+   * @return int
+   */
   public function getCurrentIteration()
   {
     return $this->currentIteration;
   }
+  /**
+   * @param string
+   */
   public function setExpectedTotalIterations($expectedTotalIterations)
   {
     $this->expectedTotalIterations = $expectedTotalIterations;
   }
+  /**
+   * @return string
+   */
   public function getExpectedTotalIterations()
   {
     return $this->expectedTotalIterations;

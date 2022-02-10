@@ -19,75 +19,147 @@ namespace Google\Service\Directory;
 
 class UserPhoto extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $photoData;
+  /**
+   * @var string
+   */
   public $primaryEmail;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setPhotoData($photoData)
   {
     $this->photoData = $photoData;
   }
+  /**
+   * @return string
+   */
   public function getPhotoData()
   {
     return $this->photoData;
   }
+  /**
+   * @param string
+   */
   public function setPrimaryEmail($primaryEmail)
   {
     $this->primaryEmail = $primaryEmail;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryEmail()
   {
     return $this->primaryEmail;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

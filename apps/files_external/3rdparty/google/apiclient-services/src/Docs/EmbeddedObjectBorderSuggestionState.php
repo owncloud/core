@@ -19,39 +19,75 @@ namespace Google\Service\Docs;
 
 class EmbeddedObjectBorderSuggestionState extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $colorSuggested;
+  /**
+   * @var bool
+   */
   public $dashStyleSuggested;
+  /**
+   * @var bool
+   */
   public $propertyStateSuggested;
+  /**
+   * @var bool
+   */
   public $widthSuggested;
 
+  /**
+   * @param bool
+   */
   public function setColorSuggested($colorSuggested)
   {
     $this->colorSuggested = $colorSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getColorSuggested()
   {
     return $this->colorSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setDashStyleSuggested($dashStyleSuggested)
   {
     $this->dashStyleSuggested = $dashStyleSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getDashStyleSuggested()
   {
     return $this->dashStyleSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setPropertyStateSuggested($propertyStateSuggested)
   {
     $this->propertyStateSuggested = $propertyStateSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getPropertyStateSuggested()
   {
     return $this->propertyStateSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setWidthSuggested($widthSuggested)
   {
     $this->widthSuggested = $widthSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getWidthSuggested()
   {
     return $this->widthSuggested;

@@ -21,12 +21,21 @@ class GooglePrivacyDlpV2DeidentifyContentRequest extends \Google\Model
 {
   protected $deidentifyConfigType = GooglePrivacyDlpV2DeidentifyConfig::class;
   protected $deidentifyConfigDataType = '';
+  /**
+   * @var string
+   */
   public $deidentifyTemplateName;
   protected $inspectConfigType = GooglePrivacyDlpV2InspectConfig::class;
   protected $inspectConfigDataType = '';
+  /**
+   * @var string
+   */
   public $inspectTemplateName;
   protected $itemType = GooglePrivacyDlpV2ContentItem::class;
   protected $itemDataType = '';
+  /**
+   * @var string
+   */
   public $locationId;
 
   /**
@@ -43,10 +52,16 @@ class GooglePrivacyDlpV2DeidentifyContentRequest extends \Google\Model
   {
     return $this->deidentifyConfig;
   }
+  /**
+   * @param string
+   */
   public function setDeidentifyTemplateName($deidentifyTemplateName)
   {
     $this->deidentifyTemplateName = $deidentifyTemplateName;
   }
+  /**
+   * @return string
+   */
   public function getDeidentifyTemplateName()
   {
     return $this->deidentifyTemplateName;
@@ -65,10 +80,16 @@ class GooglePrivacyDlpV2DeidentifyContentRequest extends \Google\Model
   {
     return $this->inspectConfig;
   }
+  /**
+   * @param string
+   */
   public function setInspectTemplateName($inspectTemplateName)
   {
     $this->inspectTemplateName = $inspectTemplateName;
   }
+  /**
+   * @return string
+   */
   public function getInspectTemplateName()
   {
     return $this->inspectTemplateName;
@@ -87,10 +108,16 @@ class GooglePrivacyDlpV2DeidentifyContentRequest extends \Google\Model
   {
     return $this->item;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;

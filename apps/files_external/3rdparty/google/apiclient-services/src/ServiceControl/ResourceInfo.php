@@ -19,48 +19,93 @@ namespace Google\Service\ServiceControl;
 
 class ResourceInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $container;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $permission;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setContainer($container)
   {
     $this->container = $container;
   }
+  /**
+   * @return string
+   */
   public function getContainer()
   {
     return $this->container;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string
+   */
   public function getPermission()
   {
     return $this->permission;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

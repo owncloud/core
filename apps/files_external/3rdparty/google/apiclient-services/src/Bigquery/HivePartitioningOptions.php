@@ -19,30 +19,57 @@ namespace Google\Service\Bigquery;
 
 class HivePartitioningOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mode;
+  /**
+   * @var bool
+   */
   public $requirePartitionFilter;
+  /**
+   * @var string
+   */
   public $sourceUriPrefix;
 
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;
   }
+  /**
+   * @param bool
+   */
   public function setRequirePartitionFilter($requirePartitionFilter)
   {
     $this->requirePartitionFilter = $requirePartitionFilter;
   }
+  /**
+   * @return bool
+   */
   public function getRequirePartitionFilter()
   {
     return $this->requirePartitionFilter;
   }
+  /**
+   * @param string
+   */
   public function setSourceUriPrefix($sourceUriPrefix)
   {
     $this->sourceUriPrefix = $sourceUriPrefix;
   }
+  /**
+   * @return string
+   */
   public function getSourceUriPrefix()
   {
     return $this->sourceUriPrefix;

@@ -19,30 +19,57 @@ namespace Google\Service\RealTimeBidding;
 
 class DestinationNotCrawlableEvidence extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $crawlTime;
+  /**
+   * @var string
+   */
   public $crawledUrl;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string
+   */
   public function setCrawlTime($crawlTime)
   {
     $this->crawlTime = $crawlTime;
   }
+  /**
+   * @return string
+   */
   public function getCrawlTime()
   {
     return $this->crawlTime;
   }
+  /**
+   * @param string
+   */
   public function setCrawledUrl($crawledUrl)
   {
     $this->crawledUrl = $crawledUrl;
   }
+  /**
+   * @return string
+   */
   public function getCrawledUrl()
   {
     return $this->crawledUrl;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

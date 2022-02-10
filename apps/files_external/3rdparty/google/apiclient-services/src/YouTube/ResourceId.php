@@ -19,39 +19,75 @@ namespace Google\Service\YouTube;
 
 class ResourceId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $playlistId;
+  /**
+   * @var string
+   */
   public $videoId;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPlaylistId($playlistId)
   {
     $this->playlistId = $playlistId;
   }
+  /**
+   * @return string
+   */
   public function getPlaylistId()
   {
     return $this->playlistId;
   }
+  /**
+   * @param string
+   */
   public function setVideoId($videoId)
   {
     $this->videoId = $videoId;
   }
+  /**
+   * @return string
+   */
   public function getVideoId()
   {
     return $this->videoId;

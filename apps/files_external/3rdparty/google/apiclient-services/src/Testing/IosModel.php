@@ -20,84 +20,165 @@ namespace Google\Service\Testing;
 class IosModel extends \Google\Collection
 {
   protected $collection_key = 'tags';
+  /**
+   * @var string[]
+   */
   public $deviceCapabilities;
+  /**
+   * @var string
+   */
   public $formFactor;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $screenDensity;
+  /**
+   * @var int
+   */
   public $screenX;
+  /**
+   * @var int
+   */
   public $screenY;
+  /**
+   * @var string[]
+   */
   public $supportedVersionIds;
+  /**
+   * @var string[]
+   */
   public $tags;
 
+  /**
+   * @param string[]
+   */
   public function setDeviceCapabilities($deviceCapabilities)
   {
     $this->deviceCapabilities = $deviceCapabilities;
   }
+  /**
+   * @return string[]
+   */
   public function getDeviceCapabilities()
   {
     return $this->deviceCapabilities;
   }
+  /**
+   * @param string
+   */
   public function setFormFactor($formFactor)
   {
     $this->formFactor = $formFactor;
   }
+  /**
+   * @return string
+   */
   public function getFormFactor()
   {
     return $this->formFactor;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setScreenDensity($screenDensity)
   {
     $this->screenDensity = $screenDensity;
   }
+  /**
+   * @return int
+   */
   public function getScreenDensity()
   {
     return $this->screenDensity;
   }
+  /**
+   * @param int
+   */
   public function setScreenX($screenX)
   {
     $this->screenX = $screenX;
   }
+  /**
+   * @return int
+   */
   public function getScreenX()
   {
     return $this->screenX;
   }
+  /**
+   * @param int
+   */
   public function setScreenY($screenY)
   {
     $this->screenY = $screenY;
   }
+  /**
+   * @return int
+   */
   public function getScreenY()
   {
     return $this->screenY;
   }
+  /**
+   * @param string[]
+   */
   public function setSupportedVersionIds($supportedVersionIds)
   {
     $this->supportedVersionIds = $supportedVersionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSupportedVersionIds()
   {
     return $this->supportedVersionIds;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;

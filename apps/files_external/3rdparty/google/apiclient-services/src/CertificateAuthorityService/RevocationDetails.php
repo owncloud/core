@@ -19,21 +19,39 @@ namespace Google\Service\CertificateAuthorityService;
 
 class RevocationDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $revocationState;
+  /**
+   * @var string
+   */
   public $revocationTime;
 
+  /**
+   * @param string
+   */
   public function setRevocationState($revocationState)
   {
     $this->revocationState = $revocationState;
   }
+  /**
+   * @return string
+   */
   public function getRevocationState()
   {
     return $this->revocationState;
   }
+  /**
+   * @param string
+   */
   public function setRevocationTime($revocationTime)
   {
     $this->revocationTime = $revocationTime;
   }
+  /**
+   * @return string
+   */
   public function getRevocationTime()
   {
     return $this->revocationTime;

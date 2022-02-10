@@ -22,6 +22,9 @@ class GoogleCloudDatalabelingV1beta1ListExamplesResponse extends \Google\Collect
   protected $collection_key = 'examples';
   protected $examplesType = GoogleCloudDatalabelingV1beta1Example::class;
   protected $examplesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudDatalabelingV1beta1ListExamplesResponse extends \Google\Collect
   {
     return $this->examples;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

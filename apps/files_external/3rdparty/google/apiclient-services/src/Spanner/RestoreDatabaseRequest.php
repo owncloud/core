@@ -19,23 +19,41 @@ namespace Google\Service\Spanner;
 
 class RestoreDatabaseRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backup;
+  /**
+   * @var string
+   */
   public $databaseId;
   protected $encryptionConfigType = RestoreDatabaseEncryptionConfig::class;
   protected $encryptionConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBackup($backup)
   {
     $this->backup = $backup;
   }
+  /**
+   * @return string
+   */
   public function getBackup()
   {
     return $this->backup;
   }
+  /**
+   * @param string
+   */
   public function setDatabaseId($databaseId)
   {
     $this->databaseId = $databaseId;
   }
+  /**
+   * @return string
+   */
   public function getDatabaseId()
   {
     return $this->databaseId;

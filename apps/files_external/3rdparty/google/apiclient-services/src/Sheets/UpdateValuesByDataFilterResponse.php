@@ -21,11 +21,23 @@ class UpdateValuesByDataFilterResponse extends \Google\Model
 {
   protected $dataFilterType = DataFilter::class;
   protected $dataFilterDataType = '';
+  /**
+   * @var int
+   */
   public $updatedCells;
+  /**
+   * @var int
+   */
   public $updatedColumns;
   protected $updatedDataType = ValueRange::class;
   protected $updatedDataDataType = '';
+  /**
+   * @var string
+   */
   public $updatedRange;
+  /**
+   * @var int
+   */
   public $updatedRows;
 
   /**
@@ -42,18 +54,30 @@ class UpdateValuesByDataFilterResponse extends \Google\Model
   {
     return $this->dataFilter;
   }
+  /**
+   * @param int
+   */
   public function setUpdatedCells($updatedCells)
   {
     $this->updatedCells = $updatedCells;
   }
+  /**
+   * @return int
+   */
   public function getUpdatedCells()
   {
     return $this->updatedCells;
   }
+  /**
+   * @param int
+   */
   public function setUpdatedColumns($updatedColumns)
   {
     $this->updatedColumns = $updatedColumns;
   }
+  /**
+   * @return int
+   */
   public function getUpdatedColumns()
   {
     return $this->updatedColumns;
@@ -72,18 +96,30 @@ class UpdateValuesByDataFilterResponse extends \Google\Model
   {
     return $this->updatedData;
   }
+  /**
+   * @param string
+   */
   public function setUpdatedRange($updatedRange)
   {
     $this->updatedRange = $updatedRange;
   }
+  /**
+   * @return string
+   */
   public function getUpdatedRange()
   {
     return $this->updatedRange;
   }
+  /**
+   * @param int
+   */
   public function setUpdatedRows($updatedRows)
   {
     $this->updatedRows = $updatedRows;
   }
+  /**
+   * @return int
+   */
   public function getUpdatedRows()
   {
     return $this->updatedRows;

@@ -19,49 +19,103 @@ namespace Google\Service\AndroidPublisher;
 
 class UserComment extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $androidOsVersion;
+  /**
+   * @var int
+   */
   public $appVersionCode;
+  /**
+   * @var string
+   */
   public $appVersionName;
+  /**
+   * @var string
+   */
   public $device;
   protected $deviceMetadataType = DeviceMetadata::class;
   protected $deviceMetadataDataType = '';
   protected $lastModifiedType = Timestamp::class;
   protected $lastModifiedDataType = '';
+  /**
+   * @var string
+   */
   public $originalText;
+  /**
+   * @var string
+   */
   public $reviewerLanguage;
+  /**
+   * @var int
+   */
   public $starRating;
+  /**
+   * @var string
+   */
   public $text;
+  /**
+   * @var int
+   */
   public $thumbsDownCount;
+  /**
+   * @var int
+   */
   public $thumbsUpCount;
 
+  /**
+   * @param int
+   */
   public function setAndroidOsVersion($androidOsVersion)
   {
     $this->androidOsVersion = $androidOsVersion;
   }
+  /**
+   * @return int
+   */
   public function getAndroidOsVersion()
   {
     return $this->androidOsVersion;
   }
+  /**
+   * @param int
+   */
   public function setAppVersionCode($appVersionCode)
   {
     $this->appVersionCode = $appVersionCode;
   }
+  /**
+   * @return int
+   */
   public function getAppVersionCode()
   {
     return $this->appVersionCode;
   }
+  /**
+   * @param string
+   */
   public function setAppVersionName($appVersionName)
   {
     $this->appVersionName = $appVersionName;
   }
+  /**
+   * @return string
+   */
   public function getAppVersionName()
   {
     return $this->appVersionName;
   }
+  /**
+   * @param string
+   */
   public function setDevice($device)
   {
     $this->device = $device;
   }
+  /**
+   * @return string
+   */
   public function getDevice()
   {
     return $this->device;
@@ -94,50 +148,86 @@ class UserComment extends \Google\Model
   {
     return $this->lastModified;
   }
+  /**
+   * @param string
+   */
   public function setOriginalText($originalText)
   {
     $this->originalText = $originalText;
   }
+  /**
+   * @return string
+   */
   public function getOriginalText()
   {
     return $this->originalText;
   }
+  /**
+   * @param string
+   */
   public function setReviewerLanguage($reviewerLanguage)
   {
     $this->reviewerLanguage = $reviewerLanguage;
   }
+  /**
+   * @return string
+   */
   public function getReviewerLanguage()
   {
     return $this->reviewerLanguage;
   }
+  /**
+   * @param int
+   */
   public function setStarRating($starRating)
   {
     $this->starRating = $starRating;
   }
+  /**
+   * @return int
+   */
   public function getStarRating()
   {
     return $this->starRating;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;
   }
+  /**
+   * @param int
+   */
   public function setThumbsDownCount($thumbsDownCount)
   {
     $this->thumbsDownCount = $thumbsDownCount;
   }
+  /**
+   * @return int
+   */
   public function getThumbsDownCount()
   {
     return $this->thumbsDownCount;
   }
+  /**
+   * @param int
+   */
   public function setThumbsUpCount($thumbsUpCount)
   {
     $this->thumbsUpCount = $thumbsUpCount;
   }
+  /**
+   * @return int
+   */
   public function getThumbsUpCount()
   {
     return $this->thumbsUpCount;

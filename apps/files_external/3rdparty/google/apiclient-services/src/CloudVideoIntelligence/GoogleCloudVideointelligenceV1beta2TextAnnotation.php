@@ -22,7 +22,13 @@ class GoogleCloudVideointelligenceV1beta2TextAnnotation extends \Google\Collecti
   protected $collection_key = 'segments';
   protected $segmentsType = GoogleCloudVideointelligenceV1beta2TextSegment::class;
   protected $segmentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $text;
+  /**
+   * @var string
+   */
   public $version;
 
   /**
@@ -39,18 +45,30 @@ class GoogleCloudVideointelligenceV1beta2TextAnnotation extends \Google\Collecti
   {
     return $this->segments;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

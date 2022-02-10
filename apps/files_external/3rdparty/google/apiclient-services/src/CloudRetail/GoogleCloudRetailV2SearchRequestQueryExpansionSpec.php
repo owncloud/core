@@ -19,21 +19,39 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2SearchRequestQueryExpansionSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $condition;
+  /**
+   * @var bool
+   */
   public $pinUnexpandedResults;
 
+  /**
+   * @param string
+   */
   public function setCondition($condition)
   {
     $this->condition = $condition;
   }
+  /**
+   * @return string
+   */
   public function getCondition()
   {
     return $this->condition;
   }
+  /**
+   * @param bool
+   */
   public function setPinUnexpandedResults($pinUnexpandedResults)
   {
     $this->pinUnexpandedResults = $pinUnexpandedResults;
   }
+  /**
+   * @return bool
+   */
   public function getPinUnexpandedResults()
   {
     return $this->pinUnexpandedResults;

@@ -22,6 +22,9 @@ class GoogleCloudDialogflowCxV3ListAgentsResponse extends \Google\Collection
   protected $collection_key = 'agents';
   protected $agentsType = GoogleCloudDialogflowCxV3Agent::class;
   protected $agentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudDialogflowCxV3ListAgentsResponse extends \Google\Collection
   {
     return $this->agents;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

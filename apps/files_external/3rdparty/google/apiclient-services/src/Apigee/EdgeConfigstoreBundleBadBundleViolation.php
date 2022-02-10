@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class EdgeConfigstoreBundleBadBundleViolation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $filename;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setFilename($filename)
   {
     $this->filename = $filename;
   }
+  /**
+   * @return string
+   */
   public function getFilename()
   {
     return $this->filename;

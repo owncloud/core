@@ -19,12 +19,21 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1alphaTuningMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $recommendationModel;
 
+  /**
+   * @param string
+   */
   public function setRecommendationModel($recommendationModel)
   {
     $this->recommendationModel = $recommendationModel;
   }
+  /**
+   * @return string
+   */
   public function getRecommendationModel()
   {
     return $this->recommendationModel;

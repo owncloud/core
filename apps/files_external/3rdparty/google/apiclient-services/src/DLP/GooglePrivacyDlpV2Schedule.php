@@ -19,12 +19,21 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2Schedule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $recurrencePeriodDuration;
 
+  /**
+   * @param string
+   */
   public function setRecurrencePeriodDuration($recurrencePeriodDuration)
   {
     $this->recurrencePeriodDuration = $recurrencePeriodDuration;
   }
+  /**
+   * @return string
+   */
   public function getRecurrencePeriodDuration()
   {
     return $this->recurrencePeriodDuration;

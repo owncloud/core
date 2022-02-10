@@ -19,12 +19,21 @@ namespace Google\Service\CloudShell;
 
 class StartEnvironmentMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

@@ -19,15 +19,27 @@ namespace Google\Service\Dfareporting;
 
 class OptimizationActivity extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $floodlightActivityId;
   protected $floodlightActivityIdDimensionValueType = DimensionValue::class;
   protected $floodlightActivityIdDimensionValueDataType = '';
+  /**
+   * @var int
+   */
   public $weight;
 
+  /**
+   * @param string
+   */
   public function setFloodlightActivityId($floodlightActivityId)
   {
     $this->floodlightActivityId = $floodlightActivityId;
   }
+  /**
+   * @return string
+   */
   public function getFloodlightActivityId()
   {
     return $this->floodlightActivityId;
@@ -46,10 +58,16 @@ class OptimizationActivity extends \Google\Model
   {
     return $this->floodlightActivityIdDimensionValue;
   }
+  /**
+   * @param int
+   */
   public function setWeight($weight)
   {
     $this->weight = $weight;
   }
+  /**
+   * @return int
+   */
   public function getWeight()
   {
     return $this->weight;

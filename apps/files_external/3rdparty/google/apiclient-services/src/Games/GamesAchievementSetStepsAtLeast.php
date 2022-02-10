@@ -19,21 +19,39 @@ namespace Google\Service\Games;
 
 class GamesAchievementSetStepsAtLeast extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var int
+   */
   public $steps;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param int
+   */
   public function setSteps($steps)
   {
     $this->steps = $steps;
   }
+  /**
+   * @return int
+   */
   public function getSteps()
   {
     return $this->steps;

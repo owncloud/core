@@ -24,6 +24,9 @@ class GoogleSecuritySafebrowsingV4FindFullHashesRequest extends \Google\Collecti
   protected $apiClientDataType = '';
   protected $clientType = GoogleSecuritySafebrowsingV4ClientInfo::class;
   protected $clientDataType = '';
+  /**
+   * @var string[]
+   */
   public $clientStates;
   protected $threatInfoType = GoogleSecuritySafebrowsingV4ThreatInfo::class;
   protected $threatInfoDataType = '';
@@ -56,10 +59,16 @@ class GoogleSecuritySafebrowsingV4FindFullHashesRequest extends \Google\Collecti
   {
     return $this->client;
   }
+  /**
+   * @param string[]
+   */
   public function setClientStates($clientStates)
   {
     $this->clientStates = $clientStates;
   }
+  /**
+   * @return string[]
+   */
   public function getClientStates()
   {
     return $this->clientStates;

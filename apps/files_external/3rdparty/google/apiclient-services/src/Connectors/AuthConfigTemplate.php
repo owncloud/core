@@ -20,14 +20,23 @@ namespace Google\Service\Connectors;
 class AuthConfigTemplate extends \Google\Collection
 {
   protected $collection_key = 'configVariableTemplates';
+  /**
+   * @var string
+   */
   public $authType;
   protected $configVariableTemplatesType = ConfigVariableTemplate::class;
   protected $configVariableTemplatesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAuthType($authType)
   {
     $this->authType = $authType;
   }
+  /**
+   * @return string
+   */
   public function getAuthType()
   {
     return $this->authType;

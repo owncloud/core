@@ -19,30 +19,57 @@ namespace Google\Service\IdentityToolkit;
 
 class IdentitytoolkitRelyingpartyEmailLinkSigninRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $idToken;
+  /**
+   * @var string
+   */
   public $oobCode;
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setIdToken($idToken)
   {
     $this->idToken = $idToken;
   }
+  /**
+   * @return string
+   */
   public function getIdToken()
   {
     return $this->idToken;
   }
+  /**
+   * @param string
+   */
   public function setOobCode($oobCode)
   {
     $this->oobCode = $oobCode;
   }
+  /**
+   * @return string
+   */
   public function getOobCode()
   {
     return $this->oobCode;

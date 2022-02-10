@@ -19,39 +19,75 @@ namespace Google\Service\Dataproc;
 
 class YarnApplication extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var float
+   */
   public $progress;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $trackingUrl;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param float
+   */
   public function setProgress($progress)
   {
     $this->progress = $progress;
   }
+  /**
+   * @return float
+   */
   public function getProgress()
   {
     return $this->progress;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setTrackingUrl($trackingUrl)
   {
     $this->trackingUrl = $trackingUrl;
   }
+  /**
+   * @return string
+   */
   public function getTrackingUrl()
   {
     return $this->trackingUrl;

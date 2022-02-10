@@ -20,30 +20,57 @@ namespace Google\Service\RecaptchaEnterprise;
 class GoogleCloudRecaptchaenterpriseV1AnnotateAssessmentRequest extends \Google\Collection
 {
   protected $collection_key = 'reasons';
+  /**
+   * @var string
+   */
   public $annotation;
+  /**
+   * @var string
+   */
   public $hashedAccountId;
+  /**
+   * @var string[]
+   */
   public $reasons;
 
+  /**
+   * @param string
+   */
   public function setAnnotation($annotation)
   {
     $this->annotation = $annotation;
   }
+  /**
+   * @return string
+   */
   public function getAnnotation()
   {
     return $this->annotation;
   }
+  /**
+   * @param string
+   */
   public function setHashedAccountId($hashedAccountId)
   {
     $this->hashedAccountId = $hashedAccountId;
   }
+  /**
+   * @return string
+   */
   public function getHashedAccountId()
   {
     return $this->hashedAccountId;
   }
+  /**
+   * @param string[]
+   */
   public function setReasons($reasons)
   {
     $this->reasons = $reasons;
   }
+  /**
+   * @return string[]
+   */
   public function getReasons()
   {
     return $this->reasons;

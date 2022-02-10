@@ -19,23 +19,44 @@ namespace Google\Service\CustomSearchAPI;
 
 class SearchSearchInformation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $formattedSearchTime;
+  /**
+   * @var string
+   */
   public $formattedTotalResults;
   public $searchTime;
+  /**
+   * @var string
+   */
   public $totalResults;
 
+  /**
+   * @param string
+   */
   public function setFormattedSearchTime($formattedSearchTime)
   {
     $this->formattedSearchTime = $formattedSearchTime;
   }
+  /**
+   * @return string
+   */
   public function getFormattedSearchTime()
   {
     return $this->formattedSearchTime;
   }
+  /**
+   * @param string
+   */
   public function setFormattedTotalResults($formattedTotalResults)
   {
     $this->formattedTotalResults = $formattedTotalResults;
   }
+  /**
+   * @return string
+   */
   public function getFormattedTotalResults()
   {
     return $this->formattedTotalResults;
@@ -48,10 +69,16 @@ class SearchSearchInformation extends \Google\Model
   {
     return $this->searchTime;
   }
+  /**
+   * @param string
+   */
   public function setTotalResults($totalResults)
   {
     $this->totalResults = $totalResults;
   }
+  /**
+   * @return string
+   */
   public function getTotalResults()
   {
     return $this->totalResults;

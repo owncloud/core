@@ -20,21 +20,39 @@ namespace Google\Service\RealTimeBidding;
 class StringTargetingDimension extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $targetingMode;
+  /**
+   * @var string[]
+   */
   public $values;
 
+  /**
+   * @param string
+   */
   public function setTargetingMode($targetingMode)
   {
     $this->targetingMode = $targetingMode;
   }
+  /**
+   * @return string
+   */
   public function getTargetingMode()
   {
     return $this->targetingMode;
   }
+  /**
+   * @param string[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return string[]
+   */
   public function getValues()
   {
     return $this->values;

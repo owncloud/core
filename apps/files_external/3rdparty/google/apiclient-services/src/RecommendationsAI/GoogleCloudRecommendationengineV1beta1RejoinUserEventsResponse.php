@@ -19,12 +19,21 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1RejoinUserEventsResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rejoinedUserEventsCount;
 
+  /**
+   * @param string
+   */
   public function setRejoinedUserEventsCount($rejoinedUserEventsCount)
   {
     $this->rejoinedUserEventsCount = $rejoinedUserEventsCount;
   }
+  /**
+   * @return string
+   */
   public function getRejoinedUserEventsCount()
   {
     return $this->rejoinedUserEventsCount;

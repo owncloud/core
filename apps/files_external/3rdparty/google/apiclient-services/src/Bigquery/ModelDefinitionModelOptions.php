@@ -20,30 +20,57 @@ namespace Google\Service\Bigquery;
 class ModelDefinitionModelOptions extends \Google\Collection
 {
   protected $collection_key = 'labels';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $lossType;
+  /**
+   * @var string
+   */
   public $modelType;
 
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLossType($lossType)
   {
     $this->lossType = $lossType;
   }
+  /**
+   * @return string
+   */
   public function getLossType()
   {
     return $this->lossType;
   }
+  /**
+   * @param string
+   */
   public function setModelType($modelType)
   {
     $this->modelType = $modelType;
   }
+  /**
+   * @return string
+   */
   public function getModelType()
   {
     return $this->modelType;

@@ -19,12 +19,21 @@ namespace Google\Service\CloudHealthcare;
 
 class RejectConsentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $consentArtifact;
 
+  /**
+   * @param string
+   */
   public function setConsentArtifact($consentArtifact)
   {
     $this->consentArtifact = $consentArtifact;
   }
+  /**
+   * @return string
+   */
   public function getConsentArtifact()
   {
     return $this->consentArtifact;

@@ -20,12 +20,21 @@ namespace Google\Service\CloudHealthcare;
 class QueryAccessibleDataResponse extends \Google\Collection
 {
   protected $collection_key = 'gcsUris';
+  /**
+   * @var string[]
+   */
   public $gcsUris;
 
+  /**
+   * @param string[]
+   */
   public function setGcsUris($gcsUris)
   {
     $this->gcsUris = $gcsUris;
   }
+  /**
+   * @return string[]
+   */
   public function getGcsUris()
   {
     return $this->gcsUris;

@@ -26,36 +26,87 @@ class Build extends \Google\Collection
   protected $artifactsDataType = '';
   protected $availableSecretsType = Secrets::class;
   protected $availableSecretsDataType = '';
+  /**
+   * @var string
+   */
   public $buildTriggerId;
+  /**
+   * @var string
+   */
   public $createTime;
   protected $failureInfoType = FailureInfo::class;
   protected $failureInfoDataType = '';
+  /**
+   * @var string
+   */
   public $finishTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string[]
+   */
   public $images;
+  /**
+   * @var string
+   */
   public $logUrl;
+  /**
+   * @var string
+   */
   public $logsBucket;
+  /**
+   * @var string
+   */
   public $name;
   protected $optionsType = BuildOptions::class;
   protected $optionsDataType = '';
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $queueTtl;
   protected $resultsType = Results::class;
   protected $resultsDataType = '';
   protected $secretsType = Secret::class;
   protected $secretsDataType = 'array';
+  /**
+   * @var string
+   */
   public $serviceAccount;
   protected $sourceType = Source::class;
   protected $sourceDataType = '';
   protected $sourceProvenanceType = SourceProvenance::class;
   protected $sourceProvenanceDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $statusDetail;
   protected $stepsType = BuildStep::class;
   protected $stepsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $substitutions;
+  /**
+   * @var string[]
+   */
   public $tags;
+  /**
+   * @var string
+   */
   public $timeout;
   protected $timingType = TimeSpan::class;
   protected $timingDataType = 'map';
@@ -104,18 +155,30 @@ class Build extends \Google\Collection
   {
     return $this->availableSecrets;
   }
+  /**
+   * @param string
+   */
   public function setBuildTriggerId($buildTriggerId)
   {
     $this->buildTriggerId = $buildTriggerId;
   }
+  /**
+   * @return string
+   */
   public function getBuildTriggerId()
   {
     return $this->buildTriggerId;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -134,50 +197,86 @@ class Build extends \Google\Collection
   {
     return $this->failureInfo;
   }
+  /**
+   * @param string
+   */
   public function setFinishTime($finishTime)
   {
     $this->finishTime = $finishTime;
   }
+  /**
+   * @return string
+   */
   public function getFinishTime()
   {
     return $this->finishTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string[]
+   */
   public function setImages($images)
   {
     $this->images = $images;
   }
+  /**
+   * @return string[]
+   */
   public function getImages()
   {
     return $this->images;
   }
+  /**
+   * @param string
+   */
   public function setLogUrl($logUrl)
   {
     $this->logUrl = $logUrl;
   }
+  /**
+   * @return string
+   */
   public function getLogUrl()
   {
     return $this->logUrl;
   }
+  /**
+   * @param string
+   */
   public function setLogsBucket($logsBucket)
   {
     $this->logsBucket = $logsBucket;
   }
+  /**
+   * @return string
+   */
   public function getLogsBucket()
   {
     return $this->logsBucket;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -196,18 +295,30 @@ class Build extends \Google\Collection
   {
     return $this->options;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setQueueTtl($queueTtl)
   {
     $this->queueTtl = $queueTtl;
   }
+  /**
+   * @return string
+   */
   public function getQueueTtl()
   {
     return $this->queueTtl;
@@ -240,10 +351,16 @@ class Build extends \Google\Collection
   {
     return $this->secrets;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
@@ -276,26 +393,44 @@ class Build extends \Google\Collection
   {
     return $this->sourceProvenance;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setStatusDetail($statusDetail)
   {
     $this->statusDetail = $statusDetail;
   }
+  /**
+   * @return string
+   */
   public function getStatusDetail()
   {
     return $this->statusDetail;
@@ -314,26 +449,44 @@ class Build extends \Google\Collection
   {
     return $this->steps;
   }
+  /**
+   * @param string[]
+   */
   public function setSubstitutions($substitutions)
   {
     $this->substitutions = $substitutions;
   }
+  /**
+   * @return string[]
+   */
   public function getSubstitutions()
   {
     return $this->substitutions;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;
   }
+  /**
+   * @param string
+   */
   public function setTimeout($timeout)
   {
     $this->timeout = $timeout;
   }
+  /**
+   * @return string
+   */
   public function getTimeout()
   {
     return $this->timeout;

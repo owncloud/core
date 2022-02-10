@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class ChannelBannerResource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

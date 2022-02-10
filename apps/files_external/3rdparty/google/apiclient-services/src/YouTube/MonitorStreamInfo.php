@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class MonitorStreamInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $broadcastStreamDelayMs;
+  /**
+   * @var string
+   */
   public $embedHtml;
+  /**
+   * @var bool
+   */
   public $enableMonitorStream;
 
+  /**
+   * @param string
+   */
   public function setBroadcastStreamDelayMs($broadcastStreamDelayMs)
   {
     $this->broadcastStreamDelayMs = $broadcastStreamDelayMs;
   }
+  /**
+   * @return string
+   */
   public function getBroadcastStreamDelayMs()
   {
     return $this->broadcastStreamDelayMs;
   }
+  /**
+   * @param string
+   */
   public function setEmbedHtml($embedHtml)
   {
     $this->embedHtml = $embedHtml;
   }
+  /**
+   * @return string
+   */
   public function getEmbedHtml()
   {
     return $this->embedHtml;
   }
+  /**
+   * @param bool
+   */
   public function setEnableMonitorStream($enableMonitorStream)
   {
     $this->enableMonitorStream = $enableMonitorStream;
   }
+  /**
+   * @return bool
+   */
   public function getEnableMonitorStream()
   {
     return $this->enableMonitorStream;

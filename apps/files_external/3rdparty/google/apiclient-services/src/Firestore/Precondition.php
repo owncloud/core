@@ -19,21 +19,39 @@ namespace Google\Service\Firestore;
 
 class Precondition extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $exists;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param bool
+   */
   public function setExists($exists)
   {
     $this->exists = $exists;
   }
+  /**
+   * @return bool
+   */
   public function getExists()
   {
     return $this->exists;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

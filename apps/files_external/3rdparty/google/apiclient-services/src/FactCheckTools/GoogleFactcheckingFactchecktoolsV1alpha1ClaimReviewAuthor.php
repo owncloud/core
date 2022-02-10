@@ -19,21 +19,39 @@ namespace Google\Service\FactCheckTools;
 
 class GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewAuthor extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $imageUrl;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

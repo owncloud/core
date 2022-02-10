@@ -19,48 +19,93 @@ namespace Google\Service\Datastream;
 
 class Error extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $errorTime;
+  /**
+   * @var string
+   */
   public $errorUuid;
+  /**
+   * @var string
+   */
   public $message;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string[]
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return string[]
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setErrorTime($errorTime)
   {
     $this->errorTime = $errorTime;
   }
+  /**
+   * @return string
+   */
   public function getErrorTime()
   {
     return $this->errorTime;
   }
+  /**
+   * @param string
+   */
   public function setErrorUuid($errorUuid)
   {
     $this->errorUuid = $errorUuid;
   }
+  /**
+   * @return string
+   */
   public function getErrorUuid()
   {
     return $this->errorUuid;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3IntentTrainingPhrasePart extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $parameterId;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setParameterId($parameterId)
   {
     $this->parameterId = $parameterId;
   }
+  /**
+   * @return string
+   */
   public function getParameterId()
   {
     return $this->parameterId;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

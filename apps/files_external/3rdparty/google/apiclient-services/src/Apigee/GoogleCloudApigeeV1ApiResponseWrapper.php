@@ -19,39 +19,75 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1ApiResponseWrapper extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $message;
+  /**
+   * @var string
+   */
   public $requestId;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

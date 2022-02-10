@@ -19,21 +19,39 @@ namespace Google\Service\CloudHealthcare;
 
 class SchematizedData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $error;
 
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setError($error)
   {
     $this->error = $error;
   }
+  /**
+   * @return string
+   */
   public function getError()
   {
     return $this->error;

@@ -19,30 +19,57 @@ namespace Google\Service\CloudSearch;
 
 class QueryInterpretation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $interpretationType;
+  /**
+   * @var string
+   */
   public $interpretedQuery;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string
+   */
   public function setInterpretationType($interpretationType)
   {
     $this->interpretationType = $interpretationType;
   }
+  /**
+   * @return string
+   */
   public function getInterpretationType()
   {
     return $this->interpretationType;
   }
+  /**
+   * @param string
+   */
   public function setInterpretedQuery($interpretedQuery)
   {
     $this->interpretedQuery = $interpretedQuery;
   }
+  /**
+   * @return string
+   */
   public function getInterpretedQuery()
   {
     return $this->interpretedQuery;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

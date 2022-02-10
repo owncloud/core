@@ -30,6 +30,9 @@ class GoogleCloudMlV1StudyConfigParameterSpec extends \Google\Collection
   protected $doubleValueSpecDataType = '';
   protected $integerValueSpecType = GoogleCloudMlV1StudyConfigParameterSpecIntegerValueSpec::class;
   protected $integerValueSpecDataType = '';
+  /**
+   * @var string
+   */
   public $parameter;
   protected $parentCategoricalValuesType = GoogleCloudMlV1StudyConfigParameterSpecMatchingParentCategoricalValueSpec::class;
   protected $parentCategoricalValuesDataType = '';
@@ -37,7 +40,13 @@ class GoogleCloudMlV1StudyConfigParameterSpec extends \Google\Collection
   protected $parentDiscreteValuesDataType = '';
   protected $parentIntValuesType = GoogleCloudMlV1StudyConfigParameterSpecMatchingParentIntValueSpec::class;
   protected $parentIntValuesDataType = '';
+  /**
+   * @var string
+   */
   public $scaleType;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -110,10 +119,16 @@ class GoogleCloudMlV1StudyConfigParameterSpec extends \Google\Collection
   {
     return $this->integerValueSpec;
   }
+  /**
+   * @param string
+   */
   public function setParameter($parameter)
   {
     $this->parameter = $parameter;
   }
+  /**
+   * @return string
+   */
   public function getParameter()
   {
     return $this->parameter;
@@ -160,18 +175,30 @@ class GoogleCloudMlV1StudyConfigParameterSpec extends \Google\Collection
   {
     return $this->parentIntValues;
   }
+  /**
+   * @param string
+   */
   public function setScaleType($scaleType)
   {
     $this->scaleType = $scaleType;
   }
+  /**
+   * @return string
+   */
   public function getScaleType()
   {
     return $this->scaleType;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

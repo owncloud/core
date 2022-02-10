@@ -19,21 +19,39 @@ namespace Google\Service\Vault;
 
 class HeldOrgUnit extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $holdTime;
+  /**
+   * @var string
+   */
   public $orgUnitId;
 
+  /**
+   * @param string
+   */
   public function setHoldTime($holdTime)
   {
     $this->holdTime = $holdTime;
   }
+  /**
+   * @return string
+   */
   public function getHoldTime()
   {
     return $this->holdTime;
   }
+  /**
+   * @param string
+   */
   public function setOrgUnitId($orgUnitId)
   {
     $this->orgUnitId = $orgUnitId;
   }
+  /**
+   * @return string
+   */
   public function getOrgUnitId()
   {
     return $this->orgUnitId;

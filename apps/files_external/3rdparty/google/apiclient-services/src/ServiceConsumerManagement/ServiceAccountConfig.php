@@ -20,21 +20,39 @@ namespace Google\Service\ServiceConsumerManagement;
 class ServiceAccountConfig extends \Google\Collection
 {
   protected $collection_key = 'tenantProjectRoles';
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string[]
+   */
   public $tenantProjectRoles;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string[]
+   */
   public function setTenantProjectRoles($tenantProjectRoles)
   {
     $this->tenantProjectRoles = $tenantProjectRoles;
   }
+  /**
+   * @return string[]
+   */
   public function getTenantProjectRoles()
   {
     return $this->tenantProjectRoles;

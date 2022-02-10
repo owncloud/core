@@ -19,12 +19,21 @@ namespace Google\Service\Reseller;
 
 class PrimaryAdmin extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $primaryEmail;
 
+  /**
+   * @param string
+   */
   public function setPrimaryEmail($primaryEmail)
   {
     $this->primaryEmail = $primaryEmail;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryEmail()
   {
     return $this->primaryEmail;

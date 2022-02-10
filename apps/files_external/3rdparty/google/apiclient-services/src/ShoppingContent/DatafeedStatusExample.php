@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class DatafeedStatusExample extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $itemId;
+  /**
+   * @var string
+   */
   public $lineNumber;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setItemId($itemId)
   {
     $this->itemId = $itemId;
   }
+  /**
+   * @return string
+   */
   public function getItemId()
   {
     return $this->itemId;
   }
+  /**
+   * @param string
+   */
   public function setLineNumber($lineNumber)
   {
     $this->lineNumber = $lineNumber;
   }
+  /**
+   * @return string
+   */
   public function getLineNumber()
   {
     return $this->lineNumber;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

@@ -20,66 +20,129 @@ namespace Google\Service\OnDemandScanning;
 class DeploymentOccurrence extends \Google\Collection
 {
   protected $collection_key = 'resourceUri';
+  /**
+   * @var string
+   */
   public $address;
+  /**
+   * @var string
+   */
   public $config;
+  /**
+   * @var string
+   */
   public $deployTime;
+  /**
+   * @var string
+   */
   public $platform;
+  /**
+   * @var string[]
+   */
   public $resourceUri;
+  /**
+   * @var string
+   */
   public $undeployTime;
+  /**
+   * @var string
+   */
   public $userEmail;
 
+  /**
+   * @param string
+   */
   public function setAddress($address)
   {
     $this->address = $address;
   }
+  /**
+   * @return string
+   */
   public function getAddress()
   {
     return $this->address;
   }
+  /**
+   * @param string
+   */
   public function setConfig($config)
   {
     $this->config = $config;
   }
+  /**
+   * @return string
+   */
   public function getConfig()
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setDeployTime($deployTime)
   {
     $this->deployTime = $deployTime;
   }
+  /**
+   * @return string
+   */
   public function getDeployTime()
   {
     return $this->deployTime;
   }
+  /**
+   * @param string
+   */
   public function setPlatform($platform)
   {
     $this->platform = $platform;
   }
+  /**
+   * @return string
+   */
   public function getPlatform()
   {
     return $this->platform;
   }
+  /**
+   * @param string[]
+   */
   public function setResourceUri($resourceUri)
   {
     $this->resourceUri = $resourceUri;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceUri()
   {
     return $this->resourceUri;
   }
+  /**
+   * @param string
+   */
   public function setUndeployTime($undeployTime)
   {
     $this->undeployTime = $undeployTime;
   }
+  /**
+   * @return string
+   */
   public function getUndeployTime()
   {
     return $this->undeployTime;
   }
+  /**
+   * @param string
+   */
   public function setUserEmail($userEmail)
   {
     $this->userEmail = $userEmail;
   }
+  /**
+   * @return string
+   */
   public function getUserEmail()
   {
     return $this->userEmail;

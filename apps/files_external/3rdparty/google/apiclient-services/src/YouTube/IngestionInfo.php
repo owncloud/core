@@ -19,48 +19,93 @@ namespace Google\Service\YouTube;
 
 class IngestionInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backupIngestionAddress;
+  /**
+   * @var string
+   */
   public $ingestionAddress;
+  /**
+   * @var string
+   */
   public $rtmpsBackupIngestionAddress;
+  /**
+   * @var string
+   */
   public $rtmpsIngestionAddress;
+  /**
+   * @var string
+   */
   public $streamName;
 
+  /**
+   * @param string
+   */
   public function setBackupIngestionAddress($backupIngestionAddress)
   {
     $this->backupIngestionAddress = $backupIngestionAddress;
   }
+  /**
+   * @return string
+   */
   public function getBackupIngestionAddress()
   {
     return $this->backupIngestionAddress;
   }
+  /**
+   * @param string
+   */
   public function setIngestionAddress($ingestionAddress)
   {
     $this->ingestionAddress = $ingestionAddress;
   }
+  /**
+   * @return string
+   */
   public function getIngestionAddress()
   {
     return $this->ingestionAddress;
   }
+  /**
+   * @param string
+   */
   public function setRtmpsBackupIngestionAddress($rtmpsBackupIngestionAddress)
   {
     $this->rtmpsBackupIngestionAddress = $rtmpsBackupIngestionAddress;
   }
+  /**
+   * @return string
+   */
   public function getRtmpsBackupIngestionAddress()
   {
     return $this->rtmpsBackupIngestionAddress;
   }
+  /**
+   * @param string
+   */
   public function setRtmpsIngestionAddress($rtmpsIngestionAddress)
   {
     $this->rtmpsIngestionAddress = $rtmpsIngestionAddress;
   }
+  /**
+   * @return string
+   */
   public function getRtmpsIngestionAddress()
   {
     return $this->rtmpsIngestionAddress;
   }
+  /**
+   * @param string
+   */
   public function setStreamName($streamName)
   {
     $this->streamName = $streamName;
   }
+  /**
+   * @return string
+   */
   public function getStreamName()
   {
     return $this->streamName;

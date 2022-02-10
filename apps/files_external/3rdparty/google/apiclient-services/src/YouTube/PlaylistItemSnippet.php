@@ -19,64 +19,127 @@ namespace Google\Service\YouTube;
 
 class PlaylistItemSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $channelTitle;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $playlistId;
+  /**
+   * @var string
+   */
   public $position;
+  /**
+   * @var string
+   */
   public $publishedAt;
   protected $resourceIdType = ResourceId::class;
   protected $resourceIdDataType = '';
   protected $thumbnailsType = ThumbnailDetails::class;
   protected $thumbnailsDataType = '';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $videoOwnerChannelId;
+  /**
+   * @var string
+   */
   public $videoOwnerChannelTitle;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setChannelTitle($channelTitle)
   {
     $this->channelTitle = $channelTitle;
   }
+  /**
+   * @return string
+   */
   public function getChannelTitle()
   {
     return $this->channelTitle;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setPlaylistId($playlistId)
   {
     $this->playlistId = $playlistId;
   }
+  /**
+   * @return string
+   */
   public function getPlaylistId()
   {
     return $this->playlistId;
   }
+  /**
+   * @param string
+   */
   public function setPosition($position)
   {
     $this->position = $position;
   }
+  /**
+   * @return string
+   */
   public function getPosition()
   {
     return $this->position;
   }
+  /**
+   * @param string
+   */
   public function setPublishedAt($publishedAt)
   {
     $this->publishedAt = $publishedAt;
   }
+  /**
+   * @return string
+   */
   public function getPublishedAt()
   {
     return $this->publishedAt;
@@ -109,26 +172,44 @@ class PlaylistItemSnippet extends \Google\Model
   {
     return $this->thumbnails;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setVideoOwnerChannelId($videoOwnerChannelId)
   {
     $this->videoOwnerChannelId = $videoOwnerChannelId;
   }
+  /**
+   * @return string
+   */
   public function getVideoOwnerChannelId()
   {
     return $this->videoOwnerChannelId;
   }
+  /**
+   * @param string
+   */
   public function setVideoOwnerChannelTitle($videoOwnerChannelTitle)
   {
     $this->videoOwnerChannelTitle = $videoOwnerChannelTitle;
   }
+  /**
+   * @return string
+   */
   public function getVideoOwnerChannelTitle()
   {
     return $this->videoOwnerChannelTitle;

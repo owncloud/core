@@ -19,17 +19,32 @@ namespace Google\Service\CloudTalentSolution;
 
 class LocationFilter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $address;
   public $distanceInMiles;
   protected $latLngType = LatLng::class;
   protected $latLngDataType = '';
+  /**
+   * @var string
+   */
   public $regionCode;
+  /**
+   * @var string
+   */
   public $telecommutePreference;
 
+  /**
+   * @param string
+   */
   public function setAddress($address)
   {
     $this->address = $address;
   }
+  /**
+   * @return string
+   */
   public function getAddress()
   {
     return $this->address;
@@ -56,18 +71,30 @@ class LocationFilter extends \Google\Model
   {
     return $this->latLng;
   }
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;
   }
+  /**
+   * @param string
+   */
   public function setTelecommutePreference($telecommutePreference)
   {
     $this->telecommutePreference = $telecommutePreference;
   }
+  /**
+   * @return string
+   */
   public function getTelecommutePreference()
   {
     return $this->telecommutePreference;

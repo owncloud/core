@@ -20,12 +20,21 @@ namespace Google\Service\CertificateAuthorityService;
 class SubordinateConfigChain extends \Google\Collection
 {
   protected $collection_key = 'pemCertificates';
+  /**
+   * @var string[]
+   */
   public $pemCertificates;
 
+  /**
+   * @param string[]
+   */
   public function setPemCertificates($pemCertificates)
   {
     $this->pemCertificates = $pemCertificates;
   }
+  /**
+   * @return string[]
+   */
   public function getPemCertificates()
   {
     return $this->pemCertificates;

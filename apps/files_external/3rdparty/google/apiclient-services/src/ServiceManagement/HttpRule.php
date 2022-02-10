@@ -22,15 +22,39 @@ class HttpRule extends \Google\Collection
   protected $collection_key = 'additionalBindings';
   protected $additionalBindingsType = HttpRule::class;
   protected $additionalBindingsDataType = 'array';
+  /**
+   * @var string
+   */
   public $body;
   protected $customType = CustomHttpPattern::class;
   protected $customDataType = '';
+  /**
+   * @var string
+   */
   public $delete;
+  /**
+   * @var string
+   */
   public $get;
+  /**
+   * @var string
+   */
   public $patch;
+  /**
+   * @var string
+   */
   public $post;
+  /**
+   * @var string
+   */
   public $put;
+  /**
+   * @var string
+   */
   public $responseBody;
+  /**
+   * @var string
+   */
   public $selector;
 
   /**
@@ -47,10 +71,16 @@ class HttpRule extends \Google\Collection
   {
     return $this->additionalBindings;
   }
+  /**
+   * @param string
+   */
   public function setBody($body)
   {
     $this->body = $body;
   }
+  /**
+   * @return string
+   */
   public function getBody()
   {
     return $this->body;
@@ -69,58 +99,100 @@ class HttpRule extends \Google\Collection
   {
     return $this->custom;
   }
+  /**
+   * @param string
+   */
   public function setDelete($delete)
   {
     $this->delete = $delete;
   }
+  /**
+   * @return string
+   */
   public function getDelete()
   {
     return $this->delete;
   }
+  /**
+   * @param string
+   */
   public function setGet($get)
   {
     $this->get = $get;
   }
+  /**
+   * @return string
+   */
   public function getGet()
   {
     return $this->get;
   }
+  /**
+   * @param string
+   */
   public function setPatch($patch)
   {
     $this->patch = $patch;
   }
+  /**
+   * @return string
+   */
   public function getPatch()
   {
     return $this->patch;
   }
+  /**
+   * @param string
+   */
   public function setPost($post)
   {
     $this->post = $post;
   }
+  /**
+   * @return string
+   */
   public function getPost()
   {
     return $this->post;
   }
+  /**
+   * @param string
+   */
   public function setPut($put)
   {
     $this->put = $put;
   }
+  /**
+   * @return string
+   */
   public function getPut()
   {
     return $this->put;
   }
+  /**
+   * @param string
+   */
   public function setResponseBody($responseBody)
   {
     $this->responseBody = $responseBody;
   }
+  /**
+   * @return string
+   */
   public function getResponseBody()
   {
     return $this->responseBody;
   }
+  /**
+   * @param string
+   */
   public function setSelector($selector)
   {
     $this->selector = $selector;
   }
+  /**
+   * @return string
+   */
   public function getSelector()
   {
     return $this->selector;

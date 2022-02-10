@@ -22,6 +22,9 @@ class ListClustersResponse extends \Google\Collection
   protected $collection_key = 'missingZones';
   protected $clustersType = Cluster::class;
   protected $clustersDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $missingZones;
 
   /**
@@ -38,10 +41,16 @@ class ListClustersResponse extends \Google\Collection
   {
     return $this->clusters;
   }
+  /**
+   * @param string[]
+   */
   public function setMissingZones($missingZones)
   {
     $this->missingZones = $missingZones;
   }
+  /**
+   * @return string[]
+   */
   public function getMissingZones()
   {
     return $this->missingZones;

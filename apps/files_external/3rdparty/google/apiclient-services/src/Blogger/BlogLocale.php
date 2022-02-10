@@ -19,30 +19,57 @@ namespace Google\Service\Blogger;
 
 class BlogLocale extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $language;
+  /**
+   * @var string
+   */
   public $variant;
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;
   }
+  /**
+   * @param string
+   */
   public function setVariant($variant)
   {
     $this->variant = $variant;
   }
+  /**
+   * @return string
+   */
   public function getVariant()
   {
     return $this->variant;

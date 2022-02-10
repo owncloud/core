@@ -20,14 +20,23 @@ namespace Google\Service\RealTimeBidding;
 class ListUserListsResponse extends \Google\Collection
 {
   protected $collection_key = 'userLists';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $userListsType = UserList::class;
   protected $userListsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

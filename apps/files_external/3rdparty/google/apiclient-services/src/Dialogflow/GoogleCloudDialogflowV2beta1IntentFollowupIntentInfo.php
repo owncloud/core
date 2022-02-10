@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentFollowupIntentInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $followupIntentName;
+  /**
+   * @var string
+   */
   public $parentFollowupIntentName;
 
+  /**
+   * @param string
+   */
   public function setFollowupIntentName($followupIntentName)
   {
     $this->followupIntentName = $followupIntentName;
   }
+  /**
+   * @return string
+   */
   public function getFollowupIntentName()
   {
     return $this->followupIntentName;
   }
+  /**
+   * @param string
+   */
   public function setParentFollowupIntentName($parentFollowupIntentName)
   {
     $this->parentFollowupIntentName = $parentFollowupIntentName;
   }
+  /**
+   * @return string
+   */
   public function getParentFollowupIntentName()
   {
     return $this->parentFollowupIntentName;

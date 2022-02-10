@@ -19,30 +19,57 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 
 class DealPausingInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pauseReason;
+  /**
+   * @var string
+   */
   public $pauseRole;
+  /**
+   * @var bool
+   */
   public $pausingConsented;
 
+  /**
+   * @param string
+   */
   public function setPauseReason($pauseReason)
   {
     $this->pauseReason = $pauseReason;
   }
+  /**
+   * @return string
+   */
   public function getPauseReason()
   {
     return $this->pauseReason;
   }
+  /**
+   * @param string
+   */
   public function setPauseRole($pauseRole)
   {
     $this->pauseRole = $pauseRole;
   }
+  /**
+   * @return string
+   */
   public function getPauseRole()
   {
     return $this->pauseRole;
   }
+  /**
+   * @param bool
+   */
   public function setPausingConsented($pausingConsented)
   {
     $this->pausingConsented = $pausingConsented;
   }
+  /**
+   * @return bool
+   */
   public function getPausingConsented()
   {
     return $this->pausingConsented;

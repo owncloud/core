@@ -24,6 +24,9 @@ class GoogleCloudDocumentaiV1DocumentPageVisualElement extends \Google\Collectio
   protected $detectedLanguagesDataType = 'array';
   protected $layoutType = GoogleCloudDocumentaiV1DocumentPageLayout::class;
   protected $layoutDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -54,10 +57,16 @@ class GoogleCloudDocumentaiV1DocumentPageVisualElement extends \Google\Collectio
   {
     return $this->layout;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -19,39 +19,75 @@ namespace Google\Service\CloudKMS;
 
 class MacVerifyRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $dataCrc32c;
+  /**
+   * @var string
+   */
   public $mac;
+  /**
+   * @var string
+   */
   public $macCrc32c;
 
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setDataCrc32c($dataCrc32c)
   {
     $this->dataCrc32c = $dataCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getDataCrc32c()
   {
     return $this->dataCrc32c;
   }
+  /**
+   * @param string
+   */
   public function setMac($mac)
   {
     $this->mac = $mac;
   }
+  /**
+   * @return string
+   */
   public function getMac()
   {
     return $this->mac;
   }
+  /**
+   * @param string
+   */
   public function setMacCrc32c($macCrc32c)
   {
     $this->macCrc32c = $macCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getMacCrc32c()
   {
     return $this->macCrc32c;

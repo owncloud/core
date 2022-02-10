@@ -20,21 +20,39 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2GcsSource extends \Google\Collection
 {
   protected $collection_key = 'inputUris';
+  /**
+   * @var string
+   */
   public $dataSchema;
+  /**
+   * @var string[]
+   */
   public $inputUris;
 
+  /**
+   * @param string
+   */
   public function setDataSchema($dataSchema)
   {
     $this->dataSchema = $dataSchema;
   }
+  /**
+   * @return string
+   */
   public function getDataSchema()
   {
     return $this->dataSchema;
   }
+  /**
+   * @param string[]
+   */
   public function setInputUris($inputUris)
   {
     $this->inputUris = $inputUris;
   }
+  /**
+   * @return string[]
+   */
   public function getInputUris()
   {
     return $this->inputUris;

@@ -19,38 +19,38 @@ namespace Google\Service\Datastream;
 
 class OracleSourceConfig extends \Google\Model
 {
-  protected $allowlistType = OracleRdbms::class;
-  protected $allowlistDataType = '';
-  protected $rejectlistType = OracleRdbms::class;
-  protected $rejectlistDataType = '';
+  protected $excludeObjectsType = OracleRdbms::class;
+  protected $excludeObjectsDataType = '';
+  protected $includeObjectsType = OracleRdbms::class;
+  protected $includeObjectsDataType = '';
 
   /**
    * @param OracleRdbms
    */
-  public function setAllowlist(OracleRdbms $allowlist)
+  public function setExcludeObjects(OracleRdbms $excludeObjects)
   {
-    $this->allowlist = $allowlist;
+    $this->excludeObjects = $excludeObjects;
   }
   /**
    * @return OracleRdbms
    */
-  public function getAllowlist()
+  public function getExcludeObjects()
   {
-    return $this->allowlist;
+    return $this->excludeObjects;
   }
   /**
    * @param OracleRdbms
    */
-  public function setRejectlist(OracleRdbms $rejectlist)
+  public function setIncludeObjects(OracleRdbms $includeObjects)
   {
-    $this->rejectlist = $rejectlist;
+    $this->includeObjects = $includeObjects;
   }
   /**
    * @return OracleRdbms
    */
-  public function getRejectlist()
+  public function getIncludeObjects()
   {
-    return $this->rejectlist;
+    return $this->includeObjects;
   }
 }
 

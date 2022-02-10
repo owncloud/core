@@ -20,48 +20,93 @@ namespace Google\Service\Directory;
 class MobileDeviceApplications extends \Google\Collection
 {
   protected $collection_key = 'permission';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string[]
+   */
   public $permission;
+  /**
+   * @var int
+   */
   public $versionCode;
+  /**
+   * @var string
+   */
   public $versionName;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string[]
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string[]
+   */
   public function getPermission()
   {
     return $this->permission;
   }
+  /**
+   * @param int
+   */
   public function setVersionCode($versionCode)
   {
     $this->versionCode = $versionCode;
   }
+  /**
+   * @return int
+   */
   public function getVersionCode()
   {
     return $this->versionCode;
   }
+  /**
+   * @param string
+   */
   public function setVersionName($versionName)
   {
     $this->versionName = $versionName;
   }
+  /**
+   * @return string
+   */
   public function getVersionName()
   {
     return $this->versionName;

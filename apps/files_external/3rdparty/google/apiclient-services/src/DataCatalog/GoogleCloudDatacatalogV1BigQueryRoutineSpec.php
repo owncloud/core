@@ -20,12 +20,21 @@ namespace Google\Service\DataCatalog;
 class GoogleCloudDatacatalogV1BigQueryRoutineSpec extends \Google\Collection
 {
   protected $collection_key = 'importedLibraries';
+  /**
+   * @var string[]
+   */
   public $importedLibraries;
 
+  /**
+   * @param string[]
+   */
   public function setImportedLibraries($importedLibraries)
   {
     $this->importedLibraries = $importedLibraries;
   }
+  /**
+   * @return string[]
+   */
   public function getImportedLibraries()
   {
     return $this->importedLibraries;

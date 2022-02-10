@@ -19,17 +19,35 @@ namespace Google\Service\OnDemandScanning;
 
 class DiscoveryOccurrence extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $analysisStatus;
   protected $analysisStatusErrorType = Status::class;
   protected $analysisStatusErrorDataType = '';
+  /**
+   * @var string
+   */
   public $continuousAnalysis;
+  /**
+   * @var string
+   */
   public $cpe;
+  /**
+   * @var string
+   */
   public $lastScanTime;
 
+  /**
+   * @param string
+   */
   public function setAnalysisStatus($analysisStatus)
   {
     $this->analysisStatus = $analysisStatus;
   }
+  /**
+   * @return string
+   */
   public function getAnalysisStatus()
   {
     return $this->analysisStatus;
@@ -48,26 +66,44 @@ class DiscoveryOccurrence extends \Google\Model
   {
     return $this->analysisStatusError;
   }
+  /**
+   * @param string
+   */
   public function setContinuousAnalysis($continuousAnalysis)
   {
     $this->continuousAnalysis = $continuousAnalysis;
   }
+  /**
+   * @return string
+   */
   public function getContinuousAnalysis()
   {
     return $this->continuousAnalysis;
   }
+  /**
+   * @param string
+   */
   public function setCpe($cpe)
   {
     $this->cpe = $cpe;
   }
+  /**
+   * @return string
+   */
   public function getCpe()
   {
     return $this->cpe;
   }
+  /**
+   * @param string
+   */
   public function setLastScanTime($lastScanTime)
   {
     $this->lastScanTime = $lastScanTime;
   }
+  /**
+   * @return string
+   */
   public function getLastScanTime()
   {
     return $this->lastScanTime;

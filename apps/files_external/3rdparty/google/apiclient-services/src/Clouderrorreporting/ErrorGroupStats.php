@@ -22,12 +22,27 @@ class ErrorGroupStats extends \Google\Collection
   protected $collection_key = 'timedCounts';
   protected $affectedServicesType = ServiceContext::class;
   protected $affectedServicesDataType = 'array';
+  /**
+   * @var string
+   */
   public $affectedUsersCount;
+  /**
+   * @var string
+   */
   public $count;
+  /**
+   * @var string
+   */
   public $firstSeenTime;
   protected $groupType = ErrorGroup::class;
   protected $groupDataType = '';
+  /**
+   * @var string
+   */
   public $lastSeenTime;
+  /**
+   * @var int
+   */
   public $numAffectedServices;
   protected $representativeType = ErrorEvent::class;
   protected $representativeDataType = '';
@@ -48,26 +63,44 @@ class ErrorGroupStats extends \Google\Collection
   {
     return $this->affectedServices;
   }
+  /**
+   * @param string
+   */
   public function setAffectedUsersCount($affectedUsersCount)
   {
     $this->affectedUsersCount = $affectedUsersCount;
   }
+  /**
+   * @return string
+   */
   public function getAffectedUsersCount()
   {
     return $this->affectedUsersCount;
   }
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param string
+   */
   public function setFirstSeenTime($firstSeenTime)
   {
     $this->firstSeenTime = $firstSeenTime;
   }
+  /**
+   * @return string
+   */
   public function getFirstSeenTime()
   {
     return $this->firstSeenTime;
@@ -86,18 +119,30 @@ class ErrorGroupStats extends \Google\Collection
   {
     return $this->group;
   }
+  /**
+   * @param string
+   */
   public function setLastSeenTime($lastSeenTime)
   {
     $this->lastSeenTime = $lastSeenTime;
   }
+  /**
+   * @return string
+   */
   public function getLastSeenTime()
   {
     return $this->lastSeenTime;
   }
+  /**
+   * @param int
+   */
   public function setNumAffectedServices($numAffectedServices)
   {
     $this->numAffectedServices = $numAffectedServices;
   }
+  /**
+   * @return int
+   */
   public function getNumAffectedServices()
   {
     return $this->numAffectedServices;

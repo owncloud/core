@@ -19,23 +19,41 @@ namespace Google\Service\Compute;
 
 class ConsistentHashLoadBalancerSettingsHttpCookie extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $path;
   protected $ttlType = Duration::class;
   protected $ttlDataType = '';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

@@ -19,23 +19,41 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2Catalog extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
   protected $productLevelConfigType = GoogleCloudRetailV2ProductLevelConfig::class;
   protected $productLevelConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

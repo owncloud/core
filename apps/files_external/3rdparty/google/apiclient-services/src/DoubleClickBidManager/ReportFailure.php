@@ -19,12 +19,21 @@ namespace Google\Service\DoubleClickBidManager;
 
 class ReportFailure extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorCode;
 
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;

@@ -19,24 +19,45 @@ namespace Google\Service\Sheets;
 
 class UpdateConditionalFormatRuleRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $index;
+  /**
+   * @var int
+   */
   public $newIndex;
   protected $ruleType = ConditionalFormatRule::class;
   protected $ruleDataType = '';
+  /**
+   * @var int
+   */
   public $sheetId;
 
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;
   }
+  /**
+   * @param int
+   */
   public function setNewIndex($newIndex)
   {
     $this->newIndex = $newIndex;
   }
+  /**
+   * @return int
+   */
   public function getNewIndex()
   {
     return $this->newIndex;
@@ -55,10 +76,16 @@ class UpdateConditionalFormatRuleRequest extends \Google\Model
   {
     return $this->rule;
   }
+  /**
+   * @param int
+   */
   public function setSheetId($sheetId)
   {
     $this->sheetId = $sheetId;
   }
+  /**
+   * @return int
+   */
   public function getSheetId()
   {
     return $this->sheetId;

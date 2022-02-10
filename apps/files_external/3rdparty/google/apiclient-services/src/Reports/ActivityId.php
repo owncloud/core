@@ -19,39 +19,75 @@ namespace Google\Service\Reports;
 
 class ActivityId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $applicationName;
+  /**
+   * @var string
+   */
   public $customerId;
+  /**
+   * @var string
+   */
   public $time;
+  /**
+   * @var string
+   */
   public $uniqueQualifier;
 
+  /**
+   * @param string
+   */
   public function setApplicationName($applicationName)
   {
     $this->applicationName = $applicationName;
   }
+  /**
+   * @return string
+   */
   public function getApplicationName()
   {
     return $this->applicationName;
   }
+  /**
+   * @param string
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerId()
   {
     return $this->customerId;
   }
+  /**
+   * @param string
+   */
   public function setTime($time)
   {
     $this->time = $time;
   }
+  /**
+   * @return string
+   */
   public function getTime()
   {
     return $this->time;
   }
+  /**
+   * @param string
+   */
   public function setUniqueQualifier($uniqueQualifier)
   {
     $this->uniqueQualifier = $uniqueQualifier;
   }
+  /**
+   * @return string
+   */
   public function getUniqueQualifier()
   {
     return $this->uniqueQualifier;

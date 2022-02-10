@@ -19,26 +19,47 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2IntentMessageMediaContentResponseMediaObject extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentUrl;
+  /**
+   * @var string
+   */
   public $description;
   protected $iconType = GoogleCloudDialogflowV2IntentMessageImage::class;
   protected $iconDataType = '';
   protected $largeImageType = GoogleCloudDialogflowV2IntentMessageImage::class;
   protected $largeImageDataType = '';
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setContentUrl($contentUrl)
   {
     $this->contentUrl = $contentUrl;
   }
+  /**
+   * @return string
+   */
   public function getContentUrl()
   {
     return $this->contentUrl;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -71,10 +92,16 @@ class GoogleCloudDialogflowV2IntentMessageMediaContentResponseMediaObject extend
   {
     return $this->largeImage;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

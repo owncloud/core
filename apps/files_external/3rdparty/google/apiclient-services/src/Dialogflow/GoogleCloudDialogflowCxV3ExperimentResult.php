@@ -20,14 +20,23 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3ExperimentResult extends \Google\Collection
 {
   protected $collection_key = 'versionMetrics';
+  /**
+   * @var string
+   */
   public $lastUpdateTime;
   protected $versionMetricsType = GoogleCloudDialogflowCxV3ExperimentResultVersionMetrics::class;
   protected $versionMetricsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setLastUpdateTime($lastUpdateTime)
   {
     $this->lastUpdateTime = $lastUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateTime()
   {
     return $this->lastUpdateTime;

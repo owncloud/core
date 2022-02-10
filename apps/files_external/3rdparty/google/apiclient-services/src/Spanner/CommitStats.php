@@ -19,12 +19,21 @@ namespace Google\Service\Spanner;
 
 class CommitStats extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mutationCount;
 
+  /**
+   * @param string
+   */
   public function setMutationCount($mutationCount)
   {
     $this->mutationCount = $mutationCount;
   }
+  /**
+   * @return string
+   */
   public function getMutationCount()
   {
     return $this->mutationCount;

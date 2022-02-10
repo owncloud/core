@@ -20,15 +20,27 @@ namespace Google\Service\ShoppingContent;
 class TransitTable extends \Google\Collection
 {
   protected $collection_key = 'transitTimeLabels';
+  /**
+   * @var string[]
+   */
   public $postalCodeGroupNames;
   protected $rowsType = TransitTableTransitTimeRow::class;
   protected $rowsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $transitTimeLabels;
 
+  /**
+   * @param string[]
+   */
   public function setPostalCodeGroupNames($postalCodeGroupNames)
   {
     $this->postalCodeGroupNames = $postalCodeGroupNames;
   }
+  /**
+   * @return string[]
+   */
   public function getPostalCodeGroupNames()
   {
     return $this->postalCodeGroupNames;
@@ -47,10 +59,16 @@ class TransitTable extends \Google\Collection
   {
     return $this->rows;
   }
+  /**
+   * @param string[]
+   */
   public function setTransitTimeLabels($transitTimeLabels)
   {
     $this->transitTimeLabels = $transitTimeLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getTransitTimeLabels()
   {
     return $this->transitTimeLabels;

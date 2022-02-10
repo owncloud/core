@@ -20,14 +20,23 @@ namespace Google\Service\Gmail;
 class HistoryLabelRemoved extends \Google\Collection
 {
   protected $collection_key = 'labelIds';
+  /**
+   * @var string[]
+   */
   public $labelIds;
   protected $messageType = Message::class;
   protected $messageDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setLabelIds($labelIds)
   {
     $this->labelIds = $labelIds;
   }
+  /**
+   * @return string[]
+   */
   public function getLabelIds()
   {
     return $this->labelIds;

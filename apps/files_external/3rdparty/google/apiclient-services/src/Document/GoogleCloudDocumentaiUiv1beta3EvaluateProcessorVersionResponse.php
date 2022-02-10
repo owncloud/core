@@ -19,12 +19,21 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiUiv1beta3EvaluateProcessorVersionResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $evaluation;
 
+  /**
+   * @param string
+   */
   public function setEvaluation($evaluation)
   {
     $this->evaluation = $evaluation;
   }
+  /**
+   * @return string
+   */
   public function getEvaluation()
   {
     return $this->evaluation;

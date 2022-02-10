@@ -19,30 +19,57 @@ namespace Google\Service\ToolResults;
 
 class CPUInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cpuProcessor;
+  /**
+   * @var float
+   */
   public $cpuSpeedInGhz;
+  /**
+   * @var int
+   */
   public $numberOfCores;
 
+  /**
+   * @param string
+   */
   public function setCpuProcessor($cpuProcessor)
   {
     $this->cpuProcessor = $cpuProcessor;
   }
+  /**
+   * @return string
+   */
   public function getCpuProcessor()
   {
     return $this->cpuProcessor;
   }
+  /**
+   * @param float
+   */
   public function setCpuSpeedInGhz($cpuSpeedInGhz)
   {
     $this->cpuSpeedInGhz = $cpuSpeedInGhz;
   }
+  /**
+   * @return float
+   */
   public function getCpuSpeedInGhz()
   {
     return $this->cpuSpeedInGhz;
   }
+  /**
+   * @param int
+   */
   public function setNumberOfCores($numberOfCores)
   {
     $this->numberOfCores = $numberOfCores;
   }
+  /**
+   * @return int
+   */
   public function getNumberOfCores()
   {
     return $this->numberOfCores;

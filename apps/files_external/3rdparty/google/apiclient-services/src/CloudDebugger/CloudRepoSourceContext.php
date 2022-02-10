@@ -21,9 +21,15 @@ class CloudRepoSourceContext extends \Google\Model
 {
   protected $aliasContextType = AliasContext::class;
   protected $aliasContextDataType = '';
+  /**
+   * @var string
+   */
   public $aliasName;
   protected $repoIdType = RepoId::class;
   protected $repoIdDataType = '';
+  /**
+   * @var string
+   */
   public $revisionId;
 
   /**
@@ -40,10 +46,16 @@ class CloudRepoSourceContext extends \Google\Model
   {
     return $this->aliasContext;
   }
+  /**
+   * @param string
+   */
   public function setAliasName($aliasName)
   {
     $this->aliasName = $aliasName;
   }
+  /**
+   * @return string
+   */
   public function getAliasName()
   {
     return $this->aliasName;
@@ -62,10 +74,16 @@ class CloudRepoSourceContext extends \Google\Model
   {
     return $this->repoId;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;

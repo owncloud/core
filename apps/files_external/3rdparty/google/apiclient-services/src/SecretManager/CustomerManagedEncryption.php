@@ -19,12 +19,21 @@ namespace Google\Service\SecretManager;
 
 class CustomerManagedEncryption extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kmsKeyName;
 
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;

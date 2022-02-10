@@ -19,12 +19,21 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3beta1ImportFlowResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $flow;
 
+  /**
+   * @param string
+   */
   public function setFlow($flow)
   {
     $this->flow = $flow;
   }
+  /**
+   * @return string
+   */
   public function getFlow()
   {
     return $this->flow;

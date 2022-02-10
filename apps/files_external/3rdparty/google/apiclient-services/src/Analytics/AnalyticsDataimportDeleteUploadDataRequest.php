@@ -20,12 +20,21 @@ namespace Google\Service\Analytics;
 class AnalyticsDataimportDeleteUploadDataRequest extends \Google\Collection
 {
   protected $collection_key = 'customDataImportUids';
+  /**
+   * @var string[]
+   */
   public $customDataImportUids;
 
+  /**
+   * @param string[]
+   */
   public function setCustomDataImportUids($customDataImportUids)
   {
     $this->customDataImportUids = $customDataImportUids;
   }
+  /**
+   * @return string[]
+   */
   public function getCustomDataImportUids()
   {
     return $this->customDataImportUids;

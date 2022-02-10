@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class LookbackWindow extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $clickDays;
+  /**
+   * @var int
+   */
   public $impressionDays;
 
+  /**
+   * @param int
+   */
   public function setClickDays($clickDays)
   {
     $this->clickDays = $clickDays;
   }
+  /**
+   * @return int
+   */
   public function getClickDays()
   {
     return $this->clickDays;
   }
+  /**
+   * @param int
+   */
   public function setImpressionDays($impressionDays)
   {
     $this->impressionDays = $impressionDays;
   }
+  /**
+   * @return int
+   */
   public function getImpressionDays()
   {
     return $this->impressionDays;

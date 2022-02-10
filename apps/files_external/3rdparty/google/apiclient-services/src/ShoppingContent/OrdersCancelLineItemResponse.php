@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersCancelLineItemResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $executionStatus;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setExecutionStatus($executionStatus)
   {
     $this->executionStatus = $executionStatus;
   }
+  /**
+   * @return string
+   */
   public function getExecutionStatus()
   {
     return $this->executionStatus;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

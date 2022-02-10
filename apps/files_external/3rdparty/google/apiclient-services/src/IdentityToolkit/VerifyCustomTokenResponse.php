@@ -19,48 +19,93 @@ namespace Google\Service\IdentityToolkit;
 
 class VerifyCustomTokenResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expiresIn;
+  /**
+   * @var string
+   */
   public $idToken;
+  /**
+   * @var bool
+   */
   public $isNewUser;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $refreshToken;
 
+  /**
+   * @param string
+   */
   public function setExpiresIn($expiresIn)
   {
     $this->expiresIn = $expiresIn;
   }
+  /**
+   * @return string
+   */
   public function getExpiresIn()
   {
     return $this->expiresIn;
   }
+  /**
+   * @param string
+   */
   public function setIdToken($idToken)
   {
     $this->idToken = $idToken;
   }
+  /**
+   * @return string
+   */
   public function getIdToken()
   {
     return $this->idToken;
   }
+  /**
+   * @param bool
+   */
   public function setIsNewUser($isNewUser)
   {
     $this->isNewUser = $isNewUser;
   }
+  /**
+   * @return bool
+   */
   public function getIsNewUser()
   {
     return $this->isNewUser;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setRefreshToken($refreshToken)
   {
     $this->refreshToken = $refreshToken;
   }
+  /**
+   * @return string
+   */
   public function getRefreshToken()
   {
     return $this->refreshToken;

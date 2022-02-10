@@ -19,30 +19,57 @@ namespace Google\Service\AndroidManagement;
 
 class PowerManagementEvent extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $batteryLevel;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $eventType;
 
+  /**
+   * @param float
+   */
   public function setBatteryLevel($batteryLevel)
   {
     $this->batteryLevel = $batteryLevel;
   }
+  /**
+   * @return float
+   */
   public function getBatteryLevel()
   {
     return $this->batteryLevel;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;

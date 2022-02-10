@@ -20,19 +20,43 @@ namespace Google\Service\SQLAdmin;
 class Settings extends \Google\Collection
 {
   protected $collection_key = 'denyMaintenancePeriods';
+  /**
+   * @var string
+   */
   public $activationPolicy;
   protected $activeDirectoryConfigType = SqlActiveDirectoryConfig::class;
   protected $activeDirectoryConfigDataType = '';
+  /**
+   * @var string[]
+   */
   public $authorizedGaeApplications;
+  /**
+   * @var string
+   */
   public $availabilityType;
   protected $backupConfigurationType = BackupConfiguration::class;
   protected $backupConfigurationDataType = '';
+  /**
+   * @var string
+   */
   public $collation;
+  /**
+   * @var bool
+   */
   public $crashSafeReplicationEnabled;
+  /**
+   * @var string
+   */
   public $dataDiskSizeGb;
+  /**
+   * @var string
+   */
   public $dataDiskType;
   protected $databaseFlagsType = DatabaseFlags::class;
   protected $databaseFlagsDataType = 'array';
+  /**
+   * @var bool
+   */
   public $databaseReplicationEnabled;
   protected $denyMaintenancePeriodsType = DenyMaintenancePeriod::class;
   protected $denyMaintenancePeriodsDataType = 'array';
@@ -40,25 +64,57 @@ class Settings extends \Google\Collection
   protected $insightsConfigDataType = '';
   protected $ipConfigurationType = IpConfiguration::class;
   protected $ipConfigurationDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $locationPreferenceType = LocationPreference::class;
   protected $locationPreferenceDataType = '';
   protected $maintenanceWindowType = MaintenanceWindow::class;
   protected $maintenanceWindowDataType = '';
+  protected $passwordValidationPolicyType = PasswordValidationPolicy::class;
+  protected $passwordValidationPolicyDataType = '';
+  /**
+   * @var string
+   */
   public $pricingPlan;
+  /**
+   * @var string
+   */
   public $replicationType;
+  /**
+   * @var string
+   */
   public $settingsVersion;
   protected $sqlServerAuditConfigType = SqlServerAuditConfig::class;
   protected $sqlServerAuditConfigDataType = '';
+  /**
+   * @var bool
+   */
   public $storageAutoResize;
+  /**
+   * @var string
+   */
   public $storageAutoResizeLimit;
+  /**
+   * @var string
+   */
   public $tier;
+  /**
+   * @var string[]
+   */
   public $userLabels;
 
+  /**
+   * @param string
+   */
   public function setActivationPolicy($activationPolicy)
   {
     $this->activationPolicy = $activationPolicy;
   }
+  /**
+   * @return string
+   */
   public function getActivationPolicy()
   {
     return $this->activationPolicy;
@@ -77,18 +133,30 @@ class Settings extends \Google\Collection
   {
     return $this->activeDirectoryConfig;
   }
+  /**
+   * @param string[]
+   */
   public function setAuthorizedGaeApplications($authorizedGaeApplications)
   {
     $this->authorizedGaeApplications = $authorizedGaeApplications;
   }
+  /**
+   * @return string[]
+   */
   public function getAuthorizedGaeApplications()
   {
     return $this->authorizedGaeApplications;
   }
+  /**
+   * @param string
+   */
   public function setAvailabilityType($availabilityType)
   {
     $this->availabilityType = $availabilityType;
   }
+  /**
+   * @return string
+   */
   public function getAvailabilityType()
   {
     return $this->availabilityType;
@@ -107,34 +175,58 @@ class Settings extends \Google\Collection
   {
     return $this->backupConfiguration;
   }
+  /**
+   * @param string
+   */
   public function setCollation($collation)
   {
     $this->collation = $collation;
   }
+  /**
+   * @return string
+   */
   public function getCollation()
   {
     return $this->collation;
   }
+  /**
+   * @param bool
+   */
   public function setCrashSafeReplicationEnabled($crashSafeReplicationEnabled)
   {
     $this->crashSafeReplicationEnabled = $crashSafeReplicationEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getCrashSafeReplicationEnabled()
   {
     return $this->crashSafeReplicationEnabled;
   }
+  /**
+   * @param string
+   */
   public function setDataDiskSizeGb($dataDiskSizeGb)
   {
     $this->dataDiskSizeGb = $dataDiskSizeGb;
   }
+  /**
+   * @return string
+   */
   public function getDataDiskSizeGb()
   {
     return $this->dataDiskSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setDataDiskType($dataDiskType)
   {
     $this->dataDiskType = $dataDiskType;
   }
+  /**
+   * @return string
+   */
   public function getDataDiskType()
   {
     return $this->dataDiskType;
@@ -153,10 +245,16 @@ class Settings extends \Google\Collection
   {
     return $this->databaseFlags;
   }
+  /**
+   * @param bool
+   */
   public function setDatabaseReplicationEnabled($databaseReplicationEnabled)
   {
     $this->databaseReplicationEnabled = $databaseReplicationEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getDatabaseReplicationEnabled()
   {
     return $this->databaseReplicationEnabled;
@@ -203,10 +301,16 @@ class Settings extends \Google\Collection
   {
     return $this->ipConfiguration;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -239,26 +343,58 @@ class Settings extends \Google\Collection
   {
     return $this->maintenanceWindow;
   }
+  /**
+   * @param PasswordValidationPolicy
+   */
+  public function setPasswordValidationPolicy(PasswordValidationPolicy $passwordValidationPolicy)
+  {
+    $this->passwordValidationPolicy = $passwordValidationPolicy;
+  }
+  /**
+   * @return PasswordValidationPolicy
+   */
+  public function getPasswordValidationPolicy()
+  {
+    return $this->passwordValidationPolicy;
+  }
+  /**
+   * @param string
+   */
   public function setPricingPlan($pricingPlan)
   {
     $this->pricingPlan = $pricingPlan;
   }
+  /**
+   * @return string
+   */
   public function getPricingPlan()
   {
     return $this->pricingPlan;
   }
+  /**
+   * @param string
+   */
   public function setReplicationType($replicationType)
   {
     $this->replicationType = $replicationType;
   }
+  /**
+   * @return string
+   */
   public function getReplicationType()
   {
     return $this->replicationType;
   }
+  /**
+   * @param string
+   */
   public function setSettingsVersion($settingsVersion)
   {
     $this->settingsVersion = $settingsVersion;
   }
+  /**
+   * @return string
+   */
   public function getSettingsVersion()
   {
     return $this->settingsVersion;
@@ -277,34 +413,58 @@ class Settings extends \Google\Collection
   {
     return $this->sqlServerAuditConfig;
   }
+  /**
+   * @param bool
+   */
   public function setStorageAutoResize($storageAutoResize)
   {
     $this->storageAutoResize = $storageAutoResize;
   }
+  /**
+   * @return bool
+   */
   public function getStorageAutoResize()
   {
     return $this->storageAutoResize;
   }
+  /**
+   * @param string
+   */
   public function setStorageAutoResizeLimit($storageAutoResizeLimit)
   {
     $this->storageAutoResizeLimit = $storageAutoResizeLimit;
   }
+  /**
+   * @return string
+   */
   public function getStorageAutoResizeLimit()
   {
     return $this->storageAutoResizeLimit;
   }
+  /**
+   * @param string
+   */
   public function setTier($tier)
   {
     $this->tier = $tier;
   }
+  /**
+   * @return string
+   */
   public function getTier()
   {
     return $this->tier;
   }
+  /**
+   * @param string[]
+   */
   public function setUserLabels($userLabels)
   {
     $this->userLabels = $userLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getUserLabels()
   {
     return $this->userLabels;

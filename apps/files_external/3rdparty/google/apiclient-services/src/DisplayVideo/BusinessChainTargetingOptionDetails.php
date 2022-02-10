@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class BusinessChainTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $businessChain;
+  /**
+   * @var string
+   */
   public $geoRegion;
+  /**
+   * @var string
+   */
   public $geoRegionType;
 
+  /**
+   * @param string
+   */
   public function setBusinessChain($businessChain)
   {
     $this->businessChain = $businessChain;
   }
+  /**
+   * @return string
+   */
   public function getBusinessChain()
   {
     return $this->businessChain;
   }
+  /**
+   * @param string
+   */
   public function setGeoRegion($geoRegion)
   {
     $this->geoRegion = $geoRegion;
   }
+  /**
+   * @return string
+   */
   public function getGeoRegion()
   {
     return $this->geoRegion;
   }
+  /**
+   * @param string
+   */
   public function setGeoRegionType($geoRegionType)
   {
     $this->geoRegionType = $geoRegionType;
   }
+  /**
+   * @return string
+   */
   public function getGeoRegionType()
   {
     return $this->geoRegionType;

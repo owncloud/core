@@ -20,21 +20,39 @@ namespace Google\Service\TagManager;
 class ZoneTypeRestriction extends \Google\Collection
 {
   protected $collection_key = 'whitelistedTypeId';
+  /**
+   * @var bool
+   */
   public $enable;
+  /**
+   * @var string[]
+   */
   public $whitelistedTypeId;
 
+  /**
+   * @param bool
+   */
   public function setEnable($enable)
   {
     $this->enable = $enable;
   }
+  /**
+   * @return bool
+   */
   public function getEnable()
   {
     return $this->enable;
   }
+  /**
+   * @param string[]
+   */
   public function setWhitelistedTypeId($whitelistedTypeId)
   {
     $this->whitelistedTypeId = $whitelistedTypeId;
   }
+  /**
+   * @return string[]
+   */
   public function getWhitelistedTypeId()
   {
     return $this->whitelistedTypeId;

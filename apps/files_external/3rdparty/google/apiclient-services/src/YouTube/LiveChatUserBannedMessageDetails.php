@@ -19,23 +19,41 @@ namespace Google\Service\YouTube;
 
 class LiveChatUserBannedMessageDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $banDurationSeconds;
+  /**
+   * @var string
+   */
   public $banType;
   protected $bannedUserDetailsType = ChannelProfileDetails::class;
   protected $bannedUserDetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBanDurationSeconds($banDurationSeconds)
   {
     $this->banDurationSeconds = $banDurationSeconds;
   }
+  /**
+   * @return string
+   */
   public function getBanDurationSeconds()
   {
     return $this->banDurationSeconds;
   }
+  /**
+   * @param string
+   */
   public function setBanType($banType)
   {
     $this->banType = $banType;
   }
+  /**
+   * @return string
+   */
   public function getBanType()
   {
     return $this->banType;

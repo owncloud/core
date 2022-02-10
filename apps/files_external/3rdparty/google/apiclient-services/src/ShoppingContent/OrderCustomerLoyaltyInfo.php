@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class OrderCustomerLoyaltyInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $loyaltyNumber;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setLoyaltyNumber($loyaltyNumber)
   {
     $this->loyaltyNumber = $loyaltyNumber;
   }
+  /**
+   * @return string
+   */
   public function getLoyaltyNumber()
   {
     return $this->loyaltyNumber;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class TrackingFloodlightActivityConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $floodlightActivityId;
+  /**
+   * @var int
+   */
   public $postClickLookbackWindowDays;
+  /**
+   * @var int
+   */
   public $postViewLookbackWindowDays;
 
+  /**
+   * @param string
+   */
   public function setFloodlightActivityId($floodlightActivityId)
   {
     $this->floodlightActivityId = $floodlightActivityId;
   }
+  /**
+   * @return string
+   */
   public function getFloodlightActivityId()
   {
     return $this->floodlightActivityId;
   }
+  /**
+   * @param int
+   */
   public function setPostClickLookbackWindowDays($postClickLookbackWindowDays)
   {
     $this->postClickLookbackWindowDays = $postClickLookbackWindowDays;
   }
+  /**
+   * @return int
+   */
   public function getPostClickLookbackWindowDays()
   {
     return $this->postClickLookbackWindowDays;
   }
+  /**
+   * @param int
+   */
   public function setPostViewLookbackWindowDays($postViewLookbackWindowDays)
   {
     $this->postViewLookbackWindowDays = $postViewLookbackWindowDays;
   }
+  /**
+   * @return int
+   */
   public function getPostViewLookbackWindowDays()
   {
     return $this->postViewLookbackWindowDays;

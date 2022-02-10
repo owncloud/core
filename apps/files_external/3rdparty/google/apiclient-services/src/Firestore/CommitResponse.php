@@ -20,14 +20,23 @@ namespace Google\Service\Firestore;
 class CommitResponse extends \Google\Collection
 {
   protected $collection_key = 'writeResults';
+  /**
+   * @var string
+   */
   public $commitTime;
   protected $writeResultsType = WriteResult::class;
   protected $writeResultsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCommitTime($commitTime)
   {
     $this->commitTime = $commitTime;
   }
+  /**
+   * @return string
+   */
   public function getCommitTime()
   {
     return $this->commitTime;

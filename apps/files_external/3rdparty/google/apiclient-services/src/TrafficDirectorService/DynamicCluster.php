@@ -19,30 +19,57 @@ namespace Google\Service\TrafficDirectorService;
 
 class DynamicCluster extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $cluster;
+  /**
+   * @var string
+   */
   public $lastUpdated;
+  /**
+   * @var string
+   */
   public $versionInfo;
 
+  /**
+   * @param array[]
+   */
   public function setCluster($cluster)
   {
     $this->cluster = $cluster;
   }
+  /**
+   * @return array[]
+   */
   public function getCluster()
   {
     return $this->cluster;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdated($lastUpdated)
   {
     $this->lastUpdated = $lastUpdated;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdated()
   {
     return $this->lastUpdated;
   }
+  /**
+   * @param string
+   */
   public function setVersionInfo($versionInfo)
   {
     $this->versionInfo = $versionInfo;
   }
+  /**
+   * @return string
+   */
   public function getVersionInfo()
   {
     return $this->versionInfo;

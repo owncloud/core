@@ -19,16 +19,25 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class CalloutStatusRow extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $calloutStatusId;
   protected $impressionCountType = MetricValue::class;
   protected $impressionCountDataType = '';
   protected $rowDimensionsType = RowDimensions::class;
   protected $rowDimensionsDataType = '';
 
+  /**
+   * @param int
+   */
   public function setCalloutStatusId($calloutStatusId)
   {
     $this->calloutStatusId = $calloutStatusId;
   }
+  /**
+   * @return int
+   */
   public function getCalloutStatusId()
   {
     return $this->calloutStatusId;

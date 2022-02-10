@@ -19,15 +19,27 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2SearchResponseFacetFacetValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $count;
   protected $intervalType = GoogleCloudRetailV2Interval::class;
   protected $intervalDataType = '';
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
@@ -46,10 +58,16 @@ class GoogleCloudRetailV2SearchResponseFacetFacetValue extends \Google\Model
   {
     return $this->interval;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

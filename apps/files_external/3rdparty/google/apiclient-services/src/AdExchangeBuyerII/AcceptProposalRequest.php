@@ -19,12 +19,21 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class AcceptProposalRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $proposalRevision;
 
+  /**
+   * @param string
+   */
   public function setProposalRevision($proposalRevision)
   {
     $this->proposalRevision = $proposalRevision;
   }
+  /**
+   * @return string
+   */
   public function getProposalRevision()
   {
     return $this->proposalRevision;

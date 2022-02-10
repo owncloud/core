@@ -20,14 +20,23 @@ namespace Google\Service\DataCatalog;
 class GoogleCloudDatacatalogV1ListPolicyTagsResponse extends \Google\Collection
 {
   protected $collection_key = 'policyTags';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $policyTagsType = GoogleCloudDatacatalogV1PolicyTag::class;
   protected $policyTagsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

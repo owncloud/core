@@ -22,10 +22,25 @@ class BatchUpdateValuesByDataFilterResponse extends \Google\Collection
   protected $collection_key = 'responses';
   protected $responsesType = UpdateValuesByDataFilterResponse::class;
   protected $responsesDataType = 'array';
+  /**
+   * @var string
+   */
   public $spreadsheetId;
+  /**
+   * @var int
+   */
   public $totalUpdatedCells;
+  /**
+   * @var int
+   */
   public $totalUpdatedColumns;
+  /**
+   * @var int
+   */
   public $totalUpdatedRows;
+  /**
+   * @var int
+   */
   public $totalUpdatedSheets;
 
   /**
@@ -42,42 +57,72 @@ class BatchUpdateValuesByDataFilterResponse extends \Google\Collection
   {
     return $this->responses;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;
   }
+  /**
+   * @param int
+   */
   public function setTotalUpdatedCells($totalUpdatedCells)
   {
     $this->totalUpdatedCells = $totalUpdatedCells;
   }
+  /**
+   * @return int
+   */
   public function getTotalUpdatedCells()
   {
     return $this->totalUpdatedCells;
   }
+  /**
+   * @param int
+   */
   public function setTotalUpdatedColumns($totalUpdatedColumns)
   {
     $this->totalUpdatedColumns = $totalUpdatedColumns;
   }
+  /**
+   * @return int
+   */
   public function getTotalUpdatedColumns()
   {
     return $this->totalUpdatedColumns;
   }
+  /**
+   * @param int
+   */
   public function setTotalUpdatedRows($totalUpdatedRows)
   {
     $this->totalUpdatedRows = $totalUpdatedRows;
   }
+  /**
+   * @return int
+   */
   public function getTotalUpdatedRows()
   {
     return $this->totalUpdatedRows;
   }
+  /**
+   * @param int
+   */
   public function setTotalUpdatedSheets($totalUpdatedSheets)
   {
     $this->totalUpdatedSheets = $totalUpdatedSheets;
   }
+  /**
+   * @return int
+   */
   public function getTotalUpdatedSheets()
   {
     return $this->totalUpdatedSheets;

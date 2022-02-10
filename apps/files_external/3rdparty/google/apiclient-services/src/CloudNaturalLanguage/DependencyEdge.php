@@ -19,21 +19,39 @@ namespace Google\Service\CloudNaturalLanguage;
 
 class DependencyEdge extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $headTokenIndex;
+  /**
+   * @var string
+   */
   public $label;
 
+  /**
+   * @param int
+   */
   public function setHeadTokenIndex($headTokenIndex)
   {
     $this->headTokenIndex = $headTokenIndex;
   }
+  /**
+   * @return int
+   */
   public function getHeadTokenIndex()
   {
     return $this->headTokenIndex;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;

@@ -19,21 +19,39 @@ namespace Google\Service\Sheets;
 
 class ChartCustomNumberFormatOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $prefix;
+  /**
+   * @var string
+   */
   public $suffix;
 
+  /**
+   * @param string
+   */
   public function setPrefix($prefix)
   {
     $this->prefix = $prefix;
   }
+  /**
+   * @return string
+   */
   public function getPrefix()
   {
     return $this->prefix;
   }
+  /**
+   * @param string
+   */
   public function setSuffix($suffix)
   {
     $this->suffix = $suffix;
   }
+  /**
+   * @return string
+   */
   public function getSuffix()
   {
     return $this->suffix;

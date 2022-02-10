@@ -19,20 +19,38 @@ namespace Google\Service\Bigquery;
 
 class BqmlTrainingRunTrainingOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $earlyStop;
   public $l1Reg;
   public $l2Reg;
   public $learnRate;
+  /**
+   * @var string
+   */
   public $learnRateStrategy;
   public $lineSearchInitLearnRate;
+  /**
+   * @var string
+   */
   public $maxIteration;
   public $minRelProgress;
+  /**
+   * @var bool
+   */
   public $warmStart;
 
+  /**
+   * @param bool
+   */
   public function setEarlyStop($earlyStop)
   {
     $this->earlyStop = $earlyStop;
   }
+  /**
+   * @return bool
+   */
   public function getEarlyStop()
   {
     return $this->earlyStop;
@@ -61,10 +79,16 @@ class BqmlTrainingRunTrainingOptions extends \Google\Model
   {
     return $this->learnRate;
   }
+  /**
+   * @param string
+   */
   public function setLearnRateStrategy($learnRateStrategy)
   {
     $this->learnRateStrategy = $learnRateStrategy;
   }
+  /**
+   * @return string
+   */
   public function getLearnRateStrategy()
   {
     return $this->learnRateStrategy;
@@ -77,10 +101,16 @@ class BqmlTrainingRunTrainingOptions extends \Google\Model
   {
     return $this->lineSearchInitLearnRate;
   }
+  /**
+   * @param string
+   */
   public function setMaxIteration($maxIteration)
   {
     $this->maxIteration = $maxIteration;
   }
+  /**
+   * @return string
+   */
   public function getMaxIteration()
   {
     return $this->maxIteration;
@@ -93,10 +123,16 @@ class BqmlTrainingRunTrainingOptions extends \Google\Model
   {
     return $this->minRelProgress;
   }
+  /**
+   * @param bool
+   */
   public function setWarmStart($warmStart)
   {
     $this->warmStart = $warmStart;
   }
+  /**
+   * @return bool
+   */
   public function getWarmStart()
   {
     return $this->warmStart;

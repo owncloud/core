@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class KeywordAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyword;
+  /**
+   * @var bool
+   */
   public $negative;
 
+  /**
+   * @param string
+   */
   public function setKeyword($keyword)
   {
     $this->keyword = $keyword;
   }
+  /**
+   * @return string
+   */
   public function getKeyword()
   {
     return $this->keyword;
   }
+  /**
+   * @param bool
+   */
   public function setNegative($negative)
   {
     $this->negative = $negative;
   }
+  /**
+   * @return bool
+   */
   public function getNegative()
   {
     return $this->negative;

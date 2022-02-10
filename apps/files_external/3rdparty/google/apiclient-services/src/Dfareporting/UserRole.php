@@ -20,60 +20,117 @@ namespace Google\Service\Dfareporting;
 class UserRole extends \Google\Collection
 {
   protected $collection_key = 'permissions';
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var bool
+   */
   public $defaultUserRole;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parentUserRoleId;
   protected $permissionsType = UserRolePermission::class;
   protected $permissionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $subaccountId;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param bool
+   */
   public function setDefaultUserRole($defaultUserRole)
   {
     $this->defaultUserRole = $defaultUserRole;
   }
+  /**
+   * @return bool
+   */
   public function getDefaultUserRole()
   {
     return $this->defaultUserRole;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParentUserRoleId($parentUserRoleId)
   {
     $this->parentUserRoleId = $parentUserRoleId;
   }
+  /**
+   * @return string
+   */
   public function getParentUserRoleId()
   {
     return $this->parentUserRoleId;
@@ -92,10 +149,16 @@ class UserRole extends \Google\Collection
   {
     return $this->permissions;
   }
+  /**
+   * @param string
+   */
   public function setSubaccountId($subaccountId)
   {
     $this->subaccountId = $subaccountId;
   }
+  /**
+   * @return string
+   */
   public function getSubaccountId()
   {
     return $this->subaccountId;

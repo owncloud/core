@@ -20,23 +20,41 @@ namespace Google\Service\Storagetransfer;
 class ErrorSummary extends \Google\Collection
 {
   protected $collection_key = 'errorLogEntries';
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $errorCount;
   protected $errorLogEntriesType = ErrorLogEntry::class;
   protected $errorLogEntriesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setErrorCount($errorCount)
   {
     $this->errorCount = $errorCount;
   }
+  /**
+   * @return string
+   */
   public function getErrorCount()
   {
     return $this->errorCount;

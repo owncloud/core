@@ -19,50 +19,101 @@ namespace Google\Service\Games;
 
 class Player extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $avatarImageUrl;
+  /**
+   * @var string
+   */
   public $bannerUrlLandscape;
+  /**
+   * @var string
+   */
   public $bannerUrlPortrait;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $experienceInfoType = PlayerExperienceInfo::class;
   protected $experienceInfoDataType = '';
+  /**
+   * @var string
+   */
   public $friendStatus;
+  /**
+   * @var string
+   */
   public $kind;
   protected $nameType = PlayerName::class;
   protected $nameDataType = '';
+  /**
+   * @var string
+   */
   public $originalPlayerId;
+  /**
+   * @var string
+   */
   public $playerId;
   protected $profileSettingsType = ProfileSettings::class;
   protected $profileSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setAvatarImageUrl($avatarImageUrl)
   {
     $this->avatarImageUrl = $avatarImageUrl;
   }
+  /**
+   * @return string
+   */
   public function getAvatarImageUrl()
   {
     return $this->avatarImageUrl;
   }
+  /**
+   * @param string
+   */
   public function setBannerUrlLandscape($bannerUrlLandscape)
   {
     $this->bannerUrlLandscape = $bannerUrlLandscape;
   }
+  /**
+   * @return string
+   */
   public function getBannerUrlLandscape()
   {
     return $this->bannerUrlLandscape;
   }
+  /**
+   * @param string
+   */
   public function setBannerUrlPortrait($bannerUrlPortrait)
   {
     $this->bannerUrlPortrait = $bannerUrlPortrait;
   }
+  /**
+   * @return string
+   */
   public function getBannerUrlPortrait()
   {
     return $this->bannerUrlPortrait;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -81,18 +132,30 @@ class Player extends \Google\Model
   {
     return $this->experienceInfo;
   }
+  /**
+   * @param string
+   */
   public function setFriendStatus($friendStatus)
   {
     $this->friendStatus = $friendStatus;
   }
+  /**
+   * @return string
+   */
   public function getFriendStatus()
   {
     return $this->friendStatus;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -111,18 +174,30 @@ class Player extends \Google\Model
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOriginalPlayerId($originalPlayerId)
   {
     $this->originalPlayerId = $originalPlayerId;
   }
+  /**
+   * @return string
+   */
   public function getOriginalPlayerId()
   {
     return $this->originalPlayerId;
   }
+  /**
+   * @param string
+   */
   public function setPlayerId($playerId)
   {
     $this->playerId = $playerId;
   }
+  /**
+   * @return string
+   */
   public function getPlayerId()
   {
     return $this->playerId;
@@ -141,10 +216,16 @@ class Player extends \Google\Model
   {
     return $this->profileSettings;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

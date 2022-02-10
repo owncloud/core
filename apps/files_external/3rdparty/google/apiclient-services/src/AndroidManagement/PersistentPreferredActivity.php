@@ -20,30 +20,57 @@ namespace Google\Service\AndroidManagement;
 class PersistentPreferredActivity extends \Google\Collection
 {
   protected $collection_key = 'categories';
+  /**
+   * @var string[]
+   */
   public $actions;
+  /**
+   * @var string[]
+   */
   public $categories;
+  /**
+   * @var string
+   */
   public $receiverActivity;
 
+  /**
+   * @param string[]
+   */
   public function setActions($actions)
   {
     $this->actions = $actions;
   }
+  /**
+   * @return string[]
+   */
   public function getActions()
   {
     return $this->actions;
   }
+  /**
+   * @param string[]
+   */
   public function setCategories($categories)
   {
     $this->categories = $categories;
   }
+  /**
+   * @return string[]
+   */
   public function getCategories()
   {
     return $this->categories;
   }
+  /**
+   * @param string
+   */
   public function setReceiverActivity($receiverActivity)
   {
     $this->receiverActivity = $receiverActivity;
   }
+  /**
+   * @return string
+   */
   public function getReceiverActivity()
   {
     return $this->receiverActivity;

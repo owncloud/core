@@ -20,21 +20,39 @@ namespace Google\Service\Acceleratedmobilepageurl;
 class BatchGetAmpUrlsRequest extends \Google\Collection
 {
   protected $collection_key = 'urls';
+  /**
+   * @var string
+   */
   public $lookupStrategy;
+  /**
+   * @var string[]
+   */
   public $urls;
 
+  /**
+   * @param string
+   */
   public function setLookupStrategy($lookupStrategy)
   {
     $this->lookupStrategy = $lookupStrategy;
   }
+  /**
+   * @return string
+   */
   public function getLookupStrategy()
   {
     return $this->lookupStrategy;
   }
+  /**
+   * @param string[]
+   */
   public function setUrls($urls)
   {
     $this->urls = $urls;
   }
+  /**
+   * @return string[]
+   */
   public function getUrls()
   {
     return $this->urls;

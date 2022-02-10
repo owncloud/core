@@ -20,48 +20,93 @@ namespace Google\Service\Dfareporting;
 class PathReportDimensionValue extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $dimensionName;
+  /**
+   * @var string[]
+   */
   public $ids;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $matchType;
+  /**
+   * @var string[]
+   */
   public $values;
 
+  /**
+   * @param string
+   */
   public function setDimensionName($dimensionName)
   {
     $this->dimensionName = $dimensionName;
   }
+  /**
+   * @return string
+   */
   public function getDimensionName()
   {
     return $this->dimensionName;
   }
+  /**
+   * @param string[]
+   */
   public function setIds($ids)
   {
     $this->ids = $ids;
   }
+  /**
+   * @return string[]
+   */
   public function getIds()
   {
     return $this->ids;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMatchType($matchType)
   {
     $this->matchType = $matchType;
   }
+  /**
+   * @return string
+   */
   public function getMatchType()
   {
     return $this->matchType;
   }
+  /**
+   * @param string[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return string[]
+   */
   public function getValues()
   {
     return $this->values;

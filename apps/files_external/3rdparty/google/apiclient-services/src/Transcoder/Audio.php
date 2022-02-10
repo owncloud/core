@@ -19,22 +19,40 @@ namespace Google\Service\Transcoder;
 
 class Audio extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $highBoost;
+  /**
+   * @var bool
+   */
   public $lowBoost;
   public $lufs;
 
+  /**
+   * @param bool
+   */
   public function setHighBoost($highBoost)
   {
     $this->highBoost = $highBoost;
   }
+  /**
+   * @return bool
+   */
   public function getHighBoost()
   {
     return $this->highBoost;
   }
+  /**
+   * @param bool
+   */
   public function setLowBoost($lowBoost)
   {
     $this->lowBoost = $lowBoost;
   }
+  /**
+   * @return bool
+   */
   public function getLowBoost()
   {
     return $this->lowBoost;

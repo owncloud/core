@@ -22,6 +22,9 @@ class GooglePrivacyDlpV2StoredInfoType extends \Google\Collection
   protected $collection_key = 'pendingVersions';
   protected $currentVersionType = GooglePrivacyDlpV2StoredInfoTypeVersion::class;
   protected $currentVersionDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $pendingVersionsType = GooglePrivacyDlpV2StoredInfoTypeVersion::class;
   protected $pendingVersionsDataType = 'array';
@@ -40,10 +43,16 @@ class GooglePrivacyDlpV2StoredInfoType extends \Google\Collection
   {
     return $this->currentVersion;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

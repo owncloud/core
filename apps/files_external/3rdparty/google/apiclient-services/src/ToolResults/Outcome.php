@@ -27,6 +27,9 @@ class Outcome extends \Google\Model
   protected $skippedDetailDataType = '';
   protected $successDetailType = SuccessDetail::class;
   protected $successDetailDataType = '';
+  /**
+   * @var string
+   */
   public $summary;
 
   /**
@@ -85,10 +88,16 @@ class Outcome extends \Google\Model
   {
     return $this->successDetail;
   }
+  /**
+   * @param string
+   */
   public function setSummary($summary)
   {
     $this->summary = $summary;
   }
+  /**
+   * @return string
+   */
   public function getSummary()
   {
     return $this->summary;

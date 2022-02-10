@@ -19,30 +19,57 @@ namespace Google\Service\CloudShell;
 
 class AuthorizeEnvironmentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessToken;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $idToken;
 
+  /**
+   * @param string
+   */
   public function setAccessToken($accessToken)
   {
     $this->accessToken = $accessToken;
   }
+  /**
+   * @return string
+   */
   public function getAccessToken()
   {
     return $this->accessToken;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setIdToken($idToken)
   {
     $this->idToken = $idToken;
   }
+  /**
+   * @return string
+   */
   public function getIdToken()
   {
     return $this->idToken;

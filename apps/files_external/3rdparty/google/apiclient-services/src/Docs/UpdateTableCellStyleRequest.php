@@ -19,6 +19,9 @@ namespace Google\Service\Docs;
 
 class UpdateTableCellStyleRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fields;
   protected $tableCellStyleType = TableCellStyle::class;
   protected $tableCellStyleDataType = '';
@@ -27,10 +30,16 @@ class UpdateTableCellStyleRequest extends \Google\Model
   protected $tableStartLocationType = Location::class;
   protected $tableStartLocationDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

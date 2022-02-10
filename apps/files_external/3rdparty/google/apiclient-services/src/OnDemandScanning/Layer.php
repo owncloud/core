@@ -19,21 +19,39 @@ namespace Google\Service\OnDemandScanning;
 
 class Layer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $arguments;
+  /**
+   * @var string
+   */
   public $directive;
 
+  /**
+   * @param string
+   */
   public function setArguments($arguments)
   {
     $this->arguments = $arguments;
   }
+  /**
+   * @return string
+   */
   public function getArguments()
   {
     return $this->arguments;
   }
+  /**
+   * @param string
+   */
   public function setDirective($directive)
   {
     $this->directive = $directive;
   }
+  /**
+   * @return string
+   */
   public function getDirective()
   {
     return $this->directive;

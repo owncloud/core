@@ -19,15 +19,27 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1GcsFileSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $filePath;
   protected $gcsTimestampsType = GoogleCloudDatacatalogV1SystemTimestamps::class;
   protected $gcsTimestampsDataType = '';
+  /**
+   * @var string
+   */
   public $sizeBytes;
 
+  /**
+   * @param string
+   */
   public function setFilePath($filePath)
   {
     $this->filePath = $filePath;
   }
+  /**
+   * @return string
+   */
   public function getFilePath()
   {
     return $this->filePath;
@@ -46,10 +58,16 @@ class GoogleCloudDatacatalogV1GcsFileSpec extends \Google\Model
   {
     return $this->gcsTimestamps;
   }
+  /**
+   * @param string
+   */
   public function setSizeBytes($sizeBytes)
   {
     $this->sizeBytes = $sizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getSizeBytes()
   {
     return $this->sizeBytes;

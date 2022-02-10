@@ -19,21 +19,39 @@ namespace Google\Service\CloudIdentity;
 
 class DynamicGroupQuery extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $query;
+  /**
+   * @var string
+   */
   public $resourceType;
 
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;
   }
+  /**
+   * @param string
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string
+   */
   public function getResourceType()
   {
     return $this->resourceType;

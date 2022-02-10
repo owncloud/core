@@ -20,50 +20,95 @@ namespace Google\Service\CloudVideoIntelligence;
 class GoogleCloudVideointelligenceV1AnnotateVideoRequest extends \Google\Collection
 {
   protected $collection_key = 'features';
+  /**
+   * @var string[]
+   */
   public $features;
+  /**
+   * @var string
+   */
   public $inputContent;
+  /**
+   * @var string
+   */
   public $inputUri;
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $outputUri;
   protected $videoContextType = GoogleCloudVideointelligenceV1VideoContext::class;
   protected $videoContextDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setFeatures($features)
   {
     $this->features = $features;
   }
+  /**
+   * @return string[]
+   */
   public function getFeatures()
   {
     return $this->features;
   }
+  /**
+   * @param string
+   */
   public function setInputContent($inputContent)
   {
     $this->inputContent = $inputContent;
   }
+  /**
+   * @return string
+   */
   public function getInputContent()
   {
     return $this->inputContent;
   }
+  /**
+   * @param string
+   */
   public function setInputUri($inputUri)
   {
     $this->inputUri = $inputUri;
   }
+  /**
+   * @return string
+   */
   public function getInputUri()
   {
     return $this->inputUri;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setOutputUri($outputUri)
   {
     $this->outputUri = $outputUri;
   }
+  /**
+   * @return string
+   */
   public function getOutputUri()
   {
     return $this->outputUri;

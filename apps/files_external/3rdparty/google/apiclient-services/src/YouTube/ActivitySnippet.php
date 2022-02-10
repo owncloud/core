@@ -19,52 +19,103 @@ namespace Google\Service\YouTube;
 
 class ActivitySnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $channelTitle;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $groupId;
+  /**
+   * @var string
+   */
   public $publishedAt;
   protected $thumbnailsType = ThumbnailDetails::class;
   protected $thumbnailsDataType = '';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setChannelTitle($channelTitle)
   {
     $this->channelTitle = $channelTitle;
   }
+  /**
+   * @return string
+   */
   public function getChannelTitle()
   {
     return $this->channelTitle;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setGroupId($groupId)
   {
     $this->groupId = $groupId;
   }
+  /**
+   * @return string
+   */
   public function getGroupId()
   {
     return $this->groupId;
   }
+  /**
+   * @param string
+   */
   public function setPublishedAt($publishedAt)
   {
     $this->publishedAt = $publishedAt;
   }
+  /**
+   * @return string
+   */
   public function getPublishedAt()
   {
     return $this->publishedAt;
@@ -83,18 +134,30 @@ class ActivitySnippet extends \Google\Model
   {
     return $this->thumbnails;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

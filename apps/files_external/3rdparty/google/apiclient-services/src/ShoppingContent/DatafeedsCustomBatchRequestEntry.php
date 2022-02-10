@@ -19,17 +19,35 @@ namespace Google\Service\ShoppingContent;
 
 class DatafeedsCustomBatchRequestEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $batchId;
   protected $datafeedType = Datafeed::class;
   protected $datafeedDataType = '';
+  /**
+   * @var string
+   */
   public $datafeedId;
+  /**
+   * @var string
+   */
   public $merchantId;
+  /**
+   * @var string
+   */
   public $method;
 
+  /**
+   * @param string
+   */
   public function setBatchId($batchId)
   {
     $this->batchId = $batchId;
   }
+  /**
+   * @return string
+   */
   public function getBatchId()
   {
     return $this->batchId;
@@ -48,26 +66,44 @@ class DatafeedsCustomBatchRequestEntry extends \Google\Model
   {
     return $this->datafeed;
   }
+  /**
+   * @param string
+   */
   public function setDatafeedId($datafeedId)
   {
     $this->datafeedId = $datafeedId;
   }
+  /**
+   * @return string
+   */
   public function getDatafeedId()
   {
     return $this->datafeedId;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;
   }
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;

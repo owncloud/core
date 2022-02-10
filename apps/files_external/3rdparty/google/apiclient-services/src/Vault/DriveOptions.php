@@ -19,30 +19,57 @@ namespace Google\Service\Vault;
 
 class DriveOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $includeSharedDrives;
+  /**
+   * @var bool
+   */
   public $includeTeamDrives;
+  /**
+   * @var string
+   */
   public $versionDate;
 
+  /**
+   * @param bool
+   */
   public function setIncludeSharedDrives($includeSharedDrives)
   {
     $this->includeSharedDrives = $includeSharedDrives;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeSharedDrives()
   {
     return $this->includeSharedDrives;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeTeamDrives($includeTeamDrives)
   {
     $this->includeTeamDrives = $includeTeamDrives;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeTeamDrives()
   {
     return $this->includeTeamDrives;
   }
+  /**
+   * @param string
+   */
   public function setVersionDate($versionDate)
   {
     $this->versionDate = $versionDate;
   }
+  /**
+   * @return string
+   */
   public function getVersionDate()
   {
     return $this->versionDate;

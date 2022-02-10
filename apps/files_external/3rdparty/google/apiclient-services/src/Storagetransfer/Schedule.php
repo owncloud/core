@@ -21,6 +21,9 @@ class Schedule extends \Google\Model
 {
   protected $endTimeOfDayType = TimeOfDay::class;
   protected $endTimeOfDayDataType = '';
+  /**
+   * @var string
+   */
   public $repeatInterval;
   protected $scheduleEndDateType = Date::class;
   protected $scheduleEndDateDataType = '';
@@ -43,10 +46,16 @@ class Schedule extends \Google\Model
   {
     return $this->endTimeOfDay;
   }
+  /**
+   * @param string
+   */
   public function setRepeatInterval($repeatInterval)
   {
     $this->repeatInterval = $repeatInterval;
   }
+  /**
+   * @return string
+   */
   public function getRepeatInterval()
   {
     return $this->repeatInterval;

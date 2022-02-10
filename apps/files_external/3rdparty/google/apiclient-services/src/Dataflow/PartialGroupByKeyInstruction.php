@@ -22,11 +22,23 @@ class PartialGroupByKeyInstruction extends \Google\Collection
   protected $collection_key = 'sideInputs';
   protected $inputType = InstructionInput::class;
   protected $inputDataType = '';
+  /**
+   * @var array[]
+   */
   public $inputElementCodec;
+  /**
+   * @var string
+   */
   public $originalCombineValuesInputStoreName;
+  /**
+   * @var string
+   */
   public $originalCombineValuesStepName;
   protected $sideInputsType = SideInputInfo::class;
   protected $sideInputsDataType = 'array';
+  /**
+   * @var array[]
+   */
   public $valueCombiningFn;
 
   /**
@@ -43,26 +55,44 @@ class PartialGroupByKeyInstruction extends \Google\Collection
   {
     return $this->input;
   }
+  /**
+   * @param array[]
+   */
   public function setInputElementCodec($inputElementCodec)
   {
     $this->inputElementCodec = $inputElementCodec;
   }
+  /**
+   * @return array[]
+   */
   public function getInputElementCodec()
   {
     return $this->inputElementCodec;
   }
+  /**
+   * @param string
+   */
   public function setOriginalCombineValuesInputStoreName($originalCombineValuesInputStoreName)
   {
     $this->originalCombineValuesInputStoreName = $originalCombineValuesInputStoreName;
   }
+  /**
+   * @return string
+   */
   public function getOriginalCombineValuesInputStoreName()
   {
     return $this->originalCombineValuesInputStoreName;
   }
+  /**
+   * @param string
+   */
   public function setOriginalCombineValuesStepName($originalCombineValuesStepName)
   {
     $this->originalCombineValuesStepName = $originalCombineValuesStepName;
   }
+  /**
+   * @return string
+   */
   public function getOriginalCombineValuesStepName()
   {
     return $this->originalCombineValuesStepName;
@@ -81,10 +111,16 @@ class PartialGroupByKeyInstruction extends \Google\Collection
   {
     return $this->sideInputs;
   }
+  /**
+   * @param array[]
+   */
   public function setValueCombiningFn($valueCombiningFn)
   {
     $this->valueCombiningFn = $valueCombiningFn;
   }
+  /**
+   * @return array[]
+   */
   public function getValueCombiningFn()
   {
     return $this->valueCombiningFn;

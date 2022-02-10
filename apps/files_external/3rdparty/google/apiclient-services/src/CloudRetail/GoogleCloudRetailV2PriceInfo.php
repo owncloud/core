@@ -19,59 +19,113 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2PriceInfo extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $cost;
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var float
+   */
   public $originalPrice;
+  /**
+   * @var float
+   */
   public $price;
+  /**
+   * @var string
+   */
   public $priceEffectiveTime;
+  /**
+   * @var string
+   */
   public $priceExpireTime;
   protected $priceRangeType = GoogleCloudRetailV2PriceInfoPriceRange::class;
   protected $priceRangeDataType = '';
 
+  /**
+   * @param float
+   */
   public function setCost($cost)
   {
     $this->cost = $cost;
   }
+  /**
+   * @return float
+   */
   public function getCost()
   {
     return $this->cost;
   }
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param float
+   */
   public function setOriginalPrice($originalPrice)
   {
     $this->originalPrice = $originalPrice;
   }
+  /**
+   * @return float
+   */
   public function getOriginalPrice()
   {
     return $this->originalPrice;
   }
+  /**
+   * @param float
+   */
   public function setPrice($price)
   {
     $this->price = $price;
   }
+  /**
+   * @return float
+   */
   public function getPrice()
   {
     return $this->price;
   }
+  /**
+   * @param string
+   */
   public function setPriceEffectiveTime($priceEffectiveTime)
   {
     $this->priceEffectiveTime = $priceEffectiveTime;
   }
+  /**
+   * @return string
+   */
   public function getPriceEffectiveTime()
   {
     return $this->priceEffectiveTime;
   }
+  /**
+   * @param string
+   */
   public function setPriceExpireTime($priceExpireTime)
   {
     $this->priceExpireTime = $priceExpireTime;
   }
+  /**
+   * @return string
+   */
   public function getPriceExpireTime()
   {
     return $this->priceExpireTime;

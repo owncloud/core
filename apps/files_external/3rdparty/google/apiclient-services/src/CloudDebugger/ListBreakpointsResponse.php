@@ -22,6 +22,9 @@ class ListBreakpointsResponse extends \Google\Collection
   protected $collection_key = 'breakpoints';
   protected $breakpointsType = Breakpoint::class;
   protected $breakpointsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextWaitToken;
 
   /**
@@ -38,10 +41,16 @@ class ListBreakpointsResponse extends \Google\Collection
   {
     return $this->breakpoints;
   }
+  /**
+   * @param string
+   */
   public function setNextWaitToken($nextWaitToken)
   {
     $this->nextWaitToken = $nextWaitToken;
   }
+  /**
+   * @return string
+   */
   public function getNextWaitToken()
   {
     return $this->nextWaitToken;

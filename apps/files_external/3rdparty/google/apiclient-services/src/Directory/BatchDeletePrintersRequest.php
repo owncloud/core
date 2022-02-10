@@ -20,12 +20,21 @@ namespace Google\Service\Directory;
 class BatchDeletePrintersRequest extends \Google\Collection
 {
   protected $collection_key = 'printerIds';
+  /**
+   * @var string[]
+   */
   public $printerIds;
 
+  /**
+   * @param string[]
+   */
   public function setPrinterIds($printerIds)
   {
     $this->printerIds = $printerIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPrinterIds()
   {
     return $this->printerIds;

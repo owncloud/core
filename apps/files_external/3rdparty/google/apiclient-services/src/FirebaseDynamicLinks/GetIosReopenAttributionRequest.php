@@ -19,30 +19,57 @@ namespace Google\Service\FirebaseDynamicLinks;
 
 class GetIosReopenAttributionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bundleId;
+  /**
+   * @var string
+   */
   public $requestedLink;
+  /**
+   * @var string
+   */
   public $sdkVersion;
 
+  /**
+   * @param string
+   */
   public function setBundleId($bundleId)
   {
     $this->bundleId = $bundleId;
   }
+  /**
+   * @return string
+   */
   public function getBundleId()
   {
     return $this->bundleId;
   }
+  /**
+   * @param string
+   */
   public function setRequestedLink($requestedLink)
   {
     $this->requestedLink = $requestedLink;
   }
+  /**
+   * @return string
+   */
   public function getRequestedLink()
   {
     return $this->requestedLink;
   }
+  /**
+   * @param string
+   */
   public function setSdkVersion($sdkVersion)
   {
     $this->sdkVersion = $sdkVersion;
   }
+  /**
+   * @return string
+   */
   public function getSdkVersion()
   {
     return $this->sdkVersion;

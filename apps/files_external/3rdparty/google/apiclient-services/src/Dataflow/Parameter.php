@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class Parameter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var array
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param array
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array
+   */
   public function getValue()
   {
     return $this->value;

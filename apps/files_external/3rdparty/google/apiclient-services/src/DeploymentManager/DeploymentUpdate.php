@@ -20,15 +20,27 @@ namespace Google\Service\DeploymentManager;
 class DeploymentUpdate extends \Google\Collection
 {
   protected $collection_key = 'labels';
+  /**
+   * @var string
+   */
   public $description;
   protected $labelsType = DeploymentUpdateLabelEntry::class;
   protected $labelsDataType = 'array';
+  /**
+   * @var string
+   */
   public $manifest;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -47,10 +59,16 @@ class DeploymentUpdate extends \Google\Collection
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setManifest($manifest)
   {
     $this->manifest = $manifest;
   }
+  /**
+   * @return string
+   */
   public function getManifest()
   {
     return $this->manifest;

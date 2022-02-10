@@ -19,21 +19,39 @@ namespace Google\Service\ServiceManagement;
 
 class ManagedService extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $producerProjectId;
+  /**
+   * @var string
+   */
   public $serviceName;
 
+  /**
+   * @param string
+   */
   public function setProducerProjectId($producerProjectId)
   {
     $this->producerProjectId = $producerProjectId;
   }
+  /**
+   * @return string
+   */
   public function getProducerProjectId()
   {
     return $this->producerProjectId;
   }
+  /**
+   * @param string
+   */
   public function setServiceName($serviceName)
   {
     $this->serviceName = $serviceName;
   }
+  /**
+   * @return string
+   */
   public function getServiceName()
   {
     return $this->serviceName;

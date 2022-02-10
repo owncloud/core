@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3ResponseMessageOutputAudioText extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowPlaybackInterruption;
+  /**
+   * @var string
+   */
   public $ssml;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param bool
+   */
   public function setAllowPlaybackInterruption($allowPlaybackInterruption)
   {
     $this->allowPlaybackInterruption = $allowPlaybackInterruption;
   }
+  /**
+   * @return bool
+   */
   public function getAllowPlaybackInterruption()
   {
     return $this->allowPlaybackInterruption;
   }
+  /**
+   * @param string
+   */
   public function setSsml($ssml)
   {
     $this->ssml = $ssml;
   }
+  /**
+   * @return string
+   */
   public function getSsml()
   {
     return $this->ssml;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

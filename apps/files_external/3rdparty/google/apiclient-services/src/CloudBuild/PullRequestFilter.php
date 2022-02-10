@@ -19,30 +19,57 @@ namespace Google\Service\CloudBuild;
 
 class PullRequestFilter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $branch;
+  /**
+   * @var string
+   */
   public $commentControl;
+  /**
+   * @var bool
+   */
   public $invertRegex;
 
+  /**
+   * @param string
+   */
   public function setBranch($branch)
   {
     $this->branch = $branch;
   }
+  /**
+   * @return string
+   */
   public function getBranch()
   {
     return $this->branch;
   }
+  /**
+   * @param string
+   */
   public function setCommentControl($commentControl)
   {
     $this->commentControl = $commentControl;
   }
+  /**
+   * @return string
+   */
   public function getCommentControl()
   {
     return $this->commentControl;
   }
+  /**
+   * @param bool
+   */
   public function setInvertRegex($invertRegex)
   {
     $this->invertRegex = $invertRegex;
   }
+  /**
+   * @return bool
+   */
   public function getInvertRegex()
   {
     return $this->invertRegex;

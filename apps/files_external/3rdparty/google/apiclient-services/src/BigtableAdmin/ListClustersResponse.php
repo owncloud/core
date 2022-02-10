@@ -22,7 +22,13 @@ class ListClustersResponse extends \Google\Collection
   protected $collection_key = 'failedLocations';
   protected $clustersType = Cluster::class;
   protected $clustersDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $failedLocations;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -39,18 +45,30 @@ class ListClustersResponse extends \Google\Collection
   {
     return $this->clusters;
   }
+  /**
+   * @param string[]
+   */
   public function setFailedLocations($failedLocations)
   {
     $this->failedLocations = $failedLocations;
   }
+  /**
+   * @return string[]
+   */
   public function getFailedLocations()
   {
     return $this->failedLocations;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

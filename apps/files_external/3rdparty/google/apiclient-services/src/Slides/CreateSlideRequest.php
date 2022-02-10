@@ -20,25 +20,43 @@ namespace Google\Service\Slides;
 class CreateSlideRequest extends \Google\Collection
 {
   protected $collection_key = 'placeholderIdMappings';
+  /**
+   * @var int
+   */
   public $insertionIndex;
+  /**
+   * @var string
+   */
   public $objectId;
   protected $placeholderIdMappingsType = LayoutPlaceholderIdMapping::class;
   protected $placeholderIdMappingsDataType = 'array';
   protected $slideLayoutReferenceType = LayoutReference::class;
   protected $slideLayoutReferenceDataType = '';
 
+  /**
+   * @param int
+   */
   public function setInsertionIndex($insertionIndex)
   {
     $this->insertionIndex = $insertionIndex;
   }
+  /**
+   * @return int
+   */
   public function getInsertionIndex()
   {
     return $this->insertionIndex;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;

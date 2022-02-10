@@ -19,14 +19,23 @@ namespace Google\Service\DisplayVideo;
 
 class PoiTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
   public $latitude;
   public $longitude;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;

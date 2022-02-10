@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class LicenseResourceRequirements extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $minGuestCpuCount;
+  /**
+   * @var int
+   */
   public $minMemoryMb;
 
+  /**
+   * @param int
+   */
   public function setMinGuestCpuCount($minGuestCpuCount)
   {
     $this->minGuestCpuCount = $minGuestCpuCount;
   }
+  /**
+   * @return int
+   */
   public function getMinGuestCpuCount()
   {
     return $this->minGuestCpuCount;
   }
+  /**
+   * @param int
+   */
   public function setMinMemoryMb($minMemoryMb)
   {
     $this->minMemoryMb = $minMemoryMb;
   }
+  /**
+   * @return int
+   */
   public function getMinMemoryMb()
   {
     return $this->minMemoryMb;

@@ -21,6 +21,9 @@ class Variant extends \Google\Model
 {
   protected $deviceSpecType = DeviceSpec::class;
   protected $deviceSpecDataType = '';
+  /**
+   * @var string
+   */
   public $variantId;
 
   /**
@@ -37,10 +40,16 @@ class Variant extends \Google\Model
   {
     return $this->deviceSpec;
   }
+  /**
+   * @param string
+   */
   public function setVariantId($variantId)
   {
     $this->variantId = $variantId;
   }
+  /**
+   * @return string
+   */
   public function getVariantId()
   {
     return $this->variantId;

@@ -19,75 +19,147 @@ namespace Google\Service\Gmail;
 
 class VacationSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableAutoReply;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $responseBodyHtml;
+  /**
+   * @var string
+   */
   public $responseBodyPlainText;
+  /**
+   * @var string
+   */
   public $responseSubject;
+  /**
+   * @var bool
+   */
   public $restrictToContacts;
+  /**
+   * @var bool
+   */
   public $restrictToDomain;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param bool
+   */
   public function setEnableAutoReply($enableAutoReply)
   {
     $this->enableAutoReply = $enableAutoReply;
   }
+  /**
+   * @return bool
+   */
   public function getEnableAutoReply()
   {
     return $this->enableAutoReply;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setResponseBodyHtml($responseBodyHtml)
   {
     $this->responseBodyHtml = $responseBodyHtml;
   }
+  /**
+   * @return string
+   */
   public function getResponseBodyHtml()
   {
     return $this->responseBodyHtml;
   }
+  /**
+   * @param string
+   */
   public function setResponseBodyPlainText($responseBodyPlainText)
   {
     $this->responseBodyPlainText = $responseBodyPlainText;
   }
+  /**
+   * @return string
+   */
   public function getResponseBodyPlainText()
   {
     return $this->responseBodyPlainText;
   }
+  /**
+   * @param string
+   */
   public function setResponseSubject($responseSubject)
   {
     $this->responseSubject = $responseSubject;
   }
+  /**
+   * @return string
+   */
   public function getResponseSubject()
   {
     return $this->responseSubject;
   }
+  /**
+   * @param bool
+   */
   public function setRestrictToContacts($restrictToContacts)
   {
     $this->restrictToContacts = $restrictToContacts;
   }
+  /**
+   * @return bool
+   */
   public function getRestrictToContacts()
   {
     return $this->restrictToContacts;
   }
+  /**
+   * @param bool
+   */
   public function setRestrictToDomain($restrictToDomain)
   {
     $this->restrictToDomain = $restrictToDomain;
   }
+  /**
+   * @return bool
+   */
   public function getRestrictToDomain()
   {
     return $this->restrictToDomain;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

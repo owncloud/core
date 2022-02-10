@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class NodeGroupAutoscalingPolicy extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxNodes;
+  /**
+   * @var int
+   */
   public $minNodes;
+  /**
+   * @var string
+   */
   public $mode;
 
+  /**
+   * @param int
+   */
   public function setMaxNodes($maxNodes)
   {
     $this->maxNodes = $maxNodes;
   }
+  /**
+   * @return int
+   */
   public function getMaxNodes()
   {
     return $this->maxNodes;
   }
+  /**
+   * @param int
+   */
   public function setMinNodes($minNodes)
   {
     $this->minNodes = $minNodes;
   }
+  /**
+   * @return int
+   */
   public function getMinNodes()
   {
     return $this->minNodes;
   }
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;

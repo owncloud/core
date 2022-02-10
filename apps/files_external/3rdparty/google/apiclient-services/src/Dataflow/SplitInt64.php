@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class SplitInt64 extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $highBits;
+  /**
+   * @var string
+   */
   public $lowBits;
 
+  /**
+   * @param int
+   */
   public function setHighBits($highBits)
   {
     $this->highBits = $highBits;
   }
+  /**
+   * @return int
+   */
   public function getHighBits()
   {
     return $this->highBits;
   }
+  /**
+   * @param string
+   */
   public function setLowBits($lowBits)
   {
     $this->lowBits = $lowBits;
   }
+  /**
+   * @return string
+   */
   public function getLowBits()
   {
     return $this->lowBits;

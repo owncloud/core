@@ -19,12 +19,21 @@ namespace Google\Service\CloudBuild;
 
 class ApprovalConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $approvalRequired;
 
+  /**
+   * @param bool
+   */
   public function setApprovalRequired($approvalRequired)
   {
     $this->approvalRequired = $approvalRequired;
   }
+  /**
+   * @return bool
+   */
   public function getApprovalRequired()
   {
     return $this->approvalRequired;

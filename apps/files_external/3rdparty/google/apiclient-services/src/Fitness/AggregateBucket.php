@@ -20,19 +20,37 @@ namespace Google\Service\Fitness;
 class AggregateBucket extends \Google\Collection
 {
   protected $collection_key = 'dataset';
+  /**
+   * @var int
+   */
   public $activity;
   protected $datasetType = Dataset::class;
   protected $datasetDataType = 'array';
+  /**
+   * @var string
+   */
   public $endTimeMillis;
   protected $sessionType = Session::class;
   protected $sessionDataType = '';
+  /**
+   * @var string
+   */
   public $startTimeMillis;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setActivity($activity)
   {
     $this->activity = $activity;
   }
+  /**
+   * @return int
+   */
   public function getActivity()
   {
     return $this->activity;
@@ -51,10 +69,16 @@ class AggregateBucket extends \Google\Collection
   {
     return $this->dataset;
   }
+  /**
+   * @param string
+   */
   public function setEndTimeMillis($endTimeMillis)
   {
     $this->endTimeMillis = $endTimeMillis;
   }
+  /**
+   * @return string
+   */
   public function getEndTimeMillis()
   {
     return $this->endTimeMillis;
@@ -73,18 +97,30 @@ class AggregateBucket extends \Google\Collection
   {
     return $this->session;
   }
+  /**
+   * @param string
+   */
   public function setStartTimeMillis($startTimeMillis)
   {
     $this->startTimeMillis = $startTimeMillis;
   }
+  /**
+   * @return string
+   */
   public function getStartTimeMillis()
   {
     return $this->startTimeMillis;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

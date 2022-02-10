@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class DoubleVerifyFraudInvalidTraffic extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $avoidInsufficientOption;
+  /**
+   * @var string
+   */
   public $avoidedFraudOption;
 
+  /**
+   * @param bool
+   */
   public function setAvoidInsufficientOption($avoidInsufficientOption)
   {
     $this->avoidInsufficientOption = $avoidInsufficientOption;
   }
+  /**
+   * @return bool
+   */
   public function getAvoidInsufficientOption()
   {
     return $this->avoidInsufficientOption;
   }
+  /**
+   * @param string
+   */
   public function setAvoidedFraudOption($avoidedFraudOption)
   {
     $this->avoidedFraudOption = $avoidedFraudOption;
   }
+  /**
+   * @return string
+   */
   public function getAvoidedFraudOption()
   {
     return $this->avoidedFraudOption;

@@ -22,6 +22,9 @@ class Resources extends \Google\Collection
   protected $collection_key = 'volumes';
   public $cpu;
   public $diskGb;
+  /**
+   * @var string
+   */
   public $kmsKeyReference;
   public $memoryGb;
   protected $volumesType = Volume::class;
@@ -43,10 +46,16 @@ class Resources extends \Google\Collection
   {
     return $this->diskGb;
   }
+  /**
+   * @param string
+   */
   public function setKmsKeyReference($kmsKeyReference)
   {
     $this->kmsKeyReference = $kmsKeyReference;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyReference()
   {
     return $this->kmsKeyReference;

@@ -19,21 +19,39 @@ namespace Google\Service\CloudMemorystoreforMemcached;
 
 class NodeConfig extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $cpuCount;
+  /**
+   * @var int
+   */
   public $memorySizeMb;
 
+  /**
+   * @param int
+   */
   public function setCpuCount($cpuCount)
   {
     $this->cpuCount = $cpuCount;
   }
+  /**
+   * @return int
+   */
   public function getCpuCount()
   {
     return $this->cpuCount;
   }
+  /**
+   * @param int
+   */
   public function setMemorySizeMb($memorySizeMb)
   {
     $this->memorySizeMb = $memorySizeMb;
   }
+  /**
+   * @return int
+   */
   public function getMemorySizeMb()
   {
     return $this->memorySizeMb;

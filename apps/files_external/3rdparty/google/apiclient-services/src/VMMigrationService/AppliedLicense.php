@@ -19,21 +19,39 @@ namespace Google\Service\VMMigrationService;
 
 class AppliedLicense extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $osLicense;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setOsLicense($osLicense)
   {
     $this->osLicense = $osLicense;
   }
+  /**
+   * @return string
+   */
   public function getOsLicense()
   {
     return $this->osLicense;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

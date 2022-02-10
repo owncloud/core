@@ -19,12 +19,21 @@ namespace Google\Service\Recommender;
 
 class GoogleCloudRecommenderV1InsightRecommendationReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $recommendation;
 
+  /**
+   * @param string
+   */
   public function setRecommendation($recommendation)
   {
     $this->recommendation = $recommendation;
   }
+  /**
+   * @return string
+   */
   public function getRecommendation()
   {
     return $this->recommendation;

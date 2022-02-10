@@ -19,48 +19,93 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta3CommonOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $resource;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $stateMessage;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStateMessage($stateMessage)
   {
     $this->stateMessage = $stateMessage;
   }
+  /**
+   * @return string
+   */
   public function getStateMessage()
   {
     return $this->stateMessage;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

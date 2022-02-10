@@ -19,21 +19,39 @@ namespace Google\Service\ServiceNetworking;
 
 class PolicyBinding extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $member;
+  /**
+   * @var string
+   */
   public $role;
 
+  /**
+   * @param string
+   */
   public function setMember($member)
   {
     $this->member = $member;
   }
+  /**
+   * @return string
+   */
   public function getMember()
   {
     return $this->member;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;

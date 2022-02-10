@@ -20,14 +20,23 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1ReportProperty extends \Google\Collection
 {
   protected $collection_key = 'value';
+  /**
+   * @var string
+   */
   public $property;
   protected $valueType = GoogleCloudApigeeV1Attribute::class;
   protected $valueDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setProperty($property)
   {
     $this->property = $property;
   }
+  /**
+   * @return string
+   */
   public function getProperty()
   {
     return $this->property;

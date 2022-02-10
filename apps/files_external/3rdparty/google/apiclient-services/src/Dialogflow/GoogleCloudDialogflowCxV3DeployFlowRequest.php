@@ -19,12 +19,21 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3DeployFlowRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $flowVersion;
 
+  /**
+   * @param string
+   */
   public function setFlowVersion($flowVersion)
   {
     $this->flowVersion = $flowVersion;
   }
+  /**
+   * @return string
+   */
   public function getFlowVersion()
   {
     return $this->flowVersion;

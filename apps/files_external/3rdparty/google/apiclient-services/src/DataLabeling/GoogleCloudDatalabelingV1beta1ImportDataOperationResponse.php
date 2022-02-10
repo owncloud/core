@@ -19,30 +19,57 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1ImportDataOperationResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataset;
+  /**
+   * @var int
+   */
   public $importCount;
+  /**
+   * @var int
+   */
   public $totalCount;
 
+  /**
+   * @param string
+   */
   public function setDataset($dataset)
   {
     $this->dataset = $dataset;
   }
+  /**
+   * @return string
+   */
   public function getDataset()
   {
     return $this->dataset;
   }
+  /**
+   * @param int
+   */
   public function setImportCount($importCount)
   {
     $this->importCount = $importCount;
   }
+  /**
+   * @return int
+   */
   public function getImportCount()
   {
     return $this->importCount;
   }
+  /**
+   * @param int
+   */
   public function setTotalCount($totalCount)
   {
     $this->totalCount = $totalCount;
   }
+  /**
+   * @return int
+   */
   public function getTotalCount()
   {
     return $this->totalCount;

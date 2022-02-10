@@ -19,21 +19,39 @@ namespace Google\Service\Directory;
 
 class ChromeOsDeviceActiveTimeRanges extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $activeTime;
+  /**
+   * @var string
+   */
   public $date;
 
+  /**
+   * @param int
+   */
   public function setActiveTime($activeTime)
   {
     $this->activeTime = $activeTime;
   }
+  /**
+   * @return int
+   */
   public function getActiveTime()
   {
     return $this->activeTime;
   }
+  /**
+   * @param string
+   */
   public function setDate($date)
   {
     $this->date = $date;
   }
+  /**
+   * @return string
+   */
   public function getDate()
   {
     return $this->date;

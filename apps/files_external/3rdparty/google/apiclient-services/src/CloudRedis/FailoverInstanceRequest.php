@@ -19,12 +19,21 @@ namespace Google\Service\CloudRedis;
 
 class FailoverInstanceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataProtectionMode;
 
+  /**
+   * @param string
+   */
   public function setDataProtectionMode($dataProtectionMode)
   {
     $this->dataProtectionMode = $dataProtectionMode;
   }
+  /**
+   * @return string
+   */
   public function getDataProtectionMode()
   {
     return $this->dataProtectionMode;

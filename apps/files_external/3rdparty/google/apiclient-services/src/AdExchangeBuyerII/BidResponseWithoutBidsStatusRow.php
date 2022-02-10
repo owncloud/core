@@ -23,6 +23,9 @@ class BidResponseWithoutBidsStatusRow extends \Google\Model
   protected $impressionCountDataType = '';
   protected $rowDimensionsType = RowDimensions::class;
   protected $rowDimensionsDataType = '';
+  /**
+   * @var string
+   */
   public $status;
 
   /**
@@ -53,10 +56,16 @@ class BidResponseWithoutBidsStatusRow extends \Google\Model
   {
     return $this->rowDimensions;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersCustomBatchRequestEntryCreateTestReturnReturnItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $quantity;
 
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return string
+   */
   public function getQuantity()
   {
     return $this->quantity;

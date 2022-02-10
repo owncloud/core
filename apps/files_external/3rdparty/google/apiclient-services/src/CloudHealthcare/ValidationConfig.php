@@ -19,30 +19,57 @@ namespace Google\Service\CloudHealthcare;
 
 class ValidationConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $disableFhirpathValidation;
+  /**
+   * @var bool
+   */
   public $disableReferenceTypeValidation;
+  /**
+   * @var bool
+   */
   public $disableRequiredFieldValidation;
 
+  /**
+   * @param bool
+   */
   public function setDisableFhirpathValidation($disableFhirpathValidation)
   {
     $this->disableFhirpathValidation = $disableFhirpathValidation;
   }
+  /**
+   * @return bool
+   */
   public function getDisableFhirpathValidation()
   {
     return $this->disableFhirpathValidation;
   }
+  /**
+   * @param bool
+   */
   public function setDisableReferenceTypeValidation($disableReferenceTypeValidation)
   {
     $this->disableReferenceTypeValidation = $disableReferenceTypeValidation;
   }
+  /**
+   * @return bool
+   */
   public function getDisableReferenceTypeValidation()
   {
     return $this->disableReferenceTypeValidation;
   }
+  /**
+   * @param bool
+   */
   public function setDisableRequiredFieldValidation($disableRequiredFieldValidation)
   {
     $this->disableRequiredFieldValidation = $disableRequiredFieldValidation;
   }
+  /**
+   * @return bool
+   */
   public function getDisableRequiredFieldValidation()
   {
     return $this->disableRequiredFieldValidation;

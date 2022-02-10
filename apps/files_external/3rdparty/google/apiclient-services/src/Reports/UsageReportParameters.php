@@ -20,57 +20,111 @@ namespace Google\Service\Reports;
 class UsageReportParameters extends \Google\Collection
 {
   protected $collection_key = 'msgValue';
+  /**
+   * @var bool
+   */
   public $boolValue;
+  /**
+   * @var string
+   */
   public $datetimeValue;
+  /**
+   * @var string
+   */
   public $intValue;
+  /**
+   * @var array[]
+   */
   public $msgValue;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $stringValue;
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
   }
+  /**
+   * @param string
+   */
   public function setDatetimeValue($datetimeValue)
   {
     $this->datetimeValue = $datetimeValue;
   }
+  /**
+   * @return string
+   */
   public function getDatetimeValue()
   {
     return $this->datetimeValue;
   }
+  /**
+   * @param string
+   */
   public function setIntValue($intValue)
   {
     $this->intValue = $intValue;
   }
+  /**
+   * @return string
+   */
   public function getIntValue()
   {
     return $this->intValue;
   }
+  /**
+   * @param array[]
+   */
   public function setMsgValue($msgValue)
   {
     $this->msgValue = $msgValue;
   }
+  /**
+   * @return array[]
+   */
   public function getMsgValue()
   {
     return $this->msgValue;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;

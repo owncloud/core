@@ -20,16 +20,25 @@ namespace Google\Service\CloudNaturalLanguage;
 class AnalyzeSyntaxResponse extends \Google\Collection
 {
   protected $collection_key = 'tokens';
+  /**
+   * @var string
+   */
   public $language;
   protected $sentencesType = Sentence::class;
   protected $sentencesDataType = 'array';
   protected $tokensType = Token::class;
   protected $tokensDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;

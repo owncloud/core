@@ -20,23 +20,41 @@ namespace Google\Service\ServiceConsumerManagement;
 class EnumValue extends \Google\Collection
 {
   protected $collection_key = 'options';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $number;
   protected $optionsType = Option::class;
   protected $optionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setNumber($number)
   {
     $this->number = $number;
   }
+  /**
+   * @return int
+   */
   public function getNumber()
   {
     return $this->number;

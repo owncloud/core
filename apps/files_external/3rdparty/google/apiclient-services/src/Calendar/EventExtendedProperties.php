@@ -19,21 +19,39 @@ namespace Google\Service\Calendar;
 
 class EventExtendedProperties extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $private;
+  /**
+   * @var string[]
+   */
   public $shared;
 
+  /**
+   * @param string[]
+   */
   public function setPrivate($private)
   {
     $this->private = $private;
   }
+  /**
+   * @return string[]
+   */
   public function getPrivate()
   {
     return $this->private;
   }
+  /**
+   * @param string[]
+   */
   public function setShared($shared)
   {
     $this->shared = $shared;
   }
+  /**
+   * @return string[]
+   */
   public function getShared()
   {
     return $this->shared;

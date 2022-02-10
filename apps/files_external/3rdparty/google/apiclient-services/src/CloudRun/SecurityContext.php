@@ -19,12 +19,21 @@ namespace Google\Service\CloudRun;
 
 class SecurityContext extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $runAsUser;
 
+  /**
+   * @param int
+   */
   public function setRunAsUser($runAsUser)
   {
     $this->runAsUser = $runAsUser;
   }
+  /**
+   * @return int
+   */
   public function getRunAsUser()
   {
     return $this->runAsUser;

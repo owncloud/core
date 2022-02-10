@@ -20,73 +20,145 @@ namespace Google\Service\YouTube;
 class VideoSnippet extends \Google\Collection
 {
   protected $collection_key = 'tags';
+  /**
+   * @var string
+   */
   public $categoryId;
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $channelTitle;
+  /**
+   * @var string
+   */
   public $defaultAudioLanguage;
+  /**
+   * @var string
+   */
   public $defaultLanguage;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $liveBroadcastContent;
   protected $localizedType = VideoLocalization::class;
   protected $localizedDataType = '';
+  /**
+   * @var string
+   */
   public $publishedAt;
+  /**
+   * @var string[]
+   */
   public $tags;
   protected $thumbnailsType = ThumbnailDetails::class;
   protected $thumbnailsDataType = '';
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setCategoryId($categoryId)
   {
     $this->categoryId = $categoryId;
   }
+  /**
+   * @return string
+   */
   public function getCategoryId()
   {
     return $this->categoryId;
   }
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setChannelTitle($channelTitle)
   {
     $this->channelTitle = $channelTitle;
   }
+  /**
+   * @return string
+   */
   public function getChannelTitle()
   {
     return $this->channelTitle;
   }
+  /**
+   * @param string
+   */
   public function setDefaultAudioLanguage($defaultAudioLanguage)
   {
     $this->defaultAudioLanguage = $defaultAudioLanguage;
   }
+  /**
+   * @return string
+   */
   public function getDefaultAudioLanguage()
   {
     return $this->defaultAudioLanguage;
   }
+  /**
+   * @param string
+   */
   public function setDefaultLanguage($defaultLanguage)
   {
     $this->defaultLanguage = $defaultLanguage;
   }
+  /**
+   * @return string
+   */
   public function getDefaultLanguage()
   {
     return $this->defaultLanguage;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setLiveBroadcastContent($liveBroadcastContent)
   {
     $this->liveBroadcastContent = $liveBroadcastContent;
   }
+  /**
+   * @return string
+   */
   public function getLiveBroadcastContent()
   {
     return $this->liveBroadcastContent;
@@ -105,18 +177,30 @@ class VideoSnippet extends \Google\Collection
   {
     return $this->localized;
   }
+  /**
+   * @param string
+   */
   public function setPublishedAt($publishedAt)
   {
     $this->publishedAt = $publishedAt;
   }
+  /**
+   * @return string
+   */
   public function getPublishedAt()
   {
     return $this->publishedAt;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;
@@ -135,10 +219,16 @@ class VideoSnippet extends \Google\Collection
   {
     return $this->thumbnails;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

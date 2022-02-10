@@ -19,21 +19,39 @@ namespace Google\Service\CloudKMS;
 
 class GenerateRandomBytesResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $dataCrc32c;
 
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setDataCrc32c($dataCrc32c)
   {
     $this->dataCrc32c = $dataCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getDataCrc32c()
   {
     return $this->dataCrc32c;

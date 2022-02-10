@@ -19,16 +19,25 @@ namespace Google\Service\Docs;
 
 class PositionedObjectPositioning extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $layout;
   protected $leftOffsetType = Dimension::class;
   protected $leftOffsetDataType = '';
   protected $topOffsetType = Dimension::class;
   protected $topOffsetDataType = '';
 
+  /**
+   * @param string
+   */
   public function setLayout($layout)
   {
     $this->layout = $layout;
   }
+  /**
+   * @return string
+   */
   public function getLayout()
   {
     return $this->layout;

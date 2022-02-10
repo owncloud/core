@@ -19,21 +19,39 @@ namespace Google\Service\Playcustomapp;
 
 class Organization extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $organizationId;
+  /**
+   * @var string
+   */
   public $organizationName;
 
+  /**
+   * @param string
+   */
   public function setOrganizationId($organizationId)
   {
     $this->organizationId = $organizationId;
   }
+  /**
+   * @return string
+   */
   public function getOrganizationId()
   {
     return $this->organizationId;
   }
+  /**
+   * @param string
+   */
   public function setOrganizationName($organizationName)
   {
     $this->organizationName = $organizationName;
   }
+  /**
+   * @return string
+   */
   public function getOrganizationName()
   {
     return $this->organizationName;

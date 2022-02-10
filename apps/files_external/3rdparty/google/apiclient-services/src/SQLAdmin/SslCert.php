@@ -19,84 +19,165 @@ namespace Google\Service\SQLAdmin;
 
 class SslCert extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cert;
+  /**
+   * @var string
+   */
   public $certSerialNumber;
+  /**
+   * @var string
+   */
   public $commonName;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $expirationTime;
+  /**
+   * @var string
+   */
   public $instance;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $sha1Fingerprint;
 
+  /**
+   * @param string
+   */
   public function setCert($cert)
   {
     $this->cert = $cert;
   }
+  /**
+   * @return string
+   */
   public function getCert()
   {
     return $this->cert;
   }
+  /**
+   * @param string
+   */
   public function setCertSerialNumber($certSerialNumber)
   {
     $this->certSerialNumber = $certSerialNumber;
   }
+  /**
+   * @return string
+   */
   public function getCertSerialNumber()
   {
     return $this->certSerialNumber;
   }
+  /**
+   * @param string
+   */
   public function setCommonName($commonName)
   {
     $this->commonName = $commonName;
   }
+  /**
+   * @return string
+   */
   public function getCommonName()
   {
     return $this->commonName;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setExpirationTime($expirationTime)
   {
     $this->expirationTime = $expirationTime;
   }
+  /**
+   * @return string
+   */
   public function getExpirationTime()
   {
     return $this->expirationTime;
   }
+  /**
+   * @param string
+   */
   public function setInstance($instance)
   {
     $this->instance = $instance;
   }
+  /**
+   * @return string
+   */
   public function getInstance()
   {
     return $this->instance;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setSha1Fingerprint($sha1Fingerprint)
   {
     $this->sha1Fingerprint = $sha1Fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getSha1Fingerprint()
   {
     return $this->sha1Fingerprint;

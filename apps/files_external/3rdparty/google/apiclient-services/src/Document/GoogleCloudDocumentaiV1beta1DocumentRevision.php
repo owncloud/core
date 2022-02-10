@@ -19,27 +19,58 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta1DocumentRevision extends \Google\Collection
 {
-  protected $collection_key = 'parent';
+  protected $collection_key = 'parentIds';
+  /**
+   * @var string
+   */
   public $agent;
+  /**
+   * @var string
+   */
   public $createTime;
   protected $humanReviewType = GoogleCloudDocumentaiV1beta1DocumentRevisionHumanReview::class;
   protected $humanReviewDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var int[]
+   */
   public $parent;
+  /**
+   * @var string[]
+   */
+  public $parentIds;
+  /**
+   * @var string
+   */
   public $processor;
 
+  /**
+   * @param string
+   */
   public function setAgent($agent)
   {
     $this->agent = $agent;
   }
+  /**
+   * @return string
+   */
   public function getAgent()
   {
     return $this->agent;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -58,26 +89,58 @@ class GoogleCloudDocumentaiV1beta1DocumentRevision extends \Google\Collection
   {
     return $this->humanReview;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param int[]
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return int[]
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string[]
+   */
+  public function setParentIds($parentIds)
+  {
+    $this->parentIds = $parentIds;
+  }
+  /**
+   * @return string[]
+   */
+  public function getParentIds()
+  {
+    return $this->parentIds;
+  }
+  /**
+   * @param string
+   */
   public function setProcessor($processor)
   {
     $this->processor = $processor;
   }
+  /**
+   * @return string
+   */
   public function getProcessor()
   {
     return $this->processor;

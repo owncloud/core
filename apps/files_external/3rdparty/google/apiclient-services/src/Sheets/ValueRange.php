@@ -20,30 +20,57 @@ namespace Google\Service\Sheets;
 class ValueRange extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $majorDimension;
+  /**
+   * @var string
+   */
   public $range;
+  /**
+   * @var array[]
+   */
   public $values;
 
+  /**
+   * @param string
+   */
   public function setMajorDimension($majorDimension)
   {
     $this->majorDimension = $majorDimension;
   }
+  /**
+   * @return string
+   */
   public function getMajorDimension()
   {
     return $this->majorDimension;
   }
+  /**
+   * @param string
+   */
   public function setRange($range)
   {
     $this->range = $range;
   }
+  /**
+   * @return string
+   */
   public function getRange()
   {
     return $this->range;
   }
+  /**
+   * @param array[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return array[]
+   */
   public function getValues()
   {
     return $this->values;

@@ -34,7 +34,7 @@ class Rooms extends \Google\Service\Resource
    * response. (rooms.messages)
    *
    * @param string $parent Required. Space resource name, in the form "spaces".
-   * Example: spaces/AAAAMpdlehY
+   * Example: spaces/AAAAAAAAAAA
    * @param Message $postBody
    * @param array $optParams Optional parameters.
    *
@@ -63,7 +63,7 @@ class Rooms extends \Google\Service\Resource
    * response. (rooms.webhooks)
    *
    * @param string $parent Required. Space resource name, in the form "spaces".
-   * Example: spaces/AAAAMpdlehY
+   * Example: spaces/AAAAAAAAAAA
    * @param Message $postBody
    * @param array $optParams Optional parameters.
    *

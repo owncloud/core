@@ -20,21 +20,39 @@ namespace Google\Service\DisplayVideo;
 class DeleteAssignedTargetingOptionsRequest extends \Google\Collection
 {
   protected $collection_key = 'assignedTargetingOptionIds';
+  /**
+   * @var string[]
+   */
   public $assignedTargetingOptionIds;
+  /**
+   * @var string
+   */
   public $targetingType;
 
+  /**
+   * @param string[]
+   */
   public function setAssignedTargetingOptionIds($assignedTargetingOptionIds)
   {
     $this->assignedTargetingOptionIds = $assignedTargetingOptionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAssignedTargetingOptionIds()
   {
     return $this->assignedTargetingOptionIds;
   }
+  /**
+   * @param string
+   */
   public function setTargetingType($targetingType)
   {
     $this->targetingType = $targetingType;
   }
+  /**
+   * @return string
+   */
   public function getTargetingType()
   {
     return $this->targetingType;

@@ -21,11 +21,19 @@ class GcsDestinationConfig extends \Google\Model
 {
   protected $avroFileFormatType = AvroFileFormat::class;
   protected $avroFileFormatDataType = '';
+  /**
+   * @var string
+   */
   public $fileRotationInterval;
+  /**
+   * @var int
+   */
   public $fileRotationMb;
-  public $gcsFileFormat;
   protected $jsonFileFormatType = JsonFileFormat::class;
   protected $jsonFileFormatDataType = '';
+  /**
+   * @var string
+   */
   public $path;
 
   /**
@@ -42,29 +50,33 @@ class GcsDestinationConfig extends \Google\Model
   {
     return $this->avroFileFormat;
   }
+  /**
+   * @param string
+   */
   public function setFileRotationInterval($fileRotationInterval)
   {
     $this->fileRotationInterval = $fileRotationInterval;
   }
+  /**
+   * @return string
+   */
   public function getFileRotationInterval()
   {
     return $this->fileRotationInterval;
   }
+  /**
+   * @param int
+   */
   public function setFileRotationMb($fileRotationMb)
   {
     $this->fileRotationMb = $fileRotationMb;
   }
+  /**
+   * @return int
+   */
   public function getFileRotationMb()
   {
     return $this->fileRotationMb;
-  }
-  public function setGcsFileFormat($gcsFileFormat)
-  {
-    $this->gcsFileFormat = $gcsFileFormat;
-  }
-  public function getGcsFileFormat()
-  {
-    return $this->gcsFileFormat;
   }
   /**
    * @param JsonFileFormat
@@ -80,10 +92,16 @@ class GcsDestinationConfig extends \Google\Model
   {
     return $this->jsonFileFormat;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

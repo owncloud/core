@@ -22,14 +22,29 @@ class DataSource extends \Google\Collection
   protected $collection_key = 'dataQualityStandard';
   protected $applicationType = Application::class;
   protected $applicationDataType = '';
+  /**
+   * @var string[]
+   */
   public $dataQualityStandard;
+  /**
+   * @var string
+   */
   public $dataStreamId;
+  /**
+   * @var string
+   */
   public $dataStreamName;
   protected $dataTypeType = DataType::class;
   protected $dataTypeDataType = '';
   protected $deviceType = Device::class;
   protected $deviceDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -46,26 +61,44 @@ class DataSource extends \Google\Collection
   {
     return $this->application;
   }
+  /**
+   * @param string[]
+   */
   public function setDataQualityStandard($dataQualityStandard)
   {
     $this->dataQualityStandard = $dataQualityStandard;
   }
+  /**
+   * @return string[]
+   */
   public function getDataQualityStandard()
   {
     return $this->dataQualityStandard;
   }
+  /**
+   * @param string
+   */
   public function setDataStreamId($dataStreamId)
   {
     $this->dataStreamId = $dataStreamId;
   }
+  /**
+   * @return string
+   */
   public function getDataStreamId()
   {
     return $this->dataStreamId;
   }
+  /**
+   * @param string
+   */
   public function setDataStreamName($dataStreamName)
   {
     $this->dataStreamName = $dataStreamName;
   }
+  /**
+   * @return string
+   */
   public function getDataStreamName()
   {
     return $this->dataStreamName;
@@ -98,18 +131,30 @@ class DataSource extends \Google\Collection
   {
     return $this->device;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

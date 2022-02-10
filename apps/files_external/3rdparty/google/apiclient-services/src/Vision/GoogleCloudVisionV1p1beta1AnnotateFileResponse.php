@@ -26,6 +26,9 @@ class GoogleCloudVisionV1p1beta1AnnotateFileResponse extends \Google\Collection
   protected $inputConfigDataType = '';
   protected $responsesType = GoogleCloudVisionV1p1beta1AnnotateImageResponse::class;
   protected $responsesDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalPages;
 
   /**
@@ -70,10 +73,16 @@ class GoogleCloudVisionV1p1beta1AnnotateFileResponse extends \Google\Collection
   {
     return $this->responses;
   }
+  /**
+   * @param int
+   */
   public function setTotalPages($totalPages)
   {
     $this->totalPages = $totalPages;
   }
+  /**
+   * @return int
+   */
   public function getTotalPages()
   {
     return $this->totalPages;

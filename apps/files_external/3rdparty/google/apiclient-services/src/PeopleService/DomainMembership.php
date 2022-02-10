@@ -19,12 +19,21 @@ namespace Google\Service\PeopleService;
 
 class DomainMembership extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $inViewerDomain;
 
+  /**
+   * @param bool
+   */
   public function setInViewerDomain($inViewerDomain)
   {
     $this->inViewerDomain = $inViewerDomain;
   }
+  /**
+   * @return bool
+   */
   public function getInViewerDomain()
   {
     return $this->inViewerDomain;

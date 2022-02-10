@@ -20,21 +20,39 @@ namespace Google\Service\Essentialcontacts;
 class GoogleCloudEssentialcontactsV1SendTestMessageRequest extends \Google\Collection
 {
   protected $collection_key = 'contacts';
+  /**
+   * @var string[]
+   */
   public $contacts;
+  /**
+   * @var string
+   */
   public $notificationCategory;
 
+  /**
+   * @param string[]
+   */
   public function setContacts($contacts)
   {
     $this->contacts = $contacts;
   }
+  /**
+   * @return string[]
+   */
   public function getContacts()
   {
     return $this->contacts;
   }
+  /**
+   * @param string
+   */
   public function setNotificationCategory($notificationCategory)
   {
     $this->notificationCategory = $notificationCategory;
   }
+  /**
+   * @return string
+   */
   public function getNotificationCategory()
   {
     return $this->notificationCategory;

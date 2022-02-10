@@ -35,7 +35,7 @@ class Accounts extends \Google\Service\Resource
    * Gets information about the selected AdSense account. (accounts.get)
    *
    * @param string $name Required. Account to get information about. Format:
-   * accounts/{account_id}
+   * accounts/{account}
    * @param array $optParams Optional parameters.
    * @return Account
    */

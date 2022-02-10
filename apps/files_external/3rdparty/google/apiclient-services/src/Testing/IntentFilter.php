@@ -20,30 +20,57 @@ namespace Google\Service\Testing;
 class IntentFilter extends \Google\Collection
 {
   protected $collection_key = 'categoryNames';
+  /**
+   * @var string[]
+   */
   public $actionNames;
+  /**
+   * @var string[]
+   */
   public $categoryNames;
+  /**
+   * @var string
+   */
   public $mimeType;
 
+  /**
+   * @param string[]
+   */
   public function setActionNames($actionNames)
   {
     $this->actionNames = $actionNames;
   }
+  /**
+   * @return string[]
+   */
   public function getActionNames()
   {
     return $this->actionNames;
   }
+  /**
+   * @param string[]
+   */
   public function setCategoryNames($categoryNames)
   {
     $this->categoryNames = $categoryNames;
   }
+  /**
+   * @return string[]
+   */
   public function getCategoryNames()
   {
     return $this->categoryNames;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;

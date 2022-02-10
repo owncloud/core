@@ -20,30 +20,57 @@ namespace Google\Service\Compute;
 class RouterNatSubnetworkToNat extends \Google\Collection
 {
   protected $collection_key = 'sourceIpRangesToNat';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $secondaryIpRangeNames;
+  /**
+   * @var string[]
+   */
   public $sourceIpRangesToNat;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setSecondaryIpRangeNames($secondaryIpRangeNames)
   {
     $this->secondaryIpRangeNames = $secondaryIpRangeNames;
   }
+  /**
+   * @return string[]
+   */
   public function getSecondaryIpRangeNames()
   {
     return $this->secondaryIpRangeNames;
   }
+  /**
+   * @param string[]
+   */
   public function setSourceIpRangesToNat($sourceIpRangesToNat)
   {
     $this->sourceIpRangesToNat = $sourceIpRangesToNat;
   }
+  /**
+   * @return string[]
+   */
   public function getSourceIpRangesToNat()
   {
     return $this->sourceIpRangesToNat;

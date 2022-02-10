@@ -19,21 +19,39 @@ namespace Google\Service\Blogger;
 
 class PageviewsCounts extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $count;
+  /**
+   * @var string
+   */
   public $timeRange;
 
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param string
+   */
   public function setTimeRange($timeRange)
   {
     $this->timeRange = $timeRange;
   }
+  /**
+   * @return string
+   */
   public function getTimeRange()
   {
     return $this->timeRange;

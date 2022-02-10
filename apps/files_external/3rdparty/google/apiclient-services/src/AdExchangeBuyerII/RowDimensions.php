@@ -19,14 +19,23 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class RowDimensions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $publisherIdentifier;
   protected $timeIntervalType = TimeInterval::class;
   protected $timeIntervalDataType = '';
 
+  /**
+   * @param string
+   */
   public function setPublisherIdentifier($publisherIdentifier)
   {
     $this->publisherIdentifier = $publisherIdentifier;
   }
+  /**
+   * @return string
+   */
   public function getPublisherIdentifier()
   {
     return $this->publisherIdentifier;

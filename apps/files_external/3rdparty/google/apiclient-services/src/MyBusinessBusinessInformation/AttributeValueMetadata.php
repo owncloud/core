@@ -19,21 +19,39 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class AttributeValueMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var array
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param array
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array
+   */
   public function getValue()
   {
     return $this->value;

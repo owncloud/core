@@ -22,10 +22,25 @@ class PlanNode extends \Google\Collection
   protected $collection_key = 'childLinks';
   protected $childLinksType = ChildLink::class;
   protected $childLinksDataType = 'array';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var array[]
+   */
   public $executionStats;
+  /**
+   * @var int
+   */
   public $index;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var array[]
+   */
   public $metadata;
   protected $shortRepresentationType = ShortRepresentation::class;
   protected $shortRepresentationDataType = '';
@@ -44,42 +59,72 @@ class PlanNode extends \Google\Collection
   {
     return $this->childLinks;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param array[]
+   */
   public function setExecutionStats($executionStats)
   {
     $this->executionStats = $executionStats;
   }
+  /**
+   * @return array[]
+   */
   public function getExecutionStats()
   {
     return $this->executionStats;
   }
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param array[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return array[]
+   */
   public function getMetadata()
   {
     return $this->metadata;

@@ -22,8 +22,17 @@ class BatchGetValuesByDataFilterRequest extends \Google\Collection
   protected $collection_key = 'dataFilters';
   protected $dataFiltersType = DataFilter::class;
   protected $dataFiltersDataType = 'array';
+  /**
+   * @var string
+   */
   public $dateTimeRenderOption;
+  /**
+   * @var string
+   */
   public $majorDimension;
+  /**
+   * @var string
+   */
   public $valueRenderOption;
 
   /**
@@ -40,26 +49,44 @@ class BatchGetValuesByDataFilterRequest extends \Google\Collection
   {
     return $this->dataFilters;
   }
+  /**
+   * @param string
+   */
   public function setDateTimeRenderOption($dateTimeRenderOption)
   {
     $this->dateTimeRenderOption = $dateTimeRenderOption;
   }
+  /**
+   * @return string
+   */
   public function getDateTimeRenderOption()
   {
     return $this->dateTimeRenderOption;
   }
+  /**
+   * @param string
+   */
   public function setMajorDimension($majorDimension)
   {
     $this->majorDimension = $majorDimension;
   }
+  /**
+   * @return string
+   */
   public function getMajorDimension()
   {
     return $this->majorDimension;
   }
+  /**
+   * @param string
+   */
   public function setValueRenderOption($valueRenderOption)
   {
     $this->valueRenderOption = $valueRenderOption;
   }
+  /**
+   * @return string
+   */
   public function getValueRenderOption()
   {
     return $this->valueRenderOption;

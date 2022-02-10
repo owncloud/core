@@ -20,16 +20,31 @@ namespace Google\Service\DisplayVideo;
 class BulkEditAssignedInventorySourcesRequest extends \Google\Collection
 {
   protected $collection_key = 'deletedAssignedInventorySources';
+  /**
+   * @var string
+   */
   public $advertiserId;
   protected $createdAssignedInventorySourcesType = AssignedInventorySource::class;
   protected $createdAssignedInventorySourcesDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $deletedAssignedInventorySources;
+  /**
+   * @var string
+   */
   public $partnerId;
 
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
@@ -48,18 +63,30 @@ class BulkEditAssignedInventorySourcesRequest extends \Google\Collection
   {
     return $this->createdAssignedInventorySources;
   }
+  /**
+   * @param string[]
+   */
   public function setDeletedAssignedInventorySources($deletedAssignedInventorySources)
   {
     $this->deletedAssignedInventorySources = $deletedAssignedInventorySources;
   }
+  /**
+   * @return string[]
+   */
   public function getDeletedAssignedInventorySources()
   {
     return $this->deletedAssignedInventorySources;
   }
+  /**
+   * @param string
+   */
   public function setPartnerId($partnerId)
   {
     $this->partnerId = $partnerId;
   }
+  /**
+   * @return string
+   */
   public function getPartnerId()
   {
     return $this->partnerId;

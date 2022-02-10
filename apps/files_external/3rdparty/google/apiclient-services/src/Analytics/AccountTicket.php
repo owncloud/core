@@ -21,10 +21,19 @@ class AccountTicket extends \Google\Model
 {
   protected $accountType = Account::class;
   protected $accountDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
   protected $profileType = Profile::class;
   protected $profileDataType = '';
+  /**
+   * @var string
+   */
   public $redirectUri;
   protected $webpropertyType = Webproperty::class;
   protected $webpropertyDataType = '';
@@ -43,18 +52,30 @@ class AccountTicket extends \Google\Model
   {
     return $this->account;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -73,10 +94,16 @@ class AccountTicket extends \Google\Model
   {
     return $this->profile;
   }
+  /**
+   * @param string
+   */
   public function setRedirectUri($redirectUri)
   {
     $this->redirectUri = $redirectUri;
   }
+  /**
+   * @return string
+   */
   public function getRedirectUri()
   {
     return $this->redirectUri;

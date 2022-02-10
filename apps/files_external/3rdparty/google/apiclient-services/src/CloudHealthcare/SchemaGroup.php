@@ -20,25 +20,49 @@ namespace Google\Service\CloudHealthcare;
 class SchemaGroup extends \Google\Collection
 {
   protected $collection_key = 'members';
+  /**
+   * @var bool
+   */
   public $choice;
+  /**
+   * @var int
+   */
   public $maxOccurs;
   protected $membersType = GroupOrSegment::class;
   protected $membersDataType = 'array';
+  /**
+   * @var int
+   */
   public $minOccurs;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param bool
+   */
   public function setChoice($choice)
   {
     $this->choice = $choice;
   }
+  /**
+   * @return bool
+   */
   public function getChoice()
   {
     return $this->choice;
   }
+  /**
+   * @param int
+   */
   public function setMaxOccurs($maxOccurs)
   {
     $this->maxOccurs = $maxOccurs;
   }
+  /**
+   * @return int
+   */
   public function getMaxOccurs()
   {
     return $this->maxOccurs;
@@ -57,18 +81,30 @@ class SchemaGroup extends \Google\Collection
   {
     return $this->members;
   }
+  /**
+   * @param int
+   */
   public function setMinOccurs($minOccurs)
   {
     $this->minOccurs = $minOccurs;
   }
+  /**
+   * @return int
+   */
   public function getMinOccurs()
   {
     return $this->minOccurs;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

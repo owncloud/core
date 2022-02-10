@@ -19,12 +19,21 @@ namespace Google\Service\CloudAsset;
 
 class GoogleCloudOrgpolicyV1BooleanPolicy extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enforced;
 
+  /**
+   * @param bool
+   */
   public function setEnforced($enforced)
   {
     $this->enforced = $enforced;
   }
+  /**
+   * @return bool
+   */
   public function getEnforced()
   {
     return $this->enforced;

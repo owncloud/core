@@ -19,32 +19,59 @@ namespace Google\Service\Transcoder;
 
 class AnimationFade extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTimeOffset;
+  /**
+   * @var string
+   */
   public $fadeType;
+  /**
+   * @var string
+   */
   public $startTimeOffset;
   protected $xyType = NormalizedCoordinate::class;
   protected $xyDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEndTimeOffset($endTimeOffset)
   {
     $this->endTimeOffset = $endTimeOffset;
   }
+  /**
+   * @return string
+   */
   public function getEndTimeOffset()
   {
     return $this->endTimeOffset;
   }
+  /**
+   * @param string
+   */
   public function setFadeType($fadeType)
   {
     $this->fadeType = $fadeType;
   }
+  /**
+   * @return string
+   */
   public function getFadeType()
   {
     return $this->fadeType;
   }
+  /**
+   * @param string
+   */
   public function setStartTimeOffset($startTimeOffset)
   {
     $this->startTimeOffset = $startTimeOffset;
   }
+  /**
+   * @return string
+   */
   public function getStartTimeOffset()
   {
     return $this->startTimeOffset;

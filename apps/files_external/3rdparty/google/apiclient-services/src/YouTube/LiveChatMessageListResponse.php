@@ -20,32 +20,65 @@ namespace Google\Service\YouTube;
 class LiveChatMessageListResponse extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $eventId;
   protected $itemsType = LiveChatMessage::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $offlineAt;
   protected $pageInfoType = PageInfo::class;
   protected $pageInfoDataType = '';
+  /**
+   * @var string
+   */
   public $pollingIntervalMillis;
   protected $tokenPaginationType = TokenPagination::class;
   protected $tokenPaginationDataType = '';
+  /**
+   * @var string
+   */
   public $visitorId;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setEventId($eventId)
   {
     $this->eventId = $eventId;
   }
+  /**
+   * @return string
+   */
   public function getEventId()
   {
     return $this->eventId;
@@ -64,26 +97,44 @@ class LiveChatMessageListResponse extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setOfflineAt($offlineAt)
   {
     $this->offlineAt = $offlineAt;
   }
+  /**
+   * @return string
+   */
   public function getOfflineAt()
   {
     return $this->offlineAt;
@@ -102,10 +153,16 @@ class LiveChatMessageListResponse extends \Google\Collection
   {
     return $this->pageInfo;
   }
+  /**
+   * @param string
+   */
   public function setPollingIntervalMillis($pollingIntervalMillis)
   {
     $this->pollingIntervalMillis = $pollingIntervalMillis;
   }
+  /**
+   * @return string
+   */
   public function getPollingIntervalMillis()
   {
     return $this->pollingIntervalMillis;
@@ -124,10 +181,16 @@ class LiveChatMessageListResponse extends \Google\Collection
   {
     return $this->tokenPagination;
   }
+  /**
+   * @param string
+   */
   public function setVisitorId($visitorId)
   {
     $this->visitorId = $visitorId;
   }
+  /**
+   * @return string
+   */
   public function getVisitorId()
   {
     return $this->visitorId;

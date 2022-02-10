@@ -22,7 +22,13 @@ class GoogleDomainsDns extends \Google\Collection
   protected $collection_key = 'nameServers';
   protected $dsRecordsType = DsRecord::class;
   protected $dsRecordsDataType = 'array';
+  /**
+   * @var string
+   */
   public $dsState;
+  /**
+   * @var string[]
+   */
   public $nameServers;
 
   /**
@@ -39,18 +45,30 @@ class GoogleDomainsDns extends \Google\Collection
   {
     return $this->dsRecords;
   }
+  /**
+   * @param string
+   */
   public function setDsState($dsState)
   {
     $this->dsState = $dsState;
   }
+  /**
+   * @return string
+   */
   public function getDsState()
   {
     return $this->dsState;
   }
+  /**
+   * @param string[]
+   */
   public function setNameServers($nameServers)
   {
     $this->nameServers = $nameServers;
   }
+  /**
+   * @return string[]
+   */
   public function getNameServers()
   {
     return $this->nameServers;

@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class InstancesSetMachineTypeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $machineType;
 
+  /**
+   * @param string
+   */
   public function setMachineType($machineType)
   {
     $this->machineType = $machineType;
   }
+  /**
+   * @return string
+   */
   public function getMachineType()
   {
     return $this->machineType;

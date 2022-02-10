@@ -24,14 +24,29 @@ class AndroidInstrumentationTest extends \Google\Collection
   protected $appApkDataType = '';
   protected $appBundleType = AppBundle::class;
   protected $appBundleDataType = '';
+  /**
+   * @var string
+   */
   public $appPackageId;
+  /**
+   * @var string
+   */
   public $orchestratorOption;
   protected $shardingOptionType = ShardingOption::class;
   protected $shardingOptionDataType = '';
   protected $testApkType = FileReference::class;
   protected $testApkDataType = '';
+  /**
+   * @var string
+   */
   public $testPackageId;
+  /**
+   * @var string
+   */
   public $testRunnerClass;
+  /**
+   * @var string[]
+   */
   public $testTargets;
 
   /**
@@ -62,18 +77,30 @@ class AndroidInstrumentationTest extends \Google\Collection
   {
     return $this->appBundle;
   }
+  /**
+   * @param string
+   */
   public function setAppPackageId($appPackageId)
   {
     $this->appPackageId = $appPackageId;
   }
+  /**
+   * @return string
+   */
   public function getAppPackageId()
   {
     return $this->appPackageId;
   }
+  /**
+   * @param string
+   */
   public function setOrchestratorOption($orchestratorOption)
   {
     $this->orchestratorOption = $orchestratorOption;
   }
+  /**
+   * @return string
+   */
   public function getOrchestratorOption()
   {
     return $this->orchestratorOption;
@@ -106,26 +133,44 @@ class AndroidInstrumentationTest extends \Google\Collection
   {
     return $this->testApk;
   }
+  /**
+   * @param string
+   */
   public function setTestPackageId($testPackageId)
   {
     $this->testPackageId = $testPackageId;
   }
+  /**
+   * @return string
+   */
   public function getTestPackageId()
   {
     return $this->testPackageId;
   }
+  /**
+   * @param string
+   */
   public function setTestRunnerClass($testRunnerClass)
   {
     $this->testRunnerClass = $testRunnerClass;
   }
+  /**
+   * @return string
+   */
   public function getTestRunnerClass()
   {
     return $this->testRunnerClass;
   }
+  /**
+   * @param string[]
+   */
   public function setTestTargets($testTargets)
   {
     $this->testTargets = $testTargets;
   }
+  /**
+   * @return string[]
+   */
   public function getTestTargets()
   {
     return $this->testTargets;

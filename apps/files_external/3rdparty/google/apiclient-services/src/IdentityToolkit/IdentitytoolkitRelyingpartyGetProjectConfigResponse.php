@@ -20,44 +20,83 @@ namespace Google\Service\IdentityToolkit;
 class IdentitytoolkitRelyingpartyGetProjectConfigResponse extends \Google\Collection
 {
   protected $collection_key = 'idpConfig';
+  /**
+   * @var bool
+   */
   public $allowPasswordUser;
+  /**
+   * @var string
+   */
   public $apiKey;
+  /**
+   * @var string[]
+   */
   public $authorizedDomains;
   protected $changeEmailTemplateType = EmailTemplate::class;
   protected $changeEmailTemplateDataType = '';
+  /**
+   * @var string
+   */
   public $dynamicLinksDomain;
+  /**
+   * @var bool
+   */
   public $enableAnonymousUser;
   protected $idpConfigType = IdpConfig::class;
   protected $idpConfigDataType = 'array';
   protected $legacyResetPasswordTemplateType = EmailTemplate::class;
   protected $legacyResetPasswordTemplateDataType = '';
+  /**
+   * @var string
+   */
   public $projectId;
   protected $resetPasswordTemplateType = EmailTemplate::class;
   protected $resetPasswordTemplateDataType = '';
+  /**
+   * @var bool
+   */
   public $useEmailSending;
   protected $verifyEmailTemplateType = EmailTemplate::class;
   protected $verifyEmailTemplateDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setAllowPasswordUser($allowPasswordUser)
   {
     $this->allowPasswordUser = $allowPasswordUser;
   }
+  /**
+   * @return bool
+   */
   public function getAllowPasswordUser()
   {
     return $this->allowPasswordUser;
   }
+  /**
+   * @param string
+   */
   public function setApiKey($apiKey)
   {
     $this->apiKey = $apiKey;
   }
+  /**
+   * @return string
+   */
   public function getApiKey()
   {
     return $this->apiKey;
   }
+  /**
+   * @param string[]
+   */
   public function setAuthorizedDomains($authorizedDomains)
   {
     $this->authorizedDomains = $authorizedDomains;
   }
+  /**
+   * @return string[]
+   */
   public function getAuthorizedDomains()
   {
     return $this->authorizedDomains;
@@ -76,18 +115,30 @@ class IdentitytoolkitRelyingpartyGetProjectConfigResponse extends \Google\Collec
   {
     return $this->changeEmailTemplate;
   }
+  /**
+   * @param string
+   */
   public function setDynamicLinksDomain($dynamicLinksDomain)
   {
     $this->dynamicLinksDomain = $dynamicLinksDomain;
   }
+  /**
+   * @return string
+   */
   public function getDynamicLinksDomain()
   {
     return $this->dynamicLinksDomain;
   }
+  /**
+   * @param bool
+   */
   public function setEnableAnonymousUser($enableAnonymousUser)
   {
     $this->enableAnonymousUser = $enableAnonymousUser;
   }
+  /**
+   * @return bool
+   */
   public function getEnableAnonymousUser()
   {
     return $this->enableAnonymousUser;
@@ -120,10 +171,16 @@ class IdentitytoolkitRelyingpartyGetProjectConfigResponse extends \Google\Collec
   {
     return $this->legacyResetPasswordTemplate;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
@@ -142,10 +199,16 @@ class IdentitytoolkitRelyingpartyGetProjectConfigResponse extends \Google\Collec
   {
     return $this->resetPasswordTemplate;
   }
+  /**
+   * @param bool
+   */
   public function setUseEmailSending($useEmailSending)
   {
     $this->useEmailSending = $useEmailSending;
   }
+  /**
+   * @return bool
+   */
   public function getUseEmailSending()
   {
     return $this->useEmailSending;

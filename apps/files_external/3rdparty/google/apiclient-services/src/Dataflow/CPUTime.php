@@ -20,7 +20,13 @@ namespace Google\Service\Dataflow;
 class CPUTime extends \Google\Model
 {
   public $rate;
+  /**
+   * @var string
+   */
   public $timestamp;
+  /**
+   * @var string
+   */
   public $totalMs;
 
   public function setRate($rate)
@@ -31,18 +37,30 @@ class CPUTime extends \Google\Model
   {
     return $this->rate;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;
   }
+  /**
+   * @param string
+   */
   public function setTotalMs($totalMs)
   {
     $this->totalMs = $totalMs;
   }
+  /**
+   * @return string
+   */
   public function getTotalMs()
   {
     return $this->totalMs;

@@ -19,57 +19,111 @@ namespace Google\Service\Compute;
 
 class AutoscalingPolicyScalingSchedule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var bool
+   */
   public $disabled;
+  /**
+   * @var int
+   */
   public $durationSec;
+  /**
+   * @var int
+   */
   public $minRequiredReplicas;
+  /**
+   * @var string
+   */
   public $schedule;
+  /**
+   * @var string
+   */
   public $timeZone;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;
   }
+  /**
+   * @param int
+   */
   public function setDurationSec($durationSec)
   {
     $this->durationSec = $durationSec;
   }
+  /**
+   * @return int
+   */
   public function getDurationSec()
   {
     return $this->durationSec;
   }
+  /**
+   * @param int
+   */
   public function setMinRequiredReplicas($minRequiredReplicas)
   {
     $this->minRequiredReplicas = $minRequiredReplicas;
   }
+  /**
+   * @return int
+   */
   public function getMinRequiredReplicas()
   {
     return $this->minRequiredReplicas;
   }
+  /**
+   * @param string
+   */
   public function setSchedule($schedule)
   {
     $this->schedule = $schedule;
   }
+  /**
+   * @return string
+   */
   public function getSchedule()
   {
     return $this->schedule;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;

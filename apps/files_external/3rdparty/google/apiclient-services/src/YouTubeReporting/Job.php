@@ -19,57 +19,111 @@ namespace Google\Service\YouTubeReporting;
 
 class Job extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $reportTypeId;
+  /**
+   * @var bool
+   */
   public $systemManaged;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setReportTypeId($reportTypeId)
   {
     $this->reportTypeId = $reportTypeId;
   }
+  /**
+   * @return string
+   */
   public function getReportTypeId()
   {
     return $this->reportTypeId;
   }
+  /**
+   * @param bool
+   */
   public function setSystemManaged($systemManaged)
   {
     $this->systemManaged = $systemManaged;
   }
+  /**
+   * @return bool
+   */
   public function getSystemManaged()
   {
     return $this->systemManaged;

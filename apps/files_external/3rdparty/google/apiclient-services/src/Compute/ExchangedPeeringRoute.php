@@ -19,48 +19,93 @@ namespace Google\Service\Compute;
 
 class ExchangedPeeringRoute extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destRange;
+  /**
+   * @var bool
+   */
   public $imported;
+  /**
+   * @var string
+   */
   public $nextHopRegion;
+  /**
+   * @var string
+   */
   public $priority;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDestRange($destRange)
   {
     $this->destRange = $destRange;
   }
+  /**
+   * @return string
+   */
   public function getDestRange()
   {
     return $this->destRange;
   }
+  /**
+   * @param bool
+   */
   public function setImported($imported)
   {
     $this->imported = $imported;
   }
+  /**
+   * @return bool
+   */
   public function getImported()
   {
     return $this->imported;
   }
+  /**
+   * @param string
+   */
   public function setNextHopRegion($nextHopRegion)
   {
     $this->nextHopRegion = $nextHopRegion;
   }
+  /**
+   * @return string
+   */
   public function getNextHopRegion()
   {
     return $this->nextHopRegion;
   }
+  /**
+   * @param string
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return string
+   */
   public function getPriority()
   {
     return $this->priority;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

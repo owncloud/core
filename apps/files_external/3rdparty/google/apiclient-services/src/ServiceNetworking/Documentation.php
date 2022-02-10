@@ -20,27 +20,51 @@ namespace Google\Service\ServiceNetworking;
 class Documentation extends \Google\Collection
 {
   protected $collection_key = 'rules';
+  /**
+   * @var string
+   */
   public $documentationRootUrl;
+  /**
+   * @var string
+   */
   public $overview;
   protected $pagesType = Page::class;
   protected $pagesDataType = 'array';
   protected $rulesType = DocumentationRule::class;
   protected $rulesDataType = 'array';
+  /**
+   * @var string
+   */
   public $serviceRootUrl;
+  /**
+   * @var string
+   */
   public $summary;
 
+  /**
+   * @param string
+   */
   public function setDocumentationRootUrl($documentationRootUrl)
   {
     $this->documentationRootUrl = $documentationRootUrl;
   }
+  /**
+   * @return string
+   */
   public function getDocumentationRootUrl()
   {
     return $this->documentationRootUrl;
   }
+  /**
+   * @param string
+   */
   public function setOverview($overview)
   {
     $this->overview = $overview;
   }
+  /**
+   * @return string
+   */
   public function getOverview()
   {
     return $this->overview;
@@ -73,18 +97,30 @@ class Documentation extends \Google\Collection
   {
     return $this->rules;
   }
+  /**
+   * @param string
+   */
   public function setServiceRootUrl($serviceRootUrl)
   {
     $this->serviceRootUrl = $serviceRootUrl;
   }
+  /**
+   * @return string
+   */
   public function getServiceRootUrl()
   {
     return $this->serviceRootUrl;
   }
+  /**
+   * @param string
+   */
   public function setSummary($summary)
   {
     $this->summary = $summary;
   }
+  /**
+   * @return string
+   */
   public function getSummary()
   {
     return $this->summary;

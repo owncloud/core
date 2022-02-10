@@ -19,13 +19,22 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1RequestLoggingConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bigqueryTableName;
   public $samplingPercentage;
 
+  /**
+   * @param string
+   */
   public function setBigqueryTableName($bigqueryTableName)
   {
     $this->bigqueryTableName = $bigqueryTableName;
   }
+  /**
+   * @return string
+   */
   public function getBigqueryTableName()
   {
     return $this->bigqueryTableName;

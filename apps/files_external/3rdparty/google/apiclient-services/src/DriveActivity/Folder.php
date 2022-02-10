@@ -19,12 +19,21 @@ namespace Google\Service\DriveActivity;
 
 class Folder extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

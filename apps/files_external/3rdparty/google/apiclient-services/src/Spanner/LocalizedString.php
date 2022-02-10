@@ -19,30 +19,57 @@ namespace Google\Service\Spanner;
 
 class LocalizedString extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $args;
+  /**
+   * @var string
+   */
   public $message;
+  /**
+   * @var string
+   */
   public $token;
 
+  /**
+   * @param string[]
+   */
   public function setArgs($args)
   {
     $this->args = $args;
   }
+  /**
+   * @return string[]
+   */
   public function getArgs()
   {
     return $this->args;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
   }
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;

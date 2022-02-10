@@ -20,51 +20,99 @@ namespace Google\Service\MyBusinessBusinessInformation;
 class AttributeMetadata extends \Google\Collection
 {
   protected $collection_key = 'valueMetadata';
+  /**
+   * @var bool
+   */
   public $deprecated;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $groupDisplayName;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var bool
+   */
   public $repeatable;
   protected $valueMetadataType = AttributeValueMetadata::class;
   protected $valueMetadataDataType = 'array';
+  /**
+   * @var string
+   */
   public $valueType;
 
+  /**
+   * @param bool
+   */
   public function setDeprecated($deprecated)
   {
     $this->deprecated = $deprecated;
   }
+  /**
+   * @return bool
+   */
   public function getDeprecated()
   {
     return $this->deprecated;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setGroupDisplayName($groupDisplayName)
   {
     $this->groupDisplayName = $groupDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getGroupDisplayName()
   {
     return $this->groupDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param bool
+   */
   public function setRepeatable($repeatable)
   {
     $this->repeatable = $repeatable;
   }
+  /**
+   * @return bool
+   */
   public function getRepeatable()
   {
     return $this->repeatable;
@@ -83,10 +131,16 @@ class AttributeMetadata extends \Google\Collection
   {
     return $this->valueMetadata;
   }
+  /**
+   * @param string
+   */
   public function setValueType($valueType)
   {
     $this->valueType = $valueType;
   }
+  /**
+   * @return string
+   */
   public function getValueType()
   {
     return $this->valueType;

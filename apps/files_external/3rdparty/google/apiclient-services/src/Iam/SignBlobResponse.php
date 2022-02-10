@@ -19,21 +19,39 @@ namespace Google\Service\Iam;
 
 class SignBlobResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyId;
+  /**
+   * @var string
+   */
   public $signature;
 
+  /**
+   * @param string
+   */
   public function setKeyId($keyId)
   {
     $this->keyId = $keyId;
   }
+  /**
+   * @return string
+   */
   public function getKeyId()
   {
     return $this->keyId;
   }
+  /**
+   * @param string
+   */
   public function setSignature($signature)
   {
     $this->signature = $signature;
   }
+  /**
+   * @return string
+   */
   public function getSignature()
   {
     return $this->signature;

@@ -20,23 +20,41 @@ namespace Google\Service\Drive;
 class RevisionList extends \Google\Collection
 {
   protected $collection_key = 'revisions';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $revisionsType = Revision::class;
   protected $revisionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

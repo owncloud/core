@@ -22,6 +22,9 @@ class AuthConfig extends \Google\Collection
   protected $collection_key = 'additionalVariables';
   protected $additionalVariablesType = ConfigVariable::class;
   protected $additionalVariablesDataType = 'array';
+  /**
+   * @var string
+   */
   public $authType;
   protected $oauth2ClientCredentialsType = Oauth2ClientCredentials::class;
   protected $oauth2ClientCredentialsDataType = '';
@@ -44,10 +47,16 @@ class AuthConfig extends \Google\Collection
   {
     return $this->additionalVariables;
   }
+  /**
+   * @param string
+   */
   public function setAuthType($authType)
   {
     $this->authType = $authType;
   }
+  /**
+   * @return string
+   */
   public function getAuthType()
   {
     return $this->authType;

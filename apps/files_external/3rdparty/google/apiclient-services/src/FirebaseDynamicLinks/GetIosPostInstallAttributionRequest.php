@@ -19,28 +19,61 @@ namespace Google\Service\FirebaseDynamicLinks;
 
 class GetIosPostInstallAttributionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appInstallationTime;
+  /**
+   * @var string
+   */
   public $bundleId;
   protected $deviceType = DeviceInfo::class;
   protected $deviceDataType = '';
+  /**
+   * @var string
+   */
   public $iosVersion;
+  /**
+   * @var string
+   */
   public $retrievalMethod;
+  /**
+   * @var string
+   */
   public $sdkVersion;
+  /**
+   * @var string
+   */
   public $uniqueMatchLinkToCheck;
+  /**
+   * @var string
+   */
   public $visualStyle;
 
+  /**
+   * @param string
+   */
   public function setAppInstallationTime($appInstallationTime)
   {
     $this->appInstallationTime = $appInstallationTime;
   }
+  /**
+   * @return string
+   */
   public function getAppInstallationTime()
   {
     return $this->appInstallationTime;
   }
+  /**
+   * @param string
+   */
   public function setBundleId($bundleId)
   {
     $this->bundleId = $bundleId;
   }
+  /**
+   * @return string
+   */
   public function getBundleId()
   {
     return $this->bundleId;
@@ -59,42 +92,72 @@ class GetIosPostInstallAttributionRequest extends \Google\Model
   {
     return $this->device;
   }
+  /**
+   * @param string
+   */
   public function setIosVersion($iosVersion)
   {
     $this->iosVersion = $iosVersion;
   }
+  /**
+   * @return string
+   */
   public function getIosVersion()
   {
     return $this->iosVersion;
   }
+  /**
+   * @param string
+   */
   public function setRetrievalMethod($retrievalMethod)
   {
     $this->retrievalMethod = $retrievalMethod;
   }
+  /**
+   * @return string
+   */
   public function getRetrievalMethod()
   {
     return $this->retrievalMethod;
   }
+  /**
+   * @param string
+   */
   public function setSdkVersion($sdkVersion)
   {
     $this->sdkVersion = $sdkVersion;
   }
+  /**
+   * @return string
+   */
   public function getSdkVersion()
   {
     return $this->sdkVersion;
   }
+  /**
+   * @param string
+   */
   public function setUniqueMatchLinkToCheck($uniqueMatchLinkToCheck)
   {
     $this->uniqueMatchLinkToCheck = $uniqueMatchLinkToCheck;
   }
+  /**
+   * @return string
+   */
   public function getUniqueMatchLinkToCheck()
   {
     return $this->uniqueMatchLinkToCheck;
   }
+  /**
+   * @param string
+   */
   public function setVisualStyle($visualStyle)
   {
     $this->visualStyle = $visualStyle;
   }
+  /**
+   * @return string
+   */
   public function getVisualStyle()
   {
     return $this->visualStyle;

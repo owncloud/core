@@ -19,25 +19,49 @@ namespace Google\Service\SQLAdmin;
 
 class DemoteMasterContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $masterInstanceName;
   protected $replicaConfigurationType = DemoteMasterConfiguration::class;
   protected $replicaConfigurationDataType = '';
+  /**
+   * @var bool
+   */
   public $skipReplicationSetup;
+  /**
+   * @var bool
+   */
   public $verifyGtidConsistency;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMasterInstanceName($masterInstanceName)
   {
     $this->masterInstanceName = $masterInstanceName;
   }
+  /**
+   * @return string
+   */
   public function getMasterInstanceName()
   {
     return $this->masterInstanceName;
@@ -56,18 +80,30 @@ class DemoteMasterContext extends \Google\Model
   {
     return $this->replicaConfiguration;
   }
+  /**
+   * @param bool
+   */
   public function setSkipReplicationSetup($skipReplicationSetup)
   {
     $this->skipReplicationSetup = $skipReplicationSetup;
   }
+  /**
+   * @return bool
+   */
   public function getSkipReplicationSetup()
   {
     return $this->skipReplicationSetup;
   }
+  /**
+   * @param bool
+   */
   public function setVerifyGtidConsistency($verifyGtidConsistency)
   {
     $this->verifyGtidConsistency = $verifyGtidConsistency;
   }
+  /**
+   * @return bool
+   */
   public function getVerifyGtidConsistency()
   {
     return $this->verifyGtidConsistency;

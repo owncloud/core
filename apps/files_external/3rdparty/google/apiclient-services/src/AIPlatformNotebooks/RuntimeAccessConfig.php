@@ -19,30 +19,57 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class RuntimeAccessConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessType;
+  /**
+   * @var string
+   */
   public $proxyUri;
+  /**
+   * @var string
+   */
   public $runtimeOwner;
 
+  /**
+   * @param string
+   */
   public function setAccessType($accessType)
   {
     $this->accessType = $accessType;
   }
+  /**
+   * @return string
+   */
   public function getAccessType()
   {
     return $this->accessType;
   }
+  /**
+   * @param string
+   */
   public function setProxyUri($proxyUri)
   {
     $this->proxyUri = $proxyUri;
   }
+  /**
+   * @return string
+   */
   public function getProxyUri()
   {
     return $this->proxyUri;
   }
+  /**
+   * @param string
+   */
   public function setRuntimeOwner($runtimeOwner)
   {
     $this->runtimeOwner = $runtimeOwner;
   }
+  /**
+   * @return string
+   */
   public function getRuntimeOwner()
   {
     return $this->runtimeOwner;

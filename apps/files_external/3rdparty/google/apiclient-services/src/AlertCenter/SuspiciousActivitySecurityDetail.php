@@ -19,84 +19,165 @@ namespace Google\Service\AlertCenter;
 
 class SuspiciousActivitySecurityDetail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceId;
+  /**
+   * @var string
+   */
   public $deviceModel;
+  /**
+   * @var string
+   */
   public $deviceProperty;
+  /**
+   * @var string
+   */
   public $deviceType;
+  /**
+   * @var string
+   */
   public $iosVendorId;
+  /**
+   * @var string
+   */
   public $newValue;
+  /**
+   * @var string
+   */
   public $oldValue;
+  /**
+   * @var string
+   */
   public $resourceId;
+  /**
+   * @var string
+   */
   public $serialNumber;
 
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
   }
+  /**
+   * @param string
+   */
   public function setDeviceModel($deviceModel)
   {
     $this->deviceModel = $deviceModel;
   }
+  /**
+   * @return string
+   */
   public function getDeviceModel()
   {
     return $this->deviceModel;
   }
+  /**
+   * @param string
+   */
   public function setDeviceProperty($deviceProperty)
   {
     $this->deviceProperty = $deviceProperty;
   }
+  /**
+   * @return string
+   */
   public function getDeviceProperty()
   {
     return $this->deviceProperty;
   }
+  /**
+   * @param string
+   */
   public function setDeviceType($deviceType)
   {
     $this->deviceType = $deviceType;
   }
+  /**
+   * @return string
+   */
   public function getDeviceType()
   {
     return $this->deviceType;
   }
+  /**
+   * @param string
+   */
   public function setIosVendorId($iosVendorId)
   {
     $this->iosVendorId = $iosVendorId;
   }
+  /**
+   * @return string
+   */
   public function getIosVendorId()
   {
     return $this->iosVendorId;
   }
+  /**
+   * @param string
+   */
   public function setNewValue($newValue)
   {
     $this->newValue = $newValue;
   }
+  /**
+   * @return string
+   */
   public function getNewValue()
   {
     return $this->newValue;
   }
+  /**
+   * @param string
+   */
   public function setOldValue($oldValue)
   {
     $this->oldValue = $oldValue;
   }
+  /**
+   * @return string
+   */
   public function getOldValue()
   {
     return $this->oldValue;
   }
+  /**
+   * @param string
+   */
   public function setResourceId($resourceId)
   {
     $this->resourceId = $resourceId;
   }
+  /**
+   * @return string
+   */
   public function getResourceId()
   {
     return $this->resourceId;
   }
+  /**
+   * @param string
+   */
   public function setSerialNumber($serialNumber)
   {
     $this->serialNumber = $serialNumber;
   }
+  /**
+   * @return string
+   */
   public function getSerialNumber()
   {
     return $this->serialNumber;

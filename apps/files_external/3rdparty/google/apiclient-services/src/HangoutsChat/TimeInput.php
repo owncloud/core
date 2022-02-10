@@ -19,21 +19,39 @@ namespace Google\Service\HangoutsChat;
 
 class TimeInput extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $hours;
+  /**
+   * @var int
+   */
   public $minutes;
 
+  /**
+   * @param int
+   */
   public function setHours($hours)
   {
     $this->hours = $hours;
   }
+  /**
+   * @return int
+   */
   public function getHours()
   {
     return $this->hours;
   }
+  /**
+   * @param int
+   */
   public function setMinutes($minutes)
   {
     $this->minutes = $minutes;
   }
+  /**
+   * @return int
+   */
   public function getMinutes()
   {
     return $this->minutes;

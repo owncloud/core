@@ -22,7 +22,13 @@ class GoogleChromeManagementV1CountChromeVersionsResponse extends \Google\Collec
   protected $collection_key = 'browserVersions';
   protected $browserVersionsType = GoogleChromeManagementV1BrowserVersion::class;
   protected $browserVersionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var int
+   */
   public $totalSize;
 
   /**
@@ -39,18 +45,30 @@ class GoogleChromeManagementV1CountChromeVersionsResponse extends \Google\Collec
   {
     return $this->browserVersions;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

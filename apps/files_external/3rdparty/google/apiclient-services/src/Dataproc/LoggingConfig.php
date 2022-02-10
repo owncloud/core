@@ -19,12 +19,21 @@ namespace Google\Service\Dataproc;
 
 class LoggingConfig extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $driverLogLevels;
 
+  /**
+   * @param string[]
+   */
   public function setDriverLogLevels($driverLogLevels)
   {
     $this->driverLogLevels = $driverLogLevels;
   }
+  /**
+   * @return string[]
+   */
   public function getDriverLogLevels()
   {
     return $this->driverLogLevels;

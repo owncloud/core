@@ -22,7 +22,13 @@ class TargetDetails extends \Google\Collection
   protected $collection_key = 'fleetDetails';
   protected $fleetDetailsType = TargetFleetDetails::class;
   protected $fleetDetailsDataType = 'array';
+  /**
+   * @var string
+   */
   public $gameServerClusterName;
+  /**
+   * @var string
+   */
   public $gameServerDeploymentName;
 
   /**
@@ -39,18 +45,30 @@ class TargetDetails extends \Google\Collection
   {
     return $this->fleetDetails;
   }
+  /**
+   * @param string
+   */
   public function setGameServerClusterName($gameServerClusterName)
   {
     $this->gameServerClusterName = $gameServerClusterName;
   }
+  /**
+   * @return string
+   */
   public function getGameServerClusterName()
   {
     return $this->gameServerClusterName;
   }
+  /**
+   * @param string
+   */
   public function setGameServerDeploymentName($gameServerDeploymentName)
   {
     $this->gameServerDeploymentName = $gameServerDeploymentName;
   }
+  /**
+   * @return string
+   */
   public function getGameServerDeploymentName()
   {
     return $this->gameServerDeploymentName;

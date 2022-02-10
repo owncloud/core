@@ -25,7 +25,7 @@ use Google\Client;
  * <p>
  * The Certificate Authority Service API is a highly-available, scalable service
  * that enables you to simplify and automate the management of private
- * certificate authorities (CAs) while staying in control of your private keys."</p>
+ * certificate authorities (CAs) while staying in control of your private keys.</p>
  *
  * <p>
  * For more information about this service, see the API

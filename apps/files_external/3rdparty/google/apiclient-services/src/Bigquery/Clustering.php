@@ -20,12 +20,21 @@ namespace Google\Service\Bigquery;
 class Clustering extends \Google\Collection
 {
   protected $collection_key = 'fields';
+  /**
+   * @var string[]
+   */
   public $fields;
 
+  /**
+   * @param string[]
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string[]
+   */
   public function getFields()
   {
     return $this->fields;

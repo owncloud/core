@@ -20,16 +20,25 @@ namespace Google\Service\Connectors;
 class RuntimeActionSchema extends \Google\Collection
 {
   protected $collection_key = 'resultMetadata';
+  /**
+   * @var string
+   */
   public $action;
   protected $inputParametersType = InputParameter::class;
   protected $inputParametersDataType = 'array';
   protected $resultMetadataType = ResultMetadata::class;
   protected $resultMetadataDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;

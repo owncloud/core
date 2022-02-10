@@ -22,7 +22,13 @@ class OrdersShipLineItemsRequest extends \Google\Collection
   protected $collection_key = 'shipmentInfos';
   protected $lineItemsType = OrderShipmentLineItemShipment::class;
   protected $lineItemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $operationId;
+  /**
+   * @var string
+   */
   public $shipmentGroupId;
   protected $shipmentInfosType = OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo::class;
   protected $shipmentInfosDataType = 'array';
@@ -41,18 +47,30 @@ class OrdersShipLineItemsRequest extends \Google\Collection
   {
     return $this->lineItems;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;
   }
+  /**
+   * @param string
+   */
   public function setShipmentGroupId($shipmentGroupId)
   {
     $this->shipmentGroupId = $shipmentGroupId;
   }
+  /**
+   * @return string
+   */
   public function getShipmentGroupId()
   {
     return $this->shipmentGroupId;

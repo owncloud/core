@@ -22,7 +22,13 @@ class ReplaceAllTextRequest extends \Google\Collection
   protected $collection_key = 'pageObjectIds';
   protected $containsTextType = SubstringMatchCriteria::class;
   protected $containsTextDataType = '';
+  /**
+   * @var string[]
+   */
   public $pageObjectIds;
+  /**
+   * @var string
+   */
   public $replaceText;
 
   /**
@@ -39,18 +45,30 @@ class ReplaceAllTextRequest extends \Google\Collection
   {
     return $this->containsText;
   }
+  /**
+   * @param string[]
+   */
   public function setPageObjectIds($pageObjectIds)
   {
     $this->pageObjectIds = $pageObjectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPageObjectIds()
   {
     return $this->pageObjectIds;
   }
+  /**
+   * @param string
+   */
   public function setReplaceText($replaceText)
   {
     $this->replaceText = $replaceText;
   }
+  /**
+   * @return string
+   */
   public function getReplaceText()
   {
     return $this->replaceText;

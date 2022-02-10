@@ -20,19 +20,37 @@ namespace Google\Service\ShoppingContent;
 class AccountStatus extends \Google\Collection
 {
   protected $collection_key = 'products';
+  /**
+   * @var string
+   */
   public $accountId;
   protected $accountLevelIssuesType = AccountStatusAccountLevelIssue::class;
   protected $accountLevelIssuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $accountManagement;
+  /**
+   * @var string
+   */
   public $kind;
   protected $productsType = AccountStatusProducts::class;
   protected $productsDataType = 'array';
+  /**
+   * @var bool
+   */
   public $websiteClaimed;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -51,18 +69,30 @@ class AccountStatus extends \Google\Collection
   {
     return $this->accountLevelIssues;
   }
+  /**
+   * @param string
+   */
   public function setAccountManagement($accountManagement)
   {
     $this->accountManagement = $accountManagement;
   }
+  /**
+   * @return string
+   */
   public function getAccountManagement()
   {
     return $this->accountManagement;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -81,10 +111,16 @@ class AccountStatus extends \Google\Collection
   {
     return $this->products;
   }
+  /**
+   * @param bool
+   */
   public function setWebsiteClaimed($websiteClaimed)
   {
     $this->websiteClaimed = $websiteClaimed;
   }
+  /**
+   * @return bool
+   */
   public function getWebsiteClaimed()
   {
     return $this->websiteClaimed;

@@ -19,21 +19,39 @@ namespace Google\Service\Sheets;
 
 class NumberFormat extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pattern;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setPattern($pattern)
   {
     $this->pattern = $pattern;
   }
+  /**
+   * @return string
+   */
   public function getPattern()
   {
     return $this->pattern;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

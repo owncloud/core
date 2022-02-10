@@ -19,21 +19,39 @@ namespace Google\Service\Container;
 
 class CloudRunConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $disabled;
+  /**
+   * @var string
+   */
   public $loadBalancerType;
 
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;
   }
+  /**
+   * @param string
+   */
   public function setLoadBalancerType($loadBalancerType)
   {
     $this->loadBalancerType = $loadBalancerType;
   }
+  /**
+   * @return string
+   */
   public function getLoadBalancerType()
   {
     return $this->loadBalancerType;

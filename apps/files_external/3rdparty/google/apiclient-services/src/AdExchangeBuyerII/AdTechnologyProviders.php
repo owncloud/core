@@ -20,21 +20,39 @@ namespace Google\Service\AdExchangeBuyerII;
 class AdTechnologyProviders extends \Google\Collection
 {
   protected $collection_key = 'detectedProviderIds';
+  /**
+   * @var string[]
+   */
   public $detectedProviderIds;
+  /**
+   * @var bool
+   */
   public $hasUnidentifiedProvider;
 
+  /**
+   * @param string[]
+   */
   public function setDetectedProviderIds($detectedProviderIds)
   {
     $this->detectedProviderIds = $detectedProviderIds;
   }
+  /**
+   * @return string[]
+   */
   public function getDetectedProviderIds()
   {
     return $this->detectedProviderIds;
   }
+  /**
+   * @param bool
+   */
   public function setHasUnidentifiedProvider($hasUnidentifiedProvider)
   {
     $this->hasUnidentifiedProvider = $hasUnidentifiedProvider;
   }
+  /**
+   * @return bool
+   */
   public function getHasUnidentifiedProvider()
   {
     return $this->hasUnidentifiedProvider;

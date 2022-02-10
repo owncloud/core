@@ -19,12 +19,21 @@ namespace Google\Service\Datastore;
 
 class ReadWrite extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $previousTransaction;
 
+  /**
+   * @param string
+   */
   public function setPreviousTransaction($previousTransaction)
   {
     $this->previousTransaction = $previousTransaction;
   }
+  /**
+   * @return string
+   */
   public function getPreviousTransaction()
   {
     return $this->previousTransaction;

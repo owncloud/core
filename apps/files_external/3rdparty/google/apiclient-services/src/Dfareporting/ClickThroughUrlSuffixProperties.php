@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class ClickThroughUrlSuffixProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clickThroughUrlSuffix;
+  /**
+   * @var bool
+   */
   public $overrideInheritedSuffix;
 
+  /**
+   * @param string
+   */
   public function setClickThroughUrlSuffix($clickThroughUrlSuffix)
   {
     $this->clickThroughUrlSuffix = $clickThroughUrlSuffix;
   }
+  /**
+   * @return string
+   */
   public function getClickThroughUrlSuffix()
   {
     return $this->clickThroughUrlSuffix;
   }
+  /**
+   * @param bool
+   */
   public function setOverrideInheritedSuffix($overrideInheritedSuffix)
   {
     $this->overrideInheritedSuffix = $overrideInheritedSuffix;
   }
+  /**
+   * @return bool
+   */
   public function getOverrideInheritedSuffix()
   {
     return $this->overrideInheritedSuffix;

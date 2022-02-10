@@ -20,14 +20,23 @@ namespace Google\Service\BigQueryDataTransfer;
 class ListTransferLogsResponse extends \Google\Collection
 {
   protected $collection_key = 'transferMessages';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $transferMessagesType = TransferMessage::class;
   protected $transferMessagesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

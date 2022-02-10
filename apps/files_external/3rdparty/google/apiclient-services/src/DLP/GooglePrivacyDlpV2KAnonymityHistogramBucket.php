@@ -20,25 +20,49 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2KAnonymityHistogramBucket extends \Google\Collection
 {
   protected $collection_key = 'bucketValues';
+  /**
+   * @var string
+   */
   public $bucketSize;
+  /**
+   * @var string
+   */
   public $bucketValueCount;
   protected $bucketValuesType = GooglePrivacyDlpV2KAnonymityEquivalenceClass::class;
   protected $bucketValuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $equivalenceClassSizeLowerBound;
+  /**
+   * @var string
+   */
   public $equivalenceClassSizeUpperBound;
 
+  /**
+   * @param string
+   */
   public function setBucketSize($bucketSize)
   {
     $this->bucketSize = $bucketSize;
   }
+  /**
+   * @return string
+   */
   public function getBucketSize()
   {
     return $this->bucketSize;
   }
+  /**
+   * @param string
+   */
   public function setBucketValueCount($bucketValueCount)
   {
     $this->bucketValueCount = $bucketValueCount;
   }
+  /**
+   * @return string
+   */
   public function getBucketValueCount()
   {
     return $this->bucketValueCount;
@@ -57,18 +81,30 @@ class GooglePrivacyDlpV2KAnonymityHistogramBucket extends \Google\Collection
   {
     return $this->bucketValues;
   }
+  /**
+   * @param string
+   */
   public function setEquivalenceClassSizeLowerBound($equivalenceClassSizeLowerBound)
   {
     $this->equivalenceClassSizeLowerBound = $equivalenceClassSizeLowerBound;
   }
+  /**
+   * @return string
+   */
   public function getEquivalenceClassSizeLowerBound()
   {
     return $this->equivalenceClassSizeLowerBound;
   }
+  /**
+   * @param string
+   */
   public function setEquivalenceClassSizeUpperBound($equivalenceClassSizeUpperBound)
   {
     $this->equivalenceClassSizeUpperBound = $equivalenceClassSizeUpperBound;
   }
+  /**
+   * @return string
+   */
   public function getEquivalenceClassSizeUpperBound()
   {
     return $this->equivalenceClassSizeUpperBound;

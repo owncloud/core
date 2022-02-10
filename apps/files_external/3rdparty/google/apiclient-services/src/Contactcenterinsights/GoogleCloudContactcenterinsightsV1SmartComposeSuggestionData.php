@@ -20,8 +20,17 @@ namespace Google\Service\Contactcenterinsights;
 class GoogleCloudContactcenterinsightsV1SmartComposeSuggestionData extends \Google\Model
 {
   public $confidenceScore;
+  /**
+   * @var string[]
+   */
   public $metadata;
+  /**
+   * @var string
+   */
   public $queryRecord;
+  /**
+   * @var string
+   */
   public $suggestion;
 
   public function setConfidenceScore($confidenceScore)
@@ -32,26 +41,44 @@ class GoogleCloudContactcenterinsightsV1SmartComposeSuggestionData extends \Goog
   {
     return $this->confidenceScore;
   }
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setQueryRecord($queryRecord)
   {
     $this->queryRecord = $queryRecord;
   }
+  /**
+   * @return string
+   */
   public function getQueryRecord()
   {
     return $this->queryRecord;
   }
+  /**
+   * @param string
+   */
   public function setSuggestion($suggestion)
   {
     $this->suggestion = $suggestion;
   }
+  /**
+   * @return string
+   */
   public function getSuggestion()
   {
     return $this->suggestion;

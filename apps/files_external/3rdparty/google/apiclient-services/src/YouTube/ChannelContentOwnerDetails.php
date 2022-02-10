@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class ChannelContentOwnerDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentOwner;
+  /**
+   * @var string
+   */
   public $timeLinked;
 
+  /**
+   * @param string
+   */
   public function setContentOwner($contentOwner)
   {
     $this->contentOwner = $contentOwner;
   }
+  /**
+   * @return string
+   */
   public function getContentOwner()
   {
     return $this->contentOwner;
   }
+  /**
+   * @param string
+   */
   public function setTimeLinked($timeLinked)
   {
     $this->timeLinked = $timeLinked;
   }
+  /**
+   * @return string
+   */
   public function getTimeLinked()
   {
     return $this->timeLinked;

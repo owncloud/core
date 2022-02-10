@@ -19,12 +19,21 @@ namespace Google\Service\Appengine;
 
 class ApiEndpointHandler extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $scriptPath;
 
+  /**
+   * @param string
+   */
   public function setScriptPath($scriptPath)
   {
     $this->scriptPath = $scriptPath;
   }
+  /**
+   * @return string
+   */
   public function getScriptPath()
   {
     return $this->scriptPath;

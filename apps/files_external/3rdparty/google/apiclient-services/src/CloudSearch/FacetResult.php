@@ -22,8 +22,17 @@ class FacetResult extends \Google\Collection
   protected $collection_key = 'buckets';
   protected $bucketsType = FacetBucket::class;
   protected $bucketsDataType = 'array';
+  /**
+   * @var string
+   */
   public $objectType;
+  /**
+   * @var string
+   */
   public $operatorName;
+  /**
+   * @var string
+   */
   public $sourceName;
 
   /**
@@ -40,26 +49,44 @@ class FacetResult extends \Google\Collection
   {
     return $this->buckets;
   }
+  /**
+   * @param string
+   */
   public function setObjectType($objectType)
   {
     $this->objectType = $objectType;
   }
+  /**
+   * @return string
+   */
   public function getObjectType()
   {
     return $this->objectType;
   }
+  /**
+   * @param string
+   */
   public function setOperatorName($operatorName)
   {
     $this->operatorName = $operatorName;
   }
+  /**
+   * @return string
+   */
   public function getOperatorName()
   {
     return $this->operatorName;
   }
+  /**
+   * @param string
+   */
   public function setSourceName($sourceName)
   {
     $this->sourceName = $sourceName;
   }
+  /**
+   * @return string
+   */
   public function getSourceName()
   {
     return $this->sourceName;

@@ -19,48 +19,93 @@ namespace Google\Service\RecaptchaEnterprise;
 
 class GoogleCloudRecaptchaenterpriseV1TokenProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $hostname;
+  /**
+   * @var string
+   */
   public $invalidReason;
+  /**
+   * @var bool
+   */
   public $valid;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setHostname($hostname)
   {
     $this->hostname = $hostname;
   }
+  /**
+   * @return string
+   */
   public function getHostname()
   {
     return $this->hostname;
   }
+  /**
+   * @param string
+   */
   public function setInvalidReason($invalidReason)
   {
     $this->invalidReason = $invalidReason;
   }
+  /**
+   * @return string
+   */
   public function getInvalidReason()
   {
     return $this->invalidReason;
   }
+  /**
+   * @param bool
+   */
   public function setValid($valid)
   {
     $this->valid = $valid;
   }
+  /**
+   * @return bool
+   */
   public function getValid()
   {
     return $this->valid;

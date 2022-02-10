@@ -20,14 +20,23 @@ namespace Google\Service\Dns;
 class PolicyAlternativeNameServerConfig extends \Google\Collection
 {
   protected $collection_key = 'targetNameServers';
+  /**
+   * @var string
+   */
   public $kind;
   protected $targetNameServersType = PolicyAlternativeNameServerConfigTargetNameServer::class;
   protected $targetNameServersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

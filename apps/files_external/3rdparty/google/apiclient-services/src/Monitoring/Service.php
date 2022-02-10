@@ -27,14 +27,23 @@ class Service extends \Google\Model
   protected $clusterIstioDataType = '';
   protected $customType = Custom::class;
   protected $customDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
   protected $istioCanonicalServiceType = IstioCanonicalService::class;
   protected $istioCanonicalServiceDataType = '';
   protected $meshIstioType = MeshIstio::class;
   protected $meshIstioDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $telemetryType = Telemetry::class;
   protected $telemetryDataType = '';
+  /**
+   * @var string[]
+   */
   public $userLabels;
 
   /**
@@ -93,10 +102,16 @@ class Service extends \Google\Model
   {
     return $this->custom;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -129,10 +144,16 @@ class Service extends \Google\Model
   {
     return $this->meshIstio;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -151,10 +172,16 @@ class Service extends \Google\Model
   {
     return $this->telemetry;
   }
+  /**
+   * @param string[]
+   */
   public function setUserLabels($userLabels)
   {
     $this->userLabels = $userLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getUserLabels()
   {
     return $this->userLabels;

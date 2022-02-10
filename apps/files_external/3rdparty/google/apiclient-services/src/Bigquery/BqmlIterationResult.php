@@ -19,16 +19,28 @@ namespace Google\Service\Bigquery;
 
 class BqmlIterationResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $durationMs;
   public $evalLoss;
+  /**
+   * @var int
+   */
   public $index;
   public $learnRate;
   public $trainingLoss;
 
+  /**
+   * @param string
+   */
   public function setDurationMs($durationMs)
   {
     $this->durationMs = $durationMs;
   }
+  /**
+   * @return string
+   */
   public function getDurationMs()
   {
     return $this->durationMs;
@@ -41,10 +53,16 @@ class BqmlIterationResult extends \Google\Model
   {
     return $this->evalLoss;
   }
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;

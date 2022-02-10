@@ -24,7 +24,13 @@ class DnsKeysListResponse extends \Google\Collection
   protected $dnsKeysDataType = 'array';
   protected $headerType = ResponseHeader::class;
   protected $headerDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -55,18 +61,30 @@ class DnsKeysListResponse extends \Google\Collection
   {
     return $this->header;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

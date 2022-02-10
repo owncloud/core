@@ -19,39 +19,75 @@ namespace Google\Service\Compute;
 
 class DiskInstantiationConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $autoDelete;
+  /**
+   * @var string
+   */
   public $customImage;
+  /**
+   * @var string
+   */
   public $deviceName;
+  /**
+   * @var string
+   */
   public $instantiateFrom;
 
+  /**
+   * @param bool
+   */
   public function setAutoDelete($autoDelete)
   {
     $this->autoDelete = $autoDelete;
   }
+  /**
+   * @return bool
+   */
   public function getAutoDelete()
   {
     return $this->autoDelete;
   }
+  /**
+   * @param string
+   */
   public function setCustomImage($customImage)
   {
     $this->customImage = $customImage;
   }
+  /**
+   * @return string
+   */
   public function getCustomImage()
   {
     return $this->customImage;
   }
+  /**
+   * @param string
+   */
   public function setDeviceName($deviceName)
   {
     $this->deviceName = $deviceName;
   }
+  /**
+   * @return string
+   */
   public function getDeviceName()
   {
     return $this->deviceName;
   }
+  /**
+   * @param string
+   */
   public function setInstantiateFrom($instantiateFrom)
   {
     $this->instantiateFrom = $instantiateFrom;
   }
+  /**
+   * @return string
+   */
   public function getInstantiateFrom()
   {
     return $this->instantiateFrom;

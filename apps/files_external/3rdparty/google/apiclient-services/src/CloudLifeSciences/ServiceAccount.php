@@ -20,21 +20,39 @@ namespace Google\Service\CloudLifeSciences;
 class ServiceAccount extends \Google\Collection
 {
   protected $collection_key = 'scopes';
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string[]
+   */
   public $scopes;
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string[]
+   */
   public function setScopes($scopes)
   {
     $this->scopes = $scopes;
   }
+  /**
+   * @return string[]
+   */
   public function getScopes()
   {
     return $this->scopes;

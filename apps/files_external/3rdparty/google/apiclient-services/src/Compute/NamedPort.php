@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class NamedPort extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $port;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;

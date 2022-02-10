@@ -19,12 +19,21 @@ namespace Google\Service\Storagetransfer;
 
 class PosixFilesystem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rootDirectory;
 
+  /**
+   * @param string
+   */
   public function setRootDirectory($rootDirectory)
   {
     $this->rootDirectory = $rootDirectory;
   }
+  /**
+   * @return string
+   */
   public function getRootDirectory()
   {
     return $this->rootDirectory;

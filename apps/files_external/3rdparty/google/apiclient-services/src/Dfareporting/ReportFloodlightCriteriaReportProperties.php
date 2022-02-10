@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class ReportFloodlightCriteriaReportProperties extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $includeAttributedIPConversions;
+  /**
+   * @var bool
+   */
   public $includeUnattributedCookieConversions;
+  /**
+   * @var bool
+   */
   public $includeUnattributedIPConversions;
 
+  /**
+   * @param bool
+   */
   public function setIncludeAttributedIPConversions($includeAttributedIPConversions)
   {
     $this->includeAttributedIPConversions = $includeAttributedIPConversions;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeAttributedIPConversions()
   {
     return $this->includeAttributedIPConversions;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeUnattributedCookieConversions($includeUnattributedCookieConversions)
   {
     $this->includeUnattributedCookieConversions = $includeUnattributedCookieConversions;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeUnattributedCookieConversions()
   {
     return $this->includeUnattributedCookieConversions;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeUnattributedIPConversions($includeUnattributedIPConversions)
   {
     $this->includeUnattributedIPConversions = $includeUnattributedIPConversions;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeUnattributedIPConversions()
   {
     return $this->includeUnattributedIPConversions;

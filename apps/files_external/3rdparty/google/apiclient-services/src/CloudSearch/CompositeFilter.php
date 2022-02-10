@@ -20,14 +20,23 @@ namespace Google\Service\CloudSearch;
 class CompositeFilter extends \Google\Collection
 {
   protected $collection_key = 'subFilters';
+  /**
+   * @var string
+   */
   public $logicOperator;
   protected $subFiltersType = Filter::class;
   protected $subFiltersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setLogicOperator($logicOperator)
   {
     $this->logicOperator = $logicOperator;
   }
+  /**
+   * @return string
+   */
   public function getLogicOperator()
   {
     return $this->logicOperator;

@@ -19,12 +19,21 @@ namespace Google\Service\ServiceNetworking;
 
 class SourceContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fileName;
 
+  /**
+   * @param string
+   */
   public function setFileName($fileName)
   {
     $this->fileName = $fileName;
   }
+  /**
+   * @return string
+   */
   public function getFileName()
   {
     return $this->fileName;

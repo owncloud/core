@@ -19,17 +19,35 @@ namespace Google\Service\ShoppingContent;
 
 class Value extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $carrierRateName;
   protected $flatRateType = Price::class;
   protected $flatRateDataType = '';
+  /**
+   * @var bool
+   */
   public $noShipping;
+  /**
+   * @var string
+   */
   public $pricePercentage;
+  /**
+   * @var string
+   */
   public $subtableName;
 
+  /**
+   * @param string
+   */
   public function setCarrierRateName($carrierRateName)
   {
     $this->carrierRateName = $carrierRateName;
   }
+  /**
+   * @return string
+   */
   public function getCarrierRateName()
   {
     return $this->carrierRateName;
@@ -48,26 +66,44 @@ class Value extends \Google\Model
   {
     return $this->flatRate;
   }
+  /**
+   * @param bool
+   */
   public function setNoShipping($noShipping)
   {
     $this->noShipping = $noShipping;
   }
+  /**
+   * @return bool
+   */
   public function getNoShipping()
   {
     return $this->noShipping;
   }
+  /**
+   * @param string
+   */
   public function setPricePercentage($pricePercentage)
   {
     $this->pricePercentage = $pricePercentage;
   }
+  /**
+   * @return string
+   */
   public function getPricePercentage()
   {
     return $this->pricePercentage;
   }
+  /**
+   * @param string
+   */
   public function setSubtableName($subtableName)
   {
     $this->subtableName = $subtableName;
   }
+  /**
+   * @return string
+   */
   public function getSubtableName()
   {
     return $this->subtableName;

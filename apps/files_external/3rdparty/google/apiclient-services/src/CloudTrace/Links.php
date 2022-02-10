@@ -20,14 +20,23 @@ namespace Google\Service\CloudTrace;
 class Links extends \Google\Collection
 {
   protected $collection_key = 'link';
+  /**
+   * @var int
+   */
   public $droppedLinksCount;
   protected $linkType = Link::class;
   protected $linkDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setDroppedLinksCount($droppedLinksCount)
   {
     $this->droppedLinksCount = $droppedLinksCount;
   }
+  /**
+   * @return int
+   */
   public function getDroppedLinksCount()
   {
     return $this->droppedLinksCount;

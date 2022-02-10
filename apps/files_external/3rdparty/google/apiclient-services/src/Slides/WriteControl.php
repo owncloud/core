@@ -19,12 +19,21 @@ namespace Google\Service\Slides;
 
 class WriteControl extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $requiredRevisionId;
 
+  /**
+   * @param string
+   */
   public function setRequiredRevisionId($requiredRevisionId)
   {
     $this->requiredRevisionId = $requiredRevisionId;
   }
+  /**
+   * @return string
+   */
   public function getRequiredRevisionId()
   {
     return $this->requiredRevisionId;

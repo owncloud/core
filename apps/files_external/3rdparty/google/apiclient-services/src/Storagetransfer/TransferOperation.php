@@ -22,15 +22,33 @@ class TransferOperation extends \Google\Collection
   protected $collection_key = 'errorBreakdowns';
   protected $countersType = TransferCounters::class;
   protected $countersDataType = '';
+  /**
+   * @var string
+   */
   public $endTime;
   protected $errorBreakdownsType = ErrorSummary::class;
   protected $errorBreakdownsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $notificationConfigType = NotificationConfig::class;
   protected $notificationConfigDataType = '';
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $transferJobName;
   protected $transferSpecType = TransferSpec::class;
   protected $transferSpecDataType = '';
@@ -49,10 +67,16 @@ class TransferOperation extends \Google\Collection
   {
     return $this->counters;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -71,10 +95,16 @@ class TransferOperation extends \Google\Collection
   {
     return $this->errorBreakdowns;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -93,34 +123,58 @@ class TransferOperation extends \Google\Collection
   {
     return $this->notificationConfig;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setTransferJobName($transferJobName)
   {
     $this->transferJobName = $transferJobName;
   }
+  /**
+   * @return string
+   */
   public function getTransferJobName()
   {
     return $this->transferJobName;

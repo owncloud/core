@@ -20,39 +20,75 @@ namespace Google\Service\OSConfig;
 class OSPolicyResourceRepositoryResourceZypperRepository extends \Google\Collection
 {
   protected $collection_key = 'gpgKeys';
+  /**
+   * @var string
+   */
   public $baseUrl;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string[]
+   */
   public $gpgKeys;
+  /**
+   * @var string
+   */
   public $id;
 
+  /**
+   * @param string
+   */
   public function setBaseUrl($baseUrl)
   {
     $this->baseUrl = $baseUrl;
   }
+  /**
+   * @return string
+   */
   public function getBaseUrl()
   {
     return $this->baseUrl;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string[]
+   */
   public function setGpgKeys($gpgKeys)
   {
     $this->gpgKeys = $gpgKeys;
   }
+  /**
+   * @return string[]
+   */
   public function getGpgKeys()
   {
     return $this->gpgKeys;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

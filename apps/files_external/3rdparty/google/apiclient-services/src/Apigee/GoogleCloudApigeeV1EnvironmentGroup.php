@@ -20,48 +20,93 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1EnvironmentGroup extends \Google\Collection
 {
   protected $collection_key = 'hostnames';
+  /**
+   * @var string
+   */
   public $createdAt;
+  /**
+   * @var string[]
+   */
   public $hostnames;
+  /**
+   * @var string
+   */
   public $lastModifiedAt;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setCreatedAt($createdAt)
   {
     $this->createdAt = $createdAt;
   }
+  /**
+   * @return string
+   */
   public function getCreatedAt()
   {
     return $this->createdAt;
   }
+  /**
+   * @param string[]
+   */
   public function setHostnames($hostnames)
   {
     $this->hostnames = $hostnames;
   }
+  /**
+   * @return string[]
+   */
   public function getHostnames()
   {
     return $this->hostnames;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedAt($lastModifiedAt)
   {
     $this->lastModifiedAt = $lastModifiedAt;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedAt()
   {
     return $this->lastModifiedAt;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

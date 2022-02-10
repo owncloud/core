@@ -20,28 +20,55 @@ namespace Google\Service\CloudLifeSciences;
 class Metadata extends \Google\Collection
 {
   protected $collection_key = 'events';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $endTime;
   protected $eventsType = Event::class;
   protected $eventsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $pipelineType = Pipeline::class;
   protected $pipelineDataType = '';
+  /**
+   * @var string
+   */
   public $pubSubTopic;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -60,10 +87,16 @@ class Metadata extends \Google\Collection
   {
     return $this->events;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -82,18 +115,30 @@ class Metadata extends \Google\Collection
   {
     return $this->pipeline;
   }
+  /**
+   * @param string
+   */
   public function setPubSubTopic($pubSubTopic)
   {
     $this->pubSubTopic = $pubSubTopic;
   }
+  /**
+   * @return string
+   */
   public function getPubSubTopic()
   {
     return $this->pubSubTopic;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

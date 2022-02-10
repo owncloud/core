@@ -19,51 +19,99 @@ namespace Google\Service\YouTube;
 
 class SearchResultSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $channelTitle;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $liveBroadcastContent;
+  /**
+   * @var string
+   */
   public $publishedAt;
   protected $thumbnailsType = ThumbnailDetails::class;
   protected $thumbnailsDataType = '';
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setChannelTitle($channelTitle)
   {
     $this->channelTitle = $channelTitle;
   }
+  /**
+   * @return string
+   */
   public function getChannelTitle()
   {
     return $this->channelTitle;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setLiveBroadcastContent($liveBroadcastContent)
   {
     $this->liveBroadcastContent = $liveBroadcastContent;
   }
+  /**
+   * @return string
+   */
   public function getLiveBroadcastContent()
   {
     return $this->liveBroadcastContent;
   }
+  /**
+   * @param string
+   */
   public function setPublishedAt($publishedAt)
   {
     $this->publishedAt = $publishedAt;
   }
+  /**
+   * @return string
+   */
   public function getPublishedAt()
   {
     return $this->publishedAt;
@@ -82,10 +130,16 @@ class SearchResultSnippet extends \Google\Model
   {
     return $this->thumbnails;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

@@ -19,30 +19,57 @@ namespace Google\Service\Bigquery;
 
 class RangePartitioningRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $end;
+  /**
+   * @var string
+   */
   public $interval;
+  /**
+   * @var string
+   */
   public $start;
 
+  /**
+   * @param string
+   */
   public function setEnd($end)
   {
     $this->end = $end;
   }
+  /**
+   * @return string
+   */
   public function getEnd()
   {
     return $this->end;
   }
+  /**
+   * @param string
+   */
   public function setInterval($interval)
   {
     $this->interval = $interval;
   }
+  /**
+   * @return string
+   */
   public function getInterval()
   {
     return $this->interval;
   }
+  /**
+   * @param string
+   */
   public function setStart($start)
   {
     $this->start = $start;
   }
+  /**
+   * @return string
+   */
   public function getStart()
   {
     return $this->start;

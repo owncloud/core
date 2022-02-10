@@ -19,30 +19,57 @@ namespace Google\Service\Vault;
 
 class ExportStats extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exportedArtifactCount;
+  /**
+   * @var string
+   */
   public $sizeInBytes;
+  /**
+   * @var string
+   */
   public $totalArtifactCount;
 
+  /**
+   * @param string
+   */
   public function setExportedArtifactCount($exportedArtifactCount)
   {
     $this->exportedArtifactCount = $exportedArtifactCount;
   }
+  /**
+   * @return string
+   */
   public function getExportedArtifactCount()
   {
     return $this->exportedArtifactCount;
   }
+  /**
+   * @param string
+   */
   public function setSizeInBytes($sizeInBytes)
   {
     $this->sizeInBytes = $sizeInBytes;
   }
+  /**
+   * @return string
+   */
   public function getSizeInBytes()
   {
     return $this->sizeInBytes;
   }
+  /**
+   * @param string
+   */
   public function setTotalArtifactCount($totalArtifactCount)
   {
     $this->totalArtifactCount = $totalArtifactCount;
   }
+  /**
+   * @return string
+   */
   public function getTotalArtifactCount()
   {
     return $this->totalArtifactCount;

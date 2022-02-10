@@ -19,48 +19,93 @@ namespace Google\Service\AndroidEnterprise;
 
 class InstallFailureEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceId;
+  /**
+   * @var string
+   */
   public $failureDetails;
+  /**
+   * @var string
+   */
   public $failureReason;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
   }
+  /**
+   * @param string
+   */
   public function setFailureDetails($failureDetails)
   {
     $this->failureDetails = $failureDetails;
   }
+  /**
+   * @return string
+   */
   public function getFailureDetails()
   {
     return $this->failureDetails;
   }
+  /**
+   * @param string
+   */
   public function setFailureReason($failureReason)
   {
     $this->failureReason = $failureReason;
   }
+  /**
+   * @return string
+   */
   public function getFailureReason()
   {
     return $this->failureReason;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

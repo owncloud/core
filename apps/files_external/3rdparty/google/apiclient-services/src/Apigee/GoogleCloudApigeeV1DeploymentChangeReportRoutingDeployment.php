@@ -19,39 +19,75 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1DeploymentChangeReportRoutingDeployment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiProxy;
+  /**
+   * @var string
+   */
   public $basepath;
+  /**
+   * @var string
+   */
   public $environment;
+  /**
+   * @var string
+   */
   public $revision;
 
+  /**
+   * @param string
+   */
   public function setApiProxy($apiProxy)
   {
     $this->apiProxy = $apiProxy;
   }
+  /**
+   * @return string
+   */
   public function getApiProxy()
   {
     return $this->apiProxy;
   }
+  /**
+   * @param string
+   */
   public function setBasepath($basepath)
   {
     $this->basepath = $basepath;
   }
+  /**
+   * @return string
+   */
   public function getBasepath()
   {
     return $this->basepath;
   }
+  /**
+   * @param string
+   */
   public function setEnvironment($environment)
   {
     $this->environment = $environment;
   }
+  /**
+   * @return string
+   */
   public function getEnvironment()
   {
     return $this->environment;
   }
+  /**
+   * @param string
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return string
+   */
   public function getRevision()
   {
     return $this->revision;

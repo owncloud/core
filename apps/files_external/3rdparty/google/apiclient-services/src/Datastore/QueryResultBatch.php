@@ -20,27 +20,57 @@ namespace Google\Service\Datastore;
 class QueryResultBatch extends \Google\Collection
 {
   protected $collection_key = 'entityResults';
+  /**
+   * @var string
+   */
   public $endCursor;
+  /**
+   * @var string
+   */
   public $entityResultType;
   protected $entityResultsType = EntityResult::class;
   protected $entityResultsDataType = 'array';
+  /**
+   * @var string
+   */
   public $moreResults;
+  /**
+   * @var string
+   */
   public $skippedCursor;
+  /**
+   * @var int
+   */
   public $skippedResults;
+  /**
+   * @var string
+   */
   public $snapshotVersion;
 
+  /**
+   * @param string
+   */
   public function setEndCursor($endCursor)
   {
     $this->endCursor = $endCursor;
   }
+  /**
+   * @return string
+   */
   public function getEndCursor()
   {
     return $this->endCursor;
   }
+  /**
+   * @param string
+   */
   public function setEntityResultType($entityResultType)
   {
     $this->entityResultType = $entityResultType;
   }
+  /**
+   * @return string
+   */
   public function getEntityResultType()
   {
     return $this->entityResultType;
@@ -59,34 +89,58 @@ class QueryResultBatch extends \Google\Collection
   {
     return $this->entityResults;
   }
+  /**
+   * @param string
+   */
   public function setMoreResults($moreResults)
   {
     $this->moreResults = $moreResults;
   }
+  /**
+   * @return string
+   */
   public function getMoreResults()
   {
     return $this->moreResults;
   }
+  /**
+   * @param string
+   */
   public function setSkippedCursor($skippedCursor)
   {
     $this->skippedCursor = $skippedCursor;
   }
+  /**
+   * @return string
+   */
   public function getSkippedCursor()
   {
     return $this->skippedCursor;
   }
+  /**
+   * @param int
+   */
   public function setSkippedResults($skippedResults)
   {
     $this->skippedResults = $skippedResults;
   }
+  /**
+   * @return int
+   */
   public function getSkippedResults()
   {
     return $this->skippedResults;
   }
+  /**
+   * @param string
+   */
   public function setSnapshotVersion($snapshotVersion)
   {
     $this->snapshotVersion = $snapshotVersion;
   }
+  /**
+   * @return string
+   */
   public function getSnapshotVersion()
   {
     return $this->snapshotVersion;

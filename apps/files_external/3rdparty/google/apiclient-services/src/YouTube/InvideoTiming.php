@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class InvideoTiming extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $durationMs;
+  /**
+   * @var string
+   */
   public $offsetMs;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDurationMs($durationMs)
   {
     $this->durationMs = $durationMs;
   }
+  /**
+   * @return string
+   */
   public function getDurationMs()
   {
     return $this->durationMs;
   }
+  /**
+   * @param string
+   */
   public function setOffsetMs($offsetMs)
   {
     $this->offsetMs = $offsetMs;
   }
+  /**
+   * @return string
+   */
   public function getOffsetMs()
   {
     return $this->offsetMs;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

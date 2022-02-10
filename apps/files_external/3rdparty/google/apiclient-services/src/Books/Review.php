@@ -21,15 +21,39 @@ class Review extends \Google\Model
 {
   protected $authorType = ReviewAuthor::class;
   protected $authorDataType = '';
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var string
+   */
   public $date;
+  /**
+   * @var string
+   */
   public $fullTextUrl;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $rating;
   protected $sourceType = ReviewSource::class;
   protected $sourceDataType = '';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $volumeId;
 
   /**
@@ -46,42 +70,72 @@ class Review extends \Google\Model
   {
     return $this->author;
   }
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setDate($date)
   {
     $this->date = $date;
   }
+  /**
+   * @return string
+   */
   public function getDate()
   {
     return $this->date;
   }
+  /**
+   * @param string
+   */
   public function setFullTextUrl($fullTextUrl)
   {
     $this->fullTextUrl = $fullTextUrl;
   }
+  /**
+   * @return string
+   */
   public function getFullTextUrl()
   {
     return $this->fullTextUrl;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setRating($rating)
   {
     $this->rating = $rating;
   }
+  /**
+   * @return string
+   */
   public function getRating()
   {
     return $this->rating;
@@ -100,26 +154,44 @@ class Review extends \Google\Model
   {
     return $this->source;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setVolumeId($volumeId)
   {
     $this->volumeId = $volumeId;
   }
+  /**
+   * @return string
+   */
   public function getVolumeId()
   {
     return $this->volumeId;

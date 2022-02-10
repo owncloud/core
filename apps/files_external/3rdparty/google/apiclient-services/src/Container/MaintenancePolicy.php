@@ -19,14 +19,23 @@ namespace Google\Service\Container;
 
 class MaintenancePolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resourceVersion;
   protected $windowType = MaintenanceWindow::class;
   protected $windowDataType = '';
 
+  /**
+   * @param string
+   */
   public function setResourceVersion($resourceVersion)
   {
     $this->resourceVersion = $resourceVersion;
   }
+  /**
+   * @return string
+   */
   public function getResourceVersion()
   {
     return $this->resourceVersion;

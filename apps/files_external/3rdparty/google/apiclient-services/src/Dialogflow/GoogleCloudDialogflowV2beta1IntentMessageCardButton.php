@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentMessageCardButton extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $postback;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setPostback($postback)
   {
     $this->postback = $postback;
   }
+  /**
+   * @return string
+   */
   public function getPostback()
   {
     return $this->postback;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

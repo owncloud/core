@@ -19,21 +19,33 @@ namespace Google\Service\Docs;
 
 class StructuralElement extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $endIndex;
   protected $paragraphType = Paragraph::class;
   protected $paragraphDataType = '';
   protected $sectionBreakType = SectionBreak::class;
   protected $sectionBreakDataType = '';
+  /**
+   * @var int
+   */
   public $startIndex;
   protected $tableType = Table::class;
   protected $tableDataType = '';
   protected $tableOfContentsType = TableOfContents::class;
   protected $tableOfContentsDataType = '';
 
+  /**
+   * @param int
+   */
   public function setEndIndex($endIndex)
   {
     $this->endIndex = $endIndex;
   }
+  /**
+   * @return int
+   */
   public function getEndIndex()
   {
     return $this->endIndex;
@@ -66,10 +78,16 @@ class StructuralElement extends \Google\Model
   {
     return $this->sectionBreak;
   }
+  /**
+   * @param int
+   */
   public function setStartIndex($startIndex)
   {
     $this->startIndex = $startIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartIndex()
   {
     return $this->startIndex;

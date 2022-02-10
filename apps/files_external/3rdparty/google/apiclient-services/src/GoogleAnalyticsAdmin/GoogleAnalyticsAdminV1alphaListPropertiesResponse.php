@@ -20,14 +20,23 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 class GoogleAnalyticsAdminV1alphaListPropertiesResponse extends \Google\Collection
 {
   protected $collection_key = 'properties';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $propertiesType = GoogleAnalyticsAdminV1alphaProperty::class;
   protected $propertiesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

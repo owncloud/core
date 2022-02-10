@@ -19,30 +19,57 @@ namespace Google\Service\IdentityToolkit;
 
 class IdentitytoolkitRelyingpartyDeleteAccountRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $delegatedProjectNumber;
+  /**
+   * @var string
+   */
   public $idToken;
+  /**
+   * @var string
+   */
   public $localId;
 
+  /**
+   * @param string
+   */
   public function setDelegatedProjectNumber($delegatedProjectNumber)
   {
     $this->delegatedProjectNumber = $delegatedProjectNumber;
   }
+  /**
+   * @return string
+   */
   public function getDelegatedProjectNumber()
   {
     return $this->delegatedProjectNumber;
   }
+  /**
+   * @param string
+   */
   public function setIdToken($idToken)
   {
     $this->idToken = $idToken;
   }
+  /**
+   * @return string
+   */
   public function getIdToken()
   {
     return $this->idToken;
   }
+  /**
+   * @param string
+   */
   public function setLocalId($localId)
   {
     $this->localId = $localId;
   }
+  /**
+   * @return string
+   */
   public function getLocalId()
   {
     return $this->localId;

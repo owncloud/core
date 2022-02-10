@@ -21,6 +21,9 @@ class UpdateDimensionPropertiesRequest extends \Google\Model
 {
   protected $dataSourceSheetRangeType = DataSourceSheetDimensionRange::class;
   protected $dataSourceSheetRangeDataType = '';
+  /**
+   * @var string
+   */
   public $fields;
   protected $propertiesType = DimensionProperties::class;
   protected $propertiesDataType = '';
@@ -41,10 +44,16 @@ class UpdateDimensionPropertiesRequest extends \Google\Model
   {
     return $this->dataSourceSheetRange;
   }
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

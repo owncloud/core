@@ -21,8 +21,17 @@ class Bullet extends \Google\Model
 {
   protected $bulletStyleType = TextStyle::class;
   protected $bulletStyleDataType = '';
+  /**
+   * @var string
+   */
   public $glyph;
+  /**
+   * @var string
+   */
   public $listId;
+  /**
+   * @var int
+   */
   public $nestingLevel;
 
   /**
@@ -39,26 +48,44 @@ class Bullet extends \Google\Model
   {
     return $this->bulletStyle;
   }
+  /**
+   * @param string
+   */
   public function setGlyph($glyph)
   {
     $this->glyph = $glyph;
   }
+  /**
+   * @return string
+   */
   public function getGlyph()
   {
     return $this->glyph;
   }
+  /**
+   * @param string
+   */
   public function setListId($listId)
   {
     $this->listId = $listId;
   }
+  /**
+   * @return string
+   */
   public function getListId()
   {
     return $this->listId;
   }
+  /**
+   * @param int
+   */
   public function setNestingLevel($nestingLevel)
   {
     $this->nestingLevel = $nestingLevel;
   }
+  /**
+   * @return int
+   */
   public function getNestingLevel()
   {
     return $this->nestingLevel;

@@ -22,6 +22,9 @@ class SasPortalListDevicesResponse extends \Google\Collection
   protected $collection_key = 'devices';
   protected $devicesType = SasPortalDevice::class;
   protected $devicesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class SasPortalListDevicesResponse extends \Google\Collection
   {
     return $this->devices;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

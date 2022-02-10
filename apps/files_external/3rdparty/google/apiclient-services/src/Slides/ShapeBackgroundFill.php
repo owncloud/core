@@ -19,14 +19,23 @@ namespace Google\Service\Slides;
 
 class ShapeBackgroundFill extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $propertyState;
   protected $solidFillType = SolidFill::class;
   protected $solidFillDataType = '';
 
+  /**
+   * @param string
+   */
   public function setPropertyState($propertyState)
   {
     $this->propertyState = $propertyState;
   }
+  /**
+   * @return string
+   */
   public function getPropertyState()
   {
     return $this->propertyState;

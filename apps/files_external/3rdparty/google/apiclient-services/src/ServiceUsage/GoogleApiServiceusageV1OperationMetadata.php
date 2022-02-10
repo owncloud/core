@@ -20,12 +20,21 @@ namespace Google\Service\ServiceUsage;
 class GoogleApiServiceusageV1OperationMetadata extends \Google\Collection
 {
   protected $collection_key = 'resourceNames';
+  /**
+   * @var string[]
+   */
   public $resourceNames;
 
+  /**
+   * @param string[]
+   */
   public function setResourceNames($resourceNames)
   {
     $this->resourceNames = $resourceNames;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceNames()
   {
     return $this->resourceNames;

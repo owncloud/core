@@ -20,66 +20,129 @@ namespace Google\Service\Dataflow;
 class ParameterMetadata extends \Google\Collection
 {
   protected $collection_key = 'regexes';
+  /**
+   * @var string[]
+   */
   public $customMetadata;
+  /**
+   * @var string
+   */
   public $helpText;
+  /**
+   * @var bool
+   */
   public $isOptional;
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $paramType;
+  /**
+   * @var string[]
+   */
   public $regexes;
 
+  /**
+   * @param string[]
+   */
   public function setCustomMetadata($customMetadata)
   {
     $this->customMetadata = $customMetadata;
   }
+  /**
+   * @return string[]
+   */
   public function getCustomMetadata()
   {
     return $this->customMetadata;
   }
+  /**
+   * @param string
+   */
   public function setHelpText($helpText)
   {
     $this->helpText = $helpText;
   }
+  /**
+   * @return string
+   */
   public function getHelpText()
   {
     return $this->helpText;
   }
+  /**
+   * @param bool
+   */
   public function setIsOptional($isOptional)
   {
     $this->isOptional = $isOptional;
   }
+  /**
+   * @return bool
+   */
   public function getIsOptional()
   {
     return $this->isOptional;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParamType($paramType)
   {
     $this->paramType = $paramType;
   }
+  /**
+   * @return string
+   */
   public function getParamType()
   {
     return $this->paramType;
   }
+  /**
+   * @param string[]
+   */
   public function setRegexes($regexes)
   {
     $this->regexes = $regexes;
   }
+  /**
+   * @return string[]
+   */
   public function getRegexes()
   {
     return $this->regexes;

@@ -22,9 +22,21 @@ class SubjectAltNames extends \Google\Collection
   protected $collection_key = 'uris';
   protected $customSansType = X509Extension::class;
   protected $customSansDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $dnsNames;
+  /**
+   * @var string[]
+   */
   public $emailAddresses;
+  /**
+   * @var string[]
+   */
   public $ipAddresses;
+  /**
+   * @var string[]
+   */
   public $uris;
 
   /**
@@ -41,34 +53,58 @@ class SubjectAltNames extends \Google\Collection
   {
     return $this->customSans;
   }
+  /**
+   * @param string[]
+   */
   public function setDnsNames($dnsNames)
   {
     $this->dnsNames = $dnsNames;
   }
+  /**
+   * @return string[]
+   */
   public function getDnsNames()
   {
     return $this->dnsNames;
   }
+  /**
+   * @param string[]
+   */
   public function setEmailAddresses($emailAddresses)
   {
     $this->emailAddresses = $emailAddresses;
   }
+  /**
+   * @return string[]
+   */
   public function getEmailAddresses()
   {
     return $this->emailAddresses;
   }
+  /**
+   * @param string[]
+   */
   public function setIpAddresses($ipAddresses)
   {
     $this->ipAddresses = $ipAddresses;
   }
+  /**
+   * @return string[]
+   */
   public function getIpAddresses()
   {
     return $this->ipAddresses;
   }
+  /**
+   * @param string[]
+   */
   public function setUris($uris)
   {
     $this->uris = $uris;
   }
+  /**
+   * @return string[]
+   */
   public function getUris()
   {
     return $this->uris;

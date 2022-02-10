@@ -19,30 +19,57 @@ namespace Google\Service\CloudSearch;
 
 class IntegerOperatorOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $greaterThanOperatorName;
+  /**
+   * @var string
+   */
   public $lessThanOperatorName;
+  /**
+   * @var string
+   */
   public $operatorName;
 
+  /**
+   * @param string
+   */
   public function setGreaterThanOperatorName($greaterThanOperatorName)
   {
     $this->greaterThanOperatorName = $greaterThanOperatorName;
   }
+  /**
+   * @return string
+   */
   public function getGreaterThanOperatorName()
   {
     return $this->greaterThanOperatorName;
   }
+  /**
+   * @param string
+   */
   public function setLessThanOperatorName($lessThanOperatorName)
   {
     $this->lessThanOperatorName = $lessThanOperatorName;
   }
+  /**
+   * @return string
+   */
   public function getLessThanOperatorName()
   {
     return $this->lessThanOperatorName;
   }
+  /**
+   * @param string
+   */
   public function setOperatorName($operatorName)
   {
     $this->operatorName = $operatorName;
   }
+  /**
+   * @return string
+   */
   public function getOperatorName()
   {
     return $this->operatorName;

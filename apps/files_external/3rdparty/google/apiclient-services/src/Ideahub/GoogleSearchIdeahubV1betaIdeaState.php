@@ -19,30 +19,57 @@ namespace Google\Service\Ideahub;
 
 class GoogleSearchIdeahubV1betaIdeaState extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $dismissed;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $saved;
 
+  /**
+   * @param bool
+   */
   public function setDismissed($dismissed)
   {
     $this->dismissed = $dismissed;
   }
+  /**
+   * @return bool
+   */
   public function getDismissed()
   {
     return $this->dismissed;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setSaved($saved)
   {
     $this->saved = $saved;
   }
+  /**
+   * @return bool
+   */
   public function getSaved()
   {
     return $this->saved;

@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class IntegrationDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $integrationCode;
 
+  /**
+   * @param string
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return string
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setIntegrationCode($integrationCode)
   {
     $this->integrationCode = $integrationCode;
   }
+  /**
+   * @return string
+   */
   public function getIntegrationCode()
   {
     return $this->integrationCode;

@@ -20,14 +20,23 @@ namespace Google\Service\AccessContextManager;
 class ListServicePerimetersResponse extends \Google\Collection
 {
   protected $collection_key = 'servicePerimeters';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $servicePerimetersType = ServicePerimeter::class;
   protected $servicePerimetersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

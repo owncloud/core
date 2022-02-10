@@ -20,25 +20,43 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2DeltaPresenceEstimationHistogramBucket extends \Google\Collection
 {
   protected $collection_key = 'bucketValues';
+  /**
+   * @var string
+   */
   public $bucketSize;
+  /**
+   * @var string
+   */
   public $bucketValueCount;
   protected $bucketValuesType = GooglePrivacyDlpV2DeltaPresenceEstimationQuasiIdValues::class;
   protected $bucketValuesDataType = 'array';
   public $maxProbability;
   public $minProbability;
 
+  /**
+   * @param string
+   */
   public function setBucketSize($bucketSize)
   {
     $this->bucketSize = $bucketSize;
   }
+  /**
+   * @return string
+   */
   public function getBucketSize()
   {
     return $this->bucketSize;
   }
+  /**
+   * @param string
+   */
   public function setBucketValueCount($bucketValueCount)
   {
     $this->bucketValueCount = $bucketValueCount;
   }
+  /**
+   * @return string
+   */
   public function getBucketValueCount()
   {
     return $this->bucketValueCount;

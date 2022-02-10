@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class PostalCodesListResponse extends \Google\Collection
 {
   protected $collection_key = 'postalCodes';
+  /**
+   * @var string
+   */
   public $kind;
   protected $postalCodesType = PostalCode::class;
   protected $postalCodesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

@@ -19,12 +19,21 @@ namespace Google\Service\Docs;
 
 class CreateFooterResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $footerId;
 
+  /**
+   * @param string
+   */
   public function setFooterId($footerId)
   {
     $this->footerId = $footerId;
   }
+  /**
+   * @return string
+   */
   public function getFooterId()
   {
     return $this->footerId;

@@ -19,21 +19,39 @@ namespace Google\Service\Drive;
 
 class StartPageToken extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $startPageToken;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setStartPageToken($startPageToken)
   {
     $this->startPageToken = $startPageToken;
   }
+  /**
+   * @return string
+   */
   public function getStartPageToken()
   {
     return $this->startPageToken;

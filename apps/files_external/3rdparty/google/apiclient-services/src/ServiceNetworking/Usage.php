@@ -20,23 +20,41 @@ namespace Google\Service\ServiceNetworking;
 class Usage extends \Google\Collection
 {
   protected $collection_key = 'rules';
+  /**
+   * @var string
+   */
   public $producerNotificationChannel;
+  /**
+   * @var string[]
+   */
   public $requirements;
   protected $rulesType = UsageRule::class;
   protected $rulesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setProducerNotificationChannel($producerNotificationChannel)
   {
     $this->producerNotificationChannel = $producerNotificationChannel;
   }
+  /**
+   * @return string
+   */
   public function getProducerNotificationChannel()
   {
     return $this->producerNotificationChannel;
   }
+  /**
+   * @param string[]
+   */
   public function setRequirements($requirements)
   {
     $this->requirements = $requirements;
   }
+  /**
+   * @return string[]
+   */
   public function getRequirements()
   {
     return $this->requirements;

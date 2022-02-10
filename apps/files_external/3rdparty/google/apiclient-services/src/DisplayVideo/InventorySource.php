@@ -20,16 +20,43 @@ namespace Google\Service\DisplayVideo;
 class InventorySource extends \Google\Collection
 {
   protected $collection_key = 'creativeConfigs';
+  /**
+   * @var string
+   */
   public $commitment;
   protected $creativeConfigsType = CreativeConfig::class;
   protected $creativeConfigsDataType = 'array';
+  /**
+   * @var string
+   */
   public $dealId;
+  /**
+   * @var string
+   */
   public $deliveryMethod;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $exchange;
+  /**
+   * @var string
+   */
   public $inventorySourceId;
+  /**
+   * @var string
+   */
   public $inventorySourceType;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $publisherName;
   protected $rateDetailsType = RateDetails::class;
   protected $rateDetailsDataType = '';
@@ -37,12 +64,21 @@ class InventorySource extends \Google\Collection
   protected $statusDataType = '';
   protected $timeRangeType = TimeRange::class;
   protected $timeRangeDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCommitment($commitment)
   {
     $this->commitment = $commitment;
   }
+  /**
+   * @return string
+   */
   public function getCommitment()
   {
     return $this->commitment;
@@ -61,66 +97,114 @@ class InventorySource extends \Google\Collection
   {
     return $this->creativeConfigs;
   }
+  /**
+   * @param string
+   */
   public function setDealId($dealId)
   {
     $this->dealId = $dealId;
   }
+  /**
+   * @return string
+   */
   public function getDealId()
   {
     return $this->dealId;
   }
+  /**
+   * @param string
+   */
   public function setDeliveryMethod($deliveryMethod)
   {
     $this->deliveryMethod = $deliveryMethod;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryMethod()
   {
     return $this->deliveryMethod;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setExchange($exchange)
   {
     $this->exchange = $exchange;
   }
+  /**
+   * @return string
+   */
   public function getExchange()
   {
     return $this->exchange;
   }
+  /**
+   * @param string
+   */
   public function setInventorySourceId($inventorySourceId)
   {
     $this->inventorySourceId = $inventorySourceId;
   }
+  /**
+   * @return string
+   */
   public function getInventorySourceId()
   {
     return $this->inventorySourceId;
   }
+  /**
+   * @param string
+   */
   public function setInventorySourceType($inventorySourceType)
   {
     $this->inventorySourceType = $inventorySourceType;
   }
+  /**
+   * @return string
+   */
   public function getInventorySourceType()
   {
     return $this->inventorySourceType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPublisherName($publisherName)
   {
     $this->publisherName = $publisherName;
   }
+  /**
+   * @return string
+   */
   public function getPublisherName()
   {
     return $this->publisherName;
@@ -167,10 +251,16 @@ class InventorySource extends \Google\Collection
   {
     return $this->timeRange;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

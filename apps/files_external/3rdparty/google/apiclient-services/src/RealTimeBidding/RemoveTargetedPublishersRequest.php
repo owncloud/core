@@ -20,12 +20,21 @@ namespace Google\Service\RealTimeBidding;
 class RemoveTargetedPublishersRequest extends \Google\Collection
 {
   protected $collection_key = 'publisherIds';
+  /**
+   * @var string[]
+   */
   public $publisherIds;
 
+  /**
+   * @param string[]
+   */
   public function setPublisherIds($publisherIds)
   {
     $this->publisherIds = $publisherIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPublisherIds()
   {
     return $this->publisherIds;

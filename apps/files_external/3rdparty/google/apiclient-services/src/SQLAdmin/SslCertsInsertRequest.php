@@ -19,12 +19,21 @@ namespace Google\Service\SQLAdmin;
 
 class SslCertsInsertRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $commonName;
 
+  /**
+   * @param string
+   */
   public function setCommonName($commonName)
   {
     $this->commonName = $commonName;
   }
+  /**
+   * @return string
+   */
   public function getCommonName()
   {
     return $this->commonName;

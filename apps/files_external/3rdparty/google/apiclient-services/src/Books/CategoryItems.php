@@ -19,30 +19,57 @@ namespace Google\Service\Books;
 
 class CategoryItems extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $badgeUrl;
+  /**
+   * @var string
+   */
   public $categoryId;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setBadgeUrl($badgeUrl)
   {
     $this->badgeUrl = $badgeUrl;
   }
+  /**
+   * @return string
+   */
   public function getBadgeUrl()
   {
     return $this->badgeUrl;
   }
+  /**
+   * @param string
+   */
   public function setCategoryId($categoryId)
   {
     $this->categoryId = $categoryId;
   }
+  /**
+   * @return string
+   */
   public function getCategoryId()
   {
     return $this->categoryId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

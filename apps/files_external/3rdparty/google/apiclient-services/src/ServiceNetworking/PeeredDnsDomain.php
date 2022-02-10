@@ -19,21 +19,39 @@ namespace Google\Service\ServiceNetworking;
 
 class PeeredDnsDomain extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dnsSuffix;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDnsSuffix($dnsSuffix)
   {
     $this->dnsSuffix = $dnsSuffix;
   }
+  /**
+   * @return string
+   */
   public function getDnsSuffix()
   {
     return $this->dnsSuffix;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

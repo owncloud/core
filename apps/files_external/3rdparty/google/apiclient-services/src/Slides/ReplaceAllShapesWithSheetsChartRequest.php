@@ -20,17 +20,35 @@ namespace Google\Service\Slides;
 class ReplaceAllShapesWithSheetsChartRequest extends \Google\Collection
 {
   protected $collection_key = 'pageObjectIds';
+  /**
+   * @var int
+   */
   public $chartId;
   protected $containsTextType = SubstringMatchCriteria::class;
   protected $containsTextDataType = '';
+  /**
+   * @var string
+   */
   public $linkingMode;
+  /**
+   * @var string[]
+   */
   public $pageObjectIds;
+  /**
+   * @var string
+   */
   public $spreadsheetId;
 
+  /**
+   * @param int
+   */
   public function setChartId($chartId)
   {
     $this->chartId = $chartId;
   }
+  /**
+   * @return int
+   */
   public function getChartId()
   {
     return $this->chartId;
@@ -49,26 +67,44 @@ class ReplaceAllShapesWithSheetsChartRequest extends \Google\Collection
   {
     return $this->containsText;
   }
+  /**
+   * @param string
+   */
   public function setLinkingMode($linkingMode)
   {
     $this->linkingMode = $linkingMode;
   }
+  /**
+   * @return string
+   */
   public function getLinkingMode()
   {
     return $this->linkingMode;
   }
+  /**
+   * @param string[]
+   */
   public function setPageObjectIds($pageObjectIds)
   {
     $this->pageObjectIds = $pageObjectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPageObjectIds()
   {
     return $this->pageObjectIds;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;

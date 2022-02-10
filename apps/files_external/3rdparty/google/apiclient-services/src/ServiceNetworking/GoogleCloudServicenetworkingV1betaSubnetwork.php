@@ -19,39 +19,75 @@ namespace Google\Service\ServiceNetworking;
 
 class GoogleCloudServicenetworkingV1betaSubnetwork extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipCidrRange;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var bool
+   */
   public $outsideAllocation;
 
+  /**
+   * @param string
+   */
   public function setIpCidrRange($ipCidrRange)
   {
     $this->ipCidrRange = $ipCidrRange;
   }
+  /**
+   * @return string
+   */
   public function getIpCidrRange()
   {
     return $this->ipCidrRange;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param bool
+   */
   public function setOutsideAllocation($outsideAllocation)
   {
     $this->outsideAllocation = $outsideAllocation;
   }
+  /**
+   * @return bool
+   */
   public function getOutsideAllocation()
   {
     return $this->outsideAllocation;

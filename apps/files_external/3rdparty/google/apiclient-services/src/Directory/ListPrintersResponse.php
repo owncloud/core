@@ -20,14 +20,23 @@ namespace Google\Service\Directory;
 class ListPrintersResponse extends \Google\Collection
 {
   protected $collection_key = 'printers';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $printersType = Printer::class;
   protected $printersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

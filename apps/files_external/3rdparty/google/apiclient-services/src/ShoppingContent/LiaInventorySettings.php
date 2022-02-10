@@ -19,39 +19,75 @@ namespace Google\Service\ShoppingContent;
 
 class LiaInventorySettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $inventoryVerificationContactEmail;
+  /**
+   * @var string
+   */
   public $inventoryVerificationContactName;
+  /**
+   * @var string
+   */
   public $inventoryVerificationContactStatus;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setInventoryVerificationContactEmail($inventoryVerificationContactEmail)
   {
     $this->inventoryVerificationContactEmail = $inventoryVerificationContactEmail;
   }
+  /**
+   * @return string
+   */
   public function getInventoryVerificationContactEmail()
   {
     return $this->inventoryVerificationContactEmail;
   }
+  /**
+   * @param string
+   */
   public function setInventoryVerificationContactName($inventoryVerificationContactName)
   {
     $this->inventoryVerificationContactName = $inventoryVerificationContactName;
   }
+  /**
+   * @return string
+   */
   public function getInventoryVerificationContactName()
   {
     return $this->inventoryVerificationContactName;
   }
+  /**
+   * @param string
+   */
   public function setInventoryVerificationContactStatus($inventoryVerificationContactStatus)
   {
     $this->inventoryVerificationContactStatus = $inventoryVerificationContactStatus;
   }
+  /**
+   * @return string
+   */
   public function getInventoryVerificationContactStatus()
   {
     return $this->inventoryVerificationContactStatus;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

@@ -19,66 +19,129 @@ namespace Google\Service\IdentityToolkit;
 
 class SignupNewUserResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $expiresIn;
+  /**
+   * @var string
+   */
   public $idToken;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $localId;
+  /**
+   * @var string
+   */
   public $refreshToken;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setExpiresIn($expiresIn)
   {
     $this->expiresIn = $expiresIn;
   }
+  /**
+   * @return string
+   */
   public function getExpiresIn()
   {
     return $this->expiresIn;
   }
+  /**
+   * @param string
+   */
   public function setIdToken($idToken)
   {
     $this->idToken = $idToken;
   }
+  /**
+   * @return string
+   */
   public function getIdToken()
   {
     return $this->idToken;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLocalId($localId)
   {
     $this->localId = $localId;
   }
+  /**
+   * @return string
+   */
   public function getLocalId()
   {
     return $this->localId;
   }
+  /**
+   * @param string
+   */
   public function setRefreshToken($refreshToken)
   {
     $this->refreshToken = $refreshToken;
   }
+  /**
+   * @return string
+   */
   public function getRefreshToken()
   {
     return $this->refreshToken;

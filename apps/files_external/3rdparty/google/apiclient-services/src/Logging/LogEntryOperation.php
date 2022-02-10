@@ -19,39 +19,75 @@ namespace Google\Service\Logging;
 
 class LogEntryOperation extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $first;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var bool
+   */
   public $last;
+  /**
+   * @var string
+   */
   public $producer;
 
+  /**
+   * @param bool
+   */
   public function setFirst($first)
   {
     $this->first = $first;
   }
+  /**
+   * @return bool
+   */
   public function getFirst()
   {
     return $this->first;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param bool
+   */
   public function setLast($last)
   {
     $this->last = $last;
   }
+  /**
+   * @return bool
+   */
   public function getLast()
   {
     return $this->last;
   }
+  /**
+   * @param string
+   */
   public function setProducer($producer)
   {
     $this->producer = $producer;
   }
+  /**
+   * @return string
+   */
   public function getProducer()
   {
     return $this->producer;

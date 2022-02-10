@@ -19,27 +19,54 @@ namespace Google\Service\Monitoring;
 
 class ServiceLevelObjective extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $calendarPeriod;
+  /**
+   * @var string
+   */
   public $displayName;
   public $goal;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $rollingPeriod;
   protected $serviceLevelIndicatorType = ServiceLevelIndicator::class;
   protected $serviceLevelIndicatorDataType = '';
+  /**
+   * @var string[]
+   */
   public $userLabels;
 
+  /**
+   * @param string
+   */
   public function setCalendarPeriod($calendarPeriod)
   {
     $this->calendarPeriod = $calendarPeriod;
   }
+  /**
+   * @return string
+   */
   public function getCalendarPeriod()
   {
     return $this->calendarPeriod;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -52,18 +79,30 @@ class ServiceLevelObjective extends \Google\Model
   {
     return $this->goal;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRollingPeriod($rollingPeriod)
   {
     $this->rollingPeriod = $rollingPeriod;
   }
+  /**
+   * @return string
+   */
   public function getRollingPeriod()
   {
     return $this->rollingPeriod;
@@ -82,10 +121,16 @@ class ServiceLevelObjective extends \Google\Model
   {
     return $this->serviceLevelIndicator;
   }
+  /**
+   * @param string[]
+   */
   public function setUserLabels($userLabels)
   {
     $this->userLabels = $userLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getUserLabels()
   {
     return $this->userLabels;

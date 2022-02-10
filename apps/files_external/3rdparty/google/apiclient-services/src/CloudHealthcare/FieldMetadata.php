@@ -20,21 +20,39 @@ namespace Google\Service\CloudHealthcare;
 class FieldMetadata extends \Google\Collection
 {
   protected $collection_key = 'paths';
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string[]
+   */
   public $paths;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string[]
+   */
   public function setPaths($paths)
   {
     $this->paths = $paths;
   }
+  /**
+   * @return string[]
+   */
   public function getPaths()
   {
     return $this->paths;

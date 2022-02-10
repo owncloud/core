@@ -20,23 +20,41 @@ namespace Google\Service\Script;
 class ExecutionError extends \Google\Collection
 {
   protected $collection_key = 'scriptStackTraceElements';
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string
+   */
   public $errorType;
   protected $scriptStackTraceElementsType = ScriptStackTraceElement::class;
   protected $scriptStackTraceElementsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string
+   */
   public function setErrorType($errorType)
   {
     $this->errorType = $errorType;
   }
+  /**
+   * @return string
+   */
   public function getErrorType()
   {
     return $this->errorType;

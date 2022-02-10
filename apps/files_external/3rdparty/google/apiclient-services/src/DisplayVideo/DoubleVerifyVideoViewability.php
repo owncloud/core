@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class DoubleVerifyVideoViewability extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $playerImpressionRate;
+  /**
+   * @var string
+   */
   public $videoIab;
+  /**
+   * @var string
+   */
   public $videoViewableRate;
 
+  /**
+   * @param string
+   */
   public function setPlayerImpressionRate($playerImpressionRate)
   {
     $this->playerImpressionRate = $playerImpressionRate;
   }
+  /**
+   * @return string
+   */
   public function getPlayerImpressionRate()
   {
     return $this->playerImpressionRate;
   }
+  /**
+   * @param string
+   */
   public function setVideoIab($videoIab)
   {
     $this->videoIab = $videoIab;
   }
+  /**
+   * @return string
+   */
   public function getVideoIab()
   {
     return $this->videoIab;
   }
+  /**
+   * @param string
+   */
   public function setVideoViewableRate($videoViewableRate)
   {
     $this->videoViewableRate = $videoViewableRate;
   }
+  /**
+   * @return string
+   */
   public function getVideoViewableRate()
   {
     return $this->videoViewableRate;

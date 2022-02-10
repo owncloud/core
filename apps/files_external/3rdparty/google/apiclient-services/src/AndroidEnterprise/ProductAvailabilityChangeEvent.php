@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class ProductAvailabilityChangeEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $availabilityStatus;
+  /**
+   * @var string
+   */
   public $productId;
 
+  /**
+   * @param string
+   */
   public function setAvailabilityStatus($availabilityStatus)
   {
     $this->availabilityStatus = $availabilityStatus;
   }
+  /**
+   * @return string
+   */
   public function getAvailabilityStatus()
   {
     return $this->availabilityStatus;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;

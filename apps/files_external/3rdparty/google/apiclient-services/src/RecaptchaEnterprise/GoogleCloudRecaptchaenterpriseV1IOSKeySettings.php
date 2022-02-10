@@ -20,21 +20,39 @@ namespace Google\Service\RecaptchaEnterprise;
 class GoogleCloudRecaptchaenterpriseV1IOSKeySettings extends \Google\Collection
 {
   protected $collection_key = 'allowedBundleIds';
+  /**
+   * @var bool
+   */
   public $allowAllBundleIds;
+  /**
+   * @var string[]
+   */
   public $allowedBundleIds;
 
+  /**
+   * @param bool
+   */
   public function setAllowAllBundleIds($allowAllBundleIds)
   {
     $this->allowAllBundleIds = $allowAllBundleIds;
   }
+  /**
+   * @return bool
+   */
   public function getAllowAllBundleIds()
   {
     return $this->allowAllBundleIds;
   }
+  /**
+   * @param string[]
+   */
   public function setAllowedBundleIds($allowedBundleIds)
   {
     $this->allowedBundleIds = $allowedBundleIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedBundleIds()
   {
     return $this->allowedBundleIds;

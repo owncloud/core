@@ -20,61 +20,121 @@ namespace Google\Service\Compute;
 class TestFailure extends \Google\Collection
 {
   protected $collection_key = 'headers';
+  /**
+   * @var string
+   */
   public $actualOutputUrl;
+  /**
+   * @var int
+   */
   public $actualRedirectResponseCode;
+  /**
+   * @var string
+   */
   public $actualService;
+  /**
+   * @var string
+   */
   public $expectedOutputUrl;
+  /**
+   * @var int
+   */
   public $expectedRedirectResponseCode;
+  /**
+   * @var string
+   */
   public $expectedService;
   protected $headersType = UrlMapTestHeader::class;
   protected $headersDataType = 'array';
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var string
+   */
   public $path;
 
+  /**
+   * @param string
+   */
   public function setActualOutputUrl($actualOutputUrl)
   {
     $this->actualOutputUrl = $actualOutputUrl;
   }
+  /**
+   * @return string
+   */
   public function getActualOutputUrl()
   {
     return $this->actualOutputUrl;
   }
+  /**
+   * @param int
+   */
   public function setActualRedirectResponseCode($actualRedirectResponseCode)
   {
     $this->actualRedirectResponseCode = $actualRedirectResponseCode;
   }
+  /**
+   * @return int
+   */
   public function getActualRedirectResponseCode()
   {
     return $this->actualRedirectResponseCode;
   }
+  /**
+   * @param string
+   */
   public function setActualService($actualService)
   {
     $this->actualService = $actualService;
   }
+  /**
+   * @return string
+   */
   public function getActualService()
   {
     return $this->actualService;
   }
+  /**
+   * @param string
+   */
   public function setExpectedOutputUrl($expectedOutputUrl)
   {
     $this->expectedOutputUrl = $expectedOutputUrl;
   }
+  /**
+   * @return string
+   */
   public function getExpectedOutputUrl()
   {
     return $this->expectedOutputUrl;
   }
+  /**
+   * @param int
+   */
   public function setExpectedRedirectResponseCode($expectedRedirectResponseCode)
   {
     $this->expectedRedirectResponseCode = $expectedRedirectResponseCode;
   }
+  /**
+   * @return int
+   */
   public function getExpectedRedirectResponseCode()
   {
     return $this->expectedRedirectResponseCode;
   }
+  /**
+   * @param string
+   */
   public function setExpectedService($expectedService)
   {
     $this->expectedService = $expectedService;
   }
+  /**
+   * @return string
+   */
   public function getExpectedService()
   {
     return $this->expectedService;
@@ -93,18 +153,30 @@ class TestFailure extends \Google\Collection
   {
     return $this->headers;
   }
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

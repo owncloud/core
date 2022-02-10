@@ -20,14 +20,23 @@ namespace Google\Service\Libraryagent;
 class GoogleExampleLibraryagentV1ListShelvesResponse extends \Google\Collection
 {
   protected $collection_key = 'shelves';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $shelvesType = GoogleExampleLibraryagentV1Shelf::class;
   protected $shelvesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

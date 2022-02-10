@@ -19,12 +19,21 @@ namespace Google\Service\CloudIdentity;
 
 class TransitiveMembershipRole extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $role;
 
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;

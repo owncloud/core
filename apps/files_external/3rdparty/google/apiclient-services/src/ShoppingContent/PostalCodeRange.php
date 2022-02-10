@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class PostalCodeRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $postalCodeRangeBegin;
+  /**
+   * @var string
+   */
   public $postalCodeRangeEnd;
 
+  /**
+   * @param string
+   */
   public function setPostalCodeRangeBegin($postalCodeRangeBegin)
   {
     $this->postalCodeRangeBegin = $postalCodeRangeBegin;
   }
+  /**
+   * @return string
+   */
   public function getPostalCodeRangeBegin()
   {
     return $this->postalCodeRangeBegin;
   }
+  /**
+   * @param string
+   */
   public function setPostalCodeRangeEnd($postalCodeRangeEnd)
   {
     $this->postalCodeRangeEnd = $postalCodeRangeEnd;
   }
+  /**
+   * @return string
+   */
   public function getPostalCodeRangeEnd()
   {
     return $this->postalCodeRangeEnd;

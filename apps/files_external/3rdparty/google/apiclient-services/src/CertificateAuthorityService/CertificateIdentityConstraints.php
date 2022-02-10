@@ -19,23 +19,41 @@ namespace Google\Service\CertificateAuthorityService;
 
 class CertificateIdentityConstraints extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowSubjectAltNamesPassthrough;
+  /**
+   * @var bool
+   */
   public $allowSubjectPassthrough;
   protected $celExpressionType = Expr::class;
   protected $celExpressionDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setAllowSubjectAltNamesPassthrough($allowSubjectAltNamesPassthrough)
   {
     $this->allowSubjectAltNamesPassthrough = $allowSubjectAltNamesPassthrough;
   }
+  /**
+   * @return bool
+   */
   public function getAllowSubjectAltNamesPassthrough()
   {
     return $this->allowSubjectAltNamesPassthrough;
   }
+  /**
+   * @param bool
+   */
   public function setAllowSubjectPassthrough($allowSubjectPassthrough)
   {
     $this->allowSubjectPassthrough = $allowSubjectPassthrough;
   }
+  /**
+   * @return bool
+   */
   public function getAllowSubjectPassthrough()
   {
     return $this->allowSubjectPassthrough;

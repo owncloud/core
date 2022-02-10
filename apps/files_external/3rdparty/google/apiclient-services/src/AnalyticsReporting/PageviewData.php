@@ -19,21 +19,39 @@ namespace Google\Service\AnalyticsReporting;
 
 class PageviewData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pagePath;
+  /**
+   * @var string
+   */
   public $pageTitle;
 
+  /**
+   * @param string
+   */
   public function setPagePath($pagePath)
   {
     $this->pagePath = $pagePath;
   }
+  /**
+   * @return string
+   */
   public function getPagePath()
   {
     return $this->pagePath;
   }
+  /**
+   * @param string
+   */
   public function setPageTitle($pageTitle)
   {
     $this->pageTitle = $pageTitle;
   }
+  /**
+   * @return string
+   */
   public function getPageTitle()
   {
     return $this->pageTitle;

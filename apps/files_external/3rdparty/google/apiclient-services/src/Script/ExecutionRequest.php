@@ -20,39 +20,75 @@ namespace Google\Service\Script;
 class ExecutionRequest extends \Google\Collection
 {
   protected $collection_key = 'parameters';
+  /**
+   * @var bool
+   */
   public $devMode;
+  /**
+   * @var string
+   */
   public $function;
+  /**
+   * @var array[]
+   */
   public $parameters;
+  /**
+   * @var string
+   */
   public $sessionState;
 
+  /**
+   * @param bool
+   */
   public function setDevMode($devMode)
   {
     $this->devMode = $devMode;
   }
+  /**
+   * @return bool
+   */
   public function getDevMode()
   {
     return $this->devMode;
   }
+  /**
+   * @param string
+   */
   public function setFunction($function)
   {
     $this->function = $function;
   }
+  /**
+   * @return string
+   */
   public function getFunction()
   {
     return $this->function;
   }
+  /**
+   * @param array[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return array[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setSessionState($sessionState)
   {
     $this->sessionState = $sessionState;
   }
+  /**
+   * @return string
+   */
   public function getSessionState()
   {
     return $this->sessionState;

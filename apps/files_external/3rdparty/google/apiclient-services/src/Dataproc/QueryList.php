@@ -20,12 +20,21 @@ namespace Google\Service\Dataproc;
 class QueryList extends \Google\Collection
 {
   protected $collection_key = 'queries';
+  /**
+   * @var string[]
+   */
   public $queries;
 
+  /**
+   * @param string[]
+   */
   public function setQueries($queries)
   {
     $this->queries = $queries;
   }
+  /**
+   * @return string[]
+   */
   public function getQueries()
   {
     return $this->queries;

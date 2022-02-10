@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class PerformanceGoal extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $performanceGoalAmountMicros;
+  /**
+   * @var string
+   */
   public $performanceGoalPercentageMicros;
+  /**
+   * @var string
+   */
   public $performanceGoalString;
+  /**
+   * @var string
+   */
   public $performanceGoalType;
 
+  /**
+   * @param string
+   */
   public function setPerformanceGoalAmountMicros($performanceGoalAmountMicros)
   {
     $this->performanceGoalAmountMicros = $performanceGoalAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getPerformanceGoalAmountMicros()
   {
     return $this->performanceGoalAmountMicros;
   }
+  /**
+   * @param string
+   */
   public function setPerformanceGoalPercentageMicros($performanceGoalPercentageMicros)
   {
     $this->performanceGoalPercentageMicros = $performanceGoalPercentageMicros;
   }
+  /**
+   * @return string
+   */
   public function getPerformanceGoalPercentageMicros()
   {
     return $this->performanceGoalPercentageMicros;
   }
+  /**
+   * @param string
+   */
   public function setPerformanceGoalString($performanceGoalString)
   {
     $this->performanceGoalString = $performanceGoalString;
   }
+  /**
+   * @return string
+   */
   public function getPerformanceGoalString()
   {
     return $this->performanceGoalString;
   }
+  /**
+   * @param string
+   */
   public function setPerformanceGoalType($performanceGoalType)
   {
     $this->performanceGoalType = $performanceGoalType;
   }
+  /**
+   * @return string
+   */
   public function getPerformanceGoalType()
   {
     return $this->performanceGoalType;

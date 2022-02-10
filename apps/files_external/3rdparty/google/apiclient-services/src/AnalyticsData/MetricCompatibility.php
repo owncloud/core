@@ -19,14 +19,23 @@ namespace Google\Service\AnalyticsData;
 
 class MetricCompatibility extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $compatibility;
   protected $metricMetadataType = MetricMetadata::class;
   protected $metricMetadataDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCompatibility($compatibility)
   {
     $this->compatibility = $compatibility;
   }
+  /**
+   * @return string
+   */
   public function getCompatibility()
   {
     return $this->compatibility;

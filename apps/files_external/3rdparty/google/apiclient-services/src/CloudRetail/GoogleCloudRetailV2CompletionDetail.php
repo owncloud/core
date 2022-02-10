@@ -19,30 +19,57 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2CompletionDetail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $completionAttributionToken;
+  /**
+   * @var int
+   */
   public $selectedPosition;
+  /**
+   * @var string
+   */
   public $selectedSuggestion;
 
+  /**
+   * @param string
+   */
   public function setCompletionAttributionToken($completionAttributionToken)
   {
     $this->completionAttributionToken = $completionAttributionToken;
   }
+  /**
+   * @return string
+   */
   public function getCompletionAttributionToken()
   {
     return $this->completionAttributionToken;
   }
+  /**
+   * @param int
+   */
   public function setSelectedPosition($selectedPosition)
   {
     $this->selectedPosition = $selectedPosition;
   }
+  /**
+   * @return int
+   */
   public function getSelectedPosition()
   {
     return $this->selectedPosition;
   }
+  /**
+   * @param string
+   */
   public function setSelectedSuggestion($selectedSuggestion)
   {
     $this->selectedSuggestion = $selectedSuggestion;
   }
+  /**
+   * @return string
+   */
   public function getSelectedSuggestion()
   {
     return $this->selectedSuggestion;

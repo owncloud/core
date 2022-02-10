@@ -19,30 +19,57 @@ namespace Google\Service\AndroidPublisher;
 
 class InternalAppSharingArtifact extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certificateFingerprint;
+  /**
+   * @var string
+   */
   public $downloadUrl;
+  /**
+   * @var string
+   */
   public $sha256;
 
+  /**
+   * @param string
+   */
   public function setCertificateFingerprint($certificateFingerprint)
   {
     $this->certificateFingerprint = $certificateFingerprint;
   }
+  /**
+   * @return string
+   */
   public function getCertificateFingerprint()
   {
     return $this->certificateFingerprint;
   }
+  /**
+   * @param string
+   */
   public function setDownloadUrl($downloadUrl)
   {
     $this->downloadUrl = $downloadUrl;
   }
+  /**
+   * @return string
+   */
   public function getDownloadUrl()
   {
     return $this->downloadUrl;
   }
+  /**
+   * @param string
+   */
   public function setSha256($sha256)
   {
     $this->sha256 = $sha256;
   }
+  /**
+   * @return string
+   */
   public function getSha256()
   {
     return $this->sha256;

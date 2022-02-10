@@ -20,53 +20,101 @@ namespace Google\Service\Dataproc;
 class ClusterOperationMetadata extends \Google\Collection
 {
   protected $collection_key = 'warnings';
+  /**
+   * @var string
+   */
   public $clusterName;
+  /**
+   * @var string
+   */
   public $clusterUuid;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $operationType;
   protected $statusType = ClusterOperationStatus::class;
   protected $statusDataType = '';
   protected $statusHistoryType = ClusterOperationStatus::class;
   protected $statusHistoryDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $warnings;
 
+  /**
+   * @param string
+   */
   public function setClusterName($clusterName)
   {
     $this->clusterName = $clusterName;
   }
+  /**
+   * @return string
+   */
   public function getClusterName()
   {
     return $this->clusterName;
   }
+  /**
+   * @param string
+   */
   public function setClusterUuid($clusterUuid)
   {
     $this->clusterUuid = $clusterUuid;
   }
+  /**
+   * @return string
+   */
   public function getClusterUuid()
   {
     return $this->clusterUuid;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setOperationType($operationType)
   {
     $this->operationType = $operationType;
   }
+  /**
+   * @return string
+   */
   public function getOperationType()
   {
     return $this->operationType;
@@ -99,10 +147,16 @@ class ClusterOperationMetadata extends \Google\Collection
   {
     return $this->statusHistory;
   }
+  /**
+   * @param string[]
+   */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
+  /**
+   * @return string[]
+   */
   public function getWarnings()
   {
     return $this->warnings;

@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentMessageImage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessibilityText;
+  /**
+   * @var string
+   */
   public $imageUri;
 
+  /**
+   * @param string
+   */
   public function setAccessibilityText($accessibilityText)
   {
     $this->accessibilityText = $accessibilityText;
   }
+  /**
+   * @return string
+   */
   public function getAccessibilityText()
   {
     return $this->accessibilityText;
   }
+  /**
+   * @param string
+   */
   public function setImageUri($imageUri)
   {
     $this->imageUri = $imageUri;
   }
+  /**
+   * @return string
+   */
   public function getImageUri()
   {
     return $this->imageUri;

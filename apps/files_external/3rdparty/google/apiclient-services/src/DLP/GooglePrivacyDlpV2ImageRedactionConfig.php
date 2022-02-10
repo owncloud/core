@@ -21,6 +21,9 @@ class GooglePrivacyDlpV2ImageRedactionConfig extends \Google\Model
 {
   protected $infoTypeType = GooglePrivacyDlpV2InfoType::class;
   protected $infoTypeDataType = '';
+  /**
+   * @var bool
+   */
   public $redactAllText;
   protected $redactionColorType = GooglePrivacyDlpV2Color::class;
   protected $redactionColorDataType = '';
@@ -39,10 +42,16 @@ class GooglePrivacyDlpV2ImageRedactionConfig extends \Google\Model
   {
     return $this->infoType;
   }
+  /**
+   * @param bool
+   */
   public function setRedactAllText($redactAllText)
   {
     $this->redactAllText = $redactAllText;
   }
+  /**
+   * @return bool
+   */
   public function getRedactAllText()
   {
     return $this->redactAllText;

@@ -19,34 +19,61 @@ namespace Google\Service\Slides;
 
 class UpdateTableBorderPropertiesRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $borderPosition;
+  /**
+   * @var string
+   */
   public $fields;
+  /**
+   * @var string
+   */
   public $objectId;
   protected $tableBorderPropertiesType = TableBorderProperties::class;
   protected $tableBorderPropertiesDataType = '';
   protected $tableRangeType = TableRange::class;
   protected $tableRangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBorderPosition($borderPosition)
   {
     $this->borderPosition = $borderPosition;
   }
+  /**
+   * @return string
+   */
   public function getBorderPosition()
   {
     return $this->borderPosition;
   }
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;

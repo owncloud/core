@@ -19,12 +19,21 @@ namespace Google\Service\HangoutsChat;
 
 class DriveDataRef extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $driveFileId;
 
+  /**
+   * @param string
+   */
   public function setDriveFileId($driveFileId)
   {
     $this->driveFileId = $driveFileId;
   }
+  /**
+   * @return string
+   */
   public function getDriveFileId()
   {
     return $this->driveFileId;

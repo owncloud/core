@@ -19,21 +19,39 @@ namespace Google\Service\AndroidPublisher;
 
 class RegionalTaxRateInfo extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $eligibleForStreamingServiceTaxRate;
+  /**
+   * @var string
+   */
   public $taxTier;
 
+  /**
+   * @param bool
+   */
   public function setEligibleForStreamingServiceTaxRate($eligibleForStreamingServiceTaxRate)
   {
     $this->eligibleForStreamingServiceTaxRate = $eligibleForStreamingServiceTaxRate;
   }
+  /**
+   * @return bool
+   */
   public function getEligibleForStreamingServiceTaxRate()
   {
     return $this->eligibleForStreamingServiceTaxRate;
   }
+  /**
+   * @param string
+   */
   public function setTaxTier($taxTier)
   {
     $this->taxTier = $taxTier;
   }
+  /**
+   * @return string
+   */
   public function getTaxTier()
   {
     return $this->taxTier;

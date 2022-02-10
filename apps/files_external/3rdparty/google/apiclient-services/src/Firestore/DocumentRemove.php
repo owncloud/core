@@ -20,30 +20,57 @@ namespace Google\Service\Firestore;
 class DocumentRemove extends \Google\Collection
 {
   protected $collection_key = 'removedTargetIds';
+  /**
+   * @var string
+   */
   public $document;
+  /**
+   * @var string
+   */
   public $readTime;
+  /**
+   * @var int[]
+   */
   public $removedTargetIds;
 
+  /**
+   * @param string
+   */
   public function setDocument($document)
   {
     $this->document = $document;
   }
+  /**
+   * @return string
+   */
   public function getDocument()
   {
     return $this->document;
   }
+  /**
+   * @param string
+   */
   public function setReadTime($readTime)
   {
     $this->readTime = $readTime;
   }
+  /**
+   * @return string
+   */
   public function getReadTime()
   {
     return $this->readTime;
   }
+  /**
+   * @param int[]
+   */
   public function setRemovedTargetIds($removedTargetIds)
   {
     $this->removedTargetIds = $removedTargetIds;
   }
+  /**
+   * @return int[]
+   */
   public function getRemovedTargetIds()
   {
     return $this->removedTargetIds;

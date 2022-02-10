@@ -20,14 +20,23 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3ListSecuritySettingsResponse extends \Google\Collection
 {
   protected $collection_key = 'securitySettings';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $securitySettingsType = GoogleCloudDialogflowCxV3SecuritySettings::class;
   protected $securitySettingsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -21,7 +21,13 @@ class EncryptionInfo extends \Google\Model
 {
   protected $encryptionStatusType = Status::class;
   protected $encryptionStatusDataType = '';
+  /**
+   * @var string
+   */
   public $encryptionType;
+  /**
+   * @var string
+   */
   public $kmsKeyVersion;
 
   /**
@@ -38,18 +44,30 @@ class EncryptionInfo extends \Google\Model
   {
     return $this->encryptionStatus;
   }
+  /**
+   * @param string
+   */
   public function setEncryptionType($encryptionType)
   {
     $this->encryptionType = $encryptionType;
   }
+  /**
+   * @return string
+   */
   public function getEncryptionType()
   {
     return $this->encryptionType;
   }
+  /**
+   * @param string
+   */
   public function setKmsKeyVersion($kmsKeyVersion)
   {
     $this->kmsKeyVersion = $kmsKeyVersion;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyVersion()
   {
     return $this->kmsKeyVersion;

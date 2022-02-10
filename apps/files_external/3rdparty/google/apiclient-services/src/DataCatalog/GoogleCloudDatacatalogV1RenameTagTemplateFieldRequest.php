@@ -19,12 +19,21 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1RenameTagTemplateFieldRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $newTagTemplateFieldId;
 
+  /**
+   * @param string
+   */
   public function setNewTagTemplateFieldId($newTagTemplateFieldId)
   {
     $this->newTagTemplateFieldId = $newTagTemplateFieldId;
   }
+  /**
+   * @return string
+   */
   public function getNewTagTemplateFieldId()
   {
     return $this->newTagTemplateFieldId;

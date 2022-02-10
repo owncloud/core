@@ -19,21 +19,39 @@ namespace Google\Service\TrafficDirectorService;
 
 class Pipe extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mode;
+  /**
+   * @var string
+   */
   public $path;
 
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

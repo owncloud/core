@@ -20,67 +20,139 @@ namespace Google\Service\Compute;
 class SslCertificate extends \Google\Collection
 {
   protected $collection_key = 'subjectAlternativeNames';
+  /**
+   * @var string
+   */
   public $certificate;
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
   protected $managedType = SslCertificateManagedSslCertificate::class;
   protected $managedDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $privateKey;
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $selfLink;
   protected $selfManagedType = SslCertificateSelfManagedSslCertificate::class;
   protected $selfManagedDataType = '';
+  /**
+   * @var string[]
+   */
   public $subjectAlternativeNames;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCertificate($certificate)
   {
     $this->certificate = $certificate;
   }
+  /**
+   * @return string
+   */
   public function getCertificate()
   {
     return $this->certificate;
   }
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -99,34 +171,58 @@ class SslCertificate extends \Google\Collection
   {
     return $this->managed;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPrivateKey($privateKey)
   {
     $this->privateKey = $privateKey;
   }
+  /**
+   * @return string
+   */
   public function getPrivateKey()
   {
     return $this->privateKey;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
@@ -145,18 +241,30 @@ class SslCertificate extends \Google\Collection
   {
     return $this->selfManaged;
   }
+  /**
+   * @param string[]
+   */
   public function setSubjectAlternativeNames($subjectAlternativeNames)
   {
     $this->subjectAlternativeNames = $subjectAlternativeNames;
   }
+  /**
+   * @return string[]
+   */
   public function getSubjectAlternativeNames()
   {
     return $this->subjectAlternativeNames;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

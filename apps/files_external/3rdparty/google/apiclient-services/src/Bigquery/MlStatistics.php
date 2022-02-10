@@ -22,6 +22,9 @@ class MlStatistics extends \Google\Collection
   protected $collection_key = 'iterationResults';
   protected $iterationResultsType = IterationResult::class;
   protected $iterationResultsDataType = 'array';
+  /**
+   * @var string
+   */
   public $maxIterations;
 
   /**
@@ -38,10 +41,16 @@ class MlStatistics extends \Google\Collection
   {
     return $this->iterationResults;
   }
+  /**
+   * @param string
+   */
   public function setMaxIterations($maxIterations)
   {
     $this->maxIterations = $maxIterations;
   }
+  /**
+   * @return string
+   */
   public function getMaxIterations()
   {
     return $this->maxIterations;

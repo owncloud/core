@@ -19,30 +19,57 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta2DocumentEntityRelation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var string
+   */
   public $relation;
+  /**
+   * @var string
+   */
   public $subjectId;
 
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param string
+   */
   public function setRelation($relation)
   {
     $this->relation = $relation;
   }
+  /**
+   * @return string
+   */
   public function getRelation()
   {
     return $this->relation;
   }
+  /**
+   * @param string
+   */
   public function setSubjectId($subjectId)
   {
     $this->subjectId = $subjectId;
   }
+  /**
+   * @return string
+   */
   public function getSubjectId()
   {
     return $this->subjectId;

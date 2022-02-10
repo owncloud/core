@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class StopClusterRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterUuid;
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setClusterUuid($clusterUuid)
   {
     $this->clusterUuid = $clusterUuid;
   }
+  /**
+   * @return string
+   */
   public function getClusterUuid()
   {
     return $this->clusterUuid;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

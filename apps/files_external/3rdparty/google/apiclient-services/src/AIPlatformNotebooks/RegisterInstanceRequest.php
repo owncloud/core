@@ -19,12 +19,21 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class RegisterInstanceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $instanceId;
 
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;

@@ -19,73 +19,142 @@ namespace Google\Service\Sasportal;
 
 class SasPortalInstallationParams extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $antennaAzimuth;
+  /**
+   * @var int
+   */
   public $antennaBeamwidth;
+  /**
+   * @var int
+   */
   public $antennaDowntilt;
+  /**
+   * @var int
+   */
   public $antennaGain;
+  /**
+   * @var string
+   */
   public $antennaModel;
+  /**
+   * @var bool
+   */
   public $cpeCbsdIndication;
+  /**
+   * @var int
+   */
   public $eirpCapability;
   public $height;
+  /**
+   * @var string
+   */
   public $heightType;
   public $horizontalAccuracy;
+  /**
+   * @var bool
+   */
   public $indoorDeployment;
   public $latitude;
   public $longitude;
   public $verticalAccuracy;
 
+  /**
+   * @param int
+   */
   public function setAntennaAzimuth($antennaAzimuth)
   {
     $this->antennaAzimuth = $antennaAzimuth;
   }
+  /**
+   * @return int
+   */
   public function getAntennaAzimuth()
   {
     return $this->antennaAzimuth;
   }
+  /**
+   * @param int
+   */
   public function setAntennaBeamwidth($antennaBeamwidth)
   {
     $this->antennaBeamwidth = $antennaBeamwidth;
   }
+  /**
+   * @return int
+   */
   public function getAntennaBeamwidth()
   {
     return $this->antennaBeamwidth;
   }
+  /**
+   * @param int
+   */
   public function setAntennaDowntilt($antennaDowntilt)
   {
     $this->antennaDowntilt = $antennaDowntilt;
   }
+  /**
+   * @return int
+   */
   public function getAntennaDowntilt()
   {
     return $this->antennaDowntilt;
   }
+  /**
+   * @param int
+   */
   public function setAntennaGain($antennaGain)
   {
     $this->antennaGain = $antennaGain;
   }
+  /**
+   * @return int
+   */
   public function getAntennaGain()
   {
     return $this->antennaGain;
   }
+  /**
+   * @param string
+   */
   public function setAntennaModel($antennaModel)
   {
     $this->antennaModel = $antennaModel;
   }
+  /**
+   * @return string
+   */
   public function getAntennaModel()
   {
     return $this->antennaModel;
   }
+  /**
+   * @param bool
+   */
   public function setCpeCbsdIndication($cpeCbsdIndication)
   {
     $this->cpeCbsdIndication = $cpeCbsdIndication;
   }
+  /**
+   * @return bool
+   */
   public function getCpeCbsdIndication()
   {
     return $this->cpeCbsdIndication;
   }
+  /**
+   * @param int
+   */
   public function setEirpCapability($eirpCapability)
   {
     $this->eirpCapability = $eirpCapability;
   }
+  /**
+   * @return int
+   */
   public function getEirpCapability()
   {
     return $this->eirpCapability;
@@ -98,10 +167,16 @@ class SasPortalInstallationParams extends \Google\Model
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setHeightType($heightType)
   {
     $this->heightType = $heightType;
   }
+  /**
+   * @return string
+   */
   public function getHeightType()
   {
     return $this->heightType;
@@ -114,10 +189,16 @@ class SasPortalInstallationParams extends \Google\Model
   {
     return $this->horizontalAccuracy;
   }
+  /**
+   * @param bool
+   */
   public function setIndoorDeployment($indoorDeployment)
   {
     $this->indoorDeployment = $indoorDeployment;
   }
+  /**
+   * @return bool
+   */
   public function getIndoorDeployment()
   {
     return $this->indoorDeployment;

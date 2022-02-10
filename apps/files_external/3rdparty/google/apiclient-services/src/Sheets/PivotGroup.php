@@ -26,10 +26,25 @@ class PivotGroup extends \Google\Collection
   protected $groupLimitDataType = '';
   protected $groupRuleType = PivotGroupRule::class;
   protected $groupRuleDataType = '';
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var bool
+   */
   public $repeatHeadings;
+  /**
+   * @var bool
+   */
   public $showTotals;
+  /**
+   * @var string
+   */
   public $sortOrder;
+  /**
+   * @var int
+   */
   public $sourceColumnOffset;
   protected $valueBucketType = PivotGroupSortValueBucket::class;
   protected $valueBucketDataType = '';
@@ -78,42 +93,72 @@ class PivotGroup extends \Google\Collection
   {
     return $this->groupRule;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param bool
+   */
   public function setRepeatHeadings($repeatHeadings)
   {
     $this->repeatHeadings = $repeatHeadings;
   }
+  /**
+   * @return bool
+   */
   public function getRepeatHeadings()
   {
     return $this->repeatHeadings;
   }
+  /**
+   * @param bool
+   */
   public function setShowTotals($showTotals)
   {
     $this->showTotals = $showTotals;
   }
+  /**
+   * @return bool
+   */
   public function getShowTotals()
   {
     return $this->showTotals;
   }
+  /**
+   * @param string
+   */
   public function setSortOrder($sortOrder)
   {
     $this->sortOrder = $sortOrder;
   }
+  /**
+   * @return string
+   */
   public function getSortOrder()
   {
     return $this->sortOrder;
   }
+  /**
+   * @param int
+   */
   public function setSourceColumnOffset($sourceColumnOffset)
   {
     $this->sourceColumnOffset = $sourceColumnOffset;
   }
+  /**
+   * @return int
+   */
   public function getSourceColumnOffset()
   {
     return $this->sourceColumnOffset;

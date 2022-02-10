@@ -24,6 +24,9 @@ class ListCompaniesResponse extends \Google\Collection
   protected $companiesDataType = 'array';
   protected $metadataType = ResponseMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -54,10 +57,16 @@ class ListCompaniesResponse extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

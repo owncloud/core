@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class VariableSet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $placeholder;
+  /**
+   * @var string
+   */
   public $userValue;
 
+  /**
+   * @param string
+   */
   public function setPlaceholder($placeholder)
   {
     $this->placeholder = $placeholder;
   }
+  /**
+   * @return string
+   */
   public function getPlaceholder()
   {
     return $this->placeholder;
   }
+  /**
+   * @param string
+   */
   public function setUserValue($userValue)
   {
     $this->userValue = $userValue;
   }
+  /**
+   * @return string
+   */
   public function getUserValue()
   {
     return $this->userValue;

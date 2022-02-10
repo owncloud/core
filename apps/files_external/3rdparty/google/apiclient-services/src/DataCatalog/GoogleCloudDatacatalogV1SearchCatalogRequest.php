@@ -19,41 +19,77 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1SearchCatalogRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $orderBy;
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var string
+   */
   public $query;
   protected $scopeType = GoogleCloudDatacatalogV1SearchCatalogRequestScope::class;
   protected $scopeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setOrderBy($orderBy)
   {
     $this->orderBy = $orderBy;
   }
+  /**
+   * @return string
+   */
   public function getOrderBy()
   {
     return $this->orderBy;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;

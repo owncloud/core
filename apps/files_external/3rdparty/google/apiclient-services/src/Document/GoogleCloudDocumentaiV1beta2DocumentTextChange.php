@@ -20,16 +20,25 @@ namespace Google\Service\Document;
 class GoogleCloudDocumentaiV1beta2DocumentTextChange extends \Google\Collection
 {
   protected $collection_key = 'provenance';
+  /**
+   * @var string
+   */
   public $changedText;
   protected $provenanceType = GoogleCloudDocumentaiV1beta2DocumentProvenance::class;
   protected $provenanceDataType = 'array';
   protected $textAnchorType = GoogleCloudDocumentaiV1beta2DocumentTextAnchor::class;
   protected $textAnchorDataType = '';
 
+  /**
+   * @param string
+   */
   public function setChangedText($changedText)
   {
     $this->changedText = $changedText;
   }
+  /**
+   * @return string
+   */
   public function getChangedText()
   {
     return $this->changedText;

@@ -19,21 +19,39 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1GcsSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $inputUri;
+  /**
+   * @var string
+   */
   public $mimeType;
 
+  /**
+   * @param string
+   */
   public function setInputUri($inputUri)
   {
     $this->inputUri = $inputUri;
   }
+  /**
+   * @return string
+   */
   public function getInputUri()
   {
     return $this->inputUri;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;

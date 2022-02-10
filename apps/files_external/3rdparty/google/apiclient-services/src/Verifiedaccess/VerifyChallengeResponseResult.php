@@ -19,39 +19,75 @@ namespace Google\Service\Verifiedaccess;
 
 class VerifyChallengeResponseResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceEnrollmentId;
+  /**
+   * @var string
+   */
   public $devicePermanentId;
+  /**
+   * @var string
+   */
   public $signedPublicKeyAndChallenge;
+  /**
+   * @var string
+   */
   public $verificationOutput;
 
+  /**
+   * @param string
+   */
   public function setDeviceEnrollmentId($deviceEnrollmentId)
   {
     $this->deviceEnrollmentId = $deviceEnrollmentId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceEnrollmentId()
   {
     return $this->deviceEnrollmentId;
   }
+  /**
+   * @param string
+   */
   public function setDevicePermanentId($devicePermanentId)
   {
     $this->devicePermanentId = $devicePermanentId;
   }
+  /**
+   * @return string
+   */
   public function getDevicePermanentId()
   {
     return $this->devicePermanentId;
   }
+  /**
+   * @param string
+   */
   public function setSignedPublicKeyAndChallenge($signedPublicKeyAndChallenge)
   {
     $this->signedPublicKeyAndChallenge = $signedPublicKeyAndChallenge;
   }
+  /**
+   * @return string
+   */
   public function getSignedPublicKeyAndChallenge()
   {
     return $this->signedPublicKeyAndChallenge;
   }
+  /**
+   * @param string
+   */
   public function setVerificationOutput($verificationOutput)
   {
     $this->verificationOutput = $verificationOutput;
   }
+  /**
+   * @return string
+   */
   public function getVerificationOutput()
   {
     return $this->verificationOutput;

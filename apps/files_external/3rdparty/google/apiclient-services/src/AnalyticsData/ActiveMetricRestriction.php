@@ -20,21 +20,39 @@ namespace Google\Service\AnalyticsData;
 class ActiveMetricRestriction extends \Google\Collection
 {
   protected $collection_key = 'restrictedMetricTypes';
+  /**
+   * @var string
+   */
   public $metricName;
+  /**
+   * @var string[]
+   */
   public $restrictedMetricTypes;
 
+  /**
+   * @param string
+   */
   public function setMetricName($metricName)
   {
     $this->metricName = $metricName;
   }
+  /**
+   * @return string
+   */
   public function getMetricName()
   {
     return $this->metricName;
   }
+  /**
+   * @param string[]
+   */
   public function setRestrictedMetricTypes($restrictedMetricTypes)
   {
     $this->restrictedMetricTypes = $restrictedMetricTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getRestrictedMetricTypes()
   {
     return $this->restrictedMetricTypes;

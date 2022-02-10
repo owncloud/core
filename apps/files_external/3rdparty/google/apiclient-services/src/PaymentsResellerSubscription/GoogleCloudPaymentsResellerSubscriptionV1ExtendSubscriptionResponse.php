@@ -19,30 +19,57 @@ namespace Google\Service\PaymentsResellerSubscription;
 
 class GoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cycleEndTime;
+  /**
+   * @var string
+   */
   public $freeTrialEndTime;
+  /**
+   * @var string
+   */
   public $renewalTime;
 
+  /**
+   * @param string
+   */
   public function setCycleEndTime($cycleEndTime)
   {
     $this->cycleEndTime = $cycleEndTime;
   }
+  /**
+   * @return string
+   */
   public function getCycleEndTime()
   {
     return $this->cycleEndTime;
   }
+  /**
+   * @param string
+   */
   public function setFreeTrialEndTime($freeTrialEndTime)
   {
     $this->freeTrialEndTime = $freeTrialEndTime;
   }
+  /**
+   * @return string
+   */
   public function getFreeTrialEndTime()
   {
     return $this->freeTrialEndTime;
   }
+  /**
+   * @param string
+   */
   public function setRenewalTime($renewalTime)
   {
     $this->renewalTime = $renewalTime;
   }
+  /**
+   * @return string
+   */
   public function getRenewalTime()
   {
     return $this->renewalTime;

@@ -20,16 +20,31 @@ namespace Google\Service\SmartDeviceManagement;
 class GoogleHomeEnterpriseSdmV1Device extends \Google\Collection
 {
   protected $collection_key = 'parentRelations';
+  /**
+   * @var string
+   */
   public $name;
   protected $parentRelationsType = GoogleHomeEnterpriseSdmV1ParentRelation::class;
   protected $parentRelationsDataType = 'array';
+  /**
+   * @var array[]
+   */
   public $traits;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -48,18 +63,30 @@ class GoogleHomeEnterpriseSdmV1Device extends \Google\Collection
   {
     return $this->parentRelations;
   }
+  /**
+   * @param array[]
+   */
   public function setTraits($traits)
   {
     $this->traits = $traits;
   }
+  /**
+   * @return array[]
+   */
   public function getTraits()
   {
     return $this->traits;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

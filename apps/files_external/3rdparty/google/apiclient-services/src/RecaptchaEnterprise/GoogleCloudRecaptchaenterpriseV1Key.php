@@ -21,14 +21,28 @@ class GoogleCloudRecaptchaenterpriseV1Key extends \Google\Model
 {
   protected $androidSettingsType = GoogleCloudRecaptchaenterpriseV1AndroidKeySettings::class;
   protected $androidSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $iosSettingsType = GoogleCloudRecaptchaenterpriseV1IOSKeySettings::class;
   protected $iosSettingsDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
   protected $testingOptionsType = GoogleCloudRecaptchaenterpriseV1TestingOptions::class;
   protected $testingOptionsDataType = '';
+  protected $wafSettingsType = GoogleCloudRecaptchaenterpriseV1WafSettings::class;
+  protected $wafSettingsDataType = '';
   protected $webSettingsType = GoogleCloudRecaptchaenterpriseV1WebKeySettings::class;
   protected $webSettingsDataType = '';
 
@@ -46,18 +60,30 @@ class GoogleCloudRecaptchaenterpriseV1Key extends \Google\Model
   {
     return $this->androidSettings;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -76,18 +102,30 @@ class GoogleCloudRecaptchaenterpriseV1Key extends \Google\Model
   {
     return $this->iosSettings;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -105,6 +143,20 @@ class GoogleCloudRecaptchaenterpriseV1Key extends \Google\Model
   public function getTestingOptions()
   {
     return $this->testingOptions;
+  }
+  /**
+   * @param GoogleCloudRecaptchaenterpriseV1WafSettings
+   */
+  public function setWafSettings(GoogleCloudRecaptchaenterpriseV1WafSettings $wafSettings)
+  {
+    $this->wafSettings = $wafSettings;
+  }
+  /**
+   * @return GoogleCloudRecaptchaenterpriseV1WafSettings
+   */
+  public function getWafSettings()
+  {
+    return $this->wafSettings;
   }
   /**
    * @param GoogleCloudRecaptchaenterpriseV1WebKeySettings

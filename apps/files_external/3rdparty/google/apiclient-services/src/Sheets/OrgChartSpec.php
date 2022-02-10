@@ -25,6 +25,9 @@ class OrgChartSpec extends \Google\Model
   protected $nodeColorDataType = '';
   protected $nodeColorStyleType = ColorStyle::class;
   protected $nodeColorStyleDataType = '';
+  /**
+   * @var string
+   */
   public $nodeSize;
   protected $parentLabelsType = ChartData::class;
   protected $parentLabelsDataType = '';
@@ -77,10 +80,16 @@ class OrgChartSpec extends \Google\Model
   {
     return $this->nodeColorStyle;
   }
+  /**
+   * @param string
+   */
   public function setNodeSize($nodeSize)
   {
     $this->nodeSize = $nodeSize;
   }
+  /**
+   * @return string
+   */
   public function getNodeSize()
   {
     return $this->nodeSize;

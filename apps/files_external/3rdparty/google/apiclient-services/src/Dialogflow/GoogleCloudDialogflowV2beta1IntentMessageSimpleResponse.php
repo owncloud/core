@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentMessageSimpleResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayText;
+  /**
+   * @var string
+   */
   public $ssml;
+  /**
+   * @var string
+   */
   public $textToSpeech;
 
+  /**
+   * @param string
+   */
   public function setDisplayText($displayText)
   {
     $this->displayText = $displayText;
   }
+  /**
+   * @return string
+   */
   public function getDisplayText()
   {
     return $this->displayText;
   }
+  /**
+   * @param string
+   */
   public function setSsml($ssml)
   {
     $this->ssml = $ssml;
   }
+  /**
+   * @return string
+   */
   public function getSsml()
   {
     return $this->ssml;
   }
+  /**
+   * @param string
+   */
   public function setTextToSpeech($textToSpeech)
   {
     $this->textToSpeech = $textToSpeech;
   }
+  /**
+   * @return string
+   */
   public function getTextToSpeech()
   {
     return $this->textToSpeech;

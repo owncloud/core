@@ -17,6 +17,7 @@
 
 namespace Google\Service\ArtifactRegistry\Resource;
 
+use Google\Service\ArtifactRegistry\DockerImage;
 use Google\Service\ArtifactRegistry\ListDockerImagesResponse;
 
 /**
@@ -29,6 +30,19 @@ use Google\Service\ArtifactRegistry\ListDockerImagesResponse;
  */
 class ProjectsLocationsRepositoriesDockerImages extends \Google\Service\Resource
 {
+  /**
+   * Gets a docker image. (dockerImages.get)
+   *
+   * @param string $name Required. The name of the docker images.
+   * @param array $optParams Optional parameters.
+   * @return DockerImage
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], DockerImage::class);
+  }
   /**
    * Lists docker images.
    * (dockerImages.listProjectsLocationsRepositoriesDockerImages)

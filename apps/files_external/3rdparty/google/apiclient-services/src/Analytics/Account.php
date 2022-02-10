@@ -21,14 +21,35 @@ class Account extends \Google\Model
 {
   protected $childLinkType = AccountChildLink::class;
   protected $childLinkDataType = '';
+  /**
+   * @var string
+   */
   public $created;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $permissionsType = AccountPermissions::class;
   protected $permissionsDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var bool
+   */
   public $starred;
+  /**
+   * @var string
+   */
   public $updated;
 
   /**
@@ -45,34 +66,58 @@ class Account extends \Google\Model
   {
     return $this->childLink;
   }
+  /**
+   * @param string
+   */
   public function setCreated($created)
   {
     $this->created = $created;
   }
+  /**
+   * @return string
+   */
   public function getCreated()
   {
     return $this->created;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -91,26 +136,44 @@ class Account extends \Google\Model
   {
     return $this->permissions;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param bool
+   */
   public function setStarred($starred)
   {
     $this->starred = $starred;
   }
+  /**
+   * @return bool
+   */
   public function getStarred()
   {
     return $this->starred;
   }
+  /**
+   * @param string
+   */
   public function setUpdated($updated)
   {
     $this->updated = $updated;
   }
+  /**
+   * @return string
+   */
   public function getUpdated()
   {
     return $this->updated;

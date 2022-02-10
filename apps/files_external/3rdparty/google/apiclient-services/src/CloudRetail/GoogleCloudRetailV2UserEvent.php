@@ -22,28 +22,73 @@ class GoogleCloudRetailV2UserEvent extends \Google\Collection
   protected $collection_key = 'productDetails';
   protected $attributesType = GoogleCloudRetailV2CustomAttribute::class;
   protected $attributesDataType = 'map';
+  /**
+   * @var string
+   */
   public $attributionToken;
+  /**
+   * @var string
+   */
   public $cartId;
   protected $completionDetailType = GoogleCloudRetailV2CompletionDetail::class;
   protected $completionDetailDataType = '';
+  /**
+   * @var string
+   */
   public $eventTime;
+  /**
+   * @var string
+   */
   public $eventType;
+  /**
+   * @var string[]
+   */
   public $experimentIds;
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var int
+   */
   public $offset;
+  /**
+   * @var string
+   */
   public $orderBy;
+  /**
+   * @var string[]
+   */
   public $pageCategories;
+  /**
+   * @var string
+   */
   public $pageViewId;
   protected $productDetailsType = GoogleCloudRetailV2ProductDetail::class;
   protected $productDetailsDataType = 'array';
   protected $purchaseTransactionType = GoogleCloudRetailV2PurchaseTransaction::class;
   protected $purchaseTransactionDataType = '';
+  /**
+   * @var string
+   */
   public $referrerUri;
+  /**
+   * @var string
+   */
   public $searchQuery;
+  /**
+   * @var string
+   */
   public $sessionId;
+  /**
+   * @var string
+   */
   public $uri;
   protected $userInfoType = GoogleCloudRetailV2UserInfo::class;
   protected $userInfoDataType = '';
+  /**
+   * @var string
+   */
   public $visitorId;
 
   /**
@@ -60,18 +105,30 @@ class GoogleCloudRetailV2UserEvent extends \Google\Collection
   {
     return $this->attributes;
   }
+  /**
+   * @param string
+   */
   public function setAttributionToken($attributionToken)
   {
     $this->attributionToken = $attributionToken;
   }
+  /**
+   * @return string
+   */
   public function getAttributionToken()
   {
     return $this->attributionToken;
   }
+  /**
+   * @param string
+   */
   public function setCartId($cartId)
   {
     $this->cartId = $cartId;
   }
+  /**
+   * @return string
+   */
   public function getCartId()
   {
     return $this->cartId;
@@ -90,66 +147,114 @@ class GoogleCloudRetailV2UserEvent extends \Google\Collection
   {
     return $this->completionDetail;
   }
+  /**
+   * @param string
+   */
   public function setEventTime($eventTime)
   {
     $this->eventTime = $eventTime;
   }
+  /**
+   * @return string
+   */
   public function getEventTime()
   {
     return $this->eventTime;
   }
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;
   }
+  /**
+   * @param string[]
+   */
   public function setExperimentIds($experimentIds)
   {
     $this->experimentIds = $experimentIds;
   }
+  /**
+   * @return string[]
+   */
   public function getExperimentIds()
   {
     return $this->experimentIds;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param int
+   */
   public function setOffset($offset)
   {
     $this->offset = $offset;
   }
+  /**
+   * @return int
+   */
   public function getOffset()
   {
     return $this->offset;
   }
+  /**
+   * @param string
+   */
   public function setOrderBy($orderBy)
   {
     $this->orderBy = $orderBy;
   }
+  /**
+   * @return string
+   */
   public function getOrderBy()
   {
     return $this->orderBy;
   }
+  /**
+   * @param string[]
+   */
   public function setPageCategories($pageCategories)
   {
     $this->pageCategories = $pageCategories;
   }
+  /**
+   * @return string[]
+   */
   public function getPageCategories()
   {
     return $this->pageCategories;
   }
+  /**
+   * @param string
+   */
   public function setPageViewId($pageViewId)
   {
     $this->pageViewId = $pageViewId;
   }
+  /**
+   * @return string
+   */
   public function getPageViewId()
   {
     return $this->pageViewId;
@@ -182,34 +287,58 @@ class GoogleCloudRetailV2UserEvent extends \Google\Collection
   {
     return $this->purchaseTransaction;
   }
+  /**
+   * @param string
+   */
   public function setReferrerUri($referrerUri)
   {
     $this->referrerUri = $referrerUri;
   }
+  /**
+   * @return string
+   */
   public function getReferrerUri()
   {
     return $this->referrerUri;
   }
+  /**
+   * @param string
+   */
   public function setSearchQuery($searchQuery)
   {
     $this->searchQuery = $searchQuery;
   }
+  /**
+   * @return string
+   */
   public function getSearchQuery()
   {
     return $this->searchQuery;
   }
+  /**
+   * @param string
+   */
   public function setSessionId($sessionId)
   {
     $this->sessionId = $sessionId;
   }
+  /**
+   * @return string
+   */
   public function getSessionId()
   {
     return $this->sessionId;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;
@@ -228,10 +357,16 @@ class GoogleCloudRetailV2UserEvent extends \Google\Collection
   {
     return $this->userInfo;
   }
+  /**
+   * @param string
+   */
   public function setVisitorId($visitorId)
   {
     $this->visitorId = $visitorId;
   }
+  /**
+   * @return string
+   */
   public function getVisitorId()
   {
     return $this->visitorId;

@@ -19,21 +19,39 @@ namespace Google\Service\SecurityCommandCenter;
 
 class GroupResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $count;
+  /**
+   * @var array[]
+   */
   public $properties;
 
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param array[]
+   */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
+  /**
+   * @return array[]
+   */
   public function getProperties()
   {
     return $this->properties;

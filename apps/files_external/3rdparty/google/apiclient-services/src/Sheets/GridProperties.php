@@ -19,66 +19,129 @@ namespace Google\Service\Sheets;
 
 class GridProperties extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $columnCount;
+  /**
+   * @var bool
+   */
   public $columnGroupControlAfter;
+  /**
+   * @var int
+   */
   public $frozenColumnCount;
+  /**
+   * @var int
+   */
   public $frozenRowCount;
+  /**
+   * @var bool
+   */
   public $hideGridlines;
+  /**
+   * @var int
+   */
   public $rowCount;
+  /**
+   * @var bool
+   */
   public $rowGroupControlAfter;
 
+  /**
+   * @param int
+   */
   public function setColumnCount($columnCount)
   {
     $this->columnCount = $columnCount;
   }
+  /**
+   * @return int
+   */
   public function getColumnCount()
   {
     return $this->columnCount;
   }
+  /**
+   * @param bool
+   */
   public function setColumnGroupControlAfter($columnGroupControlAfter)
   {
     $this->columnGroupControlAfter = $columnGroupControlAfter;
   }
+  /**
+   * @return bool
+   */
   public function getColumnGroupControlAfter()
   {
     return $this->columnGroupControlAfter;
   }
+  /**
+   * @param int
+   */
   public function setFrozenColumnCount($frozenColumnCount)
   {
     $this->frozenColumnCount = $frozenColumnCount;
   }
+  /**
+   * @return int
+   */
   public function getFrozenColumnCount()
   {
     return $this->frozenColumnCount;
   }
+  /**
+   * @param int
+   */
   public function setFrozenRowCount($frozenRowCount)
   {
     $this->frozenRowCount = $frozenRowCount;
   }
+  /**
+   * @return int
+   */
   public function getFrozenRowCount()
   {
     return $this->frozenRowCount;
   }
+  /**
+   * @param bool
+   */
   public function setHideGridlines($hideGridlines)
   {
     $this->hideGridlines = $hideGridlines;
   }
+  /**
+   * @return bool
+   */
   public function getHideGridlines()
   {
     return $this->hideGridlines;
   }
+  /**
+   * @param int
+   */
   public function setRowCount($rowCount)
   {
     $this->rowCount = $rowCount;
   }
+  /**
+   * @return int
+   */
   public function getRowCount()
   {
     return $this->rowCount;
   }
+  /**
+   * @param bool
+   */
   public function setRowGroupControlAfter($rowGroupControlAfter)
   {
     $this->rowGroupControlAfter = $rowGroupControlAfter;
   }
+  /**
+   * @return bool
+   */
   public function getRowGroupControlAfter()
   {
     return $this->rowGroupControlAfter;

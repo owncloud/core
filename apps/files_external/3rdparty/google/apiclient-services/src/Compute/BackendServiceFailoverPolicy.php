@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class BackendServiceFailoverPolicy extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $disableConnectionDrainOnFailover;
+  /**
+   * @var bool
+   */
   public $dropTrafficIfUnhealthy;
+  /**
+   * @var float
+   */
   public $failoverRatio;
 
+  /**
+   * @param bool
+   */
   public function setDisableConnectionDrainOnFailover($disableConnectionDrainOnFailover)
   {
     $this->disableConnectionDrainOnFailover = $disableConnectionDrainOnFailover;
   }
+  /**
+   * @return bool
+   */
   public function getDisableConnectionDrainOnFailover()
   {
     return $this->disableConnectionDrainOnFailover;
   }
+  /**
+   * @param bool
+   */
   public function setDropTrafficIfUnhealthy($dropTrafficIfUnhealthy)
   {
     $this->dropTrafficIfUnhealthy = $dropTrafficIfUnhealthy;
   }
+  /**
+   * @return bool
+   */
   public function getDropTrafficIfUnhealthy()
   {
     return $this->dropTrafficIfUnhealthy;
   }
+  /**
+   * @param float
+   */
   public function setFailoverRatio($failoverRatio)
   {
     $this->failoverRatio = $failoverRatio;
   }
+  /**
+   * @return float
+   */
   public function getFailoverRatio()
   {
     return $this->failoverRatio;

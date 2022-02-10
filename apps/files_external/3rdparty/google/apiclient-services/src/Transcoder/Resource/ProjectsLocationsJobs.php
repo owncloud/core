@@ -52,6 +52,9 @@ class ProjectsLocationsJobs extends \Google\Service\Resource
    * @param string $name Required. The name of the job to delete. Format:
    * `projects/{project}/locations/{location}/jobs/{job}`
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param bool allowMissing If set to true, and the job is not found, the
+   * request will succeed but no action will be taken on the server.
    * @return TranscoderEmpty
    */
   public function delete($name, $optParams = [])
@@ -81,6 +84,10 @@ class ProjectsLocationsJobs extends \Google\Service\Resource
    * `projects/{project}/locations/{location}`
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string filter The filter expression, following the syntax outlined
+   * in https://google.aip.dev/160.
+   * @opt_param string orderBy One or more fields to compare and use to sort the
+   * output. See https://google.aip.dev/132#ordering.
    * @opt_param int pageSize The maximum number of items to return.
    * @opt_param string pageToken The `next_page_token` value returned from a
    * previous List request, if any.

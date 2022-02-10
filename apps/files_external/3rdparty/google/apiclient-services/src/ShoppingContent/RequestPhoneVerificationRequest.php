@@ -19,39 +19,75 @@ namespace Google\Service\ShoppingContent;
 
 class RequestPhoneVerificationRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $phoneNumber;
+  /**
+   * @var string
+   */
   public $phoneRegionCode;
+  /**
+   * @var string
+   */
   public $phoneVerificationMethod;
 
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setPhoneNumber($phoneNumber)
   {
     $this->phoneNumber = $phoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getPhoneNumber()
   {
     return $this->phoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setPhoneRegionCode($phoneRegionCode)
   {
     $this->phoneRegionCode = $phoneRegionCode;
   }
+  /**
+   * @return string
+   */
   public function getPhoneRegionCode()
   {
     return $this->phoneRegionCode;
   }
+  /**
+   * @param string
+   */
   public function setPhoneVerificationMethod($phoneVerificationMethod)
   {
     $this->phoneVerificationMethod = $phoneVerificationMethod;
   }
+  /**
+   * @return string
+   */
   public function getPhoneVerificationMethod()
   {
     return $this->phoneVerificationMethod;

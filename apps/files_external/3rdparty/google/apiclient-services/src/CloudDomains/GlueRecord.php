@@ -20,30 +20,57 @@ namespace Google\Service\CloudDomains;
 class GlueRecord extends \Google\Collection
 {
   protected $collection_key = 'ipv6Addresses';
+  /**
+   * @var string
+   */
   public $hostName;
+  /**
+   * @var string[]
+   */
   public $ipv4Addresses;
+  /**
+   * @var string[]
+   */
   public $ipv6Addresses;
 
+  /**
+   * @param string
+   */
   public function setHostName($hostName)
   {
     $this->hostName = $hostName;
   }
+  /**
+   * @return string
+   */
   public function getHostName()
   {
     return $this->hostName;
   }
+  /**
+   * @param string[]
+   */
   public function setIpv4Addresses($ipv4Addresses)
   {
     $this->ipv4Addresses = $ipv4Addresses;
   }
+  /**
+   * @return string[]
+   */
   public function getIpv4Addresses()
   {
     return $this->ipv4Addresses;
   }
+  /**
+   * @param string[]
+   */
   public function setIpv6Addresses($ipv6Addresses)
   {
     $this->ipv6Addresses = $ipv6Addresses;
   }
+  /**
+   * @return string[]
+   */
   public function getIpv6Addresses()
   {
     return $this->ipv6Addresses;

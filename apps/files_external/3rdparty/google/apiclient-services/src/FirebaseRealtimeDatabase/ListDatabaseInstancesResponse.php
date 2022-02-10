@@ -22,6 +22,9 @@ class ListDatabaseInstancesResponse extends \Google\Collection
   protected $collection_key = 'instances';
   protected $instancesType = DatabaseInstance::class;
   protected $instancesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListDatabaseInstancesResponse extends \Google\Collection
   {
     return $this->instances;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,48 +19,93 @@ namespace Google\Service\DataprocMetastore;
 
 class MetadataExport extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $databaseDumpType;
+  /**
+   * @var string
+   */
   public $destinationGcsUri;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setDatabaseDumpType($databaseDumpType)
   {
     $this->databaseDumpType = $databaseDumpType;
   }
+  /**
+   * @return string
+   */
   public function getDatabaseDumpType()
   {
     return $this->databaseDumpType;
   }
+  /**
+   * @param string
+   */
   public function setDestinationGcsUri($destinationGcsUri)
   {
     $this->destinationGcsUri = $destinationGcsUri;
   }
+  /**
+   * @return string
+   */
   public function getDestinationGcsUri()
   {
     return $this->destinationGcsUri;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

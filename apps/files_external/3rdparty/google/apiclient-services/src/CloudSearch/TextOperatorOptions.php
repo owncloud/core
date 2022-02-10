@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class TextOperatorOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $exactMatchWithOperator;
+  /**
+   * @var string
+   */
   public $operatorName;
 
+  /**
+   * @param bool
+   */
   public function setExactMatchWithOperator($exactMatchWithOperator)
   {
     $this->exactMatchWithOperator = $exactMatchWithOperator;
   }
+  /**
+   * @return bool
+   */
   public function getExactMatchWithOperator()
   {
     return $this->exactMatchWithOperator;
   }
+  /**
+   * @param string
+   */
   public function setOperatorName($operatorName)
   {
     $this->operatorName = $operatorName;
   }
+  /**
+   * @return string
+   */
   public function getOperatorName()
   {
     return $this->operatorName;

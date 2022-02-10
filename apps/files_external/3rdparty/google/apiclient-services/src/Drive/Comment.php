@@ -20,26 +20,59 @@ namespace Google\Service\Drive;
 class Comment extends \Google\Collection
 {
   protected $collection_key = 'replies';
+  /**
+   * @var string
+   */
   public $anchor;
   protected $authorType = User::class;
   protected $authorDataType = '';
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var string
+   */
   public $createdTime;
+  /**
+   * @var bool
+   */
   public $deleted;
+  /**
+   * @var string
+   */
   public $htmlContent;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $modifiedTime;
   protected $quotedFileContentType = CommentQuotedFileContent::class;
   protected $quotedFileContentDataType = '';
   protected $repliesType = Reply::class;
   protected $repliesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $resolved;
 
+  /**
+   * @param string
+   */
   public function setAnchor($anchor)
   {
     $this->anchor = $anchor;
   }
+  /**
+   * @return string
+   */
   public function getAnchor()
   {
     return $this->anchor;
@@ -58,58 +91,100 @@ class Comment extends \Google\Collection
   {
     return $this->author;
   }
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setCreatedTime($createdTime)
   {
     $this->createdTime = $createdTime;
   }
+  /**
+   * @return string
+   */
   public function getCreatedTime()
   {
     return $this->createdTime;
   }
+  /**
+   * @param bool
+   */
   public function setDeleted($deleted)
   {
     $this->deleted = $deleted;
   }
+  /**
+   * @return bool
+   */
   public function getDeleted()
   {
     return $this->deleted;
   }
+  /**
+   * @param string
+   */
   public function setHtmlContent($htmlContent)
   {
     $this->htmlContent = $htmlContent;
   }
+  /**
+   * @return string
+   */
   public function getHtmlContent()
   {
     return $this->htmlContent;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setModifiedTime($modifiedTime)
   {
     $this->modifiedTime = $modifiedTime;
   }
+  /**
+   * @return string
+   */
   public function getModifiedTime()
   {
     return $this->modifiedTime;
@@ -142,10 +217,16 @@ class Comment extends \Google\Collection
   {
     return $this->replies;
   }
+  /**
+   * @param bool
+   */
   public function setResolved($resolved)
   {
     $this->resolved = $resolved;
   }
+  /**
+   * @return bool
+   */
   public function getResolved()
   {
     return $this->resolved;

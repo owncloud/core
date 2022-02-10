@@ -19,57 +19,111 @@ namespace Google\Service\IdentityToolkit;
 
 class EmailTemplate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $body;
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $from;
+  /**
+   * @var string
+   */
   public $fromDisplayName;
+  /**
+   * @var string
+   */
   public $replyTo;
+  /**
+   * @var string
+   */
   public $subject;
 
+  /**
+   * @param string
+   */
   public function setBody($body)
   {
     $this->body = $body;
   }
+  /**
+   * @return string
+   */
   public function getBody()
   {
     return $this->body;
   }
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setFrom($from)
   {
     $this->from = $from;
   }
+  /**
+   * @return string
+   */
   public function getFrom()
   {
     return $this->from;
   }
+  /**
+   * @param string
+   */
   public function setFromDisplayName($fromDisplayName)
   {
     $this->fromDisplayName = $fromDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getFromDisplayName()
   {
     return $this->fromDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setReplyTo($replyTo)
   {
     $this->replyTo = $replyTo;
   }
+  /**
+   * @return string
+   */
   public function getReplyTo()
   {
     return $this->replyTo;
   }
+  /**
+   * @param string
+   */
   public function setSubject($subject)
   {
     $this->subject = $subject;
   }
+  /**
+   * @return string
+   */
   public function getSubject()
   {
     return $this->subject;

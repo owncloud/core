@@ -23,6 +23,9 @@ class GoogleDatastoreAdminV1ImportEntitiesMetadata extends \Google\Model
   protected $commonDataType = '';
   protected $entityFilterType = GoogleDatastoreAdminV1EntityFilter::class;
   protected $entityFilterDataType = '';
+  /**
+   * @var string
+   */
   public $inputUrl;
   protected $progressBytesType = GoogleDatastoreAdminV1Progress::class;
   protected $progressBytesDataType = '';
@@ -57,10 +60,16 @@ class GoogleDatastoreAdminV1ImportEntitiesMetadata extends \Google\Model
   {
     return $this->entityFilter;
   }
+  /**
+   * @param string
+   */
   public function setInputUrl($inputUrl)
   {
     $this->inputUrl = $inputUrl;
   }
+  /**
+   * @return string
+   */
   public function getInputUrl()
   {
     return $this->inputUrl;

@@ -19,15 +19,27 @@ namespace Google\Service\CloudSearch;
 
 class Principal extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $groupResourceName;
   protected $gsuitePrincipalType = GSuitePrincipal::class;
   protected $gsuitePrincipalDataType = '';
+  /**
+   * @var string
+   */
   public $userResourceName;
 
+  /**
+   * @param string
+   */
   public function setGroupResourceName($groupResourceName)
   {
     $this->groupResourceName = $groupResourceName;
   }
+  /**
+   * @return string
+   */
   public function getGroupResourceName()
   {
     return $this->groupResourceName;
@@ -46,10 +58,16 @@ class Principal extends \Google\Model
   {
     return $this->gsuitePrincipal;
   }
+  /**
+   * @param string
+   */
   public function setUserResourceName($userResourceName)
   {
     $this->userResourceName = $userResourceName;
   }
+  /**
+   * @return string
+   */
   public function getUserResourceName()
   {
     return $this->userResourceName;

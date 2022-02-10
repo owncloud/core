@@ -22,6 +22,9 @@ class GoogleAnalyticsAdminV1alphaListAccountsResponse extends \Google\Collection
   protected $collection_key = 'accounts';
   protected $accountsType = GoogleAnalyticsAdminV1alphaAccount::class;
   protected $accountsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAnalyticsAdminV1alphaListAccountsResponse extends \Google\Collection
   {
     return $this->accounts;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

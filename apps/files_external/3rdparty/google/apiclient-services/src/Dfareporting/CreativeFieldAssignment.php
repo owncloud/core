@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class CreativeFieldAssignment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creativeFieldId;
+  /**
+   * @var string
+   */
   public $creativeFieldValueId;
 
+  /**
+   * @param string
+   */
   public function setCreativeFieldId($creativeFieldId)
   {
     $this->creativeFieldId = $creativeFieldId;
   }
+  /**
+   * @return string
+   */
   public function getCreativeFieldId()
   {
     return $this->creativeFieldId;
   }
+  /**
+   * @param string
+   */
   public function setCreativeFieldValueId($creativeFieldValueId)
   {
     $this->creativeFieldValueId = $creativeFieldValueId;
   }
+  /**
+   * @return string
+   */
   public function getCreativeFieldValueId()
   {
     return $this->creativeFieldValueId;

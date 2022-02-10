@@ -19,21 +19,39 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1PhraseMatchData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $phraseMatcher;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setPhraseMatcher($phraseMatcher)
   {
     $this->phraseMatcher = $phraseMatcher;
   }
+  /**
+   * @return string
+   */
   public function getPhraseMatcher()
   {
     return $this->phraseMatcher;

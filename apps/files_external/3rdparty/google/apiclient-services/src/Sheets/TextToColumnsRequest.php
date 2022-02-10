@@ -19,23 +19,41 @@ namespace Google\Service\Sheets;
 
 class TextToColumnsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $delimiter;
+  /**
+   * @var string
+   */
   public $delimiterType;
   protected $sourceType = GridRange::class;
   protected $sourceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDelimiter($delimiter)
   {
     $this->delimiter = $delimiter;
   }
+  /**
+   * @return string
+   */
   public function getDelimiter()
   {
     return $this->delimiter;
   }
+  /**
+   * @param string
+   */
   public function setDelimiterType($delimiterType)
   {
     $this->delimiterType = $delimiterType;
   }
+  /**
+   * @return string
+   */
   public function getDelimiterType()
   {
     return $this->delimiterType;

@@ -19,21 +19,39 @@ namespace Google\Service\Vision;
 
 class WebLabel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $languageCode;
 
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;

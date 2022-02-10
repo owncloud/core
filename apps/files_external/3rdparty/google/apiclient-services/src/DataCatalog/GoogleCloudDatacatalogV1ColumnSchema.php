@@ -20,33 +20,63 @@ namespace Google\Service\DataCatalog;
 class GoogleCloudDatacatalogV1ColumnSchema extends \Google\Collection
 {
   protected $collection_key = 'subcolumns';
+  /**
+   * @var string
+   */
   public $column;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $mode;
   protected $subcolumnsType = GoogleCloudDatacatalogV1ColumnSchema::class;
   protected $subcolumnsDataType = 'array';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setColumn($column)
   {
     $this->column = $column;
   }
+  /**
+   * @return string
+   */
   public function getColumn()
   {
     return $this->column;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;
@@ -65,10 +95,16 @@ class GoogleCloudDatacatalogV1ColumnSchema extends \Google\Collection
   {
     return $this->subcolumns;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

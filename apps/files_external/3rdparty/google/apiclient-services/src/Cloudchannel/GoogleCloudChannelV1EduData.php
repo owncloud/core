@@ -19,30 +19,57 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1EduData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $instituteSize;
+  /**
+   * @var string
+   */
   public $instituteType;
+  /**
+   * @var string
+   */
   public $website;
 
+  /**
+   * @param string
+   */
   public function setInstituteSize($instituteSize)
   {
     $this->instituteSize = $instituteSize;
   }
+  /**
+   * @return string
+   */
   public function getInstituteSize()
   {
     return $this->instituteSize;
   }
+  /**
+   * @param string
+   */
   public function setInstituteType($instituteType)
   {
     $this->instituteType = $instituteType;
   }
+  /**
+   * @return string
+   */
   public function getInstituteType()
   {
     return $this->instituteType;
   }
+  /**
+   * @param string
+   */
   public function setWebsite($website)
   {
     $this->website = $website;
   }
+  /**
+   * @return string
+   */
   public function getWebsite()
   {
     return $this->website;

@@ -19,12 +19,21 @@ namespace Google\Service\ServiceConsumerManagement;
 
 class CreateTenancyUnitRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $tenancyUnitId;
 
+  /**
+   * @param string
+   */
   public function setTenancyUnitId($tenancyUnitId)
   {
     $this->tenancyUnitId = $tenancyUnitId;
   }
+  /**
+   * @return string
+   */
   public function getTenancyUnitId()
   {
     return $this->tenancyUnitId;

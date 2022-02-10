@@ -19,30 +19,57 @@ namespace Google\Service\CloudHealthcare;
 
 class ActivateConsentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $consentArtifact;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $ttl;
 
+  /**
+   * @param string
+   */
   public function setConsentArtifact($consentArtifact)
   {
     $this->consentArtifact = $consentArtifact;
   }
+  /**
+   * @return string
+   */
   public function getConsentArtifact()
   {
     return $this->consentArtifact;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return string
+   */
   public function getTtl()
   {
     return $this->ttl;

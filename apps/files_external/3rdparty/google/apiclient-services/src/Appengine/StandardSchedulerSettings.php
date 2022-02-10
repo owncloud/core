@@ -19,23 +19,41 @@ namespace Google\Service\Appengine;
 
 class StandardSchedulerSettings extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxInstances;
+  /**
+   * @var int
+   */
   public $minInstances;
   public $targetCpuUtilization;
   public $targetThroughputUtilization;
 
+  /**
+   * @param int
+   */
   public function setMaxInstances($maxInstances)
   {
     $this->maxInstances = $maxInstances;
   }
+  /**
+   * @return int
+   */
   public function getMaxInstances()
   {
     return $this->maxInstances;
   }
+  /**
+   * @param int
+   */
   public function setMinInstances($minInstances)
   {
     $this->minInstances = $minInstances;
   }
+  /**
+   * @return int
+   */
   public function getMinInstances()
   {
     return $this->minInstances;

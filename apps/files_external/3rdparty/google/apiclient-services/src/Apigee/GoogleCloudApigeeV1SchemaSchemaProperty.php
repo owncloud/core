@@ -19,30 +19,57 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1SchemaSchemaProperty extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $custom;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setCustom($custom)
   {
     $this->custom = $custom;
   }
+  /**
+   * @return string
+   */
   public function getCustom()
   {
     return $this->custom;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

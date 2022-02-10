@@ -20,21 +20,39 @@ namespace Google\Service\CloudShell;
 class StartEnvironmentRequest extends \Google\Collection
 {
   protected $collection_key = 'publicKeys';
+  /**
+   * @var string
+   */
   public $accessToken;
+  /**
+   * @var string[]
+   */
   public $publicKeys;
 
+  /**
+   * @param string
+   */
   public function setAccessToken($accessToken)
   {
     $this->accessToken = $accessToken;
   }
+  /**
+   * @return string
+   */
   public function getAccessToken()
   {
     return $this->accessToken;
   }
+  /**
+   * @param string[]
+   */
   public function setPublicKeys($publicKeys)
   {
     $this->publicKeys = $publicKeys;
   }
+  /**
+   * @return string[]
+   */
   public function getPublicKeys()
   {
     return $this->publicKeys;

@@ -19,30 +19,57 @@ namespace Google\Service\Container;
 
 class NodeNetworkConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $createPodRange;
+  /**
+   * @var string
+   */
   public $podIpv4CidrBlock;
+  /**
+   * @var string
+   */
   public $podRange;
 
+  /**
+   * @param bool
+   */
   public function setCreatePodRange($createPodRange)
   {
     $this->createPodRange = $createPodRange;
   }
+  /**
+   * @return bool
+   */
   public function getCreatePodRange()
   {
     return $this->createPodRange;
   }
+  /**
+   * @param string
+   */
   public function setPodIpv4CidrBlock($podIpv4CidrBlock)
   {
     $this->podIpv4CidrBlock = $podIpv4CidrBlock;
   }
+  /**
+   * @return string
+   */
   public function getPodIpv4CidrBlock()
   {
     return $this->podIpv4CidrBlock;
   }
+  /**
+   * @param string
+   */
   public function setPodRange($podRange)
   {
     $this->podRange = $podRange;
   }
+  /**
+   * @return string
+   */
   public function getPodRange()
   {
     return $this->podRange;

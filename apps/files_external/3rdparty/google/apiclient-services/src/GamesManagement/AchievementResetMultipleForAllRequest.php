@@ -23,21 +23,39 @@ class AchievementResetMultipleForAllRequest extends \Google\Collection
   protected $internal_gapi_mappings = [
         "achievementIds" => "achievement_ids",
   ];
+  /**
+   * @var string[]
+   */
   public $achievementIds;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string[]
+   */
   public function setAchievementIds($achievementIds)
   {
     $this->achievementIds = $achievementIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAchievementIds()
   {
     return $this->achievementIds;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

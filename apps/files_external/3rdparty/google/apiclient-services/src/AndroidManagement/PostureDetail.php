@@ -22,6 +22,9 @@ class PostureDetail extends \Google\Collection
   protected $collection_key = 'advice';
   protected $adviceType = UserFacingMessage::class;
   protected $adviceDataType = 'array';
+  /**
+   * @var string
+   */
   public $securityRisk;
 
   /**
@@ -38,10 +41,16 @@ class PostureDetail extends \Google\Collection
   {
     return $this->advice;
   }
+  /**
+   * @param string
+   */
   public function setSecurityRisk($securityRisk)
   {
     $this->securityRisk = $securityRisk;
   }
+  /**
+   * @return string
+   */
   public function getSecurityRisk()
   {
     return $this->securityRisk;

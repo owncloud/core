@@ -19,30 +19,57 @@ namespace Google\Service\CloudLifeSciences;
 
 class Mount extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $disk;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var bool
+   */
   public $readOnly;
 
+  /**
+   * @param string
+   */
   public function setDisk($disk)
   {
     $this->disk = $disk;
   }
+  /**
+   * @return string
+   */
   public function getDisk()
   {
     return $this->disk;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param bool
+   */
   public function setReadOnly($readOnly)
   {
     $this->readOnly = $readOnly;
   }
+  /**
+   * @return bool
+   */
   public function getReadOnly()
   {
     return $this->readOnly;

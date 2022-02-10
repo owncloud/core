@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class ProductSigningCertificate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certificateHashSha1;
+  /**
+   * @var string
+   */
   public $certificateHashSha256;
 
+  /**
+   * @param string
+   */
   public function setCertificateHashSha1($certificateHashSha1)
   {
     $this->certificateHashSha1 = $certificateHashSha1;
   }
+  /**
+   * @return string
+   */
   public function getCertificateHashSha1()
   {
     return $this->certificateHashSha1;
   }
+  /**
+   * @param string
+   */
   public function setCertificateHashSha256($certificateHashSha256)
   {
     $this->certificateHashSha256 = $certificateHashSha256;
   }
+  /**
+   * @return string
+   */
   public function getCertificateHashSha256()
   {
     return $this->certificateHashSha256;

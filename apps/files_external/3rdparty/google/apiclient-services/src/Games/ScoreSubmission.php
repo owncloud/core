@@ -19,48 +19,93 @@ namespace Google\Service\Games;
 
 class ScoreSubmission extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $leaderboardId;
+  /**
+   * @var string
+   */
   public $score;
+  /**
+   * @var string
+   */
   public $scoreTag;
+  /**
+   * @var string
+   */
   public $signature;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLeaderboardId($leaderboardId)
   {
     $this->leaderboardId = $leaderboardId;
   }
+  /**
+   * @return string
+   */
   public function getLeaderboardId()
   {
     return $this->leaderboardId;
   }
+  /**
+   * @param string
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return string
+   */
   public function getScore()
   {
     return $this->score;
   }
+  /**
+   * @param string
+   */
   public function setScoreTag($scoreTag)
   {
     $this->scoreTag = $scoreTag;
   }
+  /**
+   * @return string
+   */
   public function getScoreTag()
   {
     return $this->scoreTag;
   }
+  /**
+   * @param string
+   */
   public function setSignature($signature)
   {
     $this->signature = $signature;
   }
+  /**
+   * @return string
+   */
   public function getSignature()
   {
     return $this->signature;

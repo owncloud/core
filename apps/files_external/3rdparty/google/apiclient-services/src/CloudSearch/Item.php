@@ -23,16 +23,31 @@ class Item extends \Google\Model
   protected $aclDataType = '';
   protected $contentType = ItemContent::class;
   protected $contentDataType = '';
+  /**
+   * @var string
+   */
   public $itemType;
   protected $metadataType = ItemMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $payload;
+  /**
+   * @var string
+   */
   public $queue;
   protected $statusType = ItemStatus::class;
   protected $statusDataType = '';
   protected $structuredDataType = ItemStructuredData::class;
   protected $structuredDataDataType = '';
+  /**
+   * @var string
+   */
   public $version;
 
   /**
@@ -63,10 +78,16 @@ class Item extends \Google\Model
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setItemType($itemType)
   {
     $this->itemType = $itemType;
   }
+  /**
+   * @return string
+   */
   public function getItemType()
   {
     return $this->itemType;
@@ -85,26 +106,44 @@ class Item extends \Google\Model
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return string
+   */
   public function getPayload()
   {
     return $this->payload;
   }
+  /**
+   * @param string
+   */
   public function setQueue($queue)
   {
     $this->queue = $queue;
   }
+  /**
+   * @return string
+   */
   public function getQueue()
   {
     return $this->queue;
@@ -137,10 +176,16 @@ class Item extends \Google\Model
   {
     return $this->structuredData;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

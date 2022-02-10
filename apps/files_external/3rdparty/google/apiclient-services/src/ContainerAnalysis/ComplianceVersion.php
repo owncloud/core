@@ -19,21 +19,39 @@ namespace Google\Service\ContainerAnalysis;
 
 class ComplianceVersion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cpeUri;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setCpeUri($cpeUri)
   {
     $this->cpeUri = $cpeUri;
   }
+  /**
+   * @return string
+   */
   public function getCpeUri()
   {
     return $this->cpeUri;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

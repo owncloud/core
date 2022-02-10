@@ -19,30 +19,57 @@ namespace Google\Service\Container;
 
 class ResourceLimit extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maximum;
+  /**
+   * @var string
+   */
   public $minimum;
+  /**
+   * @var string
+   */
   public $resourceType;
 
+  /**
+   * @param string
+   */
   public function setMaximum($maximum)
   {
     $this->maximum = $maximum;
   }
+  /**
+   * @return string
+   */
   public function getMaximum()
   {
     return $this->maximum;
   }
+  /**
+   * @param string
+   */
   public function setMinimum($minimum)
   {
     $this->minimum = $minimum;
   }
+  /**
+   * @return string
+   */
   public function getMinimum()
   {
     return $this->minimum;
   }
+  /**
+   * @param string
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string
+   */
   public function getResourceType()
   {
     return $this->resourceType;

@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersCreateTestReturnResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $returnId;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setReturnId($returnId)
   {
     $this->returnId = $returnId;
   }
+  /**
+   * @return string
+   */
   public function getReturnId()
   {
     return $this->returnId;

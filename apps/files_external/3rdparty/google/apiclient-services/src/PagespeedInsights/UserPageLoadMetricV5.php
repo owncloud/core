@@ -20,18 +20,39 @@ namespace Google\Service\PagespeedInsights;
 class UserPageLoadMetricV5 extends \Google\Collection
 {
   protected $collection_key = 'distributions';
+  /**
+   * @var string
+   */
   public $category;
   protected $distributionsType = Bucket::class;
   protected $distributionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $formFactor;
+  /**
+   * @var int
+   */
   public $median;
+  /**
+   * @var string
+   */
   public $metricId;
+  /**
+   * @var int
+   */
   public $percentile;
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
@@ -50,34 +71,58 @@ class UserPageLoadMetricV5 extends \Google\Collection
   {
     return $this->distributions;
   }
+  /**
+   * @param string
+   */
   public function setFormFactor($formFactor)
   {
     $this->formFactor = $formFactor;
   }
+  /**
+   * @return string
+   */
   public function getFormFactor()
   {
     return $this->formFactor;
   }
+  /**
+   * @param int
+   */
   public function setMedian($median)
   {
     $this->median = $median;
   }
+  /**
+   * @return int
+   */
   public function getMedian()
   {
     return $this->median;
   }
+  /**
+   * @param string
+   */
   public function setMetricId($metricId)
   {
     $this->metricId = $metricId;
   }
+  /**
+   * @return string
+   */
   public function getMetricId()
   {
     return $this->metricId;
   }
+  /**
+   * @param int
+   */
   public function setPercentile($percentile)
   {
     $this->percentile = $percentile;
   }
+  /**
+   * @return int
+   */
   public function getPercentile()
   {
     return $this->percentile;

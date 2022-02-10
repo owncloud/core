@@ -19,59 +19,113 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1TargetServer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var bool
+   */
   public $isEnabled;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $port;
+  /**
+   * @var string
+   */
   public $protocol;
   protected $sSLInfoType = GoogleCloudApigeeV1TlsInfo::class;
   protected $sSLInfoDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param bool
+   */
   public function setIsEnabled($isEnabled)
   {
     $this->isEnabled = $isEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getIsEnabled()
   {
     return $this->isEnabled;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;
   }
+  /**
+   * @param string
+   */
   public function setProtocol($protocol)
   {
     $this->protocol = $protocol;
   }
+  /**
+   * @return string
+   */
   public function getProtocol()
   {
     return $this->protocol;

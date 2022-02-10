@@ -19,22 +19,40 @@ namespace Google\Service\PagespeedInsights;
 
 class Bucket extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $max;
+  /**
+   * @var int
+   */
   public $min;
   public $proportion;
 
+  /**
+   * @param int
+   */
   public function setMax($max)
   {
     $this->max = $max;
   }
+  /**
+   * @return int
+   */
   public function getMax()
   {
     return $this->max;
   }
+  /**
+   * @param int
+   */
   public function setMin($min)
   {
     $this->min = $min;
   }
+  /**
+   * @return int
+   */
   public function getMin()
   {
     return $this->min;

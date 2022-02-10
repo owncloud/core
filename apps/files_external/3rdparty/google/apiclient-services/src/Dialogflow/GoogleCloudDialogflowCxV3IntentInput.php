@@ -19,12 +19,21 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3IntentInput extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $intent;
 
+  /**
+   * @param string
+   */
   public function setIntent($intent)
   {
     $this->intent = $intent;
   }
+  /**
+   * @return string
+   */
   public function getIntent()
   {
     return $this->intent;

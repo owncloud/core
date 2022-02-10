@@ -19,12 +19,21 @@ namespace Google\Service\Dataflow;
 
 class GetDebugConfigResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $config;
 
+  /**
+   * @param string
+   */
   public function setConfig($config)
   {
     $this->config = $config;
   }
+  /**
+   * @return string
+   */
   public function getConfig()
   {
     return $this->config;

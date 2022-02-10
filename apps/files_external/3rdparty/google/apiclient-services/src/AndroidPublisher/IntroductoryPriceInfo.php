@@ -19,39 +19,75 @@ namespace Google\Service\AndroidPublisher;
 
 class IntroductoryPriceInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $introductoryPriceAmountMicros;
+  /**
+   * @var string
+   */
   public $introductoryPriceCurrencyCode;
+  /**
+   * @var int
+   */
   public $introductoryPriceCycles;
+  /**
+   * @var string
+   */
   public $introductoryPricePeriod;
 
+  /**
+   * @param string
+   */
   public function setIntroductoryPriceAmountMicros($introductoryPriceAmountMicros)
   {
     $this->introductoryPriceAmountMicros = $introductoryPriceAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getIntroductoryPriceAmountMicros()
   {
     return $this->introductoryPriceAmountMicros;
   }
+  /**
+   * @param string
+   */
   public function setIntroductoryPriceCurrencyCode($introductoryPriceCurrencyCode)
   {
     $this->introductoryPriceCurrencyCode = $introductoryPriceCurrencyCode;
   }
+  /**
+   * @return string
+   */
   public function getIntroductoryPriceCurrencyCode()
   {
     return $this->introductoryPriceCurrencyCode;
   }
+  /**
+   * @param int
+   */
   public function setIntroductoryPriceCycles($introductoryPriceCycles)
   {
     $this->introductoryPriceCycles = $introductoryPriceCycles;
   }
+  /**
+   * @return int
+   */
   public function getIntroductoryPriceCycles()
   {
     return $this->introductoryPriceCycles;
   }
+  /**
+   * @param string
+   */
   public function setIntroductoryPricePeriod($introductoryPricePeriod)
   {
     $this->introductoryPricePeriod = $introductoryPricePeriod;
   }
+  /**
+   * @return string
+   */
   public function getIntroductoryPricePeriod()
   {
     return $this->introductoryPricePeriod;

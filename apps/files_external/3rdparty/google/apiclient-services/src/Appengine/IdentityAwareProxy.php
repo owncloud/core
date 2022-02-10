@@ -19,39 +19,75 @@ namespace Google\Service\Appengine;
 
 class IdentityAwareProxy extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $oauth2ClientId;
+  /**
+   * @var string
+   */
   public $oauth2ClientSecret;
+  /**
+   * @var string
+   */
   public $oauth2ClientSecretSha256;
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setOauth2ClientId($oauth2ClientId)
   {
     $this->oauth2ClientId = $oauth2ClientId;
   }
+  /**
+   * @return string
+   */
   public function getOauth2ClientId()
   {
     return $this->oauth2ClientId;
   }
+  /**
+   * @param string
+   */
   public function setOauth2ClientSecret($oauth2ClientSecret)
   {
     $this->oauth2ClientSecret = $oauth2ClientSecret;
   }
+  /**
+   * @return string
+   */
   public function getOauth2ClientSecret()
   {
     return $this->oauth2ClientSecret;
   }
+  /**
+   * @param string
+   */
   public function setOauth2ClientSecretSha256($oauth2ClientSecretSha256)
   {
     $this->oauth2ClientSecretSha256 = $oauth2ClientSecretSha256;
   }
+  /**
+   * @return string
+   */
   public function getOauth2ClientSecretSha256()
   {
     return $this->oauth2ClientSecretSha256;

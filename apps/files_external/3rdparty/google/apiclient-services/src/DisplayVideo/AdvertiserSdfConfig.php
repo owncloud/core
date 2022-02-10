@@ -19,14 +19,23 @@ namespace Google\Service\DisplayVideo;
 
 class AdvertiserSdfConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $overridePartnerSdfConfig;
   protected $sdfConfigType = SdfConfig::class;
   protected $sdfConfigDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setOverridePartnerSdfConfig($overridePartnerSdfConfig)
   {
     $this->overridePartnerSdfConfig = $overridePartnerSdfConfig;
   }
+  /**
+   * @return bool
+   */
   public function getOverridePartnerSdfConfig()
   {
     return $this->overridePartnerSdfConfig;

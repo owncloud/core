@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class InstanceGroupManagerAutoHealingPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $healthCheck;
+  /**
+   * @var int
+   */
   public $initialDelaySec;
 
+  /**
+   * @param string
+   */
   public function setHealthCheck($healthCheck)
   {
     $this->healthCheck = $healthCheck;
   }
+  /**
+   * @return string
+   */
   public function getHealthCheck()
   {
     return $this->healthCheck;
   }
+  /**
+   * @param int
+   */
   public function setInitialDelaySec($initialDelaySec)
   {
     $this->initialDelaySec = $initialDelaySec;
   }
+  /**
+   * @return int
+   */
   public function getInitialDelaySec()
   {
     return $this->initialDelaySec;

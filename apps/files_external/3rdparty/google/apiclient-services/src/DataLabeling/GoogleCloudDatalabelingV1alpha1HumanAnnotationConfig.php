@@ -20,84 +20,165 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1alpha1HumanAnnotationConfig extends \Google\Collection
 {
   protected $collection_key = 'contributorEmails';
+  /**
+   * @var string
+   */
   public $annotatedDatasetDescription;
+  /**
+   * @var string
+   */
   public $annotatedDatasetDisplayName;
+  /**
+   * @var string[]
+   */
   public $contributorEmails;
+  /**
+   * @var string
+   */
   public $instruction;
+  /**
+   * @var string
+   */
   public $labelGroup;
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $questionDuration;
+  /**
+   * @var int
+   */
   public $replicaCount;
+  /**
+   * @var string
+   */
   public $userEmailAddress;
 
+  /**
+   * @param string
+   */
   public function setAnnotatedDatasetDescription($annotatedDatasetDescription)
   {
     $this->annotatedDatasetDescription = $annotatedDatasetDescription;
   }
+  /**
+   * @return string
+   */
   public function getAnnotatedDatasetDescription()
   {
     return $this->annotatedDatasetDescription;
   }
+  /**
+   * @param string
+   */
   public function setAnnotatedDatasetDisplayName($annotatedDatasetDisplayName)
   {
     $this->annotatedDatasetDisplayName = $annotatedDatasetDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getAnnotatedDatasetDisplayName()
   {
     return $this->annotatedDatasetDisplayName;
   }
+  /**
+   * @param string[]
+   */
   public function setContributorEmails($contributorEmails)
   {
     $this->contributorEmails = $contributorEmails;
   }
+  /**
+   * @return string[]
+   */
   public function getContributorEmails()
   {
     return $this->contributorEmails;
   }
+  /**
+   * @param string
+   */
   public function setInstruction($instruction)
   {
     $this->instruction = $instruction;
   }
+  /**
+   * @return string
+   */
   public function getInstruction()
   {
     return $this->instruction;
   }
+  /**
+   * @param string
+   */
   public function setLabelGroup($labelGroup)
   {
     $this->labelGroup = $labelGroup;
   }
+  /**
+   * @return string
+   */
   public function getLabelGroup()
   {
     return $this->labelGroup;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setQuestionDuration($questionDuration)
   {
     $this->questionDuration = $questionDuration;
   }
+  /**
+   * @return string
+   */
   public function getQuestionDuration()
   {
     return $this->questionDuration;
   }
+  /**
+   * @param int
+   */
   public function setReplicaCount($replicaCount)
   {
     $this->replicaCount = $replicaCount;
   }
+  /**
+   * @return int
+   */
   public function getReplicaCount()
   {
     return $this->replicaCount;
   }
+  /**
+   * @param string
+   */
   public function setUserEmailAddress($userEmailAddress)
   {
     $this->userEmailAddress = $userEmailAddress;
   }
+  /**
+   * @return string
+   */
   public function getUserEmailAddress()
   {
     return $this->userEmailAddress;

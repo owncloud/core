@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class ContentInstreamPositionTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentInstreamPosition;
 
+  /**
+   * @param string
+   */
   public function setContentInstreamPosition($contentInstreamPosition)
   {
     $this->contentInstreamPosition = $contentInstreamPosition;
   }
+  /**
+   * @return string
+   */
   public function getContentInstreamPosition()
   {
     return $this->contentInstreamPosition;

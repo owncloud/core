@@ -19,57 +19,111 @@ namespace Google\Service\Iam;
 
 class LintResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $debugMessage;
+  /**
+   * @var string
+   */
   public $fieldName;
+  /**
+   * @var string
+   */
   public $level;
+  /**
+   * @var int
+   */
   public $locationOffset;
+  /**
+   * @var string
+   */
   public $severity;
+  /**
+   * @var string
+   */
   public $validationUnitName;
 
+  /**
+   * @param string
+   */
   public function setDebugMessage($debugMessage)
   {
     $this->debugMessage = $debugMessage;
   }
+  /**
+   * @return string
+   */
   public function getDebugMessage()
   {
     return $this->debugMessage;
   }
+  /**
+   * @param string
+   */
   public function setFieldName($fieldName)
   {
     $this->fieldName = $fieldName;
   }
+  /**
+   * @return string
+   */
   public function getFieldName()
   {
     return $this->fieldName;
   }
+  /**
+   * @param string
+   */
   public function setLevel($level)
   {
     $this->level = $level;
   }
+  /**
+   * @return string
+   */
   public function getLevel()
   {
     return $this->level;
   }
+  /**
+   * @param int
+   */
   public function setLocationOffset($locationOffset)
   {
     $this->locationOffset = $locationOffset;
   }
+  /**
+   * @return int
+   */
   public function getLocationOffset()
   {
     return $this->locationOffset;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;
   }
+  /**
+   * @param string
+   */
   public function setValidationUnitName($validationUnitName)
   {
     $this->validationUnitName = $validationUnitName;
   }
+  /**
+   * @return string
+   */
   public function getValidationUnitName()
   {
     return $this->validationUnitName;

@@ -19,48 +19,93 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1DatastoreConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bucketName;
+  /**
+   * @var string
+   */
   public $datasetName;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $tablePrefix;
 
+  /**
+   * @param string
+   */
   public function setBucketName($bucketName)
   {
     $this->bucketName = $bucketName;
   }
+  /**
+   * @return string
+   */
   public function getBucketName()
   {
     return $this->bucketName;
   }
+  /**
+   * @param string
+   */
   public function setDatasetName($datasetName)
   {
     $this->datasetName = $datasetName;
   }
+  /**
+   * @return string
+   */
   public function getDatasetName()
   {
     return $this->datasetName;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setTablePrefix($tablePrefix)
   {
     $this->tablePrefix = $tablePrefix;
   }
+  /**
+   * @return string
+   */
   public function getTablePrefix()
   {
     return $this->tablePrefix;

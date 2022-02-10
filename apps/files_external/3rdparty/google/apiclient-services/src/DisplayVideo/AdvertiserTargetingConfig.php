@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class AdvertiserTargetingConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $exemptTvFromViewabilityTargeting;
 
+  /**
+   * @param bool
+   */
   public function setExemptTvFromViewabilityTargeting($exemptTvFromViewabilityTargeting)
   {
     $this->exemptTvFromViewabilityTargeting = $exemptTvFromViewabilityTargeting;
   }
+  /**
+   * @return bool
+   */
   public function getExemptTvFromViewabilityTargeting()
   {
     return $this->exemptTvFromViewabilityTargeting;

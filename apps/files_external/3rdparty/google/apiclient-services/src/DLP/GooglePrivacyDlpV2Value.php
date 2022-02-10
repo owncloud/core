@@ -19,21 +19,42 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2Value extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $booleanValue;
   protected $dateValueType = GoogleTypeDate::class;
   protected $dateValueDataType = '';
+  /**
+   * @var string
+   */
   public $dayOfWeekValue;
   public $floatValue;
+  /**
+   * @var string
+   */
   public $integerValue;
+  /**
+   * @var string
+   */
   public $stringValue;
   protected $timeValueType = GoogleTypeTimeOfDay::class;
   protected $timeValueDataType = '';
+  /**
+   * @var string
+   */
   public $timestampValue;
 
+  /**
+   * @param bool
+   */
   public function setBooleanValue($booleanValue)
   {
     $this->booleanValue = $booleanValue;
   }
+  /**
+   * @return bool
+   */
   public function getBooleanValue()
   {
     return $this->booleanValue;
@@ -52,10 +73,16 @@ class GooglePrivacyDlpV2Value extends \Google\Model
   {
     return $this->dateValue;
   }
+  /**
+   * @param string
+   */
   public function setDayOfWeekValue($dayOfWeekValue)
   {
     $this->dayOfWeekValue = $dayOfWeekValue;
   }
+  /**
+   * @return string
+   */
   public function getDayOfWeekValue()
   {
     return $this->dayOfWeekValue;
@@ -68,18 +95,30 @@ class GooglePrivacyDlpV2Value extends \Google\Model
   {
     return $this->floatValue;
   }
+  /**
+   * @param string
+   */
   public function setIntegerValue($integerValue)
   {
     $this->integerValue = $integerValue;
   }
+  /**
+   * @return string
+   */
   public function getIntegerValue()
   {
     return $this->integerValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;
@@ -98,10 +137,16 @@ class GooglePrivacyDlpV2Value extends \Google\Model
   {
     return $this->timeValue;
   }
+  /**
+   * @param string
+   */
   public function setTimestampValue($timestampValue)
   {
     $this->timestampValue = $timestampValue;
   }
+  /**
+   * @return string
+   */
   public function getTimestampValue()
   {
     return $this->timestampValue;

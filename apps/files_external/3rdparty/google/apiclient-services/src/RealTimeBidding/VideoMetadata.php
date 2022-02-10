@@ -20,34 +20,67 @@ namespace Google\Service\RealTimeBidding;
 class VideoMetadata extends \Google\Collection
 {
   protected $collection_key = 'mediaFiles';
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var bool
+   */
   public $isValidVast;
+  /**
+   * @var bool
+   */
   public $isVpaid;
   protected $mediaFilesType = MediaFile::class;
   protected $mediaFilesDataType = 'array';
+  /**
+   * @var string
+   */
   public $skipOffset;
+  /**
+   * @var string
+   */
   public $vastVersion;
 
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param bool
+   */
   public function setIsValidVast($isValidVast)
   {
     $this->isValidVast = $isValidVast;
   }
+  /**
+   * @return bool
+   */
   public function getIsValidVast()
   {
     return $this->isValidVast;
   }
+  /**
+   * @param bool
+   */
   public function setIsVpaid($isVpaid)
   {
     $this->isVpaid = $isVpaid;
   }
+  /**
+   * @return bool
+   */
   public function getIsVpaid()
   {
     return $this->isVpaid;
@@ -66,18 +99,30 @@ class VideoMetadata extends \Google\Collection
   {
     return $this->mediaFiles;
   }
+  /**
+   * @param string
+   */
   public function setSkipOffset($skipOffset)
   {
     $this->skipOffset = $skipOffset;
   }
+  /**
+   * @return string
+   */
   public function getSkipOffset()
   {
     return $this->skipOffset;
   }
+  /**
+   * @param string
+   */
   public function setVastVersion($vastVersion)
   {
     $this->vastVersion = $vastVersion;
   }
+  /**
+   * @return string
+   */
   public function getVastVersion()
   {
     return $this->vastVersion;

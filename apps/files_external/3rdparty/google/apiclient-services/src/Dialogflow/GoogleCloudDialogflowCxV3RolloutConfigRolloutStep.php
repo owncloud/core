@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3RolloutConfigRolloutStep extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $minDuration;
+  /**
+   * @var int
+   */
   public $trafficPercent;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setMinDuration($minDuration)
   {
     $this->minDuration = $minDuration;
   }
+  /**
+   * @return string
+   */
   public function getMinDuration()
   {
     return $this->minDuration;
   }
+  /**
+   * @param int
+   */
   public function setTrafficPercent($trafficPercent)
   {
     $this->trafficPercent = $trafficPercent;
   }
+  /**
+   * @return int
+   */
   public function getTrafficPercent()
   {
     return $this->trafficPercent;

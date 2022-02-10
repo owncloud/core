@@ -19,39 +19,75 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1SuggestTrialsMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clientId;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $study;
+  /**
+   * @var int
+   */
   public $suggestionCount;
 
+  /**
+   * @param string
+   */
   public function setClientId($clientId)
   {
     $this->clientId = $clientId;
   }
+  /**
+   * @return string
+   */
   public function getClientId()
   {
     return $this->clientId;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setStudy($study)
   {
     $this->study = $study;
   }
+  /**
+   * @return string
+   */
   public function getStudy()
   {
     return $this->study;
   }
+  /**
+   * @param int
+   */
   public function setSuggestionCount($suggestionCount)
   {
     $this->suggestionCount = $suggestionCount;
   }
+  /**
+   * @return int
+   */
   public function getSuggestionCount()
   {
     return $this->suggestionCount;

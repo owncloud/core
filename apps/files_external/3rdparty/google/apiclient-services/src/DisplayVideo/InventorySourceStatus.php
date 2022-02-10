@@ -19,48 +19,93 @@ namespace Google\Service\DisplayVideo;
 
 class InventorySourceStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $configStatus;
+  /**
+   * @var string
+   */
   public $entityPauseReason;
+  /**
+   * @var string
+   */
   public $entityStatus;
+  /**
+   * @var string
+   */
   public $sellerPauseReason;
+  /**
+   * @var string
+   */
   public $sellerStatus;
 
+  /**
+   * @param string
+   */
   public function setConfigStatus($configStatus)
   {
     $this->configStatus = $configStatus;
   }
+  /**
+   * @return string
+   */
   public function getConfigStatus()
   {
     return $this->configStatus;
   }
+  /**
+   * @param string
+   */
   public function setEntityPauseReason($entityPauseReason)
   {
     $this->entityPauseReason = $entityPauseReason;
   }
+  /**
+   * @return string
+   */
   public function getEntityPauseReason()
   {
     return $this->entityPauseReason;
   }
+  /**
+   * @param string
+   */
   public function setEntityStatus($entityStatus)
   {
     $this->entityStatus = $entityStatus;
   }
+  /**
+   * @return string
+   */
   public function getEntityStatus()
   {
     return $this->entityStatus;
   }
+  /**
+   * @param string
+   */
   public function setSellerPauseReason($sellerPauseReason)
   {
     $this->sellerPauseReason = $sellerPauseReason;
   }
+  /**
+   * @return string
+   */
   public function getSellerPauseReason()
   {
     return $this->sellerPauseReason;
   }
+  /**
+   * @param string
+   */
   public function setSellerStatus($sellerStatus)
   {
     $this->sellerStatus = $sellerStatus;
   }
+  /**
+   * @return string
+   */
   public function getSellerStatus()
   {
     return $this->sellerStatus;

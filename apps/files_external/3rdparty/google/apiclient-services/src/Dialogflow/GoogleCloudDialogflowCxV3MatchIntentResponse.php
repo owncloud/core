@@ -24,9 +24,21 @@ class GoogleCloudDialogflowCxV3MatchIntentResponse extends \Google\Collection
   protected $currentPageDataType = '';
   protected $matchesType = GoogleCloudDialogflowCxV3Match::class;
   protected $matchesDataType = 'array';
+  /**
+   * @var string
+   */
   public $text;
+  /**
+   * @var string
+   */
   public $transcript;
+  /**
+   * @var string
+   */
   public $triggerEvent;
+  /**
+   * @var string
+   */
   public $triggerIntent;
 
   /**
@@ -57,34 +69,58 @@ class GoogleCloudDialogflowCxV3MatchIntentResponse extends \Google\Collection
   {
     return $this->matches;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;
   }
+  /**
+   * @param string
+   */
   public function setTranscript($transcript)
   {
     $this->transcript = $transcript;
   }
+  /**
+   * @return string
+   */
   public function getTranscript()
   {
     return $this->transcript;
   }
+  /**
+   * @param string
+   */
   public function setTriggerEvent($triggerEvent)
   {
     $this->triggerEvent = $triggerEvent;
   }
+  /**
+   * @return string
+   */
   public function getTriggerEvent()
   {
     return $this->triggerEvent;
   }
+  /**
+   * @param string
+   */
   public function setTriggerIntent($triggerIntent)
   {
     $this->triggerIntent = $triggerIntent;
   }
+  /**
+   * @return string
+   */
   public function getTriggerIntent()
   {
     return $this->triggerIntent;

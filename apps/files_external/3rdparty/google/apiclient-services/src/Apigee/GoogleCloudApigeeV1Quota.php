@@ -19,30 +19,57 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1Quota extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $interval;
+  /**
+   * @var string
+   */
   public $limit;
+  /**
+   * @var string
+   */
   public $timeUnit;
 
+  /**
+   * @param string
+   */
   public function setInterval($interval)
   {
     $this->interval = $interval;
   }
+  /**
+   * @return string
+   */
   public function getInterval()
   {
     return $this->interval;
   }
+  /**
+   * @param string
+   */
   public function setLimit($limit)
   {
     $this->limit = $limit;
   }
+  /**
+   * @return string
+   */
   public function getLimit()
   {
     return $this->limit;
   }
+  /**
+   * @param string
+   */
   public function setTimeUnit($timeUnit)
   {
     $this->timeUnit = $timeUnit;
   }
+  /**
+   * @return string
+   */
   public function getTimeUnit()
   {
     return $this->timeUnit;

@@ -22,6 +22,9 @@ class DomainCallEvidence extends \Google\Collection
   protected $collection_key = 'topHttpCallDomains';
   protected $topHttpCallDomainsType = DomainCalls::class;
   protected $topHttpCallDomainsDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalHttpCallCount;
 
   /**
@@ -38,10 +41,16 @@ class DomainCallEvidence extends \Google\Collection
   {
     return $this->topHttpCallDomains;
   }
+  /**
+   * @param int
+   */
   public function setTotalHttpCallCount($totalHttpCallCount)
   {
     $this->totalHttpCallCount = $totalHttpCallCount;
   }
+  /**
+   * @return int
+   */
   public function getTotalHttpCallCount()
   {
     return $this->totalHttpCallCount;

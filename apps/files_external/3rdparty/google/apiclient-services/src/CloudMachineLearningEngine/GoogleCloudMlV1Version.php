@@ -26,32 +26,89 @@ class GoogleCloudMlV1Version extends \Google\Collection
   protected $autoScalingDataType = '';
   protected $containerType = GoogleCloudMlV1ContainerSpec::class;
   protected $containerDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $deploymentUri;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string
+   */
   public $etag;
   protected $explanationConfigType = GoogleCloudMlV1ExplanationConfig::class;
   protected $explanationConfigDataType = '';
+  /**
+   * @var string
+   */
   public $framework;
+  /**
+   * @var bool
+   */
   public $isDefault;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $lastMigrationModelId;
+  /**
+   * @var string
+   */
   public $lastMigrationTime;
+  /**
+   * @var string
+   */
   public $lastUseTime;
+  /**
+   * @var string
+   */
   public $machineType;
   protected $manualScalingType = GoogleCloudMlV1ManualScaling::class;
   protected $manualScalingDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $packageUris;
+  /**
+   * @var string
+   */
   public $predictionClass;
+  /**
+   * @var string
+   */
   public $pythonVersion;
   protected $requestLoggingConfigType = GoogleCloudMlV1RequestLoggingConfig::class;
   protected $requestLoggingConfigDataType = '';
   protected $routesType = GoogleCloudMlV1RouteMap::class;
   protected $routesDataType = '';
+  /**
+   * @var string
+   */
   public $runtimeVersion;
+  /**
+   * @var string
+   */
   public $serviceAccount;
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -96,42 +153,72 @@ class GoogleCloudMlV1Version extends \Google\Collection
   {
     return $this->container;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDeploymentUri($deploymentUri)
   {
     $this->deploymentUri = $deploymentUri;
   }
+  /**
+   * @return string
+   */
   public function getDeploymentUri()
   {
     return $this->deploymentUri;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
@@ -150,58 +237,100 @@ class GoogleCloudMlV1Version extends \Google\Collection
   {
     return $this->explanationConfig;
   }
+  /**
+   * @param string
+   */
   public function setFramework($framework)
   {
     $this->framework = $framework;
   }
+  /**
+   * @return string
+   */
   public function getFramework()
   {
     return $this->framework;
   }
+  /**
+   * @param bool
+   */
   public function setIsDefault($isDefault)
   {
     $this->isDefault = $isDefault;
   }
+  /**
+   * @return bool
+   */
   public function getIsDefault()
   {
     return $this->isDefault;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLastMigrationModelId($lastMigrationModelId)
   {
     $this->lastMigrationModelId = $lastMigrationModelId;
   }
+  /**
+   * @return string
+   */
   public function getLastMigrationModelId()
   {
     return $this->lastMigrationModelId;
   }
+  /**
+   * @param string
+   */
   public function setLastMigrationTime($lastMigrationTime)
   {
     $this->lastMigrationTime = $lastMigrationTime;
   }
+  /**
+   * @return string
+   */
   public function getLastMigrationTime()
   {
     return $this->lastMigrationTime;
   }
+  /**
+   * @param string
+   */
   public function setLastUseTime($lastUseTime)
   {
     $this->lastUseTime = $lastUseTime;
   }
+  /**
+   * @return string
+   */
   public function getLastUseTime()
   {
     return $this->lastUseTime;
   }
+  /**
+   * @param string
+   */
   public function setMachineType($machineType)
   {
     $this->machineType = $machineType;
   }
+  /**
+   * @return string
+   */
   public function getMachineType()
   {
     return $this->machineType;
@@ -220,34 +349,58 @@ class GoogleCloudMlV1Version extends \Google\Collection
   {
     return $this->manualScaling;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setPackageUris($packageUris)
   {
     $this->packageUris = $packageUris;
   }
+  /**
+   * @return string[]
+   */
   public function getPackageUris()
   {
     return $this->packageUris;
   }
+  /**
+   * @param string
+   */
   public function setPredictionClass($predictionClass)
   {
     $this->predictionClass = $predictionClass;
   }
+  /**
+   * @return string
+   */
   public function getPredictionClass()
   {
     return $this->predictionClass;
   }
+  /**
+   * @param string
+   */
   public function setPythonVersion($pythonVersion)
   {
     $this->pythonVersion = $pythonVersion;
   }
+  /**
+   * @return string
+   */
   public function getPythonVersion()
   {
     return $this->pythonVersion;
@@ -280,26 +433,44 @@ class GoogleCloudMlV1Version extends \Google\Collection
   {
     return $this->routes;
   }
+  /**
+   * @param string
+   */
   public function setRuntimeVersion($runtimeVersion)
   {
     $this->runtimeVersion = $runtimeVersion;
   }
+  /**
+   * @return string
+   */
   public function getRuntimeVersion()
   {
     return $this->runtimeVersion;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

@@ -19,39 +19,75 @@ namespace Google\Service\AndroidEnterprise;
 
 class NewDeviceEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceId;
+  /**
+   * @var string
+   */
   public $dpcPackageName;
+  /**
+   * @var string
+   */
   public $managementType;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
   }
+  /**
+   * @param string
+   */
   public function setDpcPackageName($dpcPackageName)
   {
     $this->dpcPackageName = $dpcPackageName;
   }
+  /**
+   * @return string
+   */
   public function getDpcPackageName()
   {
     return $this->dpcPackageName;
   }
+  /**
+   * @param string
+   */
   public function setManagementType($managementType)
   {
     $this->managementType = $managementType;
   }
+  /**
+   * @return string
+   */
   public function getManagementType()
   {
     return $this->managementType;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

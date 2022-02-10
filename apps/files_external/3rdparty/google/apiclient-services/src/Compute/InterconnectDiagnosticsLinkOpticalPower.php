@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class InterconnectDiagnosticsLinkOpticalPower extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var float
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param float
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return float
+   */
   public function getValue()
   {
     return $this->value;

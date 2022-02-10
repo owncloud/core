@@ -21,7 +21,13 @@ class UpdateParagraphStyleRequest extends \Google\Model
 {
   protected $cellLocationType = TableCellLocation::class;
   protected $cellLocationDataType = '';
+  /**
+   * @var string
+   */
   public $fields;
+  /**
+   * @var string
+   */
   public $objectId;
   protected $styleType = ParagraphStyle::class;
   protected $styleDataType = '';
@@ -42,18 +48,30 @@ class UpdateParagraphStyleRequest extends \Google\Model
   {
     return $this->cellLocation;
   }
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;

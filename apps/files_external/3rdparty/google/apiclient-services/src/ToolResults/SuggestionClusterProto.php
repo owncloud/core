@@ -20,14 +20,23 @@ namespace Google\Service\ToolResults;
 class SuggestionClusterProto extends \Google\Collection
 {
   protected $collection_key = 'suggestions';
+  /**
+   * @var string
+   */
   public $category;
   protected $suggestionsType = SuggestionProto::class;
   protected $suggestionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;

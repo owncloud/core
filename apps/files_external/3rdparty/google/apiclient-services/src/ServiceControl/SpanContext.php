@@ -19,12 +19,21 @@ namespace Google\Service\ServiceControl;
 
 class SpanContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $spanName;
 
+  /**
+   * @param string
+   */
   public function setSpanName($spanName)
   {
     $this->spanName = $spanName;
   }
+  /**
+   * @return string
+   */
   public function getSpanName()
   {
     return $this->spanName;

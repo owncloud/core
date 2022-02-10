@@ -20,30 +20,57 @@ namespace Google\Service\Drive;
 class GeneratedIds extends \Google\Collection
 {
   protected $collection_key = 'ids';
+  /**
+   * @var string[]
+   */
   public $ids;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $space;
 
+  /**
+   * @param string[]
+   */
   public function setIds($ids)
   {
     $this->ids = $ids;
   }
+  /**
+   * @return string[]
+   */
   public function getIds()
   {
     return $this->ids;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setSpace($space)
   {
     $this->space = $space;
   }
+  /**
+   * @return string
+   */
   public function getSpace()
   {
     return $this->space;

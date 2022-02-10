@@ -22,6 +22,9 @@ class ListGuardiansResponse extends \Google\Collection
   protected $collection_key = 'guardians';
   protected $guardiansType = Guardian::class;
   protected $guardiansDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListGuardiansResponse extends \Google\Collection
   {
     return $this->guardians;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

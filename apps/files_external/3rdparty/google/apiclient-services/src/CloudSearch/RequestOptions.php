@@ -21,8 +21,17 @@ class RequestOptions extends \Google\Model
 {
   protected $debugOptionsType = DebugOptions::class;
   protected $debugOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $searchApplicationId;
+  /**
+   * @var string
+   */
   public $timeZone;
 
   /**
@@ -39,26 +48,44 @@ class RequestOptions extends \Google\Model
   {
     return $this->debugOptions;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setSearchApplicationId($searchApplicationId)
   {
     $this->searchApplicationId = $searchApplicationId;
   }
+  /**
+   * @return string
+   */
   public function getSearchApplicationId()
   {
     return $this->searchApplicationId;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;

@@ -19,16 +19,31 @@ namespace Google\Service\Dfareporting;
 
 class DirectorySiteSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $activeViewOptOut;
   protected $dfpSettingsType = DfpSettings::class;
   protected $dfpSettingsDataType = '';
+  /**
+   * @var bool
+   */
   public $instreamVideoPlacementAccepted;
+  /**
+   * @var bool
+   */
   public $interstitialPlacementAccepted;
 
+  /**
+   * @param bool
+   */
   public function setActiveViewOptOut($activeViewOptOut)
   {
     $this->activeViewOptOut = $activeViewOptOut;
   }
+  /**
+   * @return bool
+   */
   public function getActiveViewOptOut()
   {
     return $this->activeViewOptOut;
@@ -47,18 +62,30 @@ class DirectorySiteSettings extends \Google\Model
   {
     return $this->dfpSettings;
   }
+  /**
+   * @param bool
+   */
   public function setInstreamVideoPlacementAccepted($instreamVideoPlacementAccepted)
   {
     $this->instreamVideoPlacementAccepted = $instreamVideoPlacementAccepted;
   }
+  /**
+   * @return bool
+   */
   public function getInstreamVideoPlacementAccepted()
   {
     return $this->instreamVideoPlacementAccepted;
   }
+  /**
+   * @param bool
+   */
   public function setInterstitialPlacementAccepted($interstitialPlacementAccepted)
   {
     $this->interstitialPlacementAccepted = $interstitialPlacementAccepted;
   }
+  /**
+   * @return bool
+   */
   public function getInterstitialPlacementAccepted()
   {
     return $this->interstitialPlacementAccepted;

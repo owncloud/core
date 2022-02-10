@@ -20,32 +20,59 @@ namespace Google\Service\CloudFunctions;
 class SecretVolume extends \Google\Collection
 {
   protected $collection_key = 'versions';
+  /**
+   * @var string
+   */
   public $mountPath;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $secret;
   protected $versionsType = SecretVersion::class;
   protected $versionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setMountPath($mountPath)
   {
     $this->mountPath = $mountPath;
   }
+  /**
+   * @return string
+   */
   public function getMountPath()
   {
     return $this->mountPath;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setSecret($secret)
   {
     $this->secret = $secret;
   }
+  /**
+   * @return string
+   */
   public function getSecret()
   {
     return $this->secret;

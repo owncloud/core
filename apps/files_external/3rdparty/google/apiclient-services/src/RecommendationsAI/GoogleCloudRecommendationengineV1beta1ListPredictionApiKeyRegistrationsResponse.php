@@ -20,14 +20,23 @@ namespace Google\Service\RecommendationsAI;
 class GoogleCloudRecommendationengineV1beta1ListPredictionApiKeyRegistrationsResponse extends \Google\Collection
 {
   protected $collection_key = 'predictionApiKeyRegistrations';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $predictionApiKeyRegistrationsType = GoogleCloudRecommendationengineV1beta1PredictionApiKeyRegistration::class;
   protected $predictionApiKeyRegistrationsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

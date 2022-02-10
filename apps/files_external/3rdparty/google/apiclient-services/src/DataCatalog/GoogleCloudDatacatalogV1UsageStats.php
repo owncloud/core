@@ -19,39 +19,75 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1UsageStats extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $totalCancellations;
+  /**
+   * @var float
+   */
   public $totalCompletions;
+  /**
+   * @var float
+   */
   public $totalExecutionTimeForCompletionsMillis;
+  /**
+   * @var float
+   */
   public $totalFailures;
 
+  /**
+   * @param float
+   */
   public function setTotalCancellations($totalCancellations)
   {
     $this->totalCancellations = $totalCancellations;
   }
+  /**
+   * @return float
+   */
   public function getTotalCancellations()
   {
     return $this->totalCancellations;
   }
+  /**
+   * @param float
+   */
   public function setTotalCompletions($totalCompletions)
   {
     $this->totalCompletions = $totalCompletions;
   }
+  /**
+   * @return float
+   */
   public function getTotalCompletions()
   {
     return $this->totalCompletions;
   }
+  /**
+   * @param float
+   */
   public function setTotalExecutionTimeForCompletionsMillis($totalExecutionTimeForCompletionsMillis)
   {
     $this->totalExecutionTimeForCompletionsMillis = $totalExecutionTimeForCompletionsMillis;
   }
+  /**
+   * @return float
+   */
   public function getTotalExecutionTimeForCompletionsMillis()
   {
     return $this->totalExecutionTimeForCompletionsMillis;
   }
+  /**
+   * @param float
+   */
   public function setTotalFailures($totalFailures)
   {
     $this->totalFailures = $totalFailures;
   }
+  /**
+   * @return float
+   */
   public function getTotalFailures()
   {
     return $this->totalFailures;

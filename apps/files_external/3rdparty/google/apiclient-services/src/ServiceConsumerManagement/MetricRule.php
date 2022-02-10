@@ -19,21 +19,39 @@ namespace Google\Service\ServiceConsumerManagement;
 
 class MetricRule extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $metricCosts;
+  /**
+   * @var string
+   */
   public $selector;
 
+  /**
+   * @param string[]
+   */
   public function setMetricCosts($metricCosts)
   {
     $this->metricCosts = $metricCosts;
   }
+  /**
+   * @return string[]
+   */
   public function getMetricCosts()
   {
     return $this->metricCosts;
   }
+  /**
+   * @param string
+   */
   public function setSelector($selector)
   {
     $this->selector = $selector;
   }
+  /**
+   * @return string
+   */
   public function getSelector()
   {
     return $this->selector;

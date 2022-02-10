@@ -19,14 +19,23 @@ namespace Google\Service\HangoutsChat;
 
 class UserMentionMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $type;
   protected $userType = User::class;
   protected $userDataType = '';
 
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

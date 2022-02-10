@@ -19,12 +19,21 @@ namespace Google\Service\PubsubLite;
 
 class TopicPartitions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $partitionCount;
 
+  /**
+   * @param string
+   */
   public function setPartitionCount($partitionCount)
   {
     $this->partitionCount = $partitionCount;
   }
+  /**
+   * @return string
+   */
   public function getPartitionCount()
   {
     return $this->partitionCount;

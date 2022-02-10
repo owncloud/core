@@ -20,16 +20,31 @@ namespace Google\Service\NetworkSecurity;
 class Destination extends \Google\Collection
 {
   protected $collection_key = 'ports';
+  /**
+   * @var string[]
+   */
   public $hosts;
   protected $httpHeaderMatchType = HttpHeaderMatch::class;
   protected $httpHeaderMatchDataType = '';
+  /**
+   * @var string[]
+   */
   public $methods;
+  /**
+   * @var string[]
+   */
   public $ports;
 
+  /**
+   * @param string[]
+   */
   public function setHosts($hosts)
   {
     $this->hosts = $hosts;
   }
+  /**
+   * @return string[]
+   */
   public function getHosts()
   {
     return $this->hosts;
@@ -48,18 +63,30 @@ class Destination extends \Google\Collection
   {
     return $this->httpHeaderMatch;
   }
+  /**
+   * @param string[]
+   */
   public function setMethods($methods)
   {
     $this->methods = $methods;
   }
+  /**
+   * @return string[]
+   */
   public function getMethods()
   {
     return $this->methods;
   }
+  /**
+   * @param string[]
+   */
   public function setPorts($ports)
   {
     $this->ports = $ports;
   }
+  /**
+   * @return string[]
+   */
   public function getPorts()
   {
     return $this->ports;

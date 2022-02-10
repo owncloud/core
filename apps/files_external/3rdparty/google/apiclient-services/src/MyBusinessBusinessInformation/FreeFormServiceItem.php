@@ -19,14 +19,23 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class FreeFormServiceItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $category;
   protected $labelType = Label::class;
   protected $labelDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;

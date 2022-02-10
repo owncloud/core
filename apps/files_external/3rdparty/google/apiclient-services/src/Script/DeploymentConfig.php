@@ -19,39 +19,75 @@ namespace Google\Service\Script;
 
 class DeploymentConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $manifestFileName;
+  /**
+   * @var string
+   */
   public $scriptId;
+  /**
+   * @var int
+   */
   public $versionNumber;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setManifestFileName($manifestFileName)
   {
     $this->manifestFileName = $manifestFileName;
   }
+  /**
+   * @return string
+   */
   public function getManifestFileName()
   {
     return $this->manifestFileName;
   }
+  /**
+   * @param string
+   */
   public function setScriptId($scriptId)
   {
     $this->scriptId = $scriptId;
   }
+  /**
+   * @return string
+   */
   public function getScriptId()
   {
     return $this->scriptId;
   }
+  /**
+   * @param int
+   */
   public function setVersionNumber($versionNumber)
   {
     $this->versionNumber = $versionNumber;
   }
+  /**
+   * @return int
+   */
   public function getVersionNumber()
   {
     return $this->versionNumber;

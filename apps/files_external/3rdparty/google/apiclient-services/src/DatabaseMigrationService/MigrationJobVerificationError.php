@@ -19,30 +19,57 @@ namespace Google\Service\DatabaseMigrationService;
 
 class MigrationJobVerificationError extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $errorDetailMessage;
+  /**
+   * @var string
+   */
   public $errorMessage;
 
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setErrorDetailMessage($errorDetailMessage)
   {
     $this->errorDetailMessage = $errorDetailMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorDetailMessage()
   {
     return $this->errorDetailMessage;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;

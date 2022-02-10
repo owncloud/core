@@ -19,21 +19,39 @@ namespace Google\Service\Container;
 
 class UpgradeSettings extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxSurge;
+  /**
+   * @var int
+   */
   public $maxUnavailable;
 
+  /**
+   * @param int
+   */
   public function setMaxSurge($maxSurge)
   {
     $this->maxSurge = $maxSurge;
   }
+  /**
+   * @return int
+   */
   public function getMaxSurge()
   {
     return $this->maxSurge;
   }
+  /**
+   * @param int
+   */
   public function setMaxUnavailable($maxUnavailable)
   {
     $this->maxUnavailable = $maxUnavailable;
   }
+  /**
+   * @return int
+   */
   public function getMaxUnavailable()
   {
     return $this->maxUnavailable;

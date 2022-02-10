@@ -19,30 +19,57 @@ namespace Google\Service\Books;
 
 class AnnotationLayerSummary extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $allowedCharacterCount;
+  /**
+   * @var string
+   */
   public $limitType;
+  /**
+   * @var int
+   */
   public $remainingCharacterCount;
 
+  /**
+   * @param int
+   */
   public function setAllowedCharacterCount($allowedCharacterCount)
   {
     $this->allowedCharacterCount = $allowedCharacterCount;
   }
+  /**
+   * @return int
+   */
   public function getAllowedCharacterCount()
   {
     return $this->allowedCharacterCount;
   }
+  /**
+   * @param string
+   */
   public function setLimitType($limitType)
   {
     $this->limitType = $limitType;
   }
+  /**
+   * @return string
+   */
   public function getLimitType()
   {
     return $this->limitType;
   }
+  /**
+   * @param int
+   */
   public function setRemainingCharacterCount($remainingCharacterCount)
   {
     $this->remainingCharacterCount = $remainingCharacterCount;
   }
+  /**
+   * @return int
+   */
   public function getRemainingCharacterCount()
   {
     return $this->remainingCharacterCount;

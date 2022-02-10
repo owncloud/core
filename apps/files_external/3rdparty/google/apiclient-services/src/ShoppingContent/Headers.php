@@ -22,7 +22,13 @@ class Headers extends \Google\Collection
   protected $collection_key = 'weights';
   protected $locationsType = LocationIdSet::class;
   protected $locationsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $numberOfItems;
+  /**
+   * @var string[]
+   */
   public $postalCodeGroupNames;
   protected $pricesType = Price::class;
   protected $pricesDataType = 'array';
@@ -43,18 +49,30 @@ class Headers extends \Google\Collection
   {
     return $this->locations;
   }
+  /**
+   * @param string[]
+   */
   public function setNumberOfItems($numberOfItems)
   {
     $this->numberOfItems = $numberOfItems;
   }
+  /**
+   * @return string[]
+   */
   public function getNumberOfItems()
   {
     return $this->numberOfItems;
   }
+  /**
+   * @param string[]
+   */
   public function setPostalCodeGroupNames($postalCodeGroupNames)
   {
     $this->postalCodeGroupNames = $postalCodeGroupNames;
   }
+  /**
+   * @return string[]
+   */
   public function getPostalCodeGroupNames()
   {
     return $this->postalCodeGroupNames;

@@ -20,21 +20,39 @@ namespace Google\Service\Reseller;
 class ResellernotifyGetwatchdetailsResponse extends \Google\Collection
 {
   protected $collection_key = 'serviceAccountEmailAddresses';
+  /**
+   * @var string[]
+   */
   public $serviceAccountEmailAddresses;
+  /**
+   * @var string
+   */
   public $topicName;
 
+  /**
+   * @param string[]
+   */
   public function setServiceAccountEmailAddresses($serviceAccountEmailAddresses)
   {
     $this->serviceAccountEmailAddresses = $serviceAccountEmailAddresses;
   }
+  /**
+   * @return string[]
+   */
   public function getServiceAccountEmailAddresses()
   {
     return $this->serviceAccountEmailAddresses;
   }
+  /**
+   * @param string
+   */
   public function setTopicName($topicName)
   {
     $this->topicName = $topicName;
   }
+  /**
+   * @return string
+   */
   public function getTopicName()
   {
     return $this->topicName;

@@ -20,12 +20,21 @@ namespace Google\Service\Vault;
 class SharedDriveInfo extends \Google\Collection
 {
   protected $collection_key = 'sharedDriveIds';
+  /**
+   * @var string[]
+   */
   public $sharedDriveIds;
 
+  /**
+   * @param string[]
+   */
   public function setSharedDriveIds($sharedDriveIds)
   {
     $this->sharedDriveIds = $sharedDriveIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSharedDriveIds()
   {
     return $this->sharedDriveIds;

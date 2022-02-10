@@ -19,39 +19,75 @@ namespace Google\Service\VMMigrationService;
 
 class VmwareSourceDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $password;
+  /**
+   * @var string
+   */
   public $thumbprint;
+  /**
+   * @var string
+   */
   public $username;
+  /**
+   * @var string
+   */
   public $vcenterIp;
 
+  /**
+   * @param string
+   */
   public function setPassword($password)
   {
     $this->password = $password;
   }
+  /**
+   * @return string
+   */
   public function getPassword()
   {
     return $this->password;
   }
+  /**
+   * @param string
+   */
   public function setThumbprint($thumbprint)
   {
     $this->thumbprint = $thumbprint;
   }
+  /**
+   * @return string
+   */
   public function getThumbprint()
   {
     return $this->thumbprint;
   }
+  /**
+   * @param string
+   */
   public function setUsername($username)
   {
     $this->username = $username;
   }
+  /**
+   * @return string
+   */
   public function getUsername()
   {
     return $this->username;
   }
+  /**
+   * @param string
+   */
   public function setVcenterIp($vcenterIp)
   {
     $this->vcenterIp = $vcenterIp;
   }
+  /**
+   * @return string
+   */
   public function getVcenterIp()
   {
     return $this->vcenterIp;

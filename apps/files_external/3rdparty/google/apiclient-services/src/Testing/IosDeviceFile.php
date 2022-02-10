@@ -19,15 +19,27 @@ namespace Google\Service\Testing;
 
 class IosDeviceFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bundleId;
   protected $contentType = FileReference::class;
   protected $contentDataType = '';
+  /**
+   * @var string
+   */
   public $devicePath;
 
+  /**
+   * @param string
+   */
   public function setBundleId($bundleId)
   {
     $this->bundleId = $bundleId;
   }
+  /**
+   * @return string
+   */
   public function getBundleId()
   {
     return $this->bundleId;
@@ -46,10 +58,16 @@ class IosDeviceFile extends \Google\Model
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setDevicePath($devicePath)
   {
     $this->devicePath = $devicePath;
   }
+  /**
+   * @return string
+   */
   public function getDevicePath()
   {
     return $this->devicePath;

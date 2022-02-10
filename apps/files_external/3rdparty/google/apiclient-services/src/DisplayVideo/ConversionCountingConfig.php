@@ -22,6 +22,9 @@ class ConversionCountingConfig extends \Google\Collection
   protected $collection_key = 'floodlightActivityConfigs';
   protected $floodlightActivityConfigsType = TrackingFloodlightActivityConfig::class;
   protected $floodlightActivityConfigsDataType = 'array';
+  /**
+   * @var string
+   */
   public $postViewCountPercentageMillis;
 
   /**
@@ -38,10 +41,16 @@ class ConversionCountingConfig extends \Google\Collection
   {
     return $this->floodlightActivityConfigs;
   }
+  /**
+   * @param string
+   */
   public function setPostViewCountPercentageMillis($postViewCountPercentageMillis)
   {
     $this->postViewCountPercentageMillis = $postViewCountPercentageMillis;
   }
+  /**
+   * @return string
+   */
   public function getPostViewCountPercentageMillis()
   {
     return $this->postViewCountPercentageMillis;

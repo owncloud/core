@@ -20,21 +20,39 @@ namespace Google\Service\Slides;
 class GroupObjectsRequest extends \Google\Collection
 {
   protected $collection_key = 'childrenObjectIds';
+  /**
+   * @var string[]
+   */
   public $childrenObjectIds;
+  /**
+   * @var string
+   */
   public $groupObjectId;
 
+  /**
+   * @param string[]
+   */
   public function setChildrenObjectIds($childrenObjectIds)
   {
     $this->childrenObjectIds = $childrenObjectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getChildrenObjectIds()
   {
     return $this->childrenObjectIds;
   }
+  /**
+   * @param string
+   */
   public function setGroupObjectId($groupObjectId)
   {
     $this->groupObjectId = $groupObjectId;
   }
+  /**
+   * @return string
+   */
   public function getGroupObjectId()
   {
     return $this->groupObjectId;

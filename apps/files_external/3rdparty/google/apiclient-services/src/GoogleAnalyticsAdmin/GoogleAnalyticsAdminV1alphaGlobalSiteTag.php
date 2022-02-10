@@ -19,21 +19,39 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 
 class GoogleAnalyticsAdminV1alphaGlobalSiteTag extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $snippet;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSnippet($snippet)
   {
     $this->snippet = $snippet;
   }
+  /**
+   * @return string
+   */
   public function getSnippet()
   {
     return $this->snippet;

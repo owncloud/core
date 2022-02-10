@@ -19,39 +19,75 @@ namespace Google\Service\Testing;
 
 class AndroidDevice extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $androidModelId;
+  /**
+   * @var string
+   */
   public $androidVersionId;
+  /**
+   * @var string
+   */
   public $locale;
+  /**
+   * @var string
+   */
   public $orientation;
 
+  /**
+   * @param string
+   */
   public function setAndroidModelId($androidModelId)
   {
     $this->androidModelId = $androidModelId;
   }
+  /**
+   * @return string
+   */
   public function getAndroidModelId()
   {
     return $this->androidModelId;
   }
+  /**
+   * @param string
+   */
   public function setAndroidVersionId($androidVersionId)
   {
     $this->androidVersionId = $androidVersionId;
   }
+  /**
+   * @return string
+   */
   public function getAndroidVersionId()
   {
     return $this->androidVersionId;
   }
+  /**
+   * @param string
+   */
   public function setLocale($locale)
   {
     $this->locale = $locale;
   }
+  /**
+   * @return string
+   */
   public function getLocale()
   {
     return $this->locale;
   }
+  /**
+   * @param string
+   */
   public function setOrientation($orientation)
   {
     $this->orientation = $orientation;
   }
+  /**
+   * @return string
+   */
   public function getOrientation()
   {
     return $this->orientation;

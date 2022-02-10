@@ -20,43 +20,91 @@ namespace Google\Service\ShoppingContent;
 class TestOrderLineItemProduct extends \Google\Collection
 {
   protected $collection_key = 'variantAttributes';
+  /**
+   * @var string
+   */
   public $brand;
+  /**
+   * @var string
+   */
   public $condition;
+  /**
+   * @var string
+   */
   public $contentLanguage;
   protected $feesType = OrderLineItemProductFee::class;
   protected $feesDataType = 'array';
+  /**
+   * @var string
+   */
   public $gtin;
+  /**
+   * @var string
+   */
   public $imageLink;
+  /**
+   * @var string
+   */
   public $itemGroupId;
+  /**
+   * @var string
+   */
   public $mpn;
+  /**
+   * @var string
+   */
   public $offerId;
   protected $priceType = Price::class;
   protected $priceDataType = '';
+  /**
+   * @var string
+   */
   public $targetCountry;
+  /**
+   * @var string
+   */
   public $title;
   protected $variantAttributesType = OrderLineItemProductVariantAttribute::class;
   protected $variantAttributesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setBrand($brand)
   {
     $this->brand = $brand;
   }
+  /**
+   * @return string
+   */
   public function getBrand()
   {
     return $this->brand;
   }
+  /**
+   * @param string
+   */
   public function setCondition($condition)
   {
     $this->condition = $condition;
   }
+  /**
+   * @return string
+   */
   public function getCondition()
   {
     return $this->condition;
   }
+  /**
+   * @param string
+   */
   public function setContentLanguage($contentLanguage)
   {
     $this->contentLanguage = $contentLanguage;
   }
+  /**
+   * @return string
+   */
   public function getContentLanguage()
   {
     return $this->contentLanguage;
@@ -75,42 +123,72 @@ class TestOrderLineItemProduct extends \Google\Collection
   {
     return $this->fees;
   }
+  /**
+   * @param string
+   */
   public function setGtin($gtin)
   {
     $this->gtin = $gtin;
   }
+  /**
+   * @return string
+   */
   public function getGtin()
   {
     return $this->gtin;
   }
+  /**
+   * @param string
+   */
   public function setImageLink($imageLink)
   {
     $this->imageLink = $imageLink;
   }
+  /**
+   * @return string
+   */
   public function getImageLink()
   {
     return $this->imageLink;
   }
+  /**
+   * @param string
+   */
   public function setItemGroupId($itemGroupId)
   {
     $this->itemGroupId = $itemGroupId;
   }
+  /**
+   * @return string
+   */
   public function getItemGroupId()
   {
     return $this->itemGroupId;
   }
+  /**
+   * @param string
+   */
   public function setMpn($mpn)
   {
     $this->mpn = $mpn;
   }
+  /**
+   * @return string
+   */
   public function getMpn()
   {
     return $this->mpn;
   }
+  /**
+   * @param string
+   */
   public function setOfferId($offerId)
   {
     $this->offerId = $offerId;
   }
+  /**
+   * @return string
+   */
   public function getOfferId()
   {
     return $this->offerId;
@@ -129,18 +207,30 @@ class TestOrderLineItemProduct extends \Google\Collection
   {
     return $this->price;
   }
+  /**
+   * @param string
+   */
   public function setTargetCountry($targetCountry)
   {
     $this->targetCountry = $targetCountry;
   }
+  /**
+   * @return string
+   */
   public function getTargetCountry()
   {
     return $this->targetCountry;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

@@ -19,30 +19,57 @@ namespace Google\Service\Reseller;
 
 class SubscriptionTransferInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currentLegacySkuId;
+  /**
+   * @var int
+   */
   public $minimumTransferableSeats;
+  /**
+   * @var string
+   */
   public $transferabilityExpirationTime;
 
+  /**
+   * @param string
+   */
   public function setCurrentLegacySkuId($currentLegacySkuId)
   {
     $this->currentLegacySkuId = $currentLegacySkuId;
   }
+  /**
+   * @return string
+   */
   public function getCurrentLegacySkuId()
   {
     return $this->currentLegacySkuId;
   }
+  /**
+   * @param int
+   */
   public function setMinimumTransferableSeats($minimumTransferableSeats)
   {
     $this->minimumTransferableSeats = $minimumTransferableSeats;
   }
+  /**
+   * @return int
+   */
   public function getMinimumTransferableSeats()
   {
     return $this->minimumTransferableSeats;
   }
+  /**
+   * @param string
+   */
   public function setTransferabilityExpirationTime($transferabilityExpirationTime)
   {
     $this->transferabilityExpirationTime = $transferabilityExpirationTime;
   }
+  /**
+   * @return string
+   */
   public function getTransferabilityExpirationTime()
   {
     return $this->transferabilityExpirationTime;

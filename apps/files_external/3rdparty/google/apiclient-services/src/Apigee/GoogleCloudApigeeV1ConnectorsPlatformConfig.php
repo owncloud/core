@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1ConnectorsPlatformConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $expiresAt;
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setExpiresAt($expiresAt)
   {
     $this->expiresAt = $expiresAt;
   }
+  /**
+   * @return string
+   */
   public function getExpiresAt()
   {
     return $this->expiresAt;

@@ -22,6 +22,9 @@ class ListIosAppsResponse extends \Google\Collection
   protected $collection_key = 'apps';
   protected $appsType = IosApp::class;
   protected $appsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListIosAppsResponse extends \Google\Collection
   {
     return $this->apps;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

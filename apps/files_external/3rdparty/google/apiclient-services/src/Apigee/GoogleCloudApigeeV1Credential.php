@@ -24,11 +24,29 @@ class GoogleCloudApigeeV1Credential extends \Google\Collection
   protected $apiProductsDataType = 'array';
   protected $attributesType = GoogleCloudApigeeV1Attribute::class;
   protected $attributesDataType = 'array';
+  /**
+   * @var string
+   */
   public $consumerKey;
+  /**
+   * @var string
+   */
   public $consumerSecret;
+  /**
+   * @var string
+   */
   public $expiresAt;
+  /**
+   * @var string
+   */
   public $issuedAt;
+  /**
+   * @var string[]
+   */
   public $scopes;
+  /**
+   * @var string
+   */
   public $status;
 
   /**
@@ -59,50 +77,86 @@ class GoogleCloudApigeeV1Credential extends \Google\Collection
   {
     return $this->attributes;
   }
+  /**
+   * @param string
+   */
   public function setConsumerKey($consumerKey)
   {
     $this->consumerKey = $consumerKey;
   }
+  /**
+   * @return string
+   */
   public function getConsumerKey()
   {
     return $this->consumerKey;
   }
+  /**
+   * @param string
+   */
   public function setConsumerSecret($consumerSecret)
   {
     $this->consumerSecret = $consumerSecret;
   }
+  /**
+   * @return string
+   */
   public function getConsumerSecret()
   {
     return $this->consumerSecret;
   }
+  /**
+   * @param string
+   */
   public function setExpiresAt($expiresAt)
   {
     $this->expiresAt = $expiresAt;
   }
+  /**
+   * @return string
+   */
   public function getExpiresAt()
   {
     return $this->expiresAt;
   }
+  /**
+   * @param string
+   */
   public function setIssuedAt($issuedAt)
   {
     $this->issuedAt = $issuedAt;
   }
+  /**
+   * @return string
+   */
   public function getIssuedAt()
   {
     return $this->issuedAt;
   }
+  /**
+   * @param string[]
+   */
   public function setScopes($scopes)
   {
     $this->scopes = $scopes;
   }
+  /**
+   * @return string[]
+   */
   public function getScopes()
   {
     return $this->scopes;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

@@ -19,21 +19,39 @@ namespace Google\Service\Logging;
 
 class BigQueryOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $usePartitionedTables;
+  /**
+   * @var bool
+   */
   public $usesTimestampColumnPartitioning;
 
+  /**
+   * @param bool
+   */
   public function setUsePartitionedTables($usePartitionedTables)
   {
     $this->usePartitionedTables = $usePartitionedTables;
   }
+  /**
+   * @return bool
+   */
   public function getUsePartitionedTables()
   {
     return $this->usePartitionedTables;
   }
+  /**
+   * @param bool
+   */
   public function setUsesTimestampColumnPartitioning($usesTimestampColumnPartitioning)
   {
     $this->usesTimestampColumnPartitioning = $usesTimestampColumnPartitioning;
   }
+  /**
+   * @return bool
+   */
   public function getUsesTimestampColumnPartitioning()
   {
     return $this->usesTimestampColumnPartitioning;

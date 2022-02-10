@@ -19,21 +19,39 @@ namespace Google\Service\AccessApproval;
 
 class ApproveDecision extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $approveTime;
+  /**
+   * @var string
+   */
   public $expireTime;
 
+  /**
+   * @param string
+   */
   public function setApproveTime($approveTime)
   {
     $this->approveTime = $approveTime;
   }
+  /**
+   * @return string
+   */
   public function getApproveTime()
   {
     return $this->approveTime;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;

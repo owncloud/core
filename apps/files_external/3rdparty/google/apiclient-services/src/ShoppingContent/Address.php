@@ -19,48 +19,93 @@ namespace Google\Service\ShoppingContent;
 
 class Address extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $administrativeArea;
+  /**
+   * @var string
+   */
   public $city;
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $postalCode;
+  /**
+   * @var string
+   */
   public $streetAddress;
 
+  /**
+   * @param string
+   */
   public function setAdministrativeArea($administrativeArea)
   {
     $this->administrativeArea = $administrativeArea;
   }
+  /**
+   * @return string
+   */
   public function getAdministrativeArea()
   {
     return $this->administrativeArea;
   }
+  /**
+   * @param string
+   */
   public function setCity($city)
   {
     $this->city = $city;
   }
+  /**
+   * @return string
+   */
   public function getCity()
   {
     return $this->city;
   }
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setPostalCode($postalCode)
   {
     $this->postalCode = $postalCode;
   }
+  /**
+   * @return string
+   */
   public function getPostalCode()
   {
     return $this->postalCode;
   }
+  /**
+   * @param string
+   */
   public function setStreetAddress($streetAddress)
   {
     $this->streetAddress = $streetAddress;
   }
+  /**
+   * @return string
+   */
   public function getStreetAddress()
   {
     return $this->streetAddress;

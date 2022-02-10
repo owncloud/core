@@ -19,12 +19,21 @@ namespace Google\Service\ApiKeysService;
 
 class V2GetKeyStringResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyString;
 
+  /**
+   * @param string
+   */
   public function setKeyString($keyString)
   {
     $this->keyString = $keyString;
   }
+  /**
+   * @return string
+   */
   public function getKeyString()
   {
     return $this->keyString;

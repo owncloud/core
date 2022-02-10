@@ -19,54 +19,117 @@ namespace Google\Service\PeopleService;
 
 class Organization extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $costCenter;
+  /**
+   * @var bool
+   */
   public $current;
+  /**
+   * @var string
+   */
   public $department;
+  /**
+   * @var string
+   */
   public $domain;
   protected $endDateType = Date::class;
   protected $endDateDataType = '';
+  /**
+   * @var string
+   */
   public $formattedType;
+  /**
+   * @var int
+   */
   public $fullTimeEquivalentMillipercent;
+  /**
+   * @var string
+   */
   public $jobDescription;
+  /**
+   * @var string
+   */
   public $location;
   protected $metadataType = FieldMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $phoneticName;
   protected $startDateType = Date::class;
   protected $startDateDataType = '';
+  /**
+   * @var string
+   */
   public $symbol;
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCostCenter($costCenter)
   {
     $this->costCenter = $costCenter;
   }
+  /**
+   * @return string
+   */
   public function getCostCenter()
   {
     return $this->costCenter;
   }
+  /**
+   * @param bool
+   */
   public function setCurrent($current)
   {
     $this->current = $current;
   }
+  /**
+   * @return bool
+   */
   public function getCurrent()
   {
     return $this->current;
   }
+  /**
+   * @param string
+   */
   public function setDepartment($department)
   {
     $this->department = $department;
   }
+  /**
+   * @return string
+   */
   public function getDepartment()
   {
     return $this->department;
   }
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
@@ -85,34 +148,58 @@ class Organization extends \Google\Model
   {
     return $this->endDate;
   }
+  /**
+   * @param string
+   */
   public function setFormattedType($formattedType)
   {
     $this->formattedType = $formattedType;
   }
+  /**
+   * @return string
+   */
   public function getFormattedType()
   {
     return $this->formattedType;
   }
+  /**
+   * @param int
+   */
   public function setFullTimeEquivalentMillipercent($fullTimeEquivalentMillipercent)
   {
     $this->fullTimeEquivalentMillipercent = $fullTimeEquivalentMillipercent;
   }
+  /**
+   * @return int
+   */
   public function getFullTimeEquivalentMillipercent()
   {
     return $this->fullTimeEquivalentMillipercent;
   }
+  /**
+   * @param string
+   */
   public function setJobDescription($jobDescription)
   {
     $this->jobDescription = $jobDescription;
   }
+  /**
+   * @return string
+   */
   public function getJobDescription()
   {
     return $this->jobDescription;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
@@ -131,18 +218,30 @@ class Organization extends \Google\Model
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPhoneticName($phoneticName)
   {
     $this->phoneticName = $phoneticName;
   }
+  /**
+   * @return string
+   */
   public function getPhoneticName()
   {
     return $this->phoneticName;
@@ -161,26 +260,44 @@ class Organization extends \Google\Model
   {
     return $this->startDate;
   }
+  /**
+   * @param string
+   */
   public function setSymbol($symbol)
   {
     $this->symbol = $symbol;
   }
+  /**
+   * @return string
+   */
   public function getSymbol()
   {
     return $this->symbol;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

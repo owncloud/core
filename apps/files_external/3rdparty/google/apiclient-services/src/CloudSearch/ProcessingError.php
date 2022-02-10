@@ -20,23 +20,41 @@ namespace Google\Service\CloudSearch;
 class ProcessingError extends \Google\Collection
 {
   protected $collection_key = 'fieldViolations';
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var string
+   */
   public $errorMessage;
   protected $fieldViolationsType = FieldViolation::class;
   protected $fieldViolationsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;

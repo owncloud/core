@@ -21,6 +21,9 @@ class Result extends \Google\Model
 {
   protected $undefinedType = FirebaserulesEmpty::class;
   protected $undefinedDataType = '';
+  /**
+   * @var array
+   */
   public $value;
 
   /**
@@ -37,10 +40,16 @@ class Result extends \Google\Model
   {
     return $this->undefined;
   }
+  /**
+   * @param array
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array
+   */
   public function getValue()
   {
     return $this->value;

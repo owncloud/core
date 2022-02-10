@@ -19,21 +19,39 @@ namespace Google\Service\Docs;
 
 class WriteControl extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $requiredRevisionId;
+  /**
+   * @var string
+   */
   public $targetRevisionId;
 
+  /**
+   * @param string
+   */
   public function setRequiredRevisionId($requiredRevisionId)
   {
     $this->requiredRevisionId = $requiredRevisionId;
   }
+  /**
+   * @return string
+   */
   public function getRequiredRevisionId()
   {
     return $this->requiredRevisionId;
   }
+  /**
+   * @param string
+   */
   public function setTargetRevisionId($targetRevisionId)
   {
     $this->targetRevisionId = $targetRevisionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetRevisionId()
   {
     return $this->targetRevisionId;

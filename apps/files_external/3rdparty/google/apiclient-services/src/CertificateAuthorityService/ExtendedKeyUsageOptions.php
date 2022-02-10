@@ -19,57 +19,111 @@ namespace Google\Service\CertificateAuthorityService;
 
 class ExtendedKeyUsageOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $clientAuth;
+  /**
+   * @var bool
+   */
   public $codeSigning;
+  /**
+   * @var bool
+   */
   public $emailProtection;
+  /**
+   * @var bool
+   */
   public $ocspSigning;
+  /**
+   * @var bool
+   */
   public $serverAuth;
+  /**
+   * @var bool
+   */
   public $timeStamping;
 
+  /**
+   * @param bool
+   */
   public function setClientAuth($clientAuth)
   {
     $this->clientAuth = $clientAuth;
   }
+  /**
+   * @return bool
+   */
   public function getClientAuth()
   {
     return $this->clientAuth;
   }
+  /**
+   * @param bool
+   */
   public function setCodeSigning($codeSigning)
   {
     $this->codeSigning = $codeSigning;
   }
+  /**
+   * @return bool
+   */
   public function getCodeSigning()
   {
     return $this->codeSigning;
   }
+  /**
+   * @param bool
+   */
   public function setEmailProtection($emailProtection)
   {
     $this->emailProtection = $emailProtection;
   }
+  /**
+   * @return bool
+   */
   public function getEmailProtection()
   {
     return $this->emailProtection;
   }
+  /**
+   * @param bool
+   */
   public function setOcspSigning($ocspSigning)
   {
     $this->ocspSigning = $ocspSigning;
   }
+  /**
+   * @return bool
+   */
   public function getOcspSigning()
   {
     return $this->ocspSigning;
   }
+  /**
+   * @param bool
+   */
   public function setServerAuth($serverAuth)
   {
     $this->serverAuth = $serverAuth;
   }
+  /**
+   * @return bool
+   */
   public function getServerAuth()
   {
     return $this->serverAuth;
   }
+  /**
+   * @param bool
+   */
   public function setTimeStamping($timeStamping)
   {
     $this->timeStamping = $timeStamping;
   }
+  /**
+   * @return bool
+   */
   public function getTimeStamping()
   {
     return $this->timeStamping;

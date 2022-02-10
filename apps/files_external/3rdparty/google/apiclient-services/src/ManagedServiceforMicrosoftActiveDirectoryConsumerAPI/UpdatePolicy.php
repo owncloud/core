@@ -20,16 +20,25 @@ namespace Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI;
 class UpdatePolicy extends \Google\Collection
 {
   protected $collection_key = 'denyMaintenancePeriods';
+  /**
+   * @var string
+   */
   public $channel;
   protected $denyMaintenancePeriodsType = DenyMaintenancePeriod::class;
   protected $denyMaintenancePeriodsDataType = 'array';
   protected $windowType = MaintenanceWindow::class;
   protected $windowDataType = '';
 
+  /**
+   * @param string
+   */
   public function setChannel($channel)
   {
     $this->channel = $channel;
   }
+  /**
+   * @return string
+   */
   public function getChannel()
   {
     return $this->channel;

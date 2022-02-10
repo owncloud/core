@@ -21,8 +21,17 @@ class ContextValue extends \Google\Model
 {
   protected $labelType = LocalizedString::class;
   protected $labelDataType = '';
+  /**
+   * @var string
+   */
   public $severity;
+  /**
+   * @var string
+   */
   public $unit;
+  /**
+   * @var float
+   */
   public $value;
 
   /**
@@ -39,26 +48,44 @@ class ContextValue extends \Google\Model
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;
   }
+  /**
+   * @param float
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return float
+   */
   public function getValue()
   {
     return $this->value;

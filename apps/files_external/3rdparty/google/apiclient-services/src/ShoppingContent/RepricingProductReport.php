@@ -20,6 +20,9 @@ namespace Google\Service\ShoppingContent;
 class RepricingProductReport extends \Google\Collection
 {
   protected $collection_key = 'ruleIds';
+  /**
+   * @var string
+   */
   public $applicationCount;
   protected $buyboxWinningProductStatsType = RepricingProductReportBuyboxWinningProductStats::class;
   protected $buyboxWinningProductStatsDataType = '';
@@ -31,16 +34,31 @@ class RepricingProductReport extends \Google\Collection
   protected $inapplicabilityDetailsDataType = 'array';
   protected $lowWatermarkType = PriceAmount::class;
   protected $lowWatermarkDataType = '';
+  /**
+   * @var int
+   */
   public $orderItemCount;
+  /**
+   * @var string[]
+   */
   public $ruleIds;
   protected $totalGmvType = PriceAmount::class;
   protected $totalGmvDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setApplicationCount($applicationCount)
   {
     $this->applicationCount = $applicationCount;
   }
+  /**
+   * @return string
+   */
   public function getApplicationCount()
   {
     return $this->applicationCount;
@@ -115,18 +133,30 @@ class RepricingProductReport extends \Google\Collection
   {
     return $this->lowWatermark;
   }
+  /**
+   * @param int
+   */
   public function setOrderItemCount($orderItemCount)
   {
     $this->orderItemCount = $orderItemCount;
   }
+  /**
+   * @return int
+   */
   public function getOrderItemCount()
   {
     return $this->orderItemCount;
   }
+  /**
+   * @param string[]
+   */
   public function setRuleIds($ruleIds)
   {
     $this->ruleIds = $ruleIds;
   }
+  /**
+   * @return string[]
+   */
   public function getRuleIds()
   {
     return $this->ruleIds;
@@ -145,10 +175,16 @@ class RepricingProductReport extends \Google\Collection
   {
     return $this->totalGmv;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

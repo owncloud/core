@@ -19,12 +19,21 @@ namespace Google\Service\VMMigrationService;
 
 class ReplicationSync extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastSyncTime;
 
+  /**
+   * @param string
+   */
   public function setLastSyncTime($lastSyncTime)
   {
     $this->lastSyncTime = $lastSyncTime;
   }
+  /**
+   * @return string
+   */
   public function getLastSyncTime()
   {
     return $this->lastSyncTime;

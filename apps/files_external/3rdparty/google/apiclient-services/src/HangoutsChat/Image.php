@@ -20,6 +20,9 @@ namespace Google\Service\HangoutsChat;
 class Image extends \Google\Model
 {
   public $aspectRatio;
+  /**
+   * @var string
+   */
   public $imageUrl;
   protected $onClickType = OnClick::class;
   protected $onClickDataType = '';
@@ -32,10 +35,16 @@ class Image extends \Google\Model
   {
     return $this->aspectRatio;
   }
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;

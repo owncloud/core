@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class OperatingSystemVersionsListResponse extends \Google\Collection
 {
   protected $collection_key = 'operatingSystemVersions';
+  /**
+   * @var string
+   */
   public $kind;
   protected $operatingSystemVersionsType = OperatingSystemVersion::class;
   protected $operatingSystemVersionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

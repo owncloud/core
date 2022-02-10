@@ -19,39 +19,75 @@ namespace Google\Service\CloudKMS;
 
 class AsymmetricDecryptResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $plaintext;
+  /**
+   * @var string
+   */
   public $plaintextCrc32c;
+  /**
+   * @var string
+   */
   public $protectionLevel;
+  /**
+   * @var bool
+   */
   public $verifiedCiphertextCrc32c;
 
+  /**
+   * @param string
+   */
   public function setPlaintext($plaintext)
   {
     $this->plaintext = $plaintext;
   }
+  /**
+   * @return string
+   */
   public function getPlaintext()
   {
     return $this->plaintext;
   }
+  /**
+   * @param string
+   */
   public function setPlaintextCrc32c($plaintextCrc32c)
   {
     $this->plaintextCrc32c = $plaintextCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getPlaintextCrc32c()
   {
     return $this->plaintextCrc32c;
   }
+  /**
+   * @param string
+   */
   public function setProtectionLevel($protectionLevel)
   {
     $this->protectionLevel = $protectionLevel;
   }
+  /**
+   * @return string
+   */
   public function getProtectionLevel()
   {
     return $this->protectionLevel;
   }
+  /**
+   * @param bool
+   */
   public function setVerifiedCiphertextCrc32c($verifiedCiphertextCrc32c)
   {
     $this->verifiedCiphertextCrc32c = $verifiedCiphertextCrc32c;
   }
+  /**
+   * @return bool
+   */
   public function getVerifiedCiphertextCrc32c()
   {
     return $this->verifiedCiphertextCrc32c;

@@ -21,6 +21,9 @@ class Price extends \Google\Model
 {
   protected $amountType = Money::class;
   protected $amountDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -37,10 +40,16 @@ class Price extends \Google\Model
   {
     return $this->amount;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -19,30 +19,57 @@ namespace Google\Service\AdMob;
 
 class NetworkReportSpecSortCondition extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimension;
+  /**
+   * @var string
+   */
   public $metric;
+  /**
+   * @var string
+   */
   public $order;
 
+  /**
+   * @param string
+   */
   public function setDimension($dimension)
   {
     $this->dimension = $dimension;
   }
+  /**
+   * @return string
+   */
   public function getDimension()
   {
     return $this->dimension;
   }
+  /**
+   * @param string
+   */
   public function setMetric($metric)
   {
     $this->metric = $metric;
   }
+  /**
+   * @return string
+   */
   public function getMetric()
   {
     return $this->metric;
   }
+  /**
+   * @param string
+   */
   public function setOrder($order)
   {
     $this->order = $order;
   }
+  /**
+   * @return string
+   */
   public function getOrder()
   {
     return $this->order;

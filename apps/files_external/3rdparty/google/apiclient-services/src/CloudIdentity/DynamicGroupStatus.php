@@ -19,21 +19,39 @@ namespace Google\Service\CloudIdentity;
 
 class DynamicGroupStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $statusTime;
 
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setStatusTime($statusTime)
   {
     $this->statusTime = $statusTime;
   }
+  /**
+   * @return string
+   */
   public function getStatusTime()
   {
     return $this->statusTime;

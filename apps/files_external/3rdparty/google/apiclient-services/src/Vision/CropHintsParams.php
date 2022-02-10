@@ -20,12 +20,21 @@ namespace Google\Service\Vision;
 class CropHintsParams extends \Google\Collection
 {
   protected $collection_key = 'aspectRatios';
+  /**
+   * @var float[]
+   */
   public $aspectRatios;
 
+  /**
+   * @param float[]
+   */
   public function setAspectRatios($aspectRatios)
   {
     $this->aspectRatios = $aspectRatios;
   }
+  /**
+   * @return float[]
+   */
   public function getAspectRatios()
   {
     return $this->aspectRatios;

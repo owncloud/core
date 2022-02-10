@@ -26,6 +26,9 @@ class InfoTypeTransformation extends \Google\Collection
   protected $cryptoHashConfigDataType = '';
   protected $dateShiftConfigType = DateShiftConfig::class;
   protected $dateShiftConfigDataType = '';
+  /**
+   * @var string[]
+   */
   public $infoTypes;
   protected $redactConfigType = RedactConfig::class;
   protected $redactConfigDataType = '';
@@ -74,10 +77,16 @@ class InfoTypeTransformation extends \Google\Collection
   {
     return $this->dateShiftConfig;
   }
+  /**
+   * @param string[]
+   */
   public function setInfoTypes($infoTypes)
   {
     $this->infoTypes = $infoTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getInfoTypes()
   {
     return $this->infoTypes;

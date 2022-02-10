@@ -20,14 +20,23 @@ namespace Google\Service\ChromePolicy;
 class GoogleChromePolicyV1ListPolicySchemasResponse extends \Google\Collection
 {
   protected $collection_key = 'policySchemas';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $policySchemasType = GoogleChromePolicyV1PolicySchema::class;
   protected $policySchemasDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

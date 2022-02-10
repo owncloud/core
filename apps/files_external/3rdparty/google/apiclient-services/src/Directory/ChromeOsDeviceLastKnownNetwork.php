@@ -19,21 +19,39 @@ namespace Google\Service\Directory;
 
 class ChromeOsDeviceLastKnownNetwork extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var string
+   */
   public $wanIpAddress;
 
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param string
+   */
   public function setWanIpAddress($wanIpAddress)
   {
     $this->wanIpAddress = $wanIpAddress;
   }
+  /**
+   * @return string
+   */
   public function getWanIpAddress()
   {
     return $this->wanIpAddress;

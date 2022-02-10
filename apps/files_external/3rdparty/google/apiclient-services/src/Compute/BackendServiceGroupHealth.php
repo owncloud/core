@@ -20,15 +20,27 @@ namespace Google\Service\Compute;
 class BackendServiceGroupHealth extends \Google\Collection
 {
   protected $collection_key = 'healthStatus';
+  /**
+   * @var string[]
+   */
   public $annotations;
   protected $healthStatusType = HealthStatus::class;
   protected $healthStatusDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string[]
+   */
   public function setAnnotations($annotations)
   {
     $this->annotations = $annotations;
   }
+  /**
+   * @return string[]
+   */
   public function getAnnotations()
   {
     return $this->annotations;
@@ -47,10 +59,16 @@ class BackendServiceGroupHealth extends \Google\Collection
   {
     return $this->healthStatus;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

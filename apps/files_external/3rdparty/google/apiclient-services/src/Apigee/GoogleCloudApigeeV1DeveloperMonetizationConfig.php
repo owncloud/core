@@ -19,12 +19,21 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1DeveloperMonetizationConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $billingType;
 
+  /**
+   * @param string
+   */
   public function setBillingType($billingType)
   {
     $this->billingType = $billingType;
   }
+  /**
+   * @return string
+   */
   public function getBillingType()
   {
     return $this->billingType;

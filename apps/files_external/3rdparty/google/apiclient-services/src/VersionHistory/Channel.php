@@ -19,21 +19,39 @@ namespace Google\Service\VersionHistory;
 
 class Channel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelType;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setChannelType($channelType)
   {
     $this->channelType = $channelType;
   }
+  /**
+   * @return string
+   */
   public function getChannelType()
   {
     return $this->channelType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

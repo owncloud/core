@@ -21,7 +21,13 @@ class GooglePrivacyDlpV2CreateDlpJobRequest extends \Google\Model
 {
   protected $inspectJobType = GooglePrivacyDlpV2InspectJobConfig::class;
   protected $inspectJobDataType = '';
+  /**
+   * @var string
+   */
   public $jobId;
+  /**
+   * @var string
+   */
   public $locationId;
   protected $riskJobType = GooglePrivacyDlpV2RiskAnalysisJobConfig::class;
   protected $riskJobDataType = '';
@@ -40,18 +46,30 @@ class GooglePrivacyDlpV2CreateDlpJobRequest extends \Google\Model
   {
     return $this->inspectJob;
   }
+  /**
+   * @param string
+   */
   public function setJobId($jobId)
   {
     $this->jobId = $jobId;
   }
+  /**
+   * @return string
+   */
   public function getJobId()
   {
     return $this->jobId;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;

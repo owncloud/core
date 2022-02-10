@@ -20,14 +20,23 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1ListVersionsResponse extends \Google\Collection
 {
   protected $collection_key = 'versions';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $versionsType = GoogleCloudMlV1Version::class;
   protected $versionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

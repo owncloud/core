@@ -22,6 +22,9 @@ class ListEnterprisesResponse extends \Google\Collection
   protected $collection_key = 'enterprises';
   protected $enterprisesType = Enterprise::class;
   protected $enterprisesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListEnterprisesResponse extends \Google\Collection
   {
     return $this->enterprises;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

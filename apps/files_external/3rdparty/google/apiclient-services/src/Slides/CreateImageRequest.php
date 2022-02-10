@@ -21,7 +21,13 @@ class CreateImageRequest extends \Google\Model
 {
   protected $elementPropertiesType = PageElementProperties::class;
   protected $elementPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var string
+   */
   public $url;
 
   /**
@@ -38,18 +44,30 @@ class CreateImageRequest extends \Google\Model
   {
     return $this->elementProperties;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

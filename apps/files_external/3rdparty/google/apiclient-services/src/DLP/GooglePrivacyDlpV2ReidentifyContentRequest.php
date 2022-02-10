@@ -21,12 +21,21 @@ class GooglePrivacyDlpV2ReidentifyContentRequest extends \Google\Model
 {
   protected $inspectConfigType = GooglePrivacyDlpV2InspectConfig::class;
   protected $inspectConfigDataType = '';
+  /**
+   * @var string
+   */
   public $inspectTemplateName;
   protected $itemType = GooglePrivacyDlpV2ContentItem::class;
   protected $itemDataType = '';
+  /**
+   * @var string
+   */
   public $locationId;
   protected $reidentifyConfigType = GooglePrivacyDlpV2DeidentifyConfig::class;
   protected $reidentifyConfigDataType = '';
+  /**
+   * @var string
+   */
   public $reidentifyTemplateName;
 
   /**
@@ -43,10 +52,16 @@ class GooglePrivacyDlpV2ReidentifyContentRequest extends \Google\Model
   {
     return $this->inspectConfig;
   }
+  /**
+   * @param string
+   */
   public function setInspectTemplateName($inspectTemplateName)
   {
     $this->inspectTemplateName = $inspectTemplateName;
   }
+  /**
+   * @return string
+   */
   public function getInspectTemplateName()
   {
     return $this->inspectTemplateName;
@@ -65,10 +80,16 @@ class GooglePrivacyDlpV2ReidentifyContentRequest extends \Google\Model
   {
     return $this->item;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
@@ -87,10 +108,16 @@ class GooglePrivacyDlpV2ReidentifyContentRequest extends \Google\Model
   {
     return $this->reidentifyConfig;
   }
+  /**
+   * @param string
+   */
   public function setReidentifyTemplateName($reidentifyTemplateName)
   {
     $this->reidentifyTemplateName = $reidentifyTemplateName;
   }
+  /**
+   * @return string
+   */
   public function getReidentifyTemplateName()
   {
     return $this->reidentifyTemplateName;

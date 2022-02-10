@@ -19,21 +19,39 @@ namespace Google\Service\Assuredworkloads;
 
 class GoogleCloudAssuredworkloadsV1WorkloadKMSSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $nextRotationTime;
+  /**
+   * @var string
+   */
   public $rotationPeriod;
 
+  /**
+   * @param string
+   */
   public function setNextRotationTime($nextRotationTime)
   {
     $this->nextRotationTime = $nextRotationTime;
   }
+  /**
+   * @return string
+   */
   public function getNextRotationTime()
   {
     return $this->nextRotationTime;
   }
+  /**
+   * @param string
+   */
   public function setRotationPeriod($rotationPeriod)
   {
     $this->rotationPeriod = $rotationPeriod;
   }
+  /**
+   * @return string
+   */
   public function getRotationPeriod()
   {
     return $this->rotationPeriod;

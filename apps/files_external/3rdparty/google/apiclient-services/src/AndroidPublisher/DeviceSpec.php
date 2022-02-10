@@ -20,30 +20,57 @@ namespace Google\Service\AndroidPublisher;
 class DeviceSpec extends \Google\Collection
 {
   protected $collection_key = 'supportedLocales';
+  /**
+   * @var string
+   */
   public $screenDensity;
+  /**
+   * @var string[]
+   */
   public $supportedAbis;
+  /**
+   * @var string[]
+   */
   public $supportedLocales;
 
+  /**
+   * @param string
+   */
   public function setScreenDensity($screenDensity)
   {
     $this->screenDensity = $screenDensity;
   }
+  /**
+   * @return string
+   */
   public function getScreenDensity()
   {
     return $this->screenDensity;
   }
+  /**
+   * @param string[]
+   */
   public function setSupportedAbis($supportedAbis)
   {
     $this->supportedAbis = $supportedAbis;
   }
+  /**
+   * @return string[]
+   */
   public function getSupportedAbis()
   {
     return $this->supportedAbis;
   }
+  /**
+   * @param string[]
+   */
   public function setSupportedLocales($supportedLocales)
   {
     $this->supportedLocales = $supportedLocales;
   }
+  /**
+   * @return string[]
+   */
   public function getSupportedLocales()
   {
     return $this->supportedLocales;

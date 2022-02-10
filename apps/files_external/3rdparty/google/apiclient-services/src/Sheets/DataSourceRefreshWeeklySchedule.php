@@ -20,14 +20,23 @@ namespace Google\Service\Sheets;
 class DataSourceRefreshWeeklySchedule extends \Google\Collection
 {
   protected $collection_key = 'daysOfWeek';
+  /**
+   * @var string[]
+   */
   public $daysOfWeek;
   protected $startTimeType = TimeOfDay::class;
   protected $startTimeDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setDaysOfWeek($daysOfWeek)
   {
     $this->daysOfWeek = $daysOfWeek;
   }
+  /**
+   * @return string[]
+   */
   public function getDaysOfWeek()
   {
     return $this->daysOfWeek;

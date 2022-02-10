@@ -22,8 +22,17 @@ class Objects extends \Google\Collection
   protected $collection_key = 'prefixes';
   protected $itemsType = StorageObject::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $prefixes;
 
   /**
@@ -40,26 +49,44 @@ class Objects extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setPrefixes($prefixes)
   {
     $this->prefixes = $prefixes;
   }
+  /**
+   * @return string[]
+   */
   public function getPrefixes()
   {
     return $this->prefixes;

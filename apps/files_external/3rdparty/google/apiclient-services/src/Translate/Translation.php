@@ -19,16 +19,31 @@ namespace Google\Service\Translate;
 
 class Translation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $detectedLanguageCode;
   protected $glossaryConfigType = TranslateTextGlossaryConfig::class;
   protected $glossaryConfigDataType = '';
+  /**
+   * @var string
+   */
   public $model;
+  /**
+   * @var string
+   */
   public $translatedText;
 
+  /**
+   * @param string
+   */
   public function setDetectedLanguageCode($detectedLanguageCode)
   {
     $this->detectedLanguageCode = $detectedLanguageCode;
   }
+  /**
+   * @return string
+   */
   public function getDetectedLanguageCode()
   {
     return $this->detectedLanguageCode;
@@ -47,18 +62,30 @@ class Translation extends \Google\Model
   {
     return $this->glossaryConfig;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;
   }
+  /**
+   * @param string
+   */
   public function setTranslatedText($translatedText)
   {
     $this->translatedText = $translatedText;
   }
+  /**
+   * @return string
+   */
   public function getTranslatedText()
   {
     return $this->translatedText;

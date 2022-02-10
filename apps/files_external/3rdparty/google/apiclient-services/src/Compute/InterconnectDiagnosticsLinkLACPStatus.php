@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class InterconnectDiagnosticsLinkLACPStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $googleSystemId;
+  /**
+   * @var string
+   */
   public $neighborSystemId;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setGoogleSystemId($googleSystemId)
   {
     $this->googleSystemId = $googleSystemId;
   }
+  /**
+   * @return string
+   */
   public function getGoogleSystemId()
   {
     return $this->googleSystemId;
   }
+  /**
+   * @param string
+   */
   public function setNeighborSystemId($neighborSystemId)
   {
     $this->neighborSystemId = $neighborSystemId;
   }
+  /**
+   * @return string
+   */
   public function getNeighborSystemId()
   {
     return $this->neighborSystemId;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

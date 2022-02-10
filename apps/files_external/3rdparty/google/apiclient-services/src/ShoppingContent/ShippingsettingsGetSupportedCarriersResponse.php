@@ -22,6 +22,9 @@ class ShippingsettingsGetSupportedCarriersResponse extends \Google\Collection
   protected $collection_key = 'carriers';
   protected $carriersType = CarriersCarrier::class;
   protected $carriersDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -38,10 +41,16 @@ class ShippingsettingsGetSupportedCarriersResponse extends \Google\Collection
   {
     return $this->carriers;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

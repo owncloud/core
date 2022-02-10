@@ -19,21 +19,39 @@ namespace Google\Service\NetworkManagement;
 
 class DeliverInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resourceUri;
+  /**
+   * @var string
+   */
   public $target;
 
+  /**
+   * @param string
+   */
   public function setResourceUri($resourceUri)
   {
     $this->resourceUri = $resourceUri;
   }
+  /**
+   * @return string
+   */
   public function getResourceUri()
   {
     return $this->resourceUri;
   }
+  /**
+   * @param string
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return string
+   */
   public function getTarget()
   {
     return $this->target;

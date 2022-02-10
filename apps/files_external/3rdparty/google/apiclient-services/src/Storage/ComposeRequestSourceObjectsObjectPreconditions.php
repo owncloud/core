@@ -19,12 +19,21 @@ namespace Google\Service\Storage;
 
 class ComposeRequestSourceObjectsObjectPreconditions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ifGenerationMatch;
 
+  /**
+   * @param string
+   */
   public function setIfGenerationMatch($ifGenerationMatch)
   {
     $this->ifGenerationMatch = $ifGenerationMatch;
   }
+  /**
+   * @return string
+   */
   public function getIfGenerationMatch()
   {
     return $this->ifGenerationMatch;

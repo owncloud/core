@@ -21,6 +21,9 @@ class ElementaryStream extends \Google\Model
 {
   protected $audioStreamType = AudioStream::class;
   protected $audioStreamDataType = '';
+  /**
+   * @var string
+   */
   public $key;
   protected $textStreamType = TextStream::class;
   protected $textStreamDataType = '';
@@ -41,10 +44,16 @@ class ElementaryStream extends \Google\Model
   {
     return $this->audioStream;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;

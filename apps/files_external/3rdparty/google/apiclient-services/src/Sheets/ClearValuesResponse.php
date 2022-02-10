@@ -19,21 +19,39 @@ namespace Google\Service\Sheets;
 
 class ClearValuesResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clearedRange;
+  /**
+   * @var string
+   */
   public $spreadsheetId;
 
+  /**
+   * @param string
+   */
   public function setClearedRange($clearedRange)
   {
     $this->clearedRange = $clearedRange;
   }
+  /**
+   * @return string
+   */
   public function getClearedRange()
   {
     return $this->clearedRange;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;

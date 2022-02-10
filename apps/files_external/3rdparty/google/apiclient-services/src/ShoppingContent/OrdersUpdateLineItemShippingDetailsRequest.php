@@ -19,48 +19,93 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersUpdateLineItemShippingDetailsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deliverByDate;
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $operationId;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $shipByDate;
 
+  /**
+   * @param string
+   */
   public function setDeliverByDate($deliverByDate)
   {
     $this->deliverByDate = $deliverByDate;
   }
+  /**
+   * @return string
+   */
   public function getDeliverByDate()
   {
     return $this->deliverByDate;
   }
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setShipByDate($shipByDate)
   {
     $this->shipByDate = $shipByDate;
   }
+  /**
+   * @return string
+   */
   public function getShipByDate()
   {
     return $this->shipByDate;

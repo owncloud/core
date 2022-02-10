@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class InterconnectLocationRegionInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expectedRttMs;
+  /**
+   * @var string
+   */
   public $locationPresence;
+  /**
+   * @var string
+   */
   public $region;
 
+  /**
+   * @param string
+   */
   public function setExpectedRttMs($expectedRttMs)
   {
     $this->expectedRttMs = $expectedRttMs;
   }
+  /**
+   * @return string
+   */
   public function getExpectedRttMs()
   {
     return $this->expectedRttMs;
   }
+  /**
+   * @param string
+   */
   public function setLocationPresence($locationPresence)
   {
     $this->locationPresence = $locationPresence;
   }
+  /**
+   * @return string
+   */
   public function getLocationPresence()
   {
     return $this->locationPresence;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;

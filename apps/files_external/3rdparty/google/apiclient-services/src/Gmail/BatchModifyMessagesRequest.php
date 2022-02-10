@@ -20,30 +20,57 @@ namespace Google\Service\Gmail;
 class BatchModifyMessagesRequest extends \Google\Collection
 {
   protected $collection_key = 'removeLabelIds';
+  /**
+   * @var string[]
+   */
   public $addLabelIds;
+  /**
+   * @var string[]
+   */
   public $ids;
+  /**
+   * @var string[]
+   */
   public $removeLabelIds;
 
+  /**
+   * @param string[]
+   */
   public function setAddLabelIds($addLabelIds)
   {
     $this->addLabelIds = $addLabelIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAddLabelIds()
   {
     return $this->addLabelIds;
   }
+  /**
+   * @param string[]
+   */
   public function setIds($ids)
   {
     $this->ids = $ids;
   }
+  /**
+   * @return string[]
+   */
   public function getIds()
   {
     return $this->ids;
   }
+  /**
+   * @param string[]
+   */
   public function setRemoveLabelIds($removeLabelIds)
   {
     $this->removeLabelIds = $removeLabelIds;
   }
+  /**
+   * @return string[]
+   */
   public function getRemoveLabelIds()
   {
     return $this->removeLabelIds;

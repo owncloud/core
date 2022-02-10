@@ -22,9 +22,21 @@ class GoogleCloudDialogflowCxV3beta1TestCaseResult extends \Google\Collection
   protected $collection_key = 'conversationTurns';
   protected $conversationTurnsType = GoogleCloudDialogflowCxV3beta1ConversationTurn::class;
   protected $conversationTurnsDataType = 'array';
+  /**
+   * @var string
+   */
   public $environment;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $testResult;
+  /**
+   * @var string
+   */
   public $testTime;
 
   /**
@@ -41,34 +53,58 @@ class GoogleCloudDialogflowCxV3beta1TestCaseResult extends \Google\Collection
   {
     return $this->conversationTurns;
   }
+  /**
+   * @param string
+   */
   public function setEnvironment($environment)
   {
     $this->environment = $environment;
   }
+  /**
+   * @return string
+   */
   public function getEnvironment()
   {
     return $this->environment;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTestResult($testResult)
   {
     $this->testResult = $testResult;
   }
+  /**
+   * @return string
+   */
   public function getTestResult()
   {
     return $this->testResult;
   }
+  /**
+   * @param string
+   */
   public function setTestTime($testTime)
   {
     $this->testTime = $testTime;
   }
+  /**
+   * @return string
+   */
   public function getTestTime()
   {
     return $this->testTime;

@@ -19,21 +19,39 @@ namespace Google\Service\WebRisk;
 
 class GoogleCloudWebriskV1RawHashes extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $prefixSize;
+  /**
+   * @var string
+   */
   public $rawHashes;
 
+  /**
+   * @param int
+   */
   public function setPrefixSize($prefixSize)
   {
     $this->prefixSize = $prefixSize;
   }
+  /**
+   * @return int
+   */
   public function getPrefixSize()
   {
     return $this->prefixSize;
   }
+  /**
+   * @param string
+   */
   public function setRawHashes($rawHashes)
   {
     $this->rawHashes = $rawHashes;
   }
+  /**
+   * @return string
+   */
   public function getRawHashes()
   {
     return $this->rawHashes;

@@ -19,12 +19,21 @@ namespace Google\Service\CloudHealthcare;
 
 class ConsentEvaluation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $evaluationResult;
 
+  /**
+   * @param string
+   */
   public function setEvaluationResult($evaluationResult)
   {
     $this->evaluationResult = $evaluationResult;
   }
+  /**
+   * @return string
+   */
   public function getEvaluationResult()
   {
     return $this->evaluationResult;

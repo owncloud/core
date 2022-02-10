@@ -19,30 +19,57 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1CloudSqlBigQueryConnectionSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $database;
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDatabase($database)
   {
     $this->database = $database;
   }
+  /**
+   * @return string
+   */
   public function getDatabase()
   {
     return $this->database;
   }
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

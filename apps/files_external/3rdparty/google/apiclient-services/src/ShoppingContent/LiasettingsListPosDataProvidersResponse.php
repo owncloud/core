@@ -20,14 +20,23 @@ namespace Google\Service\ShoppingContent;
 class LiasettingsListPosDataProvidersResponse extends \Google\Collection
 {
   protected $collection_key = 'posDataProviders';
+  /**
+   * @var string
+   */
   public $kind;
   protected $posDataProvidersType = PosDataProviders::class;
   protected $posDataProvidersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

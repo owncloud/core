@@ -19,33 +19,63 @@ namespace Google\Service\FirebaseManagement;
 
 class StatusProto extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $canonicalCode;
+  /**
+   * @var int
+   */
   public $code;
+  /**
+   * @var string
+   */
   public $message;
   protected $messageSetType = MessageSet::class;
   protected $messageSetDataType = '';
+  /**
+   * @var string
+   */
   public $space;
 
+  /**
+   * @param int
+   */
   public function setCanonicalCode($canonicalCode)
   {
     $this->canonicalCode = $canonicalCode;
   }
+  /**
+   * @return int
+   */
   public function getCanonicalCode()
   {
     return $this->canonicalCode;
   }
+  /**
+   * @param int
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return int
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
@@ -64,10 +94,16 @@ class StatusProto extends \Google\Model
   {
     return $this->messageSet;
   }
+  /**
+   * @param string
+   */
   public function setSpace($space)
   {
     $this->space = $space;
   }
+  /**
+   * @return string
+   */
   public function getSpace()
   {
     return $this->space;

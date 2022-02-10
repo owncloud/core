@@ -20,15 +20,27 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1SuggestFaqAnswersResponse extends \Google\Collection
 {
   protected $collection_key = 'faqAnswers';
+  /**
+   * @var int
+   */
   public $contextSize;
   protected $faqAnswersType = GoogleCloudDialogflowV2beta1FaqAnswer::class;
   protected $faqAnswersDataType = 'array';
+  /**
+   * @var string
+   */
   public $latestMessage;
 
+  /**
+   * @param int
+   */
   public function setContextSize($contextSize)
   {
     $this->contextSize = $contextSize;
   }
+  /**
+   * @return int
+   */
   public function getContextSize()
   {
     return $this->contextSize;
@@ -47,10 +59,16 @@ class GoogleCloudDialogflowV2beta1SuggestFaqAnswersResponse extends \Google\Coll
   {
     return $this->faqAnswers;
   }
+  /**
+   * @param string
+   */
   public function setLatestMessage($latestMessage)
   {
     $this->latestMessage = $latestMessage;
   }
+  /**
+   * @return string
+   */
   public function getLatestMessage()
   {
     return $this->latestMessage;

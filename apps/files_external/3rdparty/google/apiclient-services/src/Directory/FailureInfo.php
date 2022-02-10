@@ -19,24 +19,45 @@ namespace Google\Service\Directory;
 
 class FailureInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $errorMessage;
   protected $printerType = Printer::class;
   protected $printerDataType = '';
+  /**
+   * @var string
+   */
   public $printerId;
 
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
@@ -55,10 +76,16 @@ class FailureInfo extends \Google\Model
   {
     return $this->printer;
   }
+  /**
+   * @param string
+   */
   public function setPrinterId($printerId)
   {
     $this->printerId = $printerId;
   }
+  /**
+   * @return string
+   */
   public function getPrinterId()
   {
     return $this->printerId;

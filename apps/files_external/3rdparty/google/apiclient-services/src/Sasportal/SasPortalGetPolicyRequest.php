@@ -19,12 +19,21 @@ namespace Google\Service\Sasportal;
 
 class SasPortalGetPolicyRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resource;
 
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;

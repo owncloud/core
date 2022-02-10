@@ -19,12 +19,21 @@ namespace Google\Service\ContainerAnalysis;
 
 class DiscoveryNote extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $analysisKind;
 
+  /**
+   * @param string
+   */
   public function setAnalysisKind($analysisKind)
   {
     $this->analysisKind = $analysisKind;
   }
+  /**
+   * @return string
+   */
   public function getAnalysisKind()
   {
     return $this->analysisKind;

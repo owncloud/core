@@ -19,21 +19,39 @@ namespace Google\Service\Drive;
 
 class DriveFileLinkShareMetadata extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $securityUpdateEligible;
+  /**
+   * @var bool
+   */
   public $securityUpdateEnabled;
 
+  /**
+   * @param bool
+   */
   public function setSecurityUpdateEligible($securityUpdateEligible)
   {
     $this->securityUpdateEligible = $securityUpdateEligible;
   }
+  /**
+   * @return bool
+   */
   public function getSecurityUpdateEligible()
   {
     return $this->securityUpdateEligible;
   }
+  /**
+   * @param bool
+   */
   public function setSecurityUpdateEnabled($securityUpdateEnabled)
   {
     $this->securityUpdateEnabled = $securityUpdateEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getSecurityUpdateEnabled()
   {
     return $this->securityUpdateEnabled;

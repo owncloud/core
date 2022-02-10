@@ -22,48 +22,93 @@ class SnapshotImage extends \Google\Model
   protected $internal_gapi_mappings = [
         "mimeType" => "mime_type",
   ];
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $url;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

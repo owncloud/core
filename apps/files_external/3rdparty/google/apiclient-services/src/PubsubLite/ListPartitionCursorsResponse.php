@@ -20,14 +20,23 @@ namespace Google\Service\PubsubLite;
 class ListPartitionCursorsResponse extends \Google\Collection
 {
   protected $collection_key = 'partitionCursors';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $partitionCursorsType = PartitionCursor::class;
   protected $partitionCursorsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

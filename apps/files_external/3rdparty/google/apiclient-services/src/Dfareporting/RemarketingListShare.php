@@ -20,39 +20,75 @@ namespace Google\Service\Dfareporting;
 class RemarketingListShare extends \Google\Collection
 {
   protected $collection_key = 'sharedAdvertiserIds';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $remarketingListId;
+  /**
+   * @var string[]
+   */
   public $sharedAccountIds;
+  /**
+   * @var string[]
+   */
   public $sharedAdvertiserIds;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setRemarketingListId($remarketingListId)
   {
     $this->remarketingListId = $remarketingListId;
   }
+  /**
+   * @return string
+   */
   public function getRemarketingListId()
   {
     return $this->remarketingListId;
   }
+  /**
+   * @param string[]
+   */
   public function setSharedAccountIds($sharedAccountIds)
   {
     $this->sharedAccountIds = $sharedAccountIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSharedAccountIds()
   {
     return $this->sharedAccountIds;
   }
+  /**
+   * @param string[]
+   */
   public function setSharedAdvertiserIds($sharedAdvertiserIds)
   {
     $this->sharedAdvertiserIds = $sharedAdvertiserIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSharedAdvertiserIds()
   {
     return $this->sharedAdvertiserIds;

@@ -19,30 +19,57 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1TransferEligibility extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $ineligibilityReason;
+  /**
+   * @var bool
+   */
   public $isEligible;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setIneligibilityReason($ineligibilityReason)
   {
     $this->ineligibilityReason = $ineligibilityReason;
   }
+  /**
+   * @return string
+   */
   public function getIneligibilityReason()
   {
     return $this->ineligibilityReason;
   }
+  /**
+   * @param bool
+   */
   public function setIsEligible($isEligible)
   {
     $this->isEligible = $isEligible;
   }
+  /**
+   * @return bool
+   */
   public function getIsEligible()
   {
     return $this->isEligible;

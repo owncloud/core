@@ -20,12 +20,21 @@ namespace Google\Service\AdExchangeBuyerII;
 class AuctionContext extends \Google\Collection
 {
   protected $collection_key = 'auctionTypes';
+  /**
+   * @var string[]
+   */
   public $auctionTypes;
 
+  /**
+   * @param string[]
+   */
   public function setAuctionTypes($auctionTypes)
   {
     $this->auctionTypes = $auctionTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getAuctionTypes()
   {
     return $this->auctionTypes;

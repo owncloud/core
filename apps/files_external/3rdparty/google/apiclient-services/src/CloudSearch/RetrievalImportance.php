@@ -19,12 +19,21 @@ namespace Google\Service\CloudSearch;
 
 class RetrievalImportance extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $importance;
 
+  /**
+   * @param string
+   */
   public function setImportance($importance)
   {
     $this->importance = $importance;
   }
+  /**
+   * @return string
+   */
   public function getImportance()
   {
     return $this->importance;

@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class RefundReason extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $reasonCode;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setReasonCode($reasonCode)
   {
     $this->reasonCode = $reasonCode;
   }
+  /**
+   * @return string
+   */
   public function getReasonCode()
   {
     return $this->reasonCode;

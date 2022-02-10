@@ -19,30 +19,57 @@ namespace Google\Service\Localservices;
 
 class GoogleAdsHomeservicesLocalservicesV1PhoneLead extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $chargedCallTimestamp;
+  /**
+   * @var string
+   */
   public $chargedConnectedCallDurationSeconds;
+  /**
+   * @var string
+   */
   public $consumerPhoneNumber;
 
+  /**
+   * @param string
+   */
   public function setChargedCallTimestamp($chargedCallTimestamp)
   {
     $this->chargedCallTimestamp = $chargedCallTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getChargedCallTimestamp()
   {
     return $this->chargedCallTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setChargedConnectedCallDurationSeconds($chargedConnectedCallDurationSeconds)
   {
     $this->chargedConnectedCallDurationSeconds = $chargedConnectedCallDurationSeconds;
   }
+  /**
+   * @return string
+   */
   public function getChargedConnectedCallDurationSeconds()
   {
     return $this->chargedConnectedCallDurationSeconds;
   }
+  /**
+   * @param string
+   */
   public function setConsumerPhoneNumber($consumerPhoneNumber)
   {
     $this->consumerPhoneNumber = $consumerPhoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getConsumerPhoneNumber()
   {
     return $this->consumerPhoneNumber;

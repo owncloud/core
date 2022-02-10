@@ -20,33 +20,63 @@ namespace Google\Service\Bigquery;
 class TableList extends \Google\Collection
 {
   protected $collection_key = 'tables';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $tablesType = TableListTables::class;
   protected $tablesDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalItems;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
@@ -65,10 +95,16 @@ class TableList extends \Google\Collection
   {
     return $this->tables;
   }
+  /**
+   * @param int
+   */
   public function setTotalItems($totalItems)
   {
     $this->totalItems = $totalItems;
   }
+  /**
+   * @return int
+   */
   public function getTotalItems()
   {
     return $this->totalItems;

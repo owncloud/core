@@ -19,39 +19,75 @@ namespace Google\Service\CloudAsset;
 
 class ZypperPatch extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $category;
+  /**
+   * @var string
+   */
   public $patchName;
+  /**
+   * @var string
+   */
   public $severity;
+  /**
+   * @var string
+   */
   public $summary;
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
   }
+  /**
+   * @param string
+   */
   public function setPatchName($patchName)
   {
     $this->patchName = $patchName;
   }
+  /**
+   * @return string
+   */
   public function getPatchName()
   {
     return $this->patchName;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;
   }
+  /**
+   * @param string
+   */
   public function setSummary($summary)
   {
     $this->summary = $summary;
   }
+  /**
+   * @return string
+   */
   public function getSummary()
   {
     return $this->summary;

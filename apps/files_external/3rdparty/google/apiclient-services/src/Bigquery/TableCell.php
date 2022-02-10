@@ -19,12 +19,21 @@ namespace Google\Service\Bigquery;
 
 class TableCell extends \Google\Model
 {
+  /**
+   * @var array
+   */
   public $v;
 
+  /**
+   * @param array
+   */
   public function setV($v)
   {
     $this->v = $v;
   }
+  /**
+   * @return array
+   */
   public function getV()
   {
     return $this->v;

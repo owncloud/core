@@ -21,16 +21,37 @@ class TeamDrive extends \Google\Model
 {
   protected $backgroundImageFileType = TeamDriveBackgroundImageFile::class;
   protected $backgroundImageFileDataType = '';
+  /**
+   * @var string
+   */
   public $backgroundImageLink;
   protected $capabilitiesType = TeamDriveCapabilities::class;
   protected $capabilitiesDataType = '';
+  /**
+   * @var string
+   */
   public $colorRgb;
+  /**
+   * @var string
+   */
   public $createdTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $restrictionsType = TeamDriveRestrictions::class;
   protected $restrictionsDataType = '';
+  /**
+   * @var string
+   */
   public $themeId;
 
   /**
@@ -47,10 +68,16 @@ class TeamDrive extends \Google\Model
   {
     return $this->backgroundImageFile;
   }
+  /**
+   * @param string
+   */
   public function setBackgroundImageLink($backgroundImageLink)
   {
     $this->backgroundImageLink = $backgroundImageLink;
   }
+  /**
+   * @return string
+   */
   public function getBackgroundImageLink()
   {
     return $this->backgroundImageLink;
@@ -69,42 +96,72 @@ class TeamDrive extends \Google\Model
   {
     return $this->capabilities;
   }
+  /**
+   * @param string
+   */
   public function setColorRgb($colorRgb)
   {
     $this->colorRgb = $colorRgb;
   }
+  /**
+   * @return string
+   */
   public function getColorRgb()
   {
     return $this->colorRgb;
   }
+  /**
+   * @param string
+   */
   public function setCreatedTime($createdTime)
   {
     $this->createdTime = $createdTime;
   }
+  /**
+   * @return string
+   */
   public function getCreatedTime()
   {
     return $this->createdTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -123,10 +180,16 @@ class TeamDrive extends \Google\Model
   {
     return $this->restrictions;
   }
+  /**
+   * @param string
+   */
   public function setThemeId($themeId)
   {
     $this->themeId = $themeId;
   }
+  /**
+   * @return string
+   */
   public function getThemeId()
   {
     return $this->themeId;

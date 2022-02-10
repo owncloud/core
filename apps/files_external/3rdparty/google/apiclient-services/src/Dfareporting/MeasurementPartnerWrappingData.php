@@ -19,39 +19,75 @@ namespace Google\Service\Dfareporting;
 
 class MeasurementPartnerWrappingData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $linkStatus;
+  /**
+   * @var string
+   */
   public $measurementPartner;
+  /**
+   * @var string
+   */
   public $tagWrappingMode;
+  /**
+   * @var string
+   */
   public $wrappedTag;
 
+  /**
+   * @param string
+   */
   public function setLinkStatus($linkStatus)
   {
     $this->linkStatus = $linkStatus;
   }
+  /**
+   * @return string
+   */
   public function getLinkStatus()
   {
     return $this->linkStatus;
   }
+  /**
+   * @param string
+   */
   public function setMeasurementPartner($measurementPartner)
   {
     $this->measurementPartner = $measurementPartner;
   }
+  /**
+   * @return string
+   */
   public function getMeasurementPartner()
   {
     return $this->measurementPartner;
   }
+  /**
+   * @param string
+   */
   public function setTagWrappingMode($tagWrappingMode)
   {
     $this->tagWrappingMode = $tagWrappingMode;
   }
+  /**
+   * @return string
+   */
   public function getTagWrappingMode()
   {
     return $this->tagWrappingMode;
   }
+  /**
+   * @param string
+   */
   public function setWrappedTag($wrappedTag)
   {
     $this->wrappedTag = $wrappedTag;
   }
+  /**
+   * @return string
+   */
   public function getWrappedTag()
   {
     return $this->wrappedTag;

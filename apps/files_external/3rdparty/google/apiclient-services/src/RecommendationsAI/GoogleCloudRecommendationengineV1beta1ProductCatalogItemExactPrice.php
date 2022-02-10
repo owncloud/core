@@ -19,21 +19,39 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1ProductCatalogItemExactPrice extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $displayPrice;
+  /**
+   * @var float
+   */
   public $originalPrice;
 
+  /**
+   * @param float
+   */
   public function setDisplayPrice($displayPrice)
   {
     $this->displayPrice = $displayPrice;
   }
+  /**
+   * @return float
+   */
   public function getDisplayPrice()
   {
     return $this->displayPrice;
   }
+  /**
+   * @param float
+   */
   public function setOriginalPrice($originalPrice)
   {
     $this->originalPrice = $originalPrice;
   }
+  /**
+   * @return float
+   */
   public function getOriginalPrice()
   {
     return $this->originalPrice;

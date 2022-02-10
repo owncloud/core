@@ -19,21 +19,39 @@ namespace Google\Service\Bigquery;
 
 class TableDataInsertAllRequestRows extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $insertId;
+  /**
+   * @var array[]
+   */
   public $json;
 
+  /**
+   * @param string
+   */
   public function setInsertId($insertId)
   {
     $this->insertId = $insertId;
   }
+  /**
+   * @return string
+   */
   public function getInsertId()
   {
     return $this->insertId;
   }
+  /**
+   * @param array[]
+   */
   public function setJson($json)
   {
     $this->json = $json;
   }
+  /**
+   * @return array[]
+   */
   public function getJson()
   {
     return $this->json;

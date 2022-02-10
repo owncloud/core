@@ -22,10 +22,19 @@ class GoogleCloudDialogflowV2IntentMessageBasicCard extends \Google\Collection
   protected $collection_key = 'buttons';
   protected $buttonsType = GoogleCloudDialogflowV2IntentMessageBasicCardButton::class;
   protected $buttonsDataType = 'array';
+  /**
+   * @var string
+   */
   public $formattedText;
   protected $imageType = GoogleCloudDialogflowV2IntentMessageImage::class;
   protected $imageDataType = '';
+  /**
+   * @var string
+   */
   public $subtitle;
+  /**
+   * @var string
+   */
   public $title;
 
   /**
@@ -42,10 +51,16 @@ class GoogleCloudDialogflowV2IntentMessageBasicCard extends \Google\Collection
   {
     return $this->buttons;
   }
+  /**
+   * @param string
+   */
   public function setFormattedText($formattedText)
   {
     $this->formattedText = $formattedText;
   }
+  /**
+   * @return string
+   */
   public function getFormattedText()
   {
     return $this->formattedText;
@@ -64,18 +79,30 @@ class GoogleCloudDialogflowV2IntentMessageBasicCard extends \Google\Collection
   {
     return $this->image;
   }
+  /**
+   * @param string
+   */
   public function setSubtitle($subtitle)
   {
     $this->subtitle = $subtitle;
   }
+  /**
+   * @return string
+   */
   public function getSubtitle()
   {
     return $this->subtitle;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

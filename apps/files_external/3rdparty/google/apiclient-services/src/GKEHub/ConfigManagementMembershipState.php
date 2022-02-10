@@ -19,6 +19,9 @@ namespace Google\Service\GKEHub;
 
 class ConfigManagementMembershipState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterName;
   protected $configSyncStateType = ConfigManagementConfigSyncState::class;
   protected $configSyncStateDataType = '';
@@ -31,10 +34,16 @@ class ConfigManagementMembershipState extends \Google\Model
   protected $policyControllerStateType = ConfigManagementPolicyControllerState::class;
   protected $policyControllerStateDataType = '';
 
+  /**
+   * @param string
+   */
   public function setClusterName($clusterName)
   {
     $this->clusterName = $clusterName;
   }
+  /**
+   * @return string
+   */
   public function getClusterName()
   {
     return $this->clusterName;

@@ -20,16 +20,31 @@ namespace Google\Service\CloudRun;
 class Container extends \Google\Collection
 {
   protected $collection_key = 'volumeMounts';
+  /**
+   * @var string[]
+   */
   public $args;
+  /**
+   * @var string[]
+   */
   public $command;
   protected $envType = EnvVar::class;
   protected $envDataType = 'array';
   protected $envFromType = EnvFromSource::class;
   protected $envFromDataType = 'array';
+  /**
+   * @var string
+   */
   public $image;
+  /**
+   * @var string
+   */
   public $imagePullPolicy;
   protected $livenessProbeType = Probe::class;
   protected $livenessProbeDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $portsType = ContainerPort::class;
   protected $portsDataType = 'array';
@@ -41,24 +56,45 @@ class Container extends \Google\Collection
   protected $securityContextDataType = '';
   protected $startupProbeType = Probe::class;
   protected $startupProbeDataType = '';
+  /**
+   * @var string
+   */
   public $terminationMessagePath;
+  /**
+   * @var string
+   */
   public $terminationMessagePolicy;
   protected $volumeMountsType = VolumeMount::class;
   protected $volumeMountsDataType = 'array';
+  /**
+   * @var string
+   */
   public $workingDir;
 
+  /**
+   * @param string[]
+   */
   public function setArgs($args)
   {
     $this->args = $args;
   }
+  /**
+   * @return string[]
+   */
   public function getArgs()
   {
     return $this->args;
   }
+  /**
+   * @param string[]
+   */
   public function setCommand($command)
   {
     $this->command = $command;
   }
+  /**
+   * @return string[]
+   */
   public function getCommand()
   {
     return $this->command;
@@ -91,18 +127,30 @@ class Container extends \Google\Collection
   {
     return $this->envFrom;
   }
+  /**
+   * @param string
+   */
   public function setImage($image)
   {
     $this->image = $image;
   }
+  /**
+   * @return string
+   */
   public function getImage()
   {
     return $this->image;
   }
+  /**
+   * @param string
+   */
   public function setImagePullPolicy($imagePullPolicy)
   {
     $this->imagePullPolicy = $imagePullPolicy;
   }
+  /**
+   * @return string
+   */
   public function getImagePullPolicy()
   {
     return $this->imagePullPolicy;
@@ -121,10 +169,16 @@ class Container extends \Google\Collection
   {
     return $this->livenessProbe;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -199,18 +253,30 @@ class Container extends \Google\Collection
   {
     return $this->startupProbe;
   }
+  /**
+   * @param string
+   */
   public function setTerminationMessagePath($terminationMessagePath)
   {
     $this->terminationMessagePath = $terminationMessagePath;
   }
+  /**
+   * @return string
+   */
   public function getTerminationMessagePath()
   {
     return $this->terminationMessagePath;
   }
+  /**
+   * @param string
+   */
   public function setTerminationMessagePolicy($terminationMessagePolicy)
   {
     $this->terminationMessagePolicy = $terminationMessagePolicy;
   }
+  /**
+   * @return string
+   */
   public function getTerminationMessagePolicy()
   {
     return $this->terminationMessagePolicy;
@@ -229,10 +295,16 @@ class Container extends \Google\Collection
   {
     return $this->volumeMounts;
   }
+  /**
+   * @param string
+   */
   public function setWorkingDir($workingDir)
   {
     $this->workingDir = $workingDir;
   }
+  /**
+   * @return string
+   */
   public function getWorkingDir()
   {
     return $this->workingDir;

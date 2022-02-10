@@ -20,50 +20,95 @@ namespace Google\Service\CivicInfo;
 class Office extends \Google\Collection
 {
   protected $collection_key = 'sources';
+  /**
+   * @var string
+   */
   public $divisionId;
+  /**
+   * @var string[]
+   */
   public $levels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $officialIndices;
+  /**
+   * @var string[]
+   */
   public $roles;
   protected $sourcesType = Source::class;
   protected $sourcesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDivisionId($divisionId)
   {
     $this->divisionId = $divisionId;
   }
+  /**
+   * @return string
+   */
   public function getDivisionId()
   {
     return $this->divisionId;
   }
+  /**
+   * @param string[]
+   */
   public function setLevels($levels)
   {
     $this->levels = $levels;
   }
+  /**
+   * @return string[]
+   */
   public function getLevels()
   {
     return $this->levels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setOfficialIndices($officialIndices)
   {
     $this->officialIndices = $officialIndices;
   }
+  /**
+   * @return string[]
+   */
   public function getOfficialIndices()
   {
     return $this->officialIndices;
   }
+  /**
+   * @param string[]
+   */
   public function setRoles($roles)
   {
     $this->roles = $roles;
   }
+  /**
+   * @return string[]
+   */
   public function getRoles()
   {
     return $this->roles;

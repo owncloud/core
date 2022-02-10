@@ -22,9 +22,15 @@ class OperationProgress extends \Google\Collection
   protected $collection_key = 'stages';
   protected $metricsType = Metric::class;
   protected $metricsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $stagesType = OperationProgress::class;
   protected $stagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $status;
 
   /**
@@ -41,10 +47,16 @@ class OperationProgress extends \Google\Collection
   {
     return $this->metrics;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -63,10 +75,16 @@ class OperationProgress extends \Google\Collection
   {
     return $this->stages;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

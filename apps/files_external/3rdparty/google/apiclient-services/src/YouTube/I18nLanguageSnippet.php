@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class I18nLanguageSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hl;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setHl($hl)
   {
     $this->hl = $hl;
   }
+  /**
+   * @return string
+   */
   public function getHl()
   {
     return $this->hl;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

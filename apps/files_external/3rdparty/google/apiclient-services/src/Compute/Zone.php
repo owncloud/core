@@ -20,31 +20,73 @@ namespace Google\Service\Compute;
 class Zone extends \Google\Collection
 {
   protected $collection_key = 'availableCpuPlatforms';
+  /**
+   * @var string[]
+   */
   public $availableCpuPlatforms;
+  /**
+   * @var string
+   */
   public $creationTimestamp;
   protected $deprecatedType = DeprecationStatus::class;
   protected $deprecatedDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var bool
+   */
   public $supportsPzs;
 
+  /**
+   * @param string[]
+   */
   public function setAvailableCpuPlatforms($availableCpuPlatforms)
   {
     $this->availableCpuPlatforms = $availableCpuPlatforms;
   }
+  /**
+   * @return string[]
+   */
   public function getAvailableCpuPlatforms()
   {
     return $this->availableCpuPlatforms;
   }
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
@@ -63,66 +105,114 @@ class Zone extends \Google\Collection
   {
     return $this->deprecated;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param bool
+   */
   public function setSupportsPzs($supportsPzs)
   {
     $this->supportsPzs = $supportsPzs;
   }
+  /**
+   * @return bool
+   */
   public function getSupportsPzs()
   {
     return $this->supportsPzs;

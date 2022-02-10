@@ -20,25 +20,43 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2LDiversityEquivalenceClass extends \Google\Collection
 {
   protected $collection_key = 'topSensitiveValues';
+  /**
+   * @var string
+   */
   public $equivalenceClassSize;
+  /**
+   * @var string
+   */
   public $numDistinctSensitiveValues;
   protected $quasiIdsValuesType = GooglePrivacyDlpV2Value::class;
   protected $quasiIdsValuesDataType = 'array';
   protected $topSensitiveValuesType = GooglePrivacyDlpV2ValueFrequency::class;
   protected $topSensitiveValuesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setEquivalenceClassSize($equivalenceClassSize)
   {
     $this->equivalenceClassSize = $equivalenceClassSize;
   }
+  /**
+   * @return string
+   */
   public function getEquivalenceClassSize()
   {
     return $this->equivalenceClassSize;
   }
+  /**
+   * @param string
+   */
   public function setNumDistinctSensitiveValues($numDistinctSensitiveValues)
   {
     $this->numDistinctSensitiveValues = $numDistinctSensitiveValues;
   }
+  /**
+   * @return string
+   */
   public function getNumDistinctSensitiveValues()
   {
     return $this->numDistinctSensitiveValues;

@@ -20,39 +20,75 @@ namespace Google\Service\Spanner;
 class KeyRange extends \Google\Collection
 {
   protected $collection_key = 'startOpen';
+  /**
+   * @var array[]
+   */
   public $endClosed;
+  /**
+   * @var array[]
+   */
   public $endOpen;
+  /**
+   * @var array[]
+   */
   public $startClosed;
+  /**
+   * @var array[]
+   */
   public $startOpen;
 
+  /**
+   * @param array[]
+   */
   public function setEndClosed($endClosed)
   {
     $this->endClosed = $endClosed;
   }
+  /**
+   * @return array[]
+   */
   public function getEndClosed()
   {
     return $this->endClosed;
   }
+  /**
+   * @param array[]
+   */
   public function setEndOpen($endOpen)
   {
     $this->endOpen = $endOpen;
   }
+  /**
+   * @return array[]
+   */
   public function getEndOpen()
   {
     return $this->endOpen;
   }
+  /**
+   * @param array[]
+   */
   public function setStartClosed($startClosed)
   {
     $this->startClosed = $startClosed;
   }
+  /**
+   * @return array[]
+   */
   public function getStartClosed()
   {
     return $this->startClosed;
   }
+  /**
+   * @param array[]
+   */
   public function setStartOpen($startOpen)
   {
     $this->startOpen = $startOpen;
   }
+  /**
+   * @return array[]
+   */
   public function getStartOpen()
   {
     return $this->startOpen;

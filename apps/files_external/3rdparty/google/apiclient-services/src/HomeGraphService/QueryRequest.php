@@ -20,15 +20,27 @@ namespace Google\Service\HomeGraphService;
 class QueryRequest extends \Google\Collection
 {
   protected $collection_key = 'inputs';
+  /**
+   * @var string
+   */
   public $agentUserId;
   protected $inputsType = QueryRequestInput::class;
   protected $inputsDataType = 'array';
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setAgentUserId($agentUserId)
   {
     $this->agentUserId = $agentUserId;
   }
+  /**
+   * @return string
+   */
   public function getAgentUserId()
   {
     return $this->agentUserId;
@@ -47,10 +59,16 @@ class QueryRequest extends \Google\Collection
   {
     return $this->inputs;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

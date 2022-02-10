@@ -21,7 +21,13 @@ class GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict extends \Google\M
 {
   protected $conflictingDeploymentType = GoogleCloudApigeeV1DeploymentChangeReportRoutingDeployment::class;
   protected $conflictingDeploymentDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $environmentGroup;
 
   /**
@@ -38,18 +44,30 @@ class GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict extends \Google\M
   {
     return $this->conflictingDeployment;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setEnvironmentGroup($environmentGroup)
   {
     $this->environmentGroup = $environmentGroup;
   }
+  /**
+   * @return string
+   */
   public function getEnvironmentGroup()
   {
     return $this->environmentGroup;

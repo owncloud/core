@@ -19,26 +19,53 @@ namespace Google\Service\Analytics;
 
 class UserDeletionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deletionRequestTime;
+  /**
+   * @var string
+   */
   public $firebaseProjectId;
   protected $idType = UserDeletionRequestId::class;
   protected $idDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $propertyId;
+  /**
+   * @var string
+   */
   public $webPropertyId;
 
+  /**
+   * @param string
+   */
   public function setDeletionRequestTime($deletionRequestTime)
   {
     $this->deletionRequestTime = $deletionRequestTime;
   }
+  /**
+   * @return string
+   */
   public function getDeletionRequestTime()
   {
     return $this->deletionRequestTime;
   }
+  /**
+   * @param string
+   */
   public function setFirebaseProjectId($firebaseProjectId)
   {
     $this->firebaseProjectId = $firebaseProjectId;
   }
+  /**
+   * @return string
+   */
   public function getFirebaseProjectId()
   {
     return $this->firebaseProjectId;
@@ -57,26 +84,44 @@ class UserDeletionRequest extends \Google\Model
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPropertyId($propertyId)
   {
     $this->propertyId = $propertyId;
   }
+  /**
+   * @return string
+   */
   public function getPropertyId()
   {
     return $this->propertyId;
   }
+  /**
+   * @param string
+   */
   public function setWebPropertyId($webPropertyId)
   {
     $this->webPropertyId = $webPropertyId;
   }
+  /**
+   * @return string
+   */
   public function getWebPropertyId()
   {
     return $this->webPropertyId;

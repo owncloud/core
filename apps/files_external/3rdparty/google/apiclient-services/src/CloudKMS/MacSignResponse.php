@@ -19,48 +19,93 @@ namespace Google\Service\CloudKMS;
 
 class MacSignResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mac;
+  /**
+   * @var string
+   */
   public $macCrc32c;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $protectionLevel;
+  /**
+   * @var bool
+   */
   public $verifiedDataCrc32c;
 
+  /**
+   * @param string
+   */
   public function setMac($mac)
   {
     $this->mac = $mac;
   }
+  /**
+   * @return string
+   */
   public function getMac()
   {
     return $this->mac;
   }
+  /**
+   * @param string
+   */
   public function setMacCrc32c($macCrc32c)
   {
     $this->macCrc32c = $macCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getMacCrc32c()
   {
     return $this->macCrc32c;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProtectionLevel($protectionLevel)
   {
     $this->protectionLevel = $protectionLevel;
   }
+  /**
+   * @return string
+   */
   public function getProtectionLevel()
   {
     return $this->protectionLevel;
   }
+  /**
+   * @param bool
+   */
   public function setVerifiedDataCrc32c($verifiedDataCrc32c)
   {
     $this->verifiedDataCrc32c = $verifiedDataCrc32c;
   }
+  /**
+   * @return bool
+   */
   public function getVerifiedDataCrc32c()
   {
     return $this->verifiedDataCrc32c;

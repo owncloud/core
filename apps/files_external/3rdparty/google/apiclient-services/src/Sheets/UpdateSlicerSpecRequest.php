@@ -19,23 +19,41 @@ namespace Google\Service\Sheets;
 
 class UpdateSlicerSpecRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fields;
+  /**
+   * @var int
+   */
   public $slicerId;
   protected $specType = SlicerSpec::class;
   protected $specDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;
   }
+  /**
+   * @param int
+   */
   public function setSlicerId($slicerId)
   {
     $this->slicerId = $slicerId;
   }
+  /**
+   * @return int
+   */
   public function getSlicerId()
   {
     return $this->slicerId;

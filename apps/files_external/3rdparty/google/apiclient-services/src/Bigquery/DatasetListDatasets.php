@@ -21,10 +21,25 @@ class DatasetListDatasets extends \Google\Model
 {
   protected $datasetReferenceType = DatasetReference::class;
   protected $datasetReferenceDataType = '';
+  /**
+   * @var string
+   */
   public $friendlyName;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $location;
 
   /**
@@ -41,42 +56,72 @@ class DatasetListDatasets extends \Google\Model
   {
     return $this->datasetReference;
   }
+  /**
+   * @param string
+   */
   public function setFriendlyName($friendlyName)
   {
     $this->friendlyName = $friendlyName;
   }
+  /**
+   * @return string
+   */
   public function getFriendlyName()
   {
     return $this->friendlyName;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;

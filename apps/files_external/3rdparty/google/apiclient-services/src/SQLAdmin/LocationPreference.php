@@ -19,39 +19,75 @@ namespace Google\Service\SQLAdmin;
 
 class LocationPreference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $followGaeApplication;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $secondaryZone;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string
+   */
   public function setFollowGaeApplication($followGaeApplication)
   {
     $this->followGaeApplication = $followGaeApplication;
   }
+  /**
+   * @return string
+   */
   public function getFollowGaeApplication()
   {
     return $this->followGaeApplication;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setSecondaryZone($secondaryZone)
   {
     $this->secondaryZone = $secondaryZone;
   }
+  /**
+   * @return string
+   */
   public function getSecondaryZone()
   {
     return $this->secondaryZone;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

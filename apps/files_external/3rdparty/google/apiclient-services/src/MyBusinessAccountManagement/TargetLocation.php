@@ -19,21 +19,39 @@ namespace Google\Service\MyBusinessAccountManagement;
 
 class TargetLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $address;
+  /**
+   * @var string
+   */
   public $locationName;
 
+  /**
+   * @param string
+   */
   public function setAddress($address)
   {
     $this->address = $address;
   }
+  /**
+   * @return string
+   */
   public function getAddress()
   {
     return $this->address;
   }
+  /**
+   * @param string
+   */
   public function setLocationName($locationName)
   {
     $this->locationName = $locationName;
   }
+  /**
+   * @return string
+   */
   public function getLocationName()
   {
     return $this->locationName;

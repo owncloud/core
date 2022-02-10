@@ -19,12 +19,21 @@ namespace Google\Service\Speech;
 
 class TranscriptOutputConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsUri;
 
+  /**
+   * @param string
+   */
   public function setGcsUri($gcsUri)
   {
     $this->gcsUri = $gcsUri;
   }
+  /**
+   * @return string
+   */
   public function getGcsUri()
   {
     return $this->gcsUri;

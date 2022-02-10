@@ -20,32 +20,59 @@ namespace Google\Service\DataCatalog;
 class GoogleCloudDatacatalogV1SerializedTaxonomy extends \Google\Collection
 {
   protected $collection_key = 'policyTags';
+  /**
+   * @var string[]
+   */
   public $activatedPolicyTypes;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $policyTagsType = GoogleCloudDatacatalogV1SerializedPolicyTag::class;
   protected $policyTagsDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setActivatedPolicyTypes($activatedPolicyTypes)
   {
     $this->activatedPolicyTypes = $activatedPolicyTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getActivatedPolicyTypes()
   {
     return $this->activatedPolicyTypes;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;

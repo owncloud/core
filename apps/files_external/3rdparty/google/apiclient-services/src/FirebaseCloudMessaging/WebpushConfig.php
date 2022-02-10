@@ -19,16 +19,31 @@ namespace Google\Service\FirebaseCloudMessaging;
 
 class WebpushConfig extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $data;
   protected $fcmOptionsType = WebpushFcmOptions::class;
   protected $fcmOptionsDataType = '';
+  /**
+   * @var string[]
+   */
   public $headers;
+  /**
+   * @var array[]
+   */
   public $notification;
 
+  /**
+   * @param string[]
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string[]
+   */
   public function getData()
   {
     return $this->data;
@@ -47,18 +62,30 @@ class WebpushConfig extends \Google\Model
   {
     return $this->fcmOptions;
   }
+  /**
+   * @param string[]
+   */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
+  /**
+   * @return string[]
+   */
   public function getHeaders()
   {
     return $this->headers;
   }
+  /**
+   * @param array[]
+   */
   public function setNotification($notification)
   {
     $this->notification = $notification;
   }
+  /**
+   * @return array[]
+   */
   public function getNotification()
   {
     return $this->notification;

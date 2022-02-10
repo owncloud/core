@@ -19,30 +19,57 @@ namespace Google\Service\CloudSearch;
 
 class RepositoryError extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var int
+   */
   public $httpStatusCode;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param int
+   */
   public function setHttpStatusCode($httpStatusCode)
   {
     $this->httpStatusCode = $httpStatusCode;
   }
+  /**
+   * @return int
+   */
   public function getHttpStatusCode()
   {
     return $this->httpStatusCode;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

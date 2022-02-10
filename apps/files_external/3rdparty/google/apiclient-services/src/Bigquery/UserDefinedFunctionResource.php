@@ -19,21 +19,39 @@ namespace Google\Service\Bigquery;
 
 class UserDefinedFunctionResource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $inlineCode;
+  /**
+   * @var string
+   */
   public $resourceUri;
 
+  /**
+   * @param string
+   */
   public function setInlineCode($inlineCode)
   {
     $this->inlineCode = $inlineCode;
   }
+  /**
+   * @return string
+   */
   public function getInlineCode()
   {
     return $this->inlineCode;
   }
+  /**
+   * @param string
+   */
   public function setResourceUri($resourceUri)
   {
     $this->resourceUri = $resourceUri;
   }
+  /**
+   * @return string
+   */
   public function getResourceUri()
   {
     return $this->resourceUri;

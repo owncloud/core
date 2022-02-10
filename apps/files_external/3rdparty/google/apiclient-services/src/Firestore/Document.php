@@ -19,16 +19,31 @@ namespace Google\Service\Firestore;
 
 class Document extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
   protected $fieldsType = Value::class;
   protected $fieldsDataType = 'map';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -47,18 +62,30 @@ class Document extends \Google\Model
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

@@ -19,30 +19,57 @@ namespace Google\Service\ContainerAnalysis;
 
 class Completeness extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $arguments;
+  /**
+   * @var bool
+   */
   public $environment;
+  /**
+   * @var bool
+   */
   public $materials;
 
+  /**
+   * @param bool
+   */
   public function setArguments($arguments)
   {
     $this->arguments = $arguments;
   }
+  /**
+   * @return bool
+   */
   public function getArguments()
   {
     return $this->arguments;
   }
+  /**
+   * @param bool
+   */
   public function setEnvironment($environment)
   {
     $this->environment = $environment;
   }
+  /**
+   * @return bool
+   */
   public function getEnvironment()
   {
     return $this->environment;
   }
+  /**
+   * @param bool
+   */
   public function setMaterials($materials)
   {
     $this->materials = $materials;
   }
+  /**
+   * @return bool
+   */
   public function getMaterials()
   {
     return $this->materials;

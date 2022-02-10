@@ -19,48 +19,93 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p2beta1SafeSearchAnnotation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adult;
+  /**
+   * @var string
+   */
   public $medical;
+  /**
+   * @var string
+   */
   public $racy;
+  /**
+   * @var string
+   */
   public $spoof;
+  /**
+   * @var string
+   */
   public $violence;
 
+  /**
+   * @param string
+   */
   public function setAdult($adult)
   {
     $this->adult = $adult;
   }
+  /**
+   * @return string
+   */
   public function getAdult()
   {
     return $this->adult;
   }
+  /**
+   * @param string
+   */
   public function setMedical($medical)
   {
     $this->medical = $medical;
   }
+  /**
+   * @return string
+   */
   public function getMedical()
   {
     return $this->medical;
   }
+  /**
+   * @param string
+   */
   public function setRacy($racy)
   {
     $this->racy = $racy;
   }
+  /**
+   * @return string
+   */
   public function getRacy()
   {
     return $this->racy;
   }
+  /**
+   * @param string
+   */
   public function setSpoof($spoof)
   {
     $this->spoof = $spoof;
   }
+  /**
+   * @return string
+   */
   public function getSpoof()
   {
     return $this->spoof;
   }
+  /**
+   * @param string
+   */
   public function setViolence($violence)
   {
     $this->violence = $violence;
   }
+  /**
+   * @return string
+   */
   public function getViolence()
   {
     return $this->violence;

@@ -20,37 +20,85 @@ namespace Google\Service\Vision;
 class FaceAnnotation extends \Google\Collection
 {
   protected $collection_key = 'landmarks';
+  /**
+   * @var string
+   */
   public $angerLikelihood;
+  /**
+   * @var string
+   */
   public $blurredLikelihood;
   protected $boundingPolyType = BoundingPoly::class;
   protected $boundingPolyDataType = '';
+  /**
+   * @var float
+   */
   public $detectionConfidence;
   protected $fdBoundingPolyType = BoundingPoly::class;
   protected $fdBoundingPolyDataType = '';
+  /**
+   * @var string
+   */
   public $headwearLikelihood;
+  /**
+   * @var string
+   */
   public $joyLikelihood;
+  /**
+   * @var float
+   */
   public $landmarkingConfidence;
   protected $landmarksType = Landmark::class;
   protected $landmarksDataType = 'array';
+  /**
+   * @var float
+   */
   public $panAngle;
+  /**
+   * @var float
+   */
   public $rollAngle;
+  /**
+   * @var string
+   */
   public $sorrowLikelihood;
+  /**
+   * @var string
+   */
   public $surpriseLikelihood;
+  /**
+   * @var float
+   */
   public $tiltAngle;
+  /**
+   * @var string
+   */
   public $underExposedLikelihood;
 
+  /**
+   * @param string
+   */
   public function setAngerLikelihood($angerLikelihood)
   {
     $this->angerLikelihood = $angerLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getAngerLikelihood()
   {
     return $this->angerLikelihood;
   }
+  /**
+   * @param string
+   */
   public function setBlurredLikelihood($blurredLikelihood)
   {
     $this->blurredLikelihood = $blurredLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getBlurredLikelihood()
   {
     return $this->blurredLikelihood;
@@ -69,10 +117,16 @@ class FaceAnnotation extends \Google\Collection
   {
     return $this->boundingPoly;
   }
+  /**
+   * @param float
+   */
   public function setDetectionConfidence($detectionConfidence)
   {
     $this->detectionConfidence = $detectionConfidence;
   }
+  /**
+   * @return float
+   */
   public function getDetectionConfidence()
   {
     return $this->detectionConfidence;
@@ -91,26 +145,44 @@ class FaceAnnotation extends \Google\Collection
   {
     return $this->fdBoundingPoly;
   }
+  /**
+   * @param string
+   */
   public function setHeadwearLikelihood($headwearLikelihood)
   {
     $this->headwearLikelihood = $headwearLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getHeadwearLikelihood()
   {
     return $this->headwearLikelihood;
   }
+  /**
+   * @param string
+   */
   public function setJoyLikelihood($joyLikelihood)
   {
     $this->joyLikelihood = $joyLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getJoyLikelihood()
   {
     return $this->joyLikelihood;
   }
+  /**
+   * @param float
+   */
   public function setLandmarkingConfidence($landmarkingConfidence)
   {
     $this->landmarkingConfidence = $landmarkingConfidence;
   }
+  /**
+   * @return float
+   */
   public function getLandmarkingConfidence()
   {
     return $this->landmarkingConfidence;
@@ -129,50 +201,86 @@ class FaceAnnotation extends \Google\Collection
   {
     return $this->landmarks;
   }
+  /**
+   * @param float
+   */
   public function setPanAngle($panAngle)
   {
     $this->panAngle = $panAngle;
   }
+  /**
+   * @return float
+   */
   public function getPanAngle()
   {
     return $this->panAngle;
   }
+  /**
+   * @param float
+   */
   public function setRollAngle($rollAngle)
   {
     $this->rollAngle = $rollAngle;
   }
+  /**
+   * @return float
+   */
   public function getRollAngle()
   {
     return $this->rollAngle;
   }
+  /**
+   * @param string
+   */
   public function setSorrowLikelihood($sorrowLikelihood)
   {
     $this->sorrowLikelihood = $sorrowLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getSorrowLikelihood()
   {
     return $this->sorrowLikelihood;
   }
+  /**
+   * @param string
+   */
   public function setSurpriseLikelihood($surpriseLikelihood)
   {
     $this->surpriseLikelihood = $surpriseLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getSurpriseLikelihood()
   {
     return $this->surpriseLikelihood;
   }
+  /**
+   * @param float
+   */
   public function setTiltAngle($tiltAngle)
   {
     $this->tiltAngle = $tiltAngle;
   }
+  /**
+   * @return float
+   */
   public function getTiltAngle()
   {
     return $this->tiltAngle;
   }
+  /**
+   * @param string
+   */
   public function setUnderExposedLikelihood($underExposedLikelihood)
   {
     $this->underExposedLikelihood = $underExposedLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getUnderExposedLikelihood()
   {
     return $this->underExposedLikelihood;

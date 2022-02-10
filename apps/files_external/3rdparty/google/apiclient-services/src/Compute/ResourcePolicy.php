@@ -19,35 +19,71 @@ namespace Google\Service\Compute;
 
 class ResourcePolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
   protected $groupPlacementPolicyType = ResourcePolicyGroupPlacementPolicy::class;
   protected $groupPlacementPolicyDataType = '';
+  /**
+   * @var string
+   */
   public $id;
   protected $instanceSchedulePolicyType = ResourcePolicyInstanceSchedulePolicy::class;
   protected $instanceSchedulePolicyDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $region;
   protected $resourceStatusType = ResourcePolicyResourceStatus::class;
   protected $resourceStatusDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
   protected $snapshotSchedulePolicyType = ResourcePolicySnapshotSchedulePolicy::class;
   protected $snapshotSchedulePolicyDataType = '';
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -66,10 +102,16 @@ class ResourcePolicy extends \Google\Model
   {
     return $this->groupPlacementPolicy;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -88,26 +130,44 @@ class ResourcePolicy extends \Google\Model
   {
     return $this->instanceSchedulePolicy;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
@@ -126,10 +186,16 @@ class ResourcePolicy extends \Google\Model
   {
     return $this->resourceStatus;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
@@ -148,10 +214,16 @@ class ResourcePolicy extends \Google\Model
   {
     return $this->snapshotSchedulePolicy;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

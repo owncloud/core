@@ -20,30 +20,57 @@ namespace Google\Service\Compute;
 class SchedulingNodeAffinity extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $operator;
+  /**
+   * @var string[]
+   */
   public $values;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setOperator($operator)
   {
     $this->operator = $operator;
   }
+  /**
+   * @return string
+   */
   public function getOperator()
   {
     return $this->operator;
   }
+  /**
+   * @param string[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return string[]
+   */
   public function getValues()
   {
     return $this->values;

@@ -19,75 +19,147 @@ namespace Google\Service\CloudResourceManager;
 
 class TagValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $namespacedName;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string
+   */
   public $shortName;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNamespacedName($namespacedName)
   {
     $this->namespacedName = $namespacedName;
   }
+  /**
+   * @return string
+   */
   public function getNamespacedName()
   {
     return $this->namespacedName;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string
+   */
   public function setShortName($shortName)
   {
     $this->shortName = $shortName;
   }
+  /**
+   * @return string
+   */
   public function getShortName()
   {
     return $this->shortName;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

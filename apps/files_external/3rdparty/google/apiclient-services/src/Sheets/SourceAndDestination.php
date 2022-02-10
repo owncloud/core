@@ -19,23 +19,41 @@ namespace Google\Service\Sheets;
 
 class SourceAndDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimension;
+  /**
+   * @var int
+   */
   public $fillLength;
   protected $sourceType = GridRange::class;
   protected $sourceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDimension($dimension)
   {
     $this->dimension = $dimension;
   }
+  /**
+   * @return string
+   */
   public function getDimension()
   {
     return $this->dimension;
   }
+  /**
+   * @param int
+   */
   public function setFillLength($fillLength)
   {
     $this->fillLength = $fillLength;
   }
+  /**
+   * @return int
+   */
   public function getFillLength()
   {
     return $this->fillLength;

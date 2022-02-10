@@ -19,30 +19,57 @@ namespace Google\Service\HangoutsChat;
 
 class GoogleAppsCardV1OpenLink extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $onClose;
+  /**
+   * @var string
+   */
   public $openAs;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setOnClose($onClose)
   {
     $this->onClose = $onClose;
   }
+  /**
+   * @return string
+   */
   public function getOnClose()
   {
     return $this->onClose;
   }
+  /**
+   * @param string
+   */
   public function setOpenAs($openAs)
   {
     $this->openAs = $openAs;
   }
+  /**
+   * @return string
+   */
   public function getOpenAs()
   {
     return $this->openAs;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

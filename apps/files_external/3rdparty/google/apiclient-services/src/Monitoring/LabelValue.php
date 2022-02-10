@@ -19,30 +19,57 @@ namespace Google\Service\Monitoring;
 
 class LabelValue extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $boolValue;
+  /**
+   * @var string
+   */
   public $int64Value;
+  /**
+   * @var string
+   */
   public $stringValue;
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
   }
+  /**
+   * @param string
+   */
   public function setInt64Value($int64Value)
   {
     $this->int64Value = $int64Value;
   }
+  /**
+   * @return string
+   */
   public function getInt64Value()
   {
     return $this->int64Value;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;

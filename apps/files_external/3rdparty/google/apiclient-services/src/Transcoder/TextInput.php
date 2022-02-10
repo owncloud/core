@@ -19,21 +19,39 @@ namespace Google\Service\Transcoder;
 
 class TextInput extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var int
+   */
   public $track;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param int
+   */
   public function setTrack($track)
   {
     $this->track = $track;
   }
+  /**
+   * @return int
+   */
   public function getTrack()
   {
     return $this->track;

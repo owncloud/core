@@ -19,22 +19,40 @@ namespace Google\Service\ShoppingContent;
 
 class LoyaltyPoints extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $pointsValue;
   public $ratio;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPointsValue($pointsValue)
   {
     $this->pointsValue = $pointsValue;
   }
+  /**
+   * @return string
+   */
   public function getPointsValue()
   {
     return $this->pointsValue;

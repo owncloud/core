@@ -19,14 +19,23 @@ namespace Google\Service\Slides;
 
 class TextRun extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $content;
   protected $styleType = TextStyle::class;
   protected $styleDataType = '';
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;

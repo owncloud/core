@@ -22,6 +22,9 @@ class ListAttestorsResponse extends \Google\Collection
   protected $collection_key = 'attestors';
   protected $attestorsType = Attestor::class;
   protected $attestorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListAttestorsResponse extends \Google\Collection
   {
     return $this->attestors;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

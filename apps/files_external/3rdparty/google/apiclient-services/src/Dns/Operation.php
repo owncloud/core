@@ -21,11 +21,29 @@ class Operation extends \Google\Model
 {
   protected $dnsKeyContextType = OperationDnsKeyContext::class;
   protected $dnsKeyContextDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $user;
   protected $zoneContextType = OperationManagedZoneContext::class;
   protected $zoneContextDataType = '';
@@ -44,50 +62,86 @@ class Operation extends \Google\Model
   {
     return $this->dnsKeyContext;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUser($user)
   {
     $this->user = $user;
   }
+  /**
+   * @return string
+   */
   public function getUser()
   {
     return $this->user;

@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2EventInput extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var array[]
+   */
   public $parameters;
 
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param array[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return array[]
+   */
   public function getParameters()
   {
     return $this->parameters;

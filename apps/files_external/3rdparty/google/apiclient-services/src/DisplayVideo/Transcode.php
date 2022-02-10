@@ -19,37 +19,79 @@ namespace Google\Service\DisplayVideo;
 
 class Transcode extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audioBitRateKbps;
+  /**
+   * @var string
+   */
   public $audioSampleRateHz;
+  /**
+   * @var string
+   */
   public $bitRateKbps;
   protected $dimensionsType = Dimensions::class;
   protected $dimensionsDataType = '';
+  /**
+   * @var string
+   */
   public $fileSizeBytes;
+  /**
+   * @var float
+   */
   public $frameRate;
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $transcoded;
 
+  /**
+   * @param string
+   */
   public function setAudioBitRateKbps($audioBitRateKbps)
   {
     $this->audioBitRateKbps = $audioBitRateKbps;
   }
+  /**
+   * @return string
+   */
   public function getAudioBitRateKbps()
   {
     return $this->audioBitRateKbps;
   }
+  /**
+   * @param string
+   */
   public function setAudioSampleRateHz($audioSampleRateHz)
   {
     $this->audioSampleRateHz = $audioSampleRateHz;
   }
+  /**
+   * @return string
+   */
   public function getAudioSampleRateHz()
   {
     return $this->audioSampleRateHz;
   }
+  /**
+   * @param string
+   */
   public function setBitRateKbps($bitRateKbps)
   {
     $this->bitRateKbps = $bitRateKbps;
   }
+  /**
+   * @return string
+   */
   public function getBitRateKbps()
   {
     return $this->bitRateKbps;
@@ -68,42 +110,72 @@ class Transcode extends \Google\Model
   {
     return $this->dimensions;
   }
+  /**
+   * @param string
+   */
   public function setFileSizeBytes($fileSizeBytes)
   {
     $this->fileSizeBytes = $fileSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getFileSizeBytes()
   {
     return $this->fileSizeBytes;
   }
+  /**
+   * @param float
+   */
   public function setFrameRate($frameRate)
   {
     $this->frameRate = $frameRate;
   }
+  /**
+   * @return float
+   */
   public function getFrameRate()
   {
     return $this->frameRate;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setTranscoded($transcoded)
   {
     $this->transcoded = $transcoded;
   }
+  /**
+   * @return bool
+   */
   public function getTranscoded()
   {
     return $this->transcoded;

@@ -20,12 +20,21 @@ namespace Google\Service\CertificateAuthorityService;
 class ObjectId extends \Google\Collection
 {
   protected $collection_key = 'objectIdPath';
+  /**
+   * @var int[]
+   */
   public $objectIdPath;
 
+  /**
+   * @param int[]
+   */
   public function setObjectIdPath($objectIdPath)
   {
     $this->objectIdPath = $objectIdPath;
   }
+  /**
+   * @return int[]
+   */
   public function getObjectIdPath()
   {
     return $this->objectIdPath;

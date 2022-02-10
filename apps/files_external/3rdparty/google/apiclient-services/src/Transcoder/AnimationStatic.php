@@ -19,14 +19,23 @@ namespace Google\Service\Transcoder;
 
 class AnimationStatic extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $startTimeOffset;
   protected $xyType = NormalizedCoordinate::class;
   protected $xyDataType = '';
 
+  /**
+   * @param string
+   */
   public function setStartTimeOffset($startTimeOffset)
   {
     $this->startTimeOffset = $startTimeOffset;
   }
+  /**
+   * @return string
+   */
   public function getStartTimeOffset()
   {
     return $this->startTimeOffset;

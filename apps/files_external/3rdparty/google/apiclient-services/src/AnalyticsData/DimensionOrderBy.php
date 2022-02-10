@@ -19,21 +19,39 @@ namespace Google\Service\AnalyticsData;
 
 class DimensionOrderBy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimensionName;
+  /**
+   * @var string
+   */
   public $orderType;
 
+  /**
+   * @param string
+   */
   public function setDimensionName($dimensionName)
   {
     $this->dimensionName = $dimensionName;
   }
+  /**
+   * @return string
+   */
   public function getDimensionName()
   {
     return $this->dimensionName;
   }
+  /**
+   * @param string
+   */
   public function setOrderType($orderType)
   {
     $this->orderType = $orderType;
   }
+  /**
+   * @return string
+   */
   public function getOrderType()
   {
     return $this->orderType;

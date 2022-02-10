@@ -21,6 +21,9 @@ class SslCertsInsertResponse extends \Google\Model
 {
   protected $clientCertType = SslCertDetail::class;
   protected $clientCertDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $operationType = Operation::class;
   protected $operationDataType = '';
@@ -41,10 +44,16 @@ class SslCertsInsertResponse extends \Google\Model
   {
     return $this->clientCert;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

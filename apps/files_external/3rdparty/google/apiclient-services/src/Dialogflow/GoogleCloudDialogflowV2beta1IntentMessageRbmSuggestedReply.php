@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentMessageRbmSuggestedReply extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $postbackData;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setPostbackData($postbackData)
   {
     $this->postbackData = $postbackData;
   }
+  /**
+   * @return string
+   */
   public function getPostbackData()
   {
     return $this->postbackData;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

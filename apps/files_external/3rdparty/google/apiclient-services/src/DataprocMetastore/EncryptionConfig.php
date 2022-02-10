@@ -19,12 +19,21 @@ namespace Google\Service\DataprocMetastore;
 
 class EncryptionConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kmsKey;
 
+  /**
+   * @param string
+   */
   public function setKmsKey($kmsKey)
   {
     $this->kmsKey = $kmsKey;
   }
+  /**
+   * @return string
+   */
   public function getKmsKey()
   {
     return $this->kmsKey;

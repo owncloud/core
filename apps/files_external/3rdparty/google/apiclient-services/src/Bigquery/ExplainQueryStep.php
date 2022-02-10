@@ -20,21 +20,39 @@ namespace Google\Service\Bigquery;
 class ExplainQueryStep extends \Google\Collection
 {
   protected $collection_key = 'substeps';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $substeps;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setSubsteps($substeps)
   {
     $this->substeps = $substeps;
   }
+  /**
+   * @return string[]
+   */
   public function getSubsteps()
   {
     return $this->substeps;

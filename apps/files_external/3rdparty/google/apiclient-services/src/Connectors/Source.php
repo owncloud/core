@@ -19,21 +19,39 @@ namespace Google\Service\Connectors;
 
 class Source extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fieldId;
+  /**
+   * @var string
+   */
   public $sourceType;
 
+  /**
+   * @param string
+   */
   public function setFieldId($fieldId)
   {
     $this->fieldId = $fieldId;
   }
+  /**
+   * @return string
+   */
   public function getFieldId()
   {
     return $this->fieldId;
   }
+  /**
+   * @param string
+   */
   public function setSourceType($sourceType)
   {
     $this->sourceType = $sourceType;
   }
+  /**
+   * @return string
+   */
   public function getSourceType()
   {
     return $this->sourceType;

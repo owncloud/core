@@ -19,12 +19,21 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaExchangeSafetyNetTokenRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $safetyNetToken;
 
+  /**
+   * @param string
+   */
   public function setSafetyNetToken($safetyNetToken)
   {
     $this->safetyNetToken = $safetyNetToken;
   }
+  /**
+   * @return string
+   */
   public function getSafetyNetToken()
   {
     return $this->safetyNetToken;

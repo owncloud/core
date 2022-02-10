@@ -19,16 +19,25 @@ namespace Google\Service\Datastore;
 
 class PropertyFilter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $op;
   protected $propertyType = PropertyReference::class;
   protected $propertyDataType = '';
   protected $valueType = Value::class;
   protected $valueDataType = '';
 
+  /**
+   * @param string
+   */
   public function setOp($op)
   {
     $this->op = $op;
   }
+  /**
+   * @return string
+   */
   public function getOp()
   {
     return $this->op;

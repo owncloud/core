@@ -19,23 +19,41 @@ namespace Google\Service\Docs;
 
 class Bullet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $listId;
+  /**
+   * @var int
+   */
   public $nestingLevel;
   protected $textStyleType = TextStyle::class;
   protected $textStyleDataType = '';
 
+  /**
+   * @param string
+   */
   public function setListId($listId)
   {
     $this->listId = $listId;
   }
+  /**
+   * @return string
+   */
   public function getListId()
   {
     return $this->listId;
   }
+  /**
+   * @param int
+   */
   public function setNestingLevel($nestingLevel)
   {
     $this->nestingLevel = $nestingLevel;
   }
+  /**
+   * @return int
+   */
   public function getNestingLevel()
   {
     return $this->nestingLevel;

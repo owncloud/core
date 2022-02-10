@@ -19,75 +19,147 @@ namespace Google\Service\CloudTalentSolution;
 
 class BatchOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var int
+   */
   public $failureCount;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $stateDescription;
+  /**
+   * @var int
+   */
   public $successCount;
+  /**
+   * @var int
+   */
   public $totalCount;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param int
+   */
   public function setFailureCount($failureCount)
   {
     $this->failureCount = $failureCount;
   }
+  /**
+   * @return int
+   */
   public function getFailureCount()
   {
     return $this->failureCount;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStateDescription($stateDescription)
   {
     $this->stateDescription = $stateDescription;
   }
+  /**
+   * @return string
+   */
   public function getStateDescription()
   {
     return $this->stateDescription;
   }
+  /**
+   * @param int
+   */
   public function setSuccessCount($successCount)
   {
     $this->successCount = $successCount;
   }
+  /**
+   * @return int
+   */
   public function getSuccessCount()
   {
     return $this->successCount;
   }
+  /**
+   * @param int
+   */
   public function setTotalCount($totalCount)
   {
     $this->totalCount = $totalCount;
   }
+  /**
+   * @return int
+   */
   public function getTotalCount()
   {
     return $this->totalCount;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

@@ -19,30 +19,57 @@ namespace Google\Service\FirebaseDynamicLinks;
 
 class DynamicLinkWarning extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $warningCode;
+  /**
+   * @var string
+   */
   public $warningDocumentLink;
+  /**
+   * @var string
+   */
   public $warningMessage;
 
+  /**
+   * @param string
+   */
   public function setWarningCode($warningCode)
   {
     $this->warningCode = $warningCode;
   }
+  /**
+   * @return string
+   */
   public function getWarningCode()
   {
     return $this->warningCode;
   }
+  /**
+   * @param string
+   */
   public function setWarningDocumentLink($warningDocumentLink)
   {
     $this->warningDocumentLink = $warningDocumentLink;
   }
+  /**
+   * @return string
+   */
   public function getWarningDocumentLink()
   {
     return $this->warningDocumentLink;
   }
+  /**
+   * @param string
+   */
   public function setWarningMessage($warningMessage)
   {
     $this->warningMessage = $warningMessage;
   }
+  /**
+   * @return string
+   */
   public function getWarningMessage()
   {
     return $this->warningMessage;

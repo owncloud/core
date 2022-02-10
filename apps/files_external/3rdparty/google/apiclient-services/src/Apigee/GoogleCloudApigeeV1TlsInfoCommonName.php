@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1TlsInfoCommonName extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $value;
+  /**
+   * @var bool
+   */
   public $wildcardMatch;
 
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;
   }
+  /**
+   * @param bool
+   */
   public function setWildcardMatch($wildcardMatch)
   {
     $this->wildcardMatch = $wildcardMatch;
   }
+  /**
+   * @return bool
+   */
   public function getWildcardMatch()
   {
     return $this->wildcardMatch;

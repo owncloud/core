@@ -20,18 +20,39 @@ namespace Google\Service\Document;
 class GoogleCloudDocumentaiV1ProcessorType extends \Google\Collection
 {
   protected $collection_key = 'availableLocations';
+  /**
+   * @var bool
+   */
   public $allowCreation;
   protected $availableLocationsType = GoogleCloudDocumentaiV1ProcessorTypeLocationInfo::class;
   protected $availableLocationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $category;
+  /**
+   * @var string
+   */
   public $launchStage;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param bool
+   */
   public function setAllowCreation($allowCreation)
   {
     $this->allowCreation = $allowCreation;
   }
+  /**
+   * @return bool
+   */
   public function getAllowCreation()
   {
     return $this->allowCreation;
@@ -50,34 +71,58 @@ class GoogleCloudDocumentaiV1ProcessorType extends \Google\Collection
   {
     return $this->availableLocations;
   }
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
   }
+  /**
+   * @param string
+   */
   public function setLaunchStage($launchStage)
   {
     $this->launchStage = $launchStage;
   }
+  /**
+   * @return string
+   */
   public function getLaunchStage()
   {
     return $this->launchStage;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

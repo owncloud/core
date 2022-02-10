@@ -20,17 +20,29 @@ namespace Google\Service\ServiceManagement;
 class AuthenticationRule extends \Google\Collection
 {
   protected $collection_key = 'requirements';
+  /**
+   * @var bool
+   */
   public $allowWithoutCredential;
   protected $oauthType = OAuthRequirements::class;
   protected $oauthDataType = '';
   protected $requirementsType = AuthRequirement::class;
   protected $requirementsDataType = 'array';
+  /**
+   * @var string
+   */
   public $selector;
 
+  /**
+   * @param bool
+   */
   public function setAllowWithoutCredential($allowWithoutCredential)
   {
     $this->allowWithoutCredential = $allowWithoutCredential;
   }
+  /**
+   * @return bool
+   */
   public function getAllowWithoutCredential()
   {
     return $this->allowWithoutCredential;
@@ -63,10 +75,16 @@ class AuthenticationRule extends \Google\Collection
   {
     return $this->requirements;
   }
+  /**
+   * @param string
+   */
   public function setSelector($selector)
   {
     $this->selector = $selector;
   }
+  /**
+   * @return string
+   */
   public function getSelector()
   {
     return $this->selector;

@@ -19,30 +19,57 @@ namespace Google\Service\Dns;
 
 class ManagedZoneServiceDirectoryConfigNamespace extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deletionTime;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $namespaceUrl;
 
+  /**
+   * @param string
+   */
   public function setDeletionTime($deletionTime)
   {
     $this->deletionTime = $deletionTime;
   }
+  /**
+   * @return string
+   */
   public function getDeletionTime()
   {
     return $this->deletionTime;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNamespaceUrl($namespaceUrl)
   {
     $this->namespaceUrl = $namespaceUrl;
   }
+  /**
+   * @return string
+   */
   public function getNamespaceUrl()
   {
     return $this->namespaceUrl;

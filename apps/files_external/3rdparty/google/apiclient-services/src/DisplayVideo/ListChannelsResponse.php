@@ -22,6 +22,9 @@ class ListChannelsResponse extends \Google\Collection
   protected $collection_key = 'channels';
   protected $channelsType = Channel::class;
   protected $channelsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListChannelsResponse extends \Google\Collection
   {
     return $this->channels;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

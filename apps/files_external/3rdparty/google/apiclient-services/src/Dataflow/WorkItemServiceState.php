@@ -22,13 +22,25 @@ class WorkItemServiceState extends \Google\Collection
   protected $collection_key = 'metricShortId';
   protected $completeWorkStatusType = Status::class;
   protected $completeWorkStatusDataType = '';
+  /**
+   * @var array[]
+   */
   public $harnessData;
   protected $hotKeyDetectionType = HotKeyDetection::class;
   protected $hotKeyDetectionDataType = '';
+  /**
+   * @var string
+   */
   public $leaseExpireTime;
   protected $metricShortIdType = MetricShortId::class;
   protected $metricShortIdDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextReportIndex;
+  /**
+   * @var string
+   */
   public $reportStatusInterval;
   protected $splitRequestType = ApproximateSplitRequest::class;
   protected $splitRequestDataType = '';
@@ -51,10 +63,16 @@ class WorkItemServiceState extends \Google\Collection
   {
     return $this->completeWorkStatus;
   }
+  /**
+   * @param array[]
+   */
   public function setHarnessData($harnessData)
   {
     $this->harnessData = $harnessData;
   }
+  /**
+   * @return array[]
+   */
   public function getHarnessData()
   {
     return $this->harnessData;
@@ -73,10 +91,16 @@ class WorkItemServiceState extends \Google\Collection
   {
     return $this->hotKeyDetection;
   }
+  /**
+   * @param string
+   */
   public function setLeaseExpireTime($leaseExpireTime)
   {
     $this->leaseExpireTime = $leaseExpireTime;
   }
+  /**
+   * @return string
+   */
   public function getLeaseExpireTime()
   {
     return $this->leaseExpireTime;
@@ -95,18 +119,30 @@ class WorkItemServiceState extends \Google\Collection
   {
     return $this->metricShortId;
   }
+  /**
+   * @param string
+   */
   public function setNextReportIndex($nextReportIndex)
   {
     $this->nextReportIndex = $nextReportIndex;
   }
+  /**
+   * @return string
+   */
   public function getNextReportIndex()
   {
     return $this->nextReportIndex;
   }
+  /**
+   * @param string
+   */
   public function setReportStatusInterval($reportStatusInterval)
   {
     $this->reportStatusInterval = $reportStatusInterval;
   }
+  /**
+   * @return string
+   */
   public function getReportStatusInterval()
   {
     return $this->reportStatusInterval;

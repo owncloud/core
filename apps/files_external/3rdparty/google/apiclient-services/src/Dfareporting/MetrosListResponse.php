@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class MetrosListResponse extends \Google\Collection
 {
   protected $collection_key = 'metros';
+  /**
+   * @var string
+   */
   public $kind;
   protected $metrosType = Metro::class;
   protected $metrosDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

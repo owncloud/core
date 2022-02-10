@@ -19,39 +19,75 @@ namespace Google\Service\Testing;
 
 class IosDevice extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $iosModelId;
+  /**
+   * @var string
+   */
   public $iosVersionId;
+  /**
+   * @var string
+   */
   public $locale;
+  /**
+   * @var string
+   */
   public $orientation;
 
+  /**
+   * @param string
+   */
   public function setIosModelId($iosModelId)
   {
     $this->iosModelId = $iosModelId;
   }
+  /**
+   * @return string
+   */
   public function getIosModelId()
   {
     return $this->iosModelId;
   }
+  /**
+   * @param string
+   */
   public function setIosVersionId($iosVersionId)
   {
     $this->iosVersionId = $iosVersionId;
   }
+  /**
+   * @return string
+   */
   public function getIosVersionId()
   {
     return $this->iosVersionId;
   }
+  /**
+   * @param string
+   */
   public function setLocale($locale)
   {
     $this->locale = $locale;
   }
+  /**
+   * @return string
+   */
   public function getLocale()
   {
     return $this->locale;
   }
+  /**
+   * @param string
+   */
   public function setOrientation($orientation)
   {
     $this->orientation = $orientation;
   }
+  /**
+   * @return string
+   */
   public function getOrientation()
   {
     return $this->orientation;

@@ -19,48 +19,93 @@ namespace Google\Service\Compute;
 
 class FirewallPolicyAssociation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $attachmentTarget;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $firewallPolicyId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $shortName;
 
+  /**
+   * @param string
+   */
   public function setAttachmentTarget($attachmentTarget)
   {
     $this->attachmentTarget = $attachmentTarget;
   }
+  /**
+   * @return string
+   */
   public function getAttachmentTarget()
   {
     return $this->attachmentTarget;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setFirewallPolicyId($firewallPolicyId)
   {
     $this->firewallPolicyId = $firewallPolicyId;
   }
+  /**
+   * @return string
+   */
   public function getFirewallPolicyId()
   {
     return $this->firewallPolicyId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setShortName($shortName)
   {
     $this->shortName = $shortName;
   }
+  /**
+   * @return string
+   */
   public function getShortName()
   {
     return $this->shortName;

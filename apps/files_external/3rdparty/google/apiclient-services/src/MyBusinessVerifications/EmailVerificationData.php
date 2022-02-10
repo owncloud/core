@@ -19,30 +19,57 @@ namespace Google\Service\MyBusinessVerifications;
 
 class EmailVerificationData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $domain;
+  /**
+   * @var bool
+   */
   public $isUserNameEditable;
+  /**
+   * @var string
+   */
   public $user;
 
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
   }
+  /**
+   * @param bool
+   */
   public function setIsUserNameEditable($isUserNameEditable)
   {
     $this->isUserNameEditable = $isUserNameEditable;
   }
+  /**
+   * @return bool
+   */
   public function getIsUserNameEditable()
   {
     return $this->isUserNameEditable;
   }
+  /**
+   * @param string
+   */
   public function setUser($user)
   {
     $this->user = $user;
   }
+  /**
+   * @return string
+   */
   public function getUser()
   {
     return $this->user;

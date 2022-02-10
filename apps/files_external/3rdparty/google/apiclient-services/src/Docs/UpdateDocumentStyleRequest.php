@@ -21,6 +21,9 @@ class UpdateDocumentStyleRequest extends \Google\Model
 {
   protected $documentStyleType = DocumentStyle::class;
   protected $documentStyleDataType = '';
+  /**
+   * @var string
+   */
   public $fields;
 
   /**
@@ -37,10 +40,16 @@ class UpdateDocumentStyleRequest extends \Google\Model
   {
     return $this->documentStyle;
   }
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

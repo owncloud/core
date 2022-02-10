@@ -24,16 +24,37 @@ class InstanceGroupConfig extends \Google\Collection
   protected $acceleratorsDataType = 'array';
   protected $diskConfigType = DiskConfig::class;
   protected $diskConfigDataType = '';
+  /**
+   * @var string
+   */
   public $imageUri;
+  /**
+   * @var string[]
+   */
   public $instanceNames;
   protected $instanceReferencesType = InstanceReference::class;
   protected $instanceReferencesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $isPreemptible;
+  /**
+   * @var string
+   */
   public $machineTypeUri;
   protected $managedGroupConfigType = ManagedGroupConfig::class;
   protected $managedGroupConfigDataType = '';
+  /**
+   * @var string
+   */
   public $minCpuPlatform;
+  /**
+   * @var int
+   */
   public $numInstances;
+  /**
+   * @var string
+   */
   public $preemptibility;
 
   /**
@@ -64,18 +85,30 @@ class InstanceGroupConfig extends \Google\Collection
   {
     return $this->diskConfig;
   }
+  /**
+   * @param string
+   */
   public function setImageUri($imageUri)
   {
     $this->imageUri = $imageUri;
   }
+  /**
+   * @return string
+   */
   public function getImageUri()
   {
     return $this->imageUri;
   }
+  /**
+   * @param string[]
+   */
   public function setInstanceNames($instanceNames)
   {
     $this->instanceNames = $instanceNames;
   }
+  /**
+   * @return string[]
+   */
   public function getInstanceNames()
   {
     return $this->instanceNames;
@@ -94,18 +127,30 @@ class InstanceGroupConfig extends \Google\Collection
   {
     return $this->instanceReferences;
   }
+  /**
+   * @param bool
+   */
   public function setIsPreemptible($isPreemptible)
   {
     $this->isPreemptible = $isPreemptible;
   }
+  /**
+   * @return bool
+   */
   public function getIsPreemptible()
   {
     return $this->isPreemptible;
   }
+  /**
+   * @param string
+   */
   public function setMachineTypeUri($machineTypeUri)
   {
     $this->machineTypeUri = $machineTypeUri;
   }
+  /**
+   * @return string
+   */
   public function getMachineTypeUri()
   {
     return $this->machineTypeUri;
@@ -124,26 +169,44 @@ class InstanceGroupConfig extends \Google\Collection
   {
     return $this->managedGroupConfig;
   }
+  /**
+   * @param string
+   */
   public function setMinCpuPlatform($minCpuPlatform)
   {
     $this->minCpuPlatform = $minCpuPlatform;
   }
+  /**
+   * @return string
+   */
   public function getMinCpuPlatform()
   {
     return $this->minCpuPlatform;
   }
+  /**
+   * @param int
+   */
   public function setNumInstances($numInstances)
   {
     $this->numInstances = $numInstances;
   }
+  /**
+   * @return int
+   */
   public function getNumInstances()
   {
     return $this->numInstances;
   }
+  /**
+   * @param string
+   */
   public function setPreemptibility($preemptibility)
   {
     $this->preemptibility = $preemptibility;
   }
+  /**
+   * @return string
+   */
   public function getPreemptibility()
   {
     return $this->preemptibility;

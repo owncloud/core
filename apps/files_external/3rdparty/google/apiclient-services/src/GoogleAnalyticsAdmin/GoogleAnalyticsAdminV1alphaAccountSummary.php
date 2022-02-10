@@ -20,32 +20,59 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 class GoogleAnalyticsAdminV1alphaAccountSummary extends \Google\Collection
 {
   protected $collection_key = 'propertySummaries';
+  /**
+   * @var string
+   */
   public $account;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
   protected $propertySummariesType = GoogleAnalyticsAdminV1alphaPropertySummary::class;
   protected $propertySummariesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAccount($account)
   {
     $this->account = $account;
   }
+  /**
+   * @return string
+   */
   public function getAccount()
   {
     return $this->account;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class FloodlightActivitiesGenerateTagResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $floodlightActivityTag;
+  /**
+   * @var string
+   */
   public $globalSiteTagGlobalSnippet;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setFloodlightActivityTag($floodlightActivityTag)
   {
     $this->floodlightActivityTag = $floodlightActivityTag;
   }
+  /**
+   * @return string
+   */
   public function getFloodlightActivityTag()
   {
     return $this->floodlightActivityTag;
   }
+  /**
+   * @param string
+   */
   public function setGlobalSiteTagGlobalSnippet($globalSiteTagGlobalSnippet)
   {
     $this->globalSiteTagGlobalSnippet = $globalSiteTagGlobalSnippet;
   }
+  /**
+   * @return string
+   */
   public function getGlobalSiteTagGlobalSnippet()
   {
     return $this->globalSiteTagGlobalSnippet;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

@@ -30,6 +30,9 @@ class DriveActivity extends \Google\Collection
   protected $targetsDataType = 'array';
   protected $timeRangeType = TimeRange::class;
   protected $timeRangeDataType = '';
+  /**
+   * @var string
+   */
   public $timestamp;
 
   /**
@@ -102,10 +105,16 @@ class DriveActivity extends \Google\Collection
   {
     return $this->timeRange;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

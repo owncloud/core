@@ -20,21 +20,39 @@ namespace Google\Service\Pubsub;
 class ModifyAckDeadlineRequest extends \Google\Collection
 {
   protected $collection_key = 'ackIds';
+  /**
+   * @var int
+   */
   public $ackDeadlineSeconds;
+  /**
+   * @var string[]
+   */
   public $ackIds;
 
+  /**
+   * @param int
+   */
   public function setAckDeadlineSeconds($ackDeadlineSeconds)
   {
     $this->ackDeadlineSeconds = $ackDeadlineSeconds;
   }
+  /**
+   * @return int
+   */
   public function getAckDeadlineSeconds()
   {
     return $this->ackDeadlineSeconds;
   }
+  /**
+   * @param string[]
+   */
   public function setAckIds($ackIds)
   {
     $this->ackIds = $ackIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAckIds()
   {
     return $this->ackIds;

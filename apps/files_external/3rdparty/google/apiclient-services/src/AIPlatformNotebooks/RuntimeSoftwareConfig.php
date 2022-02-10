@@ -19,66 +19,129 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class RuntimeSoftwareConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customGpuDriverPath;
+  /**
+   * @var bool
+   */
   public $enableHealthMonitoring;
+  /**
+   * @var bool
+   */
   public $idleShutdown;
+  /**
+   * @var int
+   */
   public $idleShutdownTimeout;
+  /**
+   * @var bool
+   */
   public $installGpuDriver;
+  /**
+   * @var string
+   */
   public $notebookUpgradeSchedule;
+  /**
+   * @var string
+   */
   public $postStartupScript;
 
+  /**
+   * @param string
+   */
   public function setCustomGpuDriverPath($customGpuDriverPath)
   {
     $this->customGpuDriverPath = $customGpuDriverPath;
   }
+  /**
+   * @return string
+   */
   public function getCustomGpuDriverPath()
   {
     return $this->customGpuDriverPath;
   }
+  /**
+   * @param bool
+   */
   public function setEnableHealthMonitoring($enableHealthMonitoring)
   {
     $this->enableHealthMonitoring = $enableHealthMonitoring;
   }
+  /**
+   * @return bool
+   */
   public function getEnableHealthMonitoring()
   {
     return $this->enableHealthMonitoring;
   }
+  /**
+   * @param bool
+   */
   public function setIdleShutdown($idleShutdown)
   {
     $this->idleShutdown = $idleShutdown;
   }
+  /**
+   * @return bool
+   */
   public function getIdleShutdown()
   {
     return $this->idleShutdown;
   }
+  /**
+   * @param int
+   */
   public function setIdleShutdownTimeout($idleShutdownTimeout)
   {
     $this->idleShutdownTimeout = $idleShutdownTimeout;
   }
+  /**
+   * @return int
+   */
   public function getIdleShutdownTimeout()
   {
     return $this->idleShutdownTimeout;
   }
+  /**
+   * @param bool
+   */
   public function setInstallGpuDriver($installGpuDriver)
   {
     $this->installGpuDriver = $installGpuDriver;
   }
+  /**
+   * @return bool
+   */
   public function getInstallGpuDriver()
   {
     return $this->installGpuDriver;
   }
+  /**
+   * @param string
+   */
   public function setNotebookUpgradeSchedule($notebookUpgradeSchedule)
   {
     $this->notebookUpgradeSchedule = $notebookUpgradeSchedule;
   }
+  /**
+   * @return string
+   */
   public function getNotebookUpgradeSchedule()
   {
     return $this->notebookUpgradeSchedule;
   }
+  /**
+   * @param string
+   */
   public function setPostStartupScript($postStartupScript)
   {
     $this->postStartupScript = $postStartupScript;
   }
+  /**
+   * @return string
+   */
   public function getPostStartupScript()
   {
     return $this->postStartupScript;

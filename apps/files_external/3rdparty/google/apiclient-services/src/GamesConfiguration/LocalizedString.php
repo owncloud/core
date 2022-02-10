@@ -19,30 +19,57 @@ namespace Google\Service\GamesConfiguration;
 
 class LocalizedString extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $locale;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLocale($locale)
   {
     $this->locale = $locale;
   }
+  /**
+   * @return string
+   */
   public function getLocale()
   {
     return $this->locale;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

@@ -20,39 +20,75 @@ namespace Google\Service\ContainerAnalysis;
 class UpgradeDistribution extends \Google\Collection
 {
   protected $collection_key = 'cve';
+  /**
+   * @var string
+   */
   public $classification;
+  /**
+   * @var string
+   */
   public $cpeUri;
+  /**
+   * @var string[]
+   */
   public $cve;
+  /**
+   * @var string
+   */
   public $severity;
 
+  /**
+   * @param string
+   */
   public function setClassification($classification)
   {
     $this->classification = $classification;
   }
+  /**
+   * @return string
+   */
   public function getClassification()
   {
     return $this->classification;
   }
+  /**
+   * @param string
+   */
   public function setCpeUri($cpeUri)
   {
     $this->cpeUri = $cpeUri;
   }
+  /**
+   * @return string
+   */
   public function getCpeUri()
   {
     return $this->cpeUri;
   }
+  /**
+   * @param string[]
+   */
   public function setCve($cve)
   {
     $this->cve = $cve;
   }
+  /**
+   * @return string[]
+   */
   public function getCve()
   {
     return $this->cve;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;

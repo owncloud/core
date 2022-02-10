@@ -22,6 +22,9 @@ class ListHl7V2StoresResponse extends \Google\Collection
   protected $collection_key = 'hl7V2Stores';
   protected $hl7V2StoresType = Hl7V2Store::class;
   protected $hl7V2StoresDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListHl7V2StoresResponse extends \Google\Collection
   {
     return $this->hl7V2Stores;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -22,7 +22,13 @@ class PivotFilterCriteria extends \Google\Collection
   protected $collection_key = 'visibleValues';
   protected $conditionType = BooleanCondition::class;
   protected $conditionDataType = '';
+  /**
+   * @var bool
+   */
   public $visibleByDefault;
+  /**
+   * @var string[]
+   */
   public $visibleValues;
 
   /**
@@ -39,18 +45,30 @@ class PivotFilterCriteria extends \Google\Collection
   {
     return $this->condition;
   }
+  /**
+   * @param bool
+   */
   public function setVisibleByDefault($visibleByDefault)
   {
     $this->visibleByDefault = $visibleByDefault;
   }
+  /**
+   * @return bool
+   */
   public function getVisibleByDefault()
   {
     return $this->visibleByDefault;
   }
+  /**
+   * @param string[]
+   */
   public function setVisibleValues($visibleValues)
   {
     $this->visibleValues = $visibleValues;
   }
+  /**
+   * @return string[]
+   */
   public function getVisibleValues()
   {
     return $this->visibleValues;

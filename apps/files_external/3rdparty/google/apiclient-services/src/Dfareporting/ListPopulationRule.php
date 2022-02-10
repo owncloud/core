@@ -20,23 +20,41 @@ namespace Google\Service\Dfareporting;
 class ListPopulationRule extends \Google\Collection
 {
   protected $collection_key = 'listPopulationClauses';
+  /**
+   * @var string
+   */
   public $floodlightActivityId;
+  /**
+   * @var string
+   */
   public $floodlightActivityName;
   protected $listPopulationClausesType = ListPopulationClause::class;
   protected $listPopulationClausesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setFloodlightActivityId($floodlightActivityId)
   {
     $this->floodlightActivityId = $floodlightActivityId;
   }
+  /**
+   * @return string
+   */
   public function getFloodlightActivityId()
   {
     return $this->floodlightActivityId;
   }
+  /**
+   * @param string
+   */
   public function setFloodlightActivityName($floodlightActivityName)
   {
     $this->floodlightActivityName = $floodlightActivityName;
   }
+  /**
+   * @return string
+   */
   public function getFloodlightActivityName()
   {
     return $this->floodlightActivityName;

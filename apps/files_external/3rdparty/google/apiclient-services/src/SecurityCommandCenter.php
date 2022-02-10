@@ -40,17 +40,26 @@ class SecurityCommandCenter extends \Google\Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $folders_assets;
+  public $folders_findings;
+  public $folders_muteConfigs;
   public $folders_sources;
   public $folders_sources_findings;
+  public $folders_sources_findings_externalSystems;
   public $organizations;
   public $organizations_assets;
+  public $organizations_findings;
+  public $organizations_muteConfigs;
   public $organizations_notificationConfigs;
   public $organizations_operations;
   public $organizations_sources;
   public $organizations_sources_findings;
+  public $organizations_sources_findings_externalSystems;
   public $projects_assets;
+  public $projects_findings;
+  public $projects_muteConfigs;
   public $projects_sources;
   public $projects_sources_findings;
+  public $projects_sources_findings_externalSystems;
 
   /**
    * Constructs the internal representation of the SecurityCommandCenter
@@ -135,6 +144,102 @@ class SecurityCommandCenter extends \Google\Service
                 'startTime' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->folders_findings = new SecurityCommandCenter\Resource\FoldersFindings(
+        $this,
+        $this->serviceName,
+        'findings',
+        [
+          'methods' => [
+            'bulkMute' => [
+              'path' => 'v1/{+parent}/findings:bulkMute',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->folders_muteConfigs = new SecurityCommandCenter\Resource\FoldersMuteConfigs(
+        $this,
+        $this->serviceName,
+        'muteConfigs',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/{+parent}/muteConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'muteConfigId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/muteConfigs',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
                 'updateMask' => [
                   'location' => 'query',
@@ -241,6 +346,16 @@ class SecurityCommandCenter extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'setMute' => [
+              'path' => 'v1/{+name}:setMute',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'setState' => [
               'path' => 'v1/{+name}:setState',
               'httpMethod' => 'POST',
@@ -263,6 +378,30 @@ class SecurityCommandCenter extends \Google\Service
                 'startTime' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->folders_sources_findings_externalSystems = new SecurityCommandCenter\Resource\FoldersSourcesFindingsExternalSystems(
+        $this,
+        $this->serviceName,
+        'externalSystems',
+        [
+          'methods' => [
+            'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
                 'updateMask' => [
                   'location' => 'query',
@@ -383,6 +522,102 @@ class SecurityCommandCenter extends \Google\Service
                 'startTime' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->organizations_findings = new SecurityCommandCenter\Resource\OrganizationsFindings(
+        $this,
+        $this->serviceName,
+        'findings',
+        [
+          'methods' => [
+            'bulkMute' => [
+              'path' => 'v1/{+parent}/findings:bulkMute',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->organizations_muteConfigs = new SecurityCommandCenter\Resource\OrganizationsMuteConfigs(
+        $this,
+        $this->serviceName,
+        'muteConfigs',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/{+parent}/muteConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'muteConfigId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/muteConfigs',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
                 'updateMask' => [
                   'location' => 'query',
@@ -705,6 +940,16 @@ class SecurityCommandCenter extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'setMute' => [
+              'path' => 'v1/{+name}:setMute',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'setState' => [
               'path' => 'v1/{+name}:setState',
               'httpMethod' => 'POST',
@@ -727,6 +972,30 @@ class SecurityCommandCenter extends \Google\Service
                 'startTime' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->organizations_sources_findings_externalSystems = new SecurityCommandCenter\Resource\OrganizationsSourcesFindingsExternalSystems(
+        $this,
+        $this->serviceName,
+        'externalSystems',
+        [
+          'methods' => [
+            'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
                 'updateMask' => [
                   'location' => 'query',
@@ -803,6 +1072,102 @@ class SecurityCommandCenter extends \Google\Service
                 'startTime' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_findings = new SecurityCommandCenter\Resource\ProjectsFindings(
+        $this,
+        $this->serviceName,
+        'findings',
+        [
+          'methods' => [
+            'bulkMute' => [
+              'path' => 'v1/{+parent}/findings:bulkMute',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_muteConfigs = new SecurityCommandCenter\Resource\ProjectsMuteConfigs(
+        $this,
+        $this->serviceName,
+        'muteConfigs',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1/{+parent}/muteConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'muteConfigId' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1/{+parent}/muteConfigs',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
                 'updateMask' => [
                   'location' => 'query',
@@ -909,6 +1274,16 @@ class SecurityCommandCenter extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'setMute' => [
+              'path' => 'v1/{+name}:setMute',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
             ],'setState' => [
               'path' => 'v1/{+name}:setState',
               'httpMethod' => 'POST',
@@ -931,6 +1306,30 @@ class SecurityCommandCenter extends \Google\Service
                 'startTime' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_sources_findings_externalSystems = new SecurityCommandCenter\Resource\ProjectsSourcesFindingsExternalSystems(
+        $this,
+        $this->serviceName,
+        'externalSystems',
+        [
+          'methods' => [
+            'patch' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
                 'updateMask' => [
                   'location' => 'query',

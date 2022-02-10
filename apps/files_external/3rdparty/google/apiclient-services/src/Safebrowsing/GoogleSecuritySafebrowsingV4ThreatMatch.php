@@ -19,26 +19,50 @@ namespace Google\Service\Safebrowsing;
 
 class GoogleSecuritySafebrowsingV4ThreatMatch extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cacheDuration;
+  /**
+   * @var string
+   */
   public $platformType;
   protected $threatDataType = '';
   protected $threatEntryMetadataType = GoogleSecuritySafebrowsingV4ThreatEntryMetadata::class;
   protected $threatEntryMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $threatEntryType;
+  /**
+   * @var string
+   */
   public $threatType;
 
+  /**
+   * @param string
+   */
   public function setCacheDuration($cacheDuration)
   {
     $this->cacheDuration = $cacheDuration;
   }
+  /**
+   * @return string
+   */
   public function getCacheDuration()
   {
     return $this->cacheDuration;
   }
+  /**
+   * @param string
+   */
   public function setPlatformType($platformType)
   {
     $this->platformType = $platformType;
   }
+  /**
+   * @return string
+   */
   public function getPlatformType()
   {
     return $this->platformType;
@@ -71,18 +95,30 @@ class GoogleSecuritySafebrowsingV4ThreatMatch extends \Google\Model
   {
     return $this->threatEntryMetadata;
   }
+  /**
+   * @param string
+   */
   public function setThreatEntryType($threatEntryType)
   {
     $this->threatEntryType = $threatEntryType;
   }
+  /**
+   * @return string
+   */
   public function getThreatEntryType()
   {
     return $this->threatEntryType;
   }
+  /**
+   * @param string
+   */
   public function setThreatType($threatType)
   {
     $this->threatType = $threatType;
   }
+  /**
+   * @return string
+   */
   public function getThreatType()
   {
     return $this->threatType;

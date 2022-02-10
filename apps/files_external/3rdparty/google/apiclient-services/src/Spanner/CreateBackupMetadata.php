@@ -19,32 +19,59 @@ namespace Google\Service\Spanner;
 
 class CreateBackupMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cancelTime;
+  /**
+   * @var string
+   */
   public $database;
+  /**
+   * @var string
+   */
   public $name;
   protected $progressType = OperationProgress::class;
   protected $progressDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCancelTime($cancelTime)
   {
     $this->cancelTime = $cancelTime;
   }
+  /**
+   * @return string
+   */
   public function getCancelTime()
   {
     return $this->cancelTime;
   }
+  /**
+   * @param string
+   */
   public function setDatabase($database)
   {
     $this->database = $database;
   }
+  /**
+   * @return string
+   */
   public function getDatabase()
   {
     return $this->database;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

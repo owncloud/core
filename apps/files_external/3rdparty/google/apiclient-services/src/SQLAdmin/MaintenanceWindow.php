@@ -19,39 +19,75 @@ namespace Google\Service\SQLAdmin;
 
 class MaintenanceWindow extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $day;
+  /**
+   * @var int
+   */
   public $hour;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $updateTrack;
 
+  /**
+   * @param int
+   */
   public function setDay($day)
   {
     $this->day = $day;
   }
+  /**
+   * @return int
+   */
   public function getDay()
   {
     return $this->day;
   }
+  /**
+   * @param int
+   */
   public function setHour($hour)
   {
     $this->hour = $hour;
   }
+  /**
+   * @return int
+   */
   public function getHour()
   {
     return $this->hour;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTrack($updateTrack)
   {
     $this->updateTrack = $updateTrack;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTrack()
   {
     return $this->updateTrack;

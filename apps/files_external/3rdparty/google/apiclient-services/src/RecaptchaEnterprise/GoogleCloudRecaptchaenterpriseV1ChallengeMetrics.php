@@ -19,39 +19,75 @@ namespace Google\Service\RecaptchaEnterprise;
 
 class GoogleCloudRecaptchaenterpriseV1ChallengeMetrics extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $failedCount;
+  /**
+   * @var string
+   */
   public $nocaptchaCount;
+  /**
+   * @var string
+   */
   public $pageloadCount;
+  /**
+   * @var string
+   */
   public $passedCount;
 
+  /**
+   * @param string
+   */
   public function setFailedCount($failedCount)
   {
     $this->failedCount = $failedCount;
   }
+  /**
+   * @return string
+   */
   public function getFailedCount()
   {
     return $this->failedCount;
   }
+  /**
+   * @param string
+   */
   public function setNocaptchaCount($nocaptchaCount)
   {
     $this->nocaptchaCount = $nocaptchaCount;
   }
+  /**
+   * @return string
+   */
   public function getNocaptchaCount()
   {
     return $this->nocaptchaCount;
   }
+  /**
+   * @param string
+   */
   public function setPageloadCount($pageloadCount)
   {
     $this->pageloadCount = $pageloadCount;
   }
+  /**
+   * @return string
+   */
   public function getPageloadCount()
   {
     return $this->pageloadCount;
   }
+  /**
+   * @param string
+   */
   public function setPassedCount($passedCount)
   {
     $this->passedCount = $passedCount;
   }
+  /**
+   * @return string
+   */
   public function getPassedCount()
   {
     return $this->passedCount;

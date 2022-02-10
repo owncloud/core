@@ -19,30 +19,57 @@ namespace Google\Service\Safebrowsing;
 
 class GoogleSecuritySafebrowsingV4ThreatListDescriptor extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $platformType;
+  /**
+   * @var string
+   */
   public $threatEntryType;
+  /**
+   * @var string
+   */
   public $threatType;
 
+  /**
+   * @param string
+   */
   public function setPlatformType($platformType)
   {
     $this->platformType = $platformType;
   }
+  /**
+   * @return string
+   */
   public function getPlatformType()
   {
     return $this->platformType;
   }
+  /**
+   * @param string
+   */
   public function setThreatEntryType($threatEntryType)
   {
     $this->threatEntryType = $threatEntryType;
   }
+  /**
+   * @return string
+   */
   public function getThreatEntryType()
   {
     return $this->threatEntryType;
   }
+  /**
+   * @param string
+   */
   public function setThreatType($threatType)
   {
     $this->threatType = $threatType;
   }
+  /**
+   * @return string
+   */
   public function getThreatType()
   {
     return $this->threatType;

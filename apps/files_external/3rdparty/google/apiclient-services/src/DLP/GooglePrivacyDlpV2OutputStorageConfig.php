@@ -19,14 +19,23 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2OutputStorageConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $outputSchema;
   protected $tableType = GooglePrivacyDlpV2BigQueryTable::class;
   protected $tableDataType = '';
 
+  /**
+   * @param string
+   */
   public function setOutputSchema($outputSchema)
   {
     $this->outputSchema = $outputSchema;
   }
+  /**
+   * @return string
+   */
   public function getOutputSchema()
   {
     return $this->outputSchema;

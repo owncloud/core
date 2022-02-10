@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class FixedOrPercent extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $calculated;
+  /**
+   * @var int
+   */
   public $fixed;
+  /**
+   * @var int
+   */
   public $percent;
 
+  /**
+   * @param int
+   */
   public function setCalculated($calculated)
   {
     $this->calculated = $calculated;
   }
+  /**
+   * @return int
+   */
   public function getCalculated()
   {
     return $this->calculated;
   }
+  /**
+   * @param int
+   */
   public function setFixed($fixed)
   {
     $this->fixed = $fixed;
   }
+  /**
+   * @return int
+   */
   public function getFixed()
   {
     return $this->fixed;
   }
+  /**
+   * @param int
+   */
   public function setPercent($percent)
   {
     $this->percent = $percent;
   }
+  /**
+   * @return int
+   */
   public function getPercent()
   {
     return $this->percent;

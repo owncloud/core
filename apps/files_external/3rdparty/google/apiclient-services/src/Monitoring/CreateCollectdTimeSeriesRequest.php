@@ -22,6 +22,9 @@ class CreateCollectdTimeSeriesRequest extends \Google\Collection
   protected $collection_key = 'collectdPayloads';
   protected $collectdPayloadsType = CollectdPayload::class;
   protected $collectdPayloadsDataType = 'array';
+  /**
+   * @var string
+   */
   public $collectdVersion;
   protected $resourceType = MonitoredResource::class;
   protected $resourceDataType = '';
@@ -40,10 +43,16 @@ class CreateCollectdTimeSeriesRequest extends \Google\Collection
   {
     return $this->collectdPayloads;
   }
+  /**
+   * @param string
+   */
   public function setCollectdVersion($collectdVersion)
   {
     $this->collectdVersion = $collectdVersion;
   }
+  /**
+   * @return string
+   */
   public function getCollectdVersion()
   {
     return $this->collectdVersion;

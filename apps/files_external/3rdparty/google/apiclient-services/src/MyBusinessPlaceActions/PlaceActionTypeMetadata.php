@@ -19,21 +19,39 @@ namespace Google\Service\MyBusinessPlaceActions;
 
 class PlaceActionTypeMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $placeActionType;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setPlaceActionType($placeActionType)
   {
     $this->placeActionType = $placeActionType;
   }
+  /**
+   * @return string
+   */
   public function getPlaceActionType()
   {
     return $this->placeActionType;

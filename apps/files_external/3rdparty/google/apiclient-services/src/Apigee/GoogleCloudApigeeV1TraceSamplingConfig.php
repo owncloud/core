@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1TraceSamplingConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sampler;
+  /**
+   * @var float
+   */
   public $samplingRate;
 
+  /**
+   * @param string
+   */
   public function setSampler($sampler)
   {
     $this->sampler = $sampler;
   }
+  /**
+   * @return string
+   */
   public function getSampler()
   {
     return $this->sampler;
   }
+  /**
+   * @param float
+   */
   public function setSamplingRate($samplingRate)
   {
     $this->samplingRate = $samplingRate;
   }
+  /**
+   * @return float
+   */
   public function getSamplingRate()
   {
     return $this->samplingRate;

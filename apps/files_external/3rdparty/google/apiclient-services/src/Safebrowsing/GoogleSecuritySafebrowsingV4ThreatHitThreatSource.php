@@ -19,39 +19,75 @@ namespace Google\Service\Safebrowsing;
 
 class GoogleSecuritySafebrowsingV4ThreatHitThreatSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $referrer;
+  /**
+   * @var string
+   */
   public $remoteIp;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setReferrer($referrer)
   {
     $this->referrer = $referrer;
   }
+  /**
+   * @return string
+   */
   public function getReferrer()
   {
     return $this->referrer;
   }
+  /**
+   * @param string
+   */
   public function setRemoteIp($remoteIp)
   {
     $this->remoteIp = $remoteIp;
   }
+  /**
+   * @return string
+   */
   public function getRemoteIp()
   {
     return $this->remoteIp;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

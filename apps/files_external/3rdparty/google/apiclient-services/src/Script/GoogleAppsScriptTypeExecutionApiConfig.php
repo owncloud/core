@@ -19,12 +19,21 @@ namespace Google\Service\Script;
 
 class GoogleAppsScriptTypeExecutionApiConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $access;
 
+  /**
+   * @param string
+   */
   public function setAccess($access)
   {
     $this->access = $access;
   }
+  /**
+   * @return string
+   */
   public function getAccess()
   {
     return $this->access;

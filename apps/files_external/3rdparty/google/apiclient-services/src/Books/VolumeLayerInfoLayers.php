@@ -19,21 +19,39 @@ namespace Google\Service\Books;
 
 class VolumeLayerInfoLayers extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $layerId;
+  /**
+   * @var string
+   */
   public $volumeAnnotationsVersion;
 
+  /**
+   * @param string
+   */
   public function setLayerId($layerId)
   {
     $this->layerId = $layerId;
   }
+  /**
+   * @return string
+   */
   public function getLayerId()
   {
     return $this->layerId;
   }
+  /**
+   * @param string
+   */
   public function setVolumeAnnotationsVersion($volumeAnnotationsVersion)
   {
     $this->volumeAnnotationsVersion = $volumeAnnotationsVersion;
   }
+  /**
+   * @return string
+   */
   public function getVolumeAnnotationsVersion()
   {
     return $this->volumeAnnotationsVersion;

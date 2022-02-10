@@ -19,30 +19,57 @@ namespace Google\Service\CloudRun;
 
 class DomainMappingSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certificateMode;
+  /**
+   * @var bool
+   */
   public $forceOverride;
+  /**
+   * @var string
+   */
   public $routeName;
 
+  /**
+   * @param string
+   */
   public function setCertificateMode($certificateMode)
   {
     $this->certificateMode = $certificateMode;
   }
+  /**
+   * @return string
+   */
   public function getCertificateMode()
   {
     return $this->certificateMode;
   }
+  /**
+   * @param bool
+   */
   public function setForceOverride($forceOverride)
   {
     $this->forceOverride = $forceOverride;
   }
+  /**
+   * @return bool
+   */
   public function getForceOverride()
   {
     return $this->forceOverride;
   }
+  /**
+   * @param string
+   */
   public function setRouteName($routeName)
   {
     $this->routeName = $routeName;
   }
+  /**
+   * @return string
+   */
   public function getRouteName()
   {
     return $this->routeName;

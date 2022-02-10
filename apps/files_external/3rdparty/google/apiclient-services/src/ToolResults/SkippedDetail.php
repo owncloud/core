@@ -19,30 +19,57 @@ namespace Google\Service\ToolResults;
 
 class SkippedDetail extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $incompatibleAppVersion;
+  /**
+   * @var bool
+   */
   public $incompatibleArchitecture;
+  /**
+   * @var bool
+   */
   public $incompatibleDevice;
 
+  /**
+   * @param bool
+   */
   public function setIncompatibleAppVersion($incompatibleAppVersion)
   {
     $this->incompatibleAppVersion = $incompatibleAppVersion;
   }
+  /**
+   * @return bool
+   */
   public function getIncompatibleAppVersion()
   {
     return $this->incompatibleAppVersion;
   }
+  /**
+   * @param bool
+   */
   public function setIncompatibleArchitecture($incompatibleArchitecture)
   {
     $this->incompatibleArchitecture = $incompatibleArchitecture;
   }
+  /**
+   * @return bool
+   */
   public function getIncompatibleArchitecture()
   {
     return $this->incompatibleArchitecture;
   }
+  /**
+   * @param bool
+   */
   public function setIncompatibleDevice($incompatibleDevice)
   {
     $this->incompatibleDevice = $incompatibleDevice;
   }
+  /**
+   * @return bool
+   */
   public function getIncompatibleDevice()
   {
     return $this->incompatibleDevice;

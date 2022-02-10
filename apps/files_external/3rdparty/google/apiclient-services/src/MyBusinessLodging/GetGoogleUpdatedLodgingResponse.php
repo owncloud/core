@@ -19,14 +19,23 @@ namespace Google\Service\MyBusinessLodging;
 
 class GetGoogleUpdatedLodgingResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $diffMask;
   protected $lodgingType = Lodging::class;
   protected $lodgingDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDiffMask($diffMask)
   {
     $this->diffMask = $diffMask;
   }
+  /**
+   * @return string
+   */
   public function getDiffMask()
   {
     return $this->diffMask;

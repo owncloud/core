@@ -19,30 +19,57 @@ namespace Google\Service\AccessContextManager;
 
 class OsConstraint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $minimumVersion;
+  /**
+   * @var string
+   */
   public $osType;
+  /**
+   * @var bool
+   */
   public $requireVerifiedChromeOs;
 
+  /**
+   * @param string
+   */
   public function setMinimumVersion($minimumVersion)
   {
     $this->minimumVersion = $minimumVersion;
   }
+  /**
+   * @return string
+   */
   public function getMinimumVersion()
   {
     return $this->minimumVersion;
   }
+  /**
+   * @param string
+   */
   public function setOsType($osType)
   {
     $this->osType = $osType;
   }
+  /**
+   * @return string
+   */
   public function getOsType()
   {
     return $this->osType;
   }
+  /**
+   * @param bool
+   */
   public function setRequireVerifiedChromeOs($requireVerifiedChromeOs)
   {
     $this->requireVerifiedChromeOs = $requireVerifiedChromeOs;
   }
+  /**
+   * @return bool
+   */
   public function getRequireVerifiedChromeOs()
   {
     return $this->requireVerifiedChromeOs;

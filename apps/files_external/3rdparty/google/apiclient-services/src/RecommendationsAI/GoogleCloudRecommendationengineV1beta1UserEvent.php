@@ -21,8 +21,17 @@ class GoogleCloudRecommendationengineV1beta1UserEvent extends \Google\Model
 {
   protected $eventDetailType = GoogleCloudRecommendationengineV1beta1EventDetail::class;
   protected $eventDetailDataType = '';
+  /**
+   * @var string
+   */
   public $eventSource;
+  /**
+   * @var string
+   */
   public $eventTime;
+  /**
+   * @var string
+   */
   public $eventType;
   protected $productEventDetailType = GoogleCloudRecommendationengineV1beta1ProductEventDetail::class;
   protected $productEventDetailDataType = '';
@@ -43,26 +52,44 @@ class GoogleCloudRecommendationengineV1beta1UserEvent extends \Google\Model
   {
     return $this->eventDetail;
   }
+  /**
+   * @param string
+   */
   public function setEventSource($eventSource)
   {
     $this->eventSource = $eventSource;
   }
+  /**
+   * @return string
+   */
   public function getEventSource()
   {
     return $this->eventSource;
   }
+  /**
+   * @param string
+   */
   public function setEventTime($eventTime)
   {
     $this->eventTime = $eventTime;
   }
+  /**
+   * @return string
+   */
   public function getEventTime()
   {
     return $this->eventTime;
   }
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;

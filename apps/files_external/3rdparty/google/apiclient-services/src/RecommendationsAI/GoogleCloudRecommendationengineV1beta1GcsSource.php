@@ -20,21 +20,39 @@ namespace Google\Service\RecommendationsAI;
 class GoogleCloudRecommendationengineV1beta1GcsSource extends \Google\Collection
 {
   protected $collection_key = 'inputUris';
+  /**
+   * @var string[]
+   */
   public $inputUris;
+  /**
+   * @var string
+   */
   public $jsonSchema;
 
+  /**
+   * @param string[]
+   */
   public function setInputUris($inputUris)
   {
     $this->inputUris = $inputUris;
   }
+  /**
+   * @return string[]
+   */
   public function getInputUris()
   {
     return $this->inputUris;
   }
+  /**
+   * @param string
+   */
   public function setJsonSchema($jsonSchema)
   {
     $this->jsonSchema = $jsonSchema;
   }
+  /**
+   * @return string
+   */
   public function getJsonSchema()
   {
     return $this->jsonSchema;

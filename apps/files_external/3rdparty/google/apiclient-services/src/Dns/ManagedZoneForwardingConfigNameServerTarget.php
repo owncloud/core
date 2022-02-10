@@ -19,30 +19,57 @@ namespace Google\Service\Dns;
 
 class ManagedZoneForwardingConfigNameServerTarget extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $forwardingPath;
+  /**
+   * @var string
+   */
   public $ipv4Address;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setForwardingPath($forwardingPath)
   {
     $this->forwardingPath = $forwardingPath;
   }
+  /**
+   * @return string
+   */
   public function getForwardingPath()
   {
     return $this->forwardingPath;
   }
+  /**
+   * @param string
+   */
   public function setIpv4Address($ipv4Address)
   {
     $this->ipv4Address = $ipv4Address;
   }
+  /**
+   * @return string
+   */
   public function getIpv4Address()
   {
     return $this->ipv4Address;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

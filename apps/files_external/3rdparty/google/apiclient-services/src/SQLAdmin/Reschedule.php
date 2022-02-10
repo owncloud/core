@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class Reschedule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rescheduleType;
+  /**
+   * @var string
+   */
   public $scheduleTime;
 
+  /**
+   * @param string
+   */
   public function setRescheduleType($rescheduleType)
   {
     $this->rescheduleType = $rescheduleType;
   }
+  /**
+   * @return string
+   */
   public function getRescheduleType()
   {
     return $this->rescheduleType;
   }
+  /**
+   * @param string
+   */
   public function setScheduleTime($scheduleTime)
   {
     $this->scheduleTime = $scheduleTime;
   }
+  /**
+   * @return string
+   */
   public function getScheduleTime()
   {
     return $this->scheduleTime;

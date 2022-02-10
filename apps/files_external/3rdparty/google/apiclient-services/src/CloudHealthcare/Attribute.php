@@ -20,21 +20,39 @@ namespace Google\Service\CloudHealthcare;
 class Attribute extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $attributeDefinitionId;
+  /**
+   * @var string[]
+   */
   public $values;
 
+  /**
+   * @param string
+   */
   public function setAttributeDefinitionId($attributeDefinitionId)
   {
     $this->attributeDefinitionId = $attributeDefinitionId;
   }
+  /**
+   * @return string
+   */
   public function getAttributeDefinitionId()
   {
     return $this->attributeDefinitionId;
   }
+  /**
+   * @param string[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return string[]
+   */
   public function getValues()
   {
     return $this->values;

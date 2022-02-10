@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class EnterprisesSendTestPushNotificationResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $messageId;
+  /**
+   * @var string
+   */
   public $topicName;
 
+  /**
+   * @param string
+   */
   public function setMessageId($messageId)
   {
     $this->messageId = $messageId;
   }
+  /**
+   * @return string
+   */
   public function getMessageId()
   {
     return $this->messageId;
   }
+  /**
+   * @param string
+   */
   public function setTopicName($topicName)
   {
     $this->topicName = $topicName;
   }
+  /**
+   * @return string
+   */
   public function getTopicName()
   {
     return $this->topicName;

@@ -19,30 +19,57 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class ShieldedInstanceConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableIntegrityMonitoring;
+  /**
+   * @var bool
+   */
   public $enableSecureBoot;
+  /**
+   * @var bool
+   */
   public $enableVtpm;
 
+  /**
+   * @param bool
+   */
   public function setEnableIntegrityMonitoring($enableIntegrityMonitoring)
   {
     $this->enableIntegrityMonitoring = $enableIntegrityMonitoring;
   }
+  /**
+   * @return bool
+   */
   public function getEnableIntegrityMonitoring()
   {
     return $this->enableIntegrityMonitoring;
   }
+  /**
+   * @param bool
+   */
   public function setEnableSecureBoot($enableSecureBoot)
   {
     $this->enableSecureBoot = $enableSecureBoot;
   }
+  /**
+   * @return bool
+   */
   public function getEnableSecureBoot()
   {
     return $this->enableSecureBoot;
   }
+  /**
+   * @param bool
+   */
   public function setEnableVtpm($enableVtpm)
   {
     $this->enableVtpm = $enableVtpm;
   }
+  /**
+   * @return bool
+   */
   public function getEnableVtpm()
   {
     return $this->enableVtpm;

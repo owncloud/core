@@ -19,48 +19,93 @@ namespace Google\Service\ShoppingContent;
 
 class AccountTaxTaxRule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $ratePercent;
+  /**
+   * @var bool
+   */
   public $shippingTaxed;
+  /**
+   * @var bool
+   */
   public $useGlobalRate;
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setRatePercent($ratePercent)
   {
     $this->ratePercent = $ratePercent;
   }
+  /**
+   * @return string
+   */
   public function getRatePercent()
   {
     return $this->ratePercent;
   }
+  /**
+   * @param bool
+   */
   public function setShippingTaxed($shippingTaxed)
   {
     $this->shippingTaxed = $shippingTaxed;
   }
+  /**
+   * @return bool
+   */
   public function getShippingTaxed()
   {
     return $this->shippingTaxed;
   }
+  /**
+   * @param bool
+   */
   public function setUseGlobalRate($useGlobalRate)
   {
     $this->useGlobalRate = $useGlobalRate;
   }
+  /**
+   * @return bool
+   */
   public function getUseGlobalRate()
   {
     return $this->useGlobalRate;

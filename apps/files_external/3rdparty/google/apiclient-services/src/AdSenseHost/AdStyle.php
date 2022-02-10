@@ -21,9 +21,15 @@ class AdStyle extends \Google\Model
 {
   protected $colorsType = AdStyleColors::class;
   protected $colorsDataType = '';
+  /**
+   * @var string
+   */
   public $corners;
   protected $fontType = AdStyleFont::class;
   protected $fontDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -40,10 +46,16 @@ class AdStyle extends \Google\Model
   {
     return $this->colors;
   }
+  /**
+   * @param string
+   */
   public function setCorners($corners)
   {
     $this->corners = $corners;
   }
+  /**
+   * @return string
+   */
   public function getCorners()
   {
     return $this->corners;
@@ -62,10 +74,16 @@ class AdStyle extends \Google\Model
   {
     return $this->font;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class ShellTask extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $command;
+  /**
+   * @var int
+   */
   public $exitCode;
 
+  /**
+   * @param string
+   */
   public function setCommand($command)
   {
     $this->command = $command;
   }
+  /**
+   * @return string
+   */
   public function getCommand()
   {
     return $this->command;
   }
+  /**
+   * @param int
+   */
   public function setExitCode($exitCode)
   {
     $this->exitCode = $exitCode;
   }
+  /**
+   * @return int
+   */
   public function getExitCode()
   {
     return $this->exitCode;

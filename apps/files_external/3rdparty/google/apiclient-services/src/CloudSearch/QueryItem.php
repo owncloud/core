@@ -19,12 +19,21 @@ namespace Google\Service\CloudSearch;
 
 class QueryItem extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isSynthetic;
 
+  /**
+   * @param bool
+   */
   public function setIsSynthetic($isSynthetic)
   {
     $this->isSynthetic = $isSynthetic;
   }
+  /**
+   * @return bool
+   */
   public function getIsSynthetic()
   {
     return $this->isSynthetic;

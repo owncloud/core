@@ -19,12 +19,21 @@ namespace Google\Service\Sheets;
 
 class DeleteBandingRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $bandedRangeId;
 
+  /**
+   * @param int
+   */
   public function setBandedRangeId($bandedRangeId)
   {
     $this->bandedRangeId = $bandedRangeId;
   }
+  /**
+   * @return int
+   */
   public function getBandedRangeId()
   {
     return $this->bandedRangeId;

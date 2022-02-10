@@ -19,33 +19,63 @@ namespace Google\Service\CloudTalentSolution;
 
 class ClientEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $eventId;
+  /**
+   * @var string
+   */
   public $eventNotes;
   protected $jobEventType = JobEvent::class;
   protected $jobEventDataType = '';
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEventId($eventId)
   {
     $this->eventId = $eventId;
   }
+  /**
+   * @return string
+   */
   public function getEventId()
   {
     return $this->eventId;
   }
+  /**
+   * @param string
+   */
   public function setEventNotes($eventNotes)
   {
     $this->eventNotes = $eventNotes;
   }
+  /**
+   * @return string
+   */
   public function getEventNotes()
   {
     return $this->eventNotes;
@@ -64,10 +94,16 @@ class ClientEvent extends \Google\Model
   {
     return $this->jobEvent;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

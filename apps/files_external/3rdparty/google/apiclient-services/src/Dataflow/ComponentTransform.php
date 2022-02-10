@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class ComponentTransform extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $originalTransform;
+  /**
+   * @var string
+   */
   public $userName;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOriginalTransform($originalTransform)
   {
     $this->originalTransform = $originalTransform;
   }
+  /**
+   * @return string
+   */
   public function getOriginalTransform()
   {
     return $this->originalTransform;
   }
+  /**
+   * @param string
+   */
   public function setUserName($userName)
   {
     $this->userName = $userName;
   }
+  /**
+   * @return string
+   */
   public function getUserName()
   {
     return $this->userName;

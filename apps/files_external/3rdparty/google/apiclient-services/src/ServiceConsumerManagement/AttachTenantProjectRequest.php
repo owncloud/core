@@ -19,30 +19,57 @@ namespace Google\Service\ServiceConsumerManagement;
 
 class AttachTenantProjectRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $externalResource;
+  /**
+   * @var string
+   */
   public $reservedResource;
+  /**
+   * @var string
+   */
   public $tag;
 
+  /**
+   * @param string
+   */
   public function setExternalResource($externalResource)
   {
     $this->externalResource = $externalResource;
   }
+  /**
+   * @return string
+   */
   public function getExternalResource()
   {
     return $this->externalResource;
   }
+  /**
+   * @param string
+   */
   public function setReservedResource($reservedResource)
   {
     $this->reservedResource = $reservedResource;
   }
+  /**
+   * @return string
+   */
   public function getReservedResource()
   {
     return $this->reservedResource;
   }
+  /**
+   * @param string
+   */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
+  /**
+   * @return string
+   */
   public function getTag()
   {
     return $this->tag;

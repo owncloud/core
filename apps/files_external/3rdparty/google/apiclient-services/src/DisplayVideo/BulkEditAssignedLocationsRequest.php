@@ -22,6 +22,9 @@ class BulkEditAssignedLocationsRequest extends \Google\Collection
   protected $collection_key = 'deletedAssignedLocations';
   protected $createdAssignedLocationsType = AssignedLocation::class;
   protected $createdAssignedLocationsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $deletedAssignedLocations;
 
   /**
@@ -38,10 +41,16 @@ class BulkEditAssignedLocationsRequest extends \Google\Collection
   {
     return $this->createdAssignedLocations;
   }
+  /**
+   * @param string[]
+   */
   public function setDeletedAssignedLocations($deletedAssignedLocations)
   {
     $this->deletedAssignedLocations = $deletedAssignedLocations;
   }
+  /**
+   * @return string[]
+   */
   public function getDeletedAssignedLocations()
   {
     return $this->deletedAssignedLocations;

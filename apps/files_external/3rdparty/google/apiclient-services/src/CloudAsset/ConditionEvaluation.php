@@ -19,12 +19,21 @@ namespace Google\Service\CloudAsset;
 
 class ConditionEvaluation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $evaluationValue;
 
+  /**
+   * @param string
+   */
   public function setEvaluationValue($evaluationValue)
   {
     $this->evaluationValue = $evaluationValue;
   }
+  /**
+   * @return string
+   */
   public function getEvaluationValue()
   {
     return $this->evaluationValue;

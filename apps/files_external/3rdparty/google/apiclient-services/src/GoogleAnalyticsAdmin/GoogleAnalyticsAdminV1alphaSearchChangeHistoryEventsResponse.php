@@ -22,6 +22,9 @@ class GoogleAnalyticsAdminV1alphaSearchChangeHistoryEventsResponse extends \Goog
   protected $collection_key = 'changeHistoryEvents';
   protected $changeHistoryEventsType = GoogleAnalyticsAdminV1alphaChangeHistoryEvent::class;
   protected $changeHistoryEventsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAnalyticsAdminV1alphaSearchChangeHistoryEventsResponse extends \Goog
   {
     return $this->changeHistoryEvents;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

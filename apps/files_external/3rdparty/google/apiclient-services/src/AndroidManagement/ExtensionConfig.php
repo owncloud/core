@@ -20,21 +20,39 @@ namespace Google\Service\AndroidManagement;
 class ExtensionConfig extends \Google\Collection
 {
   protected $collection_key = 'signingKeyFingerprintsSha256';
+  /**
+   * @var string
+   */
   public $notificationReceiver;
+  /**
+   * @var string[]
+   */
   public $signingKeyFingerprintsSha256;
 
+  /**
+   * @param string
+   */
   public function setNotificationReceiver($notificationReceiver)
   {
     $this->notificationReceiver = $notificationReceiver;
   }
+  /**
+   * @return string
+   */
   public function getNotificationReceiver()
   {
     return $this->notificationReceiver;
   }
+  /**
+   * @param string[]
+   */
   public function setSigningKeyFingerprintsSha256($signingKeyFingerprintsSha256)
   {
     $this->signingKeyFingerprintsSha256 = $signingKeyFingerprintsSha256;
   }
+  /**
+   * @return string[]
+   */
   public function getSigningKeyFingerprintsSha256()
   {
     return $this->signingKeyFingerprintsSha256;

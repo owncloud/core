@@ -20,32 +20,59 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2HybridOptions extends \Google\Collection
 {
   protected $collection_key = 'requiredFindingLabelKeys';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string[]
+   */
   public $requiredFindingLabelKeys;
   protected $tableOptionsType = GooglePrivacyDlpV2TableOptions::class;
   protected $tableOptionsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string[]
+   */
   public function setRequiredFindingLabelKeys($requiredFindingLabelKeys)
   {
     $this->requiredFindingLabelKeys = $requiredFindingLabelKeys;
   }
+  /**
+   * @return string[]
+   */
   public function getRequiredFindingLabelKeys()
   {
     return $this->requiredFindingLabelKeys;

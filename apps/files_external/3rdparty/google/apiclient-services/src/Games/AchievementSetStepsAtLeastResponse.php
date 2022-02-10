@@ -19,30 +19,57 @@ namespace Google\Service\Games;
 
 class AchievementSetStepsAtLeastResponse extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $currentSteps;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $newlyUnlocked;
 
+  /**
+   * @param int
+   */
   public function setCurrentSteps($currentSteps)
   {
     $this->currentSteps = $currentSteps;
   }
+  /**
+   * @return int
+   */
   public function getCurrentSteps()
   {
     return $this->currentSteps;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setNewlyUnlocked($newlyUnlocked)
   {
     $this->newlyUnlocked = $newlyUnlocked;
   }
+  /**
+   * @return bool
+   */
   public function getNewlyUnlocked()
   {
     return $this->newlyUnlocked;

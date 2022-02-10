@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1KeyAliasReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $aliasId;
+  /**
+   * @var string
+   */
   public $reference;
 
+  /**
+   * @param string
+   */
   public function setAliasId($aliasId)
   {
     $this->aliasId = $aliasId;
   }
+  /**
+   * @return string
+   */
   public function getAliasId()
   {
     return $this->aliasId;
   }
+  /**
+   * @param string
+   */
   public function setReference($reference)
   {
     $this->reference = $reference;
   }
+  /**
+   * @return string
+   */
   public function getReference()
   {
     return $this->reference;

@@ -20,34 +20,67 @@ namespace Google\Service\AndroidManagement;
 class PersonalUsagePolicies extends \Google\Collection
 {
   protected $collection_key = 'personalApplications';
+  /**
+   * @var string[]
+   */
   public $accountTypesWithManagementDisabled;
+  /**
+   * @var bool
+   */
   public $cameraDisabled;
+  /**
+   * @var int
+   */
   public $maxDaysWithWorkOff;
   protected $personalApplicationsType = PersonalApplicationPolicy::class;
   protected $personalApplicationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $personalPlayStoreMode;
+  /**
+   * @var bool
+   */
   public $screenCaptureDisabled;
 
+  /**
+   * @param string[]
+   */
   public function setAccountTypesWithManagementDisabled($accountTypesWithManagementDisabled)
   {
     $this->accountTypesWithManagementDisabled = $accountTypesWithManagementDisabled;
   }
+  /**
+   * @return string[]
+   */
   public function getAccountTypesWithManagementDisabled()
   {
     return $this->accountTypesWithManagementDisabled;
   }
+  /**
+   * @param bool
+   */
   public function setCameraDisabled($cameraDisabled)
   {
     $this->cameraDisabled = $cameraDisabled;
   }
+  /**
+   * @return bool
+   */
   public function getCameraDisabled()
   {
     return $this->cameraDisabled;
   }
+  /**
+   * @param int
+   */
   public function setMaxDaysWithWorkOff($maxDaysWithWorkOff)
   {
     $this->maxDaysWithWorkOff = $maxDaysWithWorkOff;
   }
+  /**
+   * @return int
+   */
   public function getMaxDaysWithWorkOff()
   {
     return $this->maxDaysWithWorkOff;
@@ -66,18 +99,30 @@ class PersonalUsagePolicies extends \Google\Collection
   {
     return $this->personalApplications;
   }
+  /**
+   * @param string
+   */
   public function setPersonalPlayStoreMode($personalPlayStoreMode)
   {
     $this->personalPlayStoreMode = $personalPlayStoreMode;
   }
+  /**
+   * @return string
+   */
   public function getPersonalPlayStoreMode()
   {
     return $this->personalPlayStoreMode;
   }
+  /**
+   * @param bool
+   */
   public function setScreenCaptureDisabled($screenCaptureDisabled)
   {
     $this->screenCaptureDisabled = $screenCaptureDisabled;
   }
+  /**
+   * @return bool
+   */
   public function getScreenCaptureDisabled()
   {
     return $this->screenCaptureDisabled;

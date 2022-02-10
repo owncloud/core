@@ -19,48 +19,93 @@ namespace Google\Service\Books;
 
 class FamilyInfoMembership extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $acquirePermission;
+  /**
+   * @var string
+   */
   public $ageGroup;
+  /**
+   * @var string
+   */
   public $allowedMaturityRating;
+  /**
+   * @var bool
+   */
   public $isInFamily;
+  /**
+   * @var string
+   */
   public $role;
 
+  /**
+   * @param string
+   */
   public function setAcquirePermission($acquirePermission)
   {
     $this->acquirePermission = $acquirePermission;
   }
+  /**
+   * @return string
+   */
   public function getAcquirePermission()
   {
     return $this->acquirePermission;
   }
+  /**
+   * @param string
+   */
   public function setAgeGroup($ageGroup)
   {
     $this->ageGroup = $ageGroup;
   }
+  /**
+   * @return string
+   */
   public function getAgeGroup()
   {
     return $this->ageGroup;
   }
+  /**
+   * @param string
+   */
   public function setAllowedMaturityRating($allowedMaturityRating)
   {
     $this->allowedMaturityRating = $allowedMaturityRating;
   }
+  /**
+   * @return string
+   */
   public function getAllowedMaturityRating()
   {
     return $this->allowedMaturityRating;
   }
+  /**
+   * @param bool
+   */
   public function setIsInFamily($isInFamily)
   {
     $this->isInFamily = $isInFamily;
   }
+  /**
+   * @return bool
+   */
   public function getIsInFamily()
   {
     return $this->isInFamily;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;

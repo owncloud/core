@@ -19,12 +19,21 @@ namespace Google\Service\Container;
 
 class HttpLoadBalancing extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $disabled;
 
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;

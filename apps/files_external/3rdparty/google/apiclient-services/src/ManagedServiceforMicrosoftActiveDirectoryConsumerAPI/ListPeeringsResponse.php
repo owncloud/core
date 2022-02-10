@@ -20,15 +20,27 @@ namespace Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI;
 class ListPeeringsResponse extends \Google\Collection
 {
   protected $collection_key = 'unreachable';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $peeringsType = Peering::class;
   protected $peeringsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $unreachable;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
@@ -47,10 +59,16 @@ class ListPeeringsResponse extends \Google\Collection
   {
     return $this->peerings;
   }
+  /**
+   * @param string[]
+   */
   public function setUnreachable($unreachable)
   {
     $this->unreachable = $unreachable;
   }
+  /**
+   * @return string[]
+   */
   public function getUnreachable()
   {
     return $this->unreachable;

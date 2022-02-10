@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3RestoreAgentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $agentContent;
+  /**
+   * @var string
+   */
   public $agentUri;
+  /**
+   * @var string
+   */
   public $restoreOption;
 
+  /**
+   * @param string
+   */
   public function setAgentContent($agentContent)
   {
     $this->agentContent = $agentContent;
   }
+  /**
+   * @return string
+   */
   public function getAgentContent()
   {
     return $this->agentContent;
   }
+  /**
+   * @param string
+   */
   public function setAgentUri($agentUri)
   {
     $this->agentUri = $agentUri;
   }
+  /**
+   * @return string
+   */
   public function getAgentUri()
   {
     return $this->agentUri;
   }
+  /**
+   * @param string
+   */
   public function setRestoreOption($restoreOption)
   {
     $this->restoreOption = $restoreOption;
   }
+  /**
+   * @return string
+   */
   public function getRestoreOption()
   {
     return $this->restoreOption;

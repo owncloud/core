@@ -20,14 +20,23 @@ namespace Google\Service\FirebaseRules;
 class ListReleasesResponse extends \Google\Collection
 {
   protected $collection_key = 'releases';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $releasesType = Release::class;
   protected $releasesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

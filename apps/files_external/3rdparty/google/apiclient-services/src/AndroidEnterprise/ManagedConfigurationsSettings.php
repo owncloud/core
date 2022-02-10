@@ -19,30 +19,57 @@ namespace Google\Service\AndroidEnterprise;
 
 class ManagedConfigurationsSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastUpdatedTimestampMillis;
+  /**
+   * @var string
+   */
   public $mcmId;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setLastUpdatedTimestampMillis($lastUpdatedTimestampMillis)
   {
     $this->lastUpdatedTimestampMillis = $lastUpdatedTimestampMillis;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdatedTimestampMillis()
   {
     return $this->lastUpdatedTimestampMillis;
   }
+  /**
+   * @param string
+   */
   public function setMcmId($mcmId)
   {
     $this->mcmId = $mcmId;
   }
+  /**
+   * @return string
+   */
   public function getMcmId()
   {
     return $this->mcmId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

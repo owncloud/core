@@ -19,30 +19,57 @@ namespace Google\Service\Slides;
 
 class Placeholder extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $index;
+  /**
+   * @var string
+   */
   public $parentObjectId;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;
   }
+  /**
+   * @param string
+   */
   public function setParentObjectId($parentObjectId)
   {
     $this->parentObjectId = $parentObjectId;
   }
+  /**
+   * @return string
+   */
   public function getParentObjectId()
   {
     return $this->parentObjectId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

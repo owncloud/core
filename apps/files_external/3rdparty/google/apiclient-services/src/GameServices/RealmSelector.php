@@ -20,12 +20,21 @@ namespace Google\Service\GameServices;
 class RealmSelector extends \Google\Collection
 {
   protected $collection_key = 'realms';
+  /**
+   * @var string[]
+   */
   public $realms;
 
+  /**
+   * @param string[]
+   */
   public function setRealms($realms)
   {
     $this->realms = $realms;
   }
+  /**
+   * @return string[]
+   */
   public function getRealms()
   {
     return $this->realms;

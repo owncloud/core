@@ -19,21 +19,39 @@ namespace Google\Service\CertificateAuthorityService;
 
 class RsaKeyType extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maxModulusSize;
+  /**
+   * @var string
+   */
   public $minModulusSize;
 
+  /**
+   * @param string
+   */
   public function setMaxModulusSize($maxModulusSize)
   {
     $this->maxModulusSize = $maxModulusSize;
   }
+  /**
+   * @return string
+   */
   public function getMaxModulusSize()
   {
     return $this->maxModulusSize;
   }
+  /**
+   * @param string
+   */
   public function setMinModulusSize($minModulusSize)
   {
     $this->minModulusSize = $minModulusSize;
   }
+  /**
+   * @return string
+   */
   public function getMinModulusSize()
   {
     return $this->minModulusSize;

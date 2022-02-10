@@ -21,8 +21,17 @@ class UpgradeAvailableEvent extends \Google\Model
 {
   protected $releaseChannelType = ReleaseChannel::class;
   protected $releaseChannelDataType = '';
+  /**
+   * @var string
+   */
   public $resource;
+  /**
+   * @var string
+   */
   public $resourceType;
+  /**
+   * @var string
+   */
   public $version;
 
   /**
@@ -39,26 +48,44 @@ class UpgradeAvailableEvent extends \Google\Model
   {
     return $this->releaseChannel;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string
+   */
   public function getResourceType()
   {
     return $this->resourceType;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

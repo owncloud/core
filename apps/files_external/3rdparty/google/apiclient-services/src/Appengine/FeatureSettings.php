@@ -19,21 +19,39 @@ namespace Google\Service\Appengine;
 
 class FeatureSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $splitHealthChecks;
+  /**
+   * @var bool
+   */
   public $useContainerOptimizedOs;
 
+  /**
+   * @param bool
+   */
   public function setSplitHealthChecks($splitHealthChecks)
   {
     $this->splitHealthChecks = $splitHealthChecks;
   }
+  /**
+   * @return bool
+   */
   public function getSplitHealthChecks()
   {
     return $this->splitHealthChecks;
   }
+  /**
+   * @param bool
+   */
   public function setUseContainerOptimizedOs($useContainerOptimizedOs)
   {
     $this->useContainerOptimizedOs = $useContainerOptimizedOs;
   }
+  /**
+   * @return bool
+   */
   public function getUseContainerOptimizedOs()
   {
     return $this->useContainerOptimizedOs;

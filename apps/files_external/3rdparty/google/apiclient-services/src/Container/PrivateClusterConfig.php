@@ -19,27 +19,57 @@ namespace Google\Service\Container;
 
 class PrivateClusterConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enablePrivateEndpoint;
+  /**
+   * @var bool
+   */
   public $enablePrivateNodes;
   protected $masterGlobalAccessConfigType = PrivateClusterMasterGlobalAccessConfig::class;
   protected $masterGlobalAccessConfigDataType = '';
+  /**
+   * @var string
+   */
   public $masterIpv4CidrBlock;
+  /**
+   * @var string
+   */
   public $peeringName;
+  /**
+   * @var string
+   */
   public $privateEndpoint;
+  /**
+   * @var string
+   */
   public $publicEndpoint;
 
+  /**
+   * @param bool
+   */
   public function setEnablePrivateEndpoint($enablePrivateEndpoint)
   {
     $this->enablePrivateEndpoint = $enablePrivateEndpoint;
   }
+  /**
+   * @return bool
+   */
   public function getEnablePrivateEndpoint()
   {
     return $this->enablePrivateEndpoint;
   }
+  /**
+   * @param bool
+   */
   public function setEnablePrivateNodes($enablePrivateNodes)
   {
     $this->enablePrivateNodes = $enablePrivateNodes;
   }
+  /**
+   * @return bool
+   */
   public function getEnablePrivateNodes()
   {
     return $this->enablePrivateNodes;
@@ -58,34 +88,58 @@ class PrivateClusterConfig extends \Google\Model
   {
     return $this->masterGlobalAccessConfig;
   }
+  /**
+   * @param string
+   */
   public function setMasterIpv4CidrBlock($masterIpv4CidrBlock)
   {
     $this->masterIpv4CidrBlock = $masterIpv4CidrBlock;
   }
+  /**
+   * @return string
+   */
   public function getMasterIpv4CidrBlock()
   {
     return $this->masterIpv4CidrBlock;
   }
+  /**
+   * @param string
+   */
   public function setPeeringName($peeringName)
   {
     $this->peeringName = $peeringName;
   }
+  /**
+   * @return string
+   */
   public function getPeeringName()
   {
     return $this->peeringName;
   }
+  /**
+   * @param string
+   */
   public function setPrivateEndpoint($privateEndpoint)
   {
     $this->privateEndpoint = $privateEndpoint;
   }
+  /**
+   * @return string
+   */
   public function getPrivateEndpoint()
   {
     return $this->privateEndpoint;
   }
+  /**
+   * @param string
+   */
   public function setPublicEndpoint($publicEndpoint)
   {
     $this->publicEndpoint = $publicEndpoint;
   }
+  /**
+   * @return string
+   */
   public function getPublicEndpoint()
   {
     return $this->publicEndpoint;

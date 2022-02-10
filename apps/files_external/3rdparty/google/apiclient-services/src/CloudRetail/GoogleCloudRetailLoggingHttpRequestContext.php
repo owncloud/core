@@ -19,12 +19,21 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailLoggingHttpRequestContext extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $responseStatusCode;
 
+  /**
+   * @param int
+   */
   public function setResponseStatusCode($responseStatusCode)
   {
     $this->responseStatusCode = $responseStatusCode;
   }
+  /**
+   * @return int
+   */
   public function getResponseStatusCode()
   {
     return $this->responseStatusCode;

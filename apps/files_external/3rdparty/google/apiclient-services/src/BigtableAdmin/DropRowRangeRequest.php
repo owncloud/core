@@ -19,21 +19,39 @@ namespace Google\Service\BigtableAdmin;
 
 class DropRowRangeRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $deleteAllDataFromTable;
+  /**
+   * @var string
+   */
   public $rowKeyPrefix;
 
+  /**
+   * @param bool
+   */
   public function setDeleteAllDataFromTable($deleteAllDataFromTable)
   {
     $this->deleteAllDataFromTable = $deleteAllDataFromTable;
   }
+  /**
+   * @return bool
+   */
   public function getDeleteAllDataFromTable()
   {
     return $this->deleteAllDataFromTable;
   }
+  /**
+   * @param string
+   */
   public function setRowKeyPrefix($rowKeyPrefix)
   {
     $this->rowKeyPrefix = $rowKeyPrefix;
   }
+  /**
+   * @return string
+   */
   public function getRowKeyPrefix()
   {
     return $this->rowKeyPrefix;

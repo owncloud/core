@@ -19,30 +19,57 @@ namespace Google\Service\Appengine;
 
 class FileInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $sha1Sum;
+  /**
+   * @var string
+   */
   public $sourceUrl;
 
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setSha1Sum($sha1Sum)
   {
     $this->sha1Sum = $sha1Sum;
   }
+  /**
+   * @return string
+   */
   public function getSha1Sum()
   {
     return $this->sha1Sum;
   }
+  /**
+   * @param string
+   */
   public function setSourceUrl($sourceUrl)
   {
     $this->sourceUrl = $sourceUrl;
   }
+  /**
+   * @return string
+   */
   public function getSourceUrl()
   {
     return $this->sourceUrl;

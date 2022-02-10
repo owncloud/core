@@ -19,23 +19,41 @@ namespace Google\Service\HangoutsChat;
 
 class GoogleAppsCardV1Image extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $altText;
+  /**
+   * @var string
+   */
   public $imageUrl;
   protected $onClickType = GoogleAppsCardV1OnClick::class;
   protected $onClickDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAltText($altText)
   {
     $this->altText = $altText;
   }
+  /**
+   * @return string
+   */
   public function getAltText()
   {
     return $this->altText;
   }
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;

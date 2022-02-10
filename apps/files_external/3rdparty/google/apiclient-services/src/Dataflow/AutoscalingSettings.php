@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class AutoscalingSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $algorithm;
+  /**
+   * @var int
+   */
   public $maxNumWorkers;
 
+  /**
+   * @param string
+   */
   public function setAlgorithm($algorithm)
   {
     $this->algorithm = $algorithm;
   }
+  /**
+   * @return string
+   */
   public function getAlgorithm()
   {
     return $this->algorithm;
   }
+  /**
+   * @param int
+   */
   public function setMaxNumWorkers($maxNumWorkers)
   {
     $this->maxNumWorkers = $maxNumWorkers;
   }
+  /**
+   * @return int
+   */
   public function getMaxNumWorkers()
   {
     return $this->maxNumWorkers;

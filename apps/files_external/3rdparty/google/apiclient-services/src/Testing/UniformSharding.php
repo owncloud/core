@@ -19,12 +19,21 @@ namespace Google\Service\Testing;
 
 class UniformSharding extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $numShards;
 
+  /**
+   * @param int
+   */
   public function setNumShards($numShards)
   {
     $this->numShards = $numShards;
   }
+  /**
+   * @return int
+   */
   public function getNumShards()
   {
     return $this->numShards;

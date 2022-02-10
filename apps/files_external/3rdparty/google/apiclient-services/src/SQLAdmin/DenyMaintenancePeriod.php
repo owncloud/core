@@ -19,30 +19,57 @@ namespace Google\Service\SQLAdmin;
 
 class DenyMaintenancePeriod extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endDate;
+  /**
+   * @var string
+   */
   public $startDate;
+  /**
+   * @var string
+   */
   public $time;
 
+  /**
+   * @param string
+   */
   public function setEndDate($endDate)
   {
     $this->endDate = $endDate;
   }
+  /**
+   * @return string
+   */
   public function getEndDate()
   {
     return $this->endDate;
   }
+  /**
+   * @param string
+   */
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
   }
+  /**
+   * @return string
+   */
   public function getStartDate()
   {
     return $this->startDate;
   }
+  /**
+   * @param string
+   */
   public function setTime($time)
   {
     $this->time = $time;
   }
+  /**
+   * @return string
+   */
   public function getTime()
   {
     return $this->time;

@@ -19,48 +19,93 @@ namespace Google\Service\Spanner;
 
 class PrefixNode extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $dataSourceNode;
+  /**
+   * @var int
+   */
   public $depth;
+  /**
+   * @var int
+   */
   public $endIndex;
+  /**
+   * @var int
+   */
   public $startIndex;
+  /**
+   * @var string
+   */
   public $word;
 
+  /**
+   * @param bool
+   */
   public function setDataSourceNode($dataSourceNode)
   {
     $this->dataSourceNode = $dataSourceNode;
   }
+  /**
+   * @return bool
+   */
   public function getDataSourceNode()
   {
     return $this->dataSourceNode;
   }
+  /**
+   * @param int
+   */
   public function setDepth($depth)
   {
     $this->depth = $depth;
   }
+  /**
+   * @return int
+   */
   public function getDepth()
   {
     return $this->depth;
   }
+  /**
+   * @param int
+   */
   public function setEndIndex($endIndex)
   {
     $this->endIndex = $endIndex;
   }
+  /**
+   * @return int
+   */
   public function getEndIndex()
   {
     return $this->endIndex;
   }
+  /**
+   * @param int
+   */
   public function setStartIndex($startIndex)
   {
     $this->startIndex = $startIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartIndex()
   {
     return $this->startIndex;
   }
+  /**
+   * @param string
+   */
   public function setWord($word)
   {
     $this->word = $word;
   }
+  /**
+   * @return string
+   */
   public function getWord()
   {
     return $this->word;

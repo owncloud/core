@@ -20,14 +20,23 @@ namespace Google\Service\Sheets;
 class BooleanCondition extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $type;
   protected $valuesType = ConditionValue::class;
   protected $valuesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

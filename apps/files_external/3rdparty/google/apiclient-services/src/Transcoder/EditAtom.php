@@ -20,39 +20,75 @@ namespace Google\Service\Transcoder;
 class EditAtom extends \Google\Collection
 {
   protected $collection_key = 'inputs';
+  /**
+   * @var string
+   */
   public $endTimeOffset;
+  /**
+   * @var string[]
+   */
   public $inputs;
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $startTimeOffset;
 
+  /**
+   * @param string
+   */
   public function setEndTimeOffset($endTimeOffset)
   {
     $this->endTimeOffset = $endTimeOffset;
   }
+  /**
+   * @return string
+   */
   public function getEndTimeOffset()
   {
     return $this->endTimeOffset;
   }
+  /**
+   * @param string[]
+   */
   public function setInputs($inputs)
   {
     $this->inputs = $inputs;
   }
+  /**
+   * @return string[]
+   */
   public function getInputs()
   {
     return $this->inputs;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setStartTimeOffset($startTimeOffset)
   {
     $this->startTimeOffset = $startTimeOffset;
   }
+  /**
+   * @return string
+   */
   public function getStartTimeOffset()
   {
     return $this->startTimeOffset;

@@ -25,11 +25,17 @@ class SortSpec extends \Google\Model
   protected $backgroundColorStyleDataType = '';
   protected $dataSourceColumnReferenceType = DataSourceColumnReference::class;
   protected $dataSourceColumnReferenceDataType = '';
+  /**
+   * @var int
+   */
   public $dimensionIndex;
   protected $foregroundColorType = Color::class;
   protected $foregroundColorDataType = '';
   protected $foregroundColorStyleType = ColorStyle::class;
   protected $foregroundColorStyleDataType = '';
+  /**
+   * @var string
+   */
   public $sortOrder;
 
   /**
@@ -74,10 +80,16 @@ class SortSpec extends \Google\Model
   {
     return $this->dataSourceColumnReference;
   }
+  /**
+   * @param int
+   */
   public function setDimensionIndex($dimensionIndex)
   {
     $this->dimensionIndex = $dimensionIndex;
   }
+  /**
+   * @return int
+   */
   public function getDimensionIndex()
   {
     return $this->dimensionIndex;
@@ -110,10 +122,16 @@ class SortSpec extends \Google\Model
   {
     return $this->foregroundColorStyle;
   }
+  /**
+   * @param string
+   */
   public function setSortOrder($sortOrder)
   {
     $this->sortOrder = $sortOrder;
   }
+  /**
+   * @return string
+   */
   public function getSortOrder()
   {
     return $this->sortOrder;

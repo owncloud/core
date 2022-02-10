@@ -19,21 +19,57 @@ namespace Google\Service\CloudSearch;
 
 class ItemCountByStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $count;
+  /**
+   * @var string
+   */
+  public $indexedItemsCount;
+  /**
+   * @var string
+   */
   public $statusCode;
 
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param string
+   */
+  public function setIndexedItemsCount($indexedItemsCount)
+  {
+    $this->indexedItemsCount = $indexedItemsCount;
+  }
+  /**
+   * @return string
+   */
+  public function getIndexedItemsCount()
+  {
+    return $this->indexedItemsCount;
+  }
+  /**
+   * @param string
+   */
   public function setStatusCode($statusCode)
   {
     $this->statusCode = $statusCode;
   }
+  /**
+   * @return string
+   */
   public function getStatusCode()
   {
     return $this->statusCode;

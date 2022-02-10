@@ -35,8 +35,8 @@ class ProjectsLocations extends \Google\Service\Resource
    * Fetches processor types. (locations.fetchProcessorTypes)
    *
    * @param string $parent Required. The project of processor type to list. The
-   * available processor types may depend on the whitelisting on projects. Format:
-   * projects/{project}/locations/{location}
+   * available processor types may depend on the allow-listing on projects.
+   * Format: `projects/{project}/locations/{location}`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDocumentaiV1FetchProcessorTypesResponse
    */

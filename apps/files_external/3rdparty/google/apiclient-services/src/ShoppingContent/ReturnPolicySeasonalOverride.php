@@ -19,24 +19,45 @@ namespace Google\Service\ShoppingContent;
 
 class ReturnPolicySeasonalOverride extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endDate;
+  /**
+   * @var string
+   */
   public $name;
   protected $policyType = ReturnPolicyPolicy::class;
   protected $policyDataType = '';
+  /**
+   * @var string
+   */
   public $startDate;
 
+  /**
+   * @param string
+   */
   public function setEndDate($endDate)
   {
     $this->endDate = $endDate;
   }
+  /**
+   * @return string
+   */
   public function getEndDate()
   {
     return $this->endDate;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -55,10 +76,16 @@ class ReturnPolicySeasonalOverride extends \Google\Model
   {
     return $this->policy;
   }
+  /**
+   * @param string
+   */
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
   }
+  /**
+   * @return string
+   */
   public function getStartDate()
   {
     return $this->startDate;

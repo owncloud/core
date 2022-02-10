@@ -20,21 +20,39 @@ namespace Google\Service\YouTube;
 class VideoSuggestionsTagSuggestion extends \Google\Collection
 {
   protected $collection_key = 'categoryRestricts';
+  /**
+   * @var string[]
+   */
   public $categoryRestricts;
+  /**
+   * @var string
+   */
   public $tag;
 
+  /**
+   * @param string[]
+   */
   public function setCategoryRestricts($categoryRestricts)
   {
     $this->categoryRestricts = $categoryRestricts;
   }
+  /**
+   * @return string[]
+   */
   public function getCategoryRestricts()
   {
     return $this->categoryRestricts;
   }
+  /**
+   * @param string
+   */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
+  /**
+   * @return string
+   */
   public function getTag()
   {
     return $this->tag;

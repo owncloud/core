@@ -19,21 +19,39 @@ namespace Google\Service\VMMigrationService;
 
 class ReplicationCycle extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $progressPercent;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param int
+   */
   public function setProgressPercent($progressPercent)
   {
     $this->progressPercent = $progressPercent;
   }
+  /**
+   * @return int
+   */
   public function getProgressPercent()
   {
     return $this->progressPercent;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

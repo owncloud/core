@@ -19,93 +19,183 @@ namespace Google\Service\Dataflow;
 
 class CounterStructuredName extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $componentStepName;
+  /**
+   * @var string
+   */
   public $executionStepName;
+  /**
+   * @var int
+   */
   public $inputIndex;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $origin;
+  /**
+   * @var string
+   */
   public $originNamespace;
+  /**
+   * @var string
+   */
   public $originalRequestingStepName;
+  /**
+   * @var string
+   */
   public $originalStepName;
+  /**
+   * @var string
+   */
   public $portion;
+  /**
+   * @var string
+   */
   public $workerId;
 
+  /**
+   * @param string
+   */
   public function setComponentStepName($componentStepName)
   {
     $this->componentStepName = $componentStepName;
   }
+  /**
+   * @return string
+   */
   public function getComponentStepName()
   {
     return $this->componentStepName;
   }
+  /**
+   * @param string
+   */
   public function setExecutionStepName($executionStepName)
   {
     $this->executionStepName = $executionStepName;
   }
+  /**
+   * @return string
+   */
   public function getExecutionStepName()
   {
     return $this->executionStepName;
   }
+  /**
+   * @param int
+   */
   public function setInputIndex($inputIndex)
   {
     $this->inputIndex = $inputIndex;
   }
+  /**
+   * @return int
+   */
   public function getInputIndex()
   {
     return $this->inputIndex;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOrigin($origin)
   {
     $this->origin = $origin;
   }
+  /**
+   * @return string
+   */
   public function getOrigin()
   {
     return $this->origin;
   }
+  /**
+   * @param string
+   */
   public function setOriginNamespace($originNamespace)
   {
     $this->originNamespace = $originNamespace;
   }
+  /**
+   * @return string
+   */
   public function getOriginNamespace()
   {
     return $this->originNamespace;
   }
+  /**
+   * @param string
+   */
   public function setOriginalRequestingStepName($originalRequestingStepName)
   {
     $this->originalRequestingStepName = $originalRequestingStepName;
   }
+  /**
+   * @return string
+   */
   public function getOriginalRequestingStepName()
   {
     return $this->originalRequestingStepName;
   }
+  /**
+   * @param string
+   */
   public function setOriginalStepName($originalStepName)
   {
     $this->originalStepName = $originalStepName;
   }
+  /**
+   * @return string
+   */
   public function getOriginalStepName()
   {
     return $this->originalStepName;
   }
+  /**
+   * @param string
+   */
   public function setPortion($portion)
   {
     $this->portion = $portion;
   }
+  /**
+   * @return string
+   */
   public function getPortion()
   {
     return $this->portion;
   }
+  /**
+   * @param string
+   */
   public function setWorkerId($workerId)
   {
     $this->workerId = $workerId;
   }
+  /**
+   * @return string
+   */
   public function getWorkerId()
   {
     return $this->workerId;

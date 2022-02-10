@@ -19,39 +19,75 @@ namespace Google\Service\Spanner;
 
 class Session extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $approximateLastUseTime;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setApproximateLastUseTime($approximateLastUseTime)
   {
     $this->approximateLastUseTime = $approximateLastUseTime;
   }
+  /**
+   * @return string
+   */
   public function getApproximateLastUseTime()
   {
     return $this->approximateLastUseTime;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

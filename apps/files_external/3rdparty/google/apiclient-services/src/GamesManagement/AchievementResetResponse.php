@@ -19,39 +19,75 @@ namespace Google\Service\GamesManagement;
 
 class AchievementResetResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currentState;
+  /**
+   * @var string
+   */
   public $definitionId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $updateOccurred;
 
+  /**
+   * @param string
+   */
   public function setCurrentState($currentState)
   {
     $this->currentState = $currentState;
   }
+  /**
+   * @return string
+   */
   public function getCurrentState()
   {
     return $this->currentState;
   }
+  /**
+   * @param string
+   */
   public function setDefinitionId($definitionId)
   {
     $this->definitionId = $definitionId;
   }
+  /**
+   * @return string
+   */
   public function getDefinitionId()
   {
     return $this->definitionId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setUpdateOccurred($updateOccurred)
   {
     $this->updateOccurred = $updateOccurred;
   }
+  /**
+   * @return bool
+   */
   public function getUpdateOccurred()
   {
     return $this->updateOccurred;

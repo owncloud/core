@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3DtmfInput extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $digits;
+  /**
+   * @var string
+   */
   public $finishDigit;
 
+  /**
+   * @param string
+   */
   public function setDigits($digits)
   {
     $this->digits = $digits;
   }
+  /**
+   * @return string
+   */
   public function getDigits()
   {
     return $this->digits;
   }
+  /**
+   * @param string
+   */
   public function setFinishDigit($finishDigit)
   {
     $this->finishDigit = $finishDigit;
   }
+  /**
+   * @return string
+   */
   public function getFinishDigit()
   {
     return $this->finishDigit;

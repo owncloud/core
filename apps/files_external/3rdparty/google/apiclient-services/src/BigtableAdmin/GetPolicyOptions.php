@@ -19,12 +19,21 @@ namespace Google\Service\BigtableAdmin;
 
 class GetPolicyOptions extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $requestedPolicyVersion;
 
+  /**
+   * @param int
+   */
   public function setRequestedPolicyVersion($requestedPolicyVersion)
   {
     $this->requestedPolicyVersion = $requestedPolicyVersion;
   }
+  /**
+   * @return int
+   */
   public function getRequestedPolicyVersion()
   {
     return $this->requestedPolicyVersion;

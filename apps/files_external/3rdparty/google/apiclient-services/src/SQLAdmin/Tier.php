@@ -24,48 +24,93 @@ class Tier extends \Google\Collection
         "diskQuota" => "DiskQuota",
         "rAM" => "RAM",
   ];
+  /**
+   * @var string
+   */
   public $diskQuota;
+  /**
+   * @var string
+   */
   public $rAM;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $tier;
 
+  /**
+   * @param string
+   */
   public function setDiskQuota($diskQuota)
   {
     $this->diskQuota = $diskQuota;
   }
+  /**
+   * @return string
+   */
   public function getDiskQuota()
   {
     return $this->diskQuota;
   }
+  /**
+   * @param string
+   */
   public function setRAM($rAM)
   {
     $this->rAM = $rAM;
   }
+  /**
+   * @return string
+   */
   public function getRAM()
   {
     return $this->rAM;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string[]
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setTier($tier)
   {
     $this->tier = $tier;
   }
+  /**
+   * @return string
+   */
   public function getTier()
   {
     return $this->tier;

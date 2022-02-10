@@ -19,24 +19,45 @@ namespace Google\Service\CloudHealthcare;
 
 class GoogleCloudHealthcareV1FhirBigQueryDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $datasetUri;
+  /**
+   * @var bool
+   */
   public $force;
   protected $schemaConfigType = SchemaConfig::class;
   protected $schemaConfigDataType = '';
+  /**
+   * @var string
+   */
   public $writeDisposition;
 
+  /**
+   * @param string
+   */
   public function setDatasetUri($datasetUri)
   {
     $this->datasetUri = $datasetUri;
   }
+  /**
+   * @return string
+   */
   public function getDatasetUri()
   {
     return $this->datasetUri;
   }
+  /**
+   * @param bool
+   */
   public function setForce($force)
   {
     $this->force = $force;
   }
+  /**
+   * @return bool
+   */
   public function getForce()
   {
     return $this->force;
@@ -55,10 +76,16 @@ class GoogleCloudHealthcareV1FhirBigQueryDestination extends \Google\Model
   {
     return $this->schemaConfig;
   }
+  /**
+   * @param string
+   */
   public function setWriteDisposition($writeDisposition)
   {
     $this->writeDisposition = $writeDisposition;
   }
+  /**
+   * @return string
+   */
   public function getWriteDisposition()
   {
     return $this->writeDisposition;

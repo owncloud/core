@@ -19,21 +19,39 @@ namespace Google\Service\Slides;
 
 class LineConnection extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $connectedObjectId;
+  /**
+   * @var int
+   */
   public $connectionSiteIndex;
 
+  /**
+   * @param string
+   */
   public function setConnectedObjectId($connectedObjectId)
   {
     $this->connectedObjectId = $connectedObjectId;
   }
+  /**
+   * @return string
+   */
   public function getConnectedObjectId()
   {
     return $this->connectedObjectId;
   }
+  /**
+   * @param int
+   */
   public function setConnectionSiteIndex($connectionSiteIndex)
   {
     $this->connectionSiteIndex = $connectionSiteIndex;
   }
+  /**
+   * @return int
+   */
   public function getConnectionSiteIndex()
   {
     return $this->connectionSiteIndex;

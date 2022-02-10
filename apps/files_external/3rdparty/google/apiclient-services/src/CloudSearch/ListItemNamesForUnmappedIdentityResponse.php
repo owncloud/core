@@ -20,21 +20,39 @@ namespace Google\Service\CloudSearch;
 class ListItemNamesForUnmappedIdentityResponse extends \Google\Collection
 {
   protected $collection_key = 'itemNames';
+  /**
+   * @var string[]
+   */
   public $itemNames;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string[]
+   */
   public function setItemNames($itemNames)
   {
     $this->itemNames = $itemNames;
   }
+  /**
+   * @return string[]
+   */
   public function getItemNames()
   {
     return $this->itemNames;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

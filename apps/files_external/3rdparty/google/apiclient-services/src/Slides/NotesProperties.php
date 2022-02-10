@@ -19,12 +19,21 @@ namespace Google\Service\Slides;
 
 class NotesProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $speakerNotesObjectId;
 
+  /**
+   * @param string
+   */
   public function setSpeakerNotesObjectId($speakerNotesObjectId)
   {
     $this->speakerNotesObjectId = $speakerNotesObjectId;
   }
+  /**
+   * @return string
+   */
   public function getSpeakerNotesObjectId()
   {
     return $this->speakerNotesObjectId;

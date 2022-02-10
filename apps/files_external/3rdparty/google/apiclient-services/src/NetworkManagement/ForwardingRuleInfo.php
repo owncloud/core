@@ -19,66 +19,129 @@ namespace Google\Service\NetworkManagement;
 
 class ForwardingRuleInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $matchedPortRange;
+  /**
+   * @var string
+   */
   public $matchedProtocol;
+  /**
+   * @var string
+   */
   public $networkUri;
+  /**
+   * @var string
+   */
   public $target;
+  /**
+   * @var string
+   */
   public $uri;
+  /**
+   * @var string
+   */
   public $vip;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setMatchedPortRange($matchedPortRange)
   {
     $this->matchedPortRange = $matchedPortRange;
   }
+  /**
+   * @return string
+   */
   public function getMatchedPortRange()
   {
     return $this->matchedPortRange;
   }
+  /**
+   * @param string
+   */
   public function setMatchedProtocol($matchedProtocol)
   {
     $this->matchedProtocol = $matchedProtocol;
   }
+  /**
+   * @return string
+   */
   public function getMatchedProtocol()
   {
     return $this->matchedProtocol;
   }
+  /**
+   * @param string
+   */
   public function setNetworkUri($networkUri)
   {
     $this->networkUri = $networkUri;
   }
+  /**
+   * @return string
+   */
   public function getNetworkUri()
   {
     return $this->networkUri;
   }
+  /**
+   * @param string
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return string
+   */
   public function getTarget()
   {
     return $this->target;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;
   }
+  /**
+   * @param string
+   */
   public function setVip($vip)
   {
     $this->vip = $vip;
   }
+  /**
+   * @return string
+   */
   public function getVip()
   {
     return $this->vip;

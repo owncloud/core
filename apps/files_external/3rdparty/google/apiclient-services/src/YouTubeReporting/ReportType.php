@@ -19,39 +19,75 @@ namespace Google\Service\YouTubeReporting;
 
 class ReportType extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deprecateTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $systemManaged;
 
+  /**
+   * @param string
+   */
   public function setDeprecateTime($deprecateTime)
   {
     $this->deprecateTime = $deprecateTime;
   }
+  /**
+   * @return string
+   */
   public function getDeprecateTime()
   {
     return $this->deprecateTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setSystemManaged($systemManaged)
   {
     $this->systemManaged = $systemManaged;
   }
+  /**
+   * @return bool
+   */
   public function getSystemManaged()
   {
     return $this->systemManaged;

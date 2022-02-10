@@ -19,48 +19,93 @@ namespace Google\Service\CloudScheduler;
 
 class RetryConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maxBackoffDuration;
+  /**
+   * @var int
+   */
   public $maxDoublings;
+  /**
+   * @var string
+   */
   public $maxRetryDuration;
+  /**
+   * @var string
+   */
   public $minBackoffDuration;
+  /**
+   * @var int
+   */
   public $retryCount;
 
+  /**
+   * @param string
+   */
   public function setMaxBackoffDuration($maxBackoffDuration)
   {
     $this->maxBackoffDuration = $maxBackoffDuration;
   }
+  /**
+   * @return string
+   */
   public function getMaxBackoffDuration()
   {
     return $this->maxBackoffDuration;
   }
+  /**
+   * @param int
+   */
   public function setMaxDoublings($maxDoublings)
   {
     $this->maxDoublings = $maxDoublings;
   }
+  /**
+   * @return int
+   */
   public function getMaxDoublings()
   {
     return $this->maxDoublings;
   }
+  /**
+   * @param string
+   */
   public function setMaxRetryDuration($maxRetryDuration)
   {
     $this->maxRetryDuration = $maxRetryDuration;
   }
+  /**
+   * @return string
+   */
   public function getMaxRetryDuration()
   {
     return $this->maxRetryDuration;
   }
+  /**
+   * @param string
+   */
   public function setMinBackoffDuration($minBackoffDuration)
   {
     $this->minBackoffDuration = $minBackoffDuration;
   }
+  /**
+   * @return string
+   */
   public function getMinBackoffDuration()
   {
     return $this->minBackoffDuration;
   }
+  /**
+   * @param int
+   */
   public function setRetryCount($retryCount)
   {
     $this->retryCount = $retryCount;
   }
+  /**
+   * @return int
+   */
   public function getRetryCount()
   {
     return $this->retryCount;

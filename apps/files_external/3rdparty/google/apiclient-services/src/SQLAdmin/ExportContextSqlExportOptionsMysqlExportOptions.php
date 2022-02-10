@@ -19,12 +19,21 @@ namespace Google\Service\SQLAdmin;
 
 class ExportContextSqlExportOptionsMysqlExportOptions extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $masterData;
 
+  /**
+   * @param int
+   */
   public function setMasterData($masterData)
   {
     $this->masterData = $masterData;
   }
+  /**
+   * @return int
+   */
   public function getMasterData()
   {
     return $this->masterData;

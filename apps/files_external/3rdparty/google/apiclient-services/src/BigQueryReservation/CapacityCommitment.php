@@ -19,28 +19,61 @@ namespace Google\Service\BigQueryReservation;
 
 class CapacityCommitment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $commitmentEndTime;
+  /**
+   * @var string
+   */
   public $commitmentStartTime;
   protected $failureStatusType = Status::class;
   protected $failureStatusDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $plan;
+  /**
+   * @var string
+   */
   public $renewalPlan;
+  /**
+   * @var string
+   */
   public $slotCount;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setCommitmentEndTime($commitmentEndTime)
   {
     $this->commitmentEndTime = $commitmentEndTime;
   }
+  /**
+   * @return string
+   */
   public function getCommitmentEndTime()
   {
     return $this->commitmentEndTime;
   }
+  /**
+   * @param string
+   */
   public function setCommitmentStartTime($commitmentStartTime)
   {
     $this->commitmentStartTime = $commitmentStartTime;
   }
+  /**
+   * @return string
+   */
   public function getCommitmentStartTime()
   {
     return $this->commitmentStartTime;
@@ -59,42 +92,72 @@ class CapacityCommitment extends \Google\Model
   {
     return $this->failureStatus;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPlan($plan)
   {
     $this->plan = $plan;
   }
+  /**
+   * @return string
+   */
   public function getPlan()
   {
     return $this->plan;
   }
+  /**
+   * @param string
+   */
   public function setRenewalPlan($renewalPlan)
   {
     $this->renewalPlan = $renewalPlan;
   }
+  /**
+   * @return string
+   */
   public function getRenewalPlan()
   {
     return $this->renewalPlan;
   }
+  /**
+   * @param string
+   */
   public function setSlotCount($slotCount)
   {
     $this->slotCount = $slotCount;
   }
+  /**
+   * @return string
+   */
   public function getSlotCount()
   {
     return $this->slotCount;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

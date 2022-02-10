@@ -19,57 +19,111 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1DebugSession extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $count;
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $timeout;
+  /**
+   * @var int
+   */
   public $tracesize;
+  /**
+   * @var int
+   */
   public $validity;
 
+  /**
+   * @param int
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return int
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTimeout($timeout)
   {
     $this->timeout = $timeout;
   }
+  /**
+   * @return string
+   */
   public function getTimeout()
   {
     return $this->timeout;
   }
+  /**
+   * @param int
+   */
   public function setTracesize($tracesize)
   {
     $this->tracesize = $tracesize;
   }
+  /**
+   * @return int
+   */
   public function getTracesize()
   {
     return $this->tracesize;
   }
+  /**
+   * @param int
+   */
   public function setValidity($validity)
   {
     $this->validity = $validity;
   }
+  /**
+   * @return int
+   */
   public function getValidity()
   {
     return $this->validity;

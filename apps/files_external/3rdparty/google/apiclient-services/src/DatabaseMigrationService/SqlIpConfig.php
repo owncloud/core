@@ -22,8 +22,17 @@ class SqlIpConfig extends \Google\Collection
   protected $collection_key = 'authorizedNetworks';
   protected $authorizedNetworksType = SqlAclEntry::class;
   protected $authorizedNetworksDataType = 'array';
+  /**
+   * @var bool
+   */
   public $enableIpv4;
+  /**
+   * @var string
+   */
   public $privateNetwork;
+  /**
+   * @var bool
+   */
   public $requireSsl;
 
   /**
@@ -40,26 +49,44 @@ class SqlIpConfig extends \Google\Collection
   {
     return $this->authorizedNetworks;
   }
+  /**
+   * @param bool
+   */
   public function setEnableIpv4($enableIpv4)
   {
     $this->enableIpv4 = $enableIpv4;
   }
+  /**
+   * @return bool
+   */
   public function getEnableIpv4()
   {
     return $this->enableIpv4;
   }
+  /**
+   * @param string
+   */
   public function setPrivateNetwork($privateNetwork)
   {
     $this->privateNetwork = $privateNetwork;
   }
+  /**
+   * @return string
+   */
   public function getPrivateNetwork()
   {
     return $this->privateNetwork;
   }
+  /**
+   * @param bool
+   */
   public function setRequireSsl($requireSsl)
   {
     $this->requireSsl = $requireSsl;
   }
+  /**
+   * @return bool
+   */
   public function getRequireSsl()
   {
     return $this->requireSsl;

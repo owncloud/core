@@ -20,21 +20,39 @@ namespace Google\Service\Logging;
 class ListLogsResponse extends \Google\Collection
 {
   protected $collection_key = 'logNames';
+  /**
+   * @var string[]
+   */
   public $logNames;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string[]
+   */
   public function setLogNames($logNames)
   {
     $this->logNames = $logNames;
   }
+  /**
+   * @return string[]
+   */
   public function getLogNames()
   {
     return $this->logNames;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

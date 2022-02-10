@@ -19,30 +19,57 @@ namespace Google\Service\Directory;
 
 class AuxiliaryMessage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $auxiliaryMessage;
+  /**
+   * @var string
+   */
   public $fieldMask;
+  /**
+   * @var string
+   */
   public $severity;
 
+  /**
+   * @param string
+   */
   public function setAuxiliaryMessage($auxiliaryMessage)
   {
     $this->auxiliaryMessage = $auxiliaryMessage;
   }
+  /**
+   * @return string
+   */
   public function getAuxiliaryMessage()
   {
     return $this->auxiliaryMessage;
   }
+  /**
+   * @param string
+   */
   public function setFieldMask($fieldMask)
   {
     $this->fieldMask = $fieldMask;
   }
+  /**
+   * @return string
+   */
   public function getFieldMask()
   {
     return $this->fieldMask;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;

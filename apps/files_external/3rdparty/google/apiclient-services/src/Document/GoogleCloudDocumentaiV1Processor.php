@@ -19,75 +19,147 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1Processor extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $defaultProcessorVersion;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $kmsKeyName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $processEndpoint;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDefaultProcessorVersion($defaultProcessorVersion)
   {
     $this->defaultProcessorVersion = $defaultProcessorVersion;
   }
+  /**
+   * @return string
+   */
   public function getDefaultProcessorVersion()
   {
     return $this->defaultProcessorVersion;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProcessEndpoint($processEndpoint)
   {
     $this->processEndpoint = $processEndpoint;
   }
+  /**
+   * @return string
+   */
   public function getProcessEndpoint()
   {
     return $this->processEndpoint;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

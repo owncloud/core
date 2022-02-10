@@ -20,14 +20,23 @@ namespace Google\Service\AnalyticsData;
 class PivotOrderBy extends \Google\Collection
 {
   protected $collection_key = 'pivotSelections';
+  /**
+   * @var string
+   */
   public $metricName;
   protected $pivotSelectionsType = PivotSelection::class;
   protected $pivotSelectionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setMetricName($metricName)
   {
     $this->metricName = $metricName;
   }
+  /**
+   * @return string
+   */
   public function getMetricName()
   {
     return $this->metricName;

@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class ImageRawDisk extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $containerType;
+  /**
+   * @var string
+   */
   public $sha1Checksum;
+  /**
+   * @var string
+   */
   public $source;
 
+  /**
+   * @param string
+   */
   public function setContainerType($containerType)
   {
     $this->containerType = $containerType;
   }
+  /**
+   * @return string
+   */
   public function getContainerType()
   {
     return $this->containerType;
   }
+  /**
+   * @param string
+   */
   public function setSha1Checksum($sha1Checksum)
   {
     $this->sha1Checksum = $sha1Checksum;
   }
+  /**
+   * @return string
+   */
   public function getSha1Checksum()
   {
     return $this->sha1Checksum;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;

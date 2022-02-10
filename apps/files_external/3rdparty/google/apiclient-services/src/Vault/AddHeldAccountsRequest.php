@@ -20,21 +20,39 @@ namespace Google\Service\Vault;
 class AddHeldAccountsRequest extends \Google\Collection
 {
   protected $collection_key = 'emails';
+  /**
+   * @var string[]
+   */
   public $accountIds;
+  /**
+   * @var string[]
+   */
   public $emails;
 
+  /**
+   * @param string[]
+   */
   public function setAccountIds($accountIds)
   {
     $this->accountIds = $accountIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAccountIds()
   {
     return $this->accountIds;
   }
+  /**
+   * @param string[]
+   */
   public function setEmails($emails)
   {
     $this->emails = $emails;
   }
+  /**
+   * @return string[]
+   */
   public function getEmails()
   {
     return $this->emails;

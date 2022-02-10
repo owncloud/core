@@ -19,69 +19,151 @@ namespace Google\Service\SQLAdmin;
 
 class User extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var string
+   */
   public $instance;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $password;
+  protected $passwordPolicyType = UserPasswordValidationPolicy::class;
+  protected $passwordPolicyDataType = '';
+  /**
+   * @var string
+   */
   public $project;
   protected $sqlserverUserDetailsType = SqlServerUserDetails::class;
   protected $sqlserverUserDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param string
+   */
   public function setInstance($instance)
   {
     $this->instance = $instance;
   }
+  /**
+   * @return string
+   */
   public function getInstance()
   {
     return $this->instance;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPassword($password)
   {
     $this->password = $password;
   }
+  /**
+   * @return string
+   */
   public function getPassword()
   {
     return $this->password;
   }
+  /**
+   * @param UserPasswordValidationPolicy
+   */
+  public function setPasswordPolicy(UserPasswordValidationPolicy $passwordPolicy)
+  {
+    $this->passwordPolicy = $passwordPolicy;
+  }
+  /**
+   * @return UserPasswordValidationPolicy
+   */
+  public function getPasswordPolicy()
+  {
+    return $this->passwordPolicy;
+  }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;
@@ -100,10 +182,16 @@ class User extends \Google\Model
   {
     return $this->sqlserverUserDetails;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

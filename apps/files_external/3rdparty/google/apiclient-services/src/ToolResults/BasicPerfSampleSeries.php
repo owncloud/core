@@ -19,30 +19,57 @@ namespace Google\Service\ToolResults;
 
 class BasicPerfSampleSeries extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $perfMetricType;
+  /**
+   * @var string
+   */
   public $perfUnit;
+  /**
+   * @var string
+   */
   public $sampleSeriesLabel;
 
+  /**
+   * @param string
+   */
   public function setPerfMetricType($perfMetricType)
   {
     $this->perfMetricType = $perfMetricType;
   }
+  /**
+   * @return string
+   */
   public function getPerfMetricType()
   {
     return $this->perfMetricType;
   }
+  /**
+   * @param string
+   */
   public function setPerfUnit($perfUnit)
   {
     $this->perfUnit = $perfUnit;
   }
+  /**
+   * @return string
+   */
   public function getPerfUnit()
   {
     return $this->perfUnit;
   }
+  /**
+   * @param string
+   */
   public function setSampleSeriesLabel($sampleSeriesLabel)
   {
     $this->sampleSeriesLabel = $sampleSeriesLabel;
   }
+  /**
+   * @return string
+   */
   public function getSampleSeriesLabel()
   {
     return $this->sampleSeriesLabel;

@@ -22,8 +22,17 @@ class OrderreturnsCreateOrderReturnRequest extends \Google\Collection
   protected $collection_key = 'lineItems';
   protected $lineItemsType = OrderreturnsLineItem::class;
   protected $lineItemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $operationId;
+  /**
+   * @var string
+   */
   public $orderId;
+  /**
+   * @var string
+   */
   public $returnMethodType;
 
   /**
@@ -40,26 +49,44 @@ class OrderreturnsCreateOrderReturnRequest extends \Google\Collection
   {
     return $this->lineItems;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;
   }
+  /**
+   * @param string
+   */
   public function setOrderId($orderId)
   {
     $this->orderId = $orderId;
   }
+  /**
+   * @return string
+   */
   public function getOrderId()
   {
     return $this->orderId;
   }
+  /**
+   * @param string
+   */
   public function setReturnMethodType($returnMethodType)
   {
     $this->returnMethodType = $returnMethodType;
   }
+  /**
+   * @return string
+   */
   public function getReturnMethodType()
   {
     return $this->returnMethodType;

@@ -21,6 +21,9 @@ class StackTrace extends \Google\Model
 {
   protected $stackFramesType = StackFrames::class;
   protected $stackFramesDataType = '';
+  /**
+   * @var string
+   */
   public $stackTraceHashId;
 
   /**
@@ -37,10 +40,16 @@ class StackTrace extends \Google\Model
   {
     return $this->stackFrames;
   }
+  /**
+   * @param string
+   */
   public function setStackTraceHashId($stackTraceHashId)
   {
     $this->stackTraceHashId = $stackTraceHashId;
   }
+  /**
+   * @return string
+   */
   public function getStackTraceHashId()
   {
     return $this->stackTraceHashId;

@@ -20,15 +20,27 @@ namespace Google\Service\CloudVideoIntelligence;
 class GoogleCloudVideointelligenceV1FaceDetectionAnnotation extends \Google\Collection
 {
   protected $collection_key = 'tracks';
+  /**
+   * @var string
+   */
   public $thumbnail;
   protected $tracksType = GoogleCloudVideointelligenceV1Track::class;
   protected $tracksDataType = 'array';
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setThumbnail($thumbnail)
   {
     $this->thumbnail = $thumbnail;
   }
+  /**
+   * @return string
+   */
   public function getThumbnail()
   {
     return $this->thumbnail;
@@ -47,10 +59,16 @@ class GoogleCloudVideointelligenceV1FaceDetectionAnnotation extends \Google\Coll
   {
     return $this->tracks;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

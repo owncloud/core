@@ -19,13 +19,22 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1ObjectDetectionConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $annotationSpecSet;
   public $extractionFrameRate;
 
+  /**
+   * @param string
+   */
   public function setAnnotationSpecSet($annotationSpecSet)
   {
     $this->annotationSpecSet = $annotationSpecSet;
   }
+  /**
+   * @return string
+   */
   public function getAnnotationSpecSet()
   {
     return $this->annotationSpecSet;

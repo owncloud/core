@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class LookbackConfiguration extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $clickDuration;
+  /**
+   * @var int
+   */
   public $postImpressionActivitiesDuration;
 
+  /**
+   * @param int
+   */
   public function setClickDuration($clickDuration)
   {
     $this->clickDuration = $clickDuration;
   }
+  /**
+   * @return int
+   */
   public function getClickDuration()
   {
     return $this->clickDuration;
   }
+  /**
+   * @param int
+   */
   public function setPostImpressionActivitiesDuration($postImpressionActivitiesDuration)
   {
     $this->postImpressionActivitiesDuration = $postImpressionActivitiesDuration;
   }
+  /**
+   * @return int
+   */
   public function getPostImpressionActivitiesDuration()
   {
     return $this->postImpressionActivitiesDuration;

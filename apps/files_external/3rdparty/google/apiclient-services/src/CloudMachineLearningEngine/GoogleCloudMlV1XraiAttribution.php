@@ -19,12 +19,21 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1XraiAttribution extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $numIntegralSteps;
 
+  /**
+   * @param int
+   */
   public function setNumIntegralSteps($numIntegralSteps)
   {
     $this->numIntegralSteps = $numIntegralSteps;
   }
+  /**
+   * @return int
+   */
   public function getNumIntegralSteps()
   {
     return $this->numIntegralSteps;

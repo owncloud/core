@@ -19,48 +19,93 @@ namespace Google\Service\Adsense;
 
 class Site extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $autoAdsEnabled;
+  /**
+   * @var string
+   */
   public $domain;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $reportingDimensionId;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param bool
+   */
   public function setAutoAdsEnabled($autoAdsEnabled)
   {
     $this->autoAdsEnabled = $autoAdsEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getAutoAdsEnabled()
   {
     return $this->autoAdsEnabled;
   }
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setReportingDimensionId($reportingDimensionId)
   {
     $this->reportingDimensionId = $reportingDimensionId;
   }
+  /**
+   * @return string
+   */
   public function getReportingDimensionId()
   {
     return $this->reportingDimensionId;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

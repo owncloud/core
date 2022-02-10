@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class ShipmentTrackingInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $carrier;
+  /**
+   * @var string
+   */
   public $trackingNumber;
 
+  /**
+   * @param string
+   */
   public function setCarrier($carrier)
   {
     $this->carrier = $carrier;
   }
+  /**
+   * @return string
+   */
   public function getCarrier()
   {
     return $this->carrier;
   }
+  /**
+   * @param string
+   */
   public function setTrackingNumber($trackingNumber)
   {
     $this->trackingNumber = $trackingNumber;
   }
+  /**
+   * @return string
+   */
   public function getTrackingNumber()
   {
     return $this->trackingNumber;

@@ -19,21 +19,39 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1DialogflowSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audioUri;
+  /**
+   * @var string
+   */
   public $dialogflowConversation;
 
+  /**
+   * @param string
+   */
   public function setAudioUri($audioUri)
   {
     $this->audioUri = $audioUri;
   }
+  /**
+   * @return string
+   */
   public function getAudioUri()
   {
     return $this->audioUri;
   }
+  /**
+   * @param string
+   */
   public function setDialogflowConversation($dialogflowConversation)
   {
     $this->dialogflowConversation = $dialogflowConversation;
   }
+  /**
+   * @return string
+   */
   public function getDialogflowConversation()
   {
     return $this->dialogflowConversation;

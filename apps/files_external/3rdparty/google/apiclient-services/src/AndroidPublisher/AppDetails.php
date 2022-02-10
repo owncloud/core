@@ -19,39 +19,75 @@ namespace Google\Service\AndroidPublisher;
 
 class AppDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contactEmail;
+  /**
+   * @var string
+   */
   public $contactPhone;
+  /**
+   * @var string
+   */
   public $contactWebsite;
+  /**
+   * @var string
+   */
   public $defaultLanguage;
 
+  /**
+   * @param string
+   */
   public function setContactEmail($contactEmail)
   {
     $this->contactEmail = $contactEmail;
   }
+  /**
+   * @return string
+   */
   public function getContactEmail()
   {
     return $this->contactEmail;
   }
+  /**
+   * @param string
+   */
   public function setContactPhone($contactPhone)
   {
     $this->contactPhone = $contactPhone;
   }
+  /**
+   * @return string
+   */
   public function getContactPhone()
   {
     return $this->contactPhone;
   }
+  /**
+   * @param string
+   */
   public function setContactWebsite($contactWebsite)
   {
     $this->contactWebsite = $contactWebsite;
   }
+  /**
+   * @return string
+   */
   public function getContactWebsite()
   {
     return $this->contactWebsite;
   }
+  /**
+   * @param string
+   */
   public function setDefaultLanguage($defaultLanguage)
   {
     $this->defaultLanguage = $defaultLanguage;
   }
+  /**
+   * @return string
+   */
   public function getDefaultLanguage()
   {
     return $this->defaultLanguage;

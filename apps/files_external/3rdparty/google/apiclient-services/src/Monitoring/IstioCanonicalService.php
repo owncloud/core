@@ -19,30 +19,57 @@ namespace Google\Service\Monitoring;
 
 class IstioCanonicalService extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $canonicalService;
+  /**
+   * @var string
+   */
   public $canonicalServiceNamespace;
+  /**
+   * @var string
+   */
   public $meshUid;
 
+  /**
+   * @param string
+   */
   public function setCanonicalService($canonicalService)
   {
     $this->canonicalService = $canonicalService;
   }
+  /**
+   * @return string
+   */
   public function getCanonicalService()
   {
     return $this->canonicalService;
   }
+  /**
+   * @param string
+   */
   public function setCanonicalServiceNamespace($canonicalServiceNamespace)
   {
     $this->canonicalServiceNamespace = $canonicalServiceNamespace;
   }
+  /**
+   * @return string
+   */
   public function getCanonicalServiceNamespace()
   {
     return $this->canonicalServiceNamespace;
   }
+  /**
+   * @param string
+   */
   public function setMeshUid($meshUid)
   {
     $this->meshUid = $meshUid;
   }
+  /**
+   * @return string
+   */
   public function getMeshUid()
   {
     return $this->meshUid;

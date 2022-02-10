@@ -20,41 +20,77 @@ namespace Google\Service\ServiceConsumerManagement;
 class TenancyUnit extends \Google\Collection
 {
   protected $collection_key = 'tenantResources';
+  /**
+   * @var string
+   */
   public $consumer;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $service;
   protected $tenantResourcesType = TenantResource::class;
   protected $tenantResourcesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setConsumer($consumer)
   {
     $this->consumer = $consumer;
   }
+  /**
+   * @return string
+   */
   public function getConsumer()
   {
     return $this->consumer;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

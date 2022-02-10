@@ -19,25 +19,43 @@ namespace Google\Service\Sheets;
 
 class SlicerSpec extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $applyToPivotTables;
   protected $backgroundColorType = Color::class;
   protected $backgroundColorDataType = '';
   protected $backgroundColorStyleType = ColorStyle::class;
   protected $backgroundColorStyleDataType = '';
+  /**
+   * @var int
+   */
   public $columnIndex;
   protected $dataRangeType = GridRange::class;
   protected $dataRangeDataType = '';
   protected $filterCriteriaType = FilterCriteria::class;
   protected $filterCriteriaDataType = '';
+  /**
+   * @var string
+   */
   public $horizontalAlignment;
   protected $textFormatType = TextFormat::class;
   protected $textFormatDataType = '';
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param bool
+   */
   public function setApplyToPivotTables($applyToPivotTables)
   {
     $this->applyToPivotTables = $applyToPivotTables;
   }
+  /**
+   * @return bool
+   */
   public function getApplyToPivotTables()
   {
     return $this->applyToPivotTables;
@@ -70,10 +88,16 @@ class SlicerSpec extends \Google\Model
   {
     return $this->backgroundColorStyle;
   }
+  /**
+   * @param int
+   */
   public function setColumnIndex($columnIndex)
   {
     $this->columnIndex = $columnIndex;
   }
+  /**
+   * @return int
+   */
   public function getColumnIndex()
   {
     return $this->columnIndex;
@@ -106,10 +130,16 @@ class SlicerSpec extends \Google\Model
   {
     return $this->filterCriteria;
   }
+  /**
+   * @param string
+   */
   public function setHorizontalAlignment($horizontalAlignment)
   {
     $this->horizontalAlignment = $horizontalAlignment;
   }
+  /**
+   * @return string
+   */
   public function getHorizontalAlignment()
   {
     return $this->horizontalAlignment;
@@ -128,10 +158,16 @@ class SlicerSpec extends \Google\Model
   {
     return $this->textFormat;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

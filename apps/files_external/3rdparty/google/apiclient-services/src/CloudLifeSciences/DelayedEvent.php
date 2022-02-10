@@ -20,21 +20,39 @@ namespace Google\Service\CloudLifeSciences;
 class DelayedEvent extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var string
+   */
   public $cause;
+  /**
+   * @var string[]
+   */
   public $metrics;
 
+  /**
+   * @param string
+   */
   public function setCause($cause)
   {
     $this->cause = $cause;
   }
+  /**
+   * @return string
+   */
   public function getCause()
   {
     return $this->cause;
   }
+  /**
+   * @param string[]
+   */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
+  /**
+   * @return string[]
+   */
   public function getMetrics()
   {
     return $this->metrics;

@@ -19,21 +19,39 @@ namespace Google\Service\Monitoring;
 
 class ResourceGroup extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $groupId;
+  /**
+   * @var string
+   */
   public $resourceType;
 
+  /**
+   * @param string
+   */
   public function setGroupId($groupId)
   {
     $this->groupId = $groupId;
   }
+  /**
+   * @return string
+   */
   public function getGroupId()
   {
     return $this->groupId;
   }
+  /**
+   * @param string
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string
+   */
   public function getResourceType()
   {
     return $this->resourceType;

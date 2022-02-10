@@ -22,9 +22,21 @@ class ConfigChange extends \Google\Collection
   protected $collection_key = 'advices';
   protected $advicesType = Advice::class;
   protected $advicesDataType = 'array';
+  /**
+   * @var string
+   */
   public $changeType;
+  /**
+   * @var string
+   */
   public $element;
+  /**
+   * @var string
+   */
   public $newValue;
+  /**
+   * @var string
+   */
   public $oldValue;
 
   /**
@@ -41,34 +53,58 @@ class ConfigChange extends \Google\Collection
   {
     return $this->advices;
   }
+  /**
+   * @param string
+   */
   public function setChangeType($changeType)
   {
     $this->changeType = $changeType;
   }
+  /**
+   * @return string
+   */
   public function getChangeType()
   {
     return $this->changeType;
   }
+  /**
+   * @param string
+   */
   public function setElement($element)
   {
     $this->element = $element;
   }
+  /**
+   * @return string
+   */
   public function getElement()
   {
     return $this->element;
   }
+  /**
+   * @param string
+   */
   public function setNewValue($newValue)
   {
     $this->newValue = $newValue;
   }
+  /**
+   * @return string
+   */
   public function getNewValue()
   {
     return $this->newValue;
   }
+  /**
+   * @param string
+   */
   public function setOldValue($oldValue)
   {
     $this->oldValue = $oldValue;
   }
+  /**
+   * @return string
+   */
   public function getOldValue()
   {
     return $this->oldValue;

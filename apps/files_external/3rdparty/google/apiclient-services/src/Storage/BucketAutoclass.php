@@ -19,21 +19,39 @@ namespace Google\Service\Storage;
 
 class BucketAutoclass extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $toggleTime;
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setToggleTime($toggleTime)
   {
     $this->toggleTime = $toggleTime;
   }
+  /**
+   * @return string
+   */
   public function getToggleTime()
   {
     return $this->toggleTime;

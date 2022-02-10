@@ -19,39 +19,75 @@ namespace Google\Service\CloudIot;
 
 class GatewayConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gatewayAuthMethod;
+  /**
+   * @var string
+   */
   public $gatewayType;
+  /**
+   * @var string
+   */
   public $lastAccessedGatewayId;
+  /**
+   * @var string
+   */
   public $lastAccessedGatewayTime;
 
+  /**
+   * @param string
+   */
   public function setGatewayAuthMethod($gatewayAuthMethod)
   {
     $this->gatewayAuthMethod = $gatewayAuthMethod;
   }
+  /**
+   * @return string
+   */
   public function getGatewayAuthMethod()
   {
     return $this->gatewayAuthMethod;
   }
+  /**
+   * @param string
+   */
   public function setGatewayType($gatewayType)
   {
     $this->gatewayType = $gatewayType;
   }
+  /**
+   * @return string
+   */
   public function getGatewayType()
   {
     return $this->gatewayType;
   }
+  /**
+   * @param string
+   */
   public function setLastAccessedGatewayId($lastAccessedGatewayId)
   {
     $this->lastAccessedGatewayId = $lastAccessedGatewayId;
   }
+  /**
+   * @return string
+   */
   public function getLastAccessedGatewayId()
   {
     return $this->lastAccessedGatewayId;
   }
+  /**
+   * @param string
+   */
   public function setLastAccessedGatewayTime($lastAccessedGatewayTime)
   {
     $this->lastAccessedGatewayTime = $lastAccessedGatewayTime;
   }
+  /**
+   * @return string
+   */
   public function getLastAccessedGatewayTime()
   {
     return $this->lastAccessedGatewayTime;

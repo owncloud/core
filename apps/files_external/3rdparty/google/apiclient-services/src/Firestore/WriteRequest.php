@@ -20,32 +20,59 @@ namespace Google\Service\Firestore;
 class WriteRequest extends \Google\Collection
 {
   protected $collection_key = 'writes';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $streamId;
+  /**
+   * @var string
+   */
   public $streamToken;
   protected $writesType = Write::class;
   protected $writesDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setStreamId($streamId)
   {
     $this->streamId = $streamId;
   }
+  /**
+   * @return string
+   */
   public function getStreamId()
   {
     return $this->streamId;
   }
+  /**
+   * @param string
+   */
   public function setStreamToken($streamToken)
   {
     $this->streamToken = $streamToken;
   }
+  /**
+   * @return string
+   */
   public function getStreamToken()
   {
     return $this->streamToken;

@@ -19,21 +19,39 @@ namespace Google\Service\HomeGraphService;
 
 class SyncRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $agentUserId;
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setAgentUserId($agentUserId)
   {
     $this->agentUserId = $agentUserId;
   }
+  /**
+   * @return string
+   */
   public function getAgentUserId()
   {
     return $this->agentUserId;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

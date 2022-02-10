@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class SqlOutOfDiskReport extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $sqlMinRecommendedIncreaseSizeGb;
+  /**
+   * @var string
+   */
   public $sqlOutOfDiskState;
 
+  /**
+   * @param int
+   */
   public function setSqlMinRecommendedIncreaseSizeGb($sqlMinRecommendedIncreaseSizeGb)
   {
     $this->sqlMinRecommendedIncreaseSizeGb = $sqlMinRecommendedIncreaseSizeGb;
   }
+  /**
+   * @return int
+   */
   public function getSqlMinRecommendedIncreaseSizeGb()
   {
     return $this->sqlMinRecommendedIncreaseSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setSqlOutOfDiskState($sqlOutOfDiskState)
   {
     $this->sqlOutOfDiskState = $sqlOutOfDiskState;
   }
+  /**
+   * @return string
+   */
   public function getSqlOutOfDiskState()
   {
     return $this->sqlOutOfDiskState;

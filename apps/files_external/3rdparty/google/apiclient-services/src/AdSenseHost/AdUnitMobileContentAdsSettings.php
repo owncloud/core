@@ -19,39 +19,75 @@ namespace Google\Service\AdSenseHost;
 
 class AdUnitMobileContentAdsSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $markupLanguage;
+  /**
+   * @var string
+   */
   public $scriptingLanguage;
+  /**
+   * @var string
+   */
   public $size;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setMarkupLanguage($markupLanguage)
   {
     $this->markupLanguage = $markupLanguage;
   }
+  /**
+   * @return string
+   */
   public function getMarkupLanguage()
   {
     return $this->markupLanguage;
   }
+  /**
+   * @param string
+   */
   public function setScriptingLanguage($scriptingLanguage)
   {
     $this->scriptingLanguage = $scriptingLanguage;
   }
+  /**
+   * @return string
+   */
   public function getScriptingLanguage()
   {
     return $this->scriptingLanguage;
   }
+  /**
+   * @param string
+   */
   public function setSize($size)
   {
     $this->size = $size;
   }
+  /**
+   * @return string
+   */
   public function getSize()
   {
     return $this->size;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

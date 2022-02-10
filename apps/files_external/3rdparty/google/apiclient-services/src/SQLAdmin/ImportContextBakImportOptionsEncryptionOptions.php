@@ -19,30 +19,57 @@ namespace Google\Service\SQLAdmin;
 
 class ImportContextBakImportOptionsEncryptionOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certPath;
+  /**
+   * @var string
+   */
   public $pvkPassword;
+  /**
+   * @var string
+   */
   public $pvkPath;
 
+  /**
+   * @param string
+   */
   public function setCertPath($certPath)
   {
     $this->certPath = $certPath;
   }
+  /**
+   * @return string
+   */
   public function getCertPath()
   {
     return $this->certPath;
   }
+  /**
+   * @param string
+   */
   public function setPvkPassword($pvkPassword)
   {
     $this->pvkPassword = $pvkPassword;
   }
+  /**
+   * @return string
+   */
   public function getPvkPassword()
   {
     return $this->pvkPassword;
   }
+  /**
+   * @param string
+   */
   public function setPvkPath($pvkPath)
   {
     $this->pvkPath = $pvkPath;
   }
+  /**
+   * @return string
+   */
   public function getPvkPath()
   {
     return $this->pvkPath;

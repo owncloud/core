@@ -19,48 +19,93 @@ namespace Google\Service\Bigquery;
 
 class QueryTimelineSample extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $activeUnits;
+  /**
+   * @var string
+   */
   public $completedUnits;
+  /**
+   * @var string
+   */
   public $elapsedMs;
+  /**
+   * @var string
+   */
   public $pendingUnits;
+  /**
+   * @var string
+   */
   public $totalSlotMs;
 
+  /**
+   * @param string
+   */
   public function setActiveUnits($activeUnits)
   {
     $this->activeUnits = $activeUnits;
   }
+  /**
+   * @return string
+   */
   public function getActiveUnits()
   {
     return $this->activeUnits;
   }
+  /**
+   * @param string
+   */
   public function setCompletedUnits($completedUnits)
   {
     $this->completedUnits = $completedUnits;
   }
+  /**
+   * @return string
+   */
   public function getCompletedUnits()
   {
     return $this->completedUnits;
   }
+  /**
+   * @param string
+   */
   public function setElapsedMs($elapsedMs)
   {
     $this->elapsedMs = $elapsedMs;
   }
+  /**
+   * @return string
+   */
   public function getElapsedMs()
   {
     return $this->elapsedMs;
   }
+  /**
+   * @param string
+   */
   public function setPendingUnits($pendingUnits)
   {
     $this->pendingUnits = $pendingUnits;
   }
+  /**
+   * @return string
+   */
   public function getPendingUnits()
   {
     return $this->pendingUnits;
   }
+  /**
+   * @param string
+   */
   public function setTotalSlotMs($totalSlotMs)
   {
     $this->totalSlotMs = $totalSlotMs;
   }
+  /**
+   * @return string
+   */
   public function getTotalSlotMs()
   {
     return $this->totalSlotMs;

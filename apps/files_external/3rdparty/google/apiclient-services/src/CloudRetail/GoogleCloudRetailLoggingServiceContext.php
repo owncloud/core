@@ -19,12 +19,21 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailLoggingServiceContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

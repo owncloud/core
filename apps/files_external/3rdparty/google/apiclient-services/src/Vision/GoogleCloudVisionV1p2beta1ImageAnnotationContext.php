@@ -19,21 +19,39 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p2beta1ImageAnnotationContext extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $pageNumber;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param int
+   */
   public function setPageNumber($pageNumber)
   {
     $this->pageNumber = $pageNumber;
   }
+  /**
+   * @return int
+   */
   public function getPageNumber()
   {
     return $this->pageNumber;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

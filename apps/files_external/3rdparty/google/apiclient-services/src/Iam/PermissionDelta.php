@@ -20,21 +20,39 @@ namespace Google\Service\Iam;
 class PermissionDelta extends \Google\Collection
 {
   protected $collection_key = 'removedPermissions';
+  /**
+   * @var string[]
+   */
   public $addedPermissions;
+  /**
+   * @var string[]
+   */
   public $removedPermissions;
 
+  /**
+   * @param string[]
+   */
   public function setAddedPermissions($addedPermissions)
   {
     $this->addedPermissions = $addedPermissions;
   }
+  /**
+   * @return string[]
+   */
   public function getAddedPermissions()
   {
     return $this->addedPermissions;
   }
+  /**
+   * @param string[]
+   */
   public function setRemovedPermissions($removedPermissions)
   {
     $this->removedPermissions = $removedPermissions;
   }
+  /**
+   * @return string[]
+   */
   public function getRemovedPermissions()
   {
     return $this->removedPermissions;

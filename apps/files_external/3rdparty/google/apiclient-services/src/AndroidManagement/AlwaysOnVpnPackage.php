@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class AlwaysOnVpnPackage extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $lockdownEnabled;
+  /**
+   * @var string
+   */
   public $packageName;
 
+  /**
+   * @param bool
+   */
   public function setLockdownEnabled($lockdownEnabled)
   {
     $this->lockdownEnabled = $lockdownEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getLockdownEnabled()
   {
     return $this->lockdownEnabled;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;

@@ -21,6 +21,9 @@ class MoveAnalysis extends \Google\Model
 {
   protected $analysisType = MoveAnalysisResult::class;
   protected $analysisDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
   protected $errorType = Status::class;
   protected $errorDataType = '';
@@ -39,10 +42,16 @@ class MoveAnalysis extends \Google\Model
   {
     return $this->analysis;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;

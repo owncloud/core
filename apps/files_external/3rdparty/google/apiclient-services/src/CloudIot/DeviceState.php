@@ -19,21 +19,39 @@ namespace Google\Service\CloudIot;
 
 class DeviceState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $binaryData;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setBinaryData($binaryData)
   {
     $this->binaryData = $binaryData;
   }
+  /**
+   * @return string
+   */
   public function getBinaryData()
   {
     return $this->binaryData;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

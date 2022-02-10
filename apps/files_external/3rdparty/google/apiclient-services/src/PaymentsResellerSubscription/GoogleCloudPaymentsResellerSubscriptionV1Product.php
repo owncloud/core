@@ -20,25 +20,43 @@ namespace Google\Service\PaymentsResellerSubscription;
 class GoogleCloudPaymentsResellerSubscriptionV1Product extends \Google\Collection
 {
   protected $collection_key = 'titles';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $regionCodes;
   protected $subscriptionBillingCycleDurationType = GoogleCloudPaymentsResellerSubscriptionV1Duration::class;
   protected $subscriptionBillingCycleDurationDataType = '';
   protected $titlesType = GoogleTypeLocalizedText::class;
   protected $titlesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setRegionCodes($regionCodes)
   {
     $this->regionCodes = $regionCodes;
   }
+  /**
+   * @return string[]
+   */
   public function getRegionCodes()
   {
     return $this->regionCodes;

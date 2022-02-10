@@ -19,17 +19,35 @@ namespace Google\Service\Container;
 
 class SetMaintenancePolicyRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterId;
   protected $maintenancePolicyType = MaintenancePolicy::class;
   protected $maintenancePolicyDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string
+   */
   public function setClusterId($clusterId)
   {
     $this->clusterId = $clusterId;
   }
+  /**
+   * @return string
+   */
   public function getClusterId()
   {
     return $this->clusterId;
@@ -48,26 +66,44 @@ class SetMaintenancePolicyRequest extends \Google\Model
   {
     return $this->maintenancePolicy;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

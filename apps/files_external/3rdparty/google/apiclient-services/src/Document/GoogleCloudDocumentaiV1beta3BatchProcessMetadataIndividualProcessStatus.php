@@ -19,18 +19,33 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta3BatchProcessMetadataIndividualProcessStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $humanReviewOperation;
   protected $humanReviewStatusType = GoogleCloudDocumentaiV1beta3HumanReviewStatus::class;
   protected $humanReviewStatusDataType = '';
+  /**
+   * @var string
+   */
   public $inputGcsSource;
+  /**
+   * @var string
+   */
   public $outputGcsDestination;
   protected $statusType = GoogleRpcStatus::class;
   protected $statusDataType = '';
 
+  /**
+   * @param string
+   */
   public function setHumanReviewOperation($humanReviewOperation)
   {
     $this->humanReviewOperation = $humanReviewOperation;
   }
+  /**
+   * @return string
+   */
   public function getHumanReviewOperation()
   {
     return $this->humanReviewOperation;
@@ -49,18 +64,30 @@ class GoogleCloudDocumentaiV1beta3BatchProcessMetadataIndividualProcessStatus ex
   {
     return $this->humanReviewStatus;
   }
+  /**
+   * @param string
+   */
   public function setInputGcsSource($inputGcsSource)
   {
     $this->inputGcsSource = $inputGcsSource;
   }
+  /**
+   * @return string
+   */
   public function getInputGcsSource()
   {
     return $this->inputGcsSource;
   }
+  /**
+   * @param string
+   */
   public function setOutputGcsDestination($outputGcsDestination)
   {
     $this->outputGcsDestination = $outputGcsDestination;
   }
+  /**
+   * @return string
+   */
   public function getOutputGcsDestination()
   {
     return $this->outputGcsDestination;

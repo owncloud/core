@@ -19,39 +19,75 @@ namespace Google\Service\CloudFunctions;
 
 class SecretEnvVar extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $secret;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setSecret($secret)
   {
     $this->secret = $secret;
   }
+  /**
+   * @return string
+   */
   public function getSecret()
   {
     return $this->secret;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

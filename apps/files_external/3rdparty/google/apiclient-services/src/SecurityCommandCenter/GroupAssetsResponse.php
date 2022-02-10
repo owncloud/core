@@ -22,8 +22,17 @@ class GroupAssetsResponse extends \Google\Collection
   protected $collection_key = 'groupByResults';
   protected $groupByResultsType = GroupResult::class;
   protected $groupByResultsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $readTime;
+  /**
+   * @var int
+   */
   public $totalSize;
 
   /**
@@ -40,26 +49,44 @@ class GroupAssetsResponse extends \Google\Collection
   {
     return $this->groupByResults;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setReadTime($readTime)
   {
     $this->readTime = $readTime;
   }
+  /**
+   * @return string
+   */
   public function getReadTime()
   {
     return $this->readTime;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

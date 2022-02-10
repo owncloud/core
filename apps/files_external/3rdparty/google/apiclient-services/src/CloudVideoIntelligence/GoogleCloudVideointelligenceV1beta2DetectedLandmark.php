@@ -19,23 +19,41 @@ namespace Google\Service\CloudVideoIntelligence;
 
 class GoogleCloudVideointelligenceV1beta2DetectedLandmark extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $name;
   protected $pointType = GoogleCloudVideointelligenceV1beta2NormalizedVertex::class;
   protected $pointDataType = '';
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

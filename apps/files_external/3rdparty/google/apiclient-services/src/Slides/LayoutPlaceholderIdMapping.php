@@ -21,7 +21,13 @@ class LayoutPlaceholderIdMapping extends \Google\Model
 {
   protected $layoutPlaceholderType = Placeholder::class;
   protected $layoutPlaceholderDataType = '';
+  /**
+   * @var string
+   */
   public $layoutPlaceholderObjectId;
+  /**
+   * @var string
+   */
   public $objectId;
 
   /**
@@ -38,18 +44,30 @@ class LayoutPlaceholderIdMapping extends \Google\Model
   {
     return $this->layoutPlaceholder;
   }
+  /**
+   * @param string
+   */
   public function setLayoutPlaceholderObjectId($layoutPlaceholderObjectId)
   {
     $this->layoutPlaceholderObjectId = $layoutPlaceholderObjectId;
   }
+  /**
+   * @return string
+   */
   public function getLayoutPlaceholderObjectId()
   {
     return $this->layoutPlaceholderObjectId;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;

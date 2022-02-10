@@ -20,48 +20,93 @@ namespace Google\Service\OSConfig;
 class OSPolicyResourceRepositoryResourceAptRepository extends \Google\Collection
 {
   protected $collection_key = 'components';
+  /**
+   * @var string
+   */
   public $archiveType;
+  /**
+   * @var string[]
+   */
   public $components;
+  /**
+   * @var string
+   */
   public $distribution;
+  /**
+   * @var string
+   */
   public $gpgKey;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setArchiveType($archiveType)
   {
     $this->archiveType = $archiveType;
   }
+  /**
+   * @return string
+   */
   public function getArchiveType()
   {
     return $this->archiveType;
   }
+  /**
+   * @param string[]
+   */
   public function setComponents($components)
   {
     $this->components = $components;
   }
+  /**
+   * @return string[]
+   */
   public function getComponents()
   {
     return $this->components;
   }
+  /**
+   * @param string
+   */
   public function setDistribution($distribution)
   {
     $this->distribution = $distribution;
   }
+  /**
+   * @return string
+   */
   public function getDistribution()
   {
     return $this->distribution;
   }
+  /**
+   * @param string
+   */
   public function setGpgKey($gpgKey)
   {
     $this->gpgKey = $gpgKey;
   }
+  /**
+   * @return string
+   */
   public function getGpgKey()
   {
     return $this->gpgKey;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

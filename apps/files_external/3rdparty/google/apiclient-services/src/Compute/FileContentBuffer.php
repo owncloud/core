@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class FileContentBuffer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var string
+   */
   public $fileType;
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setFileType($fileType)
   {
     $this->fileType = $fileType;
   }
+  /**
+   * @return string
+   */
   public function getFileType()
   {
     return $this->fileType;

@@ -19,84 +19,165 @@ namespace Google\Service\Compute;
 
 class InstanceGroupManagerActionsSummary extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $abandoning;
+  /**
+   * @var int
+   */
   public $creating;
+  /**
+   * @var int
+   */
   public $creatingWithoutRetries;
+  /**
+   * @var int
+   */
   public $deleting;
+  /**
+   * @var int
+   */
   public $none;
+  /**
+   * @var int
+   */
   public $recreating;
+  /**
+   * @var int
+   */
   public $refreshing;
+  /**
+   * @var int
+   */
   public $restarting;
+  /**
+   * @var int
+   */
   public $verifying;
 
+  /**
+   * @param int
+   */
   public function setAbandoning($abandoning)
   {
     $this->abandoning = $abandoning;
   }
+  /**
+   * @return int
+   */
   public function getAbandoning()
   {
     return $this->abandoning;
   }
+  /**
+   * @param int
+   */
   public function setCreating($creating)
   {
     $this->creating = $creating;
   }
+  /**
+   * @return int
+   */
   public function getCreating()
   {
     return $this->creating;
   }
+  /**
+   * @param int
+   */
   public function setCreatingWithoutRetries($creatingWithoutRetries)
   {
     $this->creatingWithoutRetries = $creatingWithoutRetries;
   }
+  /**
+   * @return int
+   */
   public function getCreatingWithoutRetries()
   {
     return $this->creatingWithoutRetries;
   }
+  /**
+   * @param int
+   */
   public function setDeleting($deleting)
   {
     $this->deleting = $deleting;
   }
+  /**
+   * @return int
+   */
   public function getDeleting()
   {
     return $this->deleting;
   }
+  /**
+   * @param int
+   */
   public function setNone($none)
   {
     $this->none = $none;
   }
+  /**
+   * @return int
+   */
   public function getNone()
   {
     return $this->none;
   }
+  /**
+   * @param int
+   */
   public function setRecreating($recreating)
   {
     $this->recreating = $recreating;
   }
+  /**
+   * @return int
+   */
   public function getRecreating()
   {
     return $this->recreating;
   }
+  /**
+   * @param int
+   */
   public function setRefreshing($refreshing)
   {
     $this->refreshing = $refreshing;
   }
+  /**
+   * @return int
+   */
   public function getRefreshing()
   {
     return $this->refreshing;
   }
+  /**
+   * @param int
+   */
   public function setRestarting($restarting)
   {
     $this->restarting = $restarting;
   }
+  /**
+   * @return int
+   */
   public function getRestarting()
   {
     return $this->restarting;
   }
+  /**
+   * @param int
+   */
   public function setVerifying($verifying)
   {
     $this->verifying = $verifying;
   }
+  /**
+   * @return int
+   */
   public function getVerifying()
   {
     return $this->verifying;

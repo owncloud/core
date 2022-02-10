@@ -17,6 +17,8 @@
 
 namespace Google\Service\Logging\Resource;
 
+use Google\Service\Logging\CmekSettings;
+
 /**
  * The "projects" collection of methods.
  * Typical usage is:
@@ -27,6 +29,32 @@ namespace Google\Service\Logging\Resource;
  */
 class Projects extends \Google\Service\Resource
 {
+  /**
+   * Gets the Logging CMEK settings for the given resource.Note: CMEK for the Log
+   * Router can be configured for Google Cloud projects, folders, organizations
+   * and billing accounts. Once configured for an organization, it applies to all
+   * projects and folders in the Google Cloud organization.See Enabling CMEK for
+   * Log Router (https://cloud.google.com/logging/docs/routing/managed-encryption)
+   * for more information. (projects.getCmekSettings)
+   *
+   * @param string $name Required. The resource for which to retrieve CMEK
+   * settings. "projects/[PROJECT_ID]/cmekSettings"
+   * "organizations/[ORGANIZATION_ID]/cmekSettings"
+   * "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
+   * "folders/[FOLDER_ID]/cmekSettings" For
+   * example:"organizations/12345/cmekSettings"Note: CMEK for the Log Router can
+   * be configured for Google Cloud projects, folders, organizations and billing
+   * accounts. Once configured for an organization, it applies to all projects and
+   * folders in the Google Cloud organization.
+   * @param array $optParams Optional parameters.
+   * @return CmekSettings
+   */
+  public function getCmekSettings($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getCmekSettings', [$params], CmekSettings::class);
+  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

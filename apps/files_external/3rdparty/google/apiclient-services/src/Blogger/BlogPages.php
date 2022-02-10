@@ -19,21 +19,39 @@ namespace Google\Service\Blogger;
 
 class BlogPages extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var int
+   */
   public $totalItems;
 
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param int
+   */
   public function setTotalItems($totalItems)
   {
     $this->totalItems = $totalItems;
   }
+  /**
+   * @return int
+   */
   public function getTotalItems()
   {
     return $this->totalItems;

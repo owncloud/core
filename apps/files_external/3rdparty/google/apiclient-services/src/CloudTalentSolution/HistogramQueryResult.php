@@ -19,21 +19,39 @@ namespace Google\Service\CloudTalentSolution;
 
 class HistogramQueryResult extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $histogram;
+  /**
+   * @var string
+   */
   public $histogramQuery;
 
+  /**
+   * @param string[]
+   */
   public function setHistogram($histogram)
   {
     $this->histogram = $histogram;
   }
+  /**
+   * @return string[]
+   */
   public function getHistogram()
   {
     return $this->histogram;
   }
+  /**
+   * @param string
+   */
   public function setHistogramQuery($histogramQuery)
   {
     $this->histogramQuery = $histogramQuery;
   }
+  /**
+   * @return string
+   */
   public function getHistogramQuery()
   {
     return $this->histogramQuery;

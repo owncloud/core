@@ -20,21 +20,39 @@ namespace Google\Service\SecurityCommandCenter;
 class Indicator extends \Google\Collection
 {
   protected $collection_key = 'ipAddresses';
+  /**
+   * @var string[]
+   */
   public $domains;
+  /**
+   * @var string[]
+   */
   public $ipAddresses;
 
+  /**
+   * @param string[]
+   */
   public function setDomains($domains)
   {
     $this->domains = $domains;
   }
+  /**
+   * @return string[]
+   */
   public function getDomains()
   {
     return $this->domains;
   }
+  /**
+   * @param string[]
+   */
   public function setIpAddresses($ipAddresses)
   {
     $this->ipAddresses = $ipAddresses;
   }
+  /**
+   * @return string[]
+   */
   public function getIpAddresses()
   {
     return $this->ipAddresses;

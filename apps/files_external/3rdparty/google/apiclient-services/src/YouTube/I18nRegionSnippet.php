@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class I18nRegionSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gl;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setGl($gl)
   {
     $this->gl = $gl;
   }
+  /**
+   * @return string
+   */
   public function getGl()
   {
     return $this->gl;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

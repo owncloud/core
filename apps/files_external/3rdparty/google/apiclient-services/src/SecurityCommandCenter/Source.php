@@ -19,39 +19,75 @@ namespace Google\Service\SecurityCommandCenter;
 
 class Source extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $canonicalName;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setCanonicalName($canonicalName)
   {
     $this->canonicalName = $canonicalName;
   }
+  /**
+   * @return string
+   */
   public function getCanonicalName()
   {
     return $this->canonicalName;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

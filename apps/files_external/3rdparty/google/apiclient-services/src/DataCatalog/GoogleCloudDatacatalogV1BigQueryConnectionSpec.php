@@ -21,7 +21,13 @@ class GoogleCloudDatacatalogV1BigQueryConnectionSpec extends \Google\Model
 {
   protected $cloudSqlType = GoogleCloudDatacatalogV1CloudSqlBigQueryConnectionSpec::class;
   protected $cloudSqlDataType = '';
+  /**
+   * @var string
+   */
   public $connectionType;
+  /**
+   * @var bool
+   */
   public $hasCredential;
 
   /**
@@ -38,18 +44,30 @@ class GoogleCloudDatacatalogV1BigQueryConnectionSpec extends \Google\Model
   {
     return $this->cloudSql;
   }
+  /**
+   * @param string
+   */
   public function setConnectionType($connectionType)
   {
     $this->connectionType = $connectionType;
   }
+  /**
+   * @return string
+   */
   public function getConnectionType()
   {
     return $this->connectionType;
   }
+  /**
+   * @param bool
+   */
   public function setHasCredential($hasCredential)
   {
     $this->hasCredential = $hasCredential;
   }
+  /**
+   * @return bool
+   */
   public function getHasCredential()
   {
     return $this->hasCredential;

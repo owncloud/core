@@ -24,25 +24,49 @@ class PagespeedApiLoadingExperienceV5 extends \Google\Model
         "originFallback" => "origin_fallback",
         "overallCategory" => "overall_category",
   ];
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $initialUrl;
   protected $metricsType = UserPageLoadMetricV5::class;
   protected $metricsDataType = 'map';
+  /**
+   * @var bool
+   */
   public $originFallback;
+  /**
+   * @var string
+   */
   public $overallCategory;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setInitialUrl($initialUrl)
   {
     $this->initialUrl = $initialUrl;
   }
+  /**
+   * @return string
+   */
   public function getInitialUrl()
   {
     return $this->initialUrl;
@@ -61,18 +85,30 @@ class PagespeedApiLoadingExperienceV5 extends \Google\Model
   {
     return $this->metrics;
   }
+  /**
+   * @param bool
+   */
   public function setOriginFallback($originFallback)
   {
     $this->originFallback = $originFallback;
   }
+  /**
+   * @return bool
+   */
   public function getOriginFallback()
   {
     return $this->originFallback;
   }
+  /**
+   * @param string
+   */
   public function setOverallCategory($overallCategory)
   {
     $this->overallCategory = $overallCategory;
   }
+  /**
+   * @return string
+   */
   public function getOverallCategory()
   {
     return $this->overallCategory;

@@ -19,30 +19,57 @@ namespace Google\Service\Genomics;
 
 class ContainerStartedEvent extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $actionId;
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var int[]
+   */
   public $portMappings;
 
+  /**
+   * @param int
+   */
   public function setActionId($actionId)
   {
     $this->actionId = $actionId;
   }
+  /**
+   * @return int
+   */
   public function getActionId()
   {
     return $this->actionId;
   }
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param int[]
+   */
   public function setPortMappings($portMappings)
   {
     $this->portMappings = $portMappings;
   }
+  /**
+   * @return int[]
+   */
   public function getPortMappings()
   {
     return $this->portMappings;

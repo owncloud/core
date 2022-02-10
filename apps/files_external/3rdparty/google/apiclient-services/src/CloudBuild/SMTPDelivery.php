@@ -20,18 +20,39 @@ namespace Google\Service\CloudBuild;
 class SMTPDelivery extends \Google\Collection
 {
   protected $collection_key = 'recipientAddresses';
+  /**
+   * @var string
+   */
   public $fromAddress;
   protected $passwordType = NotifierSecretRef::class;
   protected $passwordDataType = '';
+  /**
+   * @var string
+   */
   public $port;
+  /**
+   * @var string[]
+   */
   public $recipientAddresses;
+  /**
+   * @var string
+   */
   public $senderAddress;
+  /**
+   * @var string
+   */
   public $server;
 
+  /**
+   * @param string
+   */
   public function setFromAddress($fromAddress)
   {
     $this->fromAddress = $fromAddress;
   }
+  /**
+   * @return string
+   */
   public function getFromAddress()
   {
     return $this->fromAddress;
@@ -50,34 +71,58 @@ class SMTPDelivery extends \Google\Collection
   {
     return $this->password;
   }
+  /**
+   * @param string
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return string
+   */
   public function getPort()
   {
     return $this->port;
   }
+  /**
+   * @param string[]
+   */
   public function setRecipientAddresses($recipientAddresses)
   {
     $this->recipientAddresses = $recipientAddresses;
   }
+  /**
+   * @return string[]
+   */
   public function getRecipientAddresses()
   {
     return $this->recipientAddresses;
   }
+  /**
+   * @param string
+   */
   public function setSenderAddress($senderAddress)
   {
     $this->senderAddress = $senderAddress;
   }
+  /**
+   * @return string
+   */
   public function getSenderAddress()
   {
     return $this->senderAddress;
   }
+  /**
+   * @param string
+   */
   public function setServer($server)
   {
     $this->server = $server;
   }
+  /**
+   * @return string
+   */
   public function getServer()
   {
     return $this->server;

@@ -37,7 +37,9 @@ class ProjectsLocationsConnectionsRuntimeEntitySchemas extends \Google\Service\R
    * Format: projects/{project}/locations/{location}/connections/{connection}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Filter
+   * @opt_param string filter Required. Filter Format: entity="{entityId}" Only
+   * entity field is supported with literal equality operator. Accepted filter
+   * example: entity="Order" Wildcards are not supported in the filter currently.
    * @opt_param int pageSize Page size.
    * @opt_param string pageToken Page token.
    * @return ListRuntimeEntitySchemasResponse

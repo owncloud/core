@@ -20,21 +20,39 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1Operation extends \Google\Collection
 {
   protected $collection_key = 'methods';
+  /**
+   * @var string[]
+   */
   public $methods;
+  /**
+   * @var string
+   */
   public $resource;
 
+  /**
+   * @param string[]
+   */
   public function setMethods($methods)
   {
     $this->methods = $methods;
   }
+  /**
+   * @return string[]
+   */
   public function getMethods()
   {
     return $this->methods;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;

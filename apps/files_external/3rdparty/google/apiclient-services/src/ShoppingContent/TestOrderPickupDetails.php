@@ -20,17 +20,29 @@ namespace Google\Service\ShoppingContent;
 class TestOrderPickupDetails extends \Google\Collection
 {
   protected $collection_key = 'pickupPersons';
+  /**
+   * @var string
+   */
   public $locationCode;
   protected $pickupLocationAddressType = TestOrderAddress::class;
   protected $pickupLocationAddressDataType = '';
+  /**
+   * @var string
+   */
   public $pickupLocationType;
   protected $pickupPersonsType = TestOrderPickupDetailsPickupPerson::class;
   protected $pickupPersonsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setLocationCode($locationCode)
   {
     $this->locationCode = $locationCode;
   }
+  /**
+   * @return string
+   */
   public function getLocationCode()
   {
     return $this->locationCode;
@@ -49,10 +61,16 @@ class TestOrderPickupDetails extends \Google\Collection
   {
     return $this->pickupLocationAddress;
   }
+  /**
+   * @param string
+   */
   public function setPickupLocationType($pickupLocationType)
   {
     $this->pickupLocationType = $pickupLocationType;
   }
+  /**
+   * @return string
+   */
   public function getPickupLocationType()
   {
     return $this->pickupLocationType;

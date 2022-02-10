@@ -19,14 +19,23 @@ namespace Google\Service\Logging;
 
 class Linear extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $numFiniteBuckets;
   public $offset;
   public $width;
 
+  /**
+   * @param int
+   */
   public function setNumFiniteBuckets($numFiniteBuckets)
   {
     $this->numFiniteBuckets = $numFiniteBuckets;
   }
+  /**
+   * @return int
+   */
   public function getNumFiniteBuckets()
   {
     return $this->numFiniteBuckets;

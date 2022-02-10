@@ -20,21 +20,39 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3ResponseMessageText extends \Google\Collection
 {
   protected $collection_key = 'text';
+  /**
+   * @var bool
+   */
   public $allowPlaybackInterruption;
+  /**
+   * @var string[]
+   */
   public $text;
 
+  /**
+   * @param bool
+   */
   public function setAllowPlaybackInterruption($allowPlaybackInterruption)
   {
     $this->allowPlaybackInterruption = $allowPlaybackInterruption;
   }
+  /**
+   * @return bool
+   */
   public function getAllowPlaybackInterruption()
   {
     return $this->allowPlaybackInterruption;
   }
+  /**
+   * @param string[]
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string[]
+   */
   public function getText()
   {
     return $this->text;

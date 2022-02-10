@@ -20,12 +20,21 @@ namespace Google\Service\ShoppingContent;
 class RegionGeoTargetArea extends \Google\Collection
 {
   protected $collection_key = 'geotargetCriteriaIds';
+  /**
+   * @var string[]
+   */
   public $geotargetCriteriaIds;
 
+  /**
+   * @param string[]
+   */
   public function setGeotargetCriteriaIds($geotargetCriteriaIds)
   {
     $this->geotargetCriteriaIds = $geotargetCriteriaIds;
   }
+  /**
+   * @return string[]
+   */
   public function getGeotargetCriteriaIds()
   {
     return $this->geotargetCriteriaIds;

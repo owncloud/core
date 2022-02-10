@@ -20,12 +20,21 @@ namespace Google\Service\CloudRun;
 class ExecAction extends \Google\Collection
 {
   protected $collection_key = 'command';
+  /**
+   * @var string[]
+   */
   public $command;
 
+  /**
+   * @param string[]
+   */
   public function setCommand($command)
   {
     $this->command = $command;
   }
+  /**
+   * @return string[]
+   */
   public function getCommand()
   {
     return $this->command;

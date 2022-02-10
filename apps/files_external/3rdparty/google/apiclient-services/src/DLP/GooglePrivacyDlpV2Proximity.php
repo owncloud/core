@@ -19,21 +19,39 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2Proximity extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $windowAfter;
+  /**
+   * @var int
+   */
   public $windowBefore;
 
+  /**
+   * @param int
+   */
   public function setWindowAfter($windowAfter)
   {
     $this->windowAfter = $windowAfter;
   }
+  /**
+   * @return int
+   */
   public function getWindowAfter()
   {
     return $this->windowAfter;
   }
+  /**
+   * @param int
+   */
   public function setWindowBefore($windowBefore)
   {
     $this->windowBefore = $windowBefore;
   }
+  /**
+   * @return int
+   */
   public function getWindowBefore()
   {
     return $this->windowBefore;

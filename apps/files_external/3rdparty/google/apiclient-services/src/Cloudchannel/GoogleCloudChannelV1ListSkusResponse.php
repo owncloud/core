@@ -20,14 +20,23 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1ListSkusResponse extends \Google\Collection
 {
   protected $collection_key = 'skus';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $skusType = GoogleCloudChannelV1Sku::class;
   protected $skusDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

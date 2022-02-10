@@ -19,12 +19,21 @@ namespace Google\Service\YouTube;
 
 class ThirdPartyLinkStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $linkStatus;
 
+  /**
+   * @param string
+   */
   public function setLinkStatus($linkStatus)
   {
     $this->linkStatus = $linkStatus;
   }
+  /**
+   * @return string
+   */
   public function getLinkStatus()
   {
     return $this->linkStatus;

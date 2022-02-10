@@ -19,12 +19,21 @@ namespace Google\Service\PubsubLite;
 
 class DeliveryConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deliveryRequirement;
 
+  /**
+   * @param string
+   */
   public function setDeliveryRequirement($deliveryRequirement)
   {
     $this->deliveryRequirement = $deliveryRequirement;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryRequirement()
   {
     return $this->deliveryRequirement;

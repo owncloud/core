@@ -19,30 +19,57 @@ namespace Google\Service\Bigquery;
 
 class ArimaOrder extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $d;
+  /**
+   * @var string
+   */
   public $p;
+  /**
+   * @var string
+   */
   public $q;
 
+  /**
+   * @param string
+   */
   public function setD($d)
   {
     $this->d = $d;
   }
+  /**
+   * @return string
+   */
   public function getD()
   {
     return $this->d;
   }
+  /**
+   * @param string
+   */
   public function setP($p)
   {
     $this->p = $p;
   }
+  /**
+   * @return string
+   */
   public function getP()
   {
     return $this->p;
   }
+  /**
+   * @param string
+   */
   public function setQ($q)
   {
     $this->q = $q;
   }
+  /**
+   * @return string
+   */
   public function getQ()
   {
     return $this->q;

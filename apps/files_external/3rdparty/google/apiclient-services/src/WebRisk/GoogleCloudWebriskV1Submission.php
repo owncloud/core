@@ -20,21 +20,39 @@ namespace Google\Service\WebRisk;
 class GoogleCloudWebriskV1Submission extends \Google\Collection
 {
   protected $collection_key = 'threatTypes';
+  /**
+   * @var string[]
+   */
   public $threatTypes;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string[]
+   */
   public function setThreatTypes($threatTypes)
   {
     $this->threatTypes = $threatTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getThreatTypes()
   {
     return $this->threatTypes;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

@@ -19,39 +19,75 @@ namespace Google\Service\VMMigrationService;
 
 class NetworkInterface extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $externalIp;
+  /**
+   * @var string
+   */
   public $internalIp;
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string
+   */
   public $subnetwork;
 
+  /**
+   * @param string
+   */
   public function setExternalIp($externalIp)
   {
     $this->externalIp = $externalIp;
   }
+  /**
+   * @return string
+   */
   public function getExternalIp()
   {
     return $this->externalIp;
   }
+  /**
+   * @param string
+   */
   public function setInternalIp($internalIp)
   {
     $this->internalIp = $internalIp;
   }
+  /**
+   * @return string
+   */
   public function getInternalIp()
   {
     return $this->internalIp;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setSubnetwork($subnetwork)
   {
     $this->subnetwork = $subnetwork;
   }
+  /**
+   * @return string
+   */
   public function getSubnetwork()
   {
     return $this->subnetwork;

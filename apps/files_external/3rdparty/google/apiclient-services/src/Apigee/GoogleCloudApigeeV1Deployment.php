@@ -20,8 +20,17 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1Deployment extends \Google\Collection
 {
   protected $collection_key = 'routeConflicts';
+  /**
+   * @var string
+   */
   public $apiProxy;
+  /**
+   * @var string
+   */
   public $deployStartTime;
+  /**
+   * @var string
+   */
   public $environment;
   protected $errorsType = GoogleRpcStatus::class;
   protected $errorsDataType = 'array';
@@ -29,32 +38,59 @@ class GoogleCloudApigeeV1Deployment extends \Google\Collection
   protected $instancesDataType = 'array';
   protected $podsType = GoogleCloudApigeeV1PodStatus::class;
   protected $podsDataType = 'array';
+  /**
+   * @var string
+   */
   public $revision;
   protected $routeConflictsType = GoogleCloudApigeeV1DeploymentChangeReportRoutingConflict::class;
   protected $routeConflictsDataType = 'array';
+  /**
+   * @var string
+   */
   public $serviceAccount;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setApiProxy($apiProxy)
   {
     $this->apiProxy = $apiProxy;
   }
+  /**
+   * @return string
+   */
   public function getApiProxy()
   {
     return $this->apiProxy;
   }
+  /**
+   * @param string
+   */
   public function setDeployStartTime($deployStartTime)
   {
     $this->deployStartTime = $deployStartTime;
   }
+  /**
+   * @return string
+   */
   public function getDeployStartTime()
   {
     return $this->deployStartTime;
   }
+  /**
+   * @param string
+   */
   public function setEnvironment($environment)
   {
     $this->environment = $environment;
   }
+  /**
+   * @return string
+   */
   public function getEnvironment()
   {
     return $this->environment;
@@ -101,10 +137,16 @@ class GoogleCloudApigeeV1Deployment extends \Google\Collection
   {
     return $this->pods;
   }
+  /**
+   * @param string
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return string
+   */
   public function getRevision()
   {
     return $this->revision;
@@ -123,18 +165,30 @@ class GoogleCloudApigeeV1Deployment extends \Google\Collection
   {
     return $this->routeConflicts;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

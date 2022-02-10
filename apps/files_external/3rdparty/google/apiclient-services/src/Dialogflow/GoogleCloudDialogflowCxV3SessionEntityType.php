@@ -22,7 +22,13 @@ class GoogleCloudDialogflowCxV3SessionEntityType extends \Google\Collection
   protected $collection_key = 'entities';
   protected $entitiesType = GoogleCloudDialogflowCxV3EntityTypeEntity::class;
   protected $entitiesDataType = 'array';
+  /**
+   * @var string
+   */
   public $entityOverrideMode;
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -39,18 +45,30 @@ class GoogleCloudDialogflowCxV3SessionEntityType extends \Google\Collection
   {
     return $this->entities;
   }
+  /**
+   * @param string
+   */
   public function setEntityOverrideMode($entityOverrideMode)
   {
     $this->entityOverrideMode = $entityOverrideMode;
   }
+  /**
+   * @return string
+   */
   public function getEntityOverrideMode()
   {
     return $this->entityOverrideMode;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -20,102 +20,201 @@ namespace Google\Service\DoubleClickBidManager;
 class QueryMetadata extends \Google\Collection
 {
   protected $collection_key = 'shareEmailAddress';
+  /**
+   * @var string
+   */
   public $dataRange;
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $googleCloudStoragePathForLatestReport;
+  /**
+   * @var string
+   */
   public $googleDrivePathForLatestReport;
+  /**
+   * @var string
+   */
   public $latestReportRunTimeMs;
+  /**
+   * @var string
+   */
   public $locale;
+  /**
+   * @var int
+   */
   public $reportCount;
+  /**
+   * @var bool
+   */
   public $running;
+  /**
+   * @var bool
+   */
   public $sendNotification;
+  /**
+   * @var string[]
+   */
   public $shareEmailAddress;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setDataRange($dataRange)
   {
     $this->dataRange = $dataRange;
   }
+  /**
+   * @return string
+   */
   public function getDataRange()
   {
     return $this->dataRange;
   }
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setGoogleCloudStoragePathForLatestReport($googleCloudStoragePathForLatestReport)
   {
     $this->googleCloudStoragePathForLatestReport = $googleCloudStoragePathForLatestReport;
   }
+  /**
+   * @return string
+   */
   public function getGoogleCloudStoragePathForLatestReport()
   {
     return $this->googleCloudStoragePathForLatestReport;
   }
+  /**
+   * @param string
+   */
   public function setGoogleDrivePathForLatestReport($googleDrivePathForLatestReport)
   {
     $this->googleDrivePathForLatestReport = $googleDrivePathForLatestReport;
   }
+  /**
+   * @return string
+   */
   public function getGoogleDrivePathForLatestReport()
   {
     return $this->googleDrivePathForLatestReport;
   }
+  /**
+   * @param string
+   */
   public function setLatestReportRunTimeMs($latestReportRunTimeMs)
   {
     $this->latestReportRunTimeMs = $latestReportRunTimeMs;
   }
+  /**
+   * @return string
+   */
   public function getLatestReportRunTimeMs()
   {
     return $this->latestReportRunTimeMs;
   }
+  /**
+   * @param string
+   */
   public function setLocale($locale)
   {
     $this->locale = $locale;
   }
+  /**
+   * @return string
+   */
   public function getLocale()
   {
     return $this->locale;
   }
+  /**
+   * @param int
+   */
   public function setReportCount($reportCount)
   {
     $this->reportCount = $reportCount;
   }
+  /**
+   * @return int
+   */
   public function getReportCount()
   {
     return $this->reportCount;
   }
+  /**
+   * @param bool
+   */
   public function setRunning($running)
   {
     $this->running = $running;
   }
+  /**
+   * @return bool
+   */
   public function getRunning()
   {
     return $this->running;
   }
+  /**
+   * @param bool
+   */
   public function setSendNotification($sendNotification)
   {
     $this->sendNotification = $sendNotification;
   }
+  /**
+   * @return bool
+   */
   public function getSendNotification()
   {
     return $this->sendNotification;
   }
+  /**
+   * @param string[]
+   */
   public function setShareEmailAddress($shareEmailAddress)
   {
     $this->shareEmailAddress = $shareEmailAddress;
   }
+  /**
+   * @return string[]
+   */
   public function getShareEmailAddress()
   {
     return $this->shareEmailAddress;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

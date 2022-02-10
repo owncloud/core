@@ -19,39 +19,75 @@ namespace Google\Service\CloudHealthcare;
 
 class ConsentStore extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $defaultConsentTtl;
+  /**
+   * @var bool
+   */
   public $enableConsentCreateOnUpdate;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDefaultConsentTtl($defaultConsentTtl)
   {
     $this->defaultConsentTtl = $defaultConsentTtl;
   }
+  /**
+   * @return string
+   */
   public function getDefaultConsentTtl()
   {
     return $this->defaultConsentTtl;
   }
+  /**
+   * @param bool
+   */
   public function setEnableConsentCreateOnUpdate($enableConsentCreateOnUpdate)
   {
     $this->enableConsentCreateOnUpdate = $enableConsentCreateOnUpdate;
   }
+  /**
+   * @return bool
+   */
   public function getEnableConsentCreateOnUpdate()
   {
     return $this->enableConsentCreateOnUpdate;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

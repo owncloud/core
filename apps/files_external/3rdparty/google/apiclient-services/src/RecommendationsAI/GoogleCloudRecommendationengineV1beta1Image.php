@@ -19,30 +19,57 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1Image extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $uri;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

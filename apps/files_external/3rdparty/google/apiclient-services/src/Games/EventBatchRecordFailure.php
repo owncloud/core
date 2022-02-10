@@ -19,23 +19,41 @@ namespace Google\Service\Games;
 
 class EventBatchRecordFailure extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $failureCause;
+  /**
+   * @var string
+   */
   public $kind;
   protected $rangeType = EventPeriodRange::class;
   protected $rangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFailureCause($failureCause)
   {
     $this->failureCause = $failureCause;
   }
+  /**
+   * @return string
+   */
   public function getFailureCause()
   {
     return $this->failureCause;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

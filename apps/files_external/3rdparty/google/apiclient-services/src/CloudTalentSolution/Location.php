@@ -21,6 +21,9 @@ class Location extends \Google\Model
 {
   protected $latLngType = LatLng::class;
   protected $latLngDataType = '';
+  /**
+   * @var string
+   */
   public $locationType;
   protected $postalAddressType = PostalAddress::class;
   protected $postalAddressDataType = '';
@@ -40,10 +43,16 @@ class Location extends \Google\Model
   {
     return $this->latLng;
   }
+  /**
+   * @param string
+   */
   public function setLocationType($locationType)
   {
     $this->locationType = $locationType;
   }
+  /**
+   * @return string
+   */
   public function getLocationType()
   {
     return $this->locationType;

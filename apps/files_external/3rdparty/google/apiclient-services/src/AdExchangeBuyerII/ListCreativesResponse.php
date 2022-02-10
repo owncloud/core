@@ -22,6 +22,9 @@ class ListCreativesResponse extends \Google\Collection
   protected $collection_key = 'creatives';
   protected $creativesType = Creative::class;
   protected $creativesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListCreativesResponse extends \Google\Collection
   {
     return $this->creatives;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

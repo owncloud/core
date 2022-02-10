@@ -20,14 +20,23 @@ namespace Google\Service\CloudAsset;
 class AttachedResource extends \Google\Collection
 {
   protected $collection_key = 'versionedResources';
+  /**
+   * @var string
+   */
   public $assetType;
   protected $versionedResourcesType = VersionedResource::class;
   protected $versionedResourcesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAssetType($assetType)
   {
     $this->assetType = $assetType;
   }
+  /**
+   * @return string
+   */
   public function getAssetType()
   {
     return $this->assetType;

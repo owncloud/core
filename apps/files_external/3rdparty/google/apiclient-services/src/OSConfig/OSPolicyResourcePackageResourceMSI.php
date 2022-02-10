@@ -20,14 +20,23 @@ namespace Google\Service\OSConfig;
 class OSPolicyResourcePackageResourceMSI extends \Google\Collection
 {
   protected $collection_key = 'properties';
+  /**
+   * @var string[]
+   */
   public $properties;
   protected $sourceType = OSPolicyResourceFile::class;
   protected $sourceDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
+  /**
+   * @return string[]
+   */
   public function getProperties()
   {
     return $this->properties;

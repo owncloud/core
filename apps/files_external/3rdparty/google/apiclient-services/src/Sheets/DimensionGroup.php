@@ -19,23 +19,41 @@ namespace Google\Service\Sheets;
 
 class DimensionGroup extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $collapsed;
+  /**
+   * @var int
+   */
   public $depth;
   protected $rangeType = DimensionRange::class;
   protected $rangeDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setCollapsed($collapsed)
   {
     $this->collapsed = $collapsed;
   }
+  /**
+   * @return bool
+   */
   public function getCollapsed()
   {
     return $this->collapsed;
   }
+  /**
+   * @param int
+   */
   public function setDepth($depth)
   {
     $this->depth = $depth;
   }
+  /**
+   * @return int
+   */
   public function getDepth()
   {
     return $this->depth;

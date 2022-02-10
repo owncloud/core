@@ -19,21 +19,39 @@ namespace Google\Service\Datastore;
 
 class GoogleDatastoreAdminV1IndexedProperty extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $direction;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDirection($direction)
   {
     $this->direction = $direction;
   }
+  /**
+   * @return string
+   */
   public function getDirection()
   {
     return $this->direction;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

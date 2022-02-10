@@ -21,10 +21,19 @@ class Repo extends \Google\Model
 {
   protected $mirrorConfigType = MirrorConfig::class;
   protected $mirrorConfigDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $pubsubConfigsType = PubsubConfig::class;
   protected $pubsubConfigsDataType = 'map';
+  /**
+   * @var string
+   */
   public $size;
+  /**
+   * @var string
+   */
   public $url;
 
   /**
@@ -41,10 +50,16 @@ class Repo extends \Google\Model
   {
     return $this->mirrorConfig;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -63,18 +78,30 @@ class Repo extends \Google\Model
   {
     return $this->pubsubConfigs;
   }
+  /**
+   * @param string
+   */
   public function setSize($size)
   {
     $this->size = $size;
   }
+  /**
+   * @return string
+   */
   public function getSize()
   {
     return $this->size;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

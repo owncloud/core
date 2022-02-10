@@ -19,21 +19,39 @@ namespace Google\Service\DriveActivity;
 
 class Rename extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $newTitle;
+  /**
+   * @var string
+   */
   public $oldTitle;
 
+  /**
+   * @param string
+   */
   public function setNewTitle($newTitle)
   {
     $this->newTitle = $newTitle;
   }
+  /**
+   * @return string
+   */
   public function getNewTitle()
   {
     return $this->newTitle;
   }
+  /**
+   * @param string
+   */
   public function setOldTitle($oldTitle)
   {
     $this->oldTitle = $oldTitle;
   }
+  /**
+   * @return string
+   */
   public function getOldTitle()
   {
     return $this->oldTitle;

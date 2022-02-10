@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRevision extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $percentage;
+  /**
+   * @var string
+   */
   public $revision;
 
+  /**
+   * @param int
+   */
   public function setPercentage($percentage)
   {
     $this->percentage = $percentage;
   }
+  /**
+   * @return int
+   */
   public function getPercentage()
   {
     return $this->percentage;
   }
+  /**
+   * @param string
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return string
+   */
   public function getRevision()
   {
     return $this->revision;

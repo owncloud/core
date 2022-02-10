@@ -19,30 +19,57 @@ namespace Google\Service\Books;
 
 class VolumeAccessInfoEpub extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $acsTokenLink;
+  /**
+   * @var string
+   */
   public $downloadLink;
+  /**
+   * @var bool
+   */
   public $isAvailable;
 
+  /**
+   * @param string
+   */
   public function setAcsTokenLink($acsTokenLink)
   {
     $this->acsTokenLink = $acsTokenLink;
   }
+  /**
+   * @return string
+   */
   public function getAcsTokenLink()
   {
     return $this->acsTokenLink;
   }
+  /**
+   * @param string
+   */
   public function setDownloadLink($downloadLink)
   {
     $this->downloadLink = $downloadLink;
   }
+  /**
+   * @return string
+   */
   public function getDownloadLink()
   {
     return $this->downloadLink;
   }
+  /**
+   * @param bool
+   */
   public function setIsAvailable($isAvailable)
   {
     $this->isAvailable = $isAvailable;
   }
+  /**
+   * @return bool
+   */
   public function getIsAvailable()
   {
     return $this->isAvailable;

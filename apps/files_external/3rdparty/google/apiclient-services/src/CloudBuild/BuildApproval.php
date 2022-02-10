@@ -23,6 +23,9 @@ class BuildApproval extends \Google\Model
   protected $configDataType = '';
   protected $resultType = ApprovalResult::class;
   protected $resultDataType = '';
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -53,10 +56,16 @@ class BuildApproval extends \Google\Model
   {
     return $this->result;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

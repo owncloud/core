@@ -19,12 +19,21 @@ namespace Google\Service\Appengine;
 
 class DebugInstanceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sshKey;
 
+  /**
+   * @param string
+   */
   public function setSshKey($sshKey)
   {
     $this->sshKey = $sshKey;
   }
+  /**
+   * @return string
+   */
   public function getSshKey()
   {
     return $this->sshKey;

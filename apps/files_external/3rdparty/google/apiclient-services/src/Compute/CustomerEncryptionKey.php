@@ -19,48 +19,93 @@ namespace Google\Service\Compute;
 
 class CustomerEncryptionKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kmsKeyName;
+  /**
+   * @var string
+   */
   public $kmsKeyServiceAccount;
+  /**
+   * @var string
+   */
   public $rawKey;
+  /**
+   * @var string
+   */
   public $rsaEncryptedKey;
+  /**
+   * @var string
+   */
   public $sha256;
 
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;
   }
+  /**
+   * @param string
+   */
   public function setKmsKeyServiceAccount($kmsKeyServiceAccount)
   {
     $this->kmsKeyServiceAccount = $kmsKeyServiceAccount;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyServiceAccount()
   {
     return $this->kmsKeyServiceAccount;
   }
+  /**
+   * @param string
+   */
   public function setRawKey($rawKey)
   {
     $this->rawKey = $rawKey;
   }
+  /**
+   * @return string
+   */
   public function getRawKey()
   {
     return $this->rawKey;
   }
+  /**
+   * @param string
+   */
   public function setRsaEncryptedKey($rsaEncryptedKey)
   {
     $this->rsaEncryptedKey = $rsaEncryptedKey;
   }
+  /**
+   * @return string
+   */
   public function getRsaEncryptedKey()
   {
     return $this->rsaEncryptedKey;
   }
+  /**
+   * @param string
+   */
   public function setSha256($sha256)
   {
     $this->sha256 = $sha256;
   }
+  /**
+   * @return string
+   */
   public function getSha256()
   {
     return $this->sha256;

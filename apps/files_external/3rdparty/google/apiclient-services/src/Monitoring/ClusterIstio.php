@@ -19,39 +19,75 @@ namespace Google\Service\Monitoring;
 
 class ClusterIstio extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterName;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $serviceName;
+  /**
+   * @var string
+   */
   public $serviceNamespace;
 
+  /**
+   * @param string
+   */
   public function setClusterName($clusterName)
   {
     $this->clusterName = $clusterName;
   }
+  /**
+   * @return string
+   */
   public function getClusterName()
   {
     return $this->clusterName;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setServiceName($serviceName)
   {
     $this->serviceName = $serviceName;
   }
+  /**
+   * @return string
+   */
   public function getServiceName()
   {
     return $this->serviceName;
   }
+  /**
+   * @param string
+   */
   public function setServiceNamespace($serviceNamespace)
   {
     $this->serviceNamespace = $serviceNamespace;
   }
+  /**
+   * @return string
+   */
   public function getServiceNamespace()
   {
     return $this->serviceNamespace;

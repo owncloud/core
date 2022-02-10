@@ -22,21 +22,51 @@ class SearchJobsRequest extends \Google\Collection
   protected $collection_key = 'histogramQueries';
   protected $customRankingInfoType = CustomRankingInfo::class;
   protected $customRankingInfoDataType = '';
+  /**
+   * @var bool
+   */
   public $disableKeywordMatch;
+  /**
+   * @var string
+   */
   public $diversificationLevel;
+  /**
+   * @var bool
+   */
   public $enableBroadening;
   protected $histogramQueriesType = HistogramQuery::class;
   protected $histogramQueriesDataType = 'array';
   protected $jobQueryType = JobQuery::class;
   protected $jobQueryDataType = '';
+  /**
+   * @var string
+   */
   public $jobView;
+  /**
+   * @var string
+   */
   public $keywordMatchMode;
+  /**
+   * @var int
+   */
   public $maxPageSize;
+  /**
+   * @var int
+   */
   public $offset;
+  /**
+   * @var string
+   */
   public $orderBy;
+  /**
+   * @var string
+   */
   public $pageToken;
   protected $requestMetadataType = RequestMetadata::class;
   protected $requestMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $searchMode;
 
   /**
@@ -53,26 +83,44 @@ class SearchJobsRequest extends \Google\Collection
   {
     return $this->customRankingInfo;
   }
+  /**
+   * @param bool
+   */
   public function setDisableKeywordMatch($disableKeywordMatch)
   {
     $this->disableKeywordMatch = $disableKeywordMatch;
   }
+  /**
+   * @return bool
+   */
   public function getDisableKeywordMatch()
   {
     return $this->disableKeywordMatch;
   }
+  /**
+   * @param string
+   */
   public function setDiversificationLevel($diversificationLevel)
   {
     $this->diversificationLevel = $diversificationLevel;
   }
+  /**
+   * @return string
+   */
   public function getDiversificationLevel()
   {
     return $this->diversificationLevel;
   }
+  /**
+   * @param bool
+   */
   public function setEnableBroadening($enableBroadening)
   {
     $this->enableBroadening = $enableBroadening;
   }
+  /**
+   * @return bool
+   */
   public function getEnableBroadening()
   {
     return $this->enableBroadening;
@@ -105,50 +153,86 @@ class SearchJobsRequest extends \Google\Collection
   {
     return $this->jobQuery;
   }
+  /**
+   * @param string
+   */
   public function setJobView($jobView)
   {
     $this->jobView = $jobView;
   }
+  /**
+   * @return string
+   */
   public function getJobView()
   {
     return $this->jobView;
   }
+  /**
+   * @param string
+   */
   public function setKeywordMatchMode($keywordMatchMode)
   {
     $this->keywordMatchMode = $keywordMatchMode;
   }
+  /**
+   * @return string
+   */
   public function getKeywordMatchMode()
   {
     return $this->keywordMatchMode;
   }
+  /**
+   * @param int
+   */
   public function setMaxPageSize($maxPageSize)
   {
     $this->maxPageSize = $maxPageSize;
   }
+  /**
+   * @return int
+   */
   public function getMaxPageSize()
   {
     return $this->maxPageSize;
   }
+  /**
+   * @param int
+   */
   public function setOffset($offset)
   {
     $this->offset = $offset;
   }
+  /**
+   * @return int
+   */
   public function getOffset()
   {
     return $this->offset;
   }
+  /**
+   * @param string
+   */
   public function setOrderBy($orderBy)
   {
     $this->orderBy = $orderBy;
   }
+  /**
+   * @return string
+   */
   public function getOrderBy()
   {
     return $this->orderBy;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
@@ -167,10 +251,16 @@ class SearchJobsRequest extends \Google\Collection
   {
     return $this->requestMetadata;
   }
+  /**
+   * @param string
+   */
   public function setSearchMode($searchMode)
   {
     $this->searchMode = $searchMode;
   }
+  /**
+   * @return string
+   */
   public function getSearchMode()
   {
     return $this->searchMode;

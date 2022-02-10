@@ -19,30 +19,57 @@ namespace Google\Service\Spanner;
 
 class RequestOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $priority;
+  /**
+   * @var string
+   */
   public $requestTag;
+  /**
+   * @var string
+   */
   public $transactionTag;
 
+  /**
+   * @param string
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return string
+   */
   public function getPriority()
   {
     return $this->priority;
   }
+  /**
+   * @param string
+   */
   public function setRequestTag($requestTag)
   {
     $this->requestTag = $requestTag;
   }
+  /**
+   * @return string
+   */
   public function getRequestTag()
   {
     return $this->requestTag;
   }
+  /**
+   * @param string
+   */
   public function setTransactionTag($transactionTag)
   {
     $this->transactionTag = $transactionTag;
   }
+  /**
+   * @return string
+   */
   public function getTransactionTag()
   {
     return $this->transactionTag;

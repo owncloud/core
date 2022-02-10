@@ -19,21 +19,39 @@ namespace Google\Service\SecurityCommandCenter;
 
 class Reference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $source;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

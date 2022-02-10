@@ -19,30 +19,57 @@ namespace Google\Service\SecurityCommandCenter;
 
 class SecurityMarks extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $canonicalName;
+  /**
+   * @var string[]
+   */
   public $marks;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setCanonicalName($canonicalName)
   {
     $this->canonicalName = $canonicalName;
   }
+  /**
+   * @return string
+   */
   public function getCanonicalName()
   {
     return $this->canonicalName;
   }
+  /**
+   * @param string[]
+   */
   public function setMarks($marks)
   {
     $this->marks = $marks;
   }
+  /**
+   * @return string[]
+   */
   public function getMarks()
   {
     return $this->marks;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

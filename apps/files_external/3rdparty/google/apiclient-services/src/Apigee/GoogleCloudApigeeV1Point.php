@@ -20,14 +20,23 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1Point extends \Google\Collection
 {
   protected $collection_key = 'results';
+  /**
+   * @var string
+   */
   public $id;
   protected $resultsType = GoogleCloudApigeeV1Result::class;
   protected $resultsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

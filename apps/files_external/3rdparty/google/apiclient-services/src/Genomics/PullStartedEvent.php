@@ -19,12 +19,21 @@ namespace Google\Service\Genomics;
 
 class PullStartedEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $imageUri;
 
+  /**
+   * @param string
+   */
   public function setImageUri($imageUri)
   {
     $this->imageUri = $imageUri;
   }
+  /**
+   * @return string
+   */
   public function getImageUri()
   {
     return $this->imageUri;

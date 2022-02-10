@@ -20,44 +20,83 @@ namespace Google\Service\ChromeManagement;
 class GoogleChromeManagementV1ChromeAppInfo extends \Google\Collection
 {
   protected $collection_key = 'siteAccess';
+  /**
+   * @var bool
+   */
   public $googleOwned;
+  /**
+   * @var bool
+   */
   public $isCwsHosted;
+  /**
+   * @var bool
+   */
   public $isTheme;
+  /**
+   * @var int
+   */
   public $minUserCount;
   protected $permissionsType = GoogleChromeManagementV1ChromeAppPermission::class;
   protected $permissionsDataType = 'array';
   protected $siteAccessType = GoogleChromeManagementV1ChromeAppSiteAccess::class;
   protected $siteAccessDataType = 'array';
+  /**
+   * @var bool
+   */
   public $supportEnabled;
 
+  /**
+   * @param bool
+   */
   public function setGoogleOwned($googleOwned)
   {
     $this->googleOwned = $googleOwned;
   }
+  /**
+   * @return bool
+   */
   public function getGoogleOwned()
   {
     return $this->googleOwned;
   }
+  /**
+   * @param bool
+   */
   public function setIsCwsHosted($isCwsHosted)
   {
     $this->isCwsHosted = $isCwsHosted;
   }
+  /**
+   * @return bool
+   */
   public function getIsCwsHosted()
   {
     return $this->isCwsHosted;
   }
+  /**
+   * @param bool
+   */
   public function setIsTheme($isTheme)
   {
     $this->isTheme = $isTheme;
   }
+  /**
+   * @return bool
+   */
   public function getIsTheme()
   {
     return $this->isTheme;
   }
+  /**
+   * @param int
+   */
   public function setMinUserCount($minUserCount)
   {
     $this->minUserCount = $minUserCount;
   }
+  /**
+   * @return int
+   */
   public function getMinUserCount()
   {
     return $this->minUserCount;
@@ -90,10 +129,16 @@ class GoogleChromeManagementV1ChromeAppInfo extends \Google\Collection
   {
     return $this->siteAccess;
   }
+  /**
+   * @param bool
+   */
   public function setSupportEnabled($supportEnabled)
   {
     $this->supportEnabled = $supportEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getSupportEnabled()
   {
     return $this->supportEnabled;

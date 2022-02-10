@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class InterconnectCircuitInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customerDemarcId;
+  /**
+   * @var string
+   */
   public $googleCircuitId;
+  /**
+   * @var string
+   */
   public $googleDemarcId;
 
+  /**
+   * @param string
+   */
   public function setCustomerDemarcId($customerDemarcId)
   {
     $this->customerDemarcId = $customerDemarcId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerDemarcId()
   {
     return $this->customerDemarcId;
   }
+  /**
+   * @param string
+   */
   public function setGoogleCircuitId($googleCircuitId)
   {
     $this->googleCircuitId = $googleCircuitId;
   }
+  /**
+   * @return string
+   */
   public function getGoogleCircuitId()
   {
     return $this->googleCircuitId;
   }
+  /**
+   * @param string
+   */
   public function setGoogleDemarcId($googleDemarcId)
   {
     $this->googleDemarcId = $googleDemarcId;
   }
+  /**
+   * @return string
+   */
   public function getGoogleDemarcId()
   {
     return $this->googleDemarcId;

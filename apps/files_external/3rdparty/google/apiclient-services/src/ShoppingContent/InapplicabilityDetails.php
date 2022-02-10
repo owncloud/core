@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class InapplicabilityDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $inapplicableCount;
+  /**
+   * @var string
+   */
   public $inapplicableReason;
 
+  /**
+   * @param string
+   */
   public function setInapplicableCount($inapplicableCount)
   {
     $this->inapplicableCount = $inapplicableCount;
   }
+  /**
+   * @return string
+   */
   public function getInapplicableCount()
   {
     return $this->inapplicableCount;
   }
+  /**
+   * @param string
+   */
   public function setInapplicableReason($inapplicableReason)
   {
     $this->inapplicableReason = $inapplicableReason;
   }
+  /**
+   * @return string
+   */
   public function getInapplicableReason()
   {
     return $this->inapplicableReason;

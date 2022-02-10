@@ -19,12 +19,21 @@ namespace Google\Service\CloudDomains;
 
 class AuthorizationCode extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $code;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;

@@ -19,18 +19,39 @@ namespace Google\Service\DriveActivity;
 
 class QueryDriveActivityRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ancestorName;
   protected $consolidationStrategyType = ConsolidationStrategy::class;
   protected $consolidationStrategyDataType = '';
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string
+   */
   public $itemName;
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
 
+  /**
+   * @param string
+   */
   public function setAncestorName($ancestorName)
   {
     $this->ancestorName = $ancestorName;
   }
+  /**
+   * @return string
+   */
   public function getAncestorName()
   {
     return $this->ancestorName;
@@ -49,34 +70,58 @@ class QueryDriveActivityRequest extends \Google\Model
   {
     return $this->consolidationStrategy;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string
+   */
   public function setItemName($itemName)
   {
     $this->itemName = $itemName;
   }
+  /**
+   * @return string
+   */
   public function getItemName()
   {
     return $this->itemName;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;

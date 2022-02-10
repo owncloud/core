@@ -19,25 +19,43 @@ namespace Google\Service\AndroidEnterprise;
 
 class Device extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $androidId;
+  /**
+   * @var string
+   */
   public $managementType;
   protected $policyType = Policy::class;
   protected $policyDataType = '';
   protected $reportType = DeviceReport::class;
   protected $reportDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAndroidId($androidId)
   {
     $this->androidId = $androidId;
   }
+  /**
+   * @return string
+   */
   public function getAndroidId()
   {
     return $this->androidId;
   }
+  /**
+   * @param string
+   */
   public function setManagementType($managementType)
   {
     $this->managementType = $managementType;
   }
+  /**
+   * @return string
+   */
   public function getManagementType()
   {
     return $this->managementType;

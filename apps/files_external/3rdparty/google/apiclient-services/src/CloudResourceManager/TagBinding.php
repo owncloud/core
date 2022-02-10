@@ -19,30 +19,57 @@ namespace Google\Service\CloudResourceManager;
 
 class TagBinding extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string
+   */
   public $tagValue;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string
+   */
   public function setTagValue($tagValue)
   {
     $this->tagValue = $tagValue;
   }
+  /**
+   * @return string
+   */
   public function getTagValue()
   {
     return $this->tagValue;

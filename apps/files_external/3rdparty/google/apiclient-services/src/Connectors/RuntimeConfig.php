@@ -19,84 +19,165 @@ namespace Google\Service\Connectors;
 
 class RuntimeConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $conndSubscription;
+  /**
+   * @var string
+   */
   public $conndTopic;
+  /**
+   * @var string
+   */
   public $controlPlaneSubscription;
+  /**
+   * @var string
+   */
   public $controlPlaneTopic;
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $runtimeEndpoint;
+  /**
+   * @var string
+   */
   public $schemaGcsBucket;
+  /**
+   * @var string
+   */
   public $serviceDirectory;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setConndSubscription($conndSubscription)
   {
     $this->conndSubscription = $conndSubscription;
   }
+  /**
+   * @return string
+   */
   public function getConndSubscription()
   {
     return $this->conndSubscription;
   }
+  /**
+   * @param string
+   */
   public function setConndTopic($conndTopic)
   {
     $this->conndTopic = $conndTopic;
   }
+  /**
+   * @return string
+   */
   public function getConndTopic()
   {
     return $this->conndTopic;
   }
+  /**
+   * @param string
+   */
   public function setControlPlaneSubscription($controlPlaneSubscription)
   {
     $this->controlPlaneSubscription = $controlPlaneSubscription;
   }
+  /**
+   * @return string
+   */
   public function getControlPlaneSubscription()
   {
     return $this->controlPlaneSubscription;
   }
+  /**
+   * @param string
+   */
   public function setControlPlaneTopic($controlPlaneTopic)
   {
     $this->controlPlaneTopic = $controlPlaneTopic;
   }
+  /**
+   * @return string
+   */
   public function getControlPlaneTopic()
   {
     return $this->controlPlaneTopic;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setRuntimeEndpoint($runtimeEndpoint)
   {
     $this->runtimeEndpoint = $runtimeEndpoint;
   }
+  /**
+   * @return string
+   */
   public function getRuntimeEndpoint()
   {
     return $this->runtimeEndpoint;
   }
+  /**
+   * @param string
+   */
   public function setSchemaGcsBucket($schemaGcsBucket)
   {
     $this->schemaGcsBucket = $schemaGcsBucket;
   }
+  /**
+   * @return string
+   */
   public function getSchemaGcsBucket()
   {
     return $this->schemaGcsBucket;
   }
+  /**
+   * @param string
+   */
   public function setServiceDirectory($serviceDirectory)
   {
     $this->serviceDirectory = $serviceDirectory;
   }
+  /**
+   * @return string
+   */
   public function getServiceDirectory()
   {
     return $this->serviceDirectory;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

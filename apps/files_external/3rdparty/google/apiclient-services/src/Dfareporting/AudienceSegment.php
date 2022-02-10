@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class AudienceSegment extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $allocation;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param int
+   */
   public function setAllocation($allocation)
   {
     $this->allocation = $allocation;
   }
+  /**
+   * @return int
+   */
   public function getAllocation()
   {
     return $this->allocation;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

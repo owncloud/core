@@ -20,14 +20,23 @@ namespace Google\Service\NetworkSecurity;
 class ListServerTlsPoliciesResponse extends \Google\Collection
 {
   protected $collection_key = 'serverTlsPolicies';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $serverTlsPoliciesType = ServerTlsPolicy::class;
   protected $serverTlsPoliciesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

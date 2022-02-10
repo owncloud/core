@@ -19,12 +19,21 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1CsvInstruction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsFileUri;
 
+  /**
+   * @param string
+   */
   public function setGcsFileUri($gcsFileUri)
   {
     $this->gcsFileUri = $gcsFileUri;
   }
+  /**
+   * @return string
+   */
   public function getGcsFileUri()
   {
     return $this->gcsFileUri;

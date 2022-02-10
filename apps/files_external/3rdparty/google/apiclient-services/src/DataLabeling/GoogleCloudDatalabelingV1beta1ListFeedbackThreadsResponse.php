@@ -22,6 +22,9 @@ class GoogleCloudDatalabelingV1beta1ListFeedbackThreadsResponse extends \Google\
   protected $collection_key = 'feedbackThreads';
   protected $feedbackThreadsType = GoogleCloudDatalabelingV1beta1FeedbackThread::class;
   protected $feedbackThreadsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudDatalabelingV1beta1ListFeedbackThreadsResponse extends \Google\
   {
     return $this->feedbackThreads;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

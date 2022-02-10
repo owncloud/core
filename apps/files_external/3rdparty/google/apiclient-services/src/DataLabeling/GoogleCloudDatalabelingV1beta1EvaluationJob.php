@@ -20,23 +20,53 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1beta1EvaluationJob extends \Google\Collection
 {
   protected $collection_key = 'attempts';
+  /**
+   * @var string
+   */
   public $annotationSpecSet;
   protected $attemptsType = GoogleCloudDatalabelingV1beta1Attempt::class;
   protected $attemptsDataType = 'array';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
   protected $evaluationJobConfigType = GoogleCloudDatalabelingV1beta1EvaluationJobConfig::class;
   protected $evaluationJobConfigDataType = '';
+  /**
+   * @var bool
+   */
   public $labelMissingGroundTruth;
+  /**
+   * @var string
+   */
   public $modelVersion;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $schedule;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setAnnotationSpecSet($annotationSpecSet)
   {
     $this->annotationSpecSet = $annotationSpecSet;
   }
+  /**
+   * @return string
+   */
   public function getAnnotationSpecSet()
   {
     return $this->annotationSpecSet;
@@ -55,18 +85,30 @@ class GoogleCloudDatalabelingV1beta1EvaluationJob extends \Google\Collection
   {
     return $this->attempts;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -85,42 +127,72 @@ class GoogleCloudDatalabelingV1beta1EvaluationJob extends \Google\Collection
   {
     return $this->evaluationJobConfig;
   }
+  /**
+   * @param bool
+   */
   public function setLabelMissingGroundTruth($labelMissingGroundTruth)
   {
     $this->labelMissingGroundTruth = $labelMissingGroundTruth;
   }
+  /**
+   * @return bool
+   */
   public function getLabelMissingGroundTruth()
   {
     return $this->labelMissingGroundTruth;
   }
+  /**
+   * @param string
+   */
   public function setModelVersion($modelVersion)
   {
     $this->modelVersion = $modelVersion;
   }
+  /**
+   * @return string
+   */
   public function getModelVersion()
   {
     return $this->modelVersion;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSchedule($schedule)
   {
     $this->schedule = $schedule;
   }
+  /**
+   * @return string
+   */
   public function getSchedule()
   {
     return $this->schedule;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

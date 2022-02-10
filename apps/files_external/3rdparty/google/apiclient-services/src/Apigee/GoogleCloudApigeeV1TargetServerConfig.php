@@ -19,50 +19,95 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1TargetServerConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $port;
+  /**
+   * @var string
+   */
   public $protocol;
   protected $tlsInfoType = GoogleCloudApigeeV1TlsInfoConfig::class;
   protected $tlsInfoDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;
   }
+  /**
+   * @param string
+   */
   public function setProtocol($protocol)
   {
     $this->protocol = $protocol;
   }
+  /**
+   * @return string
+   */
   public function getProtocol()
   {
     return $this->protocol;

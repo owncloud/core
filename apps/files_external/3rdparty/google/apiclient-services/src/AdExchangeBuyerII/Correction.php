@@ -22,7 +22,13 @@ class Correction extends \Google\Collection
   protected $collection_key = 'details';
   protected $contextsType = ServingContext::class;
   protected $contextsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -39,18 +45,30 @@ class Correction extends \Google\Collection
   {
     return $this->contexts;
   }
+  /**
+   * @param string[]
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return string[]
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

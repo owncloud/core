@@ -21,6 +21,9 @@ class CreateInstanceRequest extends \Google\Model
 {
   protected $instanceType = Instance::class;
   protected $instanceDataType = '';
+  /**
+   * @var string
+   */
   public $instanceId;
 
   /**
@@ -37,10 +40,16 @@ class CreateInstanceRequest extends \Google\Model
   {
     return $this->instance;
   }
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;

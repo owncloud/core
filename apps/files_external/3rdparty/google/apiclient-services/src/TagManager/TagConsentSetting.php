@@ -19,14 +19,23 @@ namespace Google\Service\TagManager;
 
 class TagConsentSetting extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $consentStatus;
   protected $consentTypeType = Parameter::class;
   protected $consentTypeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setConsentStatus($consentStatus)
   {
     $this->consentStatus = $consentStatus;
   }
+  /**
+   * @return string
+   */
   public function getConsentStatus()
   {
     return $this->consentStatus;

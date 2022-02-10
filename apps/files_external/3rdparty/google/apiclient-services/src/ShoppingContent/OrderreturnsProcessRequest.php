@@ -20,25 +20,43 @@ namespace Google\Service\ShoppingContent;
 class OrderreturnsProcessRequest extends \Google\Collection
 {
   protected $collection_key = 'returnItems';
+  /**
+   * @var bool
+   */
   public $fullChargeReturnShippingCost;
+  /**
+   * @var string
+   */
   public $operationId;
   protected $refundShippingFeeType = OrderreturnsRefundOperation::class;
   protected $refundShippingFeeDataType = '';
   protected $returnItemsType = OrderreturnsReturnItem::class;
   protected $returnItemsDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setFullChargeReturnShippingCost($fullChargeReturnShippingCost)
   {
     $this->fullChargeReturnShippingCost = $fullChargeReturnShippingCost;
   }
+  /**
+   * @return bool
+   */
   public function getFullChargeReturnShippingCost()
   {
     return $this->fullChargeReturnShippingCost;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;

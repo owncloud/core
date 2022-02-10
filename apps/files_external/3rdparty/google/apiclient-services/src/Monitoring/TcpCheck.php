@@ -19,12 +19,21 @@ namespace Google\Service\Monitoring;
 
 class TcpCheck extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $port;
 
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;

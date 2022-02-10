@@ -19,12 +19,21 @@ namespace Google\Service\HangoutsChat;
 
 class SlashCommand extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $commandId;
 
+  /**
+   * @param string
+   */
   public function setCommandId($commandId)
   {
     $this->commandId = $commandId;
   }
+  /**
+   * @return string
+   */
   public function getCommandId()
   {
     return $this->commandId;

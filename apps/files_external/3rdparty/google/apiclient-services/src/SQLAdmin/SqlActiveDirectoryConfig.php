@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class SqlActiveDirectoryConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $domain;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

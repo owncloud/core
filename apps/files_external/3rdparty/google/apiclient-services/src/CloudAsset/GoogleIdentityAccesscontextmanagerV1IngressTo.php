@@ -22,6 +22,9 @@ class GoogleIdentityAccesscontextmanagerV1IngressTo extends \Google\Collection
   protected $collection_key = 'resources';
   protected $operationsType = GoogleIdentityAccesscontextmanagerV1ApiOperation::class;
   protected $operationsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $resources;
 
   /**
@@ -38,10 +41,16 @@ class GoogleIdentityAccesscontextmanagerV1IngressTo extends \Google\Collection
   {
     return $this->operations;
   }
+  /**
+   * @param string[]
+   */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
+  /**
+   * @return string[]
+   */
   public function getResources()
   {
     return $this->resources;

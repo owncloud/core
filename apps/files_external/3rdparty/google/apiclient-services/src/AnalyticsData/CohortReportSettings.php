@@ -19,12 +19,21 @@ namespace Google\Service\AnalyticsData;
 
 class CohortReportSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $accumulate;
 
+  /**
+   * @param bool
+   */
   public function setAccumulate($accumulate)
   {
     $this->accumulate = $accumulate;
   }
+  /**
+   * @return bool
+   */
   public function getAccumulate()
   {
     return $this->accumulate;

@@ -21,8 +21,17 @@ class CloudSqlProperties extends \Google\Model
 {
   protected $credentialType = CloudSqlCredential::class;
   protected $credentialDataType = '';
+  /**
+   * @var string
+   */
   public $database;
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -39,26 +48,44 @@ class CloudSqlProperties extends \Google\Model
   {
     return $this->credential;
   }
+  /**
+   * @param string
+   */
   public function setDatabase($database)
   {
     $this->database = $database;
   }
+  /**
+   * @return string
+   */
   public function getDatabase()
   {
     return $this->database;
   }
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

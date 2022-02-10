@@ -28,6 +28,9 @@ class IssuancePolicy extends \Google\Collection
   protected $baselineValuesDataType = '';
   protected $identityConstraintsType = CertificateIdentityConstraints::class;
   protected $identityConstraintsDataType = '';
+  /**
+   * @var string
+   */
   public $maximumLifetime;
   protected $passthroughExtensionsType = CertificateExtensionConstraints::class;
   protected $passthroughExtensionsDataType = '';
@@ -88,10 +91,16 @@ class IssuancePolicy extends \Google\Collection
   {
     return $this->identityConstraints;
   }
+  /**
+   * @param string
+   */
   public function setMaximumLifetime($maximumLifetime)
   {
     $this->maximumLifetime = $maximumLifetime;
   }
+  /**
+   * @return string
+   */
   public function getMaximumLifetime()
   {
     return $this->maximumLifetime;

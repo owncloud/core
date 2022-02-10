@@ -19,57 +19,111 @@ namespace Google\Service\Blogger;
 
 class BlogPerUserInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $blogId;
+  /**
+   * @var bool
+   */
   public $hasAdminAccess;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $photosAlbumKey;
+  /**
+   * @var string
+   */
   public $role;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setBlogId($blogId)
   {
     $this->blogId = $blogId;
   }
+  /**
+   * @return string
+   */
   public function getBlogId()
   {
     return $this->blogId;
   }
+  /**
+   * @param bool
+   */
   public function setHasAdminAccess($hasAdminAccess)
   {
     $this->hasAdminAccess = $hasAdminAccess;
   }
+  /**
+   * @return bool
+   */
   public function getHasAdminAccess()
   {
     return $this->hasAdminAccess;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPhotosAlbumKey($photosAlbumKey)
   {
     $this->photosAlbumKey = $photosAlbumKey;
   }
+  /**
+   * @return string
+   */
   public function getPhotosAlbumKey()
   {
     return $this->photosAlbumKey;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

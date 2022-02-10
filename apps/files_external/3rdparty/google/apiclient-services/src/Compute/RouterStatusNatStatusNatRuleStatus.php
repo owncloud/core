@@ -20,48 +20,93 @@ namespace Google\Service\Compute;
 class RouterStatusNatStatusNatRuleStatus extends \Google\Collection
 {
   protected $collection_key = 'drainNatIps';
+  /**
+   * @var string[]
+   */
   public $activeNatIps;
+  /**
+   * @var string[]
+   */
   public $drainNatIps;
+  /**
+   * @var int
+   */
   public $minExtraIpsNeeded;
+  /**
+   * @var int
+   */
   public $numVmEndpointsWithNatMappings;
+  /**
+   * @var int
+   */
   public $ruleNumber;
 
+  /**
+   * @param string[]
+   */
   public function setActiveNatIps($activeNatIps)
   {
     $this->activeNatIps = $activeNatIps;
   }
+  /**
+   * @return string[]
+   */
   public function getActiveNatIps()
   {
     return $this->activeNatIps;
   }
+  /**
+   * @param string[]
+   */
   public function setDrainNatIps($drainNatIps)
   {
     $this->drainNatIps = $drainNatIps;
   }
+  /**
+   * @return string[]
+   */
   public function getDrainNatIps()
   {
     return $this->drainNatIps;
   }
+  /**
+   * @param int
+   */
   public function setMinExtraIpsNeeded($minExtraIpsNeeded)
   {
     $this->minExtraIpsNeeded = $minExtraIpsNeeded;
   }
+  /**
+   * @return int
+   */
   public function getMinExtraIpsNeeded()
   {
     return $this->minExtraIpsNeeded;
   }
+  /**
+   * @param int
+   */
   public function setNumVmEndpointsWithNatMappings($numVmEndpointsWithNatMappings)
   {
     $this->numVmEndpointsWithNatMappings = $numVmEndpointsWithNatMappings;
   }
+  /**
+   * @return int
+   */
   public function getNumVmEndpointsWithNatMappings()
   {
     return $this->numVmEndpointsWithNatMappings;
   }
+  /**
+   * @param int
+   */
   public function setRuleNumber($ruleNumber)
   {
     $this->ruleNumber = $ruleNumber;
   }
+  /**
+   * @return int
+   */
   public function getRuleNumber()
   {
     return $this->ruleNumber;

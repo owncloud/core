@@ -20,23 +20,41 @@ namespace Google\Service\CloudVideoIntelligence;
 class GoogleCloudVideointelligenceV1p1beta1SpeechRecognitionAlternative extends \Google\Collection
 {
   protected $collection_key = 'words';
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $transcript;
   protected $wordsType = GoogleCloudVideointelligenceV1p1beta1WordInfo::class;
   protected $wordsDataType = 'array';
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setTranscript($transcript)
   {
     $this->transcript = $transcript;
   }
+  /**
+   * @return string
+   */
   public function getTranscript()
   {
     return $this->transcript;

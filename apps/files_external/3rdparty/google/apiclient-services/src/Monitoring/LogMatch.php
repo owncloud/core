@@ -19,21 +19,39 @@ namespace Google\Service\Monitoring;
 
 class LogMatch extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string[]
+   */
   public $labelExtractors;
 
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string[]
+   */
   public function setLabelExtractors($labelExtractors)
   {
     $this->labelExtractors = $labelExtractors;
   }
+  /**
+   * @return string[]
+   */
   public function getLabelExtractors()
   {
     return $this->labelExtractors;

@@ -19,30 +19,57 @@ namespace Google\Service\TrafficDirectorService;
 
 class DynamicListenerState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastUpdated;
+  /**
+   * @var array[]
+   */
   public $listener;
+  /**
+   * @var string
+   */
   public $versionInfo;
 
+  /**
+   * @param string
+   */
   public function setLastUpdated($lastUpdated)
   {
     $this->lastUpdated = $lastUpdated;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdated()
   {
     return $this->lastUpdated;
   }
+  /**
+   * @param array[]
+   */
   public function setListener($listener)
   {
     $this->listener = $listener;
   }
+  /**
+   * @return array[]
+   */
   public function getListener()
   {
     return $this->listener;
   }
+  /**
+   * @param string
+   */
   public function setVersionInfo($versionInfo)
   {
     $this->versionInfo = $versionInfo;
   }
+  /**
+   * @return string
+   */
   public function getVersionInfo()
   {
     return $this->versionInfo;

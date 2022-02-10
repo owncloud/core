@@ -19,30 +19,57 @@ namespace Google\Service\Docs;
 
 class RgbColor extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $blue;
+  /**
+   * @var float
+   */
   public $green;
+  /**
+   * @var float
+   */
   public $red;
 
+  /**
+   * @param float
+   */
   public function setBlue($blue)
   {
     $this->blue = $blue;
   }
+  /**
+   * @return float
+   */
   public function getBlue()
   {
     return $this->blue;
   }
+  /**
+   * @param float
+   */
   public function setGreen($green)
   {
     $this->green = $green;
   }
+  /**
+   * @return float
+   */
   public function getGreen()
   {
     return $this->green;
   }
+  /**
+   * @param float
+   */
   public function setRed($red)
   {
     $this->red = $red;
   }
+  /**
+   * @return float
+   */
   public function getRed()
   {
     return $this->red;

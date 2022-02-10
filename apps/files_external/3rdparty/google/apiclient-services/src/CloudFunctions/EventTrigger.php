@@ -19,16 +19,31 @@ namespace Google\Service\CloudFunctions;
 
 class EventTrigger extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $eventType;
   protected $failurePolicyType = FailurePolicy::class;
   protected $failurePolicyDataType = '';
+  /**
+   * @var string
+   */
   public $resource;
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;
@@ -47,18 +62,30 @@ class EventTrigger extends \Google\Model
   {
     return $this->failurePolicy;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

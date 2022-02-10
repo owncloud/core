@@ -22,7 +22,13 @@ class GoogleCloudChannelV1ChangeParametersRequest extends \Google\Collection
   protected $collection_key = 'parameters';
   protected $parametersType = GoogleCloudChannelV1Parameter::class;
   protected $parametersDataType = 'array';
+  /**
+   * @var string
+   */
   public $purchaseOrderId;
+  /**
+   * @var string
+   */
   public $requestId;
 
   /**
@@ -39,18 +45,30 @@ class GoogleCloudChannelV1ChangeParametersRequest extends \Google\Collection
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setPurchaseOrderId($purchaseOrderId)
   {
     $this->purchaseOrderId = $purchaseOrderId;
   }
+  /**
+   * @return string
+   */
   public function getPurchaseOrderId()
   {
     return $this->purchaseOrderId;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

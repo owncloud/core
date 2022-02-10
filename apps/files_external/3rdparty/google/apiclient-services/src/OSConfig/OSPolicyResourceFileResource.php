@@ -19,17 +19,35 @@ namespace Google\Service\OSConfig;
 
 class OSPolicyResourceFileResource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $content;
   protected $fileType = OSPolicyResourceFile::class;
   protected $fileDataType = '';
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $permissions;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
@@ -48,26 +66,44 @@ class OSPolicyResourceFileResource extends \Google\Model
   {
     return $this->file;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
+  /**
+   * @return string
+   */
   public function getPermissions()
   {
     return $this->permissions;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

@@ -23,8 +23,17 @@ class MatchingJob extends \Google\Model
   protected $commuteInfoDataType = '';
   protected $jobType = Job::class;
   protected $jobDataType = '';
+  /**
+   * @var string
+   */
   public $jobSummary;
+  /**
+   * @var string
+   */
   public $jobTitleSnippet;
+  /**
+   * @var string
+   */
   public $searchTextSnippet;
 
   /**
@@ -55,26 +64,44 @@ class MatchingJob extends \Google\Model
   {
     return $this->job;
   }
+  /**
+   * @param string
+   */
   public function setJobSummary($jobSummary)
   {
     $this->jobSummary = $jobSummary;
   }
+  /**
+   * @return string
+   */
   public function getJobSummary()
   {
     return $this->jobSummary;
   }
+  /**
+   * @param string
+   */
   public function setJobTitleSnippet($jobTitleSnippet)
   {
     $this->jobTitleSnippet = $jobTitleSnippet;
   }
+  /**
+   * @return string
+   */
   public function getJobTitleSnippet()
   {
     return $this->jobTitleSnippet;
   }
+  /**
+   * @param string
+   */
   public function setSearchTextSnippet($searchTextSnippet)
   {
     $this->searchTextSnippet = $searchTextSnippet;
   }
+  /**
+   * @return string
+   */
   public function getSearchTextSnippet()
   {
     return $this->searchTextSnippet;

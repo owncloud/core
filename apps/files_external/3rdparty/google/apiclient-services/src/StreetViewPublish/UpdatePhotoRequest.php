@@ -21,6 +21,9 @@ class UpdatePhotoRequest extends \Google\Model
 {
   protected $photoType = Photo::class;
   protected $photoDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
 
   /**
@@ -37,10 +40,16 @@ class UpdatePhotoRequest extends \Google\Model
   {
     return $this->photo;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;

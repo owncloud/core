@@ -19,23 +19,41 @@ namespace Google\Service\Monitoring;
 
 class MonitoringQueryLanguageCondition extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var string
+   */
   public $query;
   protected $triggerType = Trigger::class;
   protected $triggerDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;

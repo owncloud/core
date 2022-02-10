@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class EndpointConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableHttpPortAccess;
+  /**
+   * @var string[]
+   */
   public $httpPorts;
 
+  /**
+   * @param bool
+   */
   public function setEnableHttpPortAccess($enableHttpPortAccess)
   {
     $this->enableHttpPortAccess = $enableHttpPortAccess;
   }
+  /**
+   * @return bool
+   */
   public function getEnableHttpPortAccess()
   {
     return $this->enableHttpPortAccess;
   }
+  /**
+   * @param string[]
+   */
   public function setHttpPorts($httpPorts)
   {
     $this->httpPorts = $httpPorts;
   }
+  /**
+   * @return string[]
+   */
   public function getHttpPorts()
   {
     return $this->httpPorts;

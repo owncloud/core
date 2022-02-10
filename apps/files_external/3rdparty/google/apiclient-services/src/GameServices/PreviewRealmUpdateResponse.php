@@ -19,14 +19,23 @@ namespace Google\Service\GameServices;
 
 class PreviewRealmUpdateResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $etag;
   protected $targetStateType = TargetState::class;
   protected $targetStateDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;

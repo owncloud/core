@@ -20,30 +20,57 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3beta1TestCase extends \Google\Collection
 {
   protected $collection_key = 'testCaseConversationTurns';
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $lastTestResultType = GoogleCloudDialogflowCxV3beta1TestCaseResult::class;
   protected $lastTestResultDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $notes;
+  /**
+   * @var string[]
+   */
   public $tags;
   protected $testCaseConversationTurnsType = GoogleCloudDialogflowCxV3beta1ConversationTurn::class;
   protected $testCaseConversationTurnsDataType = 'array';
   protected $testConfigType = GoogleCloudDialogflowCxV3beta1TestConfig::class;
   protected $testConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -62,26 +89,44 @@ class GoogleCloudDialogflowCxV3beta1TestCase extends \Google\Collection
   {
     return $this->lastTestResult;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNotes($notes)
   {
     $this->notes = $notes;
   }
+  /**
+   * @return string
+   */
   public function getNotes()
   {
     return $this->notes;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;

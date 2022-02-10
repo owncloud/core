@@ -21,6 +21,9 @@ class GoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionRequest extends
 {
   protected $extensionType = GoogleCloudPaymentsResellerSubscriptionV1Extension::class;
   protected $extensionDataType = '';
+  /**
+   * @var string
+   */
   public $requestId;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudPaymentsResellerSubscriptionV1ExtendSubscriptionRequest extends
   {
     return $this->extension;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

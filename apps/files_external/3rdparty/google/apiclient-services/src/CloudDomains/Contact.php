@@ -19,32 +19,59 @@ namespace Google\Service\CloudDomains;
 
 class Contact extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $faxNumber;
+  /**
+   * @var string
+   */
   public $phoneNumber;
   protected $postalAddressType = PostalAddress::class;
   protected $postalAddressDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setFaxNumber($faxNumber)
   {
     $this->faxNumber = $faxNumber;
   }
+  /**
+   * @return string
+   */
   public function getFaxNumber()
   {
     return $this->faxNumber;
   }
+  /**
+   * @param string
+   */
   public function setPhoneNumber($phoneNumber)
   {
     $this->phoneNumber = $phoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getPhoneNumber()
   {
     return $this->phoneNumber;

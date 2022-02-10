@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class CrashDialogError extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $crashPackage;
 
+  /**
+   * @param string
+   */
   public function setCrashPackage($crashPackage)
   {
     $this->crashPackage = $crashPackage;
   }
+  /**
+   * @return string
+   */
   public function getCrashPackage()
   {
     return $this->crashPackage;

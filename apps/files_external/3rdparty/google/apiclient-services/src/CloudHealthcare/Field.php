@@ -19,48 +19,93 @@ namespace Google\Service\CloudHealthcare;
 
 class Field extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxOccurs;
+  /**
+   * @var int
+   */
   public $minOccurs;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $table;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setMaxOccurs($maxOccurs)
   {
     $this->maxOccurs = $maxOccurs;
   }
+  /**
+   * @return int
+   */
   public function getMaxOccurs()
   {
     return $this->maxOccurs;
   }
+  /**
+   * @param int
+   */
   public function setMinOccurs($minOccurs)
   {
     $this->minOccurs = $minOccurs;
   }
+  /**
+   * @return int
+   */
   public function getMinOccurs()
   {
     return $this->minOccurs;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTable($table)
   {
     $this->table = $table;
   }
+  /**
+   * @return string
+   */
   public function getTable()
   {
     return $this->table;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

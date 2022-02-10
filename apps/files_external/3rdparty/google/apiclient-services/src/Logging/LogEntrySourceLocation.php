@@ -19,30 +19,57 @@ namespace Google\Service\Logging;
 
 class LogEntrySourceLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $file;
+  /**
+   * @var string
+   */
   public $function;
+  /**
+   * @var string
+   */
   public $line;
 
+  /**
+   * @param string
+   */
   public function setFile($file)
   {
     $this->file = $file;
   }
+  /**
+   * @return string
+   */
   public function getFile()
   {
     return $this->file;
   }
+  /**
+   * @param string
+   */
   public function setFunction($function)
   {
     $this->function = $function;
   }
+  /**
+   * @return string
+   */
   public function getFunction()
   {
     return $this->function;
   }
+  /**
+   * @param string
+   */
   public function setLine($line)
   {
     $this->line = $line;
   }
+  /**
+   * @return string
+   */
   public function getLine()
   {
     return $this->line;

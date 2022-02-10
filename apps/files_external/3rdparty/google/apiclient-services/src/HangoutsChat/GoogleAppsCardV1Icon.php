@@ -19,39 +19,75 @@ namespace Google\Service\HangoutsChat;
 
 class GoogleAppsCardV1Icon extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $altText;
+  /**
+   * @var string
+   */
   public $iconUrl;
+  /**
+   * @var string
+   */
   public $imageType;
+  /**
+   * @var string
+   */
   public $knownIcon;
 
+  /**
+   * @param string
+   */
   public function setAltText($altText)
   {
     $this->altText = $altText;
   }
+  /**
+   * @return string
+   */
   public function getAltText()
   {
     return $this->altText;
   }
+  /**
+   * @param string
+   */
   public function setIconUrl($iconUrl)
   {
     $this->iconUrl = $iconUrl;
   }
+  /**
+   * @return string
+   */
   public function getIconUrl()
   {
     return $this->iconUrl;
   }
+  /**
+   * @param string
+   */
   public function setImageType($imageType)
   {
     $this->imageType = $imageType;
   }
+  /**
+   * @return string
+   */
   public function getImageType()
   {
     return $this->imageType;
   }
+  /**
+   * @param string
+   */
   public function setKnownIcon($knownIcon)
   {
     $this->knownIcon = $knownIcon;
   }
+  /**
+   * @return string
+   */
   public function getKnownIcon()
   {
     return $this->knownIcon;

@@ -23,15 +23,33 @@ class SheetProperties extends \Google\Model
   protected $dataSourceSheetPropertiesDataType = '';
   protected $gridPropertiesType = GridProperties::class;
   protected $gridPropertiesDataType = '';
+  /**
+   * @var bool
+   */
   public $hidden;
+  /**
+   * @var int
+   */
   public $index;
+  /**
+   * @var bool
+   */
   public $rightToLeft;
+  /**
+   * @var int
+   */
   public $sheetId;
+  /**
+   * @var string
+   */
   public $sheetType;
   protected $tabColorType = Color::class;
   protected $tabColorDataType = '';
   protected $tabColorStyleType = ColorStyle::class;
   protected $tabColorStyleDataType = '';
+  /**
+   * @var string
+   */
   public $title;
 
   /**
@@ -62,42 +80,72 @@ class SheetProperties extends \Google\Model
   {
     return $this->gridProperties;
   }
+  /**
+   * @param bool
+   */
   public function setHidden($hidden)
   {
     $this->hidden = $hidden;
   }
+  /**
+   * @return bool
+   */
   public function getHidden()
   {
     return $this->hidden;
   }
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;
   }
+  /**
+   * @param bool
+   */
   public function setRightToLeft($rightToLeft)
   {
     $this->rightToLeft = $rightToLeft;
   }
+  /**
+   * @return bool
+   */
   public function getRightToLeft()
   {
     return $this->rightToLeft;
   }
+  /**
+   * @param int
+   */
   public function setSheetId($sheetId)
   {
     $this->sheetId = $sheetId;
   }
+  /**
+   * @return int
+   */
   public function getSheetId()
   {
     return $this->sheetId;
   }
+  /**
+   * @param string
+   */
   public function setSheetType($sheetType)
   {
     $this->sheetType = $sheetType;
   }
+  /**
+   * @return string
+   */
   public function getSheetType()
   {
     return $this->sheetType;
@@ -130,10 +178,16 @@ class SheetProperties extends \Google\Model
   {
     return $this->tabColorStyle;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

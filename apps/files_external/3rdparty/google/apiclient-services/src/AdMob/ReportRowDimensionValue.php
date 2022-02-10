@@ -19,21 +19,39 @@ namespace Google\Service\AdMob;
 
 class ReportRowDimensionValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayLabel;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setDisplayLabel($displayLabel)
   {
     $this->displayLabel = $displayLabel;
   }
+  /**
+   * @return string
+   */
   public function getDisplayLabel()
   {
     return $this->displayLabel;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

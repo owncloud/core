@@ -20,30 +20,57 @@ namespace Google\Service\MyBusinessNotificationSettings;
 class NotificationSetting extends \Google\Collection
 {
   protected $collection_key = 'notificationTypes';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $notificationTypes;
+  /**
+   * @var string
+   */
   public $pubsubTopic;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setNotificationTypes($notificationTypes)
   {
     $this->notificationTypes = $notificationTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getNotificationTypes()
   {
     return $this->notificationTypes;
   }
+  /**
+   * @param string
+   */
   public function setPubsubTopic($pubsubTopic)
   {
     $this->pubsubTopic = $pubsubTopic;
   }
+  /**
+   * @return string
+   */
   public function getPubsubTopic()
   {
     return $this->pubsubTopic;

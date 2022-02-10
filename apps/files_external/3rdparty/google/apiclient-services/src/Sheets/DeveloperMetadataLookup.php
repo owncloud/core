@@ -19,43 +19,85 @@ namespace Google\Service\Sheets;
 
 class DeveloperMetadataLookup extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $locationMatchingStrategy;
+  /**
+   * @var string
+   */
   public $locationType;
+  /**
+   * @var int
+   */
   public $metadataId;
+  /**
+   * @var string
+   */
   public $metadataKey;
   protected $metadataLocationType = DeveloperMetadataLocation::class;
   protected $metadataLocationDataType = '';
+  /**
+   * @var string
+   */
   public $metadataValue;
+  /**
+   * @var string
+   */
   public $visibility;
 
+  /**
+   * @param string
+   */
   public function setLocationMatchingStrategy($locationMatchingStrategy)
   {
     $this->locationMatchingStrategy = $locationMatchingStrategy;
   }
+  /**
+   * @return string
+   */
   public function getLocationMatchingStrategy()
   {
     return $this->locationMatchingStrategy;
   }
+  /**
+   * @param string
+   */
   public function setLocationType($locationType)
   {
     $this->locationType = $locationType;
   }
+  /**
+   * @return string
+   */
   public function getLocationType()
   {
     return $this->locationType;
   }
+  /**
+   * @param int
+   */
   public function setMetadataId($metadataId)
   {
     $this->metadataId = $metadataId;
   }
+  /**
+   * @return int
+   */
   public function getMetadataId()
   {
     return $this->metadataId;
   }
+  /**
+   * @param string
+   */
   public function setMetadataKey($metadataKey)
   {
     $this->metadataKey = $metadataKey;
   }
+  /**
+   * @return string
+   */
   public function getMetadataKey()
   {
     return $this->metadataKey;
@@ -74,18 +116,30 @@ class DeveloperMetadataLookup extends \Google\Model
   {
     return $this->metadataLocation;
   }
+  /**
+   * @param string
+   */
   public function setMetadataValue($metadataValue)
   {
     $this->metadataValue = $metadataValue;
   }
+  /**
+   * @return string
+   */
   public function getMetadataValue()
   {
     return $this->metadataValue;
   }
+  /**
+   * @param string
+   */
   public function setVisibility($visibility)
   {
     $this->visibility = $visibility;
   }
+  /**
+   * @return string
+   */
   public function getVisibility()
   {
     return $this->visibility;

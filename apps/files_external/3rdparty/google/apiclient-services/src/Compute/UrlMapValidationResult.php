@@ -20,24 +20,45 @@ namespace Google\Service\Compute;
 class UrlMapValidationResult extends \Google\Collection
 {
   protected $collection_key = 'testFailures';
+  /**
+   * @var string[]
+   */
   public $loadErrors;
+  /**
+   * @var bool
+   */
   public $loadSucceeded;
   protected $testFailuresType = TestFailure::class;
   protected $testFailuresDataType = 'array';
+  /**
+   * @var bool
+   */
   public $testPassed;
 
+  /**
+   * @param string[]
+   */
   public function setLoadErrors($loadErrors)
   {
     $this->loadErrors = $loadErrors;
   }
+  /**
+   * @return string[]
+   */
   public function getLoadErrors()
   {
     return $this->loadErrors;
   }
+  /**
+   * @param bool
+   */
   public function setLoadSucceeded($loadSucceeded)
   {
     $this->loadSucceeded = $loadSucceeded;
   }
+  /**
+   * @return bool
+   */
   public function getLoadSucceeded()
   {
     return $this->loadSucceeded;
@@ -56,10 +77,16 @@ class UrlMapValidationResult extends \Google\Collection
   {
     return $this->testFailures;
   }
+  /**
+   * @param bool
+   */
   public function setTestPassed($testPassed)
   {
     $this->testPassed = $testPassed;
   }
+  /**
+   * @return bool
+   */
   public function getTestPassed()
   {
     return $this->testPassed;

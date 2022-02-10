@@ -19,21 +19,39 @@ namespace Google\Service\Safebrowsing;
 
 class GoogleSecuritySafebrowsingV4ClientInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clientId;
+  /**
+   * @var string
+   */
   public $clientVersion;
 
+  /**
+   * @param string
+   */
   public function setClientId($clientId)
   {
     $this->clientId = $clientId;
   }
+  /**
+   * @return string
+   */
   public function getClientId()
   {
     return $this->clientId;
   }
+  /**
+   * @param string
+   */
   public function setClientVersion($clientVersion)
   {
     $this->clientVersion = $clientVersion;
   }
+  /**
+   * @return string
+   */
   public function getClientVersion()
   {
     return $this->clientVersion;

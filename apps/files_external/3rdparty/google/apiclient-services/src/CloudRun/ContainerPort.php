@@ -19,30 +19,57 @@ namespace Google\Service\CloudRun;
 
 class ContainerPort extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $containerPort;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $protocol;
 
+  /**
+   * @param int
+   */
   public function setContainerPort($containerPort)
   {
     $this->containerPort = $containerPort;
   }
+  /**
+   * @return int
+   */
   public function getContainerPort()
   {
     return $this->containerPort;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProtocol($protocol)
   {
     $this->protocol = $protocol;
   }
+  /**
+   * @return string
+   */
   public function getProtocol()
   {
     return $this->protocol;

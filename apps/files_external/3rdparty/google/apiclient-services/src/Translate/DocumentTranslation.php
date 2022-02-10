@@ -20,30 +20,57 @@ namespace Google\Service\Translate;
 class DocumentTranslation extends \Google\Collection
 {
   protected $collection_key = 'byteStreamOutputs';
+  /**
+   * @var string[]
+   */
   public $byteStreamOutputs;
+  /**
+   * @var string
+   */
   public $detectedLanguageCode;
+  /**
+   * @var string
+   */
   public $mimeType;
 
+  /**
+   * @param string[]
+   */
   public function setByteStreamOutputs($byteStreamOutputs)
   {
     $this->byteStreamOutputs = $byteStreamOutputs;
   }
+  /**
+   * @return string[]
+   */
   public function getByteStreamOutputs()
   {
     return $this->byteStreamOutputs;
   }
+  /**
+   * @param string
+   */
   public function setDetectedLanguageCode($detectedLanguageCode)
   {
     $this->detectedLanguageCode = $detectedLanguageCode;
   }
+  /**
+   * @return string
+   */
   public function getDetectedLanguageCode()
   {
     return $this->detectedLanguageCode;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;

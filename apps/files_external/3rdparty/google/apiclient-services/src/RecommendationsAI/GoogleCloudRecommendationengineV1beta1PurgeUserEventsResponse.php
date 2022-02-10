@@ -20,14 +20,23 @@ namespace Google\Service\RecommendationsAI;
 class GoogleCloudRecommendationengineV1beta1PurgeUserEventsResponse extends \Google\Collection
 {
   protected $collection_key = 'userEventsSample';
+  /**
+   * @var string
+   */
   public $purgedEventsCount;
   protected $userEventsSampleType = GoogleCloudRecommendationengineV1beta1UserEvent::class;
   protected $userEventsSampleDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setPurgedEventsCount($purgedEventsCount)
   {
     $this->purgedEventsCount = $purgedEventsCount;
   }
+  /**
+   * @return string
+   */
   public function getPurgedEventsCount()
   {
     return $this->purgedEventsCount;

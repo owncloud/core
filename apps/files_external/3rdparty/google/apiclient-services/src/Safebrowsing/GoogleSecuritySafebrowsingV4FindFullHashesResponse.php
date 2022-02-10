@@ -22,7 +22,13 @@ class GoogleSecuritySafebrowsingV4FindFullHashesResponse extends \Google\Collect
   protected $collection_key = 'matches';
   protected $matchesType = GoogleSecuritySafebrowsingV4ThreatMatch::class;
   protected $matchesDataType = 'array';
+  /**
+   * @var string
+   */
   public $minimumWaitDuration;
+  /**
+   * @var string
+   */
   public $negativeCacheDuration;
 
   /**
@@ -39,18 +45,30 @@ class GoogleSecuritySafebrowsingV4FindFullHashesResponse extends \Google\Collect
   {
     return $this->matches;
   }
+  /**
+   * @param string
+   */
   public function setMinimumWaitDuration($minimumWaitDuration)
   {
     $this->minimumWaitDuration = $minimumWaitDuration;
   }
+  /**
+   * @return string
+   */
   public function getMinimumWaitDuration()
   {
     return $this->minimumWaitDuration;
   }
+  /**
+   * @param string
+   */
   public function setNegativeCacheDuration($negativeCacheDuration)
   {
     $this->negativeCacheDuration = $negativeCacheDuration;
   }
+  /**
+   * @return string
+   */
   public function getNegativeCacheDuration()
   {
     return $this->negativeCacheDuration;

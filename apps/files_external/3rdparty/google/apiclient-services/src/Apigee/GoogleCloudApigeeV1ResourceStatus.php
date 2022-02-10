@@ -20,16 +20,31 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1ResourceStatus extends \Google\Collection
 {
   protected $collection_key = 'revisions';
+  /**
+   * @var string
+   */
   public $resource;
   protected $revisionsType = GoogleCloudApigeeV1RevisionStatus::class;
   protected $revisionsDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalReplicas;
+  /**
+   * @var string
+   */
   public $uid;
 
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;
@@ -48,18 +63,30 @@ class GoogleCloudApigeeV1ResourceStatus extends \Google\Collection
   {
     return $this->revisions;
   }
+  /**
+   * @param int
+   */
   public function setTotalReplicas($totalReplicas)
   {
     $this->totalReplicas = $totalReplicas;
   }
+  /**
+   * @return int
+   */
   public function getTotalReplicas()
   {
     return $this->totalReplicas;
   }
+  /**
+   * @param string
+   */
   public function setUid($uid)
   {
     $this->uid = $uid;
   }
+  /**
+   * @return string
+   */
   public function getUid()
   {
     return $this->uid;

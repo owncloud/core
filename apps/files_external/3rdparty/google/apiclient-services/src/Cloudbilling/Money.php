@@ -19,30 +19,57 @@ namespace Google\Service\Cloudbilling;
 
 class Money extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var int
+   */
   public $nanos;
+  /**
+   * @var string
+   */
   public $units;
 
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param int
+   */
   public function setNanos($nanos)
   {
     $this->nanos = $nanos;
   }
+  /**
+   * @return int
+   */
   public function getNanos()
   {
     return $this->nanos;
   }
+  /**
+   * @param string
+   */
   public function setUnits($units)
   {
     $this->units = $units;
   }
+  /**
+   * @return string
+   */
   public function getUnits()
   {
     return $this->units;

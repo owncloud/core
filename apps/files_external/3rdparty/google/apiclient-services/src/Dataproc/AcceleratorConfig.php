@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class AcceleratorConfig extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $acceleratorCount;
+  /**
+   * @var string
+   */
   public $acceleratorTypeUri;
 
+  /**
+   * @param int
+   */
   public function setAcceleratorCount($acceleratorCount)
   {
     $this->acceleratorCount = $acceleratorCount;
   }
+  /**
+   * @return int
+   */
   public function getAcceleratorCount()
   {
     return $this->acceleratorCount;
   }
+  /**
+   * @param string
+   */
   public function setAcceleratorTypeUri($acceleratorTypeUri)
   {
     $this->acceleratorTypeUri = $acceleratorTypeUri;
   }
+  /**
+   * @return string
+   */
   public function getAcceleratorTypeUri()
   {
     return $this->acceleratorTypeUri;

@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class KeyRangeDataDiskAssignment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataDisk;
+  /**
+   * @var string
+   */
   public $end;
+  /**
+   * @var string
+   */
   public $start;
 
+  /**
+   * @param string
+   */
   public function setDataDisk($dataDisk)
   {
     $this->dataDisk = $dataDisk;
   }
+  /**
+   * @return string
+   */
   public function getDataDisk()
   {
     return $this->dataDisk;
   }
+  /**
+   * @param string
+   */
   public function setEnd($end)
   {
     $this->end = $end;
   }
+  /**
+   * @return string
+   */
   public function getEnd()
   {
     return $this->end;
   }
+  /**
+   * @param string
+   */
   public function setStart($start)
   {
     $this->start = $start;
   }
+  /**
+   * @return string
+   */
   public function getStart()
   {
     return $this->start;

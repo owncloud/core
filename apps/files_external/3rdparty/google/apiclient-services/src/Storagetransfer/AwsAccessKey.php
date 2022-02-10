@@ -19,21 +19,39 @@ namespace Google\Service\Storagetransfer;
 
 class AwsAccessKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessKeyId;
+  /**
+   * @var string
+   */
   public $secretAccessKey;
 
+  /**
+   * @param string
+   */
   public function setAccessKeyId($accessKeyId)
   {
     $this->accessKeyId = $accessKeyId;
   }
+  /**
+   * @return string
+   */
   public function getAccessKeyId()
   {
     return $this->accessKeyId;
   }
+  /**
+   * @param string
+   */
   public function setSecretAccessKey($secretAccessKey)
   {
     $this->secretAccessKey = $secretAccessKey;
   }
+  /**
+   * @return string
+   */
   public function getSecretAccessKey()
   {
     return $this->secretAccessKey;

@@ -20,21 +20,39 @@ namespace Google\Service\Directory;
 class ChromeOsDeviceSystemRamFreeReports extends \Google\Collection
 {
   protected $collection_key = 'systemRamFreeInfo';
+  /**
+   * @var string
+   */
   public $reportTime;
+  /**
+   * @var string[]
+   */
   public $systemRamFreeInfo;
 
+  /**
+   * @param string
+   */
   public function setReportTime($reportTime)
   {
     $this->reportTime = $reportTime;
   }
+  /**
+   * @return string
+   */
   public function getReportTime()
   {
     return $this->reportTime;
   }
+  /**
+   * @param string[]
+   */
   public function setSystemRamFreeInfo($systemRamFreeInfo)
   {
     $this->systemRamFreeInfo = $systemRamFreeInfo;
   }
+  /**
+   * @return string[]
+   */
   public function getSystemRamFreeInfo()
   {
     return $this->systemRamFreeInfo;

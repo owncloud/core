@@ -19,12 +19,21 @@ namespace Google\Service\CloudIot;
 
 class HttpConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $httpEnabledState;
 
+  /**
+   * @param string
+   */
   public function setHttpEnabledState($httpEnabledState)
   {
     $this->httpEnabledState = $httpEnabledState;
   }
+  /**
+   * @return string
+   */
   public function getHttpEnabledState()
   {
     return $this->httpEnabledState;

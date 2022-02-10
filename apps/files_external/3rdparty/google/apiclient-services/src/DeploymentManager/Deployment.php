@@ -20,51 +20,99 @@ namespace Google\Service\DeploymentManager;
 class Deployment extends \Google\Collection
 {
   protected $collection_key = 'labels';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $fingerprint;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $insertTime;
   protected $labelsType = DeploymentLabelEntry::class;
   protected $labelsDataType = 'array';
+  /**
+   * @var string
+   */
   public $manifest;
+  /**
+   * @var string
+   */
   public $name;
   protected $operationType = Operation::class;
   protected $operationDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
   protected $targetType = TargetConfiguration::class;
   protected $targetDataType = '';
   protected $updateType = DeploymentUpdate::class;
   protected $updateDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setInsertTime($insertTime)
   {
     $this->insertTime = $insertTime;
   }
+  /**
+   * @return string
+   */
   public function getInsertTime()
   {
     return $this->insertTime;
@@ -83,18 +131,30 @@ class Deployment extends \Google\Collection
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setManifest($manifest)
   {
     $this->manifest = $manifest;
   }
+  /**
+   * @return string
+   */
   public function getManifest()
   {
     return $this->manifest;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -113,10 +173,16 @@ class Deployment extends \Google\Collection
   {
     return $this->operation;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
@@ -149,10 +215,16 @@ class Deployment extends \Google\Collection
   {
     return $this->update;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

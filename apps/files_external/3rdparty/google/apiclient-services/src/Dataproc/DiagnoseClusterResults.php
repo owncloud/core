@@ -19,12 +19,21 @@ namespace Google\Service\Dataproc;
 
 class DiagnoseClusterResults extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $outputUri;
 
+  /**
+   * @param string
+   */
   public function setOutputUri($outputUri)
   {
     $this->outputUri = $outputUri;
   }
+  /**
+   * @return string
+   */
   public function getOutputUri()
   {
     return $this->outputUri;

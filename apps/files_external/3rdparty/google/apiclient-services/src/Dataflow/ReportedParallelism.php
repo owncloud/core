@@ -19,13 +19,22 @@ namespace Google\Service\Dataflow;
 
 class ReportedParallelism extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isInfinite;
   public $value;
 
+  /**
+   * @param bool
+   */
   public function setIsInfinite($isInfinite)
   {
     $this->isInfinite = $isInfinite;
   }
+  /**
+   * @return bool
+   */
   public function getIsInfinite()
   {
     return $this->isInfinite;

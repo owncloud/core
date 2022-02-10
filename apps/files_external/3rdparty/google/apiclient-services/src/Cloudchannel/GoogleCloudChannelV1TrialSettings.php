@@ -19,21 +19,39 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1TrialSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var bool
+   */
   public $trial;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param bool
+   */
   public function setTrial($trial)
   {
     $this->trial = $trial;
   }
+  /**
+   * @return bool
+   */
   public function getTrial()
   {
     return $this->trial;

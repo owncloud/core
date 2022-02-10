@@ -19,30 +19,57 @@ namespace Google\Service\Logging;
 
 class CopyLogEntriesRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destination;
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDestination($destination)
   {
     $this->destination = $destination;
   }
+  /**
+   * @return string
+   */
   public function getDestination()
   {
     return $this->destination;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

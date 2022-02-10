@@ -19,21 +19,39 @@ namespace Google\Service\AndroidPublisher;
 
 class ApkBinary extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sha1;
+  /**
+   * @var string
+   */
   public $sha256;
 
+  /**
+   * @param string
+   */
   public function setSha1($sha1)
   {
     $this->sha1 = $sha1;
   }
+  /**
+   * @return string
+   */
   public function getSha1()
   {
     return $this->sha1;
   }
+  /**
+   * @param string
+   */
   public function setSha256($sha256)
   {
     $this->sha256 = $sha256;
   }
+  /**
+   * @return string
+   */
   public function getSha256()
   {
     return $this->sha256;

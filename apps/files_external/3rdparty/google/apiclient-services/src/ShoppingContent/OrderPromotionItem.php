@@ -19,39 +19,75 @@ namespace Google\Service\ShoppingContent;
 
 class OrderPromotionItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $offerId;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var int
+   */
   public $quantity;
 
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setOfferId($offerId)
   {
     $this->offerId = $offerId;
   }
+  /**
+   * @return string
+   */
   public function getOfferId()
   {
     return $this->offerId;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param int
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return int
+   */
   public function getQuantity()
   {
     return $this->quantity;

@@ -23,12 +23,33 @@ class PopupWindowProperties extends \Google\Model
   protected $dimensionDataType = '';
   protected $offsetType = OffsetPosition::class;
   protected $offsetDataType = '';
+  /**
+   * @var string
+   */
   public $positionType;
+  /**
+   * @var bool
+   */
   public $showAddressBar;
+  /**
+   * @var bool
+   */
   public $showMenuBar;
+  /**
+   * @var bool
+   */
   public $showScrollBar;
+  /**
+   * @var bool
+   */
   public $showStatusBar;
+  /**
+   * @var bool
+   */
   public $showToolBar;
+  /**
+   * @var string
+   */
   public $title;
 
   /**
@@ -59,58 +80,100 @@ class PopupWindowProperties extends \Google\Model
   {
     return $this->offset;
   }
+  /**
+   * @param string
+   */
   public function setPositionType($positionType)
   {
     $this->positionType = $positionType;
   }
+  /**
+   * @return string
+   */
   public function getPositionType()
   {
     return $this->positionType;
   }
+  /**
+   * @param bool
+   */
   public function setShowAddressBar($showAddressBar)
   {
     $this->showAddressBar = $showAddressBar;
   }
+  /**
+   * @return bool
+   */
   public function getShowAddressBar()
   {
     return $this->showAddressBar;
   }
+  /**
+   * @param bool
+   */
   public function setShowMenuBar($showMenuBar)
   {
     $this->showMenuBar = $showMenuBar;
   }
+  /**
+   * @return bool
+   */
   public function getShowMenuBar()
   {
     return $this->showMenuBar;
   }
+  /**
+   * @param bool
+   */
   public function setShowScrollBar($showScrollBar)
   {
     $this->showScrollBar = $showScrollBar;
   }
+  /**
+   * @return bool
+   */
   public function getShowScrollBar()
   {
     return $this->showScrollBar;
   }
+  /**
+   * @param bool
+   */
   public function setShowStatusBar($showStatusBar)
   {
     $this->showStatusBar = $showStatusBar;
   }
+  /**
+   * @return bool
+   */
   public function getShowStatusBar()
   {
     return $this->showStatusBar;
   }
+  /**
+   * @param bool
+   */
   public function setShowToolBar($showToolBar)
   {
     $this->showToolBar = $showToolBar;
   }
+  /**
+   * @return bool
+   */
   public function getShowToolBar()
   {
     return $this->showToolBar;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

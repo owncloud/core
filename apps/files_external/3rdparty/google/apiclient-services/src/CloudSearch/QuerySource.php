@@ -20,17 +20,29 @@ namespace Google\Service\CloudSearch;
 class QuerySource extends \Google\Collection
 {
   protected $collection_key = 'operators';
+  /**
+   * @var string
+   */
   public $displayName;
   protected $operatorsType = QueryOperator::class;
   protected $operatorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $shortName;
   protected $sourceType = Source::class;
   protected $sourceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -49,10 +61,16 @@ class QuerySource extends \Google\Collection
   {
     return $this->operators;
   }
+  /**
+   * @param string
+   */
   public function setShortName($shortName)
   {
     $this->shortName = $shortName;
   }
+  /**
+   * @return string
+   */
   public function getShortName()
   {
     return $this->shortName;

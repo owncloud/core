@@ -20,29 +20,59 @@ namespace Google\Service\Compute;
 class ResourcePolicyAggregatedList extends \Google\Collection
 {
   protected $collection_key = 'unreachables';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $id;
   protected $itemsType = ResourcePoliciesScopedList::class;
   protected $itemsDataType = 'map';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string[]
+   */
   public $unreachables;
   protected $warningType = ResourcePolicyAggregatedListWarning::class;
   protected $warningDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -61,34 +91,58 @@ class ResourcePolicyAggregatedList extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string[]
+   */
   public function setUnreachables($unreachables)
   {
     $this->unreachables = $unreachables;
   }
+  /**
+   * @return string[]
+   */
   public function getUnreachables()
   {
     return $this->unreachables;

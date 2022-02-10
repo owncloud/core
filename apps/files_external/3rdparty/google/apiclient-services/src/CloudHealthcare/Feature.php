@@ -20,6 +20,9 @@ namespace Google\Service\CloudHealthcare;
 class Feature extends \Google\Model
 {
   public $confidence;
+  /**
+   * @var string
+   */
   public $value;
 
   public function setConfidence($confidence)
@@ -30,10 +33,16 @@ class Feature extends \Google\Model
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

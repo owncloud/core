@@ -19,66 +19,129 @@ namespace Google\Service\DisplayVideo;
 
 class Channel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $negativelyTargetedLineItemCount;
+  /**
+   * @var string
+   */
   public $partnerId;
+  /**
+   * @var string
+   */
   public $positivelyTargetedLineItemCount;
 
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNegativelyTargetedLineItemCount($negativelyTargetedLineItemCount)
   {
     $this->negativelyTargetedLineItemCount = $negativelyTargetedLineItemCount;
   }
+  /**
+   * @return string
+   */
   public function getNegativelyTargetedLineItemCount()
   {
     return $this->negativelyTargetedLineItemCount;
   }
+  /**
+   * @param string
+   */
   public function setPartnerId($partnerId)
   {
     $this->partnerId = $partnerId;
   }
+  /**
+   * @return string
+   */
   public function getPartnerId()
   {
     return $this->partnerId;
   }
+  /**
+   * @param string
+   */
   public function setPositivelyTargetedLineItemCount($positivelyTargetedLineItemCount)
   {
     $this->positivelyTargetedLineItemCount = $positivelyTargetedLineItemCount;
   }
+  /**
+   * @return string
+   */
   public function getPositivelyTargetedLineItemCount()
   {
     return $this->positivelyTargetedLineItemCount;

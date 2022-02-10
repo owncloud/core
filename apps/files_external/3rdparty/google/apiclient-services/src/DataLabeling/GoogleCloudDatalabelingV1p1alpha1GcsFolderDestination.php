@@ -19,12 +19,21 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1p1alpha1GcsFolderDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $outputFolderUri;
 
+  /**
+   * @param string
+   */
   public function setOutputFolderUri($outputFolderUri)
   {
     $this->outputFolderUri = $outputFolderUri;
   }
+  /**
+   * @return string
+   */
   public function getOutputFolderUri()
   {
     return $this->outputFolderUri;

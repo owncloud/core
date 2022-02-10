@@ -20,16 +20,31 @@ namespace Google\Service\CloudDomains;
 class ConfigureContactSettingsRequest extends \Google\Collection
 {
   protected $collection_key = 'contactNotices';
+  /**
+   * @var string[]
+   */
   public $contactNotices;
   protected $contactSettingsType = ContactSettings::class;
   protected $contactSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
+  /**
+   * @var bool
+   */
   public $validateOnly;
 
+  /**
+   * @param string[]
+   */
   public function setContactNotices($contactNotices)
   {
     $this->contactNotices = $contactNotices;
   }
+  /**
+   * @return string[]
+   */
   public function getContactNotices()
   {
     return $this->contactNotices;
@@ -48,18 +63,30 @@ class ConfigureContactSettingsRequest extends \Google\Collection
   {
     return $this->contactSettings;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;
   }
+  /**
+   * @param bool
+   */
   public function setValidateOnly($validateOnly)
   {
     $this->validateOnly = $validateOnly;
   }
+  /**
+   * @return bool
+   */
   public function getValidateOnly()
   {
     return $this->validateOnly;

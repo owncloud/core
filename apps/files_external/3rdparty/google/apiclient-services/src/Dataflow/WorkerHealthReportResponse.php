@@ -19,12 +19,21 @@ namespace Google\Service\Dataflow;
 
 class WorkerHealthReportResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $reportInterval;
 
+  /**
+   * @param string
+   */
   public function setReportInterval($reportInterval)
   {
     $this->reportInterval = $reportInterval;
   }
+  /**
+   * @return string
+   */
   public function getReportInterval()
   {
     return $this->reportInterval;

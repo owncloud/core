@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class SqlServerAuditConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bucket;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setBucket($bucket)
   {
     $this->bucket = $bucket;
   }
+  /**
+   * @return string
+   */
   public function getBucket()
   {
     return $this->bucket;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

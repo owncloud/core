@@ -22,6 +22,9 @@ class QueryDriveActivityResponse extends \Google\Collection
   protected $collection_key = 'activities';
   protected $activitiesType = DriveActivity::class;
   protected $activitiesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class QueryDriveActivityResponse extends \Google\Collection
   {
     return $this->activities;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

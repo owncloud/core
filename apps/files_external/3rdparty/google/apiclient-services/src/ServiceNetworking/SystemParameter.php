@@ -19,30 +19,57 @@ namespace Google\Service\ServiceNetworking;
 
 class SystemParameter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $httpHeader;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $urlQueryParameter;
 
+  /**
+   * @param string
+   */
   public function setHttpHeader($httpHeader)
   {
     $this->httpHeader = $httpHeader;
   }
+  /**
+   * @return string
+   */
   public function getHttpHeader()
   {
     return $this->httpHeader;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setUrlQueryParameter($urlQueryParameter)
   {
     $this->urlQueryParameter = $urlQueryParameter;
   }
+  /**
+   * @return string
+   */
   public function getUrlQueryParameter()
   {
     return $this->urlQueryParameter;

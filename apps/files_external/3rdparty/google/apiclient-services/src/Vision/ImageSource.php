@@ -19,21 +19,39 @@ namespace Google\Service\Vision;
 
 class ImageSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsImageUri;
+  /**
+   * @var string
+   */
   public $imageUri;
 
+  /**
+   * @param string
+   */
   public function setGcsImageUri($gcsImageUri)
   {
     $this->gcsImageUri = $gcsImageUri;
   }
+  /**
+   * @return string
+   */
   public function getGcsImageUri()
   {
     return $this->gcsImageUri;
   }
+  /**
+   * @param string
+   */
   public function setImageUri($imageUri)
   {
     $this->imageUri = $imageUri;
   }
+  /**
+   * @return string
+   */
   public function getImageUri()
   {
     return $this->imageUri;

@@ -23,21 +23,39 @@ class FirewallAllowed extends \Google\Collection
   protected $internal_gapi_mappings = [
         "iPProtocol" => "IPProtocol",
   ];
+  /**
+   * @var string
+   */
   public $iPProtocol;
+  /**
+   * @var string[]
+   */
   public $ports;
 
+  /**
+   * @param string
+   */
   public function setIPProtocol($iPProtocol)
   {
     $this->iPProtocol = $iPProtocol;
   }
+  /**
+   * @return string
+   */
   public function getIPProtocol()
   {
     return $this->iPProtocol;
   }
+  /**
+   * @param string[]
+   */
   public function setPorts($ports)
   {
     $this->ports = $ports;
   }
+  /**
+   * @return string[]
+   */
   public function getPorts()
   {
     return $this->ports;

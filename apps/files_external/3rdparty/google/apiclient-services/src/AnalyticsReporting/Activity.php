@@ -20,11 +20,23 @@ namespace Google\Service\AnalyticsReporting;
 class Activity extends \Google\Collection
 {
   protected $collection_key = 'customDimension';
+  /**
+   * @var string
+   */
   public $activityTime;
+  /**
+   * @var string
+   */
   public $activityType;
   protected $appviewType = ScreenviewData::class;
   protected $appviewDataType = '';
+  /**
+   * @var string
+   */
   public $campaign;
+  /**
+   * @var string
+   */
   public $channelGrouping;
   protected $customDimensionType = CustomDimension::class;
   protected $customDimensionDataType = 'array';
@@ -34,26 +46,53 @@ class Activity extends \Google\Collection
   protected $eventDataType = '';
   protected $goalsType = GoalSetData::class;
   protected $goalsDataType = '';
+  /**
+   * @var string
+   */
   public $hostname;
+  /**
+   * @var string
+   */
   public $keyword;
+  /**
+   * @var string
+   */
   public $landingPagePath;
+  /**
+   * @var string
+   */
   public $medium;
   protected $pageviewType = PageviewData::class;
   protected $pageviewDataType = '';
+  /**
+   * @var string
+   */
   public $source;
 
+  /**
+   * @param string
+   */
   public function setActivityTime($activityTime)
   {
     $this->activityTime = $activityTime;
   }
+  /**
+   * @return string
+   */
   public function getActivityTime()
   {
     return $this->activityTime;
   }
+  /**
+   * @param string
+   */
   public function setActivityType($activityType)
   {
     $this->activityType = $activityType;
   }
+  /**
+   * @return string
+   */
   public function getActivityType()
   {
     return $this->activityType;
@@ -72,18 +111,30 @@ class Activity extends \Google\Collection
   {
     return $this->appview;
   }
+  /**
+   * @param string
+   */
   public function setCampaign($campaign)
   {
     $this->campaign = $campaign;
   }
+  /**
+   * @return string
+   */
   public function getCampaign()
   {
     return $this->campaign;
   }
+  /**
+   * @param string
+   */
   public function setChannelGrouping($channelGrouping)
   {
     $this->channelGrouping = $channelGrouping;
   }
+  /**
+   * @return string
+   */
   public function getChannelGrouping()
   {
     return $this->channelGrouping;
@@ -144,34 +195,58 @@ class Activity extends \Google\Collection
   {
     return $this->goals;
   }
+  /**
+   * @param string
+   */
   public function setHostname($hostname)
   {
     $this->hostname = $hostname;
   }
+  /**
+   * @return string
+   */
   public function getHostname()
   {
     return $this->hostname;
   }
+  /**
+   * @param string
+   */
   public function setKeyword($keyword)
   {
     $this->keyword = $keyword;
   }
+  /**
+   * @return string
+   */
   public function getKeyword()
   {
     return $this->keyword;
   }
+  /**
+   * @param string
+   */
   public function setLandingPagePath($landingPagePath)
   {
     $this->landingPagePath = $landingPagePath;
   }
+  /**
+   * @return string
+   */
   public function getLandingPagePath()
   {
     return $this->landingPagePath;
   }
+  /**
+   * @param string
+   */
   public function setMedium($medium)
   {
     $this->medium = $medium;
   }
+  /**
+   * @return string
+   */
   public function getMedium()
   {
     return $this->medium;
@@ -190,10 +265,16 @@ class Activity extends \Google\Collection
   {
     return $this->pageview;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;

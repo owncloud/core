@@ -19,12 +19,21 @@ namespace Google\Service\Dataproc;
 
 class ConfidentialInstanceConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableConfidentialCompute;
 
+  /**
+   * @param bool
+   */
   public function setEnableConfidentialCompute($enableConfidentialCompute)
   {
     $this->enableConfidentialCompute = $enableConfidentialCompute;
   }
+  /**
+   * @return bool
+   */
   public function getEnableConfidentialCompute()
   {
     return $this->enableConfidentialCompute;

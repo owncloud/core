@@ -19,12 +19,21 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3SecuritySettingsInsightsExportSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableInsightsExport;
 
+  /**
+   * @param bool
+   */
   public function setEnableInsightsExport($enableInsightsExport)
   {
     $this->enableInsightsExport = $enableInsightsExport;
   }
+  /**
+   * @return bool
+   */
   public function getEnableInsightsExport()
   {
     return $this->enableInsightsExport;

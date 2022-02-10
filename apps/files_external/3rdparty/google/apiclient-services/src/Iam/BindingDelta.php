@@ -19,16 +19,31 @@ namespace Google\Service\Iam;
 
 class BindingDelta extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $action;
   protected $conditionType = Expr::class;
   protected $conditionDataType = '';
+  /**
+   * @var string
+   */
   public $member;
+  /**
+   * @var string
+   */
   public $role;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
@@ -47,18 +62,30 @@ class BindingDelta extends \Google\Model
   {
     return $this->condition;
   }
+  /**
+   * @param string
+   */
   public function setMember($member)
   {
     $this->member = $member;
   }
+  /**
+   * @return string
+   */
   public function getMember()
   {
     return $this->member;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;

@@ -20,21 +20,39 @@ namespace Google\Service\Datastream;
 class FetchStaticIpsResponse extends \Google\Collection
 {
   protected $collection_key = 'staticIps';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $staticIps;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setStaticIps($staticIps)
   {
     $this->staticIps = $staticIps;
   }
+  /**
+   * @return string[]
+   */
   public function getStaticIps()
   {
     return $this->staticIps;

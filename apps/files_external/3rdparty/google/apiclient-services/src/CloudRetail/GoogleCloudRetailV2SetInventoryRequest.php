@@ -19,16 +19,31 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2SetInventoryRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowMissing;
   protected $inventoryType = GoogleCloudRetailV2Product::class;
   protected $inventoryDataType = '';
+  /**
+   * @var string
+   */
   public $setMask;
+  /**
+   * @var string
+   */
   public $setTime;
 
+  /**
+   * @param bool
+   */
   public function setAllowMissing($allowMissing)
   {
     $this->allowMissing = $allowMissing;
   }
+  /**
+   * @return bool
+   */
   public function getAllowMissing()
   {
     return $this->allowMissing;
@@ -47,18 +62,30 @@ class GoogleCloudRetailV2SetInventoryRequest extends \Google\Model
   {
     return $this->inventory;
   }
+  /**
+   * @param string
+   */
   public function setSetMask($setMask)
   {
     $this->setMask = $setMask;
   }
+  /**
+   * @return string
+   */
   public function getSetMask()
   {
     return $this->setMask;
   }
+  /**
+   * @param string
+   */
   public function setSetTime($setTime)
   {
     $this->setTime = $setTime;
   }
+  /**
+   * @return string
+   */
   public function getSetTime()
   {
     return $this->setTime;

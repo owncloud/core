@@ -19,30 +19,57 @@ namespace Google\Service\CloudSupport;
 
 class ObjectId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bucketName;
+  /**
+   * @var string
+   */
   public $generation;
+  /**
+   * @var string
+   */
   public $objectName;
 
+  /**
+   * @param string
+   */
   public function setBucketName($bucketName)
   {
     $this->bucketName = $bucketName;
   }
+  /**
+   * @return string
+   */
   public function getBucketName()
   {
     return $this->bucketName;
   }
+  /**
+   * @param string
+   */
   public function setGeneration($generation)
   {
     $this->generation = $generation;
   }
+  /**
+   * @return string
+   */
   public function getGeneration()
   {
     return $this->generation;
   }
+  /**
+   * @param string
+   */
   public function setObjectName($objectName)
   {
     $this->objectName = $objectName;
   }
+  /**
+   * @return string
+   */
   public function getObjectName()
   {
     return $this->objectName;

@@ -20,28 +20,61 @@ namespace Google\Service\TagManager;
 class Zone extends \Google\Collection
 {
   protected $collection_key = 'parameter';
+  /**
+   * @var string
+   */
   public $accountId;
   protected $boundaryType = ZoneBoundary::class;
   protected $boundaryDataType = '';
   protected $childContainerType = ZoneChildContainer::class;
   protected $childContainerDataType = 'array';
+  /**
+   * @var string
+   */
   public $containerId;
+  /**
+   * @var string
+   */
   public $fingerprint;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $notes;
   protected $parameterType = Parameter::class;
   protected $parameterDataType = 'array';
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $tagManagerUrl;
   protected $typeRestrictionType = ZoneTypeRestriction::class;
   protected $typeRestrictionDataType = '';
+  /**
+   * @var string
+   */
   public $workspaceId;
+  /**
+   * @var string
+   */
   public $zoneId;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -74,34 +107,58 @@ class Zone extends \Google\Collection
   {
     return $this->childContainer;
   }
+  /**
+   * @param string
+   */
   public function setContainerId($containerId)
   {
     $this->containerId = $containerId;
   }
+  /**
+   * @return string
+   */
   public function getContainerId()
   {
     return $this->containerId;
   }
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNotes($notes)
   {
     $this->notes = $notes;
   }
+  /**
+   * @return string
+   */
   public function getNotes()
   {
     return $this->notes;
@@ -120,18 +177,30 @@ class Zone extends \Google\Collection
   {
     return $this->parameter;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setTagManagerUrl($tagManagerUrl)
   {
     $this->tagManagerUrl = $tagManagerUrl;
   }
+  /**
+   * @return string
+   */
   public function getTagManagerUrl()
   {
     return $this->tagManagerUrl;
@@ -150,18 +219,30 @@ class Zone extends \Google\Collection
   {
     return $this->typeRestriction;
   }
+  /**
+   * @param string
+   */
   public function setWorkspaceId($workspaceId)
   {
     $this->workspaceId = $workspaceId;
   }
+  /**
+   * @return string
+   */
   public function getWorkspaceId()
   {
     return $this->workspaceId;
   }
+  /**
+   * @param string
+   */
   public function setZoneId($zoneId)
   {
     $this->zoneId = $zoneId;
   }
+  /**
+   * @return string
+   */
   public function getZoneId()
   {
     return $this->zoneId;

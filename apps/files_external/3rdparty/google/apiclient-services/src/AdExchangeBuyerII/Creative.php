@@ -20,51 +20,123 @@ namespace Google\Service\AdExchangeBuyerII;
 class Creative extends \Google\Collection
 {
   protected $collection_key = 'vendorIds';
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $adChoicesDestinationUrl;
   protected $adTechnologyProvidersType = AdTechnologyProviders::class;
   protected $adTechnologyProvidersDataType = '';
+  /**
+   * @var string
+   */
   public $advertiserName;
+  /**
+   * @var string
+   */
   public $agencyId;
+  /**
+   * @var string
+   */
   public $apiUpdateTime;
+  /**
+   * @var string[]
+   */
   public $attributes;
+  /**
+   * @var string[]
+   */
   public $clickThroughUrls;
   protected $correctionsType = Correction::class;
   protected $correctionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $creativeId;
+  /**
+   * @var string
+   */
   public $dealsStatus;
+  /**
+   * @var string[]
+   */
   public $declaredClickThroughUrls;
+  /**
+   * @var string[]
+   */
   public $detectedAdvertiserIds;
+  /**
+   * @var string[]
+   */
   public $detectedDomains;
+  /**
+   * @var string[]
+   */
   public $detectedLanguages;
+  /**
+   * @var int[]
+   */
   public $detectedProductCategories;
+  /**
+   * @var int[]
+   */
   public $detectedSensitiveCategories;
   protected $htmlType = HtmlContent::class;
   protected $htmlDataType = '';
+  /**
+   * @var string[]
+   */
   public $impressionTrackingUrls;
   protected $nativeType = NativeContent::class;
   protected $nativeDataType = '';
+  /**
+   * @var string
+   */
   public $openAuctionStatus;
+  /**
+   * @var string[]
+   */
   public $restrictedCategories;
   protected $servingRestrictionsType = ServingRestriction::class;
   protected $servingRestrictionsDataType = 'array';
+  /**
+   * @var int[]
+   */
   public $vendorIds;
+  /**
+   * @var int
+   */
   public $version;
   protected $videoType = VideoContent::class;
   protected $videoDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setAdChoicesDestinationUrl($adChoicesDestinationUrl)
   {
     $this->adChoicesDestinationUrl = $adChoicesDestinationUrl;
   }
+  /**
+   * @return string
+   */
   public function getAdChoicesDestinationUrl()
   {
     return $this->adChoicesDestinationUrl;
@@ -83,42 +155,72 @@ class Creative extends \Google\Collection
   {
     return $this->adTechnologyProviders;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserName($advertiserName)
   {
     $this->advertiserName = $advertiserName;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserName()
   {
     return $this->advertiserName;
   }
+  /**
+   * @param string
+   */
   public function setAgencyId($agencyId)
   {
     $this->agencyId = $agencyId;
   }
+  /**
+   * @return string
+   */
   public function getAgencyId()
   {
     return $this->agencyId;
   }
+  /**
+   * @param string
+   */
   public function setApiUpdateTime($apiUpdateTime)
   {
     $this->apiUpdateTime = $apiUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getApiUpdateTime()
   {
     return $this->apiUpdateTime;
   }
+  /**
+   * @param string[]
+   */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
+  /**
+   * @return string[]
+   */
   public function getAttributes()
   {
     return $this->attributes;
   }
+  /**
+   * @param string[]
+   */
   public function setClickThroughUrls($clickThroughUrls)
   {
     $this->clickThroughUrls = $clickThroughUrls;
   }
+  /**
+   * @return string[]
+   */
   public function getClickThroughUrls()
   {
     return $this->clickThroughUrls;
@@ -137,66 +239,114 @@ class Creative extends \Google\Collection
   {
     return $this->corrections;
   }
+  /**
+   * @param string
+   */
   public function setCreativeId($creativeId)
   {
     $this->creativeId = $creativeId;
   }
+  /**
+   * @return string
+   */
   public function getCreativeId()
   {
     return $this->creativeId;
   }
+  /**
+   * @param string
+   */
   public function setDealsStatus($dealsStatus)
   {
     $this->dealsStatus = $dealsStatus;
   }
+  /**
+   * @return string
+   */
   public function getDealsStatus()
   {
     return $this->dealsStatus;
   }
+  /**
+   * @param string[]
+   */
   public function setDeclaredClickThroughUrls($declaredClickThroughUrls)
   {
     $this->declaredClickThroughUrls = $declaredClickThroughUrls;
   }
+  /**
+   * @return string[]
+   */
   public function getDeclaredClickThroughUrls()
   {
     return $this->declaredClickThroughUrls;
   }
+  /**
+   * @param string[]
+   */
   public function setDetectedAdvertiserIds($detectedAdvertiserIds)
   {
     $this->detectedAdvertiserIds = $detectedAdvertiserIds;
   }
+  /**
+   * @return string[]
+   */
   public function getDetectedAdvertiserIds()
   {
     return $this->detectedAdvertiserIds;
   }
+  /**
+   * @param string[]
+   */
   public function setDetectedDomains($detectedDomains)
   {
     $this->detectedDomains = $detectedDomains;
   }
+  /**
+   * @return string[]
+   */
   public function getDetectedDomains()
   {
     return $this->detectedDomains;
   }
+  /**
+   * @param string[]
+   */
   public function setDetectedLanguages($detectedLanguages)
   {
     $this->detectedLanguages = $detectedLanguages;
   }
+  /**
+   * @return string[]
+   */
   public function getDetectedLanguages()
   {
     return $this->detectedLanguages;
   }
+  /**
+   * @param int[]
+   */
   public function setDetectedProductCategories($detectedProductCategories)
   {
     $this->detectedProductCategories = $detectedProductCategories;
   }
+  /**
+   * @return int[]
+   */
   public function getDetectedProductCategories()
   {
     return $this->detectedProductCategories;
   }
+  /**
+   * @param int[]
+   */
   public function setDetectedSensitiveCategories($detectedSensitiveCategories)
   {
     $this->detectedSensitiveCategories = $detectedSensitiveCategories;
   }
+  /**
+   * @return int[]
+   */
   public function getDetectedSensitiveCategories()
   {
     return $this->detectedSensitiveCategories;
@@ -215,10 +365,16 @@ class Creative extends \Google\Collection
   {
     return $this->html;
   }
+  /**
+   * @param string[]
+   */
   public function setImpressionTrackingUrls($impressionTrackingUrls)
   {
     $this->impressionTrackingUrls = $impressionTrackingUrls;
   }
+  /**
+   * @return string[]
+   */
   public function getImpressionTrackingUrls()
   {
     return $this->impressionTrackingUrls;
@@ -237,18 +393,30 @@ class Creative extends \Google\Collection
   {
     return $this->native;
   }
+  /**
+   * @param string
+   */
   public function setOpenAuctionStatus($openAuctionStatus)
   {
     $this->openAuctionStatus = $openAuctionStatus;
   }
+  /**
+   * @return string
+   */
   public function getOpenAuctionStatus()
   {
     return $this->openAuctionStatus;
   }
+  /**
+   * @param string[]
+   */
   public function setRestrictedCategories($restrictedCategories)
   {
     $this->restrictedCategories = $restrictedCategories;
   }
+  /**
+   * @return string[]
+   */
   public function getRestrictedCategories()
   {
     return $this->restrictedCategories;
@@ -267,18 +435,30 @@ class Creative extends \Google\Collection
   {
     return $this->servingRestrictions;
   }
+  /**
+   * @param int[]
+   */
   public function setVendorIds($vendorIds)
   {
     $this->vendorIds = $vendorIds;
   }
+  /**
+   * @return int[]
+   */
   public function getVendorIds()
   {
     return $this->vendorIds;
   }
+  /**
+   * @param int
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return int
+   */
   public function getVersion()
   {
     return $this->version;

@@ -20,93 +20,183 @@ namespace Google\Service\Compute;
 class TargetSslProxy extends \Google\Collection
 {
   protected $collection_key = 'sslCertificates';
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $proxyHeader;
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $service;
+  /**
+   * @var string[]
+   */
   public $sslCertificates;
+  /**
+   * @var string
+   */
   public $sslPolicy;
 
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProxyHeader($proxyHeader)
   {
     $this->proxyHeader = $proxyHeader;
   }
+  /**
+   * @return string
+   */
   public function getProxyHeader()
   {
     return $this->proxyHeader;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;
   }
+  /**
+   * @param string[]
+   */
   public function setSslCertificates($sslCertificates)
   {
     $this->sslCertificates = $sslCertificates;
   }
+  /**
+   * @return string[]
+   */
   public function getSslCertificates()
   {
     return $this->sslCertificates;
   }
+  /**
+   * @param string
+   */
   public function setSslPolicy($sslPolicy)
   {
     $this->sslPolicy = $sslPolicy;
   }
+  /**
+   * @return string
+   */
   public function getSslPolicy()
   {
     return $this->sslPolicy;

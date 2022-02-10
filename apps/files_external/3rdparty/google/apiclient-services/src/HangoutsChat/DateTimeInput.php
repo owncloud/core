@@ -19,30 +19,57 @@ namespace Google\Service\HangoutsChat;
 
 class DateTimeInput extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $hasDate;
+  /**
+   * @var bool
+   */
   public $hasTime;
+  /**
+   * @var string
+   */
   public $msSinceEpoch;
 
+  /**
+   * @param bool
+   */
   public function setHasDate($hasDate)
   {
     $this->hasDate = $hasDate;
   }
+  /**
+   * @return bool
+   */
   public function getHasDate()
   {
     return $this->hasDate;
   }
+  /**
+   * @param bool
+   */
   public function setHasTime($hasTime)
   {
     $this->hasTime = $hasTime;
   }
+  /**
+   * @return bool
+   */
   public function getHasTime()
   {
     return $this->hasTime;
   }
+  /**
+   * @param string
+   */
   public function setMsSinceEpoch($msSinceEpoch)
   {
     $this->msSinceEpoch = $msSinceEpoch;
   }
+  /**
+   * @return string
+   */
   public function getMsSinceEpoch()
   {
     return $this->msSinceEpoch;

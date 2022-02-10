@@ -40,7 +40,8 @@ class OrganizationsDatacollectors extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string dataCollectorId ID of the data collector. Overrides any ID
-   * in the data collector resource. Must begin with `dc_`.
+   * in the data collector resource. Must be a string beginning with `dc_` that
+   * contains only letters, numbers, and underscores.
    * @return GoogleCloudApigeeV1DataCollector
    */
   public function create($parent, GoogleCloudApigeeV1DataCollector $postBody, $optParams = [])

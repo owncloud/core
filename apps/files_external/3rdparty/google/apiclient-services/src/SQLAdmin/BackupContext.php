@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class BackupContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backupId;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setBackupId($backupId)
   {
     $this->backupId = $backupId;
   }
+  /**
+   * @return string
+   */
   public function getBackupId()
   {
     return $this->backupId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

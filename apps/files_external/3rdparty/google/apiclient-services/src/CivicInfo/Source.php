@@ -19,21 +19,39 @@ namespace Google\Service\CivicInfo;
 
 class Source extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $official;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setOfficial($official)
   {
     $this->official = $official;
   }
+  /**
+   * @return bool
+   */
   public function getOfficial()
   {
     return $this->official;

@@ -22,19 +22,43 @@ class Registration extends \Google\Collection
   protected $collection_key = 'supportedPrivacy';
   protected $contactSettingsType = ContactSettings::class;
   protected $contactSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
   protected $dnsSettingsType = DnsSettings::class;
   protected $dnsSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $domainName;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string[]
+   */
   public $issues;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $managementSettingsType = ManagementSettings::class;
   protected $managementSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $pendingContactSettingsType = ContactSettings::class;
   protected $pendingContactSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string[]
+   */
   public $supportedPrivacy;
 
   /**
@@ -51,10 +75,16 @@ class Registration extends \Google\Collection
   {
     return $this->contactSettings;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -73,34 +103,58 @@ class Registration extends \Google\Collection
   {
     return $this->dnsSettings;
   }
+  /**
+   * @param string
+   */
   public function setDomainName($domainName)
   {
     $this->domainName = $domainName;
   }
+  /**
+   * @return string
+   */
   public function getDomainName()
   {
     return $this->domainName;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string[]
+   */
   public function setIssues($issues)
   {
     $this->issues = $issues;
   }
+  /**
+   * @return string[]
+   */
   public function getIssues()
   {
     return $this->issues;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -119,10 +173,16 @@ class Registration extends \Google\Collection
   {
     return $this->managementSettings;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -141,18 +201,30 @@ class Registration extends \Google\Collection
   {
     return $this->pendingContactSettings;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string[]
+   */
   public function setSupportedPrivacy($supportedPrivacy)
   {
     $this->supportedPrivacy = $supportedPrivacy;
   }
+  /**
+   * @return string[]
+   */
   public function getSupportedPrivacy()
   {
     return $this->supportedPrivacy;

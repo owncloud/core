@@ -20,32 +20,65 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2DlpJob extends \Google\Collection
 {
   protected $collection_key = 'errors';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $endTime;
   protected $errorsType = GooglePrivacyDlpV2Error::class;
   protected $errorsDataType = 'array';
   protected $inspectDetailsType = GooglePrivacyDlpV2InspectDataSourceDetails::class;
   protected $inspectDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $jobTriggerName;
+  /**
+   * @var string
+   */
   public $name;
   protected $riskDetailsType = GooglePrivacyDlpV2AnalyzeDataSourceRiskDetails::class;
   protected $riskDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -78,18 +111,30 @@ class GooglePrivacyDlpV2DlpJob extends \Google\Collection
   {
     return $this->inspectDetails;
   }
+  /**
+   * @param string
+   */
   public function setJobTriggerName($jobTriggerName)
   {
     $this->jobTriggerName = $jobTriggerName;
   }
+  /**
+   * @return string
+   */
   public function getJobTriggerName()
   {
     return $this->jobTriggerName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -108,26 +153,44 @@ class GooglePrivacyDlpV2DlpJob extends \Google\Collection
   {
     return $this->riskDetails;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

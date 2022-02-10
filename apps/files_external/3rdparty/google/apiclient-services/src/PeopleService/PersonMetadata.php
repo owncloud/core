@@ -20,41 +20,77 @@ namespace Google\Service\PeopleService;
 class PersonMetadata extends \Google\Collection
 {
   protected $collection_key = 'sources';
+  /**
+   * @var bool
+   */
   public $deleted;
+  /**
+   * @var string[]
+   */
   public $linkedPeopleResourceNames;
+  /**
+   * @var string
+   */
   public $objectType;
+  /**
+   * @var string[]
+   */
   public $previousResourceNames;
   protected $sourcesType = Source::class;
   protected $sourcesDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setDeleted($deleted)
   {
     $this->deleted = $deleted;
   }
+  /**
+   * @return bool
+   */
   public function getDeleted()
   {
     return $this->deleted;
   }
+  /**
+   * @param string[]
+   */
   public function setLinkedPeopleResourceNames($linkedPeopleResourceNames)
   {
     $this->linkedPeopleResourceNames = $linkedPeopleResourceNames;
   }
+  /**
+   * @return string[]
+   */
   public function getLinkedPeopleResourceNames()
   {
     return $this->linkedPeopleResourceNames;
   }
+  /**
+   * @param string
+   */
   public function setObjectType($objectType)
   {
     $this->objectType = $objectType;
   }
+  /**
+   * @return string
+   */
   public function getObjectType()
   {
     return $this->objectType;
   }
+  /**
+   * @param string[]
+   */
   public function setPreviousResourceNames($previousResourceNames)
   {
     $this->previousResourceNames = $previousResourceNames;
   }
+  /**
+   * @return string[]
+   */
   public function getPreviousResourceNames()
   {
     return $this->previousResourceNames;

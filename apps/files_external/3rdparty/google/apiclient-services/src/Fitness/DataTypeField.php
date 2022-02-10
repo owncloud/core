@@ -19,30 +19,57 @@ namespace Google\Service\Fitness;
 
 class DataTypeField extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $optional;
 
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setOptional($optional)
   {
     $this->optional = $optional;
   }
+  /**
+   * @return bool
+   */
   public function getOptional()
   {
     return $this->optional;

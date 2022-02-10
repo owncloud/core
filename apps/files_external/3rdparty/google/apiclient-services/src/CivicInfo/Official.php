@@ -24,11 +24,31 @@ class Official extends \Google\Collection
   protected $addressDataType = 'array';
   protected $channelsType = Channel::class;
   protected $channelsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $emails;
+  protected $geocodingSummariesType = GeocodingSummary::class;
+  protected $geocodingSummariesDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $party;
+  /**
+   * @var string[]
+   */
   public $phones;
+  /**
+   * @var string
+   */
   public $photoUrl;
+  /**
+   * @var string[]
+   */
   public $urls;
 
   /**
@@ -59,50 +79,100 @@ class Official extends \Google\Collection
   {
     return $this->channels;
   }
+  /**
+   * @param string[]
+   */
   public function setEmails($emails)
   {
     $this->emails = $emails;
   }
+  /**
+   * @return string[]
+   */
   public function getEmails()
   {
     return $this->emails;
   }
+  /**
+   * @param GeocodingSummary[]
+   */
+  public function setGeocodingSummaries($geocodingSummaries)
+  {
+    $this->geocodingSummaries = $geocodingSummaries;
+  }
+  /**
+   * @return GeocodingSummary[]
+   */
+  public function getGeocodingSummaries()
+  {
+    return $this->geocodingSummaries;
+  }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParty($party)
   {
     $this->party = $party;
   }
+  /**
+   * @return string
+   */
   public function getParty()
   {
     return $this->party;
   }
+  /**
+   * @param string[]
+   */
   public function setPhones($phones)
   {
     $this->phones = $phones;
   }
+  /**
+   * @return string[]
+   */
   public function getPhones()
   {
     return $this->phones;
   }
+  /**
+   * @param string
+   */
   public function setPhotoUrl($photoUrl)
   {
     $this->photoUrl = $photoUrl;
   }
+  /**
+   * @return string
+   */
   public function getPhotoUrl()
   {
     return $this->photoUrl;
   }
+  /**
+   * @param string[]
+   */
   public function setUrls($urls)
   {
     $this->urls = $urls;
   }
+  /**
+   * @return string[]
+   */
   public function getUrls()
   {
     return $this->urls;

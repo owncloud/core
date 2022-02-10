@@ -20,14 +20,23 @@ namespace Google\Service\RealTimeBidding;
 class ListPretargetingConfigsResponse extends \Google\Collection
 {
   protected $collection_key = 'pretargetingConfigs';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $pretargetingConfigsType = PretargetingConfig::class;
   protected $pretargetingConfigsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,48 +19,93 @@ namespace Google\Service\AndroidPublisher;
 
 class Listing extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fullDescription;
+  /**
+   * @var string
+   */
   public $language;
+  /**
+   * @var string
+   */
   public $shortDescription;
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $video;
 
+  /**
+   * @param string
+   */
   public function setFullDescription($fullDescription)
   {
     $this->fullDescription = $fullDescription;
   }
+  /**
+   * @return string
+   */
   public function getFullDescription()
   {
     return $this->fullDescription;
   }
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;
   }
+  /**
+   * @param string
+   */
   public function setShortDescription($shortDescription)
   {
     $this->shortDescription = $shortDescription;
   }
+  /**
+   * @return string
+   */
   public function getShortDescription()
   {
     return $this->shortDescription;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setVideo($video)
   {
     $this->video = $video;
   }
+  /**
+   * @return string
+   */
   public function getVideo()
   {
     return $this->video;

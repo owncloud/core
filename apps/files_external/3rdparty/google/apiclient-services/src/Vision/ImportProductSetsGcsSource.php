@@ -19,12 +19,21 @@ namespace Google\Service\Vision;
 
 class ImportProductSetsGcsSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $csvFileUri;
 
+  /**
+   * @param string
+   */
   public function setCsvFileUri($csvFileUri)
   {
     $this->csvFileUri = $csvFileUri;
   }
+  /**
+   * @return string
+   */
   public function getCsvFileUri()
   {
     return $this->csvFileUri;

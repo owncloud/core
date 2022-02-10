@@ -22,7 +22,13 @@ class ListAssetsResponse extends \Google\Collection
   protected $collection_key = 'assets';
   protected $assetsType = Asset::class;
   protected $assetsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $readTime;
 
   /**
@@ -39,18 +45,30 @@ class ListAssetsResponse extends \Google\Collection
   {
     return $this->assets;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setReadTime($readTime)
   {
     $this->readTime = $readTime;
   }
+  /**
+   * @return string
+   */
   public function getReadTime()
   {
     return $this->readTime;

@@ -20,21 +20,39 @@ namespace Google\Service\Compute;
 class FirewallPolicyRuleMatcherLayer4Config extends \Google\Collection
 {
   protected $collection_key = 'ports';
+  /**
+   * @var string
+   */
   public $ipProtocol;
+  /**
+   * @var string[]
+   */
   public $ports;
 
+  /**
+   * @param string
+   */
   public function setIpProtocol($ipProtocol)
   {
     $this->ipProtocol = $ipProtocol;
   }
+  /**
+   * @return string
+   */
   public function getIpProtocol()
   {
     return $this->ipProtocol;
   }
+  /**
+   * @param string[]
+   */
   public function setPorts($ports)
   {
     $this->ports = $ports;
   }
+  /**
+   * @return string[]
+   */
   public function getPorts()
   {
     return $this->ports;

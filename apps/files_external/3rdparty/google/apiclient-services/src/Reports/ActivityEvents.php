@@ -20,15 +20,27 @@ namespace Google\Service\Reports;
 class ActivityEvents extends \Google\Collection
 {
   protected $collection_key = 'parameters';
+  /**
+   * @var string
+   */
   public $name;
   protected $parametersType = ActivityEventsParameters::class;
   protected $parametersDataType = 'array';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -47,10 +59,16 @@ class ActivityEvents extends \Google\Collection
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -19,21 +19,39 @@ namespace Google\Service\ServiceDirectory;
 
 class ResolveServiceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endpointFilter;
+  /**
+   * @var int
+   */
   public $maxEndpoints;
 
+  /**
+   * @param string
+   */
   public function setEndpointFilter($endpointFilter)
   {
     $this->endpointFilter = $endpointFilter;
   }
+  /**
+   * @return string
+   */
   public function getEndpointFilter()
   {
     return $this->endpointFilter;
   }
+  /**
+   * @param int
+   */
   public function setMaxEndpoints($maxEndpoints)
   {
     $this->maxEndpoints = $maxEndpoints;
   }
+  /**
+   * @return int
+   */
   public function getMaxEndpoints()
   {
     return $this->maxEndpoints;

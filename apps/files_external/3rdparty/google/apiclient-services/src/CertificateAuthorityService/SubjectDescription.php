@@ -19,43 +19,79 @@ namespace Google\Service\CertificateAuthorityService;
 
 class SubjectDescription extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hexSerialNumber;
+  /**
+   * @var string
+   */
   public $lifetime;
+  /**
+   * @var string
+   */
   public $notAfterTime;
+  /**
+   * @var string
+   */
   public $notBeforeTime;
   protected $subjectType = Subject::class;
   protected $subjectDataType = '';
   protected $subjectAltNameType = SubjectAltNames::class;
   protected $subjectAltNameDataType = '';
 
+  /**
+   * @param string
+   */
   public function setHexSerialNumber($hexSerialNumber)
   {
     $this->hexSerialNumber = $hexSerialNumber;
   }
+  /**
+   * @return string
+   */
   public function getHexSerialNumber()
   {
     return $this->hexSerialNumber;
   }
+  /**
+   * @param string
+   */
   public function setLifetime($lifetime)
   {
     $this->lifetime = $lifetime;
   }
+  /**
+   * @return string
+   */
   public function getLifetime()
   {
     return $this->lifetime;
   }
+  /**
+   * @param string
+   */
   public function setNotAfterTime($notAfterTime)
   {
     $this->notAfterTime = $notAfterTime;
   }
+  /**
+   * @return string
+   */
   public function getNotAfterTime()
   {
     return $this->notAfterTime;
   }
+  /**
+   * @param string
+   */
   public function setNotBeforeTime($notBeforeTime)
   {
     $this->notBeforeTime = $notBeforeTime;
   }
+  /**
+   * @return string
+   */
   public function getNotBeforeTime()
   {
     return $this->notBeforeTime;

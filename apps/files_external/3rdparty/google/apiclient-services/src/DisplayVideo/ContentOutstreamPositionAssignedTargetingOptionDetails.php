@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class ContentOutstreamPositionAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adType;
+  /**
+   * @var string
+   */
   public $contentOutstreamPosition;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setAdType($adType)
   {
     $this->adType = $adType;
   }
+  /**
+   * @return string
+   */
   public function getAdType()
   {
     return $this->adType;
   }
+  /**
+   * @param string
+   */
   public function setContentOutstreamPosition($contentOutstreamPosition)
   {
     $this->contentOutstreamPosition = $contentOutstreamPosition;
   }
+  /**
+   * @return string
+   */
   public function getContentOutstreamPosition()
   {
     return $this->contentOutstreamPosition;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

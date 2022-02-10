@@ -19,21 +19,39 @@ namespace Google\Service\CloudAsset;
 
 class GoogleIdentityAccesscontextmanagerV1IngressSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessLevel;
+  /**
+   * @var string
+   */
   public $resource;
 
+  /**
+   * @param string
+   */
   public function setAccessLevel($accessLevel)
   {
     $this->accessLevel = $accessLevel;
   }
+  /**
+   * @return string
+   */
   public function getAccessLevel()
   {
     return $this->accessLevel;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;

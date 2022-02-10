@@ -19,75 +19,147 @@ namespace Google\Service\CloudBuild;
 
 class RepoSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $branchName;
+  /**
+   * @var string
+   */
   public $commitSha;
+  /**
+   * @var string
+   */
   public $dir;
+  /**
+   * @var bool
+   */
   public $invertRegex;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $repoName;
+  /**
+   * @var string[]
+   */
   public $substitutions;
+  /**
+   * @var string
+   */
   public $tagName;
 
+  /**
+   * @param string
+   */
   public function setBranchName($branchName)
   {
     $this->branchName = $branchName;
   }
+  /**
+   * @return string
+   */
   public function getBranchName()
   {
     return $this->branchName;
   }
+  /**
+   * @param string
+   */
   public function setCommitSha($commitSha)
   {
     $this->commitSha = $commitSha;
   }
+  /**
+   * @return string
+   */
   public function getCommitSha()
   {
     return $this->commitSha;
   }
+  /**
+   * @param string
+   */
   public function setDir($dir)
   {
     $this->dir = $dir;
   }
+  /**
+   * @return string
+   */
   public function getDir()
   {
     return $this->dir;
   }
+  /**
+   * @param bool
+   */
   public function setInvertRegex($invertRegex)
   {
     $this->invertRegex = $invertRegex;
   }
+  /**
+   * @return bool
+   */
   public function getInvertRegex()
   {
     return $this->invertRegex;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setRepoName($repoName)
   {
     $this->repoName = $repoName;
   }
+  /**
+   * @return string
+   */
   public function getRepoName()
   {
     return $this->repoName;
   }
+  /**
+   * @param string[]
+   */
   public function setSubstitutions($substitutions)
   {
     $this->substitutions = $substitutions;
   }
+  /**
+   * @return string[]
+   */
   public function getSubstitutions()
   {
     return $this->substitutions;
   }
+  /**
+   * @param string
+   */
   public function setTagName($tagName)
   {
     $this->tagName = $tagName;
   }
+  /**
+   * @return string
+   */
   public function getTagName()
   {
     return $this->tagName;

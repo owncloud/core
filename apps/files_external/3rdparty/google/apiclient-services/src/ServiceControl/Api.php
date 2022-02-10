@@ -19,39 +19,75 @@ namespace Google\Service\ServiceControl;
 
 class Api extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $operation;
+  /**
+   * @var string
+   */
   public $protocol;
+  /**
+   * @var string
+   */
   public $service;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setOperation($operation)
   {
     $this->operation = $operation;
   }
+  /**
+   * @return string
+   */
   public function getOperation()
   {
     return $this->operation;
   }
+  /**
+   * @param string
+   */
   public function setProtocol($protocol)
   {
     $this->protocol = $protocol;
   }
+  /**
+   * @return string
+   */
   public function getProtocol()
   {
     return $this->protocol;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

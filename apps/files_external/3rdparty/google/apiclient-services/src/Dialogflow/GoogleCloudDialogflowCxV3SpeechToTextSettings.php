@@ -19,12 +19,21 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3SpeechToTextSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableSpeechAdaptation;
 
+  /**
+   * @param bool
+   */
   public function setEnableSpeechAdaptation($enableSpeechAdaptation)
   {
     $this->enableSpeechAdaptation = $enableSpeechAdaptation;
   }
+  /**
+   * @return bool
+   */
   public function getEnableSpeechAdaptation()
   {
     return $this->enableSpeechAdaptation;

@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class InstructionInput extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $outputNum;
+  /**
+   * @var int
+   */
   public $producerInstructionIndex;
 
+  /**
+   * @param int
+   */
   public function setOutputNum($outputNum)
   {
     $this->outputNum = $outputNum;
   }
+  /**
+   * @return int
+   */
   public function getOutputNum()
   {
     return $this->outputNum;
   }
+  /**
+   * @param int
+   */
   public function setProducerInstructionIndex($producerInstructionIndex)
   {
     $this->producerInstructionIndex = $producerInstructionIndex;
   }
+  /**
+   * @return int
+   */
   public function getProducerInstructionIndex()
   {
     return $this->producerInstructionIndex;

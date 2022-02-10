@@ -20,40 +20,76 @@ namespace Google\Service\PagespeedInsights;
 class AuditRefs extends \Google\Collection
 {
   protected $collection_key = 'relevantAudits';
+  /**
+   * @var string
+   */
   public $acronym;
+  /**
+   * @var string
+   */
   public $group;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string[]
+   */
   public $relevantAudits;
   public $weight;
 
+  /**
+   * @param string
+   */
   public function setAcronym($acronym)
   {
     $this->acronym = $acronym;
   }
+  /**
+   * @return string
+   */
   public function getAcronym()
   {
     return $this->acronym;
   }
+  /**
+   * @param string
+   */
   public function setGroup($group)
   {
     $this->group = $group;
   }
+  /**
+   * @return string
+   */
   public function getGroup()
   {
     return $this->group;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string[]
+   */
   public function setRelevantAudits($relevantAudits)
   {
     $this->relevantAudits = $relevantAudits;
   }
+  /**
+   * @return string[]
+   */
   public function getRelevantAudits()
   {
     return $this->relevantAudits;

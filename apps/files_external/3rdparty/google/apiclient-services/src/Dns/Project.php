@@ -19,32 +19,59 @@ namespace Google\Service\Dns;
 
 class Project extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $number;
   protected $quotaType = Quota::class;
   protected $quotaDataType = '';
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNumber($number)
   {
     $this->number = $number;
   }
+  /**
+   * @return string
+   */
   public function getNumber()
   {
     return $this->number;

@@ -19,48 +19,93 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 
 class GoogleAnalyticsAdminV1alphaConversionEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var bool
+   */
   public $custom;
+  /**
+   * @var bool
+   */
   public $deletable;
+  /**
+   * @var string
+   */
   public $eventName;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param bool
+   */
   public function setCustom($custom)
   {
     $this->custom = $custom;
   }
+  /**
+   * @return bool
+   */
   public function getCustom()
   {
     return $this->custom;
   }
+  /**
+   * @param bool
+   */
   public function setDeletable($deletable)
   {
     $this->deletable = $deletable;
   }
+  /**
+   * @return bool
+   */
   public function getDeletable()
   {
     return $this->deletable;
   }
+  /**
+   * @param string
+   */
   public function setEventName($eventName)
   {
     $this->eventName = $eventName;
   }
+  /**
+   * @return string
+   */
   public function getEventName()
   {
     return $this->eventName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

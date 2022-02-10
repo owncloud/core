@@ -21,6 +21,9 @@ class BasicChartDomain extends \Google\Model
 {
   protected $domainType = ChartData::class;
   protected $domainDataType = '';
+  /**
+   * @var bool
+   */
   public $reversed;
 
   /**
@@ -37,10 +40,16 @@ class BasicChartDomain extends \Google\Model
   {
     return $this->domain;
   }
+  /**
+   * @param bool
+   */
   public function setReversed($reversed)
   {
     $this->reversed = $reversed;
   }
+  /**
+   * @return bool
+   */
   public function getReversed()
   {
     return $this->reversed;

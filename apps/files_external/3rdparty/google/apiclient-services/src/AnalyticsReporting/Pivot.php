@@ -24,9 +24,15 @@ class Pivot extends \Google\Collection
   protected $dimensionFilterClausesDataType = 'array';
   protected $dimensionsType = Dimension::class;
   protected $dimensionsDataType = 'array';
+  /**
+   * @var int
+   */
   public $maxGroupCount;
   protected $metricsType = Metric::class;
   protected $metricsDataType = 'array';
+  /**
+   * @var int
+   */
   public $startGroup;
 
   /**
@@ -57,10 +63,16 @@ class Pivot extends \Google\Collection
   {
     return $this->dimensions;
   }
+  /**
+   * @param int
+   */
   public function setMaxGroupCount($maxGroupCount)
   {
     $this->maxGroupCount = $maxGroupCount;
   }
+  /**
+   * @return int
+   */
   public function getMaxGroupCount()
   {
     return $this->maxGroupCount;
@@ -79,10 +91,16 @@ class Pivot extends \Google\Collection
   {
     return $this->metrics;
   }
+  /**
+   * @param int
+   */
   public function setStartGroup($startGroup)
   {
     $this->startGroup = $startGroup;
   }
+  /**
+   * @return int
+   */
   public function getStartGroup()
   {
     return $this->startGroup;

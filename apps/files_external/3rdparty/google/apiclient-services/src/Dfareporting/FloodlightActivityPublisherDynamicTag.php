@@ -19,27 +19,51 @@ namespace Google\Service\Dfareporting;
 
 class FloodlightActivityPublisherDynamicTag extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $clickThrough;
+  /**
+   * @var string
+   */
   public $directorySiteId;
   protected $dynamicTagType = FloodlightActivityDynamicTag::class;
   protected $dynamicTagDataType = '';
+  /**
+   * @var string
+   */
   public $siteId;
   protected $siteIdDimensionValueType = DimensionValue::class;
   protected $siteIdDimensionValueDataType = '';
+  /**
+   * @var bool
+   */
   public $viewThrough;
 
+  /**
+   * @param bool
+   */
   public function setClickThrough($clickThrough)
   {
     $this->clickThrough = $clickThrough;
   }
+  /**
+   * @return bool
+   */
   public function getClickThrough()
   {
     return $this->clickThrough;
   }
+  /**
+   * @param string
+   */
   public function setDirectorySiteId($directorySiteId)
   {
     $this->directorySiteId = $directorySiteId;
   }
+  /**
+   * @return string
+   */
   public function getDirectorySiteId()
   {
     return $this->directorySiteId;
@@ -58,10 +82,16 @@ class FloodlightActivityPublisherDynamicTag extends \Google\Model
   {
     return $this->dynamicTag;
   }
+  /**
+   * @param string
+   */
   public function setSiteId($siteId)
   {
     $this->siteId = $siteId;
   }
+  /**
+   * @return string
+   */
   public function getSiteId()
   {
     return $this->siteId;
@@ -80,10 +110,16 @@ class FloodlightActivityPublisherDynamicTag extends \Google\Model
   {
     return $this->siteIdDimensionValue;
   }
+  /**
+   * @param bool
+   */
   public function setViewThrough($viewThrough)
   {
     $this->viewThrough = $viewThrough;
   }
+  /**
+   * @return bool
+   */
   public function getViewThrough()
   {
     return $this->viewThrough;

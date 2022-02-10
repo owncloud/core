@@ -19,30 +19,57 @@ namespace Google\Service\CloudRun;
 
 class ListMeta extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $continue;
+  /**
+   * @var string
+   */
   public $resourceVersion;
+  /**
+   * @var string
+   */
   public $selfLink;
 
+  /**
+   * @param string
+   */
   public function setContinue($continue)
   {
     $this->continue = $continue;
   }
+  /**
+   * @return string
+   */
   public function getContinue()
   {
     return $this->continue;
   }
+  /**
+   * @param string
+   */
   public function setResourceVersion($resourceVersion)
   {
     $this->resourceVersion = $resourceVersion;
   }
+  /**
+   * @return string
+   */
   public function getResourceVersion()
   {
     return $this->resourceVersion;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

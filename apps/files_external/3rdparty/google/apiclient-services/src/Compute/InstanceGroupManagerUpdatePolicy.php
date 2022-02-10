@@ -19,19 +19,41 @@ namespace Google\Service\Compute;
 
 class InstanceGroupManagerUpdatePolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $instanceRedistributionType;
   protected $maxSurgeType = FixedOrPercent::class;
   protected $maxSurgeDataType = '';
   protected $maxUnavailableType = FixedOrPercent::class;
   protected $maxUnavailableDataType = '';
+  /**
+   * @var string
+   */
   public $minimalAction;
+  /**
+   * @var string
+   */
+  public $mostDisruptiveAllowedAction;
+  /**
+   * @var string
+   */
   public $replacementMethod;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setInstanceRedistributionType($instanceRedistributionType)
   {
     $this->instanceRedistributionType = $instanceRedistributionType;
   }
+  /**
+   * @return string
+   */
   public function getInstanceRedistributionType()
   {
     return $this->instanceRedistributionType;
@@ -64,26 +86,58 @@ class InstanceGroupManagerUpdatePolicy extends \Google\Model
   {
     return $this->maxUnavailable;
   }
+  /**
+   * @param string
+   */
   public function setMinimalAction($minimalAction)
   {
     $this->minimalAction = $minimalAction;
   }
+  /**
+   * @return string
+   */
   public function getMinimalAction()
   {
     return $this->minimalAction;
   }
+  /**
+   * @param string
+   */
+  public function setMostDisruptiveAllowedAction($mostDisruptiveAllowedAction)
+  {
+    $this->mostDisruptiveAllowedAction = $mostDisruptiveAllowedAction;
+  }
+  /**
+   * @return string
+   */
+  public function getMostDisruptiveAllowedAction()
+  {
+    return $this->mostDisruptiveAllowedAction;
+  }
+  /**
+   * @param string
+   */
   public function setReplacementMethod($replacementMethod)
   {
     $this->replacementMethod = $replacementMethod;
   }
+  /**
+   * @return string
+   */
   public function getReplacementMethod()
   {
     return $this->replacementMethod;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

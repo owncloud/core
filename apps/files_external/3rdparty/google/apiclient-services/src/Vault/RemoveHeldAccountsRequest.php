@@ -20,12 +20,21 @@ namespace Google\Service\Vault;
 class RemoveHeldAccountsRequest extends \Google\Collection
 {
   protected $collection_key = 'accountIds';
+  /**
+   * @var string[]
+   */
   public $accountIds;
 
+  /**
+   * @param string[]
+   */
   public function setAccountIds($accountIds)
   {
     $this->accountIds = $accountIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAccountIds()
   {
     return $this->accountIds;

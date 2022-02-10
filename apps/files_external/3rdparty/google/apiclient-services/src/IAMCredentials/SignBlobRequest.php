@@ -20,21 +20,39 @@ namespace Google\Service\IAMCredentials;
 class SignBlobRequest extends \Google\Collection
 {
   protected $collection_key = 'delegates';
+  /**
+   * @var string[]
+   */
   public $delegates;
+  /**
+   * @var string
+   */
   public $payload;
 
+  /**
+   * @param string[]
+   */
   public function setDelegates($delegates)
   {
     $this->delegates = $delegates;
   }
+  /**
+   * @return string[]
+   */
   public function getDelegates()
   {
     return $this->delegates;
   }
+  /**
+   * @param string
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return string
+   */
   public function getPayload()
   {
     return $this->payload;

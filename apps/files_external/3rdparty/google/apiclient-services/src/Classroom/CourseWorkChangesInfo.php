@@ -19,12 +19,21 @@ namespace Google\Service\Classroom;
 
 class CourseWorkChangesInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $courseId;
 
+  /**
+   * @param string
+   */
   public function setCourseId($courseId)
   {
     $this->courseId = $courseId;
   }
+  /**
+   * @return string
+   */
   public function getCourseId()
   {
     return $this->courseId;

@@ -19,39 +19,75 @@ namespace Google\Service\Drive;
 
 class PermissionTeamDrivePermissionDetails extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $inherited;
+  /**
+   * @var string
+   */
   public $inheritedFrom;
+  /**
+   * @var string
+   */
   public $role;
+  /**
+   * @var string
+   */
   public $teamDrivePermissionType;
 
+  /**
+   * @param bool
+   */
   public function setInherited($inherited)
   {
     $this->inherited = $inherited;
   }
+  /**
+   * @return bool
+   */
   public function getInherited()
   {
     return $this->inherited;
   }
+  /**
+   * @param string
+   */
   public function setInheritedFrom($inheritedFrom)
   {
     $this->inheritedFrom = $inheritedFrom;
   }
+  /**
+   * @return string
+   */
   public function getInheritedFrom()
   {
     return $this->inheritedFrom;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;
   }
+  /**
+   * @param string
+   */
   public function setTeamDrivePermissionType($teamDrivePermissionType)
   {
     $this->teamDrivePermissionType = $teamDrivePermissionType;
   }
+  /**
+   * @return string
+   */
   public function getTeamDrivePermissionType()
   {
     return $this->teamDrivePermissionType;

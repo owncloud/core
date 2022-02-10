@@ -19,23 +19,41 @@ namespace Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI;
 
 class GoogleCloudSaasacceleratorManagementProvidersV1NodeSloMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $nodeId;
   protected $perSliEligibilityType = GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility::class;
   protected $perSliEligibilityDataType = '';
 
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setNodeId($nodeId)
   {
     $this->nodeId = $nodeId;
   }
+  /**
+   * @return string
+   */
   public function getNodeId()
   {
     return $this->nodeId;

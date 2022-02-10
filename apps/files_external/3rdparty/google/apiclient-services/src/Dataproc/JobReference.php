@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class JobReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $jobId;
+  /**
+   * @var string
+   */
   public $projectId;
 
+  /**
+   * @param string
+   */
   public function setJobId($jobId)
   {
     $this->jobId = $jobId;
   }
+  /**
+   * @return string
+   */
   public function getJobId()
   {
     return $this->jobId;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;

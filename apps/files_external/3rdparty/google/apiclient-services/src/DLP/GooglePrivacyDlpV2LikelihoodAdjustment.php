@@ -19,21 +19,39 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2LikelihoodAdjustment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fixedLikelihood;
+  /**
+   * @var int
+   */
   public $relativeLikelihood;
 
+  /**
+   * @param string
+   */
   public function setFixedLikelihood($fixedLikelihood)
   {
     $this->fixedLikelihood = $fixedLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getFixedLikelihood()
   {
     return $this->fixedLikelihood;
   }
+  /**
+   * @param int
+   */
   public function setRelativeLikelihood($relativeLikelihood)
   {
     $this->relativeLikelihood = $relativeLikelihood;
   }
+  /**
+   * @return int
+   */
   public function getRelativeLikelihood()
   {
     return $this->relativeLikelihood;

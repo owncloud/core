@@ -19,21 +19,39 @@ namespace Google\Service\CertificateAuthorityService;
 
 class CaOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isCa;
+  /**
+   * @var int
+   */
   public $maxIssuerPathLength;
 
+  /**
+   * @param bool
+   */
   public function setIsCa($isCa)
   {
     $this->isCa = $isCa;
   }
+  /**
+   * @return bool
+   */
   public function getIsCa()
   {
     return $this->isCa;
   }
+  /**
+   * @param int
+   */
   public function setMaxIssuerPathLength($maxIssuerPathLength)
   {
     $this->maxIssuerPathLength = $maxIssuerPathLength;
   }
+  /**
+   * @return int
+   */
   public function getMaxIssuerPathLength()
   {
     return $this->maxIssuerPathLength;

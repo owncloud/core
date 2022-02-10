@@ -19,6 +19,9 @@ namespace Google\Service\CloudSearch;
 
 class NamedProperty extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $booleanValue;
   protected $dateValuesType = DateValues::class;
   protected $dateValuesDataType = '';
@@ -30,6 +33,9 @@ class NamedProperty extends \Google\Model
   protected $htmlValuesDataType = '';
   protected $integerValuesType = IntegerValues::class;
   protected $integerValuesDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $objectValuesType = ObjectValues::class;
   protected $objectValuesDataType = '';
@@ -38,10 +44,16 @@ class NamedProperty extends \Google\Model
   protected $timestampValuesType = TimestampValues::class;
   protected $timestampValuesDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setBooleanValue($booleanValue)
   {
     $this->booleanValue = $booleanValue;
   }
+  /**
+   * @return bool
+   */
   public function getBooleanValue()
   {
     return $this->booleanValue;
@@ -116,10 +128,16 @@ class NamedProperty extends \Google\Model
   {
     return $this->integerValues;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

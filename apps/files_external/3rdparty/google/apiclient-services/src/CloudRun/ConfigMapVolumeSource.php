@@ -20,16 +20,31 @@ namespace Google\Service\CloudRun;
 class ConfigMapVolumeSource extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var int
+   */
   public $defaultMode;
   protected $itemsType = KeyToPath::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $optional;
 
+  /**
+   * @param int
+   */
   public function setDefaultMode($defaultMode)
   {
     $this->defaultMode = $defaultMode;
   }
+  /**
+   * @return int
+   */
   public function getDefaultMode()
   {
     return $this->defaultMode;
@@ -48,18 +63,30 @@ class ConfigMapVolumeSource extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setOptional($optional)
   {
     $this->optional = $optional;
   }
+  /**
+   * @return bool
+   */
   public function getOptional()
   {
     return $this->optional;

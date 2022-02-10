@@ -19,30 +19,57 @@ namespace Google\Service\Bigquery;
 
 class JobReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $jobId;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $projectId;
 
+  /**
+   * @param string
+   */
   public function setJobId($jobId)
   {
     $this->jobId = $jobId;
   }
+  /**
+   * @return string
+   */
   public function getJobId()
   {
     return $this->jobId;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;

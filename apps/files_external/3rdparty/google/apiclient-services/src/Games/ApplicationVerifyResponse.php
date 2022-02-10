@@ -23,30 +23,57 @@ class ApplicationVerifyResponse extends \Google\Model
         "alternatePlayerId" => "alternate_player_id",
         "playerId" => "player_id",
   ];
+  /**
+   * @var string
+   */
   public $alternatePlayerId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $playerId;
 
+  /**
+   * @param string
+   */
   public function setAlternatePlayerId($alternatePlayerId)
   {
     $this->alternatePlayerId = $alternatePlayerId;
   }
+  /**
+   * @return string
+   */
   public function getAlternatePlayerId()
   {
     return $this->alternatePlayerId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPlayerId($playerId)
   {
     $this->playerId = $playerId;
   }
+  /**
+   * @return string
+   */
   public function getPlayerId()
   {
     return $this->playerId;

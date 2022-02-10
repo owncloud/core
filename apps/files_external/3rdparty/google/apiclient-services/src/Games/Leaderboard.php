@@ -19,57 +19,111 @@ namespace Google\Service\Games;
 
 class Leaderboard extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $iconUrl;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var bool
+   */
   public $isIconUrlDefault;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $order;
 
+  /**
+   * @param string
+   */
   public function setIconUrl($iconUrl)
   {
     $this->iconUrl = $iconUrl;
   }
+  /**
+   * @return string
+   */
   public function getIconUrl()
   {
     return $this->iconUrl;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param bool
+   */
   public function setIsIconUrlDefault($isIconUrlDefault)
   {
     $this->isIconUrlDefault = $isIconUrlDefault;
   }
+  /**
+   * @return bool
+   */
   public function getIsIconUrlDefault()
   {
     return $this->isIconUrlDefault;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOrder($order)
   {
     $this->order = $order;
   }
+  /**
+   * @return string
+   */
   public function getOrder()
   {
     return $this->order;

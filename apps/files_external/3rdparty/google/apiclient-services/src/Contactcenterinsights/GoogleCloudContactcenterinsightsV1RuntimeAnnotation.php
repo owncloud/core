@@ -19,11 +19,17 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1RuntimeAnnotation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $annotationId;
   protected $answerFeedbackType = GoogleCloudContactcenterinsightsV1AnswerFeedback::class;
   protected $answerFeedbackDataType = '';
   protected $articleSuggestionType = GoogleCloudContactcenterinsightsV1ArticleSuggestionData::class;
   protected $articleSuggestionDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
   protected $dialogflowInteractionType = GoogleCloudContactcenterinsightsV1DialogflowInteractionData::class;
   protected $dialogflowInteractionDataType = '';
@@ -38,10 +44,16 @@ class GoogleCloudContactcenterinsightsV1RuntimeAnnotation extends \Google\Model
   protected $startBoundaryType = GoogleCloudContactcenterinsightsV1AnnotationBoundary::class;
   protected $startBoundaryDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAnnotationId($annotationId)
   {
     $this->annotationId = $annotationId;
   }
+  /**
+   * @return string
+   */
   public function getAnnotationId()
   {
     return $this->annotationId;
@@ -74,10 +86,16 @@ class GoogleCloudContactcenterinsightsV1RuntimeAnnotation extends \Google\Model
   {
     return $this->articleSuggestion;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;

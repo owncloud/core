@@ -22,6 +22,9 @@ class ApksListResponse extends \Google\Collection
   protected $collection_key = 'apks';
   protected $apksType = Apk::class;
   protected $apksDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -38,10 +41,16 @@ class ApksListResponse extends \Google\Collection
   {
     return $this->apks;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

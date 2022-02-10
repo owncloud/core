@@ -19,21 +19,39 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1alpha1Period extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $duration;
+  /**
+   * @var string
+   */
   public $periodType;
 
+  /**
+   * @param int
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return int
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param string
+   */
   public function setPeriodType($periodType)
   {
     $this->periodType = $periodType;
   }
+  /**
+   * @return string
+   */
   public function getPeriodType()
   {
     return $this->periodType;

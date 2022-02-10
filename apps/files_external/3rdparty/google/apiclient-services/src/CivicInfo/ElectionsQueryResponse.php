@@ -22,6 +22,9 @@ class ElectionsQueryResponse extends \Google\Collection
   protected $collection_key = 'elections';
   protected $electionsType = Election::class;
   protected $electionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -38,10 +41,16 @@ class ElectionsQueryResponse extends \Google\Collection
   {
     return $this->elections;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

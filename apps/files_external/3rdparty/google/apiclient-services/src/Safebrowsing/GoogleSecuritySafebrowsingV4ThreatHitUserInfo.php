@@ -19,21 +19,39 @@ namespace Google\Service\Safebrowsing;
 
 class GoogleSecuritySafebrowsingV4ThreatHitUserInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $regionCode;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

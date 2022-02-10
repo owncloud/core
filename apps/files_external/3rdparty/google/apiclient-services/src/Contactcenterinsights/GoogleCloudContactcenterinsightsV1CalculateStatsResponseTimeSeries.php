@@ -20,14 +20,23 @@ namespace Google\Service\Contactcenterinsights;
 class GoogleCloudContactcenterinsightsV1CalculateStatsResponseTimeSeries extends \Google\Collection
 {
   protected $collection_key = 'points';
+  /**
+   * @var string
+   */
   public $intervalDuration;
   protected $pointsType = GoogleCloudContactcenterinsightsV1CalculateStatsResponseTimeSeriesInterval::class;
   protected $pointsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setIntervalDuration($intervalDuration)
   {
     $this->intervalDuration = $intervalDuration;
   }
+  /**
+   * @return string
+   */
   public function getIntervalDuration()
   {
     return $this->intervalDuration;

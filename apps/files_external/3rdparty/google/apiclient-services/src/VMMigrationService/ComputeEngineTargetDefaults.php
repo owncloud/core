@@ -20,26 +20,83 @@ namespace Google\Service\VMMigrationService;
 class ComputeEngineTargetDefaults extends \Google\Collection
 {
   protected $collection_key = 'networkTags';
+  /**
+   * @var string[]
+   */
+  public $additionalLicenses;
   protected $appliedLicenseType = AppliedLicense::class;
   protected $appliedLicenseDataType = '';
+  /**
+   * @var string
+   */
   public $bootOption;
   protected $computeSchedulingType = ComputeScheduling::class;
   protected $computeSchedulingDataType = '';
+  /**
+   * @var string
+   */
   public $diskType;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $licenseType;
+  /**
+   * @var string
+   */
   public $machineType;
+  /**
+   * @var string
+   */
   public $machineTypeSeries;
+  /**
+   * @var string[]
+   */
   public $metadata;
   protected $networkInterfacesType = NetworkInterface::class;
   protected $networkInterfacesDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $networkTags;
+  /**
+   * @var bool
+   */
   public $secureBoot;
+  /**
+   * @var string
+   */
   public $serviceAccount;
+  /**
+   * @var string
+   */
   public $targetProject;
+  /**
+   * @var string
+   */
   public $vmName;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string[]
+   */
+  public function setAdditionalLicenses($additionalLicenses)
+  {
+    $this->additionalLicenses = $additionalLicenses;
+  }
+  /**
+   * @return string[]
+   */
+  public function getAdditionalLicenses()
+  {
+    return $this->additionalLicenses;
+  }
   /**
    * @param AppliedLicense
    */
@@ -54,10 +111,16 @@ class ComputeEngineTargetDefaults extends \Google\Collection
   {
     return $this->appliedLicense;
   }
+  /**
+   * @param string
+   */
   public function setBootOption($bootOption)
   {
     $this->bootOption = $bootOption;
   }
+  /**
+   * @return string
+   */
   public function getBootOption()
   {
     return $this->bootOption;
@@ -76,50 +139,86 @@ class ComputeEngineTargetDefaults extends \Google\Collection
   {
     return $this->computeScheduling;
   }
+  /**
+   * @param string
+   */
   public function setDiskType($diskType)
   {
     $this->diskType = $diskType;
   }
+  /**
+   * @return string
+   */
   public function getDiskType()
   {
     return $this->diskType;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLicenseType($licenseType)
   {
     $this->licenseType = $licenseType;
   }
+  /**
+   * @return string
+   */
   public function getLicenseType()
   {
     return $this->licenseType;
   }
+  /**
+   * @param string
+   */
   public function setMachineType($machineType)
   {
     $this->machineType = $machineType;
   }
+  /**
+   * @return string
+   */
   public function getMachineType()
   {
     return $this->machineType;
   }
+  /**
+   * @param string
+   */
   public function setMachineTypeSeries($machineTypeSeries)
   {
     $this->machineTypeSeries = $machineTypeSeries;
   }
+  /**
+   * @return string
+   */
   public function getMachineTypeSeries()
   {
     return $this->machineTypeSeries;
   }
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
@@ -138,50 +237,86 @@ class ComputeEngineTargetDefaults extends \Google\Collection
   {
     return $this->networkInterfaces;
   }
+  /**
+   * @param string[]
+   */
   public function setNetworkTags($networkTags)
   {
     $this->networkTags = $networkTags;
   }
+  /**
+   * @return string[]
+   */
   public function getNetworkTags()
   {
     return $this->networkTags;
   }
+  /**
+   * @param bool
+   */
   public function setSecureBoot($secureBoot)
   {
     $this->secureBoot = $secureBoot;
   }
+  /**
+   * @return bool
+   */
   public function getSecureBoot()
   {
     return $this->secureBoot;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
   }
+  /**
+   * @param string
+   */
   public function setTargetProject($targetProject)
   {
     $this->targetProject = $targetProject;
   }
+  /**
+   * @return string
+   */
   public function getTargetProject()
   {
     return $this->targetProject;
   }
+  /**
+   * @param string
+   */
   public function setVmName($vmName)
   {
     $this->vmName = $vmName;
   }
+  /**
+   * @return string
+   */
   public function getVmName()
   {
     return $this->vmName;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

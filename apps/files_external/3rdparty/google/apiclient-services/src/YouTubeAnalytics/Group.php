@@ -23,8 +23,17 @@ class Group extends \Google\Model
   protected $contentDetailsDataType = '';
   protected $errorsType = Errors::class;
   protected $errorsDataType = '';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
   protected $snippetType = GroupSnippet::class;
   protected $snippetDataType = '';
@@ -57,26 +66,44 @@ class Group extends \Google\Model
   {
     return $this->errors;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

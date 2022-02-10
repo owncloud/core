@@ -19,25 +19,49 @@ namespace Google\Service\CloudAsset;
 
 class BigQueryDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataset;
+  /**
+   * @var bool
+   */
   public $force;
   protected $partitionSpecType = PartitionSpec::class;
   protected $partitionSpecDataType = '';
+  /**
+   * @var bool
+   */
   public $separateTablesPerAssetType;
+  /**
+   * @var string
+   */
   public $table;
 
+  /**
+   * @param string
+   */
   public function setDataset($dataset)
   {
     $this->dataset = $dataset;
   }
+  /**
+   * @return string
+   */
   public function getDataset()
   {
     return $this->dataset;
   }
+  /**
+   * @param bool
+   */
   public function setForce($force)
   {
     $this->force = $force;
   }
+  /**
+   * @return bool
+   */
   public function getForce()
   {
     return $this->force;
@@ -56,18 +80,30 @@ class BigQueryDestination extends \Google\Model
   {
     return $this->partitionSpec;
   }
+  /**
+   * @param bool
+   */
   public function setSeparateTablesPerAssetType($separateTablesPerAssetType)
   {
     $this->separateTablesPerAssetType = $separateTablesPerAssetType;
   }
+  /**
+   * @return bool
+   */
   public function getSeparateTablesPerAssetType()
   {
     return $this->separateTablesPerAssetType;
   }
+  /**
+   * @param string
+   */
   public function setTable($table)
   {
     $this->table = $table;
   }
+  /**
+   * @return string
+   */
   public function getTable()
   {
     return $this->table;

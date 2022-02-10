@@ -21,9 +21,21 @@ class OverlayPosition extends \Google\Model
 {
   protected $anchorCellType = GridCoordinate::class;
   protected $anchorCellDataType = '';
+  /**
+   * @var int
+   */
   public $heightPixels;
+  /**
+   * @var int
+   */
   public $offsetXPixels;
+  /**
+   * @var int
+   */
   public $offsetYPixels;
+  /**
+   * @var int
+   */
   public $widthPixels;
 
   /**
@@ -40,34 +52,58 @@ class OverlayPosition extends \Google\Model
   {
     return $this->anchorCell;
   }
+  /**
+   * @param int
+   */
   public function setHeightPixels($heightPixels)
   {
     $this->heightPixels = $heightPixels;
   }
+  /**
+   * @return int
+   */
   public function getHeightPixels()
   {
     return $this->heightPixels;
   }
+  /**
+   * @param int
+   */
   public function setOffsetXPixels($offsetXPixels)
   {
     $this->offsetXPixels = $offsetXPixels;
   }
+  /**
+   * @return int
+   */
   public function getOffsetXPixels()
   {
     return $this->offsetXPixels;
   }
+  /**
+   * @param int
+   */
   public function setOffsetYPixels($offsetYPixels)
   {
     $this->offsetYPixels = $offsetYPixels;
   }
+  /**
+   * @return int
+   */
   public function getOffsetYPixels()
   {
     return $this->offsetYPixels;
   }
+  /**
+   * @param int
+   */
   public function setWidthPixels($widthPixels)
   {
     $this->widthPixels = $widthPixels;
   }
+  /**
+   * @return int
+   */
   public function getWidthPixels()
   {
     return $this->widthPixels;

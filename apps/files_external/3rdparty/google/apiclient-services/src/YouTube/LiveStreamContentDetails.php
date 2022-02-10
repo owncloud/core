@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class LiveStreamContentDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $closedCaptionsIngestionUrl;
+  /**
+   * @var bool
+   */
   public $isReusable;
 
+  /**
+   * @param string
+   */
   public function setClosedCaptionsIngestionUrl($closedCaptionsIngestionUrl)
   {
     $this->closedCaptionsIngestionUrl = $closedCaptionsIngestionUrl;
   }
+  /**
+   * @return string
+   */
   public function getClosedCaptionsIngestionUrl()
   {
     return $this->closedCaptionsIngestionUrl;
   }
+  /**
+   * @param bool
+   */
   public function setIsReusable($isReusable)
   {
     $this->isReusable = $isReusable;
   }
+  /**
+   * @return bool
+   */
   public function getIsReusable()
   {
     return $this->isReusable;

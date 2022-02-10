@@ -21,6 +21,9 @@ class GoogleCloudDialogflowCxV3WebhookServiceDirectoryConfig extends \Google\Mod
 {
   protected $genericWebServiceType = GoogleCloudDialogflowCxV3WebhookGenericWebService::class;
   protected $genericWebServiceDataType = '';
+  /**
+   * @var string
+   */
   public $service;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudDialogflowCxV3WebhookServiceDirectoryConfig extends \Google\Mod
   {
     return $this->genericWebService;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

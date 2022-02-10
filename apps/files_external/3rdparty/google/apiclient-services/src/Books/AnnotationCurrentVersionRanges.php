@@ -21,6 +21,9 @@ class AnnotationCurrentVersionRanges extends \Google\Model
 {
   protected $cfiRangeType = BooksAnnotationsRange::class;
   protected $cfiRangeDataType = '';
+  /**
+   * @var string
+   */
   public $contentVersion;
   protected $gbImageRangeType = BooksAnnotationsRange::class;
   protected $gbImageRangeDataType = '';
@@ -43,10 +46,16 @@ class AnnotationCurrentVersionRanges extends \Google\Model
   {
     return $this->cfiRange;
   }
+  /**
+   * @param string
+   */
   public function setContentVersion($contentVersion)
   {
     $this->contentVersion = $contentVersion;
   }
+  /**
+   * @return string
+   */
   public function getContentVersion()
   {
     return $this->contentVersion;

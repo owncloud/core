@@ -23,6 +23,9 @@ class BasicSeriesDataPointStyleOverride extends \Google\Model
   protected $colorDataType = '';
   protected $colorStyleType = ColorStyle::class;
   protected $colorStyleDataType = '';
+  /**
+   * @var int
+   */
   public $index;
   protected $pointStyleType = PointStyle::class;
   protected $pointStyleDataType = '';
@@ -55,10 +58,16 @@ class BasicSeriesDataPointStyleOverride extends \Google\Model
   {
     return $this->colorStyle;
   }
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;

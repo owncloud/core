@@ -20,20 +20,41 @@ namespace Google\Service\CloudAsset;
 class IamPolicySearchResult extends \Google\Collection
 {
   protected $collection_key = 'folders';
+  /**
+   * @var string
+   */
   public $assetType;
   protected $explanationType = Explanation::class;
   protected $explanationDataType = '';
+  /**
+   * @var string[]
+   */
   public $folders;
+  /**
+   * @var string
+   */
   public $organization;
   protected $policyType = Policy::class;
   protected $policyDataType = '';
+  /**
+   * @var string
+   */
   public $project;
+  /**
+   * @var string
+   */
   public $resource;
 
+  /**
+   * @param string
+   */
   public function setAssetType($assetType)
   {
     $this->assetType = $assetType;
   }
+  /**
+   * @return string
+   */
   public function getAssetType()
   {
     return $this->assetType;
@@ -52,18 +73,30 @@ class IamPolicySearchResult extends \Google\Collection
   {
     return $this->explanation;
   }
+  /**
+   * @param string[]
+   */
   public function setFolders($folders)
   {
     $this->folders = $folders;
   }
+  /**
+   * @return string[]
+   */
   public function getFolders()
   {
     return $this->folders;
   }
+  /**
+   * @param string
+   */
   public function setOrganization($organization)
   {
     $this->organization = $organization;
   }
+  /**
+   * @return string
+   */
   public function getOrganization()
   {
     return $this->organization;
@@ -82,18 +115,30 @@ class IamPolicySearchResult extends \Google\Collection
   {
     return $this->policy;
   }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;

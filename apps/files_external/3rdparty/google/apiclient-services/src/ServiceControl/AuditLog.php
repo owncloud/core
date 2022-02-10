@@ -24,18 +24,45 @@ class AuditLog extends \Google\Collection
   protected $authenticationInfoDataType = '';
   protected $authorizationInfoType = AuthorizationInfo::class;
   protected $authorizationInfoDataType = 'array';
+  /**
+   * @var array[]
+   */
   public $metadata;
+  /**
+   * @var string
+   */
   public $methodName;
+  /**
+   * @var string
+   */
   public $numResponseItems;
+  /**
+   * @var array[]
+   */
   public $request;
   protected $requestMetadataType = RequestMetadata::class;
   protected $requestMetadataDataType = '';
   protected $resourceLocationType = ResourceLocation::class;
   protected $resourceLocationDataType = '';
+  /**
+   * @var string
+   */
   public $resourceName;
+  /**
+   * @var array[]
+   */
   public $resourceOriginalState;
+  /**
+   * @var array[]
+   */
   public $response;
+  /**
+   * @var array[]
+   */
   public $serviceData;
+  /**
+   * @var string
+   */
   public $serviceName;
   protected $statusType = Status::class;
   protected $statusDataType = '';
@@ -68,34 +95,58 @@ class AuditLog extends \Google\Collection
   {
     return $this->authorizationInfo;
   }
+  /**
+   * @param array[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return array[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setMethodName($methodName)
   {
     $this->methodName = $methodName;
   }
+  /**
+   * @return string
+   */
   public function getMethodName()
   {
     return $this->methodName;
   }
+  /**
+   * @param string
+   */
   public function setNumResponseItems($numResponseItems)
   {
     $this->numResponseItems = $numResponseItems;
   }
+  /**
+   * @return string
+   */
   public function getNumResponseItems()
   {
     return $this->numResponseItems;
   }
+  /**
+   * @param array[]
+   */
   public function setRequest($request)
   {
     $this->request = $request;
   }
+  /**
+   * @return array[]
+   */
   public function getRequest()
   {
     return $this->request;
@@ -128,42 +179,72 @@ class AuditLog extends \Google\Collection
   {
     return $this->resourceLocation;
   }
+  /**
+   * @param string
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string
+   */
   public function getResourceName()
   {
     return $this->resourceName;
   }
+  /**
+   * @param array[]
+   */
   public function setResourceOriginalState($resourceOriginalState)
   {
     $this->resourceOriginalState = $resourceOriginalState;
   }
+  /**
+   * @return array[]
+   */
   public function getResourceOriginalState()
   {
     return $this->resourceOriginalState;
   }
+  /**
+   * @param array[]
+   */
   public function setResponse($response)
   {
     $this->response = $response;
   }
+  /**
+   * @return array[]
+   */
   public function getResponse()
   {
     return $this->response;
   }
+  /**
+   * @param array[]
+   */
   public function setServiceData($serviceData)
   {
     $this->serviceData = $serviceData;
   }
+  /**
+   * @return array[]
+   */
   public function getServiceData()
   {
     return $this->serviceData;
   }
+  /**
+   * @param string
+   */
   public function setServiceName($serviceName)
   {
     $this->serviceName = $serviceName;
   }
+  /**
+   * @return string
+   */
   public function getServiceName()
   {
     return $this->serviceName;

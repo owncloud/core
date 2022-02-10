@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class ResourcePolicyResourceStatusInstanceSchedulePolicyStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastRunStartTime;
+  /**
+   * @var string
+   */
   public $nextRunStartTime;
 
+  /**
+   * @param string
+   */
   public function setLastRunStartTime($lastRunStartTime)
   {
     $this->lastRunStartTime = $lastRunStartTime;
   }
+  /**
+   * @return string
+   */
   public function getLastRunStartTime()
   {
     return $this->lastRunStartTime;
   }
+  /**
+   * @param string
+   */
   public function setNextRunStartTime($nextRunStartTime)
   {
     $this->nextRunStartTime = $nextRunStartTime;
   }
+  /**
+   * @return string
+   */
   public function getNextRunStartTime()
   {
     return $this->nextRunStartTime;

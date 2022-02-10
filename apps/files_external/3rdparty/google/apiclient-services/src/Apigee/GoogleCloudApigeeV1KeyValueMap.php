@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1KeyValueMap extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $encrypted;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param bool
+   */
   public function setEncrypted($encrypted)
   {
     $this->encrypted = $encrypted;
   }
+  /**
+   * @return bool
+   */
   public function getEncrypted()
   {
     return $this->encrypted;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -19,39 +19,75 @@ namespace Google\Service\IdentityToolkit;
 
 class IdentitytoolkitRelyingpartyDownloadAccountRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $delegatedProjectNumber;
+  /**
+   * @var string
+   */
   public $maxResults;
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $targetProjectId;
 
+  /**
+   * @param string
+   */
   public function setDelegatedProjectNumber($delegatedProjectNumber)
   {
     $this->delegatedProjectNumber = $delegatedProjectNumber;
   }
+  /**
+   * @return string
+   */
   public function getDelegatedProjectNumber()
   {
     return $this->delegatedProjectNumber;
   }
+  /**
+   * @param string
+   */
   public function setMaxResults($maxResults)
   {
     $this->maxResults = $maxResults;
   }
+  /**
+   * @return string
+   */
   public function getMaxResults()
   {
     return $this->maxResults;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setTargetProjectId($targetProjectId)
   {
     $this->targetProjectId = $targetProjectId;
   }
+  /**
+   * @return string
+   */
   public function getTargetProjectId()
   {
     return $this->targetProjectId;

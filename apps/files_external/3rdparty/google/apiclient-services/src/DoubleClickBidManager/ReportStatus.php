@@ -21,8 +21,17 @@ class ReportStatus extends \Google\Model
 {
   protected $failureType = ReportFailure::class;
   protected $failureDataType = '';
+  /**
+   * @var string
+   */
   public $finishTimeMs;
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -39,26 +48,44 @@ class ReportStatus extends \Google\Model
   {
     return $this->failure;
   }
+  /**
+   * @param string
+   */
   public function setFinishTimeMs($finishTimeMs)
   {
     $this->finishTimeMs = $finishTimeMs;
   }
+  /**
+   * @return string
+   */
   public function getFinishTimeMs()
   {
     return $this->finishTimeMs;
   }
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

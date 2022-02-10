@@ -19,12 +19,21 @@ namespace Google\Service\YouTube;
 
 class PlaylistContentDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $itemCount;
 
+  /**
+   * @param string
+   */
   public function setItemCount($itemCount)
   {
     $this->itemCount = $itemCount;
   }
+  /**
+   * @return string
+   */
   public function getItemCount()
   {
     return $this->itemCount;

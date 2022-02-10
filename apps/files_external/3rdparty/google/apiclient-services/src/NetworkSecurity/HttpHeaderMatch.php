@@ -19,21 +19,39 @@ namespace Google\Service\NetworkSecurity;
 
 class HttpHeaderMatch extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $headerName;
+  /**
+   * @var string
+   */
   public $regexMatch;
 
+  /**
+   * @param string
+   */
   public function setHeaderName($headerName)
   {
     $this->headerName = $headerName;
   }
+  /**
+   * @return string
+   */
   public function getHeaderName()
   {
     return $this->headerName;
   }
+  /**
+   * @param string
+   */
   public function setRegexMatch($regexMatch)
   {
     $this->regexMatch = $regexMatch;
   }
+  /**
+   * @return string
+   */
   public function getRegexMatch()
   {
     return $this->regexMatch;

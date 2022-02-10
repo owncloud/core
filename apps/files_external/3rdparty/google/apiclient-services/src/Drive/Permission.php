@@ -20,86 +20,188 @@ namespace Google\Service\Drive;
 class Permission extends \Google\Collection
 {
   protected $collection_key = 'teamDrivePermissionDetails';
+  /**
+   * @var bool
+   */
   public $allowFileDiscovery;
+  /**
+   * @var bool
+   */
   public $deleted;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $domain;
+  /**
+   * @var string
+   */
   public $emailAddress;
+  /**
+   * @var string
+   */
   public $expirationTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
+  public $pendingOwner;
   protected $permissionDetailsType = PermissionPermissionDetails::class;
   protected $permissionDetailsDataType = 'array';
+  /**
+   * @var string
+   */
   public $photoLink;
+  /**
+   * @var string
+   */
   public $role;
   protected $teamDrivePermissionDetailsType = PermissionTeamDrivePermissionDetails::class;
   protected $teamDrivePermissionDetailsDataType = 'array';
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $view;
 
+  /**
+   * @param bool
+   */
   public function setAllowFileDiscovery($allowFileDiscovery)
   {
     $this->allowFileDiscovery = $allowFileDiscovery;
   }
+  /**
+   * @return bool
+   */
   public function getAllowFileDiscovery()
   {
     return $this->allowFileDiscovery;
   }
+  /**
+   * @param bool
+   */
   public function setDeleted($deleted)
   {
     $this->deleted = $deleted;
   }
+  /**
+   * @return bool
+   */
   public function getDeleted()
   {
     return $this->deleted;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
   }
+  /**
+   * @param string
+   */
   public function setEmailAddress($emailAddress)
   {
     $this->emailAddress = $emailAddress;
   }
+  /**
+   * @return string
+   */
   public function getEmailAddress()
   {
     return $this->emailAddress;
   }
+  /**
+   * @param string
+   */
   public function setExpirationTime($expirationTime)
   {
     $this->expirationTime = $expirationTime;
   }
+  /**
+   * @return string
+   */
   public function getExpirationTime()
   {
     return $this->expirationTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
+  }
+  /**
+   * @param bool
+   */
+  public function setPendingOwner($pendingOwner)
+  {
+    $this->pendingOwner = $pendingOwner;
+  }
+  /**
+   * @return bool
+   */
+  public function getPendingOwner()
+  {
+    return $this->pendingOwner;
   }
   /**
    * @param PermissionPermissionDetails[]
@@ -115,18 +217,30 @@ class Permission extends \Google\Collection
   {
     return $this->permissionDetails;
   }
+  /**
+   * @param string
+   */
   public function setPhotoLink($photoLink)
   {
     $this->photoLink = $photoLink;
   }
+  /**
+   * @return string
+   */
   public function getPhotoLink()
   {
     return $this->photoLink;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;
@@ -145,18 +259,30 @@ class Permission extends \Google\Collection
   {
     return $this->teamDrivePermissionDetails;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setView($view)
   {
     $this->view = $view;
   }
+  /**
+   * @return string
+   */
   public function getView()
   {
     return $this->view;

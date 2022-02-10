@@ -19,30 +19,57 @@ namespace Google\Service\Games;
 
 class EventPeriodRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $periodEndMillis;
+  /**
+   * @var string
+   */
   public $periodStartMillis;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPeriodEndMillis($periodEndMillis)
   {
     $this->periodEndMillis = $periodEndMillis;
   }
+  /**
+   * @return string
+   */
   public function getPeriodEndMillis()
   {
     return $this->periodEndMillis;
   }
+  /**
+   * @param string
+   */
   public function setPeriodStartMillis($periodStartMillis)
   {
     $this->periodStartMillis = $periodStartMillis;
   }
+  /**
+   * @return string
+   */
   public function getPeriodStartMillis()
   {
     return $this->periodStartMillis;

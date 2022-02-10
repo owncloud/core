@@ -19,21 +19,39 @@ namespace Google\Service\Sheets;
 
 class ConditionValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $relativeDate;
+  /**
+   * @var string
+   */
   public $userEnteredValue;
 
+  /**
+   * @param string
+   */
   public function setRelativeDate($relativeDate)
   {
     $this->relativeDate = $relativeDate;
   }
+  /**
+   * @return string
+   */
   public function getRelativeDate()
   {
     return $this->relativeDate;
   }
+  /**
+   * @param string
+   */
   public function setUserEnteredValue($userEnteredValue)
   {
     $this->userEnteredValue = $userEnteredValue;
   }
+  /**
+   * @return string
+   */
   public function getUserEnteredValue()
   {
     return $this->userEnteredValue;

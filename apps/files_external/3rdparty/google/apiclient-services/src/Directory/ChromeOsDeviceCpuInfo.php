@@ -20,16 +20,31 @@ namespace Google\Service\Directory;
 class ChromeOsDeviceCpuInfo extends \Google\Collection
 {
   protected $collection_key = 'logicalCpus';
+  /**
+   * @var string
+   */
   public $architecture;
   protected $logicalCpusType = ChromeOsDeviceCpuInfoLogicalCpus::class;
   protected $logicalCpusDataType = 'array';
+  /**
+   * @var int
+   */
   public $maxClockSpeedKhz;
+  /**
+   * @var string
+   */
   public $model;
 
+  /**
+   * @param string
+   */
   public function setArchitecture($architecture)
   {
     $this->architecture = $architecture;
   }
+  /**
+   * @return string
+   */
   public function getArchitecture()
   {
     return $this->architecture;
@@ -48,18 +63,30 @@ class ChromeOsDeviceCpuInfo extends \Google\Collection
   {
     return $this->logicalCpus;
   }
+  /**
+   * @param int
+   */
   public function setMaxClockSpeedKhz($maxClockSpeedKhz)
   {
     $this->maxClockSpeedKhz = $maxClockSpeedKhz;
   }
+  /**
+   * @return int
+   */
   public function getMaxClockSpeedKhz()
   {
     return $this->maxClockSpeedKhz;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;

@@ -19,12 +19,21 @@ namespace Google\Service\CertificateAuthorityService;
 
 class KeyId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyId;
 
+  /**
+   * @param string
+   */
   public function setKeyId($keyId)
   {
     $this->keyId = $keyId;
   }
+  /**
+   * @return string
+   */
   public function getKeyId()
   {
     return $this->keyId;

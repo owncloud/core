@@ -19,21 +19,39 @@ namespace Google\Service\CloudSecurityToken;
 
 class GoogleIdentityStsV1IntrospectTokenRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $token;
+  /**
+   * @var string
+   */
   public $tokenTypeHint;
 
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;
   }
+  /**
+   * @param string
+   */
   public function setTokenTypeHint($tokenTypeHint)
   {
     $this->tokenTypeHint = $tokenTypeHint;
   }
+  /**
+   * @return string
+   */
   public function getTokenTypeHint()
   {
     return $this->tokenTypeHint;

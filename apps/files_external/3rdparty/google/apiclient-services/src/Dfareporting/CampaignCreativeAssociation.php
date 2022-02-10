@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class CampaignCreativeAssociation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creativeId;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setCreativeId($creativeId)
   {
     $this->creativeId = $creativeId;
   }
+  /**
+   * @return string
+   */
   public function getCreativeId()
   {
     return $this->creativeId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

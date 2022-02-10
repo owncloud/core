@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class DimensionFilter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimensionName;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setDimensionName($dimensionName)
   {
     $this->dimensionName = $dimensionName;
   }
+  /**
+   * @return string
+   */
   public function getDimensionName()
   {
     return $this->dimensionName;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

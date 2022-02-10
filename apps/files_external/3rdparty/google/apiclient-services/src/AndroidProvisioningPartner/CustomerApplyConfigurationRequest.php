@@ -19,14 +19,23 @@ namespace Google\Service\AndroidProvisioningPartner;
 
 class CustomerApplyConfigurationRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $configuration;
   protected $deviceType = DeviceReference::class;
   protected $deviceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setConfiguration($configuration)
   {
     $this->configuration = $configuration;
   }
+  /**
+   * @return string
+   */
   public function getConfiguration()
   {
     return $this->configuration;

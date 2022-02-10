@@ -20,32 +20,59 @@ namespace Google\Service\Books;
 class OffersItems extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var string
+   */
   public $artUrl;
+  /**
+   * @var string
+   */
   public $gservicesKey;
+  /**
+   * @var string
+   */
   public $id;
   protected $itemsType = OffersItemsItems::class;
   protected $itemsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setArtUrl($artUrl)
   {
     $this->artUrl = $artUrl;
   }
+  /**
+   * @return string
+   */
   public function getArtUrl()
   {
     return $this->artUrl;
   }
+  /**
+   * @param string
+   */
   public function setGservicesKey($gservicesKey)
   {
     $this->gservicesKey = $gservicesKey;
   }
+  /**
+   * @return string
+   */
   public function getGservicesKey()
   {
     return $this->gservicesKey;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

@@ -17,27 +17,47 @@
 
 namespace Google\Service\Transcoder;
 
-class Job extends \Google\Collection
+class Job extends \Google\Model
 {
-  protected $collection_key = 'failureDetails';
   protected $configType = JobConfig::class;
   protected $configDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $endTime;
-  protected $failureDetailsType = FailureDetail::class;
-  protected $failureDetailsDataType = 'array';
-  public $failureReason;
+  protected $errorType = Status::class;
+  protected $errorDataType = '';
+  /**
+   * @var string
+   */
   public $inputUri;
+  /**
+   * @var string
+   */
   public $name;
-  protected $originUriType = OriginUri::class;
-  protected $originUriDataType = '';
+  /**
+   * @var string
+   */
   public $outputUri;
-  public $priority;
-  protected $progressType = Progress::class;
-  protected $progressDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $templateId;
+  /**
+   * @var int
+   */
   public $ttlAfterCompletionDays;
 
   /**
@@ -54,132 +74,142 @@ class Job extends \Google\Collection
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
   /**
-   * @param FailureDetail[]
+   * @param Status
    */
-  public function setFailureDetails($failureDetails)
+  public function setError(Status $error)
   {
-    $this->failureDetails = $failureDetails;
+    $this->error = $error;
   }
   /**
-   * @return FailureDetail[]
+   * @return Status
    */
-  public function getFailureDetails()
+  public function getError()
   {
-    return $this->failureDetails;
+    return $this->error;
   }
-  public function setFailureReason($failureReason)
-  {
-    $this->failureReason = $failureReason;
-  }
-  public function getFailureReason()
-  {
-    return $this->failureReason;
-  }
+  /**
+   * @param string
+   */
   public function setInputUri($inputUri)
   {
     $this->inputUri = $inputUri;
   }
+  /**
+   * @return string
+   */
   public function getInputUri()
   {
     return $this->inputUri;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
   /**
-   * @param OriginUri
+   * @param string
    */
-  public function setOriginUri(OriginUri $originUri)
-  {
-    $this->originUri = $originUri;
-  }
-  /**
-   * @return OriginUri
-   */
-  public function getOriginUri()
-  {
-    return $this->originUri;
-  }
   public function setOutputUri($outputUri)
   {
     $this->outputUri = $outputUri;
   }
+  /**
+   * @return string
+   */
   public function getOutputUri()
   {
     return $this->outputUri;
   }
-  public function setPriority($priority)
-  {
-    $this->priority = $priority;
-  }
-  public function getPriority()
-  {
-    return $this->priority;
-  }
   /**
-   * @param Progress
+   * @param string
    */
-  public function setProgress(Progress $progress)
-  {
-    $this->progress = $progress;
-  }
-  /**
-   * @return Progress
-   */
-  public function getProgress()
-  {
-    return $this->progress;
-  }
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setTemplateId($templateId)
   {
     $this->templateId = $templateId;
   }
+  /**
+   * @return string
+   */
   public function getTemplateId()
   {
     return $this->templateId;
   }
+  /**
+   * @param int
+   */
   public function setTtlAfterCompletionDays($ttlAfterCompletionDays)
   {
     $this->ttlAfterCompletionDays = $ttlAfterCompletionDays;
   }
+  /**
+   * @return int
+   */
   public function getTtlAfterCompletionDays()
   {
     return $this->ttlAfterCompletionDays;

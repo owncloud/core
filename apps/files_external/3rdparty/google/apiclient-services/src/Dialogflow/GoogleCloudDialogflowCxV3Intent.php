@@ -20,53 +20,101 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3Intent extends \Google\Collection
 {
   protected $collection_key = 'trainingPhrases';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $isFallback;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
   protected $parametersType = GoogleCloudDialogflowCxV3IntentParameter::class;
   protected $parametersDataType = 'array';
+  /**
+   * @var int
+   */
   public $priority;
   protected $trainingPhrasesType = GoogleCloudDialogflowCxV3IntentTrainingPhrase::class;
   protected $trainingPhrasesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setIsFallback($isFallback)
   {
     $this->isFallback = $isFallback;
   }
+  /**
+   * @return bool
+   */
   public function getIsFallback()
   {
     return $this->isFallback;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -85,10 +133,16 @@ class GoogleCloudDialogflowCxV3Intent extends \Google\Collection
   {
     return $this->parameters;
   }
+  /**
+   * @param int
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return int
+   */
   public function getPriority()
   {
     return $this->priority;

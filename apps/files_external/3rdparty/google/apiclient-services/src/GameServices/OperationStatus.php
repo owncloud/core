@@ -19,30 +19,57 @@ namespace Google\Service\GameServices;
 
 class OperationStatus extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $done;
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $errorMessage;
 
+  /**
+   * @param bool
+   */
   public function setDone($done)
   {
     $this->done = $done;
   }
+  /**
+   * @return bool
+   */
   public function getDone()
   {
     return $this->done;
   }
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;

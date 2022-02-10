@@ -20,30 +20,57 @@ namespace Google\Service\WebRisk;
 class GoogleCloudWebriskV1SearchHashesResponseThreatHash extends \Google\Collection
 {
   protected $collection_key = 'threatTypes';
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $hash;
+  /**
+   * @var string[]
+   */
   public $threatTypes;
 
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setHash($hash)
   {
     $this->hash = $hash;
   }
+  /**
+   * @return string
+   */
   public function getHash()
   {
     return $this->hash;
   }
+  /**
+   * @param string[]
+   */
   public function setThreatTypes($threatTypes)
   {
     $this->threatTypes = $threatTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getThreatTypes()
   {
     return $this->threatTypes;

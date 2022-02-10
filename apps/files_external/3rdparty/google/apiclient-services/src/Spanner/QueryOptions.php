@@ -19,21 +19,39 @@ namespace Google\Service\Spanner;
 
 class QueryOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $optimizerStatisticsPackage;
+  /**
+   * @var string
+   */
   public $optimizerVersion;
 
+  /**
+   * @param string
+   */
   public function setOptimizerStatisticsPackage($optimizerStatisticsPackage)
   {
     $this->optimizerStatisticsPackage = $optimizerStatisticsPackage;
   }
+  /**
+   * @return string
+   */
   public function getOptimizerStatisticsPackage()
   {
     return $this->optimizerStatisticsPackage;
   }
+  /**
+   * @param string
+   */
   public function setOptimizerVersion($optimizerVersion)
   {
     $this->optimizerVersion = $optimizerVersion;
   }
+  /**
+   * @return string
+   */
   public function getOptimizerVersion()
   {
     return $this->optimizerVersion;

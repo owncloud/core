@@ -19,16 +19,25 @@ namespace Google\Service\Books;
 
 class Usersettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
   protected $notesExportType = UsersettingsNotesExport::class;
   protected $notesExportDataType = '';
   protected $notificationType = UsersettingsNotification::class;
   protected $notificationDataType = '';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

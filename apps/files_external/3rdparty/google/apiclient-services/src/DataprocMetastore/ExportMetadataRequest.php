@@ -19,30 +19,57 @@ namespace Google\Service\DataprocMetastore;
 
 class ExportMetadataRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $databaseDumpType;
+  /**
+   * @var string
+   */
   public $destinationGcsFolder;
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setDatabaseDumpType($databaseDumpType)
   {
     $this->databaseDumpType = $databaseDumpType;
   }
+  /**
+   * @return string
+   */
   public function getDatabaseDumpType()
   {
     return $this->databaseDumpType;
   }
+  /**
+   * @param string
+   */
   public function setDestinationGcsFolder($destinationGcsFolder)
   {
     $this->destinationGcsFolder = $destinationGcsFolder;
   }
+  /**
+   * @return string
+   */
   public function getDestinationGcsFolder()
   {
     return $this->destinationGcsFolder;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

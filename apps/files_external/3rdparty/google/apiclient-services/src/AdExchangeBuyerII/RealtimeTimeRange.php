@@ -19,12 +19,21 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class RealtimeTimeRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $startTimestamp;
 
+  /**
+   * @param string
+   */
   public function setStartTimestamp($startTimestamp)
   {
     $this->startTimestamp = $startTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getStartTimestamp()
   {
     return $this->startTimestamp;

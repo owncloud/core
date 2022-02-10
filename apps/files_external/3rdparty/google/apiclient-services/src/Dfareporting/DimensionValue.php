@@ -19,57 +19,111 @@ namespace Google\Service\Dfareporting;
 
 class DimensionValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimensionName;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $matchType;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setDimensionName($dimensionName)
   {
     $this->dimensionName = $dimensionName;
   }
+  /**
+   * @return string
+   */
   public function getDimensionName()
   {
     return $this->dimensionName;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMatchType($matchType)
   {
     $this->matchType = $matchType;
   }
+  /**
+   * @return string
+   */
   public function getMatchType()
   {
     return $this->matchType;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

@@ -21,13 +21,31 @@ class LeaderboardConfiguration extends \Google\Model
 {
   protected $draftType = LeaderboardConfigurationDetail::class;
   protected $draftDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
   protected $publishedType = LeaderboardConfigurationDetail::class;
   protected $publishedDataType = '';
+  /**
+   * @var string
+   */
   public $scoreMax;
+  /**
+   * @var string
+   */
   public $scoreMin;
+  /**
+   * @var string
+   */
   public $scoreOrder;
+  /**
+   * @var string
+   */
   public $token;
 
   /**
@@ -44,18 +62,30 @@ class LeaderboardConfiguration extends \Google\Model
   {
     return $this->draft;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -74,34 +104,58 @@ class LeaderboardConfiguration extends \Google\Model
   {
     return $this->published;
   }
+  /**
+   * @param string
+   */
   public function setScoreMax($scoreMax)
   {
     $this->scoreMax = $scoreMax;
   }
+  /**
+   * @return string
+   */
   public function getScoreMax()
   {
     return $this->scoreMax;
   }
+  /**
+   * @param string
+   */
   public function setScoreMin($scoreMin)
   {
     $this->scoreMin = $scoreMin;
   }
+  /**
+   * @return string
+   */
   public function getScoreMin()
   {
     return $this->scoreMin;
   }
+  /**
+   * @param string
+   */
   public function setScoreOrder($scoreOrder)
   {
     $this->scoreOrder = $scoreOrder;
   }
+  /**
+   * @return string
+   */
   public function getScoreOrder()
   {
     return $this->scoreOrder;
   }
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;

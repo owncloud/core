@@ -20,34 +20,61 @@ namespace Google\Service\DisplayVideo;
 class ReviewStatusInfo extends \Google\Collection
 {
   protected $collection_key = 'publisherReviewStatuses';
+  /**
+   * @var string
+   */
   public $approvalStatus;
+  /**
+   * @var string
+   */
   public $contentAndPolicyReviewStatus;
+  /**
+   * @var string
+   */
   public $creativeAndLandingPageReviewStatus;
   protected $exchangeReviewStatusesType = ExchangeReviewStatus::class;
   protected $exchangeReviewStatusesDataType = 'array';
   protected $publisherReviewStatusesType = PublisherReviewStatus::class;
   protected $publisherReviewStatusesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setApprovalStatus($approvalStatus)
   {
     $this->approvalStatus = $approvalStatus;
   }
+  /**
+   * @return string
+   */
   public function getApprovalStatus()
   {
     return $this->approvalStatus;
   }
+  /**
+   * @param string
+   */
   public function setContentAndPolicyReviewStatus($contentAndPolicyReviewStatus)
   {
     $this->contentAndPolicyReviewStatus = $contentAndPolicyReviewStatus;
   }
+  /**
+   * @return string
+   */
   public function getContentAndPolicyReviewStatus()
   {
     return $this->contentAndPolicyReviewStatus;
   }
+  /**
+   * @param string
+   */
   public function setCreativeAndLandingPageReviewStatus($creativeAndLandingPageReviewStatus)
   {
     $this->creativeAndLandingPageReviewStatus = $creativeAndLandingPageReviewStatus;
   }
+  /**
+   * @return string
+   */
   public function getCreativeAndLandingPageReviewStatus()
   {
     return $this->creativeAndLandingPageReviewStatus;

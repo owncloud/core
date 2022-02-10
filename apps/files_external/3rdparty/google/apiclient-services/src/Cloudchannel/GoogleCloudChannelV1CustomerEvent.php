@@ -19,21 +19,39 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1CustomerEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customer;
+  /**
+   * @var string
+   */
   public $eventType;
 
+  /**
+   * @param string
+   */
   public function setCustomer($customer)
   {
     $this->customer = $customer;
   }
+  /**
+   * @return string
+   */
   public function getCustomer()
   {
     return $this->customer;
   }
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;

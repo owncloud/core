@@ -19,30 +19,57 @@ namespace Google\Service\CloudRun;
 
 class KeyToPath extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var int
+   */
   public $mode;
+  /**
+   * @var string
+   */
   public $path;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param int
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return int
+   */
   public function getMode()
   {
     return $this->mode;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

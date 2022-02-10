@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class InterconnectAttachmentPrivateInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $tag8021q;
 
+  /**
+   * @param string
+   */
   public function setTag8021q($tag8021q)
   {
     $this->tag8021q = $tag8021q;
   }
+  /**
+   * @return string
+   */
   public function getTag8021q()
   {
     return $this->tag8021q;

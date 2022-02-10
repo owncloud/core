@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class InstanceMoveRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destinationZone;
+  /**
+   * @var string
+   */
   public $targetInstance;
 
+  /**
+   * @param string
+   */
   public function setDestinationZone($destinationZone)
   {
     $this->destinationZone = $destinationZone;
   }
+  /**
+   * @return string
+   */
   public function getDestinationZone()
   {
     return $this->destinationZone;
   }
+  /**
+   * @param string
+   */
   public function setTargetInstance($targetInstance)
   {
     $this->targetInstance = $targetInstance;
   }
+  /**
+   * @return string
+   */
   public function getTargetInstance()
   {
     return $this->targetInstance;

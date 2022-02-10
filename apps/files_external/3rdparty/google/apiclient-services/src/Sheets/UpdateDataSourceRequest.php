@@ -21,6 +21,9 @@ class UpdateDataSourceRequest extends \Google\Model
 {
   protected $dataSourceType = DataSource::class;
   protected $dataSourceDataType = '';
+  /**
+   * @var string
+   */
   public $fields;
 
   /**
@@ -37,10 +40,16 @@ class UpdateDataSourceRequest extends \Google\Model
   {
     return $this->dataSource;
   }
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

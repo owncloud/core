@@ -19,21 +19,57 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1IssueModelLabelStatsIssueStats extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $displayName;
+  /**
+   * @var string
+   */
   public $issue;
+  /**
+   * @var string
+   */
   public $labeledConversationsCount;
 
+  /**
+   * @param string
+   */
+  public function setDisplayName($displayName)
+  {
+    $this->displayName = $displayName;
+  }
+  /**
+   * @return string
+   */
+  public function getDisplayName()
+  {
+    return $this->displayName;
+  }
+  /**
+   * @param string
+   */
   public function setIssue($issue)
   {
     $this->issue = $issue;
   }
+  /**
+   * @return string
+   */
   public function getIssue()
   {
     return $this->issue;
   }
+  /**
+   * @param string
+   */
   public function setLabeledConversationsCount($labeledConversationsCount)
   {
     $this->labeledConversationsCount = $labeledConversationsCount;
   }
+  /**
+   * @return string
+   */
   public function getLabeledConversationsCount()
   {
     return $this->labeledConversationsCount;

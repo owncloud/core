@@ -19,12 +19,21 @@ namespace Google\Service\Books;
 
 class VolumeRecommendedInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $explanation;
 
+  /**
+   * @param string
+   */
   public function setExplanation($explanation)
   {
     $this->explanation = $explanation;
   }
+  /**
+   * @return string
+   */
   public function getExplanation()
   {
     return $this->explanation;

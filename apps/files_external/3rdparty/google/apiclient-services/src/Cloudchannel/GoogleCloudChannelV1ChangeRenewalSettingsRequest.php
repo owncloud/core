@@ -21,6 +21,9 @@ class GoogleCloudChannelV1ChangeRenewalSettingsRequest extends \Google\Model
 {
   protected $renewalSettingsType = GoogleCloudChannelV1RenewalSettings::class;
   protected $renewalSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $requestId;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudChannelV1ChangeRenewalSettingsRequest extends \Google\Model
   {
     return $this->renewalSettings;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

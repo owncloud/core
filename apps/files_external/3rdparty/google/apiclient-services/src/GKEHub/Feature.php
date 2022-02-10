@@ -19,13 +19,25 @@ namespace Google\Service\GKEHub;
 
 class Feature extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $deleteTime;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $membershipSpecsType = MembershipFeatureSpec::class;
   protected $membershipSpecsDataType = 'map';
   protected $membershipStatesType = MembershipFeatureState::class;
   protected $membershipStatesDataType = 'map';
+  /**
+   * @var string
+   */
   public $name;
   protected $resourceStateType = FeatureResourceState::class;
   protected $resourceStateDataType = '';
@@ -33,28 +45,49 @@ class Feature extends \Google\Model
   protected $specDataType = '';
   protected $stateType = CommonFeatureState::class;
   protected $stateDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDeleteTime($deleteTime)
   {
     $this->deleteTime = $deleteTime;
   }
+  /**
+   * @return string
+   */
   public function getDeleteTime()
   {
     return $this->deleteTime;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -87,10 +120,16 @@ class Feature extends \Google\Model
   {
     return $this->membershipStates;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -137,10 +176,16 @@ class Feature extends \Google\Model
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

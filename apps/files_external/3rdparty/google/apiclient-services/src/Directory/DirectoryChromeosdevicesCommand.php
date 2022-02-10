@@ -19,27 +19,57 @@ namespace Google\Service\Directory;
 
 class DirectoryChromeosdevicesCommand extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $commandExpireTime;
+  /**
+   * @var string
+   */
   public $commandId;
   protected $commandResultType = DirectoryChromeosdevicesCommandResult::class;
   protected $commandResultDataType = '';
+  /**
+   * @var string
+   */
   public $issueTime;
+  /**
+   * @var string
+   */
   public $payload;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCommandExpireTime($commandExpireTime)
   {
     $this->commandExpireTime = $commandExpireTime;
   }
+  /**
+   * @return string
+   */
   public function getCommandExpireTime()
   {
     return $this->commandExpireTime;
   }
+  /**
+   * @param string
+   */
   public function setCommandId($commandId)
   {
     $this->commandId = $commandId;
   }
+  /**
+   * @return string
+   */
   public function getCommandId()
   {
     return $this->commandId;
@@ -58,34 +88,58 @@ class DirectoryChromeosdevicesCommand extends \Google\Model
   {
     return $this->commandResult;
   }
+  /**
+   * @param string
+   */
   public function setIssueTime($issueTime)
   {
     $this->issueTime = $issueTime;
   }
+  /**
+   * @return string
+   */
   public function getIssueTime()
   {
     return $this->issueTime;
   }
+  /**
+   * @param string
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return string
+   */
   public function getPayload()
   {
     return $this->payload;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

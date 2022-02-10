@@ -20,15 +20,27 @@ namespace Google\Service\Blogger;
 class Pageviews extends \Google\Collection
 {
   protected $collection_key = 'counts';
+  /**
+   * @var string
+   */
   public $blogId;
   protected $countsType = PageviewsCounts::class;
   protected $countsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setBlogId($blogId)
   {
     $this->blogId = $blogId;
   }
+  /**
+   * @return string
+   */
   public function getBlogId()
   {
     return $this->blogId;
@@ -47,10 +59,16 @@ class Pageviews extends \Google\Collection
   {
     return $this->counts;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

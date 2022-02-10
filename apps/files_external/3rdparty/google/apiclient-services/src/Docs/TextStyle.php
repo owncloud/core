@@ -21,17 +21,35 @@ class TextStyle extends \Google\Model
 {
   protected $backgroundColorType = OptionalColor::class;
   protected $backgroundColorDataType = '';
+  /**
+   * @var string
+   */
   public $baselineOffset;
+  /**
+   * @var bool
+   */
   public $bold;
   protected $fontSizeType = Dimension::class;
   protected $fontSizeDataType = '';
   protected $foregroundColorType = OptionalColor::class;
   protected $foregroundColorDataType = '';
+  /**
+   * @var bool
+   */
   public $italic;
   protected $linkType = Link::class;
   protected $linkDataType = '';
+  /**
+   * @var bool
+   */
   public $smallCaps;
+  /**
+   * @var bool
+   */
   public $strikethrough;
+  /**
+   * @var bool
+   */
   public $underline;
   protected $weightedFontFamilyType = WeightedFontFamily::class;
   protected $weightedFontFamilyDataType = '';
@@ -50,18 +68,30 @@ class TextStyle extends \Google\Model
   {
     return $this->backgroundColor;
   }
+  /**
+   * @param string
+   */
   public function setBaselineOffset($baselineOffset)
   {
     $this->baselineOffset = $baselineOffset;
   }
+  /**
+   * @return string
+   */
   public function getBaselineOffset()
   {
     return $this->baselineOffset;
   }
+  /**
+   * @param bool
+   */
   public function setBold($bold)
   {
     $this->bold = $bold;
   }
+  /**
+   * @return bool
+   */
   public function getBold()
   {
     return $this->bold;
@@ -94,10 +124,16 @@ class TextStyle extends \Google\Model
   {
     return $this->foregroundColor;
   }
+  /**
+   * @param bool
+   */
   public function setItalic($italic)
   {
     $this->italic = $italic;
   }
+  /**
+   * @return bool
+   */
   public function getItalic()
   {
     return $this->italic;
@@ -116,26 +152,44 @@ class TextStyle extends \Google\Model
   {
     return $this->link;
   }
+  /**
+   * @param bool
+   */
   public function setSmallCaps($smallCaps)
   {
     $this->smallCaps = $smallCaps;
   }
+  /**
+   * @return bool
+   */
   public function getSmallCaps()
   {
     return $this->smallCaps;
   }
+  /**
+   * @param bool
+   */
   public function setStrikethrough($strikethrough)
   {
     $this->strikethrough = $strikethrough;
   }
+  /**
+   * @return bool
+   */
   public function getStrikethrough()
   {
     return $this->strikethrough;
   }
+  /**
+   * @param bool
+   */
   public function setUnderline($underline)
   {
     $this->underline = $underline;
   }
+  /**
+   * @return bool
+   */
   public function getUnderline()
   {
     return $this->underline;

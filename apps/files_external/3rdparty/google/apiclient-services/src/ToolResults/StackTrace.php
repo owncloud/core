@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class StackTrace extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exception;
 
+  /**
+   * @param string
+   */
   public function setException($exception)
   {
     $this->exception = $exception;
   }
+  /**
+   * @return string
+   */
   public function getException()
   {
     return $this->exception;

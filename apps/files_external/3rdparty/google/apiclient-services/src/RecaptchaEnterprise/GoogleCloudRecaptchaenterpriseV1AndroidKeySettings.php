@@ -20,21 +20,39 @@ namespace Google\Service\RecaptchaEnterprise;
 class GoogleCloudRecaptchaenterpriseV1AndroidKeySettings extends \Google\Collection
 {
   protected $collection_key = 'allowedPackageNames';
+  /**
+   * @var bool
+   */
   public $allowAllPackageNames;
+  /**
+   * @var string[]
+   */
   public $allowedPackageNames;
 
+  /**
+   * @param bool
+   */
   public function setAllowAllPackageNames($allowAllPackageNames)
   {
     $this->allowAllPackageNames = $allowAllPackageNames;
   }
+  /**
+   * @return bool
+   */
   public function getAllowAllPackageNames()
   {
     return $this->allowAllPackageNames;
   }
+  /**
+   * @param string[]
+   */
   public function setAllowedPackageNames($allowedPackageNames)
   {
     $this->allowedPackageNames = $allowedPackageNames;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedPackageNames()
   {
     return $this->allowedPackageNames;

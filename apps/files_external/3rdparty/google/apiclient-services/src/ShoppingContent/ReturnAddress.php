@@ -21,10 +21,25 @@ class ReturnAddress extends \Google\Model
 {
   protected $addressType = ReturnAddressAddress::class;
   protected $addressDataType = '';
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $phoneNumber;
+  /**
+   * @var string
+   */
   public $returnAddressId;
 
   /**
@@ -41,42 +56,72 @@ class ReturnAddress extends \Google\Model
   {
     return $this->address;
   }
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setPhoneNumber($phoneNumber)
   {
     $this->phoneNumber = $phoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getPhoneNumber()
   {
     return $this->phoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setReturnAddressId($returnAddressId)
   {
     $this->returnAddressId = $returnAddressId;
   }
+  /**
+   * @return string
+   */
   public function getReturnAddressId()
   {
     return $this->returnAddressId;

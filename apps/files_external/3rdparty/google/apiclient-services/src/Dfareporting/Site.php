@@ -20,45 +20,87 @@ namespace Google\Service\Dfareporting;
 class Site extends \Google\Collection
 {
   protected $collection_key = 'siteContacts';
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var bool
+   */
   public $approved;
+  /**
+   * @var string
+   */
   public $directorySiteId;
   protected $directorySiteIdDimensionValueType = DimensionValue::class;
   protected $directorySiteIdDimensionValueDataType = '';
+  /**
+   * @var string
+   */
   public $id;
   protected $idDimensionValueType = DimensionValue::class;
   protected $idDimensionValueDataType = '';
+  /**
+   * @var string
+   */
   public $keyName;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $siteContactsType = SiteContact::class;
   protected $siteContactsDataType = 'array';
   protected $siteSettingsType = SiteSettings::class;
   protected $siteSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $subaccountId;
   protected $videoSettingsType = SiteVideoSettings::class;
   protected $videoSettingsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param bool
+   */
   public function setApproved($approved)
   {
     $this->approved = $approved;
   }
+  /**
+   * @return bool
+   */
   public function getApproved()
   {
     return $this->approved;
   }
+  /**
+   * @param string
+   */
   public function setDirectorySiteId($directorySiteId)
   {
     $this->directorySiteId = $directorySiteId;
   }
+  /**
+   * @return string
+   */
   public function getDirectorySiteId()
   {
     return $this->directorySiteId;
@@ -77,10 +119,16 @@ class Site extends \Google\Collection
   {
     return $this->directorySiteIdDimensionValue;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -99,26 +147,44 @@ class Site extends \Google\Collection
   {
     return $this->idDimensionValue;
   }
+  /**
+   * @param string
+   */
   public function setKeyName($keyName)
   {
     $this->keyName = $keyName;
   }
+  /**
+   * @return string
+   */
   public function getKeyName()
   {
     return $this->keyName;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -151,10 +217,16 @@ class Site extends \Google\Collection
   {
     return $this->siteSettings;
   }
+  /**
+   * @param string
+   */
   public function setSubaccountId($subaccountId)
   {
     $this->subaccountId = $subaccountId;
   }
+  /**
+   * @return string
+   */
   public function getSubaccountId()
   {
     return $this->subaccountId;

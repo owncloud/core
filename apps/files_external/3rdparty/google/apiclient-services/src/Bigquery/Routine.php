@@ -22,13 +22,37 @@ class Routine extends \Google\Collection
   protected $collection_key = 'importedLibraries';
   protected $argumentsType = Argument::class;
   protected $argumentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string
+   */
   public $definitionBody;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $determinismLevel;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string[]
+   */
   public $importedLibraries;
+  /**
+   * @var string
+   */
   public $language;
+  /**
+   * @var string
+   */
   public $lastModifiedTime;
   protected $returnTableTypeType = StandardSqlTableType::class;
   protected $returnTableTypeDataType = '';
@@ -36,7 +60,13 @@ class Routine extends \Google\Collection
   protected $returnTypeDataType = '';
   protected $routineReferenceType = RoutineReference::class;
   protected $routineReferenceDataType = '';
+  /**
+   * @var string
+   */
   public $routineType;
+  /**
+   * @var bool
+   */
   public $strictMode;
 
   /**
@@ -53,66 +83,114 @@ class Routine extends \Google\Collection
   {
     return $this->arguments;
   }
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setDefinitionBody($definitionBody)
   {
     $this->definitionBody = $definitionBody;
   }
+  /**
+   * @return string
+   */
   public function getDefinitionBody()
   {
     return $this->definitionBody;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDeterminismLevel($determinismLevel)
   {
     $this->determinismLevel = $determinismLevel;
   }
+  /**
+   * @return string
+   */
   public function getDeterminismLevel()
   {
     return $this->determinismLevel;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string[]
+   */
   public function setImportedLibraries($importedLibraries)
   {
     $this->importedLibraries = $importedLibraries;
   }
+  /**
+   * @return string[]
+   */
   public function getImportedLibraries()
   {
     return $this->importedLibraries;
   }
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedTime($lastModifiedTime)
   {
     $this->lastModifiedTime = $lastModifiedTime;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedTime()
   {
     return $this->lastModifiedTime;
@@ -159,18 +237,30 @@ class Routine extends \Google\Collection
   {
     return $this->routineReference;
   }
+  /**
+   * @param string
+   */
   public function setRoutineType($routineType)
   {
     $this->routineType = $routineType;
   }
+  /**
+   * @return string
+   */
   public function getRoutineType()
   {
     return $this->routineType;
   }
+  /**
+   * @param bool
+   */
   public function setStrictMode($strictMode)
   {
     $this->strictMode = $strictMode;
   }
+  /**
+   * @return bool
+   */
   public function getStrictMode()
   {
     return $this->strictMode;

@@ -19,21 +19,39 @@ namespace Google\Service\Apigateway;
 
 class ApigatewayApiConfigFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contents;
+  /**
+   * @var string
+   */
   public $path;
 
+  /**
+   * @param string
+   */
   public function setContents($contents)
   {
     $this->contents = $contents;
   }
+  /**
+   * @return string
+   */
   public function getContents()
   {
     return $this->contents;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

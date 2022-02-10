@@ -19,12 +19,21 @@ namespace Google\Service\CloudBuild;
 
 class NotifierSecretRef extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $secretRef;
 
+  /**
+   * @param string
+   */
   public function setSecretRef($secretRef)
   {
     $this->secretRef = $secretRef;
   }
+  /**
+   * @return string
+   */
   public function getSecretRef()
   {
     return $this->secretRef;

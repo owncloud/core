@@ -22,6 +22,9 @@ class PackageOccurrence extends \Google\Collection
   protected $collection_key = 'location';
   protected $locationType = Location::class;
   protected $locationDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -38,10 +41,16 @@ class PackageOccurrence extends \Google\Collection
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

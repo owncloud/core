@@ -19,30 +19,57 @@ namespace Google\Service\AndroidManagement;
 
 class NonComplianceDetailCondition extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $nonComplianceReason;
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string
+   */
   public $settingName;
 
+  /**
+   * @param string
+   */
   public function setNonComplianceReason($nonComplianceReason)
   {
     $this->nonComplianceReason = $nonComplianceReason;
   }
+  /**
+   * @return string
+   */
   public function getNonComplianceReason()
   {
     return $this->nonComplianceReason;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string
+   */
   public function setSettingName($settingName)
   {
     $this->settingName = $settingName;
   }
+  /**
+   * @return string
+   */
   public function getSettingName()
   {
     return $this->settingName;

@@ -19,48 +19,93 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1QueryMetric extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alias;
+  /**
+   * @var string
+   */
   public $function;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $operator;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setAlias($alias)
   {
     $this->alias = $alias;
   }
+  /**
+   * @return string
+   */
   public function getAlias()
   {
     return $this->alias;
   }
+  /**
+   * @param string
+   */
   public function setFunction($function)
   {
     $this->function = $function;
   }
+  /**
+   * @return string
+   */
   public function getFunction()
   {
     return $this->function;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOperator($operator)
   {
     $this->operator = $operator;
   }
+  /**
+   * @return string
+   */
   public function getOperator()
   {
     return $this->operator;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

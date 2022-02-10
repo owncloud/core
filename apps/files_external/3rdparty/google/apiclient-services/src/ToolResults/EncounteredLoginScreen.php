@@ -20,21 +20,39 @@ namespace Google\Service\ToolResults;
 class EncounteredLoginScreen extends \Google\Collection
 {
   protected $collection_key = 'screenIds';
+  /**
+   * @var int
+   */
   public $distinctScreens;
+  /**
+   * @var string[]
+   */
   public $screenIds;
 
+  /**
+   * @param int
+   */
   public function setDistinctScreens($distinctScreens)
   {
     $this->distinctScreens = $distinctScreens;
   }
+  /**
+   * @return int
+   */
   public function getDistinctScreens()
   {
     return $this->distinctScreens;
   }
+  /**
+   * @param string[]
+   */
   public function setScreenIds($screenIds)
   {
     $this->screenIds = $screenIds;
   }
+  /**
+   * @return string[]
+   */
   public function getScreenIds()
   {
     return $this->screenIds;

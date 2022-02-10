@@ -20,39 +20,75 @@ namespace Google\Service\Compute;
 class InstanceGroupManagersApplyUpdatesRequest extends \Google\Collection
 {
   protected $collection_key = 'instances';
+  /**
+   * @var bool
+   */
   public $allInstances;
+  /**
+   * @var string[]
+   */
   public $instances;
+  /**
+   * @var string
+   */
   public $minimalAction;
+  /**
+   * @var string
+   */
   public $mostDisruptiveAllowedAction;
 
+  /**
+   * @param bool
+   */
   public function setAllInstances($allInstances)
   {
     $this->allInstances = $allInstances;
   }
+  /**
+   * @return bool
+   */
   public function getAllInstances()
   {
     return $this->allInstances;
   }
+  /**
+   * @param string[]
+   */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
+  /**
+   * @return string[]
+   */
   public function getInstances()
   {
     return $this->instances;
   }
+  /**
+   * @param string
+   */
   public function setMinimalAction($minimalAction)
   {
     $this->minimalAction = $minimalAction;
   }
+  /**
+   * @return string
+   */
   public function getMinimalAction()
   {
     return $this->minimalAction;
   }
+  /**
+   * @param string
+   */
   public function setMostDisruptiveAllowedAction($mostDisruptiveAllowedAction)
   {
     $this->mostDisruptiveAllowedAction = $mostDisruptiveAllowedAction;
   }
+  /**
+   * @return string
+   */
   public function getMostDisruptiveAllowedAction()
   {
     return $this->mostDisruptiveAllowedAction;

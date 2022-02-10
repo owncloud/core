@@ -19,12 +19,21 @@ namespace Google\Service\BigQueryReservation;
 
 class SplitCapacityCommitmentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $slotCount;
 
+  /**
+   * @param string
+   */
   public function setSlotCount($slotCount)
   {
     $this->slotCount = $slotCount;
   }
+  /**
+   * @return string
+   */
   public function getSlotCount()
   {
     return $this->slotCount;

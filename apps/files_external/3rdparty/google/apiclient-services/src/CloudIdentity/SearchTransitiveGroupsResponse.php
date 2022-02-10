@@ -22,6 +22,9 @@ class SearchTransitiveGroupsResponse extends \Google\Collection
   protected $collection_key = 'memberships';
   protected $membershipsType = GroupRelation::class;
   protected $membershipsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class SearchTransitiveGroupsResponse extends \Google\Collection
   {
     return $this->memberships;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

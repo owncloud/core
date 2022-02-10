@@ -20,32 +20,59 @@ namespace Google\Service\Dfareporting;
 class ReportDelivery extends \Google\Collection
 {
   protected $collection_key = 'recipients';
+  /**
+   * @var bool
+   */
   public $emailOwner;
+  /**
+   * @var string
+   */
   public $emailOwnerDeliveryType;
+  /**
+   * @var string
+   */
   public $message;
   protected $recipientsType = Recipient::class;
   protected $recipientsDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setEmailOwner($emailOwner)
   {
     $this->emailOwner = $emailOwner;
   }
+  /**
+   * @return bool
+   */
   public function getEmailOwner()
   {
     return $this->emailOwner;
   }
+  /**
+   * @param string
+   */
   public function setEmailOwnerDeliveryType($emailOwnerDeliveryType)
   {
     $this->emailOwnerDeliveryType = $emailOwnerDeliveryType;
   }
+  /**
+   * @return string
+   */
   public function getEmailOwnerDeliveryType()
   {
     return $this->emailOwnerDeliveryType;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;

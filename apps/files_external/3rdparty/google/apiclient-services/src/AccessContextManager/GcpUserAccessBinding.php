@@ -20,30 +20,57 @@ namespace Google\Service\AccessContextManager;
 class GcpUserAccessBinding extends \Google\Collection
 {
   protected $collection_key = 'accessLevels';
+  /**
+   * @var string[]
+   */
   public $accessLevels;
+  /**
+   * @var string
+   */
   public $groupKey;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string[]
+   */
   public function setAccessLevels($accessLevels)
   {
     $this->accessLevels = $accessLevels;
   }
+  /**
+   * @return string[]
+   */
   public function getAccessLevels()
   {
     return $this->accessLevels;
   }
+  /**
+   * @param string
+   */
   public function setGroupKey($groupKey)
   {
     $this->groupKey = $groupKey;
   }
+  /**
+   * @return string
+   */
   public function getGroupKey()
   {
     return $this->groupKey;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

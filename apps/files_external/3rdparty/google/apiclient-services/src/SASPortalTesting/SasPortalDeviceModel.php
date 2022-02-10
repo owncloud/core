@@ -19,48 +19,93 @@ namespace Google\Service\SASPortalTesting;
 
 class SasPortalDeviceModel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $firmwareVersion;
+  /**
+   * @var string
+   */
   public $hardwareVersion;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $softwareVersion;
+  /**
+   * @var string
+   */
   public $vendor;
 
+  /**
+   * @param string
+   */
   public function setFirmwareVersion($firmwareVersion)
   {
     $this->firmwareVersion = $firmwareVersion;
   }
+  /**
+   * @return string
+   */
   public function getFirmwareVersion()
   {
     return $this->firmwareVersion;
   }
+  /**
+   * @param string
+   */
   public function setHardwareVersion($hardwareVersion)
   {
     $this->hardwareVersion = $hardwareVersion;
   }
+  /**
+   * @return string
+   */
   public function getHardwareVersion()
   {
     return $this->hardwareVersion;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSoftwareVersion($softwareVersion)
   {
     $this->softwareVersion = $softwareVersion;
   }
+  /**
+   * @return string
+   */
   public function getSoftwareVersion()
   {
     return $this->softwareVersion;
   }
+  /**
+   * @param string
+   */
   public function setVendor($vendor)
   {
     $this->vendor = $vendor;
   }
+  /**
+   * @return string
+   */
   public function getVendor()
   {
     return $this->vendor;

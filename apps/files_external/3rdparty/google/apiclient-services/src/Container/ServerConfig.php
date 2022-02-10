@@ -22,10 +22,25 @@ class ServerConfig extends \Google\Collection
   protected $collection_key = 'validNodeVersions';
   protected $channelsType = ReleaseChannelConfig::class;
   protected $channelsDataType = 'array';
+  /**
+   * @var string
+   */
   public $defaultClusterVersion;
+  /**
+   * @var string
+   */
   public $defaultImageType;
+  /**
+   * @var string[]
+   */
   public $validImageTypes;
+  /**
+   * @var string[]
+   */
   public $validMasterVersions;
+  /**
+   * @var string[]
+   */
   public $validNodeVersions;
 
   /**
@@ -42,42 +57,72 @@ class ServerConfig extends \Google\Collection
   {
     return $this->channels;
   }
+  /**
+   * @param string
+   */
   public function setDefaultClusterVersion($defaultClusterVersion)
   {
     $this->defaultClusterVersion = $defaultClusterVersion;
   }
+  /**
+   * @return string
+   */
   public function getDefaultClusterVersion()
   {
     return $this->defaultClusterVersion;
   }
+  /**
+   * @param string
+   */
   public function setDefaultImageType($defaultImageType)
   {
     $this->defaultImageType = $defaultImageType;
   }
+  /**
+   * @return string
+   */
   public function getDefaultImageType()
   {
     return $this->defaultImageType;
   }
+  /**
+   * @param string[]
+   */
   public function setValidImageTypes($validImageTypes)
   {
     $this->validImageTypes = $validImageTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getValidImageTypes()
   {
     return $this->validImageTypes;
   }
+  /**
+   * @param string[]
+   */
   public function setValidMasterVersions($validMasterVersions)
   {
     $this->validMasterVersions = $validMasterVersions;
   }
+  /**
+   * @return string[]
+   */
   public function getValidMasterVersions()
   {
     return $this->validMasterVersions;
   }
+  /**
+   * @param string[]
+   */
   public function setValidNodeVersions($validNodeVersions)
   {
     $this->validNodeVersions = $validNodeVersions;
   }
+  /**
+   * @return string[]
+   */
   public function getValidNodeVersions()
   {
     return $this->validNodeVersions;

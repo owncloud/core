@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class OnScreenPositionAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adType;
+  /**
+   * @var string
+   */
   public $onScreenPosition;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setAdType($adType)
   {
     $this->adType = $adType;
   }
+  /**
+   * @return string
+   */
   public function getAdType()
   {
     return $this->adType;
   }
+  /**
+   * @param string
+   */
   public function setOnScreenPosition($onScreenPosition)
   {
     $this->onScreenPosition = $onScreenPosition;
   }
+  /**
+   * @return string
+   */
   public function getOnScreenPosition()
   {
     return $this->onScreenPosition;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

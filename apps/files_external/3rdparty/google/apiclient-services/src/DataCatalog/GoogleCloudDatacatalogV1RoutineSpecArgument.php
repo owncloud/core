@@ -19,30 +19,57 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1RoutineSpecArgument extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mode;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

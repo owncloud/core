@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentMessageBrowseCarouselCardBrowseCarouselCardItemOpenUrlAction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $url;
+  /**
+   * @var string
+   */
   public $urlTypeHint;
 
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;
   }
+  /**
+   * @param string
+   */
   public function setUrlTypeHint($urlTypeHint)
   {
     $this->urlTypeHint = $urlTypeHint;
   }
+  /**
+   * @return string
+   */
   public function getUrlTypeHint()
   {
     return $this->urlTypeHint;

@@ -27,10 +27,19 @@ class TreemapChartSpec extends \Google\Model
   protected $headerColorDataType = '';
   protected $headerColorStyleType = ColorStyle::class;
   protected $headerColorStyleDataType = '';
+  /**
+   * @var bool
+   */
   public $hideTooltips;
+  /**
+   * @var int
+   */
   public $hintedLevels;
   protected $labelsType = ChartData::class;
   protected $labelsDataType = '';
+  /**
+   * @var int
+   */
   public $levels;
   public $maxValue;
   public $minValue;
@@ -97,18 +106,30 @@ class TreemapChartSpec extends \Google\Model
   {
     return $this->headerColorStyle;
   }
+  /**
+   * @param bool
+   */
   public function setHideTooltips($hideTooltips)
   {
     $this->hideTooltips = $hideTooltips;
   }
+  /**
+   * @return bool
+   */
   public function getHideTooltips()
   {
     return $this->hideTooltips;
   }
+  /**
+   * @param int
+   */
   public function setHintedLevels($hintedLevels)
   {
     $this->hintedLevels = $hintedLevels;
   }
+  /**
+   * @return int
+   */
   public function getHintedLevels()
   {
     return $this->hintedLevels;
@@ -127,10 +148,16 @@ class TreemapChartSpec extends \Google\Model
   {
     return $this->labels;
   }
+  /**
+   * @param int
+   */
   public function setLevels($levels)
   {
     $this->levels = $levels;
   }
+  /**
+   * @return int
+   */
   public function getLevels()
   {
     return $this->levels;

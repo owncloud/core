@@ -20,14 +20,23 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1ListTransferableSkusResponse extends \Google\Collection
 {
   protected $collection_key = 'transferableSkus';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $transferableSkusType = GoogleCloudChannelV1TransferableSku::class;
   protected $transferableSkusDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

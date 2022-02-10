@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class UserFacingMessage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $defaultMessage;
+  /**
+   * @var string[]
+   */
   public $localizedMessages;
 
+  /**
+   * @param string
+   */
   public function setDefaultMessage($defaultMessage)
   {
     $this->defaultMessage = $defaultMessage;
   }
+  /**
+   * @return string
+   */
   public function getDefaultMessage()
   {
     return $this->defaultMessage;
   }
+  /**
+   * @param string[]
+   */
   public function setLocalizedMessages($localizedMessages)
   {
     $this->localizedMessages = $localizedMessages;
   }
+  /**
+   * @return string[]
+   */
   public function getLocalizedMessages()
   {
     return $this->localizedMessages;

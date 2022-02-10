@@ -19,30 +19,57 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1DocumentPageDimension extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $unit;
+  /**
+   * @var float
+   */
   public $width;
 
+  /**
+   * @param float
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return float
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;
   }
+  /**
+   * @param float
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return float
+   */
   public function getWidth()
   {
     return $this->width;

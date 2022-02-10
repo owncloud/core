@@ -19,21 +19,39 @@ namespace Google\Service\ManufacturerCenter;
 
 class Price extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $amount;
+  /**
+   * @var string
+   */
   public $currency;
 
+  /**
+   * @param string
+   */
   public function setAmount($amount)
   {
     $this->amount = $amount;
   }
+  /**
+   * @return string
+   */
   public function getAmount()
   {
     return $this->amount;
   }
+  /**
+   * @param string
+   */
   public function setCurrency($currency)
   {
     $this->currency = $currency;
   }
+  /**
+   * @return string
+   */
   public function getCurrency()
   {
     return $this->currency;

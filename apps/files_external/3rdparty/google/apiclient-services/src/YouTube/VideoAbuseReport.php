@@ -19,48 +19,93 @@ namespace Google\Service\YouTube;
 
 class VideoAbuseReport extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $comments;
+  /**
+   * @var string
+   */
   public $language;
+  /**
+   * @var string
+   */
   public $reasonId;
+  /**
+   * @var string
+   */
   public $secondaryReasonId;
+  /**
+   * @var string
+   */
   public $videoId;
 
+  /**
+   * @param string
+   */
   public function setComments($comments)
   {
     $this->comments = $comments;
   }
+  /**
+   * @return string
+   */
   public function getComments()
   {
     return $this->comments;
   }
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;
   }
+  /**
+   * @param string
+   */
   public function setReasonId($reasonId)
   {
     $this->reasonId = $reasonId;
   }
+  /**
+   * @return string
+   */
   public function getReasonId()
   {
     return $this->reasonId;
   }
+  /**
+   * @param string
+   */
   public function setSecondaryReasonId($secondaryReasonId)
   {
     $this->secondaryReasonId = $secondaryReasonId;
   }
+  /**
+   * @return string
+   */
   public function getSecondaryReasonId()
   {
     return $this->secondaryReasonId;
   }
+  /**
+   * @param string
+   */
   public function setVideoId($videoId)
   {
     $this->videoId = $videoId;
   }
+  /**
+   * @return string
+   */
   public function getVideoId()
   {
     return $this->videoId;

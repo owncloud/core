@@ -20,25 +20,49 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1ApiProxy extends \Google\Collection
 {
   protected $collection_key = 'revision';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $latestRevisionId;
   protected $metaDataType = GoogleCloudApigeeV1EntityMetadata::class;
   protected $metaDataDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $revision;
 
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLatestRevisionId($latestRevisionId)
   {
     $this->latestRevisionId = $latestRevisionId;
   }
+  /**
+   * @return string
+   */
   public function getLatestRevisionId()
   {
     return $this->latestRevisionId;
@@ -57,18 +81,30 @@ class GoogleCloudApigeeV1ApiProxy extends \Google\Collection
   {
     return $this->metaData;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return string[]
+   */
   public function getRevision()
   {
     return $this->revision;

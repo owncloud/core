@@ -19,12 +19,21 @@ namespace Google\Service\Analytics;
 
 class GaDataDataTableRowsC extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $v;
 
+  /**
+   * @param string
+   */
   public function setV($v)
   {
     $this->v = $v;
   }
+  /**
+   * @return string
+   */
   public function getV()
   {
     return $this->v;

@@ -19,26 +19,47 @@ namespace Google\Service\Testing;
 
 class IosXcTest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appBundleId;
+  /**
+   * @var bool
+   */
   public $testSpecialEntitlements;
   protected $testsZipType = FileReference::class;
   protected $testsZipDataType = '';
+  /**
+   * @var string
+   */
   public $xcodeVersion;
   protected $xctestrunType = FileReference::class;
   protected $xctestrunDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAppBundleId($appBundleId)
   {
     $this->appBundleId = $appBundleId;
   }
+  /**
+   * @return string
+   */
   public function getAppBundleId()
   {
     return $this->appBundleId;
   }
+  /**
+   * @param bool
+   */
   public function setTestSpecialEntitlements($testSpecialEntitlements)
   {
     $this->testSpecialEntitlements = $testSpecialEntitlements;
   }
+  /**
+   * @return bool
+   */
   public function getTestSpecialEntitlements()
   {
     return $this->testSpecialEntitlements;
@@ -57,10 +78,16 @@ class IosXcTest extends \Google\Model
   {
     return $this->testsZip;
   }
+  /**
+   * @param string
+   */
   public function setXcodeVersion($xcodeVersion)
   {
     $this->xcodeVersion = $xcodeVersion;
   }
+  /**
+   * @return string
+   */
   public function getXcodeVersion()
   {
     return $this->xcodeVersion;

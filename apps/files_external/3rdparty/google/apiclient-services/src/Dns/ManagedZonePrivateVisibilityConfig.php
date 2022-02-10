@@ -20,14 +20,23 @@ namespace Google\Service\Dns;
 class ManagedZonePrivateVisibilityConfig extends \Google\Collection
 {
   protected $collection_key = 'networks';
+  /**
+   * @var string
+   */
   public $kind;
   protected $networksType = ManagedZonePrivateVisibilityConfigNetwork::class;
   protected $networksDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

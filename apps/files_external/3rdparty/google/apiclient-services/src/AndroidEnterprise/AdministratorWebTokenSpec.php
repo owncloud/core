@@ -22,7 +22,13 @@ class AdministratorWebTokenSpec extends \Google\Collection
   protected $collection_key = 'permission';
   protected $managedConfigurationsType = AdministratorWebTokenSpecManagedConfigurations::class;
   protected $managedConfigurationsDataType = '';
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string[]
+   */
   public $permission;
   protected $playSearchType = AdministratorWebTokenSpecPlaySearch::class;
   protected $playSearchDataType = '';
@@ -49,18 +55,30 @@ class AdministratorWebTokenSpec extends \Google\Collection
   {
     return $this->managedConfigurations;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string[]
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string[]
+   */
   public function getPermission()
   {
     return $this->permission;

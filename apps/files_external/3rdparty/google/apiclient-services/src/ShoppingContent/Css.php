@@ -20,57 +20,111 @@ namespace Google\Service\ShoppingContent;
 class Css extends \Google\Collection
 {
   protected $collection_key = 'labelIds';
+  /**
+   * @var string
+   */
   public $cssDomainId;
+  /**
+   * @var string
+   */
   public $cssGroupId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $fullName;
+  /**
+   * @var string
+   */
   public $homepageUri;
+  /**
+   * @var string[]
+   */
   public $labelIds;
 
+  /**
+   * @param string
+   */
   public function setCssDomainId($cssDomainId)
   {
     $this->cssDomainId = $cssDomainId;
   }
+  /**
+   * @return string
+   */
   public function getCssDomainId()
   {
     return $this->cssDomainId;
   }
+  /**
+   * @param string
+   */
   public function setCssGroupId($cssGroupId)
   {
     $this->cssGroupId = $cssGroupId;
   }
+  /**
+   * @return string
+   */
   public function getCssGroupId()
   {
     return $this->cssGroupId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setFullName($fullName)
   {
     $this->fullName = $fullName;
   }
+  /**
+   * @return string
+   */
   public function getFullName()
   {
     return $this->fullName;
   }
+  /**
+   * @param string
+   */
   public function setHomepageUri($homepageUri)
   {
     $this->homepageUri = $homepageUri;
   }
+  /**
+   * @return string
+   */
   public function getHomepageUri()
   {
     return $this->homepageUri;
   }
+  /**
+   * @param string[]
+   */
   public function setLabelIds($labelIds)
   {
     $this->labelIds = $labelIds;
   }
+  /**
+   * @return string[]
+   */
   public function getLabelIds()
   {
     return $this->labelIds;

@@ -19,21 +19,39 @@ namespace Google\Service\CloudLifeSciences;
 
 class UnexpectedExitStatusEvent extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $actionId;
+  /**
+   * @var int
+   */
   public $exitStatus;
 
+  /**
+   * @param int
+   */
   public function setActionId($actionId)
   {
     $this->actionId = $actionId;
   }
+  /**
+   * @return int
+   */
   public function getActionId()
   {
     return $this->actionId;
   }
+  /**
+   * @param int
+   */
   public function setExitStatus($exitStatus)
   {
     $this->exitStatus = $exitStatus;
   }
+  /**
+   * @return int
+   */
   public function getExitStatus()
   {
     return $this->exitStatus;

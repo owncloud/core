@@ -19,21 +19,39 @@ namespace Google\Service\Games;
 
 class AchievementRevealResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currentState;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setCurrentState($currentState)
   {
     $this->currentState = $currentState;
   }
+  /**
+   * @return string
+   */
   public function getCurrentState()
   {
     return $this->currentState;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

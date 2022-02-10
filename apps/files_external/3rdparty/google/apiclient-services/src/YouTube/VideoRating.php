@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class VideoRating extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rating;
+  /**
+   * @var string
+   */
   public $videoId;
 
+  /**
+   * @param string
+   */
   public function setRating($rating)
   {
     $this->rating = $rating;
   }
+  /**
+   * @return string
+   */
   public function getRating()
   {
     return $this->rating;
   }
+  /**
+   * @param string
+   */
   public function setVideoId($videoId)
   {
     $this->videoId = $videoId;
   }
+  /**
+   * @return string
+   */
   public function getVideoId()
   {
     return $this->videoId;

@@ -22,6 +22,9 @@ class ListNegativeKeywordListsResponse extends \Google\Collection
   protected $collection_key = 'negativeKeywordLists';
   protected $negativeKeywordListsType = NegativeKeywordList::class;
   protected $negativeKeywordListsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListNegativeKeywordListsResponse extends \Google\Collection
   {
     return $this->negativeKeywordLists;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

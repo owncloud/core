@@ -20,22 +20,49 @@ namespace Google\Service\ShoppingContent;
 class ProductStatus extends \Google\Collection
 {
   protected $collection_key = 'itemLevelIssues';
+  /**
+   * @var string
+   */
   public $creationDate;
   protected $destinationStatusesType = ProductStatusDestinationStatus::class;
   protected $destinationStatusesDataType = 'array';
+  /**
+   * @var string
+   */
   public $googleExpirationDate;
   protected $itemLevelIssuesType = ProductStatusItemLevelIssue::class;
   protected $itemLevelIssuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $lastUpdateDate;
+  /**
+   * @var string
+   */
   public $link;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setCreationDate($creationDate)
   {
     $this->creationDate = $creationDate;
   }
+  /**
+   * @return string
+   */
   public function getCreationDate()
   {
     return $this->creationDate;
@@ -54,10 +81,16 @@ class ProductStatus extends \Google\Collection
   {
     return $this->destinationStatuses;
   }
+  /**
+   * @param string
+   */
   public function setGoogleExpirationDate($googleExpirationDate)
   {
     $this->googleExpirationDate = $googleExpirationDate;
   }
+  /**
+   * @return string
+   */
   public function getGoogleExpirationDate()
   {
     return $this->googleExpirationDate;
@@ -76,42 +109,72 @@ class ProductStatus extends \Google\Collection
   {
     return $this->itemLevelIssues;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdateDate($lastUpdateDate)
   {
     $this->lastUpdateDate = $lastUpdateDate;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateDate()
   {
     return $this->lastUpdateDate;
   }
+  /**
+   * @param string
+   */
   public function setLink($link)
   {
     $this->link = $link;
   }
+  /**
+   * @return string
+   */
   public function getLink()
   {
     return $this->link;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

@@ -19,57 +19,111 @@ namespace Google\Service\Bigquery;
 
 class ScriptStackFrame extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $endColumn;
+  /**
+   * @var int
+   */
   public $endLine;
+  /**
+   * @var string
+   */
   public $procedureId;
+  /**
+   * @var int
+   */
   public $startColumn;
+  /**
+   * @var int
+   */
   public $startLine;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param int
+   */
   public function setEndColumn($endColumn)
   {
     $this->endColumn = $endColumn;
   }
+  /**
+   * @return int
+   */
   public function getEndColumn()
   {
     return $this->endColumn;
   }
+  /**
+   * @param int
+   */
   public function setEndLine($endLine)
   {
     $this->endLine = $endLine;
   }
+  /**
+   * @return int
+   */
   public function getEndLine()
   {
     return $this->endLine;
   }
+  /**
+   * @param string
+   */
   public function setProcedureId($procedureId)
   {
     $this->procedureId = $procedureId;
   }
+  /**
+   * @return string
+   */
   public function getProcedureId()
   {
     return $this->procedureId;
   }
+  /**
+   * @param int
+   */
   public function setStartColumn($startColumn)
   {
     $this->startColumn = $startColumn;
   }
+  /**
+   * @return int
+   */
   public function getStartColumn()
   {
     return $this->startColumn;
   }
+  /**
+   * @param int
+   */
   public function setStartLine($startLine)
   {
     $this->startLine = $startLine;
   }
+  /**
+   * @return int
+   */
   public function getStartLine()
   {
     return $this->startLine;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

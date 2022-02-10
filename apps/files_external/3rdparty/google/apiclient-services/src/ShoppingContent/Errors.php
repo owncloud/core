@@ -20,15 +20,27 @@ namespace Google\Service\ShoppingContent;
 class Errors extends \Google\Collection
 {
   protected $collection_key = 'errors';
+  /**
+   * @var string
+   */
   public $code;
   protected $errorsType = Error::class;
   protected $errorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $message;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
@@ -47,10 +59,16 @@ class Errors extends \Google\Collection
   {
     return $this->errors;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;

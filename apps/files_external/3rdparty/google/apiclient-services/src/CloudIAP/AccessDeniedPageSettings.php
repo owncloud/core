@@ -19,21 +19,39 @@ namespace Google\Service\CloudIAP;
 
 class AccessDeniedPageSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessDeniedPageUri;
+  /**
+   * @var bool
+   */
   public $generateTroubleshootingUri;
 
+  /**
+   * @param string
+   */
   public function setAccessDeniedPageUri($accessDeniedPageUri)
   {
     $this->accessDeniedPageUri = $accessDeniedPageUri;
   }
+  /**
+   * @return string
+   */
   public function getAccessDeniedPageUri()
   {
     return $this->accessDeniedPageUri;
   }
+  /**
+   * @param bool
+   */
   public function setGenerateTroubleshootingUri($generateTroubleshootingUri)
   {
     $this->generateTroubleshootingUri = $generateTroubleshootingUri;
   }
+  /**
+   * @return bool
+   */
   public function getGenerateTroubleshootingUri()
   {
     return $this->generateTroubleshootingUri;

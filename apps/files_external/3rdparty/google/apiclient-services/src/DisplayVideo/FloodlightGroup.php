@@ -21,12 +21,27 @@ class FloodlightGroup extends \Google\Model
 {
   protected $activeViewConfigType = ActiveViewVideoViewabilityMetricConfig::class;
   protected $activeViewConfigDataType = '';
+  /**
+   * @var array[]
+   */
   public $customVariables;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $floodlightGroupId;
   protected $lookbackWindowType = LookbackWindow::class;
   protected $lookbackWindowDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $webTagType;
 
   /**
@@ -43,26 +58,44 @@ class FloodlightGroup extends \Google\Model
   {
     return $this->activeViewConfig;
   }
+  /**
+   * @param array[]
+   */
   public function setCustomVariables($customVariables)
   {
     $this->customVariables = $customVariables;
   }
+  /**
+   * @return array[]
+   */
   public function getCustomVariables()
   {
     return $this->customVariables;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setFloodlightGroupId($floodlightGroupId)
   {
     $this->floodlightGroupId = $floodlightGroupId;
   }
+  /**
+   * @return string
+   */
   public function getFloodlightGroupId()
   {
     return $this->floodlightGroupId;
@@ -81,18 +114,30 @@ class FloodlightGroup extends \Google\Model
   {
     return $this->lookbackWindow;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setWebTagType($webTagType)
   {
     $this->webTagType = $webTagType;
   }
+  /**
+   * @return string
+   */
   public function getWebTagType()
   {
     return $this->webTagType;

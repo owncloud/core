@@ -21,6 +21,9 @@ class GooglePrivacyDlpV2UpdateDeidentifyTemplateRequest extends \Google\Model
 {
   protected $deidentifyTemplateType = GooglePrivacyDlpV2DeidentifyTemplate::class;
   protected $deidentifyTemplateDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
 
   /**
@@ -37,10 +40,16 @@ class GooglePrivacyDlpV2UpdateDeidentifyTemplateRequest extends \Google\Model
   {
     return $this->deidentifyTemplate;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;

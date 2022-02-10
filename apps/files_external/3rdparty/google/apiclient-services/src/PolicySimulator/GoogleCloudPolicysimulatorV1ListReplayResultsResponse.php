@@ -20,14 +20,23 @@ namespace Google\Service\PolicySimulator;
 class GoogleCloudPolicysimulatorV1ListReplayResultsResponse extends \Google\Collection
 {
   protected $collection_key = 'replayResults';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $replayResultsType = GoogleCloudPolicysimulatorV1ReplayResult::class;
   protected $replayResultsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

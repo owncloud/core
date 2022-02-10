@@ -19,30 +19,57 @@ namespace Google\Service\SASPortalTesting;
 
 class SasPortalValidateInstallerRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $encodedSecret;
+  /**
+   * @var string
+   */
   public $installerId;
+  /**
+   * @var string
+   */
   public $secret;
 
+  /**
+   * @param string
+   */
   public function setEncodedSecret($encodedSecret)
   {
     $this->encodedSecret = $encodedSecret;
   }
+  /**
+   * @return string
+   */
   public function getEncodedSecret()
   {
     return $this->encodedSecret;
   }
+  /**
+   * @param string
+   */
   public function setInstallerId($installerId)
   {
     $this->installerId = $installerId;
   }
+  /**
+   * @return string
+   */
   public function getInstallerId()
   {
     return $this->installerId;
   }
+  /**
+   * @param string
+   */
   public function setSecret($secret)
   {
     $this->secret = $secret;
   }
+  /**
+   * @return string
+   */
   public function getSecret()
   {
     return $this->secret;

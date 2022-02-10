@@ -19,12 +19,21 @@ namespace Google\Service\DatabaseMigrationService;
 
 class VpcPeeringConnectivity extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $vpc;
 
+  /**
+   * @param string
+   */
   public function setVpc($vpc)
   {
     $this->vpc = $vpc;
   }
+  /**
+   * @return string
+   */
   public function getVpc()
   {
     return $this->vpc;

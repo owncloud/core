@@ -24,6 +24,9 @@ class AttributeContext extends \Google\Collection
   protected $apiDataType = '';
   protected $destinationType = Peer::class;
   protected $destinationDataType = '';
+  /**
+   * @var array[]
+   */
   public $extensions;
   protected $originType = Peer::class;
   protected $originDataType = '';
@@ -64,10 +67,16 @@ class AttributeContext extends \Google\Collection
   {
     return $this->destination;
   }
+  /**
+   * @param array[]
+   */
   public function setExtensions($extensions)
   {
     $this->extensions = $extensions;
   }
+  /**
+   * @return array[]
+   */
   public function getExtensions()
   {
     return $this->extensions;

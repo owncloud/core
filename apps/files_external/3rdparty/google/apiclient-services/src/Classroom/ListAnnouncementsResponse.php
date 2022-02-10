@@ -22,6 +22,9 @@ class ListAnnouncementsResponse extends \Google\Collection
   protected $collection_key = 'announcements';
   protected $announcementsType = Announcement::class;
   protected $announcementsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListAnnouncementsResponse extends \Google\Collection
   {
     return $this->announcements;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

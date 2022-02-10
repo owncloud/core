@@ -19,16 +19,31 @@ namespace Google\Service\Classroom;
 
 class Guardian extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $guardianId;
   protected $guardianProfileType = UserProfile::class;
   protected $guardianProfileDataType = '';
+  /**
+   * @var string
+   */
   public $invitedEmailAddress;
+  /**
+   * @var string
+   */
   public $studentId;
 
+  /**
+   * @param string
+   */
   public function setGuardianId($guardianId)
   {
     $this->guardianId = $guardianId;
   }
+  /**
+   * @return string
+   */
   public function getGuardianId()
   {
     return $this->guardianId;
@@ -47,18 +62,30 @@ class Guardian extends \Google\Model
   {
     return $this->guardianProfile;
   }
+  /**
+   * @param string
+   */
   public function setInvitedEmailAddress($invitedEmailAddress)
   {
     $this->invitedEmailAddress = $invitedEmailAddress;
   }
+  /**
+   * @return string
+   */
   public function getInvitedEmailAddress()
   {
     return $this->invitedEmailAddress;
   }
+  /**
+   * @param string
+   */
   public function setStudentId($studentId)
   {
     $this->studentId = $studentId;
   }
+  /**
+   * @return string
+   */
   public function getStudentId()
   {
     return $this->studentId;

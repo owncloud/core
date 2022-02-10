@@ -20,30 +20,57 @@ namespace Google\Service\CloudAsset;
 class GoogleCloudAssetV1p7beta1RelatedAsset extends \Google\Collection
 {
   protected $collection_key = 'ancestors';
+  /**
+   * @var string[]
+   */
   public $ancestors;
+  /**
+   * @var string
+   */
   public $asset;
+  /**
+   * @var string
+   */
   public $assetType;
 
+  /**
+   * @param string[]
+   */
   public function setAncestors($ancestors)
   {
     $this->ancestors = $ancestors;
   }
+  /**
+   * @return string[]
+   */
   public function getAncestors()
   {
     return $this->ancestors;
   }
+  /**
+   * @param string
+   */
   public function setAsset($asset)
   {
     $this->asset = $asset;
   }
+  /**
+   * @return string
+   */
   public function getAsset()
   {
     return $this->asset;
   }
+  /**
+   * @param string
+   */
   public function setAssetType($assetType)
   {
     $this->assetType = $assetType;
   }
+  /**
+   * @return string
+   */
   public function getAssetType()
   {
     return $this->assetType;

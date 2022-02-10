@@ -20,48 +20,93 @@ namespace Google\Service\ChromeUXReport;
 class QueryRequest extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var string
+   */
   public $effectiveConnectionType;
+  /**
+   * @var string
+   */
   public $formFactor;
+  /**
+   * @var string[]
+   */
   public $metrics;
+  /**
+   * @var string
+   */
   public $origin;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setEffectiveConnectionType($effectiveConnectionType)
   {
     $this->effectiveConnectionType = $effectiveConnectionType;
   }
+  /**
+   * @return string
+   */
   public function getEffectiveConnectionType()
   {
     return $this->effectiveConnectionType;
   }
+  /**
+   * @param string
+   */
   public function setFormFactor($formFactor)
   {
     $this->formFactor = $formFactor;
   }
+  /**
+   * @return string
+   */
   public function getFormFactor()
   {
     return $this->formFactor;
   }
+  /**
+   * @param string[]
+   */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
+  /**
+   * @return string[]
+   */
   public function getMetrics()
   {
     return $this->metrics;
   }
+  /**
+   * @param string
+   */
   public function setOrigin($origin)
   {
     $this->origin = $origin;
   }
+  /**
+   * @return string
+   */
   public function getOrigin()
   {
     return $this->origin;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

@@ -20,30 +20,57 @@ namespace Google\Service\YouTube;
 class VideoTopicDetails extends \Google\Collection
 {
   protected $collection_key = 'topicIds';
+  /**
+   * @var string[]
+   */
   public $relevantTopicIds;
+  /**
+   * @var string[]
+   */
   public $topicCategories;
+  /**
+   * @var string[]
+   */
   public $topicIds;
 
+  /**
+   * @param string[]
+   */
   public function setRelevantTopicIds($relevantTopicIds)
   {
     $this->relevantTopicIds = $relevantTopicIds;
   }
+  /**
+   * @return string[]
+   */
   public function getRelevantTopicIds()
   {
     return $this->relevantTopicIds;
   }
+  /**
+   * @param string[]
+   */
   public function setTopicCategories($topicCategories)
   {
     $this->topicCategories = $topicCategories;
   }
+  /**
+   * @return string[]
+   */
   public function getTopicCategories()
   {
     return $this->topicCategories;
   }
+  /**
+   * @param string[]
+   */
   public function setTopicIds($topicIds)
   {
     $this->topicIds = $topicIds;
   }
+  /**
+   * @return string[]
+   */
   public function getTopicIds()
   {
     return $this->topicIds;

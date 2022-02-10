@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class Screenshot extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contents;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setContents($contents)
   {
     $this->contents = $contents;
   }
+  /**
+   * @return string
+   */
   public function getContents()
   {
     return $this->contents;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

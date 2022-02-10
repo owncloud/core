@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class ExchangeTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exchange;
 
+  /**
+   * @param string
+   */
   public function setExchange($exchange)
   {
     $this->exchange = $exchange;
   }
+  /**
+   * @return string
+   */
   public function getExchange()
   {
     return $this->exchange;

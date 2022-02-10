@@ -19,21 +19,39 @@ namespace Google\Service\Testing;
 
 class ProvidedSoftwareCatalog extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $androidxOrchestratorVersion;
+  /**
+   * @var string
+   */
   public $orchestratorVersion;
 
+  /**
+   * @param string
+   */
   public function setAndroidxOrchestratorVersion($androidxOrchestratorVersion)
   {
     $this->androidxOrchestratorVersion = $androidxOrchestratorVersion;
   }
+  /**
+   * @return string
+   */
   public function getAndroidxOrchestratorVersion()
   {
     return $this->androidxOrchestratorVersion;
   }
+  /**
+   * @param string
+   */
   public function setOrchestratorVersion($orchestratorVersion)
   {
     $this->orchestratorVersion = $orchestratorVersion;
   }
+  /**
+   * @return string
+   */
   public function getOrchestratorVersion()
   {
     return $this->orchestratorVersion;

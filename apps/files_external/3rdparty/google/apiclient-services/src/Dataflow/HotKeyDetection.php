@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class HotKeyDetection extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hotKeyAge;
+  /**
+   * @var string
+   */
   public $systemName;
+  /**
+   * @var string
+   */
   public $userStepName;
 
+  /**
+   * @param string
+   */
   public function setHotKeyAge($hotKeyAge)
   {
     $this->hotKeyAge = $hotKeyAge;
   }
+  /**
+   * @return string
+   */
   public function getHotKeyAge()
   {
     return $this->hotKeyAge;
   }
+  /**
+   * @param string
+   */
   public function setSystemName($systemName)
   {
     $this->systemName = $systemName;
   }
+  /**
+   * @return string
+   */
   public function getSystemName()
   {
     return $this->systemName;
   }
+  /**
+   * @param string
+   */
   public function setUserStepName($userStepName)
   {
     $this->userStepName = $userStepName;
   }
+  /**
+   * @return string
+   */
   public function getUserStepName()
   {
     return $this->userStepName;

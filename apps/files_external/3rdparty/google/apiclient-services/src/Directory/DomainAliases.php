@@ -22,7 +22,13 @@ class DomainAliases extends \Google\Collection
   protected $collection_key = 'domainAliases';
   protected $domainAliasesType = DomainAlias::class;
   protected $domainAliasesDataType = 'array';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -39,18 +45,30 @@ class DomainAliases extends \Google\Collection
   {
     return $this->domainAliases;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

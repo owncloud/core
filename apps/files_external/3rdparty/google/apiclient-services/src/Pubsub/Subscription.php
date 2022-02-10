@@ -19,29 +19,69 @@ namespace Google\Service\Pubsub;
 
 class Subscription extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $ackDeadlineSeconds;
   protected $deadLetterPolicyType = DeadLetterPolicy::class;
   protected $deadLetterPolicyDataType = '';
+  /**
+   * @var bool
+   */
   public $detached;
+  /**
+   * @var bool
+   */
   public $enableMessageOrdering;
   protected $expirationPolicyType = ExpirationPolicy::class;
   protected $expirationPolicyDataType = '';
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $messageRetentionDuration;
+  /**
+   * @var string
+   */
   public $name;
   protected $pushConfigType = PushConfig::class;
   protected $pushConfigDataType = '';
+  /**
+   * @var bool
+   */
   public $retainAckedMessages;
   protected $retryPolicyType = RetryPolicy::class;
   protected $retryPolicyDataType = '';
+  /**
+   * @var string
+   */
+  public $state;
+  /**
+   * @var string
+   */
   public $topic;
+  /**
+   * @var string
+   */
   public $topicMessageRetentionDuration;
 
+  /**
+   * @param int
+   */
   public function setAckDeadlineSeconds($ackDeadlineSeconds)
   {
     $this->ackDeadlineSeconds = $ackDeadlineSeconds;
   }
+  /**
+   * @return int
+   */
   public function getAckDeadlineSeconds()
   {
     return $this->ackDeadlineSeconds;
@@ -60,18 +100,30 @@ class Subscription extends \Google\Model
   {
     return $this->deadLetterPolicy;
   }
+  /**
+   * @param bool
+   */
   public function setDetached($detached)
   {
     $this->detached = $detached;
   }
+  /**
+   * @return bool
+   */
   public function getDetached()
   {
     return $this->detached;
   }
+  /**
+   * @param bool
+   */
   public function setEnableMessageOrdering($enableMessageOrdering)
   {
     $this->enableMessageOrdering = $enableMessageOrdering;
   }
+  /**
+   * @return bool
+   */
   public function getEnableMessageOrdering()
   {
     return $this->enableMessageOrdering;
@@ -90,34 +142,58 @@ class Subscription extends \Google\Model
   {
     return $this->expirationPolicy;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setMessageRetentionDuration($messageRetentionDuration)
   {
     $this->messageRetentionDuration = $messageRetentionDuration;
   }
+  /**
+   * @return string
+   */
   public function getMessageRetentionDuration()
   {
     return $this->messageRetentionDuration;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -136,10 +212,16 @@ class Subscription extends \Google\Model
   {
     return $this->pushConfig;
   }
+  /**
+   * @param bool
+   */
   public function setRetainAckedMessages($retainAckedMessages)
   {
     $this->retainAckedMessages = $retainAckedMessages;
   }
+  /**
+   * @return bool
+   */
   public function getRetainAckedMessages()
   {
     return $this->retainAckedMessages;
@@ -158,18 +240,44 @@ class Subscription extends \Google\Model
   {
     return $this->retryPolicy;
   }
+  /**
+   * @param string
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
+  }
+  /**
+   * @return string
+   */
+  public function getState()
+  {
+    return $this->state;
+  }
+  /**
+   * @param string
+   */
   public function setTopic($topic)
   {
     $this->topic = $topic;
   }
+  /**
+   * @return string
+   */
   public function getTopic()
   {
     return $this->topic;
   }
+  /**
+   * @param string
+   */
   public function setTopicMessageRetentionDuration($topicMessageRetentionDuration)
   {
     $this->topicMessageRetentionDuration = $topicMessageRetentionDuration;
   }
+  /**
+   * @return string
+   */
   public function getTopicMessageRetentionDuration()
   {
     return $this->topicMessageRetentionDuration;

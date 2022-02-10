@@ -19,48 +19,93 @@ namespace Google\Service\Games;
 
 class PlayerScore extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $formattedScore;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $score;
+  /**
+   * @var string
+   */
   public $scoreTag;
+  /**
+   * @var string
+   */
   public $timeSpan;
 
+  /**
+   * @param string
+   */
   public function setFormattedScore($formattedScore)
   {
     $this->formattedScore = $formattedScore;
   }
+  /**
+   * @return string
+   */
   public function getFormattedScore()
   {
     return $this->formattedScore;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return string
+   */
   public function getScore()
   {
     return $this->score;
   }
+  /**
+   * @param string
+   */
   public function setScoreTag($scoreTag)
   {
     $this->scoreTag = $scoreTag;
   }
+  /**
+   * @return string
+   */
   public function getScoreTag()
   {
     return $this->scoreTag;
   }
+  /**
+   * @param string
+   */
   public function setTimeSpan($timeSpan)
   {
     $this->timeSpan = $timeSpan;
   }
+  /**
+   * @return string
+   */
   public function getTimeSpan()
   {
     return $this->timeSpan;

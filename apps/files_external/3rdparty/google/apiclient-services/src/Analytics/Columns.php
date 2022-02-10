@@ -20,25 +20,49 @@ namespace Google\Service\Analytics;
 class Columns extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var string[]
+   */
   public $attributeNames;
+  /**
+   * @var string
+   */
   public $etag;
   protected $itemsType = Column::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var int
+   */
   public $totalResults;
 
+  /**
+   * @param string[]
+   */
   public function setAttributeNames($attributeNames)
   {
     $this->attributeNames = $attributeNames;
   }
+  /**
+   * @return string[]
+   */
   public function getAttributeNames()
   {
     return $this->attributeNames;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
@@ -57,18 +81,30 @@ class Columns extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param int
+   */
   public function setTotalResults($totalResults)
   {
     $this->totalResults = $totalResults;
   }
+  /**
+   * @return int
+   */
   public function getTotalResults()
   {
     return $this->totalResults;

@@ -20,28 +20,55 @@ namespace Google\Service\AndroidManagement;
 class ManagedProperty extends \Google\Collection
 {
   protected $collection_key = 'nestedProperties';
+  /**
+   * @var array
+   */
   public $defaultValue;
+  /**
+   * @var string
+   */
   public $description;
   protected $entriesType = ManagedPropertyEntry::class;
   protected $entriesDataType = 'array';
+  /**
+   * @var string
+   */
   public $key;
   protected $nestedPropertiesType = ManagedProperty::class;
   protected $nestedPropertiesDataType = 'array';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param array
+   */
   public function setDefaultValue($defaultValue)
   {
     $this->defaultValue = $defaultValue;
   }
+  /**
+   * @return array
+   */
   public function getDefaultValue()
   {
     return $this->defaultValue;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -60,10 +87,16 @@ class ManagedProperty extends \Google\Collection
   {
     return $this->entries;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
@@ -82,18 +115,30 @@ class ManagedProperty extends \Google\Collection
   {
     return $this->nestedProperties;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -20,12 +20,21 @@ namespace Google\Service\Dataproc;
 class RegexValidation extends \Google\Collection
 {
   protected $collection_key = 'regexes';
+  /**
+   * @var string[]
+   */
   public $regexes;
 
+  /**
+   * @param string[]
+   */
   public function setRegexes($regexes)
   {
     $this->regexes = $regexes;
   }
+  /**
+   * @return string[]
+   */
   public function getRegexes()
   {
     return $this->regexes;

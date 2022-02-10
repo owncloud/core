@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class MemoryInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $memoryCapInKibibyte;
+  /**
+   * @var string
+   */
   public $memoryTotalInKibibyte;
 
+  /**
+   * @param string
+   */
   public function setMemoryCapInKibibyte($memoryCapInKibibyte)
   {
     $this->memoryCapInKibibyte = $memoryCapInKibibyte;
   }
+  /**
+   * @return string
+   */
   public function getMemoryCapInKibibyte()
   {
     return $this->memoryCapInKibibyte;
   }
+  /**
+   * @param string
+   */
   public function setMemoryTotalInKibibyte($memoryTotalInKibibyte)
   {
     $this->memoryTotalInKibibyte = $memoryTotalInKibibyte;
   }
+  /**
+   * @return string
+   */
   public function getMemoryTotalInKibibyte()
   {
     return $this->memoryTotalInKibibyte;

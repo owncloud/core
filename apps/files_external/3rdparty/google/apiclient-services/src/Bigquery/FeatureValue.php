@@ -21,6 +21,9 @@ class FeatureValue extends \Google\Model
 {
   protected $categoricalValueType = CategoricalValue::class;
   protected $categoricalValueDataType = '';
+  /**
+   * @var string
+   */
   public $featureColumn;
   public $numericalValue;
 
@@ -38,10 +41,16 @@ class FeatureValue extends \Google\Model
   {
     return $this->categoricalValue;
   }
+  /**
+   * @param string
+   */
   public function setFeatureColumn($featureColumn)
   {
     $this->featureColumn = $featureColumn;
   }
+  /**
+   * @return string
+   */
   public function getFeatureColumn()
   {
     return $this->featureColumn;

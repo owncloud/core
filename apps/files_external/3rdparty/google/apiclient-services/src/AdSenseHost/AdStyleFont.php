@@ -19,21 +19,39 @@ namespace Google\Service\AdSenseHost;
 
 class AdStyleFont extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $family;
+  /**
+   * @var string
+   */
   public $size;
 
+  /**
+   * @param string
+   */
   public function setFamily($family)
   {
     $this->family = $family;
   }
+  /**
+   * @return string
+   */
   public function getFamily()
   {
     return $this->family;
   }
+  /**
+   * @param string
+   */
   public function setSize($size)
   {
     $this->size = $size;
   }
+  /**
+   * @return string
+   */
   public function getSize()
   {
     return $this->size;

@@ -19,30 +19,57 @@ namespace Google\Service\Docs;
 
 class ReplaceNamedRangeContentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $namedRangeId;
+  /**
+   * @var string
+   */
   public $namedRangeName;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setNamedRangeId($namedRangeId)
   {
     $this->namedRangeId = $namedRangeId;
   }
+  /**
+   * @return string
+   */
   public function getNamedRangeId()
   {
     return $this->namedRangeId;
   }
+  /**
+   * @param string
+   */
   public function setNamedRangeName($namedRangeName)
   {
     $this->namedRangeName = $namedRangeName;
   }
+  /**
+   * @return string
+   */
   public function getNamedRangeName()
   {
     return $this->namedRangeName;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

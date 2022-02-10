@@ -19,43 +19,85 @@ namespace Google\Service\Docs;
 
 class ImagePropertiesSuggestionState extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $angleSuggested;
+  /**
+   * @var bool
+   */
   public $brightnessSuggested;
+  /**
+   * @var bool
+   */
   public $contentUriSuggested;
+  /**
+   * @var bool
+   */
   public $contrastSuggested;
   protected $cropPropertiesSuggestionStateType = CropPropertiesSuggestionState::class;
   protected $cropPropertiesSuggestionStateDataType = '';
+  /**
+   * @var bool
+   */
   public $sourceUriSuggested;
+  /**
+   * @var bool
+   */
   public $transparencySuggested;
 
+  /**
+   * @param bool
+   */
   public function setAngleSuggested($angleSuggested)
   {
     $this->angleSuggested = $angleSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getAngleSuggested()
   {
     return $this->angleSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setBrightnessSuggested($brightnessSuggested)
   {
     $this->brightnessSuggested = $brightnessSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getBrightnessSuggested()
   {
     return $this->brightnessSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setContentUriSuggested($contentUriSuggested)
   {
     $this->contentUriSuggested = $contentUriSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getContentUriSuggested()
   {
     return $this->contentUriSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setContrastSuggested($contrastSuggested)
   {
     $this->contrastSuggested = $contrastSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getContrastSuggested()
   {
     return $this->contrastSuggested;
@@ -74,18 +116,30 @@ class ImagePropertiesSuggestionState extends \Google\Model
   {
     return $this->cropPropertiesSuggestionState;
   }
+  /**
+   * @param bool
+   */
   public function setSourceUriSuggested($sourceUriSuggested)
   {
     $this->sourceUriSuggested = $sourceUriSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getSourceUriSuggested()
   {
     return $this->sourceUriSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setTransparencySuggested($transparencySuggested)
   {
     $this->transparencySuggested = $transparencySuggested;
   }
+  /**
+   * @return bool
+   */
   public function getTransparencySuggested()
   {
     return $this->transparencySuggested;

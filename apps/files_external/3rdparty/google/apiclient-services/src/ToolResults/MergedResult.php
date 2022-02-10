@@ -22,6 +22,9 @@ class MergedResult extends \Google\Collection
   protected $collection_key = 'testSuiteOverviews';
   protected $outcomeType = Outcome::class;
   protected $outcomeDataType = '';
+  /**
+   * @var string
+   */
   public $state;
   protected $testSuiteOverviewsType = TestSuiteOverview::class;
   protected $testSuiteOverviewsDataType = 'array';
@@ -40,10 +43,16 @@ class MergedResult extends \Google\Collection
   {
     return $this->outcome;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

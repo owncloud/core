@@ -19,12 +19,21 @@ namespace Google\Service\Digitalassetlinks;
 
 class WebAsset extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $site;
 
+  /**
+   * @param string
+   */
   public function setSite($site)
   {
     $this->site = $site;
   }
+  /**
+   * @return string
+   */
   public function getSite()
   {
     return $this->site;

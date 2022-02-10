@@ -19,21 +19,39 @@ namespace Google\Service\ChromePolicy;
 
 class GoogleChromePolicyV1PolicyTargetKey extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $additionalTargetKeys;
+  /**
+   * @var string
+   */
   public $targetResource;
 
+  /**
+   * @param string[]
+   */
   public function setAdditionalTargetKeys($additionalTargetKeys)
   {
     $this->additionalTargetKeys = $additionalTargetKeys;
   }
+  /**
+   * @return string[]
+   */
   public function getAdditionalTargetKeys()
   {
     return $this->additionalTargetKeys;
   }
+  /**
+   * @param string
+   */
   public function setTargetResource($targetResource)
   {
     $this->targetResource = $targetResource;
   }
+  /**
+   * @return string
+   */
   public function getTargetResource()
   {
     return $this->targetResource;

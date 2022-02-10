@@ -20,19 +20,43 @@ namespace Google\Service\AdSenseHost;
 class Report extends \Google\Collection
 {
   protected $collection_key = 'warnings';
+  /**
+   * @var string[]
+   */
   public $averages;
   protected $headersType = ReportHeaders::class;
   protected $headersDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $rows;
+  /**
+   * @var string
+   */
   public $totalMatchedRows;
+  /**
+   * @var string[]
+   */
   public $totals;
+  /**
+   * @var string[]
+   */
   public $warnings;
 
+  /**
+   * @param string[]
+   */
   public function setAverages($averages)
   {
     $this->averages = $averages;
   }
+  /**
+   * @return string[]
+   */
   public function getAverages()
   {
     return $this->averages;
@@ -51,42 +75,72 @@ class Report extends \Google\Collection
   {
     return $this->headers;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
+  /**
+   * @return string[]
+   */
   public function getRows()
   {
     return $this->rows;
   }
+  /**
+   * @param string
+   */
   public function setTotalMatchedRows($totalMatchedRows)
   {
     $this->totalMatchedRows = $totalMatchedRows;
   }
+  /**
+   * @return string
+   */
   public function getTotalMatchedRows()
   {
     return $this->totalMatchedRows;
   }
+  /**
+   * @param string[]
+   */
   public function setTotals($totals)
   {
     $this->totals = $totals;
   }
+  /**
+   * @return string[]
+   */
   public function getTotals()
   {
     return $this->totals;
   }
+  /**
+   * @param string[]
+   */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
+  /**
+   * @return string[]
+   */
   public function getWarnings()
   {
     return $this->warnings;

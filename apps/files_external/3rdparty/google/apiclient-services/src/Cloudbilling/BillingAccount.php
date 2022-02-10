@@ -19,39 +19,75 @@ namespace Google\Service\Cloudbilling;
 
 class BillingAccount extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $masterBillingAccount;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $open;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setMasterBillingAccount($masterBillingAccount)
   {
     $this->masterBillingAccount = $masterBillingAccount;
   }
+  /**
+   * @return string
+   */
   public function getMasterBillingAccount()
   {
     return $this->masterBillingAccount;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setOpen($open)
   {
     $this->open = $open;
   }
+  /**
+   * @return bool
+   */
   public function getOpen()
   {
     return $this->open;

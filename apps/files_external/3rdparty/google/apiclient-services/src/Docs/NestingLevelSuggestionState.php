@@ -19,68 +19,131 @@ namespace Google\Service\Docs;
 
 class NestingLevelSuggestionState extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $bulletAlignmentSuggested;
+  /**
+   * @var bool
+   */
   public $glyphFormatSuggested;
+  /**
+   * @var bool
+   */
   public $glyphSymbolSuggested;
+  /**
+   * @var bool
+   */
   public $glyphTypeSuggested;
+  /**
+   * @var bool
+   */
   public $indentFirstLineSuggested;
+  /**
+   * @var bool
+   */
   public $indentStartSuggested;
+  /**
+   * @var bool
+   */
   public $startNumberSuggested;
   protected $textStyleSuggestionStateType = TextStyleSuggestionState::class;
   protected $textStyleSuggestionStateDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setBulletAlignmentSuggested($bulletAlignmentSuggested)
   {
     $this->bulletAlignmentSuggested = $bulletAlignmentSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getBulletAlignmentSuggested()
   {
     return $this->bulletAlignmentSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setGlyphFormatSuggested($glyphFormatSuggested)
   {
     $this->glyphFormatSuggested = $glyphFormatSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getGlyphFormatSuggested()
   {
     return $this->glyphFormatSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setGlyphSymbolSuggested($glyphSymbolSuggested)
   {
     $this->glyphSymbolSuggested = $glyphSymbolSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getGlyphSymbolSuggested()
   {
     return $this->glyphSymbolSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setGlyphTypeSuggested($glyphTypeSuggested)
   {
     $this->glyphTypeSuggested = $glyphTypeSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getGlyphTypeSuggested()
   {
     return $this->glyphTypeSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setIndentFirstLineSuggested($indentFirstLineSuggested)
   {
     $this->indentFirstLineSuggested = $indentFirstLineSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getIndentFirstLineSuggested()
   {
     return $this->indentFirstLineSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setIndentStartSuggested($indentStartSuggested)
   {
     $this->indentStartSuggested = $indentStartSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getIndentStartSuggested()
   {
     return $this->indentStartSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setStartNumberSuggested($startNumberSuggested)
   {
     $this->startNumberSuggested = $startNumberSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getStartNumberSuggested()
   {
     return $this->startNumberSuggested;

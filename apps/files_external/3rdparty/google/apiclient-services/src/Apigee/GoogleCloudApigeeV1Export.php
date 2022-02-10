@@ -19,84 +19,165 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1Export extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $created;
+  /**
+   * @var string
+   */
   public $datastoreName;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $error;
+  /**
+   * @var string
+   */
   public $executionTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $self;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $updated;
 
+  /**
+   * @param string
+   */
   public function setCreated($created)
   {
     $this->created = $created;
   }
+  /**
+   * @return string
+   */
   public function getCreated()
   {
     return $this->created;
   }
+  /**
+   * @param string
+   */
   public function setDatastoreName($datastoreName)
   {
     $this->datastoreName = $datastoreName;
   }
+  /**
+   * @return string
+   */
   public function getDatastoreName()
   {
     return $this->datastoreName;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setError($error)
   {
     $this->error = $error;
   }
+  /**
+   * @return string
+   */
   public function getError()
   {
     return $this->error;
   }
+  /**
+   * @param string
+   */
   public function setExecutionTime($executionTime)
   {
     $this->executionTime = $executionTime;
   }
+  /**
+   * @return string
+   */
   public function getExecutionTime()
   {
     return $this->executionTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSelf($self)
   {
     $this->self = $self;
   }
+  /**
+   * @return string
+   */
   public function getSelf()
   {
     return $this->self;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setUpdated($updated)
   {
     $this->updated = $updated;
   }
+  /**
+   * @return string
+   */
   public function getUpdated()
   {
     return $this->updated;

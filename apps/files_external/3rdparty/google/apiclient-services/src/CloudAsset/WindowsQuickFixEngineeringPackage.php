@@ -19,39 +19,75 @@ namespace Google\Service\CloudAsset;
 
 class WindowsQuickFixEngineeringPackage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $caption;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $hotFixId;
+  /**
+   * @var string
+   */
   public $installTime;
 
+  /**
+   * @param string
+   */
   public function setCaption($caption)
   {
     $this->caption = $caption;
   }
+  /**
+   * @return string
+   */
   public function getCaption()
   {
     return $this->caption;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setHotFixId($hotFixId)
   {
     $this->hotFixId = $hotFixId;
   }
+  /**
+   * @return string
+   */
   public function getHotFixId()
   {
     return $this->hotFixId;
   }
+  /**
+   * @param string
+   */
   public function setInstallTime($installTime)
   {
     $this->installTime = $installTime;
   }
+  /**
+   * @return string
+   */
   public function getInstallTime()
   {
     return $this->installTime;

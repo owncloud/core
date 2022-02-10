@@ -22,9 +22,21 @@ class BatchUpdateValuesByDataFilterRequest extends \Google\Collection
   protected $collection_key = 'data';
   protected $dataType = DataFilterValueRange::class;
   protected $dataDataType = 'array';
+  /**
+   * @var bool
+   */
   public $includeValuesInResponse;
+  /**
+   * @var string
+   */
   public $responseDateTimeRenderOption;
+  /**
+   * @var string
+   */
   public $responseValueRenderOption;
+  /**
+   * @var string
+   */
   public $valueInputOption;
 
   /**
@@ -41,34 +53,58 @@ class BatchUpdateValuesByDataFilterRequest extends \Google\Collection
   {
     return $this->data;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeValuesInResponse($includeValuesInResponse)
   {
     $this->includeValuesInResponse = $includeValuesInResponse;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeValuesInResponse()
   {
     return $this->includeValuesInResponse;
   }
+  /**
+   * @param string
+   */
   public function setResponseDateTimeRenderOption($responseDateTimeRenderOption)
   {
     $this->responseDateTimeRenderOption = $responseDateTimeRenderOption;
   }
+  /**
+   * @return string
+   */
   public function getResponseDateTimeRenderOption()
   {
     return $this->responseDateTimeRenderOption;
   }
+  /**
+   * @param string
+   */
   public function setResponseValueRenderOption($responseValueRenderOption)
   {
     $this->responseValueRenderOption = $responseValueRenderOption;
   }
+  /**
+   * @return string
+   */
   public function getResponseValueRenderOption()
   {
     return $this->responseValueRenderOption;
   }
+  /**
+   * @param string
+   */
   public function setValueInputOption($valueInputOption)
   {
     $this->valueInputOption = $valueInputOption;
   }
+  /**
+   * @return string
+   */
   public function getValueInputOption()
   {
     return $this->valueInputOption;

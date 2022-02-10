@@ -44,6 +44,8 @@ class ProjectsLocationsConnectionProfiles extends \Google\Service\Resource
    *
    * @opt_param string connectionProfileId Required. The connection profile
    * identifier.
+   * @opt_param bool force Optional. Create the connection profile without
+   * validating it.
    * @opt_param string requestId Optional. A request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed. The
@@ -95,7 +97,7 @@ class ProjectsLocationsConnectionProfiles extends \Google\Service\Resource
    * request returns children data objects under a parent data object that's
    * optionally supplied in the request. (connectionProfiles.discover)
    *
-   * @param string $parent Required. The parent resource of the ConnectionProfile
+   * @param string $parent Required. The parent resource of the connection profile
    * type. Must be in the format `projects/locations`.
    * @param DiscoverConnectionProfileRequest $postBody
    * @param array $optParams Optional parameters.
@@ -155,6 +157,7 @@ class ProjectsLocationsConnectionProfiles extends \Google\Service\Resource
    * @param ConnectionProfile $postBody
    * @param array $optParams Optional parameters.
    *
+   * @opt_param bool force Optional. Execute the update without validating it.
    * @opt_param string requestId Optional. A request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed. The
@@ -171,8 +174,6 @@ class ProjectsLocationsConnectionProfiles extends \Google\Service\Resource
    * fields specified in the update_mask are relative to the resource, not the
    * full request. A field will be overwritten if it is in the mask. If the user
    * does not provide a mask then all fields will be overwritten.
-   * @opt_param bool validateOnly Optional. Only validate the connection profile,
-   * but do not update any resources. The default is false.
    * @return Operation
    */
   public function patch($name, ConnectionProfile $postBody, $optParams = [])

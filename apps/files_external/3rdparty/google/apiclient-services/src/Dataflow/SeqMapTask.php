@@ -22,11 +22,23 @@ class SeqMapTask extends \Google\Collection
   protected $collection_key = 'outputInfos';
   protected $inputsType = SideInputInfo::class;
   protected $inputsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $outputInfosType = SeqMapTaskOutputInfo::class;
   protected $outputInfosDataType = 'array';
+  /**
+   * @var string
+   */
   public $stageName;
+  /**
+   * @var string
+   */
   public $systemName;
+  /**
+   * @var array[]
+   */
   public $userFn;
 
   /**
@@ -43,10 +55,16 @@ class SeqMapTask extends \Google\Collection
   {
     return $this->inputs;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -65,26 +83,44 @@ class SeqMapTask extends \Google\Collection
   {
     return $this->outputInfos;
   }
+  /**
+   * @param string
+   */
   public function setStageName($stageName)
   {
     $this->stageName = $stageName;
   }
+  /**
+   * @return string
+   */
   public function getStageName()
   {
     return $this->stageName;
   }
+  /**
+   * @param string
+   */
   public function setSystemName($systemName)
   {
     $this->systemName = $systemName;
   }
+  /**
+   * @return string
+   */
   public function getSystemName()
   {
     return $this->systemName;
   }
+  /**
+   * @param array[]
+   */
   public function setUserFn($userFn)
   {
     $this->userFn = $userFn;
   }
+  /**
+   * @return array[]
+   */
   public function getUserFn()
   {
     return $this->userFn;

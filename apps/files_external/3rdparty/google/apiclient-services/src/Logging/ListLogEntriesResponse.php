@@ -22,6 +22,9 @@ class ListLogEntriesResponse extends \Google\Collection
   protected $collection_key = 'entries';
   protected $entriesType = LogEntry::class;
   protected $entriesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListLogEntriesResponse extends \Google\Collection
   {
     return $this->entries;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

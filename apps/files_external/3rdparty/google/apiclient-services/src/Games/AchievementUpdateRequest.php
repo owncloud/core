@@ -19,18 +19,33 @@ namespace Google\Service\Games;
 
 class AchievementUpdateRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $achievementId;
   protected $incrementPayloadType = GamesAchievementIncrement::class;
   protected $incrementPayloadDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $setStepsAtLeastPayloadType = GamesAchievementSetStepsAtLeast::class;
   protected $setStepsAtLeastPayloadDataType = '';
+  /**
+   * @var string
+   */
   public $updateType;
 
+  /**
+   * @param string
+   */
   public function setAchievementId($achievementId)
   {
     $this->achievementId = $achievementId;
   }
+  /**
+   * @return string
+   */
   public function getAchievementId()
   {
     return $this->achievementId;
@@ -49,10 +64,16 @@ class AchievementUpdateRequest extends \Google\Model
   {
     return $this->incrementPayload;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -71,10 +92,16 @@ class AchievementUpdateRequest extends \Google\Model
   {
     return $this->setStepsAtLeastPayload;
   }
+  /**
+   * @param string
+   */
   public function setUpdateType($updateType)
   {
     $this->updateType = $updateType;
   }
+  /**
+   * @return string
+   */
   public function getUpdateType()
   {
     return $this->updateType;

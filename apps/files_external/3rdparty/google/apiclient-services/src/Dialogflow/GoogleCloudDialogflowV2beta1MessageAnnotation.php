@@ -20,14 +20,23 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1MessageAnnotation extends \Google\Collection
 {
   protected $collection_key = 'parts';
+  /**
+   * @var bool
+   */
   public $containEntities;
   protected $partsType = GoogleCloudDialogflowV2beta1AnnotatedMessagePart::class;
   protected $partsDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setContainEntities($containEntities)
   {
     $this->containEntities = $containEntities;
   }
+  /**
+   * @return bool
+   */
   public function getContainEntities()
   {
     return $this->containEntities;

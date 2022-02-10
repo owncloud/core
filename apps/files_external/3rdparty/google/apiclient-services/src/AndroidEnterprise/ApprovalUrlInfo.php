@@ -19,12 +19,21 @@ namespace Google\Service\AndroidEnterprise;
 
 class ApprovalUrlInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $approvalUrl;
 
+  /**
+   * @param string
+   */
   public function setApprovalUrl($approvalUrl)
   {
     $this->approvalUrl = $approvalUrl;
   }
+  /**
+   * @return string
+   */
   public function getApprovalUrl()
   {
     return $this->approvalUrl;

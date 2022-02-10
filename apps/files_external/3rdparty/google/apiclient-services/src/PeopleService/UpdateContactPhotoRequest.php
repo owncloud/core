@@ -20,30 +20,57 @@ namespace Google\Service\PeopleService;
 class UpdateContactPhotoRequest extends \Google\Collection
 {
   protected $collection_key = 'sources';
+  /**
+   * @var string
+   */
   public $personFields;
+  /**
+   * @var string
+   */
   public $photoBytes;
+  /**
+   * @var string[]
+   */
   public $sources;
 
+  /**
+   * @param string
+   */
   public function setPersonFields($personFields)
   {
     $this->personFields = $personFields;
   }
+  /**
+   * @return string
+   */
   public function getPersonFields()
   {
     return $this->personFields;
   }
+  /**
+   * @param string
+   */
   public function setPhotoBytes($photoBytes)
   {
     $this->photoBytes = $photoBytes;
   }
+  /**
+   * @return string
+   */
   public function getPhotoBytes()
   {
     return $this->photoBytes;
   }
+  /**
+   * @param string[]
+   */
   public function setSources($sources)
   {
     $this->sources = $sources;
   }
+  /**
+   * @return string[]
+   */
   public function getSources()
   {
     return $this->sources;

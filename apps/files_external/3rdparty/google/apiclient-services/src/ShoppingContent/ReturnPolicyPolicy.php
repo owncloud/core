@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class ReturnPolicyPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastReturnDate;
+  /**
+   * @var string
+   */
   public $numberOfDays;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setLastReturnDate($lastReturnDate)
   {
     $this->lastReturnDate = $lastReturnDate;
   }
+  /**
+   * @return string
+   */
   public function getLastReturnDate()
   {
     return $this->lastReturnDate;
   }
+  /**
+   * @param string
+   */
   public function setNumberOfDays($numberOfDays)
   {
     $this->numberOfDays = $numberOfDays;
   }
+  /**
+   * @return string
+   */
   public function getNumberOfDays()
   {
     return $this->numberOfDays;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

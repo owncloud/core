@@ -25,9 +25,21 @@ class TranslateDocumentRequest extends \Google\Model
   protected $documentOutputConfigDataType = '';
   protected $glossaryConfigType = TranslateTextGlossaryConfig::class;
   protected $glossaryConfigDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $model;
+  /**
+   * @var string
+   */
   public $sourceLanguageCode;
+  /**
+   * @var string
+   */
   public $targetLanguageCode;
 
   /**
@@ -72,34 +84,58 @@ class TranslateDocumentRequest extends \Google\Model
   {
     return $this->glossaryConfig;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;
   }
+  /**
+   * @param string
+   */
   public function setSourceLanguageCode($sourceLanguageCode)
   {
     $this->sourceLanguageCode = $sourceLanguageCode;
   }
+  /**
+   * @return string
+   */
   public function getSourceLanguageCode()
   {
     return $this->sourceLanguageCode;
   }
+  /**
+   * @param string
+   */
   public function setTargetLanguageCode($targetLanguageCode)
   {
     $this->targetLanguageCode = $targetLanguageCode;
   }
+  /**
+   * @return string
+   */
   public function getTargetLanguageCode()
   {
     return $this->targetLanguageCode;

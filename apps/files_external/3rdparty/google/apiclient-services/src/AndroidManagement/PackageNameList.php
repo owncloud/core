@@ -20,12 +20,21 @@ namespace Google\Service\AndroidManagement;
 class PackageNameList extends \Google\Collection
 {
   protected $collection_key = 'packageNames';
+  /**
+   * @var string[]
+   */
   public $packageNames;
 
+  /**
+   * @param string[]
+   */
   public function setPackageNames($packageNames)
   {
     $this->packageNames = $packageNames;
   }
+  /**
+   * @return string[]
+   */
   public function getPackageNames()
   {
     return $this->packageNames;

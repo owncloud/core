@@ -19,39 +19,75 @@ namespace Google\Service\Sheets;
 
 class Padding extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $bottom;
+  /**
+   * @var int
+   */
   public $left;
+  /**
+   * @var int
+   */
   public $right;
+  /**
+   * @var int
+   */
   public $top;
 
+  /**
+   * @param int
+   */
   public function setBottom($bottom)
   {
     $this->bottom = $bottom;
   }
+  /**
+   * @return int
+   */
   public function getBottom()
   {
     return $this->bottom;
   }
+  /**
+   * @param int
+   */
   public function setLeft($left)
   {
     $this->left = $left;
   }
+  /**
+   * @return int
+   */
   public function getLeft()
   {
     return $this->left;
   }
+  /**
+   * @param int
+   */
   public function setRight($right)
   {
     $this->right = $right;
   }
+  /**
+   * @return int
+   */
   public function getRight()
   {
     return $this->right;
   }
+  /**
+   * @param int
+   */
   public function setTop($top)
   {
     $this->top = $top;
   }
+  /**
+   * @return int
+   */
   public function getTop()
   {
     return $this->top;

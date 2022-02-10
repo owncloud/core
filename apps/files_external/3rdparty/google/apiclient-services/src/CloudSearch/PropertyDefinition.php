@@ -33,12 +33,33 @@ class PropertyDefinition extends \Google\Model
   protected $htmlPropertyOptionsDataType = '';
   protected $integerPropertyOptionsType = IntegerPropertyOptions::class;
   protected $integerPropertyOptionsDataType = '';
+  /**
+   * @var bool
+   */
   public $isFacetable;
+  /**
+   * @var bool
+   */
   public $isRepeatable;
+  /**
+   * @var bool
+   */
   public $isReturnable;
+  /**
+   * @var bool
+   */
   public $isSortable;
+  /**
+   * @var bool
+   */
   public $isSuggestable;
+  /**
+   * @var bool
+   */
   public $isWildcardSearchable;
+  /**
+   * @var string
+   */
   public $name;
   protected $objectPropertyOptionsType = ObjectPropertyOptions::class;
   protected $objectPropertyOptionsDataType = '';
@@ -145,58 +166,100 @@ class PropertyDefinition extends \Google\Model
   {
     return $this->integerPropertyOptions;
   }
+  /**
+   * @param bool
+   */
   public function setIsFacetable($isFacetable)
   {
     $this->isFacetable = $isFacetable;
   }
+  /**
+   * @return bool
+   */
   public function getIsFacetable()
   {
     return $this->isFacetable;
   }
+  /**
+   * @param bool
+   */
   public function setIsRepeatable($isRepeatable)
   {
     $this->isRepeatable = $isRepeatable;
   }
+  /**
+   * @return bool
+   */
   public function getIsRepeatable()
   {
     return $this->isRepeatable;
   }
+  /**
+   * @param bool
+   */
   public function setIsReturnable($isReturnable)
   {
     $this->isReturnable = $isReturnable;
   }
+  /**
+   * @return bool
+   */
   public function getIsReturnable()
   {
     return $this->isReturnable;
   }
+  /**
+   * @param bool
+   */
   public function setIsSortable($isSortable)
   {
     $this->isSortable = $isSortable;
   }
+  /**
+   * @return bool
+   */
   public function getIsSortable()
   {
     return $this->isSortable;
   }
+  /**
+   * @param bool
+   */
   public function setIsSuggestable($isSuggestable)
   {
     $this->isSuggestable = $isSuggestable;
   }
+  /**
+   * @return bool
+   */
   public function getIsSuggestable()
   {
     return $this->isSuggestable;
   }
+  /**
+   * @param bool
+   */
   public function setIsWildcardSearchable($isWildcardSearchable)
   {
     $this->isWildcardSearchable = $isWildcardSearchable;
   }
+  /**
+   * @return bool
+   */
   public function getIsWildcardSearchable()
   {
     return $this->isWildcardSearchable;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

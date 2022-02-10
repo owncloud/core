@@ -19,28 +19,58 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1TagField extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $boolValue;
+  /**
+   * @var string
+   */
   public $displayName;
   public $doubleValue;
   protected $enumValueType = GoogleCloudDatacatalogV1TagFieldEnumValue::class;
   protected $enumValueDataType = '';
+  /**
+   * @var int
+   */
   public $order;
+  /**
+   * @var string
+   */
   public $richtextValue;
+  /**
+   * @var string
+   */
   public $stringValue;
+  /**
+   * @var string
+   */
   public $timestampValue;
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -67,34 +97,58 @@ class GoogleCloudDatacatalogV1TagField extends \Google\Model
   {
     return $this->enumValue;
   }
+  /**
+   * @param int
+   */
   public function setOrder($order)
   {
     $this->order = $order;
   }
+  /**
+   * @return int
+   */
   public function getOrder()
   {
     return $this->order;
   }
+  /**
+   * @param string
+   */
   public function setRichtextValue($richtextValue)
   {
     $this->richtextValue = $richtextValue;
   }
+  /**
+   * @return string
+   */
   public function getRichtextValue()
   {
     return $this->richtextValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;
   }
+  /**
+   * @param string
+   */
   public function setTimestampValue($timestampValue)
   {
     $this->timestampValue = $timestampValue;
   }
+  /**
+   * @return string
+   */
   public function getTimestampValue()
   {
     return $this->timestampValue;

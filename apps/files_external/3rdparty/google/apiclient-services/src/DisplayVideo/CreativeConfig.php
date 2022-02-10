@@ -19,16 +19,25 @@ namespace Google\Service\DisplayVideo;
 
 class CreativeConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creativeType;
   protected $displayCreativeConfigType = InventorySourceDisplayCreativeConfig::class;
   protected $displayCreativeConfigDataType = '';
   protected $videoCreativeConfigType = InventorySourceVideoCreativeConfig::class;
   protected $videoCreativeConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreativeType($creativeType)
   {
     $this->creativeType = $creativeType;
   }
+  /**
+   * @return string
+   */
   public function getCreativeType()
   {
     return $this->creativeType;

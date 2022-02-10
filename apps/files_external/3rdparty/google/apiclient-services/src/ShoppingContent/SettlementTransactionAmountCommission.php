@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class SettlementTransactionAmountCommission extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $category;
+  /**
+   * @var string
+   */
   public $rate;
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
   }
+  /**
+   * @param string
+   */
   public function setRate($rate)
   {
     $this->rate = $rate;
   }
+  /**
+   * @return string
+   */
   public function getRate()
   {
     return $this->rate;

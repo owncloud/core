@@ -21,9 +21,21 @@ class PasteDataRequest extends \Google\Model
 {
   protected $coordinateType = GridCoordinate::class;
   protected $coordinateDataType = '';
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $delimiter;
+  /**
+   * @var bool
+   */
   public $html;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -40,34 +52,58 @@ class PasteDataRequest extends \Google\Model
   {
     return $this->coordinate;
   }
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setDelimiter($delimiter)
   {
     $this->delimiter = $delimiter;
   }
+  /**
+   * @return string
+   */
   public function getDelimiter()
   {
     return $this->delimiter;
   }
+  /**
+   * @param bool
+   */
   public function setHtml($html)
   {
     $this->html = $html;
   }
+  /**
+   * @return bool
+   */
   public function getHtml()
   {
     return $this->html;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

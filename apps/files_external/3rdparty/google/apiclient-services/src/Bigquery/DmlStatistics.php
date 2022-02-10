@@ -19,30 +19,57 @@ namespace Google\Service\Bigquery;
 
 class DmlStatistics extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deletedRowCount;
+  /**
+   * @var string
+   */
   public $insertedRowCount;
+  /**
+   * @var string
+   */
   public $updatedRowCount;
 
+  /**
+   * @param string
+   */
   public function setDeletedRowCount($deletedRowCount)
   {
     $this->deletedRowCount = $deletedRowCount;
   }
+  /**
+   * @return string
+   */
   public function getDeletedRowCount()
   {
     return $this->deletedRowCount;
   }
+  /**
+   * @param string
+   */
   public function setInsertedRowCount($insertedRowCount)
   {
     $this->insertedRowCount = $insertedRowCount;
   }
+  /**
+   * @return string
+   */
   public function getInsertedRowCount()
   {
     return $this->insertedRowCount;
   }
+  /**
+   * @param string
+   */
   public function setUpdatedRowCount($updatedRowCount)
   {
     $this->updatedRowCount = $updatedRowCount;
   }
+  /**
+   * @return string
+   */
   public function getUpdatedRowCount()
   {
     return $this->updatedRowCount;

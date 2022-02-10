@@ -19,25 +19,55 @@ namespace Google\Service\Drive;
 
 class Change extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $changeType;
   protected $driveType = Drive::class;
   protected $driveDataType = '';
+  /**
+   * @var string
+   */
   public $driveId;
   protected $fileType = DriveFile::class;
   protected $fileDataType = '';
+  /**
+   * @var string
+   */
   public $fileId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $removed;
   protected $teamDriveType = TeamDrive::class;
   protected $teamDriveDataType = '';
+  /**
+   * @var string
+   */
   public $teamDriveId;
+  /**
+   * @var string
+   */
   public $time;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setChangeType($changeType)
   {
     $this->changeType = $changeType;
   }
+  /**
+   * @return string
+   */
   public function getChangeType()
   {
     return $this->changeType;
@@ -56,10 +86,16 @@ class Change extends \Google\Model
   {
     return $this->drive;
   }
+  /**
+   * @param string
+   */
   public function setDriveId($driveId)
   {
     $this->driveId = $driveId;
   }
+  /**
+   * @return string
+   */
   public function getDriveId()
   {
     return $this->driveId;
@@ -78,26 +114,44 @@ class Change extends \Google\Model
   {
     return $this->file;
   }
+  /**
+   * @param string
+   */
   public function setFileId($fileId)
   {
     $this->fileId = $fileId;
   }
+  /**
+   * @return string
+   */
   public function getFileId()
   {
     return $this->fileId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setRemoved($removed)
   {
     $this->removed = $removed;
   }
+  /**
+   * @return bool
+   */
   public function getRemoved()
   {
     return $this->removed;
@@ -116,26 +170,44 @@ class Change extends \Google\Model
   {
     return $this->teamDrive;
   }
+  /**
+   * @param string
+   */
   public function setTeamDriveId($teamDriveId)
   {
     $this->teamDriveId = $teamDriveId;
   }
+  /**
+   * @return string
+   */
   public function getTeamDriveId()
   {
     return $this->teamDriveId;
   }
+  /**
+   * @param string
+   */
   public function setTime($time)
   {
     $this->time = $time;
   }
+  /**
+   * @return string
+   */
   public function getTime()
   {
     return $this->time;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

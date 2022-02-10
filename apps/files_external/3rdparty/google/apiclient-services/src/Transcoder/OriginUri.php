@@ -19,21 +19,39 @@ namespace Google\Service\Transcoder;
 
 class OriginUri extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dash;
+  /**
+   * @var string
+   */
   public $hls;
 
+  /**
+   * @param string
+   */
   public function setDash($dash)
   {
     $this->dash = $dash;
   }
+  /**
+   * @return string
+   */
   public function getDash()
   {
     return $this->dash;
   }
+  /**
+   * @param string
+   */
   public function setHls($hls)
   {
     $this->hls = $hls;
   }
+  /**
+   * @return string
+   */
   public function getHls()
   {
     return $this->hls;

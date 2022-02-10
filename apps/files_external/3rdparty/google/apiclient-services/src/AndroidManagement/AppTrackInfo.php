@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class AppTrackInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $trackAlias;
+  /**
+   * @var string
+   */
   public $trackId;
 
+  /**
+   * @param string
+   */
   public function setTrackAlias($trackAlias)
   {
     $this->trackAlias = $trackAlias;
   }
+  /**
+   * @return string
+   */
   public function getTrackAlias()
   {
     return $this->trackAlias;
   }
+  /**
+   * @param string
+   */
   public function setTrackId($trackId)
   {
     $this->trackId = $trackId;
   }
+  /**
+   * @return string
+   */
   public function getTrackId()
   {
     return $this->trackId;

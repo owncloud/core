@@ -20,21 +20,39 @@ namespace Google\Service\ServiceNetworking;
 class LoggingDestination extends \Google\Collection
 {
   protected $collection_key = 'logs';
+  /**
+   * @var string[]
+   */
   public $logs;
+  /**
+   * @var string
+   */
   public $monitoredResource;
 
+  /**
+   * @param string[]
+   */
   public function setLogs($logs)
   {
     $this->logs = $logs;
   }
+  /**
+   * @return string[]
+   */
   public function getLogs()
   {
     return $this->logs;
   }
+  /**
+   * @param string
+   */
   public function setMonitoredResource($monitoredResource)
   {
     $this->monitoredResource = $monitoredResource;
   }
+  /**
+   * @return string
+   */
   public function getMonitoredResource()
   {
     return $this->monitoredResource;

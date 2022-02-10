@@ -19,21 +19,39 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1DocumentTextAnchorTextSegment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endIndex;
+  /**
+   * @var string
+   */
   public $startIndex;
 
+  /**
+   * @param string
+   */
   public function setEndIndex($endIndex)
   {
     $this->endIndex = $endIndex;
   }
+  /**
+   * @return string
+   */
   public function getEndIndex()
   {
     return $this->endIndex;
   }
+  /**
+   * @param string
+   */
   public function setStartIndex($startIndex)
   {
     $this->startIndex = $startIndex;
   }
+  /**
+   * @return string
+   */
   public function getStartIndex()
   {
     return $this->startIndex;

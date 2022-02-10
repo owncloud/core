@@ -19,48 +19,93 @@ namespace Google\Service\Reports;
 
 class UsageReportEntity extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customerId;
+  /**
+   * @var string
+   */
   public $entityId;
+  /**
+   * @var string
+   */
   public $profileId;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $userEmail;
 
+  /**
+   * @param string
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerId()
   {
     return $this->customerId;
   }
+  /**
+   * @param string
+   */
   public function setEntityId($entityId)
   {
     $this->entityId = $entityId;
   }
+  /**
+   * @return string
+   */
   public function getEntityId()
   {
     return $this->entityId;
   }
+  /**
+   * @param string
+   */
   public function setProfileId($profileId)
   {
     $this->profileId = $profileId;
   }
+  /**
+   * @return string
+   */
   public function getProfileId()
   {
     return $this->profileId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUserEmail($userEmail)
   {
     $this->userEmail = $userEmail;
   }
+  /**
+   * @return string
+   */
   public function getUserEmail()
   {
     return $this->userEmail;

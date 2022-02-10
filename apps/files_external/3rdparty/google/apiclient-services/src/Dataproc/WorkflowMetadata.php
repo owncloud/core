@@ -19,36 +19,81 @@ namespace Google\Service\Dataproc;
 
 class WorkflowMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterName;
+  /**
+   * @var string
+   */
   public $clusterUuid;
   protected $createClusterType = ClusterOperation::class;
   protected $createClusterDataType = '';
+  /**
+   * @var string
+   */
   public $dagEndTime;
+  /**
+   * @var string
+   */
   public $dagStartTime;
+  /**
+   * @var string
+   */
   public $dagTimeout;
   protected $deleteClusterType = ClusterOperation::class;
   protected $deleteClusterDataType = '';
+  /**
+   * @var string
+   */
   public $endTime;
   protected $graphType = WorkflowGraph::class;
   protected $graphDataType = '';
+  /**
+   * @var string[]
+   */
   public $parameters;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $template;
+  /**
+   * @var int
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setClusterName($clusterName)
   {
     $this->clusterName = $clusterName;
   }
+  /**
+   * @return string
+   */
   public function getClusterName()
   {
     return $this->clusterName;
   }
+  /**
+   * @param string
+   */
   public function setClusterUuid($clusterUuid)
   {
     $this->clusterUuid = $clusterUuid;
   }
+  /**
+   * @return string
+   */
   public function getClusterUuid()
   {
     return $this->clusterUuid;
@@ -67,26 +112,44 @@ class WorkflowMetadata extends \Google\Model
   {
     return $this->createCluster;
   }
+  /**
+   * @param string
+   */
   public function setDagEndTime($dagEndTime)
   {
     $this->dagEndTime = $dagEndTime;
   }
+  /**
+   * @return string
+   */
   public function getDagEndTime()
   {
     return $this->dagEndTime;
   }
+  /**
+   * @param string
+   */
   public function setDagStartTime($dagStartTime)
   {
     $this->dagStartTime = $dagStartTime;
   }
+  /**
+   * @return string
+   */
   public function getDagStartTime()
   {
     return $this->dagStartTime;
   }
+  /**
+   * @param string
+   */
   public function setDagTimeout($dagTimeout)
   {
     $this->dagTimeout = $dagTimeout;
   }
+  /**
+   * @return string
+   */
   public function getDagTimeout()
   {
     return $this->dagTimeout;
@@ -105,10 +168,16 @@ class WorkflowMetadata extends \Google\Model
   {
     return $this->deleteCluster;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -127,42 +196,72 @@ class WorkflowMetadata extends \Google\Model
   {
     return $this->graph;
   }
+  /**
+   * @param string[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return string[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setTemplate($template)
   {
     $this->template = $template;
   }
+  /**
+   * @return string
+   */
   public function getTemplate()
   {
     return $this->template;
   }
+  /**
+   * @param int
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return int
+   */
   public function getVersion()
   {
     return $this->version;

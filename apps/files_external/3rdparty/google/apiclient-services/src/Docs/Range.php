@@ -19,30 +19,57 @@ namespace Google\Service\Docs;
 
 class Range extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $endIndex;
+  /**
+   * @var string
+   */
   public $segmentId;
+  /**
+   * @var int
+   */
   public $startIndex;
 
+  /**
+   * @param int
+   */
   public function setEndIndex($endIndex)
   {
     $this->endIndex = $endIndex;
   }
+  /**
+   * @return int
+   */
   public function getEndIndex()
   {
     return $this->endIndex;
   }
+  /**
+   * @param string
+   */
   public function setSegmentId($segmentId)
   {
     $this->segmentId = $segmentId;
   }
+  /**
+   * @return string
+   */
   public function getSegmentId()
   {
     return $this->segmentId;
   }
+  /**
+   * @param int
+   */
   public function setStartIndex($startIndex)
   {
     $this->startIndex = $startIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartIndex()
   {
     return $this->startIndex;

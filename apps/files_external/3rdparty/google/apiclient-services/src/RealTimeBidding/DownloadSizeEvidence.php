@@ -22,6 +22,9 @@ class DownloadSizeEvidence extends \Google\Collection
   protected $collection_key = 'topUrlDownloadSizeBreakdowns';
   protected $topUrlDownloadSizeBreakdownsType = UrlDownloadSize::class;
   protected $topUrlDownloadSizeBreakdownsDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalDownloadSizeKb;
 
   /**
@@ -38,10 +41,16 @@ class DownloadSizeEvidence extends \Google\Collection
   {
     return $this->topUrlDownloadSizeBreakdowns;
   }
+  /**
+   * @param int
+   */
   public function setTotalDownloadSizeKb($totalDownloadSizeKb)
   {
     $this->totalDownloadSizeKb = $totalDownloadSizeKb;
   }
+  /**
+   * @return int
+   */
   public function getTotalDownloadSizeKb()
   {
     return $this->totalDownloadSizeKb;

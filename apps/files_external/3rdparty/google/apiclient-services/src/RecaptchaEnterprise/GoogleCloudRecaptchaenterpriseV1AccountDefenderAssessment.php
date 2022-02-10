@@ -20,15 +20,42 @@ namespace Google\Service\RecaptchaEnterprise;
 class GoogleCloudRecaptchaenterpriseV1AccountDefenderAssessment extends \Google\Collection
 {
   protected $collection_key = 'labels';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
+  public $recommendedAction;
 
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
+  }
+  /**
+   * @param string
+   */
+  public function setRecommendedAction($recommendedAction)
+  {
+    $this->recommendedAction = $recommendedAction;
+  }
+  /**
+   * @return string
+   */
+  public function getRecommendedAction()
+  {
+    return $this->recommendedAction;
   }
 }
 

@@ -19,21 +19,39 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class RelativeDateRange extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $durationDays;
+  /**
+   * @var int
+   */
   public $offsetDays;
 
+  /**
+   * @param int
+   */
   public function setDurationDays($durationDays)
   {
     $this->durationDays = $durationDays;
   }
+  /**
+   * @return int
+   */
   public function getDurationDays()
   {
     return $this->durationDays;
   }
+  /**
+   * @param int
+   */
   public function setOffsetDays($offsetDays)
   {
     $this->offsetDays = $offsetDays;
   }
+  /**
+   * @return int
+   */
   public function getOffsetDays()
   {
     return $this->offsetDays;

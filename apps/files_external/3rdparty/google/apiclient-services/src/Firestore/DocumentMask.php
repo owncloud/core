@@ -20,12 +20,21 @@ namespace Google\Service\Firestore;
 class DocumentMask extends \Google\Collection
 {
   protected $collection_key = 'fieldPaths';
+  /**
+   * @var string[]
+   */
   public $fieldPaths;
 
+  /**
+   * @param string[]
+   */
   public function setFieldPaths($fieldPaths)
   {
     $this->fieldPaths = $fieldPaths;
   }
+  /**
+   * @return string[]
+   */
   public function getFieldPaths()
   {
     return $this->fieldPaths;

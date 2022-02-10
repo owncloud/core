@@ -19,21 +19,39 @@ namespace Google\Service\AndroidPublisher;
 
 class Price extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currency;
+  /**
+   * @var string
+   */
   public $priceMicros;
 
+  /**
+   * @param string
+   */
   public function setCurrency($currency)
   {
     $this->currency = $currency;
   }
+  /**
+   * @return string
+   */
   public function getCurrency()
   {
     return $this->currency;
   }
+  /**
+   * @param string
+   */
   public function setPriceMicros($priceMicros)
   {
     $this->priceMicros = $priceMicros;
   }
+  /**
+   * @return string
+   */
   public function getPriceMicros()
   {
     return $this->priceMicros;

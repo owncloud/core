@@ -25,6 +25,9 @@ class SourceContext extends \Google\Model
   protected $gerritDataType = '';
   protected $gitType = GitSourceContext::class;
   protected $gitDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
 
   /**
@@ -69,10 +72,16 @@ class SourceContext extends \Google\Model
   {
     return $this->git;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

@@ -19,12 +19,21 @@ namespace Google\Service\IAMCredentials;
 
 class GenerateIdTokenResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $token;
 
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;

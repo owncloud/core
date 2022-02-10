@@ -19,21 +19,39 @@ namespace Google\Service\CloudTrace;
 
 class TruncatableString extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $truncatedByteCount;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param int
+   */
   public function setTruncatedByteCount($truncatedByteCount)
   {
     $this->truncatedByteCount = $truncatedByteCount;
   }
+  /**
+   * @return int
+   */
   public function getTruncatedByteCount()
   {
     return $this->truncatedByteCount;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

@@ -20,12 +20,21 @@ namespace Google\Service\Firestore;
 class DocumentsTarget extends \Google\Collection
 {
   protected $collection_key = 'documents';
+  /**
+   * @var string[]
+   */
   public $documents;
 
+  /**
+   * @param string[]
+   */
   public function setDocuments($documents)
   {
     $this->documents = $documents;
   }
+  /**
+   * @return string[]
+   */
   public function getDocuments()
   {
     return $this->documents;

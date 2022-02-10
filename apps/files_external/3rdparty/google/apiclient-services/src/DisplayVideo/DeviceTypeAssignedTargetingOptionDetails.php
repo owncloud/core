@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class DeviceTypeAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceType;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setDeviceType($deviceType)
   {
     $this->deviceType = $deviceType;
   }
+  /**
+   * @return string
+   */
   public function getDeviceType()
   {
     return $this->deviceType;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

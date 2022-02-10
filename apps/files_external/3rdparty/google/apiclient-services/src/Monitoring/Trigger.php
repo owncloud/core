@@ -19,13 +19,22 @@ namespace Google\Service\Monitoring;
 
 class Trigger extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $count;
   public $percent;
 
+  /**
+   * @param int
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return int
+   */
   public function getCount()
   {
     return $this->count;

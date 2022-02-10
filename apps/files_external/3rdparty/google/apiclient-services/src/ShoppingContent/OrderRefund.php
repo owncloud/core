@@ -19,17 +19,35 @@ namespace Google\Service\ShoppingContent;
 
 class OrderRefund extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $actor;
   protected $amountType = Price::class;
   protected $amountDataType = '';
+  /**
+   * @var string
+   */
   public $creationDate;
+  /**
+   * @var string
+   */
   public $reason;
+  /**
+   * @var string
+   */
   public $reasonText;
 
+  /**
+   * @param string
+   */
   public function setActor($actor)
   {
     $this->actor = $actor;
   }
+  /**
+   * @return string
+   */
   public function getActor()
   {
     return $this->actor;
@@ -48,26 +66,44 @@ class OrderRefund extends \Google\Model
   {
     return $this->amount;
   }
+  /**
+   * @param string
+   */
   public function setCreationDate($creationDate)
   {
     $this->creationDate = $creationDate;
   }
+  /**
+   * @return string
+   */
   public function getCreationDate()
   {
     return $this->creationDate;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
   }
+  /**
+   * @param string
+   */
   public function setReasonText($reasonText)
   {
     $this->reasonText = $reasonText;
   }
+  /**
+   * @return string
+   */
   public function getReasonText()
   {
     return $this->reasonText;

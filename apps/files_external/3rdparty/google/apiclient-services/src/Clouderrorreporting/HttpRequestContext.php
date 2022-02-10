@@ -19,57 +19,111 @@ namespace Google\Service\Clouderrorreporting;
 
 class HttpRequestContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $method;
+  /**
+   * @var string
+   */
   public $referrer;
+  /**
+   * @var string
+   */
   public $remoteIp;
+  /**
+   * @var int
+   */
   public $responseStatusCode;
+  /**
+   * @var string
+   */
   public $url;
+  /**
+   * @var string
+   */
   public $userAgent;
 
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;
   }
+  /**
+   * @param string
+   */
   public function setReferrer($referrer)
   {
     $this->referrer = $referrer;
   }
+  /**
+   * @return string
+   */
   public function getReferrer()
   {
     return $this->referrer;
   }
+  /**
+   * @param string
+   */
   public function setRemoteIp($remoteIp)
   {
     $this->remoteIp = $remoteIp;
   }
+  /**
+   * @return string
+   */
   public function getRemoteIp()
   {
     return $this->remoteIp;
   }
+  /**
+   * @param int
+   */
   public function setResponseStatusCode($responseStatusCode)
   {
     $this->responseStatusCode = $responseStatusCode;
   }
+  /**
+   * @return int
+   */
   public function getResponseStatusCode()
   {
     return $this->responseStatusCode;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;
   }
+  /**
+   * @param string
+   */
   public function setUserAgent($userAgent)
   {
     $this->userAgent = $userAgent;
   }
+  /**
+   * @return string
+   */
   public function getUserAgent()
   {
     return $this->userAgent;

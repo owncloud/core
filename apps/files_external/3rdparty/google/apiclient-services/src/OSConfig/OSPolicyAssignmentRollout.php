@@ -21,6 +21,9 @@ class OSPolicyAssignmentRollout extends \Google\Model
 {
   protected $disruptionBudgetType = FixedOrPercent::class;
   protected $disruptionBudgetDataType = '';
+  /**
+   * @var string
+   */
   public $minWaitDuration;
 
   /**
@@ -37,10 +40,16 @@ class OSPolicyAssignmentRollout extends \Google\Model
   {
     return $this->disruptionBudget;
   }
+  /**
+   * @param string
+   */
   public function setMinWaitDuration($minWaitDuration)
   {
     $this->minWaitDuration = $minWaitDuration;
   }
+  /**
+   * @return string
+   */
   public function getMinWaitDuration()
   {
     return $this->minWaitDuration;

@@ -19,29 +19,68 @@ namespace Google\Service\Localservices;
 
 class GoogleAdsHomeservicesLocalservicesV1AccountReport extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
   protected $aggregatorInfoType = GoogleAdsHomeservicesLocalservicesV1AggregatorInfo::class;
   protected $aggregatorInfoDataType = '';
   public $averageFiveStarRating;
   public $averageWeeklyBudget;
+  /**
+   * @var string
+   */
   public $businessName;
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var string
+   */
   public $currentPeriodChargedLeads;
+  /**
+   * @var string
+   */
   public $currentPeriodConnectedPhoneCalls;
+  /**
+   * @var string
+   */
   public $currentPeriodPhoneCalls;
   public $currentPeriodTotalCost;
+  /**
+   * @var string
+   */
   public $impressionsLastTwoDays;
   public $phoneLeadResponsiveness;
+  /**
+   * @var string
+   */
   public $previousPeriodChargedLeads;
+  /**
+   * @var string
+   */
   public $previousPeriodConnectedPhoneCalls;
+  /**
+   * @var string
+   */
   public $previousPeriodPhoneCalls;
   public $previousPeriodTotalCost;
+  /**
+   * @var int
+   */
   public $totalReview;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -76,42 +115,72 @@ class GoogleAdsHomeservicesLocalservicesV1AccountReport extends \Google\Model
   {
     return $this->averageWeeklyBudget;
   }
+  /**
+   * @param string
+   */
   public function setBusinessName($businessName)
   {
     $this->businessName = $businessName;
   }
+  /**
+   * @return string
+   */
   public function getBusinessName()
   {
     return $this->businessName;
   }
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param string
+   */
   public function setCurrentPeriodChargedLeads($currentPeriodChargedLeads)
   {
     $this->currentPeriodChargedLeads = $currentPeriodChargedLeads;
   }
+  /**
+   * @return string
+   */
   public function getCurrentPeriodChargedLeads()
   {
     return $this->currentPeriodChargedLeads;
   }
+  /**
+   * @param string
+   */
   public function setCurrentPeriodConnectedPhoneCalls($currentPeriodConnectedPhoneCalls)
   {
     $this->currentPeriodConnectedPhoneCalls = $currentPeriodConnectedPhoneCalls;
   }
+  /**
+   * @return string
+   */
   public function getCurrentPeriodConnectedPhoneCalls()
   {
     return $this->currentPeriodConnectedPhoneCalls;
   }
+  /**
+   * @param string
+   */
   public function setCurrentPeriodPhoneCalls($currentPeriodPhoneCalls)
   {
     $this->currentPeriodPhoneCalls = $currentPeriodPhoneCalls;
   }
+  /**
+   * @return string
+   */
   public function getCurrentPeriodPhoneCalls()
   {
     return $this->currentPeriodPhoneCalls;
@@ -124,10 +193,16 @@ class GoogleAdsHomeservicesLocalservicesV1AccountReport extends \Google\Model
   {
     return $this->currentPeriodTotalCost;
   }
+  /**
+   * @param string
+   */
   public function setImpressionsLastTwoDays($impressionsLastTwoDays)
   {
     $this->impressionsLastTwoDays = $impressionsLastTwoDays;
   }
+  /**
+   * @return string
+   */
   public function getImpressionsLastTwoDays()
   {
     return $this->impressionsLastTwoDays;
@@ -140,26 +215,44 @@ class GoogleAdsHomeservicesLocalservicesV1AccountReport extends \Google\Model
   {
     return $this->phoneLeadResponsiveness;
   }
+  /**
+   * @param string
+   */
   public function setPreviousPeriodChargedLeads($previousPeriodChargedLeads)
   {
     $this->previousPeriodChargedLeads = $previousPeriodChargedLeads;
   }
+  /**
+   * @return string
+   */
   public function getPreviousPeriodChargedLeads()
   {
     return $this->previousPeriodChargedLeads;
   }
+  /**
+   * @param string
+   */
   public function setPreviousPeriodConnectedPhoneCalls($previousPeriodConnectedPhoneCalls)
   {
     $this->previousPeriodConnectedPhoneCalls = $previousPeriodConnectedPhoneCalls;
   }
+  /**
+   * @return string
+   */
   public function getPreviousPeriodConnectedPhoneCalls()
   {
     return $this->previousPeriodConnectedPhoneCalls;
   }
+  /**
+   * @param string
+   */
   public function setPreviousPeriodPhoneCalls($previousPeriodPhoneCalls)
   {
     $this->previousPeriodPhoneCalls = $previousPeriodPhoneCalls;
   }
+  /**
+   * @return string
+   */
   public function getPreviousPeriodPhoneCalls()
   {
     return $this->previousPeriodPhoneCalls;
@@ -172,10 +265,16 @@ class GoogleAdsHomeservicesLocalservicesV1AccountReport extends \Google\Model
   {
     return $this->previousPeriodTotalCost;
   }
+  /**
+   * @param int
+   */
   public function setTotalReview($totalReview)
   {
     $this->totalReview = $totalReview;
   }
+  /**
+   * @return int
+   */
   public function getTotalReview()
   {
     return $this->totalReview;

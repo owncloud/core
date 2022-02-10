@@ -20,21 +20,39 @@ namespace Google\Service\AccessContextManager;
 class VpcAccessibleServices extends \Google\Collection
 {
   protected $collection_key = 'allowedServices';
+  /**
+   * @var string[]
+   */
   public $allowedServices;
+  /**
+   * @var bool
+   */
   public $enableRestriction;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedServices($allowedServices)
   {
     $this->allowedServices = $allowedServices;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedServices()
   {
     return $this->allowedServices;
   }
+  /**
+   * @param bool
+   */
   public function setEnableRestriction($enableRestriction)
   {
     $this->enableRestriction = $enableRestriction;
   }
+  /**
+   * @return bool
+   */
   public function getEnableRestriction()
   {
     return $this->enableRestriction;

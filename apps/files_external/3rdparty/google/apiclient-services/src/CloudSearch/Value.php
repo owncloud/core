@@ -19,18 +19,36 @@ namespace Google\Service\CloudSearch;
 
 class Value extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $booleanValue;
   protected $dateValueType = Date::class;
   protected $dateValueDataType = '';
   public $doubleValue;
+  /**
+   * @var string
+   */
   public $integerValue;
+  /**
+   * @var string
+   */
   public $stringValue;
+  /**
+   * @var string
+   */
   public $timestampValue;
 
+  /**
+   * @param bool
+   */
   public function setBooleanValue($booleanValue)
   {
     $this->booleanValue = $booleanValue;
   }
+  /**
+   * @return bool
+   */
   public function getBooleanValue()
   {
     return $this->booleanValue;
@@ -57,26 +75,44 @@ class Value extends \Google\Model
   {
     return $this->doubleValue;
   }
+  /**
+   * @param string
+   */
   public function setIntegerValue($integerValue)
   {
     $this->integerValue = $integerValue;
   }
+  /**
+   * @return string
+   */
   public function getIntegerValue()
   {
     return $this->integerValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;
   }
+  /**
+   * @param string
+   */
   public function setTimestampValue($timestampValue)
   {
     $this->timestampValue = $timestampValue;
   }
+  /**
+   * @return string
+   */
   public function getTimestampValue()
   {
     return $this->timestampValue;

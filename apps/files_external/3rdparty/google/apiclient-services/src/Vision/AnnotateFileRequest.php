@@ -26,6 +26,9 @@ class AnnotateFileRequest extends \Google\Collection
   protected $imageContextDataType = '';
   protected $inputConfigType = InputConfig::class;
   protected $inputConfigDataType = '';
+  /**
+   * @var int[]
+   */
   public $pages;
 
   /**
@@ -70,10 +73,16 @@ class AnnotateFileRequest extends \Google\Collection
   {
     return $this->inputConfig;
   }
+  /**
+   * @param int[]
+   */
   public function setPages($pages)
   {
     $this->pages = $pages;
   }
+  /**
+   * @return int[]
+   */
   public function getPages()
   {
     return $this->pages;

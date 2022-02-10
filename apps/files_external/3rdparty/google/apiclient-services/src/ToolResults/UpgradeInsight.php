@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class UpgradeInsight extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string
+   */
   public $upgradeToVersion;
 
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string
+   */
   public function setUpgradeToVersion($upgradeToVersion)
   {
     $this->upgradeToVersion = $upgradeToVersion;
   }
+  /**
+   * @return string
+   */
   public function getUpgradeToVersion()
   {
     return $this->upgradeToVersion;

@@ -19,12 +19,21 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1ReviewDocumentResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsDestination;
 
+  /**
+   * @param string
+   */
   public function setGcsDestination($gcsDestination)
   {
     $this->gcsDestination = $gcsDestination;
   }
+  /**
+   * @return string
+   */
   public function getGcsDestination()
   {
     return $this->gcsDestination;

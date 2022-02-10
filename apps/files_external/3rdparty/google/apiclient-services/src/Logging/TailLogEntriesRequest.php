@@ -20,30 +20,57 @@ namespace Google\Service\Logging;
 class TailLogEntriesRequest extends \Google\Collection
 {
   protected $collection_key = 'resourceNames';
+  /**
+   * @var string
+   */
   public $bufferWindow;
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string[]
+   */
   public $resourceNames;
 
+  /**
+   * @param string
+   */
   public function setBufferWindow($bufferWindow)
   {
     $this->bufferWindow = $bufferWindow;
   }
+  /**
+   * @return string
+   */
   public function getBufferWindow()
   {
     return $this->bufferWindow;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string[]
+   */
   public function setResourceNames($resourceNames)
   {
     $this->resourceNames = $resourceNames;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceNames()
   {
     return $this->resourceNames;

@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class SslPolicyReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sslPolicy;
 
+  /**
+   * @param string
+   */
   public function setSslPolicy($sslPolicy)
   {
     $this->sslPolicy = $sslPolicy;
   }
+  /**
+   * @return string
+   */
   public function getSslPolicy()
   {
     return $this->sslPolicy;

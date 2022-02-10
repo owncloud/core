@@ -19,30 +19,57 @@ namespace Google\Service\Monitoring;
 
 class QueryTimeSeriesRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var string
+   */
   public $query;
 
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;

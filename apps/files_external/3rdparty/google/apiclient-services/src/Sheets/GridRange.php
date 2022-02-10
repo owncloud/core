@@ -19,48 +19,93 @@ namespace Google\Service\Sheets;
 
 class GridRange extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $endColumnIndex;
+  /**
+   * @var int
+   */
   public $endRowIndex;
+  /**
+   * @var int
+   */
   public $sheetId;
+  /**
+   * @var int
+   */
   public $startColumnIndex;
+  /**
+   * @var int
+   */
   public $startRowIndex;
 
+  /**
+   * @param int
+   */
   public function setEndColumnIndex($endColumnIndex)
   {
     $this->endColumnIndex = $endColumnIndex;
   }
+  /**
+   * @return int
+   */
   public function getEndColumnIndex()
   {
     return $this->endColumnIndex;
   }
+  /**
+   * @param int
+   */
   public function setEndRowIndex($endRowIndex)
   {
     $this->endRowIndex = $endRowIndex;
   }
+  /**
+   * @return int
+   */
   public function getEndRowIndex()
   {
     return $this->endRowIndex;
   }
+  /**
+   * @param int
+   */
   public function setSheetId($sheetId)
   {
     $this->sheetId = $sheetId;
   }
+  /**
+   * @return int
+   */
   public function getSheetId()
   {
     return $this->sheetId;
   }
+  /**
+   * @param int
+   */
   public function setStartColumnIndex($startColumnIndex)
   {
     $this->startColumnIndex = $startColumnIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartColumnIndex()
   {
     return $this->startColumnIndex;
   }
+  /**
+   * @param int
+   */
   public function setStartRowIndex($startRowIndex)
   {
     $this->startRowIndex = $startRowIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartRowIndex()
   {
     return $this->startRowIndex;

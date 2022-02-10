@@ -19,30 +19,57 @@ namespace Google\Service\CloudSourceRepositories;
 
 class PubsubConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $messageFormat;
+  /**
+   * @var string
+   */
   public $serviceAccountEmail;
+  /**
+   * @var string
+   */
   public $topic;
 
+  /**
+   * @param string
+   */
   public function setMessageFormat($messageFormat)
   {
     $this->messageFormat = $messageFormat;
   }
+  /**
+   * @return string
+   */
   public function getMessageFormat()
   {
     return $this->messageFormat;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccountEmail($serviceAccountEmail)
   {
     $this->serviceAccountEmail = $serviceAccountEmail;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccountEmail()
   {
     return $this->serviceAccountEmail;
   }
+  /**
+   * @param string
+   */
   public function setTopic($topic)
   {
     $this->topic = $topic;
   }
+  /**
+   * @return string
+   */
   public function getTopic()
   {
     return $this->topic;

@@ -20,14 +20,23 @@ namespace Google\Service\ContainerAnalysis;
 class ListNotesResponse extends \Google\Collection
 {
   protected $collection_key = 'notes';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $notesType = Note::class;
   protected $notesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

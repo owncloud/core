@@ -19,21 +19,39 @@ namespace Google\Service\Genomics;
 
 class TimestampedEvent extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $timestamp;
 
+  /**
+   * @param array[]
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return array[]
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

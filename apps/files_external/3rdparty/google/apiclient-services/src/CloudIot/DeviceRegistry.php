@@ -26,10 +26,19 @@ class DeviceRegistry extends \Google\Collection
   protected $eventNotificationConfigsDataType = 'array';
   protected $httpConfigType = HttpConfig::class;
   protected $httpConfigDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $logLevel;
   protected $mqttConfigType = MqttConfig::class;
   protected $mqttConfigDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $stateNotificationConfigType = StateNotificationConfig::class;
   protected $stateNotificationConfigDataType = '';
@@ -76,18 +85,30 @@ class DeviceRegistry extends \Google\Collection
   {
     return $this->httpConfig;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setLogLevel($logLevel)
   {
     $this->logLevel = $logLevel;
   }
+  /**
+   * @return string
+   */
   public function getLogLevel()
   {
     return $this->logLevel;
@@ -106,10 +127,16 @@ class DeviceRegistry extends \Google\Collection
   {
     return $this->mqttConfig;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

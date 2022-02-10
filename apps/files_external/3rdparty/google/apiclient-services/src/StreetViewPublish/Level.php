@@ -19,13 +19,22 @@ namespace Google\Service\StreetViewPublish;
 
 class Level extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
   public $number;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

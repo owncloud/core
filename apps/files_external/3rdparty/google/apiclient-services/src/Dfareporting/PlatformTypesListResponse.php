@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class PlatformTypesListResponse extends \Google\Collection
 {
   protected $collection_key = 'platformTypes';
+  /**
+   * @var string
+   */
   public $kind;
   protected $platformTypesType = PlatformType::class;
   protected $platformTypesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

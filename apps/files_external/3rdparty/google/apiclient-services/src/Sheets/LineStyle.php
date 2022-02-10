@@ -19,21 +19,39 @@ namespace Google\Service\Sheets;
 
 class LineStyle extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

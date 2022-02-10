@@ -22,6 +22,9 @@ class ListLinkedAdUnitsResponse extends \Google\Collection
   protected $collection_key = 'adUnits';
   protected $adUnitsType = AdUnit::class;
   protected $adUnitsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListLinkedAdUnitsResponse extends \Google\Collection
   {
     return $this->adUnits;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

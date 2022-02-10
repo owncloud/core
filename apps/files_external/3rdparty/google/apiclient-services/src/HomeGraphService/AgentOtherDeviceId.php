@@ -19,21 +19,39 @@ namespace Google\Service\HomeGraphService;
 
 class AgentOtherDeviceId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $agentId;
+  /**
+   * @var string
+   */
   public $deviceId;
 
+  /**
+   * @param string
+   */
   public function setAgentId($agentId)
   {
     $this->agentId = $agentId;
   }
+  /**
+   * @return string
+   */
   public function getAgentId()
   {
     return $this->agentId;
   }
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;

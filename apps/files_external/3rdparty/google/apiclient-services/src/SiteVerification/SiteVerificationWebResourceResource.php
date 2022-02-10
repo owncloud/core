@@ -20,23 +20,41 @@ namespace Google\Service\SiteVerification;
 class SiteVerificationWebResourceResource extends \Google\Collection
 {
   protected $collection_key = 'owners';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string[]
+   */
   public $owners;
   protected $siteType = SiteVerificationWebResourceResourceSite::class;
   protected $siteDataType = '';
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string[]
+   */
   public function setOwners($owners)
   {
     $this->owners = $owners;
   }
+  /**
+   * @return string[]
+   */
   public function getOwners()
   {
     return $this->owners;

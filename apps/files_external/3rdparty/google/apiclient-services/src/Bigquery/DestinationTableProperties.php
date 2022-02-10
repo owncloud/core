@@ -19,39 +19,75 @@ namespace Google\Service\Bigquery;
 
 class DestinationTableProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $expirationTime;
+  /**
+   * @var string
+   */
   public $friendlyName;
+  /**
+   * @var string[]
+   */
   public $labels;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setExpirationTime($expirationTime)
   {
     $this->expirationTime = $expirationTime;
   }
+  /**
+   * @return string
+   */
   public function getExpirationTime()
   {
     return $this->expirationTime;
   }
+  /**
+   * @param string
+   */
   public function setFriendlyName($friendlyName)
   {
     $this->friendlyName = $friendlyName;
   }
+  /**
+   * @return string
+   */
   public function getFriendlyName()
   {
     return $this->friendlyName;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

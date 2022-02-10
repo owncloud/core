@@ -22,6 +22,9 @@ class ListBackupsResponse extends \Google\Collection
   protected $collection_key = 'backups';
   protected $backupsType = Backup::class;
   protected $backupsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListBackupsResponse extends \Google\Collection
   {
     return $this->backups;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

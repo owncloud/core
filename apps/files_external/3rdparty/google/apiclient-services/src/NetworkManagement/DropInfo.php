@@ -19,21 +19,39 @@ namespace Google\Service\NetworkManagement;
 
 class DropInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cause;
+  /**
+   * @var string
+   */
   public $resourceUri;
 
+  /**
+   * @param string
+   */
   public function setCause($cause)
   {
     $this->cause = $cause;
   }
+  /**
+   * @return string
+   */
   public function getCause()
   {
     return $this->cause;
   }
+  /**
+   * @param string
+   */
   public function setResourceUri($resourceUri)
   {
     $this->resourceUri = $resourceUri;
   }
+  /**
+   * @return string
+   */
   public function getResourceUri()
   {
     return $this->resourceUri;

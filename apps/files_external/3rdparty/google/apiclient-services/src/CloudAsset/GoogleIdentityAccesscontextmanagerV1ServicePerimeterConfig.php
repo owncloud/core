@@ -20,20 +20,35 @@ namespace Google\Service\CloudAsset;
 class GoogleIdentityAccesscontextmanagerV1ServicePerimeterConfig extends \Google\Collection
 {
   protected $collection_key = 'restrictedServices';
+  /**
+   * @var string[]
+   */
   public $accessLevels;
   protected $egressPoliciesType = GoogleIdentityAccesscontextmanagerV1EgressPolicy::class;
   protected $egressPoliciesDataType = 'array';
   protected $ingressPoliciesType = GoogleIdentityAccesscontextmanagerV1IngressPolicy::class;
   protected $ingressPoliciesDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $resources;
+  /**
+   * @var string[]
+   */
   public $restrictedServices;
   protected $vpcAccessibleServicesType = GoogleIdentityAccesscontextmanagerV1VpcAccessibleServices::class;
   protected $vpcAccessibleServicesDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setAccessLevels($accessLevels)
   {
     $this->accessLevels = $accessLevels;
   }
+  /**
+   * @return string[]
+   */
   public function getAccessLevels()
   {
     return $this->accessLevels;
@@ -66,18 +81,30 @@ class GoogleIdentityAccesscontextmanagerV1ServicePerimeterConfig extends \Google
   {
     return $this->ingressPolicies;
   }
+  /**
+   * @param string[]
+   */
   public function setResources($resources)
   {
     $this->resources = $resources;
   }
+  /**
+   * @return string[]
+   */
   public function getResources()
   {
     return $this->resources;
   }
+  /**
+   * @param string[]
+   */
   public function setRestrictedServices($restrictedServices)
   {
     $this->restrictedServices = $restrictedServices;
   }
+  /**
+   * @return string[]
+   */
   public function getRestrictedServices()
   {
     return $this->restrictedServices;

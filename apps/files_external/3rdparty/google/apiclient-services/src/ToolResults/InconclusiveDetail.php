@@ -19,30 +19,57 @@ namespace Google\Service\ToolResults;
 
 class InconclusiveDetail extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $abortedByUser;
+  /**
+   * @var bool
+   */
   public $hasErrorLogs;
+  /**
+   * @var bool
+   */
   public $infrastructureFailure;
 
+  /**
+   * @param bool
+   */
   public function setAbortedByUser($abortedByUser)
   {
     $this->abortedByUser = $abortedByUser;
   }
+  /**
+   * @return bool
+   */
   public function getAbortedByUser()
   {
     return $this->abortedByUser;
   }
+  /**
+   * @param bool
+   */
   public function setHasErrorLogs($hasErrorLogs)
   {
     $this->hasErrorLogs = $hasErrorLogs;
   }
+  /**
+   * @return bool
+   */
   public function getHasErrorLogs()
   {
     return $this->hasErrorLogs;
   }
+  /**
+   * @param bool
+   */
   public function setInfrastructureFailure($infrastructureFailure)
   {
     $this->infrastructureFailure = $infrastructureFailure;
   }
+  /**
+   * @return bool
+   */
   public function getInfrastructureFailure()
   {
     return $this->infrastructureFailure;

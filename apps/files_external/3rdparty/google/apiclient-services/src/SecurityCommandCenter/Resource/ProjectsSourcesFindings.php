@@ -23,6 +23,7 @@ use Google\Service\SecurityCommandCenter\GroupFindingsResponse;
 use Google\Service\SecurityCommandCenter\ListFindingsResponse;
 use Google\Service\SecurityCommandCenter\SecurityMarks;
 use Google\Service\SecurityCommandCenter\SetFindingStateRequest;
+use Google\Service\SecurityCommandCenter\SetMuteRequest;
 
 /**
  * The "findings" collection of methods.
@@ -172,6 +173,25 @@ class ProjectsSourcesFindings extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], Finding::class);
+  }
+  /**
+   * Updates the mute state of a finding. (findings.setMute)
+   *
+   * @param string $name Required. The relative resource name of the finding. See:
+   * https://cloud.google.com/apis/design/resource_names#relative_resource_name
+   * Example:
+   * "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}",
+   * "folders/{folder_id}/sources/{source_id}/finding/{finding_id}",
+   * "projects/{project_id}/sources/{source_id}/finding/{finding_id}".
+   * @param SetMuteRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Finding
+   */
+  public function setMute($name, SetMuteRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('setMute', [$params], Finding::class);
   }
   /**
    * Updates the state of a finding. (findings.setState)

@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class RoboScriptExecution extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $successfulActions;
+  /**
+   * @var int
+   */
   public $totalActions;
 
+  /**
+   * @param int
+   */
   public function setSuccessfulActions($successfulActions)
   {
     $this->successfulActions = $successfulActions;
   }
+  /**
+   * @return int
+   */
   public function getSuccessfulActions()
   {
     return $this->successfulActions;
   }
+  /**
+   * @param int
+   */
   public function setTotalActions($totalActions)
   {
     $this->totalActions = $totalActions;
   }
+  /**
+   * @return int
+   */
   public function getTotalActions()
   {
     return $this->totalActions;

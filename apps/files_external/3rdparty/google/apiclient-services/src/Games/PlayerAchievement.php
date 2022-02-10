@@ -19,66 +19,129 @@ namespace Google\Service\Games;
 
 class PlayerAchievement extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $achievementState;
+  /**
+   * @var int
+   */
   public $currentSteps;
+  /**
+   * @var string
+   */
   public $experiencePoints;
+  /**
+   * @var string
+   */
   public $formattedCurrentStepsString;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $lastUpdatedTimestamp;
 
+  /**
+   * @param string
+   */
   public function setAchievementState($achievementState)
   {
     $this->achievementState = $achievementState;
   }
+  /**
+   * @return string
+   */
   public function getAchievementState()
   {
     return $this->achievementState;
   }
+  /**
+   * @param int
+   */
   public function setCurrentSteps($currentSteps)
   {
     $this->currentSteps = $currentSteps;
   }
+  /**
+   * @return int
+   */
   public function getCurrentSteps()
   {
     return $this->currentSteps;
   }
+  /**
+   * @param string
+   */
   public function setExperiencePoints($experiencePoints)
   {
     $this->experiencePoints = $experiencePoints;
   }
+  /**
+   * @return string
+   */
   public function getExperiencePoints()
   {
     return $this->experiencePoints;
   }
+  /**
+   * @param string
+   */
   public function setFormattedCurrentStepsString($formattedCurrentStepsString)
   {
     $this->formattedCurrentStepsString = $formattedCurrentStepsString;
   }
+  /**
+   * @return string
+   */
   public function getFormattedCurrentStepsString()
   {
     return $this->formattedCurrentStepsString;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdatedTimestamp($lastUpdatedTimestamp)
   {
     $this->lastUpdatedTimestamp = $lastUpdatedTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdatedTimestamp()
   {
     return $this->lastUpdatedTimestamp;

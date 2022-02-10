@@ -20,6 +20,8 @@ namespace Google\Service\OSConfig\Resource;
 use Google\Service\OSConfig\ListPatchDeploymentsResponse;
 use Google\Service\OSConfig\OsconfigEmpty;
 use Google\Service\OSConfig\PatchDeployment;
+use Google\Service\OSConfig\PausePatchDeploymentRequest;
+use Google\Service\OSConfig\ResumePatchDeploymentRequest;
 
 /**
  * The "patchDeployments" collection of methods.
@@ -120,6 +122,38 @@ class ProjectsPatchDeployments extends \Google\Service\Resource
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], PatchDeployment::class);
+  }
+  /**
+   * Change state of patch deployment to "PAUSED". Patch deployment in paused
+   * state doesn't generate patch jobs. (patchDeployments.pause)
+   *
+   * @param string $name Required. The resource name of the patch deployment in
+   * the form `projects/patchDeployments`.
+   * @param PausePatchDeploymentRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return PatchDeployment
+   */
+  public function pause($name, PausePatchDeploymentRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('pause', [$params], PatchDeployment::class);
+  }
+  /**
+   * Change state of patch deployment back to "ACTIVE". Patch deployment in active
+   * state continues to generate patch jobs. (patchDeployments.resume)
+   *
+   * @param string $name Required. The resource name of the patch deployment in
+   * the form `projects/patchDeployments`.
+   * @param ResumePatchDeploymentRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return PatchDeployment
+   */
+  public function resume($name, ResumePatchDeploymentRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('resume', [$params], PatchDeployment::class);
   }
 }
 

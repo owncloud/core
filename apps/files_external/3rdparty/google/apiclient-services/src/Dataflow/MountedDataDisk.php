@@ -19,12 +19,21 @@ namespace Google\Service\Dataflow;
 
 class MountedDataDisk extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataDisk;
 
+  /**
+   * @param string
+   */
   public function setDataDisk($dataDisk)
   {
     $this->dataDisk = $dataDisk;
   }
+  /**
+   * @return string
+   */
   public function getDataDisk()
   {
     return $this->dataDisk;

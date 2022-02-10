@@ -21,6 +21,9 @@ class UpdateBandingRequest extends \Google\Model
 {
   protected $bandedRangeType = BandedRange::class;
   protected $bandedRangeDataType = '';
+  /**
+   * @var string
+   */
   public $fields;
 
   /**
@@ -37,10 +40,16 @@ class UpdateBandingRequest extends \Google\Model
   {
     return $this->bandedRange;
   }
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

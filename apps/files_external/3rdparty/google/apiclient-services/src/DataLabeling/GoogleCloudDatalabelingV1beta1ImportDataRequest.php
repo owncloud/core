@@ -21,6 +21,9 @@ class GoogleCloudDatalabelingV1beta1ImportDataRequest extends \Google\Model
 {
   protected $inputConfigType = GoogleCloudDatalabelingV1beta1InputConfig::class;
   protected $inputConfigDataType = '';
+  /**
+   * @var string
+   */
   public $userEmailAddress;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudDatalabelingV1beta1ImportDataRequest extends \Google\Model
   {
     return $this->inputConfig;
   }
+  /**
+   * @param string
+   */
   public function setUserEmailAddress($userEmailAddress)
   {
     $this->userEmailAddress = $userEmailAddress;
   }
+  /**
+   * @return string
+   */
   public function getUserEmailAddress()
   {
     return $this->userEmailAddress;

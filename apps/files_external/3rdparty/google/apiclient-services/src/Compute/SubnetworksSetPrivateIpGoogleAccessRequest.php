@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class SubnetworksSetPrivateIpGoogleAccessRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $privateIpGoogleAccess;
 
+  /**
+   * @param bool
+   */
   public function setPrivateIpGoogleAccess($privateIpGoogleAccess)
   {
     $this->privateIpGoogleAccess = $privateIpGoogleAccess;
   }
+  /**
+   * @return bool
+   */
   public function getPrivateIpGoogleAccess()
   {
     return $this->privateIpGoogleAccess;

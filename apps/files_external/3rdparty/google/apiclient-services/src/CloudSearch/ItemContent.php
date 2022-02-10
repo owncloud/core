@@ -21,8 +21,17 @@ class ItemContent extends \Google\Model
 {
   protected $contentDataRefType = UploadItemRef::class;
   protected $contentDataRefDataType = '';
+  /**
+   * @var string
+   */
   public $contentFormat;
+  /**
+   * @var string
+   */
   public $hash;
+  /**
+   * @var string
+   */
   public $inlineContent;
 
   /**
@@ -39,26 +48,44 @@ class ItemContent extends \Google\Model
   {
     return $this->contentDataRef;
   }
+  /**
+   * @param string
+   */
   public function setContentFormat($contentFormat)
   {
     $this->contentFormat = $contentFormat;
   }
+  /**
+   * @return string
+   */
   public function getContentFormat()
   {
     return $this->contentFormat;
   }
+  /**
+   * @param string
+   */
   public function setHash($hash)
   {
     $this->hash = $hash;
   }
+  /**
+   * @return string
+   */
   public function getHash()
   {
     return $this->hash;
   }
+  /**
+   * @param string
+   */
   public function setInlineContent($inlineContent)
   {
     $this->inlineContent = $inlineContent;
   }
+  /**
+   * @return string
+   */
   public function getInlineContent()
   {
     return $this->inlineContent;

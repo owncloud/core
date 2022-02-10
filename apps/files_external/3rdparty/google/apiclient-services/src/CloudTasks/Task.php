@@ -21,8 +21,17 @@ class Task extends \Google\Model
 {
   protected $appEngineHttpRequestType = AppEngineHttpRequest::class;
   protected $appEngineHttpRequestDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var int
+   */
   public $dispatchCount;
+  /**
+   * @var string
+   */
   public $dispatchDeadline;
   protected $firstAttemptType = Attempt::class;
   protected $firstAttemptDataType = '';
@@ -30,9 +39,21 @@ class Task extends \Google\Model
   protected $httpRequestDataType = '';
   protected $lastAttemptType = Attempt::class;
   protected $lastAttemptDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $responseCount;
+  /**
+   * @var string
+   */
   public $scheduleTime;
+  /**
+   * @var string
+   */
   public $view;
 
   /**
@@ -49,26 +70,44 @@ class Task extends \Google\Model
   {
     return $this->appEngineHttpRequest;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param int
+   */
   public function setDispatchCount($dispatchCount)
   {
     $this->dispatchCount = $dispatchCount;
   }
+  /**
+   * @return int
+   */
   public function getDispatchCount()
   {
     return $this->dispatchCount;
   }
+  /**
+   * @param string
+   */
   public function setDispatchDeadline($dispatchDeadline)
   {
     $this->dispatchDeadline = $dispatchDeadline;
   }
+  /**
+   * @return string
+   */
   public function getDispatchDeadline()
   {
     return $this->dispatchDeadline;
@@ -115,34 +154,58 @@ class Task extends \Google\Model
   {
     return $this->lastAttempt;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setResponseCount($responseCount)
   {
     $this->responseCount = $responseCount;
   }
+  /**
+   * @return int
+   */
   public function getResponseCount()
   {
     return $this->responseCount;
   }
+  /**
+   * @param string
+   */
   public function setScheduleTime($scheduleTime)
   {
     $this->scheduleTime = $scheduleTime;
   }
+  /**
+   * @return string
+   */
   public function getScheduleTime()
   {
     return $this->scheduleTime;
   }
+  /**
+   * @param string
+   */
   public function setView($view)
   {
     $this->view = $view;
   }
+  /**
+   * @return string
+   */
   public function getView()
   {
     return $this->view;

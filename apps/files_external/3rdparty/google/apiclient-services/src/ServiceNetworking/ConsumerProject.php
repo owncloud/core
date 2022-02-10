@@ -19,12 +19,21 @@ namespace Google\Service\ServiceNetworking;
 
 class ConsumerProject extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $projectNum;
 
+  /**
+   * @param string
+   */
   public function setProjectNum($projectNum)
   {
     $this->projectNum = $projectNum;
   }
+  /**
+   * @return string
+   */
   public function getProjectNum()
   {
     return $this->projectNum;

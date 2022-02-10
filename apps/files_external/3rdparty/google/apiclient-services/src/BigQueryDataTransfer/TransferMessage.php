@@ -19,30 +19,57 @@ namespace Google\Service\BigQueryDataTransfer;
 
 class TransferMessage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $messageText;
+  /**
+   * @var string
+   */
   public $messageTime;
+  /**
+   * @var string
+   */
   public $severity;
 
+  /**
+   * @param string
+   */
   public function setMessageText($messageText)
   {
     $this->messageText = $messageText;
   }
+  /**
+   * @return string
+   */
   public function getMessageText()
   {
     return $this->messageText;
   }
+  /**
+   * @param string
+   */
   public function setMessageTime($messageTime)
   {
     $this->messageTime = $messageTime;
   }
+  /**
+   * @return string
+   */
   public function getMessageTime()
   {
     return $this->messageTime;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;

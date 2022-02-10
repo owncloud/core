@@ -19,30 +19,57 @@ namespace Google\Service\Adsense;
 
 class AdClient extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $productCode;
+  /**
+   * @var string
+   */
   public $reportingDimensionId;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProductCode($productCode)
   {
     $this->productCode = $productCode;
   }
+  /**
+   * @return string
+   */
   public function getProductCode()
   {
     return $this->productCode;
   }
+  /**
+   * @param string
+   */
   public function setReportingDimensionId($reportingDimensionId)
   {
     $this->reportingDimensionId = $reportingDimensionId;
   }
+  /**
+   * @return string
+   */
   public function getReportingDimensionId()
   {
     return $this->reportingDimensionId;

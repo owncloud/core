@@ -22,10 +22,25 @@ class GoogleCloudSecuritycenterV1p1beta1Resource extends \Google\Collection
   protected $collection_key = 'folders';
   protected $foldersType = GoogleCloudSecuritycenterV1p1beta1Folder::class;
   protected $foldersDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string
+   */
   public $parentDisplayName;
+  /**
+   * @var string
+   */
   public $project;
+  /**
+   * @var string
+   */
   public $projectDisplayName;
 
   /**
@@ -42,42 +57,72 @@ class GoogleCloudSecuritycenterV1p1beta1Resource extends \Google\Collection
   {
     return $this->folders;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string
+   */
   public function setParentDisplayName($parentDisplayName)
   {
     $this->parentDisplayName = $parentDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getParentDisplayName()
   {
     return $this->parentDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;
   }
+  /**
+   * @param string
+   */
   public function setProjectDisplayName($projectDisplayName)
   {
     $this->projectDisplayName = $projectDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getProjectDisplayName()
   {
     return $this->projectDisplayName;

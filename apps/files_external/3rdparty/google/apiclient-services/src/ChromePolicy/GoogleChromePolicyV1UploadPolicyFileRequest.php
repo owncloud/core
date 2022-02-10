@@ -19,12 +19,21 @@ namespace Google\Service\ChromePolicy;
 
 class GoogleChromePolicyV1UploadPolicyFileRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $policyField;
 
+  /**
+   * @param string
+   */
   public function setPolicyField($policyField)
   {
     $this->policyField = $policyField;
   }
+  /**
+   * @return string
+   */
   public function getPolicyField()
   {
     return $this->policyField;

@@ -19,30 +19,57 @@ namespace Google\Service\CertificateAuthorityService;
 
 class RevokedCertificate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certificate;
+  /**
+   * @var string
+   */
   public $hexSerialNumber;
+  /**
+   * @var string
+   */
   public $revocationReason;
 
+  /**
+   * @param string
+   */
   public function setCertificate($certificate)
   {
     $this->certificate = $certificate;
   }
+  /**
+   * @return string
+   */
   public function getCertificate()
   {
     return $this->certificate;
   }
+  /**
+   * @param string
+   */
   public function setHexSerialNumber($hexSerialNumber)
   {
     $this->hexSerialNumber = $hexSerialNumber;
   }
+  /**
+   * @return string
+   */
   public function getHexSerialNumber()
   {
     return $this->hexSerialNumber;
   }
+  /**
+   * @param string
+   */
   public function setRevocationReason($revocationReason)
   {
     $this->revocationReason = $revocationReason;
   }
+  /**
+   * @return string
+   */
   public function getRevocationReason()
   {
     return $this->revocationReason;

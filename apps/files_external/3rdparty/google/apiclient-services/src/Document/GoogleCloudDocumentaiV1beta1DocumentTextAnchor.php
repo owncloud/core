@@ -20,14 +20,23 @@ namespace Google\Service\Document;
 class GoogleCloudDocumentaiV1beta1DocumentTextAnchor extends \Google\Collection
 {
   protected $collection_key = 'textSegments';
+  /**
+   * @var string
+   */
   public $content;
   protected $textSegmentsType = GoogleCloudDocumentaiV1beta1DocumentTextAnchorTextSegment::class;
   protected $textSegmentsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;

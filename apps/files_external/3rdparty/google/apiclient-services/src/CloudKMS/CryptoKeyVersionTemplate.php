@@ -19,21 +19,39 @@ namespace Google\Service\CloudKMS;
 
 class CryptoKeyVersionTemplate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $algorithm;
+  /**
+   * @var string
+   */
   public $protectionLevel;
 
+  /**
+   * @param string
+   */
   public function setAlgorithm($algorithm)
   {
     $this->algorithm = $algorithm;
   }
+  /**
+   * @return string
+   */
   public function getAlgorithm()
   {
     return $this->algorithm;
   }
+  /**
+   * @param string
+   */
   public function setProtectionLevel($protectionLevel)
   {
     $this->protectionLevel = $protectionLevel;
   }
+  /**
+   * @return string
+   */
   public function getProtectionLevel()
   {
     return $this->protectionLevel;

@@ -19,14 +19,23 @@ namespace Google\Service\Fitness;
 
 class ValueMapValEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
   protected $valueType = MapValue::class;
   protected $valueDataType = '';
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;

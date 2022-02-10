@@ -19,30 +19,57 @@ namespace Google\Service\Directory;
 
 class Feature extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $etags;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setEtags($etags)
   {
     $this->etags = $etags;
   }
+  /**
+   * @return string
+   */
   public function getEtags()
   {
     return $this->etags;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

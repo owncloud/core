@@ -21,7 +21,13 @@ class TestOrderDeliveryDetails extends \Google\Model
 {
   protected $addressType = TestOrderAddress::class;
   protected $addressDataType = '';
+  /**
+   * @var bool
+   */
   public $isScheduledDelivery;
+  /**
+   * @var string
+   */
   public $phoneNumber;
 
   /**
@@ -38,18 +44,30 @@ class TestOrderDeliveryDetails extends \Google\Model
   {
     return $this->address;
   }
+  /**
+   * @param bool
+   */
   public function setIsScheduledDelivery($isScheduledDelivery)
   {
     $this->isScheduledDelivery = $isScheduledDelivery;
   }
+  /**
+   * @return bool
+   */
   public function getIsScheduledDelivery()
   {
     return $this->isScheduledDelivery;
   }
+  /**
+   * @param string
+   */
   public function setPhoneNumber($phoneNumber)
   {
     $this->phoneNumber = $phoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getPhoneNumber()
   {
     return $this->phoneNumber;

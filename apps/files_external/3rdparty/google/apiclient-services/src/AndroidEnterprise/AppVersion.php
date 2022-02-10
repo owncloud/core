@@ -20,48 +20,93 @@ namespace Google\Service\AndroidEnterprise;
 class AppVersion extends \Google\Collection
 {
   protected $collection_key = 'trackId';
+  /**
+   * @var bool
+   */
   public $isProduction;
+  /**
+   * @var string
+   */
   public $track;
+  /**
+   * @var string[]
+   */
   public $trackId;
+  /**
+   * @var int
+   */
   public $versionCode;
+  /**
+   * @var string
+   */
   public $versionString;
 
+  /**
+   * @param bool
+   */
   public function setIsProduction($isProduction)
   {
     $this->isProduction = $isProduction;
   }
+  /**
+   * @return bool
+   */
   public function getIsProduction()
   {
     return $this->isProduction;
   }
+  /**
+   * @param string
+   */
   public function setTrack($track)
   {
     $this->track = $track;
   }
+  /**
+   * @return string
+   */
   public function getTrack()
   {
     return $this->track;
   }
+  /**
+   * @param string[]
+   */
   public function setTrackId($trackId)
   {
     $this->trackId = $trackId;
   }
+  /**
+   * @return string[]
+   */
   public function getTrackId()
   {
     return $this->trackId;
   }
+  /**
+   * @param int
+   */
   public function setVersionCode($versionCode)
   {
     $this->versionCode = $versionCode;
   }
+  /**
+   * @return int
+   */
   public function getVersionCode()
   {
     return $this->versionCode;
   }
+  /**
+   * @param string
+   */
   public function setVersionString($versionString)
   {
     $this->versionString = $versionString;
   }
+  /**
+   * @return string
+   */
   public function getVersionString()
   {
     return $this->versionString;

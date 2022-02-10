@@ -19,12 +19,21 @@ namespace Google\Service\YouTube;
 
 class ActivityContentDetailsUpload extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $videoId;
 
+  /**
+   * @param string
+   */
   public function setVideoId($videoId)
   {
     $this->videoId = $videoId;
   }
+  /**
+   * @return string
+   */
   public function getVideoId()
   {
     return $this->videoId;

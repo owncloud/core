@@ -19,48 +19,93 @@ namespace Google\Service\HangoutsChat;
 
 class Space extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $singleUserBotDm;
+  /**
+   * @var bool
+   */
   public $threaded;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setSingleUserBotDm($singleUserBotDm)
   {
     $this->singleUserBotDm = $singleUserBotDm;
   }
+  /**
+   * @return bool
+   */
   public function getSingleUserBotDm()
   {
     return $this->singleUserBotDm;
   }
+  /**
+   * @param bool
+   */
   public function setThreaded($threaded)
   {
     $this->threaded = $threaded;
   }
+  /**
+   * @return bool
+   */
   public function getThreaded()
   {
     return $this->threaded;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

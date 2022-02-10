@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class AgeRangeAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ageRange;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setAgeRange($ageRange)
   {
     $this->ageRange = $ageRange;
   }
+  /**
+   * @return string
+   */
   public function getAgeRange()
   {
     return $this->ageRange;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

@@ -24,6 +24,9 @@ class ListJobMessagesResponse extends \Google\Collection
   protected $autoscalingEventsDataType = 'array';
   protected $jobMessagesType = JobMessage::class;
   protected $jobMessagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -54,10 +57,16 @@ class ListJobMessagesResponse extends \Google\Collection
   {
     return $this->jobMessages;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

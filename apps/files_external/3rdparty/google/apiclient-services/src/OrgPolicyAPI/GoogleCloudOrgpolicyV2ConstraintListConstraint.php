@@ -19,21 +19,39 @@ namespace Google\Service\OrgPolicyAPI;
 
 class GoogleCloudOrgpolicyV2ConstraintListConstraint extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $supportsIn;
+  /**
+   * @var bool
+   */
   public $supportsUnder;
 
+  /**
+   * @param bool
+   */
   public function setSupportsIn($supportsIn)
   {
     $this->supportsIn = $supportsIn;
   }
+  /**
+   * @return bool
+   */
   public function getSupportsIn()
   {
     return $this->supportsIn;
   }
+  /**
+   * @param bool
+   */
   public function setSupportsUnder($supportsUnder)
   {
     $this->supportsUnder = $supportsUnder;
   }
+  /**
+   * @return bool
+   */
   public function getSupportsUnder()
   {
     return $this->supportsUnder;

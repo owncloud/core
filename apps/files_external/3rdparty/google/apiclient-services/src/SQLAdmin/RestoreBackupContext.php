@@ -19,39 +19,75 @@ namespace Google\Service\SQLAdmin;
 
 class RestoreBackupContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backupRunId;
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $project;
 
+  /**
+   * @param string
+   */
   public function setBackupRunId($backupRunId)
   {
     $this->backupRunId = $backupRunId;
   }
+  /**
+   * @return string
+   */
   public function getBackupRunId()
   {
     return $this->backupRunId;
   }
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;

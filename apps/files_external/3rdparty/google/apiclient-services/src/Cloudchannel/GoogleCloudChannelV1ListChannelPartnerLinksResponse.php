@@ -22,6 +22,9 @@ class GoogleCloudChannelV1ListChannelPartnerLinksResponse extends \Google\Collec
   protected $collection_key = 'channelPartnerLinks';
   protected $channelPartnerLinksType = GoogleCloudChannelV1ChannelPartnerLink::class;
   protected $channelPartnerLinksDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudChannelV1ListChannelPartnerLinksResponse extends \Google\Collec
   {
     return $this->channelPartnerLinks;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

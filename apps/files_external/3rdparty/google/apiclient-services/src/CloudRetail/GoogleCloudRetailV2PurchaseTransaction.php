@@ -19,48 +19,93 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2PurchaseTransaction extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $cost;
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var float
+   */
   public $revenue;
+  /**
+   * @var float
+   */
   public $tax;
 
+  /**
+   * @param float
+   */
   public function setCost($cost)
   {
     $this->cost = $cost;
   }
+  /**
+   * @return float
+   */
   public function getCost()
   {
     return $this->cost;
   }
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param float
+   */
   public function setRevenue($revenue)
   {
     $this->revenue = $revenue;
   }
+  /**
+   * @return float
+   */
   public function getRevenue()
   {
     return $this->revenue;
   }
+  /**
+   * @param float
+   */
   public function setTax($tax)
   {
     $this->tax = $tax;
   }
+  /**
+   * @return float
+   */
   public function getTax()
   {
     return $this->tax;

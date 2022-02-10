@@ -60,6 +60,10 @@ class ProjectsLocationsInstances extends \Google\Service\Resource
    * @param string $name Required. The instance resource name, in the format
    * `projects/{project_id}/locations/{location}/instances/{instance_id}`
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param bool force If set to true, all snapshots of the instance will also
+   * be deleted. (Otherwise, the request will only work if the instance has no
+   * snapshots.)
    * @return Operation
    */
   public function delete($name, $optParams = [])

@@ -19,39 +19,75 @@ namespace Google\Service\Libraryagent;
 
 class GoogleExampleLibraryagentV1Book extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $author;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $read;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setAuthor($author)
   {
     $this->author = $author;
   }
+  /**
+   * @return string
+   */
   public function getAuthor()
   {
     return $this->author;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setRead($read)
   {
     $this->read = $read;
   }
+  /**
+   * @return bool
+   */
   public function getRead()
   {
     return $this->read;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

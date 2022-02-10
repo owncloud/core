@@ -19,12 +19,21 @@ namespace Google\Service\CloudIot;
 
 class StateNotificationConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pubsubTopicName;
 
+  /**
+   * @param string
+   */
   public function setPubsubTopicName($pubsubTopicName)
   {
     $this->pubsubTopicName = $pubsubTopicName;
   }
+  /**
+   * @return string
+   */
   public function getPubsubTopicName()
   {
     return $this->pubsubTopicName;

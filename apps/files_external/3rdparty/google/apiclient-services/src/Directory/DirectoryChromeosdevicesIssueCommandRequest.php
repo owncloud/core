@@ -19,21 +19,39 @@ namespace Google\Service\Directory;
 
 class DirectoryChromeosdevicesIssueCommandRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $commandType;
+  /**
+   * @var string
+   */
   public $payload;
 
+  /**
+   * @param string
+   */
   public function setCommandType($commandType)
   {
     $this->commandType = $commandType;
   }
+  /**
+   * @return string
+   */
   public function getCommandType()
   {
     return $this->commandType;
   }
+  /**
+   * @param string
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return string
+   */
   public function getPayload()
   {
     return $this->payload;

@@ -26,9 +26,21 @@ class DeliveryTime extends \Google\Collection
   protected $handlingBusinessDayConfigDataType = '';
   protected $holidayCutoffsType = HolidayCutoff::class;
   protected $holidayCutoffsDataType = 'array';
+  /**
+   * @var string
+   */
   public $maxHandlingTimeInDays;
+  /**
+   * @var string
+   */
   public $maxTransitTimeInDays;
+  /**
+   * @var string
+   */
   public $minHandlingTimeInDays;
+  /**
+   * @var string
+   */
   public $minTransitTimeInDays;
   protected $transitBusinessDayConfigType = BusinessDayConfig::class;
   protected $transitBusinessDayConfigDataType = '';
@@ -79,34 +91,58 @@ class DeliveryTime extends \Google\Collection
   {
     return $this->holidayCutoffs;
   }
+  /**
+   * @param string
+   */
   public function setMaxHandlingTimeInDays($maxHandlingTimeInDays)
   {
     $this->maxHandlingTimeInDays = $maxHandlingTimeInDays;
   }
+  /**
+   * @return string
+   */
   public function getMaxHandlingTimeInDays()
   {
     return $this->maxHandlingTimeInDays;
   }
+  /**
+   * @param string
+   */
   public function setMaxTransitTimeInDays($maxTransitTimeInDays)
   {
     $this->maxTransitTimeInDays = $maxTransitTimeInDays;
   }
+  /**
+   * @return string
+   */
   public function getMaxTransitTimeInDays()
   {
     return $this->maxTransitTimeInDays;
   }
+  /**
+   * @param string
+   */
   public function setMinHandlingTimeInDays($minHandlingTimeInDays)
   {
     $this->minHandlingTimeInDays = $minHandlingTimeInDays;
   }
+  /**
+   * @return string
+   */
   public function getMinHandlingTimeInDays()
   {
     return $this->minHandlingTimeInDays;
   }
+  /**
+   * @param string
+   */
   public function setMinTransitTimeInDays($minTransitTimeInDays)
   {
     $this->minTransitTimeInDays = $minTransitTimeInDays;
   }
+  /**
+   * @return string
+   */
   public function getMinTransitTimeInDays()
   {
     return $this->minTransitTimeInDays;

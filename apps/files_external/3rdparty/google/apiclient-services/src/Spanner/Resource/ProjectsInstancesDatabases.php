@@ -63,8 +63,9 @@ class ProjectsInstancesDatabases extends \Google\Service\Resource
   }
   /**
    * Drops (aka deletes) a Cloud Spanner database. Completed backups for the
-   * database will be retained according to their `expire_time`.
-   * (databases.dropDatabase)
+   * database will be retained according to their `expire_time`. Note: Cloud
+   * Spanner might continue to accept requests for a few seconds after the
+   * database has been deleted. (databases.dropDatabase)
    *
    * @param string $database Required. The database to be dropped.
    * @param array $optParams Optional parameters.

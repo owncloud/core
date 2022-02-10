@@ -23,6 +23,9 @@ class GoogleCloudDatalabelingV1beta1LabelVideoRequest extends \Google\Model
   protected $basicConfigDataType = '';
   protected $eventConfigType = GoogleCloudDatalabelingV1beta1EventConfig::class;
   protected $eventConfigDataType = '';
+  /**
+   * @var string
+   */
   public $feature;
   protected $objectDetectionConfigType = GoogleCloudDatalabelingV1beta1ObjectDetectionConfig::class;
   protected $objectDetectionConfigDataType = '';
@@ -59,10 +62,16 @@ class GoogleCloudDatalabelingV1beta1LabelVideoRequest extends \Google\Model
   {
     return $this->eventConfig;
   }
+  /**
+   * @param string
+   */
   public function setFeature($feature)
   {
     $this->feature = $feature;
   }
+  /**
+   * @return string
+   */
   public function getFeature()
   {
     return $this->feature;

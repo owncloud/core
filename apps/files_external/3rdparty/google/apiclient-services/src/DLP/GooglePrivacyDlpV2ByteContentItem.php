@@ -19,21 +19,39 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2ByteContentItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

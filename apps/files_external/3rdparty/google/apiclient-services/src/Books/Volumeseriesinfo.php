@@ -20,32 +20,59 @@ namespace Google\Service\Books;
 class Volumeseriesinfo extends \Google\Collection
 {
   protected $collection_key = 'volumeSeries';
+  /**
+   * @var string
+   */
   public $bookDisplayNumber;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $shortSeriesBookTitle;
   protected $volumeSeriesType = VolumeseriesinfoVolumeSeries::class;
   protected $volumeSeriesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setBookDisplayNumber($bookDisplayNumber)
   {
     $this->bookDisplayNumber = $bookDisplayNumber;
   }
+  /**
+   * @return string
+   */
   public function getBookDisplayNumber()
   {
     return $this->bookDisplayNumber;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setShortSeriesBookTitle($shortSeriesBookTitle)
   {
     $this->shortSeriesBookTitle = $shortSeriesBookTitle;
   }
+  /**
+   * @return string
+   */
   public function getShortSeriesBookTitle()
   {
     return $this->shortSeriesBookTitle;

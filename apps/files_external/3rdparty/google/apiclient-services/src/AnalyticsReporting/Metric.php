@@ -19,30 +19,57 @@ namespace Google\Service\AnalyticsReporting;
 
 class Metric extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alias;
+  /**
+   * @var string
+   */
   public $expression;
+  /**
+   * @var string
+   */
   public $formattingType;
 
+  /**
+   * @param string
+   */
   public function setAlias($alias)
   {
     $this->alias = $alias;
   }
+  /**
+   * @return string
+   */
   public function getAlias()
   {
     return $this->alias;
   }
+  /**
+   * @param string
+   */
   public function setExpression($expression)
   {
     $this->expression = $expression;
   }
+  /**
+   * @return string
+   */
   public function getExpression()
   {
     return $this->expression;
   }
+  /**
+   * @param string
+   */
   public function setFormattingType($formattingType)
   {
     $this->formattingType = $formattingType;
   }
+  /**
+   * @return string
+   */
   public function getFormattingType()
   {
     return $this->formattingType;

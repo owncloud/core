@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class RouterNatLogConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enable;
+  /**
+   * @var string
+   */
   public $filter;
 
+  /**
+   * @param bool
+   */
   public function setEnable($enable)
   {
     $this->enable = $enable;
   }
+  /**
+   * @return bool
+   */
   public function getEnable()
   {
     return $this->enable;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;

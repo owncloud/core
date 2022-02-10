@@ -19,30 +19,57 @@ namespace Google\Service\Logging;
 
 class SourceLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $file;
+  /**
+   * @var string
+   */
   public $functionName;
+  /**
+   * @var string
+   */
   public $line;
 
+  /**
+   * @param string
+   */
   public function setFile($file)
   {
     $this->file = $file;
   }
+  /**
+   * @return string
+   */
   public function getFile()
   {
     return $this->file;
   }
+  /**
+   * @param string
+   */
   public function setFunctionName($functionName)
   {
     $this->functionName = $functionName;
   }
+  /**
+   * @return string
+   */
   public function getFunctionName()
   {
     return $this->functionName;
   }
+  /**
+   * @param string
+   */
   public function setLine($line)
   {
     $this->line = $line;
   }
+  /**
+   * @return string
+   */
   public function getLine()
   {
     return $this->line;

@@ -22,6 +22,9 @@ class ConfigSource extends \Google\Collection
   protected $collection_key = 'files';
   protected $filesType = ConfigFile::class;
   protected $filesDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
 
   /**
@@ -38,10 +41,16 @@ class ConfigSource extends \Google\Collection
   {
     return $this->files;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

@@ -19,39 +19,75 @@ namespace Google\Service\Dataproc;
 
 class InstanceReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var string
+   */
   public $instanceName;
+  /**
+   * @var string
+   */
   public $publicEciesKey;
+  /**
+   * @var string
+   */
   public $publicKey;
 
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param string
+   */
   public function setInstanceName($instanceName)
   {
     $this->instanceName = $instanceName;
   }
+  /**
+   * @return string
+   */
   public function getInstanceName()
   {
     return $this->instanceName;
   }
+  /**
+   * @param string
+   */
   public function setPublicEciesKey($publicEciesKey)
   {
     $this->publicEciesKey = $publicEciesKey;
   }
+  /**
+   * @return string
+   */
   public function getPublicEciesKey()
   {
     return $this->publicEciesKey;
   }
+  /**
+   * @param string
+   */
   public function setPublicKey($publicKey)
   {
     $this->publicKey = $publicKey;
   }
+  /**
+   * @return string
+   */
   public function getPublicKey()
   {
     return $this->publicKey;

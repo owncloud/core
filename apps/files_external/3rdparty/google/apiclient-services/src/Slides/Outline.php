@@ -19,17 +19,29 @@ namespace Google\Service\Slides;
 
 class Outline extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dashStyle;
   protected $outlineFillType = OutlineFill::class;
   protected $outlineFillDataType = '';
+  /**
+   * @var string
+   */
   public $propertyState;
   protected $weightType = Dimension::class;
   protected $weightDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDashStyle($dashStyle)
   {
     $this->dashStyle = $dashStyle;
   }
+  /**
+   * @return string
+   */
   public function getDashStyle()
   {
     return $this->dashStyle;
@@ -48,10 +60,16 @@ class Outline extends \Google\Model
   {
     return $this->outlineFill;
   }
+  /**
+   * @param string
+   */
   public function setPropertyState($propertyState)
   {
     $this->propertyState = $propertyState;
   }
+  /**
+   * @return string
+   */
   public function getPropertyState()
   {
     return $this->propertyState;

@@ -21,10 +21,25 @@ class SetNodePoolAutoscalingRequest extends \Google\Model
 {
   protected $autoscalingType = NodePoolAutoscaling::class;
   protected $autoscalingDataType = '';
+  /**
+   * @var string
+   */
   public $clusterId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $nodePoolId;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $zone;
 
   /**
@@ -41,42 +56,72 @@ class SetNodePoolAutoscalingRequest extends \Google\Model
   {
     return $this->autoscaling;
   }
+  /**
+   * @param string
+   */
   public function setClusterId($clusterId)
   {
     $this->clusterId = $clusterId;
   }
+  /**
+   * @return string
+   */
   public function getClusterId()
   {
     return $this->clusterId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNodePoolId($nodePoolId)
   {
     $this->nodePoolId = $nodePoolId;
   }
+  /**
+   * @return string
+   */
   public function getNodePoolId()
   {
     return $this->nodePoolId;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

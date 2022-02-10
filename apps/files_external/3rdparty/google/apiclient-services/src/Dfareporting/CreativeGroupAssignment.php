@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class CreativeGroupAssignment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creativeGroupId;
+  /**
+   * @var string
+   */
   public $creativeGroupNumber;
 
+  /**
+   * @param string
+   */
   public function setCreativeGroupId($creativeGroupId)
   {
     $this->creativeGroupId = $creativeGroupId;
   }
+  /**
+   * @return string
+   */
   public function getCreativeGroupId()
   {
     return $this->creativeGroupId;
   }
+  /**
+   * @param string
+   */
   public function setCreativeGroupNumber($creativeGroupNumber)
   {
     $this->creativeGroupNumber = $creativeGroupNumber;
   }
+  /**
+   * @return string
+   */
   public function getCreativeGroupNumber()
   {
     return $this->creativeGroupNumber;

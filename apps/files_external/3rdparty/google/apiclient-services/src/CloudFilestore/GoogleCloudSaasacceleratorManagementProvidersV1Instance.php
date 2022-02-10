@@ -20,54 +20,111 @@ namespace Google\Service\CloudFilestore;
 class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Collection
 {
   protected $collection_key = 'provisionedResources';
+  /**
+   * @var string
+   */
   public $consumerDefinedName;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string[]
+   */
   public $maintenancePolicyNames;
   protected $maintenanceSchedulesType = GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSchedule::class;
   protected $maintenanceSchedulesDataType = 'map';
   protected $maintenanceSettingsType = GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings::class;
   protected $maintenanceSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $producerMetadata;
   protected $provisionedResourcesType = GoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource::class;
   protected $provisionedResourcesDataType = 'array';
+  /**
+   * @var string
+   */
   public $slmInstanceTemplate;
   protected $sloMetadataType = GoogleCloudSaasacceleratorManagementProvidersV1SloMetadata::class;
   protected $sloMetadataDataType = '';
+  /**
+   * @var string[]
+   */
   public $softwareVersions;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $tenantProjectId;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setConsumerDefinedName($consumerDefinedName)
   {
     $this->consumerDefinedName = $consumerDefinedName;
   }
+  /**
+   * @return string
+   */
   public function getConsumerDefinedName()
   {
     return $this->consumerDefinedName;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string[]
+   */
   public function setMaintenancePolicyNames($maintenancePolicyNames)
   {
     $this->maintenancePolicyNames = $maintenancePolicyNames;
   }
+  /**
+   * @return string[]
+   */
   public function getMaintenancePolicyNames()
   {
     return $this->maintenancePolicyNames;
@@ -100,18 +157,30 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
   {
     return $this->maintenanceSettings;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setProducerMetadata($producerMetadata)
   {
     $this->producerMetadata = $producerMetadata;
   }
+  /**
+   * @return string[]
+   */
   public function getProducerMetadata()
   {
     return $this->producerMetadata;
@@ -130,10 +199,16 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
   {
     return $this->provisionedResources;
   }
+  /**
+   * @param string
+   */
   public function setSlmInstanceTemplate($slmInstanceTemplate)
   {
     $this->slmInstanceTemplate = $slmInstanceTemplate;
   }
+  /**
+   * @return string
+   */
   public function getSlmInstanceTemplate()
   {
     return $this->slmInstanceTemplate;
@@ -152,34 +227,58 @@ class GoogleCloudSaasacceleratorManagementProvidersV1Instance extends \Google\Co
   {
     return $this->sloMetadata;
   }
+  /**
+   * @param string[]
+   */
   public function setSoftwareVersions($softwareVersions)
   {
     $this->softwareVersions = $softwareVersions;
   }
+  /**
+   * @return string[]
+   */
   public function getSoftwareVersions()
   {
     return $this->softwareVersions;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setTenantProjectId($tenantProjectId)
   {
     $this->tenantProjectId = $tenantProjectId;
   }
+  /**
+   * @return string
+   */
   public function getTenantProjectId()
   {
     return $this->tenantProjectId;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class TruncateLogContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $logType;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLogType($logType)
   {
     $this->logType = $logType;
   }
+  /**
+   * @return string
+   */
   public function getLogType()
   {
     return $this->logType;

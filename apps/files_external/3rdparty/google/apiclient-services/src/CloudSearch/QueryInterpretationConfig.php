@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class QueryInterpretationConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $forceDisableSupplementalResults;
+  /**
+   * @var bool
+   */
   public $forceVerbatimMode;
 
+  /**
+   * @param bool
+   */
   public function setForceDisableSupplementalResults($forceDisableSupplementalResults)
   {
     $this->forceDisableSupplementalResults = $forceDisableSupplementalResults;
   }
+  /**
+   * @return bool
+   */
   public function getForceDisableSupplementalResults()
   {
     return $this->forceDisableSupplementalResults;
   }
+  /**
+   * @param bool
+   */
   public function setForceVerbatimMode($forceVerbatimMode)
   {
     $this->forceVerbatimMode = $forceVerbatimMode;
   }
+  /**
+   * @return bool
+   */
   public function getForceVerbatimMode()
   {
     return $this->forceVerbatimMode;

@@ -19,30 +19,57 @@ namespace Google\Service\Monitoring;
 
 class LabelDescriptor extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $valueType;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setValueType($valueType)
   {
     $this->valueType = $valueType;
   }
+  /**
+   * @return string
+   */
   public function getValueType()
   {
     return $this->valueType;

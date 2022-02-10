@@ -19,21 +19,39 @@ namespace Google\Service\CloudDomains;
 
 class ManagementSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $renewalMethod;
+  /**
+   * @var string
+   */
   public $transferLockState;
 
+  /**
+   * @param string
+   */
   public function setRenewalMethod($renewalMethod)
   {
     $this->renewalMethod = $renewalMethod;
   }
+  /**
+   * @return string
+   */
   public function getRenewalMethod()
   {
     return $this->renewalMethod;
   }
+  /**
+   * @param string
+   */
   public function setTransferLockState($transferLockState)
   {
     $this->transferLockState = $transferLockState;
   }
+  /**
+   * @return string
+   */
   public function getTransferLockState()
   {
     return $this->transferLockState;

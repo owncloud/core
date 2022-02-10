@@ -23,16 +23,37 @@ class DeprecatedEvent extends \Google\Model
   protected $actionDataType = '';
   protected $commonType = CommonEventObject::class;
   protected $commonDataType = '';
+  /**
+   * @var string
+   */
   public $configCompleteRedirectUrl;
+  /**
+   * @var string
+   */
   public $dialogEventType;
+  /**
+   * @var string
+   */
   public $eventTime;
+  /**
+   * @var bool
+   */
   public $isDialogEvent;
   protected $messageType = Message::class;
   protected $messageDataType = '';
   protected $spaceType = Space::class;
   protected $spaceDataType = '';
+  /**
+   * @var string
+   */
   public $threadKey;
+  /**
+   * @var string
+   */
   public $token;
+  /**
+   * @var string
+   */
   public $type;
   protected $userType = User::class;
   protected $userDataType = '';
@@ -65,34 +86,58 @@ class DeprecatedEvent extends \Google\Model
   {
     return $this->common;
   }
+  /**
+   * @param string
+   */
   public function setConfigCompleteRedirectUrl($configCompleteRedirectUrl)
   {
     $this->configCompleteRedirectUrl = $configCompleteRedirectUrl;
   }
+  /**
+   * @return string
+   */
   public function getConfigCompleteRedirectUrl()
   {
     return $this->configCompleteRedirectUrl;
   }
+  /**
+   * @param string
+   */
   public function setDialogEventType($dialogEventType)
   {
     $this->dialogEventType = $dialogEventType;
   }
+  /**
+   * @return string
+   */
   public function getDialogEventType()
   {
     return $this->dialogEventType;
   }
+  /**
+   * @param string
+   */
   public function setEventTime($eventTime)
   {
     $this->eventTime = $eventTime;
   }
+  /**
+   * @return string
+   */
   public function getEventTime()
   {
     return $this->eventTime;
   }
+  /**
+   * @param bool
+   */
   public function setIsDialogEvent($isDialogEvent)
   {
     $this->isDialogEvent = $isDialogEvent;
   }
+  /**
+   * @return bool
+   */
   public function getIsDialogEvent()
   {
     return $this->isDialogEvent;
@@ -125,26 +170,44 @@ class DeprecatedEvent extends \Google\Model
   {
     return $this->space;
   }
+  /**
+   * @param string
+   */
   public function setThreadKey($threadKey)
   {
     $this->threadKey = $threadKey;
   }
+  /**
+   * @return string
+   */
   public function getThreadKey()
   {
     return $this->threadKey;
   }
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

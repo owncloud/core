@@ -20,14 +20,23 @@ namespace Google\Service\ShoppingContent;
 class PosDataProviders extends \Google\Collection
 {
   protected $collection_key = 'posDataProviders';
+  /**
+   * @var string
+   */
   public $country;
   protected $posDataProvidersType = PosDataProvidersPosDataProvider::class;
   protected $posDataProvidersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;

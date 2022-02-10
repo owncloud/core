@@ -19,12 +19,21 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2PublishToPubSub extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $topic;
 
+  /**
+   * @param string
+   */
   public function setTopic($topic)
   {
     $this->topic = $topic;
   }
+  /**
+   * @return string
+   */
   public function getTopic()
   {
     return $this->topic;

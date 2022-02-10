@@ -20,30 +20,57 @@ namespace Google\Service\Compute;
 class SslCertificateManagedSslCertificate extends \Google\Collection
 {
   protected $collection_key = 'domains';
+  /**
+   * @var string[]
+   */
   public $domainStatus;
+  /**
+   * @var string[]
+   */
   public $domains;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string[]
+   */
   public function setDomainStatus($domainStatus)
   {
     $this->domainStatus = $domainStatus;
   }
+  /**
+   * @return string[]
+   */
   public function getDomainStatus()
   {
     return $this->domainStatus;
   }
+  /**
+   * @param string[]
+   */
   public function setDomains($domains)
   {
     $this->domains = $domains;
   }
+  /**
+   * @return string[]
+   */
   public function getDomains()
   {
     return $this->domains;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

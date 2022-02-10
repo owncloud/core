@@ -20,21 +20,39 @@ namespace Google\Service\ShoppingContent;
 class RegionalInventory extends \Google\Collection
 {
   protected $collection_key = 'customAttributes';
+  /**
+   * @var string
+   */
   public $availability;
   protected $customAttributesType = CustomAttribute::class;
   protected $customAttributesDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
   protected $priceType = Price::class;
   protected $priceDataType = '';
+  /**
+   * @var string
+   */
   public $regionId;
   protected $salePriceType = Price::class;
   protected $salePriceDataType = '';
+  /**
+   * @var string
+   */
   public $salePriceEffectiveDate;
 
+  /**
+   * @param string
+   */
   public function setAvailability($availability)
   {
     $this->availability = $availability;
   }
+  /**
+   * @return string
+   */
   public function getAvailability()
   {
     return $this->availability;
@@ -53,10 +71,16 @@ class RegionalInventory extends \Google\Collection
   {
     return $this->customAttributes;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -75,10 +99,16 @@ class RegionalInventory extends \Google\Collection
   {
     return $this->price;
   }
+  /**
+   * @param string
+   */
   public function setRegionId($regionId)
   {
     $this->regionId = $regionId;
   }
+  /**
+   * @return string
+   */
   public function getRegionId()
   {
     return $this->regionId;
@@ -97,10 +127,16 @@ class RegionalInventory extends \Google\Collection
   {
     return $this->salePrice;
   }
+  /**
+   * @param string
+   */
   public function setSalePriceEffectiveDate($salePriceEffectiveDate)
   {
     $this->salePriceEffectiveDate = $salePriceEffectiveDate;
   }
+  /**
+   * @return string
+   */
   public function getSalePriceEffectiveDate()
   {
     return $this->salePriceEffectiveDate;

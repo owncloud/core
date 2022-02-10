@@ -20,41 +20,77 @@ namespace Google\Service\CloudDomains;
 class RegisterParameters extends \Google\Collection
 {
   protected $collection_key = 'supportedPrivacy';
+  /**
+   * @var string
+   */
   public $availability;
+  /**
+   * @var string
+   */
   public $domainName;
+  /**
+   * @var string[]
+   */
   public $domainNotices;
+  /**
+   * @var string[]
+   */
   public $supportedPrivacy;
   protected $yearlyPriceType = Money::class;
   protected $yearlyPriceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAvailability($availability)
   {
     $this->availability = $availability;
   }
+  /**
+   * @return string
+   */
   public function getAvailability()
   {
     return $this->availability;
   }
+  /**
+   * @param string
+   */
   public function setDomainName($domainName)
   {
     $this->domainName = $domainName;
   }
+  /**
+   * @return string
+   */
   public function getDomainName()
   {
     return $this->domainName;
   }
+  /**
+   * @param string[]
+   */
   public function setDomainNotices($domainNotices)
   {
     $this->domainNotices = $domainNotices;
   }
+  /**
+   * @return string[]
+   */
   public function getDomainNotices()
   {
     return $this->domainNotices;
   }
+  /**
+   * @param string[]
+   */
   public function setSupportedPrivacy($supportedPrivacy)
   {
     $this->supportedPrivacy = $supportedPrivacy;
   }
+  /**
+   * @return string[]
+   */
   public function getSupportedPrivacy()
   {
     return $this->supportedPrivacy;

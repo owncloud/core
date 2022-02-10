@@ -19,15 +19,27 @@ namespace Google\Service\Storage;
 
 class HmacKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
   protected $metadataType = HmacKeyMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $secret;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -46,10 +58,16 @@ class HmacKey extends \Google\Model
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setSecret($secret)
   {
     $this->secret = $secret;
   }
+  /**
+   * @return string
+   */
   public function getSecret()
   {
     return $this->secret;

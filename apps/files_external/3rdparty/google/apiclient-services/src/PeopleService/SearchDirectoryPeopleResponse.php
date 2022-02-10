@@ -20,15 +20,27 @@ namespace Google\Service\PeopleService;
 class SearchDirectoryPeopleResponse extends \Google\Collection
 {
   protected $collection_key = 'people';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $peopleType = Person::class;
   protected $peopleDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalSize;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
@@ -47,10 +59,16 @@ class SearchDirectoryPeopleResponse extends \Google\Collection
   {
     return $this->people;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

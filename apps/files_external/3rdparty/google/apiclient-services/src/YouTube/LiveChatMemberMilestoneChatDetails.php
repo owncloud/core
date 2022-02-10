@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class LiveChatMemberMilestoneChatDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $memberLevelName;
+  /**
+   * @var string
+   */
   public $memberMonth;
+  /**
+   * @var string
+   */
   public $userComment;
 
+  /**
+   * @param string
+   */
   public function setMemberLevelName($memberLevelName)
   {
     $this->memberLevelName = $memberLevelName;
   }
+  /**
+   * @return string
+   */
   public function getMemberLevelName()
   {
     return $this->memberLevelName;
   }
+  /**
+   * @param string
+   */
   public function setMemberMonth($memberMonth)
   {
     $this->memberMonth = $memberMonth;
   }
+  /**
+   * @return string
+   */
   public function getMemberMonth()
   {
     return $this->memberMonth;
   }
+  /**
+   * @param string
+   */
   public function setUserComment($userComment)
   {
     $this->userComment = $userComment;
   }
+  /**
+   * @return string
+   */
   public function getUserComment()
   {
     return $this->userComment;

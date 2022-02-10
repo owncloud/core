@@ -20,30 +20,57 @@ namespace Google\Service\YouTube;
 class SuperChatEventListResponse extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $eventId;
   protected $itemsType = SuperChatEvent::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $pageInfoType = PageInfo::class;
   protected $pageInfoDataType = '';
   protected $tokenPaginationType = TokenPagination::class;
   protected $tokenPaginationDataType = '';
+  /**
+   * @var string
+   */
   public $visitorId;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setEventId($eventId)
   {
     $this->eventId = $eventId;
   }
+  /**
+   * @return string
+   */
   public function getEventId()
   {
     return $this->eventId;
@@ -62,18 +89,30 @@ class SuperChatEventListResponse extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
@@ -106,10 +145,16 @@ class SuperChatEventListResponse extends \Google\Collection
   {
     return $this->tokenPagination;
   }
+  /**
+   * @param string
+   */
   public function setVisitorId($visitorId)
   {
     $this->visitorId = $visitorId;
   }
+  /**
+   * @return string
+   */
   public function getVisitorId()
   {
     return $this->visitorId;

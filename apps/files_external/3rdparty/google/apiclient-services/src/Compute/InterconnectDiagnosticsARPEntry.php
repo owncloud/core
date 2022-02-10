@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class InterconnectDiagnosticsARPEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var string
+   */
   public $macAddress;
 
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param string
+   */
   public function setMacAddress($macAddress)
   {
     $this->macAddress = $macAddress;
   }
+  /**
+   * @return string
+   */
   public function getMacAddress()
   {
     return $this->macAddress;

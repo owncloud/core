@@ -19,30 +19,57 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2GetDefaultBranchResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $branch;
+  /**
+   * @var string
+   */
   public $note;
+  /**
+   * @var string
+   */
   public $setTime;
 
+  /**
+   * @param string
+   */
   public function setBranch($branch)
   {
     $this->branch = $branch;
   }
+  /**
+   * @return string
+   */
   public function getBranch()
   {
     return $this->branch;
   }
+  /**
+   * @param string
+   */
   public function setNote($note)
   {
     $this->note = $note;
   }
+  /**
+   * @return string
+   */
   public function getNote()
   {
     return $this->note;
   }
+  /**
+   * @param string
+   */
   public function setSetTime($setTime)
   {
     $this->setTime = $setTime;
   }
+  /**
+   * @return string
+   */
   public function getSetTime()
   {
     return $this->setTime;

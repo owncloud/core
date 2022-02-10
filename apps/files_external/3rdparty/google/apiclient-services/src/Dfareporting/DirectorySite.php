@@ -20,21 +20,45 @@ namespace Google\Service\Dfareporting;
 class DirectorySite extends \Google\Collection
 {
   protected $collection_key = 'interstitialTagFormats';
+  /**
+   * @var string
+   */
   public $id;
   protected $idDimensionValueType = DimensionValue::class;
   protected $idDimensionValueDataType = '';
+  /**
+   * @var string[]
+   */
   public $inpageTagFormats;
+  /**
+   * @var string[]
+   */
   public $interstitialTagFormats;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $settingsType = DirectorySiteSettings::class;
   protected $settingsDataType = '';
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -53,34 +77,58 @@ class DirectorySite extends \Google\Collection
   {
     return $this->idDimensionValue;
   }
+  /**
+   * @param string[]
+   */
   public function setInpageTagFormats($inpageTagFormats)
   {
     $this->inpageTagFormats = $inpageTagFormats;
   }
+  /**
+   * @return string[]
+   */
   public function getInpageTagFormats()
   {
     return $this->inpageTagFormats;
   }
+  /**
+   * @param string[]
+   */
   public function setInterstitialTagFormats($interstitialTagFormats)
   {
     $this->interstitialTagFormats = $interstitialTagFormats;
   }
+  /**
+   * @return string[]
+   */
   public function getInterstitialTagFormats()
   {
     return $this->interstitialTagFormats;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -99,10 +147,16 @@ class DirectorySite extends \Google\Collection
   {
     return $this->settings;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

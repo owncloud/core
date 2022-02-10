@@ -20,15 +20,27 @@ namespace Google\Service\AdExchangeBuyerII;
 class ListCreativeStatusBreakdownByDetailResponse extends \Google\Collection
 {
   protected $collection_key = 'filteredBidDetailRows';
+  /**
+   * @var string
+   */
   public $detailType;
   protected $filteredBidDetailRowsType = FilteredBidDetailRow::class;
   protected $filteredBidDetailRowsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string
+   */
   public function setDetailType($detailType)
   {
     $this->detailType = $detailType;
   }
+  /**
+   * @return string
+   */
   public function getDetailType()
   {
     return $this->detailType;
@@ -47,10 +59,16 @@ class ListCreativeStatusBreakdownByDetailResponse extends \Google\Collection
   {
     return $this->filteredBidDetailRows;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

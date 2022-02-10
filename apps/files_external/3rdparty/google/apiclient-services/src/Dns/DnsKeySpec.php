@@ -19,39 +19,75 @@ namespace Google\Service\Dns;
 
 class DnsKeySpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $algorithm;
+  /**
+   * @var string
+   */
   public $keyLength;
+  /**
+   * @var string
+   */
   public $keyType;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setAlgorithm($algorithm)
   {
     $this->algorithm = $algorithm;
   }
+  /**
+   * @return string
+   */
   public function getAlgorithm()
   {
     return $this->algorithm;
   }
+  /**
+   * @param string
+   */
   public function setKeyLength($keyLength)
   {
     $this->keyLength = $keyLength;
   }
+  /**
+   * @return string
+   */
   public function getKeyLength()
   {
     return $this->keyLength;
   }
+  /**
+   * @param string
+   */
   public function setKeyType($keyType)
   {
     $this->keyType = $keyType;
   }
+  /**
+   * @return string
+   */
   public function getKeyType()
   {
     return $this->keyType;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

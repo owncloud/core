@@ -19,32 +19,59 @@ namespace Google\Service\Pubsub;
 
 class ValidateMessageRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $encoding;
+  /**
+   * @var string
+   */
   public $message;
+  /**
+   * @var string
+   */
   public $name;
   protected $schemaType = Schema::class;
   protected $schemaDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEncoding($encoding)
   {
     $this->encoding = $encoding;
   }
+  /**
+   * @return string
+   */
   public function getEncoding()
   {
     return $this->encoding;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

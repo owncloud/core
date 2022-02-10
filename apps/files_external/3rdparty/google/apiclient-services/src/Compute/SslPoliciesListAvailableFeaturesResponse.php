@@ -20,12 +20,21 @@ namespace Google\Service\Compute;
 class SslPoliciesListAvailableFeaturesResponse extends \Google\Collection
 {
   protected $collection_key = 'features';
+  /**
+   * @var string[]
+   */
   public $features;
 
+  /**
+   * @param string[]
+   */
   public function setFeatures($features)
   {
     $this->features = $features;
   }
+  /**
+   * @return string[]
+   */
   public function getFeatures()
   {
     return $this->features;

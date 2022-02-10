@@ -19,48 +19,93 @@ namespace Google\Service\Fitness;
 
 class Device extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $manufacturer;
+  /**
+   * @var string
+   */
   public $model;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $uid;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setManufacturer($manufacturer)
   {
     $this->manufacturer = $manufacturer;
   }
+  /**
+   * @return string
+   */
   public function getManufacturer()
   {
     return $this->manufacturer;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUid($uid)
   {
     $this->uid = $uid;
   }
+  /**
+   * @return string
+   */
   public function getUid()
   {
     return $this->uid;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

@@ -19,30 +19,57 @@ namespace Google\Service\CloudBuild;
 
 class PushFilter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $branch;
+  /**
+   * @var bool
+   */
   public $invertRegex;
+  /**
+   * @var string
+   */
   public $tag;
 
+  /**
+   * @param string
+   */
   public function setBranch($branch)
   {
     $this->branch = $branch;
   }
+  /**
+   * @return string
+   */
   public function getBranch()
   {
     return $this->branch;
   }
+  /**
+   * @param bool
+   */
   public function setInvertRegex($invertRegex)
   {
     $this->invertRegex = $invertRegex;
   }
+  /**
+   * @return bool
+   */
   public function getInvertRegex()
   {
     return $this->invertRegex;
   }
+  /**
+   * @param string
+   */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
+  /**
+   * @return string
+   */
   public function getTag()
   {
     return $this->tag;

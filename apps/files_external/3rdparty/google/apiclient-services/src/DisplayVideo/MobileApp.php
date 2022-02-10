@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class MobileApp extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $platform;
+  /**
+   * @var string
+   */
   public $publisher;
 
+  /**
+   * @param string
+   */
   public function setAppId($appId)
   {
     $this->appId = $appId;
   }
+  /**
+   * @return string
+   */
   public function getAppId()
   {
     return $this->appId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setPlatform($platform)
   {
     $this->platform = $platform;
   }
+  /**
+   * @return string
+   */
   public function getPlatform()
   {
     return $this->platform;
   }
+  /**
+   * @param string
+   */
   public function setPublisher($publisher)
   {
     $this->publisher = $publisher;
   }
+  /**
+   * @return string
+   */
   public function getPublisher()
   {
     return $this->publisher;

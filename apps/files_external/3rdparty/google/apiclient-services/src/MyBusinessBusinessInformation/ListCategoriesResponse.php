@@ -22,6 +22,9 @@ class ListCategoriesResponse extends \Google\Collection
   protected $collection_key = 'categories';
   protected $categoriesType = Category::class;
   protected $categoriesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListCategoriesResponse extends \Google\Collection
   {
     return $this->categories;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

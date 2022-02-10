@@ -20,12 +20,21 @@ namespace Google\Service\Sheets;
 class BatchClearValuesRequest extends \Google\Collection
 {
   protected $collection_key = 'ranges';
+  /**
+   * @var string[]
+   */
   public $ranges;
 
+  /**
+   * @param string[]
+   */
   public function setRanges($ranges)
   {
     $this->ranges = $ranges;
   }
+  /**
+   * @return string[]
+   */
   public function getRanges()
   {
     return $this->ranges;

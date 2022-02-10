@@ -19,12 +19,21 @@ namespace Google\Service\ShoppingContent;
 
 class CaptureOrderResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $executionStatus;
 
+  /**
+   * @param string
+   */
   public function setExecutionStatus($executionStatus)
   {
     $this->executionStatus = $executionStatus;
   }
+  /**
+   * @return string
+   */
   public function getExecutionStatus()
   {
     return $this->executionStatus;

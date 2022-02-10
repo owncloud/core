@@ -20,12 +20,21 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 class SubscribeClientsRequest extends \Google\Collection
 {
   protected $collection_key = 'clients';
+  /**
+   * @var string[]
+   */
   public $clients;
 
+  /**
+   * @param string[]
+   */
   public function setClients($clients)
   {
     $this->clients = $clients;
   }
+  /**
+   * @return string[]
+   */
   public function getClients()
   {
     return $this->clients;

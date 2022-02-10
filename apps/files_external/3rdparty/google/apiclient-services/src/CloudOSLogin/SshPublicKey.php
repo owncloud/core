@@ -19,39 +19,75 @@ namespace Google\Service\CloudOSLogin;
 
 class SshPublicKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expirationTimeUsec;
+  /**
+   * @var string
+   */
   public $fingerprint;
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setExpirationTimeUsec($expirationTimeUsec)
   {
     $this->expirationTimeUsec = $expirationTimeUsec;
   }
+  /**
+   * @return string
+   */
   public function getExpirationTimeUsec()
   {
     return $this->expirationTimeUsec;
   }
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

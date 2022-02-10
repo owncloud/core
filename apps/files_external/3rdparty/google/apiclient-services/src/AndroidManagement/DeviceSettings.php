@@ -19,66 +19,129 @@ namespace Google\Service\AndroidManagement;
 
 class DeviceSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $adbEnabled;
+  /**
+   * @var bool
+   */
   public $developmentSettingsEnabled;
+  /**
+   * @var string
+   */
   public $encryptionStatus;
+  /**
+   * @var bool
+   */
   public $isDeviceSecure;
+  /**
+   * @var bool
+   */
   public $isEncrypted;
+  /**
+   * @var bool
+   */
   public $unknownSourcesEnabled;
+  /**
+   * @var bool
+   */
   public $verifyAppsEnabled;
 
+  /**
+   * @param bool
+   */
   public function setAdbEnabled($adbEnabled)
   {
     $this->adbEnabled = $adbEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getAdbEnabled()
   {
     return $this->adbEnabled;
   }
+  /**
+   * @param bool
+   */
   public function setDevelopmentSettingsEnabled($developmentSettingsEnabled)
   {
     $this->developmentSettingsEnabled = $developmentSettingsEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getDevelopmentSettingsEnabled()
   {
     return $this->developmentSettingsEnabled;
   }
+  /**
+   * @param string
+   */
   public function setEncryptionStatus($encryptionStatus)
   {
     $this->encryptionStatus = $encryptionStatus;
   }
+  /**
+   * @return string
+   */
   public function getEncryptionStatus()
   {
     return $this->encryptionStatus;
   }
+  /**
+   * @param bool
+   */
   public function setIsDeviceSecure($isDeviceSecure)
   {
     $this->isDeviceSecure = $isDeviceSecure;
   }
+  /**
+   * @return bool
+   */
   public function getIsDeviceSecure()
   {
     return $this->isDeviceSecure;
   }
+  /**
+   * @param bool
+   */
   public function setIsEncrypted($isEncrypted)
   {
     $this->isEncrypted = $isEncrypted;
   }
+  /**
+   * @return bool
+   */
   public function getIsEncrypted()
   {
     return $this->isEncrypted;
   }
+  /**
+   * @param bool
+   */
   public function setUnknownSourcesEnabled($unknownSourcesEnabled)
   {
     $this->unknownSourcesEnabled = $unknownSourcesEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getUnknownSourcesEnabled()
   {
     return $this->unknownSourcesEnabled;
   }
+  /**
+   * @param bool
+   */
   public function setVerifyAppsEnabled($verifyAppsEnabled)
   {
     $this->verifyAppsEnabled = $verifyAppsEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getVerifyAppsEnabled()
   {
     return $this->verifyAppsEnabled;

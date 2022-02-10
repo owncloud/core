@@ -19,48 +19,93 @@ namespace Google\Service\Container;
 
 class UpdateMasterRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterId;
+  /**
+   * @var string
+   */
   public $masterVersion;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string
+   */
   public function setClusterId($clusterId)
   {
     $this->clusterId = $clusterId;
   }
+  /**
+   * @return string
+   */
   public function getClusterId()
   {
     return $this->clusterId;
   }
+  /**
+   * @param string
+   */
   public function setMasterVersion($masterVersion)
   {
     $this->masterVersion = $masterVersion;
   }
+  /**
+   * @return string
+   */
   public function getMasterVersion()
   {
     return $this->masterVersion;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

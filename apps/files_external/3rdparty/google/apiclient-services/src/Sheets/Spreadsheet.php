@@ -32,7 +32,13 @@ class Spreadsheet extends \Google\Collection
   protected $propertiesDataType = '';
   protected $sheetsType = Sheet::class;
   protected $sheetsDataType = 'array';
+  /**
+   * @var string
+   */
   public $spreadsheetId;
+  /**
+   * @var string
+   */
   public $spreadsheetUrl;
 
   /**
@@ -119,18 +125,30 @@ class Spreadsheet extends \Google\Collection
   {
     return $this->sheets;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetUrl($spreadsheetUrl)
   {
     $this->spreadsheetUrl = $spreadsheetUrl;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetUrl()
   {
     return $this->spreadsheetUrl;

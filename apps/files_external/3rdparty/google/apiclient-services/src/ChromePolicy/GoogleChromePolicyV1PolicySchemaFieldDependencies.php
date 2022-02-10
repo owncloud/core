@@ -19,21 +19,39 @@ namespace Google\Service\ChromePolicy;
 
 class GoogleChromePolicyV1PolicySchemaFieldDependencies extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sourceField;
+  /**
+   * @var string
+   */
   public $sourceFieldValue;
 
+  /**
+   * @param string
+   */
   public function setSourceField($sourceField)
   {
     $this->sourceField = $sourceField;
   }
+  /**
+   * @return string
+   */
   public function getSourceField()
   {
     return $this->sourceField;
   }
+  /**
+   * @param string
+   */
   public function setSourceFieldValue($sourceFieldValue)
   {
     $this->sourceFieldValue = $sourceFieldValue;
   }
+  /**
+   * @return string
+   */
   public function getSourceFieldValue()
   {
     return $this->sourceFieldValue;

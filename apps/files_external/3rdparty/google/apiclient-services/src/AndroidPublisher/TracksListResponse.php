@@ -20,14 +20,23 @@ namespace Google\Service\AndroidPublisher;
 class TracksListResponse extends \Google\Collection
 {
   protected $collection_key = 'tracks';
+  /**
+   * @var string
+   */
   public $kind;
   protected $tracksType = Track::class;
   protected $tracksDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

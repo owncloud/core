@@ -19,48 +19,93 @@ namespace Google\Service\CloudScheduler;
 
 class PubsubMessage extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $attributes;
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $messageId;
+  /**
+   * @var string
+   */
   public $orderingKey;
+  /**
+   * @var string
+   */
   public $publishTime;
 
+  /**
+   * @param string[]
+   */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
+  /**
+   * @return string[]
+   */
   public function getAttributes()
   {
     return $this->attributes;
   }
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setMessageId($messageId)
   {
     $this->messageId = $messageId;
   }
+  /**
+   * @return string
+   */
   public function getMessageId()
   {
     return $this->messageId;
   }
+  /**
+   * @param string
+   */
   public function setOrderingKey($orderingKey)
   {
     $this->orderingKey = $orderingKey;
   }
+  /**
+   * @return string
+   */
   public function getOrderingKey()
   {
     return $this->orderingKey;
   }
+  /**
+   * @param string
+   */
   public function setPublishTime($publishTime)
   {
     $this->publishTime = $publishTime;
   }
+  /**
+   * @return string
+   */
   public function getPublishTime()
   {
     return $this->publishTime;

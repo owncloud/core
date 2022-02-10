@@ -19,30 +19,57 @@ namespace Google\Service\CloudAsset;
 
 class VersionedPackage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $architecture;
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setArchitecture($architecture)
   {
     $this->architecture = $architecture;
   }
+  /**
+   * @return string
+   */
   public function getArchitecture()
   {
     return $this->architecture;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

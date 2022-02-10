@@ -20,33 +20,63 @@ namespace Google\Service\Dataflow;
 class Source extends \Google\Collection
 {
   protected $collection_key = 'baseSpecs';
+  /**
+   * @var array[]
+   */
   public $baseSpecs;
+  /**
+   * @var array[]
+   */
   public $codec;
+  /**
+   * @var bool
+   */
   public $doesNotNeedSplitting;
   protected $metadataType = SourceMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var array[]
+   */
   public $spec;
 
+  /**
+   * @param array[]
+   */
   public function setBaseSpecs($baseSpecs)
   {
     $this->baseSpecs = $baseSpecs;
   }
+  /**
+   * @return array[]
+   */
   public function getBaseSpecs()
   {
     return $this->baseSpecs;
   }
+  /**
+   * @param array[]
+   */
   public function setCodec($codec)
   {
     $this->codec = $codec;
   }
+  /**
+   * @return array[]
+   */
   public function getCodec()
   {
     return $this->codec;
   }
+  /**
+   * @param bool
+   */
   public function setDoesNotNeedSplitting($doesNotNeedSplitting)
   {
     $this->doesNotNeedSplitting = $doesNotNeedSplitting;
   }
+  /**
+   * @return bool
+   */
   public function getDoesNotNeedSplitting()
   {
     return $this->doesNotNeedSplitting;
@@ -65,10 +95,16 @@ class Source extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param array[]
+   */
   public function setSpec($spec)
   {
     $this->spec = $spec;
   }
+  /**
+   * @return array[]
+   */
   public function getSpec()
   {
     return $this->spec;

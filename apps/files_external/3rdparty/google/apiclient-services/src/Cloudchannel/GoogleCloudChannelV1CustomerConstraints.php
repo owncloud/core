@@ -20,30 +20,57 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1CustomerConstraints extends \Google\Collection
 {
   protected $collection_key = 'promotionalOrderTypes';
+  /**
+   * @var string[]
+   */
   public $allowedCustomerTypes;
+  /**
+   * @var string[]
+   */
   public $allowedRegions;
+  /**
+   * @var string[]
+   */
   public $promotionalOrderTypes;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedCustomerTypes($allowedCustomerTypes)
   {
     $this->allowedCustomerTypes = $allowedCustomerTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedCustomerTypes()
   {
     return $this->allowedCustomerTypes;
   }
+  /**
+   * @param string[]
+   */
   public function setAllowedRegions($allowedRegions)
   {
     $this->allowedRegions = $allowedRegions;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedRegions()
   {
     return $this->allowedRegions;
   }
+  /**
+   * @param string[]
+   */
   public function setPromotionalOrderTypes($promotionalOrderTypes)
   {
     $this->promotionalOrderTypes = $promotionalOrderTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getPromotionalOrderTypes()
   {
     return $this->promotionalOrderTypes;

@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class ServiceAttachmentConnectedEndpoint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endpoint;
+  /**
+   * @var string
+   */
   public $pscConnectionId;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setEndpoint($endpoint)
   {
     $this->endpoint = $endpoint;
   }
+  /**
+   * @return string
+   */
   public function getEndpoint()
   {
     return $this->endpoint;
   }
+  /**
+   * @param string
+   */
   public function setPscConnectionId($pscConnectionId)
   {
     $this->pscConnectionId = $pscConnectionId;
   }
+  /**
+   * @return string
+   */
   public function getPscConnectionId()
   {
     return $this->pscConnectionId;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

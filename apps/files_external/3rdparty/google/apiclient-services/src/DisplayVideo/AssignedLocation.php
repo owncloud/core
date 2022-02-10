@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class AssignedLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $assignedLocationId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setAssignedLocationId($assignedLocationId)
   {
     $this->assignedLocationId = $assignedLocationId;
   }
+  /**
+   * @return string
+   */
   public function getAssignedLocationId()
   {
     return $this->assignedLocationId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

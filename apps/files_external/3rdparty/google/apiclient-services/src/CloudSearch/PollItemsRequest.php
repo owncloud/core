@@ -20,17 +20,35 @@ namespace Google\Service\CloudSearch;
 class PollItemsRequest extends \Google\Collection
 {
   protected $collection_key = 'statusCodes';
+  /**
+   * @var string
+   */
   public $connectorName;
   protected $debugOptionsType = DebugOptions::class;
   protected $debugOptionsDataType = '';
+  /**
+   * @var int
+   */
   public $limit;
+  /**
+   * @var string
+   */
   public $queue;
+  /**
+   * @var string[]
+   */
   public $statusCodes;
 
+  /**
+   * @param string
+   */
   public function setConnectorName($connectorName)
   {
     $this->connectorName = $connectorName;
   }
+  /**
+   * @return string
+   */
   public function getConnectorName()
   {
     return $this->connectorName;
@@ -49,26 +67,44 @@ class PollItemsRequest extends \Google\Collection
   {
     return $this->debugOptions;
   }
+  /**
+   * @param int
+   */
   public function setLimit($limit)
   {
     $this->limit = $limit;
   }
+  /**
+   * @return int
+   */
   public function getLimit()
   {
     return $this->limit;
   }
+  /**
+   * @param string
+   */
   public function setQueue($queue)
   {
     $this->queue = $queue;
   }
+  /**
+   * @return string
+   */
   public function getQueue()
   {
     return $this->queue;
   }
+  /**
+   * @param string[]
+   */
   public function setStatusCodes($statusCodes)
   {
     $this->statusCodes = $statusCodes;
   }
+  /**
+   * @return string[]
+   */
   public function getStatusCodes()
   {
     return $this->statusCodes;

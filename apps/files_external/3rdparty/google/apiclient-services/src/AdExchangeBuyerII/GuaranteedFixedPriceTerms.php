@@ -22,11 +22,29 @@ class GuaranteedFixedPriceTerms extends \Google\Collection
   protected $collection_key = 'fixedPrices';
   protected $fixedPricesType = PricePerBuyer::class;
   protected $fixedPricesDataType = 'array';
+  /**
+   * @var string
+   */
   public $guaranteedImpressions;
+  /**
+   * @var string
+   */
   public $guaranteedLooks;
+  /**
+   * @var string
+   */
   public $impressionCap;
+  /**
+   * @var string
+   */
   public $minimumDailyLooks;
+  /**
+   * @var string
+   */
   public $percentShareOfVoice;
+  /**
+   * @var string
+   */
   public $reservationType;
 
   /**
@@ -43,50 +61,86 @@ class GuaranteedFixedPriceTerms extends \Google\Collection
   {
     return $this->fixedPrices;
   }
+  /**
+   * @param string
+   */
   public function setGuaranteedImpressions($guaranteedImpressions)
   {
     $this->guaranteedImpressions = $guaranteedImpressions;
   }
+  /**
+   * @return string
+   */
   public function getGuaranteedImpressions()
   {
     return $this->guaranteedImpressions;
   }
+  /**
+   * @param string
+   */
   public function setGuaranteedLooks($guaranteedLooks)
   {
     $this->guaranteedLooks = $guaranteedLooks;
   }
+  /**
+   * @return string
+   */
   public function getGuaranteedLooks()
   {
     return $this->guaranteedLooks;
   }
+  /**
+   * @param string
+   */
   public function setImpressionCap($impressionCap)
   {
     $this->impressionCap = $impressionCap;
   }
+  /**
+   * @return string
+   */
   public function getImpressionCap()
   {
     return $this->impressionCap;
   }
+  /**
+   * @param string
+   */
   public function setMinimumDailyLooks($minimumDailyLooks)
   {
     $this->minimumDailyLooks = $minimumDailyLooks;
   }
+  /**
+   * @return string
+   */
   public function getMinimumDailyLooks()
   {
     return $this->minimumDailyLooks;
   }
+  /**
+   * @param string
+   */
   public function setPercentShareOfVoice($percentShareOfVoice)
   {
     $this->percentShareOfVoice = $percentShareOfVoice;
   }
+  /**
+   * @return string
+   */
   public function getPercentShareOfVoice()
   {
     return $this->percentShareOfVoice;
   }
+  /**
+   * @param string
+   */
   public function setReservationType($reservationType)
   {
     $this->reservationType = $reservationType;
   }
+  /**
+   * @return string
+   */
   public function getReservationType()
   {
     return $this->reservationType;

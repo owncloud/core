@@ -20,14 +20,23 @@ namespace Google\Service\Logging;
 class ListSinksResponse extends \Google\Collection
 {
   protected $collection_key = 'sinks';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $sinksType = LogSink::class;
   protected $sinksDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

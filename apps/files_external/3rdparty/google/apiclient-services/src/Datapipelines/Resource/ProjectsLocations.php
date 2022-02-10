@@ -30,9 +30,8 @@ use Google\Service\Datapipelines\GoogleCloudDatapipelinesV1ListPipelinesResponse
 class ProjectsLocations extends \Google\Service\Resource
 {
   /**
-   * Lists pipelines. Returns a "NOT_FOUND" error if the list is empty. Returns a
-   * "FORBIDDEN" error if the caller doesn't have permission to access it.
-   * (locations.listPipelines)
+   * Lists pipelines. Returns a "FORBIDDEN" error if the caller doesn't have
+   * permission to access it. (locations.listPipelines)
    *
    * @param string $parent Required. The location name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID`.
@@ -42,12 +41,10 @@ class ProjectsLocations extends \Google\Service\Resource
    * request. If unspecified, all pipelines will be returned. Multiple filters can
    * be applied and must be comma separated. Fields eligible for filtering are: +
    * `type`: The type of the pipeline (streaming or batch). Allowed values are
-   * `ALL`, `BATCH`, and `STREAMING`. + `executor_type`: The type of pipeline
-   * execution layer. This is always Dataflow for now, but more executors may be
-   * added later. Allowed values are `ALL` and `DATAFLOW`. + `status`: The
-   * activity status of the pipeline. Allowed values are `ALL`, `ACTIVE`,
-   * `ARCHIVED`, and `PAUSED`. For example, to limit results to active batch
-   * processing pipelines: type:BATCH,status:ACTIVE
+   * `ALL`, `BATCH`, and `STREAMING`. + `status`: The activity status of the
+   * pipeline. Allowed values are `ALL`, `ACTIVE`, `ARCHIVED`, and `PAUSED`. For
+   * example, to limit results to active batch processing pipelines:
+   * type:BATCH,status:ACTIVE
    * @opt_param int pageSize The maximum number of entities to return. The service
    * may return fewer than this value, even if there are additional pages. If
    * unspecified, the max limit is yet to be determined by the backend

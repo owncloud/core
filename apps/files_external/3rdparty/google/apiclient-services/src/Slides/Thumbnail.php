@@ -19,30 +19,57 @@ namespace Google\Service\Slides;
 
 class Thumbnail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentUrl;
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param string
+   */
   public function setContentUrl($contentUrl)
   {
     $this->contentUrl = $contentUrl;
   }
+  /**
+   * @return string
+   */
   public function getContentUrl()
   {
     return $this->contentUrl;
   }
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

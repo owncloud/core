@@ -22,6 +22,9 @@ class ListClientTlsPoliciesResponse extends \Google\Collection
   protected $collection_key = 'clientTlsPolicies';
   protected $clientTlsPoliciesType = ClientTlsPolicy::class;
   protected $clientTlsPoliciesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListClientTlsPoliciesResponse extends \Google\Collection
   {
     return $this->clientTlsPolicies;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

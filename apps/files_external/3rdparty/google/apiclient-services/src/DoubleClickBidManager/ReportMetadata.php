@@ -19,32 +19,59 @@ namespace Google\Service\DoubleClickBidManager;
 
 class ReportMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $googleCloudStoragePath;
+  /**
+   * @var string
+   */
   public $reportDataEndTimeMs;
+  /**
+   * @var string
+   */
   public $reportDataStartTimeMs;
   protected $statusType = ReportStatus::class;
   protected $statusDataType = '';
 
+  /**
+   * @param string
+   */
   public function setGoogleCloudStoragePath($googleCloudStoragePath)
   {
     $this->googleCloudStoragePath = $googleCloudStoragePath;
   }
+  /**
+   * @return string
+   */
   public function getGoogleCloudStoragePath()
   {
     return $this->googleCloudStoragePath;
   }
+  /**
+   * @param string
+   */
   public function setReportDataEndTimeMs($reportDataEndTimeMs)
   {
     $this->reportDataEndTimeMs = $reportDataEndTimeMs;
   }
+  /**
+   * @return string
+   */
   public function getReportDataEndTimeMs()
   {
     return $this->reportDataEndTimeMs;
   }
+  /**
+   * @param string
+   */
   public function setReportDataStartTimeMs($reportDataStartTimeMs)
   {
     $this->reportDataStartTimeMs = $reportDataStartTimeMs;
   }
+  /**
+   * @return string
+   */
   public function getReportDataStartTimeMs()
   {
     return $this->reportDataStartTimeMs;

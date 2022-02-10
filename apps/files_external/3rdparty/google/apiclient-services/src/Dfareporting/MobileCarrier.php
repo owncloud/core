@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class MobileCarrier extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $countryCode;
+  /**
+   * @var string
+   */
   public $countryDartId;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setCountryCode($countryCode)
   {
     $this->countryCode = $countryCode;
   }
+  /**
+   * @return string
+   */
   public function getCountryCode()
   {
     return $this->countryCode;
   }
+  /**
+   * @param string
+   */
   public function setCountryDartId($countryDartId)
   {
     $this->countryDartId = $countryDartId;
   }
+  /**
+   * @return string
+   */
   public function getCountryDartId()
   {
     return $this->countryDartId;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

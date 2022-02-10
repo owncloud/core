@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class RegionalLocationListAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $negative;
+  /**
+   * @var string
+   */
   public $regionalLocationListId;
 
+  /**
+   * @param bool
+   */
   public function setNegative($negative)
   {
     $this->negative = $negative;
   }
+  /**
+   * @return bool
+   */
   public function getNegative()
   {
     return $this->negative;
   }
+  /**
+   * @param string
+   */
   public function setRegionalLocationListId($regionalLocationListId)
   {
     $this->regionalLocationListId = $regionalLocationListId;
   }
+  /**
+   * @return string
+   */
   public function getRegionalLocationListId()
   {
     return $this->regionalLocationListId;

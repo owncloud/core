@@ -19,15 +19,27 @@ namespace Google\Service\Slides;
 
 class UpdateImagePropertiesRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fields;
   protected $imagePropertiesType = ImageProperties::class;
   protected $imagePropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $objectId;
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;
@@ -46,10 +58,16 @@ class UpdateImagePropertiesRequest extends \Google\Model
   {
     return $this->imageProperties;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;

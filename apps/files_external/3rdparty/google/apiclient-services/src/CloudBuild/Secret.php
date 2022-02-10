@@ -19,21 +19,39 @@ namespace Google\Service\CloudBuild;
 
 class Secret extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kmsKeyName;
+  /**
+   * @var string[]
+   */
   public $secretEnv;
 
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;
   }
+  /**
+   * @param string[]
+   */
   public function setSecretEnv($secretEnv)
   {
     $this->secretEnv = $secretEnv;
   }
+  /**
+   * @return string[]
+   */
   public function getSecretEnv()
   {
     return $this->secretEnv;

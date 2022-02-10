@@ -19,23 +19,41 @@ namespace Google\Service\CertificateAuthorityService;
 
 class ActivateCertificateAuthorityRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pemCaCertificate;
+  /**
+   * @var string
+   */
   public $requestId;
   protected $subordinateConfigType = SubordinateConfig::class;
   protected $subordinateConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setPemCaCertificate($pemCaCertificate)
   {
     $this->pemCaCertificate = $pemCaCertificate;
   }
+  /**
+   * @return string
+   */
   public function getPemCaCertificate()
   {
     return $this->pemCaCertificate;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

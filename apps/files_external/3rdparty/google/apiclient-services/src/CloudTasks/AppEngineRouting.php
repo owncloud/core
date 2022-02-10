@@ -19,39 +19,75 @@ namespace Google\Service\CloudTasks;
 
 class AppEngineRouting extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var string
+   */
   public $instance;
+  /**
+   * @var string
+   */
   public $service;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param string
+   */
   public function setInstance($instance)
   {
     $this->instance = $instance;
   }
+  /**
+   * @return string
+   */
   public function getInstance()
   {
     return $this->instance;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

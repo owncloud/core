@@ -19,34 +19,67 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3Deployment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $flowVersion;
+  /**
+   * @var string
+   */
   public $name;
   protected $resultType = GoogleCloudDialogflowCxV3DeploymentResult::class;
   protected $resultDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setFlowVersion($flowVersion)
   {
     $this->flowVersion = $flowVersion;
   }
+  /**
+   * @return string
+   */
   public function getFlowVersion()
   {
     return $this->flowVersion;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -65,18 +98,30 @@ class GoogleCloudDialogflowCxV3Deployment extends \Google\Model
   {
     return $this->result;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

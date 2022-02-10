@@ -20,21 +20,39 @@ namespace Google\Service\Pubsub;
 class ListTopicSubscriptionsResponse extends \Google\Collection
 {
   protected $collection_key = 'subscriptions';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $subscriptions;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setSubscriptions($subscriptions)
   {
     $this->subscriptions = $subscriptions;
   }
+  /**
+   * @return string[]
+   */
   public function getSubscriptions()
   {
     return $this->subscriptions;

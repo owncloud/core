@@ -19,39 +19,75 @@ namespace Google\Service\ServiceNetworking;
 
 class SecondaryIpRangeSpec extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $ipPrefixLength;
+  /**
+   * @var string
+   */
   public $outsideAllocationPublicIpRange;
+  /**
+   * @var string
+   */
   public $rangeName;
+  /**
+   * @var string
+   */
   public $requestedAddress;
 
+  /**
+   * @param int
+   */
   public function setIpPrefixLength($ipPrefixLength)
   {
     $this->ipPrefixLength = $ipPrefixLength;
   }
+  /**
+   * @return int
+   */
   public function getIpPrefixLength()
   {
     return $this->ipPrefixLength;
   }
+  /**
+   * @param string
+   */
   public function setOutsideAllocationPublicIpRange($outsideAllocationPublicIpRange)
   {
     $this->outsideAllocationPublicIpRange = $outsideAllocationPublicIpRange;
   }
+  /**
+   * @return string
+   */
   public function getOutsideAllocationPublicIpRange()
   {
     return $this->outsideAllocationPublicIpRange;
   }
+  /**
+   * @param string
+   */
   public function setRangeName($rangeName)
   {
     $this->rangeName = $rangeName;
   }
+  /**
+   * @return string
+   */
   public function getRangeName()
   {
     return $this->rangeName;
   }
+  /**
+   * @param string
+   */
   public function setRequestedAddress($requestedAddress)
   {
     $this->requestedAddress = $requestedAddress;
   }
+  /**
+   * @return string
+   */
   public function getRequestedAddress()
   {
     return $this->requestedAddress;

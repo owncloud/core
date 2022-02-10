@@ -19,32 +19,59 @@ namespace Google\Service\ServiceControl;
 
 class AuthorizationInfo extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $granted;
+  /**
+   * @var string
+   */
   public $permission;
+  /**
+   * @var string
+   */
   public $resource;
   protected $resourceAttributesType = ServicecontrolResource::class;
   protected $resourceAttributesDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setGranted($granted)
   {
     $this->granted = $granted;
   }
+  /**
+   * @return bool
+   */
   public function getGranted()
   {
     return $this->granted;
   }
+  /**
+   * @param string
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string
+   */
   public function getPermission()
   {
     return $this->permission;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;

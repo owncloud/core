@@ -22,6 +22,9 @@ class SasPortalPolicy extends \Google\Collection
   protected $collection_key = 'assignments';
   protected $assignmentsType = SasPortalAssignment::class;
   protected $assignmentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $etag;
 
   /**
@@ -38,10 +41,16 @@ class SasPortalPolicy extends \Google\Collection
   {
     return $this->assignments;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;

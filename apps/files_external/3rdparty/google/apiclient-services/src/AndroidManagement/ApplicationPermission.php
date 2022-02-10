@@ -19,30 +19,57 @@ namespace Google\Service\AndroidManagement;
 
 class ApplicationPermission extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $permissionId;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPermissionId($permissionId)
   {
     $this->permissionId = $permissionId;
   }
+  /**
+   * @return string
+   */
   public function getPermissionId()
   {
     return $this->permissionId;

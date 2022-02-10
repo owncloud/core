@@ -19,21 +19,39 @@ namespace Google\Service\VMMigrationService;
 
 class SchedulePolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $idleDuration;
+  /**
+   * @var bool
+   */
   public $skipOsAdaptation;
 
+  /**
+   * @param string
+   */
   public function setIdleDuration($idleDuration)
   {
     $this->idleDuration = $idleDuration;
   }
+  /**
+   * @return string
+   */
   public function getIdleDuration()
   {
     return $this->idleDuration;
   }
+  /**
+   * @param bool
+   */
   public function setSkipOsAdaptation($skipOsAdaptation)
   {
     $this->skipOsAdaptation = $skipOsAdaptation;
   }
+  /**
+   * @return bool
+   */
   public function getSkipOsAdaptation()
   {
     return $this->skipOsAdaptation;

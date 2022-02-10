@@ -22,6 +22,9 @@ class GoogleFactcheckingFactchecktoolsV1alpha1ListClaimReviewMarkupPagesResponse
   protected $collection_key = 'claimReviewMarkupPages';
   protected $claimReviewMarkupPagesType = GoogleFactcheckingFactchecktoolsV1alpha1ClaimReviewMarkupPage::class;
   protected $claimReviewMarkupPagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleFactcheckingFactchecktoolsV1alpha1ListClaimReviewMarkupPagesResponse
   {
     return $this->claimReviewMarkupPages;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

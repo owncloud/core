@@ -31,6 +31,21 @@ use Google\Service\CloudOSLogin\SshPublicKey;
 class UsersSshPublicKeys extends \Google\Service\Resource
 {
   /**
+   * Create an SSH public key (sshPublicKeys.create)
+   *
+   * @param string $parent Required. The unique ID for the user in format
+   * `users/{user}`.
+   * @param SshPublicKey $postBody
+   * @param array $optParams Optional parameters.
+   * @return SshPublicKey
+   */
+  public function create($parent, SshPublicKey $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('create', [$params], SshPublicKey::class);
+  }
+  /**
    * Deletes an SSH public key. (sshPublicKeys.delete)
    *
    * @param string $name Required. The fingerprint of the public key to update.

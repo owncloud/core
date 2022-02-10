@@ -20,16 +20,31 @@ namespace Google\Service\Dfareporting;
 class SiteCompanionSetting extends \Google\Collection
 {
   protected $collection_key = 'enabledSizes';
+  /**
+   * @var bool
+   */
   public $companionsDisabled;
   protected $enabledSizesType = Size::class;
   protected $enabledSizesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $imageOnly;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param bool
+   */
   public function setCompanionsDisabled($companionsDisabled)
   {
     $this->companionsDisabled = $companionsDisabled;
   }
+  /**
+   * @return bool
+   */
   public function getCompanionsDisabled()
   {
     return $this->companionsDisabled;
@@ -48,18 +63,30 @@ class SiteCompanionSetting extends \Google\Collection
   {
     return $this->enabledSizes;
   }
+  /**
+   * @param bool
+   */
   public function setImageOnly($imageOnly)
   {
     $this->imageOnly = $imageOnly;
   }
+  /**
+   * @return bool
+   */
   public function getImageOnly()
   {
     return $this->imageOnly;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

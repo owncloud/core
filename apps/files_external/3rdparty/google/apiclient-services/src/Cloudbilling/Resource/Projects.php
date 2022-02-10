@@ -31,8 +31,10 @@ class Projects extends \Google\Service\Resource
 {
   /**
    * Gets the billing information for a project. The current authenticated user
-   * must have [permission to view the project](https://cloud.google.com/docs
-   * /permissions-overview#h.bgs0oxofvnoo ). (projects.getBillingInfo)
+   * must have the `resourcemanager.projects.get` permission for the project,
+   * which can be granted by assigning the [Project
+   * Viewer](https://cloud.google.com/iam/docs/understanding-
+   * roles#predefined_roles) role. (projects.getBillingInfo)
    *
    * @param string $name Required. The resource name of the project for which
    * billing information is retrieved. For example, `projects/tokyo-rain-123`.

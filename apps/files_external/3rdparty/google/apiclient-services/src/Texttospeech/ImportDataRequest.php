@@ -19,12 +19,21 @@ namespace Google\Service\Texttospeech;
 
 class ImportDataRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $csvCloudStorageUri;
 
+  /**
+   * @param string
+   */
   public function setCsvCloudStorageUri($csvCloudStorageUri)
   {
     $this->csvCloudStorageUri = $csvCloudStorageUri;
   }
+  /**
+   * @return string
+   */
   public function getCsvCloudStorageUri()
   {
     return $this->csvCloudStorageUri;

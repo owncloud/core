@@ -19,12 +19,21 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 
 class GoogleAnalyticsAdminV1alphaAcknowledgeUserDataCollectionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $acknowledgement;
 
+  /**
+   * @param string
+   */
   public function setAcknowledgement($acknowledgement)
   {
     $this->acknowledgement = $acknowledgement;
   }
+  /**
+   * @return string
+   */
   public function getAcknowledgement()
   {
     return $this->acknowledgement;

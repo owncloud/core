@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class ContentInstreamPositionAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adType;
+  /**
+   * @var string
+   */
   public $contentInstreamPosition;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setAdType($adType)
   {
     $this->adType = $adType;
   }
+  /**
+   * @return string
+   */
   public function getAdType()
   {
     return $this->adType;
   }
+  /**
+   * @param string
+   */
   public function setContentInstreamPosition($contentInstreamPosition)
   {
     $this->contentInstreamPosition = $contentInstreamPosition;
   }
+  /**
+   * @return string
+   */
   public function getContentInstreamPosition()
   {
     return $this->contentInstreamPosition;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

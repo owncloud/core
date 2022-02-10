@@ -20,6 +20,9 @@ namespace Google\Service\Sheets;
 class ChartSpec extends \Google\Collection
 {
   protected $collection_key = 'sortSpecs';
+  /**
+   * @var string
+   */
   public $altText;
   protected $backgroundColorType = Color::class;
   protected $backgroundColorDataType = '';
@@ -35,10 +38,19 @@ class ChartSpec extends \Google\Collection
   protected $dataSourceChartPropertiesDataType = '';
   protected $filterSpecsType = FilterSpec::class;
   protected $filterSpecsDataType = 'array';
+  /**
+   * @var string
+   */
   public $fontName;
+  /**
+   * @var string
+   */
   public $hiddenDimensionStrategy;
   protected $histogramChartType = HistogramChartSpec::class;
   protected $histogramChartDataType = '';
+  /**
+   * @var bool
+   */
   public $maximized;
   protected $orgChartType = OrgChartSpec::class;
   protected $orgChartDataType = '';
@@ -48,11 +60,17 @@ class ChartSpec extends \Google\Collection
   protected $scorecardChartDataType = '';
   protected $sortSpecsType = SortSpec::class;
   protected $sortSpecsDataType = 'array';
+  /**
+   * @var string
+   */
   public $subtitle;
   protected $subtitleTextFormatType = TextFormat::class;
   protected $subtitleTextFormatDataType = '';
   protected $subtitleTextPositionType = TextPosition::class;
   protected $subtitleTextPositionDataType = '';
+  /**
+   * @var string
+   */
   public $title;
   protected $titleTextFormatType = TextFormat::class;
   protected $titleTextFormatDataType = '';
@@ -63,10 +81,16 @@ class ChartSpec extends \Google\Collection
   protected $waterfallChartType = WaterfallChartSpec::class;
   protected $waterfallChartDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAltText($altText)
   {
     $this->altText = $altText;
   }
+  /**
+   * @return string
+   */
   public function getAltText()
   {
     return $this->altText;
@@ -169,18 +193,30 @@ class ChartSpec extends \Google\Collection
   {
     return $this->filterSpecs;
   }
+  /**
+   * @param string
+   */
   public function setFontName($fontName)
   {
     $this->fontName = $fontName;
   }
+  /**
+   * @return string
+   */
   public function getFontName()
   {
     return $this->fontName;
   }
+  /**
+   * @param string
+   */
   public function setHiddenDimensionStrategy($hiddenDimensionStrategy)
   {
     $this->hiddenDimensionStrategy = $hiddenDimensionStrategy;
   }
+  /**
+   * @return string
+   */
   public function getHiddenDimensionStrategy()
   {
     return $this->hiddenDimensionStrategy;
@@ -199,10 +235,16 @@ class ChartSpec extends \Google\Collection
   {
     return $this->histogramChart;
   }
+  /**
+   * @param bool
+   */
   public function setMaximized($maximized)
   {
     $this->maximized = $maximized;
   }
+  /**
+   * @return bool
+   */
   public function getMaximized()
   {
     return $this->maximized;
@@ -263,10 +305,16 @@ class ChartSpec extends \Google\Collection
   {
     return $this->sortSpecs;
   }
+  /**
+   * @param string
+   */
   public function setSubtitle($subtitle)
   {
     $this->subtitle = $subtitle;
   }
+  /**
+   * @return string
+   */
   public function getSubtitle()
   {
     return $this->subtitle;
@@ -299,10 +347,16 @@ class ChartSpec extends \Google\Collection
   {
     return $this->subtitleTextPosition;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

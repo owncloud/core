@@ -19,84 +19,165 @@ namespace Google\Service\Datastream;
 
 class OracleColumn extends \Google\Model
 {
-  public $columnName;
+  /**
+   * @var string
+   */
+  public $column;
+  /**
+   * @var string
+   */
   public $dataType;
+  /**
+   * @var string
+   */
   public $encoding;
+  /**
+   * @var int
+   */
   public $length;
+  /**
+   * @var bool
+   */
   public $nullable;
+  /**
+   * @var int
+   */
   public $ordinalPosition;
+  /**
+   * @var int
+   */
   public $precision;
+  /**
+   * @var bool
+   */
   public $primaryKey;
+  /**
+   * @var int
+   */
   public $scale;
 
-  public function setColumnName($columnName)
+  /**
+   * @param string
+   */
+  public function setColumn($column)
   {
-    $this->columnName = $columnName;
+    $this->column = $column;
   }
-  public function getColumnName()
+  /**
+   * @return string
+   */
+  public function getColumn()
   {
-    return $this->columnName;
+    return $this->column;
   }
+  /**
+   * @param string
+   */
   public function setDataType($dataType)
   {
     $this->dataType = $dataType;
   }
+  /**
+   * @return string
+   */
   public function getDataType()
   {
     return $this->dataType;
   }
+  /**
+   * @param string
+   */
   public function setEncoding($encoding)
   {
     $this->encoding = $encoding;
   }
+  /**
+   * @return string
+   */
   public function getEncoding()
   {
     return $this->encoding;
   }
+  /**
+   * @param int
+   */
   public function setLength($length)
   {
     $this->length = $length;
   }
+  /**
+   * @return int
+   */
   public function getLength()
   {
     return $this->length;
   }
+  /**
+   * @param bool
+   */
   public function setNullable($nullable)
   {
     $this->nullable = $nullable;
   }
+  /**
+   * @return bool
+   */
   public function getNullable()
   {
     return $this->nullable;
   }
+  /**
+   * @param int
+   */
   public function setOrdinalPosition($ordinalPosition)
   {
     $this->ordinalPosition = $ordinalPosition;
   }
+  /**
+   * @return int
+   */
   public function getOrdinalPosition()
   {
     return $this->ordinalPosition;
   }
+  /**
+   * @param int
+   */
   public function setPrecision($precision)
   {
     $this->precision = $precision;
   }
+  /**
+   * @return int
+   */
   public function getPrecision()
   {
     return $this->precision;
   }
+  /**
+   * @param bool
+   */
   public function setPrimaryKey($primaryKey)
   {
     $this->primaryKey = $primaryKey;
   }
+  /**
+   * @return bool
+   */
   public function getPrimaryKey()
   {
     return $this->primaryKey;
   }
+  /**
+   * @param int
+   */
   public function setScale($scale)
   {
     $this->scale = $scale;
   }
+  /**
+   * @return int
+   */
   public function getScale()
   {
     return $this->scale;

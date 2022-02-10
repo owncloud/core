@@ -19,21 +19,39 @@ namespace Google\Service\CloudIot;
 
 class ModifyCloudToDeviceConfigRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $binaryData;
+  /**
+   * @var string
+   */
   public $versionToUpdate;
 
+  /**
+   * @param string
+   */
   public function setBinaryData($binaryData)
   {
     $this->binaryData = $binaryData;
   }
+  /**
+   * @return string
+   */
   public function getBinaryData()
   {
     return $this->binaryData;
   }
+  /**
+   * @param string
+   */
   public function setVersionToUpdate($versionToUpdate)
   {
     $this->versionToUpdate = $versionToUpdate;
   }
+  /**
+   * @return string
+   */
   public function getVersionToUpdate()
   {
     return $this->versionToUpdate;

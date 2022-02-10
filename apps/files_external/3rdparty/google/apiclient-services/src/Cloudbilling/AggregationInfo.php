@@ -19,30 +19,57 @@ namespace Google\Service\Cloudbilling;
 
 class AggregationInfo extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $aggregationCount;
+  /**
+   * @var string
+   */
   public $aggregationInterval;
+  /**
+   * @var string
+   */
   public $aggregationLevel;
 
+  /**
+   * @param int
+   */
   public function setAggregationCount($aggregationCount)
   {
     $this->aggregationCount = $aggregationCount;
   }
+  /**
+   * @return int
+   */
   public function getAggregationCount()
   {
     return $this->aggregationCount;
   }
+  /**
+   * @param string
+   */
   public function setAggregationInterval($aggregationInterval)
   {
     $this->aggregationInterval = $aggregationInterval;
   }
+  /**
+   * @return string
+   */
   public function getAggregationInterval()
   {
     return $this->aggregationInterval;
   }
+  /**
+   * @param string
+   */
   public function setAggregationLevel($aggregationLevel)
   {
     $this->aggregationLevel = $aggregationLevel;
   }
+  /**
+   * @return string
+   */
   public function getAggregationLevel()
   {
     return $this->aggregationLevel;

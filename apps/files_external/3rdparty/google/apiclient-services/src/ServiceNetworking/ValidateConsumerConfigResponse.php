@@ -22,7 +22,13 @@ class ValidateConsumerConfigResponse extends \Google\Collection
   protected $collection_key = 'existingSubnetworkCandidates';
   protected $existingSubnetworkCandidatesType = Subnetwork::class;
   protected $existingSubnetworkCandidatesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $isValid;
+  /**
+   * @var string
+   */
   public $validationError;
 
   /**
@@ -39,18 +45,30 @@ class ValidateConsumerConfigResponse extends \Google\Collection
   {
     return $this->existingSubnetworkCandidates;
   }
+  /**
+   * @param bool
+   */
   public function setIsValid($isValid)
   {
     $this->isValid = $isValid;
   }
+  /**
+   * @return bool
+   */
   public function getIsValid()
   {
     return $this->isValid;
   }
+  /**
+   * @param string
+   */
   public function setValidationError($validationError)
   {
     $this->validationError = $validationError;
   }
+  /**
+   * @return string
+   */
   public function getValidationError()
   {
     return $this->validationError;

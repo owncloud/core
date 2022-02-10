@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class Size extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var bool
+   */
   public $iab;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param bool
+   */
   public function setIab($iab)
   {
     $this->iab = $iab;
   }
+  /**
+   * @return bool
+   */
   public function getIab()
   {
     return $this->iab;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

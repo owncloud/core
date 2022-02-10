@@ -19,30 +19,57 @@ namespace Google\Service\Container;
 
 class HttpCacheControlResponseHeader extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $age;
+  /**
+   * @var string
+   */
   public $directive;
+  /**
+   * @var string
+   */
   public $expires;
 
+  /**
+   * @param string
+   */
   public function setAge($age)
   {
     $this->age = $age;
   }
+  /**
+   * @return string
+   */
   public function getAge()
   {
     return $this->age;
   }
+  /**
+   * @param string
+   */
   public function setDirective($directive)
   {
     $this->directive = $directive;
   }
+  /**
+   * @return string
+   */
   public function getDirective()
   {
     return $this->directive;
   }
+  /**
+   * @param string
+   */
   public function setExpires($expires)
   {
     $this->expires = $expires;
   }
+  /**
+   * @return string
+   */
   public function getExpires()
   {
     return $this->expires;

@@ -20,30 +20,57 @@ namespace Google\Service\AndroidPublisher;
 class Grant extends \Google\Collection
 {
   protected $collection_key = 'appLevelPermissions';
+  /**
+   * @var string[]
+   */
   public $appLevelPermissions;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $packageName;
 
+  /**
+   * @param string[]
+   */
   public function setAppLevelPermissions($appLevelPermissions)
   {
     $this->appLevelPermissions = $appLevelPermissions;
   }
+  /**
+   * @return string[]
+   */
   public function getAppLevelPermissions()
   {
     return $this->appLevelPermissions;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;

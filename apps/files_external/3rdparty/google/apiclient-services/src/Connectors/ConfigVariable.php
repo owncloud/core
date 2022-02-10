@@ -19,33 +19,63 @@ namespace Google\Service\Connectors;
 
 class ConfigVariable extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $boolValue;
+  /**
+   * @var string
+   */
   public $intValue;
+  /**
+   * @var string
+   */
   public $key;
   protected $secretValueType = Secret::class;
   protected $secretValueDataType = '';
+  /**
+   * @var string
+   */
   public $stringValue;
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
   }
+  /**
+   * @param string
+   */
   public function setIntValue($intValue)
   {
     $this->intValue = $intValue;
   }
+  /**
+   * @return string
+   */
   public function getIntValue()
   {
     return $this->intValue;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
@@ -64,10 +94,16 @@ class ConfigVariable extends \Google\Model
   {
     return $this->secretValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;

@@ -19,12 +19,21 @@ namespace Google\Service\Appengine;
 
 class ManualScaling extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $instances;
 
+  /**
+   * @param int
+   */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
+  /**
+   * @return int
+   */
   public function getInstances()
   {
     return $this->instances;

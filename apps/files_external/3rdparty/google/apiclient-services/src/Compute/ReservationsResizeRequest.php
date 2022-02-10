@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class ReservationsResizeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $specificSkuCount;
 
+  /**
+   * @param string
+   */
   public function setSpecificSkuCount($specificSkuCount)
   {
     $this->specificSkuCount = $specificSkuCount;
   }
+  /**
+   * @return string
+   */
   public function getSpecificSkuCount()
   {
     return $this->specificSkuCount;

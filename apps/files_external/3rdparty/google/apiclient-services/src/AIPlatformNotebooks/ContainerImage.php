@@ -19,21 +19,39 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class ContainerImage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $repository;
+  /**
+   * @var string
+   */
   public $tag;
 
+  /**
+   * @param string
+   */
   public function setRepository($repository)
   {
     $this->repository = $repository;
   }
+  /**
+   * @return string
+   */
   public function getRepository()
   {
     return $this->repository;
   }
+  /**
+   * @param string
+   */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
+  /**
+   * @return string
+   */
   public function getTag()
   {
     return $this->tag;

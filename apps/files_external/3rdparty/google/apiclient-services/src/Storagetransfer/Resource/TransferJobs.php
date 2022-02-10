@@ -50,8 +50,8 @@ class TransferJobs extends \Google\Service\Resource
    * Gets a transfer job. (transferJobs.get)
    *
    * @param string $jobName Required. The job to get.
-   * @param string $projectId Required. The ID of the Google Cloud Platform
-   * Console project that owns the job.
+   * @param string $projectId Required. The ID of the Google Cloud project that
+   * owns the job.
    * @param array $optParams Optional parameters.
    * @return TransferJob
    */

@@ -19,21 +19,39 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2SearchRequestBoostSpecConditionBoostSpec extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $boost;
+  /**
+   * @var string
+   */
   public $condition;
 
+  /**
+   * @param float
+   */
   public function setBoost($boost)
   {
     $this->boost = $boost;
   }
+  /**
+   * @return float
+   */
   public function getBoost()
   {
     return $this->boost;
   }
+  /**
+   * @param string
+   */
   public function setCondition($condition)
   {
     $this->condition = $condition;
   }
+  /**
+   * @return string
+   */
   public function getCondition()
   {
     return $this->condition;

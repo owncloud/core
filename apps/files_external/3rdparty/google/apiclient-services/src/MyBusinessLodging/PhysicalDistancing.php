@@ -19,93 +19,183 @@ namespace Google\Service\MyBusinessLodging;
 
 class PhysicalDistancing extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $commonAreasPhysicalDistancingArranged;
+  /**
+   * @var string
+   */
   public $commonAreasPhysicalDistancingArrangedException;
+  /**
+   * @var bool
+   */
   public $physicalDistancingRequired;
+  /**
+   * @var string
+   */
   public $physicalDistancingRequiredException;
+  /**
+   * @var bool
+   */
   public $safetyDividers;
+  /**
+   * @var string
+   */
   public $safetyDividersException;
+  /**
+   * @var bool
+   */
   public $sharedAreasLimitedOccupancy;
+  /**
+   * @var string
+   */
   public $sharedAreasLimitedOccupancyException;
+  /**
+   * @var bool
+   */
   public $wellnessAreasHavePrivateSpaces;
+  /**
+   * @var string
+   */
   public $wellnessAreasHavePrivateSpacesException;
 
+  /**
+   * @param bool
+   */
   public function setCommonAreasPhysicalDistancingArranged($commonAreasPhysicalDistancingArranged)
   {
     $this->commonAreasPhysicalDistancingArranged = $commonAreasPhysicalDistancingArranged;
   }
+  /**
+   * @return bool
+   */
   public function getCommonAreasPhysicalDistancingArranged()
   {
     return $this->commonAreasPhysicalDistancingArranged;
   }
+  /**
+   * @param string
+   */
   public function setCommonAreasPhysicalDistancingArrangedException($commonAreasPhysicalDistancingArrangedException)
   {
     $this->commonAreasPhysicalDistancingArrangedException = $commonAreasPhysicalDistancingArrangedException;
   }
+  /**
+   * @return string
+   */
   public function getCommonAreasPhysicalDistancingArrangedException()
   {
     return $this->commonAreasPhysicalDistancingArrangedException;
   }
+  /**
+   * @param bool
+   */
   public function setPhysicalDistancingRequired($physicalDistancingRequired)
   {
     $this->physicalDistancingRequired = $physicalDistancingRequired;
   }
+  /**
+   * @return bool
+   */
   public function getPhysicalDistancingRequired()
   {
     return $this->physicalDistancingRequired;
   }
+  /**
+   * @param string
+   */
   public function setPhysicalDistancingRequiredException($physicalDistancingRequiredException)
   {
     $this->physicalDistancingRequiredException = $physicalDistancingRequiredException;
   }
+  /**
+   * @return string
+   */
   public function getPhysicalDistancingRequiredException()
   {
     return $this->physicalDistancingRequiredException;
   }
+  /**
+   * @param bool
+   */
   public function setSafetyDividers($safetyDividers)
   {
     $this->safetyDividers = $safetyDividers;
   }
+  /**
+   * @return bool
+   */
   public function getSafetyDividers()
   {
     return $this->safetyDividers;
   }
+  /**
+   * @param string
+   */
   public function setSafetyDividersException($safetyDividersException)
   {
     $this->safetyDividersException = $safetyDividersException;
   }
+  /**
+   * @return string
+   */
   public function getSafetyDividersException()
   {
     return $this->safetyDividersException;
   }
+  /**
+   * @param bool
+   */
   public function setSharedAreasLimitedOccupancy($sharedAreasLimitedOccupancy)
   {
     $this->sharedAreasLimitedOccupancy = $sharedAreasLimitedOccupancy;
   }
+  /**
+   * @return bool
+   */
   public function getSharedAreasLimitedOccupancy()
   {
     return $this->sharedAreasLimitedOccupancy;
   }
+  /**
+   * @param string
+   */
   public function setSharedAreasLimitedOccupancyException($sharedAreasLimitedOccupancyException)
   {
     $this->sharedAreasLimitedOccupancyException = $sharedAreasLimitedOccupancyException;
   }
+  /**
+   * @return string
+   */
   public function getSharedAreasLimitedOccupancyException()
   {
     return $this->sharedAreasLimitedOccupancyException;
   }
+  /**
+   * @param bool
+   */
   public function setWellnessAreasHavePrivateSpaces($wellnessAreasHavePrivateSpaces)
   {
     $this->wellnessAreasHavePrivateSpaces = $wellnessAreasHavePrivateSpaces;
   }
+  /**
+   * @return bool
+   */
   public function getWellnessAreasHavePrivateSpaces()
   {
     return $this->wellnessAreasHavePrivateSpaces;
   }
+  /**
+   * @param string
+   */
   public function setWellnessAreasHavePrivateSpacesException($wellnessAreasHavePrivateSpacesException)
   {
     $this->wellnessAreasHavePrivateSpacesException = $wellnessAreasHavePrivateSpacesException;
   }
+  /**
+   * @return string
+   */
   public function getWellnessAreasHavePrivateSpacesException()
   {
     return $this->wellnessAreasHavePrivateSpacesException;

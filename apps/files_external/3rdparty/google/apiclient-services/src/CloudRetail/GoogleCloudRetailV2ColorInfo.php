@@ -20,21 +20,39 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2ColorInfo extends \Google\Collection
 {
   protected $collection_key = 'colors';
+  /**
+   * @var string[]
+   */
   public $colorFamilies;
+  /**
+   * @var string[]
+   */
   public $colors;
 
+  /**
+   * @param string[]
+   */
   public function setColorFamilies($colorFamilies)
   {
     $this->colorFamilies = $colorFamilies;
   }
+  /**
+   * @return string[]
+   */
   public function getColorFamilies()
   {
     return $this->colorFamilies;
   }
+  /**
+   * @param string[]
+   */
   public function setColors($colors)
   {
     $this->colors = $colors;
   }
+  /**
+   * @return string[]
+   */
   public function getColors()
   {
     return $this->colors;

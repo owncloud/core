@@ -19,48 +19,93 @@ namespace Google\Service\YouTube;
 
 class ChannelContentDetailsRelatedPlaylists extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $favorites;
+  /**
+   * @var string
+   */
   public $likes;
+  /**
+   * @var string
+   */
   public $uploads;
+  /**
+   * @var string
+   */
   public $watchHistory;
+  /**
+   * @var string
+   */
   public $watchLater;
 
+  /**
+   * @param string
+   */
   public function setFavorites($favorites)
   {
     $this->favorites = $favorites;
   }
+  /**
+   * @return string
+   */
   public function getFavorites()
   {
     return $this->favorites;
   }
+  /**
+   * @param string
+   */
   public function setLikes($likes)
   {
     $this->likes = $likes;
   }
+  /**
+   * @return string
+   */
   public function getLikes()
   {
     return $this->likes;
   }
+  /**
+   * @param string
+   */
   public function setUploads($uploads)
   {
     $this->uploads = $uploads;
   }
+  /**
+   * @return string
+   */
   public function getUploads()
   {
     return $this->uploads;
   }
+  /**
+   * @param string
+   */
   public function setWatchHistory($watchHistory)
   {
     $this->watchHistory = $watchHistory;
   }
+  /**
+   * @return string
+   */
   public function getWatchHistory()
   {
     return $this->watchHistory;
   }
+  /**
+   * @param string
+   */
   public function setWatchLater($watchLater)
   {
     $this->watchLater = $watchLater;
   }
+  /**
+   * @return string
+   */
   public function getWatchLater()
   {
     return $this->watchLater;

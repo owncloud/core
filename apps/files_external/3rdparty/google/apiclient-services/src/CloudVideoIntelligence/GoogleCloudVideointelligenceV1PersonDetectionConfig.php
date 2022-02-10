@@ -19,30 +19,57 @@ namespace Google\Service\CloudVideoIntelligence;
 
 class GoogleCloudVideointelligenceV1PersonDetectionConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $includeAttributes;
+  /**
+   * @var bool
+   */
   public $includeBoundingBoxes;
+  /**
+   * @var bool
+   */
   public $includePoseLandmarks;
 
+  /**
+   * @param bool
+   */
   public function setIncludeAttributes($includeAttributes)
   {
     $this->includeAttributes = $includeAttributes;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeAttributes()
   {
     return $this->includeAttributes;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeBoundingBoxes($includeBoundingBoxes)
   {
     $this->includeBoundingBoxes = $includeBoundingBoxes;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeBoundingBoxes()
   {
     return $this->includeBoundingBoxes;
   }
+  /**
+   * @param bool
+   */
   public function setIncludePoseLandmarks($includePoseLandmarks)
   {
     $this->includePoseLandmarks = $includePoseLandmarks;
   }
+  /**
+   * @return bool
+   */
   public function getIncludePoseLandmarks()
   {
     return $this->includePoseLandmarks;

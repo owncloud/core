@@ -20,12 +20,21 @@ namespace Google\Service\Keep;
 class BatchDeletePermissionsRequest extends \Google\Collection
 {
   protected $collection_key = 'names';
+  /**
+   * @var string[]
+   */
   public $names;
 
+  /**
+   * @param string[]
+   */
   public function setNames($names)
   {
     $this->names = $names;
   }
+  /**
+   * @return string[]
+   */
   public function getNames()
   {
     return $this->names;

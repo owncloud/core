@@ -19,39 +19,75 @@ namespace Google\Service\Drive;
 
 class DriveBackgroundImageFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var float
+   */
   public $width;
+  /**
+   * @var float
+   */
   public $xCoordinate;
+  /**
+   * @var float
+   */
   public $yCoordinate;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param float
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return float
+   */
   public function getWidth()
   {
     return $this->width;
   }
+  /**
+   * @param float
+   */
   public function setXCoordinate($xCoordinate)
   {
     $this->xCoordinate = $xCoordinate;
   }
+  /**
+   * @return float
+   */
   public function getXCoordinate()
   {
     return $this->xCoordinate;
   }
+  /**
+   * @param float
+   */
   public function setYCoordinate($yCoordinate)
   {
     $this->yCoordinate = $yCoordinate;
   }
+  /**
+   * @return float
+   */
   public function getYCoordinate()
   {
     return $this->yCoordinate;

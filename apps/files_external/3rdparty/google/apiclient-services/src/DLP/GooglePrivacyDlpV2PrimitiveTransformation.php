@@ -37,6 +37,8 @@ class GooglePrivacyDlpV2PrimitiveTransformation extends \Google\Model
   protected $redactConfigDataType = '';
   protected $replaceConfigType = GooglePrivacyDlpV2ReplaceValueConfig::class;
   protected $replaceConfigDataType = '';
+  protected $replaceDictionaryConfigType = GooglePrivacyDlpV2ReplaceDictionaryConfig::class;
+  protected $replaceDictionaryConfigDataType = '';
   protected $replaceWithInfoTypeConfigType = GooglePrivacyDlpV2ReplaceWithInfoTypeConfig::class;
   protected $replaceWithInfoTypeConfigDataType = '';
   protected $timePartConfigType = GooglePrivacyDlpV2TimePartConfig::class;
@@ -167,6 +169,20 @@ class GooglePrivacyDlpV2PrimitiveTransformation extends \Google\Model
   public function getReplaceConfig()
   {
     return $this->replaceConfig;
+  }
+  /**
+   * @param GooglePrivacyDlpV2ReplaceDictionaryConfig
+   */
+  public function setReplaceDictionaryConfig(GooglePrivacyDlpV2ReplaceDictionaryConfig $replaceDictionaryConfig)
+  {
+    $this->replaceDictionaryConfig = $replaceDictionaryConfig;
+  }
+  /**
+   * @return GooglePrivacyDlpV2ReplaceDictionaryConfig
+   */
+  public function getReplaceDictionaryConfig()
+  {
+    return $this->replaceDictionaryConfig;
   }
   /**
    * @param GooglePrivacyDlpV2ReplaceWithInfoTypeConfig

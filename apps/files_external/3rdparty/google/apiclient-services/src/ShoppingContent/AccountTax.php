@@ -20,23 +20,41 @@ namespace Google\Service\ShoppingContent;
 class AccountTax extends \Google\Collection
 {
   protected $collection_key = 'rules';
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $kind;
   protected $rulesType = AccountTaxTaxRule::class;
   protected $rulesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

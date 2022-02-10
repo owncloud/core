@@ -19,39 +19,75 @@ namespace Google\Service\IdentityToolkit;
 
 class ResetPasswordResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $newEmail;
+  /**
+   * @var string
+   */
   public $requestType;
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNewEmail($newEmail)
   {
     $this->newEmail = $newEmail;
   }
+  /**
+   * @return string
+   */
   public function getNewEmail()
   {
     return $this->newEmail;
   }
+  /**
+   * @param string
+   */
   public function setRequestType($requestType)
   {
     $this->requestType = $requestType;
   }
+  /**
+   * @return string
+   */
   public function getRequestType()
   {
     return $this->requestType;

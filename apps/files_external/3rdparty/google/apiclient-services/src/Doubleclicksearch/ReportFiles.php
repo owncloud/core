@@ -19,21 +19,39 @@ namespace Google\Service\Doubleclicksearch;
 
 class ReportFiles extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $byteCount;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setByteCount($byteCount)
   {
     $this->byteCount = $byteCount;
   }
+  /**
+   * @return string
+   */
   public function getByteCount()
   {
     return $this->byteCount;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

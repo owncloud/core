@@ -19,26 +19,47 @@ namespace Google\Service\YouTube;
 
 class InvideoBranding extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $imageBytes;
+  /**
+   * @var string
+   */
   public $imageUrl;
   protected $positionType = InvideoPosition::class;
   protected $positionDataType = '';
+  /**
+   * @var string
+   */
   public $targetChannelId;
   protected $timingType = InvideoTiming::class;
   protected $timingDataType = '';
 
+  /**
+   * @param string
+   */
   public function setImageBytes($imageBytes)
   {
     $this->imageBytes = $imageBytes;
   }
+  /**
+   * @return string
+   */
   public function getImageBytes()
   {
     return $this->imageBytes;
   }
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;
@@ -57,10 +78,16 @@ class InvideoBranding extends \Google\Model
   {
     return $this->position;
   }
+  /**
+   * @param string
+   */
   public function setTargetChannelId($targetChannelId)
   {
     $this->targetChannelId = $targetChannelId;
   }
+  /**
+   * @return string
+   */
   public function getTargetChannelId()
   {
     return $this->targetChannelId;

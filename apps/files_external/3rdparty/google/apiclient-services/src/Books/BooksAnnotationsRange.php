@@ -19,39 +19,75 @@ namespace Google\Service\Books;
 
 class BooksAnnotationsRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endOffset;
+  /**
+   * @var string
+   */
   public $endPosition;
+  /**
+   * @var string
+   */
   public $startOffset;
+  /**
+   * @var string
+   */
   public $startPosition;
 
+  /**
+   * @param string
+   */
   public function setEndOffset($endOffset)
   {
     $this->endOffset = $endOffset;
   }
+  /**
+   * @return string
+   */
   public function getEndOffset()
   {
     return $this->endOffset;
   }
+  /**
+   * @param string
+   */
   public function setEndPosition($endPosition)
   {
     $this->endPosition = $endPosition;
   }
+  /**
+   * @return string
+   */
   public function getEndPosition()
   {
     return $this->endPosition;
   }
+  /**
+   * @param string
+   */
   public function setStartOffset($startOffset)
   {
     $this->startOffset = $startOffset;
   }
+  /**
+   * @return string
+   */
   public function getStartOffset()
   {
     return $this->startOffset;
   }
+  /**
+   * @param string
+   */
   public function setStartPosition($startPosition)
   {
     $this->startPosition = $startPosition;
   }
+  /**
+   * @return string
+   */
   public function getStartPosition()
   {
     return $this->startPosition;

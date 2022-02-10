@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class Source extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $predefinedSource;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPredefinedSource($predefinedSource)
   {
     $this->predefinedSource = $predefinedSource;
   }
+  /**
+   * @return string
+   */
   public function getPredefinedSource()
   {
     return $this->predefinedSource;

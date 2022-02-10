@@ -19,30 +19,57 @@ namespace Google\Service\PolicySimulator;
 
 class GoogleCloudPolicysimulatorV1AccessTuple extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fullResourceName;
+  /**
+   * @var string
+   */
   public $permission;
+  /**
+   * @var string
+   */
   public $principal;
 
+  /**
+   * @param string
+   */
   public function setFullResourceName($fullResourceName)
   {
     $this->fullResourceName = $fullResourceName;
   }
+  /**
+   * @return string
+   */
   public function getFullResourceName()
   {
     return $this->fullResourceName;
   }
+  /**
+   * @param string
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string
+   */
   public function getPermission()
   {
     return $this->permission;
   }
+  /**
+   * @param string
+   */
   public function setPrincipal($principal)
   {
     $this->principal = $principal;
   }
+  /**
+   * @return string
+   */
   public function getPrincipal()
   {
     return $this->principal;

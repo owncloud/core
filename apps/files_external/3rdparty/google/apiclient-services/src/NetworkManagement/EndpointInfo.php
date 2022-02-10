@@ -19,66 +19,129 @@ namespace Google\Service\NetworkManagement;
 
 class EndpointInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destinationIp;
+  /**
+   * @var string
+   */
   public $destinationNetworkUri;
+  /**
+   * @var int
+   */
   public $destinationPort;
+  /**
+   * @var string
+   */
   public $protocol;
+  /**
+   * @var string
+   */
   public $sourceIp;
+  /**
+   * @var string
+   */
   public $sourceNetworkUri;
+  /**
+   * @var int
+   */
   public $sourcePort;
 
+  /**
+   * @param string
+   */
   public function setDestinationIp($destinationIp)
   {
     $this->destinationIp = $destinationIp;
   }
+  /**
+   * @return string
+   */
   public function getDestinationIp()
   {
     return $this->destinationIp;
   }
+  /**
+   * @param string
+   */
   public function setDestinationNetworkUri($destinationNetworkUri)
   {
     $this->destinationNetworkUri = $destinationNetworkUri;
   }
+  /**
+   * @return string
+   */
   public function getDestinationNetworkUri()
   {
     return $this->destinationNetworkUri;
   }
+  /**
+   * @param int
+   */
   public function setDestinationPort($destinationPort)
   {
     $this->destinationPort = $destinationPort;
   }
+  /**
+   * @return int
+   */
   public function getDestinationPort()
   {
     return $this->destinationPort;
   }
+  /**
+   * @param string
+   */
   public function setProtocol($protocol)
   {
     $this->protocol = $protocol;
   }
+  /**
+   * @return string
+   */
   public function getProtocol()
   {
     return $this->protocol;
   }
+  /**
+   * @param string
+   */
   public function setSourceIp($sourceIp)
   {
     $this->sourceIp = $sourceIp;
   }
+  /**
+   * @return string
+   */
   public function getSourceIp()
   {
     return $this->sourceIp;
   }
+  /**
+   * @param string
+   */
   public function setSourceNetworkUri($sourceNetworkUri)
   {
     $this->sourceNetworkUri = $sourceNetworkUri;
   }
+  /**
+   * @return string
+   */
   public function getSourceNetworkUri()
   {
     return $this->sourceNetworkUri;
   }
+  /**
+   * @param int
+   */
   public function setSourcePort($sourcePort)
   {
     $this->sourcePort = $sourcePort;
   }
+  /**
+   * @return int
+   */
   public function getSourcePort()
   {
     return $this->sourcePort;

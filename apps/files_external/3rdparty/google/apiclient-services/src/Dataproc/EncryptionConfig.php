@@ -19,12 +19,21 @@ namespace Google\Service\Dataproc;
 
 class EncryptionConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcePdKmsKeyName;
 
+  /**
+   * @param string
+   */
   public function setGcePdKmsKeyName($gcePdKmsKeyName)
   {
     $this->gcePdKmsKeyName = $gcePdKmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getGcePdKmsKeyName()
   {
     return $this->gcePdKmsKeyName;

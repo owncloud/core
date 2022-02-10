@@ -20,6 +20,9 @@ namespace Google\Service\OSConfig;
 class OSPolicyAssignmentInstanceFilter extends \Google\Collection
 {
   protected $collection_key = 'inventories';
+  /**
+   * @var bool
+   */
   public $all;
   protected $exclusionLabelsType = OSPolicyAssignmentLabelSet::class;
   protected $exclusionLabelsDataType = 'array';
@@ -28,10 +31,16 @@ class OSPolicyAssignmentInstanceFilter extends \Google\Collection
   protected $inventoriesType = OSPolicyAssignmentInstanceFilterInventory::class;
   protected $inventoriesDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setAll($all)
   {
     $this->all = $all;
   }
+  /**
+   * @return bool
+   */
   public function getAll()
   {
     return $this->all;

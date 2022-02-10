@@ -19,12 +19,21 @@ namespace Google\Service\Sheets;
 
 class TextPosition extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $horizontalAlignment;
 
+  /**
+   * @param string
+   */
   public function setHorizontalAlignment($horizontalAlignment)
   {
     $this->horizontalAlignment = $horizontalAlignment;
   }
+  /**
+   * @return string
+   */
   public function getHorizontalAlignment()
   {
     return $this->horizontalAlignment;

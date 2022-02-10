@@ -20,12 +20,21 @@ namespace Google\Service\RecommendationsAI;
 class GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy extends \Google\Collection
 {
   protected $collection_key = 'categories';
+  /**
+   * @var string[]
+   */
   public $categories;
 
+  /**
+   * @param string[]
+   */
   public function setCategories($categories)
   {
     $this->categories = $categories;
   }
+  /**
+   * @return string[]
+   */
   public function getCategories()
   {
     return $this->categories;

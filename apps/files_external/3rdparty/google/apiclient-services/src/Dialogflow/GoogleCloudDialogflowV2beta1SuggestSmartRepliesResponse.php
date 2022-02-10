@@ -20,23 +20,41 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1SuggestSmartRepliesResponse extends \Google\Collection
 {
   protected $collection_key = 'smartReplyAnswers';
+  /**
+   * @var int
+   */
   public $contextSize;
+  /**
+   * @var string
+   */
   public $latestMessage;
   protected $smartReplyAnswersType = GoogleCloudDialogflowV2beta1SmartReplyAnswer::class;
   protected $smartReplyAnswersDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setContextSize($contextSize)
   {
     $this->contextSize = $contextSize;
   }
+  /**
+   * @return int
+   */
   public function getContextSize()
   {
     return $this->contextSize;
   }
+  /**
+   * @param string
+   */
   public function setLatestMessage($latestMessage)
   {
     $this->latestMessage = $latestMessage;
   }
+  /**
+   * @return string
+   */
   public function getLatestMessage()
   {
     return $this->latestMessage;

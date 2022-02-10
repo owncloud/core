@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersCustomBatchRequestEntryShipLineItemsShipmentInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $carrier;
+  /**
+   * @var string
+   */
   public $shipmentId;
+  /**
+   * @var string
+   */
   public $trackingId;
 
+  /**
+   * @param string
+   */
   public function setCarrier($carrier)
   {
     $this->carrier = $carrier;
   }
+  /**
+   * @return string
+   */
   public function getCarrier()
   {
     return $this->carrier;
   }
+  /**
+   * @param string
+   */
   public function setShipmentId($shipmentId)
   {
     $this->shipmentId = $shipmentId;
   }
+  /**
+   * @return string
+   */
   public function getShipmentId()
   {
     return $this->shipmentId;
   }
+  /**
+   * @param string
+   */
   public function setTrackingId($trackingId)
   {
     $this->trackingId = $trackingId;
   }
+  /**
+   * @return string
+   */
   public function getTrackingId()
   {
     return $this->trackingId;

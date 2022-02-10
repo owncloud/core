@@ -21,6 +21,9 @@ class LaunchFlexTemplateRequest extends \Google\Model
 {
   protected $launchParameterType = LaunchFlexTemplateParameter::class;
   protected $launchParameterDataType = '';
+  /**
+   * @var bool
+   */
   public $validateOnly;
 
   /**
@@ -37,10 +40,16 @@ class LaunchFlexTemplateRequest extends \Google\Model
   {
     return $this->launchParameter;
   }
+  /**
+   * @param bool
+   */
   public function setValidateOnly($validateOnly)
   {
     $this->validateOnly = $validateOnly;
   }
+  /**
+   * @return bool
+   */
   public function getValidateOnly()
   {
     return $this->validateOnly;

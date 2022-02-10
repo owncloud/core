@@ -19,18 +19,39 @@ namespace Google\Service\CloudSupport;
 
 class Attachment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
   protected $creatorType = Actor::class;
   protected $creatorDataType = '';
+  /**
+   * @var string
+   */
   public $filename;
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $sizeBytes;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -49,34 +70,58 @@ class Attachment extends \Google\Model
   {
     return $this->creator;
   }
+  /**
+   * @param string
+   */
   public function setFilename($filename)
   {
     $this->filename = $filename;
   }
+  /**
+   * @return string
+   */
   public function getFilename()
   {
     return $this->filename;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSizeBytes($sizeBytes)
   {
     $this->sizeBytes = $sizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getSizeBytes()
   {
     return $this->sizeBytes;

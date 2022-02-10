@@ -19,21 +19,39 @@ namespace Google\Service\Verifiedaccess;
 
 class SignedData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $signature;
 
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setSignature($signature)
   {
     $this->signature = $signature;
   }
+  /**
+   * @return string
+   */
   public function getSignature()
   {
     return $this->signature;

@@ -19,39 +19,75 @@ namespace Google\Service\MyBusinessLodging;
 
 class TimeOfDay extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $hours;
+  /**
+   * @var int
+   */
   public $minutes;
+  /**
+   * @var int
+   */
   public $nanos;
+  /**
+   * @var int
+   */
   public $seconds;
 
+  /**
+   * @param int
+   */
   public function setHours($hours)
   {
     $this->hours = $hours;
   }
+  /**
+   * @return int
+   */
   public function getHours()
   {
     return $this->hours;
   }
+  /**
+   * @param int
+   */
   public function setMinutes($minutes)
   {
     $this->minutes = $minutes;
   }
+  /**
+   * @return int
+   */
   public function getMinutes()
   {
     return $this->minutes;
   }
+  /**
+   * @param int
+   */
   public function setNanos($nanos)
   {
     $this->nanos = $nanos;
   }
+  /**
+   * @return int
+   */
   public function getNanos()
   {
     return $this->nanos;
   }
+  /**
+   * @param int
+   */
   public function setSeconds($seconds)
   {
     $this->seconds = $seconds;
   }
+  /**
+   * @return int
+   */
   public function getSeconds()
   {
     return $this->seconds;

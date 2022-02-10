@@ -20,12 +20,21 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2IntentMessageText extends \Google\Collection
 {
   protected $collection_key = 'text';
+  /**
+   * @var string[]
+   */
   public $text;
 
+  /**
+   * @param string[]
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string[]
+   */
   public function getText()
   {
     return $this->text;

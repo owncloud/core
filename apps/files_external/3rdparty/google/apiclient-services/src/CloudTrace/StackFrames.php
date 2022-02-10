@@ -20,14 +20,23 @@ namespace Google\Service\CloudTrace;
 class StackFrames extends \Google\Collection
 {
   protected $collection_key = 'frame';
+  /**
+   * @var int
+   */
   public $droppedFramesCount;
   protected $frameType = StackFrame::class;
   protected $frameDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setDroppedFramesCount($droppedFramesCount)
   {
     $this->droppedFramesCount = $droppedFramesCount;
   }
+  /**
+   * @return int
+   */
   public function getDroppedFramesCount()
   {
     return $this->droppedFramesCount;

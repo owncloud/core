@@ -20,21 +20,39 @@ namespace Google\Service\Compute;
 class SecuritySettings extends \Google\Collection
 {
   protected $collection_key = 'subjectAltNames';
+  /**
+   * @var string
+   */
   public $clientTlsPolicy;
+  /**
+   * @var string[]
+   */
   public $subjectAltNames;
 
+  /**
+   * @param string
+   */
   public function setClientTlsPolicy($clientTlsPolicy)
   {
     $this->clientTlsPolicy = $clientTlsPolicy;
   }
+  /**
+   * @return string
+   */
   public function getClientTlsPolicy()
   {
     return $this->clientTlsPolicy;
   }
+  /**
+   * @param string[]
+   */
   public function setSubjectAltNames($subjectAltNames)
   {
     $this->subjectAltNames = $subjectAltNames;
   }
+  /**
+   * @return string[]
+   */
   public function getSubjectAltNames()
   {
     return $this->subjectAltNames;

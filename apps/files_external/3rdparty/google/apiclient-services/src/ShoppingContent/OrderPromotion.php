@@ -24,17 +24,41 @@ class OrderPromotion extends \Google\Collection
   protected $applicableItemsDataType = 'array';
   protected $appliedItemsType = OrderPromotionItem::class;
   protected $appliedItemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $funder;
+  /**
+   * @var string
+   */
   public $merchantPromotionId;
   protected $priceValueType = Price::class;
   protected $priceValueDataType = '';
+  /**
+   * @var string
+   */
   public $shortTitle;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $subtype;
   protected $taxValueType = Price::class;
   protected $taxValueDataType = '';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -65,26 +89,44 @@ class OrderPromotion extends \Google\Collection
   {
     return $this->appliedItems;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setFunder($funder)
   {
     $this->funder = $funder;
   }
+  /**
+   * @return string
+   */
   public function getFunder()
   {
     return $this->funder;
   }
+  /**
+   * @param string
+   */
   public function setMerchantPromotionId($merchantPromotionId)
   {
     $this->merchantPromotionId = $merchantPromotionId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantPromotionId()
   {
     return $this->merchantPromotionId;
@@ -103,26 +145,44 @@ class OrderPromotion extends \Google\Collection
   {
     return $this->priceValue;
   }
+  /**
+   * @param string
+   */
   public function setShortTitle($shortTitle)
   {
     $this->shortTitle = $shortTitle;
   }
+  /**
+   * @return string
+   */
   public function getShortTitle()
   {
     return $this->shortTitle;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setSubtype($subtype)
   {
     $this->subtype = $subtype;
   }
+  /**
+   * @return string
+   */
   public function getSubtype()
   {
     return $this->subtype;
@@ -141,18 +201,30 @@ class OrderPromotion extends \Google\Collection
   {
     return $this->taxValue;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

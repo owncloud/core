@@ -19,15 +19,27 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class OpenInfo extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $canReopen;
   protected $openingDateType = Date::class;
   protected $openingDateDataType = '';
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param bool
+   */
   public function setCanReopen($canReopen)
   {
     $this->canReopen = $canReopen;
   }
+  /**
+   * @return bool
+   */
   public function getCanReopen()
   {
     return $this->canReopen;
@@ -46,10 +58,16 @@ class OpenInfo extends \Google\Model
   {
     return $this->openingDate;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

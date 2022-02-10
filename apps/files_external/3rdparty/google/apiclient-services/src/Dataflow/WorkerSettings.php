@@ -19,57 +19,111 @@ namespace Google\Service\Dataflow;
 
 class WorkerSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $baseUrl;
+  /**
+   * @var bool
+   */
   public $reportingEnabled;
+  /**
+   * @var string
+   */
   public $servicePath;
+  /**
+   * @var string
+   */
   public $shuffleServicePath;
+  /**
+   * @var string
+   */
   public $tempStoragePrefix;
+  /**
+   * @var string
+   */
   public $workerId;
 
+  /**
+   * @param string
+   */
   public function setBaseUrl($baseUrl)
   {
     $this->baseUrl = $baseUrl;
   }
+  /**
+   * @return string
+   */
   public function getBaseUrl()
   {
     return $this->baseUrl;
   }
+  /**
+   * @param bool
+   */
   public function setReportingEnabled($reportingEnabled)
   {
     $this->reportingEnabled = $reportingEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getReportingEnabled()
   {
     return $this->reportingEnabled;
   }
+  /**
+   * @param string
+   */
   public function setServicePath($servicePath)
   {
     $this->servicePath = $servicePath;
   }
+  /**
+   * @return string
+   */
   public function getServicePath()
   {
     return $this->servicePath;
   }
+  /**
+   * @param string
+   */
   public function setShuffleServicePath($shuffleServicePath)
   {
     $this->shuffleServicePath = $shuffleServicePath;
   }
+  /**
+   * @return string
+   */
   public function getShuffleServicePath()
   {
     return $this->shuffleServicePath;
   }
+  /**
+   * @param string
+   */
   public function setTempStoragePrefix($tempStoragePrefix)
   {
     $this->tempStoragePrefix = $tempStoragePrefix;
   }
+  /**
+   * @return string
+   */
   public function getTempStoragePrefix()
   {
     return $this->tempStoragePrefix;
   }
+  /**
+   * @param string
+   */
   public function setWorkerId($workerId)
   {
     $this->workerId = $workerId;
   }
+  /**
+   * @return string
+   */
   public function getWorkerId()
   {
     return $this->workerId;

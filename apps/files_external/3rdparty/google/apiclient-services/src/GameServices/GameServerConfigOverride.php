@@ -19,14 +19,23 @@ namespace Google\Service\GameServices;
 
 class GameServerConfigOverride extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $configVersion;
   protected $realmsSelectorType = RealmSelector::class;
   protected $realmsSelectorDataType = '';
 
+  /**
+   * @param string
+   */
   public function setConfigVersion($configVersion)
   {
     $this->configVersion = $configVersion;
   }
+  /**
+   * @return string
+   */
   public function getConfigVersion()
   {
     return $this->configVersion;

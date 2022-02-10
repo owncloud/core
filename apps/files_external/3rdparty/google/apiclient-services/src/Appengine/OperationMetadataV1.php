@@ -22,12 +22,33 @@ class OperationMetadataV1 extends \Google\Collection
   protected $collection_key = 'warning';
   protected $createVersionMetadataType = CreateVersionMetadataV1::class;
   protected $createVersionMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $ephemeralMessage;
+  /**
+   * @var string
+   */
   public $insertTime;
+  /**
+   * @var string
+   */
   public $method;
+  /**
+   * @var string
+   */
   public $target;
+  /**
+   * @var string
+   */
   public $user;
+  /**
+   * @var string[]
+   */
   public $warning;
 
   /**
@@ -44,58 +65,100 @@ class OperationMetadataV1 extends \Google\Collection
   {
     return $this->createVersionMetadata;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setEphemeralMessage($ephemeralMessage)
   {
     $this->ephemeralMessage = $ephemeralMessage;
   }
+  /**
+   * @return string
+   */
   public function getEphemeralMessage()
   {
     return $this->ephemeralMessage;
   }
+  /**
+   * @param string
+   */
   public function setInsertTime($insertTime)
   {
     $this->insertTime = $insertTime;
   }
+  /**
+   * @return string
+   */
   public function getInsertTime()
   {
     return $this->insertTime;
   }
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;
   }
+  /**
+   * @param string
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return string
+   */
   public function getTarget()
   {
     return $this->target;
   }
+  /**
+   * @param string
+   */
   public function setUser($user)
   {
     $this->user = $user;
   }
+  /**
+   * @return string
+   */
   public function getUser()
   {
     return $this->user;
   }
+  /**
+   * @param string[]
+   */
   public function setWarning($warning)
   {
     $this->warning = $warning;
   }
+  /**
+   * @return string[]
+   */
   public function getWarning()
   {
     return $this->warning;

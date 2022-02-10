@@ -20,12 +20,21 @@ namespace Google\Service\Storage;
 class BucketCustomPlacementConfig extends \Google\Collection
 {
   protected $collection_key = 'dataLocations';
+  /**
+   * @var string[]
+   */
   public $dataLocations;
 
+  /**
+   * @param string[]
+   */
   public function setDataLocations($dataLocations)
   {
     $this->dataLocations = $dataLocations;
   }
+  /**
+   * @return string[]
+   */
   public function getDataLocations()
   {
     return $this->dataLocations;

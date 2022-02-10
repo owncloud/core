@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class VideoPlayerSizeAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $targetingOptionId;
+  /**
+   * @var string
+   */
   public $videoPlayerSize;
 
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;
   }
+  /**
+   * @param string
+   */
   public function setVideoPlayerSize($videoPlayerSize)
   {
     $this->videoPlayerSize = $videoPlayerSize;
   }
+  /**
+   * @return string
+   */
   public function getVideoPlayerSize()
   {
     return $this->videoPlayerSize;

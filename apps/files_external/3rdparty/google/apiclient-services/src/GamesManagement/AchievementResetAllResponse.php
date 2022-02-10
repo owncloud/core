@@ -20,14 +20,23 @@ namespace Google\Service\GamesManagement;
 class AchievementResetAllResponse extends \Google\Collection
 {
   protected $collection_key = 'results';
+  /**
+   * @var string
+   */
   public $kind;
   protected $resultsType = AchievementResetResponse::class;
   protected $resultsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

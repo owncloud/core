@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class RepricingRuleCostOfGoodsSaleRule extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $percentageDelta;
+  /**
+   * @var string
+   */
   public $priceDelta;
 
+  /**
+   * @param int
+   */
   public function setPercentageDelta($percentageDelta)
   {
     $this->percentageDelta = $percentageDelta;
   }
+  /**
+   * @return int
+   */
   public function getPercentageDelta()
   {
     return $this->percentageDelta;
   }
+  /**
+   * @param string
+   */
   public function setPriceDelta($priceDelta)
   {
     $this->priceDelta = $priceDelta;
   }
+  /**
+   * @return string
+   */
   public function getPriceDelta()
   {
     return $this->priceDelta;

@@ -19,20 +19,41 @@ namespace Google\Service\PolicyTroubleshooter;
 
 class GoogleCloudPolicytroubleshooterV1BindingExplanation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $access;
   protected $conditionType = GoogleTypeExpr::class;
   protected $conditionDataType = '';
   protected $membershipsType = GoogleCloudPolicytroubleshooterV1BindingExplanationAnnotatedMembership::class;
   protected $membershipsDataType = 'map';
+  /**
+   * @var string
+   */
   public $relevance;
+  /**
+   * @var string
+   */
   public $role;
+  /**
+   * @var string
+   */
   public $rolePermission;
+  /**
+   * @var string
+   */
   public $rolePermissionRelevance;
 
+  /**
+   * @param string
+   */
   public function setAccess($access)
   {
     $this->access = $access;
   }
+  /**
+   * @return string
+   */
   public function getAccess()
   {
     return $this->access;
@@ -65,34 +86,58 @@ class GoogleCloudPolicytroubleshooterV1BindingExplanation extends \Google\Model
   {
     return $this->memberships;
   }
+  /**
+   * @param string
+   */
   public function setRelevance($relevance)
   {
     $this->relevance = $relevance;
   }
+  /**
+   * @return string
+   */
   public function getRelevance()
   {
     return $this->relevance;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;
   }
+  /**
+   * @param string
+   */
   public function setRolePermission($rolePermission)
   {
     $this->rolePermission = $rolePermission;
   }
+  /**
+   * @return string
+   */
   public function getRolePermission()
   {
     return $this->rolePermission;
   }
+  /**
+   * @param string
+   */
   public function setRolePermissionRelevance($rolePermissionRelevance)
   {
     $this->rolePermissionRelevance = $rolePermissionRelevance;
   }
+  /**
+   * @return string
+   */
   public function getRolePermissionRelevance()
   {
     return $this->rolePermissionRelevance;

@@ -22,15 +22,39 @@ class NotificationChannel extends \Google\Collection
   protected $collection_key = 'mutationRecords';
   protected $creationRecordType = MutationRecord::class;
   protected $creationRecordDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $mutationRecordsType = MutationRecord::class;
   protected $mutationRecordsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string[]
+   */
   public $userLabels;
+  /**
+   * @var string
+   */
   public $verificationStatus;
 
   /**
@@ -47,34 +71,58 @@ class NotificationChannel extends \Google\Collection
   {
     return $this->creationRecord;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -93,34 +141,58 @@ class NotificationChannel extends \Google\Collection
   {
     return $this->mutationRecords;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string[]
+   */
   public function setUserLabels($userLabels)
   {
     $this->userLabels = $userLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getUserLabels()
   {
     return $this->userLabels;
   }
+  /**
+   * @param string
+   */
   public function setVerificationStatus($verificationStatus)
   {
     $this->verificationStatus = $verificationStatus;
   }
+  /**
+   * @return string
+   */
   public function getVerificationStatus()
   {
     return $this->verificationStatus;

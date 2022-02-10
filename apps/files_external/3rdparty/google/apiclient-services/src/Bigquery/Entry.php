@@ -19,21 +19,39 @@ namespace Google\Service\Bigquery;
 
 class Entry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $itemCount;
+  /**
+   * @var string
+   */
   public $predictedLabel;
 
+  /**
+   * @param string
+   */
   public function setItemCount($itemCount)
   {
     $this->itemCount = $itemCount;
   }
+  /**
+   * @return string
+   */
   public function getItemCount()
   {
     return $this->itemCount;
   }
+  /**
+   * @param string
+   */
   public function setPredictedLabel($predictedLabel)
   {
     $this->predictedLabel = $predictedLabel;
   }
+  /**
+   * @return string
+   */
   public function getPredictedLabel()
   {
     return $this->predictedLabel;

@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class SecurityPolicyReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $securityPolicy;
 
+  /**
+   * @param string
+   */
   public function setSecurityPolicy($securityPolicy)
   {
     $this->securityPolicy = $securityPolicy;
   }
+  /**
+   * @return string
+   */
   public function getSecurityPolicy()
   {
     return $this->securityPolicy;

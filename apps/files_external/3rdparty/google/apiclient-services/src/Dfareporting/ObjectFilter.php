@@ -20,30 +20,57 @@ namespace Google\Service\Dfareporting;
 class ObjectFilter extends \Google\Collection
 {
   protected $collection_key = 'objectIds';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $objectIds;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setObjectIds($objectIds)
   {
     $this->objectIds = $objectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getObjectIds()
   {
     return $this->objectIds;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

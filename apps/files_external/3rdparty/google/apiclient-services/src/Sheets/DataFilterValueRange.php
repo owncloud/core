@@ -22,7 +22,13 @@ class DataFilterValueRange extends \Google\Collection
   protected $collection_key = 'values';
   protected $dataFilterType = DataFilter::class;
   protected $dataFilterDataType = '';
+  /**
+   * @var string
+   */
   public $majorDimension;
+  /**
+   * @var array[]
+   */
   public $values;
 
   /**
@@ -39,18 +45,30 @@ class DataFilterValueRange extends \Google\Collection
   {
     return $this->dataFilter;
   }
+  /**
+   * @param string
+   */
   public function setMajorDimension($majorDimension)
   {
     $this->majorDimension = $majorDimension;
   }
+  /**
+   * @return string
+   */
   public function getMajorDimension()
   {
     return $this->majorDimension;
   }
+  /**
+   * @param array[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return array[]
+   */
   public function getValues()
   {
     return $this->values;

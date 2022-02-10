@@ -19,12 +19,21 @@ namespace Google\Service\Storagetransfer;
 
 class RunTransferJobRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $projectId;
 
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;

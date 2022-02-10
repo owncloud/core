@@ -20,21 +20,39 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2FulfillmentInfo extends \Google\Collection
 {
   protected $collection_key = 'placeIds';
+  /**
+   * @var string[]
+   */
   public $placeIds;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setPlaceIds($placeIds)
   {
     $this->placeIds = $placeIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPlaceIds()
   {
     return $this->placeIds;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

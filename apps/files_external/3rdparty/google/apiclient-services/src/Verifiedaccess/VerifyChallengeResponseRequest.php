@@ -21,6 +21,9 @@ class VerifyChallengeResponseRequest extends \Google\Model
 {
   protected $challengeResponseType = SignedData::class;
   protected $challengeResponseDataType = '';
+  /**
+   * @var string
+   */
   public $expectedIdentity;
 
   /**
@@ -37,10 +40,16 @@ class VerifyChallengeResponseRequest extends \Google\Model
   {
     return $this->challengeResponse;
   }
+  /**
+   * @param string
+   */
   public function setExpectedIdentity($expectedIdentity)
   {
     $this->expectedIdentity = $expectedIdentity;
   }
+  /**
+   * @return string
+   */
   public function getExpectedIdentity()
   {
     return $this->expectedIdentity;

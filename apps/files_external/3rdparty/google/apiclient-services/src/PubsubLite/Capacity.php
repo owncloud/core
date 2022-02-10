@@ -19,21 +19,39 @@ namespace Google\Service\PubsubLite;
 
 class Capacity extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $publishMibPerSec;
+  /**
+   * @var int
+   */
   public $subscribeMibPerSec;
 
+  /**
+   * @param int
+   */
   public function setPublishMibPerSec($publishMibPerSec)
   {
     $this->publishMibPerSec = $publishMibPerSec;
   }
+  /**
+   * @return int
+   */
   public function getPublishMibPerSec()
   {
     return $this->publishMibPerSec;
   }
+  /**
+   * @param int
+   */
   public function setSubscribeMibPerSec($subscribeMibPerSec)
   {
     $this->subscribeMibPerSec = $subscribeMibPerSec;
   }
+  /**
+   * @return int
+   */
   public function getSubscribeMibPerSec()
   {
     return $this->subscribeMibPerSec;

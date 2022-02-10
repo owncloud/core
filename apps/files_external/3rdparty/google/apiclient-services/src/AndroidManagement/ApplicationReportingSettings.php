@@ -19,12 +19,21 @@ namespace Google\Service\AndroidManagement;
 
 class ApplicationReportingSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $includeRemovedApps;
 
+  /**
+   * @param bool
+   */
   public function setIncludeRemovedApps($includeRemovedApps)
   {
     $this->includeRemovedApps = $includeRemovedApps;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeRemovedApps()
   {
     return $this->includeRemovedApps;

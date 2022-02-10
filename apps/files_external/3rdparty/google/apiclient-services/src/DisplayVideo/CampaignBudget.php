@@ -19,38 +19,77 @@ namespace Google\Service\DisplayVideo;
 
 class CampaignBudget extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $budgetAmountMicros;
+  /**
+   * @var string
+   */
   public $budgetId;
+  /**
+   * @var string
+   */
   public $budgetUnit;
   protected $dateRangeType = DateRange::class;
   protected $dateRangeDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $externalBudgetId;
+  /**
+   * @var string
+   */
   public $externalBudgetSource;
+  /**
+   * @var string
+   */
   public $invoiceGroupingId;
   protected $prismaConfigType = PrismaConfig::class;
   protected $prismaConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBudgetAmountMicros($budgetAmountMicros)
   {
     $this->budgetAmountMicros = $budgetAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getBudgetAmountMicros()
   {
     return $this->budgetAmountMicros;
   }
+  /**
+   * @param string
+   */
   public function setBudgetId($budgetId)
   {
     $this->budgetId = $budgetId;
   }
+  /**
+   * @return string
+   */
   public function getBudgetId()
   {
     return $this->budgetId;
   }
+  /**
+   * @param string
+   */
   public function setBudgetUnit($budgetUnit)
   {
     $this->budgetUnit = $budgetUnit;
   }
+  /**
+   * @return string
+   */
   public function getBudgetUnit()
   {
     return $this->budgetUnit;
@@ -69,34 +108,58 @@ class CampaignBudget extends \Google\Model
   {
     return $this->dateRange;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setExternalBudgetId($externalBudgetId)
   {
     $this->externalBudgetId = $externalBudgetId;
   }
+  /**
+   * @return string
+   */
   public function getExternalBudgetId()
   {
     return $this->externalBudgetId;
   }
+  /**
+   * @param string
+   */
   public function setExternalBudgetSource($externalBudgetSource)
   {
     $this->externalBudgetSource = $externalBudgetSource;
   }
+  /**
+   * @return string
+   */
   public function getExternalBudgetSource()
   {
     return $this->externalBudgetSource;
   }
+  /**
+   * @param string
+   */
   public function setInvoiceGroupingId($invoiceGroupingId)
   {
     $this->invoiceGroupingId = $invoiceGroupingId;
   }
+  /**
+   * @return string
+   */
   public function getInvoiceGroupingId()
   {
     return $this->invoiceGroupingId;

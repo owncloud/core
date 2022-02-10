@@ -19,30 +19,57 @@ namespace Google\Service\Classroom;
 
 class StateHistory extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $actorUserId;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $stateTimestamp;
 
+  /**
+   * @param string
+   */
   public function setActorUserId($actorUserId)
   {
     $this->actorUserId = $actorUserId;
   }
+  /**
+   * @return string
+   */
   public function getActorUserId()
   {
     return $this->actorUserId;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStateTimestamp($stateTimestamp)
   {
     $this->stateTimestamp = $stateTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getStateTimestamp()
   {
     return $this->stateTimestamp;

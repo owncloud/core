@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class ReturnShippingLabel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $carrier;
+  /**
+   * @var string
+   */
   public $labelUri;
+  /**
+   * @var string
+   */
   public $trackingId;
 
+  /**
+   * @param string
+   */
   public function setCarrier($carrier)
   {
     $this->carrier = $carrier;
   }
+  /**
+   * @return string
+   */
   public function getCarrier()
   {
     return $this->carrier;
   }
+  /**
+   * @param string
+   */
   public function setLabelUri($labelUri)
   {
     $this->labelUri = $labelUri;
   }
+  /**
+   * @return string
+   */
   public function getLabelUri()
   {
     return $this->labelUri;
   }
+  /**
+   * @param string
+   */
   public function setTrackingId($trackingId)
   {
     $this->trackingId = $trackingId;
   }
+  /**
+   * @return string
+   */
   public function getTrackingId()
   {
     return $this->trackingId;

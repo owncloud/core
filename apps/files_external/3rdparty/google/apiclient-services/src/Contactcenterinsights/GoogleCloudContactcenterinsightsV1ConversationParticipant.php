@@ -19,48 +19,93 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1ConversationParticipant extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dialogflowParticipant;
+  /**
+   * @var string
+   */
   public $dialogflowParticipantName;
+  /**
+   * @var string
+   */
   public $obfuscatedExternalUserId;
+  /**
+   * @var string
+   */
   public $role;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setDialogflowParticipant($dialogflowParticipant)
   {
     $this->dialogflowParticipant = $dialogflowParticipant;
   }
+  /**
+   * @return string
+   */
   public function getDialogflowParticipant()
   {
     return $this->dialogflowParticipant;
   }
+  /**
+   * @param string
+   */
   public function setDialogflowParticipantName($dialogflowParticipantName)
   {
     $this->dialogflowParticipantName = $dialogflowParticipantName;
   }
+  /**
+   * @return string
+   */
   public function getDialogflowParticipantName()
   {
     return $this->dialogflowParticipantName;
   }
+  /**
+   * @param string
+   */
   public function setObfuscatedExternalUserId($obfuscatedExternalUserId)
   {
     $this->obfuscatedExternalUserId = $obfuscatedExternalUserId;
   }
+  /**
+   * @return string
+   */
   public function getObfuscatedExternalUserId()
   {
     return $this->obfuscatedExternalUserId;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

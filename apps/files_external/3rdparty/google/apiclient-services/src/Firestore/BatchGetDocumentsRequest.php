@@ -20,18 +20,33 @@ namespace Google\Service\Firestore;
 class BatchGetDocumentsRequest extends \Google\Collection
 {
   protected $collection_key = 'documents';
+  /**
+   * @var string[]
+   */
   public $documents;
   protected $maskType = DocumentMask::class;
   protected $maskDataType = '';
   protected $newTransactionType = TransactionOptions::class;
   protected $newTransactionDataType = '';
+  /**
+   * @var string
+   */
   public $readTime;
+  /**
+   * @var string
+   */
   public $transaction;
 
+  /**
+   * @param string[]
+   */
   public function setDocuments($documents)
   {
     $this->documents = $documents;
   }
+  /**
+   * @return string[]
+   */
   public function getDocuments()
   {
     return $this->documents;
@@ -64,18 +79,30 @@ class BatchGetDocumentsRequest extends \Google\Collection
   {
     return $this->newTransaction;
   }
+  /**
+   * @param string
+   */
   public function setReadTime($readTime)
   {
     $this->readTime = $readTime;
   }
+  /**
+   * @return string
+   */
   public function getReadTime()
   {
     return $this->readTime;
   }
+  /**
+   * @param string
+   */
   public function setTransaction($transaction)
   {
     $this->transaction = $transaction;
   }
+  /**
+   * @return string
+   */
   public function getTransaction()
   {
     return $this->transaction;

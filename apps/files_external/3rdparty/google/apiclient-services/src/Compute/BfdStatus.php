@@ -20,33 +20,63 @@ namespace Google\Service\Compute;
 class BfdStatus extends \Google\Collection
 {
   protected $collection_key = 'controlPacketIntervals';
+  /**
+   * @var string
+   */
   public $bfdSessionInitializationMode;
+  /**
+   * @var string
+   */
   public $configUpdateTimestampMicros;
   protected $controlPacketCountsType = BfdStatusPacketCounts::class;
   protected $controlPacketCountsDataType = '';
   protected $controlPacketIntervalsType = PacketIntervals::class;
   protected $controlPacketIntervalsDataType = 'array';
+  /**
+   * @var string
+   */
   public $localDiagnostic;
+  /**
+   * @var string
+   */
   public $localState;
+  /**
+   * @var string
+   */
   public $negotiatedLocalControlTxIntervalMs;
   protected $rxPacketType = BfdPacket::class;
   protected $rxPacketDataType = '';
   protected $txPacketType = BfdPacket::class;
   protected $txPacketDataType = '';
+  /**
+   * @var string
+   */
   public $uptimeMs;
 
+  /**
+   * @param string
+   */
   public function setBfdSessionInitializationMode($bfdSessionInitializationMode)
   {
     $this->bfdSessionInitializationMode = $bfdSessionInitializationMode;
   }
+  /**
+   * @return string
+   */
   public function getBfdSessionInitializationMode()
   {
     return $this->bfdSessionInitializationMode;
   }
+  /**
+   * @param string
+   */
   public function setConfigUpdateTimestampMicros($configUpdateTimestampMicros)
   {
     $this->configUpdateTimestampMicros = $configUpdateTimestampMicros;
   }
+  /**
+   * @return string
+   */
   public function getConfigUpdateTimestampMicros()
   {
     return $this->configUpdateTimestampMicros;
@@ -79,26 +109,44 @@ class BfdStatus extends \Google\Collection
   {
     return $this->controlPacketIntervals;
   }
+  /**
+   * @param string
+   */
   public function setLocalDiagnostic($localDiagnostic)
   {
     $this->localDiagnostic = $localDiagnostic;
   }
+  /**
+   * @return string
+   */
   public function getLocalDiagnostic()
   {
     return $this->localDiagnostic;
   }
+  /**
+   * @param string
+   */
   public function setLocalState($localState)
   {
     $this->localState = $localState;
   }
+  /**
+   * @return string
+   */
   public function getLocalState()
   {
     return $this->localState;
   }
+  /**
+   * @param string
+   */
   public function setNegotiatedLocalControlTxIntervalMs($negotiatedLocalControlTxIntervalMs)
   {
     $this->negotiatedLocalControlTxIntervalMs = $negotiatedLocalControlTxIntervalMs;
   }
+  /**
+   * @return string
+   */
   public function getNegotiatedLocalControlTxIntervalMs()
   {
     return $this->negotiatedLocalControlTxIntervalMs;
@@ -131,10 +179,16 @@ class BfdStatus extends \Google\Collection
   {
     return $this->txPacket;
   }
+  /**
+   * @param string
+   */
   public function setUptimeMs($uptimeMs)
   {
     $this->uptimeMs = $uptimeMs;
   }
+  /**
+   * @return string
+   */
   public function getUptimeMs()
   {
     return $this->uptimeMs;

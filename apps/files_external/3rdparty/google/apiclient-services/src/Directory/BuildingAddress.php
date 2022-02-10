@@ -20,66 +20,129 @@ namespace Google\Service\Directory;
 class BuildingAddress extends \Google\Collection
 {
   protected $collection_key = 'addressLines';
+  /**
+   * @var string[]
+   */
   public $addressLines;
+  /**
+   * @var string
+   */
   public $administrativeArea;
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $locality;
+  /**
+   * @var string
+   */
   public $postalCode;
+  /**
+   * @var string
+   */
   public $regionCode;
+  /**
+   * @var string
+   */
   public $sublocality;
 
+  /**
+   * @param string[]
+   */
   public function setAddressLines($addressLines)
   {
     $this->addressLines = $addressLines;
   }
+  /**
+   * @return string[]
+   */
   public function getAddressLines()
   {
     return $this->addressLines;
   }
+  /**
+   * @param string
+   */
   public function setAdministrativeArea($administrativeArea)
   {
     $this->administrativeArea = $administrativeArea;
   }
+  /**
+   * @return string
+   */
   public function getAdministrativeArea()
   {
     return $this->administrativeArea;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setLocality($locality)
   {
     $this->locality = $locality;
   }
+  /**
+   * @return string
+   */
   public function getLocality()
   {
     return $this->locality;
   }
+  /**
+   * @param string
+   */
   public function setPostalCode($postalCode)
   {
     $this->postalCode = $postalCode;
   }
+  /**
+   * @return string
+   */
   public function getPostalCode()
   {
     return $this->postalCode;
   }
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;
   }
+  /**
+   * @param string
+   */
   public function setSublocality($sublocality)
   {
     $this->sublocality = $sublocality;
   }
+  /**
+   * @return string
+   */
   public function getSublocality()
   {
     return $this->sublocality;

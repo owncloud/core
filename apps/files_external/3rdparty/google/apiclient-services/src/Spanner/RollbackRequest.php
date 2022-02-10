@@ -19,12 +19,21 @@ namespace Google\Service\Spanner;
 
 class RollbackRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $transactionId;
 
+  /**
+   * @param string
+   */
   public function setTransactionId($transactionId)
   {
     $this->transactionId = $transactionId;
   }
+  /**
+   * @return string
+   */
   public function getTransactionId()
   {
     return $this->transactionId;

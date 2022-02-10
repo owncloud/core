@@ -22,6 +22,9 @@ class ListFhirStoresResponse extends \Google\Collection
   protected $collection_key = 'fhirStores';
   protected $fhirStoresType = FhirStore::class;
   protected $fhirStoresDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListFhirStoresResponse extends \Google\Collection
   {
     return $this->fhirStores;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

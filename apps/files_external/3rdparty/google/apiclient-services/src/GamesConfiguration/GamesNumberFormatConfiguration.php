@@ -19,32 +19,59 @@ namespace Google\Service\GamesConfiguration;
 
 class GamesNumberFormatConfiguration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var int
+   */
   public $numDecimalPlaces;
+  /**
+   * @var string
+   */
   public $numberFormatType;
   protected $suffixType = GamesNumberAffixConfiguration::class;
   protected $suffixDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param int
+   */
   public function setNumDecimalPlaces($numDecimalPlaces)
   {
     $this->numDecimalPlaces = $numDecimalPlaces;
   }
+  /**
+   * @return int
+   */
   public function getNumDecimalPlaces()
   {
     return $this->numDecimalPlaces;
   }
+  /**
+   * @param string
+   */
   public function setNumberFormatType($numberFormatType)
   {
     $this->numberFormatType = $numberFormatType;
   }
+  /**
+   * @return string
+   */
   public function getNumberFormatType()
   {
     return $this->numberFormatType;

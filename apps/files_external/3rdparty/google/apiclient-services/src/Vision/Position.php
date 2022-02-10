@@ -19,30 +19,57 @@ namespace Google\Service\Vision;
 
 class Position extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $x;
+  /**
+   * @var float
+   */
   public $y;
+  /**
+   * @var float
+   */
   public $z;
 
+  /**
+   * @param float
+   */
   public function setX($x)
   {
     $this->x = $x;
   }
+  /**
+   * @return float
+   */
   public function getX()
   {
     return $this->x;
   }
+  /**
+   * @param float
+   */
   public function setY($y)
   {
     $this->y = $y;
   }
+  /**
+   * @return float
+   */
   public function getY()
   {
     return $this->y;
   }
+  /**
+   * @param float
+   */
   public function setZ($z)
   {
     $this->z = $z;
   }
+  /**
+   * @return float
+   */
   public function getZ()
   {
     return $this->z;

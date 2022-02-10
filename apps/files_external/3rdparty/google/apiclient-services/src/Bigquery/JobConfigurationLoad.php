@@ -20,12 +20,27 @@ namespace Google\Service\Bigquery;
 class JobConfigurationLoad extends \Google\Collection
 {
   protected $collection_key = 'sourceUris';
+  /**
+   * @var bool
+   */
   public $allowJaggedRows;
+  /**
+   * @var bool
+   */
   public $allowQuotedNewlines;
+  /**
+   * @var bool
+   */
   public $autodetect;
   protected $clusteringType = Clustering::class;
   protected $clusteringDataType = '';
+  /**
+   * @var string
+   */
   public $createDisposition;
+  /**
+   * @var string[]
+   */
   public $decimalTargetTypes;
   protected $destinationEncryptionConfigurationType = EncryptionConfiguration::class;
   protected $destinationEncryptionConfigurationDataType = '';
@@ -33,53 +48,119 @@ class JobConfigurationLoad extends \Google\Collection
   protected $destinationTableDataType = '';
   protected $destinationTablePropertiesType = DestinationTableProperties::class;
   protected $destinationTablePropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $encoding;
+  /**
+   * @var string
+   */
   public $fieldDelimiter;
   protected $hivePartitioningOptionsType = HivePartitioningOptions::class;
   protected $hivePartitioningOptionsDataType = '';
+  /**
+   * @var bool
+   */
   public $ignoreUnknownValues;
+  /**
+   * @var string
+   */
   public $jsonExtension;
+  /**
+   * @var int
+   */
   public $maxBadRecords;
+  /**
+   * @var string
+   */
   public $nullMarker;
   protected $parquetOptionsType = ParquetOptions::class;
   protected $parquetOptionsDataType = '';
+  /**
+   * @var string[]
+   */
   public $projectionFields;
+  /**
+   * @var string
+   */
   public $quote;
   protected $rangePartitioningType = RangePartitioning::class;
   protected $rangePartitioningDataType = '';
   protected $schemaType = TableSchema::class;
   protected $schemaDataType = '';
+  /**
+   * @var string
+   */
   public $schemaInline;
+  /**
+   * @var string
+   */
   public $schemaInlineFormat;
+  /**
+   * @var string[]
+   */
   public $schemaUpdateOptions;
+  /**
+   * @var int
+   */
   public $skipLeadingRows;
+  /**
+   * @var string
+   */
   public $sourceFormat;
+  /**
+   * @var string[]
+   */
   public $sourceUris;
   protected $timePartitioningType = TimePartitioning::class;
   protected $timePartitioningDataType = '';
+  /**
+   * @var bool
+   */
   public $useAvroLogicalTypes;
+  /**
+   * @var string
+   */
   public $writeDisposition;
 
+  /**
+   * @param bool
+   */
   public function setAllowJaggedRows($allowJaggedRows)
   {
     $this->allowJaggedRows = $allowJaggedRows;
   }
+  /**
+   * @return bool
+   */
   public function getAllowJaggedRows()
   {
     return $this->allowJaggedRows;
   }
+  /**
+   * @param bool
+   */
   public function setAllowQuotedNewlines($allowQuotedNewlines)
   {
     $this->allowQuotedNewlines = $allowQuotedNewlines;
   }
+  /**
+   * @return bool
+   */
   public function getAllowQuotedNewlines()
   {
     return $this->allowQuotedNewlines;
   }
+  /**
+   * @param bool
+   */
   public function setAutodetect($autodetect)
   {
     $this->autodetect = $autodetect;
   }
+  /**
+   * @return bool
+   */
   public function getAutodetect()
   {
     return $this->autodetect;
@@ -98,18 +179,30 @@ class JobConfigurationLoad extends \Google\Collection
   {
     return $this->clustering;
   }
+  /**
+   * @param string
+   */
   public function setCreateDisposition($createDisposition)
   {
     $this->createDisposition = $createDisposition;
   }
+  /**
+   * @return string
+   */
   public function getCreateDisposition()
   {
     return $this->createDisposition;
   }
+  /**
+   * @param string[]
+   */
   public function setDecimalTargetTypes($decimalTargetTypes)
   {
     $this->decimalTargetTypes = $decimalTargetTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getDecimalTargetTypes()
   {
     return $this->decimalTargetTypes;
@@ -156,18 +249,30 @@ class JobConfigurationLoad extends \Google\Collection
   {
     return $this->destinationTableProperties;
   }
+  /**
+   * @param string
+   */
   public function setEncoding($encoding)
   {
     $this->encoding = $encoding;
   }
+  /**
+   * @return string
+   */
   public function getEncoding()
   {
     return $this->encoding;
   }
+  /**
+   * @param string
+   */
   public function setFieldDelimiter($fieldDelimiter)
   {
     $this->fieldDelimiter = $fieldDelimiter;
   }
+  /**
+   * @return string
+   */
   public function getFieldDelimiter()
   {
     return $this->fieldDelimiter;
@@ -186,34 +291,58 @@ class JobConfigurationLoad extends \Google\Collection
   {
     return $this->hivePartitioningOptions;
   }
+  /**
+   * @param bool
+   */
   public function setIgnoreUnknownValues($ignoreUnknownValues)
   {
     $this->ignoreUnknownValues = $ignoreUnknownValues;
   }
+  /**
+   * @return bool
+   */
   public function getIgnoreUnknownValues()
   {
     return $this->ignoreUnknownValues;
   }
+  /**
+   * @param string
+   */
   public function setJsonExtension($jsonExtension)
   {
     $this->jsonExtension = $jsonExtension;
   }
+  /**
+   * @return string
+   */
   public function getJsonExtension()
   {
     return $this->jsonExtension;
   }
+  /**
+   * @param int
+   */
   public function setMaxBadRecords($maxBadRecords)
   {
     $this->maxBadRecords = $maxBadRecords;
   }
+  /**
+   * @return int
+   */
   public function getMaxBadRecords()
   {
     return $this->maxBadRecords;
   }
+  /**
+   * @param string
+   */
   public function setNullMarker($nullMarker)
   {
     $this->nullMarker = $nullMarker;
   }
+  /**
+   * @return string
+   */
   public function getNullMarker()
   {
     return $this->nullMarker;
@@ -232,18 +361,30 @@ class JobConfigurationLoad extends \Google\Collection
   {
     return $this->parquetOptions;
   }
+  /**
+   * @param string[]
+   */
   public function setProjectionFields($projectionFields)
   {
     $this->projectionFields = $projectionFields;
   }
+  /**
+   * @return string[]
+   */
   public function getProjectionFields()
   {
     return $this->projectionFields;
   }
+  /**
+   * @param string
+   */
   public function setQuote($quote)
   {
     $this->quote = $quote;
   }
+  /**
+   * @return string
+   */
   public function getQuote()
   {
     return $this->quote;
@@ -276,50 +417,86 @@ class JobConfigurationLoad extends \Google\Collection
   {
     return $this->schema;
   }
+  /**
+   * @param string
+   */
   public function setSchemaInline($schemaInline)
   {
     $this->schemaInline = $schemaInline;
   }
+  /**
+   * @return string
+   */
   public function getSchemaInline()
   {
     return $this->schemaInline;
   }
+  /**
+   * @param string
+   */
   public function setSchemaInlineFormat($schemaInlineFormat)
   {
     $this->schemaInlineFormat = $schemaInlineFormat;
   }
+  /**
+   * @return string
+   */
   public function getSchemaInlineFormat()
   {
     return $this->schemaInlineFormat;
   }
+  /**
+   * @param string[]
+   */
   public function setSchemaUpdateOptions($schemaUpdateOptions)
   {
     $this->schemaUpdateOptions = $schemaUpdateOptions;
   }
+  /**
+   * @return string[]
+   */
   public function getSchemaUpdateOptions()
   {
     return $this->schemaUpdateOptions;
   }
+  /**
+   * @param int
+   */
   public function setSkipLeadingRows($skipLeadingRows)
   {
     $this->skipLeadingRows = $skipLeadingRows;
   }
+  /**
+   * @return int
+   */
   public function getSkipLeadingRows()
   {
     return $this->skipLeadingRows;
   }
+  /**
+   * @param string
+   */
   public function setSourceFormat($sourceFormat)
   {
     $this->sourceFormat = $sourceFormat;
   }
+  /**
+   * @return string
+   */
   public function getSourceFormat()
   {
     return $this->sourceFormat;
   }
+  /**
+   * @param string[]
+   */
   public function setSourceUris($sourceUris)
   {
     $this->sourceUris = $sourceUris;
   }
+  /**
+   * @return string[]
+   */
   public function getSourceUris()
   {
     return $this->sourceUris;
@@ -338,18 +515,30 @@ class JobConfigurationLoad extends \Google\Collection
   {
     return $this->timePartitioning;
   }
+  /**
+   * @param bool
+   */
   public function setUseAvroLogicalTypes($useAvroLogicalTypes)
   {
     $this->useAvroLogicalTypes = $useAvroLogicalTypes;
   }
+  /**
+   * @return bool
+   */
   public function getUseAvroLogicalTypes()
   {
     return $this->useAvroLogicalTypes;
   }
+  /**
+   * @param string
+   */
   public function setWriteDisposition($writeDisposition)
   {
     $this->writeDisposition = $writeDisposition;
   }
+  /**
+   * @return string
+   */
   public function getWriteDisposition()
   {
     return $this->writeDisposition;

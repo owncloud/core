@@ -19,39 +19,75 @@ namespace Google\Service\Cloudbilling;
 
 class Service extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $businessEntityName;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $serviceId;
 
+  /**
+   * @param string
+   */
   public function setBusinessEntityName($businessEntityName)
   {
     $this->businessEntityName = $businessEntityName;
   }
+  /**
+   * @return string
+   */
   public function getBusinessEntityName()
   {
     return $this->businessEntityName;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setServiceId($serviceId)
   {
     $this->serviceId = $serviceId;
   }
+  /**
+   * @return string
+   */
   public function getServiceId()
   {
     return $this->serviceId;

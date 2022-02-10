@@ -23,39 +23,75 @@ class GenerateEphemeralCertRequest extends \Google\Model
         "accessToken" => "access_token",
         "publicKey" => "public_key",
   ];
+  /**
+   * @var string
+   */
   public $accessToken;
+  /**
+   * @var string
+   */
   public $publicKey;
+  /**
+   * @var string
+   */
   public $readTime;
+  /**
+   * @var string
+   */
   public $validDuration;
 
+  /**
+   * @param string
+   */
   public function setAccessToken($accessToken)
   {
     $this->accessToken = $accessToken;
   }
+  /**
+   * @return string
+   */
   public function getAccessToken()
   {
     return $this->accessToken;
   }
+  /**
+   * @param string
+   */
   public function setPublicKey($publicKey)
   {
     $this->publicKey = $publicKey;
   }
+  /**
+   * @return string
+   */
   public function getPublicKey()
   {
     return $this->publicKey;
   }
+  /**
+   * @param string
+   */
   public function setReadTime($readTime)
   {
     $this->readTime = $readTime;
   }
+  /**
+   * @return string
+   */
   public function getReadTime()
   {
     return $this->readTime;
   }
+  /**
+   * @param string
+   */
   public function setValidDuration($validDuration)
   {
     $this->validDuration = $validDuration;
   }
+  /**
+   * @return string
+   */
   public function getValidDuration()
   {
     return $this->validDuration;

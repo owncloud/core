@@ -19,50 +19,95 @@ namespace Google\Service\Dfareporting;
 
 class OperatingSystemVersion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $majorVersion;
+  /**
+   * @var string
+   */
   public $minorVersion;
+  /**
+   * @var string
+   */
   public $name;
   protected $operatingSystemType = OperatingSystem::class;
   protected $operatingSystemDataType = '';
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMajorVersion($majorVersion)
   {
     $this->majorVersion = $majorVersion;
   }
+  /**
+   * @return string
+   */
   public function getMajorVersion()
   {
     return $this->majorVersion;
   }
+  /**
+   * @param string
+   */
   public function setMinorVersion($minorVersion)
   {
     $this->minorVersion = $minorVersion;
   }
+  /**
+   * @return string
+   */
   public function getMinorVersion()
   {
     return $this->minorVersion;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -22,9 +22,21 @@ class TargetChange extends \Google\Collection
   protected $collection_key = 'targetIds';
   protected $causeType = Status::class;
   protected $causeDataType = '';
+  /**
+   * @var string
+   */
   public $readTime;
+  /**
+   * @var string
+   */
   public $resumeToken;
+  /**
+   * @var string
+   */
   public $targetChangeType;
+  /**
+   * @var int[]
+   */
   public $targetIds;
 
   /**
@@ -41,34 +53,58 @@ class TargetChange extends \Google\Collection
   {
     return $this->cause;
   }
+  /**
+   * @param string
+   */
   public function setReadTime($readTime)
   {
     $this->readTime = $readTime;
   }
+  /**
+   * @return string
+   */
   public function getReadTime()
   {
     return $this->readTime;
   }
+  /**
+   * @param string
+   */
   public function setResumeToken($resumeToken)
   {
     $this->resumeToken = $resumeToken;
   }
+  /**
+   * @return string
+   */
   public function getResumeToken()
   {
     return $this->resumeToken;
   }
+  /**
+   * @param string
+   */
   public function setTargetChangeType($targetChangeType)
   {
     $this->targetChangeType = $targetChangeType;
   }
+  /**
+   * @return string
+   */
   public function getTargetChangeType()
   {
     return $this->targetChangeType;
   }
+  /**
+   * @param int[]
+   */
   public function setTargetIds($targetIds)
   {
     $this->targetIds = $targetIds;
   }
+  /**
+   * @return int[]
+   */
   public function getTargetIds()
   {
     return $this->targetIds;

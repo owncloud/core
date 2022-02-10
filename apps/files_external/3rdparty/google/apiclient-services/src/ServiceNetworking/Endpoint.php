@@ -19,30 +19,57 @@ namespace Google\Service\ServiceNetworking;
 
 class Endpoint extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowCors;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $target;
 
+  /**
+   * @param bool
+   */
   public function setAllowCors($allowCors)
   {
     $this->allowCors = $allowCors;
   }
+  /**
+   * @return bool
+   */
   public function getAllowCors()
   {
     return $this->allowCors;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return string
+   */
   public function getTarget()
   {
     return $this->target;

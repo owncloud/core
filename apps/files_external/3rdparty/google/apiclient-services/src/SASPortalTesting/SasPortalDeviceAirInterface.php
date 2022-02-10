@@ -19,21 +19,39 @@ namespace Google\Service\SASPortalTesting;
 
 class SasPortalDeviceAirInterface extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $radioTechnology;
+  /**
+   * @var string
+   */
   public $supportedSpec;
 
+  /**
+   * @param string
+   */
   public function setRadioTechnology($radioTechnology)
   {
     $this->radioTechnology = $radioTechnology;
   }
+  /**
+   * @return string
+   */
   public function getRadioTechnology()
   {
     return $this->radioTechnology;
   }
+  /**
+   * @param string
+   */
   public function setSupportedSpec($supportedSpec)
   {
     $this->supportedSpec = $supportedSpec;
   }
+  /**
+   * @return string
+   */
   public function getSupportedSpec()
   {
     return $this->supportedSpec;

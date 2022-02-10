@@ -20,52 +20,121 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1TrainingInput extends \Google\Collection
 {
   protected $collection_key = 'packageUris';
+  /**
+   * @var string[]
+   */
   public $args;
+  /**
+   * @var bool
+   */
   public $enableWebAccess;
   protected $encryptionConfigType = GoogleCloudMlV1EncryptionConfig::class;
   protected $encryptionConfigDataType = '';
   protected $evaluatorConfigType = GoogleCloudMlV1ReplicaConfig::class;
   protected $evaluatorConfigDataType = '';
+  /**
+   * @var string
+   */
   public $evaluatorCount;
+  /**
+   * @var string
+   */
   public $evaluatorType;
   protected $hyperparametersType = GoogleCloudMlV1HyperparameterSpec::class;
   protected $hyperparametersDataType = '';
+  /**
+   * @var string
+   */
   public $jobDir;
   protected $masterConfigType = GoogleCloudMlV1ReplicaConfig::class;
   protected $masterConfigDataType = '';
+  /**
+   * @var string
+   */
   public $masterType;
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string[]
+   */
   public $packageUris;
   protected $parameterServerConfigType = GoogleCloudMlV1ReplicaConfig::class;
   protected $parameterServerConfigDataType = '';
+  /**
+   * @var string
+   */
   public $parameterServerCount;
+  /**
+   * @var string
+   */
   public $parameterServerType;
+  /**
+   * @var string
+   */
   public $pythonModule;
+  /**
+   * @var string
+   */
   public $pythonVersion;
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $runtimeVersion;
+  /**
+   * @var string
+   */
   public $scaleTier;
   protected $schedulingType = GoogleCloudMlV1Scheduling::class;
   protected $schedulingDataType = '';
+  /**
+   * @var string
+   */
   public $serviceAccount;
+  /**
+   * @var bool
+   */
   public $useChiefInTfConfig;
   protected $workerConfigType = GoogleCloudMlV1ReplicaConfig::class;
   protected $workerConfigDataType = '';
+  /**
+   * @var string
+   */
   public $workerCount;
+  /**
+   * @var string
+   */
   public $workerType;
 
+  /**
+   * @param string[]
+   */
   public function setArgs($args)
   {
     $this->args = $args;
   }
+  /**
+   * @return string[]
+   */
   public function getArgs()
   {
     return $this->args;
   }
+  /**
+   * @param bool
+   */
   public function setEnableWebAccess($enableWebAccess)
   {
     $this->enableWebAccess = $enableWebAccess;
   }
+  /**
+   * @return bool
+   */
   public function getEnableWebAccess()
   {
     return $this->enableWebAccess;
@@ -98,18 +167,30 @@ class GoogleCloudMlV1TrainingInput extends \Google\Collection
   {
     return $this->evaluatorConfig;
   }
+  /**
+   * @param string
+   */
   public function setEvaluatorCount($evaluatorCount)
   {
     $this->evaluatorCount = $evaluatorCount;
   }
+  /**
+   * @return string
+   */
   public function getEvaluatorCount()
   {
     return $this->evaluatorCount;
   }
+  /**
+   * @param string
+   */
   public function setEvaluatorType($evaluatorType)
   {
     $this->evaluatorType = $evaluatorType;
   }
+  /**
+   * @return string
+   */
   public function getEvaluatorType()
   {
     return $this->evaluatorType;
@@ -128,10 +209,16 @@ class GoogleCloudMlV1TrainingInput extends \Google\Collection
   {
     return $this->hyperparameters;
   }
+  /**
+   * @param string
+   */
   public function setJobDir($jobDir)
   {
     $this->jobDir = $jobDir;
   }
+  /**
+   * @return string
+   */
   public function getJobDir()
   {
     return $this->jobDir;
@@ -150,26 +237,44 @@ class GoogleCloudMlV1TrainingInput extends \Google\Collection
   {
     return $this->masterConfig;
   }
+  /**
+   * @param string
+   */
   public function setMasterType($masterType)
   {
     $this->masterType = $masterType;
   }
+  /**
+   * @return string
+   */
   public function getMasterType()
   {
     return $this->masterType;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string[]
+   */
   public function setPackageUris($packageUris)
   {
     $this->packageUris = $packageUris;
   }
+  /**
+   * @return string[]
+   */
   public function getPackageUris()
   {
     return $this->packageUris;
@@ -188,58 +293,100 @@ class GoogleCloudMlV1TrainingInput extends \Google\Collection
   {
     return $this->parameterServerConfig;
   }
+  /**
+   * @param string
+   */
   public function setParameterServerCount($parameterServerCount)
   {
     $this->parameterServerCount = $parameterServerCount;
   }
+  /**
+   * @return string
+   */
   public function getParameterServerCount()
   {
     return $this->parameterServerCount;
   }
+  /**
+   * @param string
+   */
   public function setParameterServerType($parameterServerType)
   {
     $this->parameterServerType = $parameterServerType;
   }
+  /**
+   * @return string
+   */
   public function getParameterServerType()
   {
     return $this->parameterServerType;
   }
+  /**
+   * @param string
+   */
   public function setPythonModule($pythonModule)
   {
     $this->pythonModule = $pythonModule;
   }
+  /**
+   * @return string
+   */
   public function getPythonModule()
   {
     return $this->pythonModule;
   }
+  /**
+   * @param string
+   */
   public function setPythonVersion($pythonVersion)
   {
     $this->pythonVersion = $pythonVersion;
   }
+  /**
+   * @return string
+   */
   public function getPythonVersion()
   {
     return $this->pythonVersion;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setRuntimeVersion($runtimeVersion)
   {
     $this->runtimeVersion = $runtimeVersion;
   }
+  /**
+   * @return string
+   */
   public function getRuntimeVersion()
   {
     return $this->runtimeVersion;
   }
+  /**
+   * @param string
+   */
   public function setScaleTier($scaleTier)
   {
     $this->scaleTier = $scaleTier;
   }
+  /**
+   * @return string
+   */
   public function getScaleTier()
   {
     return $this->scaleTier;
@@ -258,18 +405,30 @@ class GoogleCloudMlV1TrainingInput extends \Google\Collection
   {
     return $this->scheduling;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
   }
+  /**
+   * @param bool
+   */
   public function setUseChiefInTfConfig($useChiefInTfConfig)
   {
     $this->useChiefInTfConfig = $useChiefInTfConfig;
   }
+  /**
+   * @return bool
+   */
   public function getUseChiefInTfConfig()
   {
     return $this->useChiefInTfConfig;
@@ -288,18 +447,30 @@ class GoogleCloudMlV1TrainingInput extends \Google\Collection
   {
     return $this->workerConfig;
   }
+  /**
+   * @param string
+   */
   public function setWorkerCount($workerCount)
   {
     $this->workerCount = $workerCount;
   }
+  /**
+   * @return string
+   */
   public function getWorkerCount()
   {
     return $this->workerCount;
   }
+  /**
+   * @param string
+   */
   public function setWorkerType($workerType)
   {
     $this->workerType = $workerType;
   }
+  /**
+   * @return string
+   */
   public function getWorkerType()
   {
     return $this->workerType;

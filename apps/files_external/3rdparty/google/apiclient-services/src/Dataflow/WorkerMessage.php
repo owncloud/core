@@ -19,7 +19,13 @@ namespace Google\Service\Dataflow;
 
 class WorkerMessage extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $time;
   protected $workerHealthReportType = WorkerHealthReport::class;
   protected $workerHealthReportDataType = '';
@@ -32,18 +38,30 @@ class WorkerMessage extends \Google\Model
   protected $workerShutdownNoticeType = WorkerShutdownNotice::class;
   protected $workerShutdownNoticeDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setTime($time)
   {
     $this->time = $time;
   }
+  /**
+   * @return string
+   */
   public function getTime()
   {
     return $this->time;

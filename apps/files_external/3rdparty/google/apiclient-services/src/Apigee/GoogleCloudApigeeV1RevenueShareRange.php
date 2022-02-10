@@ -19,14 +19,26 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1RevenueShareRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $end;
   public $sharePercentage;
+  /**
+   * @var string
+   */
   public $start;
 
+  /**
+   * @param string
+   */
   public function setEnd($end)
   {
     $this->end = $end;
   }
+  /**
+   * @return string
+   */
   public function getEnd()
   {
     return $this->end;
@@ -39,10 +51,16 @@ class GoogleCloudApigeeV1RevenueShareRange extends \Google\Model
   {
     return $this->sharePercentage;
   }
+  /**
+   * @param string
+   */
   public function setStart($start)
   {
     $this->start = $start;
   }
+  /**
+   * @return string
+   */
   public function getStart()
   {
     return $this->start;

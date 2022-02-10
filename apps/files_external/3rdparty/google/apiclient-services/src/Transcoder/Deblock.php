@@ -19,13 +19,22 @@ namespace Google\Service\Transcoder;
 
 class Deblock extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
   public $strength;
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;

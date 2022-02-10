@@ -20,30 +20,57 @@ namespace Google\Service\RealTimeBidding;
 class AdTechnologyProviders extends \Google\Collection
 {
   protected $collection_key = 'unidentifiedProviderDomains';
+  /**
+   * @var string[]
+   */
   public $detectedGvlIds;
+  /**
+   * @var string[]
+   */
   public $detectedProviderIds;
+  /**
+   * @var string[]
+   */
   public $unidentifiedProviderDomains;
 
+  /**
+   * @param string[]
+   */
   public function setDetectedGvlIds($detectedGvlIds)
   {
     $this->detectedGvlIds = $detectedGvlIds;
   }
+  /**
+   * @return string[]
+   */
   public function getDetectedGvlIds()
   {
     return $this->detectedGvlIds;
   }
+  /**
+   * @param string[]
+   */
   public function setDetectedProviderIds($detectedProviderIds)
   {
     $this->detectedProviderIds = $detectedProviderIds;
   }
+  /**
+   * @return string[]
+   */
   public function getDetectedProviderIds()
   {
     return $this->detectedProviderIds;
   }
+  /**
+   * @param string[]
+   */
   public function setUnidentifiedProviderDomains($unidentifiedProviderDomains)
   {
     $this->unidentifiedProviderDomains = $unidentifiedProviderDomains;
   }
+  /**
+   * @return string[]
+   */
   public function getUnidentifiedProviderDomains()
   {
     return $this->unidentifiedProviderDomains;

@@ -19,33 +19,63 @@ namespace Google\Service\Analytics;
 
 class Filter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
   protected $advancedDetailsType = FilterAdvancedDetails::class;
   protected $advancedDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $created;
   protected $excludeDetailsType = FilterExpression::class;
   protected $excludeDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $id;
   protected $includeDetailsType = FilterExpression::class;
   protected $includeDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $lowercaseDetailsType = FilterLowercaseDetails::class;
   protected $lowercaseDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $parentLinkType = FilterParentLink::class;
   protected $parentLinkDataType = '';
   protected $searchAndReplaceDetailsType = FilterSearchAndReplaceDetails::class;
   protected $searchAndReplaceDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $updated;
   protected $uppercaseDetailsType = FilterUppercaseDetails::class;
   protected $uppercaseDetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -64,10 +94,16 @@ class Filter extends \Google\Model
   {
     return $this->advancedDetails;
   }
+  /**
+   * @param string
+   */
   public function setCreated($created)
   {
     $this->created = $created;
   }
+  /**
+   * @return string
+   */
   public function getCreated()
   {
     return $this->created;
@@ -86,10 +122,16 @@ class Filter extends \Google\Model
   {
     return $this->excludeDetails;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -108,10 +150,16 @@ class Filter extends \Google\Model
   {
     return $this->includeDetails;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -130,10 +178,16 @@ class Filter extends \Google\Model
   {
     return $this->lowercaseDetails;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -166,26 +220,44 @@ class Filter extends \Google\Model
   {
     return $this->searchAndReplaceDetails;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUpdated($updated)
   {
     $this->updated = $updated;
   }
+  /**
+   * @return string
+   */
   public function getUpdated()
   {
     return $this->updated;

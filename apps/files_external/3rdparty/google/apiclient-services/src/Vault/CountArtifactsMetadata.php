@@ -19,24 +19,45 @@ namespace Google\Service\Vault;
 
 class CountArtifactsMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $matterId;
   protected $queryType = Query::class;
   protected $queryDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setMatterId($matterId)
   {
     $this->matterId = $matterId;
   }
+  /**
+   * @return string
+   */
   public function getMatterId()
   {
     return $this->matterId;
@@ -55,10 +76,16 @@ class CountArtifactsMetadata extends \Google\Model
   {
     return $this->query;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

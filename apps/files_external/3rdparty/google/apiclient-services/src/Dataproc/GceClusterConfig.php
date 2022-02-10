@@ -22,20 +22,47 @@ class GceClusterConfig extends \Google\Collection
   protected $collection_key = 'tags';
   protected $confidentialInstanceConfigType = ConfidentialInstanceConfig::class;
   protected $confidentialInstanceConfigDataType = '';
+  /**
+   * @var bool
+   */
   public $internalIpOnly;
+  /**
+   * @var string[]
+   */
   public $metadata;
+  /**
+   * @var string
+   */
   public $networkUri;
   protected $nodeGroupAffinityType = NodeGroupAffinity::class;
   protected $nodeGroupAffinityDataType = '';
+  /**
+   * @var string
+   */
   public $privateIpv6GoogleAccess;
   protected $reservationAffinityType = ReservationAffinity::class;
   protected $reservationAffinityDataType = '';
+  /**
+   * @var string
+   */
   public $serviceAccount;
+  /**
+   * @var string[]
+   */
   public $serviceAccountScopes;
   protected $shieldedInstanceConfigType = ShieldedInstanceConfig::class;
   protected $shieldedInstanceConfigDataType = '';
+  /**
+   * @var string
+   */
   public $subnetworkUri;
+  /**
+   * @var string[]
+   */
   public $tags;
+  /**
+   * @var string
+   */
   public $zoneUri;
 
   /**
@@ -52,26 +79,44 @@ class GceClusterConfig extends \Google\Collection
   {
     return $this->confidentialInstanceConfig;
   }
+  /**
+   * @param bool
+   */
   public function setInternalIpOnly($internalIpOnly)
   {
     $this->internalIpOnly = $internalIpOnly;
   }
+  /**
+   * @return bool
+   */
   public function getInternalIpOnly()
   {
     return $this->internalIpOnly;
   }
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setNetworkUri($networkUri)
   {
     $this->networkUri = $networkUri;
   }
+  /**
+   * @return string
+   */
   public function getNetworkUri()
   {
     return $this->networkUri;
@@ -90,10 +135,16 @@ class GceClusterConfig extends \Google\Collection
   {
     return $this->nodeGroupAffinity;
   }
+  /**
+   * @param string
+   */
   public function setPrivateIpv6GoogleAccess($privateIpv6GoogleAccess)
   {
     $this->privateIpv6GoogleAccess = $privateIpv6GoogleAccess;
   }
+  /**
+   * @return string
+   */
   public function getPrivateIpv6GoogleAccess()
   {
     return $this->privateIpv6GoogleAccess;
@@ -112,18 +163,30 @@ class GceClusterConfig extends \Google\Collection
   {
     return $this->reservationAffinity;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
   }
+  /**
+   * @param string[]
+   */
   public function setServiceAccountScopes($serviceAccountScopes)
   {
     $this->serviceAccountScopes = $serviceAccountScopes;
   }
+  /**
+   * @return string[]
+   */
   public function getServiceAccountScopes()
   {
     return $this->serviceAccountScopes;
@@ -142,26 +205,44 @@ class GceClusterConfig extends \Google\Collection
   {
     return $this->shieldedInstanceConfig;
   }
+  /**
+   * @param string
+   */
   public function setSubnetworkUri($subnetworkUri)
   {
     $this->subnetworkUri = $subnetworkUri;
   }
+  /**
+   * @return string
+   */
   public function getSubnetworkUri()
   {
     return $this->subnetworkUri;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;
   }
+  /**
+   * @param string
+   */
   public function setZoneUri($zoneUri)
   {
     $this->zoneUri = $zoneUri;
   }
+  /**
+   * @return string
+   */
   public function getZoneUri()
   {
     return $this->zoneUri;

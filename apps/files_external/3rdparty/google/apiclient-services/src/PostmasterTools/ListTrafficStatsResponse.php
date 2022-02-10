@@ -20,14 +20,23 @@ namespace Google\Service\PostmasterTools;
 class ListTrafficStatsResponse extends \Google\Collection
 {
   protected $collection_key = 'trafficStats';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $trafficStatsType = TrafficStats::class;
   protected $trafficStatsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,7 +19,13 @@ namespace Google\Service\CloudRun;
 
 class DomainMapping extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiVersion;
+  /**
+   * @var string
+   */
   public $kind;
   protected $metadataType = ObjectMeta::class;
   protected $metadataDataType = '';
@@ -28,18 +34,30 @@ class DomainMapping extends \Google\Model
   protected $statusType = DomainMappingStatus::class;
   protected $statusDataType = '';
 
+  /**
+   * @param string
+   */
   public function setApiVersion($apiVersion)
   {
     $this->apiVersion = $apiVersion;
   }
+  /**
+   * @return string
+   */
   public function getApiVersion()
   {
     return $this->apiVersion;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

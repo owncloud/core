@@ -20,14 +20,23 @@ namespace Google\Service\Compute;
 class DistributionPolicy extends \Google\Collection
 {
   protected $collection_key = 'zones';
+  /**
+   * @var string
+   */
   public $targetShape;
   protected $zonesType = DistributionPolicyZoneConfiguration::class;
   protected $zonesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setTargetShape($targetShape)
   {
     $this->targetShape = $targetShape;
   }
+  /**
+   * @return string
+   */
   public function getTargetShape()
   {
     return $this->targetShape;

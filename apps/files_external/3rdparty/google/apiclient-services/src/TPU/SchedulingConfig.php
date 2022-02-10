@@ -19,21 +19,39 @@ namespace Google\Service\TPU;
 
 class SchedulingConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $preemptible;
+  /**
+   * @var bool
+   */
   public $reserved;
 
+  /**
+   * @param bool
+   */
   public function setPreemptible($preemptible)
   {
     $this->preemptible = $preemptible;
   }
+  /**
+   * @return bool
+   */
   public function getPreemptible()
   {
     return $this->preemptible;
   }
+  /**
+   * @param bool
+   */
   public function setReserved($reserved)
   {
     $this->reserved = $reserved;
   }
+  /**
+   * @return bool
+   */
   public function getReserved()
   {
     return $this->reserved;

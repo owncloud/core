@@ -20,47 +20,95 @@ namespace Google\Service\AIPlatformNotebooks;
 class Schedule extends \Google\Collection
 {
   protected $collection_key = 'recentExecutions';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $cronSchedule;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $executionTemplateType = ExecutionTemplate::class;
   protected $executionTemplateDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $recentExecutionsType = Execution::class;
   protected $recentExecutionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $timeZone;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setCronSchedule($cronSchedule)
   {
     $this->cronSchedule = $cronSchedule;
   }
+  /**
+   * @return string
+   */
   public function getCronSchedule()
   {
     return $this->cronSchedule;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -79,10 +127,16 @@ class Schedule extends \Google\Collection
   {
     return $this->executionTemplate;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -101,26 +155,44 @@ class Schedule extends \Google\Collection
   {
     return $this->recentExecutions;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

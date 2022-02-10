@@ -19,12 +19,21 @@ namespace Google\Service\SecurityCommandCenter;
 
 class StreamingConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $filter;
 
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;

@@ -19,12 +19,21 @@ namespace Google\Service\Sheets;
 
 class CopySheetToAnotherSpreadsheetRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destinationSpreadsheetId;
 
+  /**
+   * @param string
+   */
   public function setDestinationSpreadsheetId($destinationSpreadsheetId)
   {
     $this->destinationSpreadsheetId = $destinationSpreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getDestinationSpreadsheetId()
   {
     return $this->destinationSpreadsheetId;

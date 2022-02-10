@@ -20,48 +20,93 @@ namespace Google\Service\OnDemandScanning;
 class Recipe extends \Google\Collection
 {
   protected $collection_key = 'environment';
+  /**
+   * @var array[]
+   */
   public $arguments;
+  /**
+   * @var string
+   */
   public $definedInMaterial;
+  /**
+   * @var string
+   */
   public $entryPoint;
+  /**
+   * @var array[]
+   */
   public $environment;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param array[]
+   */
   public function setArguments($arguments)
   {
     $this->arguments = $arguments;
   }
+  /**
+   * @return array[]
+   */
   public function getArguments()
   {
     return $this->arguments;
   }
+  /**
+   * @param string
+   */
   public function setDefinedInMaterial($definedInMaterial)
   {
     $this->definedInMaterial = $definedInMaterial;
   }
+  /**
+   * @return string
+   */
   public function getDefinedInMaterial()
   {
     return $this->definedInMaterial;
   }
+  /**
+   * @param string
+   */
   public function setEntryPoint($entryPoint)
   {
     $this->entryPoint = $entryPoint;
   }
+  /**
+   * @return string
+   */
   public function getEntryPoint()
   {
     return $this->entryPoint;
   }
+  /**
+   * @param array[]
+   */
   public function setEnvironment($environment)
   {
     $this->environment = $environment;
   }
+  /**
+   * @return array[]
+   */
   public function getEnvironment()
   {
     return $this->environment;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

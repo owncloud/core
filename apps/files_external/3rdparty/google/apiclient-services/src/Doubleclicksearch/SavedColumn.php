@@ -19,30 +19,57 @@ namespace Google\Service\Doubleclicksearch;
 
 class SavedColumn extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $savedColumnName;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setSavedColumnName($savedColumnName)
   {
     $this->savedColumnName = $savedColumnName;
   }
+  /**
+   * @return string
+   */
   public function getSavedColumnName()
   {
     return $this->savedColumnName;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

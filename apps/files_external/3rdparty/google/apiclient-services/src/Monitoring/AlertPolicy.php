@@ -22,19 +22,37 @@ class AlertPolicy extends \Google\Collection
   protected $collection_key = 'notificationChannels';
   protected $alertStrategyType = AlertStrategy::class;
   protected $alertStrategyDataType = '';
+  /**
+   * @var string
+   */
   public $combiner;
   protected $conditionsType = Condition::class;
   protected $conditionsDataType = 'array';
   protected $creationRecordType = MutationRecord::class;
   protected $creationRecordDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
   protected $documentationType = Documentation::class;
   protected $documentationDataType = '';
+  /**
+   * @var bool
+   */
   public $enabled;
   protected $mutationRecordType = MutationRecord::class;
   protected $mutationRecordDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $notificationChannels;
+  /**
+   * @var string[]
+   */
   public $userLabels;
   protected $validityType = Status::class;
   protected $validityDataType = '';
@@ -53,10 +71,16 @@ class AlertPolicy extends \Google\Collection
   {
     return $this->alertStrategy;
   }
+  /**
+   * @param string
+   */
   public function setCombiner($combiner)
   {
     $this->combiner = $combiner;
   }
+  /**
+   * @return string
+   */
   public function getCombiner()
   {
     return $this->combiner;
@@ -89,10 +113,16 @@ class AlertPolicy extends \Google\Collection
   {
     return $this->creationRecord;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -111,10 +141,16 @@ class AlertPolicy extends \Google\Collection
   {
     return $this->documentation;
   }
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
@@ -133,26 +169,44 @@ class AlertPolicy extends \Google\Collection
   {
     return $this->mutationRecord;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setNotificationChannels($notificationChannels)
   {
     $this->notificationChannels = $notificationChannels;
   }
+  /**
+   * @return string[]
+   */
   public function getNotificationChannels()
   {
     return $this->notificationChannels;
   }
+  /**
+   * @param string[]
+   */
   public function setUserLabels($userLabels)
   {
     $this->userLabels = $userLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getUserLabels()
   {
     return $this->userLabels;

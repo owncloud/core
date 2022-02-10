@@ -20,21 +20,39 @@ namespace Google\Service\YouTube;
 class ChannelTopicDetails extends \Google\Collection
 {
   protected $collection_key = 'topicIds';
+  /**
+   * @var string[]
+   */
   public $topicCategories;
+  /**
+   * @var string[]
+   */
   public $topicIds;
 
+  /**
+   * @param string[]
+   */
   public function setTopicCategories($topicCategories)
   {
     $this->topicCategories = $topicCategories;
   }
+  /**
+   * @return string[]
+   */
   public function getTopicCategories()
   {
     return $this->topicCategories;
   }
+  /**
+   * @param string[]
+   */
   public function setTopicIds($topicIds)
   {
     $this->topicIds = $topicIds;
   }
+  /**
+   * @return string[]
+   */
   public function getTopicIds()
   {
     return $this->topicIds;

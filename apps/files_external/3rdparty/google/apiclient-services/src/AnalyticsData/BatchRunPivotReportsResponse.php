@@ -20,14 +20,23 @@ namespace Google\Service\AnalyticsData;
 class BatchRunPivotReportsResponse extends \Google\Collection
 {
   protected $collection_key = 'pivotReports';
+  /**
+   * @var string
+   */
   public $kind;
   protected $pivotReportsType = RunPivotReportResponse::class;
   protected $pivotReportsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

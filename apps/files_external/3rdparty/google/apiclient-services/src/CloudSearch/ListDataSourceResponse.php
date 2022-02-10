@@ -20,14 +20,23 @@ namespace Google\Service\CloudSearch;
 class ListDataSourceResponse extends \Google\Collection
 {
   protected $collection_key = 'sources';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $sourcesType = DataSource::class;
   protected $sourcesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

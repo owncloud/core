@@ -19,12 +19,21 @@ namespace Google\Service\CloudSearch;
 
 class IndexItemOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowUnknownGsuitePrincipals;
 
+  /**
+   * @param bool
+   */
   public function setAllowUnknownGsuitePrincipals($allowUnknownGsuitePrincipals)
   {
     $this->allowUnknownGsuitePrincipals = $allowUnknownGsuitePrincipals;
   }
+  /**
+   * @return bool
+   */
   public function getAllowUnknownGsuitePrincipals()
   {
     return $this->allowUnknownGsuitePrincipals;

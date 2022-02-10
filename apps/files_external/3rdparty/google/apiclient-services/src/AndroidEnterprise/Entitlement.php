@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class Entitlement extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

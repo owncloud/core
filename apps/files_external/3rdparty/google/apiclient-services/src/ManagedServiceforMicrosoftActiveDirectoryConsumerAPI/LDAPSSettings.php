@@ -21,10 +21,25 @@ class LDAPSSettings extends \Google\Model
 {
   protected $certificateType = Certificate::class;
   protected $certificateDataType = '';
+  /**
+   * @var string
+   */
   public $certificatePassword;
+  /**
+   * @var string
+   */
   public $certificatePfx;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -41,42 +56,72 @@ class LDAPSSettings extends \Google\Model
   {
     return $this->certificate;
   }
+  /**
+   * @param string
+   */
   public function setCertificatePassword($certificatePassword)
   {
     $this->certificatePassword = $certificatePassword;
   }
+  /**
+   * @return string
+   */
   public function getCertificatePassword()
   {
     return $this->certificatePassword;
   }
+  /**
+   * @param string
+   */
   public function setCertificatePfx($certificatePfx)
   {
     $this->certificatePfx = $certificatePfx;
   }
+  /**
+   * @return string
+   */
   public function getCertificatePfx()
   {
     return $this->certificatePfx;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

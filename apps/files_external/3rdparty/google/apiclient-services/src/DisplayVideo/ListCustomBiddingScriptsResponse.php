@@ -22,6 +22,9 @@ class ListCustomBiddingScriptsResponse extends \Google\Collection
   protected $collection_key = 'customBiddingScripts';
   protected $customBiddingScriptsType = CustomBiddingScript::class;
   protected $customBiddingScriptsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListCustomBiddingScriptsResponse extends \Google\Collection
   {
     return $this->customBiddingScripts;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

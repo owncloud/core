@@ -34,15 +34,15 @@ class ProjectsRelatedaccountgroupmemberships extends \Google\Service\Resource
    * Search group memberships related to a given account.
    * (relatedaccountgroupmemberships.search)
    *
-   * @param string $parent Required. The name of the project to search related
+   * @param string $project Required. The name of the project to search related
    * account group memberships from, in the format "projects/{project}".
    * @param GoogleCloudRecaptchaenterpriseV1SearchRelatedAccountGroupMembershipsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudRecaptchaenterpriseV1SearchRelatedAccountGroupMembershipsResponse
    */
-  public function search($parent, GoogleCloudRecaptchaenterpriseV1SearchRelatedAccountGroupMembershipsRequest $postBody, $optParams = [])
+  public function search($project, GoogleCloudRecaptchaenterpriseV1SearchRelatedAccountGroupMembershipsRequest $postBody, $optParams = [])
   {
-    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = ['project' => $project, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('search', [$params], GoogleCloudRecaptchaenterpriseV1SearchRelatedAccountGroupMembershipsResponse::class);
   }

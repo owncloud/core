@@ -19,14 +19,23 @@ namespace Google\Service\Dns;
 
 class ManagedZonePeeringConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
   protected $targetNetworkType = ManagedZonePeeringConfigTargetNetwork::class;
   protected $targetNetworkDataType = '';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

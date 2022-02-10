@@ -20,6 +20,9 @@ namespace Google\Service\Appengine;
 class TrafficSplit extends \Google\Model
 {
   public $allocations;
+  /**
+   * @var string
+   */
   public $shardBy;
 
   public function setAllocations($allocations)
@@ -30,10 +33,16 @@ class TrafficSplit extends \Google\Model
   {
     return $this->allocations;
   }
+  /**
+   * @param string
+   */
   public function setShardBy($shardBy)
   {
     $this->shardBy = $shardBy;
   }
+  /**
+   * @return string
+   */
   public function getShardBy()
   {
     return $this->shardBy;

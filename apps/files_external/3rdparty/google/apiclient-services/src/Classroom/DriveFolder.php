@@ -19,30 +19,57 @@ namespace Google\Service\Classroom;
 
 class DriveFolder extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alternateLink;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setAlternateLink($alternateLink)
   {
     $this->alternateLink = $alternateLink;
   }
+  /**
+   * @return string
+   */
   public function getAlternateLink()
   {
     return $this->alternateLink;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

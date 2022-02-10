@@ -30,37 +30,91 @@ class Cluster extends \Google\Collection
   protected $autoscalingDataType = '';
   protected $binaryAuthorizationType = BinaryAuthorization::class;
   protected $binaryAuthorizationDataType = '';
+  /**
+   * @var string
+   */
   public $clusterIpv4Cidr;
   protected $conditionsType = StatusCondition::class;
   protected $conditionsDataType = 'array';
   protected $confidentialNodesType = ConfidentialNodes::class;
   protected $confidentialNodesDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $currentMasterVersion;
+  /**
+   * @var int
+   */
   public $currentNodeCount;
+  /**
+   * @var string
+   */
   public $currentNodeVersion;
   protected $databaseEncryptionType = DatabaseEncryption::class;
   protected $databaseEncryptionDataType = '';
   protected $defaultMaxPodsConstraintType = MaxPodsConstraint::class;
   protected $defaultMaxPodsConstraintDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var bool
+   */
   public $enableKubernetesAlpha;
+  /**
+   * @var bool
+   */
   public $enableTpu;
+  /**
+   * @var string
+   */
   public $endpoint;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $initialClusterVersion;
+  /**
+   * @var int
+   */
   public $initialNodeCount;
+  /**
+   * @var string[]
+   */
   public $instanceGroupUrls;
   protected $ipAllocationPolicyType = IPAllocationPolicy::class;
   protected $ipAllocationPolicyDataType = '';
+  /**
+   * @var string
+   */
   public $labelFingerprint;
   protected $legacyAbacType = LegacyAbac::class;
   protected $legacyAbacDataType = '';
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string[]
+   */
   public $locations;
   protected $loggingConfigType = LoggingConfig::class;
   protected $loggingConfigDataType = '';
+  /**
+   * @var string
+   */
   public $loggingService;
   protected $maintenancePolicyType = MaintenancePolicy::class;
   protected $maintenancePolicyDataType = '';
@@ -72,8 +126,17 @@ class Cluster extends \Google\Collection
   protected $meshCertificatesDataType = '';
   protected $monitoringConfigType = MonitoringConfig::class;
   protected $monitoringConfigDataType = '';
+  /**
+   * @var string
+   */
   public $monitoringService;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $network;
   protected $networkConfigType = NetworkConfig::class;
   protected $networkConfigDataType = '';
@@ -81,6 +144,9 @@ class Cluster extends \Google\Collection
   protected $networkPolicyDataType = '';
   protected $nodeConfigType = NodeConfig::class;
   protected $nodeConfigDataType = '';
+  /**
+   * @var int
+   */
   public $nodeIpv4CidrSize;
   protected $nodePoolDefaultsType = NodePoolDefaults::class;
   protected $nodePoolDefaultsDataType = '';
@@ -92,21 +158,45 @@ class Cluster extends \Google\Collection
   protected $privateClusterConfigDataType = '';
   protected $releaseChannelType = ReleaseChannel::class;
   protected $releaseChannelDataType = '';
+  /**
+   * @var string[]
+   */
   public $resourceLabels;
   protected $resourceUsageExportConfigType = ResourceUsageExportConfig::class;
   protected $resourceUsageExportConfigDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $servicesIpv4Cidr;
   protected $shieldedNodesType = ShieldedNodes::class;
   protected $shieldedNodesDataType = '';
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $statusMessage;
+  /**
+   * @var string
+   */
   public $subnetwork;
+  /**
+   * @var string
+   */
   public $tpuIpv4CidrBlock;
   protected $verticalPodAutoscalingType = VerticalPodAutoscaling::class;
   protected $verticalPodAutoscalingDataType = '';
   protected $workloadIdentityConfigType = WorkloadIdentityConfig::class;
   protected $workloadIdentityConfigDataType = '';
+  /**
+   * @var string
+   */
   public $zone;
 
   /**
@@ -179,10 +269,16 @@ class Cluster extends \Google\Collection
   {
     return $this->binaryAuthorization;
   }
+  /**
+   * @param string
+   */
   public function setClusterIpv4Cidr($clusterIpv4Cidr)
   {
     $this->clusterIpv4Cidr = $clusterIpv4Cidr;
   }
+  /**
+   * @return string
+   */
   public function getClusterIpv4Cidr()
   {
     return $this->clusterIpv4Cidr;
@@ -215,34 +311,58 @@ class Cluster extends \Google\Collection
   {
     return $this->confidentialNodes;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setCurrentMasterVersion($currentMasterVersion)
   {
     $this->currentMasterVersion = $currentMasterVersion;
   }
+  /**
+   * @return string
+   */
   public function getCurrentMasterVersion()
   {
     return $this->currentMasterVersion;
   }
+  /**
+   * @param int
+   */
   public function setCurrentNodeCount($currentNodeCount)
   {
     $this->currentNodeCount = $currentNodeCount;
   }
+  /**
+   * @return int
+   */
   public function getCurrentNodeCount()
   {
     return $this->currentNodeCount;
   }
+  /**
+   * @param string
+   */
   public function setCurrentNodeVersion($currentNodeVersion)
   {
     $this->currentNodeVersion = $currentNodeVersion;
   }
+  /**
+   * @return string
+   */
   public function getCurrentNodeVersion()
   {
     return $this->currentNodeVersion;
@@ -275,74 +395,128 @@ class Cluster extends \Google\Collection
   {
     return $this->defaultMaxPodsConstraint;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param bool
+   */
   public function setEnableKubernetesAlpha($enableKubernetesAlpha)
   {
     $this->enableKubernetesAlpha = $enableKubernetesAlpha;
   }
+  /**
+   * @return bool
+   */
   public function getEnableKubernetesAlpha()
   {
     return $this->enableKubernetesAlpha;
   }
+  /**
+   * @param bool
+   */
   public function setEnableTpu($enableTpu)
   {
     $this->enableTpu = $enableTpu;
   }
+  /**
+   * @return bool
+   */
   public function getEnableTpu()
   {
     return $this->enableTpu;
   }
+  /**
+   * @param string
+   */
   public function setEndpoint($endpoint)
   {
     $this->endpoint = $endpoint;
   }
+  /**
+   * @return string
+   */
   public function getEndpoint()
   {
     return $this->endpoint;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setInitialClusterVersion($initialClusterVersion)
   {
     $this->initialClusterVersion = $initialClusterVersion;
   }
+  /**
+   * @return string
+   */
   public function getInitialClusterVersion()
   {
     return $this->initialClusterVersion;
   }
+  /**
+   * @param int
+   */
   public function setInitialNodeCount($initialNodeCount)
   {
     $this->initialNodeCount = $initialNodeCount;
   }
+  /**
+   * @return int
+   */
   public function getInitialNodeCount()
   {
     return $this->initialNodeCount;
   }
+  /**
+   * @param string[]
+   */
   public function setInstanceGroupUrls($instanceGroupUrls)
   {
     $this->instanceGroupUrls = $instanceGroupUrls;
   }
+  /**
+   * @return string[]
+   */
   public function getInstanceGroupUrls()
   {
     return $this->instanceGroupUrls;
@@ -361,10 +535,16 @@ class Cluster extends \Google\Collection
   {
     return $this->ipAllocationPolicy;
   }
+  /**
+   * @param string
+   */
   public function setLabelFingerprint($labelFingerprint)
   {
     $this->labelFingerprint = $labelFingerprint;
   }
+  /**
+   * @return string
+   */
   public function getLabelFingerprint()
   {
     return $this->labelFingerprint;
@@ -383,18 +563,30 @@ class Cluster extends \Google\Collection
   {
     return $this->legacyAbac;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string[]
+   */
   public function setLocations($locations)
   {
     $this->locations = $locations;
   }
+  /**
+   * @return string[]
+   */
   public function getLocations()
   {
     return $this->locations;
@@ -413,10 +605,16 @@ class Cluster extends \Google\Collection
   {
     return $this->loggingConfig;
   }
+  /**
+   * @param string
+   */
   public function setLoggingService($loggingService)
   {
     $this->loggingService = $loggingService;
   }
+  /**
+   * @return string
+   */
   public function getLoggingService()
   {
     return $this->loggingService;
@@ -491,26 +689,44 @@ class Cluster extends \Google\Collection
   {
     return $this->monitoringConfig;
   }
+  /**
+   * @param string
+   */
   public function setMonitoringService($monitoringService)
   {
     $this->monitoringService = $monitoringService;
   }
+  /**
+   * @return string
+   */
   public function getMonitoringService()
   {
     return $this->monitoringService;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
@@ -557,10 +773,16 @@ class Cluster extends \Google\Collection
   {
     return $this->nodeConfig;
   }
+  /**
+   * @param int
+   */
   public function setNodeIpv4CidrSize($nodeIpv4CidrSize)
   {
     $this->nodeIpv4CidrSize = $nodeIpv4CidrSize;
   }
+  /**
+   * @return int
+   */
   public function getNodeIpv4CidrSize()
   {
     return $this->nodeIpv4CidrSize;
@@ -635,10 +857,16 @@ class Cluster extends \Google\Collection
   {
     return $this->releaseChannel;
   }
+  /**
+   * @param string[]
+   */
   public function setResourceLabels($resourceLabels)
   {
     $this->resourceLabels = $resourceLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceLabels()
   {
     return $this->resourceLabels;
@@ -657,18 +885,30 @@ class Cluster extends \Google\Collection
   {
     return $this->resourceUsageExportConfig;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setServicesIpv4Cidr($servicesIpv4Cidr)
   {
     $this->servicesIpv4Cidr = $servicesIpv4Cidr;
   }
+  /**
+   * @return string
+   */
   public function getServicesIpv4Cidr()
   {
     return $this->servicesIpv4Cidr;
@@ -687,34 +927,58 @@ class Cluster extends \Google\Collection
   {
     return $this->shieldedNodes;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setStatusMessage($statusMessage)
   {
     $this->statusMessage = $statusMessage;
   }
+  /**
+   * @return string
+   */
   public function getStatusMessage()
   {
     return $this->statusMessage;
   }
+  /**
+   * @param string
+   */
   public function setSubnetwork($subnetwork)
   {
     $this->subnetwork = $subnetwork;
   }
+  /**
+   * @return string
+   */
   public function getSubnetwork()
   {
     return $this->subnetwork;
   }
+  /**
+   * @param string
+   */
   public function setTpuIpv4CidrBlock($tpuIpv4CidrBlock)
   {
     $this->tpuIpv4CidrBlock = $tpuIpv4CidrBlock;
   }
+  /**
+   * @return string
+   */
   public function getTpuIpv4CidrBlock()
   {
     return $this->tpuIpv4CidrBlock;
@@ -747,10 +1011,16 @@ class Cluster extends \Google\Collection
   {
     return $this->workloadIdentityConfig;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

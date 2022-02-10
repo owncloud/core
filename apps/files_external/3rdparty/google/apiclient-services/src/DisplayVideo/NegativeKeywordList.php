@@ -19,48 +19,93 @@ namespace Google\Service\DisplayVideo;
 
 class NegativeKeywordList extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $negativeKeywordListId;
+  /**
+   * @var string
+   */
   public $targetedLineItemCount;
 
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNegativeKeywordListId($negativeKeywordListId)
   {
     $this->negativeKeywordListId = $negativeKeywordListId;
   }
+  /**
+   * @return string
+   */
   public function getNegativeKeywordListId()
   {
     return $this->negativeKeywordListId;
   }
+  /**
+   * @param string
+   */
   public function setTargetedLineItemCount($targetedLineItemCount)
   {
     $this->targetedLineItemCount = $targetedLineItemCount;
   }
+  /**
+   * @return string
+   */
   public function getTargetedLineItemCount()
   {
     return $this->targetedLineItemCount;

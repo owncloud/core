@@ -19,21 +19,39 @@ namespace Google\Service\RealTimeBidding;
 
 class MediaFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bitrate;
+  /**
+   * @var string
+   */
   public $mimeType;
 
+  /**
+   * @param string
+   */
   public function setBitrate($bitrate)
   {
     $this->bitrate = $bitrate;
   }
+  /**
+   * @return string
+   */
   public function getBitrate()
   {
     return $this->bitrate;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;

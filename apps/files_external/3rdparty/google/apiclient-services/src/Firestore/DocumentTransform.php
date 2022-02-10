@@ -20,14 +20,23 @@ namespace Google\Service\Firestore;
 class DocumentTransform extends \Google\Collection
 {
   protected $collection_key = 'fieldTransforms';
+  /**
+   * @var string
+   */
   public $document;
   protected $fieldTransformsType = FieldTransform::class;
   protected $fieldTransformsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDocument($document)
   {
     $this->document = $document;
   }
+  /**
+   * @return string
+   */
   public function getDocument()
   {
     return $this->document;

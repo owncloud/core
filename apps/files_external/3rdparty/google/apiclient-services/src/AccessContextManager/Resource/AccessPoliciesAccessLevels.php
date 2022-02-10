@@ -21,6 +21,8 @@ use Google\Service\AccessContextManager\AccessLevel;
 use Google\Service\AccessContextManager\ListAccessLevelsResponse;
 use Google\Service\AccessContextManager\Operation;
 use Google\Service\AccessContextManager\ReplaceAccessLevelsRequest;
+use Google\Service\AccessContextManager\TestIamPermissionsRequest;
+use Google\Service\AccessContextManager\TestIamPermissionsResponse;
 
 /**
  * The "accessLevels" collection of methods.
@@ -33,10 +35,10 @@ use Google\Service\AccessContextManager\ReplaceAccessLevelsRequest;
 class AccessPoliciesAccessLevels extends \Google\Service\Resource
 {
   /**
-   * Create an Access Level. The longrunning operation from this RPC will have a
-   * successful status once the Access Level has propagated to long-lasting
-   * storage. Access Levels containing errors will result in an error response for
-   * the first error encountered. (accessLevels.create)
+   * Creates an access level. The long-running operation from this RPC has a
+   * successful status after the access level propagates to long-lasting storage.
+   * If access levels contain errors, an error response is returned for the first
+   * error encountered. (accessLevels.create)
    *
    * @param string $parent Required. Resource name for the access policy which
    * owns this Access Level. Format: `accessPolicies/{policy_id}`
@@ -51,9 +53,9 @@ class AccessPoliciesAccessLevels extends \Google\Service\Resource
     return $this->call('create', [$params], Operation::class);
   }
   /**
-   * Delete an Access Level by resource name. The longrunning operation from this
-   * RPC will have a successful status once the Access Level has been removed from
-   * long-lasting storage. (accessLevels.delete)
+   * Deletes an access level based on the resource name. The long-running
+   * operation from this RPC has a successful status after the access level has
+   * been removed from long-lasting storage. (accessLevels.delete)
    *
    * @param string $name Required. Resource name for the Access Level. Format:
    * `accessPolicies/{policy_id}/accessLevels/{access_level_id}`
@@ -67,7 +69,7 @@ class AccessPoliciesAccessLevels extends \Google\Service\Resource
     return $this->call('delete', [$params], Operation::class);
   }
   /**
-   * Get an Access Level by resource name. (accessLevels.get)
+   * Gets an access level based on the resource name. (accessLevels.get)
    *
    * @param string $name Required. Resource name for the Access Level. Format:
    * `accessPolicies/{policy_id}/accessLevels/{access_level_id}`
@@ -88,7 +90,7 @@ class AccessPoliciesAccessLevels extends \Google\Service\Resource
     return $this->call('get', [$params], AccessLevel::class);
   }
   /**
-   * List all Access Levels for an access policy.
+   * Lists all access levels for an access policy.
    * (accessLevels.listAccessPoliciesAccessLevels)
    *
    * @param string $parent Required. Resource name for the access policy to list
@@ -112,10 +114,10 @@ class AccessPoliciesAccessLevels extends \Google\Service\Resource
     return $this->call('list', [$params], ListAccessLevelsResponse::class);
   }
   /**
-   * Update an Access Level. The longrunning operation from this RPC will have a
-   * successful status once the changes to the Access Level have propagated to
-   * long-lasting storage. Access Levels containing errors will result in an error
-   * response for the first error encountered. (accessLevels.patch)
+   * Updates an access level. The long-running operation from this RPC has a
+   * successful status after the changes to the access level propagate to long-
+   * lasting storage. If access levels contain errors, an error response is
+   * returned for the first error encountered. (accessLevels.patch)
    *
    * @param string $name Required. Resource name for the Access Level. The
    * `short_name` component must begin with a letter and only include alphanumeric
@@ -136,14 +138,15 @@ class AccessPoliciesAccessLevels extends \Google\Service\Resource
     return $this->call('patch', [$params], Operation::class);
   }
   /**
-   * Replace all existing Access Levels in an Access Policy with the Access Levels
-   * provided. This is done atomically. The longrunning operation from this RPC
-   * will have a successful status once all replacements have propagated to long-
-   * lasting storage. Replacements containing errors will result in an error
-   * response for the first error encountered. Replacement will be cancelled on
-   * error, existing Access Levels will not be affected. Operation.response field
-   * will contain ReplaceAccessLevelsResponse. Removing Access Levels contained in
-   * existing Service Perimeters will result in error. (accessLevels.replaceAll)
+   * Replaces all existing access levels in an access policy with the access
+   * levels provided. This is done atomically. The long-running operation from
+   * this RPC has a successful status after all replacements propagate to long-
+   * lasting storage. If the replacement contains errors, an error response is
+   * returned for the first error encountered. Upon error, the replacement is
+   * cancelled, and existing access levels are not affected. The
+   * Operation.response field contains ReplaceAccessLevelsResponse. Removing
+   * access levels contained in existing service perimeters result in an error.
+   * (accessLevels.replaceAll)
    *
    * @param string $parent Required. Resource name for the access policy which
    * owns these Access Levels. Format: `accessPolicies/{policy_id}`
@@ -156,6 +159,25 @@ class AccessPoliciesAccessLevels extends \Google\Service\Resource
     $params = ['parent' => $parent, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('replaceAll', [$params], Operation::class);
+  }
+  /**
+   * Returns the IAM permissions that the caller has on the specified Access
+   * Context Manager resource. The resource can be an AccessPolicy, AccessLevel,
+   * or ServicePerimeter. This method does not support other resources.
+   * (accessLevels.testIamPermissions)
+   *
+   * @param string $resource REQUIRED: The resource for which the policy detail is
+   * being requested. See the operation documentation for the appropriate value
+   * for this field.
+   * @param TestIamPermissionsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return TestIamPermissionsResponse
+   */
+  public function testIamPermissions($resource, TestIamPermissionsRequest $postBody, $optParams = [])
+  {
+    $params = ['resource' => $resource, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('testIamPermissions', [$params], TestIamPermissionsResponse::class);
   }
 }
 

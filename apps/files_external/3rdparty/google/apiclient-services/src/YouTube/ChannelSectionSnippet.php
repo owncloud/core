@@ -19,27 +19,57 @@ namespace Google\Service\YouTube;
 
 class ChannelSectionSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $defaultLanguage;
   protected $localizedType = ChannelSectionLocalization::class;
   protected $localizedDataType = '';
+  /**
+   * @var string
+   */
   public $position;
+  /**
+   * @var string
+   */
   public $style;
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setDefaultLanguage($defaultLanguage)
   {
     $this->defaultLanguage = $defaultLanguage;
   }
+  /**
+   * @return string
+   */
   public function getDefaultLanguage()
   {
     return $this->defaultLanguage;
@@ -58,34 +88,58 @@ class ChannelSectionSnippet extends \Google\Model
   {
     return $this->localized;
   }
+  /**
+   * @param string
+   */
   public function setPosition($position)
   {
     $this->position = $position;
   }
+  /**
+   * @return string
+   */
   public function getPosition()
   {
     return $this->position;
   }
+  /**
+   * @param string
+   */
   public function setStyle($style)
   {
     $this->style = $style;
   }
+  /**
+   * @return string
+   */
   public function getStyle()
   {
     return $this->style;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

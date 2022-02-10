@@ -19,12 +19,21 @@ namespace Google\Service\CloudKMS;
 
 class UpdateCryptoKeyPrimaryVersionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cryptoKeyVersionId;
 
+  /**
+   * @param string
+   */
   public function setCryptoKeyVersionId($cryptoKeyVersionId)
   {
     $this->cryptoKeyVersionId = $cryptoKeyVersionId;
   }
+  /**
+   * @return string
+   */
   public function getCryptoKeyVersionId()
   {
     return $this->cryptoKeyVersionId;

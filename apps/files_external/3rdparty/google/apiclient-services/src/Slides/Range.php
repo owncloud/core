@@ -19,30 +19,57 @@ namespace Google\Service\Slides;
 
 class Range extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $endIndex;
+  /**
+   * @var int
+   */
   public $startIndex;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setEndIndex($endIndex)
   {
     $this->endIndex = $endIndex;
   }
+  /**
+   * @return int
+   */
   public function getEndIndex()
   {
     return $this->endIndex;
   }
+  /**
+   * @param int
+   */
   public function setStartIndex($startIndex)
   {
     $this->startIndex = $startIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartIndex()
   {
     return $this->startIndex;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

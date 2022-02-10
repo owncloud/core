@@ -20,28 +20,55 @@ namespace Google\Service\DomainsRDAP;
 class RdapResponse extends \Google\Collection
 {
   protected $collection_key = 'rdapConformance';
+  /**
+   * @var string[]
+   */
   public $description;
+  /**
+   * @var int
+   */
   public $errorCode;
   protected $jsonResponseType = HttpBody::class;
   protected $jsonResponseDataType = '';
+  /**
+   * @var string
+   */
   public $lang;
   protected $noticesType = Notice::class;
   protected $noticesDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $rdapConformance;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string[]
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string[]
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param int
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return int
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
@@ -60,10 +87,16 @@ class RdapResponse extends \Google\Collection
   {
     return $this->jsonResponse;
   }
+  /**
+   * @param string
+   */
   public function setLang($lang)
   {
     $this->lang = $lang;
   }
+  /**
+   * @return string
+   */
   public function getLang()
   {
     return $this->lang;
@@ -82,18 +115,30 @@ class RdapResponse extends \Google\Collection
   {
     return $this->notices;
   }
+  /**
+   * @param string[]
+   */
   public function setRdapConformance($rdapConformance)
   {
     $this->rdapConformance = $rdapConformance;
   }
+  /**
+   * @return string[]
+   */
   public function getRdapConformance()
   {
     return $this->rdapConformance;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

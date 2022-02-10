@@ -19,21 +19,39 @@ namespace Google\Service\ServiceConsumerManagement;
 
 class Mixin extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $root;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRoot($root)
   {
     $this->root = $root;
   }
+  /**
+   * @return string
+   */
   public function getRoot()
   {
     return $this->root;

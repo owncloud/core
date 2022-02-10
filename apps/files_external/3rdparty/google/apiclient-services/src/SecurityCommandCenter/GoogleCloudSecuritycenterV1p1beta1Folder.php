@@ -19,21 +19,39 @@ namespace Google\Service\SecurityCommandCenter;
 
 class GoogleCloudSecuritycenterV1p1beta1Folder extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resourceFolder;
+  /**
+   * @var string
+   */
   public $resourceFolderDisplayName;
 
+  /**
+   * @param string
+   */
   public function setResourceFolder($resourceFolder)
   {
     $this->resourceFolder = $resourceFolder;
   }
+  /**
+   * @return string
+   */
   public function getResourceFolder()
   {
     return $this->resourceFolder;
   }
+  /**
+   * @param string
+   */
   public function setResourceFolderDisplayName($resourceFolderDisplayName)
   {
     $this->resourceFolderDisplayName = $resourceFolderDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getResourceFolderDisplayName()
   {
     return $this->resourceFolderDisplayName;

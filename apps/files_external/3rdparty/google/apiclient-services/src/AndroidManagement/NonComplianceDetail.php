@@ -19,57 +19,111 @@ namespace Google\Service\AndroidManagement;
 
 class NonComplianceDetail extends \Google\Model
 {
+  /**
+   * @var array
+   */
   public $currentValue;
+  /**
+   * @var string
+   */
   public $fieldPath;
+  /**
+   * @var string
+   */
   public $installationFailureReason;
+  /**
+   * @var string
+   */
   public $nonComplianceReason;
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string
+   */
   public $settingName;
 
+  /**
+   * @param array
+   */
   public function setCurrentValue($currentValue)
   {
     $this->currentValue = $currentValue;
   }
+  /**
+   * @return array
+   */
   public function getCurrentValue()
   {
     return $this->currentValue;
   }
+  /**
+   * @param string
+   */
   public function setFieldPath($fieldPath)
   {
     $this->fieldPath = $fieldPath;
   }
+  /**
+   * @return string
+   */
   public function getFieldPath()
   {
     return $this->fieldPath;
   }
+  /**
+   * @param string
+   */
   public function setInstallationFailureReason($installationFailureReason)
   {
     $this->installationFailureReason = $installationFailureReason;
   }
+  /**
+   * @return string
+   */
   public function getInstallationFailureReason()
   {
     return $this->installationFailureReason;
   }
+  /**
+   * @param string
+   */
   public function setNonComplianceReason($nonComplianceReason)
   {
     $this->nonComplianceReason = $nonComplianceReason;
   }
+  /**
+   * @return string
+   */
   public function getNonComplianceReason()
   {
     return $this->nonComplianceReason;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string
+   */
   public function setSettingName($settingName)
   {
     $this->settingName = $settingName;
   }
+  /**
+   * @return string
+   */
   public function getSettingName()
   {
     return $this->settingName;

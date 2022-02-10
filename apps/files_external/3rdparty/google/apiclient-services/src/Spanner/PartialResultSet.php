@@ -20,18 +20,33 @@ namespace Google\Service\Spanner;
 class PartialResultSet extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var bool
+   */
   public $chunkedValue;
   protected $metadataType = ResultSetMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $resumeToken;
   protected $statsType = ResultSetStats::class;
   protected $statsDataType = '';
+  /**
+   * @var array[]
+   */
   public $values;
 
+  /**
+   * @param bool
+   */
   public function setChunkedValue($chunkedValue)
   {
     $this->chunkedValue = $chunkedValue;
   }
+  /**
+   * @return bool
+   */
   public function getChunkedValue()
   {
     return $this->chunkedValue;
@@ -50,10 +65,16 @@ class PartialResultSet extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setResumeToken($resumeToken)
   {
     $this->resumeToken = $resumeToken;
   }
+  /**
+   * @return string
+   */
   public function getResumeToken()
   {
     return $this->resumeToken;
@@ -72,10 +93,16 @@ class PartialResultSet extends \Google\Collection
   {
     return $this->stats;
   }
+  /**
+   * @param array[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return array[]
+   */
   public function getValues()
   {
     return $this->values;

@@ -20,30 +20,57 @@ namespace Google\Service\AndroidEnterprise;
 class ProductVisibility extends \Google\Collection
 {
   protected $collection_key = 'tracks';
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string[]
+   */
   public $trackIds;
+  /**
+   * @var string[]
+   */
   public $tracks;
 
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string[]
+   */
   public function setTrackIds($trackIds)
   {
     $this->trackIds = $trackIds;
   }
+  /**
+   * @return string[]
+   */
   public function getTrackIds()
   {
     return $this->trackIds;
   }
+  /**
+   * @param string[]
+   */
   public function setTracks($tracks)
   {
     $this->tracks = $tracks;
   }
+  /**
+   * @return string[]
+   */
   public function getTracks()
   {
     return $this->tracks;

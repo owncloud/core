@@ -23,90 +23,177 @@ class Network extends \Google\Collection
   protected $internal_gapi_mappings = [
         "iPv4Range" => "IPv4Range",
   ];
+  /**
+   * @var string
+   */
   public $iPv4Range;
+  /**
+   * @var bool
+   */
   public $autoCreateSubnetworks;
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $gatewayIPv4;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var int
+   */
   public $mtu;
+  /**
+   * @var string
+   */
   public $name;
   protected $peeringsType = NetworkPeering::class;
   protected $peeringsDataType = 'array';
   protected $routingConfigType = NetworkRoutingConfig::class;
   protected $routingConfigDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string[]
+   */
   public $subnetworks;
 
+  /**
+   * @param string
+   */
   public function setIPv4Range($iPv4Range)
   {
     $this->iPv4Range = $iPv4Range;
   }
+  /**
+   * @return string
+   */
   public function getIPv4Range()
   {
     return $this->iPv4Range;
   }
+  /**
+   * @param bool
+   */
   public function setAutoCreateSubnetworks($autoCreateSubnetworks)
   {
     $this->autoCreateSubnetworks = $autoCreateSubnetworks;
   }
+  /**
+   * @return bool
+   */
   public function getAutoCreateSubnetworks()
   {
     return $this->autoCreateSubnetworks;
   }
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setGatewayIPv4($gatewayIPv4)
   {
     $this->gatewayIPv4 = $gatewayIPv4;
   }
+  /**
+   * @return string
+   */
   public function getGatewayIPv4()
   {
     return $this->gatewayIPv4;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param int
+   */
   public function setMtu($mtu)
   {
     $this->mtu = $mtu;
   }
+  /**
+   * @return int
+   */
   public function getMtu()
   {
     return $this->mtu;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -139,18 +226,30 @@ class Network extends \Google\Collection
   {
     return $this->routingConfig;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string[]
+   */
   public function setSubnetworks($subnetworks)
   {
     $this->subnetworks = $subnetworks;
   }
+  /**
+   * @return string[]
+   */
   public function getSubnetworks()
   {
     return $this->subnetworks;

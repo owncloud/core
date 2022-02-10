@@ -19,30 +19,57 @@ namespace Google\Service\CloudSourceRepositories;
 
 class MirrorConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deployKeyId;
+  /**
+   * @var string
+   */
   public $url;
+  /**
+   * @var string
+   */
   public $webhookId;
 
+  /**
+   * @param string
+   */
   public function setDeployKeyId($deployKeyId)
   {
     $this->deployKeyId = $deployKeyId;
   }
+  /**
+   * @return string
+   */
   public function getDeployKeyId()
   {
     return $this->deployKeyId;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;
   }
+  /**
+   * @param string
+   */
   public function setWebhookId($webhookId)
   {
     $this->webhookId = $webhookId;
   }
+  /**
+   * @return string
+   */
   public function getWebhookId()
   {
     return $this->webhookId;

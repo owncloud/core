@@ -19,39 +19,75 @@ namespace Google\Service\CloudRun;
 
 class VolumeMount extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mountPath;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $readOnly;
+  /**
+   * @var string
+   */
   public $subPath;
 
+  /**
+   * @param string
+   */
   public function setMountPath($mountPath)
   {
     $this->mountPath = $mountPath;
   }
+  /**
+   * @return string
+   */
   public function getMountPath()
   {
     return $this->mountPath;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setReadOnly($readOnly)
   {
     $this->readOnly = $readOnly;
   }
+  /**
+   * @return bool
+   */
   public function getReadOnly()
   {
     return $this->readOnly;
   }
+  /**
+   * @param string
+   */
   public function setSubPath($subPath)
   {
     $this->subPath = $subPath;
   }
+  /**
+   * @return string
+   */
   public function getSubPath()
   {
     return $this->subPath;

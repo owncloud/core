@@ -20,30 +20,57 @@ namespace Google\Service\FirebaseManagement;
 class Location extends \Google\Collection
 {
   protected $collection_key = 'features';
+  /**
+   * @var string[]
+   */
   public $features;
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setFeatures($features)
   {
     $this->features = $features;
   }
+  /**
+   * @return string[]
+   */
   public function getFeatures()
   {
     return $this->features;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

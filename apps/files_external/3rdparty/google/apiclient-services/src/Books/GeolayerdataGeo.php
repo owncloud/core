@@ -20,36 +20,69 @@ namespace Google\Service\Books;
 class GeolayerdataGeo extends \Google\Collection
 {
   protected $collection_key = 'boundary';
+  /**
+   * @var string[]
+   */
   public $boundary;
+  /**
+   * @var string
+   */
   public $cachePolicy;
+  /**
+   * @var string
+   */
   public $countryCode;
   public $latitude;
   public $longitude;
+  /**
+   * @var string
+   */
   public $mapType;
   protected $viewportType = GeolayerdataGeoViewport::class;
   protected $viewportDataType = '';
+  /**
+   * @var int
+   */
   public $zoom;
 
+  /**
+   * @param string[]
+   */
   public function setBoundary($boundary)
   {
     $this->boundary = $boundary;
   }
+  /**
+   * @return string[]
+   */
   public function getBoundary()
   {
     return $this->boundary;
   }
+  /**
+   * @param string
+   */
   public function setCachePolicy($cachePolicy)
   {
     $this->cachePolicy = $cachePolicy;
   }
+  /**
+   * @return string
+   */
   public function getCachePolicy()
   {
     return $this->cachePolicy;
   }
+  /**
+   * @param string
+   */
   public function setCountryCode($countryCode)
   {
     $this->countryCode = $countryCode;
   }
+  /**
+   * @return string
+   */
   public function getCountryCode()
   {
     return $this->countryCode;
@@ -70,10 +103,16 @@ class GeolayerdataGeo extends \Google\Collection
   {
     return $this->longitude;
   }
+  /**
+   * @param string
+   */
   public function setMapType($mapType)
   {
     $this->mapType = $mapType;
   }
+  /**
+   * @return string
+   */
   public function getMapType()
   {
     return $this->mapType;
@@ -92,10 +131,16 @@ class GeolayerdataGeo extends \Google\Collection
   {
     return $this->viewport;
   }
+  /**
+   * @param int
+   */
   public function setZoom($zoom)
   {
     $this->zoom = $zoom;
   }
+  /**
+   * @return int
+   */
   public function getZoom()
   {
     return $this->zoom;

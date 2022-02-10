@@ -19,67 +19,130 @@ namespace Google\Service\AnalyticsReporting;
 
 class GoalData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $goalCompletionLocation;
+  /**
+   * @var string
+   */
   public $goalCompletions;
+  /**
+   * @var int
+   */
   public $goalIndex;
+  /**
+   * @var string
+   */
   public $goalName;
+  /**
+   * @var string
+   */
   public $goalPreviousStep1;
+  /**
+   * @var string
+   */
   public $goalPreviousStep2;
+  /**
+   * @var string
+   */
   public $goalPreviousStep3;
   public $goalValue;
 
+  /**
+   * @param string
+   */
   public function setGoalCompletionLocation($goalCompletionLocation)
   {
     $this->goalCompletionLocation = $goalCompletionLocation;
   }
+  /**
+   * @return string
+   */
   public function getGoalCompletionLocation()
   {
     return $this->goalCompletionLocation;
   }
+  /**
+   * @param string
+   */
   public function setGoalCompletions($goalCompletions)
   {
     $this->goalCompletions = $goalCompletions;
   }
+  /**
+   * @return string
+   */
   public function getGoalCompletions()
   {
     return $this->goalCompletions;
   }
+  /**
+   * @param int
+   */
   public function setGoalIndex($goalIndex)
   {
     $this->goalIndex = $goalIndex;
   }
+  /**
+   * @return int
+   */
   public function getGoalIndex()
   {
     return $this->goalIndex;
   }
+  /**
+   * @param string
+   */
   public function setGoalName($goalName)
   {
     $this->goalName = $goalName;
   }
+  /**
+   * @return string
+   */
   public function getGoalName()
   {
     return $this->goalName;
   }
+  /**
+   * @param string
+   */
   public function setGoalPreviousStep1($goalPreviousStep1)
   {
     $this->goalPreviousStep1 = $goalPreviousStep1;
   }
+  /**
+   * @return string
+   */
   public function getGoalPreviousStep1()
   {
     return $this->goalPreviousStep1;
   }
+  /**
+   * @param string
+   */
   public function setGoalPreviousStep2($goalPreviousStep2)
   {
     $this->goalPreviousStep2 = $goalPreviousStep2;
   }
+  /**
+   * @return string
+   */
   public function getGoalPreviousStep2()
   {
     return $this->goalPreviousStep2;
   }
+  /**
+   * @param string
+   */
   public function setGoalPreviousStep3($goalPreviousStep3)
   {
     $this->goalPreviousStep3 = $goalPreviousStep3;
   }
+  /**
+   * @return string
+   */
   public function getGoalPreviousStep3()
   {
     return $this->goalPreviousStep3;

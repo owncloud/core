@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class LiaAboutPageSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

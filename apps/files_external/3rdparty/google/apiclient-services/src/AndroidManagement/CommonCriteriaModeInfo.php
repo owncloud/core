@@ -19,12 +19,21 @@ namespace Google\Service\AndroidManagement;
 
 class CommonCriteriaModeInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $commonCriteriaModeStatus;
 
+  /**
+   * @param string
+   */
   public function setCommonCriteriaModeStatus($commonCriteriaModeStatus)
   {
     $this->commonCriteriaModeStatus = $commonCriteriaModeStatus;
   }
+  /**
+   * @return string
+   */
   public function getCommonCriteriaModeStatus()
   {
     return $this->commonCriteriaModeStatus;

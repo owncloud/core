@@ -19,57 +19,111 @@ namespace Google\Service\FirebaseDynamicLinks;
 
 class GooglePlayAnalytics extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gclid;
+  /**
+   * @var string
+   */
   public $utmCampaign;
+  /**
+   * @var string
+   */
   public $utmContent;
+  /**
+   * @var string
+   */
   public $utmMedium;
+  /**
+   * @var string
+   */
   public $utmSource;
+  /**
+   * @var string
+   */
   public $utmTerm;
 
+  /**
+   * @param string
+   */
   public function setGclid($gclid)
   {
     $this->gclid = $gclid;
   }
+  /**
+   * @return string
+   */
   public function getGclid()
   {
     return $this->gclid;
   }
+  /**
+   * @param string
+   */
   public function setUtmCampaign($utmCampaign)
   {
     $this->utmCampaign = $utmCampaign;
   }
+  /**
+   * @return string
+   */
   public function getUtmCampaign()
   {
     return $this->utmCampaign;
   }
+  /**
+   * @param string
+   */
   public function setUtmContent($utmContent)
   {
     $this->utmContent = $utmContent;
   }
+  /**
+   * @return string
+   */
   public function getUtmContent()
   {
     return $this->utmContent;
   }
+  /**
+   * @param string
+   */
   public function setUtmMedium($utmMedium)
   {
     $this->utmMedium = $utmMedium;
   }
+  /**
+   * @return string
+   */
   public function getUtmMedium()
   {
     return $this->utmMedium;
   }
+  /**
+   * @param string
+   */
   public function setUtmSource($utmSource)
   {
     $this->utmSource = $utmSource;
   }
+  /**
+   * @return string
+   */
   public function getUtmSource()
   {
     return $this->utmSource;
   }
+  /**
+   * @param string
+   */
   public function setUtmTerm($utmTerm)
   {
     $this->utmTerm = $utmTerm;
   }
+  /**
+   * @return string
+   */
   public function getUtmTerm()
   {
     return $this->utmTerm;

@@ -19,57 +19,111 @@ namespace Google\Service\Container;
 
 class UpgradeEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currentVersion;
+  /**
+   * @var string
+   */
   public $operation;
+  /**
+   * @var string
+   */
   public $operationStartTime;
+  /**
+   * @var string
+   */
   public $resource;
+  /**
+   * @var string
+   */
   public $resourceType;
+  /**
+   * @var string
+   */
   public $targetVersion;
 
+  /**
+   * @param string
+   */
   public function setCurrentVersion($currentVersion)
   {
     $this->currentVersion = $currentVersion;
   }
+  /**
+   * @return string
+   */
   public function getCurrentVersion()
   {
     return $this->currentVersion;
   }
+  /**
+   * @param string
+   */
   public function setOperation($operation)
   {
     $this->operation = $operation;
   }
+  /**
+   * @return string
+   */
   public function getOperation()
   {
     return $this->operation;
   }
+  /**
+   * @param string
+   */
   public function setOperationStartTime($operationStartTime)
   {
     $this->operationStartTime = $operationStartTime;
   }
+  /**
+   * @return string
+   */
   public function getOperationStartTime()
   {
     return $this->operationStartTime;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string
+   */
   public function getResourceType()
   {
     return $this->resourceType;
   }
+  /**
+   * @param string
+   */
   public function setTargetVersion($targetVersion)
   {
     $this->targetVersion = $targetVersion;
   }
+  /**
+   * @return string
+   */
   public function getTargetVersion()
   {
     return $this->targetVersion;

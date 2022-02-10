@@ -19,12 +19,21 @@ namespace Google\Service\ShoppingContent;
 
 class RepricingProductReportBuyboxWinningProductStats extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $buyboxWinsCount;
 
+  /**
+   * @param int
+   */
   public function setBuyboxWinsCount($buyboxWinsCount)
   {
     $this->buyboxWinsCount = $buyboxWinsCount;
   }
+  /**
+   * @return int
+   */
   public function getBuyboxWinsCount()
   {
     return $this->buyboxWinsCount;

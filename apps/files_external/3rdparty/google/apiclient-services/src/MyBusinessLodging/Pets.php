@@ -19,75 +19,147 @@ namespace Google\Service\MyBusinessLodging;
 
 class Pets extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $catsAllowed;
+  /**
+   * @var string
+   */
   public $catsAllowedException;
+  /**
+   * @var bool
+   */
   public $dogsAllowed;
+  /**
+   * @var string
+   */
   public $dogsAllowedException;
+  /**
+   * @var bool
+   */
   public $petsAllowed;
+  /**
+   * @var string
+   */
   public $petsAllowedException;
+  /**
+   * @var bool
+   */
   public $petsAllowedFree;
+  /**
+   * @var string
+   */
   public $petsAllowedFreeException;
 
+  /**
+   * @param bool
+   */
   public function setCatsAllowed($catsAllowed)
   {
     $this->catsAllowed = $catsAllowed;
   }
+  /**
+   * @return bool
+   */
   public function getCatsAllowed()
   {
     return $this->catsAllowed;
   }
+  /**
+   * @param string
+   */
   public function setCatsAllowedException($catsAllowedException)
   {
     $this->catsAllowedException = $catsAllowedException;
   }
+  /**
+   * @return string
+   */
   public function getCatsAllowedException()
   {
     return $this->catsAllowedException;
   }
+  /**
+   * @param bool
+   */
   public function setDogsAllowed($dogsAllowed)
   {
     $this->dogsAllowed = $dogsAllowed;
   }
+  /**
+   * @return bool
+   */
   public function getDogsAllowed()
   {
     return $this->dogsAllowed;
   }
+  /**
+   * @param string
+   */
   public function setDogsAllowedException($dogsAllowedException)
   {
     $this->dogsAllowedException = $dogsAllowedException;
   }
+  /**
+   * @return string
+   */
   public function getDogsAllowedException()
   {
     return $this->dogsAllowedException;
   }
+  /**
+   * @param bool
+   */
   public function setPetsAllowed($petsAllowed)
   {
     $this->petsAllowed = $petsAllowed;
   }
+  /**
+   * @return bool
+   */
   public function getPetsAllowed()
   {
     return $this->petsAllowed;
   }
+  /**
+   * @param string
+   */
   public function setPetsAllowedException($petsAllowedException)
   {
     $this->petsAllowedException = $petsAllowedException;
   }
+  /**
+   * @return string
+   */
   public function getPetsAllowedException()
   {
     return $this->petsAllowedException;
   }
+  /**
+   * @param bool
+   */
   public function setPetsAllowedFree($petsAllowedFree)
   {
     $this->petsAllowedFree = $petsAllowedFree;
   }
+  /**
+   * @return bool
+   */
   public function getPetsAllowedFree()
   {
     return $this->petsAllowedFree;
   }
+  /**
+   * @param string
+   */
   public function setPetsAllowedFreeException($petsAllowedFreeException)
   {
     $this->petsAllowedFreeException = $petsAllowedFreeException;
   }
+  /**
+   * @return string
+   */
   public function getPetsAllowedFreeException()
   {
     return $this->petsAllowedFreeException;

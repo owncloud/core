@@ -22,10 +22,19 @@ class TenantProjectConfig extends \Google\Collection
   protected $collection_key = 'services';
   protected $billingConfigType = BillingConfig::class;
   protected $billingConfigDataType = '';
+  /**
+   * @var string
+   */
   public $folder;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $serviceAccountConfigType = ServiceAccountConfig::class;
   protected $serviceAccountConfigDataType = '';
+  /**
+   * @var string[]
+   */
   public $services;
   protected $tenantProjectPolicyType = TenantProjectPolicy::class;
   protected $tenantProjectPolicyDataType = '';
@@ -44,18 +53,30 @@ class TenantProjectConfig extends \Google\Collection
   {
     return $this->billingConfig;
   }
+  /**
+   * @param string
+   */
   public function setFolder($folder)
   {
     $this->folder = $folder;
   }
+  /**
+   * @return string
+   */
   public function getFolder()
   {
     return $this->folder;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -74,10 +95,16 @@ class TenantProjectConfig extends \Google\Collection
   {
     return $this->serviceAccountConfig;
   }
+  /**
+   * @param string[]
+   */
   public function setServices($services)
   {
     $this->services = $services;
   }
+  /**
+   * @return string[]
+   */
   public function getServices()
   {
     return $this->services;

@@ -19,30 +19,57 @@ namespace Google\Service\Appengine;
 
 class SslSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certificateId;
+  /**
+   * @var string
+   */
   public $pendingManagedCertificateId;
+  /**
+   * @var string
+   */
   public $sslManagementType;
 
+  /**
+   * @param string
+   */
   public function setCertificateId($certificateId)
   {
     $this->certificateId = $certificateId;
   }
+  /**
+   * @return string
+   */
   public function getCertificateId()
   {
     return $this->certificateId;
   }
+  /**
+   * @param string
+   */
   public function setPendingManagedCertificateId($pendingManagedCertificateId)
   {
     $this->pendingManagedCertificateId = $pendingManagedCertificateId;
   }
+  /**
+   * @return string
+   */
   public function getPendingManagedCertificateId()
   {
     return $this->pendingManagedCertificateId;
   }
+  /**
+   * @param string
+   */
   public function setSslManagementType($sslManagementType)
   {
     $this->sslManagementType = $sslManagementType;
   }
+  /**
+   * @return string
+   */
   public function getSslManagementType()
   {
     return $this->sslManagementType;

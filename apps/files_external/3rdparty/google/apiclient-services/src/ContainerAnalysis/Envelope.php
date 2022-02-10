@@ -20,23 +20,41 @@ namespace Google\Service\ContainerAnalysis;
 class Envelope extends \Google\Collection
 {
   protected $collection_key = 'signatures';
+  /**
+   * @var string
+   */
   public $payload;
+  /**
+   * @var string
+   */
   public $payloadType;
   protected $signaturesType = EnvelopeSignature::class;
   protected $signaturesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return string
+   */
   public function getPayload()
   {
     return $this->payload;
   }
+  /**
+   * @param string
+   */
   public function setPayloadType($payloadType)
   {
     $this->payloadType = $payloadType;
   }
+  /**
+   * @return string
+   */
   public function getPayloadType()
   {
     return $this->payloadType;

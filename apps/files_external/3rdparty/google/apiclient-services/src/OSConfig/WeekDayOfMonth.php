@@ -19,21 +19,57 @@ namespace Google\Service\OSConfig;
 
 class WeekDayOfMonth extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dayOfWeek;
+  /**
+   * @var int
+   */
+  public $dayOffset;
+  /**
+   * @var int
+   */
   public $weekOrdinal;
 
+  /**
+   * @param string
+   */
   public function setDayOfWeek($dayOfWeek)
   {
     $this->dayOfWeek = $dayOfWeek;
   }
+  /**
+   * @return string
+   */
   public function getDayOfWeek()
   {
     return $this->dayOfWeek;
   }
+  /**
+   * @param int
+   */
+  public function setDayOffset($dayOffset)
+  {
+    $this->dayOffset = $dayOffset;
+  }
+  /**
+   * @return int
+   */
+  public function getDayOffset()
+  {
+    return $this->dayOffset;
+  }
+  /**
+   * @param int
+   */
   public function setWeekOrdinal($weekOrdinal)
   {
     $this->weekOrdinal = $weekOrdinal;
   }
+  /**
+   * @return int
+   */
   public function getWeekOrdinal()
   {
     return $this->weekOrdinal;

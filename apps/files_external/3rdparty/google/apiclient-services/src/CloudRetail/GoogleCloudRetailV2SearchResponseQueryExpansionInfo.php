@@ -19,21 +19,39 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2SearchResponseQueryExpansionInfo extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $expandedQuery;
+  /**
+   * @var string
+   */
   public $pinnedResultCount;
 
+  /**
+   * @param bool
+   */
   public function setExpandedQuery($expandedQuery)
   {
     $this->expandedQuery = $expandedQuery;
   }
+  /**
+   * @return bool
+   */
   public function getExpandedQuery()
   {
     return $this->expandedQuery;
   }
+  /**
+   * @param string
+   */
   public function setPinnedResultCount($pinnedResultCount)
   {
     $this->pinnedResultCount = $pinnedResultCount;
   }
+  /**
+   * @return string
+   */
   public function getPinnedResultCount()
   {
     return $this->pinnedResultCount;

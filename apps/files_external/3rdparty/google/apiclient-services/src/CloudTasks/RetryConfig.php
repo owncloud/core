@@ -19,48 +19,93 @@ namespace Google\Service\CloudTasks;
 
 class RetryConfig extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxAttempts;
+  /**
+   * @var string
+   */
   public $maxBackoff;
+  /**
+   * @var int
+   */
   public $maxDoublings;
+  /**
+   * @var string
+   */
   public $maxRetryDuration;
+  /**
+   * @var string
+   */
   public $minBackoff;
 
+  /**
+   * @param int
+   */
   public function setMaxAttempts($maxAttempts)
   {
     $this->maxAttempts = $maxAttempts;
   }
+  /**
+   * @return int
+   */
   public function getMaxAttempts()
   {
     return $this->maxAttempts;
   }
+  /**
+   * @param string
+   */
   public function setMaxBackoff($maxBackoff)
   {
     $this->maxBackoff = $maxBackoff;
   }
+  /**
+   * @return string
+   */
   public function getMaxBackoff()
   {
     return $this->maxBackoff;
   }
+  /**
+   * @param int
+   */
   public function setMaxDoublings($maxDoublings)
   {
     $this->maxDoublings = $maxDoublings;
   }
+  /**
+   * @return int
+   */
   public function getMaxDoublings()
   {
     return $this->maxDoublings;
   }
+  /**
+   * @param string
+   */
   public function setMaxRetryDuration($maxRetryDuration)
   {
     $this->maxRetryDuration = $maxRetryDuration;
   }
+  /**
+   * @return string
+   */
   public function getMaxRetryDuration()
   {
     return $this->maxRetryDuration;
   }
+  /**
+   * @param string
+   */
   public function setMinBackoff($minBackoff)
   {
     $this->minBackoff = $minBackoff;
   }
+  /**
+   * @return string
+   */
   public function getMinBackoff()
   {
     return $this->minBackoff;

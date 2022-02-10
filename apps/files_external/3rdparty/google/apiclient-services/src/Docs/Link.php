@@ -19,30 +19,57 @@ namespace Google\Service\Docs;
 
 class Link extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bookmarkId;
+  /**
+   * @var string
+   */
   public $headingId;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setBookmarkId($bookmarkId)
   {
     $this->bookmarkId = $bookmarkId;
   }
+  /**
+   * @return string
+   */
   public function getBookmarkId()
   {
     return $this->bookmarkId;
   }
+  /**
+   * @param string
+   */
   public function setHeadingId($headingId)
   {
     $this->headingId = $headingId;
   }
+  /**
+   * @return string
+   */
   public function getHeadingId()
   {
     return $this->headingId;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

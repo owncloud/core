@@ -20,16 +20,31 @@ namespace Google\Service\CloudTalentSolution;
 class CompensationFilter extends \Google\Collection
 {
   protected $collection_key = 'units';
+  /**
+   * @var bool
+   */
   public $includeJobsWithUnspecifiedCompensationRange;
   protected $rangeType = CompensationRange::class;
   protected $rangeDataType = '';
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string[]
+   */
   public $units;
 
+  /**
+   * @param bool
+   */
   public function setIncludeJobsWithUnspecifiedCompensationRange($includeJobsWithUnspecifiedCompensationRange)
   {
     $this->includeJobsWithUnspecifiedCompensationRange = $includeJobsWithUnspecifiedCompensationRange;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeJobsWithUnspecifiedCompensationRange()
   {
     return $this->includeJobsWithUnspecifiedCompensationRange;
@@ -48,18 +63,30 @@ class CompensationFilter extends \Google\Collection
   {
     return $this->range;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string[]
+   */
   public function setUnits($units)
   {
     $this->units = $units;
   }
+  /**
+   * @return string[]
+   */
   public function getUnits()
   {
     return $this->units;

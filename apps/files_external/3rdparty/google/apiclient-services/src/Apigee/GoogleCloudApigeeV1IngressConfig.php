@@ -22,9 +22,21 @@ class GoogleCloudApigeeV1IngressConfig extends \Google\Collection
   protected $collection_key = 'environmentGroups';
   protected $environmentGroupsType = GoogleCloudApigeeV1EnvironmentGroupConfig::class;
   protected $environmentGroupsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $revisionCreateTime;
+  /**
+   * @var string
+   */
   public $revisionId;
+  /**
+   * @var string
+   */
   public $uid;
 
   /**
@@ -41,34 +53,58 @@ class GoogleCloudApigeeV1IngressConfig extends \Google\Collection
   {
     return $this->environmentGroups;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRevisionCreateTime($revisionCreateTime)
   {
     $this->revisionCreateTime = $revisionCreateTime;
   }
+  /**
+   * @return string
+   */
   public function getRevisionCreateTime()
   {
     return $this->revisionCreateTime;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;
   }
+  /**
+   * @param string
+   */
   public function setUid($uid)
   {
     $this->uid = $uid;
   }
+  /**
+   * @return string
+   */
   public function getUid()
   {
     return $this->uid;

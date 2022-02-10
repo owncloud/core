@@ -23,6 +23,9 @@ class InstanceManagedByIgmError extends \Google\Model
   protected $errorDataType = '';
   protected $instanceActionDetailsType = InstanceManagedByIgmErrorInstanceActionDetails::class;
   protected $instanceActionDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $timestamp;
 
   /**
@@ -53,10 +56,16 @@ class InstanceManagedByIgmError extends \Google\Model
   {
     return $this->instanceActionDetails;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

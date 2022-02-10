@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3WebhookRequestIntentInfoIntentParameterValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $originalValue;
+  /**
+   * @var array
+   */
   public $resolvedValue;
 
+  /**
+   * @param string
+   */
   public function setOriginalValue($originalValue)
   {
     $this->originalValue = $originalValue;
   }
+  /**
+   * @return string
+   */
   public function getOriginalValue()
   {
     return $this->originalValue;
   }
+  /**
+   * @param array
+   */
   public function setResolvedValue($resolvedValue)
   {
     $this->resolvedValue = $resolvedValue;
   }
+  /**
+   * @return array
+   */
   public function getResolvedValue()
   {
     return $this->resolvedValue;

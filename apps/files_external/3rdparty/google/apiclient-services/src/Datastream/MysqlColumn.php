@@ -19,66 +19,129 @@ namespace Google\Service\Datastream;
 
 class MysqlColumn extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $collation;
-  public $columnName;
+  /**
+   * @var string
+   */
+  public $column;
+  /**
+   * @var string
+   */
   public $dataType;
+  /**
+   * @var int
+   */
   public $length;
+  /**
+   * @var bool
+   */
   public $nullable;
+  /**
+   * @var int
+   */
   public $ordinalPosition;
+  /**
+   * @var bool
+   */
   public $primaryKey;
 
+  /**
+   * @param string
+   */
   public function setCollation($collation)
   {
     $this->collation = $collation;
   }
+  /**
+   * @return string
+   */
   public function getCollation()
   {
     return $this->collation;
   }
-  public function setColumnName($columnName)
+  /**
+   * @param string
+   */
+  public function setColumn($column)
   {
-    $this->columnName = $columnName;
+    $this->column = $column;
   }
-  public function getColumnName()
+  /**
+   * @return string
+   */
+  public function getColumn()
   {
-    return $this->columnName;
+    return $this->column;
   }
+  /**
+   * @param string
+   */
   public function setDataType($dataType)
   {
     $this->dataType = $dataType;
   }
+  /**
+   * @return string
+   */
   public function getDataType()
   {
     return $this->dataType;
   }
+  /**
+   * @param int
+   */
   public function setLength($length)
   {
     $this->length = $length;
   }
+  /**
+   * @return int
+   */
   public function getLength()
   {
     return $this->length;
   }
+  /**
+   * @param bool
+   */
   public function setNullable($nullable)
   {
     $this->nullable = $nullable;
   }
+  /**
+   * @return bool
+   */
   public function getNullable()
   {
     return $this->nullable;
   }
+  /**
+   * @param int
+   */
   public function setOrdinalPosition($ordinalPosition)
   {
     $this->ordinalPosition = $ordinalPosition;
   }
+  /**
+   * @return int
+   */
   public function getOrdinalPosition()
   {
     return $this->ordinalPosition;
   }
+  /**
+   * @param bool
+   */
   public function setPrimaryKey($primaryKey)
   {
     $this->primaryKey = $primaryKey;
   }
+  /**
+   * @return bool
+   */
   public function getPrimaryKey()
   {
     return $this->primaryKey;

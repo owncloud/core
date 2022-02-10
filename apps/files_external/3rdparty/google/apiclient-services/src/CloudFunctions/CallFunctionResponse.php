@@ -19,30 +19,57 @@ namespace Google\Service\CloudFunctions;
 
 class CallFunctionResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $error;
+  /**
+   * @var string
+   */
   public $executionId;
+  /**
+   * @var string
+   */
   public $result;
 
+  /**
+   * @param string
+   */
   public function setError($error)
   {
     $this->error = $error;
   }
+  /**
+   * @return string
+   */
   public function getError()
   {
     return $this->error;
   }
+  /**
+   * @param string
+   */
   public function setExecutionId($executionId)
   {
     $this->executionId = $executionId;
   }
+  /**
+   * @return string
+   */
   public function getExecutionId()
   {
     return $this->executionId;
   }
+  /**
+   * @param string
+   */
   public function setResult($result)
   {
     $this->result = $result;
   }
+  /**
+   * @return string
+   */
   public function getResult()
   {
     return $this->result;

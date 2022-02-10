@@ -19,21 +19,39 @@ namespace Google\Service\DataprocMetastore;
 
 class MaintenanceWindow extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dayOfWeek;
+  /**
+   * @var int
+   */
   public $hourOfDay;
 
+  /**
+   * @param string
+   */
   public function setDayOfWeek($dayOfWeek)
   {
     $this->dayOfWeek = $dayOfWeek;
   }
+  /**
+   * @return string
+   */
   public function getDayOfWeek()
   {
     return $this->dayOfWeek;
   }
+  /**
+   * @param int
+   */
   public function setHourOfDay($hourOfDay)
   {
     $this->hourOfDay = $hourOfDay;
   }
+  /**
+   * @return int
+   */
   public function getHourOfDay()
   {
     return $this->hourOfDay;

@@ -20,9 +20,15 @@ namespace Google\Service\VersionHistory;
 class Release extends \Google\Model
 {
   public $fraction;
+  /**
+   * @var string
+   */
   public $name;
   protected $servingType = Interval::class;
   protected $servingDataType = '';
+  /**
+   * @var string
+   */
   public $version;
 
   public function setFraction($fraction)
@@ -33,10 +39,16 @@ class Release extends \Google\Model
   {
     return $this->fraction;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -55,10 +67,16 @@ class Release extends \Google\Model
   {
     return $this->serving;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

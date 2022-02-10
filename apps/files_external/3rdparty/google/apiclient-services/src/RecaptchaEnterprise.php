@@ -189,10 +189,10 @@ class RecaptchaEnterprise extends \Google\Service
         [
           'methods' => [
             'search' => [
-              'path' => 'v1/{+parent}/relatedaccountgroupmemberships:search',
+              'path' => 'v1/{+project}/relatedaccountgroupmemberships:search',
               'httpMethod' => 'POST',
               'parameters' => [
-                'parent' => [
+                'project' => [
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

@@ -19,24 +19,45 @@ namespace Google\Service\Compute;
 
 class NetworksAddPeeringRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $autoCreateRoutes;
+  /**
+   * @var string
+   */
   public $name;
   protected $networkPeeringType = NetworkPeering::class;
   protected $networkPeeringDataType = '';
+  /**
+   * @var string
+   */
   public $peerNetwork;
 
+  /**
+   * @param bool
+   */
   public function setAutoCreateRoutes($autoCreateRoutes)
   {
     $this->autoCreateRoutes = $autoCreateRoutes;
   }
+  /**
+   * @return bool
+   */
   public function getAutoCreateRoutes()
   {
     return $this->autoCreateRoutes;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -55,10 +76,16 @@ class NetworksAddPeeringRequest extends \Google\Model
   {
     return $this->networkPeering;
   }
+  /**
+   * @param string
+   */
   public function setPeerNetwork($peerNetwork)
   {
     $this->peerNetwork = $peerNetwork;
   }
+  /**
+   * @return string
+   */
   public function getPeerNetwork()
   {
     return $this->peerNetwork;

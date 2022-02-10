@@ -24,6 +24,9 @@ class Proto2DescriptorProto extends \Google\Collection
   protected $enumTypeDataType = 'array';
   protected $fieldType = Proto2FieldDescriptorProto::class;
   protected $fieldDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $nestedTypeType = Proto2DescriptorProto::class;
   protected $nestedTypeDataType = 'array';
@@ -58,10 +61,16 @@ class Proto2DescriptorProto extends \Google\Collection
   {
     return $this->field;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

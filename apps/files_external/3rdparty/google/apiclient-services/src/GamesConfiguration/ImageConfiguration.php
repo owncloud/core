@@ -19,39 +19,75 @@ namespace Google\Service\GamesConfiguration;
 
 class ImageConfiguration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $imageType;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $resourceId;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setImageType($imageType)
   {
     $this->imageType = $imageType;
   }
+  /**
+   * @return string
+   */
   public function getImageType()
   {
     return $this->imageType;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setResourceId($resourceId)
   {
     $this->resourceId = $resourceId;
   }
+  /**
+   * @return string
+   */
   public function getResourceId()
   {
     return $this->resourceId;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

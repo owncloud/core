@@ -19,21 +19,39 @@ namespace Google\Service\SiteVerification;
 
 class SiteVerificationWebResourceGettokenResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $method;
+  /**
+   * @var string
+   */
   public $token;
 
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;
   }
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;

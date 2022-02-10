@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class ProximityLocationListAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $proximityLocationListId;
+  /**
+   * @var string
+   */
   public $proximityRadiusRange;
 
+  /**
+   * @param string
+   */
   public function setProximityLocationListId($proximityLocationListId)
   {
     $this->proximityLocationListId = $proximityLocationListId;
   }
+  /**
+   * @return string
+   */
   public function getProximityLocationListId()
   {
     return $this->proximityLocationListId;
   }
+  /**
+   * @param string
+   */
   public function setProximityRadiusRange($proximityRadiusRange)
   {
     $this->proximityRadiusRange = $proximityRadiusRange;
   }
+  /**
+   * @return string
+   */
   public function getProximityRadiusRange()
   {
     return $this->proximityRadiusRange;

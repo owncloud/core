@@ -20,21 +20,39 @@ namespace Google\Service\Dataflow;
 class Histogram extends \Google\Collection
 {
   protected $collection_key = 'bucketCounts';
+  /**
+   * @var string[]
+   */
   public $bucketCounts;
+  /**
+   * @var int
+   */
   public $firstBucketOffset;
 
+  /**
+   * @param string[]
+   */
   public function setBucketCounts($bucketCounts)
   {
     $this->bucketCounts = $bucketCounts;
   }
+  /**
+   * @return string[]
+   */
   public function getBucketCounts()
   {
     return $this->bucketCounts;
   }
+  /**
+   * @param int
+   */
   public function setFirstBucketOffset($firstBucketOffset)
   {
     $this->firstBucketOffset = $firstBucketOffset;
   }
+  /**
+   * @return int
+   */
   public function getFirstBucketOffset()
   {
     return $this->firstBucketOffset;

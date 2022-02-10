@@ -19,21 +19,39 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class MetricValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $value;
+  /**
+   * @var string
+   */
   public $variance;
 
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;
   }
+  /**
+   * @param string
+   */
   public function setVariance($variance)
   {
     $this->variance = $variance;
   }
+  /**
+   * @return string
+   */
   public function getVariance()
   {
     return $this->variance;

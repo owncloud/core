@@ -19,39 +19,75 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class IsInstanceUpgradeableResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $upgradeImage;
+  /**
+   * @var string
+   */
   public $upgradeInfo;
+  /**
+   * @var string
+   */
   public $upgradeVersion;
+  /**
+   * @var bool
+   */
   public $upgradeable;
 
+  /**
+   * @param string
+   */
   public function setUpgradeImage($upgradeImage)
   {
     $this->upgradeImage = $upgradeImage;
   }
+  /**
+   * @return string
+   */
   public function getUpgradeImage()
   {
     return $this->upgradeImage;
   }
+  /**
+   * @param string
+   */
   public function setUpgradeInfo($upgradeInfo)
   {
     $this->upgradeInfo = $upgradeInfo;
   }
+  /**
+   * @return string
+   */
   public function getUpgradeInfo()
   {
     return $this->upgradeInfo;
   }
+  /**
+   * @param string
+   */
   public function setUpgradeVersion($upgradeVersion)
   {
     $this->upgradeVersion = $upgradeVersion;
   }
+  /**
+   * @return string
+   */
   public function getUpgradeVersion()
   {
     return $this->upgradeVersion;
   }
+  /**
+   * @param bool
+   */
   public function setUpgradeable($upgradeable)
   {
     $this->upgradeable = $upgradeable;
   }
+  /**
+   * @return bool
+   */
   public function getUpgradeable()
   {
     return $this->upgradeable;

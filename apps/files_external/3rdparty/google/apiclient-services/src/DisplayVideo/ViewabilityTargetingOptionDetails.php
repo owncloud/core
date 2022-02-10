@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class ViewabilityTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $viewability;
 
+  /**
+   * @param string
+   */
   public function setViewability($viewability)
   {
     $this->viewability = $viewability;
   }
+  /**
+   * @return string
+   */
   public function getViewability()
   {
     return $this->viewability;

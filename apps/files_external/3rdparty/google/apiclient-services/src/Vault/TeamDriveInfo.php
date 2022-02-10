@@ -20,12 +20,21 @@ namespace Google\Service\Vault;
 class TeamDriveInfo extends \Google\Collection
 {
   protected $collection_key = 'teamDriveIds';
+  /**
+   * @var string[]
+   */
   public $teamDriveIds;
 
+  /**
+   * @param string[]
+   */
   public function setTeamDriveIds($teamDriveIds)
   {
     $this->teamDriveIds = $teamDriveIds;
   }
+  /**
+   * @return string[]
+   */
   public function getTeamDriveIds()
   {
     return $this->teamDriveIds;

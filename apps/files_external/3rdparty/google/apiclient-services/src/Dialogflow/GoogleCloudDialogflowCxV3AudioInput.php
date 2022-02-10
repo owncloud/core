@@ -19,14 +19,23 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3AudioInput extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audio;
   protected $configType = GoogleCloudDialogflowCxV3InputAudioConfig::class;
   protected $configDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAudio($audio)
   {
     $this->audio = $audio;
   }
+  /**
+   * @return string
+   */
   public function getAudio()
   {
     return $this->audio;

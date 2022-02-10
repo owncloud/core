@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class PreservedStatePreservedDisk extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $autoDelete;
+  /**
+   * @var string
+   */
   public $mode;
+  /**
+   * @var string
+   */
   public $source;
 
+  /**
+   * @param string
+   */
   public function setAutoDelete($autoDelete)
   {
     $this->autoDelete = $autoDelete;
   }
+  /**
+   * @return string
+   */
   public function getAutoDelete()
   {
     return $this->autoDelete;
   }
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;

@@ -17,41 +17,96 @@
 
 namespace Google\Service\AccessContextManager;
 
-class AccessPolicy extends \Google\Model
+class AccessPolicy extends \Google\Collection
 {
+  protected $collection_key = 'scopes';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string[]
+   */
+  public $scopes;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string[]
+   */
+  public function setScopes($scopes)
+  {
+    $this->scopes = $scopes;
+  }
+  /**
+   * @return string[]
+   */
+  public function getScopes()
+  {
+    return $this->scopes;
+  }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

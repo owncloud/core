@@ -19,39 +19,75 @@ namespace Google\Service\Script;
 
 class GoogleAppsScriptTypeUser extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $domain;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $photoUrl;
 
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPhotoUrl($photoUrl)
   {
     $this->photoUrl = $photoUrl;
   }
+  /**
+   * @return string
+   */
   public function getPhotoUrl()
   {
     return $this->photoUrl;

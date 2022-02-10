@@ -20,50 +20,95 @@ namespace Google\Service\Games;
 class PlayerScoreResponse extends \Google\Collection
 {
   protected $collection_key = 'unbeatenScores';
+  /**
+   * @var string[]
+   */
   public $beatenScoreTimeSpans;
+  /**
+   * @var string
+   */
   public $formattedScore;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $leaderboardId;
+  /**
+   * @var string
+   */
   public $scoreTag;
   protected $unbeatenScoresType = PlayerScore::class;
   protected $unbeatenScoresDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setBeatenScoreTimeSpans($beatenScoreTimeSpans)
   {
     $this->beatenScoreTimeSpans = $beatenScoreTimeSpans;
   }
+  /**
+   * @return string[]
+   */
   public function getBeatenScoreTimeSpans()
   {
     return $this->beatenScoreTimeSpans;
   }
+  /**
+   * @param string
+   */
   public function setFormattedScore($formattedScore)
   {
     $this->formattedScore = $formattedScore;
   }
+  /**
+   * @return string
+   */
   public function getFormattedScore()
   {
     return $this->formattedScore;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLeaderboardId($leaderboardId)
   {
     $this->leaderboardId = $leaderboardId;
   }
+  /**
+   * @return string
+   */
   public function getLeaderboardId()
   {
     return $this->leaderboardId;
   }
+  /**
+   * @param string
+   */
   public function setScoreTag($scoreTag)
   {
     $this->scoreTag = $scoreTag;
   }
+  /**
+   * @return string
+   */
   public function getScoreTag()
   {
     return $this->scoreTag;

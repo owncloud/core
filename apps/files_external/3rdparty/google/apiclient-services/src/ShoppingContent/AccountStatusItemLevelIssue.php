@@ -19,75 +19,147 @@ namespace Google\Service\ShoppingContent;
 
 class AccountStatusItemLevelIssue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $attributeName;
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $detail;
+  /**
+   * @var string
+   */
   public $documentation;
+  /**
+   * @var string
+   */
   public $numItems;
+  /**
+   * @var string
+   */
   public $resolution;
+  /**
+   * @var string
+   */
   public $servability;
 
+  /**
+   * @param string
+   */
   public function setAttributeName($attributeName)
   {
     $this->attributeName = $attributeName;
   }
+  /**
+   * @return string
+   */
   public function getAttributeName()
   {
     return $this->attributeName;
   }
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDetail($detail)
   {
     $this->detail = $detail;
   }
+  /**
+   * @return string
+   */
   public function getDetail()
   {
     return $this->detail;
   }
+  /**
+   * @param string
+   */
   public function setDocumentation($documentation)
   {
     $this->documentation = $documentation;
   }
+  /**
+   * @return string
+   */
   public function getDocumentation()
   {
     return $this->documentation;
   }
+  /**
+   * @param string
+   */
   public function setNumItems($numItems)
   {
     $this->numItems = $numItems;
   }
+  /**
+   * @return string
+   */
   public function getNumItems()
   {
     return $this->numItems;
   }
+  /**
+   * @param string
+   */
   public function setResolution($resolution)
   {
     $this->resolution = $resolution;
   }
+  /**
+   * @return string
+   */
   public function getResolution()
   {
     return $this->resolution;
   }
+  /**
+   * @param string
+   */
   public function setServability($servability)
   {
     $this->servability = $servability;
   }
+  /**
+   * @return string
+   */
   public function getServability()
   {
     return $this->servability;

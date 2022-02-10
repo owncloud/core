@@ -22,7 +22,13 @@ class Chain extends \Google\Collection
   protected $collection_key = 'websites';
   protected $chainNamesType = ChainName::class;
   protected $chainNamesDataType = 'array';
+  /**
+   * @var int
+   */
   public $locationCount;
+  /**
+   * @var string
+   */
   public $name;
   protected $websitesType = ChainUri::class;
   protected $websitesDataType = 'array';
@@ -41,18 +47,30 @@ class Chain extends \Google\Collection
   {
     return $this->chainNames;
   }
+  /**
+   * @param int
+   */
   public function setLocationCount($locationCount)
   {
     $this->locationCount = $locationCount;
   }
+  /**
+   * @return int
+   */
   public function getLocationCount()
   {
     return $this->locationCount;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

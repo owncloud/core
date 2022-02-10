@@ -20,21 +20,39 @@ namespace Google\Service\ApiKeysService;
 class V2ApiTarget extends \Google\Collection
 {
   protected $collection_key = 'methods';
+  /**
+   * @var string[]
+   */
   public $methods;
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string[]
+   */
   public function setMethods($methods)
   {
     $this->methods = $methods;
   }
+  /**
+   * @return string[]
+   */
   public function getMethods()
   {
     return $this->methods;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

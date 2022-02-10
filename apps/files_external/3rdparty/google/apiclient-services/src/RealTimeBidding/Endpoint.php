@@ -19,48 +19,93 @@ namespace Google\Service\RealTimeBidding;
 
 class Endpoint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bidProtocol;
+  /**
+   * @var string
+   */
   public $maximumQps;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $tradingLocation;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setBidProtocol($bidProtocol)
   {
     $this->bidProtocol = $bidProtocol;
   }
+  /**
+   * @return string
+   */
   public function getBidProtocol()
   {
     return $this->bidProtocol;
   }
+  /**
+   * @param string
+   */
   public function setMaximumQps($maximumQps)
   {
     $this->maximumQps = $maximumQps;
   }
+  /**
+   * @return string
+   */
   public function getMaximumQps()
   {
     return $this->maximumQps;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTradingLocation($tradingLocation)
   {
     $this->tradingLocation = $tradingLocation;
   }
+  /**
+   * @return string
+   */
   public function getTradingLocation()
   {
     return $this->tradingLocation;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

@@ -19,30 +19,57 @@ namespace Google\Service\Logging;
 
 class CmekSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kmsKeyName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $serviceAccountId;
 
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccountId($serviceAccountId)
   {
     $this->serviceAccountId = $serviceAccountId;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccountId()
   {
     return $this->serviceAccountId;

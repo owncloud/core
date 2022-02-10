@@ -19,23 +19,41 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class VirtualMachine extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var string
+   */
   public $instanceName;
   protected $virtualMachineConfigType = VirtualMachineConfig::class;
   protected $virtualMachineConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param string
+   */
   public function setInstanceName($instanceName)
   {
     $this->instanceName = $instanceName;
   }
+  /**
+   * @return string
+   */
   public function getInstanceName()
   {
     return $this->instanceName;

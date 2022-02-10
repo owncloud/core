@@ -21,11 +21,23 @@ class SourceOperationRequest extends \Google\Model
 {
   protected $getMetadataType = SourceGetMetadataRequest::class;
   protected $getMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $originalName;
   protected $splitType = SourceSplitRequest::class;
   protected $splitDataType = '';
+  /**
+   * @var string
+   */
   public $stageName;
+  /**
+   * @var string
+   */
   public $systemName;
 
   /**
@@ -42,18 +54,30 @@ class SourceOperationRequest extends \Google\Model
   {
     return $this->getMetadata;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOriginalName($originalName)
   {
     $this->originalName = $originalName;
   }
+  /**
+   * @return string
+   */
   public function getOriginalName()
   {
     return $this->originalName;
@@ -72,18 +96,30 @@ class SourceOperationRequest extends \Google\Model
   {
     return $this->split;
   }
+  /**
+   * @param string
+   */
   public function setStageName($stageName)
   {
     $this->stageName = $stageName;
   }
+  /**
+   * @return string
+   */
   public function getStageName()
   {
     return $this->stageName;
   }
+  /**
+   * @param string
+   */
   public function setSystemName($systemName)
   {
     $this->systemName = $systemName;
   }
+  /**
+   * @return string
+   */
   public function getSystemName()
   {
     return $this->systemName;

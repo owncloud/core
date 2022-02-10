@@ -19,30 +19,57 @@ namespace Google\Service\Sheets;
 
 class AppendDimensionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimension;
+  /**
+   * @var int
+   */
   public $length;
+  /**
+   * @var int
+   */
   public $sheetId;
 
+  /**
+   * @param string
+   */
   public function setDimension($dimension)
   {
     $this->dimension = $dimension;
   }
+  /**
+   * @return string
+   */
   public function getDimension()
   {
     return $this->dimension;
   }
+  /**
+   * @param int
+   */
   public function setLength($length)
   {
     $this->length = $length;
   }
+  /**
+   * @return int
+   */
   public function getLength()
   {
     return $this->length;
   }
+  /**
+   * @param int
+   */
   public function setSheetId($sheetId)
   {
     $this->sheetId = $sheetId;
   }
+  /**
+   * @return int
+   */
   public function getSheetId()
   {
     return $this->sheetId;

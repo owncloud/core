@@ -20,57 +20,111 @@ namespace Google\Service\Dns;
 class ResourceRecordSet extends \Google\Collection
 {
   protected $collection_key = 'signatureRrdatas';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $rrdatas;
+  /**
+   * @var string[]
+   */
   public $signatureRrdatas;
+  /**
+   * @var int
+   */
   public $ttl;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setRrdatas($rrdatas)
   {
     $this->rrdatas = $rrdatas;
   }
+  /**
+   * @return string[]
+   */
   public function getRrdatas()
   {
     return $this->rrdatas;
   }
+  /**
+   * @param string[]
+   */
   public function setSignatureRrdatas($signatureRrdatas)
   {
     $this->signatureRrdatas = $signatureRrdatas;
   }
+  /**
+   * @return string[]
+   */
   public function getSignatureRrdatas()
   {
     return $this->signatureRrdatas;
   }
+  /**
+   * @param int
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return int
+   */
   public function getTtl()
   {
     return $this->ttl;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

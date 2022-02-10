@@ -19,39 +19,75 @@ namespace Google\Service\RealTimeBidding;
 
 class AdvertiserAndBrand extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var string
+   */
   public $advertiserName;
+  /**
+   * @var string
+   */
   public $brandId;
+  /**
+   * @var string
+   */
   public $brandName;
 
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserName($advertiserName)
   {
     $this->advertiserName = $advertiserName;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserName()
   {
     return $this->advertiserName;
   }
+  /**
+   * @param string
+   */
   public function setBrandId($brandId)
   {
     $this->brandId = $brandId;
   }
+  /**
+   * @return string
+   */
   public function getBrandId()
   {
     return $this->brandId;
   }
+  /**
+   * @param string
+   */
   public function setBrandName($brandName)
   {
     $this->brandName = $brandName;
   }
+  /**
+   * @return string
+   */
   public function getBrandName()
   {
     return $this->brandName;

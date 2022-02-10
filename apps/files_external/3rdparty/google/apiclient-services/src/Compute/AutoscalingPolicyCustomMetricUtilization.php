@@ -19,24 +19,45 @@ namespace Google\Service\Compute;
 
 class AutoscalingPolicyCustomMetricUtilization extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string
+   */
   public $metric;
   public $singleInstanceAssignment;
   public $utilizationTarget;
+  /**
+   * @var string
+   */
   public $utilizationTargetType;
 
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string
+   */
   public function setMetric($metric)
   {
     $this->metric = $metric;
   }
+  /**
+   * @return string
+   */
   public function getMetric()
   {
     return $this->metric;
@@ -57,10 +78,16 @@ class AutoscalingPolicyCustomMetricUtilization extends \Google\Model
   {
     return $this->utilizationTarget;
   }
+  /**
+   * @param string
+   */
   public function setUtilizationTargetType($utilizationTargetType)
   {
     $this->utilizationTargetType = $utilizationTargetType;
   }
+  /**
+   * @return string
+   */
   public function getUtilizationTargetType()
   {
     return $this->utilizationTargetType;

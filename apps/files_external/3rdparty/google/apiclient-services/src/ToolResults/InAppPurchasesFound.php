@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class InAppPurchasesFound extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $inAppPurchasesFlowsExplored;
+  /**
+   * @var int
+   */
   public $inAppPurchasesFlowsStarted;
 
+  /**
+   * @param int
+   */
   public function setInAppPurchasesFlowsExplored($inAppPurchasesFlowsExplored)
   {
     $this->inAppPurchasesFlowsExplored = $inAppPurchasesFlowsExplored;
   }
+  /**
+   * @return int
+   */
   public function getInAppPurchasesFlowsExplored()
   {
     return $this->inAppPurchasesFlowsExplored;
   }
+  /**
+   * @param int
+   */
   public function setInAppPurchasesFlowsStarted($inAppPurchasesFlowsStarted)
   {
     $this->inAppPurchasesFlowsStarted = $inAppPurchasesFlowsStarted;
   }
+  /**
+   * @return int
+   */
   public function getInAppPurchasesFlowsStarted()
   {
     return $this->inAppPurchasesFlowsStarted;

@@ -19,57 +19,111 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1ListTransferableSkusRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $authToken;
+  /**
+   * @var string
+   */
   public $cloudIdentityId;
+  /**
+   * @var string
+   */
   public $customerName;
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
 
+  /**
+   * @param string
+   */
   public function setAuthToken($authToken)
   {
     $this->authToken = $authToken;
   }
+  /**
+   * @return string
+   */
   public function getAuthToken()
   {
     return $this->authToken;
   }
+  /**
+   * @param string
+   */
   public function setCloudIdentityId($cloudIdentityId)
   {
     $this->cloudIdentityId = $cloudIdentityId;
   }
+  /**
+   * @return string
+   */
   public function getCloudIdentityId()
   {
     return $this->cloudIdentityId;
   }
+  /**
+   * @param string
+   */
   public function setCustomerName($customerName)
   {
     $this->customerName = $customerName;
   }
+  /**
+   * @return string
+   */
   public function getCustomerName()
   {
     return $this->customerName;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;

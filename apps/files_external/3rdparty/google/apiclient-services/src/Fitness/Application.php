@@ -19,39 +19,75 @@ namespace Google\Service\Fitness;
 
 class Application extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $detailsUrl;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setDetailsUrl($detailsUrl)
   {
     $this->detailsUrl = $detailsUrl;
   }
+  /**
+   * @return string
+   */
   public function getDetailsUrl()
   {
     return $this->detailsUrl;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

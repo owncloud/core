@@ -20,15 +20,27 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1AutoScaling extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var int
+   */
   public $maxNodes;
   protected $metricsType = GoogleCloudMlV1MetricSpec::class;
   protected $metricsDataType = 'array';
+  /**
+   * @var int
+   */
   public $minNodes;
 
+  /**
+   * @param int
+   */
   public function setMaxNodes($maxNodes)
   {
     $this->maxNodes = $maxNodes;
   }
+  /**
+   * @return int
+   */
   public function getMaxNodes()
   {
     return $this->maxNodes;
@@ -47,10 +59,16 @@ class GoogleCloudMlV1AutoScaling extends \Google\Collection
   {
     return $this->metrics;
   }
+  /**
+   * @param int
+   */
   public function setMinNodes($minNodes)
   {
     $this->minNodes = $minNodes;
   }
+  /**
+   * @return int
+   */
   public function getMinNodes()
   {
     return $this->minNodes;

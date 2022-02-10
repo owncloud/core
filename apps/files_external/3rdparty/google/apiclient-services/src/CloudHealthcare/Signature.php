@@ -21,8 +21,17 @@ class Signature extends \Google\Model
 {
   protected $imageType = Image::class;
   protected $imageDataType = '';
+  /**
+   * @var string[]
+   */
   public $metadata;
+  /**
+   * @var string
+   */
   public $signatureTime;
+  /**
+   * @var string
+   */
   public $userId;
 
   /**
@@ -39,26 +48,44 @@ class Signature extends \Google\Model
   {
     return $this->image;
   }
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setSignatureTime($signatureTime)
   {
     $this->signatureTime = $signatureTime;
   }
+  /**
+   * @return string
+   */
   public function getSignatureTime()
   {
     return $this->signatureTime;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

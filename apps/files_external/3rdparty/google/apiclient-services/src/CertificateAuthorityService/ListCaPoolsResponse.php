@@ -22,7 +22,13 @@ class ListCaPoolsResponse extends \Google\Collection
   protected $collection_key = 'unreachable';
   protected $caPoolsType = CaPool::class;
   protected $caPoolsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $unreachable;
 
   /**
@@ -39,18 +45,30 @@ class ListCaPoolsResponse extends \Google\Collection
   {
     return $this->caPools;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setUnreachable($unreachable)
   {
     $this->unreachable = $unreachable;
   }
+  /**
+   * @return string[]
+   */
   public function getUnreachable()
   {
     return $this->unreachable;

@@ -21,6 +21,9 @@ class JobCancelResponse extends \Google\Model
 {
   protected $jobType = Job::class;
   protected $jobDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -37,10 +40,16 @@ class JobCancelResponse extends \Google\Model
   {
     return $this->job;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

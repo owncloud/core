@@ -20,14 +20,23 @@ namespace Google\Service\SmartDeviceManagement;
 class GoogleHomeEnterpriseSdmV1ListStructuresResponse extends \Google\Collection
 {
   protected $collection_key = 'structures';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $structuresType = GoogleHomeEnterpriseSdmV1Structure::class;
   protected $structuresDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

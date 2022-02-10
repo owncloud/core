@@ -20,10 +20,19 @@ namespace Google\Service\StreetViewPublish;
 class Photo extends \Google\Collection
 {
   protected $collection_key = 'places';
+  /**
+   * @var string
+   */
   public $captureTime;
   protected $connectionsType = Connection::class;
   protected $connectionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $downloadUrl;
+  /**
+   * @var string
+   */
   public $mapsPublishStatus;
   protected $photoIdType = PhotoId::class;
   protected $photoIdDataType = '';
@@ -31,18 +40,39 @@ class Photo extends \Google\Collection
   protected $placesDataType = 'array';
   protected $poseType = Pose::class;
   protected $poseDataType = '';
+  /**
+   * @var string
+   */
   public $shareLink;
+  /**
+   * @var string
+   */
   public $thumbnailUrl;
+  /**
+   * @var string
+   */
   public $transferStatus;
   protected $uploadReferenceType = UploadRef::class;
   protected $uploadReferenceDataType = '';
+  /**
+   * @var string
+   */
   public $uploadTime;
+  /**
+   * @var string
+   */
   public $viewCount;
 
+  /**
+   * @param string
+   */
   public function setCaptureTime($captureTime)
   {
     $this->captureTime = $captureTime;
   }
+  /**
+   * @return string
+   */
   public function getCaptureTime()
   {
     return $this->captureTime;
@@ -61,18 +91,30 @@ class Photo extends \Google\Collection
   {
     return $this->connections;
   }
+  /**
+   * @param string
+   */
   public function setDownloadUrl($downloadUrl)
   {
     $this->downloadUrl = $downloadUrl;
   }
+  /**
+   * @return string
+   */
   public function getDownloadUrl()
   {
     return $this->downloadUrl;
   }
+  /**
+   * @param string
+   */
   public function setMapsPublishStatus($mapsPublishStatus)
   {
     $this->mapsPublishStatus = $mapsPublishStatus;
   }
+  /**
+   * @return string
+   */
   public function getMapsPublishStatus()
   {
     return $this->mapsPublishStatus;
@@ -119,26 +161,44 @@ class Photo extends \Google\Collection
   {
     return $this->pose;
   }
+  /**
+   * @param string
+   */
   public function setShareLink($shareLink)
   {
     $this->shareLink = $shareLink;
   }
+  /**
+   * @return string
+   */
   public function getShareLink()
   {
     return $this->shareLink;
   }
+  /**
+   * @param string
+   */
   public function setThumbnailUrl($thumbnailUrl)
   {
     $this->thumbnailUrl = $thumbnailUrl;
   }
+  /**
+   * @return string
+   */
   public function getThumbnailUrl()
   {
     return $this->thumbnailUrl;
   }
+  /**
+   * @param string
+   */
   public function setTransferStatus($transferStatus)
   {
     $this->transferStatus = $transferStatus;
   }
+  /**
+   * @return string
+   */
   public function getTransferStatus()
   {
     return $this->transferStatus;
@@ -157,18 +217,30 @@ class Photo extends \Google\Collection
   {
     return $this->uploadReference;
   }
+  /**
+   * @param string
+   */
   public function setUploadTime($uploadTime)
   {
     $this->uploadTime = $uploadTime;
   }
+  /**
+   * @return string
+   */
   public function getUploadTime()
   {
     return $this->uploadTime;
   }
+  /**
+   * @param string
+   */
   public function setViewCount($viewCount)
   {
     $this->viewCount = $viewCount;
   }
+  /**
+   * @return string
+   */
   public function getViewCount()
   {
     return $this->viewCount;

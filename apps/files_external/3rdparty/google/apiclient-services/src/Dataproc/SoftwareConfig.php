@@ -20,30 +20,57 @@ namespace Google\Service\Dataproc;
 class SoftwareConfig extends \Google\Collection
 {
   protected $collection_key = 'optionalComponents';
+  /**
+   * @var string
+   */
   public $imageVersion;
+  /**
+   * @var string[]
+   */
   public $optionalComponents;
+  /**
+   * @var string[]
+   */
   public $properties;
 
+  /**
+   * @param string
+   */
   public function setImageVersion($imageVersion)
   {
     $this->imageVersion = $imageVersion;
   }
+  /**
+   * @return string
+   */
   public function getImageVersion()
   {
     return $this->imageVersion;
   }
+  /**
+   * @param string[]
+   */
   public function setOptionalComponents($optionalComponents)
   {
     $this->optionalComponents = $optionalComponents;
   }
+  /**
+   * @return string[]
+   */
   public function getOptionalComponents()
   {
     return $this->optionalComponents;
   }
+  /**
+   * @param string[]
+   */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
+  /**
+   * @return string[]
+   */
   public function getProperties()
   {
     return $this->properties;

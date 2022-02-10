@@ -19,33 +19,63 @@ namespace Google\Service\Dfareporting;
 
 class VideoFormat extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fileType;
+  /**
+   * @var int
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
   protected $resolutionType = Size::class;
   protected $resolutionDataType = '';
+  /**
+   * @var int
+   */
   public $targetBitRate;
 
+  /**
+   * @param string
+   */
   public function setFileType($fileType)
   {
     $this->fileType = $fileType;
   }
+  /**
+   * @return string
+   */
   public function getFileType()
   {
     return $this->fileType;
   }
+  /**
+   * @param int
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return int
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -64,10 +94,16 @@ class VideoFormat extends \Google\Model
   {
     return $this->resolution;
   }
+  /**
+   * @param int
+   */
   public function setTargetBitRate($targetBitRate)
   {
     $this->targetBitRate = $targetBitRate;
   }
+  /**
+   * @return int
+   */
   public function getTargetBitRate()
   {
     return $this->targetBitRate;

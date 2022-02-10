@@ -19,13 +19,22 @@ namespace Google\Service\Doubleclicksearch;
 
 class CustomMetric extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
   public $value;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

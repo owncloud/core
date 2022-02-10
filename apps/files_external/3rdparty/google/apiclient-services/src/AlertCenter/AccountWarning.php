@@ -19,14 +19,23 @@ namespace Google\Service\AlertCenter;
 
 class AccountWarning extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $email;
   protected $loginDetailsType = LoginDetails::class;
   protected $loginDetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;

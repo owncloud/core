@@ -19,21 +19,39 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1ConversationCallMetadata extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $agentChannel;
+  /**
+   * @var int
+   */
   public $customerChannel;
 
+  /**
+   * @param int
+   */
   public function setAgentChannel($agentChannel)
   {
     $this->agentChannel = $agentChannel;
   }
+  /**
+   * @return int
+   */
   public function getAgentChannel()
   {
     return $this->agentChannel;
   }
+  /**
+   * @param int
+   */
   public function setCustomerChannel($customerChannel)
   {
     $this->customerChannel = $customerChannel;
   }
+  /**
+   * @return int
+   */
   public function getCustomerChannel()
   {
     return $this->customerChannel;

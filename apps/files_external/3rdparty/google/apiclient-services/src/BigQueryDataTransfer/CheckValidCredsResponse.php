@@ -19,12 +19,21 @@ namespace Google\Service\BigQueryDataTransfer;
 
 class CheckValidCredsResponse extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $hasValidCreds;
 
+  /**
+   * @param bool
+   */
   public function setHasValidCreds($hasValidCreds)
   {
     $this->hasValidCreds = $hasValidCreds;
   }
+  /**
+   * @return bool
+   */
   public function getHasValidCreds()
   {
     return $this->hasValidCreds;

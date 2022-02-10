@@ -19,35 +19,73 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1CalculateStatsResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $averageDuration;
+  /**
+   * @var int
+   */
   public $averageTurnCount;
+  /**
+   * @var int
+   */
   public $conversationCount;
   protected $conversationCountTimeSeriesType = GoogleCloudContactcenterinsightsV1CalculateStatsResponseTimeSeries::class;
   protected $conversationCountTimeSeriesDataType = '';
+  /**
+   * @var int[]
+   */
   public $customHighlighterMatches;
+  /**
+   * @var int[]
+   */
   public $issueMatches;
+  protected $issueMatchesStatsType = GoogleCloudContactcenterinsightsV1IssueModelLabelStatsIssueStats::class;
+  protected $issueMatchesStatsDataType = 'map';
+  /**
+   * @var int[]
+   */
   public $smartHighlighterMatches;
 
+  /**
+   * @param string
+   */
   public function setAverageDuration($averageDuration)
   {
     $this->averageDuration = $averageDuration;
   }
+  /**
+   * @return string
+   */
   public function getAverageDuration()
   {
     return $this->averageDuration;
   }
+  /**
+   * @param int
+   */
   public function setAverageTurnCount($averageTurnCount)
   {
     $this->averageTurnCount = $averageTurnCount;
   }
+  /**
+   * @return int
+   */
   public function getAverageTurnCount()
   {
     return $this->averageTurnCount;
   }
+  /**
+   * @param int
+   */
   public function setConversationCount($conversationCount)
   {
     $this->conversationCount = $conversationCount;
   }
+  /**
+   * @return int
+   */
   public function getConversationCount()
   {
     return $this->conversationCount;
@@ -66,26 +104,58 @@ class GoogleCloudContactcenterinsightsV1CalculateStatsResponse extends \Google\M
   {
     return $this->conversationCountTimeSeries;
   }
+  /**
+   * @param int[]
+   */
   public function setCustomHighlighterMatches($customHighlighterMatches)
   {
     $this->customHighlighterMatches = $customHighlighterMatches;
   }
+  /**
+   * @return int[]
+   */
   public function getCustomHighlighterMatches()
   {
     return $this->customHighlighterMatches;
   }
+  /**
+   * @param int[]
+   */
   public function setIssueMatches($issueMatches)
   {
     $this->issueMatches = $issueMatches;
   }
+  /**
+   * @return int[]
+   */
   public function getIssueMatches()
   {
     return $this->issueMatches;
   }
+  /**
+   * @param GoogleCloudContactcenterinsightsV1IssueModelLabelStatsIssueStats[]
+   */
+  public function setIssueMatchesStats($issueMatchesStats)
+  {
+    $this->issueMatchesStats = $issueMatchesStats;
+  }
+  /**
+   * @return GoogleCloudContactcenterinsightsV1IssueModelLabelStatsIssueStats[]
+   */
+  public function getIssueMatchesStats()
+  {
+    return $this->issueMatchesStats;
+  }
+  /**
+   * @param int[]
+   */
   public function setSmartHighlighterMatches($smartHighlighterMatches)
   {
     $this->smartHighlighterMatches = $smartHighlighterMatches;
   }
+  /**
+   * @return int[]
+   */
   public function getSmartHighlighterMatches()
   {
     return $this->smartHighlighterMatches;

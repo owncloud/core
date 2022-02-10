@@ -19,34 +19,67 @@ namespace Google\Service\Dfareporting;
 
 class SiteSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $activeViewOptOut;
+  /**
+   * @var bool
+   */
   public $adBlockingOptOut;
+  /**
+   * @var bool
+   */
   public $disableNewCookie;
   protected $tagSettingType = TagSetting::class;
   protected $tagSettingDataType = '';
+  /**
+   * @var bool
+   */
   public $videoActiveViewOptOutTemplate;
+  /**
+   * @var string
+   */
   public $vpaidAdapterChoiceTemplate;
 
+  /**
+   * @param bool
+   */
   public function setActiveViewOptOut($activeViewOptOut)
   {
     $this->activeViewOptOut = $activeViewOptOut;
   }
+  /**
+   * @return bool
+   */
   public function getActiveViewOptOut()
   {
     return $this->activeViewOptOut;
   }
+  /**
+   * @param bool
+   */
   public function setAdBlockingOptOut($adBlockingOptOut)
   {
     $this->adBlockingOptOut = $adBlockingOptOut;
   }
+  /**
+   * @return bool
+   */
   public function getAdBlockingOptOut()
   {
     return $this->adBlockingOptOut;
   }
+  /**
+   * @param bool
+   */
   public function setDisableNewCookie($disableNewCookie)
   {
     $this->disableNewCookie = $disableNewCookie;
   }
+  /**
+   * @return bool
+   */
   public function getDisableNewCookie()
   {
     return $this->disableNewCookie;
@@ -65,18 +98,30 @@ class SiteSettings extends \Google\Model
   {
     return $this->tagSetting;
   }
+  /**
+   * @param bool
+   */
   public function setVideoActiveViewOptOutTemplate($videoActiveViewOptOutTemplate)
   {
     $this->videoActiveViewOptOutTemplate = $videoActiveViewOptOutTemplate;
   }
+  /**
+   * @return bool
+   */
   public function getVideoActiveViewOptOutTemplate()
   {
     return $this->videoActiveViewOptOutTemplate;
   }
+  /**
+   * @param string
+   */
   public function setVpaidAdapterChoiceTemplate($vpaidAdapterChoiceTemplate)
   {
     $this->vpaidAdapterChoiceTemplate = $vpaidAdapterChoiceTemplate;
   }
+  /**
+   * @return string
+   */
   public function getVpaidAdapterChoiceTemplate()
   {
     return $this->vpaidAdapterChoiceTemplate;

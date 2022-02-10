@@ -19,66 +19,129 @@ namespace Google\Service\Dataflow;
 
 class PubsubLocation extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $dropLateData;
+  /**
+   * @var string
+   */
   public $idLabel;
+  /**
+   * @var string
+   */
   public $subscription;
+  /**
+   * @var string
+   */
   public $timestampLabel;
+  /**
+   * @var string
+   */
   public $topic;
+  /**
+   * @var string
+   */
   public $trackingSubscription;
+  /**
+   * @var bool
+   */
   public $withAttributes;
 
+  /**
+   * @param bool
+   */
   public function setDropLateData($dropLateData)
   {
     $this->dropLateData = $dropLateData;
   }
+  /**
+   * @return bool
+   */
   public function getDropLateData()
   {
     return $this->dropLateData;
   }
+  /**
+   * @param string
+   */
   public function setIdLabel($idLabel)
   {
     $this->idLabel = $idLabel;
   }
+  /**
+   * @return string
+   */
   public function getIdLabel()
   {
     return $this->idLabel;
   }
+  /**
+   * @param string
+   */
   public function setSubscription($subscription)
   {
     $this->subscription = $subscription;
   }
+  /**
+   * @return string
+   */
   public function getSubscription()
   {
     return $this->subscription;
   }
+  /**
+   * @param string
+   */
   public function setTimestampLabel($timestampLabel)
   {
     $this->timestampLabel = $timestampLabel;
   }
+  /**
+   * @return string
+   */
   public function getTimestampLabel()
   {
     return $this->timestampLabel;
   }
+  /**
+   * @param string
+   */
   public function setTopic($topic)
   {
     $this->topic = $topic;
   }
+  /**
+   * @return string
+   */
   public function getTopic()
   {
     return $this->topic;
   }
+  /**
+   * @param string
+   */
   public function setTrackingSubscription($trackingSubscription)
   {
     $this->trackingSubscription = $trackingSubscription;
   }
+  /**
+   * @return string
+   */
   public function getTrackingSubscription()
   {
     return $this->trackingSubscription;
   }
+  /**
+   * @param bool
+   */
   public function setWithAttributes($withAttributes)
   {
     $this->withAttributes = $withAttributes;
   }
+  /**
+   * @return bool
+   */
   public function getWithAttributes()
   {
     return $this->withAttributes;

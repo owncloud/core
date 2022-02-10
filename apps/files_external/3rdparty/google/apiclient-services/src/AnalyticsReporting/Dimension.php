@@ -20,21 +20,39 @@ namespace Google\Service\AnalyticsReporting;
 class Dimension extends \Google\Collection
 {
   protected $collection_key = 'histogramBuckets';
+  /**
+   * @var string[]
+   */
   public $histogramBuckets;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string[]
+   */
   public function setHistogramBuckets($histogramBuckets)
   {
     $this->histogramBuckets = $histogramBuckets;
   }
+  /**
+   * @return string[]
+   */
   public function getHistogramBuckets()
   {
     return $this->histogramBuckets;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

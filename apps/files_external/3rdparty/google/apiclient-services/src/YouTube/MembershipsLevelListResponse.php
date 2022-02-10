@@ -20,25 +20,49 @@ namespace Google\Service\YouTube;
 class MembershipsLevelListResponse extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $eventId;
   protected $itemsType = MembershipsLevel::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $visitorId;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setEventId($eventId)
   {
     $this->eventId = $eventId;
   }
+  /**
+   * @return string
+   */
   public function getEventId()
   {
     return $this->eventId;
@@ -57,18 +81,30 @@ class MembershipsLevelListResponse extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setVisitorId($visitorId)
   {
     $this->visitorId = $visitorId;
   }
+  /**
+   * @return string
+   */
   public function getVisitorId()
   {
     return $this->visitorId;

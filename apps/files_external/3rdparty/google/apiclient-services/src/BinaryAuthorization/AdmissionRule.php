@@ -20,30 +20,57 @@ namespace Google\Service\BinaryAuthorization;
 class AdmissionRule extends \Google\Collection
 {
   protected $collection_key = 'requireAttestationsBy';
+  /**
+   * @var string
+   */
   public $enforcementMode;
+  /**
+   * @var string
+   */
   public $evaluationMode;
+  /**
+   * @var string[]
+   */
   public $requireAttestationsBy;
 
+  /**
+   * @param string
+   */
   public function setEnforcementMode($enforcementMode)
   {
     $this->enforcementMode = $enforcementMode;
   }
+  /**
+   * @return string
+   */
   public function getEnforcementMode()
   {
     return $this->enforcementMode;
   }
+  /**
+   * @param string
+   */
   public function setEvaluationMode($evaluationMode)
   {
     $this->evaluationMode = $evaluationMode;
   }
+  /**
+   * @return string
+   */
   public function getEvaluationMode()
   {
     return $this->evaluationMode;
   }
+  /**
+   * @param string[]
+   */
   public function setRequireAttestationsBy($requireAttestationsBy)
   {
     $this->requireAttestationsBy = $requireAttestationsBy;
   }
+  /**
+   * @return string[]
+   */
   public function getRequireAttestationsBy()
   {
     return $this->requireAttestationsBy;

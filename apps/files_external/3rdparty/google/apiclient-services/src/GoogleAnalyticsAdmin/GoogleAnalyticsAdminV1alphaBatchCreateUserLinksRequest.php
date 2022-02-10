@@ -20,14 +20,23 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 class GoogleAnalyticsAdminV1alphaBatchCreateUserLinksRequest extends \Google\Collection
 {
   protected $collection_key = 'requests';
+  /**
+   * @var bool
+   */
   public $notifyNewUsers;
   protected $requestsType = GoogleAnalyticsAdminV1alphaCreateUserLinkRequest::class;
   protected $requestsDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setNotifyNewUsers($notifyNewUsers)
   {
     $this->notifyNewUsers = $notifyNewUsers;
   }
+  /**
+   * @return bool
+   */
   public function getNotifyNewUsers()
   {
     return $this->notifyNewUsers;

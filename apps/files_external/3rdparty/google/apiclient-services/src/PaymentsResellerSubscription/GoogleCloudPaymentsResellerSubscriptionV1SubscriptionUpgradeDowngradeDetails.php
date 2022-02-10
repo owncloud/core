@@ -19,21 +19,39 @@ namespace Google\Service\PaymentsResellerSubscription;
 
 class GoogleCloudPaymentsResellerSubscriptionV1SubscriptionUpgradeDowngradeDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $billingCycleSpec;
+  /**
+   * @var string
+   */
   public $previousSubscriptionId;
 
+  /**
+   * @param string
+   */
   public function setBillingCycleSpec($billingCycleSpec)
   {
     $this->billingCycleSpec = $billingCycleSpec;
   }
+  /**
+   * @return string
+   */
   public function getBillingCycleSpec()
   {
     return $this->billingCycleSpec;
   }
+  /**
+   * @param string
+   */
   public function setPreviousSubscriptionId($previousSubscriptionId)
   {
     $this->previousSubscriptionId = $previousSubscriptionId;
   }
+  /**
+   * @return string
+   */
   public function getPreviousSubscriptionId()
   {
     return $this->previousSubscriptionId;

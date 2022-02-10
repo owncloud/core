@@ -19,21 +19,39 @@ namespace Google\Service\PeopleService;
 
 class ContactGroupMembership extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contactGroupId;
+  /**
+   * @var string
+   */
   public $contactGroupResourceName;
 
+  /**
+   * @param string
+   */
   public function setContactGroupId($contactGroupId)
   {
     $this->contactGroupId = $contactGroupId;
   }
+  /**
+   * @return string
+   */
   public function getContactGroupId()
   {
     return $this->contactGroupId;
   }
+  /**
+   * @param string
+   */
   public function setContactGroupResourceName($contactGroupResourceName)
   {
     $this->contactGroupResourceName = $contactGroupResourceName;
   }
+  /**
+   * @return string
+   */
   public function getContactGroupResourceName()
   {
     return $this->contactGroupResourceName;

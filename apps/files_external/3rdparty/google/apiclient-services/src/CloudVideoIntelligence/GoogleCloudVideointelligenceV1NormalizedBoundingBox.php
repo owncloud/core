@@ -19,39 +19,75 @@ namespace Google\Service\CloudVideoIntelligence;
 
 class GoogleCloudVideointelligenceV1NormalizedBoundingBox extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $bottom;
+  /**
+   * @var float
+   */
   public $left;
+  /**
+   * @var float
+   */
   public $right;
+  /**
+   * @var float
+   */
   public $top;
 
+  /**
+   * @param float
+   */
   public function setBottom($bottom)
   {
     $this->bottom = $bottom;
   }
+  /**
+   * @return float
+   */
   public function getBottom()
   {
     return $this->bottom;
   }
+  /**
+   * @param float
+   */
   public function setLeft($left)
   {
     $this->left = $left;
   }
+  /**
+   * @return float
+   */
   public function getLeft()
   {
     return $this->left;
   }
+  /**
+   * @param float
+   */
   public function setRight($right)
   {
     $this->right = $right;
   }
+  /**
+   * @return float
+   */
   public function getRight()
   {
     return $this->right;
   }
+  /**
+   * @param float
+   */
   public function setTop($top)
   {
     $this->top = $top;
   }
+  /**
+   * @return float
+   */
   public function getTop()
   {
     return $this->top;

@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class NodeInitializationAction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $executableFile;
+  /**
+   * @var string
+   */
   public $executionTimeout;
 
+  /**
+   * @param string
+   */
   public function setExecutableFile($executableFile)
   {
     $this->executableFile = $executableFile;
   }
+  /**
+   * @return string
+   */
   public function getExecutableFile()
   {
     return $this->executableFile;
   }
+  /**
+   * @param string
+   */
   public function setExecutionTimeout($executionTimeout)
   {
     $this->executionTimeout = $executionTimeout;
   }
+  /**
+   * @return string
+   */
   public function getExecutionTimeout()
   {
     return $this->executionTimeout;

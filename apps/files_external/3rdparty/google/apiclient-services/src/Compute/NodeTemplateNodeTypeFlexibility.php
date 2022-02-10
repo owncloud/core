@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class NodeTemplateNodeTypeFlexibility extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cpus;
+  /**
+   * @var string
+   */
   public $localSsd;
+  /**
+   * @var string
+   */
   public $memory;
 
+  /**
+   * @param string
+   */
   public function setCpus($cpus)
   {
     $this->cpus = $cpus;
   }
+  /**
+   * @return string
+   */
   public function getCpus()
   {
     return $this->cpus;
   }
+  /**
+   * @param string
+   */
   public function setLocalSsd($localSsd)
   {
     $this->localSsd = $localSsd;
   }
+  /**
+   * @return string
+   */
   public function getLocalSsd()
   {
     return $this->localSsd;
   }
+  /**
+   * @param string
+   */
   public function setMemory($memory)
   {
     $this->memory = $memory;
   }
+  /**
+   * @return string
+   */
   public function getMemory()
   {
     return $this->memory;

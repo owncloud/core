@@ -19,32 +19,59 @@ namespace Google\Service\Classroom;
 
 class GradeHistory extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $actorUserId;
+  /**
+   * @var string
+   */
   public $gradeChangeType;
+  /**
+   * @var string
+   */
   public $gradeTimestamp;
   public $maxPoints;
   public $pointsEarned;
 
+  /**
+   * @param string
+   */
   public function setActorUserId($actorUserId)
   {
     $this->actorUserId = $actorUserId;
   }
+  /**
+   * @return string
+   */
   public function getActorUserId()
   {
     return $this->actorUserId;
   }
+  /**
+   * @param string
+   */
   public function setGradeChangeType($gradeChangeType)
   {
     $this->gradeChangeType = $gradeChangeType;
   }
+  /**
+   * @return string
+   */
   public function getGradeChangeType()
   {
     return $this->gradeChangeType;
   }
+  /**
+   * @param string
+   */
   public function setGradeTimestamp($gradeTimestamp)
   {
     $this->gradeTimestamp = $gradeTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getGradeTimestamp()
   {
     return $this->gradeTimestamp;

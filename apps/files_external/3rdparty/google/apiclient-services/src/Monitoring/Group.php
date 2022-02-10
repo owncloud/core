@@ -19,48 +19,93 @@ namespace Google\Service\Monitoring;
 
 class Group extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var bool
+   */
   public $isCluster;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parentName;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param bool
+   */
   public function setIsCluster($isCluster)
   {
     $this->isCluster = $isCluster;
   }
+  /**
+   * @return bool
+   */
   public function getIsCluster()
   {
     return $this->isCluster;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParentName($parentName)
   {
     $this->parentName = $parentName;
   }
+  /**
+   * @return string
+   */
   public function getParentName()
   {
     return $this->parentName;

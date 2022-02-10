@@ -19,12 +19,21 @@ namespace Google\Service\Keep;
 
 class User extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $email;
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;

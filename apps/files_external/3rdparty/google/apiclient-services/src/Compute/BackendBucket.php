@@ -20,22 +20,59 @@ namespace Google\Service\Compute;
 class BackendBucket extends \Google\Collection
 {
   protected $collection_key = 'customResponseHeaders';
+  /**
+   * @var string
+   */
   public $bucketName;
   protected $cdnPolicyType = BackendBucketCdnPolicy::class;
   protected $cdnPolicyDataType = '';
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string[]
+   */
   public $customResponseHeaders;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
+  public $edgeSecurityPolicy;
+  /**
+   * @var bool
+   */
   public $enableCdn;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $selfLink;
 
+  /**
+   * @param string
+   */
   public function setBucketName($bucketName)
   {
     $this->bucketName = $bucketName;
   }
+  /**
+   * @return string
+   */
   public function getBucketName()
   {
     return $this->bucketName;
@@ -54,66 +91,128 @@ class BackendBucket extends \Google\Collection
   {
     return $this->cdnPolicy;
   }
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string[]
+   */
   public function setCustomResponseHeaders($customResponseHeaders)
   {
     $this->customResponseHeaders = $customResponseHeaders;
   }
+  /**
+   * @return string[]
+   */
   public function getCustomResponseHeaders()
   {
     return $this->customResponseHeaders;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
+  public function setEdgeSecurityPolicy($edgeSecurityPolicy)
+  {
+    $this->edgeSecurityPolicy = $edgeSecurityPolicy;
+  }
+  /**
+   * @return string
+   */
+  public function getEdgeSecurityPolicy()
+  {
+    return $this->edgeSecurityPolicy;
+  }
+  /**
+   * @param bool
+   */
   public function setEnableCdn($enableCdn)
   {
     $this->enableCdn = $enableCdn;
   }
+  /**
+   * @return bool
+   */
   public function getEnableCdn()
   {
     return $this->enableCdn;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

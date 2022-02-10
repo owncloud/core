@@ -19,39 +19,75 @@ namespace Google\Service\Games;
 
 class InstanceAndroidDetails extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enablePiracyCheck;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var bool
+   */
   public $preferred;
 
+  /**
+   * @param bool
+   */
   public function setEnablePiracyCheck($enablePiracyCheck)
   {
     $this->enablePiracyCheck = $enablePiracyCheck;
   }
+  /**
+   * @return bool
+   */
   public function getEnablePiracyCheck()
   {
     return $this->enablePiracyCheck;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param bool
+   */
   public function setPreferred($preferred)
   {
     $this->preferred = $preferred;
   }
+  /**
+   * @return bool
+   */
   public function getPreferred()
   {
     return $this->preferred;

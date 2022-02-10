@@ -20,30 +20,57 @@ namespace Google\Service\YouTube;
 class ChannelSectionTargeting extends \Google\Collection
 {
   protected $collection_key = 'regions';
+  /**
+   * @var string[]
+   */
   public $countries;
+  /**
+   * @var string[]
+   */
   public $languages;
+  /**
+   * @var string[]
+   */
   public $regions;
 
+  /**
+   * @param string[]
+   */
   public function setCountries($countries)
   {
     $this->countries = $countries;
   }
+  /**
+   * @return string[]
+   */
   public function getCountries()
   {
     return $this->countries;
   }
+  /**
+   * @param string[]
+   */
   public function setLanguages($languages)
   {
     $this->languages = $languages;
   }
+  /**
+   * @return string[]
+   */
   public function getLanguages()
   {
     return $this->languages;
   }
+  /**
+   * @param string[]
+   */
   public function setRegions($regions)
   {
     $this->regions = $regions;
   }
+  /**
+   * @return string[]
+   */
   public function getRegions()
   {
     return $this->regions;

@@ -24,11 +24,23 @@ class BatchTranslateTextRequest extends \Google\Collection
   protected $glossariesDataType = 'map';
   protected $inputConfigsType = InputConfig::class;
   protected $inputConfigsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string[]
+   */
   public $models;
   protected $outputConfigType = OutputConfig::class;
   protected $outputConfigDataType = '';
+  /**
+   * @var string
+   */
   public $sourceLanguageCode;
+  /**
+   * @var string[]
+   */
   public $targetLanguageCodes;
 
   /**
@@ -59,18 +71,30 @@ class BatchTranslateTextRequest extends \Google\Collection
   {
     return $this->inputConfigs;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string[]
+   */
   public function setModels($models)
   {
     $this->models = $models;
   }
+  /**
+   * @return string[]
+   */
   public function getModels()
   {
     return $this->models;
@@ -89,18 +113,30 @@ class BatchTranslateTextRequest extends \Google\Collection
   {
     return $this->outputConfig;
   }
+  /**
+   * @param string
+   */
   public function setSourceLanguageCode($sourceLanguageCode)
   {
     $this->sourceLanguageCode = $sourceLanguageCode;
   }
+  /**
+   * @return string
+   */
   public function getSourceLanguageCode()
   {
     return $this->sourceLanguageCode;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetLanguageCodes($targetLanguageCodes)
   {
     $this->targetLanguageCodes = $targetLanguageCodes;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetLanguageCodes()
   {
     return $this->targetLanguageCodes;

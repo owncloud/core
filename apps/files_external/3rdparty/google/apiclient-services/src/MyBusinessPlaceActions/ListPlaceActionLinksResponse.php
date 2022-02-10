@@ -20,14 +20,23 @@ namespace Google\Service\MyBusinessPlaceActions;
 class ListPlaceActionLinksResponse extends \Google\Collection
 {
   protected $collection_key = 'placeActionLinks';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $placeActionLinksType = PlaceActionLink::class;
   protected $placeActionLinksDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

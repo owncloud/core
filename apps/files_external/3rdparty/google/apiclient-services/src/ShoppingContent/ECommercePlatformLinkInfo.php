@@ -19,12 +19,21 @@ namespace Google\Service\ShoppingContent;
 
 class ECommercePlatformLinkInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $externalAccountId;
 
+  /**
+   * @param string
+   */
   public function setExternalAccountId($externalAccountId)
   {
     $this->externalAccountId = $externalAccountId;
   }
+  /**
+   * @return string
+   */
   public function getExternalAccountId()
   {
     return $this->externalAccountId;

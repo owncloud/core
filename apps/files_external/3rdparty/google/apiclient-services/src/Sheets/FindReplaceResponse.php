@@ -19,48 +19,93 @@ namespace Google\Service\Sheets;
 
 class FindReplaceResponse extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $formulasChanged;
+  /**
+   * @var int
+   */
   public $occurrencesChanged;
+  /**
+   * @var int
+   */
   public $rowsChanged;
+  /**
+   * @var int
+   */
   public $sheetsChanged;
+  /**
+   * @var int
+   */
   public $valuesChanged;
 
+  /**
+   * @param int
+   */
   public function setFormulasChanged($formulasChanged)
   {
     $this->formulasChanged = $formulasChanged;
   }
+  /**
+   * @return int
+   */
   public function getFormulasChanged()
   {
     return $this->formulasChanged;
   }
+  /**
+   * @param int
+   */
   public function setOccurrencesChanged($occurrencesChanged)
   {
     $this->occurrencesChanged = $occurrencesChanged;
   }
+  /**
+   * @return int
+   */
   public function getOccurrencesChanged()
   {
     return $this->occurrencesChanged;
   }
+  /**
+   * @param int
+   */
   public function setRowsChanged($rowsChanged)
   {
     $this->rowsChanged = $rowsChanged;
   }
+  /**
+   * @return int
+   */
   public function getRowsChanged()
   {
     return $this->rowsChanged;
   }
+  /**
+   * @param int
+   */
   public function setSheetsChanged($sheetsChanged)
   {
     $this->sheetsChanged = $sheetsChanged;
   }
+  /**
+   * @return int
+   */
   public function getSheetsChanged()
   {
     return $this->sheetsChanged;
   }
+  /**
+   * @param int
+   */
   public function setValuesChanged($valuesChanged)
   {
     $this->valuesChanged = $valuesChanged;
   }
+  /**
+   * @return int
+   */
   public function getValuesChanged()
   {
     return $this->valuesChanged;

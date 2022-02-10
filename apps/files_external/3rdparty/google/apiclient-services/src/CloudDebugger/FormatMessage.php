@@ -20,21 +20,39 @@ namespace Google\Service\CloudDebugger;
 class FormatMessage extends \Google\Collection
 {
   protected $collection_key = 'parameters';
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string[]
+   */
   public $parameters;
 
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return string[]
+   */
   public function getParameters()
   {
     return $this->parameters;

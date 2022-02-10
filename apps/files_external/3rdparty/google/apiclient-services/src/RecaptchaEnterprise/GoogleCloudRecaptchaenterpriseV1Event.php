@@ -19,57 +19,93 @@ namespace Google\Service\RecaptchaEnterprise;
 
 class GoogleCloudRecaptchaenterpriseV1Event extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expectedAction;
-  public $hashedAccountId;
+  /**
+   * @var string
+   */
   public $siteKey;
+  /**
+   * @var string
+   */
   public $token;
+  /**
+   * @var string
+   */
   public $userAgent;
+  /**
+   * @var string
+   */
   public $userIpAddress;
 
+  /**
+   * @param string
+   */
   public function setExpectedAction($expectedAction)
   {
     $this->expectedAction = $expectedAction;
   }
+  /**
+   * @return string
+   */
   public function getExpectedAction()
   {
     return $this->expectedAction;
   }
-  public function setHashedAccountId($hashedAccountId)
-  {
-    $this->hashedAccountId = $hashedAccountId;
-  }
-  public function getHashedAccountId()
-  {
-    return $this->hashedAccountId;
-  }
+  /**
+   * @param string
+   */
   public function setSiteKey($siteKey)
   {
     $this->siteKey = $siteKey;
   }
+  /**
+   * @return string
+   */
   public function getSiteKey()
   {
     return $this->siteKey;
   }
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;
   }
+  /**
+   * @param string
+   */
   public function setUserAgent($userAgent)
   {
     $this->userAgent = $userAgent;
   }
+  /**
+   * @return string
+   */
   public function getUserAgent()
   {
     return $this->userAgent;
   }
+  /**
+   * @param string
+   */
   public function setUserIpAddress($userIpAddress)
   {
     $this->userIpAddress = $userIpAddress;
   }
+  /**
+   * @return string
+   */
   public function getUserIpAddress()
   {
     return $this->userIpAddress;

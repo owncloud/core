@@ -21,10 +21,16 @@ class HistogramChartSpec extends \Google\Collection
 {
   protected $collection_key = 'series';
   public $bucketSize;
+  /**
+   * @var string
+   */
   public $legendPosition;
   public $outlierPercentile;
   protected $seriesType = HistogramSeries::class;
   protected $seriesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $showItemDividers;
 
   public function setBucketSize($bucketSize)
@@ -35,10 +41,16 @@ class HistogramChartSpec extends \Google\Collection
   {
     return $this->bucketSize;
   }
+  /**
+   * @param string
+   */
   public function setLegendPosition($legendPosition)
   {
     $this->legendPosition = $legendPosition;
   }
+  /**
+   * @return string
+   */
   public function getLegendPosition()
   {
     return $this->legendPosition;
@@ -65,10 +77,16 @@ class HistogramChartSpec extends \Google\Collection
   {
     return $this->series;
   }
+  /**
+   * @param bool
+   */
   public function setShowItemDividers($showItemDividers)
   {
     $this->showItemDividers = $showItemDividers;
   }
+  /**
+   * @return bool
+   */
   public function getShowItemDividers()
   {
     return $this->showItemDividers;

@@ -19,44 +19,89 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1ProductDetail extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $availableQuantity;
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var float
+   */
   public $displayPrice;
+  /**
+   * @var string
+   */
   public $id;
   protected $itemAttributesType = GoogleCloudRecommendationengineV1beta1FeatureMap::class;
   protected $itemAttributesDataType = '';
+  /**
+   * @var float
+   */
   public $originalPrice;
+  /**
+   * @var int
+   */
   public $quantity;
+  /**
+   * @var string
+   */
   public $stockState;
 
+  /**
+   * @param int
+   */
   public function setAvailableQuantity($availableQuantity)
   {
     $this->availableQuantity = $availableQuantity;
   }
+  /**
+   * @return int
+   */
   public function getAvailableQuantity()
   {
     return $this->availableQuantity;
   }
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param float
+   */
   public function setDisplayPrice($displayPrice)
   {
     $this->displayPrice = $displayPrice;
   }
+  /**
+   * @return float
+   */
   public function getDisplayPrice()
   {
     return $this->displayPrice;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -75,26 +120,44 @@ class GoogleCloudRecommendationengineV1beta1ProductDetail extends \Google\Model
   {
     return $this->itemAttributes;
   }
+  /**
+   * @param float
+   */
   public function setOriginalPrice($originalPrice)
   {
     $this->originalPrice = $originalPrice;
   }
+  /**
+   * @return float
+   */
   public function getOriginalPrice()
   {
     return $this->originalPrice;
   }
+  /**
+   * @param int
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return int
+   */
   public function getQuantity()
   {
     return $this->quantity;
   }
+  /**
+   * @param string
+   */
   public function setStockState($stockState)
   {
     $this->stockState = $stockState;
   }
+  /**
+   * @return string
+   */
   public function getStockState()
   {
     return $this->stockState;

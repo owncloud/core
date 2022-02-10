@@ -20,6 +20,9 @@ namespace Google\Service\AnalyticsData;
 class NumericValue extends \Google\Model
 {
   public $doubleValue;
+  /**
+   * @var string
+   */
   public $int64Value;
 
   public function setDoubleValue($doubleValue)
@@ -30,10 +33,16 @@ class NumericValue extends \Google\Model
   {
     return $this->doubleValue;
   }
+  /**
+   * @param string
+   */
   public function setInt64Value($int64Value)
   {
     $this->int64Value = $int64Value;
   }
+  /**
+   * @return string
+   */
   public function getInt64Value()
   {
     return $this->int64Value;

@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class UserRewardedContentAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $targetingOptionId;
+  /**
+   * @var string
+   */
   public $userRewardedContent;
 
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;
   }
+  /**
+   * @param string
+   */
   public function setUserRewardedContent($userRewardedContent)
   {
     $this->userRewardedContent = $userRewardedContent;
   }
+  /**
+   * @return string
+   */
   public function getUserRewardedContent()
   {
     return $this->userRewardedContent;

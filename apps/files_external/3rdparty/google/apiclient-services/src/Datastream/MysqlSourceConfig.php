@@ -19,38 +19,38 @@ namespace Google\Service\Datastream;
 
 class MysqlSourceConfig extends \Google\Model
 {
-  protected $allowlistType = MysqlRdbms::class;
-  protected $allowlistDataType = '';
-  protected $rejectlistType = MysqlRdbms::class;
-  protected $rejectlistDataType = '';
+  protected $excludeObjectsType = MysqlRdbms::class;
+  protected $excludeObjectsDataType = '';
+  protected $includeObjectsType = MysqlRdbms::class;
+  protected $includeObjectsDataType = '';
 
   /**
    * @param MysqlRdbms
    */
-  public function setAllowlist(MysqlRdbms $allowlist)
+  public function setExcludeObjects(MysqlRdbms $excludeObjects)
   {
-    $this->allowlist = $allowlist;
+    $this->excludeObjects = $excludeObjects;
   }
   /**
    * @return MysqlRdbms
    */
-  public function getAllowlist()
+  public function getExcludeObjects()
   {
-    return $this->allowlist;
+    return $this->excludeObjects;
   }
   /**
    * @param MysqlRdbms
    */
-  public function setRejectlist(MysqlRdbms $rejectlist)
+  public function setIncludeObjects(MysqlRdbms $includeObjects)
   {
-    $this->rejectlist = $rejectlist;
+    $this->includeObjects = $includeObjects;
   }
   /**
    * @return MysqlRdbms
    */
-  public function getRejectlist()
+  public function getIncludeObjects()
   {
-    return $this->rejectlist;
+    return $this->includeObjects;
   }
 }
 

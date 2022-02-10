@@ -19,34 +19,61 @@ namespace Google\Service\YouTube;
 
 class ThirdPartyLink extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $linkingToken;
   protected $snippetType = ThirdPartyLinkSnippet::class;
   protected $snippetDataType = '';
   protected $statusType = ThirdPartyLinkStatus::class;
   protected $statusDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLinkingToken($linkingToken)
   {
     $this->linkingToken = $linkingToken;
   }
+  /**
+   * @return string
+   */
   public function getLinkingToken()
   {
     return $this->linkingToken;

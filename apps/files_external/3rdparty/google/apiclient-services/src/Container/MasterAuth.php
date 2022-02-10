@@ -19,18 +19,39 @@ namespace Google\Service\Container;
 
 class MasterAuth extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clientCertificate;
   protected $clientCertificateConfigType = ClientCertificateConfig::class;
   protected $clientCertificateConfigDataType = '';
+  /**
+   * @var string
+   */
   public $clientKey;
+  /**
+   * @var string
+   */
   public $clusterCaCertificate;
+  /**
+   * @var string
+   */
   public $password;
+  /**
+   * @var string
+   */
   public $username;
 
+  /**
+   * @param string
+   */
   public function setClientCertificate($clientCertificate)
   {
     $this->clientCertificate = $clientCertificate;
   }
+  /**
+   * @return string
+   */
   public function getClientCertificate()
   {
     return $this->clientCertificate;
@@ -49,34 +70,58 @@ class MasterAuth extends \Google\Model
   {
     return $this->clientCertificateConfig;
   }
+  /**
+   * @param string
+   */
   public function setClientKey($clientKey)
   {
     $this->clientKey = $clientKey;
   }
+  /**
+   * @return string
+   */
   public function getClientKey()
   {
     return $this->clientKey;
   }
+  /**
+   * @param string
+   */
   public function setClusterCaCertificate($clusterCaCertificate)
   {
     $this->clusterCaCertificate = $clusterCaCertificate;
   }
+  /**
+   * @return string
+   */
   public function getClusterCaCertificate()
   {
     return $this->clusterCaCertificate;
   }
+  /**
+   * @param string
+   */
   public function setPassword($password)
   {
     $this->password = $password;
   }
+  /**
+   * @return string
+   */
   public function getPassword()
   {
     return $this->password;
   }
+  /**
+   * @param string
+   */
   public function setUsername($username)
   {
     $this->username = $username;
   }
+  /**
+   * @return string
+   */
   public function getUsername()
   {
     return $this->username;

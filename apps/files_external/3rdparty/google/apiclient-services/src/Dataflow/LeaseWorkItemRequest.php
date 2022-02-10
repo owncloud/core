@@ -20,66 +20,129 @@ namespace Google\Service\Dataflow;
 class LeaseWorkItemRequest extends \Google\Collection
 {
   protected $collection_key = 'workerCapabilities';
+  /**
+   * @var string
+   */
   public $currentWorkerTime;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $requestedLeaseDuration;
+  /**
+   * @var array[]
+   */
   public $unifiedWorkerRequest;
+  /**
+   * @var string[]
+   */
   public $workItemTypes;
+  /**
+   * @var string[]
+   */
   public $workerCapabilities;
+  /**
+   * @var string
+   */
   public $workerId;
 
+  /**
+   * @param string
+   */
   public function setCurrentWorkerTime($currentWorkerTime)
   {
     $this->currentWorkerTime = $currentWorkerTime;
   }
+  /**
+   * @return string
+   */
   public function getCurrentWorkerTime()
   {
     return $this->currentWorkerTime;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setRequestedLeaseDuration($requestedLeaseDuration)
   {
     $this->requestedLeaseDuration = $requestedLeaseDuration;
   }
+  /**
+   * @return string
+   */
   public function getRequestedLeaseDuration()
   {
     return $this->requestedLeaseDuration;
   }
+  /**
+   * @param array[]
+   */
   public function setUnifiedWorkerRequest($unifiedWorkerRequest)
   {
     $this->unifiedWorkerRequest = $unifiedWorkerRequest;
   }
+  /**
+   * @return array[]
+   */
   public function getUnifiedWorkerRequest()
   {
     return $this->unifiedWorkerRequest;
   }
+  /**
+   * @param string[]
+   */
   public function setWorkItemTypes($workItemTypes)
   {
     $this->workItemTypes = $workItemTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getWorkItemTypes()
   {
     return $this->workItemTypes;
   }
+  /**
+   * @param string[]
+   */
   public function setWorkerCapabilities($workerCapabilities)
   {
     $this->workerCapabilities = $workerCapabilities;
   }
+  /**
+   * @return string[]
+   */
   public function getWorkerCapabilities()
   {
     return $this->workerCapabilities;
   }
+  /**
+   * @param string
+   */
   public function setWorkerId($workerId)
   {
     $this->workerId = $workerId;
   }
+  /**
+   * @return string
+   */
   public function getWorkerId()
   {
     return $this->workerId;

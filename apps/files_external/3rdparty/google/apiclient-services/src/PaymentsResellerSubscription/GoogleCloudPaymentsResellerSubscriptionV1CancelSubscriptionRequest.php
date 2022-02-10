@@ -19,21 +19,39 @@ namespace Google\Service\PaymentsResellerSubscription;
 
 class GoogleCloudPaymentsResellerSubscriptionV1CancelSubscriptionRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $cancelImmediately;
+  /**
+   * @var string
+   */
   public $cancellationReason;
 
+  /**
+   * @param bool
+   */
   public function setCancelImmediately($cancelImmediately)
   {
     $this->cancelImmediately = $cancelImmediately;
   }
+  /**
+   * @return bool
+   */
   public function getCancelImmediately()
   {
     return $this->cancelImmediately;
   }
+  /**
+   * @param string
+   */
   public function setCancellationReason($cancellationReason)
   {
     $this->cancellationReason = $cancellationReason;
   }
+  /**
+   * @return string
+   */
   public function getCancellationReason()
   {
     return $this->cancellationReason;

@@ -19,21 +19,39 @@ namespace Google\Service\Reseller;
 
 class RenewalSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $renewalType;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setRenewalType($renewalType)
   {
     $this->renewalType = $renewalType;
   }
+  /**
+   * @return string
+   */
   public function getRenewalType()
   {
     return $this->renewalType;

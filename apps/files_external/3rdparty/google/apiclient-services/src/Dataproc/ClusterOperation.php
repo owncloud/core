@@ -19,30 +19,57 @@ namespace Google\Service\Dataproc;
 
 class ClusterOperation extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $done;
+  /**
+   * @var string
+   */
   public $error;
+  /**
+   * @var string
+   */
   public $operationId;
 
+  /**
+   * @param bool
+   */
   public function setDone($done)
   {
     $this->done = $done;
   }
+  /**
+   * @return bool
+   */
   public function getDone()
   {
     return $this->done;
   }
+  /**
+   * @param string
+   */
   public function setError($error)
   {
     $this->error = $error;
   }
+  /**
+   * @return string
+   */
   public function getError()
   {
     return $this->error;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;

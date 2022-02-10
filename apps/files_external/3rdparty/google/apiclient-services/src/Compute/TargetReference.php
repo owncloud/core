@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class TargetReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $target;
 
+  /**
+   * @param string
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return string
+   */
   public function getTarget()
   {
     return $this->target;

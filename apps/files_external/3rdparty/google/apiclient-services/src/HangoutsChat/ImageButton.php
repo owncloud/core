@@ -19,32 +19,59 @@ namespace Google\Service\HangoutsChat;
 
 class ImageButton extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $icon;
+  /**
+   * @var string
+   */
   public $iconUrl;
+  /**
+   * @var string
+   */
   public $name;
   protected $onClickType = OnClick::class;
   protected $onClickDataType = '';
 
+  /**
+   * @param string
+   */
   public function setIcon($icon)
   {
     $this->icon = $icon;
   }
+  /**
+   * @return string
+   */
   public function getIcon()
   {
     return $this->icon;
   }
+  /**
+   * @param string
+   */
   public function setIconUrl($iconUrl)
   {
     $this->iconUrl = $iconUrl;
   }
+  /**
+   * @return string
+   */
   public function getIconUrl()
   {
     return $this->iconUrl;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

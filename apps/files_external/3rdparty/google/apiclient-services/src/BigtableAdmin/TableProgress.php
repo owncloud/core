@@ -19,30 +19,57 @@ namespace Google\Service\BigtableAdmin;
 
 class TableProgress extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $estimatedCopiedBytes;
+  /**
+   * @var string
+   */
   public $estimatedSizeBytes;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setEstimatedCopiedBytes($estimatedCopiedBytes)
   {
     $this->estimatedCopiedBytes = $estimatedCopiedBytes;
   }
+  /**
+   * @return string
+   */
   public function getEstimatedCopiedBytes()
   {
     return $this->estimatedCopiedBytes;
   }
+  /**
+   * @param string
+   */
   public function setEstimatedSizeBytes($estimatedSizeBytes)
   {
     $this->estimatedSizeBytes = $estimatedSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getEstimatedSizeBytes()
   {
     return $this->estimatedSizeBytes;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

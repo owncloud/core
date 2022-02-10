@@ -19,25 +19,49 @@ namespace Google\Service\CloudSupport;
 
 class Comment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $body;
+  /**
+   * @var string
+   */
   public $createTime;
   protected $creatorType = Actor::class;
   protected $creatorDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $plainTextBody;
 
+  /**
+   * @param string
+   */
   public function setBody($body)
   {
     $this->body = $body;
   }
+  /**
+   * @return string
+   */
   public function getBody()
   {
     return $this->body;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -56,18 +80,30 @@ class Comment extends \Google\Model
   {
     return $this->creator;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPlainTextBody($plainTextBody)
   {
     $this->plainTextBody = $plainTextBody;
   }
+  /**
+   * @return string
+   */
   public function getPlainTextBody()
   {
     return $this->plainTextBody;

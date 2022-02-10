@@ -19,30 +19,57 @@ namespace Google\Service\TrafficDirectorService;
 
 class UpdateFailureState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $details;
+  /**
+   * @var array[]
+   */
   public $failedConfiguration;
+  /**
+   * @var string
+   */
   public $lastUpdateAttempt;
 
+  /**
+   * @param string
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return string
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param array[]
+   */
   public function setFailedConfiguration($failedConfiguration)
   {
     $this->failedConfiguration = $failedConfiguration;
   }
+  /**
+   * @return array[]
+   */
   public function getFailedConfiguration()
   {
     return $this->failedConfiguration;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdateAttempt($lastUpdateAttempt)
   {
     $this->lastUpdateAttempt = $lastUpdateAttempt;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateAttempt()
   {
     return $this->lastUpdateAttempt;

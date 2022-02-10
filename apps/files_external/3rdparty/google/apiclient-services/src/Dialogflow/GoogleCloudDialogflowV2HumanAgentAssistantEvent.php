@@ -20,23 +20,41 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2HumanAgentAssistantEvent extends \Google\Collection
 {
   protected $collection_key = 'suggestionResults';
+  /**
+   * @var string
+   */
   public $conversation;
+  /**
+   * @var string
+   */
   public $participant;
   protected $suggestionResultsType = GoogleCloudDialogflowV2SuggestionResult::class;
   protected $suggestionResultsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setConversation($conversation)
   {
     $this->conversation = $conversation;
   }
+  /**
+   * @return string
+   */
   public function getConversation()
   {
     return $this->conversation;
   }
+  /**
+   * @param string
+   */
   public function setParticipant($participant)
   {
     $this->participant = $participant;
   }
+  /**
+   * @return string
+   */
   public function getParticipant()
   {
     return $this->participant;

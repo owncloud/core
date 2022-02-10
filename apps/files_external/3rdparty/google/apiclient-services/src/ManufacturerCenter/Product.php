@@ -22,14 +22,29 @@ class Product extends \Google\Collection
   protected $collection_key = 'issues';
   protected $attributesType = Attributes::class;
   protected $attributesDataType = '';
+  /**
+   * @var string
+   */
   public $contentLanguage;
   protected $destinationStatusesType = DestinationStatus::class;
   protected $destinationStatusesDataType = 'array';
   protected $issuesType = Issue::class;
   protected $issuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $targetCountry;
 
   /**
@@ -46,10 +61,16 @@ class Product extends \Google\Collection
   {
     return $this->attributes;
   }
+  /**
+   * @param string
+   */
   public function setContentLanguage($contentLanguage)
   {
     $this->contentLanguage = $contentLanguage;
   }
+  /**
+   * @return string
+   */
   public function getContentLanguage()
   {
     return $this->contentLanguage;
@@ -82,34 +103,58 @@ class Product extends \Google\Collection
   {
     return $this->issues;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setTargetCountry($targetCountry)
   {
     $this->targetCountry = $targetCountry;
   }
+  /**
+   * @return string
+   */
   public function getTargetCountry()
   {
     return $this->targetCountry;

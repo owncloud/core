@@ -19,21 +19,39 @@ namespace Google\Service\CustomSearchAPI;
 
 class SearchUrl extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $template;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setTemplate($template)
   {
     $this->template = $template;
   }
+  /**
+   * @return string
+   */
   public function getTemplate()
   {
     return $this->template;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

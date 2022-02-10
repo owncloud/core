@@ -19,21 +19,39 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class PlaceInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $placeId;
+  /**
+   * @var string
+   */
   public $placeName;
 
+  /**
+   * @param string
+   */
   public function setPlaceId($placeId)
   {
     $this->placeId = $placeId;
   }
+  /**
+   * @return string
+   */
   public function getPlaceId()
   {
     return $this->placeId;
   }
+  /**
+   * @param string
+   */
   public function setPlaceName($placeName)
   {
     $this->placeName = $placeName;
   }
+  /**
+   * @return string
+   */
   public function getPlaceName()
   {
     return $this->placeName;

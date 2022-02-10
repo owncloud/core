@@ -19,39 +19,75 @@ namespace Google\Service\Calendar;
 
 class EventCreator extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var bool
+   */
   public $self;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param bool
+   */
   public function setSelf($self)
   {
     $this->self = $self;
   }
+  /**
+   * @return bool
+   */
   public function getSelf()
   {
     return $this->self;

@@ -21,8 +21,17 @@ class ConfigManagementErrorResource extends \Google\Model
 {
   protected $resourceGvkType = ConfigManagementGroupVersionKind::class;
   protected $resourceGvkDataType = '';
+  /**
+   * @var string
+   */
   public $resourceName;
+  /**
+   * @var string
+   */
   public $resourceNamespace;
+  /**
+   * @var string
+   */
   public $sourcePath;
 
   /**
@@ -39,26 +48,44 @@ class ConfigManagementErrorResource extends \Google\Model
   {
     return $this->resourceGvk;
   }
+  /**
+   * @param string
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string
+   */
   public function getResourceName()
   {
     return $this->resourceName;
   }
+  /**
+   * @param string
+   */
   public function setResourceNamespace($resourceNamespace)
   {
     $this->resourceNamespace = $resourceNamespace;
   }
+  /**
+   * @return string
+   */
   public function getResourceNamespace()
   {
     return $this->resourceNamespace;
   }
+  /**
+   * @param string
+   */
   public function setSourcePath($sourcePath)
   {
     $this->sourcePath = $sourcePath;
   }
+  /**
+   * @return string
+   */
   public function getSourcePath()
   {
     return $this->sourcePath;

@@ -19,21 +19,39 @@ namespace Google\Service\AccessApproval;
 
 class DismissDecision extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dismissTime;
+  /**
+   * @var bool
+   */
   public $implicit;
 
+  /**
+   * @param string
+   */
   public function setDismissTime($dismissTime)
   {
     $this->dismissTime = $dismissTime;
   }
+  /**
+   * @return string
+   */
   public function getDismissTime()
   {
     return $this->dismissTime;
   }
+  /**
+   * @param bool
+   */
   public function setImplicit($implicit)
   {
     $this->implicit = $implicit;
   }
+  /**
+   * @return bool
+   */
   public function getImplicit()
   {
     return $this->implicit;

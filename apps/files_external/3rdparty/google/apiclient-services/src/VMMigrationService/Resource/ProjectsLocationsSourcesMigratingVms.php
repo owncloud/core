@@ -96,6 +96,8 @@ class ProjectsLocationsSourcesMigratingVms extends \Google\Service\Resource
    *
    * @param string $name Required. The name of the MigratingVm.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string view Optional. The level of details of the migrating VM.
    * @return MigratingVm
    */
   public function get($name, $optParams = [])
@@ -122,6 +124,7 @@ class ProjectsLocationsSourcesMigratingVms extends \Google\Service\Resource
    * `ListMigratingVms` call. Provide this to retrieve the subsequent page. When
    * paginating, all other parameters provided to `ListMigratingVms` must match
    * the call that provided the page token.
+   * @opt_param string view Optional. The level of details of each migrating VM.
    * @return ListMigratingVmsResponse
    */
   public function listProjectsLocationsSourcesMigratingVms($parent, $optParams = [])
