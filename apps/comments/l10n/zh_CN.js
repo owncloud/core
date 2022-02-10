@@ -17,7 +17,7 @@ OC.L10N.register(
     "Error occurred while posting comment" : "发布评论时出错",
     "{count} unread comments" : "{count} 条未读评论",
     "Comment" : "评论",
-    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "文件的<strong>评论</strong><em>(始终在数据流中列出)</em>",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "当文件被<strong>评论</strong><em>(始终在信息流中列出)</em>",
     "You commented" : "您的评论",
     "%1$s commented" : "%1$s 已评论",
     "You commented on %2$s" : "你评论了 %2$s",

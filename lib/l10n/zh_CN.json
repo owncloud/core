@@ -46,6 +46,8 @@
     "App does not provide an info.xml file" : "应用未提供 info.xml 文件",
     "App can't be installed because it is not compatible with this version of ownCloud" : "App 无法安装，因为和当前 ownCloud 版本不兼容",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "App 无法安装，因为 App 包含不允许在非内置 App 中使用的 <shipped>true</shipped> 标签",
+    "Your Enterprise license key has expired." : "您的企业授权许可证已过期。",
+    "Your Enterprise license key is about to expire (days remaining: %d)." : "您的企业授权许可证将要过期（剩余%d天）。",
     "Apps" : "应用",
     "General" : "常规",
     "Storage" : "存储",
