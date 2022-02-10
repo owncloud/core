@@ -19,12 +19,21 @@ namespace Google\Service\CloudShell;
 
 class RemovePublicKeyRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;

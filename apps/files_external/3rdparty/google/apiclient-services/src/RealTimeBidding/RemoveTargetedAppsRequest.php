@@ -20,12 +20,21 @@ namespace Google\Service\RealTimeBidding;
 class RemoveTargetedAppsRequest extends \Google\Collection
 {
   protected $collection_key = 'appIds';
+  /**
+   * @var string[]
+   */
   public $appIds;
 
+  /**
+   * @param string[]
+   */
   public function setAppIds($appIds)
   {
     $this->appIds = $appIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAppIds()
   {
     return $this->appIds;

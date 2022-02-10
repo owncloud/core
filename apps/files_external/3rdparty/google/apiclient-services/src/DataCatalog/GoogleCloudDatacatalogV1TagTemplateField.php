@@ -19,50 +19,95 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1TagTemplateField extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $isRequired;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $order;
   protected $typeType = GoogleCloudDatacatalogV1FieldType::class;
   protected $typeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setIsRequired($isRequired)
   {
     $this->isRequired = $isRequired;
   }
+  /**
+   * @return bool
+   */
   public function getIsRequired()
   {
     return $this->isRequired;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setOrder($order)
   {
     $this->order = $order;
   }
+  /**
+   * @return int
+   */
   public function getOrder()
   {
     return $this->order;

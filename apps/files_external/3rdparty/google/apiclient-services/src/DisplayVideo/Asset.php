@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class Asset extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var string
+   */
   public $mediaId;
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setMediaId($mediaId)
   {
     $this->mediaId = $mediaId;
   }
+  /**
+   * @return string
+   */
   public function getMediaId()
   {
     return $this->mediaId;

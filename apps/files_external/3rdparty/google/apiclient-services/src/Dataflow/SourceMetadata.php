@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class SourceMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $estimatedSizeBytes;
+  /**
+   * @var bool
+   */
   public $infinite;
+  /**
+   * @var bool
+   */
   public $producesSortedKeys;
 
+  /**
+   * @param string
+   */
   public function setEstimatedSizeBytes($estimatedSizeBytes)
   {
     $this->estimatedSizeBytes = $estimatedSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getEstimatedSizeBytes()
   {
     return $this->estimatedSizeBytes;
   }
+  /**
+   * @param bool
+   */
   public function setInfinite($infinite)
   {
     $this->infinite = $infinite;
   }
+  /**
+   * @return bool
+   */
   public function getInfinite()
   {
     return $this->infinite;
   }
+  /**
+   * @param bool
+   */
   public function setProducesSortedKeys($producesSortedKeys)
   {
     $this->producesSortedKeys = $producesSortedKeys;
   }
+  /**
+   * @return bool
+   */
   public function getProducesSortedKeys()
   {
     return $this->producesSortedKeys;

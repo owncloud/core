@@ -20,12 +20,21 @@ namespace Google\Service\GameServices;
 class TestIamPermissionsRequest extends \Google\Collection
 {
   protected $collection_key = 'permissions';
+  /**
+   * @var string[]
+   */
   public $permissions;
 
+  /**
+   * @param string[]
+   */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
+  /**
+   * @return string[]
+   */
   public function getPermissions()
   {
     return $this->permissions;

@@ -21,7 +21,13 @@ class KeyOperationAttestation extends \Google\Model
 {
   protected $certChainsType = CertificateChains::class;
   protected $certChainsDataType = '';
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var string
+   */
   public $format;
 
   /**
@@ -38,18 +44,30 @@ class KeyOperationAttestation extends \Google\Model
   {
     return $this->certChains;
   }
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;

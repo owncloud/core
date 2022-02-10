@@ -19,21 +19,39 @@ namespace Google\Service\BinaryAuthorization;
 
 class ValidateAttestationOccurrenceResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $denialReason;
+  /**
+   * @var string
+   */
   public $result;
 
+  /**
+   * @param string
+   */
   public function setDenialReason($denialReason)
   {
     $this->denialReason = $denialReason;
   }
+  /**
+   * @return string
+   */
   public function getDenialReason()
   {
     return $this->denialReason;
   }
+  /**
+   * @param string
+   */
   public function setResult($result)
   {
     $this->result = $result;
   }
+  /**
+   * @return string
+   */
   public function getResult()
   {
     return $this->result;

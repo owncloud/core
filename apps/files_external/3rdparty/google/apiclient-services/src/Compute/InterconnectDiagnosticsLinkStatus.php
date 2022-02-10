@@ -22,7 +22,13 @@ class InterconnectDiagnosticsLinkStatus extends \Google\Collection
   protected $collection_key = 'arpCaches';
   protected $arpCachesType = InterconnectDiagnosticsARPEntry::class;
   protected $arpCachesDataType = 'array';
+  /**
+   * @var string
+   */
   public $circuitId;
+  /**
+   * @var string
+   */
   public $googleDemarc;
   protected $lacpStatusType = InterconnectDiagnosticsLinkLACPStatus::class;
   protected $lacpStatusDataType = '';
@@ -45,18 +51,30 @@ class InterconnectDiagnosticsLinkStatus extends \Google\Collection
   {
     return $this->arpCaches;
   }
+  /**
+   * @param string
+   */
   public function setCircuitId($circuitId)
   {
     $this->circuitId = $circuitId;
   }
+  /**
+   * @return string
+   */
   public function getCircuitId()
   {
     return $this->circuitId;
   }
+  /**
+   * @param string
+   */
   public function setGoogleDemarc($googleDemarc)
   {
     $this->googleDemarc = $googleDemarc;
   }
+  /**
+   * @return string
+   */
   public function getGoogleDemarc()
   {
     return $this->googleDemarc;

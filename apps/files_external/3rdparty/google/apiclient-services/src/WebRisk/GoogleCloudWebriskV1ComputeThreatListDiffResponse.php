@@ -23,10 +23,19 @@ class GoogleCloudWebriskV1ComputeThreatListDiffResponse extends \Google\Model
   protected $additionsDataType = '';
   protected $checksumType = GoogleCloudWebriskV1ComputeThreatListDiffResponseChecksum::class;
   protected $checksumDataType = '';
+  /**
+   * @var string
+   */
   public $newVersionToken;
+  /**
+   * @var string
+   */
   public $recommendedNextDiff;
   protected $removalsType = GoogleCloudWebriskV1ThreatEntryRemovals::class;
   protected $removalsDataType = '';
+  /**
+   * @var string
+   */
   public $responseType;
 
   /**
@@ -57,18 +66,30 @@ class GoogleCloudWebriskV1ComputeThreatListDiffResponse extends \Google\Model
   {
     return $this->checksum;
   }
+  /**
+   * @param string
+   */
   public function setNewVersionToken($newVersionToken)
   {
     $this->newVersionToken = $newVersionToken;
   }
+  /**
+   * @return string
+   */
   public function getNewVersionToken()
   {
     return $this->newVersionToken;
   }
+  /**
+   * @param string
+   */
   public function setRecommendedNextDiff($recommendedNextDiff)
   {
     $this->recommendedNextDiff = $recommendedNextDiff;
   }
+  /**
+   * @return string
+   */
   public function getRecommendedNextDiff()
   {
     return $this->recommendedNextDiff;
@@ -87,10 +108,16 @@ class GoogleCloudWebriskV1ComputeThreatListDiffResponse extends \Google\Model
   {
     return $this->removals;
   }
+  /**
+   * @param string
+   */
   public function setResponseType($responseType)
   {
     $this->responseType = $responseType;
   }
+  /**
+   * @return string
+   */
   public function getResponseType()
   {
     return $this->responseType;

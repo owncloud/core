@@ -19,23 +19,41 @@ namespace Google\Service\WorkflowExecutions;
 
 class Error extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $context;
+  /**
+   * @var string
+   */
   public $payload;
   protected $stackTraceType = StackTrace::class;
   protected $stackTraceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setContext($context)
   {
     $this->context = $context;
   }
+  /**
+   * @return string
+   */
   public function getContext()
   {
     return $this->context;
   }
+  /**
+   * @param string
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return string
+   */
   public function getPayload()
   {
     return $this->payload;

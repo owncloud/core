@@ -20,30 +20,57 @@ namespace Google\Service\Storagetransfer;
 class NotificationConfig extends \Google\Collection
 {
   protected $collection_key = 'eventTypes';
+  /**
+   * @var string[]
+   */
   public $eventTypes;
+  /**
+   * @var string
+   */
   public $payloadFormat;
+  /**
+   * @var string
+   */
   public $pubsubTopic;
 
+  /**
+   * @param string[]
+   */
   public function setEventTypes($eventTypes)
   {
     $this->eventTypes = $eventTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getEventTypes()
   {
     return $this->eventTypes;
   }
+  /**
+   * @param string
+   */
   public function setPayloadFormat($payloadFormat)
   {
     $this->payloadFormat = $payloadFormat;
   }
+  /**
+   * @return string
+   */
   public function getPayloadFormat()
   {
     return $this->payloadFormat;
   }
+  /**
+   * @param string
+   */
   public function setPubsubTopic($pubsubTopic)
   {
     $this->pubsubTopic = $pubsubTopic;
   }
+  /**
+   * @return string
+   */
   public function getPubsubTopic()
   {
     return $this->pubsubTopic;

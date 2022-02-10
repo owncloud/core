@@ -19,79 +19,151 @@ namespace Google\Service\YouTube;
 
 class SuperChatEventSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $amountMicros;
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $commentText;
+  /**
+   * @var string
+   */
   public $createdAt;
+  /**
+   * @var string
+   */
   public $currency;
+  /**
+   * @var string
+   */
   public $displayString;
+  /**
+   * @var bool
+   */
   public $isSuperStickerEvent;
+  /**
+   * @var string
+   */
   public $messageType;
   protected $superStickerMetadataType = SuperStickerMetadata::class;
   protected $superStickerMetadataDataType = '';
   protected $supporterDetailsType = ChannelProfileDetails::class;
   protected $supporterDetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAmountMicros($amountMicros)
   {
     $this->amountMicros = $amountMicros;
   }
+  /**
+   * @return string
+   */
   public function getAmountMicros()
   {
     return $this->amountMicros;
   }
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setCommentText($commentText)
   {
     $this->commentText = $commentText;
   }
+  /**
+   * @return string
+   */
   public function getCommentText()
   {
     return $this->commentText;
   }
+  /**
+   * @param string
+   */
   public function setCreatedAt($createdAt)
   {
     $this->createdAt = $createdAt;
   }
+  /**
+   * @return string
+   */
   public function getCreatedAt()
   {
     return $this->createdAt;
   }
+  /**
+   * @param string
+   */
   public function setCurrency($currency)
   {
     $this->currency = $currency;
   }
+  /**
+   * @return string
+   */
   public function getCurrency()
   {
     return $this->currency;
   }
+  /**
+   * @param string
+   */
   public function setDisplayString($displayString)
   {
     $this->displayString = $displayString;
   }
+  /**
+   * @return string
+   */
   public function getDisplayString()
   {
     return $this->displayString;
   }
+  /**
+   * @param bool
+   */
   public function setIsSuperStickerEvent($isSuperStickerEvent)
   {
     $this->isSuperStickerEvent = $isSuperStickerEvent;
   }
+  /**
+   * @return bool
+   */
   public function getIsSuperStickerEvent()
   {
     return $this->isSuperStickerEvent;
   }
+  /**
+   * @param string
+   */
   public function setMessageType($messageType)
   {
     $this->messageType = $messageType;
   }
+  /**
+   * @return string
+   */
   public function getMessageType()
   {
     return $this->messageType;

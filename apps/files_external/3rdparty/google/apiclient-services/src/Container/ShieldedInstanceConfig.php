@@ -19,21 +19,39 @@ namespace Google\Service\Container;
 
 class ShieldedInstanceConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableIntegrityMonitoring;
+  /**
+   * @var bool
+   */
   public $enableSecureBoot;
 
+  /**
+   * @param bool
+   */
   public function setEnableIntegrityMonitoring($enableIntegrityMonitoring)
   {
     $this->enableIntegrityMonitoring = $enableIntegrityMonitoring;
   }
+  /**
+   * @return bool
+   */
   public function getEnableIntegrityMonitoring()
   {
     return $this->enableIntegrityMonitoring;
   }
+  /**
+   * @param bool
+   */
   public function setEnableSecureBoot($enableSecureBoot)
   {
     $this->enableSecureBoot = $enableSecureBoot;
   }
+  /**
+   * @return bool
+   */
   public function getEnableSecureBoot()
   {
     return $this->enableSecureBoot;

@@ -20,15 +20,27 @@ namespace Google\Service\SQLAdmin;
 class InstancesListServerCasResponse extends \Google\Collection
 {
   protected $collection_key = 'certs';
+  /**
+   * @var string
+   */
   public $activeVersion;
   protected $certsType = SslCert::class;
   protected $certsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setActiveVersion($activeVersion)
   {
     $this->activeVersion = $activeVersion;
   }
+  /**
+   * @return string
+   */
   public function getActiveVersion()
   {
     return $this->activeVersion;
@@ -47,10 +59,16 @@ class InstancesListServerCasResponse extends \Google\Collection
   {
     return $this->certs;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

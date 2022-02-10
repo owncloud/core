@@ -19,39 +19,75 @@ namespace Google\Service\Gmail;
 
 class ImapSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $autoExpunge;
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $expungeBehavior;
+  /**
+   * @var int
+   */
   public $maxFolderSize;
 
+  /**
+   * @param bool
+   */
   public function setAutoExpunge($autoExpunge)
   {
     $this->autoExpunge = $autoExpunge;
   }
+  /**
+   * @return bool
+   */
   public function getAutoExpunge()
   {
     return $this->autoExpunge;
   }
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setExpungeBehavior($expungeBehavior)
   {
     $this->expungeBehavior = $expungeBehavior;
   }
+  /**
+   * @return string
+   */
   public function getExpungeBehavior()
   {
     return $this->expungeBehavior;
   }
+  /**
+   * @param int
+   */
   public function setMaxFolderSize($maxFolderSize)
   {
     $this->maxFolderSize = $maxFolderSize;
   }
+  /**
+   * @return int
+   */
   public function getMaxFolderSize()
   {
     return $this->maxFolderSize;

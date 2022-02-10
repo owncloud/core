@@ -20,25 +20,49 @@ namespace Google\Service\Compute;
 class RouterBgp extends \Google\Collection
 {
   protected $collection_key = 'advertisedIpRanges';
+  /**
+   * @var string
+   */
   public $advertiseMode;
+  /**
+   * @var string[]
+   */
   public $advertisedGroups;
   protected $advertisedIpRangesType = RouterAdvertisedIpRange::class;
   protected $advertisedIpRangesDataType = 'array';
+  /**
+   * @var string
+   */
   public $asn;
+  /**
+   * @var string
+   */
   public $keepaliveInterval;
 
+  /**
+   * @param string
+   */
   public function setAdvertiseMode($advertiseMode)
   {
     $this->advertiseMode = $advertiseMode;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiseMode()
   {
     return $this->advertiseMode;
   }
+  /**
+   * @param string[]
+   */
   public function setAdvertisedGroups($advertisedGroups)
   {
     $this->advertisedGroups = $advertisedGroups;
   }
+  /**
+   * @return string[]
+   */
   public function getAdvertisedGroups()
   {
     return $this->advertisedGroups;
@@ -57,18 +81,30 @@ class RouterBgp extends \Google\Collection
   {
     return $this->advertisedIpRanges;
   }
+  /**
+   * @param string
+   */
   public function setAsn($asn)
   {
     $this->asn = $asn;
   }
+  /**
+   * @return string
+   */
   public function getAsn()
   {
     return $this->asn;
   }
+  /**
+   * @param string
+   */
   public function setKeepaliveInterval($keepaliveInterval)
   {
     $this->keepaliveInterval = $keepaliveInterval;
   }
+  /**
+   * @return string
+   */
   public function getKeepaliveInterval()
   {
     return $this->keepaliveInterval;

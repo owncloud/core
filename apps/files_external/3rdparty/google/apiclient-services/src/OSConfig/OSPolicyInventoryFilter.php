@@ -19,21 +19,39 @@ namespace Google\Service\OSConfig;
 
 class OSPolicyInventoryFilter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $osShortName;
+  /**
+   * @var string
+   */
   public $osVersion;
 
+  /**
+   * @param string
+   */
   public function setOsShortName($osShortName)
   {
     $this->osShortName = $osShortName;
   }
+  /**
+   * @return string
+   */
   public function getOsShortName()
   {
     return $this->osShortName;
   }
+  /**
+   * @param string
+   */
   public function setOsVersion($osVersion)
   {
     $this->osVersion = $osVersion;
   }
+  /**
+   * @return string
+   */
   public function getOsVersion()
   {
     return $this->osVersion;

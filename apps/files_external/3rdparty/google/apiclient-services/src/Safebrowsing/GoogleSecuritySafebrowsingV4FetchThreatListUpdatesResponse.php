@@ -22,6 +22,9 @@ class GoogleSecuritySafebrowsingV4FetchThreatListUpdatesResponse extends \Google
   protected $collection_key = 'listUpdateResponses';
   protected $listUpdateResponsesType = GoogleSecuritySafebrowsingV4FetchThreatListUpdatesResponseListUpdateResponse::class;
   protected $listUpdateResponsesDataType = 'array';
+  /**
+   * @var string
+   */
   public $minimumWaitDuration;
 
   /**
@@ -38,10 +41,16 @@ class GoogleSecuritySafebrowsingV4FetchThreatListUpdatesResponse extends \Google
   {
     return $this->listUpdateResponses;
   }
+  /**
+   * @param string
+   */
   public function setMinimumWaitDuration($minimumWaitDuration)
   {
     $this->minimumWaitDuration = $minimumWaitDuration;
   }
+  /**
+   * @return string
+   */
   public function getMinimumWaitDuration()
   {
     return $this->minimumWaitDuration;

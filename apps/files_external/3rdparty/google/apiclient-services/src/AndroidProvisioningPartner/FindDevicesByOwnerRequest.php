@@ -20,39 +20,75 @@ namespace Google\Service\AndroidProvisioningPartner;
 class FindDevicesByOwnerRequest extends \Google\Collection
 {
   protected $collection_key = 'customerId';
+  /**
+   * @var string[]
+   */
   public $customerId;
+  /**
+   * @var string
+   */
   public $limit;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var string
+   */
   public $sectionType;
 
+  /**
+   * @param string[]
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string[]
+   */
   public function getCustomerId()
   {
     return $this->customerId;
   }
+  /**
+   * @param string
+   */
   public function setLimit($limit)
   {
     $this->limit = $limit;
   }
+  /**
+   * @return string
+   */
   public function getLimit()
   {
     return $this->limit;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param string
+   */
   public function setSectionType($sectionType)
   {
     $this->sectionType = $sectionType;
   }
+  /**
+   * @return string
+   */
   public function getSectionType()
   {
     return $this->sectionType;

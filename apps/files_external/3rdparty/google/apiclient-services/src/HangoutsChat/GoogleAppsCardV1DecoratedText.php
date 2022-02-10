@@ -19,6 +19,9 @@ namespace Google\Service\HangoutsChat;
 
 class GoogleAppsCardV1DecoratedText extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bottomLabel;
   protected $buttonType = GoogleAppsCardV1Button::class;
   protected $buttonDataType = '';
@@ -32,14 +35,29 @@ class GoogleAppsCardV1DecoratedText extends \Google\Model
   protected $startIconDataType = '';
   protected $switchControlType = GoogleAppsCardV1SwitchControl::class;
   protected $switchControlDataType = '';
+  /**
+   * @var string
+   */
   public $text;
+  /**
+   * @var string
+   */
   public $topLabel;
+  /**
+   * @var bool
+   */
   public $wrapText;
 
+  /**
+   * @param string
+   */
   public function setBottomLabel($bottomLabel)
   {
     $this->bottomLabel = $bottomLabel;
   }
+  /**
+   * @return string
+   */
   public function getBottomLabel()
   {
     return $this->bottomLabel;
@@ -128,26 +146,44 @@ class GoogleAppsCardV1DecoratedText extends \Google\Model
   {
     return $this->switchControl;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;
   }
+  /**
+   * @param string
+   */
   public function setTopLabel($topLabel)
   {
     $this->topLabel = $topLabel;
   }
+  /**
+   * @return string
+   */
   public function getTopLabel()
   {
     return $this->topLabel;
   }
+  /**
+   * @param bool
+   */
   public function setWrapText($wrapText)
   {
     $this->wrapText = $wrapText;
   }
+  /**
+   * @return bool
+   */
   public function getWrapText()
   {
     return $this->wrapText;

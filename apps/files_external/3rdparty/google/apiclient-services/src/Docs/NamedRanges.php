@@ -20,14 +20,23 @@ namespace Google\Service\Docs;
 class NamedRanges extends \Google\Collection
 {
   protected $collection_key = 'namedRanges';
+  /**
+   * @var string
+   */
   public $name;
   protected $namedRangesType = NamedRange::class;
   protected $namedRangesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

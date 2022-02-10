@@ -19,12 +19,21 @@ namespace Google\Service\Directory;
 
 class DirectoryChromeosdevicesIssueCommandResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $commandId;
 
+  /**
+   * @param string
+   */
   public function setCommandId($commandId)
   {
     $this->commandId = $commandId;
   }
+  /**
+   * @return string
+   */
   public function getCommandId()
   {
     return $this->commandId;

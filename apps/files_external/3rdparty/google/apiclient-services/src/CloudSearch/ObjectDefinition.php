@@ -20,16 +20,25 @@ namespace Google\Service\CloudSearch;
 class ObjectDefinition extends \Google\Collection
 {
   protected $collection_key = 'propertyDefinitions';
+  /**
+   * @var string
+   */
   public $name;
   protected $optionsType = ObjectOptions::class;
   protected $optionsDataType = '';
   protected $propertyDefinitionsType = PropertyDefinition::class;
   protected $propertyDefinitionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -20,19 +20,37 @@ namespace Google\Service\Dataflow;
 class StageSummary extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var string
+   */
   public $endTime;
   protected $metricsType = MetricUpdate::class;
   protected $metricsDataType = 'array';
   protected $progressType = ProgressTimeseries::class;
   protected $progressDataType = '';
+  /**
+   * @var string
+   */
   public $stageId;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -65,26 +83,44 @@ class StageSummary extends \Google\Collection
   {
     return $this->progress;
   }
+  /**
+   * @param string
+   */
   public function setStageId($stageId)
   {
     $this->stageId = $stageId;
   }
+  /**
+   * @return string
+   */
   public function getStageId()
   {
     return $this->stageId;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

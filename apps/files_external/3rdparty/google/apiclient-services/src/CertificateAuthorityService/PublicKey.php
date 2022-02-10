@@ -19,21 +19,39 @@ namespace Google\Service\CertificateAuthorityService;
 
 class PublicKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $key;
 
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;

@@ -22,6 +22,9 @@ class DisjunctiveMatchStatement extends \Google\Collection
   protected $collection_key = 'eventFilters';
   protected $eventFiltersType = EventFilter::class;
   protected $eventFiltersDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -38,10 +41,16 @@ class DisjunctiveMatchStatement extends \Google\Collection
   {
     return $this->eventFilters;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

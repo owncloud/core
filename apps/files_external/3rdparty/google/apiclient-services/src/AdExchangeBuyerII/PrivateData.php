@@ -19,12 +19,21 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class PrivateData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $referenceId;
 
+  /**
+   * @param string
+   */
   public function setReferenceId($referenceId)
   {
     $this->referenceId = $referenceId;
   }
+  /**
+   * @return string
+   */
   public function getReferenceId()
   {
     return $this->referenceId;

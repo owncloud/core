@@ -19,14 +19,23 @@ namespace Google\Service\AndroidPublisher;
 
 class ManagedProductTaxAndComplianceSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $eeaWithdrawalRightType;
   protected $taxRateInfoByRegionCodeType = RegionalTaxRateInfo::class;
   protected $taxRateInfoByRegionCodeDataType = 'map';
 
+  /**
+   * @param string
+   */
   public function setEeaWithdrawalRightType($eeaWithdrawalRightType)
   {
     $this->eeaWithdrawalRightType = $eeaWithdrawalRightType;
   }
+  /**
+   * @return string
+   */
   public function getEeaWithdrawalRightType()
   {
     return $this->eeaWithdrawalRightType;

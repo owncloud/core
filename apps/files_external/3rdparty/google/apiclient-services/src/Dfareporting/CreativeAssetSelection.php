@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class CreativeAssetSelection extends \Google\Collection
 {
   protected $collection_key = 'rules';
+  /**
+   * @var string
+   */
   public $defaultAssetId;
   protected $rulesType = Rule::class;
   protected $rulesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDefaultAssetId($defaultAssetId)
   {
     $this->defaultAssetId = $defaultAssetId;
   }
+  /**
+   * @return string
+   */
   public function getDefaultAssetId()
   {
     return $this->defaultAssetId;

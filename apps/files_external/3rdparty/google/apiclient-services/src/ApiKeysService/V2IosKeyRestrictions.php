@@ -20,12 +20,21 @@ namespace Google\Service\ApiKeysService;
 class V2IosKeyRestrictions extends \Google\Collection
 {
   protected $collection_key = 'allowedBundleIds';
+  /**
+   * @var string[]
+   */
   public $allowedBundleIds;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedBundleIds($allowedBundleIds)
   {
     $this->allowedBundleIds = $allowedBundleIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedBundleIds()
   {
     return $this->allowedBundleIds;

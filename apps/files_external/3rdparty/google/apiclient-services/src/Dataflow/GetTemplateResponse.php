@@ -25,6 +25,9 @@ class GetTemplateResponse extends \Google\Model
   protected $runtimeMetadataDataType = '';
   protected $statusType = Status::class;
   protected $statusDataType = '';
+  /**
+   * @var string
+   */
   public $templateType;
 
   /**
@@ -69,10 +72,16 @@ class GetTemplateResponse extends \Google\Model
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setTemplateType($templateType)
   {
     $this->templateType = $templateType;
   }
+  /**
+   * @return string
+   */
   public function getTemplateType()
   {
     return $this->templateType;

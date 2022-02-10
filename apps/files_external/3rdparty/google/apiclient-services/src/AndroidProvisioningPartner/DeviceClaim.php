@@ -19,57 +19,111 @@ namespace Google\Service\AndroidProvisioningPartner;
 
 class DeviceClaim extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $additionalService;
+  /**
+   * @var string
+   */
   public $ownerCompanyId;
+  /**
+   * @var string
+   */
   public $resellerId;
+  /**
+   * @var string
+   */
   public $sectionType;
+  /**
+   * @var string
+   */
   public $vacationModeExpireTime;
+  /**
+   * @var string
+   */
   public $vacationModeStartTime;
 
+  /**
+   * @param string
+   */
   public function setAdditionalService($additionalService)
   {
     $this->additionalService = $additionalService;
   }
+  /**
+   * @return string
+   */
   public function getAdditionalService()
   {
     return $this->additionalService;
   }
+  /**
+   * @param string
+   */
   public function setOwnerCompanyId($ownerCompanyId)
   {
     $this->ownerCompanyId = $ownerCompanyId;
   }
+  /**
+   * @return string
+   */
   public function getOwnerCompanyId()
   {
     return $this->ownerCompanyId;
   }
+  /**
+   * @param string
+   */
   public function setResellerId($resellerId)
   {
     $this->resellerId = $resellerId;
   }
+  /**
+   * @return string
+   */
   public function getResellerId()
   {
     return $this->resellerId;
   }
+  /**
+   * @param string
+   */
   public function setSectionType($sectionType)
   {
     $this->sectionType = $sectionType;
   }
+  /**
+   * @return string
+   */
   public function getSectionType()
   {
     return $this->sectionType;
   }
+  /**
+   * @param string
+   */
   public function setVacationModeExpireTime($vacationModeExpireTime)
   {
     $this->vacationModeExpireTime = $vacationModeExpireTime;
   }
+  /**
+   * @return string
+   */
   public function getVacationModeExpireTime()
   {
     return $this->vacationModeExpireTime;
   }
+  /**
+   * @param string
+   */
   public function setVacationModeStartTime($vacationModeStartTime)
   {
     $this->vacationModeStartTime = $vacationModeStartTime;
   }
+  /**
+   * @return string
+   */
   public function getVacationModeStartTime()
   {
     return $this->vacationModeStartTime;

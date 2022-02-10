@@ -19,12 +19,21 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1BoundingBoxEvaluationOptions extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $iouThreshold;
 
+  /**
+   * @param float
+   */
   public function setIouThreshold($iouThreshold)
   {
     $this->iouThreshold = $iouThreshold;
   }
+  /**
+   * @return float
+   */
   public function getIouThreshold()
   {
     return $this->iouThreshold;

@@ -19,12 +19,21 @@ namespace Google\Service\AndroidEnterprise;
 
 class WebAppIcon extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $imageData;
 
+  /**
+   * @param string
+   */
   public function setImageData($imageData)
   {
     $this->imageData = $imageData;
   }
+  /**
+   * @return string
+   */
   public function getImageData()
   {
     return $this->imageData;

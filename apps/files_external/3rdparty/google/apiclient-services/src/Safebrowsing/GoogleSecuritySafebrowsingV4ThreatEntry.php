@@ -19,30 +19,57 @@ namespace Google\Service\Safebrowsing;
 
 class GoogleSecuritySafebrowsingV4ThreatEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $digest;
+  /**
+   * @var string
+   */
   public $hash;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setDigest($digest)
   {
     $this->digest = $digest;
   }
+  /**
+   * @return string
+   */
   public function getDigest()
   {
     return $this->digest;
   }
+  /**
+   * @param string
+   */
   public function setHash($hash)
   {
     $this->hash = $hash;
   }
+  /**
+   * @return string
+   */
   public function getHash()
   {
     return $this->hash;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

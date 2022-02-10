@@ -19,39 +19,75 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta1DocumentPageImage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

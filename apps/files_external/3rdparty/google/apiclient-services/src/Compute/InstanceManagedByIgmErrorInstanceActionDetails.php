@@ -19,23 +19,41 @@ namespace Google\Service\Compute;
 
 class InstanceManagedByIgmErrorInstanceActionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string
+   */
   public $instance;
   protected $versionType = ManagedInstanceVersion::class;
   protected $versionDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string
+   */
   public function setInstance($instance)
   {
     $this->instance = $instance;
   }
+  /**
+   * @return string
+   */
   public function getInstance()
   {
     return $this->instance;

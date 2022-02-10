@@ -24,18 +24,45 @@ class Router extends \Google\Collection
   protected $bgpDataType = '';
   protected $bgpPeersType = RouterBgpPeer::class;
   protected $bgpPeersDataType = 'array';
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var bool
+   */
   public $encryptedInterconnectRouter;
+  /**
+   * @var string
+   */
   public $id;
   protected $interfacesType = RouterInterface::class;
   protected $interfacesDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $natsType = RouterNat::class;
   protected $natsDataType = 'array';
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $selfLink;
 
   /**
@@ -66,34 +93,58 @@ class Router extends \Google\Collection
   {
     return $this->bgpPeers;
   }
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param bool
+   */
   public function setEncryptedInterconnectRouter($encryptedInterconnectRouter)
   {
     $this->encryptedInterconnectRouter = $encryptedInterconnectRouter;
   }
+  /**
+   * @return bool
+   */
   public function getEncryptedInterconnectRouter()
   {
     return $this->encryptedInterconnectRouter;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -112,18 +163,30 @@ class Router extends \Google\Collection
   {
     return $this->interfaces;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -142,26 +205,44 @@ class Router extends \Google\Collection
   {
     return $this->nats;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

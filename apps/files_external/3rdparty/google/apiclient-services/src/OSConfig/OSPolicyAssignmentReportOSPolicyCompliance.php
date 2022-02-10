@@ -20,32 +20,59 @@ namespace Google\Service\OSConfig;
 class OSPolicyAssignmentReportOSPolicyCompliance extends \Google\Collection
 {
   protected $collection_key = 'osPolicyResourceCompliances';
+  /**
+   * @var string
+   */
   public $complianceState;
+  /**
+   * @var string
+   */
   public $complianceStateReason;
+  /**
+   * @var string
+   */
   public $osPolicyId;
   protected $osPolicyResourceCompliancesType = OSPolicyAssignmentReportOSPolicyComplianceOSPolicyResourceCompliance::class;
   protected $osPolicyResourceCompliancesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setComplianceState($complianceState)
   {
     $this->complianceState = $complianceState;
   }
+  /**
+   * @return string
+   */
   public function getComplianceState()
   {
     return $this->complianceState;
   }
+  /**
+   * @param string
+   */
   public function setComplianceStateReason($complianceStateReason)
   {
     $this->complianceStateReason = $complianceStateReason;
   }
+  /**
+   * @return string
+   */
   public function getComplianceStateReason()
   {
     return $this->complianceStateReason;
   }
+  /**
+   * @param string
+   */
   public function setOsPolicyId($osPolicyId)
   {
     $this->osPolicyId = $osPolicyId;
   }
+  /**
+   * @return string
+   */
   public function getOsPolicyId()
   {
     return $this->osPolicyId;

@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class SettlementTransactionTransaction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $postDate;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setPostDate($postDate)
   {
     $this->postDate = $postDate;
   }
+  /**
+   * @return string
+   */
   public function getPostDate()
   {
     return $this->postDate;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

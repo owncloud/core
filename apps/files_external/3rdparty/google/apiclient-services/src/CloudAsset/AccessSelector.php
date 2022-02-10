@@ -20,21 +20,39 @@ namespace Google\Service\CloudAsset;
 class AccessSelector extends \Google\Collection
 {
   protected $collection_key = 'roles';
+  /**
+   * @var string[]
+   */
   public $permissions;
+  /**
+   * @var string[]
+   */
   public $roles;
 
+  /**
+   * @param string[]
+   */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
+  /**
+   * @return string[]
+   */
   public function getPermissions()
   {
     return $this->permissions;
   }
+  /**
+   * @param string[]
+   */
   public function setRoles($roles)
   {
     $this->roles = $roles;
   }
+  /**
+   * @return string[]
+   */
   public function getRoles()
   {
     return $this->roles;

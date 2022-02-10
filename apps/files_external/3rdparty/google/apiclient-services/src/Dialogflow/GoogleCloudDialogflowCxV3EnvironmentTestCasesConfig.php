@@ -20,30 +20,57 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3EnvironmentTestCasesConfig extends \Google\Collection
 {
   protected $collection_key = 'testCases';
+  /**
+   * @var bool
+   */
   public $enableContinuousRun;
+  /**
+   * @var bool
+   */
   public $enablePredeploymentRun;
+  /**
+   * @var string[]
+   */
   public $testCases;
 
+  /**
+   * @param bool
+   */
   public function setEnableContinuousRun($enableContinuousRun)
   {
     $this->enableContinuousRun = $enableContinuousRun;
   }
+  /**
+   * @return bool
+   */
   public function getEnableContinuousRun()
   {
     return $this->enableContinuousRun;
   }
+  /**
+   * @param bool
+   */
   public function setEnablePredeploymentRun($enablePredeploymentRun)
   {
     $this->enablePredeploymentRun = $enablePredeploymentRun;
   }
+  /**
+   * @return bool
+   */
   public function getEnablePredeploymentRun()
   {
     return $this->enablePredeploymentRun;
   }
+  /**
+   * @param string[]
+   */
   public function setTestCases($testCases)
   {
     $this->testCases = $testCases;
   }
+  /**
+   * @return string[]
+   */
   public function getTestCases()
   {
     return $this->testCases;

@@ -20,21 +20,39 @@ namespace Google\Service\AdExchangeBuyerII;
 class Disapproval extends \Google\Collection
 {
   protected $collection_key = 'details';
+  /**
+   * @var string[]
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string[]
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return string[]
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

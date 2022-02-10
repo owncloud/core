@@ -19,14 +19,23 @@ namespace Google\Service\Bigquery;
 
 class RangePartitioning extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $field;
   protected $rangeType = RangePartitioningRange::class;
   protected $rangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setField($field)
   {
     $this->field = $field;
   }
+  /**
+   * @return string
+   */
   public function getField()
   {
     return $this->field;

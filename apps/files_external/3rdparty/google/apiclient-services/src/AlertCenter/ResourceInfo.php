@@ -19,21 +19,39 @@ namespace Google\Service\AlertCenter;
 
 class ResourceInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $documentId;
+  /**
+   * @var string
+   */
   public $resourceTitle;
 
+  /**
+   * @param string
+   */
   public function setDocumentId($documentId)
   {
     $this->documentId = $documentId;
   }
+  /**
+   * @return string
+   */
   public function getDocumentId()
   {
     return $this->documentId;
   }
+  /**
+   * @param string
+   */
   public function setResourceTitle($resourceTitle)
   {
     $this->resourceTitle = $resourceTitle;
   }
+  /**
+   * @return string
+   */
   public function getResourceTitle()
   {
     return $this->resourceTitle;

@@ -19,37 +19,73 @@ namespace Google\Service\FirebaseCloudMessaging;
 
 class AndroidConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $collapseKey;
+  /**
+   * @var string[]
+   */
   public $data;
+  /**
+   * @var bool
+   */
   public $directBootOk;
   protected $fcmOptionsType = AndroidFcmOptions::class;
   protected $fcmOptionsDataType = '';
   protected $notificationType = AndroidNotification::class;
   protected $notificationDataType = '';
+  /**
+   * @var string
+   */
   public $priority;
+  /**
+   * @var string
+   */
   public $restrictedPackageName;
+  /**
+   * @var string
+   */
   public $ttl;
 
+  /**
+   * @param string
+   */
   public function setCollapseKey($collapseKey)
   {
     $this->collapseKey = $collapseKey;
   }
+  /**
+   * @return string
+   */
   public function getCollapseKey()
   {
     return $this->collapseKey;
   }
+  /**
+   * @param string[]
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string[]
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param bool
+   */
   public function setDirectBootOk($directBootOk)
   {
     $this->directBootOk = $directBootOk;
   }
+  /**
+   * @return bool
+   */
   public function getDirectBootOk()
   {
     return $this->directBootOk;
@@ -82,26 +118,44 @@ class AndroidConfig extends \Google\Model
   {
     return $this->notification;
   }
+  /**
+   * @param string
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return string
+   */
   public function getPriority()
   {
     return $this->priority;
   }
+  /**
+   * @param string
+   */
   public function setRestrictedPackageName($restrictedPackageName)
   {
     $this->restrictedPackageName = $restrictedPackageName;
   }
+  /**
+   * @return string
+   */
   public function getRestrictedPackageName()
   {
     return $this->restrictedPackageName;
   }
+  /**
+   * @param string
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return string
+   */
   public function getTtl()
   {
     return $this->ttl;

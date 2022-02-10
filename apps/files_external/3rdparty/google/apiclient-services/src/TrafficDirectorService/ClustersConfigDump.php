@@ -26,6 +26,9 @@ class ClustersConfigDump extends \Google\Collection
   protected $dynamicWarmingClustersDataType = 'array';
   protected $staticClustersType = StaticCluster::class;
   protected $staticClustersDataType = 'array';
+  /**
+   * @var string
+   */
   public $versionInfo;
 
   /**
@@ -70,10 +73,16 @@ class ClustersConfigDump extends \Google\Collection
   {
     return $this->staticClusters;
   }
+  /**
+   * @param string
+   */
   public function setVersionInfo($versionInfo)
   {
     $this->versionInfo = $versionInfo;
   }
+  /**
+   * @return string
+   */
   public function getVersionInfo()
   {
     return $this->versionInfo;

@@ -19,21 +19,39 @@ namespace Google\Service\Transcoder;
 
 class SegmentSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $individualSegments;
+  /**
+   * @var string
+   */
   public $segmentDuration;
 
+  /**
+   * @param bool
+   */
   public function setIndividualSegments($individualSegments)
   {
     $this->individualSegments = $individualSegments;
   }
+  /**
+   * @return bool
+   */
   public function getIndividualSegments()
   {
     return $this->individualSegments;
   }
+  /**
+   * @param string
+   */
   public function setSegmentDuration($segmentDuration)
   {
     $this->segmentDuration = $segmentDuration;
   }
+  /**
+   * @return string
+   */
   public function getSegmentDuration()
   {
     return $this->segmentDuration;

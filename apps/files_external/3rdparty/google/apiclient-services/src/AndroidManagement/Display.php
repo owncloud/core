@@ -19,66 +19,129 @@ namespace Google\Service\AndroidManagement;
 
 class Display extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $density;
+  /**
+   * @var int
+   */
   public $displayId;
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $refreshRate;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param int
+   */
   public function setDensity($density)
   {
     $this->density = $density;
   }
+  /**
+   * @return int
+   */
   public function getDensity()
   {
     return $this->density;
   }
+  /**
+   * @param int
+   */
   public function setDisplayId($displayId)
   {
     $this->displayId = $displayId;
   }
+  /**
+   * @return int
+   */
   public function getDisplayId()
   {
     return $this->displayId;
   }
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setRefreshRate($refreshRate)
   {
     $this->refreshRate = $refreshRate;
   }
+  /**
+   * @return int
+   */
   public function getRefreshRate()
   {
     return $this->refreshRate;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

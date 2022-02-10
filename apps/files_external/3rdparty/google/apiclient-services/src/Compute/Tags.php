@@ -20,21 +20,39 @@ namespace Google\Service\Compute;
 class Tags extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var string
+   */
   public $fingerprint;
+  /**
+   * @var string[]
+   */
   public $items;
 
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
   }
+  /**
+   * @param string[]
+   */
   public function setItems($items)
   {
     $this->items = $items;
   }
+  /**
+   * @return string[]
+   */
   public function getItems()
   {
     return $this->items;

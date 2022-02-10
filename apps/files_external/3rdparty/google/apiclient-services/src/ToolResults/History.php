@@ -19,39 +19,75 @@ namespace Google\Service\ToolResults;
 
 class History extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $historyId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $testPlatform;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setHistoryId($historyId)
   {
     $this->historyId = $historyId;
   }
+  /**
+   * @return string
+   */
   public function getHistoryId()
   {
     return $this->historyId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTestPlatform($testPlatform)
   {
     $this->testPlatform = $testPlatform;
   }
+  /**
+   * @return string
+   */
   public function getTestPlatform()
   {
     return $this->testPlatform;

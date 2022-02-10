@@ -19,21 +19,39 @@ namespace Google\Service\Books;
 
 class VolumeseriesinfoVolumeSeriesIssue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $issueDisplayNumber;
+  /**
+   * @var int
+   */
   public $issueOrderNumber;
 
+  /**
+   * @param string
+   */
   public function setIssueDisplayNumber($issueDisplayNumber)
   {
     $this->issueDisplayNumber = $issueDisplayNumber;
   }
+  /**
+   * @return string
+   */
   public function getIssueDisplayNumber()
   {
     return $this->issueDisplayNumber;
   }
+  /**
+   * @param int
+   */
   public function setIssueOrderNumber($issueOrderNumber)
   {
     $this->issueOrderNumber = $issueOrderNumber;
   }
+  /**
+   * @return int
+   */
   public function getIssueOrderNumber()
   {
     return $this->issueOrderNumber;

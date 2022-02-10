@@ -19,30 +19,57 @@ namespace Google\Service\BigQueryDataTransfer;
 
 class ScheduleOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $disableAutoScheduling;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param bool
+   */
   public function setDisableAutoScheduling($disableAutoScheduling)
   {
     $this->disableAutoScheduling = $disableAutoScheduling;
   }
+  /**
+   * @return bool
+   */
   public function getDisableAutoScheduling()
   {
     return $this->disableAutoScheduling;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

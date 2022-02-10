@@ -19,30 +19,57 @@ namespace Google\Service\Dataproc;
 
 class JobPlacement extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $clusterLabels;
+  /**
+   * @var string
+   */
   public $clusterName;
+  /**
+   * @var string
+   */
   public $clusterUuid;
 
+  /**
+   * @param string[]
+   */
   public function setClusterLabels($clusterLabels)
   {
     $this->clusterLabels = $clusterLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getClusterLabels()
   {
     return $this->clusterLabels;
   }
+  /**
+   * @param string
+   */
   public function setClusterName($clusterName)
   {
     $this->clusterName = $clusterName;
   }
+  /**
+   * @return string
+   */
   public function getClusterName()
   {
     return $this->clusterName;
   }
+  /**
+   * @param string
+   */
   public function setClusterUuid($clusterUuid)
   {
     $this->clusterUuid = $clusterUuid;
   }
+  /**
+   * @return string
+   */
   public function getClusterUuid()
   {
     return $this->clusterUuid;

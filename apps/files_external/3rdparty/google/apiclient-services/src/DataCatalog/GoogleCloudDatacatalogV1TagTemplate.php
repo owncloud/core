@@ -19,16 +19,31 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1TagTemplate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
   protected $fieldsType = GoogleCloudDatacatalogV1TagTemplateField::class;
   protected $fieldsDataType = 'map';
+  /**
+   * @var bool
+   */
   public $isPubliclyReadable;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -47,18 +62,30 @@ class GoogleCloudDatacatalogV1TagTemplate extends \Google\Model
   {
     return $this->fields;
   }
+  /**
+   * @param bool
+   */
   public function setIsPubliclyReadable($isPubliclyReadable)
   {
     $this->isPubliclyReadable = $isPubliclyReadable;
   }
+  /**
+   * @return bool
+   */
   public function getIsPubliclyReadable()
   {
     return $this->isPubliclyReadable;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

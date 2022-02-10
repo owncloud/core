@@ -20,30 +20,57 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3WebhookRequest extends \Google\Collection
 {
   protected $collection_key = 'messages';
+  /**
+   * @var string
+   */
   public $detectIntentResponseId;
   protected $fulfillmentInfoType = GoogleCloudDialogflowCxV3WebhookRequestFulfillmentInfo::class;
   protected $fulfillmentInfoDataType = '';
   protected $intentInfoType = GoogleCloudDialogflowCxV3WebhookRequestIntentInfo::class;
   protected $intentInfoDataType = '';
+  /**
+   * @var string
+   */
   public $languageCode;
   protected $messagesType = GoogleCloudDialogflowCxV3ResponseMessage::class;
   protected $messagesDataType = 'array';
   protected $pageInfoType = GoogleCloudDialogflowCxV3PageInfo::class;
   protected $pageInfoDataType = '';
+  /**
+   * @var array[]
+   */
   public $payload;
   protected $sentimentAnalysisResultType = GoogleCloudDialogflowCxV3WebhookRequestSentimentAnalysisResult::class;
   protected $sentimentAnalysisResultDataType = '';
   protected $sessionInfoType = GoogleCloudDialogflowCxV3SessionInfo::class;
   protected $sessionInfoDataType = '';
+  /**
+   * @var string
+   */
   public $text;
+  /**
+   * @var string
+   */
   public $transcript;
+  /**
+   * @var string
+   */
   public $triggerEvent;
+  /**
+   * @var string
+   */
   public $triggerIntent;
 
+  /**
+   * @param string
+   */
   public function setDetectIntentResponseId($detectIntentResponseId)
   {
     $this->detectIntentResponseId = $detectIntentResponseId;
   }
+  /**
+   * @return string
+   */
   public function getDetectIntentResponseId()
   {
     return $this->detectIntentResponseId;
@@ -76,10 +103,16 @@ class GoogleCloudDialogflowCxV3WebhookRequest extends \Google\Collection
   {
     return $this->intentInfo;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
@@ -112,10 +145,16 @@ class GoogleCloudDialogflowCxV3WebhookRequest extends \Google\Collection
   {
     return $this->pageInfo;
   }
+  /**
+   * @param array[]
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return array[]
+   */
   public function getPayload()
   {
     return $this->payload;
@@ -148,34 +187,58 @@ class GoogleCloudDialogflowCxV3WebhookRequest extends \Google\Collection
   {
     return $this->sessionInfo;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;
   }
+  /**
+   * @param string
+   */
   public function setTranscript($transcript)
   {
     $this->transcript = $transcript;
   }
+  /**
+   * @return string
+   */
   public function getTranscript()
   {
     return $this->transcript;
   }
+  /**
+   * @param string
+   */
   public function setTriggerEvent($triggerEvent)
   {
     $this->triggerEvent = $triggerEvent;
   }
+  /**
+   * @return string
+   */
   public function getTriggerEvent()
   {
     return $this->triggerEvent;
   }
+  /**
+   * @param string
+   */
   public function setTriggerIntent($triggerIntent)
   {
     $this->triggerIntent = $triggerIntent;
   }
+  /**
+   * @return string
+   */
   public function getTriggerIntent()
   {
     return $this->triggerIntent;

@@ -19,30 +19,57 @@ namespace Google\Service\CloudHealthcare;
 
 class ProgressCounter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $failure;
+  /**
+   * @var string
+   */
   public $pending;
+  /**
+   * @var string
+   */
   public $success;
 
+  /**
+   * @param string
+   */
   public function setFailure($failure)
   {
     $this->failure = $failure;
   }
+  /**
+   * @return string
+   */
   public function getFailure()
   {
     return $this->failure;
   }
+  /**
+   * @param string
+   */
   public function setPending($pending)
   {
     $this->pending = $pending;
   }
+  /**
+   * @return string
+   */
   public function getPending()
   {
     return $this->pending;
   }
+  /**
+   * @param string
+   */
   public function setSuccess($success)
   {
     $this->success = $success;
   }
+  /**
+   * @return string
+   */
   public function getSuccess()
   {
     return $this->success;

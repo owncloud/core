@@ -19,30 +19,57 @@ namespace Google\Service\Connectors;
 
 class SupportedRuntimeFeatures extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $actionApis;
+  /**
+   * @var bool
+   */
   public $entityApis;
+  /**
+   * @var bool
+   */
   public $sqlQuery;
 
+  /**
+   * @param bool
+   */
   public function setActionApis($actionApis)
   {
     $this->actionApis = $actionApis;
   }
+  /**
+   * @return bool
+   */
   public function getActionApis()
   {
     return $this->actionApis;
   }
+  /**
+   * @param bool
+   */
   public function setEntityApis($entityApis)
   {
     $this->entityApis = $entityApis;
   }
+  /**
+   * @return bool
+   */
   public function getEntityApis()
   {
     return $this->entityApis;
   }
+  /**
+   * @param bool
+   */
   public function setSqlQuery($sqlQuery)
   {
     $this->sqlQuery = $sqlQuery;
   }
+  /**
+   * @return bool
+   */
   public function getSqlQuery()
   {
     return $this->sqlQuery;

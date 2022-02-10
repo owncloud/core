@@ -20,6 +20,9 @@ namespace Google\Service\Slides;
 class Dimension extends \Google\Model
 {
   public $magnitude;
+  /**
+   * @var string
+   */
   public $unit;
 
   public function setMagnitude($magnitude)
@@ -30,10 +33,16 @@ class Dimension extends \Google\Model
   {
     return $this->magnitude;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;

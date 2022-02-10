@@ -20,28 +20,55 @@ namespace Google\Service\AndroidEnterprise;
 class ManagedProperty extends \Google\Collection
 {
   protected $collection_key = 'valueStringArray';
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var bool
+   */
   public $valueBool;
   protected $valueBundleType = ManagedPropertyBundle::class;
   protected $valueBundleDataType = '';
   protected $valueBundleArrayType = ManagedPropertyBundle::class;
   protected $valueBundleArrayDataType = 'array';
+  /**
+   * @var int
+   */
   public $valueInteger;
+  /**
+   * @var string
+   */
   public $valueString;
+  /**
+   * @var string[]
+   */
   public $valueStringArray;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param bool
+   */
   public function setValueBool($valueBool)
   {
     $this->valueBool = $valueBool;
   }
+  /**
+   * @return bool
+   */
   public function getValueBool()
   {
     return $this->valueBool;
@@ -74,26 +101,44 @@ class ManagedProperty extends \Google\Collection
   {
     return $this->valueBundleArray;
   }
+  /**
+   * @param int
+   */
   public function setValueInteger($valueInteger)
   {
     $this->valueInteger = $valueInteger;
   }
+  /**
+   * @return int
+   */
   public function getValueInteger()
   {
     return $this->valueInteger;
   }
+  /**
+   * @param string
+   */
   public function setValueString($valueString)
   {
     $this->valueString = $valueString;
   }
+  /**
+   * @return string
+   */
   public function getValueString()
   {
     return $this->valueString;
   }
+  /**
+   * @param string[]
+   */
   public function setValueStringArray($valueStringArray)
   {
     $this->valueStringArray = $valueStringArray;
   }
+  /**
+   * @return string[]
+   */
   public function getValueStringArray()
   {
     return $this->valueStringArray;

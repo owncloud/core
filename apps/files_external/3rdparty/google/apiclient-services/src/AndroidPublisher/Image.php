@@ -19,39 +19,75 @@ namespace Google\Service\AndroidPublisher;
 
 class Image extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $sha1;
+  /**
+   * @var string
+   */
   public $sha256;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setSha1($sha1)
   {
     $this->sha1 = $sha1;
   }
+  /**
+   * @return string
+   */
   public function getSha1()
   {
     return $this->sha1;
   }
+  /**
+   * @param string
+   */
   public function setSha256($sha256)
   {
     $this->sha256 = $sha256;
   }
+  /**
+   * @return string
+   */
   public function getSha256()
   {
     return $this->sha256;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

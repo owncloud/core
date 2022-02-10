@@ -19,21 +19,39 @@ namespace Google\Service\AndroidPublisher;
 
 class SubscriptionCancelSurveyResult extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $cancelSurveyReason;
+  /**
+   * @var string
+   */
   public $userInputCancelReason;
 
+  /**
+   * @param int
+   */
   public function setCancelSurveyReason($cancelSurveyReason)
   {
     $this->cancelSurveyReason = $cancelSurveyReason;
   }
+  /**
+   * @return int
+   */
   public function getCancelSurveyReason()
   {
     return $this->cancelSurveyReason;
   }
+  /**
+   * @param string
+   */
   public function setUserInputCancelReason($userInputCancelReason)
   {
     $this->userInputCancelReason = $userInputCancelReason;
   }
+  /**
+   * @return string
+   */
   public function getUserInputCancelReason()
   {
     return $this->userInputCancelReason;

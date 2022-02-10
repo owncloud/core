@@ -22,7 +22,13 @@ class ListKeyRingsResponse extends \Google\Collection
   protected $collection_key = 'keyRings';
   protected $keyRingsType = KeyRing::class;
   protected $keyRingsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var int
+   */
   public $totalSize;
 
   /**
@@ -39,18 +45,30 @@ class ListKeyRingsResponse extends \Google\Collection
   {
     return $this->keyRings;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

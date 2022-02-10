@@ -20,64 +20,109 @@ namespace Google\Service\Transcoder;
 class AudioStream extends \Google\Collection
 {
   protected $collection_key = 'mapping';
+  /**
+   * @var int
+   */
   public $bitrateBps;
+  /**
+   * @var int
+   */
   public $channelCount;
+  /**
+   * @var string[]
+   */
   public $channelLayout;
+  /**
+   * @var string
+   */
   public $codec;
-  protected $mappingType = AudioAtom::class;
+  protected $mappingType = AudioMapping::class;
   protected $mappingDataType = 'array';
+  /**
+   * @var int
+   */
   public $sampleRateHertz;
 
+  /**
+   * @param int
+   */
   public function setBitrateBps($bitrateBps)
   {
     $this->bitrateBps = $bitrateBps;
   }
+  /**
+   * @return int
+   */
   public function getBitrateBps()
   {
     return $this->bitrateBps;
   }
+  /**
+   * @param int
+   */
   public function setChannelCount($channelCount)
   {
     $this->channelCount = $channelCount;
   }
+  /**
+   * @return int
+   */
   public function getChannelCount()
   {
     return $this->channelCount;
   }
+  /**
+   * @param string[]
+   */
   public function setChannelLayout($channelLayout)
   {
     $this->channelLayout = $channelLayout;
   }
+  /**
+   * @return string[]
+   */
   public function getChannelLayout()
   {
     return $this->channelLayout;
   }
+  /**
+   * @param string
+   */
   public function setCodec($codec)
   {
     $this->codec = $codec;
   }
+  /**
+   * @return string
+   */
   public function getCodec()
   {
     return $this->codec;
   }
   /**
-   * @param AudioAtom[]
+   * @param AudioMapping[]
    */
   public function setMapping($mapping)
   {
     $this->mapping = $mapping;
   }
   /**
-   * @return AudioAtom[]
+   * @return AudioMapping[]
    */
   public function getMapping()
   {
     return $this->mapping;
   }
+  /**
+   * @param int
+   */
   public function setSampleRateHertz($sampleRateHertz)
   {
     $this->sampleRateHertz = $sampleRateHertz;
   }
+  /**
+   * @return int
+   */
   public function getSampleRateHertz()
   {
     return $this->sampleRateHertz;

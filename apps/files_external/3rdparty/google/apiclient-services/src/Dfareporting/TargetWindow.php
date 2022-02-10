@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class TargetWindow extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customHtml;
+  /**
+   * @var string
+   */
   public $targetWindowOption;
 
+  /**
+   * @param string
+   */
   public function setCustomHtml($customHtml)
   {
     $this->customHtml = $customHtml;
   }
+  /**
+   * @return string
+   */
   public function getCustomHtml()
   {
     return $this->customHtml;
   }
+  /**
+   * @param string
+   */
   public function setTargetWindowOption($targetWindowOption)
   {
     $this->targetWindowOption = $targetWindowOption;
   }
+  /**
+   * @return string
+   */
   public function getTargetWindowOption()
   {
     return $this->targetWindowOption;

@@ -20,23 +20,41 @@ namespace Google\Service\AndroidEnterprise;
 class StorePage extends \Google\Collection
 {
   protected $collection_key = 'name';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string[]
+   */
   public $link;
   protected $nameType = LocalizedText::class;
   protected $nameDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string[]
+   */
   public function setLink($link)
   {
     $this->link = $link;
   }
+  /**
+   * @return string[]
+   */
   public function getLink()
   {
     return $this->link;

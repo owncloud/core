@@ -19,63 +19,123 @@ namespace Google\Service\CloudKMS;
 
 class CryptoKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $destroyScheduledDuration;
+  /**
+   * @var bool
+   */
   public $importOnly;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $nextRotationTime;
   protected $primaryType = CryptoKeyVersion::class;
   protected $primaryDataType = '';
+  /**
+   * @var string
+   */
   public $purpose;
+  /**
+   * @var string
+   */
   public $rotationPeriod;
   protected $versionTemplateType = CryptoKeyVersionTemplate::class;
   protected $versionTemplateDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDestroyScheduledDuration($destroyScheduledDuration)
   {
     $this->destroyScheduledDuration = $destroyScheduledDuration;
   }
+  /**
+   * @return string
+   */
   public function getDestroyScheduledDuration()
   {
     return $this->destroyScheduledDuration;
   }
+  /**
+   * @param bool
+   */
   public function setImportOnly($importOnly)
   {
     $this->importOnly = $importOnly;
   }
+  /**
+   * @return bool
+   */
   public function getImportOnly()
   {
     return $this->importOnly;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNextRotationTime($nextRotationTime)
   {
     $this->nextRotationTime = $nextRotationTime;
   }
+  /**
+   * @return string
+   */
   public function getNextRotationTime()
   {
     return $this->nextRotationTime;
@@ -94,18 +154,30 @@ class CryptoKey extends \Google\Model
   {
     return $this->primary;
   }
+  /**
+   * @param string
+   */
   public function setPurpose($purpose)
   {
     $this->purpose = $purpose;
   }
+  /**
+   * @return string
+   */
   public function getPurpose()
   {
     return $this->purpose;
   }
+  /**
+   * @param string
+   */
   public function setRotationPeriod($rotationPeriod)
   {
     $this->rotationPeriod = $rotationPeriod;
   }
+  /**
+   * @return string
+   */
   public function getRotationPeriod()
   {
     return $this->rotationPeriod;

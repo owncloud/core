@@ -20,30 +20,57 @@ namespace Google\Service\AndroidManagement;
 class ContentProviderEndpoint extends \Google\Collection
 {
   protected $collection_key = 'signingCertsSha256';
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string[]
+   */
   public $signingCertsSha256;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string[]
+   */
   public function setSigningCertsSha256($signingCertsSha256)
   {
     $this->signingCertsSha256 = $signingCertsSha256;
   }
+  /**
+   * @return string[]
+   */
   public function getSigningCertsSha256()
   {
     return $this->signingCertsSha256;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

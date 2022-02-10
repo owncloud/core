@@ -19,39 +19,75 @@ namespace Google\Service\Drive;
 
 class AboutStorageQuota extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $limit;
+  /**
+   * @var string
+   */
   public $usage;
+  /**
+   * @var string
+   */
   public $usageInDrive;
+  /**
+   * @var string
+   */
   public $usageInDriveTrash;
 
+  /**
+   * @param string
+   */
   public function setLimit($limit)
   {
     $this->limit = $limit;
   }
+  /**
+   * @return string
+   */
   public function getLimit()
   {
     return $this->limit;
   }
+  /**
+   * @param string
+   */
   public function setUsage($usage)
   {
     $this->usage = $usage;
   }
+  /**
+   * @return string
+   */
   public function getUsage()
   {
     return $this->usage;
   }
+  /**
+   * @param string
+   */
   public function setUsageInDrive($usageInDrive)
   {
     $this->usageInDrive = $usageInDrive;
   }
+  /**
+   * @return string
+   */
   public function getUsageInDrive()
   {
     return $this->usageInDrive;
   }
+  /**
+   * @param string
+   */
   public function setUsageInDriveTrash($usageInDriveTrash)
   {
     $this->usageInDriveTrash = $usageInDriveTrash;
   }
+  /**
+   * @return string
+   */
   public function getUsageInDriveTrash()
   {
     return $this->usageInDriveTrash;

@@ -19,30 +19,57 @@ namespace Google\Service\CloudTalentSolution;
 
 class CompletionResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $imageUri;
+  /**
+   * @var string
+   */
   public $suggestion;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setImageUri($imageUri)
   {
     $this->imageUri = $imageUri;
   }
+  /**
+   * @return string
+   */
   public function getImageUri()
   {
     return $this->imageUri;
   }
+  /**
+   * @param string
+   */
   public function setSuggestion($suggestion)
   {
     $this->suggestion = $suggestion;
   }
+  /**
+   * @return string
+   */
   public function getSuggestion()
   {
     return $this->suggestion;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

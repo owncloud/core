@@ -20,14 +20,23 @@ namespace Google\Service\RealTimeBidding;
 class PolicyCompliance extends \Google\Collection
 {
   protected $collection_key = 'topics';
+  /**
+   * @var string
+   */
   public $status;
   protected $topicsType = PolicyTopicEntry::class;
   protected $topicsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

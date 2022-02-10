@@ -20,32 +20,59 @@ namespace Google\Service\ServiceManagement;
 class OperationMetadata extends \Google\Collection
 {
   protected $collection_key = 'steps';
+  /**
+   * @var int
+   */
   public $progressPercentage;
+  /**
+   * @var string[]
+   */
   public $resourceNames;
+  /**
+   * @var string
+   */
   public $startTime;
   protected $stepsType = Step::class;
   protected $stepsDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setProgressPercentage($progressPercentage)
   {
     $this->progressPercentage = $progressPercentage;
   }
+  /**
+   * @return int
+   */
   public function getProgressPercentage()
   {
     return $this->progressPercentage;
   }
+  /**
+   * @param string[]
+   */
   public function setResourceNames($resourceNames)
   {
     $this->resourceNames = $resourceNames;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceNames()
   {
     return $this->resourceNames;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

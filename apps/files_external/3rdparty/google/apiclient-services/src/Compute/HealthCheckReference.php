@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class HealthCheckReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $healthCheck;
 
+  /**
+   * @param string
+   */
   public function setHealthCheck($healthCheck)
   {
     $this->healthCheck = $healthCheck;
   }
+  /**
+   * @return string
+   */
   public function getHealthCheck()
   {
     return $this->healthCheck;

@@ -21,6 +21,9 @@ class CollectdValueError extends \Google\Model
 {
   protected $errorType = Status::class;
   protected $errorDataType = '';
+  /**
+   * @var int
+   */
   public $index;
 
   /**
@@ -37,10 +40,16 @@ class CollectdValueError extends \Google\Model
   {
     return $this->error;
   }
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;

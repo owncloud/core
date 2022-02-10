@@ -20,15 +20,27 @@ namespace Google\Service\Compute;
 class HttpRetryPolicy extends \Google\Collection
 {
   protected $collection_key = 'retryConditions';
+  /**
+   * @var string
+   */
   public $numRetries;
   protected $perTryTimeoutType = Duration::class;
   protected $perTryTimeoutDataType = '';
+  /**
+   * @var string[]
+   */
   public $retryConditions;
 
+  /**
+   * @param string
+   */
   public function setNumRetries($numRetries)
   {
     $this->numRetries = $numRetries;
   }
+  /**
+   * @return string
+   */
   public function getNumRetries()
   {
     return $this->numRetries;
@@ -47,10 +59,16 @@ class HttpRetryPolicy extends \Google\Collection
   {
     return $this->perTryTimeout;
   }
+  /**
+   * @param string[]
+   */
   public function setRetryConditions($retryConditions)
   {
     $this->retryConditions = $retryConditions;
   }
+  /**
+   * @return string[]
+   */
   public function getRetryConditions()
   {
     return $this->retryConditions;

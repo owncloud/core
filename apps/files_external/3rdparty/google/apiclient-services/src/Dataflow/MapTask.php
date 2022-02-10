@@ -20,16 +20,31 @@ namespace Google\Service\Dataflow;
 class MapTask extends \Google\Collection
 {
   protected $collection_key = 'instructions';
+  /**
+   * @var string
+   */
   public $counterPrefix;
   protected $instructionsType = ParallelInstruction::class;
   protected $instructionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $stageName;
+  /**
+   * @var string
+   */
   public $systemName;
 
+  /**
+   * @param string
+   */
   public function setCounterPrefix($counterPrefix)
   {
     $this->counterPrefix = $counterPrefix;
   }
+  /**
+   * @return string
+   */
   public function getCounterPrefix()
   {
     return $this->counterPrefix;
@@ -48,18 +63,30 @@ class MapTask extends \Google\Collection
   {
     return $this->instructions;
   }
+  /**
+   * @param string
+   */
   public function setStageName($stageName)
   {
     $this->stageName = $stageName;
   }
+  /**
+   * @return string
+   */
   public function getStageName()
   {
     return $this->stageName;
   }
+  /**
+   * @param string
+   */
   public function setSystemName($systemName)
   {
     $this->systemName = $systemName;
   }
+  /**
+   * @return string
+   */
   public function getSystemName()
   {
     return $this->systemName;

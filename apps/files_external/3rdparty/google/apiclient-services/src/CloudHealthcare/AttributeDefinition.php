@@ -20,57 +20,111 @@ namespace Google\Service\CloudHealthcare;
 class AttributeDefinition extends \Google\Collection
 {
   protected $collection_key = 'consentDefaultValues';
+  /**
+   * @var string[]
+   */
   public $allowedValues;
+  /**
+   * @var string
+   */
   public $category;
+  /**
+   * @var string[]
+   */
   public $consentDefaultValues;
+  /**
+   * @var string
+   */
   public $dataMappingDefaultValue;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedValues($allowedValues)
   {
     $this->allowedValues = $allowedValues;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedValues()
   {
     return $this->allowedValues;
   }
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
   }
+  /**
+   * @param string[]
+   */
   public function setConsentDefaultValues($consentDefaultValues)
   {
     $this->consentDefaultValues = $consentDefaultValues;
   }
+  /**
+   * @return string[]
+   */
   public function getConsentDefaultValues()
   {
     return $this->consentDefaultValues;
   }
+  /**
+   * @param string
+   */
   public function setDataMappingDefaultValue($dataMappingDefaultValue)
   {
     $this->dataMappingDefaultValue = $dataMappingDefaultValue;
   }
+  /**
+   * @return string
+   */
   public function getDataMappingDefaultValue()
   {
     return $this->dataMappingDefaultValue;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

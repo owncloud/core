@@ -20,21 +20,39 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3DeploymentResult extends \Google\Collection
 {
   protected $collection_key = 'deploymentTestResults';
+  /**
+   * @var string[]
+   */
   public $deploymentTestResults;
+  /**
+   * @var string
+   */
   public $experiment;
 
+  /**
+   * @param string[]
+   */
   public function setDeploymentTestResults($deploymentTestResults)
   {
     $this->deploymentTestResults = $deploymentTestResults;
   }
+  /**
+   * @return string[]
+   */
   public function getDeploymentTestResults()
   {
     return $this->deploymentTestResults;
   }
+  /**
+   * @param string
+   */
   public function setExperiment($experiment)
   {
     $this->experiment = $experiment;
   }
+  /**
+   * @return string
+   */
   public function getExperiment()
   {
     return $this->experiment;

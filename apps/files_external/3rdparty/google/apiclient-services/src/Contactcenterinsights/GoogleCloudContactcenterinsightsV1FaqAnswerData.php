@@ -19,57 +19,111 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1FaqAnswerData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $answer;
+  /**
+   * @var float
+   */
   public $confidenceScore;
+  /**
+   * @var string[]
+   */
   public $metadata;
+  /**
+   * @var string
+   */
   public $queryRecord;
+  /**
+   * @var string
+   */
   public $question;
+  /**
+   * @var string
+   */
   public $source;
 
+  /**
+   * @param string
+   */
   public function setAnswer($answer)
   {
     $this->answer = $answer;
   }
+  /**
+   * @return string
+   */
   public function getAnswer()
   {
     return $this->answer;
   }
+  /**
+   * @param float
+   */
   public function setConfidenceScore($confidenceScore)
   {
     $this->confidenceScore = $confidenceScore;
   }
+  /**
+   * @return float
+   */
   public function getConfidenceScore()
   {
     return $this->confidenceScore;
   }
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setQueryRecord($queryRecord)
   {
     $this->queryRecord = $queryRecord;
   }
+  /**
+   * @return string
+   */
   public function getQueryRecord()
   {
     return $this->queryRecord;
   }
+  /**
+   * @param string
+   */
   public function setQuestion($question)
   {
     $this->question = $question;
   }
+  /**
+   * @return string
+   */
   public function getQuestion()
   {
     return $this->question;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;

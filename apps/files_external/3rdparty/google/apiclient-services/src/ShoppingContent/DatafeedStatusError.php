@@ -20,24 +20,45 @@ namespace Google\Service\ShoppingContent;
 class DatafeedStatusError extends \Google\Collection
 {
   protected $collection_key = 'examples';
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var string
+   */
   public $count;
   protected $examplesType = DatafeedStatusExample::class;
   protected $examplesDataType = 'array';
+  /**
+   * @var string
+   */
   public $message;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
@@ -56,10 +77,16 @@ class DatafeedStatusError extends \Google\Collection
   {
     return $this->examples;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;

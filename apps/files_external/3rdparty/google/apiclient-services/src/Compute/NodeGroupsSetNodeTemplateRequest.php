@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class NodeGroupsSetNodeTemplateRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $nodeTemplate;
 
+  /**
+   * @param string
+   */
   public function setNodeTemplate($nodeTemplate)
   {
     $this->nodeTemplate = $nodeTemplate;
   }
+  /**
+   * @return string
+   */
   public function getNodeTemplate()
   {
     return $this->nodeTemplate;

@@ -20,32 +20,59 @@ namespace Google\Service\Bigquery;
 class ViewDefinition extends \Google\Collection
 {
   protected $collection_key = 'userDefinedFunctionResources';
+  /**
+   * @var string
+   */
   public $query;
+  /**
+   * @var bool
+   */
   public $useExplicitColumnNames;
+  /**
+   * @var bool
+   */
   public $useLegacySql;
   protected $userDefinedFunctionResourcesType = UserDefinedFunctionResource::class;
   protected $userDefinedFunctionResourcesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;
   }
+  /**
+   * @param bool
+   */
   public function setUseExplicitColumnNames($useExplicitColumnNames)
   {
     $this->useExplicitColumnNames = $useExplicitColumnNames;
   }
+  /**
+   * @return bool
+   */
   public function getUseExplicitColumnNames()
   {
     return $this->useExplicitColumnNames;
   }
+  /**
+   * @param bool
+   */
   public function setUseLegacySql($useLegacySql)
   {
     $this->useLegacySql = $useLegacySql;
   }
+  /**
+   * @return bool
+   */
   public function getUseLegacySql()
   {
     return $this->useLegacySql;

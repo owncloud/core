@@ -19,16 +19,31 @@ namespace Google\Service\PeopleService;
 
 class FieldMetadata extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $primary;
   protected $sourceType = Source::class;
   protected $sourceDataType = '';
+  /**
+   * @var bool
+   */
   public $sourcePrimary;
+  /**
+   * @var bool
+   */
   public $verified;
 
+  /**
+   * @param bool
+   */
   public function setPrimary($primary)
   {
     $this->primary = $primary;
   }
+  /**
+   * @return bool
+   */
   public function getPrimary()
   {
     return $this->primary;
@@ -47,18 +62,30 @@ class FieldMetadata extends \Google\Model
   {
     return $this->source;
   }
+  /**
+   * @param bool
+   */
   public function setSourcePrimary($sourcePrimary)
   {
     $this->sourcePrimary = $sourcePrimary;
   }
+  /**
+   * @return bool
+   */
   public function getSourcePrimary()
   {
     return $this->sourcePrimary;
   }
+  /**
+   * @param bool
+   */
   public function setVerified($verified)
   {
     $this->verified = $verified;
   }
+  /**
+   * @return bool
+   */
   public function getVerified()
   {
     return $this->verified;

@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class PageInfo extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $resultsPerPage;
+  /**
+   * @var int
+   */
   public $totalResults;
 
+  /**
+   * @param int
+   */
   public function setResultsPerPage($resultsPerPage)
   {
     $this->resultsPerPage = $resultsPerPage;
   }
+  /**
+   * @return int
+   */
   public function getResultsPerPage()
   {
     return $this->resultsPerPage;
   }
+  /**
+   * @param int
+   */
   public function setTotalResults($totalResults)
   {
     $this->totalResults = $totalResults;
   }
+  /**
+   * @return int
+   */
   public function getTotalResults()
   {
     return $this->totalResults;

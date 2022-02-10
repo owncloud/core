@@ -33,7 +33,11 @@ use Google\Service\BigtableAdmin\Operation;
 class ProjectsInstancesClusters extends \Google\Service\Resource
 {
   /**
-   * Creates a cluster within an instance. (clusters.create)
+   * Creates a cluster within an instance. Note that exactly one of
+   * Cluster.serve_nodes and Cluster.cluster_config.cluster_autoscaling_config can
+   * be set. If serve_nodes is set to non-zero, then the cluster is manually
+   * scaled. If cluster_config.cluster_autoscaling_config is non-empty, then
+   * autoscaling is enabled. (clusters.create)
    *
    * @param string $parent Required. The unique name of the instance in which to
    * create the new cluster. Values are of the form
@@ -104,7 +108,14 @@ class ProjectsInstancesClusters extends \Google\Service\Resource
   }
   /**
    * Partially updates a cluster within a project. This method is the preferred
-   * way to update a Cluster.  (clusters.partialUpdateCluster)
+   * way to update a Cluster. To enable and update autoscaling, set
+   * cluster_config.cluster_autoscaling_config. When autoscaling is enabled,
+   * serve_nodes is treated as an OUTPUT_ONLY field, meaning that updates to it
+   * are ignored. Note that an update cannot simultaneously set serve_nodes to
+   * non-zero and cluster_config.cluster_autoscaling_config to non-empty, and also
+   * specify both in the update_mask. To disable autoscaling, clear
+   * cluster_config.cluster_autoscaling_config, and explicitly set a serve_node
+   * count via the update_mask. (clusters.partialUpdateCluster)
    *
    * @param string $name The unique name of the cluster. Values are of the form
    * `projects/{project}/instances/{instance}/clusters/a-z*`.
@@ -112,7 +123,7 @@ class ProjectsInstancesClusters extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. The subset of Cluster fields which
-   * should be replaced. Must be explicitly set.
+   * should be replaced.
    * @return Operation
    */
   public function partialUpdateCluster($name, Cluster $postBody, $optParams = [])
@@ -122,8 +133,9 @@ class ProjectsInstancesClusters extends \Google\Service\Resource
     return $this->call('partialUpdateCluster', [$params], Operation::class);
   }
   /**
-   * Updates a cluster within an instance. UpdateCluster is deprecated. Please use
-   * PartialUpdateCluster instead. (clusters.update)
+   * Updates a cluster within an instance. Note that UpdateCluster does not
+   * support updating cluster_config.cluster_autoscaling_config. In order to
+   * update it, you must use PartialUpdateCluster. (clusters.update)
    *
    * @param string $name The unique name of the cluster. Values are of the form
    * `projects/{project}/instances/{instance}/clusters/a-z*`.

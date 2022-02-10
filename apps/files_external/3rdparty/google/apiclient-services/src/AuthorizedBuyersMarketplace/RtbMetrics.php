@@ -19,17 +19,32 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 
 class RtbMetrics extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adImpressions7Days;
   public $bidRate7Days;
+  /**
+   * @var string
+   */
   public $bidRequests7Days;
+  /**
+   * @var string
+   */
   public $bids7Days;
   public $filteredBidRate7Days;
   public $mustBidRateCurrentMonth;
 
+  /**
+   * @param string
+   */
   public function setAdImpressions7Days($adImpressions7Days)
   {
     $this->adImpressions7Days = $adImpressions7Days;
   }
+  /**
+   * @return string
+   */
   public function getAdImpressions7Days()
   {
     return $this->adImpressions7Days;
@@ -42,18 +57,30 @@ class RtbMetrics extends \Google\Model
   {
     return $this->bidRate7Days;
   }
+  /**
+   * @param string
+   */
   public function setBidRequests7Days($bidRequests7Days)
   {
     $this->bidRequests7Days = $bidRequests7Days;
   }
+  /**
+   * @return string
+   */
   public function getBidRequests7Days()
   {
     return $this->bidRequests7Days;
   }
+  /**
+   * @param string
+   */
   public function setBids7Days($bids7Days)
   {
     $this->bids7Days = $bids7Days;
   }
+  /**
+   * @return string
+   */
   public function getBids7Days()
   {
     return $this->bids7Days;

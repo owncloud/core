@@ -21,7 +21,13 @@ class ReportedErrorEvent extends \Google\Model
 {
   protected $contextType = ErrorContext::class;
   protected $contextDataType = '';
+  /**
+   * @var string
+   */
   public $eventTime;
+  /**
+   * @var string
+   */
   public $message;
   protected $serviceContextType = ServiceContext::class;
   protected $serviceContextDataType = '';
@@ -40,18 +46,30 @@ class ReportedErrorEvent extends \Google\Model
   {
     return $this->context;
   }
+  /**
+   * @param string
+   */
   public function setEventTime($eventTime)
   {
     $this->eventTime = $eventTime;
   }
+  /**
+   * @return string
+   */
   public function getEventTime()
   {
     return $this->eventTime;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;

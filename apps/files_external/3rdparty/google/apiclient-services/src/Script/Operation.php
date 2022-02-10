@@ -19,15 +19,27 @@ namespace Google\Service\Script;
 
 class Operation extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $done;
   protected $errorType = Status::class;
   protected $errorDataType = '';
+  /**
+   * @var array[]
+   */
   public $response;
 
+  /**
+   * @param bool
+   */
   public function setDone($done)
   {
     $this->done = $done;
   }
+  /**
+   * @return bool
+   */
   public function getDone()
   {
     return $this->done;
@@ -46,10 +58,16 @@ class Operation extends \Google\Model
   {
     return $this->error;
   }
+  /**
+   * @param array[]
+   */
   public function setResponse($response)
   {
     $this->response = $response;
   }
+  /**
+   * @return array[]
+   */
   public function getResponse()
   {
     return $this->response;

@@ -26,6 +26,9 @@ class WaterfallChartSeries extends \Google\Collection
   protected $dataDataType = '';
   protected $dataLabelType = DataLabel::class;
   protected $dataLabelDataType = '';
+  /**
+   * @var bool
+   */
   public $hideTrailingSubtotal;
   protected $negativeColumnsStyleType = WaterfallChartColumnStyle::class;
   protected $negativeColumnsStyleDataType = '';
@@ -76,10 +79,16 @@ class WaterfallChartSeries extends \Google\Collection
   {
     return $this->dataLabel;
   }
+  /**
+   * @param bool
+   */
   public function setHideTrailingSubtotal($hideTrailingSubtotal)
   {
     $this->hideTrailingSubtotal = $hideTrailingSubtotal;
   }
+  /**
+   * @return bool
+   */
   public function getHideTrailingSubtotal()
   {
     return $this->hideTrailingSubtotal;

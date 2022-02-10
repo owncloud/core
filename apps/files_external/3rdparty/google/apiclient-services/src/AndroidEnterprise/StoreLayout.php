@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class StoreLayout extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $homepageId;
+  /**
+   * @var string
+   */
   public $storeLayoutType;
 
+  /**
+   * @param string
+   */
   public function setHomepageId($homepageId)
   {
     $this->homepageId = $homepageId;
   }
+  /**
+   * @return string
+   */
   public function getHomepageId()
   {
     return $this->homepageId;
   }
+  /**
+   * @param string
+   */
   public function setStoreLayoutType($storeLayoutType)
   {
     $this->storeLayoutType = $storeLayoutType;
   }
+  /**
+   * @return string
+   */
   public function getStoreLayoutType()
   {
     return $this->storeLayoutType;

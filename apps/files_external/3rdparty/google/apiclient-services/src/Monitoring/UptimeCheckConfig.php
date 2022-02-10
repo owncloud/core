@@ -22,21 +22,39 @@ class UptimeCheckConfig extends \Google\Collection
   protected $collection_key = 'selectedRegions';
   protected $contentMatchersType = ContentMatcher::class;
   protected $contentMatchersDataType = 'array';
+  /**
+   * @var string
+   */
   public $displayName;
   protected $httpCheckType = HttpCheck::class;
   protected $httpCheckDataType = '';
   protected $internalCheckersType = InternalChecker::class;
   protected $internalCheckersDataType = 'array';
+  /**
+   * @var bool
+   */
   public $isInternal;
   protected $monitoredResourceType = MonitoredResource::class;
   protected $monitoredResourceDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $period;
   protected $resourceGroupType = ResourceGroup::class;
   protected $resourceGroupDataType = '';
+  /**
+   * @var string[]
+   */
   public $selectedRegions;
   protected $tcpCheckType = TcpCheck::class;
   protected $tcpCheckDataType = '';
+  /**
+   * @var string
+   */
   public $timeout;
 
   /**
@@ -53,10 +71,16 @@ class UptimeCheckConfig extends \Google\Collection
   {
     return $this->contentMatchers;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -89,10 +113,16 @@ class UptimeCheckConfig extends \Google\Collection
   {
     return $this->internalCheckers;
   }
+  /**
+   * @param bool
+   */
   public function setIsInternal($isInternal)
   {
     $this->isInternal = $isInternal;
   }
+  /**
+   * @return bool
+   */
   public function getIsInternal()
   {
     return $this->isInternal;
@@ -111,18 +141,30 @@ class UptimeCheckConfig extends \Google\Collection
   {
     return $this->monitoredResource;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPeriod($period)
   {
     $this->period = $period;
   }
+  /**
+   * @return string
+   */
   public function getPeriod()
   {
     return $this->period;
@@ -141,10 +183,16 @@ class UptimeCheckConfig extends \Google\Collection
   {
     return $this->resourceGroup;
   }
+  /**
+   * @param string[]
+   */
   public function setSelectedRegions($selectedRegions)
   {
     $this->selectedRegions = $selectedRegions;
   }
+  /**
+   * @return string[]
+   */
   public function getSelectedRegions()
   {
     return $this->selectedRegions;
@@ -163,10 +211,16 @@ class UptimeCheckConfig extends \Google\Collection
   {
     return $this->tcpCheck;
   }
+  /**
+   * @param string
+   */
   public function setTimeout($timeout)
   {
     $this->timeout = $timeout;
   }
+  /**
+   * @return string
+   */
   public function getTimeout()
   {
     return $this->timeout;

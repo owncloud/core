@@ -19,57 +19,111 @@ namespace Google\Service\MyBusinessLodging;
 
 class Families extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $babysitting;
+  /**
+   * @var string
+   */
   public $babysittingException;
+  /**
+   * @var bool
+   */
   public $kidsActivities;
+  /**
+   * @var string
+   */
   public $kidsActivitiesException;
+  /**
+   * @var bool
+   */
   public $kidsClub;
+  /**
+   * @var string
+   */
   public $kidsClubException;
 
+  /**
+   * @param bool
+   */
   public function setBabysitting($babysitting)
   {
     $this->babysitting = $babysitting;
   }
+  /**
+   * @return bool
+   */
   public function getBabysitting()
   {
     return $this->babysitting;
   }
+  /**
+   * @param string
+   */
   public function setBabysittingException($babysittingException)
   {
     $this->babysittingException = $babysittingException;
   }
+  /**
+   * @return string
+   */
   public function getBabysittingException()
   {
     return $this->babysittingException;
   }
+  /**
+   * @param bool
+   */
   public function setKidsActivities($kidsActivities)
   {
     $this->kidsActivities = $kidsActivities;
   }
+  /**
+   * @return bool
+   */
   public function getKidsActivities()
   {
     return $this->kidsActivities;
   }
+  /**
+   * @param string
+   */
   public function setKidsActivitiesException($kidsActivitiesException)
   {
     $this->kidsActivitiesException = $kidsActivitiesException;
   }
+  /**
+   * @return string
+   */
   public function getKidsActivitiesException()
   {
     return $this->kidsActivitiesException;
   }
+  /**
+   * @param bool
+   */
   public function setKidsClub($kidsClub)
   {
     $this->kidsClub = $kidsClub;
   }
+  /**
+   * @return bool
+   */
   public function getKidsClub()
   {
     return $this->kidsClub;
   }
+  /**
+   * @param string
+   */
   public function setKidsClubException($kidsClubException)
   {
     $this->kidsClubException = $kidsClubException;
   }
+  /**
+   * @return string
+   */
   public function getKidsClubException()
   {
     return $this->kidsClubException;

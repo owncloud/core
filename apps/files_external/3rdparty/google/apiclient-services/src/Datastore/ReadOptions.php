@@ -19,21 +19,39 @@ namespace Google\Service\Datastore;
 
 class ReadOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $readConsistency;
+  /**
+   * @var string
+   */
   public $transaction;
 
+  /**
+   * @param string
+   */
   public function setReadConsistency($readConsistency)
   {
     $this->readConsistency = $readConsistency;
   }
+  /**
+   * @return string
+   */
   public function getReadConsistency()
   {
     return $this->readConsistency;
   }
+  /**
+   * @param string
+   */
   public function setTransaction($transaction)
   {
     $this->transaction = $transaction;
   }
+  /**
+   * @return string
+   */
   public function getTransaction()
   {
     return $this->transaction;

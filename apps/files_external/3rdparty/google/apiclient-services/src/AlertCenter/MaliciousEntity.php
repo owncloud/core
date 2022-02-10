@@ -19,15 +19,27 @@ namespace Google\Service\AlertCenter;
 
 class MaliciousEntity extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
   protected $entityType = User::class;
   protected $entityDataType = '';
+  /**
+   * @var string
+   */
   public $fromHeader;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -46,10 +58,16 @@ class MaliciousEntity extends \Google\Model
   {
     return $this->entity;
   }
+  /**
+   * @param string
+   */
   public function setFromHeader($fromHeader)
   {
     $this->fromHeader = $fromHeader;
   }
+  /**
+   * @return string
+   */
   public function getFromHeader()
   {
     return $this->fromHeader;

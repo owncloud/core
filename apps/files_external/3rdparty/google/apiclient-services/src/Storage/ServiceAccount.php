@@ -22,21 +22,39 @@ class ServiceAccount extends \Google\Model
   protected $internal_gapi_mappings = [
         "emailAddress" => "email_address",
   ];
+  /**
+   * @var string
+   */
   public $emailAddress;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setEmailAddress($emailAddress)
   {
     $this->emailAddress = $emailAddress;
   }
+  /**
+   * @return string
+   */
   public function getEmailAddress()
   {
     return $this->emailAddress;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

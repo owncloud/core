@@ -21,9 +21,21 @@ class GoogleCloudDatapipelinesV1LaunchTemplateParameters extends \Google\Model
 {
   protected $environmentType = GoogleCloudDatapipelinesV1RuntimeEnvironment::class;
   protected $environmentDataType = '';
+  /**
+   * @var string
+   */
   public $jobName;
+  /**
+   * @var string[]
+   */
   public $parameters;
+  /**
+   * @var string[]
+   */
   public $transformNameMapping;
+  /**
+   * @var bool
+   */
   public $update;
 
   /**
@@ -40,34 +52,58 @@ class GoogleCloudDatapipelinesV1LaunchTemplateParameters extends \Google\Model
   {
     return $this->environment;
   }
+  /**
+   * @param string
+   */
   public function setJobName($jobName)
   {
     $this->jobName = $jobName;
   }
+  /**
+   * @return string
+   */
   public function getJobName()
   {
     return $this->jobName;
   }
+  /**
+   * @param string[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return string[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string[]
+   */
   public function setTransformNameMapping($transformNameMapping)
   {
     $this->transformNameMapping = $transformNameMapping;
   }
+  /**
+   * @return string[]
+   */
   public function getTransformNameMapping()
   {
     return $this->transformNameMapping;
   }
+  /**
+   * @param bool
+   */
   public function setUpdate($update)
   {
     $this->update = $update;
   }
+  /**
+   * @return bool
+   */
   public function getUpdate()
   {
     return $this->update;

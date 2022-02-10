@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class SqlServerDatabaseDetails extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $compatibilityLevel;
+  /**
+   * @var string
+   */
   public $recoveryModel;
 
+  /**
+   * @param int
+   */
   public function setCompatibilityLevel($compatibilityLevel)
   {
     $this->compatibilityLevel = $compatibilityLevel;
   }
+  /**
+   * @return int
+   */
   public function getCompatibilityLevel()
   {
     return $this->compatibilityLevel;
   }
+  /**
+   * @param string
+   */
   public function setRecoveryModel($recoveryModel)
   {
     $this->recoveryModel = $recoveryModel;
   }
+  /**
+   * @return string
+   */
   public function getRecoveryModel()
   {
     return $this->recoveryModel;

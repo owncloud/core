@@ -20,12 +20,21 @@ namespace Google\Service\ShoppingContent;
 class AccountsUpdateLabelsRequest extends \Google\Collection
 {
   protected $collection_key = 'labelIds';
+  /**
+   * @var string[]
+   */
   public $labelIds;
 
+  /**
+   * @param string[]
+   */
   public function setLabelIds($labelIds)
   {
     $this->labelIds = $labelIds;
   }
+  /**
+   * @return string[]
+   */
   public function getLabelIds()
   {
     return $this->labelIds;

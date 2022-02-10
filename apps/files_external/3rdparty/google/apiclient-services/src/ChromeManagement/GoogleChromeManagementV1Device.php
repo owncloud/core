@@ -19,21 +19,39 @@ namespace Google\Service\ChromeManagement;
 
 class GoogleChromeManagementV1Device extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceId;
+  /**
+   * @var string
+   */
   public $machine;
 
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
   }
+  /**
+   * @param string
+   */
   public function setMachine($machine)
   {
     $this->machine = $machine;
   }
+  /**
+   * @return string
+   */
   public function getMachine()
   {
     return $this->machine;

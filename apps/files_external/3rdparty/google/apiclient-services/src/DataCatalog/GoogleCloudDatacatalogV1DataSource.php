@@ -19,21 +19,39 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1DataSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resource;
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

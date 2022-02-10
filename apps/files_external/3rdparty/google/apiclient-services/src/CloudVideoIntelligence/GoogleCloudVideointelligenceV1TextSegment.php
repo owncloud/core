@@ -20,16 +20,25 @@ namespace Google\Service\CloudVideoIntelligence;
 class GoogleCloudVideointelligenceV1TextSegment extends \Google\Collection
 {
   protected $collection_key = 'frames';
+  /**
+   * @var float
+   */
   public $confidence;
   protected $framesType = GoogleCloudVideointelligenceV1TextFrame::class;
   protected $framesDataType = 'array';
   protected $segmentType = GoogleCloudVideointelligenceV1VideoSegment::class;
   protected $segmentDataType = '';
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;

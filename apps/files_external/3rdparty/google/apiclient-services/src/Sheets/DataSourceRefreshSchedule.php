@@ -21,11 +21,17 @@ class DataSourceRefreshSchedule extends \Google\Model
 {
   protected $dailyScheduleType = DataSourceRefreshDailySchedule::class;
   protected $dailyScheduleDataType = '';
+  /**
+   * @var bool
+   */
   public $enabled;
   protected $monthlyScheduleType = DataSourceRefreshMonthlySchedule::class;
   protected $monthlyScheduleDataType = '';
   protected $nextRunType = Interval::class;
   protected $nextRunDataType = '';
+  /**
+   * @var string
+   */
   public $refreshScope;
   protected $weeklyScheduleType = DataSourceRefreshWeeklySchedule::class;
   protected $weeklyScheduleDataType = '';
@@ -44,10 +50,16 @@ class DataSourceRefreshSchedule extends \Google\Model
   {
     return $this->dailySchedule;
   }
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
@@ -80,10 +92,16 @@ class DataSourceRefreshSchedule extends \Google\Model
   {
     return $this->nextRun;
   }
+  /**
+   * @param string
+   */
   public function setRefreshScope($refreshScope)
   {
     $this->refreshScope = $refreshScope;
   }
+  /**
+   * @return string
+   */
   public function getRefreshScope()
   {
     return $this->refreshScope;

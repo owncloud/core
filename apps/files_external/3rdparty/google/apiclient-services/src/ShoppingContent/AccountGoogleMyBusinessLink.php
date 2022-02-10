@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class AccountGoogleMyBusinessLink extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gmbAccountId;
+  /**
+   * @var string
+   */
   public $gmbEmail;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setGmbAccountId($gmbAccountId)
   {
     $this->gmbAccountId = $gmbAccountId;
   }
+  /**
+   * @return string
+   */
   public function getGmbAccountId()
   {
     return $this->gmbAccountId;
   }
+  /**
+   * @param string
+   */
   public function setGmbEmail($gmbEmail)
   {
     $this->gmbEmail = $gmbEmail;
   }
+  /**
+   * @return string
+   */
   public function getGmbEmail()
   {
     return $this->gmbEmail;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

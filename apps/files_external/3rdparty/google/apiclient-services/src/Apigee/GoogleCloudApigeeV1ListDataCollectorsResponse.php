@@ -22,6 +22,9 @@ class GoogleCloudApigeeV1ListDataCollectorsResponse extends \Google\Collection
   protected $collection_key = 'dataCollectors';
   protected $dataCollectorsType = GoogleCloudApigeeV1DataCollector::class;
   protected $dataCollectorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudApigeeV1ListDataCollectorsResponse extends \Google\Collection
   {
     return $this->dataCollectors;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

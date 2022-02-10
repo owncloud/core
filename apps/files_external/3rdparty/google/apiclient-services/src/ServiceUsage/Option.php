@@ -19,21 +19,39 @@ namespace Google\Service\ServiceUsage;
 
 class Option extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var array[]
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param array[]
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array[]
+   */
   public function getValue()
   {
     return $this->value;

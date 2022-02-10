@@ -19,21 +19,39 @@ namespace Google\Service\Directory;
 
 class UserAbout extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentType;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setContentType($contentType)
   {
     $this->contentType = $contentType;
   }
+  /**
+   * @return string
+   */
   public function getContentType()
   {
     return $this->contentType;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

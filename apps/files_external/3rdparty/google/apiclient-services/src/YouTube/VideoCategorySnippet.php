@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class VideoCategorySnippet extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $assignable;
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param bool
+   */
   public function setAssignable($assignable)
   {
     $this->assignable = $assignable;
   }
+  /**
+   * @return bool
+   */
   public function getAssignable()
   {
     return $this->assignable;
   }
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

@@ -19,21 +19,39 @@ namespace Google\Service\Recommender;
 
 class GoogleCloudRecommenderV1RecommendationStateInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string[]
+   */
   public $stateMetadata;
 
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string[]
+   */
   public function setStateMetadata($stateMetadata)
   {
     $this->stateMetadata = $stateMetadata;
   }
+  /**
+   * @return string[]
+   */
   public function getStateMetadata()
   {
     return $this->stateMetadata;

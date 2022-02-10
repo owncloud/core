@@ -20,14 +20,23 @@ namespace Google\Service\Iam;
 class QueryGrantableRolesResponse extends \Google\Collection
 {
   protected $collection_key = 'roles';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $rolesType = Role::class;
   protected $rolesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

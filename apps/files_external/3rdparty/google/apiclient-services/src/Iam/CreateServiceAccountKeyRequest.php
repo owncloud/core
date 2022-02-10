@@ -19,21 +19,39 @@ namespace Google\Service\Iam;
 
 class CreateServiceAccountKeyRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyAlgorithm;
+  /**
+   * @var string
+   */
   public $privateKeyType;
 
+  /**
+   * @param string
+   */
   public function setKeyAlgorithm($keyAlgorithm)
   {
     $this->keyAlgorithm = $keyAlgorithm;
   }
+  /**
+   * @return string
+   */
   public function getKeyAlgorithm()
   {
     return $this->keyAlgorithm;
   }
+  /**
+   * @param string
+   */
   public function setPrivateKeyType($privateKeyType)
   {
     $this->privateKeyType = $privateKeyType;
   }
+  /**
+   * @return string
+   */
   public function getPrivateKeyType()
   {
     return $this->privateKeyType;

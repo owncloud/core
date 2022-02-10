@@ -19,12 +19,21 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaExchangeCustomTokenRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customToken;
 
+  /**
+   * @param string
+   */
   public function setCustomToken($customToken)
   {
     $this->customToken = $customToken;
   }
+  /**
+   * @return string
+   */
   public function getCustomToken()
   {
     return $this->customToken;

@@ -20,15 +20,27 @@ namespace Google\Service\ChromeManagement;
 class GoogleChromeManagementV1CountChromeAppRequestsResponse extends \Google\Collection
 {
   protected $collection_key = 'requestedApps';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $requestedAppsType = GoogleChromeManagementV1ChromeAppRequest::class;
   protected $requestedAppsDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalSize;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
@@ -47,10 +59,16 @@ class GoogleChromeManagementV1CountChromeAppRequestsResponse extends \Google\Col
   {
     return $this->requestedApps;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

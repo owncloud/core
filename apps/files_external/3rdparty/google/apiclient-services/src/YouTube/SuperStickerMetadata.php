@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class SuperStickerMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $altText;
+  /**
+   * @var string
+   */
   public $altTextLanguage;
+  /**
+   * @var string
+   */
   public $stickerId;
 
+  /**
+   * @param string
+   */
   public function setAltText($altText)
   {
     $this->altText = $altText;
   }
+  /**
+   * @return string
+   */
   public function getAltText()
   {
     return $this->altText;
   }
+  /**
+   * @param string
+   */
   public function setAltTextLanguage($altTextLanguage)
   {
     $this->altTextLanguage = $altTextLanguage;
   }
+  /**
+   * @return string
+   */
   public function getAltTextLanguage()
   {
     return $this->altTextLanguage;
   }
+  /**
+   * @param string
+   */
   public function setStickerId($stickerId)
   {
     $this->stickerId = $stickerId;
   }
+  /**
+   * @return string
+   */
   public function getStickerId()
   {
     return $this->stickerId;

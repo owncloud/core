@@ -20,39 +20,75 @@ namespace Google\Service\Storage;
 class BucketCors extends \Google\Collection
 {
   protected $collection_key = 'responseHeader';
+  /**
+   * @var int
+   */
   public $maxAgeSeconds;
+  /**
+   * @var string[]
+   */
   public $method;
+  /**
+   * @var string[]
+   */
   public $origin;
+  /**
+   * @var string[]
+   */
   public $responseHeader;
 
+  /**
+   * @param int
+   */
   public function setMaxAgeSeconds($maxAgeSeconds)
   {
     $this->maxAgeSeconds = $maxAgeSeconds;
   }
+  /**
+   * @return int
+   */
   public function getMaxAgeSeconds()
   {
     return $this->maxAgeSeconds;
   }
+  /**
+   * @param string[]
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string[]
+   */
   public function getMethod()
   {
     return $this->method;
   }
+  /**
+   * @param string[]
+   */
   public function setOrigin($origin)
   {
     $this->origin = $origin;
   }
+  /**
+   * @return string[]
+   */
   public function getOrigin()
   {
     return $this->origin;
   }
+  /**
+   * @param string[]
+   */
   public function setResponseHeader($responseHeader)
   {
     $this->responseHeader = $responseHeader;
   }
+  /**
+   * @return string[]
+   */
   public function getResponseHeader()
   {
     return $this->responseHeader;

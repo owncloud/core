@@ -20,39 +20,75 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3beta1ContinuousTestResult extends \Google\Collection
 {
   protected $collection_key = 'testCaseResults';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $result;
+  /**
+   * @var string
+   */
   public $runTime;
+  /**
+   * @var string[]
+   */
   public $testCaseResults;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setResult($result)
   {
     $this->result = $result;
   }
+  /**
+   * @return string
+   */
   public function getResult()
   {
     return $this->result;
   }
+  /**
+   * @param string
+   */
   public function setRunTime($runTime)
   {
     $this->runTime = $runTime;
   }
+  /**
+   * @return string
+   */
   public function getRunTime()
   {
     return $this->runTime;
   }
+  /**
+   * @param string[]
+   */
   public function setTestCaseResults($testCaseResults)
   {
     $this->testCaseResults = $testCaseResults;
   }
+  /**
+   * @return string[]
+   */
   public function getTestCaseResults()
   {
     return $this->testCaseResults;

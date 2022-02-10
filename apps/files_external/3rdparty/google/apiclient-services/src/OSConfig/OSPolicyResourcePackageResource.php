@@ -23,6 +23,9 @@ class OSPolicyResourcePackageResource extends \Google\Model
   protected $aptDataType = '';
   protected $debType = OSPolicyResourcePackageResourceDeb::class;
   protected $debDataType = '';
+  /**
+   * @var string
+   */
   public $desiredState;
   protected $googetType = OSPolicyResourcePackageResourceGooGet::class;
   protected $googetDataType = '';
@@ -63,10 +66,16 @@ class OSPolicyResourcePackageResource extends \Google\Model
   {
     return $this->deb;
   }
+  /**
+   * @param string
+   */
   public function setDesiredState($desiredState)
   {
     $this->desiredState = $desiredState;
   }
+  /**
+   * @return string
+   */
   public function getDesiredState()
   {
     return $this->desiredState;

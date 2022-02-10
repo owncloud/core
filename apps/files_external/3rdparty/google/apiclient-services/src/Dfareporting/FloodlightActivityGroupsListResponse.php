@@ -22,7 +22,13 @@ class FloodlightActivityGroupsListResponse extends \Google\Collection
   protected $collection_key = 'floodlightActivityGroups';
   protected $floodlightActivityGroupsType = FloodlightActivityGroup::class;
   protected $floodlightActivityGroupsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -39,18 +45,30 @@ class FloodlightActivityGroupsListResponse extends \Google\Collection
   {
     return $this->floodlightActivityGroups;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

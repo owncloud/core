@@ -19,12 +19,21 @@ namespace Google\Service\Container;
 
 class MeshCertificates extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableCertificates;
 
+  /**
+   * @param bool
+   */
   public function setEnableCertificates($enableCertificates)
   {
     $this->enableCertificates = $enableCertificates;
   }
+  /**
+   * @return bool
+   */
   public function getEnableCertificates()
   {
     return $this->enableCertificates;

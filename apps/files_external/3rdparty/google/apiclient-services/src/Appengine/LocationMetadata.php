@@ -19,30 +19,57 @@ namespace Google\Service\Appengine;
 
 class LocationMetadata extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $flexibleEnvironmentAvailable;
+  /**
+   * @var bool
+   */
   public $searchApiAvailable;
+  /**
+   * @var bool
+   */
   public $standardEnvironmentAvailable;
 
+  /**
+   * @param bool
+   */
   public function setFlexibleEnvironmentAvailable($flexibleEnvironmentAvailable)
   {
     $this->flexibleEnvironmentAvailable = $flexibleEnvironmentAvailable;
   }
+  /**
+   * @return bool
+   */
   public function getFlexibleEnvironmentAvailable()
   {
     return $this->flexibleEnvironmentAvailable;
   }
+  /**
+   * @param bool
+   */
   public function setSearchApiAvailable($searchApiAvailable)
   {
     $this->searchApiAvailable = $searchApiAvailable;
   }
+  /**
+   * @return bool
+   */
   public function getSearchApiAvailable()
   {
     return $this->searchApiAvailable;
   }
+  /**
+   * @param bool
+   */
   public function setStandardEnvironmentAvailable($standardEnvironmentAvailable)
   {
     $this->standardEnvironmentAvailable = $standardEnvironmentAvailable;
   }
+  /**
+   * @return bool
+   */
   public function getStandardEnvironmentAvailable()
   {
     return $this->standardEnvironmentAvailable;

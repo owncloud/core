@@ -21,11 +21,29 @@ class Connection extends \Google\Model
 {
   protected $cloudSqlType = CloudSqlProperties::class;
   protected $cloudSqlDataType = '';
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $friendlyName;
+  /**
+   * @var bool
+   */
   public $hasCredential;
+  /**
+   * @var string
+   */
   public $lastModifiedTime;
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -42,50 +60,86 @@ class Connection extends \Google\Model
   {
     return $this->cloudSql;
   }
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setFriendlyName($friendlyName)
   {
     $this->friendlyName = $friendlyName;
   }
+  /**
+   * @return string
+   */
   public function getFriendlyName()
   {
     return $this->friendlyName;
   }
+  /**
+   * @param bool
+   */
   public function setHasCredential($hasCredential)
   {
     $this->hasCredential = $hasCredential;
   }
+  /**
+   * @return bool
+   */
   public function getHasCredential()
   {
     return $this->hasCredential;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedTime($lastModifiedTime)
   {
     $this->lastModifiedTime = $lastModifiedTime;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedTime()
   {
     return $this->lastModifiedTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

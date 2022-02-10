@@ -43,9 +43,9 @@ class ProjectsLocationsProcessors extends \Google\Service\Resource
    *
    * @param string $name Required. The resource name of Processor or
    * ProcessorVersion. Format:
-   * projects/{project}/locations/{location}/processors/{processor}, or projects/{
-   * project}/locations/{location}/processors/{processor}/processorVersions/{proce
-   * ssorVersion}
+   * `projects/{project}/locations/{location}/processors/{processor}`, or `project
+   * s/{project}/locations/{location}/processors/{processor}/processorVersions/{pr
+   * ocessorVersion}`
    * @param GoogleCloudDocumentaiV1BatchProcessRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleLongrunningOperation
@@ -62,7 +62,7 @@ class ProjectsLocationsProcessors extends \Google\Service\Resource
    * (processors.create)
    *
    * @param string $parent Required. The parent (project and location) under which
-   * to create the processor. Format: projects/{project}/locations/{location}
+   * to create the processor. Format: `projects/{project}/locations/{location}`
    * @param GoogleCloudDocumentaiV1Processor $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDocumentaiV1Processor
@@ -135,7 +135,7 @@ class ProjectsLocationsProcessors extends \Google\Service\Resource
    *
    * @param string $parent Required. The parent (project and location) which owns
    * this collection of Processors. Format:
-   * projects/{project}/locations/{location}
+   * `projects/{project}/locations/{location}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of processors to return. If
@@ -157,9 +157,9 @@ class ProjectsLocationsProcessors extends \Google\Service\Resource
    * @param string $name Required. The resource name of the Processor or
    * ProcessorVersion to use for processing. If a Processor is specified, the
    * server will use its default version. Format:
-   * projects/{project}/locations/{location}/processors/{processor}, or projects/{
-   * project}/locations/{location}/processors/{processor}/processorVersions/{proce
-   * ssorVersion}
+   * `projects/{project}/locations/{location}/processors/{processor}`, or `project
+   * s/{project}/locations/{location}/processors/{processor}/processorVersions/{pr
+   * ocessorVersion}`
    * @param GoogleCloudDocumentaiV1ProcessRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDocumentaiV1ProcessResponse

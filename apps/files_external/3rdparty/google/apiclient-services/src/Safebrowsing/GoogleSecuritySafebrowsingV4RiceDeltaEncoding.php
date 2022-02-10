@@ -19,39 +19,75 @@ namespace Google\Service\Safebrowsing;
 
 class GoogleSecuritySafebrowsingV4RiceDeltaEncoding extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $encodedData;
+  /**
+   * @var string
+   */
   public $firstValue;
+  /**
+   * @var int
+   */
   public $numEntries;
+  /**
+   * @var int
+   */
   public $riceParameter;
 
+  /**
+   * @param string
+   */
   public function setEncodedData($encodedData)
   {
     $this->encodedData = $encodedData;
   }
+  /**
+   * @return string
+   */
   public function getEncodedData()
   {
     return $this->encodedData;
   }
+  /**
+   * @param string
+   */
   public function setFirstValue($firstValue)
   {
     $this->firstValue = $firstValue;
   }
+  /**
+   * @return string
+   */
   public function getFirstValue()
   {
     return $this->firstValue;
   }
+  /**
+   * @param int
+   */
   public function setNumEntries($numEntries)
   {
     $this->numEntries = $numEntries;
   }
+  /**
+   * @return int
+   */
   public function getNumEntries()
   {
     return $this->numEntries;
   }
+  /**
+   * @param int
+   */
   public function setRiceParameter($riceParameter)
   {
     $this->riceParameter = $riceParameter;
   }
+  /**
+   * @return int
+   */
   public function getRiceParameter()
   {
     return $this->riceParameter;

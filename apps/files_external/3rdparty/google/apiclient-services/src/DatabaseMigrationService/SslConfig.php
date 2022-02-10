@@ -19,39 +19,75 @@ namespace Google\Service\DatabaseMigrationService;
 
 class SslConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $caCertificate;
+  /**
+   * @var string
+   */
   public $clientCertificate;
+  /**
+   * @var string
+   */
   public $clientKey;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCaCertificate($caCertificate)
   {
     $this->caCertificate = $caCertificate;
   }
+  /**
+   * @return string
+   */
   public function getCaCertificate()
   {
     return $this->caCertificate;
   }
+  /**
+   * @param string
+   */
   public function setClientCertificate($clientCertificate)
   {
     $this->clientCertificate = $clientCertificate;
   }
+  /**
+   * @return string
+   */
   public function getClientCertificate()
   {
     return $this->clientCertificate;
   }
+  /**
+   * @param string
+   */
   public function setClientKey($clientKey)
   {
     $this->clientKey = $clientKey;
   }
+  /**
+   * @return string
+   */
   public function getClientKey()
   {
     return $this->clientKey;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

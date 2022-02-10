@@ -19,12 +19,21 @@ namespace Google\Service\CloudHealthcare;
 
 class LinkedEntity extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $entityId;
 
+  /**
+   * @param string
+   */
   public function setEntityId($entityId)
   {
     $this->entityId = $entityId;
   }
+  /**
+   * @return string
+   */
   public function getEntityId()
   {
     return $this->entityId;

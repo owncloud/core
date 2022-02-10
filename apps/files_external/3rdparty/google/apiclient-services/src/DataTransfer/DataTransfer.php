@@ -22,12 +22,33 @@ class DataTransfer extends \Google\Collection
   protected $collection_key = 'applicationDataTransfers';
   protected $applicationDataTransfersType = ApplicationDataTransfer::class;
   protected $applicationDataTransfersDataType = 'array';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $newOwnerUserId;
+  /**
+   * @var string
+   */
   public $oldOwnerUserId;
+  /**
+   * @var string
+   */
   public $overallTransferStatusCode;
+  /**
+   * @var string
+   */
   public $requestTime;
 
   /**
@@ -44,58 +65,100 @@ class DataTransfer extends \Google\Collection
   {
     return $this->applicationDataTransfers;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNewOwnerUserId($newOwnerUserId)
   {
     $this->newOwnerUserId = $newOwnerUserId;
   }
+  /**
+   * @return string
+   */
   public function getNewOwnerUserId()
   {
     return $this->newOwnerUserId;
   }
+  /**
+   * @param string
+   */
   public function setOldOwnerUserId($oldOwnerUserId)
   {
     $this->oldOwnerUserId = $oldOwnerUserId;
   }
+  /**
+   * @return string
+   */
   public function getOldOwnerUserId()
   {
     return $this->oldOwnerUserId;
   }
+  /**
+   * @param string
+   */
   public function setOverallTransferStatusCode($overallTransferStatusCode)
   {
     $this->overallTransferStatusCode = $overallTransferStatusCode;
   }
+  /**
+   * @return string
+   */
   public function getOverallTransferStatusCode()
   {
     return $this->overallTransferStatusCode;
   }
+  /**
+   * @param string
+   */
   public function setRequestTime($requestTime)
   {
     $this->requestTime = $requestTime;
   }
+  /**
+   * @return string
+   */
   public function getRequestTime()
   {
     return $this->requestTime;

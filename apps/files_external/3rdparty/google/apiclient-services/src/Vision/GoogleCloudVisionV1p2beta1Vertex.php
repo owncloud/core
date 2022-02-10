@@ -19,21 +19,39 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p2beta1Vertex extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $x;
+  /**
+   * @var int
+   */
   public $y;
 
+  /**
+   * @param int
+   */
   public function setX($x)
   {
     $this->x = $x;
   }
+  /**
+   * @return int
+   */
   public function getX()
   {
     return $this->x;
   }
+  /**
+   * @param int
+   */
   public function setY($y)
   {
     $this->y = $y;
   }
+  /**
+   * @return int
+   */
   public function getY()
   {
     return $this->y;

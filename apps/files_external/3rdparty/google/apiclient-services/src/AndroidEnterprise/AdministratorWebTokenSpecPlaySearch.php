@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class AdministratorWebTokenSpecPlaySearch extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $approveApps;
+  /**
+   * @var bool
+   */
   public $enabled;
 
+  /**
+   * @param bool
+   */
   public function setApproveApps($approveApps)
   {
     $this->approveApps = $approveApps;
   }
+  /**
+   * @return bool
+   */
   public function getApproveApps()
   {
     return $this->approveApps;
   }
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;

@@ -20,21 +20,39 @@ namespace Google\Service\AccessContextManager;
 class EgressFrom extends \Google\Collection
 {
   protected $collection_key = 'identities';
+  /**
+   * @var string[]
+   */
   public $identities;
+  /**
+   * @var string
+   */
   public $identityType;
 
+  /**
+   * @param string[]
+   */
   public function setIdentities($identities)
   {
     $this->identities = $identities;
   }
+  /**
+   * @return string[]
+   */
   public function getIdentities()
   {
     return $this->identities;
   }
+  /**
+   * @param string
+   */
   public function setIdentityType($identityType)
   {
     $this->identityType = $identityType;
   }
+  /**
+   * @return string
+   */
   public function getIdentityType()
   {
     return $this->identityType;

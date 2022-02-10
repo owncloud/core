@@ -19,19 +19,43 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1Datastore extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
   protected $datastoreConfigType = GoogleCloudApigeeV1DatastoreConfig::class;
   protected $datastoreConfigDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $lastUpdateTime;
+  /**
+   * @var string
+   */
   public $org;
+  /**
+   * @var string
+   */
   public $self;
+  /**
+   * @var string
+   */
   public $targetType;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -50,42 +74,72 @@ class GoogleCloudApigeeV1Datastore extends \Google\Model
   {
     return $this->datastoreConfig;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdateTime($lastUpdateTime)
   {
     $this->lastUpdateTime = $lastUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateTime()
   {
     return $this->lastUpdateTime;
   }
+  /**
+   * @param string
+   */
   public function setOrg($org)
   {
     $this->org = $org;
   }
+  /**
+   * @return string
+   */
   public function getOrg()
   {
     return $this->org;
   }
+  /**
+   * @param string
+   */
   public function setSelf($self)
   {
     $this->self = $self;
   }
+  /**
+   * @return string
+   */
   public function getSelf()
   {
     return $this->self;
   }
+  /**
+   * @param string
+   */
   public function setTargetType($targetType)
   {
     $this->targetType = $targetType;
   }
+  /**
+   * @return string
+   */
   public function getTargetType()
   {
     return $this->targetType;

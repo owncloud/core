@@ -19,21 +19,39 @@ namespace Google\Service\AnalyticsData;
 
 class PivotSelection extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimensionName;
+  /**
+   * @var string
+   */
   public $dimensionValue;
 
+  /**
+   * @param string
+   */
   public function setDimensionName($dimensionName)
   {
     $this->dimensionName = $dimensionName;
   }
+  /**
+   * @return string
+   */
   public function getDimensionName()
   {
     return $this->dimensionName;
   }
+  /**
+   * @param string
+   */
   public function setDimensionValue($dimensionValue)
   {
     $this->dimensionValue = $dimensionValue;
   }
+  /**
+   * @return string
+   */
   public function getDimensionValue()
   {
     return $this->dimensionValue;

@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class GetDebugConfigRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $componentId;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $workerId;
 
+  /**
+   * @param string
+   */
   public function setComponentId($componentId)
   {
     $this->componentId = $componentId;
   }
+  /**
+   * @return string
+   */
   public function getComponentId()
   {
     return $this->componentId;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setWorkerId($workerId)
   {
     $this->workerId = $workerId;
   }
+  /**
+   * @return string
+   */
   public function getWorkerId()
   {
     return $this->workerId;

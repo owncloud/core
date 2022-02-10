@@ -21,9 +21,21 @@ class CloneContext extends \Google\Model
 {
   protected $binLogCoordinatesType = BinLogCoordinates::class;
   protected $binLogCoordinatesDataType = '';
+  /**
+   * @var string
+   */
   public $destinationInstanceName;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $pitrTimestampMs;
+  /**
+   * @var string
+   */
   public $pointInTime;
 
   /**
@@ -40,34 +52,58 @@ class CloneContext extends \Google\Model
   {
     return $this->binLogCoordinates;
   }
+  /**
+   * @param string
+   */
   public function setDestinationInstanceName($destinationInstanceName)
   {
     $this->destinationInstanceName = $destinationInstanceName;
   }
+  /**
+   * @return string
+   */
   public function getDestinationInstanceName()
   {
     return $this->destinationInstanceName;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPitrTimestampMs($pitrTimestampMs)
   {
     $this->pitrTimestampMs = $pitrTimestampMs;
   }
+  /**
+   * @return string
+   */
   public function getPitrTimestampMs()
   {
     return $this->pitrTimestampMs;
   }
+  /**
+   * @param string
+   */
   public function setPointInTime($pointInTime)
   {
     $this->pointInTime = $pointInTime;
   }
+  /**
+   * @return string
+   */
   public function getPointInTime()
   {
     return $this->pointInTime;

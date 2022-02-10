@@ -22,7 +22,13 @@ class Type extends \Google\Collection
   protected $collection_key = 'fields';
   protected $fieldsType = Field::class;
   protected $fieldsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $primitive;
 
   /**
@@ -39,18 +45,30 @@ class Type extends \Google\Collection
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPrimitive($primitive)
   {
     $this->primitive = $primitive;
   }
+  /**
+   * @return string
+   */
   public function getPrimitive()
   {
     return $this->primitive;

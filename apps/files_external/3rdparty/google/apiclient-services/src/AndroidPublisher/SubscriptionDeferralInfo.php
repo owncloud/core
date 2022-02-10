@@ -19,21 +19,39 @@ namespace Google\Service\AndroidPublisher;
 
 class SubscriptionDeferralInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $desiredExpiryTimeMillis;
+  /**
+   * @var string
+   */
   public $expectedExpiryTimeMillis;
 
+  /**
+   * @param string
+   */
   public function setDesiredExpiryTimeMillis($desiredExpiryTimeMillis)
   {
     $this->desiredExpiryTimeMillis = $desiredExpiryTimeMillis;
   }
+  /**
+   * @return string
+   */
   public function getDesiredExpiryTimeMillis()
   {
     return $this->desiredExpiryTimeMillis;
   }
+  /**
+   * @param string
+   */
   public function setExpectedExpiryTimeMillis($expectedExpiryTimeMillis)
   {
     $this->expectedExpiryTimeMillis = $expectedExpiryTimeMillis;
   }
+  /**
+   * @return string
+   */
   public function getExpectedExpiryTimeMillis()
   {
     return $this->expectedExpiryTimeMillis;

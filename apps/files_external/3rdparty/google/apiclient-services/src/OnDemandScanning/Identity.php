@@ -19,21 +19,39 @@ namespace Google\Service\OnDemandScanning;
 
 class Identity extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $revision;
+  /**
+   * @var string
+   */
   public $updateId;
 
+  /**
+   * @param int
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return int
+   */
   public function getRevision()
   {
     return $this->revision;
   }
+  /**
+   * @param string
+   */
   public function setUpdateId($updateId)
   {
     $this->updateId = $updateId;
   }
+  /**
+   * @return string
+   */
   public function getUpdateId()
   {
     return $this->updateId;

@@ -19,48 +19,93 @@ namespace Google\Service\DoubleClickBidManager;
 
 class QuerySchedule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTimeMs;
+  /**
+   * @var string
+   */
   public $frequency;
+  /**
+   * @var int
+   */
   public $nextRunMinuteOfDay;
+  /**
+   * @var string
+   */
   public $nextRunTimezoneCode;
+  /**
+   * @var string
+   */
   public $startTimeMs;
 
+  /**
+   * @param string
+   */
   public function setEndTimeMs($endTimeMs)
   {
     $this->endTimeMs = $endTimeMs;
   }
+  /**
+   * @return string
+   */
   public function getEndTimeMs()
   {
     return $this->endTimeMs;
   }
+  /**
+   * @param string
+   */
   public function setFrequency($frequency)
   {
     $this->frequency = $frequency;
   }
+  /**
+   * @return string
+   */
   public function getFrequency()
   {
     return $this->frequency;
   }
+  /**
+   * @param int
+   */
   public function setNextRunMinuteOfDay($nextRunMinuteOfDay)
   {
     $this->nextRunMinuteOfDay = $nextRunMinuteOfDay;
   }
+  /**
+   * @return int
+   */
   public function getNextRunMinuteOfDay()
   {
     return $this->nextRunMinuteOfDay;
   }
+  /**
+   * @param string
+   */
   public function setNextRunTimezoneCode($nextRunTimezoneCode)
   {
     $this->nextRunTimezoneCode = $nextRunTimezoneCode;
   }
+  /**
+   * @return string
+   */
   public function getNextRunTimezoneCode()
   {
     return $this->nextRunTimezoneCode;
   }
+  /**
+   * @param string
+   */
   public function setStartTimeMs($startTimeMs)
   {
     $this->startTimeMs = $startTimeMs;
   }
+  /**
+   * @return string
+   */
   public function getStartTimeMs()
   {
     return $this->startTimeMs;

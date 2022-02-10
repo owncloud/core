@@ -19,15 +19,27 @@ namespace Google\Service\Slides;
 
 class ColorStop extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $alpha;
   protected $colorType = OpaqueColor::class;
   protected $colorDataType = '';
+  /**
+   * @var float
+   */
   public $position;
 
+  /**
+   * @param float
+   */
   public function setAlpha($alpha)
   {
     $this->alpha = $alpha;
   }
+  /**
+   * @return float
+   */
   public function getAlpha()
   {
     return $this->alpha;
@@ -46,10 +58,16 @@ class ColorStop extends \Google\Model
   {
     return $this->color;
   }
+  /**
+   * @param float
+   */
   public function setPosition($position)
   {
     $this->position = $position;
   }
+  /**
+   * @return float
+   */
   public function getPosition()
   {
     return $this->position;

@@ -19,14 +19,23 @@ namespace Google\Service\CloudHealthcare;
 
 class IngestMessageResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hl7Ack;
   protected $messageType = Message::class;
   protected $messageDataType = '';
 
+  /**
+   * @param string
+   */
   public function setHl7Ack($hl7Ack)
   {
     $this->hl7Ack = $hl7Ack;
   }
+  /**
+   * @return string
+   */
   public function getHl7Ack()
   {
     return $this->hl7Ack;

@@ -19,23 +19,41 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 
 class GoogleAnalyticsAdminV1alphaCreateUserLinkRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $notifyNewUser;
+  /**
+   * @var string
+   */
   public $parent;
   protected $userLinkType = GoogleAnalyticsAdminV1alphaUserLink::class;
   protected $userLinkDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setNotifyNewUser($notifyNewUser)
   {
     $this->notifyNewUser = $notifyNewUser;
   }
+  /**
+   * @return bool
+   */
   public function getNotifyNewUser()
   {
     return $this->notifyNewUser;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;

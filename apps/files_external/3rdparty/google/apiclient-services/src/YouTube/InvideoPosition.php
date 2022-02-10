@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class InvideoPosition extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cornerPosition;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCornerPosition($cornerPosition)
   {
     $this->cornerPosition = $cornerPosition;
   }
+  /**
+   * @return string
+   */
   public function getCornerPosition()
   {
     return $this->cornerPosition;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

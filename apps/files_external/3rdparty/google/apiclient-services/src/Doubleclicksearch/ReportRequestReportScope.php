@@ -19,66 +19,129 @@ namespace Google\Service\Doubleclicksearch;
 
 class ReportRequestReportScope extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adGroupId;
+  /**
+   * @var string
+   */
   public $adId;
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var string
+   */
   public $agencyId;
+  /**
+   * @var string
+   */
   public $campaignId;
+  /**
+   * @var string
+   */
   public $engineAccountId;
+  /**
+   * @var string
+   */
   public $keywordId;
 
+  /**
+   * @param string
+   */
   public function setAdGroupId($adGroupId)
   {
     $this->adGroupId = $adGroupId;
   }
+  /**
+   * @return string
+   */
   public function getAdGroupId()
   {
     return $this->adGroupId;
   }
+  /**
+   * @param string
+   */
   public function setAdId($adId)
   {
     $this->adId = $adId;
   }
+  /**
+   * @return string
+   */
   public function getAdId()
   {
     return $this->adId;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param string
+   */
   public function setAgencyId($agencyId)
   {
     $this->agencyId = $agencyId;
   }
+  /**
+   * @return string
+   */
   public function getAgencyId()
   {
     return $this->agencyId;
   }
+  /**
+   * @param string
+   */
   public function setCampaignId($campaignId)
   {
     $this->campaignId = $campaignId;
   }
+  /**
+   * @return string
+   */
   public function getCampaignId()
   {
     return $this->campaignId;
   }
+  /**
+   * @param string
+   */
   public function setEngineAccountId($engineAccountId)
   {
     $this->engineAccountId = $engineAccountId;
   }
+  /**
+   * @return string
+   */
   public function getEngineAccountId()
   {
     return $this->engineAccountId;
   }
+  /**
+   * @param string
+   */
   public function setKeywordId($keywordId)
   {
     $this->keywordId = $keywordId;
   }
+  /**
+   * @return string
+   */
   public function getKeywordId()
   {
     return $this->keywordId;

@@ -19,39 +19,75 @@ namespace Google\Service\Dfareporting;
 
 class DateRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endDate;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $relativeDateRange;
+  /**
+   * @var string
+   */
   public $startDate;
 
+  /**
+   * @param string
+   */
   public function setEndDate($endDate)
   {
     $this->endDate = $endDate;
   }
+  /**
+   * @return string
+   */
   public function getEndDate()
   {
     return $this->endDate;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setRelativeDateRange($relativeDateRange)
   {
     $this->relativeDateRange = $relativeDateRange;
   }
+  /**
+   * @return string
+   */
   public function getRelativeDateRange()
   {
     return $this->relativeDateRange;
   }
+  /**
+   * @param string
+   */
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
   }
+  /**
+   * @return string
+   */
   public function getStartDate()
   {
     return $this->startDate;

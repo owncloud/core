@@ -19,18 +19,55 @@ namespace Google\Service\BigtableAdmin;
 
 class Cluster extends \Google\Model
 {
+  protected $clusterConfigType = ClusterConfig::class;
+  protected $clusterConfigDataType = '';
+  /**
+   * @var string
+   */
   public $defaultStorageType;
   protected $encryptionConfigType = EncryptionConfig::class;
   protected $encryptionConfigDataType = '';
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $serveNodes;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param ClusterConfig
+   */
+  public function setClusterConfig(ClusterConfig $clusterConfig)
+  {
+    $this->clusterConfig = $clusterConfig;
+  }
+  /**
+   * @return ClusterConfig
+   */
+  public function getClusterConfig()
+  {
+    return $this->clusterConfig;
+  }
+  /**
+   * @param string
+   */
   public function setDefaultStorageType($defaultStorageType)
   {
     $this->defaultStorageType = $defaultStorageType;
   }
+  /**
+   * @return string
+   */
   public function getDefaultStorageType()
   {
     return $this->defaultStorageType;
@@ -49,34 +86,58 @@ class Cluster extends \Google\Model
   {
     return $this->encryptionConfig;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setServeNodes($serveNodes)
   {
     $this->serveNodes = $serveNodes;
   }
+  /**
+   * @return int
+   */
   public function getServeNodes()
   {
     return $this->serveNodes;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

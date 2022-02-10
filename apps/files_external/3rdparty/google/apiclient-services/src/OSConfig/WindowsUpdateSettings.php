@@ -20,30 +20,57 @@ namespace Google\Service\OSConfig;
 class WindowsUpdateSettings extends \Google\Collection
 {
   protected $collection_key = 'exclusivePatches';
+  /**
+   * @var string[]
+   */
   public $classifications;
+  /**
+   * @var string[]
+   */
   public $excludes;
+  /**
+   * @var string[]
+   */
   public $exclusivePatches;
 
+  /**
+   * @param string[]
+   */
   public function setClassifications($classifications)
   {
     $this->classifications = $classifications;
   }
+  /**
+   * @return string[]
+   */
   public function getClassifications()
   {
     return $this->classifications;
   }
+  /**
+   * @param string[]
+   */
   public function setExcludes($excludes)
   {
     $this->excludes = $excludes;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludes()
   {
     return $this->excludes;
   }
+  /**
+   * @param string[]
+   */
   public function setExclusivePatches($exclusivePatches)
   {
     $this->exclusivePatches = $exclusivePatches;
   }
+  /**
+   * @return string[]
+   */
   public function getExclusivePatches()
   {
     return $this->exclusivePatches;

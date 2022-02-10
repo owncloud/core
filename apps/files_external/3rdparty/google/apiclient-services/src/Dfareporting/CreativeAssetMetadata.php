@@ -26,16 +26,31 @@ class CreativeAssetMetadata extends \Google\Collection
   protected $clickTagsDataType = 'array';
   protected $counterCustomEventsType = CreativeCustomEvent::class;
   protected $counterCustomEventsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $detectedFeatures;
   protected $exitCustomEventsType = CreativeCustomEvent::class;
   protected $exitCustomEventsDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
   protected $idDimensionValueType = DimensionValue::class;
   protected $idDimensionValueDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $richMedia;
   protected $timerCustomEventsType = CreativeCustomEvent::class;
   protected $timerCustomEventsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $warnedValidationRules;
 
   /**
@@ -80,10 +95,16 @@ class CreativeAssetMetadata extends \Google\Collection
   {
     return $this->counterCustomEvents;
   }
+  /**
+   * @param string[]
+   */
   public function setDetectedFeatures($detectedFeatures)
   {
     $this->detectedFeatures = $detectedFeatures;
   }
+  /**
+   * @return string[]
+   */
   public function getDetectedFeatures()
   {
     return $this->detectedFeatures;
@@ -102,10 +123,16 @@ class CreativeAssetMetadata extends \Google\Collection
   {
     return $this->exitCustomEvents;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -124,18 +151,30 @@ class CreativeAssetMetadata extends \Google\Collection
   {
     return $this->idDimensionValue;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setRichMedia($richMedia)
   {
     $this->richMedia = $richMedia;
   }
+  /**
+   * @return bool
+   */
   public function getRichMedia()
   {
     return $this->richMedia;
@@ -154,10 +193,16 @@ class CreativeAssetMetadata extends \Google\Collection
   {
     return $this->timerCustomEvents;
   }
+  /**
+   * @param string[]
+   */
   public function setWarnedValidationRules($warnedValidationRules)
   {
     $this->warnedValidationRules = $warnedValidationRules;
   }
+  /**
+   * @return string[]
+   */
   public function getWarnedValidationRules()
   {
     return $this->warnedValidationRules;

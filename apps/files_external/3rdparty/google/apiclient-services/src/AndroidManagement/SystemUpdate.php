@@ -20,16 +20,31 @@ namespace Google\Service\AndroidManagement;
 class SystemUpdate extends \Google\Collection
 {
   protected $collection_key = 'freezePeriods';
+  /**
+   * @var int
+   */
   public $endMinutes;
   protected $freezePeriodsType = FreezePeriod::class;
   protected $freezePeriodsDataType = 'array';
+  /**
+   * @var int
+   */
   public $startMinutes;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setEndMinutes($endMinutes)
   {
     $this->endMinutes = $endMinutes;
   }
+  /**
+   * @return int
+   */
   public function getEndMinutes()
   {
     return $this->endMinutes;
@@ -48,18 +63,30 @@ class SystemUpdate extends \Google\Collection
   {
     return $this->freezePeriods;
   }
+  /**
+   * @param int
+   */
   public function setStartMinutes($startMinutes)
   {
     $this->startMinutes = $startMinutes;
   }
+  /**
+   * @return int
+   */
   public function getStartMinutes()
   {
     return $this->startMinutes;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

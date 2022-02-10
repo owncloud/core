@@ -19,17 +19,29 @@ namespace Google\Service\Docs;
 
 class InsertTableRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $columns;
   protected $endOfSegmentLocationType = EndOfSegmentLocation::class;
   protected $endOfSegmentLocationDataType = '';
   protected $locationType = Location::class;
   protected $locationDataType = '';
+  /**
+   * @var int
+   */
   public $rows;
 
+  /**
+   * @param int
+   */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
+  /**
+   * @return int
+   */
   public function getColumns()
   {
     return $this->columns;
@@ -62,10 +74,16 @@ class InsertTableRequest extends \Google\Model
   {
     return $this->location;
   }
+  /**
+   * @param int
+   */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
+  /**
+   * @return int
+   */
   public function getRows()
   {
     return $this->rows;

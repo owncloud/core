@@ -20,12 +20,21 @@ namespace Google\Service\Pubsub;
 class AcknowledgeRequest extends \Google\Collection
 {
   protected $collection_key = 'ackIds';
+  /**
+   * @var string[]
+   */
   public $ackIds;
 
+  /**
+   * @param string[]
+   */
   public function setAckIds($ackIds)
   {
     $this->ackIds = $ackIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAckIds()
   {
     return $this->ackIds;

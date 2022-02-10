@@ -19,30 +19,57 @@ namespace Google\Service\Docs;
 
 class PositionedObjectPositioningSuggestionState extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $layoutSuggested;
+  /**
+   * @var bool
+   */
   public $leftOffsetSuggested;
+  /**
+   * @var bool
+   */
   public $topOffsetSuggested;
 
+  /**
+   * @param bool
+   */
   public function setLayoutSuggested($layoutSuggested)
   {
     $this->layoutSuggested = $layoutSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getLayoutSuggested()
   {
     return $this->layoutSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setLeftOffsetSuggested($leftOffsetSuggested)
   {
     $this->leftOffsetSuggested = $leftOffsetSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getLeftOffsetSuggested()
   {
     return $this->leftOffsetSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setTopOffsetSuggested($topOffsetSuggested)
   {
     $this->topOffsetSuggested = $topOffsetSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getTopOffsetSuggested()
   {
     return $this->topOffsetSuggested;

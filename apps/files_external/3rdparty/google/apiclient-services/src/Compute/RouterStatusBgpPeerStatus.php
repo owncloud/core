@@ -24,15 +24,45 @@ class RouterStatusBgpPeerStatus extends \Google\Collection
   protected $advertisedRoutesDataType = 'array';
   protected $bfdStatusType = BfdStatus::class;
   protected $bfdStatusDataType = '';
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var string
+   */
   public $linkedVpnTunnel;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $numLearnedRoutes;
+  /**
+   * @var string
+   */
   public $peerIpAddress;
+  /**
+   * @var string
+   */
   public $routerApplianceInstance;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $uptime;
+  /**
+   * @var string
+   */
   public $uptimeSeconds;
 
   /**
@@ -63,82 +93,142 @@ class RouterStatusBgpPeerStatus extends \Google\Collection
   {
     return $this->bfdStatus;
   }
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param string
+   */
   public function setLinkedVpnTunnel($linkedVpnTunnel)
   {
     $this->linkedVpnTunnel = $linkedVpnTunnel;
   }
+  /**
+   * @return string
+   */
   public function getLinkedVpnTunnel()
   {
     return $this->linkedVpnTunnel;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNumLearnedRoutes($numLearnedRoutes)
   {
     $this->numLearnedRoutes = $numLearnedRoutes;
   }
+  /**
+   * @return string
+   */
   public function getNumLearnedRoutes()
   {
     return $this->numLearnedRoutes;
   }
+  /**
+   * @param string
+   */
   public function setPeerIpAddress($peerIpAddress)
   {
     $this->peerIpAddress = $peerIpAddress;
   }
+  /**
+   * @return string
+   */
   public function getPeerIpAddress()
   {
     return $this->peerIpAddress;
   }
+  /**
+   * @param string
+   */
   public function setRouterApplianceInstance($routerApplianceInstance)
   {
     $this->routerApplianceInstance = $routerApplianceInstance;
   }
+  /**
+   * @return string
+   */
   public function getRouterApplianceInstance()
   {
     return $this->routerApplianceInstance;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setUptime($uptime)
   {
     $this->uptime = $uptime;
   }
+  /**
+   * @return string
+   */
   public function getUptime()
   {
     return $this->uptime;
   }
+  /**
+   * @param string
+   */
   public function setUptimeSeconds($uptimeSeconds)
   {
     $this->uptimeSeconds = $uptimeSeconds;
   }
+  /**
+   * @return string
+   */
   public function getUptimeSeconds()
   {
     return $this->uptimeSeconds;

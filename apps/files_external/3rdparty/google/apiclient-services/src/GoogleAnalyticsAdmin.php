@@ -56,6 +56,7 @@ class GoogleAnalyticsAdmin extends \Google\Service
   public $properties_conversionEvents;
   public $properties_customDimensions;
   public $properties_customMetrics;
+  public $properties_dataStreams;
   public $properties_displayVideo360AdvertiserLinkProposals;
   public $properties_displayVideo360AdvertiserLinks;
   public $properties_firebaseLinks;
@@ -746,6 +747,78 @@ class GoogleAnalyticsAdmin extends \Google\Service
               ],
             ],'list' => [
               'path' => 'v1alpha/{+parent}/customMetrics',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'pageSize' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'pageToken' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],'patch' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'updateMask' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->properties_dataStreams = new GoogleAnalyticsAdmin\Resource\PropertiesDataStreams(
+        $this,
+        $this->serviceName,
+        'dataStreams',
+        [
+          'methods' => [
+            'create' => [
+              'path' => 'v1alpha/{+parent}/dataStreams',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'delete' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
+              'path' => 'v1alpha/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
+              'path' => 'v1alpha/{+parent}/dataStreams',
               'httpMethod' => 'GET',
               'parameters' => [
                 'parent' => [

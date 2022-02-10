@@ -20,12 +20,21 @@ namespace Google\Service\Vault;
 class AccountInfo extends \Google\Collection
 {
   protected $collection_key = 'emails';
+  /**
+   * @var string[]
+   */
   public $emails;
 
+  /**
+   * @param string[]
+   */
   public function setEmails($emails)
   {
     $this->emails = $emails;
   }
+  /**
+   * @return string[]
+   */
   public function getEmails()
   {
     return $this->emails;

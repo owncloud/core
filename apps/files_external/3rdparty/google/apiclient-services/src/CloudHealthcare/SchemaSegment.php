@@ -19,30 +19,57 @@ namespace Google\Service\CloudHealthcare;
 
 class SchemaSegment extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxOccurs;
+  /**
+   * @var int
+   */
   public $minOccurs;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setMaxOccurs($maxOccurs)
   {
     $this->maxOccurs = $maxOccurs;
   }
+  /**
+   * @return int
+   */
   public function getMaxOccurs()
   {
     return $this->maxOccurs;
   }
+  /**
+   * @param int
+   */
   public function setMinOccurs($minOccurs)
   {
     $this->minOccurs = $minOccurs;
   }
+  /**
+   * @return int
+   */
   public function getMinOccurs()
   {
     return $this->minOccurs;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

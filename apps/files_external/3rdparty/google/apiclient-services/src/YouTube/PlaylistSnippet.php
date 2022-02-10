@@ -20,47 +20,95 @@ namespace Google\Service\YouTube;
 class PlaylistSnippet extends \Google\Collection
 {
   protected $collection_key = 'tags';
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $channelTitle;
+  /**
+   * @var string
+   */
   public $defaultLanguage;
+  /**
+   * @var string
+   */
   public $description;
   protected $localizedType = PlaylistLocalization::class;
   protected $localizedDataType = '';
+  /**
+   * @var string
+   */
   public $publishedAt;
+  /**
+   * @var string[]
+   */
   public $tags;
+  /**
+   * @var string
+   */
   public $thumbnailVideoId;
   protected $thumbnailsType = ThumbnailDetails::class;
   protected $thumbnailsDataType = '';
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setChannelTitle($channelTitle)
   {
     $this->channelTitle = $channelTitle;
   }
+  /**
+   * @return string
+   */
   public function getChannelTitle()
   {
     return $this->channelTitle;
   }
+  /**
+   * @param string
+   */
   public function setDefaultLanguage($defaultLanguage)
   {
     $this->defaultLanguage = $defaultLanguage;
   }
+  /**
+   * @return string
+   */
   public function getDefaultLanguage()
   {
     return $this->defaultLanguage;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -79,26 +127,44 @@ class PlaylistSnippet extends \Google\Collection
   {
     return $this->localized;
   }
+  /**
+   * @param string
+   */
   public function setPublishedAt($publishedAt)
   {
     $this->publishedAt = $publishedAt;
   }
+  /**
+   * @return string
+   */
   public function getPublishedAt()
   {
     return $this->publishedAt;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;
   }
+  /**
+   * @param string
+   */
   public function setThumbnailVideoId($thumbnailVideoId)
   {
     $this->thumbnailVideoId = $thumbnailVideoId;
   }
+  /**
+   * @return string
+   */
   public function getThumbnailVideoId()
   {
     return $this->thumbnailVideoId;
@@ -117,10 +183,16 @@ class PlaylistSnippet extends \Google\Collection
   {
     return $this->thumbnails;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

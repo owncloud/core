@@ -19,39 +19,75 @@ namespace Google\Service\Speech;
 
 class SpeakerDiarizationConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableSpeakerDiarization;
+  /**
+   * @var int
+   */
   public $maxSpeakerCount;
+  /**
+   * @var int
+   */
   public $minSpeakerCount;
+  /**
+   * @var int
+   */
   public $speakerTag;
 
+  /**
+   * @param bool
+   */
   public function setEnableSpeakerDiarization($enableSpeakerDiarization)
   {
     $this->enableSpeakerDiarization = $enableSpeakerDiarization;
   }
+  /**
+   * @return bool
+   */
   public function getEnableSpeakerDiarization()
   {
     return $this->enableSpeakerDiarization;
   }
+  /**
+   * @param int
+   */
   public function setMaxSpeakerCount($maxSpeakerCount)
   {
     $this->maxSpeakerCount = $maxSpeakerCount;
   }
+  /**
+   * @return int
+   */
   public function getMaxSpeakerCount()
   {
     return $this->maxSpeakerCount;
   }
+  /**
+   * @param int
+   */
   public function setMinSpeakerCount($minSpeakerCount)
   {
     $this->minSpeakerCount = $minSpeakerCount;
   }
+  /**
+   * @return int
+   */
   public function getMinSpeakerCount()
   {
     return $this->minSpeakerCount;
   }
+  /**
+   * @param int
+   */
   public function setSpeakerTag($speakerTag)
   {
     $this->speakerTag = $speakerTag;
   }
+  /**
+   * @return int
+   */
   public function getSpeakerTag()
   {
     return $this->speakerTag;

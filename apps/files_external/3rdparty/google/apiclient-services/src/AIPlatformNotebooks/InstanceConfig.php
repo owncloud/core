@@ -19,21 +19,39 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class InstanceConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableHealthMonitoring;
+  /**
+   * @var string
+   */
   public $notebookUpgradeSchedule;
 
+  /**
+   * @param bool
+   */
   public function setEnableHealthMonitoring($enableHealthMonitoring)
   {
     $this->enableHealthMonitoring = $enableHealthMonitoring;
   }
+  /**
+   * @return bool
+   */
   public function getEnableHealthMonitoring()
   {
     return $this->enableHealthMonitoring;
   }
+  /**
+   * @param string
+   */
   public function setNotebookUpgradeSchedule($notebookUpgradeSchedule)
   {
     $this->notebookUpgradeSchedule = $notebookUpgradeSchedule;
   }
+  /**
+   * @return string
+   */
   public function getNotebookUpgradeSchedule()
   {
     return $this->notebookUpgradeSchedule;

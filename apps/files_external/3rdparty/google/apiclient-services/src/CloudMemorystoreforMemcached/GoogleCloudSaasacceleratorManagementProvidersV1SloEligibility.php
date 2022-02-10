@@ -19,21 +19,39 @@ namespace Google\Service\CloudMemorystoreforMemcached;
 
 class GoogleCloudSaasacceleratorManagementProvidersV1SloEligibility extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $eligible;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param bool
+   */
   public function setEligible($eligible)
   {
     $this->eligible = $eligible;
   }
+  /**
+   * @return bool
+   */
   public function getEligible()
   {
     return $this->eligible;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

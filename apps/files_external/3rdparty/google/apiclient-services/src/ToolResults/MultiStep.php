@@ -19,15 +19,27 @@ namespace Google\Service\ToolResults;
 
 class MultiStep extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $multistepNumber;
   protected $primaryStepType = PrimaryStep::class;
   protected $primaryStepDataType = '';
+  /**
+   * @var string
+   */
   public $primaryStepId;
 
+  /**
+   * @param int
+   */
   public function setMultistepNumber($multistepNumber)
   {
     $this->multistepNumber = $multistepNumber;
   }
+  /**
+   * @return int
+   */
   public function getMultistepNumber()
   {
     return $this->multistepNumber;
@@ -46,10 +58,16 @@ class MultiStep extends \Google\Model
   {
     return $this->primaryStep;
   }
+  /**
+   * @param string
+   */
   public function setPrimaryStepId($primaryStepId)
   {
     $this->primaryStepId = $primaryStepId;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryStepId()
   {
     return $this->primaryStepId;

@@ -19,48 +19,93 @@ namespace Google\Service\YouTube;
 
 class ChannelStatistics extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $commentCount;
+  /**
+   * @var bool
+   */
   public $hiddenSubscriberCount;
+  /**
+   * @var string
+   */
   public $subscriberCount;
+  /**
+   * @var string
+   */
   public $videoCount;
+  /**
+   * @var string
+   */
   public $viewCount;
 
+  /**
+   * @param string
+   */
   public function setCommentCount($commentCount)
   {
     $this->commentCount = $commentCount;
   }
+  /**
+   * @return string
+   */
   public function getCommentCount()
   {
     return $this->commentCount;
   }
+  /**
+   * @param bool
+   */
   public function setHiddenSubscriberCount($hiddenSubscriberCount)
   {
     $this->hiddenSubscriberCount = $hiddenSubscriberCount;
   }
+  /**
+   * @return bool
+   */
   public function getHiddenSubscriberCount()
   {
     return $this->hiddenSubscriberCount;
   }
+  /**
+   * @param string
+   */
   public function setSubscriberCount($subscriberCount)
   {
     $this->subscriberCount = $subscriberCount;
   }
+  /**
+   * @return string
+   */
   public function getSubscriberCount()
   {
     return $this->subscriberCount;
   }
+  /**
+   * @param string
+   */
   public function setVideoCount($videoCount)
   {
     $this->videoCount = $videoCount;
   }
+  /**
+   * @return string
+   */
   public function getVideoCount()
   {
     return $this->videoCount;
   }
+  /**
+   * @param string
+   */
   public function setViewCount($viewCount)
   {
     $this->viewCount = $viewCount;
   }
+  /**
+   * @return string
+   */
   public function getViewCount()
   {
     return $this->viewCount;

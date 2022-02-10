@@ -19,75 +19,147 @@ namespace Google\Service\Iam;
 
 class Permission extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $apiDisabled;
+  /**
+   * @var string
+   */
   public $customRolesSupportLevel;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $onlyInPredefinedRoles;
+  /**
+   * @var string
+   */
   public $primaryPermission;
+  /**
+   * @var string
+   */
   public $stage;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param bool
+   */
   public function setApiDisabled($apiDisabled)
   {
     $this->apiDisabled = $apiDisabled;
   }
+  /**
+   * @return bool
+   */
   public function getApiDisabled()
   {
     return $this->apiDisabled;
   }
+  /**
+   * @param string
+   */
   public function setCustomRolesSupportLevel($customRolesSupportLevel)
   {
     $this->customRolesSupportLevel = $customRolesSupportLevel;
   }
+  /**
+   * @return string
+   */
   public function getCustomRolesSupportLevel()
   {
     return $this->customRolesSupportLevel;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setOnlyInPredefinedRoles($onlyInPredefinedRoles)
   {
     $this->onlyInPredefinedRoles = $onlyInPredefinedRoles;
   }
+  /**
+   * @return bool
+   */
   public function getOnlyInPredefinedRoles()
   {
     return $this->onlyInPredefinedRoles;
   }
+  /**
+   * @param string
+   */
   public function setPrimaryPermission($primaryPermission)
   {
     $this->primaryPermission = $primaryPermission;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryPermission()
   {
     return $this->primaryPermission;
   }
+  /**
+   * @param string
+   */
   public function setStage($stage)
   {
     $this->stage = $stage;
   }
+  /**
+   * @return string
+   */
   public function getStage()
   {
     return $this->stage;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

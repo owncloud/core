@@ -20,12 +20,21 @@ namespace Google\Service\ShoppingContent;
 class LocationIdSet extends \Google\Collection
 {
   protected $collection_key = 'locationIds';
+  /**
+   * @var string[]
+   */
   public $locationIds;
 
+  /**
+   * @param string[]
+   */
   public function setLocationIds($locationIds)
   {
     $this->locationIds = $locationIds;
   }
+  /**
+   * @return string[]
+   */
   public function getLocationIds()
   {
     return $this->locationIds;

@@ -19,21 +19,39 @@ namespace Google\Service\CertificateAuthorityService;
 
 class PublishingOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $publishCaCert;
+  /**
+   * @var bool
+   */
   public $publishCrl;
 
+  /**
+   * @param bool
+   */
   public function setPublishCaCert($publishCaCert)
   {
     $this->publishCaCert = $publishCaCert;
   }
+  /**
+   * @return bool
+   */
   public function getPublishCaCert()
   {
     return $this->publishCaCert;
   }
+  /**
+   * @param bool
+   */
   public function setPublishCrl($publishCrl)
   {
     $this->publishCrl = $publishCrl;
   }
+  /**
+   * @return bool
+   */
   public function getPublishCrl()
   {
     return $this->publishCrl;

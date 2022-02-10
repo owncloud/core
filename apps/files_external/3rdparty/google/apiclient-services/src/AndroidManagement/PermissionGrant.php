@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class PermissionGrant extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $permission;
+  /**
+   * @var string
+   */
   public $policy;
 
+  /**
+   * @param string
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string
+   */
   public function getPermission()
   {
     return $this->permission;
   }
+  /**
+   * @param string
+   */
   public function setPolicy($policy)
   {
     $this->policy = $policy;
   }
+  /**
+   * @return string
+   */
   public function getPolicy()
   {
     return $this->policy;

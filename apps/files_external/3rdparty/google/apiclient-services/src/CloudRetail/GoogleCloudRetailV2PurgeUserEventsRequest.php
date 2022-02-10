@@ -19,21 +19,39 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2PurgeUserEventsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var bool
+   */
   public $force;
 
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param bool
+   */
   public function setForce($force)
   {
     $this->force = $force;
   }
+  /**
+   * @return bool
+   */
   public function getForce()
   {
     return $this->force;

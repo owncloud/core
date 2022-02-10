@@ -19,21 +19,39 @@ namespace Google\Service\AlertCenter;
 
 class LoginDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var string
+   */
   public $loginTime;
 
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param string
+   */
   public function setLoginTime($loginTime)
   {
     $this->loginTime = $loginTime;
   }
+  /**
+   * @return string
+   */
   public function getLoginTime()
   {
     return $this->loginTime;

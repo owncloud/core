@@ -19,21 +19,39 @@ namespace Google\Service\Analytics;
 
 class CustomMetricParentLink extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $href;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setHref($href)
   {
     $this->href = $href;
   }
+  /**
+   * @return string
+   */
   public function getHref()
   {
     return $this->href;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

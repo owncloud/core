@@ -19,23 +19,41 @@ namespace Google\Service\Storage;
 
 class ComposeRequestSourceObjects extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $generation;
+  /**
+   * @var string
+   */
   public $name;
   protected $objectPreconditionsType = ComposeRequestSourceObjectsObjectPreconditions::class;
   protected $objectPreconditionsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setGeneration($generation)
   {
     $this->generation = $generation;
   }
+  /**
+   * @return string
+   */
   public function getGeneration()
   {
     return $this->generation;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

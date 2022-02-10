@@ -19,39 +19,75 @@ namespace Google\Service\Reports;
 
 class ActivityActor extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $callerType;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $profileId;
 
+  /**
+   * @param string
+   */
   public function setCallerType($callerType)
   {
     $this->callerType = $callerType;
   }
+  /**
+   * @return string
+   */
   public function getCallerType()
   {
     return $this->callerType;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setProfileId($profileId)
   {
     $this->profileId = $profileId;
   }
+  /**
+   * @return string
+   */
   public function getProfileId()
   {
     return $this->profileId;

@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class PosDataProvidersPosDataProvider extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $fullName;
+  /**
+   * @var string
+   */
   public $providerId;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setFullName($fullName)
   {
     $this->fullName = $fullName;
   }
+  /**
+   * @return string
+   */
   public function getFullName()
   {
     return $this->fullName;
   }
+  /**
+   * @param string
+   */
   public function setProviderId($providerId)
   {
     $this->providerId = $providerId;
   }
+  /**
+   * @return string
+   */
   public function getProviderId()
   {
     return $this->providerId;

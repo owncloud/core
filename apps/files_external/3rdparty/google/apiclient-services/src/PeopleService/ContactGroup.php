@@ -22,14 +22,35 @@ class ContactGroup extends \Google\Collection
   protected $collection_key = 'memberResourceNames';
   protected $clientDataType = GroupClientData::class;
   protected $clientDataDataType = 'array';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $formattedName;
+  /**
+   * @var string
+   */
   public $groupType;
+  /**
+   * @var int
+   */
   public $memberCount;
+  /**
+   * @var string[]
+   */
   public $memberResourceNames;
   protected $metadataType = ContactGroupMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $resourceName;
 
   /**
@@ -46,42 +67,72 @@ class ContactGroup extends \Google\Collection
   {
     return $this->clientData;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setFormattedName($formattedName)
   {
     $this->formattedName = $formattedName;
   }
+  /**
+   * @return string
+   */
   public function getFormattedName()
   {
     return $this->formattedName;
   }
+  /**
+   * @param string
+   */
   public function setGroupType($groupType)
   {
     $this->groupType = $groupType;
   }
+  /**
+   * @return string
+   */
   public function getGroupType()
   {
     return $this->groupType;
   }
+  /**
+   * @param int
+   */
   public function setMemberCount($memberCount)
   {
     $this->memberCount = $memberCount;
   }
+  /**
+   * @return int
+   */
   public function getMemberCount()
   {
     return $this->memberCount;
   }
+  /**
+   * @param string[]
+   */
   public function setMemberResourceNames($memberResourceNames)
   {
     $this->memberResourceNames = $memberResourceNames;
   }
+  /**
+   * @return string[]
+   */
   public function getMemberResourceNames()
   {
     return $this->memberResourceNames;
@@ -100,18 +151,30 @@ class ContactGroup extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string
+   */
   public function getResourceName()
   {
     return $this->resourceName;

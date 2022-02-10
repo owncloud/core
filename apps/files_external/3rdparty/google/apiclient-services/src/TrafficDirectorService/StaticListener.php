@@ -19,21 +19,39 @@ namespace Google\Service\TrafficDirectorService;
 
 class StaticListener extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastUpdated;
+  /**
+   * @var array[]
+   */
   public $listener;
 
+  /**
+   * @param string
+   */
   public function setLastUpdated($lastUpdated)
   {
     $this->lastUpdated = $lastUpdated;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdated()
   {
     return $this->lastUpdated;
   }
+  /**
+   * @param array[]
+   */
   public function setListener($listener)
   {
     $this->listener = $listener;
   }
+  /**
+   * @return array[]
+   */
   public function getListener()
   {
     return $this->listener;

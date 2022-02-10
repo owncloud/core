@@ -19,30 +19,57 @@ namespace Google\Service\TrafficDirectorService;
 
 class DynamicRouteConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastUpdated;
+  /**
+   * @var array[]
+   */
   public $routeConfig;
+  /**
+   * @var string
+   */
   public $versionInfo;
 
+  /**
+   * @param string
+   */
   public function setLastUpdated($lastUpdated)
   {
     $this->lastUpdated = $lastUpdated;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdated()
   {
     return $this->lastUpdated;
   }
+  /**
+   * @param array[]
+   */
   public function setRouteConfig($routeConfig)
   {
     $this->routeConfig = $routeConfig;
   }
+  /**
+   * @return array[]
+   */
   public function getRouteConfig()
   {
     return $this->routeConfig;
   }
+  /**
+   * @param string
+   */
   public function setVersionInfo($versionInfo)
   {
     $this->versionInfo = $versionInfo;
   }
+  /**
+   * @return string
+   */
   public function getVersionInfo()
   {
     return $this->versionInfo;

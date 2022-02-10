@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3beta1ResponseMessagePlayAudio extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowPlaybackInterruption;
+  /**
+   * @var string
+   */
   public $audioUri;
 
+  /**
+   * @param bool
+   */
   public function setAllowPlaybackInterruption($allowPlaybackInterruption)
   {
     $this->allowPlaybackInterruption = $allowPlaybackInterruption;
   }
+  /**
+   * @return bool
+   */
   public function getAllowPlaybackInterruption()
   {
     return $this->allowPlaybackInterruption;
   }
+  /**
+   * @param string
+   */
   public function setAudioUri($audioUri)
   {
     $this->audioUri = $audioUri;
   }
+  /**
+   * @return string
+   */
   public function getAudioUri()
   {
     return $this->audioUri;

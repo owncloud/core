@@ -26,6 +26,9 @@ class Paragraph extends \Google\Collection
   protected $elementsDataType = 'array';
   protected $paragraphStyleType = ParagraphStyle::class;
   protected $paragraphStyleDataType = '';
+  /**
+   * @var string[]
+   */
   public $positionedObjectIds;
   protected $suggestedBulletChangesType = SuggestedBullet::class;
   protected $suggestedBulletChangesDataType = 'map';
@@ -76,10 +79,16 @@ class Paragraph extends \Google\Collection
   {
     return $this->paragraphStyle;
   }
+  /**
+   * @param string[]
+   */
   public function setPositionedObjectIds($positionedObjectIds)
   {
     $this->positionedObjectIds = $positionedObjectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPositionedObjectIds()
   {
     return $this->positionedObjectIds;

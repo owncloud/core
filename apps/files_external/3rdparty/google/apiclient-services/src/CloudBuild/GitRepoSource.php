@@ -19,30 +19,57 @@ namespace Google\Service\CloudBuild;
 
 class GitRepoSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ref;
+  /**
+   * @var string
+   */
   public $repoType;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setRef($ref)
   {
     $this->ref = $ref;
   }
+  /**
+   * @return string
+   */
   public function getRef()
   {
     return $this->ref;
   }
+  /**
+   * @param string
+   */
   public function setRepoType($repoType)
   {
     $this->repoType = $repoType;
   }
+  /**
+   * @return string
+   */
   public function getRepoType()
   {
     return $this->repoType;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

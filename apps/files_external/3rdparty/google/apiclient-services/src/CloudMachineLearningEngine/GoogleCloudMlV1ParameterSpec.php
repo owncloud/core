@@ -20,18 +20,36 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1ParameterSpec extends \Google\Collection
 {
   protected $collection_key = 'discreteValues';
+  /**
+   * @var string[]
+   */
   public $categoricalValues;
   public $discreteValues;
   public $maxValue;
   public $minValue;
+  /**
+   * @var string
+   */
   public $parameterName;
+  /**
+   * @var string
+   */
   public $scaleType;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setCategoricalValues($categoricalValues)
   {
     $this->categoricalValues = $categoricalValues;
   }
+  /**
+   * @return string[]
+   */
   public function getCategoricalValues()
   {
     return $this->categoricalValues;
@@ -60,26 +78,44 @@ class GoogleCloudMlV1ParameterSpec extends \Google\Collection
   {
     return $this->minValue;
   }
+  /**
+   * @param string
+   */
   public function setParameterName($parameterName)
   {
     $this->parameterName = $parameterName;
   }
+  /**
+   * @return string
+   */
   public function getParameterName()
   {
     return $this->parameterName;
   }
+  /**
+   * @param string
+   */
   public function setScaleType($scaleType)
   {
     $this->scaleType = $scaleType;
   }
+  /**
+   * @return string
+   */
   public function getScaleType()
   {
     return $this->scaleType;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

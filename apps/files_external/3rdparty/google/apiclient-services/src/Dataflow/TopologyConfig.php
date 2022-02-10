@@ -24,8 +24,17 @@ class TopologyConfig extends \Google\Collection
   protected $computationsDataType = 'array';
   protected $dataDiskAssignmentsType = DataDiskAssignment::class;
   protected $dataDiskAssignmentsDataType = 'array';
+  /**
+   * @var int
+   */
   public $forwardingKeyBits;
+  /**
+   * @var int
+   */
   public $persistentStateVersion;
+  /**
+   * @var string[]
+   */
   public $userStageToComputationNameMap;
 
   /**
@@ -56,26 +65,44 @@ class TopologyConfig extends \Google\Collection
   {
     return $this->dataDiskAssignments;
   }
+  /**
+   * @param int
+   */
   public function setForwardingKeyBits($forwardingKeyBits)
   {
     $this->forwardingKeyBits = $forwardingKeyBits;
   }
+  /**
+   * @return int
+   */
   public function getForwardingKeyBits()
   {
     return $this->forwardingKeyBits;
   }
+  /**
+   * @param int
+   */
   public function setPersistentStateVersion($persistentStateVersion)
   {
     $this->persistentStateVersion = $persistentStateVersion;
   }
+  /**
+   * @return int
+   */
   public function getPersistentStateVersion()
   {
     return $this->persistentStateVersion;
   }
+  /**
+   * @param string[]
+   */
   public function setUserStageToComputationNameMap($userStageToComputationNameMap)
   {
     $this->userStageToComputationNameMap = $userStageToComputationNameMap;
   }
+  /**
+   * @return string[]
+   */
   public function getUserStageToComputationNameMap()
   {
     return $this->userStageToComputationNameMap;

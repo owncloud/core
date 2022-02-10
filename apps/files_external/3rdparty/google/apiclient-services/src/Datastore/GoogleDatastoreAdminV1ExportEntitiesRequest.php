@@ -21,7 +21,13 @@ class GoogleDatastoreAdminV1ExportEntitiesRequest extends \Google\Model
 {
   protected $entityFilterType = GoogleDatastoreAdminV1EntityFilter::class;
   protected $entityFilterDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $outputUrlPrefix;
 
   /**
@@ -38,18 +44,30 @@ class GoogleDatastoreAdminV1ExportEntitiesRequest extends \Google\Model
   {
     return $this->entityFilter;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setOutputUrlPrefix($outputUrlPrefix)
   {
     $this->outputUrlPrefix = $outputUrlPrefix;
   }
+  /**
+   * @return string
+   */
   public function getOutputUrlPrefix()
   {
     return $this->outputUrlPrefix;

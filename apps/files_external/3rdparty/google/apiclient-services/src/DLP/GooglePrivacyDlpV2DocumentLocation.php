@@ -19,12 +19,21 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2DocumentLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fileOffset;
 
+  /**
+   * @param string
+   */
   public function setFileOffset($fileOffset)
   {
     $this->fileOffset = $fileOffset;
   }
+  /**
+   * @return string
+   */
   public function getFileOffset()
   {
     return $this->fileOffset;

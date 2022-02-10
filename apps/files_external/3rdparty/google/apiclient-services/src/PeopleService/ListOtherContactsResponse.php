@@ -20,24 +20,45 @@ namespace Google\Service\PeopleService;
 class ListOtherContactsResponse extends \Google\Collection
 {
   protected $collection_key = 'otherContacts';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $nextSyncToken;
   protected $otherContactsType = Person::class;
   protected $otherContactsDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalSize;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setNextSyncToken($nextSyncToken)
   {
     $this->nextSyncToken = $nextSyncToken;
   }
+  /**
+   * @return string
+   */
   public function getNextSyncToken()
   {
     return $this->nextSyncToken;
@@ -56,10 +77,16 @@ class ListOtherContactsResponse extends \Google\Collection
   {
     return $this->otherContacts;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

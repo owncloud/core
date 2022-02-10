@@ -19,21 +19,39 @@ namespace Google\Service\FirebaseCloudMessaging;
 
 class WebpushFcmOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $analyticsLabel;
+  /**
+   * @var string
+   */
   public $link;
 
+  /**
+   * @param string
+   */
   public function setAnalyticsLabel($analyticsLabel)
   {
     $this->analyticsLabel = $analyticsLabel;
   }
+  /**
+   * @return string
+   */
   public function getAnalyticsLabel()
   {
     return $this->analyticsLabel;
   }
+  /**
+   * @param string
+   */
   public function setLink($link)
   {
     $this->link = $link;
   }
+  /**
+   * @return string
+   */
   public function getLink()
   {
     return $this->link;

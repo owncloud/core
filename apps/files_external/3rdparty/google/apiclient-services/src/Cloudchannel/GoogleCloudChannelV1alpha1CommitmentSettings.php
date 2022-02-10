@@ -19,15 +19,27 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1alpha1CommitmentSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
   protected $renewalSettingsType = GoogleCloudChannelV1alpha1RenewalSettings::class;
   protected $renewalSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -46,10 +58,16 @@ class GoogleCloudChannelV1alpha1CommitmentSettings extends \Google\Model
   {
     return $this->renewalSettings;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

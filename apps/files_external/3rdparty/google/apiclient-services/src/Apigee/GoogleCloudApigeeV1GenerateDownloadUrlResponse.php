@@ -19,12 +19,21 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1GenerateDownloadUrlResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $downloadUri;
 
+  /**
+   * @param string
+   */
   public function setDownloadUri($downloadUri)
   {
     $this->downloadUri = $downloadUri;
   }
+  /**
+   * @return string
+   */
   public function getDownloadUri()
   {
     return $this->downloadUri;

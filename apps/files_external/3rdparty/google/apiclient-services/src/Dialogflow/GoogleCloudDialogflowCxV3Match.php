@@ -19,26 +19,53 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3Match extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $event;
   protected $intentType = GoogleCloudDialogflowCxV3Intent::class;
   protected $intentDataType = '';
+  /**
+   * @var string
+   */
   public $matchType;
+  /**
+   * @var array[]
+   */
   public $parameters;
+  /**
+   * @var string
+   */
   public $resolvedInput;
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setEvent($event)
   {
     $this->event = $event;
   }
+  /**
+   * @return string
+   */
   public function getEvent()
   {
     return $this->event;
@@ -57,26 +84,44 @@ class GoogleCloudDialogflowCxV3Match extends \Google\Model
   {
     return $this->intent;
   }
+  /**
+   * @param string
+   */
   public function setMatchType($matchType)
   {
     $this->matchType = $matchType;
   }
+  /**
+   * @return string
+   */
   public function getMatchType()
   {
     return $this->matchType;
   }
+  /**
+   * @param array[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return array[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setResolvedInput($resolvedInput)
   {
     $this->resolvedInput = $resolvedInput;
   }
+  /**
+   * @return string
+   */
   public function getResolvedInput()
   {
     return $this->resolvedInput;

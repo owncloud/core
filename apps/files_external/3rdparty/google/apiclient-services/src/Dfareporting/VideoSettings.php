@@ -21,11 +21,23 @@ class VideoSettings extends \Google\Model
 {
   protected $companionSettingsType = CompanionSetting::class;
   protected $companionSettingsDataType = '';
+  /**
+   * @var int
+   */
   public $durationSeconds;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $obaEnabled;
   protected $obaSettingsType = ObaIcon::class;
   protected $obaSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $orientation;
   protected $skippableSettingsType = SkippableSetting::class;
   protected $skippableSettingsDataType = '';
@@ -46,26 +58,44 @@ class VideoSettings extends \Google\Model
   {
     return $this->companionSettings;
   }
+  /**
+   * @param int
+   */
   public function setDurationSeconds($durationSeconds)
   {
     $this->durationSeconds = $durationSeconds;
   }
+  /**
+   * @return int
+   */
   public function getDurationSeconds()
   {
     return $this->durationSeconds;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setObaEnabled($obaEnabled)
   {
     $this->obaEnabled = $obaEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getObaEnabled()
   {
     return $this->obaEnabled;
@@ -84,10 +114,16 @@ class VideoSettings extends \Google\Model
   {
     return $this->obaSettings;
   }
+  /**
+   * @param string
+   */
   public function setOrientation($orientation)
   {
     $this->orientation = $orientation;
   }
+  /**
+   * @return string
+   */
   public function getOrientation()
   {
     return $this->orientation;

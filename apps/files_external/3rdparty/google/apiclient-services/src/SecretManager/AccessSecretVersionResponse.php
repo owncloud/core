@@ -19,14 +19,23 @@ namespace Google\Service\SecretManager;
 
 class AccessSecretVersionResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
   protected $payloadType = SecretPayload::class;
   protected $payloadDataType = '';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

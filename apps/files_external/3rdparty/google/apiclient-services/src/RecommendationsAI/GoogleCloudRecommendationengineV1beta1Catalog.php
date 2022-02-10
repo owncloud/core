@@ -21,8 +21,17 @@ class GoogleCloudRecommendationengineV1beta1Catalog extends \Google\Model
 {
   protected $catalogItemLevelConfigType = GoogleCloudRecommendationengineV1beta1CatalogItemLevelConfig::class;
   protected $catalogItemLevelConfigDataType = '';
+  /**
+   * @var string
+   */
   public $defaultEventStoreId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -39,26 +48,44 @@ class GoogleCloudRecommendationengineV1beta1Catalog extends \Google\Model
   {
     return $this->catalogItemLevelConfig;
   }
+  /**
+   * @param string
+   */
   public function setDefaultEventStoreId($defaultEventStoreId)
   {
     $this->defaultEventStoreId = $defaultEventStoreId;
   }
+  /**
+   * @return string
+   */
   public function getDefaultEventStoreId()
   {
     return $this->defaultEventStoreId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

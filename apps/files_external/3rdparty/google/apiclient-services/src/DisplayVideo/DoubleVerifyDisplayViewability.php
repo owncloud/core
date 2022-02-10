@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class DoubleVerifyDisplayViewability extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $iab;
+  /**
+   * @var string
+   */
   public $viewableDuring;
 
+  /**
+   * @param string
+   */
   public function setIab($iab)
   {
     $this->iab = $iab;
   }
+  /**
+   * @return string
+   */
   public function getIab()
   {
     return $this->iab;
   }
+  /**
+   * @param string
+   */
   public function setViewableDuring($viewableDuring)
   {
     $this->viewableDuring = $viewableDuring;
   }
+  /**
+   * @return string
+   */
   public function getViewableDuring()
   {
     return $this->viewableDuring;

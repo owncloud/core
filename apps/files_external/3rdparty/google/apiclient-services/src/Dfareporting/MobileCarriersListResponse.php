@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class MobileCarriersListResponse extends \Google\Collection
 {
   protected $collection_key = 'mobileCarriers';
+  /**
+   * @var string
+   */
   public $kind;
   protected $mobileCarriersType = MobileCarrier::class;
   protected $mobileCarriersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

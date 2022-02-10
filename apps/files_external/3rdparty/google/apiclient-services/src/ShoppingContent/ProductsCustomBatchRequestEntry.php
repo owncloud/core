@@ -19,43 +19,85 @@ namespace Google\Service\ShoppingContent;
 
 class ProductsCustomBatchRequestEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $batchId;
+  /**
+   * @var string
+   */
   public $feedId;
+  /**
+   * @var string
+   */
   public $merchantId;
+  /**
+   * @var string
+   */
   public $method;
   protected $productType = Product::class;
   protected $productDataType = '';
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $updateMask;
 
+  /**
+   * @param string
+   */
   public function setBatchId($batchId)
   {
     $this->batchId = $batchId;
   }
+  /**
+   * @return string
+   */
   public function getBatchId()
   {
     return $this->batchId;
   }
+  /**
+   * @param string
+   */
   public function setFeedId($feedId)
   {
     $this->feedId = $feedId;
   }
+  /**
+   * @return string
+   */
   public function getFeedId()
   {
     return $this->feedId;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;
   }
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;
@@ -74,18 +116,30 @@ class ProductsCustomBatchRequestEntry extends \Google\Model
   {
     return $this->product;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;

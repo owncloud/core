@@ -20,48 +20,93 @@ namespace Google\Service\AndroidEnterprise;
 class AppRestrictionsSchemaRestrictionRestrictionValue extends \Google\Collection
 {
   protected $collection_key = 'valueMultiselect';
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var bool
+   */
   public $valueBool;
+  /**
+   * @var int
+   */
   public $valueInteger;
+  /**
+   * @var string[]
+   */
   public $valueMultiselect;
+  /**
+   * @var string
+   */
   public $valueString;
 
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param bool
+   */
   public function setValueBool($valueBool)
   {
     $this->valueBool = $valueBool;
   }
+  /**
+   * @return bool
+   */
   public function getValueBool()
   {
     return $this->valueBool;
   }
+  /**
+   * @param int
+   */
   public function setValueInteger($valueInteger)
   {
     $this->valueInteger = $valueInteger;
   }
+  /**
+   * @return int
+   */
   public function getValueInteger()
   {
     return $this->valueInteger;
   }
+  /**
+   * @param string[]
+   */
   public function setValueMultiselect($valueMultiselect)
   {
     $this->valueMultiselect = $valueMultiselect;
   }
+  /**
+   * @return string[]
+   */
   public function getValueMultiselect()
   {
     return $this->valueMultiselect;
   }
+  /**
+   * @param string
+   */
   public function setValueString($valueString)
   {
     $this->valueString = $valueString;
   }
+  /**
+   * @return string
+   */
   public function getValueString()
   {
     return $this->valueString;

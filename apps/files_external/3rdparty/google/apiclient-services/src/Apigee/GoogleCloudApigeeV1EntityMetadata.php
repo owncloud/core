@@ -19,30 +19,57 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1EntityMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createdAt;
+  /**
+   * @var string
+   */
   public $lastModifiedAt;
+  /**
+   * @var string
+   */
   public $subType;
 
+  /**
+   * @param string
+   */
   public function setCreatedAt($createdAt)
   {
     $this->createdAt = $createdAt;
   }
+  /**
+   * @return string
+   */
   public function getCreatedAt()
   {
     return $this->createdAt;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedAt($lastModifiedAt)
   {
     $this->lastModifiedAt = $lastModifiedAt;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedAt()
   {
     return $this->lastModifiedAt;
   }
+  /**
+   * @param string
+   */
   public function setSubType($subType)
   {
     $this->subType = $subType;
   }
+  /**
+   * @return string
+   */
   public function getSubType()
   {
     return $this->subType;

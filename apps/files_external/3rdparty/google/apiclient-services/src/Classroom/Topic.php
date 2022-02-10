@@ -19,39 +19,75 @@ namespace Google\Service\Classroom;
 
 class Topic extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $courseId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $topicId;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCourseId($courseId)
   {
     $this->courseId = $courseId;
   }
+  /**
+   * @return string
+   */
   public function getCourseId()
   {
     return $this->courseId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTopicId($topicId)
   {
     $this->topicId = $topicId;
   }
+  /**
+   * @return string
+   */
   public function getTopicId()
   {
     return $this->topicId;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

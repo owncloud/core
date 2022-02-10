@@ -111,7 +111,7 @@ class ProjectsLocationsTagTemplatesFields extends \Google\Service\Resource
    * [Data Catalog resource project] (https://cloud.google.com/data-
    * catalog/docs/concepts/resource-project). (fields.rename)
    *
-   * @param string $name Required. The name of the tag template.
+   * @param string $name Required. The name of the tag template field.
    * @param GoogleCloudDatacatalogV1RenameTagTemplateFieldRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDatacatalogV1TagTemplateField

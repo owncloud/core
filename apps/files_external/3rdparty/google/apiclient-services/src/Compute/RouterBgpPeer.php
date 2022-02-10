@@ -20,34 +20,91 @@ namespace Google\Service\Compute;
 class RouterBgpPeer extends \Google\Collection
 {
   protected $collection_key = 'advertisedIpRanges';
+  /**
+   * @var string
+   */
   public $advertiseMode;
+  /**
+   * @var string[]
+   */
   public $advertisedGroups;
   protected $advertisedIpRangesType = RouterAdvertisedIpRange::class;
   protected $advertisedIpRangesDataType = 'array';
+  /**
+   * @var string
+   */
   public $advertisedRoutePriority;
   protected $bfdType = RouterBgpPeerBfd::class;
   protected $bfdDataType = '';
+  /**
+   * @var string
+   */
   public $enable;
+  /**
+   * @var bool
+   */
+  public $enableIpv6;
+  /**
+   * @var string
+   */
   public $interfaceName;
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var string
+   */
+  public $ipv6NexthopAddress;
+  /**
+   * @var string
+   */
   public $managementType;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $peerAsn;
+  /**
+   * @var string
+   */
   public $peerIpAddress;
+  /**
+   * @var string
+   */
+  public $peerIpv6NexthopAddress;
+  /**
+   * @var string
+   */
   public $routerApplianceInstance;
 
+  /**
+   * @param string
+   */
   public function setAdvertiseMode($advertiseMode)
   {
     $this->advertiseMode = $advertiseMode;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiseMode()
   {
     return $this->advertiseMode;
   }
+  /**
+   * @param string[]
+   */
   public function setAdvertisedGroups($advertisedGroups)
   {
     $this->advertisedGroups = $advertisedGroups;
   }
+  /**
+   * @return string[]
+   */
   public function getAdvertisedGroups()
   {
     return $this->advertisedGroups;
@@ -66,10 +123,16 @@ class RouterBgpPeer extends \Google\Collection
   {
     return $this->advertisedIpRanges;
   }
+  /**
+   * @param string
+   */
   public function setAdvertisedRoutePriority($advertisedRoutePriority)
   {
     $this->advertisedRoutePriority = $advertisedRoutePriority;
   }
+  /**
+   * @return string
+   */
   public function getAdvertisedRoutePriority()
   {
     return $this->advertisedRoutePriority;
@@ -88,66 +151,156 @@ class RouterBgpPeer extends \Google\Collection
   {
     return $this->bfd;
   }
+  /**
+   * @param string
+   */
   public function setEnable($enable)
   {
     $this->enable = $enable;
   }
+  /**
+   * @return string
+   */
   public function getEnable()
   {
     return $this->enable;
   }
+  /**
+   * @param bool
+   */
+  public function setEnableIpv6($enableIpv6)
+  {
+    $this->enableIpv6 = $enableIpv6;
+  }
+  /**
+   * @return bool
+   */
+  public function getEnableIpv6()
+  {
+    return $this->enableIpv6;
+  }
+  /**
+   * @param string
+   */
   public function setInterfaceName($interfaceName)
   {
     $this->interfaceName = $interfaceName;
   }
+  /**
+   * @return string
+   */
   public function getInterfaceName()
   {
     return $this->interfaceName;
   }
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param string
+   */
+  public function setIpv6NexthopAddress($ipv6NexthopAddress)
+  {
+    $this->ipv6NexthopAddress = $ipv6NexthopAddress;
+  }
+  /**
+   * @return string
+   */
+  public function getIpv6NexthopAddress()
+  {
+    return $this->ipv6NexthopAddress;
+  }
+  /**
+   * @param string
+   */
   public function setManagementType($managementType)
   {
     $this->managementType = $managementType;
   }
+  /**
+   * @return string
+   */
   public function getManagementType()
   {
     return $this->managementType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPeerAsn($peerAsn)
   {
     $this->peerAsn = $peerAsn;
   }
+  /**
+   * @return string
+   */
   public function getPeerAsn()
   {
     return $this->peerAsn;
   }
+  /**
+   * @param string
+   */
   public function setPeerIpAddress($peerIpAddress)
   {
     $this->peerIpAddress = $peerIpAddress;
   }
+  /**
+   * @return string
+   */
   public function getPeerIpAddress()
   {
     return $this->peerIpAddress;
   }
+  /**
+   * @param string
+   */
+  public function setPeerIpv6NexthopAddress($peerIpv6NexthopAddress)
+  {
+    $this->peerIpv6NexthopAddress = $peerIpv6NexthopAddress;
+  }
+  /**
+   * @return string
+   */
+  public function getPeerIpv6NexthopAddress()
+  {
+    return $this->peerIpv6NexthopAddress;
+  }
+  /**
+   * @param string
+   */
   public function setRouterApplianceInstance($routerApplianceInstance)
   {
     $this->routerApplianceInstance = $routerApplianceInstance;
   }
+  /**
+   * @return string
+   */
   public function getRouterApplianceInstance()
   {
     return $this->routerApplianceInstance;

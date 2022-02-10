@@ -19,33 +19,63 @@ namespace Google\Service\DeploymentManager;
 
 class Type extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $insertTime;
+  /**
+   * @var string
+   */
   public $name;
   protected $operationType = Operation::class;
   protected $operationDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setInsertTime($insertTime)
   {
     $this->insertTime = $insertTime;
   }
+  /**
+   * @return string
+   */
   public function getInsertTime()
   {
     return $this->insertTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -64,10 +94,16 @@ class Type extends \Google\Model
   {
     return $this->operation;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

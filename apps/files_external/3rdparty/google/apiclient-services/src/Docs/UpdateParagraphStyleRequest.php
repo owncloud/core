@@ -19,16 +19,25 @@ namespace Google\Service\Docs;
 
 class UpdateParagraphStyleRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fields;
   protected $paragraphStyleType = ParagraphStyle::class;
   protected $paragraphStyleDataType = '';
   protected $rangeType = Range::class;
   protected $rangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

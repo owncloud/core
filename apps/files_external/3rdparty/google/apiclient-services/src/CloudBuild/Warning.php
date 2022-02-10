@@ -19,21 +19,39 @@ namespace Google\Service\CloudBuild;
 
 class Warning extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $priority;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return string
+   */
   public function getPriority()
   {
     return $this->priority;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

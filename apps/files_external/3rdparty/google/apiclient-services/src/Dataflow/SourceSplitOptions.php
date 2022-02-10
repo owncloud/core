@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class SourceSplitOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $desiredBundleSizeBytes;
+  /**
+   * @var string
+   */
   public $desiredShardSizeBytes;
 
+  /**
+   * @param string
+   */
   public function setDesiredBundleSizeBytes($desiredBundleSizeBytes)
   {
     $this->desiredBundleSizeBytes = $desiredBundleSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getDesiredBundleSizeBytes()
   {
     return $this->desiredBundleSizeBytes;
   }
+  /**
+   * @param string
+   */
   public function setDesiredShardSizeBytes($desiredShardSizeBytes)
   {
     $this->desiredShardSizeBytes = $desiredShardSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getDesiredShardSizeBytes()
   {
     return $this->desiredShardSizeBytes;

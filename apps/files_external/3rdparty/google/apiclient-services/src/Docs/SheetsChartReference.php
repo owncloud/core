@@ -19,21 +19,39 @@ namespace Google\Service\Docs;
 
 class SheetsChartReference extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $chartId;
+  /**
+   * @var string
+   */
   public $spreadsheetId;
 
+  /**
+   * @param int
+   */
   public function setChartId($chartId)
   {
     $this->chartId = $chartId;
   }
+  /**
+   * @return int
+   */
   public function getChartId()
   {
     return $this->chartId;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;

@@ -19,12 +19,21 @@ namespace Google\Service\Bigquery;
 
 class SessionInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sessionId;
 
+  /**
+   * @param string
+   */
   public function setSessionId($sessionId)
   {
     $this->sessionId = $sessionId;
   }
+  /**
+   * @return string
+   */
   public function getSessionId()
   {
     return $this->sessionId;

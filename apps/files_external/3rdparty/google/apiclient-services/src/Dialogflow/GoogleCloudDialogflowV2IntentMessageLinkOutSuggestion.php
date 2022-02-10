@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2IntentMessageLinkOutSuggestion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destinationName;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setDestinationName($destinationName)
   {
     $this->destinationName = $destinationName;
   }
+  /**
+   * @return string
+   */
   public function getDestinationName()
   {
     return $this->destinationName;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

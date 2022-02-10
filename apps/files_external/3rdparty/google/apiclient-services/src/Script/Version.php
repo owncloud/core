@@ -19,39 +19,75 @@ namespace Google\Service\Script;
 
 class Version extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $scriptId;
+  /**
+   * @var int
+   */
   public $versionNumber;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setScriptId($scriptId)
   {
     $this->scriptId = $scriptId;
   }
+  /**
+   * @return string
+   */
   public function getScriptId()
   {
     return $this->scriptId;
   }
+  /**
+   * @param int
+   */
   public function setVersionNumber($versionNumber)
   {
     $this->versionNumber = $versionNumber;
   }
+  /**
+   * @return int
+   */
   public function getVersionNumber()
   {
     return $this->versionNumber;

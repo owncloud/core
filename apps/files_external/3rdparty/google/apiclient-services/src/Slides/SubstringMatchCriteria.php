@@ -19,21 +19,39 @@ namespace Google\Service\Slides;
 
 class SubstringMatchCriteria extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $matchCase;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param bool
+   */
   public function setMatchCase($matchCase)
   {
     $this->matchCase = $matchCase;
   }
+  /**
+   * @return bool
+   */
   public function getMatchCase()
   {
     return $this->matchCase;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

@@ -19,21 +19,39 @@ namespace Google\Service\Container;
 
 class AuthenticatorGroupsConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $securityGroup;
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setSecurityGroup($securityGroup)
   {
     $this->securityGroup = $securityGroup;
   }
+  /**
+   * @return string
+   */
   public function getSecurityGroup()
   {
     return $this->securityGroup;

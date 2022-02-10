@@ -20,21 +20,39 @@ namespace Google\Service\PubsubLite;
 class ListReservationTopicsResponse extends \Google\Collection
 {
   protected $collection_key = 'topics';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $topics;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setTopics($topics)
   {
     $this->topics = $topics;
   }
+  /**
+   * @return string[]
+   */
   public function getTopics()
   {
     return $this->topics;

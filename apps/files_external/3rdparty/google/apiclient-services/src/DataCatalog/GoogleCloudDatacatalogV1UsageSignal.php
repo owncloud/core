@@ -19,14 +19,23 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1UsageSignal extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $updateTime;
   protected $usageWithinTimeRangeType = GoogleCloudDatacatalogV1UsageStats::class;
   protected $usageWithinTimeRangeDataType = 'map';
 
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

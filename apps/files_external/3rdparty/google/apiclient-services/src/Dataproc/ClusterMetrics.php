@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class ClusterMetrics extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $hdfsMetrics;
+  /**
+   * @var string[]
+   */
   public $yarnMetrics;
 
+  /**
+   * @param string[]
+   */
   public function setHdfsMetrics($hdfsMetrics)
   {
     $this->hdfsMetrics = $hdfsMetrics;
   }
+  /**
+   * @return string[]
+   */
   public function getHdfsMetrics()
   {
     return $this->hdfsMetrics;
   }
+  /**
+   * @param string[]
+   */
   public function setYarnMetrics($yarnMetrics)
   {
     $this->yarnMetrics = $yarnMetrics;
   }
+  /**
+   * @return string[]
+   */
   public function getYarnMetrics()
   {
     return $this->yarnMetrics;

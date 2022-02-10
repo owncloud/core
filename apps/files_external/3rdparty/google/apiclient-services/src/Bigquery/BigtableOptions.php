@@ -22,7 +22,13 @@ class BigtableOptions extends \Google\Collection
   protected $collection_key = 'columnFamilies';
   protected $columnFamiliesType = BigtableColumnFamily::class;
   protected $columnFamiliesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $ignoreUnspecifiedColumnFamilies;
+  /**
+   * @var bool
+   */
   public $readRowkeyAsString;
 
   /**
@@ -39,18 +45,30 @@ class BigtableOptions extends \Google\Collection
   {
     return $this->columnFamilies;
   }
+  /**
+   * @param bool
+   */
   public function setIgnoreUnspecifiedColumnFamilies($ignoreUnspecifiedColumnFamilies)
   {
     $this->ignoreUnspecifiedColumnFamilies = $ignoreUnspecifiedColumnFamilies;
   }
+  /**
+   * @return bool
+   */
   public function getIgnoreUnspecifiedColumnFamilies()
   {
     return $this->ignoreUnspecifiedColumnFamilies;
   }
+  /**
+   * @param bool
+   */
   public function setReadRowkeyAsString($readRowkeyAsString)
   {
     $this->readRowkeyAsString = $readRowkeyAsString;
   }
+  /**
+   * @return bool
+   */
   public function getReadRowkeyAsString()
   {
     return $this->readRowkeyAsString;

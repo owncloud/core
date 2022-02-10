@@ -19,14 +19,23 @@ namespace Google\Service\YouTube;
 
 class LiveChatModeratorSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $liveChatId;
   protected $moderatorDetailsType = ChannelProfileDetails::class;
   protected $moderatorDetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setLiveChatId($liveChatId)
   {
     $this->liveChatId = $liveChatId;
   }
+  /**
+   * @return string
+   */
   public function getLiveChatId()
   {
     return $this->liveChatId;

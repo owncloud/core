@@ -19,21 +19,39 @@ namespace Google\Service\AnalyticsData;
 
 class QuotaStatus extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $consumed;
+  /**
+   * @var int
+   */
   public $remaining;
 
+  /**
+   * @param int
+   */
   public function setConsumed($consumed)
   {
     $this->consumed = $consumed;
   }
+  /**
+   * @return int
+   */
   public function getConsumed()
   {
     return $this->consumed;
   }
+  /**
+   * @param int
+   */
   public function setRemaining($remaining)
   {
     $this->remaining = $remaining;
   }
+  /**
+   * @return int
+   */
   public function getRemaining()
   {
     return $this->remaining;

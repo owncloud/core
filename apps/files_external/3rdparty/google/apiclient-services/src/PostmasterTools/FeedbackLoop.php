@@ -19,13 +19,22 @@ namespace Google\Service\PostmasterTools;
 
 class FeedbackLoop extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
   public $spamRatio;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

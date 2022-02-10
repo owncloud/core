@@ -22,29 +22,75 @@ class BuildTrigger extends \Google\Collection
   protected $collection_key = 'tags';
   protected $approvalConfigType = ApprovalConfig::class;
   protected $approvalConfigDataType = '';
+  /**
+   * @var bool
+   */
   public $autodetect;
   protected $buildType = Build::class;
   protected $buildDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var bool
+   */
   public $disabled;
+  /**
+   * @var string
+   */
+  public $eventType;
+  /**
+   * @var string
+   */
   public $filename;
+  /**
+   * @var string
+   */
   public $filter;
   protected $gitFileSourceType = GitFileSource::class;
   protected $gitFileSourceDataType = '';
   protected $githubType = GitHubEventsConfig::class;
   protected $githubDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string[]
+   */
   public $ignoredFiles;
+  /**
+   * @var string[]
+   */
   public $includedFiles;
+  /**
+   * @var string
+   */
   public $name;
   protected $pubsubConfigType = PubsubConfig::class;
   protected $pubsubConfigDataType = '';
+  /**
+   * @var string
+   */
   public $resourceName;
+  /**
+   * @var string
+   */
   public $serviceAccount;
   protected $sourceToBuildType = GitRepoSource::class;
   protected $sourceToBuildDataType = '';
+  /**
+   * @var string[]
+   */
   public $substitutions;
+  /**
+   * @var string[]
+   */
   public $tags;
   protected $triggerTemplateType = RepoSource::class;
   protected $triggerTemplateDataType = '';
@@ -65,10 +111,16 @@ class BuildTrigger extends \Google\Collection
   {
     return $this->approvalConfig;
   }
+  /**
+   * @param bool
+   */
   public function setAutodetect($autodetect)
   {
     $this->autodetect = $autodetect;
   }
+  /**
+   * @return bool
+   */
   public function getAutodetect()
   {
     return $this->autodetect;
@@ -87,42 +139,86 @@ class BuildTrigger extends \Google\Collection
   {
     return $this->build;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;
   }
+  /**
+   * @param string
+   */
+  public function setEventType($eventType)
+  {
+    $this->eventType = $eventType;
+  }
+  /**
+   * @return string
+   */
+  public function getEventType()
+  {
+    return $this->eventType;
+  }
+  /**
+   * @param string
+   */
   public function setFilename($filename)
   {
     $this->filename = $filename;
   }
+  /**
+   * @return string
+   */
   public function getFilename()
   {
     return $this->filename;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
@@ -155,34 +251,58 @@ class BuildTrigger extends \Google\Collection
   {
     return $this->github;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string[]
+   */
   public function setIgnoredFiles($ignoredFiles)
   {
     $this->ignoredFiles = $ignoredFiles;
   }
+  /**
+   * @return string[]
+   */
   public function getIgnoredFiles()
   {
     return $this->ignoredFiles;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludedFiles($includedFiles)
   {
     $this->includedFiles = $includedFiles;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludedFiles()
   {
     return $this->includedFiles;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -201,18 +321,30 @@ class BuildTrigger extends \Google\Collection
   {
     return $this->pubsubConfig;
   }
+  /**
+   * @param string
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string
+   */
   public function getResourceName()
   {
     return $this->resourceName;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
@@ -231,18 +363,30 @@ class BuildTrigger extends \Google\Collection
   {
     return $this->sourceToBuild;
   }
+  /**
+   * @param string[]
+   */
   public function setSubstitutions($substitutions)
   {
     $this->substitutions = $substitutions;
   }
+  /**
+   * @return string[]
+   */
   public function getSubstitutions()
   {
     return $this->substitutions;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;

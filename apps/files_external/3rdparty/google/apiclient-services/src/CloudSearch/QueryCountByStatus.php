@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class QueryCountByStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $count;
+  /**
+   * @var int
+   */
   public $statusCode;
 
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param int
+   */
   public function setStatusCode($statusCode)
   {
     $this->statusCode = $statusCode;
   }
+  /**
+   * @return int
+   */
   public function getStatusCode()
   {
     return $this->statusCode;

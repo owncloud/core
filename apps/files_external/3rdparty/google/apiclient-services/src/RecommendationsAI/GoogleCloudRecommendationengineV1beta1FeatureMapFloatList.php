@@ -20,12 +20,21 @@ namespace Google\Service\RecommendationsAI;
 class GoogleCloudRecommendationengineV1beta1FeatureMapFloatList extends \Google\Collection
 {
   protected $collection_key = 'value';
+  /**
+   * @var float[]
+   */
   public $value;
 
+  /**
+   * @param float[]
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return float[]
+   */
   public function getValue()
   {
     return $this->value;

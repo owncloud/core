@@ -19,12 +19,21 @@ namespace Google\Service\VMMigrationService;
 
 class RemoveGroupMigrationRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $migratingVm;
 
+  /**
+   * @param string
+   */
   public function setMigratingVm($migratingVm)
   {
     $this->migratingVm = $migratingVm;
   }
+  /**
+   * @return string
+   */
   public function getMigratingVm()
   {
     return $this->migratingVm;

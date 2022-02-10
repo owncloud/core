@@ -19,23 +19,41 @@ namespace Google\Service\Docs;
 
 class TableRange extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $columnSpan;
+  /**
+   * @var int
+   */
   public $rowSpan;
   protected $tableCellLocationType = TableCellLocation::class;
   protected $tableCellLocationDataType = '';
 
+  /**
+   * @param int
+   */
   public function setColumnSpan($columnSpan)
   {
     $this->columnSpan = $columnSpan;
   }
+  /**
+   * @return int
+   */
   public function getColumnSpan()
   {
     return $this->columnSpan;
   }
+  /**
+   * @param int
+   */
   public function setRowSpan($rowSpan)
   {
     $this->rowSpan = $rowSpan;
   }
+  /**
+   * @return int
+   */
   public function getRowSpan()
   {
     return $this->rowSpan;

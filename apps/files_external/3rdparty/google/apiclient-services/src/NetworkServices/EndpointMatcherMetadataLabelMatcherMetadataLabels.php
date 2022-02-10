@@ -19,21 +19,39 @@ namespace Google\Service\NetworkServices;
 
 class EndpointMatcherMetadataLabelMatcherMetadataLabels extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $labelName;
+  /**
+   * @var string
+   */
   public $labelValue;
 
+  /**
+   * @param string
+   */
   public function setLabelName($labelName)
   {
     $this->labelName = $labelName;
   }
+  /**
+   * @return string
+   */
   public function getLabelName()
   {
     return $this->labelName;
   }
+  /**
+   * @param string
+   */
   public function setLabelValue($labelValue)
   {
     $this->labelValue = $labelValue;
   }
+  /**
+   * @return string
+   */
   public function getLabelValue()
   {
     return $this->labelValue;

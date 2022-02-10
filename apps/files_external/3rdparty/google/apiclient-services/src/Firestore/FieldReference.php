@@ -19,12 +19,21 @@ namespace Google\Service\Firestore;
 
 class FieldReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fieldPath;
 
+  /**
+   * @param string
+   */
   public function setFieldPath($fieldPath)
   {
     $this->fieldPath = $fieldPath;
   }
+  /**
+   * @return string
+   */
   public function getFieldPath()
   {
     return $this->fieldPath;

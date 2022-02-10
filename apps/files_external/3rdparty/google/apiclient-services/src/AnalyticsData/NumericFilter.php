@@ -19,14 +19,23 @@ namespace Google\Service\AnalyticsData;
 
 class NumericFilter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $operation;
   protected $valueType = NumericValue::class;
   protected $valueDataType = '';
 
+  /**
+   * @param string
+   */
   public function setOperation($operation)
   {
     $this->operation = $operation;
   }
+  /**
+   * @return string
+   */
   public function getOperation()
   {
     return $this->operation;

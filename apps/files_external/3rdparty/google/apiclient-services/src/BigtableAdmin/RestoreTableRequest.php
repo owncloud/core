@@ -19,21 +19,39 @@ namespace Google\Service\BigtableAdmin;
 
 class RestoreTableRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backup;
+  /**
+   * @var string
+   */
   public $tableId;
 
+  /**
+   * @param string
+   */
   public function setBackup($backup)
   {
     $this->backup = $backup;
   }
+  /**
+   * @return string
+   */
   public function getBackup()
   {
     return $this->backup;
   }
+  /**
+   * @param string
+   */
   public function setTableId($tableId)
   {
     $this->tableId = $tableId;
   }
+  /**
+   * @return string
+   */
   public function getTableId()
   {
     return $this->tableId;

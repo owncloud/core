@@ -19,30 +19,57 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class HtmlContent extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $snippet;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setSnippet($snippet)
   {
     $this->snippet = $snippet;
   }
+  /**
+   * @return string
+   */
   public function getSnippet()
   {
     return $this->snippet;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

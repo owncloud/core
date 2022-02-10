@@ -19,39 +19,75 @@ namespace Google\Service\Gmail;
 
 class Profile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $emailAddress;
+  /**
+   * @var string
+   */
   public $historyId;
+  /**
+   * @var int
+   */
   public $messagesTotal;
+  /**
+   * @var int
+   */
   public $threadsTotal;
 
+  /**
+   * @param string
+   */
   public function setEmailAddress($emailAddress)
   {
     $this->emailAddress = $emailAddress;
   }
+  /**
+   * @return string
+   */
   public function getEmailAddress()
   {
     return $this->emailAddress;
   }
+  /**
+   * @param string
+   */
   public function setHistoryId($historyId)
   {
     $this->historyId = $historyId;
   }
+  /**
+   * @return string
+   */
   public function getHistoryId()
   {
     return $this->historyId;
   }
+  /**
+   * @param int
+   */
   public function setMessagesTotal($messagesTotal)
   {
     $this->messagesTotal = $messagesTotal;
   }
+  /**
+   * @return int
+   */
   public function getMessagesTotal()
   {
     return $this->messagesTotal;
   }
+  /**
+   * @param int
+   */
   public function setThreadsTotal($threadsTotal)
   {
     $this->threadsTotal = $threadsTotal;
   }
+  /**
+   * @return int
+   */
   public function getThreadsTotal()
   {
     return $this->threadsTotal;

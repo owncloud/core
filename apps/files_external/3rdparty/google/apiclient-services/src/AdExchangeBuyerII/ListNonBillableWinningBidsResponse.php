@@ -20,14 +20,23 @@ namespace Google\Service\AdExchangeBuyerII;
 class ListNonBillableWinningBidsResponse extends \Google\Collection
 {
   protected $collection_key = 'nonBillableWinningBidStatusRows';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $nonBillableWinningBidStatusRowsType = NonBillableWinningBidStatusRow::class;
   protected $nonBillableWinningBidStatusRowsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

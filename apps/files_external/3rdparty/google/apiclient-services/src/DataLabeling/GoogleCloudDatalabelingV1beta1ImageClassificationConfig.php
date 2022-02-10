@@ -19,30 +19,57 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1ImageClassificationConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowMultiLabel;
+  /**
+   * @var string
+   */
   public $annotationSpecSet;
+  /**
+   * @var string
+   */
   public $answerAggregationType;
 
+  /**
+   * @param bool
+   */
   public function setAllowMultiLabel($allowMultiLabel)
   {
     $this->allowMultiLabel = $allowMultiLabel;
   }
+  /**
+   * @return bool
+   */
   public function getAllowMultiLabel()
   {
     return $this->allowMultiLabel;
   }
+  /**
+   * @param string
+   */
   public function setAnnotationSpecSet($annotationSpecSet)
   {
     $this->annotationSpecSet = $annotationSpecSet;
   }
+  /**
+   * @return string
+   */
   public function getAnnotationSpecSet()
   {
     return $this->annotationSpecSet;
   }
+  /**
+   * @param string
+   */
   public function setAnswerAggregationType($answerAggregationType)
   {
     $this->answerAggregationType = $answerAggregationType;
   }
+  /**
+   * @return string
+   */
   public function getAnswerAggregationType()
   {
     return $this->answerAggregationType;

@@ -22,25 +22,61 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
   protected $collection_key = 'variantRollupKeys';
   protected $boostSpecType = GoogleCloudRetailV2SearchRequestBoostSpec::class;
   protected $boostSpecDataType = '';
+  /**
+   * @var string
+   */
   public $branch;
+  /**
+   * @var string
+   */
   public $canonicalFilter;
   protected $dynamicFacetSpecType = GoogleCloudRetailV2SearchRequestDynamicFacetSpec::class;
   protected $dynamicFacetSpecDataType = '';
   protected $facetSpecsType = GoogleCloudRetailV2SearchRequestFacetSpec::class;
   protected $facetSpecsDataType = 'array';
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var int
+   */
   public $offset;
+  /**
+   * @var string
+   */
   public $orderBy;
+  /**
+   * @var string[]
+   */
   public $pageCategories;
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var string
+   */
   public $query;
   protected $queryExpansionSpecType = GoogleCloudRetailV2SearchRequestQueryExpansionSpec::class;
   protected $queryExpansionSpecDataType = '';
+  /**
+   * @var string
+   */
   public $searchMode;
   protected $userInfoType = GoogleCloudRetailV2UserInfo::class;
   protected $userInfoDataType = '';
+  /**
+   * @var string[]
+   */
   public $variantRollupKeys;
+  /**
+   * @var string
+   */
   public $visitorId;
 
   /**
@@ -57,18 +93,30 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
   {
     return $this->boostSpec;
   }
+  /**
+   * @param string
+   */
   public function setBranch($branch)
   {
     $this->branch = $branch;
   }
+  /**
+   * @return string
+   */
   public function getBranch()
   {
     return $this->branch;
   }
+  /**
+   * @param string
+   */
   public function setCanonicalFilter($canonicalFilter)
   {
     $this->canonicalFilter = $canonicalFilter;
   }
+  /**
+   * @return string
+   */
   public function getCanonicalFilter()
   {
     return $this->canonicalFilter;
@@ -101,58 +149,100 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
   {
     return $this->facetSpecs;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param int
+   */
   public function setOffset($offset)
   {
     $this->offset = $offset;
   }
+  /**
+   * @return int
+   */
   public function getOffset()
   {
     return $this->offset;
   }
+  /**
+   * @param string
+   */
   public function setOrderBy($orderBy)
   {
     $this->orderBy = $orderBy;
   }
+  /**
+   * @return string
+   */
   public function getOrderBy()
   {
     return $this->orderBy;
   }
+  /**
+   * @param string[]
+   */
   public function setPageCategories($pageCategories)
   {
     $this->pageCategories = $pageCategories;
   }
+  /**
+   * @return string[]
+   */
   public function getPageCategories()
   {
     return $this->pageCategories;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;
@@ -171,10 +261,16 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
   {
     return $this->queryExpansionSpec;
   }
+  /**
+   * @param string
+   */
   public function setSearchMode($searchMode)
   {
     $this->searchMode = $searchMode;
   }
+  /**
+   * @return string
+   */
   public function getSearchMode()
   {
     return $this->searchMode;
@@ -193,18 +289,30 @@ class GoogleCloudRetailV2SearchRequest extends \Google\Collection
   {
     return $this->userInfo;
   }
+  /**
+   * @param string[]
+   */
   public function setVariantRollupKeys($variantRollupKeys)
   {
     $this->variantRollupKeys = $variantRollupKeys;
   }
+  /**
+   * @return string[]
+   */
   public function getVariantRollupKeys()
   {
     return $this->variantRollupKeys;
   }
+  /**
+   * @param string
+   */
   public function setVisitorId($visitorId)
   {
     $this->visitorId = $visitorId;
   }
+  /**
+   * @return string
+   */
   public function getVisitorId()
   {
     return $this->visitorId;

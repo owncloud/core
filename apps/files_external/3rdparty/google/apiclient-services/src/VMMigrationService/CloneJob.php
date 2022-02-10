@@ -21,11 +21,23 @@ class CloneJob extends \Google\Model
 {
   protected $computeEngineTargetDetailsType = ComputeEngineTargetDetails::class;
   protected $computeEngineTargetDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
   protected $errorType = Status::class;
   protected $errorDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $stateTime;
 
   /**
@@ -42,10 +54,16 @@ class CloneJob extends \Google\Model
   {
     return $this->computeEngineTargetDetails;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -64,26 +82,44 @@ class CloneJob extends \Google\Model
   {
     return $this->error;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStateTime($stateTime)
   {
     $this->stateTime = $stateTime;
   }
+  /**
+   * @return string
+   */
   public function getStateTime()
   {
     return $this->stateTime;

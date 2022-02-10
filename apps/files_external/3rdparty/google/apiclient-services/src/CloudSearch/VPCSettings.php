@@ -19,12 +19,21 @@ namespace Google\Service\CloudSearch;
 
 class VPCSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $project;
 
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;

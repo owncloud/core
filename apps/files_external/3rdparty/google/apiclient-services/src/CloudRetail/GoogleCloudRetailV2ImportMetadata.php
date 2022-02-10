@@ -19,57 +19,111 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2ImportMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $failureCount;
+  /**
+   * @var string
+   */
   public $notificationPubsubTopic;
+  /**
+   * @var string
+   */
   public $requestId;
+  /**
+   * @var string
+   */
   public $successCount;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setFailureCount($failureCount)
   {
     $this->failureCount = $failureCount;
   }
+  /**
+   * @return string
+   */
   public function getFailureCount()
   {
     return $this->failureCount;
   }
+  /**
+   * @param string
+   */
   public function setNotificationPubsubTopic($notificationPubsubTopic)
   {
     $this->notificationPubsubTopic = $notificationPubsubTopic;
   }
+  /**
+   * @return string
+   */
   public function getNotificationPubsubTopic()
   {
     return $this->notificationPubsubTopic;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;
   }
+  /**
+   * @param string
+   */
   public function setSuccessCount($successCount)
   {
     $this->successCount = $successCount;
   }
+  /**
+   * @return string
+   */
   public function getSuccessCount()
   {
     return $this->successCount;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

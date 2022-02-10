@@ -19,48 +19,93 @@ namespace Google\Service\AnalyticsReporting;
 
 class EventData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $eventAction;
+  /**
+   * @var string
+   */
   public $eventCategory;
+  /**
+   * @var string
+   */
   public $eventCount;
+  /**
+   * @var string
+   */
   public $eventLabel;
+  /**
+   * @var string
+   */
   public $eventValue;
 
+  /**
+   * @param string
+   */
   public function setEventAction($eventAction)
   {
     $this->eventAction = $eventAction;
   }
+  /**
+   * @return string
+   */
   public function getEventAction()
   {
     return $this->eventAction;
   }
+  /**
+   * @param string
+   */
   public function setEventCategory($eventCategory)
   {
     $this->eventCategory = $eventCategory;
   }
+  /**
+   * @return string
+   */
   public function getEventCategory()
   {
     return $this->eventCategory;
   }
+  /**
+   * @param string
+   */
   public function setEventCount($eventCount)
   {
     $this->eventCount = $eventCount;
   }
+  /**
+   * @return string
+   */
   public function getEventCount()
   {
     return $this->eventCount;
   }
+  /**
+   * @param string
+   */
   public function setEventLabel($eventLabel)
   {
     $this->eventLabel = $eventLabel;
   }
+  /**
+   * @return string
+   */
   public function getEventLabel()
   {
     return $this->eventLabel;
   }
+  /**
+   * @param string
+   */
   public function setEventValue($eventValue)
   {
     $this->eventValue = $eventValue;
   }
+  /**
+   * @return string
+   */
   public function getEventValue()
   {
     return $this->eventValue;

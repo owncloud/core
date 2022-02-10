@@ -19,21 +19,39 @@ namespace Google\Service\Appengine;
 
 class BasicScaling extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $idleTimeout;
+  /**
+   * @var int
+   */
   public $maxInstances;
 
+  /**
+   * @param string
+   */
   public function setIdleTimeout($idleTimeout)
   {
     $this->idleTimeout = $idleTimeout;
   }
+  /**
+   * @return string
+   */
   public function getIdleTimeout()
   {
     return $this->idleTimeout;
   }
+  /**
+   * @param int
+   */
   public function setMaxInstances($maxInstances)
   {
     $this->maxInstances = $maxInstances;
   }
+  /**
+   * @return int
+   */
   public function getMaxInstances()
   {
     return $this->maxInstances;

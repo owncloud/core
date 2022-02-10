@@ -20,43 +20,79 @@ namespace Google\Service\Docs;
 class Table extends \Google\Collection
 {
   protected $collection_key = 'tableRows';
+  /**
+   * @var int
+   */
   public $columns;
+  /**
+   * @var int
+   */
   public $rows;
+  /**
+   * @var string[]
+   */
   public $suggestedDeletionIds;
+  /**
+   * @var string[]
+   */
   public $suggestedInsertionIds;
   protected $tableRowsType = TableRow::class;
   protected $tableRowsDataType = 'array';
   protected $tableStyleType = TableStyle::class;
   protected $tableStyleDataType = '';
 
+  /**
+   * @param int
+   */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
+  /**
+   * @return int
+   */
   public function getColumns()
   {
     return $this->columns;
   }
+  /**
+   * @param int
+   */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
+  /**
+   * @return int
+   */
   public function getRows()
   {
     return $this->rows;
   }
+  /**
+   * @param string[]
+   */
   public function setSuggestedDeletionIds($suggestedDeletionIds)
   {
     $this->suggestedDeletionIds = $suggestedDeletionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSuggestedDeletionIds()
   {
     return $this->suggestedDeletionIds;
   }
+  /**
+   * @param string[]
+   */
   public function setSuggestedInsertionIds($suggestedInsertionIds)
   {
     $this->suggestedInsertionIds = $suggestedInsertionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSuggestedInsertionIds()
   {
     return $this->suggestedInsertionIds;

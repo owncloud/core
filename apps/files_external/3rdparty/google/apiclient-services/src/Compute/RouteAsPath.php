@@ -20,21 +20,39 @@ namespace Google\Service\Compute;
 class RouteAsPath extends \Google\Collection
 {
   protected $collection_key = 'asLists';
+  /**
+   * @var string[]
+   */
   public $asLists;
+  /**
+   * @var string
+   */
   public $pathSegmentType;
 
+  /**
+   * @param string[]
+   */
   public function setAsLists($asLists)
   {
     $this->asLists = $asLists;
   }
+  /**
+   * @return string[]
+   */
   public function getAsLists()
   {
     return $this->asLists;
   }
+  /**
+   * @param string
+   */
   public function setPathSegmentType($pathSegmentType)
   {
     $this->pathSegmentType = $pathSegmentType;
   }
+  /**
+   * @return string
+   */
   public function getPathSegmentType()
   {
     return $this->pathSegmentType;

@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1Session extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $timestampMs;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setTimestampMs($timestampMs)
   {
     $this->timestampMs = $timestampMs;
   }
+  /**
+   * @return string
+   */
   public function getTimestampMs()
   {
     return $this->timestampMs;

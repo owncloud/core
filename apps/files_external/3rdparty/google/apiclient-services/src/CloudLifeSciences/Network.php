@@ -19,30 +19,57 @@ namespace Google\Service\CloudLifeSciences;
 
 class Network extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string
+   */
   public $subnetwork;
+  /**
+   * @var bool
+   */
   public $usePrivateAddress;
 
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setSubnetwork($subnetwork)
   {
     $this->subnetwork = $subnetwork;
   }
+  /**
+   * @return string
+   */
   public function getSubnetwork()
   {
     return $this->subnetwork;
   }
+  /**
+   * @param bool
+   */
   public function setUsePrivateAddress($usePrivateAddress)
   {
     $this->usePrivateAddress = $usePrivateAddress;
   }
+  /**
+   * @return bool
+   */
   public function getUsePrivateAddress()
   {
     return $this->usePrivateAddress;

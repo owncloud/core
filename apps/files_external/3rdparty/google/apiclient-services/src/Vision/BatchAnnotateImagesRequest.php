@@ -20,14 +20,23 @@ namespace Google\Service\Vision;
 class BatchAnnotateImagesRequest extends \Google\Collection
 {
   protected $collection_key = 'requests';
+  /**
+   * @var string
+   */
   public $parent;
   protected $requestsType = AnnotateImageRequest::class;
   protected $requestsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;

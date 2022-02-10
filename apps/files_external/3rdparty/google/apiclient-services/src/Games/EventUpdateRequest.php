@@ -19,30 +19,57 @@ namespace Google\Service\Games;
 
 class EventUpdateRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $definitionId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $updateCount;
 
+  /**
+   * @param string
+   */
   public function setDefinitionId($definitionId)
   {
     $this->definitionId = $definitionId;
   }
+  /**
+   * @return string
+   */
   public function getDefinitionId()
   {
     return $this->definitionId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setUpdateCount($updateCount)
   {
     $this->updateCount = $updateCount;
   }
+  /**
+   * @return string
+   */
   public function getUpdateCount()
   {
     return $this->updateCount;

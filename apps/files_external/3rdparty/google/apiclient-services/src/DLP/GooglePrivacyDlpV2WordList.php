@@ -20,12 +20,21 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2WordList extends \Google\Collection
 {
   protected $collection_key = 'words';
+  /**
+   * @var string[]
+   */
   public $words;
 
+  /**
+   * @param string[]
+   */
   public function setWords($words)
   {
     $this->words = $words;
   }
+  /**
+   * @return string[]
+   */
   public function getWords()
   {
     return $this->words;

@@ -20,16 +20,31 @@ namespace Google\Service\CloudRun;
 class HTTPGetAction extends \Google\Collection
 {
   protected $collection_key = 'httpHeaders';
+  /**
+   * @var string
+   */
   public $host;
   protected $httpHeadersType = HTTPHeader::class;
   protected $httpHeadersDataType = 'array';
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $scheme;
 
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
@@ -48,18 +63,30 @@ class HTTPGetAction extends \Google\Collection
   {
     return $this->httpHeaders;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setScheme($scheme)
   {
     $this->scheme = $scheme;
   }
+  /**
+   * @return string
+   */
   public function getScheme()
   {
     return $this->scheme;

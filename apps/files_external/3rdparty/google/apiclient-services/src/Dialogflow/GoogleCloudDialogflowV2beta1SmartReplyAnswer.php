@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1SmartReplyAnswer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $answerRecord;
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $reply;
 
+  /**
+   * @param string
+   */
   public function setAnswerRecord($answerRecord)
   {
     $this->answerRecord = $answerRecord;
   }
+  /**
+   * @return string
+   */
   public function getAnswerRecord()
   {
     return $this->answerRecord;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setReply($reply)
   {
     $this->reply = $reply;
   }
+  /**
+   * @return string
+   */
   public function getReply()
   {
     return $this->reply;

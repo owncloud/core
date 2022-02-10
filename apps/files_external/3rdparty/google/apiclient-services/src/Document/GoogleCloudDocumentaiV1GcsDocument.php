@@ -19,21 +19,39 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1GcsDocument extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsUri;
+  /**
+   * @var string
+   */
   public $mimeType;
 
+  /**
+   * @param string
+   */
   public function setGcsUri($gcsUri)
   {
     $this->gcsUri = $gcsUri;
   }
+  /**
+   * @return string
+   */
   public function getGcsUri()
   {
     return $this->gcsUri;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;

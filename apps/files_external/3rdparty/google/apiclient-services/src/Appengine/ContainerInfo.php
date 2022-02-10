@@ -19,12 +19,21 @@ namespace Google\Service\Appengine;
 
 class ContainerInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $image;
 
+  /**
+   * @param string
+   */
   public function setImage($image)
   {
     $this->image = $image;
   }
+  /**
+   * @return string
+   */
   public function getImage()
   {
     return $this->image;

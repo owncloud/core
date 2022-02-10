@@ -20,34 +20,89 @@ namespace Google\Service\Compute;
 class Scheduling extends \Google\Collection
 {
   protected $collection_key = 'nodeAffinities';
+  /**
+   * @var bool
+   */
   public $automaticRestart;
+  /**
+   * @var string
+   */
+  public $instanceTerminationAction;
+  /**
+   * @var string
+   */
   public $locationHint;
+  /**
+   * @var int
+   */
   public $minNodeCpus;
   protected $nodeAffinitiesType = SchedulingNodeAffinity::class;
   protected $nodeAffinitiesDataType = 'array';
+  /**
+   * @var string
+   */
   public $onHostMaintenance;
+  /**
+   * @var bool
+   */
   public $preemptible;
+  /**
+   * @var string
+   */
+  public $provisioningModel;
 
+  /**
+   * @param bool
+   */
   public function setAutomaticRestart($automaticRestart)
   {
     $this->automaticRestart = $automaticRestart;
   }
+  /**
+   * @return bool
+   */
   public function getAutomaticRestart()
   {
     return $this->automaticRestart;
   }
+  /**
+   * @param string
+   */
+  public function setInstanceTerminationAction($instanceTerminationAction)
+  {
+    $this->instanceTerminationAction = $instanceTerminationAction;
+  }
+  /**
+   * @return string
+   */
+  public function getInstanceTerminationAction()
+  {
+    return $this->instanceTerminationAction;
+  }
+  /**
+   * @param string
+   */
   public function setLocationHint($locationHint)
   {
     $this->locationHint = $locationHint;
   }
+  /**
+   * @return string
+   */
   public function getLocationHint()
   {
     return $this->locationHint;
   }
+  /**
+   * @param int
+   */
   public function setMinNodeCpus($minNodeCpus)
   {
     $this->minNodeCpus = $minNodeCpus;
   }
+  /**
+   * @return int
+   */
   public function getMinNodeCpus()
   {
     return $this->minNodeCpus;
@@ -66,21 +121,47 @@ class Scheduling extends \Google\Collection
   {
     return $this->nodeAffinities;
   }
+  /**
+   * @param string
+   */
   public function setOnHostMaintenance($onHostMaintenance)
   {
     $this->onHostMaintenance = $onHostMaintenance;
   }
+  /**
+   * @return string
+   */
   public function getOnHostMaintenance()
   {
     return $this->onHostMaintenance;
   }
+  /**
+   * @param bool
+   */
   public function setPreemptible($preemptible)
   {
     $this->preemptible = $preemptible;
   }
+  /**
+   * @return bool
+   */
   public function getPreemptible()
   {
     return $this->preemptible;
+  }
+  /**
+   * @param string
+   */
+  public function setProvisioningModel($provisioningModel)
+  {
+    $this->provisioningModel = $provisioningModel;
+  }
+  /**
+   * @return string
+   */
+  public function getProvisioningModel()
+  {
+    return $this->provisioningModel;
   }
 }
 

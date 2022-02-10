@@ -20,21 +20,39 @@ namespace Google\Service\ToolResults;
 class OverlappingUIElements extends \Google\Collection
 {
   protected $collection_key = 'resourceName';
+  /**
+   * @var string[]
+   */
   public $resourceName;
+  /**
+   * @var string
+   */
   public $screenId;
 
+  /**
+   * @param string[]
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceName()
   {
     return $this->resourceName;
   }
+  /**
+   * @param string
+   */
   public function setScreenId($screenId)
   {
     $this->screenId = $screenId;
   }
+  /**
+   * @return string
+   */
   public function getScreenId()
   {
     return $this->screenId;

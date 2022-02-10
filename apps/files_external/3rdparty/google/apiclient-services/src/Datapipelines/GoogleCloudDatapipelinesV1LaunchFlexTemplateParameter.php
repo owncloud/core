@@ -19,19 +19,43 @@ namespace Google\Service\Datapipelines;
 
 class GoogleCloudDatapipelinesV1LaunchFlexTemplateParameter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $containerSpecGcsPath;
   protected $environmentType = GoogleCloudDatapipelinesV1FlexTemplateRuntimeEnvironment::class;
   protected $environmentDataType = '';
+  /**
+   * @var string
+   */
   public $jobName;
+  /**
+   * @var string[]
+   */
   public $launchOptions;
+  /**
+   * @var string[]
+   */
   public $parameters;
+  /**
+   * @var string[]
+   */
   public $transformNameMappings;
+  /**
+   * @var bool
+   */
   public $update;
 
+  /**
+   * @param string
+   */
   public function setContainerSpecGcsPath($containerSpecGcsPath)
   {
     $this->containerSpecGcsPath = $containerSpecGcsPath;
   }
+  /**
+   * @return string
+   */
   public function getContainerSpecGcsPath()
   {
     return $this->containerSpecGcsPath;
@@ -50,42 +74,72 @@ class GoogleCloudDatapipelinesV1LaunchFlexTemplateParameter extends \Google\Mode
   {
     return $this->environment;
   }
+  /**
+   * @param string
+   */
   public function setJobName($jobName)
   {
     $this->jobName = $jobName;
   }
+  /**
+   * @return string
+   */
   public function getJobName()
   {
     return $this->jobName;
   }
+  /**
+   * @param string[]
+   */
   public function setLaunchOptions($launchOptions)
   {
     $this->launchOptions = $launchOptions;
   }
+  /**
+   * @return string[]
+   */
   public function getLaunchOptions()
   {
     return $this->launchOptions;
   }
+  /**
+   * @param string[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return string[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string[]
+   */
   public function setTransformNameMappings($transformNameMappings)
   {
     $this->transformNameMappings = $transformNameMappings;
   }
+  /**
+   * @return string[]
+   */
   public function getTransformNameMappings()
   {
     return $this->transformNameMappings;
   }
+  /**
+   * @param bool
+   */
   public function setUpdate($update)
   {
     $this->update = $update;
   }
+  /**
+   * @return bool
+   */
   public function getUpdate()
   {
     return $this->update;

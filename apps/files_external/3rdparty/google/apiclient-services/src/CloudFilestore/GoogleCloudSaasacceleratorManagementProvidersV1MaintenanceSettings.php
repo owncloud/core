@@ -19,23 +19,41 @@ namespace Google\Service\CloudFilestore;
 
 class GoogleCloudSaasacceleratorManagementProvidersV1MaintenanceSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $exclude;
+  /**
+   * @var bool
+   */
   public $isRollback;
   protected $maintenancePoliciesType = MaintenancePolicy::class;
   protected $maintenancePoliciesDataType = 'map';
 
+  /**
+   * @param bool
+   */
   public function setExclude($exclude)
   {
     $this->exclude = $exclude;
   }
+  /**
+   * @return bool
+   */
   public function getExclude()
   {
     return $this->exclude;
   }
+  /**
+   * @param bool
+   */
   public function setIsRollback($isRollback)
   {
     $this->isRollback = $isRollback;
   }
+  /**
+   * @return bool
+   */
   public function getIsRollback()
   {
     return $this->isRollback;

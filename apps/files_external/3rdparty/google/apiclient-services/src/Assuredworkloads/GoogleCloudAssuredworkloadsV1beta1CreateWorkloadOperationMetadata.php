@@ -20,41 +20,77 @@ namespace Google\Service\Assuredworkloads;
 class GoogleCloudAssuredworkloadsV1beta1CreateWorkloadOperationMetadata extends \Google\Collection
 {
   protected $collection_key = 'resourceSettings';
+  /**
+   * @var string
+   */
   public $complianceRegime;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $parent;
   protected $resourceSettingsType = GoogleCloudAssuredworkloadsV1beta1WorkloadResourceSettings::class;
   protected $resourceSettingsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setComplianceRegime($complianceRegime)
   {
     $this->complianceRegime = $complianceRegime;
   }
+  /**
+   * @return string
+   */
   public function getComplianceRegime()
   {
     return $this->complianceRegime;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;

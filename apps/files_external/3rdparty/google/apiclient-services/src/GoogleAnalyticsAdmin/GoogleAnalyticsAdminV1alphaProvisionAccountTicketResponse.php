@@ -19,12 +19,21 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 
 class GoogleAnalyticsAdminV1alphaProvisionAccountTicketResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountTicketId;
 
+  /**
+   * @param string
+   */
   public function setAccountTicketId($accountTicketId)
   {
     $this->accountTicketId = $accountTicketId;
   }
+  /**
+   * @return string
+   */
   public function getAccountTicketId()
   {
     return $this->accountTicketId;

@@ -22,7 +22,13 @@ class CreateTimeSeriesSummary extends \Google\Collection
   protected $collection_key = 'errors';
   protected $errorsType = Error::class;
   protected $errorsDataType = 'array';
+  /**
+   * @var int
+   */
   public $successPointCount;
+  /**
+   * @var int
+   */
   public $totalPointCount;
 
   /**
@@ -39,18 +45,30 @@ class CreateTimeSeriesSummary extends \Google\Collection
   {
     return $this->errors;
   }
+  /**
+   * @param int
+   */
   public function setSuccessPointCount($successPointCount)
   {
     $this->successPointCount = $successPointCount;
   }
+  /**
+   * @return int
+   */
   public function getSuccessPointCount()
   {
     return $this->successPointCount;
   }
+  /**
+   * @param int
+   */
   public function setTotalPointCount($totalPointCount)
   {
     $this->totalPointCount = $totalPointCount;
   }
+  /**
+   * @return int
+   */
   public function getTotalPointCount()
   {
     return $this->totalPointCount;

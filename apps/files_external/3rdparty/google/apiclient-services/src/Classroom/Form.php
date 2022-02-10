@@ -19,39 +19,75 @@ namespace Google\Service\Classroom;
 
 class Form extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $formUrl;
+  /**
+   * @var string
+   */
   public $responseUrl;
+  /**
+   * @var string
+   */
   public $thumbnailUrl;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setFormUrl($formUrl)
   {
     $this->formUrl = $formUrl;
   }
+  /**
+   * @return string
+   */
   public function getFormUrl()
   {
     return $this->formUrl;
   }
+  /**
+   * @param string
+   */
   public function setResponseUrl($responseUrl)
   {
     $this->responseUrl = $responseUrl;
   }
+  /**
+   * @return string
+   */
   public function getResponseUrl()
   {
     return $this->responseUrl;
   }
+  /**
+   * @param string
+   */
   public function setThumbnailUrl($thumbnailUrl)
   {
     $this->thumbnailUrl = $thumbnailUrl;
   }
+  /**
+   * @return string
+   */
   public function getThumbnailUrl()
   {
     return $this->thumbnailUrl;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

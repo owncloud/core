@@ -19,12 +19,21 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1CrossRegionalSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $taxonomy;
 
+  /**
+   * @param string
+   */
   public function setTaxonomy($taxonomy)
   {
     $this->taxonomy = $taxonomy;
   }
+  /**
+   * @return string
+   */
   public function getTaxonomy()
   {
     return $this->taxonomy;

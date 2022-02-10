@@ -22,7 +22,13 @@ class DocumentChange extends \Google\Collection
   protected $collection_key = 'targetIds';
   protected $documentType = Document::class;
   protected $documentDataType = '';
+  /**
+   * @var int[]
+   */
   public $removedTargetIds;
+  /**
+   * @var int[]
+   */
   public $targetIds;
 
   /**
@@ -39,18 +45,30 @@ class DocumentChange extends \Google\Collection
   {
     return $this->document;
   }
+  /**
+   * @param int[]
+   */
   public function setRemovedTargetIds($removedTargetIds)
   {
     $this->removedTargetIds = $removedTargetIds;
   }
+  /**
+   * @return int[]
+   */
   public function getRemovedTargetIds()
   {
     return $this->removedTargetIds;
   }
+  /**
+   * @param int[]
+   */
   public function setTargetIds($targetIds)
   {
     $this->targetIds = $targetIds;
   }
+  /**
+   * @return int[]
+   */
   public function getTargetIds()
   {
     return $this->targetIds;

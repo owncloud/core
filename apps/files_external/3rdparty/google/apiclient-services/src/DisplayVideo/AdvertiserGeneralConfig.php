@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class AdvertiserGeneralConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var string
+   */
   public $domainUrl;
+  /**
+   * @var string
+   */
   public $timeZone;
 
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param string
+   */
   public function setDomainUrl($domainUrl)
   {
     $this->domainUrl = $domainUrl;
   }
+  /**
+   * @return string
+   */
   public function getDomainUrl()
   {
     return $this->domainUrl;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;

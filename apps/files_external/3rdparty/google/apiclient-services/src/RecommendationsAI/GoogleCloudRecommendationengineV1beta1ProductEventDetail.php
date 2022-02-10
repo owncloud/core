@@ -20,7 +20,13 @@ namespace Google\Service\RecommendationsAI;
 class GoogleCloudRecommendationengineV1beta1ProductEventDetail extends \Google\Collection
 {
   protected $collection_key = 'productDetails';
+  /**
+   * @var string
+   */
   public $cartId;
+  /**
+   * @var string
+   */
   public $listId;
   protected $pageCategoriesType = GoogleCloudRecommendationengineV1beta1CatalogItemCategoryHierarchy::class;
   protected $pageCategoriesDataType = 'array';
@@ -28,20 +34,35 @@ class GoogleCloudRecommendationengineV1beta1ProductEventDetail extends \Google\C
   protected $productDetailsDataType = 'array';
   protected $purchaseTransactionType = GoogleCloudRecommendationengineV1beta1PurchaseTransaction::class;
   protected $purchaseTransactionDataType = '';
+  /**
+   * @var string
+   */
   public $searchQuery;
 
+  /**
+   * @param string
+   */
   public function setCartId($cartId)
   {
     $this->cartId = $cartId;
   }
+  /**
+   * @return string
+   */
   public function getCartId()
   {
     return $this->cartId;
   }
+  /**
+   * @param string
+   */
   public function setListId($listId)
   {
     $this->listId = $listId;
   }
+  /**
+   * @return string
+   */
   public function getListId()
   {
     return $this->listId;
@@ -88,10 +109,16 @@ class GoogleCloudRecommendationengineV1beta1ProductEventDetail extends \Google\C
   {
     return $this->purchaseTransaction;
   }
+  /**
+   * @param string
+   */
   public function setSearchQuery($searchQuery)
   {
     $this->searchQuery = $searchQuery;
   }
+  /**
+   * @return string
+   */
   public function getSearchQuery()
   {
     return $this->searchQuery;

@@ -19,21 +19,39 @@ namespace Google\Service\CloudTasks;
 
 class OAuthToken extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $scope;
+  /**
+   * @var string
+   */
   public $serviceAccountEmail;
 
+  /**
+   * @param string
+   */
   public function setScope($scope)
   {
     $this->scope = $scope;
   }
+  /**
+   * @return string
+   */
   public function getScope()
   {
     return $this->scope;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccountEmail($serviceAccountEmail)
   {
     $this->serviceAccountEmail = $serviceAccountEmail;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccountEmail()
   {
     return $this->serviceAccountEmail;

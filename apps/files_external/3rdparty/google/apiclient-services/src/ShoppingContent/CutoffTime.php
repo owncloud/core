@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class CutoffTime extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hour;
+  /**
+   * @var string
+   */
   public $minute;
+  /**
+   * @var string
+   */
   public $timezone;
 
+  /**
+   * @param string
+   */
   public function setHour($hour)
   {
     $this->hour = $hour;
   }
+  /**
+   * @return string
+   */
   public function getHour()
   {
     return $this->hour;
   }
+  /**
+   * @param string
+   */
   public function setMinute($minute)
   {
     $this->minute = $minute;
   }
+  /**
+   * @return string
+   */
   public function getMinute()
   {
     return $this->minute;
   }
+  /**
+   * @param string
+   */
   public function setTimezone($timezone)
   {
     $this->timezone = $timezone;
   }
+  /**
+   * @return string
+   */
   public function getTimezone()
   {
     return $this->timezone;

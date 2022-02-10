@@ -20,12 +20,21 @@ namespace Google\Service\Calendar;
 class ConferenceProperties extends \Google\Collection
 {
   protected $collection_key = 'allowedConferenceSolutionTypes';
+  /**
+   * @var string[]
+   */
   public $allowedConferenceSolutionTypes;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedConferenceSolutionTypes($allowedConferenceSolutionTypes)
   {
     $this->allowedConferenceSolutionTypes = $allowedConferenceSolutionTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedConferenceSolutionTypes()
   {
     return $this->allowedConferenceSolutionTypes;

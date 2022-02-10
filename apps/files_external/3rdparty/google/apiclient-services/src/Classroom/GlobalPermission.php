@@ -19,12 +19,21 @@ namespace Google\Service\Classroom;
 
 class GlobalPermission extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $permission;
 
+  /**
+   * @param string
+   */
   public function setPermission($permission)
   {
     $this->permission = $permission;
   }
+  /**
+   * @return string
+   */
   public function getPermission()
   {
     return $this->permission;

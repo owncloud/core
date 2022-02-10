@@ -19,12 +19,21 @@ namespace Google\Service\CloudSearch;
 
 class DebugOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableDebugging;
 
+  /**
+   * @param bool
+   */
   public function setEnableDebugging($enableDebugging)
   {
     $this->enableDebugging = $enableDebugging;
   }
+  /**
+   * @return bool
+   */
   public function getEnableDebugging()
   {
     return $this->enableDebugging;

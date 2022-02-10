@@ -22,6 +22,9 @@ class CohortGroup extends \Google\Collection
   protected $collection_key = 'cohorts';
   protected $cohortsType = Cohort::class;
   protected $cohortsDataType = 'array';
+  /**
+   * @var bool
+   */
   public $lifetimeValue;
 
   /**
@@ -38,10 +41,16 @@ class CohortGroup extends \Google\Collection
   {
     return $this->cohorts;
   }
+  /**
+   * @param bool
+   */
   public function setLifetimeValue($lifetimeValue)
   {
     $this->lifetimeValue = $lifetimeValue;
   }
+  /**
+   * @return bool
+   */
   public function getLifetimeValue()
   {
     return $this->lifetimeValue;

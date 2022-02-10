@@ -19,30 +19,57 @@ namespace Google\Service\Adsense;
 
 class AdClientAdCode extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adCode;
+  /**
+   * @var string
+   */
   public $ampBody;
+  /**
+   * @var string
+   */
   public $ampHead;
 
+  /**
+   * @param string
+   */
   public function setAdCode($adCode)
   {
     $this->adCode = $adCode;
   }
+  /**
+   * @return string
+   */
   public function getAdCode()
   {
     return $this->adCode;
   }
+  /**
+   * @param string
+   */
   public function setAmpBody($ampBody)
   {
     $this->ampBody = $ampBody;
   }
+  /**
+   * @return string
+   */
   public function getAmpBody()
   {
     return $this->ampBody;
   }
+  /**
+   * @param string
+   */
   public function setAmpHead($ampHead)
   {
     $this->ampHead = $ampHead;
   }
+  /**
+   * @return string
+   */
   public function getAmpHead()
   {
     return $this->ampHead;

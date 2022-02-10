@@ -19,35 +19,77 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2Finding extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $findingId;
   protected $infoTypeType = GooglePrivacyDlpV2InfoType::class;
   protected $infoTypeDataType = '';
+  /**
+   * @var string
+   */
   public $jobCreateTime;
+  /**
+   * @var string
+   */
   public $jobName;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $likelihood;
   protected $locationType = GooglePrivacyDlpV2Location::class;
   protected $locationDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $quote;
   protected $quoteInfoType = GooglePrivacyDlpV2QuoteInfo::class;
   protected $quoteInfoDataType = '';
+  /**
+   * @var string
+   */
   public $resourceName;
+  /**
+   * @var string
+   */
   public $triggerName;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setFindingId($findingId)
   {
     $this->findingId = $findingId;
   }
+  /**
+   * @return string
+   */
   public function getFindingId()
   {
     return $this->findingId;
@@ -66,34 +108,58 @@ class GooglePrivacyDlpV2Finding extends \Google\Model
   {
     return $this->infoType;
   }
+  /**
+   * @param string
+   */
   public function setJobCreateTime($jobCreateTime)
   {
     $this->jobCreateTime = $jobCreateTime;
   }
+  /**
+   * @return string
+   */
   public function getJobCreateTime()
   {
     return $this->jobCreateTime;
   }
+  /**
+   * @param string
+   */
   public function setJobName($jobName)
   {
     $this->jobName = $jobName;
   }
+  /**
+   * @return string
+   */
   public function getJobName()
   {
     return $this->jobName;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLikelihood($likelihood)
   {
     $this->likelihood = $likelihood;
   }
+  /**
+   * @return string
+   */
   public function getLikelihood()
   {
     return $this->likelihood;
@@ -112,18 +178,30 @@ class GooglePrivacyDlpV2Finding extends \Google\Model
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setQuote($quote)
   {
     $this->quote = $quote;
   }
+  /**
+   * @return string
+   */
   public function getQuote()
   {
     return $this->quote;
@@ -142,18 +220,30 @@ class GooglePrivacyDlpV2Finding extends \Google\Model
   {
     return $this->quoteInfo;
   }
+  /**
+   * @param string
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string
+   */
   public function getResourceName()
   {
     return $this->resourceName;
   }
+  /**
+   * @param string
+   */
   public function setTriggerName($triggerName)
   {
     $this->triggerName = $triggerName;
   }
+  /**
+   * @return string
+   */
   public function getTriggerName()
   {
     return $this->triggerName;

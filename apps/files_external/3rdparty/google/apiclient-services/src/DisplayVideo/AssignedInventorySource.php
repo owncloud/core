@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class AssignedInventorySource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $assignedInventorySourceId;
+  /**
+   * @var string
+   */
   public $inventorySourceId;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setAssignedInventorySourceId($assignedInventorySourceId)
   {
     $this->assignedInventorySourceId = $assignedInventorySourceId;
   }
+  /**
+   * @return string
+   */
   public function getAssignedInventorySourceId()
   {
     return $this->assignedInventorySourceId;
   }
+  /**
+   * @param string
+   */
   public function setInventorySourceId($inventorySourceId)
   {
     $this->inventorySourceId = $inventorySourceId;
   }
+  /**
+   * @return string
+   */
   public function getInventorySourceId()
   {
     return $this->inventorySourceId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

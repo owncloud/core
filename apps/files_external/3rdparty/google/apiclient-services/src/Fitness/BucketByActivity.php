@@ -19,21 +19,39 @@ namespace Google\Service\Fitness;
 
 class BucketByActivity extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $activityDataSourceId;
+  /**
+   * @var string
+   */
   public $minDurationMillis;
 
+  /**
+   * @param string
+   */
   public function setActivityDataSourceId($activityDataSourceId)
   {
     $this->activityDataSourceId = $activityDataSourceId;
   }
+  /**
+   * @return string
+   */
   public function getActivityDataSourceId()
   {
     return $this->activityDataSourceId;
   }
+  /**
+   * @param string
+   */
   public function setMinDurationMillis($minDurationMillis)
   {
     $this->minDurationMillis = $minDurationMillis;
   }
+  /**
+   * @return string
+   */
   public function getMinDurationMillis()
   {
     return $this->minDurationMillis;

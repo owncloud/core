@@ -19,12 +19,21 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2betaImportErrorsConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsPrefix;
 
+  /**
+   * @param string
+   */
   public function setGcsPrefix($gcsPrefix)
   {
     $this->gcsPrefix = $gcsPrefix;
   }
+  /**
+   * @return string
+   */
   public function getGcsPrefix()
   {
     return $this->gcsPrefix;

@@ -19,7 +19,13 @@ namespace Google\Service\Books;
 
 class VolumeSaleInfoOffers extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $finskyOfferType;
+  /**
+   * @var bool
+   */
   public $giftable;
   protected $listPriceType = VolumeSaleInfoOffersListPrice::class;
   protected $listPriceDataType = '';
@@ -28,18 +34,30 @@ class VolumeSaleInfoOffers extends \Google\Model
   protected $retailPriceType = VolumeSaleInfoOffersRetailPrice::class;
   protected $retailPriceDataType = '';
 
+  /**
+   * @param int
+   */
   public function setFinskyOfferType($finskyOfferType)
   {
     $this->finskyOfferType = $finskyOfferType;
   }
+  /**
+   * @return int
+   */
   public function getFinskyOfferType()
   {
     return $this->finskyOfferType;
   }
+  /**
+   * @param bool
+   */
   public function setGiftable($giftable)
   {
     $this->giftable = $giftable;
   }
+  /**
+   * @return bool
+   */
   public function getGiftable()
   {
     return $this->giftable;

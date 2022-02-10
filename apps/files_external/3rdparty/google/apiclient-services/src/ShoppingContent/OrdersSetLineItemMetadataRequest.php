@@ -22,8 +22,17 @@ class OrdersSetLineItemMetadataRequest extends \Google\Collection
   protected $collection_key = 'annotations';
   protected $annotationsType = OrderMerchantProvidedAnnotation::class;
   protected $annotationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $operationId;
+  /**
+   * @var string
+   */
   public $productId;
 
   /**
@@ -40,26 +49,44 @@ class OrdersSetLineItemMetadataRequest extends \Google\Collection
   {
     return $this->annotations;
   }
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;

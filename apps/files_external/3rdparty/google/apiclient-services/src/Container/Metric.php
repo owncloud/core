@@ -20,8 +20,17 @@ namespace Google\Service\Container;
 class Metric extends \Google\Model
 {
   public $doubleValue;
+  /**
+   * @var string
+   */
   public $intValue;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $stringValue;
 
   public function setDoubleValue($doubleValue)
@@ -32,26 +41,44 @@ class Metric extends \Google\Model
   {
     return $this->doubleValue;
   }
+  /**
+   * @param string
+   */
   public function setIntValue($intValue)
   {
     $this->intValue = $intValue;
   }
+  /**
+   * @return string
+   */
   public function getIntValue()
   {
     return $this->intValue;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;

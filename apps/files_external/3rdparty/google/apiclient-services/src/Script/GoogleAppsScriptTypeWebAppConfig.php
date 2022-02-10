@@ -19,21 +19,39 @@ namespace Google\Service\Script;
 
 class GoogleAppsScriptTypeWebAppConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $access;
+  /**
+   * @var string
+   */
   public $executeAs;
 
+  /**
+   * @param string
+   */
   public function setAccess($access)
   {
     $this->access = $access;
   }
+  /**
+   * @return string
+   */
   public function getAccess()
   {
     return $this->access;
   }
+  /**
+   * @param string
+   */
   public function setExecuteAs($executeAs)
   {
     $this->executeAs = $executeAs;
   }
+  /**
+   * @return string
+   */
   public function getExecuteAs()
   {
     return $this->executeAs;

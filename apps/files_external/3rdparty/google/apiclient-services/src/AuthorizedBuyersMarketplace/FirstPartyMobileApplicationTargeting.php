@@ -20,21 +20,39 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 class FirstPartyMobileApplicationTargeting extends \Google\Collection
 {
   protected $collection_key = 'targetedAppIds';
+  /**
+   * @var string[]
+   */
   public $excludedAppIds;
+  /**
+   * @var string[]
+   */
   public $targetedAppIds;
 
+  /**
+   * @param string[]
+   */
   public function setExcludedAppIds($excludedAppIds)
   {
     $this->excludedAppIds = $excludedAppIds;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludedAppIds()
   {
     return $this->excludedAppIds;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetedAppIds($targetedAppIds)
   {
     $this->targetedAppIds = $targetedAppIds;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetedAppIds()
   {
     return $this->targetedAppIds;

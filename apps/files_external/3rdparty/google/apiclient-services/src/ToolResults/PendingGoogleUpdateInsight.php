@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class PendingGoogleUpdateInsight extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $nameOfGoogleLibrary;
 
+  /**
+   * @param string
+   */
   public function setNameOfGoogleLibrary($nameOfGoogleLibrary)
   {
     $this->nameOfGoogleLibrary = $nameOfGoogleLibrary;
   }
+  /**
+   * @return string
+   */
   public function getNameOfGoogleLibrary()
   {
     return $this->nameOfGoogleLibrary;

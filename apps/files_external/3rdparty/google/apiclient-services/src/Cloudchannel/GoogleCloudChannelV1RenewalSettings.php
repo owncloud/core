@@ -19,16 +19,31 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1RenewalSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableRenewal;
   protected $paymentCycleType = GoogleCloudChannelV1Period::class;
   protected $paymentCycleDataType = '';
+  /**
+   * @var string
+   */
   public $paymentPlan;
+  /**
+   * @var bool
+   */
   public $resizeUnitCount;
 
+  /**
+   * @param bool
+   */
   public function setEnableRenewal($enableRenewal)
   {
     $this->enableRenewal = $enableRenewal;
   }
+  /**
+   * @return bool
+   */
   public function getEnableRenewal()
   {
     return $this->enableRenewal;
@@ -47,18 +62,30 @@ class GoogleCloudChannelV1RenewalSettings extends \Google\Model
   {
     return $this->paymentCycle;
   }
+  /**
+   * @param string
+   */
   public function setPaymentPlan($paymentPlan)
   {
     $this->paymentPlan = $paymentPlan;
   }
+  /**
+   * @return string
+   */
   public function getPaymentPlan()
   {
     return $this->paymentPlan;
   }
+  /**
+   * @param bool
+   */
   public function setResizeUnitCount($resizeUnitCount)
   {
     $this->resizeUnitCount = $resizeUnitCount;
   }
+  /**
+   * @return bool
+   */
   public function getResizeUnitCount()
   {
     return $this->resizeUnitCount;

@@ -19,21 +19,39 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1AnnotationBoundary extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $transcriptIndex;
+  /**
+   * @var int
+   */
   public $wordIndex;
 
+  /**
+   * @param int
+   */
   public function setTranscriptIndex($transcriptIndex)
   {
     $this->transcriptIndex = $transcriptIndex;
   }
+  /**
+   * @return int
+   */
   public function getTranscriptIndex()
   {
     return $this->transcriptIndex;
   }
+  /**
+   * @param int
+   */
   public function setWordIndex($wordIndex)
   {
     $this->wordIndex = $wordIndex;
   }
+  /**
+   * @return int
+   */
   public function getWordIndex()
   {
     return $this->wordIndex;

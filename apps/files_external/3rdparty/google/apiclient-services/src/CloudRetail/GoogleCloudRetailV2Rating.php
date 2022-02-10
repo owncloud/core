@@ -20,30 +20,57 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2Rating extends \Google\Collection
 {
   protected $collection_key = 'ratingHistogram';
+  /**
+   * @var float
+   */
   public $averageRating;
+  /**
+   * @var int
+   */
   public $ratingCount;
+  /**
+   * @var int[]
+   */
   public $ratingHistogram;
 
+  /**
+   * @param float
+   */
   public function setAverageRating($averageRating)
   {
     $this->averageRating = $averageRating;
   }
+  /**
+   * @return float
+   */
   public function getAverageRating()
   {
     return $this->averageRating;
   }
+  /**
+   * @param int
+   */
   public function setRatingCount($ratingCount)
   {
     $this->ratingCount = $ratingCount;
   }
+  /**
+   * @return int
+   */
   public function getRatingCount()
   {
     return $this->ratingCount;
   }
+  /**
+   * @param int[]
+   */
   public function setRatingHistogram($ratingHistogram)
   {
     $this->ratingHistogram = $ratingHistogram;
   }
+  /**
+   * @return int[]
+   */
   public function getRatingHistogram()
   {
     return $this->ratingHistogram;

@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $diskSizeGb;
+  /**
+   * @var string
+   */
   public $interface;
 
+  /**
+   * @param string
+   */
   public function setDiskSizeGb($diskSizeGb)
   {
     $this->diskSizeGb = $diskSizeGb;
   }
+  /**
+   * @return string
+   */
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setInterface($interface)
   {
     $this->interface = $interface;
   }
+  /**
+   * @return string
+   */
   public function getInterface()
   {
     return $this->interface;

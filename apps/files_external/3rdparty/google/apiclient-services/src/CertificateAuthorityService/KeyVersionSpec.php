@@ -19,21 +19,39 @@ namespace Google\Service\CertificateAuthorityService;
 
 class KeyVersionSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $algorithm;
+  /**
+   * @var string
+   */
   public $cloudKmsKeyVersion;
 
+  /**
+   * @param string
+   */
   public function setAlgorithm($algorithm)
   {
     $this->algorithm = $algorithm;
   }
+  /**
+   * @return string
+   */
   public function getAlgorithm()
   {
     return $this->algorithm;
   }
+  /**
+   * @param string
+   */
   public function setCloudKmsKeyVersion($cloudKmsKeyVersion)
   {
     $this->cloudKmsKeyVersion = $cloudKmsKeyVersion;
   }
+  /**
+   * @return string
+   */
   public function getCloudKmsKeyVersion()
   {
     return $this->cloudKmsKeyVersion;

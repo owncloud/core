@@ -19,45 +19,87 @@ namespace Google\Service\YouTube;
 
 class ChannelSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $customUrl;
+  /**
+   * @var string
+   */
   public $defaultLanguage;
+  /**
+   * @var string
+   */
   public $description;
   protected $localizedType = ChannelLocalization::class;
   protected $localizedDataType = '';
+  /**
+   * @var string
+   */
   public $publishedAt;
   protected $thumbnailsType = ThumbnailDetails::class;
   protected $thumbnailsDataType = '';
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setCustomUrl($customUrl)
   {
     $this->customUrl = $customUrl;
   }
+  /**
+   * @return string
+   */
   public function getCustomUrl()
   {
     return $this->customUrl;
   }
+  /**
+   * @param string
+   */
   public function setDefaultLanguage($defaultLanguage)
   {
     $this->defaultLanguage = $defaultLanguage;
   }
+  /**
+   * @return string
+   */
   public function getDefaultLanguage()
   {
     return $this->defaultLanguage;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -76,10 +118,16 @@ class ChannelSnippet extends \Google\Model
   {
     return $this->localized;
   }
+  /**
+   * @param string
+   */
   public function setPublishedAt($publishedAt)
   {
     $this->publishedAt = $publishedAt;
   }
+  /**
+   * @return string
+   */
   public function getPublishedAt()
   {
     return $this->publishedAt;
@@ -98,10 +146,16 @@ class ChannelSnippet extends \Google\Model
   {
     return $this->thumbnails;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

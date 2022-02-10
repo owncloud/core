@@ -22,11 +22,23 @@ class JobStatistics2 extends \Google\Collection
   protected $collection_key = 'undeclaredQueryParameters';
   protected $biEngineStatisticsType = BiEngineStatistics::class;
   protected $biEngineStatisticsDataType = '';
+  /**
+   * @var int
+   */
   public $billingTier;
+  /**
+   * @var bool
+   */
   public $cacheHit;
+  /**
+   * @var string
+   */
   public $ddlAffectedRowAccessPolicyCount;
   protected $ddlDestinationTableType = TableReference::class;
   protected $ddlDestinationTableDataType = '';
+  /**
+   * @var string
+   */
   public $ddlOperationPerformed;
   protected $ddlTargetDatasetType = DatasetReference::class;
   protected $ddlTargetDatasetDataType = '';
@@ -38,13 +50,25 @@ class JobStatistics2 extends \Google\Collection
   protected $ddlTargetTableDataType = '';
   protected $dmlStatsType = DmlStatistics::class;
   protected $dmlStatsDataType = '';
+  /**
+   * @var string
+   */
   public $estimatedBytesProcessed;
   protected $mlStatisticsType = MlStatistics::class;
   protected $mlStatisticsDataType = '';
   protected $modelTrainingType = BigQueryModelTraining::class;
   protected $modelTrainingDataType = '';
+  /**
+   * @var int
+   */
   public $modelTrainingCurrentIteration;
+  /**
+   * @var string
+   */
   public $modelTrainingExpectedTotalIteration;
+  /**
+   * @var string
+   */
   public $numDmlAffectedRows;
   protected $queryPlanType = ExplainQueryStage::class;
   protected $queryPlanDataType = 'array';
@@ -56,13 +80,31 @@ class JobStatistics2 extends \Google\Collection
   protected $reservationUsageDataType = 'array';
   protected $schemaType = TableSchema::class;
   protected $schemaDataType = '';
+  /**
+   * @var string
+   */
   public $statementType;
   protected $timelineType = QueryTimelineSample::class;
   protected $timelineDataType = 'array';
+  /**
+   * @var string
+   */
   public $totalBytesBilled;
+  /**
+   * @var string
+   */
   public $totalBytesProcessed;
+  /**
+   * @var string
+   */
   public $totalBytesProcessedAccuracy;
+  /**
+   * @var string
+   */
   public $totalPartitionsProcessed;
+  /**
+   * @var string
+   */
   public $totalSlotMs;
   protected $undeclaredQueryParametersType = QueryParameter::class;
   protected $undeclaredQueryParametersDataType = 'array';
@@ -81,26 +123,44 @@ class JobStatistics2 extends \Google\Collection
   {
     return $this->biEngineStatistics;
   }
+  /**
+   * @param int
+   */
   public function setBillingTier($billingTier)
   {
     $this->billingTier = $billingTier;
   }
+  /**
+   * @return int
+   */
   public function getBillingTier()
   {
     return $this->billingTier;
   }
+  /**
+   * @param bool
+   */
   public function setCacheHit($cacheHit)
   {
     $this->cacheHit = $cacheHit;
   }
+  /**
+   * @return bool
+   */
   public function getCacheHit()
   {
     return $this->cacheHit;
   }
+  /**
+   * @param string
+   */
   public function setDdlAffectedRowAccessPolicyCount($ddlAffectedRowAccessPolicyCount)
   {
     $this->ddlAffectedRowAccessPolicyCount = $ddlAffectedRowAccessPolicyCount;
   }
+  /**
+   * @return string
+   */
   public function getDdlAffectedRowAccessPolicyCount()
   {
     return $this->ddlAffectedRowAccessPolicyCount;
@@ -119,10 +179,16 @@ class JobStatistics2 extends \Google\Collection
   {
     return $this->ddlDestinationTable;
   }
+  /**
+   * @param string
+   */
   public function setDdlOperationPerformed($ddlOperationPerformed)
   {
     $this->ddlOperationPerformed = $ddlOperationPerformed;
   }
+  /**
+   * @return string
+   */
   public function getDdlOperationPerformed()
   {
     return $this->ddlOperationPerformed;
@@ -197,10 +263,16 @@ class JobStatistics2 extends \Google\Collection
   {
     return $this->dmlStats;
   }
+  /**
+   * @param string
+   */
   public function setEstimatedBytesProcessed($estimatedBytesProcessed)
   {
     $this->estimatedBytesProcessed = $estimatedBytesProcessed;
   }
+  /**
+   * @return string
+   */
   public function getEstimatedBytesProcessed()
   {
     return $this->estimatedBytesProcessed;
@@ -233,26 +305,44 @@ class JobStatistics2 extends \Google\Collection
   {
     return $this->modelTraining;
   }
+  /**
+   * @param int
+   */
   public function setModelTrainingCurrentIteration($modelTrainingCurrentIteration)
   {
     $this->modelTrainingCurrentIteration = $modelTrainingCurrentIteration;
   }
+  /**
+   * @return int
+   */
   public function getModelTrainingCurrentIteration()
   {
     return $this->modelTrainingCurrentIteration;
   }
+  /**
+   * @param string
+   */
   public function setModelTrainingExpectedTotalIteration($modelTrainingExpectedTotalIteration)
   {
     $this->modelTrainingExpectedTotalIteration = $modelTrainingExpectedTotalIteration;
   }
+  /**
+   * @return string
+   */
   public function getModelTrainingExpectedTotalIteration()
   {
     return $this->modelTrainingExpectedTotalIteration;
   }
+  /**
+   * @param string
+   */
   public function setNumDmlAffectedRows($numDmlAffectedRows)
   {
     $this->numDmlAffectedRows = $numDmlAffectedRows;
   }
+  /**
+   * @return string
+   */
   public function getNumDmlAffectedRows()
   {
     return $this->numDmlAffectedRows;
@@ -327,10 +417,16 @@ class JobStatistics2 extends \Google\Collection
   {
     return $this->schema;
   }
+  /**
+   * @param string
+   */
   public function setStatementType($statementType)
   {
     $this->statementType = $statementType;
   }
+  /**
+   * @return string
+   */
   public function getStatementType()
   {
     return $this->statementType;
@@ -349,42 +445,72 @@ class JobStatistics2 extends \Google\Collection
   {
     return $this->timeline;
   }
+  /**
+   * @param string
+   */
   public function setTotalBytesBilled($totalBytesBilled)
   {
     $this->totalBytesBilled = $totalBytesBilled;
   }
+  /**
+   * @return string
+   */
   public function getTotalBytesBilled()
   {
     return $this->totalBytesBilled;
   }
+  /**
+   * @param string
+   */
   public function setTotalBytesProcessed($totalBytesProcessed)
   {
     $this->totalBytesProcessed = $totalBytesProcessed;
   }
+  /**
+   * @return string
+   */
   public function getTotalBytesProcessed()
   {
     return $this->totalBytesProcessed;
   }
+  /**
+   * @param string
+   */
   public function setTotalBytesProcessedAccuracy($totalBytesProcessedAccuracy)
   {
     $this->totalBytesProcessedAccuracy = $totalBytesProcessedAccuracy;
   }
+  /**
+   * @return string
+   */
   public function getTotalBytesProcessedAccuracy()
   {
     return $this->totalBytesProcessedAccuracy;
   }
+  /**
+   * @param string
+   */
   public function setTotalPartitionsProcessed($totalPartitionsProcessed)
   {
     $this->totalPartitionsProcessed = $totalPartitionsProcessed;
   }
+  /**
+   * @return string
+   */
   public function getTotalPartitionsProcessed()
   {
     return $this->totalPartitionsProcessed;
   }
+  /**
+   * @param string
+   */
   public function setTotalSlotMs($totalSlotMs)
   {
     $this->totalSlotMs = $totalSlotMs;
   }
+  /**
+   * @return string
+   */
   public function getTotalSlotMs()
   {
     return $this->totalSlotMs;

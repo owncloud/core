@@ -20,75 +20,147 @@ namespace Google\Service\Spanner;
 class Instance extends \Google\Collection
 {
   protected $collection_key = 'endpointUris';
+  /**
+   * @var string
+   */
   public $config;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string[]
+   */
   public $endpointUris;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $nodeCount;
+  /**
+   * @var int
+   */
   public $processingUnits;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setConfig($config)
   {
     $this->config = $config;
   }
+  /**
+   * @return string
+   */
   public function getConfig()
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string[]
+   */
   public function setEndpointUris($endpointUris)
   {
     $this->endpointUris = $endpointUris;
   }
+  /**
+   * @return string[]
+   */
   public function getEndpointUris()
   {
     return $this->endpointUris;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setNodeCount($nodeCount)
   {
     $this->nodeCount = $nodeCount;
   }
+  /**
+   * @return int
+   */
   public function getNodeCount()
   {
     return $this->nodeCount;
   }
+  /**
+   * @param int
+   */
   public function setProcessingUnits($processingUnits)
   {
     $this->processingUnits = $processingUnits;
   }
+  /**
+   * @return int
+   */
   public function getProcessingUnits()
   {
     return $this->processingUnits;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

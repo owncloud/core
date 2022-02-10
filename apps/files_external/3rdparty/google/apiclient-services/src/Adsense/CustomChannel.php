@@ -19,30 +19,57 @@ namespace Google\Service\Adsense;
 
 class CustomChannel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $reportingDimensionId;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setReportingDimensionId($reportingDimensionId)
   {
     $this->reportingDimensionId = $reportingDimensionId;
   }
+  /**
+   * @return string
+   */
   public function getReportingDimensionId()
   {
     return $this->reportingDimensionId;

@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class FreshnessOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $freshnessDuration;
+  /**
+   * @var string
+   */
   public $freshnessProperty;
 
+  /**
+   * @param string
+   */
   public function setFreshnessDuration($freshnessDuration)
   {
     $this->freshnessDuration = $freshnessDuration;
   }
+  /**
+   * @return string
+   */
   public function getFreshnessDuration()
   {
     return $this->freshnessDuration;
   }
+  /**
+   * @param string
+   */
   public function setFreshnessProperty($freshnessProperty)
   {
     $this->freshnessProperty = $freshnessProperty;
   }
+  /**
+   * @return string
+   */
   public function getFreshnessProperty()
   {
     return $this->freshnessProperty;

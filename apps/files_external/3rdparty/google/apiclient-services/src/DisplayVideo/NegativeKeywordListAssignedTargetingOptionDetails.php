@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class NegativeKeywordListAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $negativeKeywordListId;
 
+  /**
+   * @param string
+   */
   public function setNegativeKeywordListId($negativeKeywordListId)
   {
     $this->negativeKeywordListId = $negativeKeywordListId;
   }
+  /**
+   * @return string
+   */
   public function getNegativeKeywordListId()
   {
     return $this->negativeKeywordListId;

@@ -19,21 +19,39 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1PolylineConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $annotationSpecSet;
+  /**
+   * @var string
+   */
   public $instructionMessage;
 
+  /**
+   * @param string
+   */
   public function setAnnotationSpecSet($annotationSpecSet)
   {
     $this->annotationSpecSet = $annotationSpecSet;
   }
+  /**
+   * @return string
+   */
   public function getAnnotationSpecSet()
   {
     return $this->annotationSpecSet;
   }
+  /**
+   * @param string
+   */
   public function setInstructionMessage($instructionMessage)
   {
     $this->instructionMessage = $instructionMessage;
   }
+  /**
+   * @return string
+   */
   public function getInstructionMessage()
   {
     return $this->instructionMessage;

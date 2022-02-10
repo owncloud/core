@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class LocalDisk extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $diskCount;
+  /**
+   * @var int
+   */
   public $diskSizeGb;
+  /**
+   * @var string
+   */
   public $diskType;
 
+  /**
+   * @param int
+   */
   public function setDiskCount($diskCount)
   {
     $this->diskCount = $diskCount;
   }
+  /**
+   * @return int
+   */
   public function getDiskCount()
   {
     return $this->diskCount;
   }
+  /**
+   * @param int
+   */
   public function setDiskSizeGb($diskSizeGb)
   {
     $this->diskSizeGb = $diskSizeGb;
   }
+  /**
+   * @return int
+   */
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setDiskType($diskType)
   {
     $this->diskType = $diskType;
   }
+  /**
+   * @return string
+   */
   public function getDiskType()
   {
     return $this->diskType;

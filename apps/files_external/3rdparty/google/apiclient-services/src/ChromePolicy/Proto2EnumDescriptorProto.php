@@ -20,14 +20,23 @@ namespace Google\Service\ChromePolicy;
 class Proto2EnumDescriptorProto extends \Google\Collection
 {
   protected $collection_key = 'value';
+  /**
+   * @var string
+   */
   public $name;
   protected $valueType = Proto2EnumValueDescriptorProto::class;
   protected $valueDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class DefaultClickThroughEventTagProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $defaultClickThroughEventTagId;
+  /**
+   * @var bool
+   */
   public $overrideInheritedEventTag;
 
+  /**
+   * @param string
+   */
   public function setDefaultClickThroughEventTagId($defaultClickThroughEventTagId)
   {
     $this->defaultClickThroughEventTagId = $defaultClickThroughEventTagId;
   }
+  /**
+   * @return string
+   */
   public function getDefaultClickThroughEventTagId()
   {
     return $this->defaultClickThroughEventTagId;
   }
+  /**
+   * @param bool
+   */
   public function setOverrideInheritedEventTag($overrideInheritedEventTag)
   {
     $this->overrideInheritedEventTag = $overrideInheritedEventTag;
   }
+  /**
+   * @return bool
+   */
   public function getOverrideInheritedEventTag()
   {
     return $this->overrideInheritedEventTag;

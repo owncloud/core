@@ -20,12 +20,21 @@ namespace Google\Service\ApiKeysService;
 class V2BrowserKeyRestrictions extends \Google\Collection
 {
   protected $collection_key = 'allowedReferrers';
+  /**
+   * @var string[]
+   */
   public $allowedReferrers;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedReferrers($allowedReferrers)
   {
     $this->allowedReferrers = $allowedReferrers;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedReferrers()
   {
     return $this->allowedReferrers;

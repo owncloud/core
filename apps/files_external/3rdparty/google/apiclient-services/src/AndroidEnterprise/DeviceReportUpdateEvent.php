@@ -19,15 +19,27 @@ namespace Google\Service\AndroidEnterprise;
 
 class DeviceReportUpdateEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceId;
   protected $reportType = DeviceReport::class;
   protected $reportDataType = '';
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
@@ -46,10 +58,16 @@ class DeviceReportUpdateEvent extends \Google\Model
   {
     return $this->report;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

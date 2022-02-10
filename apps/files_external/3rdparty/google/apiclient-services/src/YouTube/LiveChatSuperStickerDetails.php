@@ -19,33 +19,63 @@ namespace Google\Service\YouTube;
 
 class LiveChatSuperStickerDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $amountDisplayString;
+  /**
+   * @var string
+   */
   public $amountMicros;
+  /**
+   * @var string
+   */
   public $currency;
   protected $superStickerMetadataType = SuperStickerMetadata::class;
   protected $superStickerMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $tier;
 
+  /**
+   * @param string
+   */
   public function setAmountDisplayString($amountDisplayString)
   {
     $this->amountDisplayString = $amountDisplayString;
   }
+  /**
+   * @return string
+   */
   public function getAmountDisplayString()
   {
     return $this->amountDisplayString;
   }
+  /**
+   * @param string
+   */
   public function setAmountMicros($amountMicros)
   {
     $this->amountMicros = $amountMicros;
   }
+  /**
+   * @return string
+   */
   public function getAmountMicros()
   {
     return $this->amountMicros;
   }
+  /**
+   * @param string
+   */
   public function setCurrency($currency)
   {
     $this->currency = $currency;
   }
+  /**
+   * @return string
+   */
   public function getCurrency()
   {
     return $this->currency;
@@ -64,10 +94,16 @@ class LiveChatSuperStickerDetails extends \Google\Model
   {
     return $this->superStickerMetadata;
   }
+  /**
+   * @param string
+   */
   public function setTier($tier)
   {
     $this->tier = $tier;
   }
+  /**
+   * @return string
+   */
   public function getTier()
   {
     return $this->tier;

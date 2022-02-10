@@ -19,57 +19,111 @@ namespace Google\Service\AndroidEnterprise;
 
 class User extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountIdentifier;
+  /**
+   * @var string
+   */
   public $accountType;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $managementType;
+  /**
+   * @var string
+   */
   public $primaryEmail;
 
+  /**
+   * @param string
+   */
   public function setAccountIdentifier($accountIdentifier)
   {
     $this->accountIdentifier = $accountIdentifier;
   }
+  /**
+   * @return string
+   */
   public function getAccountIdentifier()
   {
     return $this->accountIdentifier;
   }
+  /**
+   * @param string
+   */
   public function setAccountType($accountType)
   {
     $this->accountType = $accountType;
   }
+  /**
+   * @return string
+   */
   public function getAccountType()
   {
     return $this->accountType;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setManagementType($managementType)
   {
     $this->managementType = $managementType;
   }
+  /**
+   * @return string
+   */
   public function getManagementType()
   {
     return $this->managementType;
   }
+  /**
+   * @param string
+   */
   public function setPrimaryEmail($primaryEmail)
   {
     $this->primaryEmail = $primaryEmail;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryEmail()
   {
     return $this->primaryEmail;

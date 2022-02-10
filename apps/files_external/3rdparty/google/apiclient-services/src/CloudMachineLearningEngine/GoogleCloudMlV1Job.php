@@ -19,67 +19,145 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1Job extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $jobId;
+  /**
+   * @var string
+   */
+  public $jobPosition;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $predictionInputType = GoogleCloudMlV1PredictionInput::class;
   protected $predictionInputDataType = '';
   protected $predictionOutputType = GoogleCloudMlV1PredictionOutput::class;
   protected $predictionOutputDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
   protected $trainingInputType = GoogleCloudMlV1TrainingInput::class;
   protected $trainingInputDataType = '';
   protected $trainingOutputType = GoogleCloudMlV1TrainingOutput::class;
   protected $trainingOutputDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setJobId($jobId)
   {
     $this->jobId = $jobId;
   }
+  /**
+   * @return string
+   */
   public function getJobId()
   {
     return $this->jobId;
   }
+  /**
+   * @param string
+   */
+  public function setJobPosition($jobPosition)
+  {
+    $this->jobPosition = $jobPosition;
+  }
+  /**
+   * @return string
+   */
+  public function getJobPosition()
+  {
+    return $this->jobPosition;
+  }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -112,18 +190,30 @@ class GoogleCloudMlV1Job extends \Google\Model
   {
     return $this->predictionOutput;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

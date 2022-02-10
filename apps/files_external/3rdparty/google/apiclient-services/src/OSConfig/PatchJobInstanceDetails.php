@@ -19,48 +19,93 @@ namespace Google\Service\OSConfig;
 
 class PatchJobInstanceDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $attemptCount;
+  /**
+   * @var string
+   */
   public $failureReason;
+  /**
+   * @var string
+   */
   public $instanceSystemId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setAttemptCount($attemptCount)
   {
     $this->attemptCount = $attemptCount;
   }
+  /**
+   * @return string
+   */
   public function getAttemptCount()
   {
     return $this->attemptCount;
   }
+  /**
+   * @param string
+   */
   public function setFailureReason($failureReason)
   {
     $this->failureReason = $failureReason;
   }
+  /**
+   * @return string
+   */
   public function getFailureReason()
   {
     return $this->failureReason;
   }
+  /**
+   * @param string
+   */
   public function setInstanceSystemId($instanceSystemId)
   {
     $this->instanceSystemId = $instanceSystemId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceSystemId()
   {
     return $this->instanceSystemId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

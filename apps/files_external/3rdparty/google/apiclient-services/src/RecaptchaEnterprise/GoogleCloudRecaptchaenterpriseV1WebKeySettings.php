@@ -20,48 +20,93 @@ namespace Google\Service\RecaptchaEnterprise;
 class GoogleCloudRecaptchaenterpriseV1WebKeySettings extends \Google\Collection
 {
   protected $collection_key = 'allowedDomains';
+  /**
+   * @var bool
+   */
   public $allowAllDomains;
+  /**
+   * @var bool
+   */
   public $allowAmpTraffic;
+  /**
+   * @var string[]
+   */
   public $allowedDomains;
+  /**
+   * @var string
+   */
   public $challengeSecurityPreference;
+  /**
+   * @var string
+   */
   public $integrationType;
 
+  /**
+   * @param bool
+   */
   public function setAllowAllDomains($allowAllDomains)
   {
     $this->allowAllDomains = $allowAllDomains;
   }
+  /**
+   * @return bool
+   */
   public function getAllowAllDomains()
   {
     return $this->allowAllDomains;
   }
+  /**
+   * @param bool
+   */
   public function setAllowAmpTraffic($allowAmpTraffic)
   {
     $this->allowAmpTraffic = $allowAmpTraffic;
   }
+  /**
+   * @return bool
+   */
   public function getAllowAmpTraffic()
   {
     return $this->allowAmpTraffic;
   }
+  /**
+   * @param string[]
+   */
   public function setAllowedDomains($allowedDomains)
   {
     $this->allowedDomains = $allowedDomains;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedDomains()
   {
     return $this->allowedDomains;
   }
+  /**
+   * @param string
+   */
   public function setChallengeSecurityPreference($challengeSecurityPreference)
   {
     $this->challengeSecurityPreference = $challengeSecurityPreference;
   }
+  /**
+   * @return string
+   */
   public function getChallengeSecurityPreference()
   {
     return $this->challengeSecurityPreference;
   }
+  /**
+   * @param string
+   */
   public function setIntegrationType($integrationType)
   {
     $this->integrationType = $integrationType;
   }
+  /**
+   * @return string
+   */
   public function getIntegrationType()
   {
     return $this->integrationType;

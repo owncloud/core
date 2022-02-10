@@ -19,21 +19,39 @@ namespace Google\Service\Monitoring;
 
 class ContentMatcher extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var string
+   */
   public $matcher;
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setMatcher($matcher)
   {
     $this->matcher = $matcher;
   }
+  /**
+   * @return string
+   */
   public function getMatcher()
   {
     return $this->matcher;

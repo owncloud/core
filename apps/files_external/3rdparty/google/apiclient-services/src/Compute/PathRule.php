@@ -20,17 +20,29 @@ namespace Google\Service\Compute;
 class PathRule extends \Google\Collection
 {
   protected $collection_key = 'paths';
+  /**
+   * @var string[]
+   */
   public $paths;
   protected $routeActionType = HttpRouteAction::class;
   protected $routeActionDataType = '';
+  /**
+   * @var string
+   */
   public $service;
   protected $urlRedirectType = HttpRedirectAction::class;
   protected $urlRedirectDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setPaths($paths)
   {
     $this->paths = $paths;
   }
+  /**
+   * @return string[]
+   */
   public function getPaths()
   {
     return $this->paths;
@@ -49,10 +61,16 @@ class PathRule extends \Google\Collection
   {
     return $this->routeAction;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

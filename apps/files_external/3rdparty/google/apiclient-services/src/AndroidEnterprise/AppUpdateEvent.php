@@ -19,12 +19,21 @@ namespace Google\Service\AndroidEnterprise;
 
 class AppUpdateEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $productId;
 
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;

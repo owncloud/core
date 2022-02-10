@@ -22,6 +22,9 @@ class PivotHeader extends \Google\Collection
   protected $collection_key = 'pivotHeaderEntries';
   protected $pivotHeaderEntriesType = PivotHeaderEntry::class;
   protected $pivotHeaderEntriesDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalPivotGroupsCount;
 
   /**
@@ -38,10 +41,16 @@ class PivotHeader extends \Google\Collection
   {
     return $this->pivotHeaderEntries;
   }
+  /**
+   * @param int
+   */
   public function setTotalPivotGroupsCount($totalPivotGroupsCount)
   {
     $this->totalPivotGroupsCount = $totalPivotGroupsCount;
   }
+  /**
+   * @return int
+   */
   public function getTotalPivotGroupsCount()
   {
     return $this->totalPivotGroupsCount;

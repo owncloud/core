@@ -19,21 +19,39 @@ namespace Google\Service\Container;
 
 class DatabaseEncryption extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyName;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setKeyName($keyName)
   {
     $this->keyName = $keyName;
   }
+  /**
+   * @return string
+   */
   public function getKeyName()
   {
     return $this->keyName;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

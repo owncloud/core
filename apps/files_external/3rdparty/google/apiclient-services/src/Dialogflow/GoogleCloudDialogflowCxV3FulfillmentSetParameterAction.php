@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3FulfillmentSetParameterAction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $parameter;
+  /**
+   * @var array
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setParameter($parameter)
   {
     $this->parameter = $parameter;
   }
+  /**
+   * @return string
+   */
   public function getParameter()
   {
     return $this->parameter;
   }
+  /**
+   * @param array
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array
+   */
   public function getValue()
   {
     return $this->value;

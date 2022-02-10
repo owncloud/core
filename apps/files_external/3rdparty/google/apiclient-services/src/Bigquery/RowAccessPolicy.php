@@ -19,41 +19,77 @@ namespace Google\Service\Bigquery;
 
 class RowAccessPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $filterPredicate;
+  /**
+   * @var string
+   */
   public $lastModifiedTime;
   protected $rowAccessPolicyReferenceType = RowAccessPolicyReference::class;
   protected $rowAccessPolicyReferenceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setFilterPredicate($filterPredicate)
   {
     $this->filterPredicate = $filterPredicate;
   }
+  /**
+   * @return string
+   */
   public function getFilterPredicate()
   {
     return $this->filterPredicate;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedTime($lastModifiedTime)
   {
     $this->lastModifiedTime = $lastModifiedTime;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedTime()
   {
     return $this->lastModifiedTime;

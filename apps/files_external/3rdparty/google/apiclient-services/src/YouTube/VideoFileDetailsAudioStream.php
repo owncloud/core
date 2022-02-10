@@ -19,39 +19,75 @@ namespace Google\Service\YouTube;
 
 class VideoFileDetailsAudioStream extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bitrateBps;
+  /**
+   * @var string
+   */
   public $channelCount;
+  /**
+   * @var string
+   */
   public $codec;
+  /**
+   * @var string
+   */
   public $vendor;
 
+  /**
+   * @param string
+   */
   public function setBitrateBps($bitrateBps)
   {
     $this->bitrateBps = $bitrateBps;
   }
+  /**
+   * @return string
+   */
   public function getBitrateBps()
   {
     return $this->bitrateBps;
   }
+  /**
+   * @param string
+   */
   public function setChannelCount($channelCount)
   {
     $this->channelCount = $channelCount;
   }
+  /**
+   * @return string
+   */
   public function getChannelCount()
   {
     return $this->channelCount;
   }
+  /**
+   * @param string
+   */
   public function setCodec($codec)
   {
     $this->codec = $codec;
   }
+  /**
+   * @return string
+   */
   public function getCodec()
   {
     return $this->codec;
   }
+  /**
+   * @param string
+   */
   public function setVendor($vendor)
   {
     $this->vendor = $vendor;
   }
+  /**
+   * @return string
+   */
   public function getVendor()
   {
     return $this->vendor;

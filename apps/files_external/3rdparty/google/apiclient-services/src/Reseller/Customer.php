@@ -19,71 +19,137 @@ namespace Google\Service\Reseller;
 
 class Customer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alternateEmail;
+  /**
+   * @var string
+   */
   public $customerDomain;
+  /**
+   * @var bool
+   */
   public $customerDomainVerified;
+  /**
+   * @var string
+   */
   public $customerId;
+  /**
+   * @var string
+   */
   public $customerType;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $phoneNumber;
   protected $postalAddressType = Address::class;
   protected $postalAddressDataType = '';
   protected $primaryAdminType = PrimaryAdmin::class;
   protected $primaryAdminDataType = '';
+  /**
+   * @var string
+   */
   public $resourceUiUrl;
 
+  /**
+   * @param string
+   */
   public function setAlternateEmail($alternateEmail)
   {
     $this->alternateEmail = $alternateEmail;
   }
+  /**
+   * @return string
+   */
   public function getAlternateEmail()
   {
     return $this->alternateEmail;
   }
+  /**
+   * @param string
+   */
   public function setCustomerDomain($customerDomain)
   {
     $this->customerDomain = $customerDomain;
   }
+  /**
+   * @return string
+   */
   public function getCustomerDomain()
   {
     return $this->customerDomain;
   }
+  /**
+   * @param bool
+   */
   public function setCustomerDomainVerified($customerDomainVerified)
   {
     $this->customerDomainVerified = $customerDomainVerified;
   }
+  /**
+   * @return bool
+   */
   public function getCustomerDomainVerified()
   {
     return $this->customerDomainVerified;
   }
+  /**
+   * @param string
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerId()
   {
     return $this->customerId;
   }
+  /**
+   * @param string
+   */
   public function setCustomerType($customerType)
   {
     $this->customerType = $customerType;
   }
+  /**
+   * @return string
+   */
   public function getCustomerType()
   {
     return $this->customerType;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPhoneNumber($phoneNumber)
   {
     $this->phoneNumber = $phoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getPhoneNumber()
   {
     return $this->phoneNumber;
@@ -116,10 +182,16 @@ class Customer extends \Google\Model
   {
     return $this->primaryAdmin;
   }
+  /**
+   * @param string
+   */
   public function setResourceUiUrl($resourceUiUrl)
   {
     $this->resourceUiUrl = $resourceUiUrl;
   }
+  /**
+   * @return string
+   */
   public function getResourceUiUrl()
   {
     return $this->resourceUiUrl;

@@ -19,48 +19,93 @@ namespace Google\Service\ChromeManagement;
 
 class GoogleChromeManagementV1BrowserVersion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channel;
+  /**
+   * @var string
+   */
   public $count;
+  /**
+   * @var string
+   */
   public $deviceOsVersion;
+  /**
+   * @var string
+   */
   public $system;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setChannel($channel)
   {
     $this->channel = $channel;
   }
+  /**
+   * @return string
+   */
   public function getChannel()
   {
     return $this->channel;
   }
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param string
+   */
   public function setDeviceOsVersion($deviceOsVersion)
   {
     $this->deviceOsVersion = $deviceOsVersion;
   }
+  /**
+   * @return string
+   */
   public function getDeviceOsVersion()
   {
     return $this->deviceOsVersion;
   }
+  /**
+   * @param string
+   */
   public function setSystem($system)
   {
     $this->system = $system;
   }
+  /**
+   * @return string
+   */
   public function getSystem()
   {
     return $this->system;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

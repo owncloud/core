@@ -19,12 +19,21 @@ namespace Google\Service\BigQueryDataTransfer;
 
 class EmailPreferences extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableFailureEmail;
 
+  /**
+   * @param bool
+   */
   public function setEnableFailureEmail($enableFailureEmail)
   {
     $this->enableFailureEmail = $enableFailureEmail;
   }
+  /**
+   * @return bool
+   */
   public function getEnableFailureEmail()
   {
     return $this->enableFailureEmail;

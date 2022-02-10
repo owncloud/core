@@ -19,30 +19,57 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta2DocumentLabel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $automlModel;
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setAutomlModel($automlModel)
   {
     $this->automlModel = $automlModel;
   }
+  /**
+   * @return string
+   */
   public function getAutomlModel()
   {
     return $this->automlModel;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

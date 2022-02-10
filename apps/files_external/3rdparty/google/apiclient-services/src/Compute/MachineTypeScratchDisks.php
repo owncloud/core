@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class MachineTypeScratchDisks extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $diskGb;
 
+  /**
+   * @param int
+   */
   public function setDiskGb($diskGb)
   {
     $this->diskGb = $diskGb;
   }
+  /**
+   * @return int
+   */
   public function getDiskGb()
   {
     return $this->diskGb;

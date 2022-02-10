@@ -19,25 +19,49 @@ namespace Google\Service\Drive;
 
 class ContentRestriction extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $readOnly;
+  /**
+   * @var string
+   */
   public $reason;
   protected $restrictingUserType = User::class;
   protected $restrictingUserDataType = '';
+  /**
+   * @var string
+   */
   public $restrictionTime;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param bool
+   */
   public function setReadOnly($readOnly)
   {
     $this->readOnly = $readOnly;
   }
+  /**
+   * @return bool
+   */
   public function getReadOnly()
   {
     return $this->readOnly;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
@@ -56,18 +80,30 @@ class ContentRestriction extends \Google\Model
   {
     return $this->restrictingUser;
   }
+  /**
+   * @param string
+   */
   public function setRestrictionTime($restrictionTime)
   {
     $this->restrictionTime = $restrictionTime;
   }
+  /**
+   * @return string
+   */
   public function getRestrictionTime()
   {
     return $this->restrictionTime;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

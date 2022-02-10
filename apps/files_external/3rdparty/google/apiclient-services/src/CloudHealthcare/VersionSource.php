@@ -19,21 +19,39 @@ namespace Google\Service\CloudHealthcare;
 
 class VersionSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mshField;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setMshField($mshField)
   {
     $this->mshField = $mshField;
   }
+  /**
+   * @return string
+   */
   public function getMshField()
   {
     return $this->mshField;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

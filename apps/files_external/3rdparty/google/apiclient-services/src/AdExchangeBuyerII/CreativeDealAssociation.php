@@ -19,30 +19,57 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class CreativeDealAssociation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $creativeId;
+  /**
+   * @var string
+   */
   public $dealsId;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setCreativeId($creativeId)
   {
     $this->creativeId = $creativeId;
   }
+  /**
+   * @return string
+   */
   public function getCreativeId()
   {
     return $this->creativeId;
   }
+  /**
+   * @param string
+   */
   public function setDealsId($dealsId)
   {
     $this->dealsId = $dealsId;
   }
+  /**
+   * @return string
+   */
   public function getDealsId()
   {
     return $this->dealsId;

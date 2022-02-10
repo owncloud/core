@@ -22,11 +22,29 @@ class Uploads extends \Google\Collection
   protected $collection_key = 'items';
   protected $itemsType = Upload::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var int
+   */
   public $itemsPerPage;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextLink;
+  /**
+   * @var string
+   */
   public $previousLink;
+  /**
+   * @var int
+   */
   public $startIndex;
+  /**
+   * @var int
+   */
   public $totalResults;
 
   /**
@@ -43,50 +61,86 @@ class Uploads extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param int
+   */
   public function setItemsPerPage($itemsPerPage)
   {
     $this->itemsPerPage = $itemsPerPage;
   }
+  /**
+   * @return int
+   */
   public function getItemsPerPage()
   {
     return $this->itemsPerPage;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextLink($nextLink)
   {
     $this->nextLink = $nextLink;
   }
+  /**
+   * @return string
+   */
   public function getNextLink()
   {
     return $this->nextLink;
   }
+  /**
+   * @param string
+   */
   public function setPreviousLink($previousLink)
   {
     $this->previousLink = $previousLink;
   }
+  /**
+   * @return string
+   */
   public function getPreviousLink()
   {
     return $this->previousLink;
   }
+  /**
+   * @param int
+   */
   public function setStartIndex($startIndex)
   {
     $this->startIndex = $startIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartIndex()
   {
     return $this->startIndex;
   }
+  /**
+   * @param int
+   */
   public function setTotalResults($totalResults)
   {
     $this->totalResults = $totalResults;
   }
+  /**
+   * @return int
+   */
   public function getTotalResults()
   {
     return $this->totalResults;

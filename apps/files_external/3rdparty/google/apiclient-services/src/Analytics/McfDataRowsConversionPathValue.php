@@ -19,21 +19,39 @@ namespace Google\Service\Analytics;
 
 class McfDataRowsConversionPathValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $interactionType;
+  /**
+   * @var string
+   */
   public $nodeValue;
 
+  /**
+   * @param string
+   */
   public function setInteractionType($interactionType)
   {
     $this->interactionType = $interactionType;
   }
+  /**
+   * @return string
+   */
   public function getInteractionType()
   {
     return $this->interactionType;
   }
+  /**
+   * @param string
+   */
   public function setNodeValue($nodeValue)
   {
     $this->nodeValue = $nodeValue;
   }
+  /**
+   * @return string
+   */
   public function getNodeValue()
   {
     return $this->nodeValue;

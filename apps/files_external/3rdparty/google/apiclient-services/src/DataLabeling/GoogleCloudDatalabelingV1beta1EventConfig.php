@@ -20,30 +20,57 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1beta1EventConfig extends \Google\Collection
 {
   protected $collection_key = 'annotationSpecSets';
+  /**
+   * @var string[]
+   */
   public $annotationSpecSets;
+  /**
+   * @var int
+   */
   public $clipLength;
+  /**
+   * @var int
+   */
   public $overlapLength;
 
+  /**
+   * @param string[]
+   */
   public function setAnnotationSpecSets($annotationSpecSets)
   {
     $this->annotationSpecSets = $annotationSpecSets;
   }
+  /**
+   * @return string[]
+   */
   public function getAnnotationSpecSets()
   {
     return $this->annotationSpecSets;
   }
+  /**
+   * @param int
+   */
   public function setClipLength($clipLength)
   {
     $this->clipLength = $clipLength;
   }
+  /**
+   * @return int
+   */
   public function getClipLength()
   {
     return $this->clipLength;
   }
+  /**
+   * @param int
+   */
   public function setOverlapLength($overlapLength)
   {
     $this->overlapLength = $overlapLength;
   }
+  /**
+   * @return int
+   */
   public function getOverlapLength()
   {
     return $this->overlapLength;

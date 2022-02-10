@@ -19,39 +19,75 @@ namespace Google\Service\CloudIdentity;
 
 class GoogleAppsCloudidentityDevicesV1AndroidAttributes extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabledUnknownSources;
+  /**
+   * @var bool
+   */
   public $ownerProfileAccount;
+  /**
+   * @var string
+   */
   public $ownershipPrivilege;
+  /**
+   * @var bool
+   */
   public $supportsWorkProfile;
 
+  /**
+   * @param bool
+   */
   public function setEnabledUnknownSources($enabledUnknownSources)
   {
     $this->enabledUnknownSources = $enabledUnknownSources;
   }
+  /**
+   * @return bool
+   */
   public function getEnabledUnknownSources()
   {
     return $this->enabledUnknownSources;
   }
+  /**
+   * @param bool
+   */
   public function setOwnerProfileAccount($ownerProfileAccount)
   {
     $this->ownerProfileAccount = $ownerProfileAccount;
   }
+  /**
+   * @return bool
+   */
   public function getOwnerProfileAccount()
   {
     return $this->ownerProfileAccount;
   }
+  /**
+   * @param string
+   */
   public function setOwnershipPrivilege($ownershipPrivilege)
   {
     $this->ownershipPrivilege = $ownershipPrivilege;
   }
+  /**
+   * @return string
+   */
   public function getOwnershipPrivilege()
   {
     return $this->ownershipPrivilege;
   }
+  /**
+   * @param bool
+   */
   public function setSupportsWorkProfile($supportsWorkProfile)
   {
     $this->supportsWorkProfile = $supportsWorkProfile;
   }
+  /**
+   * @return bool
+   */
   public function getSupportsWorkProfile()
   {
     return $this->supportsWorkProfile;

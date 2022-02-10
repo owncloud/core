@@ -19,21 +19,39 @@ namespace Google\Service\CloudAsset;
 
 class GcsDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $uri;
+  /**
+   * @var string
+   */
   public $uriPrefix;
 
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;
   }
+  /**
+   * @param string
+   */
   public function setUriPrefix($uriPrefix)
   {
     $this->uriPrefix = $uriPrefix;
   }
+  /**
+   * @return string
+   */
   public function getUriPrefix()
   {
     return $this->uriPrefix;

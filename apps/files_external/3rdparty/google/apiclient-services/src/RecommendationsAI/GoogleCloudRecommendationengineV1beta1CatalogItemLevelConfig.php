@@ -19,21 +19,39 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1CatalogItemLevelConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $eventItemLevel;
+  /**
+   * @var string
+   */
   public $predictItemLevel;
 
+  /**
+   * @param string
+   */
   public function setEventItemLevel($eventItemLevel)
   {
     $this->eventItemLevel = $eventItemLevel;
   }
+  /**
+   * @return string
+   */
   public function getEventItemLevel()
   {
     return $this->eventItemLevel;
   }
+  /**
+   * @param string
+   */
   public function setPredictItemLevel($predictItemLevel)
   {
     $this->predictItemLevel = $predictItemLevel;
   }
+  /**
+   * @return string
+   */
   public function getPredictItemLevel()
   {
     return $this->predictItemLevel;

@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class StatefulPolicyPreservedStateDiskDevice extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $autoDelete;
 
+  /**
+   * @param string
+   */
   public function setAutoDelete($autoDelete)
   {
     $this->autoDelete = $autoDelete;
   }
+  /**
+   * @return string
+   */
   public function getAutoDelete()
   {
     return $this->autoDelete;

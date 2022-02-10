@@ -22,6 +22,9 @@ class ImageContext extends \Google\Collection
   protected $collection_key = 'languageHints';
   protected $cropHintsParamsType = CropHintsParams::class;
   protected $cropHintsParamsDataType = '';
+  /**
+   * @var string[]
+   */
   public $languageHints;
   protected $latLongRectType = LatLongRect::class;
   protected $latLongRectDataType = '';
@@ -46,10 +49,16 @@ class ImageContext extends \Google\Collection
   {
     return $this->cropHintsParams;
   }
+  /**
+   * @param string[]
+   */
   public function setLanguageHints($languageHints)
   {
     $this->languageHints = $languageHints;
   }
+  /**
+   * @return string[]
+   */
   public function getLanguageHints()
   {
     return $this->languageHints;

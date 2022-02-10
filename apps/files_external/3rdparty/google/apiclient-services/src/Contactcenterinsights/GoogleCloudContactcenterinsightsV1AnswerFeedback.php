@@ -19,30 +19,57 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1AnswerFeedback extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $clicked;
+  /**
+   * @var string
+   */
   public $correctnessLevel;
+  /**
+   * @var bool
+   */
   public $displayed;
 
+  /**
+   * @param bool
+   */
   public function setClicked($clicked)
   {
     $this->clicked = $clicked;
   }
+  /**
+   * @return bool
+   */
   public function getClicked()
   {
     return $this->clicked;
   }
+  /**
+   * @param string
+   */
   public function setCorrectnessLevel($correctnessLevel)
   {
     $this->correctnessLevel = $correctnessLevel;
   }
+  /**
+   * @return string
+   */
   public function getCorrectnessLevel()
   {
     return $this->correctnessLevel;
   }
+  /**
+   * @param bool
+   */
   public function setDisplayed($displayed)
   {
     $this->displayed = $displayed;
   }
+  /**
+   * @return bool
+   */
   public function getDisplayed()
   {
     return $this->displayed;

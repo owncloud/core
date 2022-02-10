@@ -19,30 +19,57 @@ namespace Google\Service\Genomics;
 
 class Network extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $subnetwork;
+  /**
+   * @var bool
+   */
   public $usePrivateAddress;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSubnetwork($subnetwork)
   {
     $this->subnetwork = $subnetwork;
   }
+  /**
+   * @return string
+   */
   public function getSubnetwork()
   {
     return $this->subnetwork;
   }
+  /**
+   * @param bool
+   */
   public function setUsePrivateAddress($usePrivateAddress)
   {
     $this->usePrivateAddress = $usePrivateAddress;
   }
+  /**
+   * @return bool
+   */
   public function getUsePrivateAddress()
   {
     return $this->usePrivateAddress;

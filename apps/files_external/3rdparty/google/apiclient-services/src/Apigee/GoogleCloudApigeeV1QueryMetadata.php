@@ -20,57 +20,111 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1QueryMetadata extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var string[]
+   */
   public $dimensions;
+  /**
+   * @var string
+   */
   public $endTimestamp;
+  /**
+   * @var string[]
+   */
   public $metrics;
+  /**
+   * @var string
+   */
   public $outputFormat;
+  /**
+   * @var string
+   */
   public $startTimestamp;
+  /**
+   * @var string
+   */
   public $timeUnit;
 
+  /**
+   * @param string[]
+   */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
+  /**
+   * @return string[]
+   */
   public function getDimensions()
   {
     return $this->dimensions;
   }
+  /**
+   * @param string
+   */
   public function setEndTimestamp($endTimestamp)
   {
     $this->endTimestamp = $endTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getEndTimestamp()
   {
     return $this->endTimestamp;
   }
+  /**
+   * @param string[]
+   */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
+  /**
+   * @return string[]
+   */
   public function getMetrics()
   {
     return $this->metrics;
   }
+  /**
+   * @param string
+   */
   public function setOutputFormat($outputFormat)
   {
     $this->outputFormat = $outputFormat;
   }
+  /**
+   * @return string
+   */
   public function getOutputFormat()
   {
     return $this->outputFormat;
   }
+  /**
+   * @param string
+   */
   public function setStartTimestamp($startTimestamp)
   {
     $this->startTimestamp = $startTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getStartTimestamp()
   {
     return $this->startTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setTimeUnit($timeUnit)
   {
     $this->timeUnit = $timeUnit;
   }
+  /**
+   * @return string
+   */
   public function getTimeUnit()
   {
     return $this->timeUnit;

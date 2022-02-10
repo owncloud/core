@@ -19,30 +19,57 @@ namespace Google\Service\Appengine;
 
 class ErrorHandler extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $staticFile;
 
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setStaticFile($staticFile)
   {
     $this->staticFile = $staticFile;
   }
+  /**
+   * @return string
+   */
   public function getStaticFile()
   {
     return $this->staticFile;

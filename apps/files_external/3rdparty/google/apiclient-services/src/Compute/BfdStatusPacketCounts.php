@@ -19,39 +19,75 @@ namespace Google\Service\Compute;
 
 class BfdStatusPacketCounts extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $numRx;
+  /**
+   * @var string
+   */
   public $numRxRejected;
+  /**
+   * @var string
+   */
   public $numRxSuccessful;
+  /**
+   * @var string
+   */
   public $numTx;
 
+  /**
+   * @param string
+   */
   public function setNumRx($numRx)
   {
     $this->numRx = $numRx;
   }
+  /**
+   * @return string
+   */
   public function getNumRx()
   {
     return $this->numRx;
   }
+  /**
+   * @param string
+   */
   public function setNumRxRejected($numRxRejected)
   {
     $this->numRxRejected = $numRxRejected;
   }
+  /**
+   * @return string
+   */
   public function getNumRxRejected()
   {
     return $this->numRxRejected;
   }
+  /**
+   * @param string
+   */
   public function setNumRxSuccessful($numRxSuccessful)
   {
     $this->numRxSuccessful = $numRxSuccessful;
   }
+  /**
+   * @return string
+   */
   public function getNumRxSuccessful()
   {
     return $this->numRxSuccessful;
   }
+  /**
+   * @param string
+   */
   public function setNumTx($numTx)
   {
     $this->numTx = $numTx;
   }
+  /**
+   * @return string
+   */
   public function getNumTx()
   {
     return $this->numTx;

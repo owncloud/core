@@ -19,21 +19,39 @@ namespace Google\Service\ServiceManagement;
 
 class GenerateConfigReportRequest extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $newConfig;
+  /**
+   * @var array[]
+   */
   public $oldConfig;
 
+  /**
+   * @param array[]
+   */
   public function setNewConfig($newConfig)
   {
     $this->newConfig = $newConfig;
   }
+  /**
+   * @return array[]
+   */
   public function getNewConfig()
   {
     return $this->newConfig;
   }
+  /**
+   * @param array[]
+   */
   public function setOldConfig($oldConfig)
   {
     $this->oldConfig = $oldConfig;
   }
+  /**
+   * @return array[]
+   */
   public function getOldConfig()
   {
     return $this->oldConfig;

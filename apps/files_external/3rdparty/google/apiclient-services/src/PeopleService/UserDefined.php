@@ -19,15 +19,27 @@ namespace Google\Service\PeopleService;
 
 class UserDefined extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
   protected $metadataType = FieldMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
@@ -46,10 +58,16 @@ class UserDefined extends \Google\Model
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

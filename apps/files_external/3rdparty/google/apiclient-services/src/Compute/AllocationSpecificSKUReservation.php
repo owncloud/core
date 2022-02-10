@@ -19,23 +19,41 @@ namespace Google\Service\Compute;
 
 class AllocationSpecificSKUReservation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $count;
+  /**
+   * @var string
+   */
   public $inUseCount;
   protected $instancePropertiesType = AllocationSpecificSKUAllocationReservedInstanceProperties::class;
   protected $instancePropertiesDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param string
+   */
   public function setInUseCount($inUseCount)
   {
     $this->inUseCount = $inUseCount;
   }
+  /**
+   * @return string
+   */
   public function getInUseCount()
   {
     return $this->inUseCount;

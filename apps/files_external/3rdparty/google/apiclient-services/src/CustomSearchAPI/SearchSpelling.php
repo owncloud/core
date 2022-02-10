@@ -19,21 +19,39 @@ namespace Google\Service\CustomSearchAPI;
 
 class SearchSpelling extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $correctedQuery;
+  /**
+   * @var string
+   */
   public $htmlCorrectedQuery;
 
+  /**
+   * @param string
+   */
   public function setCorrectedQuery($correctedQuery)
   {
     $this->correctedQuery = $correctedQuery;
   }
+  /**
+   * @return string
+   */
   public function getCorrectedQuery()
   {
     return $this->correctedQuery;
   }
+  /**
+   * @param string
+   */
   public function setHtmlCorrectedQuery($htmlCorrectedQuery)
   {
     $this->htmlCorrectedQuery = $htmlCorrectedQuery;
   }
+  /**
+   * @return string
+   */
   public function getHtmlCorrectedQuery()
   {
     return $this->htmlCorrectedQuery;

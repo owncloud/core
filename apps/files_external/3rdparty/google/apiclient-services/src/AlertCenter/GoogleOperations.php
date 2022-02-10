@@ -20,17 +20,35 @@ namespace Google\Service\AlertCenter;
 class GoogleOperations extends \Google\Collection
 {
   protected $collection_key = 'affectedUserEmails';
+  /**
+   * @var string[]
+   */
   public $affectedUserEmails;
   protected $attachmentDataType = Attachment::class;
   protected $attachmentDataDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $header;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string[]
+   */
   public function setAffectedUserEmails($affectedUserEmails)
   {
     $this->affectedUserEmails = $affectedUserEmails;
   }
+  /**
+   * @return string[]
+   */
   public function getAffectedUserEmails()
   {
     return $this->affectedUserEmails;
@@ -49,26 +67,44 @@ class GoogleOperations extends \Google\Collection
   {
     return $this->attachmentData;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setHeader($header)
   {
     $this->header = $header;
   }
+  /**
+   * @return string
+   */
   public function getHeader()
   {
     return $this->header;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

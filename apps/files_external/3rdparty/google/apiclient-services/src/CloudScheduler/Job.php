@@ -21,22 +21,49 @@ class Job extends \Google\Model
 {
   protected $appEngineHttpTargetType = AppEngineHttpTarget::class;
   protected $appEngineHttpTargetDataType = '';
+  /**
+   * @var string
+   */
   public $attemptDeadline;
+  /**
+   * @var string
+   */
   public $description;
   protected $httpTargetType = HttpTarget::class;
   protected $httpTargetDataType = '';
+  /**
+   * @var string
+   */
   public $lastAttemptTime;
+  /**
+   * @var string
+   */
   public $name;
   protected $pubsubTargetType = PubsubTarget::class;
   protected $pubsubTargetDataType = '';
   protected $retryConfigType = RetryConfig::class;
   protected $retryConfigDataType = '';
+  /**
+   * @var string
+   */
   public $schedule;
+  /**
+   * @var string
+   */
   public $scheduleTime;
+  /**
+   * @var string
+   */
   public $state;
   protected $statusType = Status::class;
   protected $statusDataType = '';
+  /**
+   * @var string
+   */
   public $timeZone;
+  /**
+   * @var string
+   */
   public $userUpdateTime;
 
   /**
@@ -53,18 +80,30 @@ class Job extends \Google\Model
   {
     return $this->appEngineHttpTarget;
   }
+  /**
+   * @param string
+   */
   public function setAttemptDeadline($attemptDeadline)
   {
     $this->attemptDeadline = $attemptDeadline;
   }
+  /**
+   * @return string
+   */
   public function getAttemptDeadline()
   {
     return $this->attemptDeadline;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -83,18 +122,30 @@ class Job extends \Google\Model
   {
     return $this->httpTarget;
   }
+  /**
+   * @param string
+   */
   public function setLastAttemptTime($lastAttemptTime)
   {
     $this->lastAttemptTime = $lastAttemptTime;
   }
+  /**
+   * @return string
+   */
   public function getLastAttemptTime()
   {
     return $this->lastAttemptTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -127,26 +178,44 @@ class Job extends \Google\Model
   {
     return $this->retryConfig;
   }
+  /**
+   * @param string
+   */
   public function setSchedule($schedule)
   {
     $this->schedule = $schedule;
   }
+  /**
+   * @return string
+   */
   public function getSchedule()
   {
     return $this->schedule;
   }
+  /**
+   * @param string
+   */
   public function setScheduleTime($scheduleTime)
   {
     $this->scheduleTime = $scheduleTime;
   }
+  /**
+   * @return string
+   */
   public function getScheduleTime()
   {
     return $this->scheduleTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
@@ -165,18 +234,30 @@ class Job extends \Google\Model
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;
   }
+  /**
+   * @param string
+   */
   public function setUserUpdateTime($userUpdateTime)
   {
     $this->userUpdateTime = $userUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getUserUpdateTime()
   {
     return $this->userUpdateTime;

@@ -20,12 +20,21 @@ namespace Google\Service\ServiceConsumerManagement;
 class V1RemoveVisibilityLabelsResponse extends \Google\Collection
 {
   protected $collection_key = 'labels';
+  /**
+   * @var string[]
+   */
   public $labels;
 
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

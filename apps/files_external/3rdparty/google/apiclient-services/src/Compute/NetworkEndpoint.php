@@ -19,48 +19,93 @@ namespace Google\Service\Compute;
 
 class NetworkEndpoint extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $annotations;
+  /**
+   * @var string
+   */
   public $fqdn;
+  /**
+   * @var string
+   */
   public $instance;
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var int
+   */
   public $port;
 
+  /**
+   * @param string[]
+   */
   public function setAnnotations($annotations)
   {
     $this->annotations = $annotations;
   }
+  /**
+   * @return string[]
+   */
   public function getAnnotations()
   {
     return $this->annotations;
   }
+  /**
+   * @param string
+   */
   public function setFqdn($fqdn)
   {
     $this->fqdn = $fqdn;
   }
+  /**
+   * @return string
+   */
   public function getFqdn()
   {
     return $this->fqdn;
   }
+  /**
+   * @param string
+   */
   public function setInstance($instance)
   {
     $this->instance = $instance;
   }
+  /**
+   * @return string
+   */
   public function getInstance()
   {
     return $this->instance;
   }
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;

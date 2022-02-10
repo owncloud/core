@@ -19,30 +19,57 @@ namespace Google\Service\MyBusinessLodging;
 
 class EcoCertification extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $awarded;
+  /**
+   * @var string
+   */
   public $awardedException;
+  /**
+   * @var string
+   */
   public $ecoCertificate;
 
+  /**
+   * @param bool
+   */
   public function setAwarded($awarded)
   {
     $this->awarded = $awarded;
   }
+  /**
+   * @return bool
+   */
   public function getAwarded()
   {
     return $this->awarded;
   }
+  /**
+   * @param string
+   */
   public function setAwardedException($awardedException)
   {
     $this->awardedException = $awardedException;
   }
+  /**
+   * @return string
+   */
   public function getAwardedException()
   {
     return $this->awardedException;
   }
+  /**
+   * @param string
+   */
   public function setEcoCertificate($ecoCertificate)
   {
     $this->ecoCertificate = $ecoCertificate;
   }
+  /**
+   * @return string
+   */
   public function getEcoCertificate()
   {
     return $this->ecoCertificate;

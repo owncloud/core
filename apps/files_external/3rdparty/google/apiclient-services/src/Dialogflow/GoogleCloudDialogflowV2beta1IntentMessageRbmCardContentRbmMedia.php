@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentMessageRbmCardContentRbmMedia extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fileUri;
+  /**
+   * @var string
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $thumbnailUri;
 
+  /**
+   * @param string
+   */
   public function setFileUri($fileUri)
   {
     $this->fileUri = $fileUri;
   }
+  /**
+   * @return string
+   */
   public function getFileUri()
   {
     return $this->fileUri;
   }
+  /**
+   * @param string
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return string
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setThumbnailUri($thumbnailUri)
   {
     $this->thumbnailUri = $thumbnailUri;
   }
+  /**
+   * @return string
+   */
   public function getThumbnailUri()
   {
     return $this->thumbnailUri;

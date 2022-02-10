@@ -20,14 +20,23 @@ namespace Google\Service\FirebaseRules;
 class ListRulesetsResponse extends \Google\Collection
 {
   protected $collection_key = 'rulesets';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $rulesetsType = Ruleset::class;
   protected $rulesetsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class TargetTcpProxiesSetProxyHeaderRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $proxyHeader;
 
+  /**
+   * @param string
+   */
   public function setProxyHeader($proxyHeader)
   {
     $this->proxyHeader = $proxyHeader;
   }
+  /**
+   * @return string
+   */
   public function getProxyHeader()
   {
     return $this->proxyHeader;

@@ -23,6 +23,9 @@ class Shape extends \Google\Model
   protected $placeholderDataType = '';
   protected $shapePropertiesType = ShapeProperties::class;
   protected $shapePropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $shapeType;
   protected $textType = TextContent::class;
   protected $textDataType = '';
@@ -55,10 +58,16 @@ class Shape extends \Google\Model
   {
     return $this->shapeProperties;
   }
+  /**
+   * @param string
+   */
   public function setShapeType($shapeType)
   {
     $this->shapeType = $shapeType;
   }
+  /**
+   * @return string
+   */
   public function getShapeType()
   {
     return $this->shapeType;

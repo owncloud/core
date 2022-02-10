@@ -26,7 +26,13 @@ class SearchRequest extends \Google\Collection
   protected $dataSourceRestrictionsDataType = 'array';
   protected $facetOptionsType = FacetOptions::class;
   protected $facetOptionsDataType = 'array';
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $query;
   protected $queryInterpretationOptionsType = QueryInterpretationOptions::class;
   protected $queryInterpretationOptionsDataType = '';
@@ -34,6 +40,9 @@ class SearchRequest extends \Google\Collection
   protected $requestOptionsDataType = '';
   protected $sortOptionsType = SortOptions::class;
   protected $sortOptionsDataType = '';
+  /**
+   * @var int
+   */
   public $start;
 
   /**
@@ -78,18 +87,30 @@ class SearchRequest extends \Google\Collection
   {
     return $this->facetOptions;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;
@@ -136,10 +157,16 @@ class SearchRequest extends \Google\Collection
   {
     return $this->sortOptions;
   }
+  /**
+   * @param int
+   */
   public function setStart($start)
   {
     $this->start = $start;
   }
+  /**
+   * @return int
+   */
   public function getStart()
   {
     return $this->start;

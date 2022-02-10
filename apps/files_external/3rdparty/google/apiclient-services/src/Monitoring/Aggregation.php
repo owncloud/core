@@ -20,39 +20,75 @@ namespace Google\Service\Monitoring;
 class Aggregation extends \Google\Collection
 {
   protected $collection_key = 'groupByFields';
+  /**
+   * @var string
+   */
   public $alignmentPeriod;
+  /**
+   * @var string
+   */
   public $crossSeriesReducer;
+  /**
+   * @var string[]
+   */
   public $groupByFields;
+  /**
+   * @var string
+   */
   public $perSeriesAligner;
 
+  /**
+   * @param string
+   */
   public function setAlignmentPeriod($alignmentPeriod)
   {
     $this->alignmentPeriod = $alignmentPeriod;
   }
+  /**
+   * @return string
+   */
   public function getAlignmentPeriod()
   {
     return $this->alignmentPeriod;
   }
+  /**
+   * @param string
+   */
   public function setCrossSeriesReducer($crossSeriesReducer)
   {
     $this->crossSeriesReducer = $crossSeriesReducer;
   }
+  /**
+   * @return string
+   */
   public function getCrossSeriesReducer()
   {
     return $this->crossSeriesReducer;
   }
+  /**
+   * @param string[]
+   */
   public function setGroupByFields($groupByFields)
   {
     $this->groupByFields = $groupByFields;
   }
+  /**
+   * @return string[]
+   */
   public function getGroupByFields()
   {
     return $this->groupByFields;
   }
+  /**
+   * @param string
+   */
   public function setPerSeriesAligner($perSeriesAligner)
   {
     $this->perSeriesAligner = $perSeriesAligner;
   }
+  /**
+   * @return string
+   */
   public function getPerSeriesAligner()
   {
     return $this->perSeriesAligner;

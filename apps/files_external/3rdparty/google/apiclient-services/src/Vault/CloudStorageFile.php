@@ -19,39 +19,75 @@ namespace Google\Service\Vault;
 
 class CloudStorageFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bucketName;
+  /**
+   * @var string
+   */
   public $md5Hash;
+  /**
+   * @var string
+   */
   public $objectName;
+  /**
+   * @var string
+   */
   public $size;
 
+  /**
+   * @param string
+   */
   public function setBucketName($bucketName)
   {
     $this->bucketName = $bucketName;
   }
+  /**
+   * @return string
+   */
   public function getBucketName()
   {
     return $this->bucketName;
   }
+  /**
+   * @param string
+   */
   public function setMd5Hash($md5Hash)
   {
     $this->md5Hash = $md5Hash;
   }
+  /**
+   * @return string
+   */
   public function getMd5Hash()
   {
     return $this->md5Hash;
   }
+  /**
+   * @param string
+   */
   public function setObjectName($objectName)
   {
     $this->objectName = $objectName;
   }
+  /**
+   * @return string
+   */
   public function getObjectName()
   {
     return $this->objectName;
   }
+  /**
+   * @param string
+   */
   public function setSize($size)
   {
     $this->size = $size;
   }
+  /**
+   * @return string
+   */
   public function getSize()
   {
     return $this->size;

@@ -19,12 +19,21 @@ namespace Google\Service\CloudRedis;
 
 class UpgradeInstanceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $redisVersion;
 
+  /**
+   * @param string
+   */
   public function setRedisVersion($redisVersion)
   {
     $this->redisVersion = $redisVersion;
   }
+  /**
+   * @return string
+   */
   public function getRedisVersion()
   {
     return $this->redisVersion;

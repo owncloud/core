@@ -19,30 +19,57 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta1DocumentProvenanceParent extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $id;
+  /**
+   * @var int
+   */
   public $index;
+  /**
+   * @var int
+   */
   public $revision;
 
+  /**
+   * @param int
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return int
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;
   }
+  /**
+   * @param int
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return int
+   */
   public function getRevision()
   {
     return $this->revision;

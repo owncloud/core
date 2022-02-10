@@ -20,14 +20,23 @@ namespace Google\Service\Area120Tables;
 class ListRowsResponse extends \Google\Collection
 {
   protected $collection_key = 'rows';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $rowsType = Row::class;
   protected $rowsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

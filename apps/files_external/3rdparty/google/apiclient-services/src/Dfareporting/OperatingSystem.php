@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class OperatingSystem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dartId;
+  /**
+   * @var bool
+   */
   public $desktop;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $mobile;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDartId($dartId)
   {
     $this->dartId = $dartId;
   }
+  /**
+   * @return string
+   */
   public function getDartId()
   {
     return $this->dartId;
   }
+  /**
+   * @param bool
+   */
   public function setDesktop($desktop)
   {
     $this->desktop = $desktop;
   }
+  /**
+   * @return bool
+   */
   public function getDesktop()
   {
     return $this->desktop;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setMobile($mobile)
   {
     $this->mobile = $mobile;
   }
+  /**
+   * @return bool
+   */
   public function getMobile()
   {
     return $this->mobile;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

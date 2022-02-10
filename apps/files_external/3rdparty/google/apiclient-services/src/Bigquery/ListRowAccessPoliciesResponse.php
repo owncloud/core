@@ -20,14 +20,23 @@ namespace Google\Service\Bigquery;
 class ListRowAccessPoliciesResponse extends \Google\Collection
 {
   protected $collection_key = 'rowAccessPolicies';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $rowAccessPoliciesType = RowAccessPolicy::class;
   protected $rowAccessPoliciesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,21 +19,39 @@ namespace Google\Service\HomeGraphService;
 
 class ReportStateAndNotificationDevice extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $notifications;
+  /**
+   * @var array[]
+   */
   public $states;
 
+  /**
+   * @param array[]
+   */
   public function setNotifications($notifications)
   {
     $this->notifications = $notifications;
   }
+  /**
+   * @return array[]
+   */
   public function getNotifications()
   {
     return $this->notifications;
   }
+  /**
+   * @param array[]
+   */
   public function setStates($states)
   {
     $this->states = $states;
   }
+  /**
+   * @return array[]
+   */
   public function getStates()
   {
     return $this->states;

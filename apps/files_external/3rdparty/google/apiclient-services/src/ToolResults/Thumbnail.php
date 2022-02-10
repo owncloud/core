@@ -19,39 +19,75 @@ namespace Google\Service\ToolResults;
 
 class Thumbnail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentType;
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var int
+   */
   public $heightPx;
+  /**
+   * @var int
+   */
   public $widthPx;
 
+  /**
+   * @param string
+   */
   public function setContentType($contentType)
   {
     $this->contentType = $contentType;
   }
+  /**
+   * @return string
+   */
   public function getContentType()
   {
     return $this->contentType;
   }
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param int
+   */
   public function setHeightPx($heightPx)
   {
     $this->heightPx = $heightPx;
   }
+  /**
+   * @return int
+   */
   public function getHeightPx()
   {
     return $this->heightPx;
   }
+  /**
+   * @param int
+   */
   public function setWidthPx($widthPx)
   {
     $this->widthPx = $widthPx;
   }
+  /**
+   * @return int
+   */
   public function getWidthPx()
   {
     return $this->widthPx;

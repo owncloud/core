@@ -19,39 +19,75 @@ namespace Google\Service\Genomics;
 
 class Disk extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $sizeGb;
+  /**
+   * @var string
+   */
   public $sourceImage;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setSizeGb($sizeGb)
   {
     $this->sizeGb = $sizeGb;
   }
+  /**
+   * @return int
+   */
   public function getSizeGb()
   {
     return $this->sizeGb;
   }
+  /**
+   * @param string
+   */
   public function setSourceImage($sourceImage)
   {
     $this->sourceImage = $sourceImage;
   }
+  /**
+   * @return string
+   */
   public function getSourceImage()
   {
     return $this->sourceImage;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

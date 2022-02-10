@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class Pacing extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dailyMaxImpressions;
+  /**
+   * @var string
+   */
   public $dailyMaxMicros;
+  /**
+   * @var string
+   */
   public $pacingPeriod;
+  /**
+   * @var string
+   */
   public $pacingType;
 
+  /**
+   * @param string
+   */
   public function setDailyMaxImpressions($dailyMaxImpressions)
   {
     $this->dailyMaxImpressions = $dailyMaxImpressions;
   }
+  /**
+   * @return string
+   */
   public function getDailyMaxImpressions()
   {
     return $this->dailyMaxImpressions;
   }
+  /**
+   * @param string
+   */
   public function setDailyMaxMicros($dailyMaxMicros)
   {
     $this->dailyMaxMicros = $dailyMaxMicros;
   }
+  /**
+   * @return string
+   */
   public function getDailyMaxMicros()
   {
     return $this->dailyMaxMicros;
   }
+  /**
+   * @param string
+   */
   public function setPacingPeriod($pacingPeriod)
   {
     $this->pacingPeriod = $pacingPeriod;
   }
+  /**
+   * @return string
+   */
   public function getPacingPeriod()
   {
     return $this->pacingPeriod;
   }
+  /**
+   * @param string
+   */
   public function setPacingType($pacingType)
   {
     $this->pacingType = $pacingType;
   }
+  /**
+   * @return string
+   */
   public function getPacingType()
   {
     return $this->pacingType;

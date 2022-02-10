@@ -19,17 +19,35 @@ namespace Google\Service\CloudTalentSolution;
 
 class RequestMetadata extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowMissingIds;
   protected $deviceInfoType = DeviceInfo::class;
   protected $deviceInfoDataType = '';
+  /**
+   * @var string
+   */
   public $domain;
+  /**
+   * @var string
+   */
   public $sessionId;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param bool
+   */
   public function setAllowMissingIds($allowMissingIds)
   {
     $this->allowMissingIds = $allowMissingIds;
   }
+  /**
+   * @return bool
+   */
   public function getAllowMissingIds()
   {
     return $this->allowMissingIds;
@@ -48,26 +66,44 @@ class RequestMetadata extends \Google\Model
   {
     return $this->deviceInfo;
   }
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
   }
+  /**
+   * @param string
+   */
   public function setSessionId($sessionId)
   {
     $this->sessionId = $sessionId;
   }
+  /**
+   * @return string
+   */
   public function getSessionId()
   {
     return $this->sessionId;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

@@ -19,39 +19,75 @@ namespace Google\Service\ToolResults;
 
 class AndroidAppInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string
+   */
   public $versionCode;
+  /**
+   * @var string
+   */
   public $versionName;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string
+   */
   public function setVersionCode($versionCode)
   {
     $this->versionCode = $versionCode;
   }
+  /**
+   * @return string
+   */
   public function getVersionCode()
   {
     return $this->versionCode;
   }
+  /**
+   * @param string
+   */
   public function setVersionName($versionName)
   {
     $this->versionName = $versionName;
   }
+  /**
+   * @return string
+   */
   public function getVersionName()
   {
     return $this->versionName;

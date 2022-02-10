@@ -19,57 +19,111 @@ namespace Google\Service\Compute;
 
 class PacketIntervals extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $avgMs;
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var string
+   */
   public $maxMs;
+  /**
+   * @var string
+   */
   public $minMs;
+  /**
+   * @var string
+   */
   public $numIntervals;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAvgMs($avgMs)
   {
     $this->avgMs = $avgMs;
   }
+  /**
+   * @return string
+   */
   public function getAvgMs()
   {
     return $this->avgMs;
   }
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param string
+   */
   public function setMaxMs($maxMs)
   {
     $this->maxMs = $maxMs;
   }
+  /**
+   * @return string
+   */
   public function getMaxMs()
   {
     return $this->maxMs;
   }
+  /**
+   * @param string
+   */
   public function setMinMs($minMs)
   {
     $this->minMs = $minMs;
   }
+  /**
+   * @return string
+   */
   public function getMinMs()
   {
     return $this->minMs;
   }
+  /**
+   * @param string
+   */
   public function setNumIntervals($numIntervals)
   {
     $this->numIntervals = $numIntervals;
   }
+  /**
+   * @return string
+   */
   public function getNumIntervals()
   {
     return $this->numIntervals;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

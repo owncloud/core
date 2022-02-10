@@ -19,21 +19,39 @@ namespace Google\Service\Genomics;
 
 class FailedEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cause;
+  /**
+   * @var string
+   */
   public $code;
 
+  /**
+   * @param string
+   */
   public function setCause($cause)
   {
     $this->cause = $cause;
   }
+  /**
+   * @return string
+   */
   public function getCause()
   {
     return $this->cause;
   }
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;

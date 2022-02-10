@@ -20,87 +20,171 @@ namespace Google\Service\ServiceNetworking;
 class ConsumerConfig extends \Google\Collection
 {
   protected $collection_key = 'reservedRanges';
+  /**
+   * @var bool
+   */
   public $consumerExportCustomRoutes;
+  /**
+   * @var bool
+   */
   public $consumerExportSubnetRoutesWithPublicIp;
+  /**
+   * @var bool
+   */
   public $consumerImportCustomRoutes;
+  /**
+   * @var bool
+   */
   public $consumerImportSubnetRoutesWithPublicIp;
+  /**
+   * @var bool
+   */
   public $producerExportCustomRoutes;
+  /**
+   * @var bool
+   */
   public $producerExportSubnetRoutesWithPublicIp;
+  /**
+   * @var bool
+   */
   public $producerImportCustomRoutes;
+  /**
+   * @var bool
+   */
   public $producerImportSubnetRoutesWithPublicIp;
+  /**
+   * @var string
+   */
   public $producerNetwork;
   protected $reservedRangesType = GoogleCloudServicenetworkingV1ConsumerConfigReservedRange::class;
   protected $reservedRangesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $vpcScReferenceArchitectureEnabled;
 
+  /**
+   * @param bool
+   */
   public function setConsumerExportCustomRoutes($consumerExportCustomRoutes)
   {
     $this->consumerExportCustomRoutes = $consumerExportCustomRoutes;
   }
+  /**
+   * @return bool
+   */
   public function getConsumerExportCustomRoutes()
   {
     return $this->consumerExportCustomRoutes;
   }
+  /**
+   * @param bool
+   */
   public function setConsumerExportSubnetRoutesWithPublicIp($consumerExportSubnetRoutesWithPublicIp)
   {
     $this->consumerExportSubnetRoutesWithPublicIp = $consumerExportSubnetRoutesWithPublicIp;
   }
+  /**
+   * @return bool
+   */
   public function getConsumerExportSubnetRoutesWithPublicIp()
   {
     return $this->consumerExportSubnetRoutesWithPublicIp;
   }
+  /**
+   * @param bool
+   */
   public function setConsumerImportCustomRoutes($consumerImportCustomRoutes)
   {
     $this->consumerImportCustomRoutes = $consumerImportCustomRoutes;
   }
+  /**
+   * @return bool
+   */
   public function getConsumerImportCustomRoutes()
   {
     return $this->consumerImportCustomRoutes;
   }
+  /**
+   * @param bool
+   */
   public function setConsumerImportSubnetRoutesWithPublicIp($consumerImportSubnetRoutesWithPublicIp)
   {
     $this->consumerImportSubnetRoutesWithPublicIp = $consumerImportSubnetRoutesWithPublicIp;
   }
+  /**
+   * @return bool
+   */
   public function getConsumerImportSubnetRoutesWithPublicIp()
   {
     return $this->consumerImportSubnetRoutesWithPublicIp;
   }
+  /**
+   * @param bool
+   */
   public function setProducerExportCustomRoutes($producerExportCustomRoutes)
   {
     $this->producerExportCustomRoutes = $producerExportCustomRoutes;
   }
+  /**
+   * @return bool
+   */
   public function getProducerExportCustomRoutes()
   {
     return $this->producerExportCustomRoutes;
   }
+  /**
+   * @param bool
+   */
   public function setProducerExportSubnetRoutesWithPublicIp($producerExportSubnetRoutesWithPublicIp)
   {
     $this->producerExportSubnetRoutesWithPublicIp = $producerExportSubnetRoutesWithPublicIp;
   }
+  /**
+   * @return bool
+   */
   public function getProducerExportSubnetRoutesWithPublicIp()
   {
     return $this->producerExportSubnetRoutesWithPublicIp;
   }
+  /**
+   * @param bool
+   */
   public function setProducerImportCustomRoutes($producerImportCustomRoutes)
   {
     $this->producerImportCustomRoutes = $producerImportCustomRoutes;
   }
+  /**
+   * @return bool
+   */
   public function getProducerImportCustomRoutes()
   {
     return $this->producerImportCustomRoutes;
   }
+  /**
+   * @param bool
+   */
   public function setProducerImportSubnetRoutesWithPublicIp($producerImportSubnetRoutesWithPublicIp)
   {
     $this->producerImportSubnetRoutesWithPublicIp = $producerImportSubnetRoutesWithPublicIp;
   }
+  /**
+   * @return bool
+   */
   public function getProducerImportSubnetRoutesWithPublicIp()
   {
     return $this->producerImportSubnetRoutesWithPublicIp;
   }
+  /**
+   * @param string
+   */
   public function setProducerNetwork($producerNetwork)
   {
     $this->producerNetwork = $producerNetwork;
   }
+  /**
+   * @return string
+   */
   public function getProducerNetwork()
   {
     return $this->producerNetwork;
@@ -119,10 +203,16 @@ class ConsumerConfig extends \Google\Collection
   {
     return $this->reservedRanges;
   }
+  /**
+   * @param bool
+   */
   public function setVpcScReferenceArchitectureEnabled($vpcScReferenceArchitectureEnabled)
   {
     $this->vpcScReferenceArchitectureEnabled = $vpcScReferenceArchitectureEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getVpcScReferenceArchitectureEnabled()
   {
     return $this->vpcScReferenceArchitectureEnabled;

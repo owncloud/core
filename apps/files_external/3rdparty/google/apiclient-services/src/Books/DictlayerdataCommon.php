@@ -19,12 +19,21 @@ namespace Google\Service\Books;
 
 class DictlayerdataCommon extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

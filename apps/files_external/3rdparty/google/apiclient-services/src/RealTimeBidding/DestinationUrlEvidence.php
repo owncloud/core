@@ -19,12 +19,21 @@ namespace Google\Service\RealTimeBidding;
 
 class DestinationUrlEvidence extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destinationUrl;
 
+  /**
+   * @param string
+   */
   public function setDestinationUrl($destinationUrl)
   {
     $this->destinationUrl = $destinationUrl;
   }
+  /**
+   * @return string
+   */
   public function getDestinationUrl()
   {
     return $this->destinationUrl;

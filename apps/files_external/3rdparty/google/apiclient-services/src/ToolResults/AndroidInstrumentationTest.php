@@ -20,39 +20,75 @@ namespace Google\Service\ToolResults;
 class AndroidInstrumentationTest extends \Google\Collection
 {
   protected $collection_key = 'testTargets';
+  /**
+   * @var string
+   */
   public $testPackageId;
+  /**
+   * @var string
+   */
   public $testRunnerClass;
+  /**
+   * @var string[]
+   */
   public $testTargets;
+  /**
+   * @var bool
+   */
   public $useOrchestrator;
 
+  /**
+   * @param string
+   */
   public function setTestPackageId($testPackageId)
   {
     $this->testPackageId = $testPackageId;
   }
+  /**
+   * @return string
+   */
   public function getTestPackageId()
   {
     return $this->testPackageId;
   }
+  /**
+   * @param string
+   */
   public function setTestRunnerClass($testRunnerClass)
   {
     $this->testRunnerClass = $testRunnerClass;
   }
+  /**
+   * @return string
+   */
   public function getTestRunnerClass()
   {
     return $this->testRunnerClass;
   }
+  /**
+   * @param string[]
+   */
   public function setTestTargets($testTargets)
   {
     $this->testTargets = $testTargets;
   }
+  /**
+   * @return string[]
+   */
   public function getTestTargets()
   {
     return $this->testTargets;
   }
+  /**
+   * @param bool
+   */
   public function setUseOrchestrator($useOrchestrator)
   {
     $this->useOrchestrator = $useOrchestrator;
   }
+  /**
+   * @return bool
+   */
   public function getUseOrchestrator()
   {
     return $this->useOrchestrator;

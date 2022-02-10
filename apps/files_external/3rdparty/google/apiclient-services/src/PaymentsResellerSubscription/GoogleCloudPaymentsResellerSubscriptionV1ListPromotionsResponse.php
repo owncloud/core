@@ -20,14 +20,23 @@ namespace Google\Service\PaymentsResellerSubscription;
 class GoogleCloudPaymentsResellerSubscriptionV1ListPromotionsResponse extends \Google\Collection
 {
   protected $collection_key = 'promotions';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $promotionsType = GoogleCloudPaymentsResellerSubscriptionV1Promotion::class;
   protected $promotionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

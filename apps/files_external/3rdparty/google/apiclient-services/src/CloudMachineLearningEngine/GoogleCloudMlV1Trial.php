@@ -20,32 +20,65 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1Trial extends \Google\Collection
 {
   protected $collection_key = 'parameters';
+  /**
+   * @var string
+   */
   public $clientId;
+  /**
+   * @var string
+   */
   public $endTime;
   protected $finalMeasurementType = GoogleCloudMlV1Measurement::class;
   protected $finalMeasurementDataType = '';
+  /**
+   * @var string
+   */
   public $infeasibleReason;
   protected $measurementsType = GoogleCloudMlV1Measurement::class;
   protected $measurementsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $parametersType = GoogleCloudMlV1TrialParameter::class;
   protected $parametersDataType = 'array';
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var bool
+   */
   public $trialInfeasible;
 
+  /**
+   * @param string
+   */
   public function setClientId($clientId)
   {
     $this->clientId = $clientId;
   }
+  /**
+   * @return string
+   */
   public function getClientId()
   {
     return $this->clientId;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -64,10 +97,16 @@ class GoogleCloudMlV1Trial extends \Google\Collection
   {
     return $this->finalMeasurement;
   }
+  /**
+   * @param string
+   */
   public function setInfeasibleReason($infeasibleReason)
   {
     $this->infeasibleReason = $infeasibleReason;
   }
+  /**
+   * @return string
+   */
   public function getInfeasibleReason()
   {
     return $this->infeasibleReason;
@@ -86,10 +125,16 @@ class GoogleCloudMlV1Trial extends \Google\Collection
   {
     return $this->measurements;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -108,26 +153,44 @@ class GoogleCloudMlV1Trial extends \Google\Collection
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param bool
+   */
   public function setTrialInfeasible($trialInfeasible)
   {
     $this->trialInfeasible = $trialInfeasible;
   }
+  /**
+   * @return bool
+   */
   public function getTrialInfeasible()
   {
     return $this->trialInfeasible;

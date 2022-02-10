@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class InventorySourceAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $inventorySourceId;
 
+  /**
+   * @param string
+   */
   public function setInventorySourceId($inventorySourceId)
   {
     $this->inventorySourceId = $inventorySourceId;
   }
+  /**
+   * @return string
+   */
   public function getInventorySourceId()
   {
     return $this->inventorySourceId;

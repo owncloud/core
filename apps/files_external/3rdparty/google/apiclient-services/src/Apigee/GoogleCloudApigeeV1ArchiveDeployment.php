@@ -19,57 +19,111 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1ArchiveDeployment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createdAt;
+  /**
+   * @var string
+   */
   public $gcsUri;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $operation;
+  /**
+   * @var string
+   */
   public $updatedAt;
 
+  /**
+   * @param string
+   */
   public function setCreatedAt($createdAt)
   {
     $this->createdAt = $createdAt;
   }
+  /**
+   * @return string
+   */
   public function getCreatedAt()
   {
     return $this->createdAt;
   }
+  /**
+   * @param string
+   */
   public function setGcsUri($gcsUri)
   {
     $this->gcsUri = $gcsUri;
   }
+  /**
+   * @return string
+   */
   public function getGcsUri()
   {
     return $this->gcsUri;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOperation($operation)
   {
     $this->operation = $operation;
   }
+  /**
+   * @return string
+   */
   public function getOperation()
   {
     return $this->operation;
   }
+  /**
+   * @param string
+   */
   public function setUpdatedAt($updatedAt)
   {
     $this->updatedAt = $updatedAt;
   }
+  /**
+   * @return string
+   */
   public function getUpdatedAt()
   {
     return $this->updatedAt;

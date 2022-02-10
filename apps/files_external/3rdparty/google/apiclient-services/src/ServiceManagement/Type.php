@@ -22,12 +22,21 @@ class Type extends \Google\Collection
   protected $collection_key = 'options';
   protected $fieldsType = Field::class;
   protected $fieldsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $oneofs;
   protected $optionsType = Option::class;
   protected $optionsDataType = 'array';
   protected $sourceContextType = SourceContext::class;
   protected $sourceContextDataType = '';
+  /**
+   * @var string
+   */
   public $syntax;
 
   /**
@@ -44,18 +53,30 @@ class Type extends \Google\Collection
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setOneofs($oneofs)
   {
     $this->oneofs = $oneofs;
   }
+  /**
+   * @return string[]
+   */
   public function getOneofs()
   {
     return $this->oneofs;
@@ -88,10 +109,16 @@ class Type extends \Google\Collection
   {
     return $this->sourceContext;
   }
+  /**
+   * @param string
+   */
   public function setSyntax($syntax)
   {
     $this->syntax = $syntax;
   }
+  /**
+   * @return string
+   */
   public function getSyntax()
   {
     return $this->syntax;

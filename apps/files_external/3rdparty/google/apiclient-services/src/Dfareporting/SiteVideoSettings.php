@@ -21,10 +21,19 @@ class SiteVideoSettings extends \Google\Model
 {
   protected $companionSettingsType = SiteCompanionSetting::class;
   protected $companionSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $obaEnabled;
   protected $obaSettingsType = ObaIcon::class;
   protected $obaSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $orientation;
   protected $skippableSettingsType = SiteSkippableSetting::class;
   protected $skippableSettingsDataType = '';
@@ -45,18 +54,30 @@ class SiteVideoSettings extends \Google\Model
   {
     return $this->companionSettings;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setObaEnabled($obaEnabled)
   {
     $this->obaEnabled = $obaEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getObaEnabled()
   {
     return $this->obaEnabled;
@@ -75,10 +96,16 @@ class SiteVideoSettings extends \Google\Model
   {
     return $this->obaSettings;
   }
+  /**
+   * @param string
+   */
   public function setOrientation($orientation)
   {
     $this->orientation = $orientation;
   }
+  /**
+   * @return string
+   */
   public function getOrientation()
   {
     return $this->orientation;

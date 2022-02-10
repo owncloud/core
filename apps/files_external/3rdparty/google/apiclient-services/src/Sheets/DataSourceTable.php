@@ -20,22 +20,37 @@ namespace Google\Service\Sheets;
 class DataSourceTable extends \Google\Collection
 {
   protected $collection_key = 'sortSpecs';
+  /**
+   * @var string
+   */
   public $columnSelectionType;
   protected $columnsType = DataSourceColumnReference::class;
   protected $columnsDataType = 'array';
   protected $dataExecutionStatusType = DataExecutionStatus::class;
   protected $dataExecutionStatusDataType = '';
+  /**
+   * @var string
+   */
   public $dataSourceId;
   protected $filterSpecsType = FilterSpec::class;
   protected $filterSpecsDataType = 'array';
+  /**
+   * @var int
+   */
   public $rowLimit;
   protected $sortSpecsType = SortSpec::class;
   protected $sortSpecsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setColumnSelectionType($columnSelectionType)
   {
     $this->columnSelectionType = $columnSelectionType;
   }
+  /**
+   * @return string
+   */
   public function getColumnSelectionType()
   {
     return $this->columnSelectionType;
@@ -68,10 +83,16 @@ class DataSourceTable extends \Google\Collection
   {
     return $this->dataExecutionStatus;
   }
+  /**
+   * @param string
+   */
   public function setDataSourceId($dataSourceId)
   {
     $this->dataSourceId = $dataSourceId;
   }
+  /**
+   * @return string
+   */
   public function getDataSourceId()
   {
     return $this->dataSourceId;
@@ -90,10 +111,16 @@ class DataSourceTable extends \Google\Collection
   {
     return $this->filterSpecs;
   }
+  /**
+   * @param int
+   */
   public function setRowLimit($rowLimit)
   {
     $this->rowLimit = $rowLimit;
   }
+  /**
+   * @return int
+   */
   public function getRowLimit()
   {
     return $this->rowLimit;

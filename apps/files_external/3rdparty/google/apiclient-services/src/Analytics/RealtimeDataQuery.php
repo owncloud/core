@@ -23,57 +23,111 @@ class RealtimeDataQuery extends \Google\Collection
   protected $internal_gapi_mappings = [
         "maxResults" => "max-results",
   ];
+  /**
+   * @var string
+   */
   public $dimensions;
+  /**
+   * @var string
+   */
   public $filters;
+  /**
+   * @var string
+   */
   public $ids;
+  /**
+   * @var int
+   */
   public $maxResults;
+  /**
+   * @var string[]
+   */
   public $metrics;
+  /**
+   * @var string[]
+   */
   public $sort;
 
+  /**
+   * @param string
+   */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
+  /**
+   * @return string
+   */
   public function getDimensions()
   {
     return $this->dimensions;
   }
+  /**
+   * @param string
+   */
   public function setFilters($filters)
   {
     $this->filters = $filters;
   }
+  /**
+   * @return string
+   */
   public function getFilters()
   {
     return $this->filters;
   }
+  /**
+   * @param string
+   */
   public function setIds($ids)
   {
     $this->ids = $ids;
   }
+  /**
+   * @return string
+   */
   public function getIds()
   {
     return $this->ids;
   }
+  /**
+   * @param int
+   */
   public function setMaxResults($maxResults)
   {
     $this->maxResults = $maxResults;
   }
+  /**
+   * @return int
+   */
   public function getMaxResults()
   {
     return $this->maxResults;
   }
+  /**
+   * @param string[]
+   */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
+  /**
+   * @return string[]
+   */
   public function getMetrics()
   {
     return $this->metrics;
   }
+  /**
+   * @param string[]
+   */
   public function setSort($sort)
   {
     $this->sort = $sort;
   }
+  /**
+   * @return string[]
+   */
   public function getSort()
   {
     return $this->sort;

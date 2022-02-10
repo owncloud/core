@@ -20,43 +20,85 @@ namespace Google\Service\AndroidPublisher;
 class User extends \Google\Collection
 {
   protected $collection_key = 'grants';
+  /**
+   * @var string
+   */
   public $accessState;
+  /**
+   * @var string[]
+   */
   public $developerAccountPermissions;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $expirationTime;
   protected $grantsType = Grant::class;
   protected $grantsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $partial;
 
+  /**
+   * @param string
+   */
   public function setAccessState($accessState)
   {
     $this->accessState = $accessState;
   }
+  /**
+   * @return string
+   */
   public function getAccessState()
   {
     return $this->accessState;
   }
+  /**
+   * @param string[]
+   */
   public function setDeveloperAccountPermissions($developerAccountPermissions)
   {
     $this->developerAccountPermissions = $developerAccountPermissions;
   }
+  /**
+   * @return string[]
+   */
   public function getDeveloperAccountPermissions()
   {
     return $this->developerAccountPermissions;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setExpirationTime($expirationTime)
   {
     $this->expirationTime = $expirationTime;
   }
+  /**
+   * @return string
+   */
   public function getExpirationTime()
   {
     return $this->expirationTime;
@@ -75,18 +117,30 @@ class User extends \Google\Collection
   {
     return $this->grants;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setPartial($partial)
   {
     $this->partial = $partial;
   }
+  /**
+   * @return bool
+   */
   public function getPartial()
   {
     return $this->partial;

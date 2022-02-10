@@ -20,20 +20,47 @@ namespace Google\Service\SecurityCommandCenter;
 class GoogleCloudSecuritycenterV1Resource extends \Google\Collection
 {
   protected $collection_key = 'folders';
+  /**
+   * @var string
+   */
   public $displayName;
   protected $foldersType = Folder::class;
   protected $foldersDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string
+   */
   public $parentDisplayName;
+  /**
+   * @var string
+   */
   public $project;
+  /**
+   * @var string
+   */
   public $projectDisplayName;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -52,50 +79,86 @@ class GoogleCloudSecuritycenterV1Resource extends \Google\Collection
   {
     return $this->folders;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string
+   */
   public function setParentDisplayName($parentDisplayName)
   {
     $this->parentDisplayName = $parentDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getParentDisplayName()
   {
     return $this->parentDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;
   }
+  /**
+   * @param string
+   */
   public function setProjectDisplayName($projectDisplayName)
   {
     $this->projectDisplayName = $projectDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getProjectDisplayName()
   {
     return $this->projectDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

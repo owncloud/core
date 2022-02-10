@@ -20,25 +20,43 @@ namespace Google\Service\GameServices;
 class ScalingConfig extends \Google\Collection
 {
   protected $collection_key = 'selectors';
+  /**
+   * @var string
+   */
   public $fleetAutoscalerSpec;
+  /**
+   * @var string
+   */
   public $name;
   protected $schedulesType = Schedule::class;
   protected $schedulesDataType = 'array';
   protected $selectorsType = LabelSelector::class;
   protected $selectorsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setFleetAutoscalerSpec($fleetAutoscalerSpec)
   {
     $this->fleetAutoscalerSpec = $fleetAutoscalerSpec;
   }
+  /**
+   * @return string
+   */
   public function getFleetAutoscalerSpec()
   {
     return $this->fleetAutoscalerSpec;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

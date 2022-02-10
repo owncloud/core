@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class SystemUpdateInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $updateReceivedTime;
+  /**
+   * @var string
+   */
   public $updateStatus;
 
+  /**
+   * @param string
+   */
   public function setUpdateReceivedTime($updateReceivedTime)
   {
     $this->updateReceivedTime = $updateReceivedTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateReceivedTime()
   {
     return $this->updateReceivedTime;
   }
+  /**
+   * @param string
+   */
   public function setUpdateStatus($updateStatus)
   {
     $this->updateStatus = $updateStatus;
   }
+  /**
+   * @return string
+   */
   public function getUpdateStatus()
   {
     return $this->updateStatus;

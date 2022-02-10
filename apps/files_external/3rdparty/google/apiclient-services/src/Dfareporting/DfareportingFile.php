@@ -21,13 +21,37 @@ class DfareportingFile extends \Google\Model
 {
   protected $dateRangeType = DateRange::class;
   protected $dateRangeDataType = '';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $fileName;
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $lastModifiedTime;
+  /**
+   * @var string
+   */
   public $reportId;
+  /**
+   * @var string
+   */
   public $status;
   protected $urlsType = DfareportingFileUrls::class;
   protected $urlsDataType = '';
@@ -46,66 +70,114 @@ class DfareportingFile extends \Google\Model
   {
     return $this->dateRange;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setFileName($fileName)
   {
     $this->fileName = $fileName;
   }
+  /**
+   * @return string
+   */
   public function getFileName()
   {
     return $this->fileName;
   }
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedTime($lastModifiedTime)
   {
     $this->lastModifiedTime = $lastModifiedTime;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedTime()
   {
     return $this->lastModifiedTime;
   }
+  /**
+   * @param string
+   */
   public function setReportId($reportId)
   {
     $this->reportId = $reportId;
   }
+  /**
+   * @return string
+   */
   public function getReportId()
   {
     return $this->reportId;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

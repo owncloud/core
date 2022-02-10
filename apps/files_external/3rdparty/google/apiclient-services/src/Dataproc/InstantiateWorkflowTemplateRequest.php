@@ -19,30 +19,57 @@ namespace Google\Service\Dataproc;
 
 class InstantiateWorkflowTemplateRequest extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $parameters;
+  /**
+   * @var string
+   */
   public $requestId;
+  /**
+   * @var int
+   */
   public $version;
 
+  /**
+   * @param string[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return string[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;
   }
+  /**
+   * @param int
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return int
+   */
   public function getVersion()
   {
     return $this->version;

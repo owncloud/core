@@ -19,12 +19,21 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class AdWordsLocationExtensions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adPhone;
 
+  /**
+   * @param string
+   */
   public function setAdPhone($adPhone)
   {
     $this->adPhone = $adPhone;
   }
+  /**
+   * @return string
+   */
   public function getAdPhone()
   {
     return $this->adPhone;

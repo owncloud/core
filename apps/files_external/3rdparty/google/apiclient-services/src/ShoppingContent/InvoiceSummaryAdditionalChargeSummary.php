@@ -21,6 +21,9 @@ class InvoiceSummaryAdditionalChargeSummary extends \Google\Model
 {
   protected $totalAmountType = Amount::class;
   protected $totalAmountDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -37,10 +40,16 @@ class InvoiceSummaryAdditionalChargeSummary extends \Google\Model
   {
     return $this->totalAmount;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

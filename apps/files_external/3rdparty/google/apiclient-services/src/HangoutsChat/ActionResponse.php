@@ -21,7 +21,13 @@ class ActionResponse extends \Google\Model
 {
   protected $dialogActionType = DialogAction::class;
   protected $dialogActionDataType = '';
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $url;
 
   /**
@@ -38,18 +44,30 @@ class ActionResponse extends \Google\Model
   {
     return $this->dialogAction;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

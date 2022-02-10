@@ -19,21 +19,39 @@ namespace Google\Service\Recommender;
 
 class GoogleCloudRecommenderV1MarkRecommendationClaimedRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string[]
+   */
   public $stateMetadata;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string[]
+   */
   public function setStateMetadata($stateMetadata)
   {
     $this->stateMetadata = $stateMetadata;
   }
+  /**
+   * @return string[]
+   */
   public function getStateMetadata()
   {
     return $this->stateMetadata;

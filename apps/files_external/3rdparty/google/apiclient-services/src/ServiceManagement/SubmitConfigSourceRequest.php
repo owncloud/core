@@ -21,6 +21,9 @@ class SubmitConfigSourceRequest extends \Google\Model
 {
   protected $configSourceType = ConfigSource::class;
   protected $configSourceDataType = '';
+  /**
+   * @var bool
+   */
   public $validateOnly;
 
   /**
@@ -37,10 +40,16 @@ class SubmitConfigSourceRequest extends \Google\Model
   {
     return $this->configSource;
   }
+  /**
+   * @param bool
+   */
   public function setValidateOnly($validateOnly)
   {
     $this->validateOnly = $validateOnly;
   }
+  /**
+   * @return bool
+   */
   public function getValidateOnly()
   {
     return $this->validateOnly;

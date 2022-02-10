@@ -21,7 +21,13 @@ class GoogleCloudContactcenterinsightsV1PhraseMatchRule extends \Google\Model
 {
   protected $configType = GoogleCloudContactcenterinsightsV1PhraseMatchRuleConfig::class;
   protected $configDataType = '';
+  /**
+   * @var bool
+   */
   public $negated;
+  /**
+   * @var string
+   */
   public $query;
 
   /**
@@ -38,18 +44,30 @@ class GoogleCloudContactcenterinsightsV1PhraseMatchRule extends \Google\Model
   {
     return $this->config;
   }
+  /**
+   * @param bool
+   */
   public function setNegated($negated)
   {
     $this->negated = $negated;
   }
+  /**
+   * @return bool
+   */
   public function getNegated()
   {
     return $this->negated;
   }
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;

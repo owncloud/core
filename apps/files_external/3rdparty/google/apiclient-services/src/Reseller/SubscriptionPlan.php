@@ -21,7 +21,13 @@ class SubscriptionPlan extends \Google\Model
 {
   protected $commitmentIntervalType = SubscriptionPlanCommitmentInterval::class;
   protected $commitmentIntervalDataType = '';
+  /**
+   * @var bool
+   */
   public $isCommitmentPlan;
+  /**
+   * @var string
+   */
   public $planName;
 
   /**
@@ -38,18 +44,30 @@ class SubscriptionPlan extends \Google\Model
   {
     return $this->commitmentInterval;
   }
+  /**
+   * @param bool
+   */
   public function setIsCommitmentPlan($isCommitmentPlan)
   {
     $this->isCommitmentPlan = $isCommitmentPlan;
   }
+  /**
+   * @return bool
+   */
   public function getIsCommitmentPlan()
   {
     return $this->isCommitmentPlan;
   }
+  /**
+   * @param string
+   */
   public function setPlanName($planName)
   {
     $this->planName = $planName;
   }
+  /**
+   * @return string
+   */
   public function getPlanName()
   {
     return $this->planName;

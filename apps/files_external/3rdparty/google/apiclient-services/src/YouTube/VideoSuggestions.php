@@ -20,41 +20,77 @@ namespace Google\Service\YouTube;
 class VideoSuggestions extends \Google\Collection
 {
   protected $collection_key = 'tagSuggestions';
+  /**
+   * @var string[]
+   */
   public $editorSuggestions;
+  /**
+   * @var string[]
+   */
   public $processingErrors;
+  /**
+   * @var string[]
+   */
   public $processingHints;
+  /**
+   * @var string[]
+   */
   public $processingWarnings;
   protected $tagSuggestionsType = VideoSuggestionsTagSuggestion::class;
   protected $tagSuggestionsDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setEditorSuggestions($editorSuggestions)
   {
     $this->editorSuggestions = $editorSuggestions;
   }
+  /**
+   * @return string[]
+   */
   public function getEditorSuggestions()
   {
     return $this->editorSuggestions;
   }
+  /**
+   * @param string[]
+   */
   public function setProcessingErrors($processingErrors)
   {
     $this->processingErrors = $processingErrors;
   }
+  /**
+   * @return string[]
+   */
   public function getProcessingErrors()
   {
     return $this->processingErrors;
   }
+  /**
+   * @param string[]
+   */
   public function setProcessingHints($processingHints)
   {
     $this->processingHints = $processingHints;
   }
+  /**
+   * @return string[]
+   */
   public function getProcessingHints()
   {
     return $this->processingHints;
   }
+  /**
+   * @param string[]
+   */
   public function setProcessingWarnings($processingWarnings)
   {
     $this->processingWarnings = $processingWarnings;
   }
+  /**
+   * @return string[]
+   */
   public function getProcessingWarnings()
   {
     return $this->processingWarnings;

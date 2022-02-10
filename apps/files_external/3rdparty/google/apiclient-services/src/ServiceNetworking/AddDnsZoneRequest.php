@@ -19,30 +19,57 @@ namespace Google\Service\ServiceNetworking;
 
 class AddDnsZoneRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $consumerNetwork;
+  /**
+   * @var string
+   */
   public $dnsSuffix;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setConsumerNetwork($consumerNetwork)
   {
     $this->consumerNetwork = $consumerNetwork;
   }
+  /**
+   * @return string
+   */
   public function getConsumerNetwork()
   {
     return $this->consumerNetwork;
   }
+  /**
+   * @param string
+   */
   public function setDnsSuffix($dnsSuffix)
   {
     $this->dnsSuffix = $dnsSuffix;
   }
+  /**
+   * @return string
+   */
   public function getDnsSuffix()
   {
     return $this->dnsSuffix;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

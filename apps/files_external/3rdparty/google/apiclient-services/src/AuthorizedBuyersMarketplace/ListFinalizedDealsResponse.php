@@ -22,6 +22,9 @@ class ListFinalizedDealsResponse extends \Google\Collection
   protected $collection_key = 'finalizedDeals';
   protected $finalizedDealsType = FinalizedDeal::class;
   protected $finalizedDealsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListFinalizedDealsResponse extends \Google\Collection
   {
     return $this->finalizedDeals;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,57 +19,111 @@ namespace Google\Service\AndroidEnterprise;
 
 class GroupLicense extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $acquisitionKind;
+  /**
+   * @var string
+   */
   public $approval;
+  /**
+   * @var int
+   */
   public $numProvisioned;
+  /**
+   * @var int
+   */
   public $numPurchased;
+  /**
+   * @var string
+   */
   public $permissions;
+  /**
+   * @var string
+   */
   public $productId;
 
+  /**
+   * @param string
+   */
   public function setAcquisitionKind($acquisitionKind)
   {
     $this->acquisitionKind = $acquisitionKind;
   }
+  /**
+   * @return string
+   */
   public function getAcquisitionKind()
   {
     return $this->acquisitionKind;
   }
+  /**
+   * @param string
+   */
   public function setApproval($approval)
   {
     $this->approval = $approval;
   }
+  /**
+   * @return string
+   */
   public function getApproval()
   {
     return $this->approval;
   }
+  /**
+   * @param int
+   */
   public function setNumProvisioned($numProvisioned)
   {
     $this->numProvisioned = $numProvisioned;
   }
+  /**
+   * @return int
+   */
   public function getNumProvisioned()
   {
     return $this->numProvisioned;
   }
+  /**
+   * @param int
+   */
   public function setNumPurchased($numPurchased)
   {
     $this->numPurchased = $numPurchased;
   }
+  /**
+   * @return int
+   */
   public function getNumPurchased()
   {
     return $this->numPurchased;
   }
+  /**
+   * @param string
+   */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
+  /**
+   * @return string
+   */
   public function getPermissions()
   {
     return $this->permissions;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;

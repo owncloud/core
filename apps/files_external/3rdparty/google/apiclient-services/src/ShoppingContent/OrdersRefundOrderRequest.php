@@ -21,9 +21,21 @@ class OrdersRefundOrderRequest extends \Google\Model
 {
   protected $amountType = MonetaryAmount::class;
   protected $amountDataType = '';
+  /**
+   * @var bool
+   */
   public $fullRefund;
+  /**
+   * @var string
+   */
   public $operationId;
+  /**
+   * @var string
+   */
   public $reason;
+  /**
+   * @var string
+   */
   public $reasonText;
 
   /**
@@ -40,34 +52,58 @@ class OrdersRefundOrderRequest extends \Google\Model
   {
     return $this->amount;
   }
+  /**
+   * @param bool
+   */
   public function setFullRefund($fullRefund)
   {
     $this->fullRefund = $fullRefund;
   }
+  /**
+   * @return bool
+   */
   public function getFullRefund()
   {
     return $this->fullRefund;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
   }
+  /**
+   * @param string
+   */
   public function setReasonText($reasonText)
   {
     $this->reasonText = $reasonText;
   }
+  /**
+   * @return string
+   */
   public function getReasonText()
   {
     return $this->reasonText;

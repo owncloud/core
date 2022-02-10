@@ -19,21 +19,39 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1RouteMap extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $health;
+  /**
+   * @var string
+   */
   public $predict;
 
+  /**
+   * @param string
+   */
   public function setHealth($health)
   {
     $this->health = $health;
   }
+  /**
+   * @return string
+   */
   public function getHealth()
   {
     return $this->health;
   }
+  /**
+   * @param string
+   */
   public function setPredict($predict)
   {
     $this->predict = $predict;
   }
+  /**
+   * @return string
+   */
   public function getPredict()
   {
     return $this->predict;

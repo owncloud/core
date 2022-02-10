@@ -19,21 +19,39 @@ namespace Google\Service\CloudNaturalLanguage;
 
 class TextSpan extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $beginOffset;
+  /**
+   * @var string
+   */
   public $content;
 
+  /**
+   * @param int
+   */
   public function setBeginOffset($beginOffset)
   {
     $this->beginOffset = $beginOffset;
   }
+  /**
+   * @return int
+   */
   public function getBeginOffset()
   {
     return $this->beginOffset;
   }
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;

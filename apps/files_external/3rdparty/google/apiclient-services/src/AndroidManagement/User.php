@@ -19,12 +19,21 @@ namespace Google\Service\AndroidManagement;
 
 class User extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountIdentifier;
 
+  /**
+   * @param string
+   */
   public function setAccountIdentifier($accountIdentifier)
   {
     $this->accountIdentifier = $accountIdentifier;
   }
+  /**
+   * @return string
+   */
   public function getAccountIdentifier()
   {
     return $this->accountIdentifier;

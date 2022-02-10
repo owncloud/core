@@ -19,12 +19,21 @@ namespace Google\Service\CloudSearch;
 
 class DoubleOperatorOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $operatorName;
 
+  /**
+   * @param string
+   */
   public function setOperatorName($operatorName)
   {
     $this->operatorName = $operatorName;
   }
+  /**
+   * @return string
+   */
   public function getOperatorName()
   {
     return $this->operatorName;

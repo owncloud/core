@@ -21,20 +21,44 @@ class Value extends \Google\Model
 {
   protected $arrayValueType = ArrayValue::class;
   protected $arrayValueDataType = '';
+  /**
+   * @var string
+   */
   public $blobValue;
+  /**
+   * @var bool
+   */
   public $booleanValue;
   public $doubleValue;
   protected $entityValueType = Entity::class;
   protected $entityValueDataType = '';
+  /**
+   * @var bool
+   */
   public $excludeFromIndexes;
   protected $geoPointValueType = LatLng::class;
   protected $geoPointValueDataType = '';
+  /**
+   * @var string
+   */
   public $integerValue;
   protected $keyValueType = Key::class;
   protected $keyValueDataType = '';
+  /**
+   * @var int
+   */
   public $meaning;
+  /**
+   * @var string
+   */
   public $nullValue;
+  /**
+   * @var string
+   */
   public $stringValue;
+  /**
+   * @var string
+   */
   public $timestampValue;
 
   /**
@@ -51,18 +75,30 @@ class Value extends \Google\Model
   {
     return $this->arrayValue;
   }
+  /**
+   * @param string
+   */
   public function setBlobValue($blobValue)
   {
     $this->blobValue = $blobValue;
   }
+  /**
+   * @return string
+   */
   public function getBlobValue()
   {
     return $this->blobValue;
   }
+  /**
+   * @param bool
+   */
   public function setBooleanValue($booleanValue)
   {
     $this->booleanValue = $booleanValue;
   }
+  /**
+   * @return bool
+   */
   public function getBooleanValue()
   {
     return $this->booleanValue;
@@ -89,10 +125,16 @@ class Value extends \Google\Model
   {
     return $this->entityValue;
   }
+  /**
+   * @param bool
+   */
   public function setExcludeFromIndexes($excludeFromIndexes)
   {
     $this->excludeFromIndexes = $excludeFromIndexes;
   }
+  /**
+   * @return bool
+   */
   public function getExcludeFromIndexes()
   {
     return $this->excludeFromIndexes;
@@ -111,10 +153,16 @@ class Value extends \Google\Model
   {
     return $this->geoPointValue;
   }
+  /**
+   * @param string
+   */
   public function setIntegerValue($integerValue)
   {
     $this->integerValue = $integerValue;
   }
+  /**
+   * @return string
+   */
   public function getIntegerValue()
   {
     return $this->integerValue;
@@ -133,34 +181,58 @@ class Value extends \Google\Model
   {
     return $this->keyValue;
   }
+  /**
+   * @param int
+   */
   public function setMeaning($meaning)
   {
     $this->meaning = $meaning;
   }
+  /**
+   * @return int
+   */
   public function getMeaning()
   {
     return $this->meaning;
   }
+  /**
+   * @param string
+   */
   public function setNullValue($nullValue)
   {
     $this->nullValue = $nullValue;
   }
+  /**
+   * @return string
+   */
   public function getNullValue()
   {
     return $this->nullValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;
   }
+  /**
+   * @param string
+   */
   public function setTimestampValue($timestampValue)
   {
     $this->timestampValue = $timestampValue;
   }
+  /**
+   * @return string
+   */
   public function getTimestampValue()
   {
     return $this->timestampValue;

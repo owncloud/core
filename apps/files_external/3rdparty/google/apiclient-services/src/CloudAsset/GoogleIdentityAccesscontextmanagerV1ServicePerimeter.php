@@ -19,36 +19,69 @@ namespace Google\Service\CloudAsset;
 
 class GoogleIdentityAccesscontextmanagerV1ServicePerimeter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $perimeterType;
   protected $specType = GoogleIdentityAccesscontextmanagerV1ServicePerimeterConfig::class;
   protected $specDataType = '';
   protected $statusType = GoogleIdentityAccesscontextmanagerV1ServicePerimeterConfig::class;
   protected $statusDataType = '';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var bool
+   */
   public $useExplicitDryRunSpec;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPerimeterType($perimeterType)
   {
     $this->perimeterType = $perimeterType;
   }
+  /**
+   * @return string
+   */
   public function getPerimeterType()
   {
     return $this->perimeterType;
@@ -81,18 +114,30 @@ class GoogleIdentityAccesscontextmanagerV1ServicePerimeter extends \Google\Model
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param bool
+   */
   public function setUseExplicitDryRunSpec($useExplicitDryRunSpec)
   {
     $this->useExplicitDryRunSpec = $useExplicitDryRunSpec;
   }
+  /**
+   * @return bool
+   */
   public function getUseExplicitDryRunSpec()
   {
     return $this->useExplicitDryRunSpec;

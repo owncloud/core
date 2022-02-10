@@ -19,32 +19,59 @@ namespace Google\Service\ChromePolicy;
 
 class GoogleChromePolicyV1ResolveRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var string
+   */
   public $policySchemaFilter;
   protected $policyTargetKeyType = GoogleChromePolicyV1PolicyTargetKey::class;
   protected $policyTargetKeyDataType = '';
 
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param string
+   */
   public function setPolicySchemaFilter($policySchemaFilter)
   {
     $this->policySchemaFilter = $policySchemaFilter;
   }
+  /**
+   * @return string
+   */
   public function getPolicySchemaFilter()
   {
     return $this->policySchemaFilter;

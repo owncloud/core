@@ -19,39 +19,75 @@ namespace Google\Service\Appengine;
 
 class DiskUtilization extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $targetReadBytesPerSecond;
+  /**
+   * @var int
+   */
   public $targetReadOpsPerSecond;
+  /**
+   * @var int
+   */
   public $targetWriteBytesPerSecond;
+  /**
+   * @var int
+   */
   public $targetWriteOpsPerSecond;
 
+  /**
+   * @param int
+   */
   public function setTargetReadBytesPerSecond($targetReadBytesPerSecond)
   {
     $this->targetReadBytesPerSecond = $targetReadBytesPerSecond;
   }
+  /**
+   * @return int
+   */
   public function getTargetReadBytesPerSecond()
   {
     return $this->targetReadBytesPerSecond;
   }
+  /**
+   * @param int
+   */
   public function setTargetReadOpsPerSecond($targetReadOpsPerSecond)
   {
     $this->targetReadOpsPerSecond = $targetReadOpsPerSecond;
   }
+  /**
+   * @return int
+   */
   public function getTargetReadOpsPerSecond()
   {
     return $this->targetReadOpsPerSecond;
   }
+  /**
+   * @param int
+   */
   public function setTargetWriteBytesPerSecond($targetWriteBytesPerSecond)
   {
     $this->targetWriteBytesPerSecond = $targetWriteBytesPerSecond;
   }
+  /**
+   * @return int
+   */
   public function getTargetWriteBytesPerSecond()
   {
     return $this->targetWriteBytesPerSecond;
   }
+  /**
+   * @param int
+   */
   public function setTargetWriteOpsPerSecond($targetWriteOpsPerSecond)
   {
     $this->targetWriteOpsPerSecond = $targetWriteOpsPerSecond;
   }
+  /**
+   * @return int
+   */
   public function getTargetWriteOpsPerSecond()
   {
     return $this->targetWriteOpsPerSecond;

@@ -20,21 +20,39 @@ namespace Google\Service\OrgPolicyAPI;
 class GoogleCloudOrgpolicyV2PolicySpecPolicyRuleStringValues extends \Google\Collection
 {
   protected $collection_key = 'deniedValues';
+  /**
+   * @var string[]
+   */
   public $allowedValues;
+  /**
+   * @var string[]
+   */
   public $deniedValues;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedValues($allowedValues)
   {
     $this->allowedValues = $allowedValues;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedValues()
   {
     return $this->allowedValues;
   }
+  /**
+   * @param string[]
+   */
   public function setDeniedValues($deniedValues)
   {
     $this->deniedValues = $deniedValues;
   }
+  /**
+   * @return string[]
+   */
   public function getDeniedValues()
   {
     return $this->deniedValues;

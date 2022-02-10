@@ -19,27 +19,51 @@ namespace Google\Service\CloudTalentSolution;
 
 class CommuteFilter extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowImpreciseAddresses;
+  /**
+   * @var string
+   */
   public $commuteMethod;
   protected $departureTimeType = TimeOfDay::class;
   protected $departureTimeDataType = '';
+  /**
+   * @var string
+   */
   public $roadTraffic;
   protected $startCoordinatesType = LatLng::class;
   protected $startCoordinatesDataType = '';
+  /**
+   * @var string
+   */
   public $travelDuration;
 
+  /**
+   * @param bool
+   */
   public function setAllowImpreciseAddresses($allowImpreciseAddresses)
   {
     $this->allowImpreciseAddresses = $allowImpreciseAddresses;
   }
+  /**
+   * @return bool
+   */
   public function getAllowImpreciseAddresses()
   {
     return $this->allowImpreciseAddresses;
   }
+  /**
+   * @param string
+   */
   public function setCommuteMethod($commuteMethod)
   {
     $this->commuteMethod = $commuteMethod;
   }
+  /**
+   * @return string
+   */
   public function getCommuteMethod()
   {
     return $this->commuteMethod;
@@ -58,10 +82,16 @@ class CommuteFilter extends \Google\Model
   {
     return $this->departureTime;
   }
+  /**
+   * @param string
+   */
   public function setRoadTraffic($roadTraffic)
   {
     $this->roadTraffic = $roadTraffic;
   }
+  /**
+   * @return string
+   */
   public function getRoadTraffic()
   {
     return $this->roadTraffic;
@@ -80,10 +110,16 @@ class CommuteFilter extends \Google\Model
   {
     return $this->startCoordinates;
   }
+  /**
+   * @param string
+   */
   public function setTravelDuration($travelDuration)
   {
     $this->travelDuration = $travelDuration;
   }
+  /**
+   * @return string
+   */
   public function getTravelDuration()
   {
     return $this->travelDuration;

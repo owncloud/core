@@ -23,6 +23,9 @@ class GooglePrivacyDlpV2ExclusionRule extends \Google\Model
   protected $dictionaryDataType = '';
   protected $excludeInfoTypesType = GooglePrivacyDlpV2ExcludeInfoTypes::class;
   protected $excludeInfoTypesDataType = '';
+  /**
+   * @var string
+   */
   public $matchingType;
   protected $regexType = GooglePrivacyDlpV2Regex::class;
   protected $regexDataType = '';
@@ -55,10 +58,16 @@ class GooglePrivacyDlpV2ExclusionRule extends \Google\Model
   {
     return $this->excludeInfoTypes;
   }
+  /**
+   * @param string
+   */
   public function setMatchingType($matchingType)
   {
     $this->matchingType = $matchingType;
   }
+  /**
+   * @return string
+   */
   public function getMatchingType()
   {
     return $this->matchingType;

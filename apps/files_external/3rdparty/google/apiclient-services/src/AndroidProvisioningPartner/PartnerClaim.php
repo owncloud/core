@@ -19,17 +19,29 @@ namespace Google\Service\AndroidProvisioningPartner;
 
 class PartnerClaim extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customerId;
   protected $deviceIdentifierType = DeviceIdentifier::class;
   protected $deviceIdentifierDataType = '';
   protected $deviceMetadataType = DeviceMetadata::class;
   protected $deviceMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $sectionType;
 
+  /**
+   * @param string
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerId()
   {
     return $this->customerId;
@@ -62,10 +74,16 @@ class PartnerClaim extends \Google\Model
   {
     return $this->deviceMetadata;
   }
+  /**
+   * @param string
+   */
   public function setSectionType($sectionType)
   {
     $this->sectionType = $sectionType;
   }
+  /**
+   * @return string
+   */
   public function getSectionType()
   {
     return $this->sectionType;

@@ -19,17 +19,35 @@ namespace Google\Service\ShoppingContent;
 
 class OrderLineItemShippingDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deliverByDate;
   protected $methodType = OrderLineItemShippingDetailsMethod::class;
   protected $methodDataType = '';
+  /**
+   * @var string
+   */
   public $pickupPromiseInMinutes;
+  /**
+   * @var string
+   */
   public $shipByDate;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDeliverByDate($deliverByDate)
   {
     $this->deliverByDate = $deliverByDate;
   }
+  /**
+   * @return string
+   */
   public function getDeliverByDate()
   {
     return $this->deliverByDate;
@@ -48,26 +66,44 @@ class OrderLineItemShippingDetails extends \Google\Model
   {
     return $this->method;
   }
+  /**
+   * @param string
+   */
   public function setPickupPromiseInMinutes($pickupPromiseInMinutes)
   {
     $this->pickupPromiseInMinutes = $pickupPromiseInMinutes;
   }
+  /**
+   * @return string
+   */
   public function getPickupPromiseInMinutes()
   {
     return $this->pickupPromiseInMinutes;
   }
+  /**
+   * @param string
+   */
   public function setShipByDate($shipByDate)
   {
     $this->shipByDate = $shipByDate;
   }
+  /**
+   * @return string
+   */
   public function getShipByDate()
   {
     return $this->shipByDate;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

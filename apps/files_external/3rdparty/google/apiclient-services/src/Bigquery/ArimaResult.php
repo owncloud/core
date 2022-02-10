@@ -22,6 +22,9 @@ class ArimaResult extends \Google\Collection
   protected $collection_key = 'seasonalPeriods';
   protected $arimaModelInfoType = ArimaModelInfo::class;
   protected $arimaModelInfoDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $seasonalPeriods;
 
   /**
@@ -38,10 +41,16 @@ class ArimaResult extends \Google\Collection
   {
     return $this->arimaModelInfo;
   }
+  /**
+   * @param string[]
+   */
   public function setSeasonalPeriods($seasonalPeriods)
   {
     $this->seasonalPeriods = $seasonalPeriods;
   }
+  /**
+   * @return string[]
+   */
   public function getSeasonalPeriods()
   {
     return $this->seasonalPeriods;

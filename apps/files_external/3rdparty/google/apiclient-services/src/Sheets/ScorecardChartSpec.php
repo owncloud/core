@@ -19,6 +19,9 @@ namespace Google\Service\Sheets;
 
 class ScorecardChartSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $aggregateType;
   protected $baselineValueDataType = ChartData::class;
   protected $baselineValueDataDataType = '';
@@ -30,13 +33,22 @@ class ScorecardChartSpec extends \Google\Model
   protected $keyValueDataDataType = '';
   protected $keyValueFormatType = KeyValueFormat::class;
   protected $keyValueFormatDataType = '';
+  /**
+   * @var string
+   */
   public $numberFormatSource;
   public $scaleFactor;
 
+  /**
+   * @param string
+   */
   public function setAggregateType($aggregateType)
   {
     $this->aggregateType = $aggregateType;
   }
+  /**
+   * @return string
+   */
   public function getAggregateType()
   {
     return $this->aggregateType;
@@ -111,10 +123,16 @@ class ScorecardChartSpec extends \Google\Model
   {
     return $this->keyValueFormat;
   }
+  /**
+   * @param string
+   */
   public function setNumberFormatSource($numberFormatSource)
   {
     $this->numberFormatSource = $numberFormatSource;
   }
+  /**
+   * @return string
+   */
   public function getNumberFormatSource()
   {
     return $this->numberFormatSource;

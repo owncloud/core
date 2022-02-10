@@ -19,30 +19,57 @@ namespace Google\Service\CloudIAP;
 
 class ReauthSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maxAge;
+  /**
+   * @var string
+   */
   public $method;
+  /**
+   * @var string
+   */
   public $policyType;
 
+  /**
+   * @param string
+   */
   public function setMaxAge($maxAge)
   {
     $this->maxAge = $maxAge;
   }
+  /**
+   * @return string
+   */
   public function getMaxAge()
   {
     return $this->maxAge;
   }
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;
   }
+  /**
+   * @param string
+   */
   public function setPolicyType($policyType)
   {
     $this->policyType = $policyType;
   }
+  /**
+   * @return string
+   */
   public function getPolicyType()
   {
     return $this->policyType;

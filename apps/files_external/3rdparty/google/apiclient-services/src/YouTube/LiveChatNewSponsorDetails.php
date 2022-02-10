@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class LiveChatNewSponsorDetails extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isUpgrade;
+  /**
+   * @var string
+   */
   public $memberLevelName;
 
+  /**
+   * @param bool
+   */
   public function setIsUpgrade($isUpgrade)
   {
     $this->isUpgrade = $isUpgrade;
   }
+  /**
+   * @return bool
+   */
   public function getIsUpgrade()
   {
     return $this->isUpgrade;
   }
+  /**
+   * @param string
+   */
   public function setMemberLevelName($memberLevelName)
   {
     $this->memberLevelName = $memberLevelName;
   }
+  /**
+   * @return string
+   */
   public function getMemberLevelName()
   {
     return $this->memberLevelName;

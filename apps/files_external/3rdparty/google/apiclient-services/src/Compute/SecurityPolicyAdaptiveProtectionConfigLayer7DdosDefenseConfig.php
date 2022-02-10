@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enable;
+  /**
+   * @var string
+   */
   public $ruleVisibility;
 
+  /**
+   * @param bool
+   */
   public function setEnable($enable)
   {
     $this->enable = $enable;
   }
+  /**
+   * @return bool
+   */
   public function getEnable()
   {
     return $this->enable;
   }
+  /**
+   * @param string
+   */
   public function setRuleVisibility($ruleVisibility)
   {
     $this->ruleVisibility = $ruleVisibility;
   }
+  /**
+   * @return string
+   */
   public function getRuleVisibility()
   {
     return $this->ruleVisibility;

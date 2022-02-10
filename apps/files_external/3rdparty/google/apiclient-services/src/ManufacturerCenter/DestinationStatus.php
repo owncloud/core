@@ -19,21 +19,39 @@ namespace Google\Service\ManufacturerCenter;
 
 class DestinationStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destination;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setDestination($destination)
   {
     $this->destination = $destination;
   }
+  /**
+   * @return string
+   */
   public function getDestination()
   {
     return $this->destination;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

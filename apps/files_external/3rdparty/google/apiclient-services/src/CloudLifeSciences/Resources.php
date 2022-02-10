@@ -20,15 +20,27 @@ namespace Google\Service\CloudLifeSciences;
 class Resources extends \Google\Collection
 {
   protected $collection_key = 'zones';
+  /**
+   * @var string[]
+   */
   public $regions;
   protected $virtualMachineType = VirtualMachine::class;
   protected $virtualMachineDataType = '';
+  /**
+   * @var string[]
+   */
   public $zones;
 
+  /**
+   * @param string[]
+   */
   public function setRegions($regions)
   {
     $this->regions = $regions;
   }
+  /**
+   * @return string[]
+   */
   public function getRegions()
   {
     return $this->regions;
@@ -47,10 +59,16 @@ class Resources extends \Google\Collection
   {
     return $this->virtualMachine;
   }
+  /**
+   * @param string[]
+   */
   public function setZones($zones)
   {
     $this->zones = $zones;
   }
+  /**
+   * @return string[]
+   */
   public function getZones()
   {
     return $this->zones;

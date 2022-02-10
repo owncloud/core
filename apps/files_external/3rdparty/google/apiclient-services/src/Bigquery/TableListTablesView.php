@@ -19,12 +19,21 @@ namespace Google\Service\Bigquery;
 
 class TableListTablesView extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $useLegacySql;
 
+  /**
+   * @param bool
+   */
   public function setUseLegacySql($useLegacySql)
   {
     $this->useLegacySql = $useLegacySql;
   }
+  /**
+   * @return bool
+   */
   public function getUseLegacySql()
   {
     return $this->useLegacySql;

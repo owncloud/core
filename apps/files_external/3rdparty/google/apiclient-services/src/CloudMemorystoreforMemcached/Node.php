@@ -19,26 +19,53 @@ namespace Google\Service\CloudMemorystoreforMemcached;
 
 class Node extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var string
+   */
   public $nodeId;
   protected $parametersType = MemcacheParameters::class;
   protected $parametersDataType = '';
+  /**
+   * @var int
+   */
   public $port;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param string
+   */
   public function setNodeId($nodeId)
   {
     $this->nodeId = $nodeId;
   }
+  /**
+   * @return string
+   */
   public function getNodeId()
   {
     return $this->nodeId;
@@ -57,26 +84,44 @@ class Node extends \Google\Model
   {
     return $this->parameters;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

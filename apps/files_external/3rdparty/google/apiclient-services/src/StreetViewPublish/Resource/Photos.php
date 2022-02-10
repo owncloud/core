@@ -62,8 +62,8 @@ class Photos extends \Google\Service\Resource
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string languageCode The BCP-47 language code, such as "en-US" or
-   * "sr-Latn". For more information, see
+   * @opt_param string languageCode Optional. The BCP-47 language code, such as
+   * "en-US" or "sr-Latn". For more information, see
    * http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. If
    * language_code is unspecified, the user's language preference for Google
    * services is used.

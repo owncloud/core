@@ -22,6 +22,9 @@ class TargetPoolInstanceHealth extends \Google\Collection
   protected $collection_key = 'healthStatus';
   protected $healthStatusType = HealthStatus::class;
   protected $healthStatusDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -38,10 +41,16 @@ class TargetPoolInstanceHealth extends \Google\Collection
   {
     return $this->healthStatus;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

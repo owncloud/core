@@ -19,48 +19,93 @@ namespace Google\Service\CloudSupport;
 
 class Blobstore2Info extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $blobGeneration;
+  /**
+   * @var string
+   */
   public $blobId;
+  /**
+   * @var string
+   */
   public $downloadReadHandle;
+  /**
+   * @var string
+   */
   public $readToken;
+  /**
+   * @var string
+   */
   public $uploadMetadataContainer;
 
+  /**
+   * @param string
+   */
   public function setBlobGeneration($blobGeneration)
   {
     $this->blobGeneration = $blobGeneration;
   }
+  /**
+   * @return string
+   */
   public function getBlobGeneration()
   {
     return $this->blobGeneration;
   }
+  /**
+   * @param string
+   */
   public function setBlobId($blobId)
   {
     $this->blobId = $blobId;
   }
+  /**
+   * @return string
+   */
   public function getBlobId()
   {
     return $this->blobId;
   }
+  /**
+   * @param string
+   */
   public function setDownloadReadHandle($downloadReadHandle)
   {
     $this->downloadReadHandle = $downloadReadHandle;
   }
+  /**
+   * @return string
+   */
   public function getDownloadReadHandle()
   {
     return $this->downloadReadHandle;
   }
+  /**
+   * @param string
+   */
   public function setReadToken($readToken)
   {
     $this->readToken = $readToken;
   }
+  /**
+   * @return string
+   */
   public function getReadToken()
   {
     return $this->readToken;
   }
+  /**
+   * @param string
+   */
   public function setUploadMetadataContainer($uploadMetadataContainer)
   {
     $this->uploadMetadataContainer = $uploadMetadataContainer;
   }
+  /**
+   * @return string
+   */
   public function getUploadMetadataContainer()
   {
     return $this->uploadMetadataContainer;

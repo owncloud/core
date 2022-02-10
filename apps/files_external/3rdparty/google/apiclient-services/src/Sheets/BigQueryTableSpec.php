@@ -19,30 +19,57 @@ namespace Google\Service\Sheets;
 
 class BigQueryTableSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $datasetId;
+  /**
+   * @var string
+   */
   public $tableId;
+  /**
+   * @var string
+   */
   public $tableProjectId;
 
+  /**
+   * @param string
+   */
   public function setDatasetId($datasetId)
   {
     $this->datasetId = $datasetId;
   }
+  /**
+   * @return string
+   */
   public function getDatasetId()
   {
     return $this->datasetId;
   }
+  /**
+   * @param string
+   */
   public function setTableId($tableId)
   {
     $this->tableId = $tableId;
   }
+  /**
+   * @return string
+   */
   public function getTableId()
   {
     return $this->tableId;
   }
+  /**
+   * @param string
+   */
   public function setTableProjectId($tableProjectId)
   {
     $this->tableProjectId = $tableProjectId;
   }
+  /**
+   * @return string
+   */
   public function getTableProjectId()
   {
     return $this->tableProjectId;

@@ -21,14 +21,41 @@ class HttpCheck extends \Google\Model
 {
   protected $authInfoType = BasicAuthentication::class;
   protected $authInfoDataType = '';
+  /**
+   * @var string
+   */
   public $body;
+  /**
+   * @var string
+   */
   public $contentType;
+  /**
+   * @var string[]
+   */
   public $headers;
+  /**
+   * @var bool
+   */
   public $maskHeaders;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var int
+   */
   public $port;
+  /**
+   * @var string
+   */
   public $requestMethod;
+  /**
+   * @var bool
+   */
   public $useSsl;
+  /**
+   * @var bool
+   */
   public $validateSsl;
 
   /**
@@ -45,74 +72,128 @@ class HttpCheck extends \Google\Model
   {
     return $this->authInfo;
   }
+  /**
+   * @param string
+   */
   public function setBody($body)
   {
     $this->body = $body;
   }
+  /**
+   * @return string
+   */
   public function getBody()
   {
     return $this->body;
   }
+  /**
+   * @param string
+   */
   public function setContentType($contentType)
   {
     $this->contentType = $contentType;
   }
+  /**
+   * @return string
+   */
   public function getContentType()
   {
     return $this->contentType;
   }
+  /**
+   * @param string[]
+   */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
+  /**
+   * @return string[]
+   */
   public function getHeaders()
   {
     return $this->headers;
   }
+  /**
+   * @param bool
+   */
   public function setMaskHeaders($maskHeaders)
   {
     $this->maskHeaders = $maskHeaders;
   }
+  /**
+   * @return bool
+   */
   public function getMaskHeaders()
   {
     return $this->maskHeaders;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;
   }
+  /**
+   * @param string
+   */
   public function setRequestMethod($requestMethod)
   {
     $this->requestMethod = $requestMethod;
   }
+  /**
+   * @return string
+   */
   public function getRequestMethod()
   {
     return $this->requestMethod;
   }
+  /**
+   * @param bool
+   */
   public function setUseSsl($useSsl)
   {
     $this->useSsl = $useSsl;
   }
+  /**
+   * @return bool
+   */
   public function getUseSsl()
   {
     return $this->useSsl;
   }
+  /**
+   * @param bool
+   */
   public function setValidateSsl($validateSsl)
   {
     $this->validateSsl = $validateSsl;
   }
+  /**
+   * @return bool
+   */
   public function getValidateSsl()
   {
     return $this->validateSsl;

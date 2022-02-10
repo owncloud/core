@@ -19,21 +19,39 @@ namespace Google\Service\BinaryAuthorization;
 
 class Signature extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $publicKeyId;
+  /**
+   * @var string
+   */
   public $signature;
 
+  /**
+   * @param string
+   */
   public function setPublicKeyId($publicKeyId)
   {
     $this->publicKeyId = $publicKeyId;
   }
+  /**
+   * @return string
+   */
   public function getPublicKeyId()
   {
     return $this->publicKeyId;
   }
+  /**
+   * @param string
+   */
   public function setSignature($signature)
   {
     $this->signature = $signature;
   }
+  /**
+   * @return string
+   */
   public function getSignature()
   {
     return $this->signature;

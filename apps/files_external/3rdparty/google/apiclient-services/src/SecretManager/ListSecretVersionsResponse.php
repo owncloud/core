@@ -20,23 +20,41 @@ namespace Google\Service\SecretManager;
 class ListSecretVersionsResponse extends \Google\Collection
 {
   protected $collection_key = 'versions';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var int
+   */
   public $totalSize;
   protected $versionsType = SecretVersion::class;
   protected $versionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

@@ -19,12 +19,21 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2CloudStoragePath extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $path;
 
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;

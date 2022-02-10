@@ -19,13 +19,22 @@ namespace Google\Service\Compute;
 
 class HttpFaultAbort extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $httpStatus;
   public $percentage;
 
+  /**
+   * @param string
+   */
   public function setHttpStatus($httpStatus)
   {
     $this->httpStatus = $httpStatus;
   }
+  /**
+   * @return string
+   */
   public function getHttpStatus()
   {
     return $this->httpStatus;

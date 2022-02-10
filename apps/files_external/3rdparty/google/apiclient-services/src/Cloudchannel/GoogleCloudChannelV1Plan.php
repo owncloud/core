@@ -19,18 +19,33 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1Plan extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $billingAccount;
   protected $paymentCycleType = GoogleCloudChannelV1Period::class;
   protected $paymentCycleDataType = '';
+  /**
+   * @var string
+   */
   public $paymentPlan;
+  /**
+   * @var string
+   */
   public $paymentType;
   protected $trialPeriodType = GoogleCloudChannelV1Period::class;
   protected $trialPeriodDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBillingAccount($billingAccount)
   {
     $this->billingAccount = $billingAccount;
   }
+  /**
+   * @return string
+   */
   public function getBillingAccount()
   {
     return $this->billingAccount;
@@ -49,18 +64,30 @@ class GoogleCloudChannelV1Plan extends \Google\Model
   {
     return $this->paymentCycle;
   }
+  /**
+   * @param string
+   */
   public function setPaymentPlan($paymentPlan)
   {
     $this->paymentPlan = $paymentPlan;
   }
+  /**
+   * @return string
+   */
   public function getPaymentPlan()
   {
     return $this->paymentPlan;
   }
+  /**
+   * @param string
+   */
   public function setPaymentType($paymentType)
   {
     $this->paymentType = $paymentType;
   }
+  /**
+   * @return string
+   */
   public function getPaymentType()
   {
     return $this->paymentType;

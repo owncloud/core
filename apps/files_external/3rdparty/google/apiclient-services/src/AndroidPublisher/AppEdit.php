@@ -19,21 +19,39 @@ namespace Google\Service\AndroidPublisher;
 
 class AppEdit extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expiryTimeSeconds;
+  /**
+   * @var string
+   */
   public $id;
 
+  /**
+   * @param string
+   */
   public function setExpiryTimeSeconds($expiryTimeSeconds)
   {
     $this->expiryTimeSeconds = $expiryTimeSeconds;
   }
+  /**
+   * @return string
+   */
   public function getExpiryTimeSeconds()
   {
     return $this->expiryTimeSeconds;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

@@ -19,21 +19,39 @@ namespace Google\Service\Games;
 
 class AchievementUnlockResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $newlyUnlocked;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setNewlyUnlocked($newlyUnlocked)
   {
     $this->newlyUnlocked = $newlyUnlocked;
   }
+  /**
+   * @return bool
+   */
   public function getNewlyUnlocked()
   {
     return $this->newlyUnlocked;

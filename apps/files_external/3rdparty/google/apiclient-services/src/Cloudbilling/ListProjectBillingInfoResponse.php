@@ -20,14 +20,23 @@ namespace Google\Service\Cloudbilling;
 class ListProjectBillingInfoResponse extends \Google\Collection
 {
   protected $collection_key = 'projectBillingInfo';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $projectBillingInfoType = ProjectBillingInfo::class;
   protected $projectBillingInfoDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

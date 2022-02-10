@@ -20,39 +20,75 @@ namespace Google\Service\Texttospeech;
 class Voice extends \Google\Collection
 {
   protected $collection_key = 'languageCodes';
+  /**
+   * @var string[]
+   */
   public $languageCodes;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $naturalSampleRateHertz;
+  /**
+   * @var string
+   */
   public $ssmlGender;
 
+  /**
+   * @param string[]
+   */
   public function setLanguageCodes($languageCodes)
   {
     $this->languageCodes = $languageCodes;
   }
+  /**
+   * @return string[]
+   */
   public function getLanguageCodes()
   {
     return $this->languageCodes;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setNaturalSampleRateHertz($naturalSampleRateHertz)
   {
     $this->naturalSampleRateHertz = $naturalSampleRateHertz;
   }
+  /**
+   * @return int
+   */
   public function getNaturalSampleRateHertz()
   {
     return $this->naturalSampleRateHertz;
   }
+  /**
+   * @param string
+   */
   public function setSsmlGender($ssmlGender)
   {
     $this->ssmlGender = $ssmlGender;
   }
+  /**
+   * @return string
+   */
   public function getSsmlGender()
   {
     return $this->ssmlGender;

@@ -24,9 +24,15 @@ class OrderedJob extends \Google\Collection
   protected $hadoopJobDataType = '';
   protected $hiveJobType = HiveJob::class;
   protected $hiveJobDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $pigJobType = PigJob::class;
   protected $pigJobDataType = '';
+  /**
+   * @var string[]
+   */
   public $prerequisiteStepIds;
   protected $prestoJobType = PrestoJob::class;
   protected $prestoJobDataType = '';
@@ -40,6 +46,9 @@ class OrderedJob extends \Google\Collection
   protected $sparkRJobDataType = '';
   protected $sparkSqlJobType = SparkSqlJob::class;
   protected $sparkSqlJobDataType = '';
+  /**
+   * @var string
+   */
   public $stepId;
 
   /**
@@ -70,10 +79,16 @@ class OrderedJob extends \Google\Collection
   {
     return $this->hiveJob;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -92,10 +107,16 @@ class OrderedJob extends \Google\Collection
   {
     return $this->pigJob;
   }
+  /**
+   * @param string[]
+   */
   public function setPrerequisiteStepIds($prerequisiteStepIds)
   {
     $this->prerequisiteStepIds = $prerequisiteStepIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPrerequisiteStepIds()
   {
     return $this->prerequisiteStepIds;
@@ -184,10 +205,16 @@ class OrderedJob extends \Google\Collection
   {
     return $this->sparkSqlJob;
   }
+  /**
+   * @param string
+   */
   public function setStepId($stepId)
   {
     $this->stepId = $stepId;
   }
+  /**
+   * @return string
+   */
   public function getStepId()
   {
     return $this->stepId;

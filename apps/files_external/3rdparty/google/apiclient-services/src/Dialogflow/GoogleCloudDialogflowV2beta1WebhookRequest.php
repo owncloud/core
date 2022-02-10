@@ -26,7 +26,13 @@ class GoogleCloudDialogflowV2beta1WebhookRequest extends \Google\Collection
   protected $originalDetectIntentRequestDataType = '';
   protected $queryResultType = GoogleCloudDialogflowV2beta1QueryResult::class;
   protected $queryResultDataType = '';
+  /**
+   * @var string
+   */
   public $responseId;
+  /**
+   * @var string
+   */
   public $session;
 
   /**
@@ -71,18 +77,30 @@ class GoogleCloudDialogflowV2beta1WebhookRequest extends \Google\Collection
   {
     return $this->queryResult;
   }
+  /**
+   * @param string
+   */
   public function setResponseId($responseId)
   {
     $this->responseId = $responseId;
   }
+  /**
+   * @return string
+   */
   public function getResponseId()
   {
     return $this->responseId;
   }
+  /**
+   * @param string
+   */
   public function setSession($session)
   {
     $this->session = $session;
   }
+  /**
+   * @return string
+   */
   public function getSession()
   {
     return $this->session;

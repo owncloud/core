@@ -19,21 +19,39 @@ namespace Google\Service\OSConfig;
 
 class OSPolicyResourceFileRemote extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sha256Checksum;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setSha256Checksum($sha256Checksum)
   {
     $this->sha256Checksum = $sha256Checksum;
   }
+  /**
+   * @return string
+   */
   public function getSha256Checksum()
   {
     return $this->sha256Checksum;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

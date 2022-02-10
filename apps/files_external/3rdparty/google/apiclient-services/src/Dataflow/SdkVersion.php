@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class SdkVersion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sdkSupportStatus;
+  /**
+   * @var string
+   */
   public $version;
+  /**
+   * @var string
+   */
   public $versionDisplayName;
 
+  /**
+   * @param string
+   */
   public function setSdkSupportStatus($sdkSupportStatus)
   {
     $this->sdkSupportStatus = $sdkSupportStatus;
   }
+  /**
+   * @return string
+   */
   public function getSdkSupportStatus()
   {
     return $this->sdkSupportStatus;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;
   }
+  /**
+   * @param string
+   */
   public function setVersionDisplayName($versionDisplayName)
   {
     $this->versionDisplayName = $versionDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getVersionDisplayName()
   {
     return $this->versionDisplayName;

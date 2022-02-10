@@ -19,12 +19,21 @@ namespace Google\Service\IdentityToolkit;
 
 class IdentitytoolkitRelyingpartySendVerificationCodeResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sessionInfo;
 
+  /**
+   * @param string
+   */
   public function setSessionInfo($sessionInfo)
   {
     $this->sessionInfo = $sessionInfo;
   }
+  /**
+   * @return string
+   */
   public function getSessionInfo()
   {
     return $this->sessionInfo;

@@ -26,16 +26,37 @@ class GoogleCloudRecommenderV1Recommendation extends \Google\Collection
   protected $associatedInsightsDataType = 'array';
   protected $contentType = GoogleCloudRecommenderV1RecommendationContent::class;
   protected $contentDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $lastRefreshTime;
+  /**
+   * @var string
+   */
   public $name;
   protected $primaryImpactType = GoogleCloudRecommenderV1Impact::class;
   protected $primaryImpactDataType = '';
+  /**
+   * @var string
+   */
   public $priority;
+  /**
+   * @var string
+   */
   public $recommenderSubtype;
   protected $stateInfoType = GoogleCloudRecommenderV1RecommendationStateInfo::class;
   protected $stateInfoDataType = '';
+  /**
+   * @var string
+   */
   public $xorGroupId;
 
   /**
@@ -80,34 +101,58 @@ class GoogleCloudRecommenderV1Recommendation extends \Google\Collection
   {
     return $this->content;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setLastRefreshTime($lastRefreshTime)
   {
     $this->lastRefreshTime = $lastRefreshTime;
   }
+  /**
+   * @return string
+   */
   public function getLastRefreshTime()
   {
     return $this->lastRefreshTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -126,18 +171,30 @@ class GoogleCloudRecommenderV1Recommendation extends \Google\Collection
   {
     return $this->primaryImpact;
   }
+  /**
+   * @param string
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return string
+   */
   public function getPriority()
   {
     return $this->priority;
   }
+  /**
+   * @param string
+   */
   public function setRecommenderSubtype($recommenderSubtype)
   {
     $this->recommenderSubtype = $recommenderSubtype;
   }
+  /**
+   * @return string
+   */
   public function getRecommenderSubtype()
   {
     return $this->recommenderSubtype;
@@ -156,10 +213,16 @@ class GoogleCloudRecommenderV1Recommendation extends \Google\Collection
   {
     return $this->stateInfo;
   }
+  /**
+   * @param string
+   */
   public function setXorGroupId($xorGroupId)
   {
     $this->xorGroupId = $xorGroupId;
   }
+  /**
+   * @return string
+   */
   public function getXorGroupId()
   {
     return $this->xorGroupId;

@@ -20,21 +20,39 @@ namespace Google\Service\RealTimeBidding;
 class AddTargetedPublishersRequest extends \Google\Collection
 {
   protected $collection_key = 'publisherIds';
+  /**
+   * @var string[]
+   */
   public $publisherIds;
+  /**
+   * @var string
+   */
   public $targetingMode;
 
+  /**
+   * @param string[]
+   */
   public function setPublisherIds($publisherIds)
   {
     $this->publisherIds = $publisherIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPublisherIds()
   {
     return $this->publisherIds;
   }
+  /**
+   * @param string
+   */
   public function setTargetingMode($targetingMode)
   {
     $this->targetingMode = $targetingMode;
   }
+  /**
+   * @return string
+   */
   public function getTargetingMode()
   {
     return $this->targetingMode;

@@ -19,48 +19,93 @@ namespace Google\Service\AdSenseHost;
 
 class AdClient extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $arcOptIn;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $productCode;
+  /**
+   * @var bool
+   */
   public $supportsReporting;
 
+  /**
+   * @param bool
+   */
   public function setArcOptIn($arcOptIn)
   {
     $this->arcOptIn = $arcOptIn;
   }
+  /**
+   * @return bool
+   */
   public function getArcOptIn()
   {
     return $this->arcOptIn;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setProductCode($productCode)
   {
     $this->productCode = $productCode;
   }
+  /**
+   * @return string
+   */
   public function getProductCode()
   {
     return $this->productCode;
   }
+  /**
+   * @param bool
+   */
   public function setSupportsReporting($supportsReporting)
   {
     $this->supportsReporting = $supportsReporting;
   }
+  /**
+   * @return bool
+   */
   public function getSupportsReporting()
   {
     return $this->supportsReporting;

@@ -20,43 +20,85 @@ namespace Google\Service\ShoppingContent;
 class ReturnShipment extends \Google\Collection
 {
   protected $collection_key = 'shipmentTrackingInfos';
+  /**
+   * @var string
+   */
   public $creationDate;
+  /**
+   * @var string
+   */
   public $deliveryDate;
+  /**
+   * @var string
+   */
   public $returnMethodType;
+  /**
+   * @var string
+   */
   public $shipmentId;
   protected $shipmentTrackingInfosType = ShipmentTrackingInfo::class;
   protected $shipmentTrackingInfosDataType = 'array';
+  /**
+   * @var string
+   */
   public $shippingDate;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setCreationDate($creationDate)
   {
     $this->creationDate = $creationDate;
   }
+  /**
+   * @return string
+   */
   public function getCreationDate()
   {
     return $this->creationDate;
   }
+  /**
+   * @param string
+   */
   public function setDeliveryDate($deliveryDate)
   {
     $this->deliveryDate = $deliveryDate;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryDate()
   {
     return $this->deliveryDate;
   }
+  /**
+   * @param string
+   */
   public function setReturnMethodType($returnMethodType)
   {
     $this->returnMethodType = $returnMethodType;
   }
+  /**
+   * @return string
+   */
   public function getReturnMethodType()
   {
     return $this->returnMethodType;
   }
+  /**
+   * @param string
+   */
   public function setShipmentId($shipmentId)
   {
     $this->shipmentId = $shipmentId;
   }
+  /**
+   * @return string
+   */
   public function getShipmentId()
   {
     return $this->shipmentId;
@@ -75,18 +117,30 @@ class ReturnShipment extends \Google\Collection
   {
     return $this->shipmentTrackingInfos;
   }
+  /**
+   * @param string
+   */
   public function setShippingDate($shippingDate)
   {
     $this->shippingDate = $shippingDate;
   }
+  /**
+   * @return string
+   */
   public function getShippingDate()
   {
     return $this->shippingDate;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

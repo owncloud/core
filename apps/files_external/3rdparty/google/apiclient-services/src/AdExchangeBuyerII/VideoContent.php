@@ -19,21 +19,39 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class VideoContent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $videoUrl;
+  /**
+   * @var string
+   */
   public $videoVastXml;
 
+  /**
+   * @param string
+   */
   public function setVideoUrl($videoUrl)
   {
     $this->videoUrl = $videoUrl;
   }
+  /**
+   * @return string
+   */
   public function getVideoUrl()
   {
     return $this->videoUrl;
   }
+  /**
+   * @param string
+   */
   public function setVideoVastXml($videoVastXml)
   {
     $this->videoVastXml = $videoVastXml;
   }
+  /**
+   * @return string
+   */
   public function getVideoVastXml()
   {
     return $this->videoVastXml;

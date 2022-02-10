@@ -19,12 +19,21 @@ namespace Google\Service\ServiceNetworking;
 
 class DisableVpcServiceControlsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $consumerNetwork;
 
+  /**
+   * @param string
+   */
   public function setConsumerNetwork($consumerNetwork)
   {
     $this->consumerNetwork = $consumerNetwork;
   }
+  /**
+   * @return string
+   */
   public function getConsumerNetwork()
   {
     return $this->consumerNetwork;

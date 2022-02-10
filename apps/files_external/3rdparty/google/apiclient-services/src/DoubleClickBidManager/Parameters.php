@@ -22,11 +22,23 @@ class Parameters extends \Google\Collection
   protected $collection_key = 'metrics';
   protected $filtersType = FilterPair::class;
   protected $filtersDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $groupBys;
+  /**
+   * @var bool
+   */
   public $includeInviteData;
+  /**
+   * @var string[]
+   */
   public $metrics;
   protected $optionsType = Options::class;
   protected $optionsDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -43,26 +55,44 @@ class Parameters extends \Google\Collection
   {
     return $this->filters;
   }
+  /**
+   * @param string[]
+   */
   public function setGroupBys($groupBys)
   {
     $this->groupBys = $groupBys;
   }
+  /**
+   * @return string[]
+   */
   public function getGroupBys()
   {
     return $this->groupBys;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeInviteData($includeInviteData)
   {
     $this->includeInviteData = $includeInviteData;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeInviteData()
   {
     return $this->includeInviteData;
   }
+  /**
+   * @param string[]
+   */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
+  /**
+   * @return string[]
+   */
   public function getMetrics()
   {
     return $this->metrics;
@@ -81,10 +111,16 @@ class Parameters extends \Google\Collection
   {
     return $this->options;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

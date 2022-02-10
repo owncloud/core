@@ -21,6 +21,9 @@ class TransactionSelector extends \Google\Model
 {
   protected $beginType = TransactionOptions::class;
   protected $beginDataType = '';
+  /**
+   * @var string
+   */
   public $id;
   protected $singleUseType = TransactionOptions::class;
   protected $singleUseDataType = '';
@@ -39,10 +42,16 @@ class TransactionSelector extends \Google\Model
   {
     return $this->begin;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

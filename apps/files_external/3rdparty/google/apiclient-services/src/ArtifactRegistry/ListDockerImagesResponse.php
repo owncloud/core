@@ -22,6 +22,9 @@ class ListDockerImagesResponse extends \Google\Collection
   protected $collection_key = 'dockerImages';
   protected $dockerImagesType = DockerImage::class;
   protected $dockerImagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListDockerImagesResponse extends \Google\Collection
   {
     return $this->dockerImages;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

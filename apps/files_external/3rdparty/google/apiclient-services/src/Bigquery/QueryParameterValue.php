@@ -24,6 +24,9 @@ class QueryParameterValue extends \Google\Collection
   protected $arrayValuesDataType = 'array';
   protected $structValuesType = QueryParameterValue::class;
   protected $structValuesDataType = 'map';
+  /**
+   * @var string
+   */
   public $value;
 
   /**
@@ -54,10 +57,16 @@ class QueryParameterValue extends \Google\Collection
   {
     return $this->structValues;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

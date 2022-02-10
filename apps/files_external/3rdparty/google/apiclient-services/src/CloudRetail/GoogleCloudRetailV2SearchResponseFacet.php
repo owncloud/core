@@ -20,23 +20,41 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2SearchResponseFacet extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var bool
+   */
   public $dynamicFacet;
+  /**
+   * @var string
+   */
   public $key;
   protected $valuesType = GoogleCloudRetailV2SearchResponseFacetFacetValue::class;
   protected $valuesDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setDynamicFacet($dynamicFacet)
   {
     $this->dynamicFacet = $dynamicFacet;
   }
+  /**
+   * @return bool
+   */
   public function getDynamicFacet()
   {
     return $this->dynamicFacet;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;

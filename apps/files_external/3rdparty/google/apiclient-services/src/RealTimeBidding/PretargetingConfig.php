@@ -20,29 +20,77 @@ namespace Google\Service\RealTimeBidding;
 class PretargetingConfig extends \Google\Collection
 {
   protected $collection_key = 'invalidGeoIds';
+  /**
+   * @var string[]
+   */
   public $allowedUserTargetingModes;
   protected $appTargetingType = AppTargeting::class;
   protected $appTargetingDataType = '';
+  /**
+   * @var string
+   */
   public $billingId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string[]
+   */
   public $excludedContentLabelIds;
   protected $geoTargetingType = NumericTargetingDimension::class;
   protected $geoTargetingDataType = '';
   protected $includedCreativeDimensionsType = CreativeDimensions::class;
   protected $includedCreativeDimensionsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $includedEnvironments;
+  /**
+   * @var string[]
+   */
   public $includedFormats;
+  /**
+   * @var string[]
+   */
   public $includedLanguages;
+  /**
+   * @var string[]
+   */
   public $includedMobileOperatingSystemIds;
+  /**
+   * @var string[]
+   */
   public $includedPlatforms;
+  /**
+   * @var string[]
+   */
   public $includedUserIdTypes;
+  /**
+   * @var string
+   */
   public $interstitialTargeting;
+  /**
+   * @var string[]
+   */
   public $invalidGeoIds;
+  /**
+   * @var string
+   */
   public $maximumQps;
+  /**
+   * @var int
+   */
   public $minimumViewabilityDecile;
+  /**
+   * @var string
+   */
   public $name;
   protected $publisherTargetingType = StringTargetingDimension::class;
   protected $publisherTargetingDataType = '';
+  /**
+   * @var string
+   */
   public $state;
   protected $userListTargetingType = NumericTargetingDimension::class;
   protected $userListTargetingDataType = '';
@@ -51,10 +99,16 @@ class PretargetingConfig extends \Google\Collection
   protected $webTargetingType = StringTargetingDimension::class;
   protected $webTargetingDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setAllowedUserTargetingModes($allowedUserTargetingModes)
   {
     $this->allowedUserTargetingModes = $allowedUserTargetingModes;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedUserTargetingModes()
   {
     return $this->allowedUserTargetingModes;
@@ -73,26 +127,44 @@ class PretargetingConfig extends \Google\Collection
   {
     return $this->appTargeting;
   }
+  /**
+   * @param string
+   */
   public function setBillingId($billingId)
   {
     $this->billingId = $billingId;
   }
+  /**
+   * @return string
+   */
   public function getBillingId()
   {
     return $this->billingId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string[]
+   */
   public function setExcludedContentLabelIds($excludedContentLabelIds)
   {
     $this->excludedContentLabelIds = $excludedContentLabelIds;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludedContentLabelIds()
   {
     return $this->excludedContentLabelIds;
@@ -125,90 +197,156 @@ class PretargetingConfig extends \Google\Collection
   {
     return $this->includedCreativeDimensions;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludedEnvironments($includedEnvironments)
   {
     $this->includedEnvironments = $includedEnvironments;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludedEnvironments()
   {
     return $this->includedEnvironments;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludedFormats($includedFormats)
   {
     $this->includedFormats = $includedFormats;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludedFormats()
   {
     return $this->includedFormats;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludedLanguages($includedLanguages)
   {
     $this->includedLanguages = $includedLanguages;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludedLanguages()
   {
     return $this->includedLanguages;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludedMobileOperatingSystemIds($includedMobileOperatingSystemIds)
   {
     $this->includedMobileOperatingSystemIds = $includedMobileOperatingSystemIds;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludedMobileOperatingSystemIds()
   {
     return $this->includedMobileOperatingSystemIds;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludedPlatforms($includedPlatforms)
   {
     $this->includedPlatforms = $includedPlatforms;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludedPlatforms()
   {
     return $this->includedPlatforms;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludedUserIdTypes($includedUserIdTypes)
   {
     $this->includedUserIdTypes = $includedUserIdTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludedUserIdTypes()
   {
     return $this->includedUserIdTypes;
   }
+  /**
+   * @param string
+   */
   public function setInterstitialTargeting($interstitialTargeting)
   {
     $this->interstitialTargeting = $interstitialTargeting;
   }
+  /**
+   * @return string
+   */
   public function getInterstitialTargeting()
   {
     return $this->interstitialTargeting;
   }
+  /**
+   * @param string[]
+   */
   public function setInvalidGeoIds($invalidGeoIds)
   {
     $this->invalidGeoIds = $invalidGeoIds;
   }
+  /**
+   * @return string[]
+   */
   public function getInvalidGeoIds()
   {
     return $this->invalidGeoIds;
   }
+  /**
+   * @param string
+   */
   public function setMaximumQps($maximumQps)
   {
     $this->maximumQps = $maximumQps;
   }
+  /**
+   * @return string
+   */
   public function getMaximumQps()
   {
     return $this->maximumQps;
   }
+  /**
+   * @param int
+   */
   public function setMinimumViewabilityDecile($minimumViewabilityDecile)
   {
     $this->minimumViewabilityDecile = $minimumViewabilityDecile;
   }
+  /**
+   * @return int
+   */
   public function getMinimumViewabilityDecile()
   {
     return $this->minimumViewabilityDecile;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -227,10 +365,16 @@ class PretargetingConfig extends \Google\Collection
   {
     return $this->publisherTargeting;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

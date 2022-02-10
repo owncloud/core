@@ -20,21 +20,39 @@ namespace Google\Service\MyBusinessBusinessInformation;
 class RepeatedEnumAttributeValue extends \Google\Collection
 {
   protected $collection_key = 'unsetValues';
+  /**
+   * @var string[]
+   */
   public $setValues;
+  /**
+   * @var string[]
+   */
   public $unsetValues;
 
+  /**
+   * @param string[]
+   */
   public function setSetValues($setValues)
   {
     $this->setValues = $setValues;
   }
+  /**
+   * @return string[]
+   */
   public function getSetValues()
   {
     return $this->setValues;
   }
+  /**
+   * @param string[]
+   */
   public function setUnsetValues($unsetValues)
   {
     $this->unsetValues = $unsetValues;
   }
+  /**
+   * @return string[]
+   */
   public function getUnsetValues()
   {
     return $this->unsetValues;

@@ -19,48 +19,93 @@ namespace Google\Service\OSConfig;
 
 class GoogleCloudOsconfigV1OSPolicyAssignmentOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiMethod;
+  /**
+   * @var string
+   */
   public $osPolicyAssignment;
+  /**
+   * @var string
+   */
   public $rolloutStartTime;
+  /**
+   * @var string
+   */
   public $rolloutState;
+  /**
+   * @var string
+   */
   public $rolloutUpdateTime;
 
+  /**
+   * @param string
+   */
   public function setApiMethod($apiMethod)
   {
     $this->apiMethod = $apiMethod;
   }
+  /**
+   * @return string
+   */
   public function getApiMethod()
   {
     return $this->apiMethod;
   }
+  /**
+   * @param string
+   */
   public function setOsPolicyAssignment($osPolicyAssignment)
   {
     $this->osPolicyAssignment = $osPolicyAssignment;
   }
+  /**
+   * @return string
+   */
   public function getOsPolicyAssignment()
   {
     return $this->osPolicyAssignment;
   }
+  /**
+   * @param string
+   */
   public function setRolloutStartTime($rolloutStartTime)
   {
     $this->rolloutStartTime = $rolloutStartTime;
   }
+  /**
+   * @return string
+   */
   public function getRolloutStartTime()
   {
     return $this->rolloutStartTime;
   }
+  /**
+   * @param string
+   */
   public function setRolloutState($rolloutState)
   {
     $this->rolloutState = $rolloutState;
   }
+  /**
+   * @return string
+   */
   public function getRolloutState()
   {
     return $this->rolloutState;
   }
+  /**
+   * @param string
+   */
   public function setRolloutUpdateTime($rolloutUpdateTime)
   {
     $this->rolloutUpdateTime = $rolloutUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getRolloutUpdateTime()
   {
     return $this->rolloutUpdateTime;

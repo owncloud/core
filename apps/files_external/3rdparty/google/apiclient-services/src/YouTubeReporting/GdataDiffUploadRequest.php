@@ -23,6 +23,9 @@ class GdataDiffUploadRequest extends \Google\Model
   protected $checksumsInfoDataType = '';
   protected $objectInfoType = GdataCompositeMedia::class;
   protected $objectInfoDataType = '';
+  /**
+   * @var string
+   */
   public $objectVersion;
 
   /**
@@ -53,10 +56,16 @@ class GdataDiffUploadRequest extends \Google\Model
   {
     return $this->objectInfo;
   }
+  /**
+   * @param string
+   */
   public function setObjectVersion($objectVersion)
   {
     $this->objectVersion = $objectVersion;
   }
+  /**
+   * @return string
+   */
   public function getObjectVersion()
   {
     return $this->objectVersion;

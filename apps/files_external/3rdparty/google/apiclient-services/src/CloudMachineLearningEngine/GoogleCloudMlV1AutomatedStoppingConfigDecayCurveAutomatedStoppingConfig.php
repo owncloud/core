@@ -19,12 +19,21 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1AutomatedStoppingConfigDecayCurveAutomatedStoppingConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $useElapsedTime;
 
+  /**
+   * @param bool
+   */
   public function setUseElapsedTime($useElapsedTime)
   {
     $this->useElapsedTime = $useElapsedTime;
   }
+  /**
+   * @return bool
+   */
   public function getUseElapsedTime()
   {
     return $this->useElapsedTime;

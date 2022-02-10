@@ -20,21 +20,39 @@ namespace Google\Service\AdExchangeBuyerII;
 class UrlTargeting extends \Google\Collection
 {
   protected $collection_key = 'targetedUrls';
+  /**
+   * @var string[]
+   */
   public $excludedUrls;
+  /**
+   * @var string[]
+   */
   public $targetedUrls;
 
+  /**
+   * @param string[]
+   */
   public function setExcludedUrls($excludedUrls)
   {
     $this->excludedUrls = $excludedUrls;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludedUrls()
   {
     return $this->excludedUrls;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetedUrls($targetedUrls)
   {
     $this->targetedUrls = $targetedUrls;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetedUrls()
   {
     return $this->targetedUrls;

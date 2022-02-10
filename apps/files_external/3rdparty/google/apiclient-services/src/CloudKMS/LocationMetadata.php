@@ -19,21 +19,39 @@ namespace Google\Service\CloudKMS;
 
 class LocationMetadata extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $ekmAvailable;
+  /**
+   * @var bool
+   */
   public $hsmAvailable;
 
+  /**
+   * @param bool
+   */
   public function setEkmAvailable($ekmAvailable)
   {
     $this->ekmAvailable = $ekmAvailable;
   }
+  /**
+   * @return bool
+   */
   public function getEkmAvailable()
   {
     return $this->ekmAvailable;
   }
+  /**
+   * @param bool
+   */
   public function setHsmAvailable($hsmAvailable)
   {
     $this->hsmAvailable = $hsmAvailable;
   }
+  /**
+   * @return bool
+   */
   public function getHsmAvailable()
   {
     return $this->hsmAvailable;

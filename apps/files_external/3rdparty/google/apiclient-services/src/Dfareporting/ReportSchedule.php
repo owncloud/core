@@ -20,66 +20,129 @@ namespace Google\Service\Dfareporting;
 class ReportSchedule extends \Google\Collection
 {
   protected $collection_key = 'repeatsOnWeekDays';
+  /**
+   * @var bool
+   */
   public $active;
+  /**
+   * @var int
+   */
   public $every;
+  /**
+   * @var string
+   */
   public $expirationDate;
+  /**
+   * @var string
+   */
   public $repeats;
+  /**
+   * @var string[]
+   */
   public $repeatsOnWeekDays;
+  /**
+   * @var string
+   */
   public $runsOnDayOfMonth;
+  /**
+   * @var string
+   */
   public $startDate;
 
+  /**
+   * @param bool
+   */
   public function setActive($active)
   {
     $this->active = $active;
   }
+  /**
+   * @return bool
+   */
   public function getActive()
   {
     return $this->active;
   }
+  /**
+   * @param int
+   */
   public function setEvery($every)
   {
     $this->every = $every;
   }
+  /**
+   * @return int
+   */
   public function getEvery()
   {
     return $this->every;
   }
+  /**
+   * @param string
+   */
   public function setExpirationDate($expirationDate)
   {
     $this->expirationDate = $expirationDate;
   }
+  /**
+   * @return string
+   */
   public function getExpirationDate()
   {
     return $this->expirationDate;
   }
+  /**
+   * @param string
+   */
   public function setRepeats($repeats)
   {
     $this->repeats = $repeats;
   }
+  /**
+   * @return string
+   */
   public function getRepeats()
   {
     return $this->repeats;
   }
+  /**
+   * @param string[]
+   */
   public function setRepeatsOnWeekDays($repeatsOnWeekDays)
   {
     $this->repeatsOnWeekDays = $repeatsOnWeekDays;
   }
+  /**
+   * @return string[]
+   */
   public function getRepeatsOnWeekDays()
   {
     return $this->repeatsOnWeekDays;
   }
+  /**
+   * @param string
+   */
   public function setRunsOnDayOfMonth($runsOnDayOfMonth)
   {
     $this->runsOnDayOfMonth = $runsOnDayOfMonth;
   }
+  /**
+   * @return string
+   */
   public function getRunsOnDayOfMonth()
   {
     return $this->runsOnDayOfMonth;
   }
+  /**
+   * @param string
+   */
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
   }
+  /**
+   * @return string
+   */
   public function getStartDate()
   {
     return $this->startDate;

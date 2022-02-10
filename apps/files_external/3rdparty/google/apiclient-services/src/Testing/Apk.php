@@ -21,6 +21,9 @@ class Apk extends \Google\Model
 {
   protected $locationType = FileReference::class;
   protected $locationDataType = '';
+  /**
+   * @var string
+   */
   public $packageName;
 
   /**
@@ -37,10 +40,16 @@ class Apk extends \Google\Model
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;

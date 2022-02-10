@@ -20,23 +20,41 @@ namespace Google\Service\Dataflow;
 class StructuredMessage extends \Google\Collection
 {
   protected $collection_key = 'parameters';
+  /**
+   * @var string
+   */
   public $messageKey;
+  /**
+   * @var string
+   */
   public $messageText;
   protected $parametersType = Parameter::class;
   protected $parametersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setMessageKey($messageKey)
   {
     $this->messageKey = $messageKey;
   }
+  /**
+   * @return string
+   */
   public function getMessageKey()
   {
     return $this->messageKey;
   }
+  /**
+   * @param string
+   */
   public function setMessageText($messageText)
   {
     $this->messageText = $messageText;
   }
+  /**
+   * @return string
+   */
   public function getMessageText()
   {
     return $this->messageText;

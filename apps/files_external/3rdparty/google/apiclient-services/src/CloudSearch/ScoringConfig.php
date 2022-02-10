@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class ScoringConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $disableFreshness;
+  /**
+   * @var bool
+   */
   public $disablePersonalization;
 
+  /**
+   * @param bool
+   */
   public function setDisableFreshness($disableFreshness)
   {
     $this->disableFreshness = $disableFreshness;
   }
+  /**
+   * @return bool
+   */
   public function getDisableFreshness()
   {
     return $this->disableFreshness;
   }
+  /**
+   * @param bool
+   */
   public function setDisablePersonalization($disablePersonalization)
   {
     $this->disablePersonalization = $disablePersonalization;
   }
+  /**
+   * @return bool
+   */
   public function getDisablePersonalization()
   {
     return $this->disablePersonalization;

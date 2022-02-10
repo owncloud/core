@@ -19,24 +19,51 @@ namespace Google\Service\YouTube;
 
 class VideoContentDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $caption;
   protected $contentRatingType = ContentRating::class;
   protected $contentRatingDataType = '';
   protected $countryRestrictionType = AccessPolicy::class;
   protected $countryRestrictionDataType = '';
+  /**
+   * @var string
+   */
   public $definition;
+  /**
+   * @var string
+   */
   public $dimension;
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var bool
+   */
   public $hasCustomThumbnail;
+  /**
+   * @var bool
+   */
   public $licensedContent;
+  /**
+   * @var string
+   */
   public $projection;
   protected $regionRestrictionType = VideoContentDetailsRegionRestriction::class;
   protected $regionRestrictionDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCaption($caption)
   {
     $this->caption = $caption;
   }
+  /**
+   * @return string
+   */
   public function getCaption()
   {
     return $this->caption;
@@ -69,50 +96,86 @@ class VideoContentDetails extends \Google\Model
   {
     return $this->countryRestriction;
   }
+  /**
+   * @param string
+   */
   public function setDefinition($definition)
   {
     $this->definition = $definition;
   }
+  /**
+   * @return string
+   */
   public function getDefinition()
   {
     return $this->definition;
   }
+  /**
+   * @param string
+   */
   public function setDimension($dimension)
   {
     $this->dimension = $dimension;
   }
+  /**
+   * @return string
+   */
   public function getDimension()
   {
     return $this->dimension;
   }
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param bool
+   */
   public function setHasCustomThumbnail($hasCustomThumbnail)
   {
     $this->hasCustomThumbnail = $hasCustomThumbnail;
   }
+  /**
+   * @return bool
+   */
   public function getHasCustomThumbnail()
   {
     return $this->hasCustomThumbnail;
   }
+  /**
+   * @param bool
+   */
   public function setLicensedContent($licensedContent)
   {
     $this->licensedContent = $licensedContent;
   }
+  /**
+   * @return bool
+   */
   public function getLicensedContent()
   {
     return $this->licensedContent;
   }
+  /**
+   * @param string
+   */
   public function setProjection($projection)
   {
     $this->projection = $projection;
   }
+  /**
+   * @return string
+   */
   public function getProjection()
   {
     return $this->projection;

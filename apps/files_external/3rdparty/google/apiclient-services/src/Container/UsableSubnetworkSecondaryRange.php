@@ -19,30 +19,57 @@ namespace Google\Service\Container;
 
 class UsableSubnetworkSecondaryRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipCidrRange;
+  /**
+   * @var string
+   */
   public $rangeName;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setIpCidrRange($ipCidrRange)
   {
     $this->ipCidrRange = $ipCidrRange;
   }
+  /**
+   * @return string
+   */
   public function getIpCidrRange()
   {
     return $this->ipCidrRange;
   }
+  /**
+   * @param string
+   */
   public function setRangeName($rangeName)
   {
     $this->rangeName = $rangeName;
   }
+  /**
+   * @return string
+   */
   public function getRangeName()
   {
     return $this->rangeName;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

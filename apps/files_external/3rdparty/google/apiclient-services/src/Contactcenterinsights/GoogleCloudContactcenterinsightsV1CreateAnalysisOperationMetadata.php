@@ -19,30 +19,57 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1CreateAnalysisOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $conversation;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $endTime;
 
+  /**
+   * @param string
+   */
   public function setConversation($conversation)
   {
     $this->conversation = $conversation;
   }
+  /**
+   * @return string
+   */
   public function getConversation()
   {
     return $this->conversation;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;

@@ -35,7 +35,13 @@ class GoogleCloudDialogflowV2IntentMessage extends \Google\Model
   protected $listSelectDataType = '';
   protected $mediaContentType = GoogleCloudDialogflowV2IntentMessageMediaContent::class;
   protected $mediaContentDataType = '';
+  /**
+   * @var array[]
+   */
   public $payload;
+  /**
+   * @var string
+   */
   public $platform;
   protected $quickRepliesType = GoogleCloudDialogflowV2IntentMessageQuickReplies::class;
   protected $quickRepliesDataType = '';
@@ -160,18 +166,30 @@ class GoogleCloudDialogflowV2IntentMessage extends \Google\Model
   {
     return $this->mediaContent;
   }
+  /**
+   * @param array[]
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return array[]
+   */
   public function getPayload()
   {
     return $this->payload;
   }
+  /**
+   * @param string
+   */
   public function setPlatform($platform)
   {
     $this->platform = $platform;
   }
+  /**
+   * @return string
+   */
   public function getPlatform()
   {
     return $this->platform;

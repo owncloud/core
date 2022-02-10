@@ -19,30 +19,57 @@ namespace Google\Service\Classroom;
 
 class Name extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $familyName;
+  /**
+   * @var string
+   */
   public $fullName;
+  /**
+   * @var string
+   */
   public $givenName;
 
+  /**
+   * @param string
+   */
   public function setFamilyName($familyName)
   {
     $this->familyName = $familyName;
   }
+  /**
+   * @return string
+   */
   public function getFamilyName()
   {
     return $this->familyName;
   }
+  /**
+   * @param string
+   */
   public function setFullName($fullName)
   {
     $this->fullName = $fullName;
   }
+  /**
+   * @return string
+   */
   public function getFullName()
   {
     return $this->fullName;
   }
+  /**
+   * @param string
+   */
   public function setGivenName($givenName)
   {
     $this->givenName = $givenName;
   }
+  /**
+   * @return string
+   */
   public function getGivenName()
   {
     return $this->givenName;

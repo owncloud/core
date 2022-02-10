@@ -19,17 +19,29 @@ namespace Google\Service\ShoppingContent;
 
 class ProductsCustomBatchResponseEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $batchId;
   protected $errorsType = Errors::class;
   protected $errorsDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $productType = Product::class;
   protected $productDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBatchId($batchId)
   {
     $this->batchId = $batchId;
   }
+  /**
+   * @return string
+   */
   public function getBatchId()
   {
     return $this->batchId;
@@ -48,10 +60,16 @@ class ProductsCustomBatchResponseEntry extends \Google\Model
   {
     return $this->errors;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

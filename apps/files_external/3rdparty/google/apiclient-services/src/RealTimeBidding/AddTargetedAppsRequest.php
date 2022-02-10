@@ -20,21 +20,39 @@ namespace Google\Service\RealTimeBidding;
 class AddTargetedAppsRequest extends \Google\Collection
 {
   protected $collection_key = 'appIds';
+  /**
+   * @var string[]
+   */
   public $appIds;
+  /**
+   * @var string
+   */
   public $targetingMode;
 
+  /**
+   * @param string[]
+   */
   public function setAppIds($appIds)
   {
     $this->appIds = $appIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAppIds()
   {
     return $this->appIds;
   }
+  /**
+   * @param string
+   */
   public function setTargetingMode($targetingMode)
   {
     $this->targetingMode = $targetingMode;
   }
+  /**
+   * @return string
+   */
   public function getTargetingMode()
   {
     return $this->targetingMode;

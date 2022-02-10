@@ -20,68 +20,131 @@ namespace Google\Service\Fitness;
 class DataPoint extends \Google\Collection
 {
   protected $collection_key = 'value';
+  /**
+   * @var string
+   */
   public $computationTimeMillis;
+  /**
+   * @var string
+   */
   public $dataTypeName;
+  /**
+   * @var string
+   */
   public $endTimeNanos;
+  /**
+   * @var string
+   */
   public $modifiedTimeMillis;
+  /**
+   * @var string
+   */
   public $originDataSourceId;
+  /**
+   * @var string
+   */
   public $rawTimestampNanos;
+  /**
+   * @var string
+   */
   public $startTimeNanos;
   protected $valueType = Value::class;
   protected $valueDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setComputationTimeMillis($computationTimeMillis)
   {
     $this->computationTimeMillis = $computationTimeMillis;
   }
+  /**
+   * @return string
+   */
   public function getComputationTimeMillis()
   {
     return $this->computationTimeMillis;
   }
+  /**
+   * @param string
+   */
   public function setDataTypeName($dataTypeName)
   {
     $this->dataTypeName = $dataTypeName;
   }
+  /**
+   * @return string
+   */
   public function getDataTypeName()
   {
     return $this->dataTypeName;
   }
+  /**
+   * @param string
+   */
   public function setEndTimeNanos($endTimeNanos)
   {
     $this->endTimeNanos = $endTimeNanos;
   }
+  /**
+   * @return string
+   */
   public function getEndTimeNanos()
   {
     return $this->endTimeNanos;
   }
+  /**
+   * @param string
+   */
   public function setModifiedTimeMillis($modifiedTimeMillis)
   {
     $this->modifiedTimeMillis = $modifiedTimeMillis;
   }
+  /**
+   * @return string
+   */
   public function getModifiedTimeMillis()
   {
     return $this->modifiedTimeMillis;
   }
+  /**
+   * @param string
+   */
   public function setOriginDataSourceId($originDataSourceId)
   {
     $this->originDataSourceId = $originDataSourceId;
   }
+  /**
+   * @return string
+   */
   public function getOriginDataSourceId()
   {
     return $this->originDataSourceId;
   }
+  /**
+   * @param string
+   */
   public function setRawTimestampNanos($rawTimestampNanos)
   {
     $this->rawTimestampNanos = $rawTimestampNanos;
   }
+  /**
+   * @return string
+   */
   public function getRawTimestampNanos()
   {
     return $this->rawTimestampNanos;
   }
+  /**
+   * @param string
+   */
   public function setStartTimeNanos($startTimeNanos)
   {
     $this->startTimeNanos = $startTimeNanos;
   }
+  /**
+   * @return string
+   */
   public function getStartTimeNanos()
   {
     return $this->startTimeNanos;

@@ -20,35 +20,71 @@ namespace Google\Service\Dataflow;
 class StreamingConfigTask extends \Google\Collection
 {
   protected $collection_key = 'streamingComputationConfigs';
+  /**
+   * @var string
+   */
   public $commitStreamChunkSizeBytes;
+  /**
+   * @var string
+   */
   public $getDataStreamChunkSizeBytes;
+  /**
+   * @var string
+   */
   public $maxWorkItemCommitBytes;
   protected $streamingComputationConfigsType = StreamingComputationConfig::class;
   protected $streamingComputationConfigsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $userStepToStateFamilyNameMap;
+  /**
+   * @var string
+   */
   public $windmillServiceEndpoint;
+  /**
+   * @var string
+   */
   public $windmillServicePort;
 
+  /**
+   * @param string
+   */
   public function setCommitStreamChunkSizeBytes($commitStreamChunkSizeBytes)
   {
     $this->commitStreamChunkSizeBytes = $commitStreamChunkSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getCommitStreamChunkSizeBytes()
   {
     return $this->commitStreamChunkSizeBytes;
   }
+  /**
+   * @param string
+   */
   public function setGetDataStreamChunkSizeBytes($getDataStreamChunkSizeBytes)
   {
     $this->getDataStreamChunkSizeBytes = $getDataStreamChunkSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getGetDataStreamChunkSizeBytes()
   {
     return $this->getDataStreamChunkSizeBytes;
   }
+  /**
+   * @param string
+   */
   public function setMaxWorkItemCommitBytes($maxWorkItemCommitBytes)
   {
     $this->maxWorkItemCommitBytes = $maxWorkItemCommitBytes;
   }
+  /**
+   * @return string
+   */
   public function getMaxWorkItemCommitBytes()
   {
     return $this->maxWorkItemCommitBytes;
@@ -67,26 +103,44 @@ class StreamingConfigTask extends \Google\Collection
   {
     return $this->streamingComputationConfigs;
   }
+  /**
+   * @param string[]
+   */
   public function setUserStepToStateFamilyNameMap($userStepToStateFamilyNameMap)
   {
     $this->userStepToStateFamilyNameMap = $userStepToStateFamilyNameMap;
   }
+  /**
+   * @return string[]
+   */
   public function getUserStepToStateFamilyNameMap()
   {
     return $this->userStepToStateFamilyNameMap;
   }
+  /**
+   * @param string
+   */
   public function setWindmillServiceEndpoint($windmillServiceEndpoint)
   {
     $this->windmillServiceEndpoint = $windmillServiceEndpoint;
   }
+  /**
+   * @return string
+   */
   public function getWindmillServiceEndpoint()
   {
     return $this->windmillServiceEndpoint;
   }
+  /**
+   * @param string
+   */
   public function setWindmillServicePort($windmillServicePort)
   {
     $this->windmillServicePort = $windmillServicePort;
   }
+  /**
+   * @return string
+   */
   public function getWindmillServicePort()
   {
     return $this->windmillServicePort;

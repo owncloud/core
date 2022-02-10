@@ -22,7 +22,13 @@ class ReportRequestFilters extends \Google\Collection
   protected $collection_key = 'values';
   protected $columnType = ReportApiColumnSpec::class;
   protected $columnDataType = '';
+  /**
+   * @var string
+   */
   public $operator;
+  /**
+   * @var array[]
+   */
   public $values;
 
   /**
@@ -39,18 +45,30 @@ class ReportRequestFilters extends \Google\Collection
   {
     return $this->column;
   }
+  /**
+   * @param string
+   */
   public function setOperator($operator)
   {
     $this->operator = $operator;
   }
+  /**
+   * @return string
+   */
   public function getOperator()
   {
     return $this->operator;
   }
+  /**
+   * @param array[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return array[]
+   */
   public function getValues()
   {
     return $this->values;

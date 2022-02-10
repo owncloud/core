@@ -19,21 +19,39 @@ namespace Google\Service\CloudBuild;
 
 class WorkerConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $diskSizeGb;
+  /**
+   * @var string
+   */
   public $machineType;
 
+  /**
+   * @param string
+   */
   public function setDiskSizeGb($diskSizeGb)
   {
     $this->diskSizeGb = $diskSizeGb;
   }
+  /**
+   * @return string
+   */
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setMachineType($machineType)
   {
     $this->machineType = $machineType;
   }
+  /**
+   * @return string
+   */
   public function getMachineType()
   {
     return $this->machineType;

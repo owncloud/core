@@ -19,21 +19,39 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2PartitionId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $namespaceId;
+  /**
+   * @var string
+   */
   public $projectId;
 
+  /**
+   * @param string
+   */
   public function setNamespaceId($namespaceId)
   {
     $this->namespaceId = $namespaceId;
   }
+  /**
+   * @return string
+   */
   public function getNamespaceId()
   {
     return $this->namespaceId;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;

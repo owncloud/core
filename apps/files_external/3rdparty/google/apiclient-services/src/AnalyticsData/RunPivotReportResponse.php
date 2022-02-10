@@ -24,6 +24,9 @@ class RunPivotReportResponse extends \Google\Collection
   protected $aggregatesDataType = 'array';
   protected $dimensionHeadersType = DimensionHeader::class;
   protected $dimensionHeadersDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
   protected $metadataType = ResponseMetaData::class;
   protected $metadataDataType = '';
@@ -64,10 +67,16 @@ class RunPivotReportResponse extends \Google\Collection
   {
     return $this->dimensionHeaders;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

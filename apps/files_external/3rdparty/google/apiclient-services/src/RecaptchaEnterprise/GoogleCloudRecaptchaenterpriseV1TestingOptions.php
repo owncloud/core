@@ -19,21 +19,39 @@ namespace Google\Service\RecaptchaEnterprise;
 
 class GoogleCloudRecaptchaenterpriseV1TestingOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $testingChallenge;
+  /**
+   * @var float
+   */
   public $testingScore;
 
+  /**
+   * @param string
+   */
   public function setTestingChallenge($testingChallenge)
   {
     $this->testingChallenge = $testingChallenge;
   }
+  /**
+   * @return string
+   */
   public function getTestingChallenge()
   {
     return $this->testingChallenge;
   }
+  /**
+   * @param float
+   */
   public function setTestingScore($testingScore)
   {
     $this->testingScore = $testingScore;
   }
+  /**
+   * @return float
+   */
   public function getTestingScore()
   {
     return $this->testingScore;

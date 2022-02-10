@@ -20,30 +20,57 @@ namespace Google\Service\Transcoder;
 class Manifest extends \Google\Collection
 {
   protected $collection_key = 'muxStreams';
+  /**
+   * @var string
+   */
   public $fileName;
+  /**
+   * @var string[]
+   */
   public $muxStreams;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setFileName($fileName)
   {
     $this->fileName = $fileName;
   }
+  /**
+   * @return string
+   */
   public function getFileName()
   {
     return $this->fileName;
   }
+  /**
+   * @param string[]
+   */
   public function setMuxStreams($muxStreams)
   {
     $this->muxStreams = $muxStreams;
   }
+  /**
+   * @return string[]
+   */
   public function getMuxStreams()
   {
     return $this->muxStreams;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

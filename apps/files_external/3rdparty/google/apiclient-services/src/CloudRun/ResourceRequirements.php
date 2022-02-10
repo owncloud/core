@@ -19,21 +19,39 @@ namespace Google\Service\CloudRun;
 
 class ResourceRequirements extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $limits;
+  /**
+   * @var string[]
+   */
   public $requests;
 
+  /**
+   * @param string[]
+   */
   public function setLimits($limits)
   {
     $this->limits = $limits;
   }
+  /**
+   * @return string[]
+   */
   public function getLimits()
   {
     return $this->limits;
   }
+  /**
+   * @param string[]
+   */
   public function setRequests($requests)
   {
     $this->requests = $requests;
   }
+  /**
+   * @return string[]
+   */
   public function getRequests()
   {
     return $this->requests;

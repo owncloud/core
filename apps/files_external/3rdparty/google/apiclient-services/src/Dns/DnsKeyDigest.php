@@ -19,21 +19,39 @@ namespace Google\Service\Dns;
 
 class DnsKeyDigest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $digest;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDigest($digest)
   {
     $this->digest = $digest;
   }
+  /**
+   * @return string
+   */
   public function getDigest()
   {
     return $this->digest;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -19,21 +19,39 @@ namespace Google\Service\ContainerAnalysis;
 
 class CisBenchmark extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $profileLevel;
+  /**
+   * @var string
+   */
   public $severity;
 
+  /**
+   * @param int
+   */
   public function setProfileLevel($profileLevel)
   {
     $this->profileLevel = $profileLevel;
   }
+  /**
+   * @return int
+   */
   public function getProfileLevel()
   {
     return $this->profileLevel;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;

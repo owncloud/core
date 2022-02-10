@@ -20,30 +20,57 @@ namespace Google\Service\OnDemandScanning;
 class Fingerprint extends \Google\Collection
 {
   protected $collection_key = 'v2Blob';
+  /**
+   * @var string
+   */
   public $v1Name;
+  /**
+   * @var string[]
+   */
   public $v2Blob;
+  /**
+   * @var string
+   */
   public $v2Name;
 
+  /**
+   * @param string
+   */
   public function setV1Name($v1Name)
   {
     $this->v1Name = $v1Name;
   }
+  /**
+   * @return string
+   */
   public function getV1Name()
   {
     return $this->v1Name;
   }
+  /**
+   * @param string[]
+   */
   public function setV2Blob($v2Blob)
   {
     $this->v2Blob = $v2Blob;
   }
+  /**
+   * @return string[]
+   */
   public function getV2Blob()
   {
     return $this->v2Blob;
   }
+  /**
+   * @param string
+   */
   public function setV2Name($v2Name)
   {
     $this->v2Name = $v2Name;
   }
+  /**
+   * @return string
+   */
   public function getV2Name()
   {
     return $this->v2Name;

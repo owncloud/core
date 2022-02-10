@@ -20,21 +20,39 @@ namespace Google\Service\Storage;
 class TestIamPermissionsResponse extends \Google\Collection
 {
   protected $collection_key = 'permissions';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $permissions;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
+  /**
+   * @return string[]
+   */
   public function getPermissions()
   {
     return $this->permissions;

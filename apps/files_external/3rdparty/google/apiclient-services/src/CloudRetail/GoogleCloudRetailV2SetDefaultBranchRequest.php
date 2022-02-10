@@ -19,21 +19,39 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2SetDefaultBranchRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $branchId;
+  /**
+   * @var string
+   */
   public $note;
 
+  /**
+   * @param string
+   */
   public function setBranchId($branchId)
   {
     $this->branchId = $branchId;
   }
+  /**
+   * @return string
+   */
   public function getBranchId()
   {
     return $this->branchId;
   }
+  /**
+   * @param string
+   */
   public function setNote($note)
   {
     $this->note = $note;
   }
+  /**
+   * @return string
+   */
   public function getNote()
   {
     return $this->note;

@@ -19,21 +19,39 @@ namespace Google\Service\DriveActivity;
 
 class Domain extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $legacyId;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setLegacyId($legacyId)
   {
     $this->legacyId = $legacyId;
   }
+  /**
+   * @return string
+   */
   public function getLegacyId()
   {
     return $this->legacyId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

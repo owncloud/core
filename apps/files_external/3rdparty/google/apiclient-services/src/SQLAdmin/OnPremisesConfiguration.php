@@ -19,69 +19,135 @@ namespace Google\Service\SQLAdmin;
 
 class OnPremisesConfiguration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $caCertificate;
+  /**
+   * @var string
+   */
   public $clientCertificate;
+  /**
+   * @var string
+   */
   public $clientKey;
+  /**
+   * @var string
+   */
   public $dumpFilePath;
+  /**
+   * @var string
+   */
   public $hostPort;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $password;
   protected $sourceInstanceType = InstanceReference::class;
   protected $sourceInstanceDataType = '';
+  /**
+   * @var string
+   */
   public $username;
 
+  /**
+   * @param string
+   */
   public function setCaCertificate($caCertificate)
   {
     $this->caCertificate = $caCertificate;
   }
+  /**
+   * @return string
+   */
   public function getCaCertificate()
   {
     return $this->caCertificate;
   }
+  /**
+   * @param string
+   */
   public function setClientCertificate($clientCertificate)
   {
     $this->clientCertificate = $clientCertificate;
   }
+  /**
+   * @return string
+   */
   public function getClientCertificate()
   {
     return $this->clientCertificate;
   }
+  /**
+   * @param string
+   */
   public function setClientKey($clientKey)
   {
     $this->clientKey = $clientKey;
   }
+  /**
+   * @return string
+   */
   public function getClientKey()
   {
     return $this->clientKey;
   }
+  /**
+   * @param string
+   */
   public function setDumpFilePath($dumpFilePath)
   {
     $this->dumpFilePath = $dumpFilePath;
   }
+  /**
+   * @return string
+   */
   public function getDumpFilePath()
   {
     return $this->dumpFilePath;
   }
+  /**
+   * @param string
+   */
   public function setHostPort($hostPort)
   {
     $this->hostPort = $hostPort;
   }
+  /**
+   * @return string
+   */
   public function getHostPort()
   {
     return $this->hostPort;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPassword($password)
   {
     $this->password = $password;
   }
+  /**
+   * @return string
+   */
   public function getPassword()
   {
     return $this->password;
@@ -100,10 +166,16 @@ class OnPremisesConfiguration extends \Google\Model
   {
     return $this->sourceInstance;
   }
+  /**
+   * @param string
+   */
   public function setUsername($username)
   {
     $this->username = $username;
   }
+  /**
+   * @return string
+   */
   public function getUsername()
   {
     return $this->username;

@@ -19,39 +19,75 @@ namespace Google\Service\Speech;
 
 class LongRunningRecognizeMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastUpdateTime;
+  /**
+   * @var int
+   */
   public $progressPercent;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setLastUpdateTime($lastUpdateTime)
   {
     $this->lastUpdateTime = $lastUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateTime()
   {
     return $this->lastUpdateTime;
   }
+  /**
+   * @param int
+   */
   public function setProgressPercent($progressPercent)
   {
     $this->progressPercent = $progressPercent;
   }
+  /**
+   * @return int
+   */
   public function getProgressPercent()
   {
     return $this->progressPercent;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

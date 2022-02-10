@@ -19,48 +19,93 @@ namespace Google\Service\DisplayVideo;
 
 class PartnerCost extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $costType;
+  /**
+   * @var string
+   */
   public $feeAmount;
+  /**
+   * @var string
+   */
   public $feePercentageMillis;
+  /**
+   * @var string
+   */
   public $feeType;
+  /**
+   * @var string
+   */
   public $invoiceType;
 
+  /**
+   * @param string
+   */
   public function setCostType($costType)
   {
     $this->costType = $costType;
   }
+  /**
+   * @return string
+   */
   public function getCostType()
   {
     return $this->costType;
   }
+  /**
+   * @param string
+   */
   public function setFeeAmount($feeAmount)
   {
     $this->feeAmount = $feeAmount;
   }
+  /**
+   * @return string
+   */
   public function getFeeAmount()
   {
     return $this->feeAmount;
   }
+  /**
+   * @param string
+   */
   public function setFeePercentageMillis($feePercentageMillis)
   {
     $this->feePercentageMillis = $feePercentageMillis;
   }
+  /**
+   * @return string
+   */
   public function getFeePercentageMillis()
   {
     return $this->feePercentageMillis;
   }
+  /**
+   * @param string
+   */
   public function setFeeType($feeType)
   {
     $this->feeType = $feeType;
   }
+  /**
+   * @return string
+   */
   public function getFeeType()
   {
     return $this->feeType;
   }
+  /**
+   * @param string
+   */
   public function setInvoiceType($invoiceType)
   {
     $this->invoiceType = $invoiceType;
   }
+  /**
+   * @return string
+   */
   public function getInvoiceType()
   {
     return $this->invoiceType;

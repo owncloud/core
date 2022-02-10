@@ -19,12 +19,21 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 
 class AddCreativeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creative;
 
+  /**
+   * @param string
+   */
   public function setCreative($creative)
   {
     $this->creative = $creative;
   }
+  /**
+   * @return string
+   */
   public function getCreative()
   {
     return $this->creative;

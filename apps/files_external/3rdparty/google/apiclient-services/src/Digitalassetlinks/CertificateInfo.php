@@ -19,12 +19,21 @@ namespace Google\Service\Digitalassetlinks;
 
 class CertificateInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sha256Fingerprint;
 
+  /**
+   * @param string
+   */
   public function setSha256Fingerprint($sha256Fingerprint)
   {
     $this->sha256Fingerprint = $sha256Fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getSha256Fingerprint()
   {
     return $this->sha256Fingerprint;

@@ -21,6 +21,9 @@ class EmbeddedChart extends \Google\Model
 {
   protected $borderType = EmbeddedObjectBorder::class;
   protected $borderDataType = '';
+  /**
+   * @var int
+   */
   public $chartId;
   protected $positionType = EmbeddedObjectPosition::class;
   protected $positionDataType = '';
@@ -41,10 +44,16 @@ class EmbeddedChart extends \Google\Model
   {
     return $this->border;
   }
+  /**
+   * @param int
+   */
   public function setChartId($chartId)
   {
     $this->chartId = $chartId;
   }
+  /**
+   * @return int
+   */
   public function getChartId()
   {
     return $this->chartId;

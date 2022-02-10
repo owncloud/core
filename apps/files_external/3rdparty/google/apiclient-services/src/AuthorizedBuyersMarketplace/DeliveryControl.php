@@ -20,33 +20,63 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 class DeliveryControl extends \Google\Collection
 {
   protected $collection_key = 'frequencyCap';
+  /**
+   * @var string
+   */
   public $companionDeliveryType;
+  /**
+   * @var string
+   */
   public $creativeRotationType;
+  /**
+   * @var string
+   */
   public $deliveryRateType;
   protected $frequencyCapType = FrequencyCap::class;
   protected $frequencyCapDataType = 'array';
+  /**
+   * @var string
+   */
   public $roadblockingType;
 
+  /**
+   * @param string
+   */
   public function setCompanionDeliveryType($companionDeliveryType)
   {
     $this->companionDeliveryType = $companionDeliveryType;
   }
+  /**
+   * @return string
+   */
   public function getCompanionDeliveryType()
   {
     return $this->companionDeliveryType;
   }
+  /**
+   * @param string
+   */
   public function setCreativeRotationType($creativeRotationType)
   {
     $this->creativeRotationType = $creativeRotationType;
   }
+  /**
+   * @return string
+   */
   public function getCreativeRotationType()
   {
     return $this->creativeRotationType;
   }
+  /**
+   * @param string
+   */
   public function setDeliveryRateType($deliveryRateType)
   {
     $this->deliveryRateType = $deliveryRateType;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryRateType()
   {
     return $this->deliveryRateType;
@@ -65,10 +95,16 @@ class DeliveryControl extends \Google\Collection
   {
     return $this->frequencyCap;
   }
+  /**
+   * @param string
+   */
   public function setRoadblockingType($roadblockingType)
   {
     $this->roadblockingType = $roadblockingType;
   }
+  /**
+   * @return string
+   */
   public function getRoadblockingType()
   {
     return $this->roadblockingType;

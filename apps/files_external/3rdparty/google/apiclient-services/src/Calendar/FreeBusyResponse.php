@@ -23,8 +23,17 @@ class FreeBusyResponse extends \Google\Model
   protected $calendarsDataType = 'map';
   protected $groupsType = FreeBusyGroup::class;
   protected $groupsDataType = 'map';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $timeMax;
+  /**
+   * @var string
+   */
   public $timeMin;
 
   /**
@@ -55,26 +64,44 @@ class FreeBusyResponse extends \Google\Model
   {
     return $this->groups;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setTimeMax($timeMax)
   {
     $this->timeMax = $timeMax;
   }
+  /**
+   * @return string
+   */
   public function getTimeMax()
   {
     return $this->timeMax;
   }
+  /**
+   * @param string
+   */
   public function setTimeMin($timeMin)
   {
     $this->timeMin = $timeMin;
   }
+  /**
+   * @return string
+   */
   public function getTimeMin()
   {
     return $this->timeMin;

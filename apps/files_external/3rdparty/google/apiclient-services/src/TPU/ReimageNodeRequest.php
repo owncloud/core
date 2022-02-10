@@ -19,12 +19,21 @@ namespace Google\Service\TPU;
 
 class ReimageNodeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $tensorflowVersion;
 
+  /**
+   * @param string
+   */
   public function setTensorflowVersion($tensorflowVersion)
   {
     $this->tensorflowVersion = $tensorflowVersion;
   }
+  /**
+   * @return string
+   */
   public function getTensorflowVersion()
   {
     return $this->tensorflowVersion;

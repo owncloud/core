@@ -19,12 +19,21 @@ namespace Google\Service\BigtableAdmin;
 
 class CheckConsistencyResponse extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $consistent;
 
+  /**
+   * @param bool
+   */
   public function setConsistent($consistent)
   {
     $this->consistent = $consistent;
   }
+  /**
+   * @return bool
+   */
   public function getConsistent()
   {
     return $this->consistent;

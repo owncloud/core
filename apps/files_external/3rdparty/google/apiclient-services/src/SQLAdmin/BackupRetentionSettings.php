@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class BackupRetentionSettings extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $retainedBackups;
+  /**
+   * @var string
+   */
   public $retentionUnit;
 
+  /**
+   * @param int
+   */
   public function setRetainedBackups($retainedBackups)
   {
     $this->retainedBackups = $retainedBackups;
   }
+  /**
+   * @return int
+   */
   public function getRetainedBackups()
   {
     return $this->retainedBackups;
   }
+  /**
+   * @param string
+   */
   public function setRetentionUnit($retentionUnit)
   {
     $this->retentionUnit = $retentionUnit;
   }
+  /**
+   * @return string
+   */
   public function getRetentionUnit()
   {
     return $this->retentionUnit;

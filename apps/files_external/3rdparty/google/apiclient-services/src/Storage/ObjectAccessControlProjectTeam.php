@@ -19,21 +19,39 @@ namespace Google\Service\Storage;
 
 class ObjectAccessControlProjectTeam extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $projectNumber;
+  /**
+   * @var string
+   */
   public $team;
 
+  /**
+   * @param string
+   */
   public function setProjectNumber($projectNumber)
   {
     $this->projectNumber = $projectNumber;
   }
+  /**
+   * @return string
+   */
   public function getProjectNumber()
   {
     return $this->projectNumber;
   }
+  /**
+   * @param string
+   */
   public function setTeam($team)
   {
     $this->team = $team;
   }
+  /**
+   * @return string
+   */
   public function getTeam()
   {
     return $this->team;

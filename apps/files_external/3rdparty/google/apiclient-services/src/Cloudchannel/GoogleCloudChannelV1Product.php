@@ -21,6 +21,9 @@ class GoogleCloudChannelV1Product extends \Google\Model
 {
   protected $marketingInfoType = GoogleCloudChannelV1MarketingInfo::class;
   protected $marketingInfoDataType = '';
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudChannelV1Product extends \Google\Model
   {
     return $this->marketingInfo;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -19,12 +19,21 @@ namespace Google\Service\CertificateAuthorityService;
 
 class FetchCaCertsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

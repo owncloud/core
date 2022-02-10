@@ -19,6 +19,9 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3CalculateCoverageResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $agent;
   protected $intentCoverageType = GoogleCloudDialogflowCxV3IntentCoverage::class;
   protected $intentCoverageDataType = '';
@@ -27,10 +30,16 @@ class GoogleCloudDialogflowCxV3CalculateCoverageResponse extends \Google\Model
   protected $transitionCoverageType = GoogleCloudDialogflowCxV3TransitionCoverage::class;
   protected $transitionCoverageDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAgent($agent)
   {
     $this->agent = $agent;
   }
+  /**
+   * @return string
+   */
   public function getAgent()
   {
     return $this->agent;

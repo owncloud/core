@@ -22,8 +22,18 @@ class SpeechRecognitionResult extends \Google\Collection
   protected $collection_key = 'alternatives';
   protected $alternativesType = SpeechRecognitionAlternative::class;
   protected $alternativesDataType = 'array';
+  /**
+   * @var int
+   */
   public $channelTag;
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
+  public $resultEndTime;
 
   /**
    * @param SpeechRecognitionAlternative[]
@@ -39,21 +49,47 @@ class SpeechRecognitionResult extends \Google\Collection
   {
     return $this->alternatives;
   }
+  /**
+   * @param int
+   */
   public function setChannelTag($channelTag)
   {
     $this->channelTag = $channelTag;
   }
+  /**
+   * @return int
+   */
   public function getChannelTag()
   {
     return $this->channelTag;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
+  }
+  /**
+   * @param string
+   */
+  public function setResultEndTime($resultEndTime)
+  {
+    $this->resultEndTime = $resultEndTime;
+  }
+  /**
+   * @return string
+   */
+  public function getResultEndTime()
+  {
+    return $this->resultEndTime;
   }
 }
 

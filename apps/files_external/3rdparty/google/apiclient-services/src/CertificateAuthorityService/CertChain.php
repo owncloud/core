@@ -20,12 +20,21 @@ namespace Google\Service\CertificateAuthorityService;
 class CertChain extends \Google\Collection
 {
   protected $collection_key = 'certificates';
+  /**
+   * @var string[]
+   */
   public $certificates;
 
+  /**
+   * @param string[]
+   */
   public function setCertificates($certificates)
   {
     $this->certificates = $certificates;
   }
+  /**
+   * @return string[]
+   */
   public function getCertificates()
   {
     return $this->certificates;

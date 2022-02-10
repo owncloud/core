@@ -20,6 +20,9 @@ namespace Google\Service\Dataflow;
 class WorkItemStatus extends \Google\Collection
 {
   protected $collection_key = 'metricUpdates';
+  /**
+   * @var bool
+   */
   public $completed;
   protected $counterUpdatesType = CounterUpdate::class;
   protected $counterUpdatesDataType = 'array';
@@ -31,9 +34,15 @@ class WorkItemStatus extends \Google\Collection
   protected $metricUpdatesDataType = 'array';
   protected $progressType = ApproximateProgress::class;
   protected $progressDataType = '';
+  /**
+   * @var string
+   */
   public $reportIndex;
   protected $reportedProgressType = ApproximateReportedProgress::class;
   protected $reportedProgressDataType = '';
+  /**
+   * @var string
+   */
   public $requestedLeaseDuration;
   protected $sourceForkType = SourceFork::class;
   protected $sourceForkDataType = '';
@@ -42,12 +51,21 @@ class WorkItemStatus extends \Google\Collection
   protected $stopPositionType = Position::class;
   protected $stopPositionDataType = '';
   public $totalThrottlerWaitTimeSeconds;
+  /**
+   * @var string
+   */
   public $workItemId;
 
+  /**
+   * @param bool
+   */
   public function setCompleted($completed)
   {
     $this->completed = $completed;
   }
+  /**
+   * @return bool
+   */
   public function getCompleted()
   {
     return $this->completed;
@@ -122,10 +140,16 @@ class WorkItemStatus extends \Google\Collection
   {
     return $this->progress;
   }
+  /**
+   * @param string
+   */
   public function setReportIndex($reportIndex)
   {
     $this->reportIndex = $reportIndex;
   }
+  /**
+   * @return string
+   */
   public function getReportIndex()
   {
     return $this->reportIndex;
@@ -144,10 +168,16 @@ class WorkItemStatus extends \Google\Collection
   {
     return $this->reportedProgress;
   }
+  /**
+   * @param string
+   */
   public function setRequestedLeaseDuration($requestedLeaseDuration)
   {
     $this->requestedLeaseDuration = $requestedLeaseDuration;
   }
+  /**
+   * @return string
+   */
   public function getRequestedLeaseDuration()
   {
     return $this->requestedLeaseDuration;
@@ -202,10 +232,16 @@ class WorkItemStatus extends \Google\Collection
   {
     return $this->totalThrottlerWaitTimeSeconds;
   }
+  /**
+   * @param string
+   */
   public function setWorkItemId($workItemId)
   {
     $this->workItemId = $workItemId;
   }
+  /**
+   * @return string
+   */
   public function getWorkItemId()
   {
     return $this->workItemId;

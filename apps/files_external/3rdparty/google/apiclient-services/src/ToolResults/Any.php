@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class Any extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $typeUrl;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setTypeUrl($typeUrl)
   {
     $this->typeUrl = $typeUrl;
   }
+  /**
+   * @return string
+   */
   public function getTypeUrl()
   {
     return $this->typeUrl;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

@@ -21,6 +21,9 @@ class DeidentifyFhirStoreRequest extends \Google\Model
 {
   protected $configType = DeidentifyConfig::class;
   protected $configDataType = '';
+  /**
+   * @var string
+   */
   public $destinationStore;
   protected $resourceFilterType = FhirFilter::class;
   protected $resourceFilterDataType = '';
@@ -39,10 +42,16 @@ class DeidentifyFhirStoreRequest extends \Google\Model
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setDestinationStore($destinationStore)
   {
     $this->destinationStore = $destinationStore;
   }
+  /**
+   * @return string
+   */
   public function getDestinationStore()
   {
     return $this->destinationStore;

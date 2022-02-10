@@ -19,21 +19,39 @@ namespace Google\Service\Spanner;
 
 class ShortRepresentation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var int[]
+   */
   public $subqueries;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param int[]
+   */
   public function setSubqueries($subqueries)
   {
     $this->subqueries = $subqueries;
   }
+  /**
+   * @return int[]
+   */
   public function getSubqueries()
   {
     return $this->subqueries;

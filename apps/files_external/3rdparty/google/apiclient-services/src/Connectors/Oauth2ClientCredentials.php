@@ -19,14 +19,23 @@ namespace Google\Service\Connectors;
 
 class Oauth2ClientCredentials extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clientId;
   protected $clientSecretType = Secret::class;
   protected $clientSecretDataType = '';
 
+  /**
+   * @param string
+   */
   public function setClientId($clientId)
   {
     $this->clientId = $clientId;
   }
+  /**
+   * @return string
+   */
   public function getClientId()
   {
     return $this->clientId;

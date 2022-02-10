@@ -22,6 +22,8 @@ use Google\Service\AccessContextManager\ListServicePerimetersResponse;
 use Google\Service\AccessContextManager\Operation;
 use Google\Service\AccessContextManager\ReplaceServicePerimetersRequest;
 use Google\Service\AccessContextManager\ServicePerimeter;
+use Google\Service\AccessContextManager\TestIamPermissionsRequest;
+use Google\Service\AccessContextManager\TestIamPermissionsResponse;
 
 /**
  * The "servicePerimeters" collection of methods.
@@ -34,16 +36,16 @@ use Google\Service\AccessContextManager\ServicePerimeter;
 class AccessPoliciesServicePerimeters extends \Google\Service\Resource
 {
   /**
-   * Commit the dry-run spec for all the Service Perimeters in an Access Policy. A
-   * commit operation on a Service Perimeter involves copying its `spec` field to
-   * that Service Perimeter's `status` field. Only Service Perimeters with
-   * `use_explicit_dry_run_spec` field set to true are affected by a commit
-   * operation. The longrunning operation from this RPC will have a successful
-   * status once the dry-run specs for all the Service Perimeters have been
-   * committed. If a commit fails, it will cause the longrunning operation to
-   * return an error response and the entire commit operation will be cancelled.
-   * When successful, Operation.response field will contain
-   * CommitServicePerimetersResponse. The `dry_run` and the `spec` fields will be
+   * Commits the dry-run specification for all the service perimeters in an access
+   * policy. A commit operation on a service perimeter involves copying its `spec`
+   * field to the `status` field of the service perimeter. Only service perimeters
+   * with `use_explicit_dry_run_spec` field set to true are affected by a commit
+   * operation. The long-running operation from this RPC has a successful status
+   * after the dry-run specifications for all the service perimeters have been
+   * committed. If a commit fails, it causes the long-running operation to return
+   * an error response and the entire commit operation is cancelled. When
+   * successful, the Operation.response field contains
+   * CommitServicePerimetersResponse. The `dry_run` and the `spec` fields are
    * cleared after a successful commit operation. (servicePerimeters.commit)
    *
    * @param string $parent Required. Resource name for the parent Access Policy
@@ -60,10 +62,10 @@ class AccessPoliciesServicePerimeters extends \Google\Service\Resource
     return $this->call('commit', [$params], Operation::class);
   }
   /**
-   * Create a Service Perimeter. The longrunning operation from this RPC will have
-   * a successful status once the Service Perimeter has propagated to long-lasting
-   * storage. Service Perimeters containing errors will result in an error
-   * response for the first error encountered. (servicePerimeters.create)
+   * Creates a service perimeter. The long-running operation from this RPC has a
+   * successful status after the service perimeter propagates to long-lasting
+   * storage. If a service perimeter contains errors, an error response is
+   * returned for the first error encountered. (servicePerimeters.create)
    *
    * @param string $parent Required. Resource name for the access policy which
    * owns this Service Perimeter. Format: `accessPolicies/{policy_id}`
@@ -78,9 +80,9 @@ class AccessPoliciesServicePerimeters extends \Google\Service\Resource
     return $this->call('create', [$params], Operation::class);
   }
   /**
-   * Delete a Service Perimeter by resource name. The longrunning operation from
-   * this RPC will have a successful status once the Service Perimeter has been
-   * removed from long-lasting storage. (servicePerimeters.delete)
+   * Deletes a service perimeter based on the resource name. The long-running
+   * operation from this RPC has a successful status after the service perimeter
+   * is removed from long-lasting storage. (servicePerimeters.delete)
    *
    * @param string $name Required. Resource name for the Service Perimeter.
    * Format: `accessPolicies/{policy_id}/servicePerimeters/{service_perimeter_id}`
@@ -94,7 +96,7 @@ class AccessPoliciesServicePerimeters extends \Google\Service\Resource
     return $this->call('delete', [$params], Operation::class);
   }
   /**
-   * Get a Service Perimeter by resource name. (servicePerimeters.get)
+   * Gets a service perimeter based on the resource name. (servicePerimeters.get)
    *
    * @param string $name Required. Resource name for the Service Perimeter.
    * Format:
@@ -109,7 +111,7 @@ class AccessPoliciesServicePerimeters extends \Google\Service\Resource
     return $this->call('get', [$params], ServicePerimeter::class);
   }
   /**
-   * List all Service Perimeters for an access policy.
+   * Lists all service perimeters for an access policy.
    * (servicePerimeters.listAccessPoliciesServicePerimeters)
    *
    * @param string $parent Required. Resource name for the access policy to list
@@ -129,10 +131,10 @@ class AccessPoliciesServicePerimeters extends \Google\Service\Resource
     return $this->call('list', [$params], ListServicePerimetersResponse::class);
   }
   /**
-   * Update a Service Perimeter. The longrunning operation from this RPC will have
-   * a successful status once the changes to the Service Perimeter have propagated
-   * to long-lasting storage. Service Perimeter containing errors will result in
-   * an error response for the first error encountered. (servicePerimeters.patch)
+   * Updates a service perimeter. The long-running operation from this RPC has a
+   * successful status after the service perimeter propagates to long-lasting
+   * storage. If a service perimeter contains errors, an error response is
+   * returned for the first error encountered. (servicePerimeters.patch)
    *
    * @param string $name Required. Resource name for the ServicePerimeter. The
    * `short_name` component must begin with a letter and only include alphanumeric
@@ -152,14 +154,13 @@ class AccessPoliciesServicePerimeters extends \Google\Service\Resource
     return $this->call('patch', [$params], Operation::class);
   }
   /**
-   * Replace all existing Service Perimeters in an Access Policy with the Service
-   * Perimeters provided. This is done atomically. The longrunning operation from
-   * this RPC will have a successful status once all replacements have propagated
-   * to long-lasting storage. Replacements containing errors will result in an
-   * error response for the first error encountered. Replacement will be cancelled
-   * on error, existing Service Perimeters will not be affected.
-   * Operation.response field will contain ReplaceServicePerimetersResponse.
-   * (servicePerimeters.replaceAll)
+   * Replace all existing service perimeters in an access policy with the service
+   * perimeters provided. This is done atomically. The long-running operation from
+   * this RPC has a successful status after all replacements propagate to long-
+   * lasting storage. Replacements containing errors result in an error response
+   * for the first error encountered. Upon an error, replacement are cancelled and
+   * existing service perimeters are not affected. The Operation.response field
+   * contains ReplaceServicePerimetersResponse. (servicePerimeters.replaceAll)
    *
    * @param string $parent Required. Resource name for the access policy which
    * owns these Service Perimeters. Format: `accessPolicies/{policy_id}`
@@ -172,6 +173,25 @@ class AccessPoliciesServicePerimeters extends \Google\Service\Resource
     $params = ['parent' => $parent, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('replaceAll', [$params], Operation::class);
+  }
+  /**
+   * Returns the IAM permissions that the caller has on the specified Access
+   * Context Manager resource. The resource can be an AccessPolicy, AccessLevel,
+   * or ServicePerimeter. This method does not support other resources.
+   * (servicePerimeters.testIamPermissions)
+   *
+   * @param string $resource REQUIRED: The resource for which the policy detail is
+   * being requested. See the operation documentation for the appropriate value
+   * for this field.
+   * @param TestIamPermissionsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return TestIamPermissionsResponse
+   */
+  public function testIamPermissions($resource, TestIamPermissionsRequest $postBody, $optParams = [])
+  {
+    $params = ['resource' => $resource, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('testIamPermissions', [$params], TestIamPermissionsResponse::class);
   }
 }
 

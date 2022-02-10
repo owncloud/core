@@ -20,6 +20,9 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1HyperparameterOutputHyperparameterMetric extends \Google\Model
 {
   public $objectiveValue;
+  /**
+   * @var string
+   */
   public $trainingStep;
 
   public function setObjectiveValue($objectiveValue)
@@ -30,10 +33,16 @@ class GoogleCloudMlV1HyperparameterOutputHyperparameterMetric extends \Google\Mo
   {
     return $this->objectiveValue;
   }
+  /**
+   * @param string
+   */
   public function setTrainingStep($trainingStep)
   {
     $this->trainingStep = $trainingStep;
   }
+  /**
+   * @return string
+   */
   public function getTrainingStep()
   {
     return $this->trainingStep;

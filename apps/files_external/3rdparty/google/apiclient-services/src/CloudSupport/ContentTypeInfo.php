@@ -19,48 +19,93 @@ namespace Google\Service\CloudSupport;
 
 class ContentTypeInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bestGuess;
+  /**
+   * @var string
+   */
   public $fromBytes;
+  /**
+   * @var string
+   */
   public $fromFileName;
+  /**
+   * @var string
+   */
   public $fromHeader;
+  /**
+   * @var string
+   */
   public $fromUrlPath;
 
+  /**
+   * @param string
+   */
   public function setBestGuess($bestGuess)
   {
     $this->bestGuess = $bestGuess;
   }
+  /**
+   * @return string
+   */
   public function getBestGuess()
   {
     return $this->bestGuess;
   }
+  /**
+   * @param string
+   */
   public function setFromBytes($fromBytes)
   {
     $this->fromBytes = $fromBytes;
   }
+  /**
+   * @return string
+   */
   public function getFromBytes()
   {
     return $this->fromBytes;
   }
+  /**
+   * @param string
+   */
   public function setFromFileName($fromFileName)
   {
     $this->fromFileName = $fromFileName;
   }
+  /**
+   * @return string
+   */
   public function getFromFileName()
   {
     return $this->fromFileName;
   }
+  /**
+   * @param string
+   */
   public function setFromHeader($fromHeader)
   {
     $this->fromHeader = $fromHeader;
   }
+  /**
+   * @return string
+   */
   public function getFromHeader()
   {
     return $this->fromHeader;
   }
+  /**
+   * @param string
+   */
   public function setFromUrlPath($fromUrlPath)
   {
     $this->fromUrlPath = $fromUrlPath;
   }
+  /**
+   * @return string
+   */
   public function getFromUrlPath()
   {
     return $this->fromUrlPath;

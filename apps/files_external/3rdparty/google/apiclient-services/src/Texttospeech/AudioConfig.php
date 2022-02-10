@@ -20,25 +20,46 @@ namespace Google\Service\Texttospeech;
 class AudioConfig extends \Google\Collection
 {
   protected $collection_key = 'effectsProfileId';
+  /**
+   * @var string
+   */
   public $audioEncoding;
+  /**
+   * @var string[]
+   */
   public $effectsProfileId;
   public $pitch;
+  /**
+   * @var int
+   */
   public $sampleRateHertz;
   public $speakingRate;
   public $volumeGainDb;
 
+  /**
+   * @param string
+   */
   public function setAudioEncoding($audioEncoding)
   {
     $this->audioEncoding = $audioEncoding;
   }
+  /**
+   * @return string
+   */
   public function getAudioEncoding()
   {
     return $this->audioEncoding;
   }
+  /**
+   * @param string[]
+   */
   public function setEffectsProfileId($effectsProfileId)
   {
     $this->effectsProfileId = $effectsProfileId;
   }
+  /**
+   * @return string[]
+   */
   public function getEffectsProfileId()
   {
     return $this->effectsProfileId;
@@ -51,10 +72,16 @@ class AudioConfig extends \Google\Collection
   {
     return $this->pitch;
   }
+  /**
+   * @param int
+   */
   public function setSampleRateHertz($sampleRateHertz)
   {
     $this->sampleRateHertz = $sampleRateHertz;
   }
+  /**
+   * @return int
+   */
   public function getSampleRateHertz()
   {
     return $this->sampleRateHertz;

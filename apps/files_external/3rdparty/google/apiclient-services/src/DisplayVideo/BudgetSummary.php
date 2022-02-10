@@ -19,25 +19,49 @@ namespace Google\Service\DisplayVideo;
 
 class BudgetSummary extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $externalBudgetId;
+  /**
+   * @var string
+   */
   public $preTaxAmountMicros;
   protected $prismaCpeCodeType = PrismaCpeCode::class;
   protected $prismaCpeCodeDataType = '';
+  /**
+   * @var string
+   */
   public $taxAmountMicros;
+  /**
+   * @var string
+   */
   public $totalAmountMicros;
 
+  /**
+   * @param string
+   */
   public function setExternalBudgetId($externalBudgetId)
   {
     $this->externalBudgetId = $externalBudgetId;
   }
+  /**
+   * @return string
+   */
   public function getExternalBudgetId()
   {
     return $this->externalBudgetId;
   }
+  /**
+   * @param string
+   */
   public function setPreTaxAmountMicros($preTaxAmountMicros)
   {
     $this->preTaxAmountMicros = $preTaxAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getPreTaxAmountMicros()
   {
     return $this->preTaxAmountMicros;
@@ -56,18 +80,30 @@ class BudgetSummary extends \Google\Model
   {
     return $this->prismaCpeCode;
   }
+  /**
+   * @param string
+   */
   public function setTaxAmountMicros($taxAmountMicros)
   {
     $this->taxAmountMicros = $taxAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getTaxAmountMicros()
   {
     return $this->taxAmountMicros;
   }
+  /**
+   * @param string
+   */
   public function setTotalAmountMicros($totalAmountMicros)
   {
     $this->totalAmountMicros = $totalAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getTotalAmountMicros()
   {
     return $this->totalAmountMicros;

@@ -20,17 +20,35 @@ namespace Google\Service\OSConfig;
 class OSPolicyResourceExecResourceExec extends \Google\Collection
 {
   protected $collection_key = 'args';
+  /**
+   * @var string[]
+   */
   public $args;
   protected $fileType = OSPolicyResourceFile::class;
   protected $fileDataType = '';
+  /**
+   * @var string
+   */
   public $interpreter;
+  /**
+   * @var string
+   */
   public $outputFilePath;
+  /**
+   * @var string
+   */
   public $script;
 
+  /**
+   * @param string[]
+   */
   public function setArgs($args)
   {
     $this->args = $args;
   }
+  /**
+   * @return string[]
+   */
   public function getArgs()
   {
     return $this->args;
@@ -49,26 +67,44 @@ class OSPolicyResourceExecResourceExec extends \Google\Collection
   {
     return $this->file;
   }
+  /**
+   * @param string
+   */
   public function setInterpreter($interpreter)
   {
     $this->interpreter = $interpreter;
   }
+  /**
+   * @return string
+   */
   public function getInterpreter()
   {
     return $this->interpreter;
   }
+  /**
+   * @param string
+   */
   public function setOutputFilePath($outputFilePath)
   {
     $this->outputFilePath = $outputFilePath;
   }
+  /**
+   * @return string
+   */
   public function getOutputFilePath()
   {
     return $this->outputFilePath;
   }
+  /**
+   * @param string
+   */
   public function setScript($script)
   {
     $this->script = $script;
   }
+  /**
+   * @return string
+   */
   public function getScript()
   {
     return $this->script;

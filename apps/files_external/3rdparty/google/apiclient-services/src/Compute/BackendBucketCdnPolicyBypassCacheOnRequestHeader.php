@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class BackendBucketCdnPolicyBypassCacheOnRequestHeader extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $headerName;
 
+  /**
+   * @param string
+   */
   public function setHeaderName($headerName)
   {
     $this->headerName = $headerName;
   }
+  /**
+   * @return string
+   */
   public function getHeaderName()
   {
     return $this->headerName;

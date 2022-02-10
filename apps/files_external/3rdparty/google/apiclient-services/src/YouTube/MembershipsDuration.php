@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class MembershipsDuration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $memberSince;
+  /**
+   * @var int
+   */
   public $memberTotalDurationMonths;
 
+  /**
+   * @param string
+   */
   public function setMemberSince($memberSince)
   {
     $this->memberSince = $memberSince;
   }
+  /**
+   * @return string
+   */
   public function getMemberSince()
   {
     return $this->memberSince;
   }
+  /**
+   * @param int
+   */
   public function setMemberTotalDurationMonths($memberTotalDurationMonths)
   {
     $this->memberTotalDurationMonths = $memberTotalDurationMonths;
   }
+  /**
+   * @return int
+   */
   public function getMemberTotalDurationMonths()
   {
     return $this->memberTotalDurationMonths;

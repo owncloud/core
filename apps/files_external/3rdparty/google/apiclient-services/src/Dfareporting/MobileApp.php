@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class MobileApp extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $directory;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $publisherName;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setDirectory($directory)
   {
     $this->directory = $directory;
   }
+  /**
+   * @return string
+   */
   public function getDirectory()
   {
     return $this->directory;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPublisherName($publisherName)
   {
     $this->publisherName = $publisherName;
   }
+  /**
+   * @return string
+   */
   public function getPublisherName()
   {
     return $this->publisherName;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

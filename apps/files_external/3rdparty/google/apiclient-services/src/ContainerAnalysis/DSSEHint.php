@@ -19,12 +19,21 @@ namespace Google\Service\ContainerAnalysis;
 
 class DSSEHint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $humanReadableName;
 
+  /**
+   * @param string
+   */
   public function setHumanReadableName($humanReadableName)
   {
     $this->humanReadableName = $humanReadableName;
   }
+  /**
+   * @return string
+   */
   public function getHumanReadableName()
   {
     return $this->humanReadableName;

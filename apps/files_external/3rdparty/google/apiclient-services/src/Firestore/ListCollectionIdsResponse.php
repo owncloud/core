@@ -20,21 +20,39 @@ namespace Google\Service\Firestore;
 class ListCollectionIdsResponse extends \Google\Collection
 {
   protected $collection_key = 'collectionIds';
+  /**
+   * @var string[]
+   */
   public $collectionIds;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string[]
+   */
   public function setCollectionIds($collectionIds)
   {
     $this->collectionIds = $collectionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getCollectionIds()
   {
     return $this->collectionIds;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

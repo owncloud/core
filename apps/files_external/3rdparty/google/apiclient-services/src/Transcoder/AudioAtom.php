@@ -22,6 +22,9 @@ class AudioAtom extends \Google\Collection
   protected $collection_key = 'channels';
   protected $channelsType = AudioChannel::class;
   protected $channelsDataType = 'array';
+  /**
+   * @var string
+   */
   public $key;
 
   /**
@@ -38,10 +41,16 @@ class AudioAtom extends \Google\Collection
   {
     return $this->channels;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;

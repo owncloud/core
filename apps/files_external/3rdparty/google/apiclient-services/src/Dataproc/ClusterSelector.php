@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class ClusterSelector extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $clusterLabels;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string[]
+   */
   public function setClusterLabels($clusterLabels)
   {
     $this->clusterLabels = $clusterLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getClusterLabels()
   {
     return $this->clusterLabels;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

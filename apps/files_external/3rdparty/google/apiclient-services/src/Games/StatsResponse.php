@@ -31,102 +31,201 @@ class StatsResponse extends \Google\Model
         "spendProbability" => "spend_probability",
         "totalSpendNext28Days" => "total_spend_next_28_days",
   ];
+  /**
+   * @var float
+   */
   public $avgSessionLengthMinutes;
+  /**
+   * @var float
+   */
   public $churnProbability;
+  /**
+   * @var int
+   */
   public $daysSinceLastPlayed;
+  /**
+   * @var float
+   */
   public $highSpenderProbability;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var int
+   */
   public $numPurchases;
+  /**
+   * @var int
+   */
   public $numSessions;
+  /**
+   * @var float
+   */
   public $numSessionsPercentile;
+  /**
+   * @var float
+   */
   public $spendPercentile;
+  /**
+   * @var float
+   */
   public $spendProbability;
+  /**
+   * @var float
+   */
   public $totalSpendNext28Days;
 
+  /**
+   * @param float
+   */
   public function setAvgSessionLengthMinutes($avgSessionLengthMinutes)
   {
     $this->avgSessionLengthMinutes = $avgSessionLengthMinutes;
   }
+  /**
+   * @return float
+   */
   public function getAvgSessionLengthMinutes()
   {
     return $this->avgSessionLengthMinutes;
   }
+  /**
+   * @param float
+   */
   public function setChurnProbability($churnProbability)
   {
     $this->churnProbability = $churnProbability;
   }
+  /**
+   * @return float
+   */
   public function getChurnProbability()
   {
     return $this->churnProbability;
   }
+  /**
+   * @param int
+   */
   public function setDaysSinceLastPlayed($daysSinceLastPlayed)
   {
     $this->daysSinceLastPlayed = $daysSinceLastPlayed;
   }
+  /**
+   * @return int
+   */
   public function getDaysSinceLastPlayed()
   {
     return $this->daysSinceLastPlayed;
   }
+  /**
+   * @param float
+   */
   public function setHighSpenderProbability($highSpenderProbability)
   {
     $this->highSpenderProbability = $highSpenderProbability;
   }
+  /**
+   * @return float
+   */
   public function getHighSpenderProbability()
   {
     return $this->highSpenderProbability;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param int
+   */
   public function setNumPurchases($numPurchases)
   {
     $this->numPurchases = $numPurchases;
   }
+  /**
+   * @return int
+   */
   public function getNumPurchases()
   {
     return $this->numPurchases;
   }
+  /**
+   * @param int
+   */
   public function setNumSessions($numSessions)
   {
     $this->numSessions = $numSessions;
   }
+  /**
+   * @return int
+   */
   public function getNumSessions()
   {
     return $this->numSessions;
   }
+  /**
+   * @param float
+   */
   public function setNumSessionsPercentile($numSessionsPercentile)
   {
     $this->numSessionsPercentile = $numSessionsPercentile;
   }
+  /**
+   * @return float
+   */
   public function getNumSessionsPercentile()
   {
     return $this->numSessionsPercentile;
   }
+  /**
+   * @param float
+   */
   public function setSpendPercentile($spendPercentile)
   {
     $this->spendPercentile = $spendPercentile;
   }
+  /**
+   * @return float
+   */
   public function getSpendPercentile()
   {
     return $this->spendPercentile;
   }
+  /**
+   * @param float
+   */
   public function setSpendProbability($spendProbability)
   {
     $this->spendProbability = $spendProbability;
   }
+  /**
+   * @return float
+   */
   public function getSpendProbability()
   {
     return $this->spendProbability;
   }
+  /**
+   * @param float
+   */
   public function setTotalSpendNext28Days($totalSpendNext28Days)
   {
     $this->totalSpendNext28Days = $totalSpendNext28Days;
   }
+  /**
+   * @return float
+   */
   public function getTotalSpendNext28Days()
   {
     return $this->totalSpendNext28Days;

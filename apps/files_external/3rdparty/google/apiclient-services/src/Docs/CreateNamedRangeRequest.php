@@ -19,14 +19,23 @@ namespace Google\Service\Docs;
 
 class CreateNamedRangeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
   protected $rangeType = Range::class;
   protected $rangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

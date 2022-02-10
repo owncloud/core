@@ -22,11 +22,23 @@ class Promotion extends \Google\Collection
   protected $collection_key = 'bodyLines';
   protected $bodyLinesType = PromotionBodyLines::class;
   protected $bodyLinesDataType = 'array';
+  /**
+   * @var string
+   */
   public $displayLink;
+  /**
+   * @var string
+   */
   public $htmlTitle;
   protected $imageType = PromotionImage::class;
   protected $imageDataType = '';
+  /**
+   * @var string
+   */
   public $link;
+  /**
+   * @var string
+   */
   public $title;
 
   /**
@@ -43,18 +55,30 @@ class Promotion extends \Google\Collection
   {
     return $this->bodyLines;
   }
+  /**
+   * @param string
+   */
   public function setDisplayLink($displayLink)
   {
     $this->displayLink = $displayLink;
   }
+  /**
+   * @return string
+   */
   public function getDisplayLink()
   {
     return $this->displayLink;
   }
+  /**
+   * @param string
+   */
   public function setHtmlTitle($htmlTitle)
   {
     $this->htmlTitle = $htmlTitle;
   }
+  /**
+   * @return string
+   */
   public function getHtmlTitle()
   {
     return $this->htmlTitle;
@@ -73,18 +97,30 @@ class Promotion extends \Google\Collection
   {
     return $this->image;
   }
+  /**
+   * @param string
+   */
   public function setLink($link)
   {
     $this->link = $link;
   }
+  /**
+   * @return string
+   */
   public function getLink()
   {
     return $this->link;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

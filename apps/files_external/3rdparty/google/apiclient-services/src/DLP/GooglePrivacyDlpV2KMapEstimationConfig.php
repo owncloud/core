@@ -24,6 +24,9 @@ class GooglePrivacyDlpV2KMapEstimationConfig extends \Google\Collection
   protected $auxiliaryTablesDataType = 'array';
   protected $quasiIdsType = GooglePrivacyDlpV2TaggedField::class;
   protected $quasiIdsDataType = 'array';
+  /**
+   * @var string
+   */
   public $regionCode;
 
   /**
@@ -54,10 +57,16 @@ class GooglePrivacyDlpV2KMapEstimationConfig extends \Google\Collection
   {
     return $this->quasiIds;
   }
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;

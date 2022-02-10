@@ -19,21 +19,39 @@ namespace Google\Service\ServiceUsage;
 
 class EnableFailure extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string
+   */
   public $serviceId;
 
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string
+   */
   public function setServiceId($serviceId)
   {
     $this->serviceId = $serviceId;
   }
+  /**
+   * @return string
+   */
   public function getServiceId()
   {
     return $this->serviceId;

@@ -19,39 +19,75 @@ namespace Google\Service\SQLAdmin;
 
 class SqlScheduledMaintenance extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $canDefer;
+  /**
+   * @var bool
+   */
   public $canReschedule;
+  /**
+   * @var string
+   */
   public $scheduleDeadlineTime;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param bool
+   */
   public function setCanDefer($canDefer)
   {
     $this->canDefer = $canDefer;
   }
+  /**
+   * @return bool
+   */
   public function getCanDefer()
   {
     return $this->canDefer;
   }
+  /**
+   * @param bool
+   */
   public function setCanReschedule($canReschedule)
   {
     $this->canReschedule = $canReschedule;
   }
+  /**
+   * @return bool
+   */
   public function getCanReschedule()
   {
     return $this->canReschedule;
   }
+  /**
+   * @param string
+   */
   public function setScheduleDeadlineTime($scheduleDeadlineTime)
   {
     $this->scheduleDeadlineTime = $scheduleDeadlineTime;
   }
+  /**
+   * @return string
+   */
   public function getScheduleDeadlineTime()
   {
     return $this->scheduleDeadlineTime;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

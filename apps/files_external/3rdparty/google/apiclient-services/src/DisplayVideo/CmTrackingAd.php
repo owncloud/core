@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class CmTrackingAd extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cmAdId;
+  /**
+   * @var string
+   */
   public $cmCreativeId;
+  /**
+   * @var string
+   */
   public $cmPlacementId;
 
+  /**
+   * @param string
+   */
   public function setCmAdId($cmAdId)
   {
     $this->cmAdId = $cmAdId;
   }
+  /**
+   * @return string
+   */
   public function getCmAdId()
   {
     return $this->cmAdId;
   }
+  /**
+   * @param string
+   */
   public function setCmCreativeId($cmCreativeId)
   {
     $this->cmCreativeId = $cmCreativeId;
   }
+  /**
+   * @return string
+   */
   public function getCmCreativeId()
   {
     return $this->cmCreativeId;
   }
+  /**
+   * @param string
+   */
   public function setCmPlacementId($cmPlacementId)
   {
     $this->cmPlacementId = $cmPlacementId;
   }
+  /**
+   * @return string
+   */
   public function getCmPlacementId()
   {
     return $this->cmPlacementId;

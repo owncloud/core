@@ -20,16 +20,25 @@ namespace Google\Service\AnalyticsReporting;
 class GetReportsResponse extends \Google\Collection
 {
   protected $collection_key = 'reports';
+  /**
+   * @var int
+   */
   public $queryCost;
   protected $reportsType = Report::class;
   protected $reportsDataType = 'array';
   protected $resourceQuotasRemainingType = ResourceQuotasRemaining::class;
   protected $resourceQuotasRemainingDataType = '';
 
+  /**
+   * @param int
+   */
   public function setQueryCost($queryCost)
   {
     $this->queryCost = $queryCost;
   }
+  /**
+   * @return int
+   */
   public function getQueryCost()
   {
     return $this->queryCost;

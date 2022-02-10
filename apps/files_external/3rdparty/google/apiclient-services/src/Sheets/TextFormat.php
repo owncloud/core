@@ -19,39 +19,75 @@ namespace Google\Service\Sheets;
 
 class TextFormat extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $bold;
+  /**
+   * @var string
+   */
   public $fontFamily;
+  /**
+   * @var int
+   */
   public $fontSize;
   protected $foregroundColorType = Color::class;
   protected $foregroundColorDataType = '';
   protected $foregroundColorStyleType = ColorStyle::class;
   protected $foregroundColorStyleDataType = '';
+  /**
+   * @var bool
+   */
   public $italic;
   protected $linkType = Link::class;
   protected $linkDataType = '';
+  /**
+   * @var bool
+   */
   public $strikethrough;
+  /**
+   * @var bool
+   */
   public $underline;
 
+  /**
+   * @param bool
+   */
   public function setBold($bold)
   {
     $this->bold = $bold;
   }
+  /**
+   * @return bool
+   */
   public function getBold()
   {
     return $this->bold;
   }
+  /**
+   * @param string
+   */
   public function setFontFamily($fontFamily)
   {
     $this->fontFamily = $fontFamily;
   }
+  /**
+   * @return string
+   */
   public function getFontFamily()
   {
     return $this->fontFamily;
   }
+  /**
+   * @param int
+   */
   public function setFontSize($fontSize)
   {
     $this->fontSize = $fontSize;
   }
+  /**
+   * @return int
+   */
   public function getFontSize()
   {
     return $this->fontSize;
@@ -84,10 +120,16 @@ class TextFormat extends \Google\Model
   {
     return $this->foregroundColorStyle;
   }
+  /**
+   * @param bool
+   */
   public function setItalic($italic)
   {
     $this->italic = $italic;
   }
+  /**
+   * @return bool
+   */
   public function getItalic()
   {
     return $this->italic;
@@ -106,18 +148,30 @@ class TextFormat extends \Google\Model
   {
     return $this->link;
   }
+  /**
+   * @param bool
+   */
   public function setStrikethrough($strikethrough)
   {
     $this->strikethrough = $strikethrough;
   }
+  /**
+   * @return bool
+   */
   public function getStrikethrough()
   {
     return $this->strikethrough;
   }
+  /**
+   * @param bool
+   */
   public function setUnderline($underline)
   {
     $this->underline = $underline;
   }
+  /**
+   * @return bool
+   */
   public function getUnderline()
   {
     return $this->underline;

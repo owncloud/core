@@ -20,15 +20,27 @@ namespace Google\Service\Compute;
 class WafExpressionSet extends \Google\Collection
 {
   protected $collection_key = 'expressions';
+  /**
+   * @var string[]
+   */
   public $aliases;
   protected $expressionsType = WafExpressionSetExpression::class;
   protected $expressionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
 
+  /**
+   * @param string[]
+   */
   public function setAliases($aliases)
   {
     $this->aliases = $aliases;
   }
+  /**
+   * @return string[]
+   */
   public function getAliases()
   {
     return $this->aliases;
@@ -47,10 +59,16 @@ class WafExpressionSet extends \Google\Collection
   {
     return $this->expressions;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

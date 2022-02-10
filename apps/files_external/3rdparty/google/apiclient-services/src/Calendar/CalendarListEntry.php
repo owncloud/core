@@ -20,49 +20,115 @@ namespace Google\Service\Calendar;
 class CalendarListEntry extends \Google\Collection
 {
   protected $collection_key = 'defaultReminders';
+  /**
+   * @var string
+   */
   public $accessRole;
+  /**
+   * @var string
+   */
   public $backgroundColor;
+  /**
+   * @var string
+   */
   public $colorId;
   protected $conferencePropertiesType = ConferenceProperties::class;
   protected $conferencePropertiesDataType = '';
   protected $defaultRemindersType = EventReminder::class;
   protected $defaultRemindersDataType = 'array';
+  /**
+   * @var bool
+   */
   public $deleted;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $foregroundColor;
+  /**
+   * @var bool
+   */
   public $hidden;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $location;
   protected $notificationSettingsType = CalendarListEntryNotificationSettings::class;
   protected $notificationSettingsDataType = '';
+  /**
+   * @var bool
+   */
   public $primary;
+  /**
+   * @var bool
+   */
   public $selected;
+  /**
+   * @var string
+   */
   public $summary;
+  /**
+   * @var string
+   */
   public $summaryOverride;
+  /**
+   * @var string
+   */
   public $timeZone;
 
+  /**
+   * @param string
+   */
   public function setAccessRole($accessRole)
   {
     $this->accessRole = $accessRole;
   }
+  /**
+   * @return string
+   */
   public function getAccessRole()
   {
     return $this->accessRole;
   }
+  /**
+   * @param string
+   */
   public function setBackgroundColor($backgroundColor)
   {
     $this->backgroundColor = $backgroundColor;
   }
+  /**
+   * @return string
+   */
   public function getBackgroundColor()
   {
     return $this->backgroundColor;
   }
+  /**
+   * @param string
+   */
   public function setColorId($colorId)
   {
     $this->colorId = $colorId;
   }
+  /**
+   * @return string
+   */
   public function getColorId()
   {
     return $this->colorId;
@@ -95,66 +161,114 @@ class CalendarListEntry extends \Google\Collection
   {
     return $this->defaultReminders;
   }
+  /**
+   * @param bool
+   */
   public function setDeleted($deleted)
   {
     $this->deleted = $deleted;
   }
+  /**
+   * @return bool
+   */
   public function getDeleted()
   {
     return $this->deleted;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setForegroundColor($foregroundColor)
   {
     $this->foregroundColor = $foregroundColor;
   }
+  /**
+   * @return string
+   */
   public function getForegroundColor()
   {
     return $this->foregroundColor;
   }
+  /**
+   * @param bool
+   */
   public function setHidden($hidden)
   {
     $this->hidden = $hidden;
   }
+  /**
+   * @return bool
+   */
   public function getHidden()
   {
     return $this->hidden;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
@@ -173,42 +287,72 @@ class CalendarListEntry extends \Google\Collection
   {
     return $this->notificationSettings;
   }
+  /**
+   * @param bool
+   */
   public function setPrimary($primary)
   {
     $this->primary = $primary;
   }
+  /**
+   * @return bool
+   */
   public function getPrimary()
   {
     return $this->primary;
   }
+  /**
+   * @param bool
+   */
   public function setSelected($selected)
   {
     $this->selected = $selected;
   }
+  /**
+   * @return bool
+   */
   public function getSelected()
   {
     return $this->selected;
   }
+  /**
+   * @param string
+   */
   public function setSummary($summary)
   {
     $this->summary = $summary;
   }
+  /**
+   * @return string
+   */
   public function getSummary()
   {
     return $this->summary;
   }
+  /**
+   * @param string
+   */
   public function setSummaryOverride($summaryOverride)
   {
     $this->summaryOverride = $summaryOverride;
   }
+  /**
+   * @return string
+   */
   public function getSummaryOverride()
   {
     return $this->summaryOverride;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;

@@ -19,21 +19,47 @@ namespace Google\Service\Container;
 
 class NetworkConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $datapathProvider;
   protected $defaultSnatStatusType = DefaultSnatStatus::class;
   protected $defaultSnatStatusDataType = '';
   protected $dnsConfigType = DNSConfig::class;
   protected $dnsConfigDataType = '';
+  /**
+   * @var bool
+   */
   public $enableIntraNodeVisibility;
+  /**
+   * @var bool
+   */
   public $enableL4ilbSubsetting;
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string
+   */
   public $privateIpv6GoogleAccess;
+  protected $serviceExternalIpsConfigType = ServiceExternalIPsConfig::class;
+  protected $serviceExternalIpsConfigDataType = '';
+  /**
+   * @var string
+   */
   public $subnetwork;
 
+  /**
+   * @param string
+   */
   public function setDatapathProvider($datapathProvider)
   {
     $this->datapathProvider = $datapathProvider;
   }
+  /**
+   * @return string
+   */
   public function getDatapathProvider()
   {
     return $this->datapathProvider;
@@ -66,42 +92,86 @@ class NetworkConfig extends \Google\Model
   {
     return $this->dnsConfig;
   }
+  /**
+   * @param bool
+   */
   public function setEnableIntraNodeVisibility($enableIntraNodeVisibility)
   {
     $this->enableIntraNodeVisibility = $enableIntraNodeVisibility;
   }
+  /**
+   * @return bool
+   */
   public function getEnableIntraNodeVisibility()
   {
     return $this->enableIntraNodeVisibility;
   }
+  /**
+   * @param bool
+   */
   public function setEnableL4ilbSubsetting($enableL4ilbSubsetting)
   {
     $this->enableL4ilbSubsetting = $enableL4ilbSubsetting;
   }
+  /**
+   * @return bool
+   */
   public function getEnableL4ilbSubsetting()
   {
     return $this->enableL4ilbSubsetting;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setPrivateIpv6GoogleAccess($privateIpv6GoogleAccess)
   {
     $this->privateIpv6GoogleAccess = $privateIpv6GoogleAccess;
   }
+  /**
+   * @return string
+   */
   public function getPrivateIpv6GoogleAccess()
   {
     return $this->privateIpv6GoogleAccess;
   }
+  /**
+   * @param ServiceExternalIPsConfig
+   */
+  public function setServiceExternalIpsConfig(ServiceExternalIPsConfig $serviceExternalIpsConfig)
+  {
+    $this->serviceExternalIpsConfig = $serviceExternalIpsConfig;
+  }
+  /**
+   * @return ServiceExternalIPsConfig
+   */
+  public function getServiceExternalIpsConfig()
+  {
+    return $this->serviceExternalIpsConfig;
+  }
+  /**
+   * @param string
+   */
   public function setSubnetwork($subnetwork)
   {
     $this->subnetwork = $subnetwork;
   }
+  /**
+   * @return string
+   */
   public function getSubnetwork()
   {
     return $this->subnetwork;

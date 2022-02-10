@@ -20,31 +20,61 @@ namespace Google\Service\ShoppingContent;
 class Datafeed extends \Google\Collection
 {
   protected $collection_key = 'targets';
+  /**
+   * @var string
+   */
   public $attributeLanguage;
+  /**
+   * @var string
+   */
   public $contentType;
   protected $fetchScheduleType = DatafeedFetchSchedule::class;
   protected $fetchScheduleDataType = '';
+  /**
+   * @var string
+   */
   public $fileName;
   protected $formatType = DatafeedFormat::class;
   protected $formatDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $targetsType = DatafeedTarget::class;
   protected $targetsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAttributeLanguage($attributeLanguage)
   {
     $this->attributeLanguage = $attributeLanguage;
   }
+  /**
+   * @return string
+   */
   public function getAttributeLanguage()
   {
     return $this->attributeLanguage;
   }
+  /**
+   * @param string
+   */
   public function setContentType($contentType)
   {
     $this->contentType = $contentType;
   }
+  /**
+   * @return string
+   */
   public function getContentType()
   {
     return $this->contentType;
@@ -63,10 +93,16 @@ class Datafeed extends \Google\Collection
   {
     return $this->fetchSchedule;
   }
+  /**
+   * @param string
+   */
   public function setFileName($fileName)
   {
     $this->fileName = $fileName;
   }
+  /**
+   * @return string
+   */
   public function getFileName()
   {
     return $this->fileName;
@@ -85,26 +121,44 @@ class Datafeed extends \Google\Collection
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

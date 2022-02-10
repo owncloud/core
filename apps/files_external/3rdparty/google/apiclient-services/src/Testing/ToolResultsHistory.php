@@ -19,21 +19,39 @@ namespace Google\Service\Testing;
 
 class ToolResultsHistory extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $historyId;
+  /**
+   * @var string
+   */
   public $projectId;
 
+  /**
+   * @param string
+   */
   public function setHistoryId($historyId)
   {
     $this->historyId = $historyId;
   }
+  /**
+   * @return string
+   */
   public function getHistoryId()
   {
     return $this->historyId;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;

@@ -19,14 +19,23 @@ namespace Google\Service\Vision;
 
 class OutputConfig extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $batchSize;
   protected $gcsDestinationType = GcsDestination::class;
   protected $gcsDestinationDataType = '';
 
+  /**
+   * @param int
+   */
   public function setBatchSize($batchSize)
   {
     $this->batchSize = $batchSize;
   }
+  /**
+   * @return int
+   */
   public function getBatchSize()
   {
     return $this->batchSize;

@@ -17,10 +17,17 @@
 
 namespace Google\Service\Document;
 
-class GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadata extends \Google\Model
+class GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadata extends \Google\Collection
 {
+  protected $collection_key = 'individualBatchMoveStatuses';
   protected $commonMetadataType = GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata::class;
   protected $commonMetadataDataType = '';
+  /**
+   * @var string
+   */
+  public $destDatasetType;
+  protected $individualBatchMoveStatusesType = GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadataIndividualBatchMoveStatus::class;
+  protected $individualBatchMoveStatusesDataType = 'array';
 
   /**
    * @param GoogleCloudDocumentaiUiv1beta3CommonOperationMetadata
@@ -35,6 +42,34 @@ class GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadata extends \Google\M
   public function getCommonMetadata()
   {
     return $this->commonMetadata;
+  }
+  /**
+   * @param string
+   */
+  public function setDestDatasetType($destDatasetType)
+  {
+    $this->destDatasetType = $destDatasetType;
+  }
+  /**
+   * @return string
+   */
+  public function getDestDatasetType()
+  {
+    return $this->destDatasetType;
+  }
+  /**
+   * @param GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadataIndividualBatchMoveStatus[]
+   */
+  public function setIndividualBatchMoveStatuses($individualBatchMoveStatuses)
+  {
+    $this->individualBatchMoveStatuses = $individualBatchMoveStatuses;
+  }
+  /**
+   * @return GoogleCloudDocumentaiUiv1beta3BatchMoveDocumentsMetadataIndividualBatchMoveStatus[]
+   */
+  public function getIndividualBatchMoveStatuses()
+  {
+    return $this->individualBatchMoveStatuses;
   }
 }
 

@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class ConversionError extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $message;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;

@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class StreamingApplianceSnapshotConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $importStateEndpoint;
+  /**
+   * @var string
+   */
   public $snapshotId;
 
+  /**
+   * @param string
+   */
   public function setImportStateEndpoint($importStateEndpoint)
   {
     $this->importStateEndpoint = $importStateEndpoint;
   }
+  /**
+   * @return string
+   */
   public function getImportStateEndpoint()
   {
     return $this->importStateEndpoint;
   }
+  /**
+   * @param string
+   */
   public function setSnapshotId($snapshotId)
   {
     $this->snapshotId = $snapshotId;
   }
+  /**
+   * @return string
+   */
   public function getSnapshotId()
   {
     return $this->snapshotId;

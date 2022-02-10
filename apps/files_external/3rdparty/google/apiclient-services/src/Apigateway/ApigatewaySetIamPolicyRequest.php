@@ -21,6 +21,9 @@ class ApigatewaySetIamPolicyRequest extends \Google\Model
 {
   protected $policyType = ApigatewayPolicy::class;
   protected $policyDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
 
   /**
@@ -37,10 +40,16 @@ class ApigatewaySetIamPolicyRequest extends \Google\Model
   {
     return $this->policy;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;

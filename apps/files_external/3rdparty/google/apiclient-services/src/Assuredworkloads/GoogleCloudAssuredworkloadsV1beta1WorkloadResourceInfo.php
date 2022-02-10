@@ -19,21 +19,39 @@ namespace Google\Service\Assuredworkloads;
 
 class GoogleCloudAssuredworkloadsV1beta1WorkloadResourceInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resourceId;
+  /**
+   * @var string
+   */
   public $resourceType;
 
+  /**
+   * @param string
+   */
   public function setResourceId($resourceId)
   {
     $this->resourceId = $resourceId;
   }
+  /**
+   * @return string
+   */
   public function getResourceId()
   {
     return $this->resourceId;
   }
+  /**
+   * @param string
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string
+   */
   public function getResourceType()
   {
     return $this->resourceType;

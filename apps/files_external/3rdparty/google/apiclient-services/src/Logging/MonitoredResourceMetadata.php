@@ -19,21 +19,39 @@ namespace Google\Service\Logging;
 
 class MonitoredResourceMetadata extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $systemLabels;
+  /**
+   * @var string[]
+   */
   public $userLabels;
 
+  /**
+   * @param array[]
+   */
   public function setSystemLabels($systemLabels)
   {
     $this->systemLabels = $systemLabels;
   }
+  /**
+   * @return array[]
+   */
   public function getSystemLabels()
   {
     return $this->systemLabels;
   }
+  /**
+   * @param string[]
+   */
   public function setUserLabels($userLabels)
   {
     $this->userLabels = $userLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getUserLabels()
   {
     return $this->userLabels;

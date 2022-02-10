@@ -20,33 +20,63 @@ namespace Google\Service\AndroidManagement;
 class NetworkInfo extends \Google\Collection
 {
   protected $collection_key = 'telephonyInfos';
+  /**
+   * @var string
+   */
   public $imei;
+  /**
+   * @var string
+   */
   public $meid;
+  /**
+   * @var string
+   */
   public $networkOperatorName;
   protected $telephonyInfosType = TelephonyInfo::class;
   protected $telephonyInfosDataType = 'array';
+  /**
+   * @var string
+   */
   public $wifiMacAddress;
 
+  /**
+   * @param string
+   */
   public function setImei($imei)
   {
     $this->imei = $imei;
   }
+  /**
+   * @return string
+   */
   public function getImei()
   {
     return $this->imei;
   }
+  /**
+   * @param string
+   */
   public function setMeid($meid)
   {
     $this->meid = $meid;
   }
+  /**
+   * @return string
+   */
   public function getMeid()
   {
     return $this->meid;
   }
+  /**
+   * @param string
+   */
   public function setNetworkOperatorName($networkOperatorName)
   {
     $this->networkOperatorName = $networkOperatorName;
   }
+  /**
+   * @return string
+   */
   public function getNetworkOperatorName()
   {
     return $this->networkOperatorName;
@@ -65,10 +95,16 @@ class NetworkInfo extends \Google\Collection
   {
     return $this->telephonyInfos;
   }
+  /**
+   * @param string
+   */
   public function setWifiMacAddress($wifiMacAddress)
   {
     $this->wifiMacAddress = $wifiMacAddress;
   }
+  /**
+   * @return string
+   */
   public function getWifiMacAddress()
   {
     return $this->wifiMacAddress;

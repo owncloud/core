@@ -31,8 +31,8 @@ use Google\Service\CloudSearch\Operation;
 class V1 extends \Google\Service\Resource
 {
   /**
-   * Initializes the customer. **Note:** This API requires an admin account to
-   * execute. (v1.initializeCustomer)
+   * Enables `third party` support in Google Cloud Search. **Note:** This API
+   * requires an admin account to execute. (v1.initializeCustomer)
    *
    * @param InitializeCustomerRequest $postBody
    * @param array $optParams Optional parameters.

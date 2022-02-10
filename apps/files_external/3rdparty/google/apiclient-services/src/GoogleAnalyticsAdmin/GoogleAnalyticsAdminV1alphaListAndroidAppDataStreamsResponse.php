@@ -22,6 +22,9 @@ class GoogleAnalyticsAdminV1alphaListAndroidAppDataStreamsResponse extends \Goog
   protected $collection_key = 'androidAppDataStreams';
   protected $androidAppDataStreamsType = GoogleAnalyticsAdminV1alphaAndroidAppDataStream::class;
   protected $androidAppDataStreamsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAnalyticsAdminV1alphaListAndroidAppDataStreamsResponse extends \Goog
   {
     return $this->androidAppDataStreams;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

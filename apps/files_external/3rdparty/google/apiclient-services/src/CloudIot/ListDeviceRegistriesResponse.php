@@ -22,6 +22,9 @@ class ListDeviceRegistriesResponse extends \Google\Collection
   protected $collection_key = 'deviceRegistries';
   protected $deviceRegistriesType = DeviceRegistry::class;
   protected $deviceRegistriesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListDeviceRegistriesResponse extends \Google\Collection
   {
     return $this->deviceRegistries;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

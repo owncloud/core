@@ -19,18 +19,33 @@ namespace Google\Service\Games;
 
 class PlayerExperienceInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currentExperiencePoints;
   protected $currentLevelType = PlayerLevel::class;
   protected $currentLevelDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $lastLevelUpTimestampMillis;
   protected $nextLevelType = PlayerLevel::class;
   protected $nextLevelDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCurrentExperiencePoints($currentExperiencePoints)
   {
     $this->currentExperiencePoints = $currentExperiencePoints;
   }
+  /**
+   * @return string
+   */
   public function getCurrentExperiencePoints()
   {
     return $this->currentExperiencePoints;
@@ -49,18 +64,30 @@ class PlayerExperienceInfo extends \Google\Model
   {
     return $this->currentLevel;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLastLevelUpTimestampMillis($lastLevelUpTimestampMillis)
   {
     $this->lastLevelUpTimestampMillis = $lastLevelUpTimestampMillis;
   }
+  /**
+   * @return string
+   */
   public function getLastLevelUpTimestampMillis()
   {
     return $this->lastLevelUpTimestampMillis;

@@ -19,15 +19,27 @@ namespace Google\Service\Sheets;
 
 class UpdateEmbeddedObjectPositionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fields;
   protected $newPositionType = EmbeddedObjectPosition::class;
   protected $newPositionDataType = '';
+  /**
+   * @var int
+   */
   public $objectId;
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;
@@ -46,10 +58,16 @@ class UpdateEmbeddedObjectPositionRequest extends \Google\Model
   {
     return $this->newPosition;
   }
+  /**
+   * @param int
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return int
+   */
   public function getObjectId()
   {
     return $this->objectId;

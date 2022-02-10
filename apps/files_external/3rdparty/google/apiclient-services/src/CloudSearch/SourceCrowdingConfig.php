@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class SourceCrowdingConfig extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $numResults;
+  /**
+   * @var int
+   */
   public $numSuggestions;
 
+  /**
+   * @param int
+   */
   public function setNumResults($numResults)
   {
     $this->numResults = $numResults;
   }
+  /**
+   * @return int
+   */
   public function getNumResults()
   {
     return $this->numResults;
   }
+  /**
+   * @param int
+   */
   public function setNumSuggestions($numSuggestions)
   {
     $this->numSuggestions = $numSuggestions;
   }
+  /**
+   * @return int
+   */
   public function getNumSuggestions()
   {
     return $this->numSuggestions;

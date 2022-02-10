@@ -19,12 +19,21 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1ImportErrorsConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsPrefix;
 
+  /**
+   * @param string
+   */
   public function setGcsPrefix($gcsPrefix)
   {
     $this->gcsPrefix = $gcsPrefix;
   }
+  /**
+   * @return string
+   */
   public function getGcsPrefix()
   {
     return $this->gcsPrefix;

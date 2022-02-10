@@ -20,48 +20,93 @@ namespace Google\Service\GameServices;
 class Condition extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $iam;
+  /**
+   * @var string
+   */
   public $op;
+  /**
+   * @var string
+   */
   public $svc;
+  /**
+   * @var string
+   */
   public $sys;
+  /**
+   * @var string[]
+   */
   public $values;
 
+  /**
+   * @param string
+   */
   public function setIam($iam)
   {
     $this->iam = $iam;
   }
+  /**
+   * @return string
+   */
   public function getIam()
   {
     return $this->iam;
   }
+  /**
+   * @param string
+   */
   public function setOp($op)
   {
     $this->op = $op;
   }
+  /**
+   * @return string
+   */
   public function getOp()
   {
     return $this->op;
   }
+  /**
+   * @param string
+   */
   public function setSvc($svc)
   {
     $this->svc = $svc;
   }
+  /**
+   * @return string
+   */
   public function getSvc()
   {
     return $this->svc;
   }
+  /**
+   * @param string
+   */
   public function setSys($sys)
   {
     $this->sys = $sys;
   }
+  /**
+   * @return string
+   */
   public function getSys()
   {
     return $this->sys;
   }
+  /**
+   * @param string[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return string[]
+   */
   public function getValues()
   {
     return $this->values;

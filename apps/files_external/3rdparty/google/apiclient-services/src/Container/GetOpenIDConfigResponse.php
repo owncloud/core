@@ -30,12 +30,33 @@ class GetOpenIDConfigResponse extends \Google\Collection
   ];
   protected $cacheHeaderType = HttpCacheControlResponseHeader::class;
   protected $cacheHeaderDataType = '';
+  /**
+   * @var string[]
+   */
   public $claimsSupported;
+  /**
+   * @var string[]
+   */
   public $grantTypes;
+  /**
+   * @var string[]
+   */
   public $idTokenSigningAlgValuesSupported;
+  /**
+   * @var string
+   */
   public $issuer;
+  /**
+   * @var string
+   */
   public $jwksUri;
+  /**
+   * @var string[]
+   */
   public $responseTypesSupported;
+  /**
+   * @var string[]
+   */
   public $subjectTypesSupported;
 
   /**
@@ -52,58 +73,100 @@ class GetOpenIDConfigResponse extends \Google\Collection
   {
     return $this->cacheHeader;
   }
+  /**
+   * @param string[]
+   */
   public function setClaimsSupported($claimsSupported)
   {
     $this->claimsSupported = $claimsSupported;
   }
+  /**
+   * @return string[]
+   */
   public function getClaimsSupported()
   {
     return $this->claimsSupported;
   }
+  /**
+   * @param string[]
+   */
   public function setGrantTypes($grantTypes)
   {
     $this->grantTypes = $grantTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getGrantTypes()
   {
     return $this->grantTypes;
   }
+  /**
+   * @param string[]
+   */
   public function setIdTokenSigningAlgValuesSupported($idTokenSigningAlgValuesSupported)
   {
     $this->idTokenSigningAlgValuesSupported = $idTokenSigningAlgValuesSupported;
   }
+  /**
+   * @return string[]
+   */
   public function getIdTokenSigningAlgValuesSupported()
   {
     return $this->idTokenSigningAlgValuesSupported;
   }
+  /**
+   * @param string
+   */
   public function setIssuer($issuer)
   {
     $this->issuer = $issuer;
   }
+  /**
+   * @return string
+   */
   public function getIssuer()
   {
     return $this->issuer;
   }
+  /**
+   * @param string
+   */
   public function setJwksUri($jwksUri)
   {
     $this->jwksUri = $jwksUri;
   }
+  /**
+   * @return string
+   */
   public function getJwksUri()
   {
     return $this->jwksUri;
   }
+  /**
+   * @param string[]
+   */
   public function setResponseTypesSupported($responseTypesSupported)
   {
     $this->responseTypesSupported = $responseTypesSupported;
   }
+  /**
+   * @return string[]
+   */
   public function getResponseTypesSupported()
   {
     return $this->responseTypesSupported;
   }
+  /**
+   * @param string[]
+   */
   public function setSubjectTypesSupported($subjectTypesSupported)
   {
     $this->subjectTypesSupported = $subjectTypesSupported;
   }
+  /**
+   * @return string[]
+   */
   public function getSubjectTypesSupported()
   {
     return $this->subjectTypesSupported;

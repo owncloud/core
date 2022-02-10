@@ -19,30 +19,57 @@ namespace Google\Service\FirebaseCloudMessaging;
 
 class Notification extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $body;
+  /**
+   * @var string
+   */
   public $image;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setBody($body)
   {
     $this->body = $body;
   }
+  /**
+   * @return string
+   */
   public function getBody()
   {
     return $this->body;
   }
+  /**
+   * @param string
+   */
   public function setImage($image)
   {
     $this->image = $image;
   }
+  /**
+   * @return string
+   */
   public function getImage()
   {
     return $this->image;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

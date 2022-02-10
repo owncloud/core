@@ -19,21 +19,39 @@ namespace Google\Service\CloudAsset;
 
 class RelatedResource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $assetType;
+  /**
+   * @var string
+   */
   public $fullResourceName;
 
+  /**
+   * @param string
+   */
   public function setAssetType($assetType)
   {
     $this->assetType = $assetType;
   }
+  /**
+   * @return string
+   */
   public function getAssetType()
   {
     return $this->assetType;
   }
+  /**
+   * @param string
+   */
   public function setFullResourceName($fullResourceName)
   {
     $this->fullResourceName = $fullResourceName;
   }
+  /**
+   * @return string
+   */
   public function getFullResourceName()
   {
     return $this->fullResourceName;

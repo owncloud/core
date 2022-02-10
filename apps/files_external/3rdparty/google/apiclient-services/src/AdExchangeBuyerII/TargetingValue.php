@@ -23,7 +23,13 @@ class TargetingValue extends \Google\Model
   protected $creativeSizeValueDataType = '';
   protected $dayPartTargetingValueType = DayPartTargeting::class;
   protected $dayPartTargetingValueDataType = '';
+  /**
+   * @var string
+   */
   public $longValue;
+  /**
+   * @var string
+   */
   public $stringValue;
 
   /**
@@ -54,18 +60,30 @@ class TargetingValue extends \Google\Model
   {
     return $this->dayPartTargetingValue;
   }
+  /**
+   * @param string
+   */
   public function setLongValue($longValue)
   {
     $this->longValue = $longValue;
   }
+  /**
+   * @return string
+   */
   public function getLongValue()
   {
     return $this->longValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;

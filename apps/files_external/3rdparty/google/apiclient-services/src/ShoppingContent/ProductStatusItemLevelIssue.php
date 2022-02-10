@@ -20,84 +20,165 @@ namespace Google\Service\ShoppingContent;
 class ProductStatusItemLevelIssue extends \Google\Collection
 {
   protected $collection_key = 'applicableCountries';
+  /**
+   * @var string[]
+   */
   public $applicableCountries;
+  /**
+   * @var string
+   */
   public $attributeName;
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $destination;
+  /**
+   * @var string
+   */
   public $detail;
+  /**
+   * @var string
+   */
   public $documentation;
+  /**
+   * @var string
+   */
   public $resolution;
+  /**
+   * @var string
+   */
   public $servability;
 
+  /**
+   * @param string[]
+   */
   public function setApplicableCountries($applicableCountries)
   {
     $this->applicableCountries = $applicableCountries;
   }
+  /**
+   * @return string[]
+   */
   public function getApplicableCountries()
   {
     return $this->applicableCountries;
   }
+  /**
+   * @param string
+   */
   public function setAttributeName($attributeName)
   {
     $this->attributeName = $attributeName;
   }
+  /**
+   * @return string
+   */
   public function getAttributeName()
   {
     return $this->attributeName;
   }
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDestination($destination)
   {
     $this->destination = $destination;
   }
+  /**
+   * @return string
+   */
   public function getDestination()
   {
     return $this->destination;
   }
+  /**
+   * @param string
+   */
   public function setDetail($detail)
   {
     $this->detail = $detail;
   }
+  /**
+   * @return string
+   */
   public function getDetail()
   {
     return $this->detail;
   }
+  /**
+   * @param string
+   */
   public function setDocumentation($documentation)
   {
     $this->documentation = $documentation;
   }
+  /**
+   * @return string
+   */
   public function getDocumentation()
   {
     return $this->documentation;
   }
+  /**
+   * @param string
+   */
   public function setResolution($resolution)
   {
     $this->resolution = $resolution;
   }
+  /**
+   * @return string
+   */
   public function getResolution()
   {
     return $this->resolution;
   }
+  /**
+   * @param string
+   */
   public function setServability($servability)
   {
     $this->servability = $servability;
   }
+  /**
+   * @return string
+   */
   public function getServability()
   {
     return $this->servability;

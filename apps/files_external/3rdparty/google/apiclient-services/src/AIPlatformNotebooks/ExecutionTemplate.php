@@ -21,18 +21,51 @@ class ExecutionTemplate extends \Google\Model
 {
   protected $acceleratorConfigType = SchedulerAcceleratorConfig::class;
   protected $acceleratorConfigDataType = '';
+  /**
+   * @var string
+   */
   public $containerImageUri;
   protected $dataprocParametersType = DataprocParameters::class;
   protected $dataprocParametersDataType = '';
+  /**
+   * @var string
+   */
   public $inputNotebookFile;
+  /**
+   * @var string
+   */
   public $jobType;
+  /**
+   * @var string
+   */
   public $kernelSpec;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $masterType;
+  /**
+   * @var string
+   */
   public $outputNotebookFolder;
+  /**
+   * @var string
+   */
   public $parameters;
+  /**
+   * @var string
+   */
   public $paramsYamlFile;
+  /**
+   * @var string
+   */
   public $scaleTier;
+  /**
+   * @var string
+   */
   public $serviceAccount;
   protected $vertexAiParametersType = VertexAIParameters::class;
   protected $vertexAiParametersDataType = '';
@@ -51,10 +84,16 @@ class ExecutionTemplate extends \Google\Model
   {
     return $this->acceleratorConfig;
   }
+  /**
+   * @param string
+   */
   public function setContainerImageUri($containerImageUri)
   {
     $this->containerImageUri = $containerImageUri;
   }
+  /**
+   * @return string
+   */
   public function getContainerImageUri()
   {
     return $this->containerImageUri;
@@ -73,82 +112,142 @@ class ExecutionTemplate extends \Google\Model
   {
     return $this->dataprocParameters;
   }
+  /**
+   * @param string
+   */
   public function setInputNotebookFile($inputNotebookFile)
   {
     $this->inputNotebookFile = $inputNotebookFile;
   }
+  /**
+   * @return string
+   */
   public function getInputNotebookFile()
   {
     return $this->inputNotebookFile;
   }
+  /**
+   * @param string
+   */
   public function setJobType($jobType)
   {
     $this->jobType = $jobType;
   }
+  /**
+   * @return string
+   */
   public function getJobType()
   {
     return $this->jobType;
   }
+  /**
+   * @param string
+   */
   public function setKernelSpec($kernelSpec)
   {
     $this->kernelSpec = $kernelSpec;
   }
+  /**
+   * @return string
+   */
   public function getKernelSpec()
   {
     return $this->kernelSpec;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setMasterType($masterType)
   {
     $this->masterType = $masterType;
   }
+  /**
+   * @return string
+   */
   public function getMasterType()
   {
     return $this->masterType;
   }
+  /**
+   * @param string
+   */
   public function setOutputNotebookFolder($outputNotebookFolder)
   {
     $this->outputNotebookFolder = $outputNotebookFolder;
   }
+  /**
+   * @return string
+   */
   public function getOutputNotebookFolder()
   {
     return $this->outputNotebookFolder;
   }
+  /**
+   * @param string
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return string
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setParamsYamlFile($paramsYamlFile)
   {
     $this->paramsYamlFile = $paramsYamlFile;
   }
+  /**
+   * @return string
+   */
   public function getParamsYamlFile()
   {
     return $this->paramsYamlFile;
   }
+  /**
+   * @param string
+   */
   public function setScaleTier($scaleTier)
   {
     $this->scaleTier = $scaleTier;
   }
+  /**
+   * @return string
+   */
   public function getScaleTier()
   {
     return $this->scaleTier;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;

@@ -19,21 +19,39 @@ namespace Google\Service\ServiceControl;
 
 class FirstPartyPrincipal extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $principalEmail;
+  /**
+   * @var array[]
+   */
   public $serviceMetadata;
 
+  /**
+   * @param string
+   */
   public function setPrincipalEmail($principalEmail)
   {
     $this->principalEmail = $principalEmail;
   }
+  /**
+   * @return string
+   */
   public function getPrincipalEmail()
   {
     return $this->principalEmail;
   }
+  /**
+   * @param array[]
+   */
   public function setServiceMetadata($serviceMetadata)
   {
     $this->serviceMetadata = $serviceMetadata;
   }
+  /**
+   * @return array[]
+   */
   public function getServiceMetadata()
   {
     return $this->serviceMetadata;

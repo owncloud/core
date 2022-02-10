@@ -19,21 +19,39 @@ namespace Google\Service\CloudIdentity;
 
 class EntityKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $namespace;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setNamespace($namespace)
   {
     $this->namespace = $namespace;
   }
+  /**
+   * @return string
+   */
   public function getNamespace()
   {
     return $this->namespace;

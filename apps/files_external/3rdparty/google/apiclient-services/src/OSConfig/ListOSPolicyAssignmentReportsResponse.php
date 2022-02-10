@@ -20,14 +20,23 @@ namespace Google\Service\OSConfig;
 class ListOSPolicyAssignmentReportsResponse extends \Google\Collection
 {
   protected $collection_key = 'osPolicyAssignmentReports';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $osPolicyAssignmentReportsType = OSPolicyAssignmentReport::class;
   protected $osPolicyAssignmentReportsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

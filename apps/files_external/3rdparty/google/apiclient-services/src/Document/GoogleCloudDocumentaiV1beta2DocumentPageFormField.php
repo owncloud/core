@@ -20,7 +20,13 @@ namespace Google\Service\Document;
 class GoogleCloudDocumentaiV1beta2DocumentPageFormField extends \Google\Collection
 {
   protected $collection_key = 'valueDetectedLanguages';
+  /**
+   * @var string
+   */
   public $correctedKeyText;
+  /**
+   * @var string
+   */
   public $correctedValueText;
   protected $fieldNameType = GoogleCloudDocumentaiV1beta2DocumentPageLayout::class;
   protected $fieldNameDataType = '';
@@ -32,20 +38,35 @@ class GoogleCloudDocumentaiV1beta2DocumentPageFormField extends \Google\Collecti
   protected $provenanceDataType = '';
   protected $valueDetectedLanguagesType = GoogleCloudDocumentaiV1beta2DocumentPageDetectedLanguage::class;
   protected $valueDetectedLanguagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $valueType;
 
+  /**
+   * @param string
+   */
   public function setCorrectedKeyText($correctedKeyText)
   {
     $this->correctedKeyText = $correctedKeyText;
   }
+  /**
+   * @return string
+   */
   public function getCorrectedKeyText()
   {
     return $this->correctedKeyText;
   }
+  /**
+   * @param string
+   */
   public function setCorrectedValueText($correctedValueText)
   {
     $this->correctedValueText = $correctedValueText;
   }
+  /**
+   * @return string
+   */
   public function getCorrectedValueText()
   {
     return $this->correctedValueText;
@@ -120,10 +141,16 @@ class GoogleCloudDocumentaiV1beta2DocumentPageFormField extends \Google\Collecti
   {
     return $this->valueDetectedLanguages;
   }
+  /**
+   * @param string
+   */
   public function setValueType($valueType)
   {
     $this->valueType = $valueType;
   }
+  /**
+   * @return string
+   */
   public function getValueType()
   {
     return $this->valueType;

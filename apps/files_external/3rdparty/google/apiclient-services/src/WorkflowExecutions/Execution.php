@@ -19,37 +19,79 @@ namespace Google\Service\WorkflowExecutions;
 
 class Execution extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $argument;
+  /**
+   * @var string
+   */
   public $callLogLevel;
+  /**
+   * @var string
+   */
   public $endTime;
   protected $errorType = Error::class;
   protected $errorDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $result;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $workflowRevisionId;
 
+  /**
+   * @param string
+   */
   public function setArgument($argument)
   {
     $this->argument = $argument;
   }
+  /**
+   * @return string
+   */
   public function getArgument()
   {
     return $this->argument;
   }
+  /**
+   * @param string
+   */
   public function setCallLogLevel($callLogLevel)
   {
     $this->callLogLevel = $callLogLevel;
   }
+  /**
+   * @return string
+   */
   public function getCallLogLevel()
   {
     return $this->callLogLevel;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -68,42 +110,72 @@ class Execution extends \Google\Model
   {
     return $this->error;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setResult($result)
   {
     $this->result = $result;
   }
+  /**
+   * @return string
+   */
   public function getResult()
   {
     return $this->result;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setWorkflowRevisionId($workflowRevisionId)
   {
     $this->workflowRevisionId = $workflowRevisionId;
   }
+  /**
+   * @return string
+   */
   public function getWorkflowRevisionId()
   {
     return $this->workflowRevisionId;

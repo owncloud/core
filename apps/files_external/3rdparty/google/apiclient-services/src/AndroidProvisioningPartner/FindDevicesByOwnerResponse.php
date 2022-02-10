@@ -22,7 +22,13 @@ class FindDevicesByOwnerResponse extends \Google\Collection
   protected $collection_key = 'devices';
   protected $devicesType = Device::class;
   protected $devicesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var int
+   */
   public $totalSize;
 
   /**
@@ -39,18 +45,30 @@ class FindDevicesByOwnerResponse extends \Google\Collection
   {
     return $this->devices;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

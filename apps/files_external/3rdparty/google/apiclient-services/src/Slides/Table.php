@@ -20,9 +20,15 @@ namespace Google\Service\Slides;
 class Table extends \Google\Collection
 {
   protected $collection_key = 'verticalBorderRows';
+  /**
+   * @var int
+   */
   public $columns;
   protected $horizontalBorderRowsType = TableBorderRow::class;
   protected $horizontalBorderRowsDataType = 'array';
+  /**
+   * @var int
+   */
   public $rows;
   protected $tableColumnsType = TableColumnProperties::class;
   protected $tableColumnsDataType = 'array';
@@ -31,10 +37,16 @@ class Table extends \Google\Collection
   protected $verticalBorderRowsType = TableBorderRow::class;
   protected $verticalBorderRowsDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
+  /**
+   * @return int
+   */
   public function getColumns()
   {
     return $this->columns;
@@ -53,10 +65,16 @@ class Table extends \Google\Collection
   {
     return $this->horizontalBorderRows;
   }
+  /**
+   * @param int
+   */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
+  /**
+   * @return int
+   */
   public function getRows()
   {
     return $this->rows;

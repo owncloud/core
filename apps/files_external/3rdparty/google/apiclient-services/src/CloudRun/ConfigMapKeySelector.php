@@ -19,16 +19,31 @@ namespace Google\Service\CloudRun;
 
 class ConfigMapKeySelector extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
   protected $localObjectReferenceType = LocalObjectReference::class;
   protected $localObjectReferenceDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $optional;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
@@ -47,18 +62,30 @@ class ConfigMapKeySelector extends \Google\Model
   {
     return $this->localObjectReference;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setOptional($optional)
   {
     $this->optional = $optional;
   }
+  /**
+   * @return bool
+   */
   public function getOptional()
   {
     return $this->optional;

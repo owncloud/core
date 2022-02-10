@@ -19,21 +19,39 @@ namespace Google\Service\Docs;
 
 class SizeSuggestionState extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $heightSuggested;
+  /**
+   * @var bool
+   */
   public $widthSuggested;
 
+  /**
+   * @param bool
+   */
   public function setHeightSuggested($heightSuggested)
   {
     $this->heightSuggested = $heightSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getHeightSuggested()
   {
     return $this->heightSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setWidthSuggested($widthSuggested)
   {
     $this->widthSuggested = $widthSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getWidthSuggested()
   {
     return $this->widthSuggested;

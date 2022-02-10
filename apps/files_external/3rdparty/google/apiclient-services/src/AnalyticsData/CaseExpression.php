@@ -19,12 +19,21 @@ namespace Google\Service\AnalyticsData;
 
 class CaseExpression extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimensionName;
 
+  /**
+   * @param string
+   */
   public function setDimensionName($dimensionName)
   {
     $this->dimensionName = $dimensionName;
   }
+  /**
+   * @return string
+   */
   public function getDimensionName()
   {
     return $this->dimensionName;

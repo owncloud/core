@@ -19,15 +19,27 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1alpha1IssueModelLabelStats extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $analyzedConversationsCount;
   protected $issueStatsType = GoogleCloudContactcenterinsightsV1alpha1IssueModelLabelStatsIssueStats::class;
   protected $issueStatsDataType = 'map';
+  /**
+   * @var string
+   */
   public $unclassifiedConversationsCount;
 
+  /**
+   * @param string
+   */
   public function setAnalyzedConversationsCount($analyzedConversationsCount)
   {
     $this->analyzedConversationsCount = $analyzedConversationsCount;
   }
+  /**
+   * @return string
+   */
   public function getAnalyzedConversationsCount()
   {
     return $this->analyzedConversationsCount;
@@ -46,10 +58,16 @@ class GoogleCloudContactcenterinsightsV1alpha1IssueModelLabelStats extends \Goog
   {
     return $this->issueStats;
   }
+  /**
+   * @param string
+   */
   public function setUnclassifiedConversationsCount($unclassifiedConversationsCount)
   {
     $this->unclassifiedConversationsCount = $unclassifiedConversationsCount;
   }
+  /**
+   * @return string
+   */
   public function getUnclassifiedConversationsCount()
   {
     return $this->unclassifiedConversationsCount;

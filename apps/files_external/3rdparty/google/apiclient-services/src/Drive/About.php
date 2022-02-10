@@ -20,16 +20,43 @@ namespace Google\Service\Drive;
 class About extends \Google\Collection
 {
   protected $collection_key = 'teamDriveThemes';
+  /**
+   * @var bool
+   */
   public $appInstalled;
+  /**
+   * @var bool
+   */
   public $canCreateDrives;
+  /**
+   * @var bool
+   */
   public $canCreateTeamDrives;
   protected $driveThemesType = AboutDriveThemes::class;
   protected $driveThemesDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $exportFormats;
+  /**
+   * @var string[]
+   */
   public $folderColorPalette;
+  /**
+   * @var string[]
+   */
   public $importFormats;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $maxImportSizes;
+  /**
+   * @var string
+   */
   public $maxUploadSize;
   protected $storageQuotaType = AboutStorageQuota::class;
   protected $storageQuotaDataType = '';
@@ -38,26 +65,44 @@ class About extends \Google\Collection
   protected $userType = User::class;
   protected $userDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setAppInstalled($appInstalled)
   {
     $this->appInstalled = $appInstalled;
   }
+  /**
+   * @return bool
+   */
   public function getAppInstalled()
   {
     return $this->appInstalled;
   }
+  /**
+   * @param bool
+   */
   public function setCanCreateDrives($canCreateDrives)
   {
     $this->canCreateDrives = $canCreateDrives;
   }
+  /**
+   * @return bool
+   */
   public function getCanCreateDrives()
   {
     return $this->canCreateDrives;
   }
+  /**
+   * @param bool
+   */
   public function setCanCreateTeamDrives($canCreateTeamDrives)
   {
     $this->canCreateTeamDrives = $canCreateTeamDrives;
   }
+  /**
+   * @return bool
+   */
   public function getCanCreateTeamDrives()
   {
     return $this->canCreateTeamDrives;
@@ -76,50 +121,86 @@ class About extends \Google\Collection
   {
     return $this->driveThemes;
   }
+  /**
+   * @param string[]
+   */
   public function setExportFormats($exportFormats)
   {
     $this->exportFormats = $exportFormats;
   }
+  /**
+   * @return string[]
+   */
   public function getExportFormats()
   {
     return $this->exportFormats;
   }
+  /**
+   * @param string[]
+   */
   public function setFolderColorPalette($folderColorPalette)
   {
     $this->folderColorPalette = $folderColorPalette;
   }
+  /**
+   * @return string[]
+   */
   public function getFolderColorPalette()
   {
     return $this->folderColorPalette;
   }
+  /**
+   * @param string[]
+   */
   public function setImportFormats($importFormats)
   {
     $this->importFormats = $importFormats;
   }
+  /**
+   * @return string[]
+   */
   public function getImportFormats()
   {
     return $this->importFormats;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setMaxImportSizes($maxImportSizes)
   {
     $this->maxImportSizes = $maxImportSizes;
   }
+  /**
+   * @return string[]
+   */
   public function getMaxImportSizes()
   {
     return $this->maxImportSizes;
   }
+  /**
+   * @param string
+   */
   public function setMaxUploadSize($maxUploadSize)
   {
     $this->maxUploadSize = $maxUploadSize;
   }
+  /**
+   * @return string
+   */
   public function getMaxUploadSize()
   {
     return $this->maxUploadSize;

@@ -19,84 +19,165 @@ namespace Google\Service\Dfareporting;
 
 class City extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $countryCode;
+  /**
+   * @var string
+   */
   public $countryDartId;
+  /**
+   * @var string
+   */
   public $dartId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $metroCode;
+  /**
+   * @var string
+   */
   public $metroDmaId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $regionCode;
+  /**
+   * @var string
+   */
   public $regionDartId;
 
+  /**
+   * @param string
+   */
   public function setCountryCode($countryCode)
   {
     $this->countryCode = $countryCode;
   }
+  /**
+   * @return string
+   */
   public function getCountryCode()
   {
     return $this->countryCode;
   }
+  /**
+   * @param string
+   */
   public function setCountryDartId($countryDartId)
   {
     $this->countryDartId = $countryDartId;
   }
+  /**
+   * @return string
+   */
   public function getCountryDartId()
   {
     return $this->countryDartId;
   }
+  /**
+   * @param string
+   */
   public function setDartId($dartId)
   {
     $this->dartId = $dartId;
   }
+  /**
+   * @return string
+   */
   public function getDartId()
   {
     return $this->dartId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setMetroCode($metroCode)
   {
     $this->metroCode = $metroCode;
   }
+  /**
+   * @return string
+   */
   public function getMetroCode()
   {
     return $this->metroCode;
   }
+  /**
+   * @param string
+   */
   public function setMetroDmaId($metroDmaId)
   {
     $this->metroDmaId = $metroDmaId;
   }
+  /**
+   * @return string
+   */
   public function getMetroDmaId()
   {
     return $this->metroDmaId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;
   }
+  /**
+   * @param string
+   */
   public function setRegionDartId($regionDartId)
   {
     $this->regionDartId = $regionDartId;
   }
+  /**
+   * @return string
+   */
   public function getRegionDartId()
   {
     return $this->regionDartId;

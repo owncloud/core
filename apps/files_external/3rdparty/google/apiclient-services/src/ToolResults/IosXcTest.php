@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class IosXcTest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bundleId;
+  /**
+   * @var string
+   */
   public $xcodeVersion;
 
+  /**
+   * @param string
+   */
   public function setBundleId($bundleId)
   {
     $this->bundleId = $bundleId;
   }
+  /**
+   * @return string
+   */
   public function getBundleId()
   {
     return $this->bundleId;
   }
+  /**
+   * @param string
+   */
   public function setXcodeVersion($xcodeVersion)
   {
     $this->xcodeVersion = $xcodeVersion;
   }
+  /**
+   * @return string
+   */
   public function getXcodeVersion()
   {
     return $this->xcodeVersion;

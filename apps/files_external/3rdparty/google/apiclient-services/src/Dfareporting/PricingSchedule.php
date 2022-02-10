@@ -20,44 +20,89 @@ namespace Google\Service\Dfareporting;
 class PricingSchedule extends \Google\Collection
 {
   protected $collection_key = 'pricingPeriods';
+  /**
+   * @var string
+   */
   public $capCostOption;
+  /**
+   * @var string
+   */
   public $endDate;
+  /**
+   * @var bool
+   */
   public $flighted;
+  /**
+   * @var string
+   */
   public $floodlightActivityId;
   protected $pricingPeriodsType = PricingSchedulePricingPeriod::class;
   protected $pricingPeriodsDataType = 'array';
+  /**
+   * @var string
+   */
   public $pricingType;
+  /**
+   * @var string
+   */
   public $startDate;
+  /**
+   * @var string
+   */
   public $testingStartDate;
 
+  /**
+   * @param string
+   */
   public function setCapCostOption($capCostOption)
   {
     $this->capCostOption = $capCostOption;
   }
+  /**
+   * @return string
+   */
   public function getCapCostOption()
   {
     return $this->capCostOption;
   }
+  /**
+   * @param string
+   */
   public function setEndDate($endDate)
   {
     $this->endDate = $endDate;
   }
+  /**
+   * @return string
+   */
   public function getEndDate()
   {
     return $this->endDate;
   }
+  /**
+   * @param bool
+   */
   public function setFlighted($flighted)
   {
     $this->flighted = $flighted;
   }
+  /**
+   * @return bool
+   */
   public function getFlighted()
   {
     return $this->flighted;
   }
+  /**
+   * @param string
+   */
   public function setFloodlightActivityId($floodlightActivityId)
   {
     $this->floodlightActivityId = $floodlightActivityId;
   }
+  /**
+   * @return string
+   */
   public function getFloodlightActivityId()
   {
     return $this->floodlightActivityId;
@@ -76,26 +121,44 @@ class PricingSchedule extends \Google\Collection
   {
     return $this->pricingPeriods;
   }
+  /**
+   * @param string
+   */
   public function setPricingType($pricingType)
   {
     $this->pricingType = $pricingType;
   }
+  /**
+   * @return string
+   */
   public function getPricingType()
   {
     return $this->pricingType;
   }
+  /**
+   * @param string
+   */
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
   }
+  /**
+   * @return string
+   */
   public function getStartDate()
   {
     return $this->startDate;
   }
+  /**
+   * @param string
+   */
   public function setTestingStartDate($testingStartDate)
   {
     $this->testingStartDate = $testingStartDate;
   }
+  /**
+   * @return string
+   */
   public function getTestingStartDate()
   {
     return $this->testingStartDate;

@@ -21,10 +21,25 @@ class ProgrammaticGuaranteedTerms extends \Google\Model
 {
   protected $fixedPriceType = Price::class;
   protected $fixedPriceDataType = '';
+  /**
+   * @var string
+   */
   public $guaranteedLooks;
+  /**
+   * @var string
+   */
   public $impressionCap;
+  /**
+   * @var string
+   */
   public $minimumDailyLooks;
+  /**
+   * @var string
+   */
   public $percentShareOfVoice;
+  /**
+   * @var string
+   */
   public $reservationType;
 
   /**
@@ -41,42 +56,72 @@ class ProgrammaticGuaranteedTerms extends \Google\Model
   {
     return $this->fixedPrice;
   }
+  /**
+   * @param string
+   */
   public function setGuaranteedLooks($guaranteedLooks)
   {
     $this->guaranteedLooks = $guaranteedLooks;
   }
+  /**
+   * @return string
+   */
   public function getGuaranteedLooks()
   {
     return $this->guaranteedLooks;
   }
+  /**
+   * @param string
+   */
   public function setImpressionCap($impressionCap)
   {
     $this->impressionCap = $impressionCap;
   }
+  /**
+   * @return string
+   */
   public function getImpressionCap()
   {
     return $this->impressionCap;
   }
+  /**
+   * @param string
+   */
   public function setMinimumDailyLooks($minimumDailyLooks)
   {
     $this->minimumDailyLooks = $minimumDailyLooks;
   }
+  /**
+   * @return string
+   */
   public function getMinimumDailyLooks()
   {
     return $this->minimumDailyLooks;
   }
+  /**
+   * @param string
+   */
   public function setPercentShareOfVoice($percentShareOfVoice)
   {
     $this->percentShareOfVoice = $percentShareOfVoice;
   }
+  /**
+   * @return string
+   */
   public function getPercentShareOfVoice()
   {
     return $this->percentShareOfVoice;
   }
+  /**
+   * @param string
+   */
   public function setReservationType($reservationType)
   {
     $this->reservationType = $reservationType;
   }
+  /**
+   * @return string
+   */
   public function getReservationType()
   {
     return $this->reservationType;

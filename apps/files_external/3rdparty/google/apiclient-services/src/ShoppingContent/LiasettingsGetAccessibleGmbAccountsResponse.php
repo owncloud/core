@@ -20,15 +20,27 @@ namespace Google\Service\ShoppingContent;
 class LiasettingsGetAccessibleGmbAccountsResponse extends \Google\Collection
 {
   protected $collection_key = 'gmbAccounts';
+  /**
+   * @var string
+   */
   public $accountId;
   protected $gmbAccountsType = GmbAccountsGmbAccount::class;
   protected $gmbAccountsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -47,10 +59,16 @@ class LiasettingsGetAccessibleGmbAccountsResponse extends \Google\Collection
   {
     return $this->gmbAccounts;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

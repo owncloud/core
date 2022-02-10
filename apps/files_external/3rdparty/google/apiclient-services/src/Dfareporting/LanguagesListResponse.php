@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class LanguagesListResponse extends \Google\Collection
 {
   protected $collection_key = 'languages';
+  /**
+   * @var string
+   */
   public $kind;
   protected $languagesType = Language::class;
   protected $languagesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

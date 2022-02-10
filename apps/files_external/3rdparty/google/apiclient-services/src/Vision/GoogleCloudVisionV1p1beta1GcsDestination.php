@@ -19,12 +19,21 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p1beta1GcsDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

@@ -19,41 +19,77 @@ namespace Google\Service\TrafficDirectorService;
 
 class Extension extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $category;
+  /**
+   * @var bool
+   */
   public $disabled;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $typeDescriptor;
   protected $versionType = BuildVersion::class;
   protected $versionDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
   }
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTypeDescriptor($typeDescriptor)
   {
     $this->typeDescriptor = $typeDescriptor;
   }
+  /**
+   * @return string
+   */
   public function getTypeDescriptor()
   {
     return $this->typeDescriptor;

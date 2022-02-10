@@ -19,41 +19,77 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1Study extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $inactiveReason;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $state;
   protected $studyConfigType = GoogleCloudMlV1StudyConfig::class;
   protected $studyConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setInactiveReason($inactiveReason)
   {
     $this->inactiveReason = $inactiveReason;
   }
+  /**
+   * @return string
+   */
   public function getInactiveReason()
   {
     return $this->inactiveReason;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

@@ -19,43 +19,85 @@ namespace Google\Service\CloudSearch;
 
 class PushItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentHash;
+  /**
+   * @var string
+   */
   public $metadataHash;
+  /**
+   * @var string
+   */
   public $payload;
+  /**
+   * @var string
+   */
   public $queue;
   protected $repositoryErrorType = RepositoryError::class;
   protected $repositoryErrorDataType = '';
+  /**
+   * @var string
+   */
   public $structuredDataHash;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setContentHash($contentHash)
   {
     $this->contentHash = $contentHash;
   }
+  /**
+   * @return string
+   */
   public function getContentHash()
   {
     return $this->contentHash;
   }
+  /**
+   * @param string
+   */
   public function setMetadataHash($metadataHash)
   {
     $this->metadataHash = $metadataHash;
   }
+  /**
+   * @return string
+   */
   public function getMetadataHash()
   {
     return $this->metadataHash;
   }
+  /**
+   * @param string
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return string
+   */
   public function getPayload()
   {
     return $this->payload;
   }
+  /**
+   * @param string
+   */
   public function setQueue($queue)
   {
     $this->queue = $queue;
   }
+  /**
+   * @return string
+   */
   public function getQueue()
   {
     return $this->queue;
@@ -74,18 +116,30 @@ class PushItem extends \Google\Model
   {
     return $this->repositoryError;
   }
+  /**
+   * @param string
+   */
   public function setStructuredDataHash($structuredDataHash)
   {
     $this->structuredDataHash = $structuredDataHash;
   }
+  /**
+   * @return string
+   */
   public function getStructuredDataHash()
   {
     return $this->structuredDataHash;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

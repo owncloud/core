@@ -23,21 +23,39 @@ class ScoresResetMultipleForAllRequest extends \Google\Collection
   protected $internal_gapi_mappings = [
         "leaderboardIds" => "leaderboard_ids",
   ];
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $leaderboardIds;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setLeaderboardIds($leaderboardIds)
   {
     $this->leaderboardIds = $leaderboardIds;
   }
+  /**
+   * @return string[]
+   */
   public function getLeaderboardIds()
   {
     return $this->leaderboardIds;

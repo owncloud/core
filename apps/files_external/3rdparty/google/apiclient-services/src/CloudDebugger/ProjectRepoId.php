@@ -19,21 +19,39 @@ namespace Google\Service\CloudDebugger;
 
 class ProjectRepoId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $repoName;
 
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setRepoName($repoName)
   {
     $this->repoName = $repoName;
   }
+  /**
+   * @return string
+   */
   public function getRepoName()
   {
     return $this->repoName;

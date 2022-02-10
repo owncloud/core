@@ -19,30 +19,57 @@ namespace Google\Service\Bigquery;
 
 class Streamingbuffer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $estimatedBytes;
+  /**
+   * @var string
+   */
   public $estimatedRows;
+  /**
+   * @var string
+   */
   public $oldestEntryTime;
 
+  /**
+   * @param string
+   */
   public function setEstimatedBytes($estimatedBytes)
   {
     $this->estimatedBytes = $estimatedBytes;
   }
+  /**
+   * @return string
+   */
   public function getEstimatedBytes()
   {
     return $this->estimatedBytes;
   }
+  /**
+   * @param string
+   */
   public function setEstimatedRows($estimatedRows)
   {
     $this->estimatedRows = $estimatedRows;
   }
+  /**
+   * @return string
+   */
   public function getEstimatedRows()
   {
     return $this->estimatedRows;
   }
+  /**
+   * @param string
+   */
   public function setOldestEntryTime($oldestEntryTime)
   {
     $this->oldestEntryTime = $oldestEntryTime;
   }
+  /**
+   * @return string
+   */
   public function getOldestEntryTime()
   {
     return $this->oldestEntryTime;

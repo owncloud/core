@@ -19,21 +19,39 @@ namespace Google\Service\SmartDeviceManagement;
 
 class GoogleHomeEnterpriseSdmV1Structure extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var array[]
+   */
   public $traits;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param array[]
+   */
   public function setTraits($traits)
   {
     $this->traits = $traits;
   }
+  /**
+   * @return array[]
+   */
   public function getTraits()
   {
     return $this->traits;

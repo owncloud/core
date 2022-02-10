@@ -21,19 +21,43 @@ class Span extends \Google\Model
 {
   protected $attributesType = Attributes::class;
   protected $attributesDataType = '';
+  /**
+   * @var int
+   */
   public $childSpanCount;
   protected $displayNameType = TruncatableString::class;
   protected $displayNameDataType = '';
+  /**
+   * @var string
+   */
   public $endTime;
   protected $linksType = Links::class;
   protected $linksDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parentSpanId;
+  /**
+   * @var bool
+   */
   public $sameProcessAsParentSpan;
+  /**
+   * @var string
+   */
   public $spanId;
+  /**
+   * @var string
+   */
   public $spanKind;
   protected $stackTraceType = StackTrace::class;
   protected $stackTraceDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
   protected $statusType = Status::class;
   protected $statusDataType = '';
@@ -54,10 +78,16 @@ class Span extends \Google\Model
   {
     return $this->attributes;
   }
+  /**
+   * @param int
+   */
   public function setChildSpanCount($childSpanCount)
   {
     $this->childSpanCount = $childSpanCount;
   }
+  /**
+   * @return int
+   */
   public function getChildSpanCount()
   {
     return $this->childSpanCount;
@@ -76,10 +106,16 @@ class Span extends \Google\Model
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -98,42 +134,72 @@ class Span extends \Google\Model
   {
     return $this->links;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParentSpanId($parentSpanId)
   {
     $this->parentSpanId = $parentSpanId;
   }
+  /**
+   * @return string
+   */
   public function getParentSpanId()
   {
     return $this->parentSpanId;
   }
+  /**
+   * @param bool
+   */
   public function setSameProcessAsParentSpan($sameProcessAsParentSpan)
   {
     $this->sameProcessAsParentSpan = $sameProcessAsParentSpan;
   }
+  /**
+   * @return bool
+   */
   public function getSameProcessAsParentSpan()
   {
     return $this->sameProcessAsParentSpan;
   }
+  /**
+   * @param string
+   */
   public function setSpanId($spanId)
   {
     $this->spanId = $spanId;
   }
+  /**
+   * @return string
+   */
   public function getSpanId()
   {
     return $this->spanId;
   }
+  /**
+   * @param string
+   */
   public function setSpanKind($spanKind)
   {
     $this->spanKind = $spanKind;
   }
+  /**
+   * @return string
+   */
   public function getSpanKind()
   {
     return $this->spanKind;
@@ -152,10 +218,16 @@ class Span extends \Google\Model
   {
     return $this->stackTrace;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

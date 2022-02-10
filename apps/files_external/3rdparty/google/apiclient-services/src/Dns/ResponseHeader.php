@@ -19,12 +19,21 @@ namespace Google\Service\Dns;
 
 class ResponseHeader extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $operationId;
 
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;

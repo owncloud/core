@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class ExchangeConfigEnabledExchange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exchange;
+  /**
+   * @var string
+   */
   public $googleAdManagerAgencyId;
+  /**
+   * @var string
+   */
   public $googleAdManagerBuyerNetworkId;
+  /**
+   * @var string
+   */
   public $seatId;
 
+  /**
+   * @param string
+   */
   public function setExchange($exchange)
   {
     $this->exchange = $exchange;
   }
+  /**
+   * @return string
+   */
   public function getExchange()
   {
     return $this->exchange;
   }
+  /**
+   * @param string
+   */
   public function setGoogleAdManagerAgencyId($googleAdManagerAgencyId)
   {
     $this->googleAdManagerAgencyId = $googleAdManagerAgencyId;
   }
+  /**
+   * @return string
+   */
   public function getGoogleAdManagerAgencyId()
   {
     return $this->googleAdManagerAgencyId;
   }
+  /**
+   * @param string
+   */
   public function setGoogleAdManagerBuyerNetworkId($googleAdManagerBuyerNetworkId)
   {
     $this->googleAdManagerBuyerNetworkId = $googleAdManagerBuyerNetworkId;
   }
+  /**
+   * @return string
+   */
   public function getGoogleAdManagerBuyerNetworkId()
   {
     return $this->googleAdManagerBuyerNetworkId;
   }
+  /**
+   * @param string
+   */
   public function setSeatId($seatId)
   {
     $this->seatId = $seatId;
   }
+  /**
+   * @return string
+   */
   public function getSeatId()
   {
     return $this->seatId;

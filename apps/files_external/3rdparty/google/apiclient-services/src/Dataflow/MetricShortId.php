@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class MetricShortId extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $metricIndex;
+  /**
+   * @var string
+   */
   public $shortId;
 
+  /**
+   * @param int
+   */
   public function setMetricIndex($metricIndex)
   {
     $this->metricIndex = $metricIndex;
   }
+  /**
+   * @return int
+   */
   public function getMetricIndex()
   {
     return $this->metricIndex;
   }
+  /**
+   * @param string
+   */
   public function setShortId($shortId)
   {
     $this->shortId = $shortId;
   }
+  /**
+   * @return string
+   */
   public function getShortId()
   {
     return $this->shortId;

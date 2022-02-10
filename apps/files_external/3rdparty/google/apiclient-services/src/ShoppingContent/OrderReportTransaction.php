@@ -21,14 +21,35 @@ class OrderReportTransaction extends \Google\Model
 {
   protected $disbursementAmountType = Price::class;
   protected $disbursementAmountDataType = '';
+  /**
+   * @var string
+   */
   public $disbursementCreationDate;
+  /**
+   * @var string
+   */
   public $disbursementDate;
+  /**
+   * @var string
+   */
   public $disbursementId;
+  /**
+   * @var string
+   */
   public $merchantId;
+  /**
+   * @var string
+   */
   public $merchantOrderId;
+  /**
+   * @var string
+   */
   public $orderId;
   protected $productAmountType = ProductAmount::class;
   protected $productAmountDataType = '';
+  /**
+   * @var string
+   */
   public $transactionDate;
 
   /**
@@ -45,50 +66,86 @@ class OrderReportTransaction extends \Google\Model
   {
     return $this->disbursementAmount;
   }
+  /**
+   * @param string
+   */
   public function setDisbursementCreationDate($disbursementCreationDate)
   {
     $this->disbursementCreationDate = $disbursementCreationDate;
   }
+  /**
+   * @return string
+   */
   public function getDisbursementCreationDate()
   {
     return $this->disbursementCreationDate;
   }
+  /**
+   * @param string
+   */
   public function setDisbursementDate($disbursementDate)
   {
     $this->disbursementDate = $disbursementDate;
   }
+  /**
+   * @return string
+   */
   public function getDisbursementDate()
   {
     return $this->disbursementDate;
   }
+  /**
+   * @param string
+   */
   public function setDisbursementId($disbursementId)
   {
     $this->disbursementId = $disbursementId;
   }
+  /**
+   * @return string
+   */
   public function getDisbursementId()
   {
     return $this->disbursementId;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;
   }
+  /**
+   * @param string
+   */
   public function setMerchantOrderId($merchantOrderId)
   {
     $this->merchantOrderId = $merchantOrderId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantOrderId()
   {
     return $this->merchantOrderId;
   }
+  /**
+   * @param string
+   */
   public function setOrderId($orderId)
   {
     $this->orderId = $orderId;
   }
+  /**
+   * @return string
+   */
   public function getOrderId()
   {
     return $this->orderId;
@@ -107,10 +164,16 @@ class OrderReportTransaction extends \Google\Model
   {
     return $this->productAmount;
   }
+  /**
+   * @param string
+   */
   public function setTransactionDate($transactionDate)
   {
     $this->transactionDate = $transactionDate;
   }
+  /**
+   * @return string
+   */
   public function getTransactionDate()
   {
     return $this->transactionDate;

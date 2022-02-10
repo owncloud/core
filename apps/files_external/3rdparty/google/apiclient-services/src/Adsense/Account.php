@@ -20,50 +20,95 @@ namespace Google\Service\Adsense;
 class Account extends \Google\Collection
 {
   protected $collection_key = 'pendingTasks';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $pendingTasks;
+  /**
+   * @var bool
+   */
   public $premium;
   protected $timeZoneType = TimeZone::class;
   protected $timeZoneDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setPendingTasks($pendingTasks)
   {
     $this->pendingTasks = $pendingTasks;
   }
+  /**
+   * @return string[]
+   */
   public function getPendingTasks()
   {
     return $this->pendingTasks;
   }
+  /**
+   * @param bool
+   */
   public function setPremium($premium)
   {
     $this->premium = $premium;
   }
+  /**
+   * @return bool
+   */
   public function getPremium()
   {
     return $this->premium;

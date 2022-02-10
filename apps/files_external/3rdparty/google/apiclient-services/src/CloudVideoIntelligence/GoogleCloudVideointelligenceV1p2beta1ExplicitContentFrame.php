@@ -19,21 +19,39 @@ namespace Google\Service\CloudVideoIntelligence;
 
 class GoogleCloudVideointelligenceV1p2beta1ExplicitContentFrame extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pornographyLikelihood;
+  /**
+   * @var string
+   */
   public $timeOffset;
 
+  /**
+   * @param string
+   */
   public function setPornographyLikelihood($pornographyLikelihood)
   {
     $this->pornographyLikelihood = $pornographyLikelihood;
   }
+  /**
+   * @return string
+   */
   public function getPornographyLikelihood()
   {
     return $this->pornographyLikelihood;
   }
+  /**
+   * @param string
+   */
   public function setTimeOffset($timeOffset)
   {
     $this->timeOffset = $timeOffset;
   }
+  /**
+   * @return string
+   */
   public function getTimeOffset()
   {
     return $this->timeOffset;

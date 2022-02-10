@@ -22,7 +22,13 @@ class BatchCreateContactsRequest extends \Google\Collection
   protected $collection_key = 'sources';
   protected $contactsType = ContactToCreate::class;
   protected $contactsDataType = 'array';
+  /**
+   * @var string
+   */
   public $readMask;
+  /**
+   * @var string[]
+   */
   public $sources;
 
   /**
@@ -39,18 +45,30 @@ class BatchCreateContactsRequest extends \Google\Collection
   {
     return $this->contacts;
   }
+  /**
+   * @param string
+   */
   public function setReadMask($readMask)
   {
     $this->readMask = $readMask;
   }
+  /**
+   * @return string
+   */
   public function getReadMask()
   {
     return $this->readMask;
   }
+  /**
+   * @param string[]
+   */
   public function setSources($sources)
   {
     $this->sources = $sources;
   }
+  /**
+   * @return string[]
+   */
   public function getSources()
   {
     return $this->sources;

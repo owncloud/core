@@ -19,21 +19,39 @@ namespace Google\Service\GamesManagement;
 
 class ProfileSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $profileVisible;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setProfileVisible($profileVisible)
   {
     $this->profileVisible = $profileVisible;
   }
+  /**
+   * @return bool
+   */
   public function getProfileVisible()
   {
     return $this->profileVisible;

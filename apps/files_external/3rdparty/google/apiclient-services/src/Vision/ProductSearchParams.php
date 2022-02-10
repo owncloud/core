@@ -22,8 +22,17 @@ class ProductSearchParams extends \Google\Collection
   protected $collection_key = 'productCategories';
   protected $boundingPolyType = BoundingPoly::class;
   protected $boundingPolyDataType = '';
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string[]
+   */
   public $productCategories;
+  /**
+   * @var string
+   */
   public $productSet;
 
   /**
@@ -40,26 +49,44 @@ class ProductSearchParams extends \Google\Collection
   {
     return $this->boundingPoly;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string[]
+   */
   public function setProductCategories($productCategories)
   {
     $this->productCategories = $productCategories;
   }
+  /**
+   * @return string[]
+   */
   public function getProductCategories()
   {
     return $this->productCategories;
   }
+  /**
+   * @param string
+   */
   public function setProductSet($productSet)
   {
     $this->productSet = $productSet;
   }
+  /**
+   * @return string
+   */
   public function getProductSet()
   {
     return $this->productSet;

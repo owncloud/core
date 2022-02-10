@@ -19,30 +19,57 @@ namespace Google\Service\AlertCenter;
 
 class ReportingRule extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alertDetails;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $query;
 
+  /**
+   * @param string
+   */
   public function setAlertDetails($alertDetails)
   {
     $this->alertDetails = $alertDetails;
   }
+  /**
+   * @return string
+   */
   public function getAlertDetails()
   {
     return $this->alertDetails;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setQuery($query)
   {
     $this->query = $query;
   }
+  /**
+   * @return string
+   */
   public function getQuery()
   {
     return $this->query;

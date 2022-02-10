@@ -22,6 +22,9 @@ class GoogleCloudBillingBudgetsV1ListBudgetsResponse extends \Google\Collection
   protected $collection_key = 'budgets';
   protected $budgetsType = GoogleCloudBillingBudgetsV1Budget::class;
   protected $budgetsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudBillingBudgetsV1ListBudgetsResponse extends \Google\Collection
   {
     return $this->budgets;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

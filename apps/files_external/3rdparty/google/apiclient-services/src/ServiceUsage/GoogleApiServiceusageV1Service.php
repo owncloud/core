@@ -21,8 +21,17 @@ class GoogleApiServiceusageV1Service extends \Google\Model
 {
   protected $configType = GoogleApiServiceusageV1ServiceConfig::class;
   protected $configDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -39,26 +48,44 @@ class GoogleApiServiceusageV1Service extends \Google\Model
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

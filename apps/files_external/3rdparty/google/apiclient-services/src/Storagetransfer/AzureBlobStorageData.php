@@ -21,8 +21,17 @@ class AzureBlobStorageData extends \Google\Model
 {
   protected $azureCredentialsType = AzureCredentials::class;
   protected $azureCredentialsDataType = '';
+  /**
+   * @var string
+   */
   public $container;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $storageAccount;
 
   /**
@@ -39,26 +48,44 @@ class AzureBlobStorageData extends \Google\Model
   {
     return $this->azureCredentials;
   }
+  /**
+   * @param string
+   */
   public function setContainer($container)
   {
     $this->container = $container;
   }
+  /**
+   * @return string
+   */
   public function getContainer()
   {
     return $this->container;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setStorageAccount($storageAccount)
   {
     $this->storageAccount = $storageAccount;
   }
+  /**
+   * @return string
+   */
   public function getStorageAccount()
   {
     return $this->storageAccount;

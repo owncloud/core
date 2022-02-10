@@ -20,44 +20,83 @@ namespace Google\Service\Firestore;
 class GoogleFirestoreAdminV1ExportDocumentsMetadata extends \Google\Collection
 {
   protected $collection_key = 'collectionIds';
+  /**
+   * @var string[]
+   */
   public $collectionIds;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $operationState;
+  /**
+   * @var string
+   */
   public $outputUriPrefix;
   protected $progressBytesType = GoogleFirestoreAdminV1Progress::class;
   protected $progressBytesDataType = '';
   protected $progressDocumentsType = GoogleFirestoreAdminV1Progress::class;
   protected $progressDocumentsDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param string[]
+   */
   public function setCollectionIds($collectionIds)
   {
     $this->collectionIds = $collectionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getCollectionIds()
   {
     return $this->collectionIds;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setOperationState($operationState)
   {
     $this->operationState = $operationState;
   }
+  /**
+   * @return string
+   */
   public function getOperationState()
   {
     return $this->operationState;
   }
+  /**
+   * @param string
+   */
   public function setOutputUriPrefix($outputUriPrefix)
   {
     $this->outputUriPrefix = $outputUriPrefix;
   }
+  /**
+   * @return string
+   */
   public function getOutputUriPrefix()
   {
     return $this->outputUriPrefix;
@@ -90,10 +129,16 @@ class GoogleFirestoreAdminV1ExportDocumentsMetadata extends \Google\Collection
   {
     return $this->progressDocuments;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

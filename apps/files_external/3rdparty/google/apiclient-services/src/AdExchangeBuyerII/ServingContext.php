@@ -19,6 +19,9 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class ServingContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $all;
   protected $appTypeType = AppContext::class;
   protected $appTypeDataType = '';
@@ -31,10 +34,16 @@ class ServingContext extends \Google\Model
   protected $securityTypeType = SecurityContext::class;
   protected $securityTypeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAll($all)
   {
     $this->all = $all;
   }
+  /**
+   * @return string
+   */
   public function getAll()
   {
     return $this->all;

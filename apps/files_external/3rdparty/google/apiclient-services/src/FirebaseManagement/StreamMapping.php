@@ -19,30 +19,57 @@ namespace Google\Service\FirebaseManagement;
 
 class StreamMapping extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $app;
+  /**
+   * @var string
+   */
   public $measurementId;
+  /**
+   * @var string
+   */
   public $streamId;
 
+  /**
+   * @param string
+   */
   public function setApp($app)
   {
     $this->app = $app;
   }
+  /**
+   * @return string
+   */
   public function getApp()
   {
     return $this->app;
   }
+  /**
+   * @param string
+   */
   public function setMeasurementId($measurementId)
   {
     $this->measurementId = $measurementId;
   }
+  /**
+   * @return string
+   */
   public function getMeasurementId()
   {
     return $this->measurementId;
   }
+  /**
+   * @param string
+   */
   public function setStreamId($streamId)
   {
     $this->streamId = $streamId;
   }
+  /**
+   * @return string
+   */
   public function getStreamId()
   {
     return $this->streamId;

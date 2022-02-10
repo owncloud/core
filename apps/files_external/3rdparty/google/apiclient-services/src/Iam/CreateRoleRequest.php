@@ -21,6 +21,9 @@ class CreateRoleRequest extends \Google\Model
 {
   protected $roleType = Role::class;
   protected $roleDataType = '';
+  /**
+   * @var string
+   */
   public $roleId;
 
   /**
@@ -37,10 +40,16 @@ class CreateRoleRequest extends \Google\Model
   {
     return $this->role;
   }
+  /**
+   * @param string
+   */
   public function setRoleId($roleId)
   {
     $this->roleId = $roleId;
   }
+  /**
+   * @return string
+   */
   public function getRoleId()
   {
     return $this->roleId;

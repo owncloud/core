@@ -27,6 +27,9 @@ class Event extends \Google\Model
   protected $containerStoppedDataType = '';
   protected $delayedType = DelayedEvent::class;
   protected $delayedDataType = '';
+  /**
+   * @var string
+   */
   public $description;
   protected $failedType = FailedEvent::class;
   protected $failedDataType = '';
@@ -34,6 +37,9 @@ class Event extends \Google\Model
   protected $pullStartedDataType = '';
   protected $pullStoppedType = PullStoppedEvent::class;
   protected $pullStoppedDataType = '';
+  /**
+   * @var string
+   */
   public $timestamp;
   protected $unexpectedExitStatusType = UnexpectedExitStatusEvent::class;
   protected $unexpectedExitStatusDataType = '';
@@ -98,10 +104,16 @@ class Event extends \Google\Model
   {
     return $this->delayed;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -148,10 +160,16 @@ class Event extends \Google\Model
   {
     return $this->pullStopped;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

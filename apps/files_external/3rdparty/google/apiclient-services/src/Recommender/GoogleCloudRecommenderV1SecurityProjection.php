@@ -19,12 +19,21 @@ namespace Google\Service\Recommender;
 
 class GoogleCloudRecommenderV1SecurityProjection extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $details;
 
+  /**
+   * @param array[]
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return array[]
+   */
   public function getDetails()
   {
     return $this->details;

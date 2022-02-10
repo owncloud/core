@@ -20,14 +20,23 @@ namespace Google\Service\AndroidPublisher;
 class ListingsListResponse extends \Google\Collection
 {
   protected $collection_key = 'listings';
+  /**
+   * @var string
+   */
   public $kind;
   protected $listingsType = Listing::class;
   protected $listingsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

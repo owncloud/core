@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3ExportAgentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $agentUri;
+  /**
+   * @var string
+   */
   public $environment;
 
+  /**
+   * @param string
+   */
   public function setAgentUri($agentUri)
   {
     $this->agentUri = $agentUri;
   }
+  /**
+   * @return string
+   */
   public function getAgentUri()
   {
     return $this->agentUri;
   }
+  /**
+   * @param string
+   */
   public function setEnvironment($environment)
   {
     $this->environment = $environment;
   }
+  /**
+   * @return string
+   */
   public function getEnvironment()
   {
     return $this->environment;

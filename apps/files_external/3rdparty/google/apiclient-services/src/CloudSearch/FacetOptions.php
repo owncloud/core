@@ -19,39 +19,75 @@ namespace Google\Service\CloudSearch;
 
 class FacetOptions extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $numFacetBuckets;
+  /**
+   * @var string
+   */
   public $objectType;
+  /**
+   * @var string
+   */
   public $operatorName;
+  /**
+   * @var string
+   */
   public $sourceName;
 
+  /**
+   * @param int
+   */
   public function setNumFacetBuckets($numFacetBuckets)
   {
     $this->numFacetBuckets = $numFacetBuckets;
   }
+  /**
+   * @return int
+   */
   public function getNumFacetBuckets()
   {
     return $this->numFacetBuckets;
   }
+  /**
+   * @param string
+   */
   public function setObjectType($objectType)
   {
     $this->objectType = $objectType;
   }
+  /**
+   * @return string
+   */
   public function getObjectType()
   {
     return $this->objectType;
   }
+  /**
+   * @param string
+   */
   public function setOperatorName($operatorName)
   {
     $this->operatorName = $operatorName;
   }
+  /**
+   * @return string
+   */
   public function getOperatorName()
   {
     return $this->operatorName;
   }
+  /**
+   * @param string
+   */
   public function setSourceName($sourceName)
   {
     $this->sourceName = $sourceName;
   }
+  /**
+   * @return string
+   */
   public function getSourceName()
   {
     return $this->sourceName;

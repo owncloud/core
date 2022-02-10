@@ -20,41 +20,77 @@ namespace Google\Service\Fitness;
 class Dataset extends \Google\Collection
 {
   protected $collection_key = 'point';
+  /**
+   * @var string
+   */
   public $dataSourceId;
+  /**
+   * @var string
+   */
   public $maxEndTimeNs;
+  /**
+   * @var string
+   */
   public $minStartTimeNs;
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $pointType = DataPoint::class;
   protected $pointDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDataSourceId($dataSourceId)
   {
     $this->dataSourceId = $dataSourceId;
   }
+  /**
+   * @return string
+   */
   public function getDataSourceId()
   {
     return $this->dataSourceId;
   }
+  /**
+   * @param string
+   */
   public function setMaxEndTimeNs($maxEndTimeNs)
   {
     $this->maxEndTimeNs = $maxEndTimeNs;
   }
+  /**
+   * @return string
+   */
   public function getMaxEndTimeNs()
   {
     return $this->maxEndTimeNs;
   }
+  /**
+   * @param string
+   */
   public function setMinStartTimeNs($minStartTimeNs)
   {
     $this->minStartTimeNs = $minStartTimeNs;
   }
+  /**
+   * @return string
+   */
   public function getMinStartTimeNs()
   {
     return $this->minStartTimeNs;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

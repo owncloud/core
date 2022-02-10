@@ -23,6 +23,9 @@ class CountArtifactsResponse extends \Google\Model
   protected $groupsCountResultDataType = '';
   protected $mailCountResultType = MailCountResult::class;
   protected $mailCountResultDataType = '';
+  /**
+   * @var string
+   */
   public $totalCount;
 
   /**
@@ -53,10 +56,16 @@ class CountArtifactsResponse extends \Google\Model
   {
     return $this->mailCountResult;
   }
+  /**
+   * @param string
+   */
   public function setTotalCount($totalCount)
   {
     $this->totalCount = $totalCount;
   }
+  /**
+   * @return string
+   */
   public function getTotalCount()
   {
     return $this->totalCount;

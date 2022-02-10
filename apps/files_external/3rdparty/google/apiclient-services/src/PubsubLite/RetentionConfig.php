@@ -19,21 +19,39 @@ namespace Google\Service\PubsubLite;
 
 class RetentionConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $perPartitionBytes;
+  /**
+   * @var string
+   */
   public $period;
 
+  /**
+   * @param string
+   */
   public function setPerPartitionBytes($perPartitionBytes)
   {
     $this->perPartitionBytes = $perPartitionBytes;
   }
+  /**
+   * @return string
+   */
   public function getPerPartitionBytes()
   {
     return $this->perPartitionBytes;
   }
+  /**
+   * @param string
+   */
   public function setPeriod($period)
   {
     $this->period = $period;
   }
+  /**
+   * @return string
+   */
   public function getPeriod()
   {
     return $this->period;

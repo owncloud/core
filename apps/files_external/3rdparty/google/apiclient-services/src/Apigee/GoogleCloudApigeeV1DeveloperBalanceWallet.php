@@ -21,6 +21,9 @@ class GoogleCloudApigeeV1DeveloperBalanceWallet extends \Google\Model
 {
   protected $balanceType = GoogleTypeMoney::class;
   protected $balanceDataType = '';
+  /**
+   * @var string
+   */
   public $lastCreditTime;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudApigeeV1DeveloperBalanceWallet extends \Google\Model
   {
     return $this->balance;
   }
+  /**
+   * @param string
+   */
   public function setLastCreditTime($lastCreditTime)
   {
     $this->lastCreditTime = $lastCreditTime;
   }
+  /**
+   * @return string
+   */
   public function getLastCreditTime()
   {
     return $this->lastCreditTime;

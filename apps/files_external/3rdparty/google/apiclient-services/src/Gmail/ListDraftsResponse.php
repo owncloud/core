@@ -22,7 +22,13 @@ class ListDraftsResponse extends \Google\Collection
   protected $collection_key = 'drafts';
   protected $draftsType = Draft::class;
   protected $draftsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $resultSizeEstimate;
 
   /**
@@ -39,18 +45,30 @@ class ListDraftsResponse extends \Google\Collection
   {
     return $this->drafts;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setResultSizeEstimate($resultSizeEstimate)
   {
     $this->resultSizeEstimate = $resultSizeEstimate;
   }
+  /**
+   * @return string
+   */
   public function getResultSizeEstimate()
   {
     return $this->resultSizeEstimate;

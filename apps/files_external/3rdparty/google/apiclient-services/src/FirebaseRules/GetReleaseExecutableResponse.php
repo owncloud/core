@@ -19,57 +19,111 @@ namespace Google\Service\FirebaseRules;
 
 class GetReleaseExecutableResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $executable;
+  /**
+   * @var string
+   */
   public $executableVersion;
+  /**
+   * @var string
+   */
   public $language;
+  /**
+   * @var string
+   */
   public $rulesetName;
+  /**
+   * @var string
+   */
   public $syncTime;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setExecutable($executable)
   {
     $this->executable = $executable;
   }
+  /**
+   * @return string
+   */
   public function getExecutable()
   {
     return $this->executable;
   }
+  /**
+   * @param string
+   */
   public function setExecutableVersion($executableVersion)
   {
     $this->executableVersion = $executableVersion;
   }
+  /**
+   * @return string
+   */
   public function getExecutableVersion()
   {
     return $this->executableVersion;
   }
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;
   }
+  /**
+   * @param string
+   */
   public function setRulesetName($rulesetName)
   {
     $this->rulesetName = $rulesetName;
   }
+  /**
+   * @return string
+   */
   public function getRulesetName()
   {
     return $this->rulesetName;
   }
+  /**
+   * @param string
+   */
   public function setSyncTime($syncTime)
   {
     $this->syncTime = $syncTime;
   }
+  /**
+   * @return string
+   */
   public function getSyncTime()
   {
     return $this->syncTime;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

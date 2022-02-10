@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class ReturnPolicyOnlinePolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $days;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDays($days)
   {
     $this->days = $days;
   }
+  /**
+   * @return string
+   */
   public function getDays()
   {
     return $this->days;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

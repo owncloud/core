@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class AuthorizedSellerStatusTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $authorizedSellerStatus;
 
+  /**
+   * @param string
+   */
   public function setAuthorizedSellerStatus($authorizedSellerStatus)
   {
     $this->authorizedSellerStatus = $authorizedSellerStatus;
   }
+  /**
+   * @return string
+   */
   public function getAuthorizedSellerStatus()
   {
     return $this->authorizedSellerStatus;

@@ -20,14 +20,23 @@ namespace Google\Service\AdExchangeBuyerII;
 class ListPublisherProfilesResponse extends \Google\Collection
 {
   protected $collection_key = 'publisherProfiles';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $publisherProfilesType = PublisherProfile::class;
   protected $publisherProfilesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,30 +19,57 @@ namespace Google\Service\BigtableAdmin;
 
 class Frame extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $targetName;
+  /**
+   * @var string
+   */
   public $workflowGuid;
+  /**
+   * @var string
+   */
   public $zoneId;
 
+  /**
+   * @param string
+   */
   public function setTargetName($targetName)
   {
     $this->targetName = $targetName;
   }
+  /**
+   * @return string
+   */
   public function getTargetName()
   {
     return $this->targetName;
   }
+  /**
+   * @param string
+   */
   public function setWorkflowGuid($workflowGuid)
   {
     $this->workflowGuid = $workflowGuid;
   }
+  /**
+   * @return string
+   */
   public function getWorkflowGuid()
   {
     return $this->workflowGuid;
   }
+  /**
+   * @param string
+   */
   public function setZoneId($zoneId)
   {
     $this->zoneId = $zoneId;
   }
+  /**
+   * @return string
+   */
   public function getZoneId()
   {
     return $this->zoneId;

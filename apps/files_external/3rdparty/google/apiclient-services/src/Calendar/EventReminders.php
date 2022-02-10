@@ -22,6 +22,9 @@ class EventReminders extends \Google\Collection
   protected $collection_key = 'overrides';
   protected $overridesType = EventReminder::class;
   protected $overridesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $useDefault;
 
   /**
@@ -38,10 +41,16 @@ class EventReminders extends \Google\Collection
   {
     return $this->overrides;
   }
+  /**
+   * @param bool
+   */
   public function setUseDefault($useDefault)
   {
     $this->useDefault = $useDefault;
   }
+  /**
+   * @return bool
+   */
   public function getUseDefault()
   {
     return $this->useDefault;

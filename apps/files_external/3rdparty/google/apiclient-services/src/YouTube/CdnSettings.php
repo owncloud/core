@@ -19,25 +19,49 @@ namespace Google\Service\YouTube;
 
 class CdnSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $frameRate;
   protected $ingestionInfoType = IngestionInfo::class;
   protected $ingestionInfoDataType = '';
+  /**
+   * @var string
+   */
   public $ingestionType;
+  /**
+   * @var string
+   */
   public $resolution;
 
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setFrameRate($frameRate)
   {
     $this->frameRate = $frameRate;
   }
+  /**
+   * @return string
+   */
   public function getFrameRate()
   {
     return $this->frameRate;
@@ -56,18 +80,30 @@ class CdnSettings extends \Google\Model
   {
     return $this->ingestionInfo;
   }
+  /**
+   * @param string
+   */
   public function setIngestionType($ingestionType)
   {
     $this->ingestionType = $ingestionType;
   }
+  /**
+   * @return string
+   */
   public function getIngestionType()
   {
     return $this->ingestionType;
   }
+  /**
+   * @param string
+   */
   public function setResolution($resolution)
   {
     $this->resolution = $resolution;
   }
+  /**
+   * @return string
+   */
   public function getResolution()
   {
     return $this->resolution;

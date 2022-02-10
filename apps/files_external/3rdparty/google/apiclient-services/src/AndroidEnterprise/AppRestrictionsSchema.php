@@ -20,14 +20,23 @@ namespace Google\Service\AndroidEnterprise;
 class AppRestrictionsSchema extends \Google\Collection
 {
   protected $collection_key = 'restrictions';
+  /**
+   * @var string
+   */
   public $kind;
   protected $restrictionsType = AppRestrictionsSchemaRestriction::class;
   protected $restrictionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

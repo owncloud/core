@@ -19,21 +19,39 @@ namespace Google\Service\Appengine;
 
 class CloudBuildOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appYamlPath;
+  /**
+   * @var string
+   */
   public $cloudBuildTimeout;
 
+  /**
+   * @param string
+   */
   public function setAppYamlPath($appYamlPath)
   {
     $this->appYamlPath = $appYamlPath;
   }
+  /**
+   * @return string
+   */
   public function getAppYamlPath()
   {
     return $this->appYamlPath;
   }
+  /**
+   * @param string
+   */
   public function setCloudBuildTimeout($cloudBuildTimeout)
   {
     $this->cloudBuildTimeout = $cloudBuildTimeout;
   }
+  /**
+   * @return string
+   */
   public function getCloudBuildTimeout()
   {
     return $this->cloudBuildTimeout;

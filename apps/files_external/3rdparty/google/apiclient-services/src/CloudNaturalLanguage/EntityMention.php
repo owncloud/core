@@ -23,6 +23,9 @@ class EntityMention extends \Google\Model
   protected $sentimentDataType = '';
   protected $textType = TextSpan::class;
   protected $textDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -53,10 +56,16 @@ class EntityMention extends \Google\Model
   {
     return $this->text;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -19,14 +19,23 @@ namespace Google\Service\Sheets;
 
 class UpdateFilterViewRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fields;
   protected $filterType = FilterView::class;
   protected $filterDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

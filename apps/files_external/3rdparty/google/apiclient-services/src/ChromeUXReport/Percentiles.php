@@ -19,12 +19,21 @@ namespace Google\Service\ChromeUXReport;
 
 class Percentiles extends \Google\Model
 {
+  /**
+   * @var array
+   */
   public $p75;
 
+  /**
+   * @param array
+   */
   public function setP75($p75)
   {
     $this->p75 = $p75;
   }
+  /**
+   * @return array
+   */
   public function getP75()
   {
     return $this->p75;

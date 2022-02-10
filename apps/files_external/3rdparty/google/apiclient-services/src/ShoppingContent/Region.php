@@ -19,20 +19,41 @@ namespace Google\Service\ShoppingContent;
 
 class Region extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
   protected $geotargetAreaType = RegionGeoTargetArea::class;
   protected $geotargetAreaDataType = '';
+  /**
+   * @var string
+   */
   public $merchantId;
   protected $postalCodeAreaType = RegionPostalCodeArea::class;
   protected $postalCodeAreaDataType = '';
+  /**
+   * @var string
+   */
   public $regionId;
+  /**
+   * @var bool
+   */
   public $regionalInventoryEligible;
+  /**
+   * @var bool
+   */
   public $shippingEligible;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -51,10 +72,16 @@ class Region extends \Google\Model
   {
     return $this->geotargetArea;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;
@@ -73,26 +100,44 @@ class Region extends \Google\Model
   {
     return $this->postalCodeArea;
   }
+  /**
+   * @param string
+   */
   public function setRegionId($regionId)
   {
     $this->regionId = $regionId;
   }
+  /**
+   * @return string
+   */
   public function getRegionId()
   {
     return $this->regionId;
   }
+  /**
+   * @param bool
+   */
   public function setRegionalInventoryEligible($regionalInventoryEligible)
   {
     $this->regionalInventoryEligible = $regionalInventoryEligible;
   }
+  /**
+   * @return bool
+   */
   public function getRegionalInventoryEligible()
   {
     return $this->regionalInventoryEligible;
   }
+  /**
+   * @param bool
+   */
   public function setShippingEligible($shippingEligible)
   {
     $this->shippingEligible = $shippingEligible;
   }
+  /**
+   * @return bool
+   */
   public function getShippingEligible()
   {
     return $this->shippingEligible;

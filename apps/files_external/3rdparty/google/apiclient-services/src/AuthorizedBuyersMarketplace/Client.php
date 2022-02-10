@@ -19,57 +19,111 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 
 class Client extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $partnerClientId;
+  /**
+   * @var string
+   */
   public $role;
+  /**
+   * @var bool
+   */
   public $sellerVisible;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPartnerClientId($partnerClientId)
   {
     $this->partnerClientId = $partnerClientId;
   }
+  /**
+   * @return string
+   */
   public function getPartnerClientId()
   {
     return $this->partnerClientId;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;
   }
+  /**
+   * @param bool
+   */
   public function setSellerVisible($sellerVisible)
   {
     $this->sellerVisible = $sellerVisible;
   }
+  /**
+   * @return bool
+   */
   public function getSellerVisible()
   {
     return $this->sellerVisible;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

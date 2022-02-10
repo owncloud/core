@@ -19,21 +19,39 @@ namespace Google\Service\PubsubLite;
 
 class Reservation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $throughputCapacity;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setThroughputCapacity($throughputCapacity)
   {
     $this->throughputCapacity = $throughputCapacity;
   }
+  /**
+   * @return string
+   */
   public function getThroughputCapacity()
   {
     return $this->throughputCapacity;

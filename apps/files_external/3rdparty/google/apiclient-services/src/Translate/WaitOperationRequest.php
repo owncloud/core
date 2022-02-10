@@ -19,12 +19,21 @@ namespace Google\Service\Translate;
 
 class WaitOperationRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $timeout;
 
+  /**
+   * @param string
+   */
   public function setTimeout($timeout)
   {
     $this->timeout = $timeout;
   }
+  /**
+   * @return string
+   */
   public function getTimeout()
   {
     return $this->timeout;

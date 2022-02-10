@@ -19,21 +19,39 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class StructuredServiceItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $serviceTypeId;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setServiceTypeId($serviceTypeId)
   {
     $this->serviceTypeId = $serviceTypeId;
   }
+  /**
+   * @return string
+   */
   public function getServiceTypeId()
   {
     return $this->serviceTypeId;

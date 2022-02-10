@@ -21,16 +21,43 @@ class LogMetric extends \Google\Model
 {
   protected $bucketOptionsType = BucketOptions::class;
   protected $bucketOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var bool
+   */
   public $disabled;
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string[]
+   */
   public $labelExtractors;
   protected $metricDescriptorType = MetricDescriptor::class;
   protected $metricDescriptorDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $updateTime;
+  /**
+   * @var string
+   */
   public $valueExtractor;
+  /**
+   * @var string
+   */
   public $version;
 
   /**
@@ -47,42 +74,72 @@ class LogMetric extends \Google\Model
   {
     return $this->bucketOptions;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string[]
+   */
   public function setLabelExtractors($labelExtractors)
   {
     $this->labelExtractors = $labelExtractors;
   }
+  /**
+   * @return string[]
+   */
   public function getLabelExtractors()
   {
     return $this->labelExtractors;
@@ -101,34 +158,58 @@ class LogMetric extends \Google\Model
   {
     return $this->metricDescriptor;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;
   }
+  /**
+   * @param string
+   */
   public function setValueExtractor($valueExtractor)
   {
     $this->valueExtractor = $valueExtractor;
   }
+  /**
+   * @return string
+   */
   public function getValueExtractor()
   {
     return $this->valueExtractor;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

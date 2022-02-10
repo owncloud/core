@@ -19,57 +19,111 @@ namespace Google\Service\TagManager;
 
 class GalleryReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var bool
+   */
   public $isModified;
+  /**
+   * @var string
+   */
   public $owner;
+  /**
+   * @var string
+   */
   public $repository;
+  /**
+   * @var string
+   */
   public $signature;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param bool
+   */
   public function setIsModified($isModified)
   {
     $this->isModified = $isModified;
   }
+  /**
+   * @return bool
+   */
   public function getIsModified()
   {
     return $this->isModified;
   }
+  /**
+   * @param string
+   */
   public function setOwner($owner)
   {
     $this->owner = $owner;
   }
+  /**
+   * @return string
+   */
   public function getOwner()
   {
     return $this->owner;
   }
+  /**
+   * @param string
+   */
   public function setRepository($repository)
   {
     $this->repository = $repository;
   }
+  /**
+   * @return string
+   */
   public function getRepository()
   {
     return $this->repository;
   }
+  /**
+   * @param string
+   */
   public function setSignature($signature)
   {
     $this->signature = $signature;
   }
+  /**
+   * @return string
+   */
   public function getSignature()
   {
     return $this->signature;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

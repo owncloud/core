@@ -19,12 +19,21 @@ namespace Google\Service\Transcoder;
 
 class SampleAesEncryption extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyUri;
 
+  /**
+   * @param string
+   */
   public function setKeyUri($keyUri)
   {
     $this->keyUri = $keyUri;
   }
+  /**
+   * @return string
+   */
   public function getKeyUri()
   {
     return $this->keyUri;

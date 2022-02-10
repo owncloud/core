@@ -20,12 +20,21 @@ namespace Google\Service\Safebrowsing;
 class GoogleSecuritySafebrowsingV4RawIndices extends \Google\Collection
 {
   protected $collection_key = 'indices';
+  /**
+   * @var int[]
+   */
   public $indices;
 
+  /**
+   * @param int[]
+   */
   public function setIndices($indices)
   {
     $this->indices = $indices;
   }
+  /**
+   * @return int[]
+   */
   public function getIndices()
   {
     return $this->indices;

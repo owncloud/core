@@ -21,7 +21,13 @@ class GoogleCloudVisionV1p2beta1CropHint extends \Google\Model
 {
   protected $boundingPolyType = GoogleCloudVisionV1p2beta1BoundingPoly::class;
   protected $boundingPolyDataType = '';
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var float
+   */
   public $importanceFraction;
 
   /**
@@ -38,18 +44,30 @@ class GoogleCloudVisionV1p2beta1CropHint extends \Google\Model
   {
     return $this->boundingPoly;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param float
+   */
   public function setImportanceFraction($importanceFraction)
   {
     $this->importanceFraction = $importanceFraction;
   }
+  /**
+   * @return float
+   */
   public function getImportanceFraction()
   {
     return $this->importanceFraction;

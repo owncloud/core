@@ -20,8 +20,17 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1p1alpha1LabelOperationMetadata extends \Google\Collection
 {
   protected $collection_key = 'partialFailures';
+  /**
+   * @var string
+   */
   public $annotatedDataset;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $dataset;
   protected $imageBoundingBoxDetailsType = GoogleCloudDatalabelingV1p1alpha1LabelImageBoundingBoxOperationMetadata::class;
   protected $imageBoundingBoxDetailsDataType = '';
@@ -37,6 +46,9 @@ class GoogleCloudDatalabelingV1p1alpha1LabelOperationMetadata extends \Google\Co
   protected $imageSegmentationDetailsDataType = '';
   protected $partialFailuresType = GoogleRpcStatus::class;
   protected $partialFailuresDataType = 'array';
+  /**
+   * @var int
+   */
   public $progressPercent;
   protected $textClassificationDetailsType = GoogleCloudDatalabelingV1p1alpha1LabelTextClassificationOperationMetadata::class;
   protected $textClassificationDetailsDataType = '';
@@ -51,26 +63,44 @@ class GoogleCloudDatalabelingV1p1alpha1LabelOperationMetadata extends \Google\Co
   protected $videoObjectTrackingDetailsType = GoogleCloudDatalabelingV1p1alpha1LabelVideoObjectTrackingOperationMetadata::class;
   protected $videoObjectTrackingDetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAnnotatedDataset($annotatedDataset)
   {
     $this->annotatedDataset = $annotatedDataset;
   }
+  /**
+   * @return string
+   */
   public function getAnnotatedDataset()
   {
     return $this->annotatedDataset;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDataset($dataset)
   {
     $this->dataset = $dataset;
   }
+  /**
+   * @return string
+   */
   public function getDataset()
   {
     return $this->dataset;
@@ -173,10 +203,16 @@ class GoogleCloudDatalabelingV1p1alpha1LabelOperationMetadata extends \Google\Co
   {
     return $this->partialFailures;
   }
+  /**
+   * @param int
+   */
   public function setProgressPercent($progressPercent)
   {
     $this->progressPercent = $progressPercent;
   }
+  /**
+   * @return int
+   */
   public function getProgressPercent()
   {
     return $this->progressPercent;

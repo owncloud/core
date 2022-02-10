@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersCustomBatchRequestEntryUpdateShipmentScheduledDeliveryDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $carrierPhoneNumber;
+  /**
+   * @var string
+   */
   public $scheduledDate;
 
+  /**
+   * @param string
+   */
   public function setCarrierPhoneNumber($carrierPhoneNumber)
   {
     $this->carrierPhoneNumber = $carrierPhoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getCarrierPhoneNumber()
   {
     return $this->carrierPhoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setScheduledDate($scheduledDate)
   {
     $this->scheduledDate = $scheduledDate;
   }
+  /**
+   * @return string
+   */
   public function getScheduledDate()
   {
     return $this->scheduledDate;

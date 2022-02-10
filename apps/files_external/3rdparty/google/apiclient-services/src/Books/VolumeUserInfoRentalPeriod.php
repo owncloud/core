@@ -19,21 +19,39 @@ namespace Google\Service\Books;
 
 class VolumeUserInfoRentalPeriod extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endUtcSec;
+  /**
+   * @var string
+   */
   public $startUtcSec;
 
+  /**
+   * @param string
+   */
   public function setEndUtcSec($endUtcSec)
   {
     $this->endUtcSec = $endUtcSec;
   }
+  /**
+   * @return string
+   */
   public function getEndUtcSec()
   {
     return $this->endUtcSec;
   }
+  /**
+   * @param string
+   */
   public function setStartUtcSec($startUtcSec)
   {
     $this->startUtcSec = $startUtcSec;
   }
+  /**
+   * @return string
+   */
   public function getStartUtcSec()
   {
     return $this->startUtcSec;

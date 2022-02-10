@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class GeoRegionAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $geoRegionType;
+  /**
+   * @var bool
+   */
   public $negative;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setGeoRegionType($geoRegionType)
   {
     $this->geoRegionType = $geoRegionType;
   }
+  /**
+   * @return string
+   */
   public function getGeoRegionType()
   {
     return $this->geoRegionType;
   }
+  /**
+   * @param bool
+   */
   public function setNegative($negative)
   {
     $this->negative = $negative;
   }
+  /**
+   * @return bool
+   */
   public function getNegative()
   {
     return $this->negative;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

@@ -20,30 +20,57 @@ namespace Google\Service\Compute;
 class AuditLogConfig extends \Google\Collection
 {
   protected $collection_key = 'exemptedMembers';
+  /**
+   * @var string[]
+   */
   public $exemptedMembers;
+  /**
+   * @var bool
+   */
   public $ignoreChildExemptions;
+  /**
+   * @var string
+   */
   public $logType;
 
+  /**
+   * @param string[]
+   */
   public function setExemptedMembers($exemptedMembers)
   {
     $this->exemptedMembers = $exemptedMembers;
   }
+  /**
+   * @return string[]
+   */
   public function getExemptedMembers()
   {
     return $this->exemptedMembers;
   }
+  /**
+   * @param bool
+   */
   public function setIgnoreChildExemptions($ignoreChildExemptions)
   {
     $this->ignoreChildExemptions = $ignoreChildExemptions;
   }
+  /**
+   * @return bool
+   */
   public function getIgnoreChildExemptions()
   {
     return $this->ignoreChildExemptions;
   }
+  /**
+   * @param string
+   */
   public function setLogType($logType)
   {
     $this->logType = $logType;
   }
+  /**
+   * @return string
+   */
   public function getLogType()
   {
     return $this->logType;

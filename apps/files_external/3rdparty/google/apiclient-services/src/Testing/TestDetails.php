@@ -20,21 +20,39 @@ namespace Google\Service\Testing;
 class TestDetails extends \Google\Collection
 {
   protected $collection_key = 'progressMessages';
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string[]
+   */
   public $progressMessages;
 
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string[]
+   */
   public function setProgressMessages($progressMessages)
   {
     $this->progressMessages = $progressMessages;
   }
+  /**
+   * @return string[]
+   */
   public function getProgressMessages()
   {
     return $this->progressMessages;

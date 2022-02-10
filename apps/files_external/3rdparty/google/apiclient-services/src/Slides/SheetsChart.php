@@ -19,24 +19,45 @@ namespace Google\Service\Slides;
 
 class SheetsChart extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $chartId;
+  /**
+   * @var string
+   */
   public $contentUrl;
   protected $sheetsChartPropertiesType = SheetsChartProperties::class;
   protected $sheetsChartPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $spreadsheetId;
 
+  /**
+   * @param int
+   */
   public function setChartId($chartId)
   {
     $this->chartId = $chartId;
   }
+  /**
+   * @return int
+   */
   public function getChartId()
   {
     return $this->chartId;
   }
+  /**
+   * @param string
+   */
   public function setContentUrl($contentUrl)
   {
     $this->contentUrl = $contentUrl;
   }
+  /**
+   * @return string
+   */
   public function getContentUrl()
   {
     return $this->contentUrl;
@@ -55,10 +76,16 @@ class SheetsChart extends \Google\Model
   {
     return $this->sheetsChartProperties;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;

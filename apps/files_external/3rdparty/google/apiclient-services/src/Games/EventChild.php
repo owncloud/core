@@ -19,21 +19,39 @@ namespace Google\Service\Games;
 
 class EventChild extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $childId;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setChildId($childId)
   {
     $this->childId = $childId;
   }
+  /**
+   * @return string
+   */
   public function getChildId()
   {
     return $this->childId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

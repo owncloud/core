@@ -24,6 +24,9 @@ class GooglePrivacyDlpV2InspectJobConfig extends \Google\Collection
   protected $actionsDataType = 'array';
   protected $inspectConfigType = GooglePrivacyDlpV2InspectConfig::class;
   protected $inspectConfigDataType = '';
+  /**
+   * @var string
+   */
   public $inspectTemplateName;
   protected $storageConfigType = GooglePrivacyDlpV2StorageConfig::class;
   protected $storageConfigDataType = '';
@@ -56,10 +59,16 @@ class GooglePrivacyDlpV2InspectJobConfig extends \Google\Collection
   {
     return $this->inspectConfig;
   }
+  /**
+   * @param string
+   */
   public function setInspectTemplateName($inspectTemplateName)
   {
     $this->inspectTemplateName = $inspectTemplateName;
   }
+  /**
+   * @return string
+   */
   public function getInspectTemplateName()
   {
     return $this->inspectTemplateName;

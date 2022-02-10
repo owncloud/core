@@ -19,21 +19,39 @@ namespace Google\Service\DriveActivity;
 
 class KnownUser extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isCurrentUser;
+  /**
+   * @var string
+   */
   public $personName;
 
+  /**
+   * @param bool
+   */
   public function setIsCurrentUser($isCurrentUser)
   {
     $this->isCurrentUser = $isCurrentUser;
   }
+  /**
+   * @return bool
+   */
   public function getIsCurrentUser()
   {
     return $this->isCurrentUser;
   }
+  /**
+   * @param string
+   */
   public function setPersonName($personName)
   {
     $this->personName = $personName;
   }
+  /**
+   * @return string
+   */
   public function getPersonName()
   {
     return $this->personName;

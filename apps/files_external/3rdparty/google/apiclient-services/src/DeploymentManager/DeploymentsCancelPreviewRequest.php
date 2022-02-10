@@ -19,12 +19,21 @@ namespace Google\Service\DeploymentManager;
 
 class DeploymentsCancelPreviewRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fingerprint;
 
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;

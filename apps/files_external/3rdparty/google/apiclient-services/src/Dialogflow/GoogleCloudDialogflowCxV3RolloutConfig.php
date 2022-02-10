@@ -20,23 +20,41 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3RolloutConfig extends \Google\Collection
 {
   protected $collection_key = 'rolloutSteps';
+  /**
+   * @var string
+   */
   public $failureCondition;
+  /**
+   * @var string
+   */
   public $rolloutCondition;
   protected $rolloutStepsType = GoogleCloudDialogflowCxV3RolloutConfigRolloutStep::class;
   protected $rolloutStepsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setFailureCondition($failureCondition)
   {
     $this->failureCondition = $failureCondition;
   }
+  /**
+   * @return string
+   */
   public function getFailureCondition()
   {
     return $this->failureCondition;
   }
+  /**
+   * @param string
+   */
   public function setRolloutCondition($rolloutCondition)
   {
     $this->rolloutCondition = $rolloutCondition;
   }
+  /**
+   * @return string
+   */
   public function getRolloutCondition()
   {
     return $this->rolloutCondition;

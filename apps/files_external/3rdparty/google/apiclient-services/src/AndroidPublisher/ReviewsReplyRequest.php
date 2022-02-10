@@ -19,12 +19,21 @@ namespace Google\Service\AndroidPublisher;
 
 class ReviewsReplyRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $replyText;
 
+  /**
+   * @param string
+   */
   public function setReplyText($replyText)
   {
     $this->replyText = $replyText;
   }
+  /**
+   * @return string
+   */
   public function getReplyText()
   {
     return $this->replyText;

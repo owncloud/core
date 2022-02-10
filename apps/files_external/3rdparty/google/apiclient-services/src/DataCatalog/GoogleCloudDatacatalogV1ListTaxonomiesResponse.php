@@ -20,14 +20,23 @@ namespace Google\Service\DataCatalog;
 class GoogleCloudDatacatalogV1ListTaxonomiesResponse extends \Google\Collection
 {
   protected $collection_key = 'taxonomies';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $taxonomiesType = GoogleCloudDatacatalogV1Taxonomy::class;
   protected $taxonomiesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

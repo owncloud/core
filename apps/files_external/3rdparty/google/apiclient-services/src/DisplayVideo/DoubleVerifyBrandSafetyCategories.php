@@ -20,30 +20,57 @@ namespace Google\Service\DisplayVideo;
 class DoubleVerifyBrandSafetyCategories extends \Google\Collection
 {
   protected $collection_key = 'avoidedMediumSeverityCategories';
+  /**
+   * @var bool
+   */
   public $avoidUnknownBrandSafetyCategory;
+  /**
+   * @var string[]
+   */
   public $avoidedHighSeverityCategories;
+  /**
+   * @var string[]
+   */
   public $avoidedMediumSeverityCategories;
 
+  /**
+   * @param bool
+   */
   public function setAvoidUnknownBrandSafetyCategory($avoidUnknownBrandSafetyCategory)
   {
     $this->avoidUnknownBrandSafetyCategory = $avoidUnknownBrandSafetyCategory;
   }
+  /**
+   * @return bool
+   */
   public function getAvoidUnknownBrandSafetyCategory()
   {
     return $this->avoidUnknownBrandSafetyCategory;
   }
+  /**
+   * @param string[]
+   */
   public function setAvoidedHighSeverityCategories($avoidedHighSeverityCategories)
   {
     $this->avoidedHighSeverityCategories = $avoidedHighSeverityCategories;
   }
+  /**
+   * @return string[]
+   */
   public function getAvoidedHighSeverityCategories()
   {
     return $this->avoidedHighSeverityCategories;
   }
+  /**
+   * @param string[]
+   */
   public function setAvoidedMediumSeverityCategories($avoidedMediumSeverityCategories)
   {
     $this->avoidedMediumSeverityCategories = $avoidedMediumSeverityCategories;
   }
+  /**
+   * @return string[]
+   */
   public function getAvoidedMediumSeverityCategories()
   {
     return $this->avoidedMediumSeverityCategories;

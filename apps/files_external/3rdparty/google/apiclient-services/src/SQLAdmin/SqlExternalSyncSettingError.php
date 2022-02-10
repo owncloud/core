@@ -19,30 +19,57 @@ namespace Google\Service\SQLAdmin;
 
 class SqlExternalSyncSettingError extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $detail;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDetail($detail)
   {
     $this->detail = $detail;
   }
+  /**
+   * @return string
+   */
   public function getDetail()
   {
     return $this->detail;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

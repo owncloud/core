@@ -20,25 +20,49 @@ namespace Google\Service\Vault;
 class Matter extends \Google\Collection
 {
   protected $collection_key = 'matterPermissions';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $matterId;
   protected $matterPermissionsType = MatterPermission::class;
   protected $matterPermissionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setMatterId($matterId)
   {
     $this->matterId = $matterId;
   }
+  /**
+   * @return string
+   */
   public function getMatterId()
   {
     return $this->matterId;
@@ -57,18 +81,30 @@ class Matter extends \Google\Collection
   {
     return $this->matterPermissions;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

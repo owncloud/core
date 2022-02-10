@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class CounterEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $reportingName;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setReportingName($reportingName)
   {
     $this->reportingName = $reportingName;
   }
+  /**
+   * @return string
+   */
   public function getReportingName()
   {
     return $this->reportingName;

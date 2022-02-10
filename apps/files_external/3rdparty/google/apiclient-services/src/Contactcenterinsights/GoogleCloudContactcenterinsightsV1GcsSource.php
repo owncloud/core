@@ -19,21 +19,39 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1GcsSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audioUri;
+  /**
+   * @var string
+   */
   public $transcriptUri;
 
+  /**
+   * @param string
+   */
   public function setAudioUri($audioUri)
   {
     $this->audioUri = $audioUri;
   }
+  /**
+   * @return string
+   */
   public function getAudioUri()
   {
     return $this->audioUri;
   }
+  /**
+   * @param string
+   */
   public function setTranscriptUri($transcriptUri)
   {
     $this->transcriptUri = $transcriptUri;
   }
+  /**
+   * @return string
+   */
   public function getTranscriptUri()
   {
     return $this->transcriptUri;

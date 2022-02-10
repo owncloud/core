@@ -19,21 +19,39 @@ namespace Google\Service\TagManager;
 
 class ZoneChildContainer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $nickname;
+  /**
+   * @var string
+   */
   public $publicId;
 
+  /**
+   * @param string
+   */
   public function setNickname($nickname)
   {
     $this->nickname = $nickname;
   }
+  /**
+   * @return string
+   */
   public function getNickname()
   {
     return $this->nickname;
   }
+  /**
+   * @param string
+   */
   public function setPublicId($publicId)
   {
     $this->publicId = $publicId;
   }
+  /**
+   * @return string
+   */
   public function getPublicId()
   {
     return $this->publicId;

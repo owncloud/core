@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class Weight extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $unit;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

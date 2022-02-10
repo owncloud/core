@@ -21,6 +21,9 @@ class GoogleFirebaseAppcheckV1betaUpdateServiceRequest extends \Google\Model
 {
   protected $serviceType = GoogleFirebaseAppcheckV1betaService::class;
   protected $serviceDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
 
   /**
@@ -37,10 +40,16 @@ class GoogleFirebaseAppcheckV1betaUpdateServiceRequest extends \Google\Model
   {
     return $this->service;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;

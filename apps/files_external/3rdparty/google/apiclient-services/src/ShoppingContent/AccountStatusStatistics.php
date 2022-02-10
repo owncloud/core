@@ -19,39 +19,75 @@ namespace Google\Service\ShoppingContent;
 
 class AccountStatusStatistics extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $active;
+  /**
+   * @var string
+   */
   public $disapproved;
+  /**
+   * @var string
+   */
   public $expiring;
+  /**
+   * @var string
+   */
   public $pending;
 
+  /**
+   * @param string
+   */
   public function setActive($active)
   {
     $this->active = $active;
   }
+  /**
+   * @return string
+   */
   public function getActive()
   {
     return $this->active;
   }
+  /**
+   * @param string
+   */
   public function setDisapproved($disapproved)
   {
     $this->disapproved = $disapproved;
   }
+  /**
+   * @return string
+   */
   public function getDisapproved()
   {
     return $this->disapproved;
   }
+  /**
+   * @param string
+   */
   public function setExpiring($expiring)
   {
     $this->expiring = $expiring;
   }
+  /**
+   * @return string
+   */
   public function getExpiring()
   {
     return $this->expiring;
   }
+  /**
+   * @param string
+   */
   public function setPending($pending)
   {
     $this->pending = $pending;
   }
+  /**
+   * @return string
+   */
   public function getPending()
   {
     return $this->pending;

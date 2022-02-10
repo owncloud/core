@@ -20,6 +20,9 @@ namespace Google\Service\CloudTalentSolution;
 class SearchJobsResponse extends \Google\Collection
 {
   protected $collection_key = 'matchingJobs';
+  /**
+   * @var int
+   */
   public $broadenedQueryJobsCount;
   protected $histogramQueryResultsType = HistogramQueryResult::class;
   protected $histogramQueryResultsDataType = 'array';
@@ -29,15 +32,27 @@ class SearchJobsResponse extends \Google\Collection
   protected $matchingJobsDataType = 'array';
   protected $metadataType = ResponseMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $spellCorrectionType = SpellingCorrection::class;
   protected $spellCorrectionDataType = '';
+  /**
+   * @var int
+   */
   public $totalSize;
 
+  /**
+   * @param int
+   */
   public function setBroadenedQueryJobsCount($broadenedQueryJobsCount)
   {
     $this->broadenedQueryJobsCount = $broadenedQueryJobsCount;
   }
+  /**
+   * @return int
+   */
   public function getBroadenedQueryJobsCount()
   {
     return $this->broadenedQueryJobsCount;
@@ -98,10 +113,16 @@ class SearchJobsResponse extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
@@ -120,10 +141,16 @@ class SearchJobsResponse extends \Google\Collection
   {
     return $this->spellCorrection;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

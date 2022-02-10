@@ -19,33 +19,63 @@ namespace Google\Service\YouTube;
 
 class ActivityContentDetailsSocial extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $author;
+  /**
+   * @var string
+   */
   public $imageUrl;
+  /**
+   * @var string
+   */
   public $referenceUrl;
   protected $resourceIdType = ResourceId::class;
   protected $resourceIdDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAuthor($author)
   {
     $this->author = $author;
   }
+  /**
+   * @return string
+   */
   public function getAuthor()
   {
     return $this->author;
   }
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;
   }
+  /**
+   * @param string
+   */
   public function setReferenceUrl($referenceUrl)
   {
     $this->referenceUrl = $referenceUrl;
   }
+  /**
+   * @return string
+   */
   public function getReferenceUrl()
   {
     return $this->referenceUrl;
@@ -64,10 +94,16 @@ class ActivityContentDetailsSocial extends \Google\Model
   {
     return $this->resourceId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

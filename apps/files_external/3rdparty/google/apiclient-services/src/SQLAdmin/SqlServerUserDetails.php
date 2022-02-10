@@ -20,21 +20,39 @@ namespace Google\Service\SQLAdmin;
 class SqlServerUserDetails extends \Google\Collection
 {
   protected $collection_key = 'serverRoles';
+  /**
+   * @var bool
+   */
   public $disabled;
+  /**
+   * @var string[]
+   */
   public $serverRoles;
 
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;
   }
+  /**
+   * @param string[]
+   */
   public function setServerRoles($serverRoles)
   {
     $this->serverRoles = $serverRoles;
   }
+  /**
+   * @return string[]
+   */
   public function getServerRoles()
   {
     return $this->serverRoles;

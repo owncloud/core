@@ -20,30 +20,57 @@ namespace Google\Service\Compute;
 class HostRule extends \Google\Collection
 {
   protected $collection_key = 'hosts';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string[]
+   */
   public $hosts;
+  /**
+   * @var string
+   */
   public $pathMatcher;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string[]
+   */
   public function setHosts($hosts)
   {
     $this->hosts = $hosts;
   }
+  /**
+   * @return string[]
+   */
   public function getHosts()
   {
     return $this->hosts;
   }
+  /**
+   * @param string
+   */
   public function setPathMatcher($pathMatcher)
   {
     $this->pathMatcher = $pathMatcher;
   }
+  /**
+   * @return string
+   */
   public function getPathMatcher()
   {
     return $this->pathMatcher;

@@ -21,34 +21,85 @@ class Table extends \Google\Model
 {
   protected $clusteringType = Clustering::class;
   protected $clusteringDataType = '';
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string
+   */
   public $defaultCollation;
+  /**
+   * @var string
+   */
   public $description;
   protected $encryptionConfigurationType = EncryptionConfiguration::class;
   protected $encryptionConfigurationDataType = '';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $expirationTime;
   protected $externalDataConfigurationType = ExternalDataConfiguration::class;
   protected $externalDataConfigurationDataType = '';
+  /**
+   * @var string
+   */
   public $friendlyName;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $lastModifiedTime;
+  /**
+   * @var string
+   */
   public $location;
   protected $materializedViewType = MaterializedViewDefinition::class;
   protected $materializedViewDataType = '';
   protected $modelType = ModelDefinition::class;
   protected $modelDataType = '';
+  /**
+   * @var string
+   */
   public $numBytes;
+  /**
+   * @var string
+   */
   public $numLongTermBytes;
+  /**
+   * @var string
+   */
   public $numPhysicalBytes;
+  /**
+   * @var string
+   */
   public $numRows;
   protected $rangePartitioningType = RangePartitioning::class;
   protected $rangePartitioningDataType = '';
+  /**
+   * @var bool
+   */
   public $requirePartitionFilter;
   protected $schemaType = TableSchema::class;
   protected $schemaDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
   protected $snapshotDefinitionType = SnapshotDefinition::class;
   protected $snapshotDefinitionDataType = '';
@@ -58,6 +109,9 @@ class Table extends \Google\Model
   protected $tableReferenceDataType = '';
   protected $timePartitioningType = TimePartitioning::class;
   protected $timePartitioningDataType = '';
+  /**
+   * @var string
+   */
   public $type;
   protected $viewType = ViewDefinition::class;
   protected $viewDataType = '';
@@ -76,26 +130,44 @@ class Table extends \Google\Model
   {
     return $this->clustering;
   }
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setDefaultCollation($defaultCollation)
   {
     $this->defaultCollation = $defaultCollation;
   }
+  /**
+   * @return string
+   */
   public function getDefaultCollation()
   {
     return $this->defaultCollation;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -114,18 +186,30 @@ class Table extends \Google\Model
   {
     return $this->encryptionConfiguration;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setExpirationTime($expirationTime)
   {
     $this->expirationTime = $expirationTime;
   }
+  /**
+   * @return string
+   */
   public function getExpirationTime()
   {
     return $this->expirationTime;
@@ -144,50 +228,86 @@ class Table extends \Google\Model
   {
     return $this->externalDataConfiguration;
   }
+  /**
+   * @param string
+   */
   public function setFriendlyName($friendlyName)
   {
     $this->friendlyName = $friendlyName;
   }
+  /**
+   * @return string
+   */
   public function getFriendlyName()
   {
     return $this->friendlyName;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedTime($lastModifiedTime)
   {
     $this->lastModifiedTime = $lastModifiedTime;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedTime()
   {
     return $this->lastModifiedTime;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
@@ -220,34 +340,58 @@ class Table extends \Google\Model
   {
     return $this->model;
   }
+  /**
+   * @param string
+   */
   public function setNumBytes($numBytes)
   {
     $this->numBytes = $numBytes;
   }
+  /**
+   * @return string
+   */
   public function getNumBytes()
   {
     return $this->numBytes;
   }
+  /**
+   * @param string
+   */
   public function setNumLongTermBytes($numLongTermBytes)
   {
     $this->numLongTermBytes = $numLongTermBytes;
   }
+  /**
+   * @return string
+   */
   public function getNumLongTermBytes()
   {
     return $this->numLongTermBytes;
   }
+  /**
+   * @param string
+   */
   public function setNumPhysicalBytes($numPhysicalBytes)
   {
     $this->numPhysicalBytes = $numPhysicalBytes;
   }
+  /**
+   * @return string
+   */
   public function getNumPhysicalBytes()
   {
     return $this->numPhysicalBytes;
   }
+  /**
+   * @param string
+   */
   public function setNumRows($numRows)
   {
     $this->numRows = $numRows;
   }
+  /**
+   * @return string
+   */
   public function getNumRows()
   {
     return $this->numRows;
@@ -266,10 +410,16 @@ class Table extends \Google\Model
   {
     return $this->rangePartitioning;
   }
+  /**
+   * @param bool
+   */
   public function setRequirePartitionFilter($requirePartitionFilter)
   {
     $this->requirePartitionFilter = $requirePartitionFilter;
   }
+  /**
+   * @return bool
+   */
   public function getRequirePartitionFilter()
   {
     return $this->requirePartitionFilter;
@@ -288,10 +438,16 @@ class Table extends \Google\Model
   {
     return $this->schema;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
@@ -352,10 +508,16 @@ class Table extends \Google\Model
   {
     return $this->timePartitioning;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

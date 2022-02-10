@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class ResourcePolicyDailyCycle extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $daysInCycle;
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param int
+   */
   public function setDaysInCycle($daysInCycle)
   {
     $this->daysInCycle = $daysInCycle;
   }
+  /**
+   * @return int
+   */
   public function getDaysInCycle()
   {
     return $this->daysInCycle;
   }
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

@@ -19,12 +19,21 @@ namespace Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI;
 
 class ResetAdminPasswordResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $password;
 
+  /**
+   * @param string
+   */
   public function setPassword($password)
   {
     $this->password = $password;
   }
+  /**
+   * @return string
+   */
   public function getPassword()
   {
     return $this->password;

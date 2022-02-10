@@ -19,21 +19,39 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaAppAttestConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $tokenTtl;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTokenTtl($tokenTtl)
   {
     $this->tokenTtl = $tokenTtl;
   }
+  /**
+   * @return string
+   */
   public function getTokenTtl()
   {
     return $this->tokenTtl;

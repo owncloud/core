@@ -19,66 +19,129 @@ namespace Google\Service\Appengine;
 
 class ReadinessCheck extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appStartTimeout;
+  /**
+   * @var string
+   */
   public $checkInterval;
+  /**
+   * @var string
+   */
   public $failureThreshold;
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $successThreshold;
+  /**
+   * @var string
+   */
   public $timeout;
 
+  /**
+   * @param string
+   */
   public function setAppStartTimeout($appStartTimeout)
   {
     $this->appStartTimeout = $appStartTimeout;
   }
+  /**
+   * @return string
+   */
   public function getAppStartTimeout()
   {
     return $this->appStartTimeout;
   }
+  /**
+   * @param string
+   */
   public function setCheckInterval($checkInterval)
   {
     $this->checkInterval = $checkInterval;
   }
+  /**
+   * @return string
+   */
   public function getCheckInterval()
   {
     return $this->checkInterval;
   }
+  /**
+   * @param string
+   */
   public function setFailureThreshold($failureThreshold)
   {
     $this->failureThreshold = $failureThreshold;
   }
+  /**
+   * @return string
+   */
   public function getFailureThreshold()
   {
     return $this->failureThreshold;
   }
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setSuccessThreshold($successThreshold)
   {
     $this->successThreshold = $successThreshold;
   }
+  /**
+   * @return string
+   */
   public function getSuccessThreshold()
   {
     return $this->successThreshold;
   }
+  /**
+   * @param string
+   */
   public function setTimeout($timeout)
   {
     $this->timeout = $timeout;
   }
+  /**
+   * @return string
+   */
   public function getTimeout()
   {
     return $this->timeout;

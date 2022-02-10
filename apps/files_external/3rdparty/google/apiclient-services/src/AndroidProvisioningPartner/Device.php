@@ -22,12 +22,21 @@ class Device extends \Google\Collection
   protected $collection_key = 'claims';
   protected $claimsType = DeviceClaim::class;
   protected $claimsDataType = 'array';
+  /**
+   * @var string
+   */
   public $configuration;
+  /**
+   * @var string
+   */
   public $deviceId;
   protected $deviceIdentifierType = DeviceIdentifier::class;
   protected $deviceIdentifierDataType = '';
   protected $deviceMetadataType = DeviceMetadata::class;
   protected $deviceMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -44,18 +53,30 @@ class Device extends \Google\Collection
   {
     return $this->claims;
   }
+  /**
+   * @param string
+   */
   public function setConfiguration($configuration)
   {
     $this->configuration = $configuration;
   }
+  /**
+   * @return string
+   */
   public function getConfiguration()
   {
     return $this->configuration;
   }
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
@@ -88,10 +109,16 @@ class Device extends \Google\Collection
   {
     return $this->deviceMetadata;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

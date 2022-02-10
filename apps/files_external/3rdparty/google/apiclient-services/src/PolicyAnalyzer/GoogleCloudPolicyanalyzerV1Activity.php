@@ -19,32 +19,59 @@ namespace Google\Service\PolicyAnalyzer;
 
 class GoogleCloudPolicyanalyzerV1Activity extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $activity;
+  /**
+   * @var string
+   */
   public $activityType;
+  /**
+   * @var string
+   */
   public $fullResourceName;
   protected $observationPeriodType = GoogleCloudPolicyanalyzerV1ObservationPeriod::class;
   protected $observationPeriodDataType = '';
 
+  /**
+   * @param array[]
+   */
   public function setActivity($activity)
   {
     $this->activity = $activity;
   }
+  /**
+   * @return array[]
+   */
   public function getActivity()
   {
     return $this->activity;
   }
+  /**
+   * @param string
+   */
   public function setActivityType($activityType)
   {
     $this->activityType = $activityType;
   }
+  /**
+   * @return string
+   */
   public function getActivityType()
   {
     return $this->activityType;
   }
+  /**
+   * @param string
+   */
   public function setFullResourceName($fullResourceName)
   {
     $this->fullResourceName = $fullResourceName;
   }
+  /**
+   * @return string
+   */
   public function getFullResourceName()
   {
     return $this->fullResourceName;

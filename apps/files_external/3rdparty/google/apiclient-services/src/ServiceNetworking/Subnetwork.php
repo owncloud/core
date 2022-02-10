@@ -20,50 +20,95 @@ namespace Google\Service\ServiceNetworking;
 class Subnetwork extends \Google\Collection
 {
   protected $collection_key = 'secondaryIpRanges';
+  /**
+   * @var string
+   */
   public $ipCidrRange;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var bool
+   */
   public $outsideAllocation;
+  /**
+   * @var string
+   */
   public $region;
   protected $secondaryIpRangesType = SecondaryIpRange::class;
   protected $secondaryIpRangesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setIpCidrRange($ipCidrRange)
   {
     $this->ipCidrRange = $ipCidrRange;
   }
+  /**
+   * @return string
+   */
   public function getIpCidrRange()
   {
     return $this->ipCidrRange;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param bool
+   */
   public function setOutsideAllocation($outsideAllocation)
   {
     $this->outsideAllocation = $outsideAllocation;
   }
+  /**
+   * @return bool
+   */
   public function getOutsideAllocation()
   {
     return $this->outsideAllocation;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;

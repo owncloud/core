@@ -19,12 +19,21 @@ namespace Google\Service\Bigquery;
 
 class DatasetAccessEntryTargetTypes extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $targetType;
 
+  /**
+   * @param string
+   */
   public function setTargetType($targetType)
   {
     $this->targetType = $targetType;
   }
+  /**
+   * @return string
+   */
   public function getTargetType()
   {
     return $this->targetType;

@@ -19,39 +19,75 @@ namespace Google\Service\Monitoring;
 
 class ValueDescriptor extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $metricKind;
+  /**
+   * @var string
+   */
   public $unit;
+  /**
+   * @var string
+   */
   public $valueType;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setMetricKind($metricKind)
   {
     $this->metricKind = $metricKind;
   }
+  /**
+   * @return string
+   */
   public function getMetricKind()
   {
     return $this->metricKind;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;
   }
+  /**
+   * @param string
+   */
   public function setValueType($valueType)
   {
     $this->valueType = $valueType;
   }
+  /**
+   * @return string
+   */
   public function getValueType()
   {
     return $this->valueType;

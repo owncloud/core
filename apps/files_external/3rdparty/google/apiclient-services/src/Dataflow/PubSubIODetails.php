@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class PubSubIODetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $subscription;
+  /**
+   * @var string
+   */
   public $topic;
 
+  /**
+   * @param string
+   */
   public function setSubscription($subscription)
   {
     $this->subscription = $subscription;
   }
+  /**
+   * @return string
+   */
   public function getSubscription()
   {
     return $this->subscription;
   }
+  /**
+   * @param string
+   */
   public function setTopic($topic)
   {
     $this->topic = $topic;
   }
+  /**
+   * @return string
+   */
   public function getTopic()
   {
     return $this->topic;

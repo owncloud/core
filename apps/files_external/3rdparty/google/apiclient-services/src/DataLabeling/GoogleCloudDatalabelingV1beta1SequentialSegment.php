@@ -19,21 +19,39 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1SequentialSegment extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $end;
+  /**
+   * @var int
+   */
   public $start;
 
+  /**
+   * @param int
+   */
   public function setEnd($end)
   {
     $this->end = $end;
   }
+  /**
+   * @return int
+   */
   public function getEnd()
   {
     return $this->end;
   }
+  /**
+   * @param int
+   */
   public function setStart($start)
   {
     $this->start = $start;
   }
+  /**
+   * @return int
+   */
   public function getStart()
   {
     return $this->start;

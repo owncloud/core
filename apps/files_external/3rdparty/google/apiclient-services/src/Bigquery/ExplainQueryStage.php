@@ -20,58 +20,139 @@ namespace Google\Service\Bigquery;
 class ExplainQueryStage extends \Google\Collection
 {
   protected $collection_key = 'steps';
+  /**
+   * @var string
+   */
   public $completedParallelInputs;
+  /**
+   * @var string
+   */
   public $computeMsAvg;
+  /**
+   * @var string
+   */
   public $computeMsMax;
   public $computeRatioAvg;
   public $computeRatioMax;
+  /**
+   * @var string
+   */
   public $endMs;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string[]
+   */
   public $inputStages;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parallelInputs;
+  /**
+   * @var string
+   */
   public $readMsAvg;
+  /**
+   * @var string
+   */
   public $readMsMax;
   public $readRatioAvg;
   public $readRatioMax;
+  /**
+   * @var string
+   */
   public $recordsRead;
+  /**
+   * @var string
+   */
   public $recordsWritten;
+  /**
+   * @var string
+   */
   public $shuffleOutputBytes;
+  /**
+   * @var string
+   */
   public $shuffleOutputBytesSpilled;
+  /**
+   * @var string
+   */
   public $slotMs;
+  /**
+   * @var string
+   */
   public $startMs;
+  /**
+   * @var string
+   */
   public $status;
   protected $stepsType = ExplainQueryStep::class;
   protected $stepsDataType = 'array';
+  /**
+   * @var string
+   */
   public $waitMsAvg;
+  /**
+   * @var string
+   */
   public $waitMsMax;
   public $waitRatioAvg;
   public $waitRatioMax;
+  /**
+   * @var string
+   */
   public $writeMsAvg;
+  /**
+   * @var string
+   */
   public $writeMsMax;
   public $writeRatioAvg;
   public $writeRatioMax;
 
+  /**
+   * @param string
+   */
   public function setCompletedParallelInputs($completedParallelInputs)
   {
     $this->completedParallelInputs = $completedParallelInputs;
   }
+  /**
+   * @return string
+   */
   public function getCompletedParallelInputs()
   {
     return $this->completedParallelInputs;
   }
+  /**
+   * @param string
+   */
   public function setComputeMsAvg($computeMsAvg)
   {
     $this->computeMsAvg = $computeMsAvg;
   }
+  /**
+   * @return string
+   */
   public function getComputeMsAvg()
   {
     return $this->computeMsAvg;
   }
+  /**
+   * @param string
+   */
   public function setComputeMsMax($computeMsMax)
   {
     $this->computeMsMax = $computeMsMax;
   }
+  /**
+   * @return string
+   */
   public function getComputeMsMax()
   {
     return $this->computeMsMax;
@@ -92,58 +173,100 @@ class ExplainQueryStage extends \Google\Collection
   {
     return $this->computeRatioMax;
   }
+  /**
+   * @param string
+   */
   public function setEndMs($endMs)
   {
     $this->endMs = $endMs;
   }
+  /**
+   * @return string
+   */
   public function getEndMs()
   {
     return $this->endMs;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string[]
+   */
   public function setInputStages($inputStages)
   {
     $this->inputStages = $inputStages;
   }
+  /**
+   * @return string[]
+   */
   public function getInputStages()
   {
     return $this->inputStages;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParallelInputs($parallelInputs)
   {
     $this->parallelInputs = $parallelInputs;
   }
+  /**
+   * @return string
+   */
   public function getParallelInputs()
   {
     return $this->parallelInputs;
   }
+  /**
+   * @param string
+   */
   public function setReadMsAvg($readMsAvg)
   {
     $this->readMsAvg = $readMsAvg;
   }
+  /**
+   * @return string
+   */
   public function getReadMsAvg()
   {
     return $this->readMsAvg;
   }
+  /**
+   * @param string
+   */
   public function setReadMsMax($readMsMax)
   {
     $this->readMsMax = $readMsMax;
   }
+  /**
+   * @return string
+   */
   public function getReadMsMax()
   {
     return $this->readMsMax;
@@ -164,58 +287,100 @@ class ExplainQueryStage extends \Google\Collection
   {
     return $this->readRatioMax;
   }
+  /**
+   * @param string
+   */
   public function setRecordsRead($recordsRead)
   {
     $this->recordsRead = $recordsRead;
   }
+  /**
+   * @return string
+   */
   public function getRecordsRead()
   {
     return $this->recordsRead;
   }
+  /**
+   * @param string
+   */
   public function setRecordsWritten($recordsWritten)
   {
     $this->recordsWritten = $recordsWritten;
   }
+  /**
+   * @return string
+   */
   public function getRecordsWritten()
   {
     return $this->recordsWritten;
   }
+  /**
+   * @param string
+   */
   public function setShuffleOutputBytes($shuffleOutputBytes)
   {
     $this->shuffleOutputBytes = $shuffleOutputBytes;
   }
+  /**
+   * @return string
+   */
   public function getShuffleOutputBytes()
   {
     return $this->shuffleOutputBytes;
   }
+  /**
+   * @param string
+   */
   public function setShuffleOutputBytesSpilled($shuffleOutputBytesSpilled)
   {
     $this->shuffleOutputBytesSpilled = $shuffleOutputBytesSpilled;
   }
+  /**
+   * @return string
+   */
   public function getShuffleOutputBytesSpilled()
   {
     return $this->shuffleOutputBytesSpilled;
   }
+  /**
+   * @param string
+   */
   public function setSlotMs($slotMs)
   {
     $this->slotMs = $slotMs;
   }
+  /**
+   * @return string
+   */
   public function getSlotMs()
   {
     return $this->slotMs;
   }
+  /**
+   * @param string
+   */
   public function setStartMs($startMs)
   {
     $this->startMs = $startMs;
   }
+  /**
+   * @return string
+   */
   public function getStartMs()
   {
     return $this->startMs;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
@@ -234,18 +399,30 @@ class ExplainQueryStage extends \Google\Collection
   {
     return $this->steps;
   }
+  /**
+   * @param string
+   */
   public function setWaitMsAvg($waitMsAvg)
   {
     $this->waitMsAvg = $waitMsAvg;
   }
+  /**
+   * @return string
+   */
   public function getWaitMsAvg()
   {
     return $this->waitMsAvg;
   }
+  /**
+   * @param string
+   */
   public function setWaitMsMax($waitMsMax)
   {
     $this->waitMsMax = $waitMsMax;
   }
+  /**
+   * @return string
+   */
   public function getWaitMsMax()
   {
     return $this->waitMsMax;
@@ -266,18 +443,30 @@ class ExplainQueryStage extends \Google\Collection
   {
     return $this->waitRatioMax;
   }
+  /**
+   * @param string
+   */
   public function setWriteMsAvg($writeMsAvg)
   {
     $this->writeMsAvg = $writeMsAvg;
   }
+  /**
+   * @return string
+   */
   public function getWriteMsAvg()
   {
     return $this->writeMsAvg;
   }
+  /**
+   * @param string
+   */
   public function setWriteMsMax($writeMsMax)
   {
     $this->writeMsMax = $writeMsMax;
   }
+  /**
+   * @return string
+   */
   public function getWriteMsMax()
   {
     return $this->writeMsMax;

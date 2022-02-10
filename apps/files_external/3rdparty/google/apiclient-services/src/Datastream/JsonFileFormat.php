@@ -19,21 +19,39 @@ namespace Google\Service\Datastream;
 
 class JsonFileFormat extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $compression;
+  /**
+   * @var string
+   */
   public $schemaFileFormat;
 
+  /**
+   * @param string
+   */
   public function setCompression($compression)
   {
     $this->compression = $compression;
   }
+  /**
+   * @return string
+   */
   public function getCompression()
   {
     return $this->compression;
   }
+  /**
+   * @param string
+   */
   public function setSchemaFileFormat($schemaFileFormat)
   {
     $this->schemaFileFormat = $schemaFileFormat;
   }
+  /**
+   * @return string
+   */
   public function getSchemaFileFormat()
   {
     return $this->schemaFileFormat;

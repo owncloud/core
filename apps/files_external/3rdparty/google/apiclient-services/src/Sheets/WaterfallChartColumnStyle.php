@@ -23,6 +23,9 @@ class WaterfallChartColumnStyle extends \Google\Model
   protected $colorDataType = '';
   protected $colorStyleType = ColorStyle::class;
   protected $colorStyleDataType = '';
+  /**
+   * @var string
+   */
   public $label;
 
   /**
@@ -53,10 +56,16 @@ class WaterfallChartColumnStyle extends \Google\Model
   {
     return $this->colorStyle;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;

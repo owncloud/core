@@ -20,39 +20,75 @@ namespace Google\Service\DataFusion;
 class Version extends \Google\Collection
 {
   protected $collection_key = 'availableFeatures';
+  /**
+   * @var string[]
+   */
   public $availableFeatures;
+  /**
+   * @var bool
+   */
   public $defaultVersion;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $versionNumber;
 
+  /**
+   * @param string[]
+   */
   public function setAvailableFeatures($availableFeatures)
   {
     $this->availableFeatures = $availableFeatures;
   }
+  /**
+   * @return string[]
+   */
   public function getAvailableFeatures()
   {
     return $this->availableFeatures;
   }
+  /**
+   * @param bool
+   */
   public function setDefaultVersion($defaultVersion)
   {
     $this->defaultVersion = $defaultVersion;
   }
+  /**
+   * @return bool
+   */
   public function getDefaultVersion()
   {
     return $this->defaultVersion;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setVersionNumber($versionNumber)
   {
     $this->versionNumber = $versionNumber;
   }
+  /**
+   * @return string
+   */
   public function getVersionNumber()
   {
     return $this->versionNumber;

@@ -20,14 +20,23 @@ namespace Google\Service\Connectors;
 class RuntimeEntitySchema extends \Google\Collection
 {
   protected $collection_key = 'fields';
+  /**
+   * @var string
+   */
   public $entity;
   protected $fieldsType = Field::class;
   protected $fieldsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setEntity($entity)
   {
     $this->entity = $entity;
   }
+  /**
+   * @return string
+   */
   public function getEntity()
   {
     return $this->entity;

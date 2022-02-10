@@ -22,8 +22,17 @@ class ChromeOsDevices extends \Google\Collection
   protected $collection_key = 'chromeosdevices';
   protected $chromeosdevicesType = ChromeOsDevice::class;
   protected $chromeosdevicesDataType = 'array';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -40,26 +49,44 @@ class ChromeOsDevices extends \Google\Collection
   {
     return $this->chromeosdevices;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

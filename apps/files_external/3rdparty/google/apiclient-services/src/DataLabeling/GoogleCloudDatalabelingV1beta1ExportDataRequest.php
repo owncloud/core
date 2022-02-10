@@ -19,24 +19,45 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1ExportDataRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $annotatedDataset;
+  /**
+   * @var string
+   */
   public $filter;
   protected $outputConfigType = GoogleCloudDatalabelingV1beta1OutputConfig::class;
   protected $outputConfigDataType = '';
+  /**
+   * @var string
+   */
   public $userEmailAddress;
 
+  /**
+   * @param string
+   */
   public function setAnnotatedDataset($annotatedDataset)
   {
     $this->annotatedDataset = $annotatedDataset;
   }
+  /**
+   * @return string
+   */
   public function getAnnotatedDataset()
   {
     return $this->annotatedDataset;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
@@ -55,10 +76,16 @@ class GoogleCloudDatalabelingV1beta1ExportDataRequest extends \Google\Model
   {
     return $this->outputConfig;
   }
+  /**
+   * @param string
+   */
   public function setUserEmailAddress($userEmailAddress)
   {
     $this->userEmailAddress = $userEmailAddress;
   }
+  /**
+   * @return string
+   */
   public function getUserEmailAddress()
   {
     return $this->userEmailAddress;

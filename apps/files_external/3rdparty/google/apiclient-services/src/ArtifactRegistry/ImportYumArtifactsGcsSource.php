@@ -20,21 +20,39 @@ namespace Google\Service\ArtifactRegistry;
 class ImportYumArtifactsGcsSource extends \Google\Collection
 {
   protected $collection_key = 'uris';
+  /**
+   * @var string[]
+   */
   public $uris;
+  /**
+   * @var bool
+   */
   public $useWildcards;
 
+  /**
+   * @param string[]
+   */
   public function setUris($uris)
   {
     $this->uris = $uris;
   }
+  /**
+   * @return string[]
+   */
   public function getUris()
   {
     return $this->uris;
   }
+  /**
+   * @param bool
+   */
   public function setUseWildcards($useWildcards)
   {
     $this->useWildcards = $useWildcards;
   }
+  /**
+   * @return bool
+   */
   public function getUseWildcards()
   {
     return $this->useWildcards;

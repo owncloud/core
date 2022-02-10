@@ -19,30 +19,57 @@ namespace Google\Service\Testing;
 
 class RoboDirective extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $actionType;
+  /**
+   * @var string
+   */
   public $inputText;
+  /**
+   * @var string
+   */
   public $resourceName;
 
+  /**
+   * @param string
+   */
   public function setActionType($actionType)
   {
     $this->actionType = $actionType;
   }
+  /**
+   * @return string
+   */
   public function getActionType()
   {
     return $this->actionType;
   }
+  /**
+   * @param string
+   */
   public function setInputText($inputText)
   {
     $this->inputText = $inputText;
   }
+  /**
+   * @return string
+   */
   public function getInputText()
   {
     return $this->inputText;
   }
+  /**
+   * @param string
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string
+   */
   public function getResourceName()
   {
     return $this->resourceName;

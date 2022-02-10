@@ -20,12 +20,21 @@ namespace Google\Service\Compute;
 class TargetHttpsProxiesSetSslCertificatesRequest extends \Google\Collection
 {
   protected $collection_key = 'sslCertificates';
+  /**
+   * @var string[]
+   */
   public $sslCertificates;
 
+  /**
+   * @param string[]
+   */
   public function setSslCertificates($sslCertificates)
   {
     $this->sslCertificates = $sslCertificates;
   }
+  /**
+   * @return string[]
+   */
   public function getSslCertificates()
   {
     return $this->sslCertificates;

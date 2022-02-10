@@ -20,12 +20,21 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3ImportTestCasesResponse extends \Google\Collection
 {
   protected $collection_key = 'names';
+  /**
+   * @var string[]
+   */
   public $names;
 
+  /**
+   * @param string[]
+   */
   public function setNames($names)
   {
     $this->names = $names;
   }
+  /**
+   * @return string[]
+   */
   public function getNames()
   {
     return $this->names;

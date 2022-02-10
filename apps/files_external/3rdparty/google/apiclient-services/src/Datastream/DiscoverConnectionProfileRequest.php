@@ -21,13 +21,22 @@ class DiscoverConnectionProfileRequest extends \Google\Model
 {
   protected $connectionProfileType = ConnectionProfile::class;
   protected $connectionProfileDataType = '';
+  /**
+   * @var string
+   */
   public $connectionProfileName;
+  /**
+   * @var bool
+   */
+  public $fullHierarchy;
+  /**
+   * @var int
+   */
+  public $hierarchyDepth;
   protected $mysqlRdbmsType = MysqlRdbms::class;
   protected $mysqlRdbmsDataType = '';
   protected $oracleRdbmsType = OracleRdbms::class;
   protected $oracleRdbmsDataType = '';
-  public $recursionDepth;
-  public $recursive;
 
   /**
    * @param ConnectionProfile
@@ -43,13 +52,47 @@ class DiscoverConnectionProfileRequest extends \Google\Model
   {
     return $this->connectionProfile;
   }
+  /**
+   * @param string
+   */
   public function setConnectionProfileName($connectionProfileName)
   {
     $this->connectionProfileName = $connectionProfileName;
   }
+  /**
+   * @return string
+   */
   public function getConnectionProfileName()
   {
     return $this->connectionProfileName;
+  }
+  /**
+   * @param bool
+   */
+  public function setFullHierarchy($fullHierarchy)
+  {
+    $this->fullHierarchy = $fullHierarchy;
+  }
+  /**
+   * @return bool
+   */
+  public function getFullHierarchy()
+  {
+    return $this->fullHierarchy;
+  }
+  /**
+   * @param int
+   */
+  public function setHierarchyDepth($hierarchyDepth)
+  {
+    $this->hierarchyDepth = $hierarchyDepth;
+  }
+  /**
+   * @return int
+   */
+  public function getHierarchyDepth()
+  {
+    return $this->hierarchyDepth;
   }
   /**
    * @param MysqlRdbms
@@ -78,22 +121,6 @@ class DiscoverConnectionProfileRequest extends \Google\Model
   public function getOracleRdbms()
   {
     return $this->oracleRdbms;
-  }
-  public function setRecursionDepth($recursionDepth)
-  {
-    $this->recursionDepth = $recursionDepth;
-  }
-  public function getRecursionDepth()
-  {
-    return $this->recursionDepth;
-  }
-  public function setRecursive($recursive)
-  {
-    $this->recursive = $recursive;
-  }
-  public function getRecursive()
-  {
-    return $this->recursive;
   }
 }
 

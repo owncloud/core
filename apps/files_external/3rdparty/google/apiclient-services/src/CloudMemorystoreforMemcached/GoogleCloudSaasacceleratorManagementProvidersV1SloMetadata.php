@@ -24,6 +24,9 @@ class GoogleCloudSaasacceleratorManagementProvidersV1SloMetadata extends \Google
   protected $nodesDataType = 'array';
   protected $perSliEligibilityType = GoogleCloudSaasacceleratorManagementProvidersV1PerSliSloEligibility::class;
   protected $perSliEligibilityDataType = '';
+  /**
+   * @var string
+   */
   public $tier;
 
   /**
@@ -54,10 +57,16 @@ class GoogleCloudSaasacceleratorManagementProvidersV1SloMetadata extends \Google
   {
     return $this->perSliEligibility;
   }
+  /**
+   * @param string
+   */
   public function setTier($tier)
   {
     $this->tier = $tier;
   }
+  /**
+   * @return string
+   */
   public function getTier()
   {
     return $this->tier;

@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class GeoRegionSearchTerms extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $geoRegionQuery;
 
+  /**
+   * @param string
+   */
   public function setGeoRegionQuery($geoRegionQuery)
   {
     $this->geoRegionQuery = $geoRegionQuery;
   }
+  /**
+   * @return string
+   */
   public function getGeoRegionQuery()
   {
     return $this->geoRegionQuery;

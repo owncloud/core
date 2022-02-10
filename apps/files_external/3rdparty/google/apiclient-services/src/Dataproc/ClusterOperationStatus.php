@@ -19,39 +19,75 @@ namespace Google\Service\Dataproc;
 
 class ClusterOperationStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $innerState;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $stateStartTime;
 
+  /**
+   * @param string
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return string
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setInnerState($innerState)
   {
     $this->innerState = $innerState;
   }
+  /**
+   * @return string
+   */
   public function getInnerState()
   {
     return $this->innerState;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStateStartTime($stateStartTime)
   {
     $this->stateStartTime = $stateStartTime;
   }
+  /**
+   * @return string
+   */
   public function getStateStartTime()
   {
     return $this->stateStartTime;

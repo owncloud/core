@@ -26,6 +26,9 @@ class TrainingRun extends \Google\Collection
   protected $evaluationMetricsDataType = '';
   protected $resultsType = IterationResult::class;
   protected $resultsDataType = 'array';
+  /**
+   * @var string
+   */
   public $startTime;
   protected $trainingOptionsType = TrainingOptions::class;
   protected $trainingOptionsDataType = '';
@@ -72,10 +75,16 @@ class TrainingRun extends \Google\Collection
   {
     return $this->results;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

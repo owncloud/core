@@ -19,30 +19,57 @@ namespace Google\Service\AnalyticsData;
 
 class CohortsRange extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $endOffset;
+  /**
+   * @var string
+   */
   public $granularity;
+  /**
+   * @var int
+   */
   public $startOffset;
 
+  /**
+   * @param int
+   */
   public function setEndOffset($endOffset)
   {
     $this->endOffset = $endOffset;
   }
+  /**
+   * @return int
+   */
   public function getEndOffset()
   {
     return $this->endOffset;
   }
+  /**
+   * @param string
+   */
   public function setGranularity($granularity)
   {
     $this->granularity = $granularity;
   }
+  /**
+   * @return string
+   */
   public function getGranularity()
   {
     return $this->granularity;
   }
+  /**
+   * @param int
+   */
   public function setStartOffset($startOffset)
   {
     $this->startOffset = $startOffset;
   }
+  /**
+   * @return int
+   */
   public function getStartOffset()
   {
     return $this->startOffset;

@@ -19,17 +19,35 @@ namespace Google\Service\ShoppingContent;
 
 class LocalinventoryCustomBatchRequestEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $batchId;
   protected $localInventoryType = LocalInventory::class;
   protected $localInventoryDataType = '';
+  /**
+   * @var string
+   */
   public $merchantId;
+  /**
+   * @var string
+   */
   public $method;
+  /**
+   * @var string
+   */
   public $productId;
 
+  /**
+   * @param string
+   */
   public function setBatchId($batchId)
   {
     $this->batchId = $batchId;
   }
+  /**
+   * @return string
+   */
   public function getBatchId()
   {
     return $this->batchId;
@@ -48,26 +66,44 @@ class LocalinventoryCustomBatchRequestEntry extends \Google\Model
   {
     return $this->localInventory;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;
   }
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;

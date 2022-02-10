@@ -20,15 +20,27 @@ namespace Google\Service\AdExchangeBuyerII;
 class CreativeRestrictions extends \Google\Collection
 {
   protected $collection_key = 'creativeSpecifications';
+  /**
+   * @var string
+   */
   public $creativeFormat;
   protected $creativeSpecificationsType = CreativeSpecification::class;
   protected $creativeSpecificationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $skippableAdType;
 
+  /**
+   * @param string
+   */
   public function setCreativeFormat($creativeFormat)
   {
     $this->creativeFormat = $creativeFormat;
   }
+  /**
+   * @return string
+   */
   public function getCreativeFormat()
   {
     return $this->creativeFormat;
@@ -47,10 +59,16 @@ class CreativeRestrictions extends \Google\Collection
   {
     return $this->creativeSpecifications;
   }
+  /**
+   * @param string
+   */
   public function setSkippableAdType($skippableAdType)
   {
     $this->skippableAdType = $skippableAdType;
   }
+  /**
+   * @return string
+   */
   public function getSkippableAdType()
   {
     return $this->skippableAdType;

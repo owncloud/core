@@ -19,14 +19,23 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaExchangeAppAttestAttestationResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $artifact;
   protected $attestationTokenType = GoogleFirebaseAppcheckV1betaAttestationTokenResponse::class;
   protected $attestationTokenDataType = '';
 
+  /**
+   * @param string
+   */
   public function setArtifact($artifact)
   {
     $this->artifact = $artifact;
   }
+  /**
+   * @return string
+   */
   public function getArtifact()
   {
     return $this->artifact;

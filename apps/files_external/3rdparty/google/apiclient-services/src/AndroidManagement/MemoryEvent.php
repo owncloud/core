@@ -19,30 +19,57 @@ namespace Google\Service\AndroidManagement;
 
 class MemoryEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $byteCount;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $eventType;
 
+  /**
+   * @param string
+   */
   public function setByteCount($byteCount)
   {
     $this->byteCount = $byteCount;
   }
+  /**
+   * @return string
+   */
   public function getByteCount()
   {
     return $this->byteCount;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;

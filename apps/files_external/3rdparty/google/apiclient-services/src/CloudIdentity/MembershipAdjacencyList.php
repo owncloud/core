@@ -22,6 +22,9 @@ class MembershipAdjacencyList extends \Google\Collection
   protected $collection_key = 'edges';
   protected $edgesType = Membership::class;
   protected $edgesDataType = 'array';
+  /**
+   * @var string
+   */
   public $group;
 
   /**
@@ -38,10 +41,16 @@ class MembershipAdjacencyList extends \Google\Collection
   {
     return $this->edges;
   }
+  /**
+   * @param string
+   */
   public function setGroup($group)
   {
     $this->group = $group;
   }
+  /**
+   * @return string
+   */
   public function getGroup()
   {
     return $this->group;

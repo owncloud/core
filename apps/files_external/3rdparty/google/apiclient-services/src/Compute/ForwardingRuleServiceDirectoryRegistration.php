@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class ForwardingRuleServiceDirectoryRegistration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $namespace;
+  /**
+   * @var string
+   */
   public $service;
+  /**
+   * @var string
+   */
   public $serviceDirectoryRegion;
 
+  /**
+   * @param string
+   */
   public function setNamespace($namespace)
   {
     $this->namespace = $namespace;
   }
+  /**
+   * @return string
+   */
   public function getNamespace()
   {
     return $this->namespace;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;
   }
+  /**
+   * @param string
+   */
   public function setServiceDirectoryRegion($serviceDirectoryRegion)
   {
     $this->serviceDirectoryRegion = $serviceDirectoryRegion;
   }
+  /**
+   * @return string
+   */
   public function getServiceDirectoryRegion()
   {
     return $this->serviceDirectoryRegion;

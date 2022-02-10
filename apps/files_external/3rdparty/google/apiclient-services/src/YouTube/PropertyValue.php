@@ -19,21 +19,39 @@ namespace Google\Service\YouTube;
 
 class PropertyValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $property;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setProperty($property)
   {
     $this->property = $property;
   }
+  /**
+   * @return string
+   */
   public function getProperty()
   {
     return $this->property;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

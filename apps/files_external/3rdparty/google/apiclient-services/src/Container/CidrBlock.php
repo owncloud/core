@@ -19,21 +19,39 @@ namespace Google\Service\Container;
 
 class CidrBlock extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cidrBlock;
+  /**
+   * @var string
+   */
   public $displayName;
 
+  /**
+   * @param string
+   */
   public function setCidrBlock($cidrBlock)
   {
     $this->cidrBlock = $cidrBlock;
   }
+  /**
+   * @return string
+   */
   public function getCidrBlock()
   {
     return $this->cidrBlock;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;

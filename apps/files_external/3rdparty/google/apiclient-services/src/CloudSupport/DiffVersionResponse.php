@@ -19,21 +19,39 @@ namespace Google\Service\CloudSupport;
 
 class DiffVersionResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $objectSizeBytes;
+  /**
+   * @var string
+   */
   public $objectVersion;
 
+  /**
+   * @param string
+   */
   public function setObjectSizeBytes($objectSizeBytes)
   {
     $this->objectSizeBytes = $objectSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getObjectSizeBytes()
   {
     return $this->objectSizeBytes;
   }
+  /**
+   * @param string
+   */
   public function setObjectVersion($objectVersion)
   {
     $this->objectVersion = $objectVersion;
   }
+  /**
+   * @return string
+   */
   public function getObjectVersion()
   {
     return $this->objectVersion;

@@ -21,6 +21,9 @@ class SpecialHourPeriod extends \Google\Model
 {
   protected $closeTimeType = TimeOfDay::class;
   protected $closeTimeDataType = '';
+  /**
+   * @var bool
+   */
   public $closed;
   protected $endDateType = Date::class;
   protected $endDateDataType = '';
@@ -43,10 +46,16 @@ class SpecialHourPeriod extends \Google\Model
   {
     return $this->closeTime;
   }
+  /**
+   * @param bool
+   */
   public function setClosed($closed)
   {
     $this->closed = $closed;
   }
+  /**
+   * @return bool
+   */
   public function getClosed()
   {
     return $this->closed;

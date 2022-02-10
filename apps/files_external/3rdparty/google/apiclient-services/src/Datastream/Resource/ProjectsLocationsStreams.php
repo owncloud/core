@@ -17,7 +17,6 @@
 
 namespace Google\Service\Datastream\Resource;
 
-use Google\Service\Datastream\FetchErrorsRequest;
 use Google\Service\Datastream\ListStreamsResponse;
 use Google\Service\Datastream\Operation;
 use Google\Service\Datastream\Stream;
@@ -89,22 +88,6 @@ class ProjectsLocationsStreams extends \Google\Service\Resource
     return $this->call('delete', [$params], Operation::class);
   }
   /**
-   * Use this method to fetch any errors associated with a stream.
-   * (streams.fetchErrors)
-   *
-   * @param string $stream Name of the Stream resource for which to fetch any
-   * errors.
-   * @param FetchErrorsRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return Operation
-   */
-  public function fetchErrors($stream, FetchErrorsRequest $postBody, $optParams = [])
-  {
-    $params = ['stream' => $stream, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('fetchErrors', [$params], Operation::class);
-  }
-  /**
    * Use this method to get details about a stream. (streams.get)
    *
    * @param string $name Required. The name of the stream resource to get.
@@ -149,7 +132,7 @@ class ProjectsLocationsStreams extends \Google\Service\Resource
    * @param Stream $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool force Optional. Execute the update without validating it.
+   * @opt_param bool force Optional. Create the stream without validating it.
    * @opt_param string requestId Optional. A request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
    * server will know to ignore the request if it has already been completed. The

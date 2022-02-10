@@ -22,8 +22,17 @@ class NonSdkApiUsageViolationReport extends \Google\Collection
   protected $collection_key = 'exampleApis';
   protected $exampleApisType = NonSdkApi::class;
   protected $exampleApisDataType = 'array';
+  /**
+   * @var int
+   */
   public $minSdkVersion;
+  /**
+   * @var int
+   */
   public $targetSdkVersion;
+  /**
+   * @var int
+   */
   public $uniqueApis;
 
   /**
@@ -40,26 +49,44 @@ class NonSdkApiUsageViolationReport extends \Google\Collection
   {
     return $this->exampleApis;
   }
+  /**
+   * @param int
+   */
   public function setMinSdkVersion($minSdkVersion)
   {
     $this->minSdkVersion = $minSdkVersion;
   }
+  /**
+   * @return int
+   */
   public function getMinSdkVersion()
   {
     return $this->minSdkVersion;
   }
+  /**
+   * @param int
+   */
   public function setTargetSdkVersion($targetSdkVersion)
   {
     $this->targetSdkVersion = $targetSdkVersion;
   }
+  /**
+   * @return int
+   */
   public function getTargetSdkVersion()
   {
     return $this->targetSdkVersion;
   }
+  /**
+   * @param int
+   */
   public function setUniqueApis($uniqueApis)
   {
     $this->uniqueApis = $uniqueApis;
   }
+  /**
+   * @return int
+   */
   public function getUniqueApis()
   {
     return $this->uniqueApis;

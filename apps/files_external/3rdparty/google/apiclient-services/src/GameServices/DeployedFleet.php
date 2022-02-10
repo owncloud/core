@@ -19,25 +19,43 @@ namespace Google\Service\GameServices;
 
 class DeployedFleet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fleet;
+  /**
+   * @var string
+   */
   public $fleetSpec;
   protected $specSourceType = SpecSource::class;
   protected $specSourceDataType = '';
   protected $statusType = DeployedFleetStatus::class;
   protected $statusDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFleet($fleet)
   {
     $this->fleet = $fleet;
   }
+  /**
+   * @return string
+   */
   public function getFleet()
   {
     return $this->fleet;
   }
+  /**
+   * @param string
+   */
   public function setFleetSpec($fleetSpec)
   {
     $this->fleetSpec = $fleetSpec;
   }
+  /**
+   * @return string
+   */
   public function getFleetSpec()
   {
     return $this->fleetSpec;

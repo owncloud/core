@@ -19,21 +19,39 @@ namespace Google\Service\YouTubeAnalytics;
 
 class GroupContentDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $itemCount;
+  /**
+   * @var string
+   */
   public $itemType;
 
+  /**
+   * @param string
+   */
   public function setItemCount($itemCount)
   {
     $this->itemCount = $itemCount;
   }
+  /**
+   * @return string
+   */
   public function getItemCount()
   {
     return $this->itemCount;
   }
+  /**
+   * @param string
+   */
   public function setItemType($itemType)
   {
     $this->itemType = $itemType;
   }
+  /**
+   * @return string
+   */
   public function getItemType()
   {
     return $this->itemType;

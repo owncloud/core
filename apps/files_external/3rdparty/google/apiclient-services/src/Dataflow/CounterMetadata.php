@@ -19,39 +19,75 @@ namespace Google\Service\Dataflow;
 
 class CounterMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $otherUnits;
+  /**
+   * @var string
+   */
   public $standardUnits;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setOtherUnits($otherUnits)
   {
     $this->otherUnits = $otherUnits;
   }
+  /**
+   * @return string
+   */
   public function getOtherUnits()
   {
     return $this->otherUnits;
   }
+  /**
+   * @param string
+   */
   public function setStandardUnits($standardUnits)
   {
     $this->standardUnits = $standardUnits;
   }
+  /**
+   * @return string
+   */
   public function getStandardUnits()
   {
     return $this->standardUnits;

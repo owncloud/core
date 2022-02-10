@@ -19,12 +19,21 @@ namespace Google\Service\CloudAsset;
 
 class ResourceSelector extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fullResourceName;
 
+  /**
+   * @param string
+   */
   public function setFullResourceName($fullResourceName)
   {
     $this->fullResourceName = $fullResourceName;
   }
+  /**
+   * @return string
+   */
   public function getFullResourceName()
   {
     return $this->fullResourceName;

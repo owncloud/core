@@ -19,57 +19,111 @@ namespace Google\Service\Games;
 
 class AchievementUpdateResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $achievementId;
+  /**
+   * @var string
+   */
   public $currentState;
+  /**
+   * @var int
+   */
   public $currentSteps;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $newlyUnlocked;
+  /**
+   * @var bool
+   */
   public $updateOccurred;
 
+  /**
+   * @param string
+   */
   public function setAchievementId($achievementId)
   {
     $this->achievementId = $achievementId;
   }
+  /**
+   * @return string
+   */
   public function getAchievementId()
   {
     return $this->achievementId;
   }
+  /**
+   * @param string
+   */
   public function setCurrentState($currentState)
   {
     $this->currentState = $currentState;
   }
+  /**
+   * @return string
+   */
   public function getCurrentState()
   {
     return $this->currentState;
   }
+  /**
+   * @param int
+   */
   public function setCurrentSteps($currentSteps)
   {
     $this->currentSteps = $currentSteps;
   }
+  /**
+   * @return int
+   */
   public function getCurrentSteps()
   {
     return $this->currentSteps;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setNewlyUnlocked($newlyUnlocked)
   {
     $this->newlyUnlocked = $newlyUnlocked;
   }
+  /**
+   * @return bool
+   */
   public function getNewlyUnlocked()
   {
     return $this->newlyUnlocked;
   }
+  /**
+   * @param bool
+   */
   public function setUpdateOccurred($updateOccurred)
   {
     $this->updateOccurred = $updateOccurred;
   }
+  /**
+   * @return bool
+   */
   public function getUpdateOccurred()
   {
     return $this->updateOccurred;

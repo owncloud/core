@@ -20,21 +20,39 @@ namespace Google\Service\AnalyticsData;
 class ConcatenateExpression extends \Google\Collection
 {
   protected $collection_key = 'dimensionNames';
+  /**
+   * @var string
+   */
   public $delimiter;
+  /**
+   * @var string[]
+   */
   public $dimensionNames;
 
+  /**
+   * @param string
+   */
   public function setDelimiter($delimiter)
   {
     $this->delimiter = $delimiter;
   }
+  /**
+   * @return string
+   */
   public function getDelimiter()
   {
     return $this->delimiter;
   }
+  /**
+   * @param string[]
+   */
   public function setDimensionNames($dimensionNames)
   {
     $this->dimensionNames = $dimensionNames;
   }
+  /**
+   * @return string[]
+   */
   public function getDimensionNames()
   {
     return $this->dimensionNames;

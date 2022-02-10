@@ -19,30 +19,57 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class ClientUserInvitation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clientAccountId;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $invitationId;
 
+  /**
+   * @param string
+   */
   public function setClientAccountId($clientAccountId)
   {
     $this->clientAccountId = $clientAccountId;
   }
+  /**
+   * @return string
+   */
   public function getClientAccountId()
   {
     return $this->clientAccountId;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setInvitationId($invitationId)
   {
     $this->invitationId = $invitationId;
   }
+  /**
+   * @return string
+   */
   public function getInvitationId()
   {
     return $this->invitationId;

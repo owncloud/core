@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1AccessRemove extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $success;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setSuccess($success)
   {
     $this->success = $success;
   }
+  /**
+   * @return bool
+   */
   public function getSuccess()
   {
     return $this->success;

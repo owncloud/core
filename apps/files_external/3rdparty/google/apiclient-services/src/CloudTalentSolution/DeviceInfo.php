@@ -19,21 +19,39 @@ namespace Google\Service\CloudTalentSolution;
 
 class DeviceInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceType;
+  /**
+   * @var string
+   */
   public $id;
 
+  /**
+   * @param string
+   */
   public function setDeviceType($deviceType)
   {
     $this->deviceType = $deviceType;
   }
+  /**
+   * @return string
+   */
   public function getDeviceType()
   {
     return $this->deviceType;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

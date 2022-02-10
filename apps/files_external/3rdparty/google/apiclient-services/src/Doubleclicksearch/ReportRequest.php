@@ -22,22 +22,49 @@ class ReportRequest extends \Google\Collection
   protected $collection_key = 'orderBy';
   protected $columnsType = ReportApiColumnSpec::class;
   protected $columnsDataType = 'array';
+  /**
+   * @var string
+   */
   public $downloadFormat;
   protected $filtersType = ReportRequestFilters::class;
   protected $filtersDataType = 'array';
+  /**
+   * @var bool
+   */
   public $includeDeletedEntities;
+  /**
+   * @var bool
+   */
   public $includeRemovedEntities;
+  /**
+   * @var int
+   */
   public $maxRowsPerFile;
   protected $orderByType = ReportRequestOrderBy::class;
   protected $orderByDataType = 'array';
   protected $reportScopeType = ReportRequestReportScope::class;
   protected $reportScopeDataType = '';
+  /**
+   * @var string
+   */
   public $reportType;
+  /**
+   * @var int
+   */
   public $rowCount;
+  /**
+   * @var int
+   */
   public $startRow;
+  /**
+   * @var string
+   */
   public $statisticsCurrency;
   protected $timeRangeType = ReportRequestTimeRange::class;
   protected $timeRangeDataType = '';
+  /**
+   * @var bool
+   */
   public $verifySingleTimeZone;
 
   /**
@@ -54,10 +81,16 @@ class ReportRequest extends \Google\Collection
   {
     return $this->columns;
   }
+  /**
+   * @param string
+   */
   public function setDownloadFormat($downloadFormat)
   {
     $this->downloadFormat = $downloadFormat;
   }
+  /**
+   * @return string
+   */
   public function getDownloadFormat()
   {
     return $this->downloadFormat;
@@ -76,26 +109,44 @@ class ReportRequest extends \Google\Collection
   {
     return $this->filters;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeDeletedEntities($includeDeletedEntities)
   {
     $this->includeDeletedEntities = $includeDeletedEntities;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeDeletedEntities()
   {
     return $this->includeDeletedEntities;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeRemovedEntities($includeRemovedEntities)
   {
     $this->includeRemovedEntities = $includeRemovedEntities;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeRemovedEntities()
   {
     return $this->includeRemovedEntities;
   }
+  /**
+   * @param int
+   */
   public function setMaxRowsPerFile($maxRowsPerFile)
   {
     $this->maxRowsPerFile = $maxRowsPerFile;
   }
+  /**
+   * @return int
+   */
   public function getMaxRowsPerFile()
   {
     return $this->maxRowsPerFile;
@@ -128,34 +179,58 @@ class ReportRequest extends \Google\Collection
   {
     return $this->reportScope;
   }
+  /**
+   * @param string
+   */
   public function setReportType($reportType)
   {
     $this->reportType = $reportType;
   }
+  /**
+   * @return string
+   */
   public function getReportType()
   {
     return $this->reportType;
   }
+  /**
+   * @param int
+   */
   public function setRowCount($rowCount)
   {
     $this->rowCount = $rowCount;
   }
+  /**
+   * @return int
+   */
   public function getRowCount()
   {
     return $this->rowCount;
   }
+  /**
+   * @param int
+   */
   public function setStartRow($startRow)
   {
     $this->startRow = $startRow;
   }
+  /**
+   * @return int
+   */
   public function getStartRow()
   {
     return $this->startRow;
   }
+  /**
+   * @param string
+   */
   public function setStatisticsCurrency($statisticsCurrency)
   {
     $this->statisticsCurrency = $statisticsCurrency;
   }
+  /**
+   * @return string
+   */
   public function getStatisticsCurrency()
   {
     return $this->statisticsCurrency;
@@ -174,10 +249,16 @@ class ReportRequest extends \Google\Collection
   {
     return $this->timeRange;
   }
+  /**
+   * @param bool
+   */
   public function setVerifySingleTimeZone($verifySingleTimeZone)
   {
     $this->verifySingleTimeZone = $verifySingleTimeZone;
   }
+  /**
+   * @return bool
+   */
   public function getVerifySingleTimeZone()
   {
     return $this->verifySingleTimeZone;

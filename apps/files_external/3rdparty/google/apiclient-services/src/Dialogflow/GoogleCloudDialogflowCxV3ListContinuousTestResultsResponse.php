@@ -22,6 +22,9 @@ class GoogleCloudDialogflowCxV3ListContinuousTestResultsResponse extends \Google
   protected $collection_key = 'continuousTestResults';
   protected $continuousTestResultsType = GoogleCloudDialogflowCxV3ContinuousTestResult::class;
   protected $continuousTestResultsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudDialogflowCxV3ListContinuousTestResultsResponse extends \Google
   {
     return $this->continuousTestResults;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

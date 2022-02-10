@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class AccountActiveAdSummary extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $activeAds;
+  /**
+   * @var string
+   */
   public $activeAdsLimitTier;
+  /**
+   * @var string
+   */
   public $availableAds;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setActiveAds($activeAds)
   {
     $this->activeAds = $activeAds;
   }
+  /**
+   * @return string
+   */
   public function getActiveAds()
   {
     return $this->activeAds;
   }
+  /**
+   * @param string
+   */
   public function setActiveAdsLimitTier($activeAdsLimitTier)
   {
     $this->activeAdsLimitTier = $activeAdsLimitTier;
   }
+  /**
+   * @return string
+   */
   public function getActiveAdsLimitTier()
   {
     return $this->activeAdsLimitTier;
   }
+  /**
+   * @param string
+   */
   public function setAvailableAds($availableAds)
   {
     $this->availableAds = $availableAds;
   }
+  /**
+   * @return string
+   */
   public function getAvailableAds()
   {
     return $this->availableAds;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

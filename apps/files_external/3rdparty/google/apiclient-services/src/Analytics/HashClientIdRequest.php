@@ -19,30 +19,57 @@ namespace Google\Service\Analytics;
 
 class HashClientIdRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clientId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $webPropertyId;
 
+  /**
+   * @param string
+   */
   public function setClientId($clientId)
   {
     $this->clientId = $clientId;
   }
+  /**
+   * @return string
+   */
   public function getClientId()
   {
     return $this->clientId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setWebPropertyId($webPropertyId)
   {
     $this->webPropertyId = $webPropertyId;
   }
+  /**
+   * @return string
+   */
   public function getWebPropertyId()
   {
     return $this->webPropertyId;

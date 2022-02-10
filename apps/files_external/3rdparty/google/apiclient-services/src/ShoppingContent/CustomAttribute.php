@@ -22,7 +22,13 @@ class CustomAttribute extends \Google\Collection
   protected $collection_key = 'groupValues';
   protected $groupValuesType = CustomAttribute::class;
   protected $groupValuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $value;
 
   /**
@@ -39,18 +45,30 @@ class CustomAttribute extends \Google\Collection
   {
     return $this->groupValues;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

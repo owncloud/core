@@ -19,23 +19,41 @@ namespace Google\Service\CloudIot;
 
 class PublicKeyCertificate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certificate;
+  /**
+   * @var string
+   */
   public $format;
   protected $x509DetailsType = X509CertificateDetails::class;
   protected $x509DetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCertificate($certificate)
   {
     $this->certificate = $certificate;
   }
+  /**
+   * @return string
+   */
   public function getCertificate()
   {
     return $this->certificate;
   }
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;

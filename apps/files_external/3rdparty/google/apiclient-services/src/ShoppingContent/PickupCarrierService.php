@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class PickupCarrierService extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $carrierName;
+  /**
+   * @var string
+   */
   public $serviceName;
 
+  /**
+   * @param string
+   */
   public function setCarrierName($carrierName)
   {
     $this->carrierName = $carrierName;
   }
+  /**
+   * @return string
+   */
   public function getCarrierName()
   {
     return $this->carrierName;
   }
+  /**
+   * @param string
+   */
   public function setServiceName($serviceName)
   {
     $this->serviceName = $serviceName;
   }
+  /**
+   * @return string
+   */
   public function getServiceName()
   {
     return $this->serviceName;

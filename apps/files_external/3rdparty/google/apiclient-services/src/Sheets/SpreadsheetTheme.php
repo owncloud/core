@@ -20,14 +20,23 @@ namespace Google\Service\Sheets;
 class SpreadsheetTheme extends \Google\Collection
 {
   protected $collection_key = 'themeColors';
+  /**
+   * @var string
+   */
   public $primaryFontFamily;
   protected $themeColorsType = ThemeColorPair::class;
   protected $themeColorsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setPrimaryFontFamily($primaryFontFamily)
   {
     $this->primaryFontFamily = $primaryFontFamily;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryFontFamily()
   {
     return $this->primaryFontFamily;

@@ -19,12 +19,21 @@ namespace Google\Service\Blogger;
 
 class CommentBlog extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

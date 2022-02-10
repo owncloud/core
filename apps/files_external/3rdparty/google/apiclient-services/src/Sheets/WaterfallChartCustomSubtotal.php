@@ -19,30 +19,57 @@ namespace Google\Service\Sheets;
 
 class WaterfallChartCustomSubtotal extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $dataIsSubtotal;
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var int
+   */
   public $subtotalIndex;
 
+  /**
+   * @param bool
+   */
   public function setDataIsSubtotal($dataIsSubtotal)
   {
     $this->dataIsSubtotal = $dataIsSubtotal;
   }
+  /**
+   * @return bool
+   */
   public function getDataIsSubtotal()
   {
     return $this->dataIsSubtotal;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param int
+   */
   public function setSubtotalIndex($subtotalIndex)
   {
     $this->subtotalIndex = $subtotalIndex;
   }
+  /**
+   * @return int
+   */
   public function getSubtotalIndex()
   {
     return $this->subtotalIndex;

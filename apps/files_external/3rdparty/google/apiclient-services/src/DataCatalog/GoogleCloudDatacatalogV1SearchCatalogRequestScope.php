@@ -20,51 +20,114 @@ namespace Google\Service\DataCatalog;
 class GoogleCloudDatacatalogV1SearchCatalogRequestScope extends \Google\Collection
 {
   protected $collection_key = 'restrictedLocations';
+  /**
+   * @var bool
+   */
   public $includeGcpPublicDatasets;
+  /**
+   * @var string[]
+   */
   public $includeOrgIds;
+  /**
+   * @var string[]
+   */
   public $includeProjectIds;
+  /**
+   * @var bool
+   */
   public $includePublicTagTemplates;
+  /**
+   * @var string[]
+   */
   public $restrictedLocations;
+  /**
+   * @var bool
+   */
+  public $starredOnly;
 
+  /**
+   * @param bool
+   */
   public function setIncludeGcpPublicDatasets($includeGcpPublicDatasets)
   {
     $this->includeGcpPublicDatasets = $includeGcpPublicDatasets;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeGcpPublicDatasets()
   {
     return $this->includeGcpPublicDatasets;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludeOrgIds($includeOrgIds)
   {
     $this->includeOrgIds = $includeOrgIds;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludeOrgIds()
   {
     return $this->includeOrgIds;
   }
+  /**
+   * @param string[]
+   */
   public function setIncludeProjectIds($includeProjectIds)
   {
     $this->includeProjectIds = $includeProjectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getIncludeProjectIds()
   {
     return $this->includeProjectIds;
   }
+  /**
+   * @param bool
+   */
   public function setIncludePublicTagTemplates($includePublicTagTemplates)
   {
     $this->includePublicTagTemplates = $includePublicTagTemplates;
   }
+  /**
+   * @return bool
+   */
   public function getIncludePublicTagTemplates()
   {
     return $this->includePublicTagTemplates;
   }
+  /**
+   * @param string[]
+   */
   public function setRestrictedLocations($restrictedLocations)
   {
     $this->restrictedLocations = $restrictedLocations;
   }
+  /**
+   * @return string[]
+   */
   public function getRestrictedLocations()
   {
     return $this->restrictedLocations;
+  }
+  /**
+   * @param bool
+   */
+  public function setStarredOnly($starredOnly)
+  {
+    $this->starredOnly = $starredOnly;
+  }
+  /**
+   * @return bool
+   */
+  public function getStarredOnly()
+  {
+    return $this->starredOnly;
   }
 }
 

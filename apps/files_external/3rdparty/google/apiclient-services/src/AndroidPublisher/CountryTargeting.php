@@ -20,21 +20,39 @@ namespace Google\Service\AndroidPublisher;
 class CountryTargeting extends \Google\Collection
 {
   protected $collection_key = 'countries';
+  /**
+   * @var string[]
+   */
   public $countries;
+  /**
+   * @var bool
+   */
   public $includeRestOfWorld;
 
+  /**
+   * @param string[]
+   */
   public function setCountries($countries)
   {
     $this->countries = $countries;
   }
+  /**
+   * @return string[]
+   */
   public function getCountries()
   {
     return $this->countries;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeRestOfWorld($includeRestOfWorld)
   {
     $this->includeRestOfWorld = $includeRestOfWorld;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeRestOfWorld()
   {
     return $this->includeRestOfWorld;

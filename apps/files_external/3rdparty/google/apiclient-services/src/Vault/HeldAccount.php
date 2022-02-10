@@ -19,48 +19,93 @@ namespace Google\Service\Vault;
 
 class HeldAccount extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $firstName;
+  /**
+   * @var string
+   */
   public $holdTime;
+  /**
+   * @var string
+   */
   public $lastName;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setFirstName($firstName)
   {
     $this->firstName = $firstName;
   }
+  /**
+   * @return string
+   */
   public function getFirstName()
   {
     return $this->firstName;
   }
+  /**
+   * @param string
+   */
   public function setHoldTime($holdTime)
   {
     $this->holdTime = $holdTime;
   }
+  /**
+   * @return string
+   */
   public function getHoldTime()
   {
     return $this->holdTime;
   }
+  /**
+   * @param string
+   */
   public function setLastName($lastName)
   {
     $this->lastName = $lastName;
   }
+  /**
+   * @return string
+   */
   public function getLastName()
   {
     return $this->lastName;

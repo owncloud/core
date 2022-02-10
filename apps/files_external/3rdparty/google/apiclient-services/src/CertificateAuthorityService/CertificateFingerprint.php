@@ -19,12 +19,21 @@ namespace Google\Service\CertificateAuthorityService;
 
 class CertificateFingerprint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sha256Hash;
 
+  /**
+   * @param string
+   */
   public function setSha256Hash($sha256Hash)
   {
     $this->sha256Hash = $sha256Hash;
   }
+  /**
+   * @return string
+   */
   public function getSha256Hash()
   {
     return $this->sha256Hash;

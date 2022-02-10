@@ -19,48 +19,93 @@ namespace Google\Service\YouTube;
 
 class ChannelStatus extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isLinked;
+  /**
+   * @var string
+   */
   public $longUploadsStatus;
+  /**
+   * @var bool
+   */
   public $madeForKids;
+  /**
+   * @var string
+   */
   public $privacyStatus;
+  /**
+   * @var bool
+   */
   public $selfDeclaredMadeForKids;
 
+  /**
+   * @param bool
+   */
   public function setIsLinked($isLinked)
   {
     $this->isLinked = $isLinked;
   }
+  /**
+   * @return bool
+   */
   public function getIsLinked()
   {
     return $this->isLinked;
   }
+  /**
+   * @param string
+   */
   public function setLongUploadsStatus($longUploadsStatus)
   {
     $this->longUploadsStatus = $longUploadsStatus;
   }
+  /**
+   * @return string
+   */
   public function getLongUploadsStatus()
   {
     return $this->longUploadsStatus;
   }
+  /**
+   * @param bool
+   */
   public function setMadeForKids($madeForKids)
   {
     $this->madeForKids = $madeForKids;
   }
+  /**
+   * @return bool
+   */
   public function getMadeForKids()
   {
     return $this->madeForKids;
   }
+  /**
+   * @param string
+   */
   public function setPrivacyStatus($privacyStatus)
   {
     $this->privacyStatus = $privacyStatus;
   }
+  /**
+   * @return string
+   */
   public function getPrivacyStatus()
   {
     return $this->privacyStatus;
   }
+  /**
+   * @param bool
+   */
   public function setSelfDeclaredMadeForKids($selfDeclaredMadeForKids)
   {
     $this->selfDeclaredMadeForKids = $selfDeclaredMadeForKids;
   }
+  /**
+   * @return bool
+   */
   public function getSelfDeclaredMadeForKids()
   {
     return $this->selfDeclaredMadeForKids;

@@ -20,30 +20,57 @@ namespace Google\Service\CloudBuild;
 class HttpBody extends \Google\Collection
 {
   protected $collection_key = 'extensions';
+  /**
+   * @var string
+   */
   public $contentType;
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var array[]
+   */
   public $extensions;
 
+  /**
+   * @param string
+   */
   public function setContentType($contentType)
   {
     $this->contentType = $contentType;
   }
+  /**
+   * @return string
+   */
   public function getContentType()
   {
     return $this->contentType;
   }
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param array[]
+   */
   public function setExtensions($extensions)
   {
     $this->extensions = $extensions;
   }
+  /**
+   * @return array[]
+   */
   public function getExtensions()
   {
     return $this->extensions;

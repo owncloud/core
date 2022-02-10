@@ -19,21 +19,39 @@ namespace Google\Service\Connectors;
 
 class ConnectorsResource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pathTemplate;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setPathTemplate($pathTemplate)
   {
     $this->pathTemplate = $pathTemplate;
   }
+  /**
+   * @return string
+   */
   public function getPathTemplate()
   {
     return $this->pathTemplate;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

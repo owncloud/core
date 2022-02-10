@@ -19,21 +19,39 @@ namespace Google\Service\Bigquery;
 
 class CategoryCount extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $category;
+  /**
+   * @var string
+   */
   public $count;
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
   }
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;

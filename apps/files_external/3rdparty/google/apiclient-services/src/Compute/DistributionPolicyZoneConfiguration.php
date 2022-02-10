@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class DistributionPolicyZoneConfiguration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

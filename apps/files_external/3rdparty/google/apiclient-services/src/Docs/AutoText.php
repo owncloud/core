@@ -20,26 +20,47 @@ namespace Google\Service\Docs;
 class AutoText extends \Google\Collection
 {
   protected $collection_key = 'suggestedInsertionIds';
+  /**
+   * @var string[]
+   */
   public $suggestedDeletionIds;
+  /**
+   * @var string[]
+   */
   public $suggestedInsertionIds;
   protected $suggestedTextStyleChangesType = SuggestedTextStyle::class;
   protected $suggestedTextStyleChangesDataType = 'map';
   protected $textStyleType = TextStyle::class;
   protected $textStyleDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setSuggestedDeletionIds($suggestedDeletionIds)
   {
     $this->suggestedDeletionIds = $suggestedDeletionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSuggestedDeletionIds()
   {
     return $this->suggestedDeletionIds;
   }
+  /**
+   * @param string[]
+   */
   public function setSuggestedInsertionIds($suggestedInsertionIds)
   {
     $this->suggestedInsertionIds = $suggestedInsertionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSuggestedInsertionIds()
   {
     return $this->suggestedInsertionIds;
@@ -72,10 +93,16 @@ class AutoText extends \Google\Collection
   {
     return $this->textStyle;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

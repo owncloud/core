@@ -23,6 +23,9 @@ class GoogleCloudRecaptchaenterpriseV1Assessment extends \Google\Model
   protected $accountDefenderAssessmentDataType = '';
   protected $eventType = GoogleCloudRecaptchaenterpriseV1Event::class;
   protected $eventDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $riskAnalysisType = GoogleCloudRecaptchaenterpriseV1RiskAnalysis::class;
   protected $riskAnalysisDataType = '';
@@ -57,10 +60,16 @@ class GoogleCloudRecaptchaenterpriseV1Assessment extends \Google\Model
   {
     return $this->event;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

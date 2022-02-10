@@ -20,36 +20,75 @@ namespace Google\Service\CloudBillingBudget;
 class GoogleCloudBillingBudgetsV1Filter extends \Google\Collection
 {
   protected $collection_key = 'subaccounts';
+  /**
+   * @var string
+   */
   public $calendarPeriod;
+  /**
+   * @var string[]
+   */
   public $creditTypes;
+  /**
+   * @var string
+   */
   public $creditTypesTreatment;
   protected $customPeriodType = GoogleCloudBillingBudgetsV1CustomPeriod::class;
   protected $customPeriodDataType = '';
+  /**
+   * @var array[]
+   */
   public $labels;
+  /**
+   * @var string[]
+   */
   public $projects;
+  /**
+   * @var string[]
+   */
   public $services;
+  /**
+   * @var string[]
+   */
   public $subaccounts;
 
+  /**
+   * @param string
+   */
   public function setCalendarPeriod($calendarPeriod)
   {
     $this->calendarPeriod = $calendarPeriod;
   }
+  /**
+   * @return string
+   */
   public function getCalendarPeriod()
   {
     return $this->calendarPeriod;
   }
+  /**
+   * @param string[]
+   */
   public function setCreditTypes($creditTypes)
   {
     $this->creditTypes = $creditTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getCreditTypes()
   {
     return $this->creditTypes;
   }
+  /**
+   * @param string
+   */
   public function setCreditTypesTreatment($creditTypesTreatment)
   {
     $this->creditTypesTreatment = $creditTypesTreatment;
   }
+  /**
+   * @return string
+   */
   public function getCreditTypesTreatment()
   {
     return $this->creditTypesTreatment;
@@ -68,34 +107,58 @@ class GoogleCloudBillingBudgetsV1Filter extends \Google\Collection
   {
     return $this->customPeriod;
   }
+  /**
+   * @param array[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return array[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string[]
+   */
   public function setProjects($projects)
   {
     $this->projects = $projects;
   }
+  /**
+   * @return string[]
+   */
   public function getProjects()
   {
     return $this->projects;
   }
+  /**
+   * @param string[]
+   */
   public function setServices($services)
   {
     $this->services = $services;
   }
+  /**
+   * @return string[]
+   */
   public function getServices()
   {
     return $this->services;
   }
+  /**
+   * @param string[]
+   */
   public function setSubaccounts($subaccounts)
   {
     $this->subaccounts = $subaccounts;
   }
+  /**
+   * @return string[]
+   */
   public function getSubaccounts()
   {
     return $this->subaccounts;

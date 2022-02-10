@@ -19,12 +19,21 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1ViewSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $viewQuery;
 
+  /**
+   * @param string
+   */
   public function setViewQuery($viewQuery)
   {
     $this->viewQuery = $viewQuery;
   }
+  /**
+   * @return string
+   */
   public function getViewQuery()
   {
     return $this->viewQuery;

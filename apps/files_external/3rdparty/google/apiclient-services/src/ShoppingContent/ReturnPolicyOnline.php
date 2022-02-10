@@ -20,48 +20,93 @@ namespace Google\Service\ShoppingContent;
 class ReturnPolicyOnline extends \Google\Collection
 {
   protected $collection_key = 'returnReasonCategoryInfo';
+  /**
+   * @var string[]
+   */
   public $countries;
+  /**
+   * @var string[]
+   */
   public $itemConditions;
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $name;
   protected $policyType = ReturnPolicyOnlinePolicy::class;
   protected $policyDataType = '';
   protected $restockingFeeType = ReturnPolicyOnlineRestockingFee::class;
   protected $restockingFeeDataType = '';
+  /**
+   * @var string[]
+   */
   public $returnMethods;
+  /**
+   * @var string
+   */
   public $returnPolicyId;
+  /**
+   * @var string
+   */
   public $returnPolicyUri;
   protected $returnReasonCategoryInfoType = ReturnPolicyOnlineReturnReasonCategoryInfo::class;
   protected $returnReasonCategoryInfoDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setCountries($countries)
   {
     $this->countries = $countries;
   }
+  /**
+   * @return string[]
+   */
   public function getCountries()
   {
     return $this->countries;
   }
+  /**
+   * @param string[]
+   */
   public function setItemConditions($itemConditions)
   {
     $this->itemConditions = $itemConditions;
   }
+  /**
+   * @return string[]
+   */
   public function getItemConditions()
   {
     return $this->itemConditions;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -94,26 +139,44 @@ class ReturnPolicyOnline extends \Google\Collection
   {
     return $this->restockingFee;
   }
+  /**
+   * @param string[]
+   */
   public function setReturnMethods($returnMethods)
   {
     $this->returnMethods = $returnMethods;
   }
+  /**
+   * @return string[]
+   */
   public function getReturnMethods()
   {
     return $this->returnMethods;
   }
+  /**
+   * @param string
+   */
   public function setReturnPolicyId($returnPolicyId)
   {
     $this->returnPolicyId = $returnPolicyId;
   }
+  /**
+   * @return string
+   */
   public function getReturnPolicyId()
   {
     return $this->returnPolicyId;
   }
+  /**
+   * @param string
+   */
   public function setReturnPolicyUri($returnPolicyUri)
   {
     $this->returnPolicyUri = $returnPolicyUri;
   }
+  /**
+   * @return string
+   */
   public function getReturnPolicyUri()
   {
     return $this->returnPolicyUri;

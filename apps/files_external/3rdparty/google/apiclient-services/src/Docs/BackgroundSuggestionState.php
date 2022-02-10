@@ -19,12 +19,21 @@ namespace Google\Service\Docs;
 
 class BackgroundSuggestionState extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $backgroundColorSuggested;
 
+  /**
+   * @param bool
+   */
   public function setBackgroundColorSuggested($backgroundColorSuggested)
   {
     $this->backgroundColorSuggested = $backgroundColorSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getBackgroundColorSuggested()
   {
     return $this->backgroundColorSuggested;

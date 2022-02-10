@@ -19,26 +19,53 @@ namespace Google\Service\CloudHealthcare;
 
 class OperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiMethodName;
+  /**
+   * @var bool
+   */
   public $cancelRequested;
   protected $counterType = ProgressCounter::class;
   protected $counterDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $logsUrl;
 
+  /**
+   * @param string
+   */
   public function setApiMethodName($apiMethodName)
   {
     $this->apiMethodName = $apiMethodName;
   }
+  /**
+   * @return string
+   */
   public function getApiMethodName()
   {
     return $this->apiMethodName;
   }
+  /**
+   * @param bool
+   */
   public function setCancelRequested($cancelRequested)
   {
     $this->cancelRequested = $cancelRequested;
   }
+  /**
+   * @return bool
+   */
   public function getCancelRequested()
   {
     return $this->cancelRequested;
@@ -57,26 +84,44 @@ class OperationMetadata extends \Google\Model
   {
     return $this->counter;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setLogsUrl($logsUrl)
   {
     $this->logsUrl = $logsUrl;
   }
+  /**
+   * @return string
+   */
   public function getLogsUrl()
   {
     return $this->logsUrl;

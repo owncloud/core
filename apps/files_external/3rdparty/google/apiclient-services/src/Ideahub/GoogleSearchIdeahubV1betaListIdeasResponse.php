@@ -22,6 +22,9 @@ class GoogleSearchIdeahubV1betaListIdeasResponse extends \Google\Collection
   protected $collection_key = 'ideas';
   protected $ideasType = GoogleSearchIdeahubV1betaIdea::class;
   protected $ideasDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleSearchIdeahubV1betaListIdeasResponse extends \Google\Collection
   {
     return $this->ideas;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,14 +19,23 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2ValueFrequency extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $count;
   protected $valueType = GooglePrivacyDlpV2Value::class;
   protected $valueDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;

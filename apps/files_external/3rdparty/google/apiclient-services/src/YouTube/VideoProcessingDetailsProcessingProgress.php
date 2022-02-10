@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class VideoProcessingDetailsProcessingProgress extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $partsProcessed;
+  /**
+   * @var string
+   */
   public $partsTotal;
+  /**
+   * @var string
+   */
   public $timeLeftMs;
 
+  /**
+   * @param string
+   */
   public function setPartsProcessed($partsProcessed)
   {
     $this->partsProcessed = $partsProcessed;
   }
+  /**
+   * @return string
+   */
   public function getPartsProcessed()
   {
     return $this->partsProcessed;
   }
+  /**
+   * @param string
+   */
   public function setPartsTotal($partsTotal)
   {
     $this->partsTotal = $partsTotal;
   }
+  /**
+   * @return string
+   */
   public function getPartsTotal()
   {
     return $this->partsTotal;
   }
+  /**
+   * @param string
+   */
   public function setTimeLeftMs($timeLeftMs)
   {
     $this->timeLeftMs = $timeLeftMs;
   }
+  /**
+   * @return string
+   */
   public function getTimeLeftMs()
   {
     return $this->timeLeftMs;

@@ -19,12 +19,21 @@ namespace Google\Service\Books;
 
 class ReviewAuthor extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;

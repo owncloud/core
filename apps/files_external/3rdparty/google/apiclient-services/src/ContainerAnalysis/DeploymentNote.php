@@ -20,12 +20,21 @@ namespace Google\Service\ContainerAnalysis;
 class DeploymentNote extends \Google\Collection
 {
   protected $collection_key = 'resourceUri';
+  /**
+   * @var string[]
+   */
   public $resourceUri;
 
+  /**
+   * @param string[]
+   */
   public function setResourceUri($resourceUri)
   {
     $this->resourceUri = $resourceUri;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceUri()
   {
     return $this->resourceUri;

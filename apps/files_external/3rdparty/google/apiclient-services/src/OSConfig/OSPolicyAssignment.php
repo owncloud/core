@@ -20,51 +20,105 @@ namespace Google\Service\OSConfig;
 class OSPolicyAssignment extends \Google\Collection
 {
   protected $collection_key = 'osPolicies';
+  /**
+   * @var bool
+   */
   public $baseline;
+  /**
+   * @var bool
+   */
   public $deleted;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $etag;
   protected $instanceFilterType = OSPolicyAssignmentInstanceFilter::class;
   protected $instanceFilterDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $osPoliciesType = OSPolicy::class;
   protected $osPoliciesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $reconciling;
+  /**
+   * @var string
+   */
   public $revisionCreateTime;
+  /**
+   * @var string
+   */
   public $revisionId;
   protected $rolloutType = OSPolicyAssignmentRollout::class;
   protected $rolloutDataType = '';
+  /**
+   * @var string
+   */
   public $rolloutState;
+  /**
+   * @var string
+   */
   public $uid;
 
+  /**
+   * @param bool
+   */
   public function setBaseline($baseline)
   {
     $this->baseline = $baseline;
   }
+  /**
+   * @return bool
+   */
   public function getBaseline()
   {
     return $this->baseline;
   }
+  /**
+   * @param bool
+   */
   public function setDeleted($deleted)
   {
     $this->deleted = $deleted;
   }
+  /**
+   * @return bool
+   */
   public function getDeleted()
   {
     return $this->deleted;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
@@ -83,10 +137,16 @@ class OSPolicyAssignment extends \Google\Collection
   {
     return $this->instanceFilter;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -105,26 +165,44 @@ class OSPolicyAssignment extends \Google\Collection
   {
     return $this->osPolicies;
   }
+  /**
+   * @param bool
+   */
   public function setReconciling($reconciling)
   {
     $this->reconciling = $reconciling;
   }
+  /**
+   * @return bool
+   */
   public function getReconciling()
   {
     return $this->reconciling;
   }
+  /**
+   * @param string
+   */
   public function setRevisionCreateTime($revisionCreateTime)
   {
     $this->revisionCreateTime = $revisionCreateTime;
   }
+  /**
+   * @return string
+   */
   public function getRevisionCreateTime()
   {
     return $this->revisionCreateTime;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;
@@ -143,18 +221,30 @@ class OSPolicyAssignment extends \Google\Collection
   {
     return $this->rollout;
   }
+  /**
+   * @param string
+   */
   public function setRolloutState($rolloutState)
   {
     $this->rolloutState = $rolloutState;
   }
+  /**
+   * @return string
+   */
   public function getRolloutState()
   {
     return $this->rolloutState;
   }
+  /**
+   * @param string
+   */
   public function setUid($uid)
   {
     $this->uid = $uid;
   }
+  /**
+   * @return string
+   */
   public function getUid()
   {
     return $this->uid;

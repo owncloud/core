@@ -20,30 +20,57 @@ namespace Google\Service\CloudRetail;
 class GoogleRpcStatus extends \Google\Collection
 {
   protected $collection_key = 'details';
+  /**
+   * @var int
+   */
   public $code;
+  /**
+   * @var array[]
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $message;
 
+  /**
+   * @param int
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return int
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param array[]
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return array[]
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;

@@ -19,32 +19,59 @@ namespace Google\Service\CloudSearch;
 
 class SourceResultCount extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $hasMoreResults;
+  /**
+   * @var string
+   */
   public $resultCountEstimate;
+  /**
+   * @var string
+   */
   public $resultCountExact;
   protected $sourceType = Source::class;
   protected $sourceDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setHasMoreResults($hasMoreResults)
   {
     $this->hasMoreResults = $hasMoreResults;
   }
+  /**
+   * @return bool
+   */
   public function getHasMoreResults()
   {
     return $this->hasMoreResults;
   }
+  /**
+   * @param string
+   */
   public function setResultCountEstimate($resultCountEstimate)
   {
     $this->resultCountEstimate = $resultCountEstimate;
   }
+  /**
+   * @return string
+   */
   public function getResultCountEstimate()
   {
     return $this->resultCountEstimate;
   }
+  /**
+   * @param string
+   */
   public function setResultCountExact($resultCountExact)
   {
     $this->resultCountExact = $resultCountExact;
   }
+  /**
+   * @return string
+   */
   public function getResultCountExact()
   {
     return $this->resultCountExact;

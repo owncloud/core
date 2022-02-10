@@ -19,52 +19,103 @@ namespace Google\Service\Compute;
 
 class HttpHeaderMatch extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exactMatch;
+  /**
+   * @var string
+   */
   public $headerName;
+  /**
+   * @var bool
+   */
   public $invertMatch;
+  /**
+   * @var string
+   */
   public $prefixMatch;
+  /**
+   * @var bool
+   */
   public $presentMatch;
   protected $rangeMatchType = Int64RangeMatch::class;
   protected $rangeMatchDataType = '';
+  /**
+   * @var string
+   */
   public $regexMatch;
+  /**
+   * @var string
+   */
   public $suffixMatch;
 
+  /**
+   * @param string
+   */
   public function setExactMatch($exactMatch)
   {
     $this->exactMatch = $exactMatch;
   }
+  /**
+   * @return string
+   */
   public function getExactMatch()
   {
     return $this->exactMatch;
   }
+  /**
+   * @param string
+   */
   public function setHeaderName($headerName)
   {
     $this->headerName = $headerName;
   }
+  /**
+   * @return string
+   */
   public function getHeaderName()
   {
     return $this->headerName;
   }
+  /**
+   * @param bool
+   */
   public function setInvertMatch($invertMatch)
   {
     $this->invertMatch = $invertMatch;
   }
+  /**
+   * @return bool
+   */
   public function getInvertMatch()
   {
     return $this->invertMatch;
   }
+  /**
+   * @param string
+   */
   public function setPrefixMatch($prefixMatch)
   {
     $this->prefixMatch = $prefixMatch;
   }
+  /**
+   * @return string
+   */
   public function getPrefixMatch()
   {
     return $this->prefixMatch;
   }
+  /**
+   * @param bool
+   */
   public function setPresentMatch($presentMatch)
   {
     $this->presentMatch = $presentMatch;
   }
+  /**
+   * @return bool
+   */
   public function getPresentMatch()
   {
     return $this->presentMatch;
@@ -83,18 +134,30 @@ class HttpHeaderMatch extends \Google\Model
   {
     return $this->rangeMatch;
   }
+  /**
+   * @param string
+   */
   public function setRegexMatch($regexMatch)
   {
     $this->regexMatch = $regexMatch;
   }
+  /**
+   * @return string
+   */
   public function getRegexMatch()
   {
     return $this->regexMatch;
   }
+  /**
+   * @param string
+   */
   public function setSuffixMatch($suffixMatch)
   {
     $this->suffixMatch = $suffixMatch;
   }
+  /**
+   * @return string
+   */
   public function getSuffixMatch()
   {
     return $this->suffixMatch;

@@ -20,34 +20,61 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1PricePhase extends \Google\Collection
 {
   protected $collection_key = 'priceTiers';
+  /**
+   * @var int
+   */
   public $firstPeriod;
+  /**
+   * @var int
+   */
   public $lastPeriod;
+  /**
+   * @var string
+   */
   public $periodType;
   protected $priceType = GoogleCloudChannelV1Price::class;
   protected $priceDataType = '';
   protected $priceTiersType = GoogleCloudChannelV1PriceTier::class;
   protected $priceTiersDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setFirstPeriod($firstPeriod)
   {
     $this->firstPeriod = $firstPeriod;
   }
+  /**
+   * @return int
+   */
   public function getFirstPeriod()
   {
     return $this->firstPeriod;
   }
+  /**
+   * @param int
+   */
   public function setLastPeriod($lastPeriod)
   {
     $this->lastPeriod = $lastPeriod;
   }
+  /**
+   * @return int
+   */
   public function getLastPeriod()
   {
     return $this->lastPeriod;
   }
+  /**
+   * @param string
+   */
   public function setPeriodType($periodType)
   {
     $this->periodType = $periodType;
   }
+  /**
+   * @return string
+   */
   public function getPeriodType()
   {
     return $this->periodType;

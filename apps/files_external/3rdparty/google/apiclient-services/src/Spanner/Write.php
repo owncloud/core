@@ -20,30 +20,57 @@ namespace Google\Service\Spanner;
 class Write extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string[]
+   */
   public $columns;
+  /**
+   * @var string
+   */
   public $table;
+  /**
+   * @var array[]
+   */
   public $values;
 
+  /**
+   * @param string[]
+   */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
+  /**
+   * @return string[]
+   */
   public function getColumns()
   {
     return $this->columns;
   }
+  /**
+   * @param string
+   */
   public function setTable($table)
   {
     $this->table = $table;
   }
+  /**
+   * @return string
+   */
   public function getTable()
   {
     return $this->table;
   }
+  /**
+   * @param array[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return array[]
+   */
   public function getValues()
   {
     return $this->values;

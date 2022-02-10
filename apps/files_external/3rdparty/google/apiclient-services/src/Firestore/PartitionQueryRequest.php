@@ -19,32 +19,59 @@ namespace Google\Service\Firestore;
 
 class PartitionQueryRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var string
+   */
   public $partitionCount;
   protected $structuredQueryType = StructuredQuery::class;
   protected $structuredQueryDataType = '';
 
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param string
+   */
   public function setPartitionCount($partitionCount)
   {
     $this->partitionCount = $partitionCount;
   }
+  /**
+   * @return string
+   */
   public function getPartitionCount()
   {
     return $this->partitionCount;

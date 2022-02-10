@@ -20,32 +20,59 @@ namespace Google\Service\Spanner;
 class InstanceConfig extends \Google\Collection
 {
   protected $collection_key = 'replicas';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string[]
+   */
   public $leaderOptions;
+  /**
+   * @var string
+   */
   public $name;
   protected $replicasType = ReplicaInfo::class;
   protected $replicasDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string[]
+   */
   public function setLeaderOptions($leaderOptions)
   {
     $this->leaderOptions = $leaderOptions;
   }
+  /**
+   * @return string[]
+   */
   public function getLeaderOptions()
   {
     return $this->leaderOptions;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

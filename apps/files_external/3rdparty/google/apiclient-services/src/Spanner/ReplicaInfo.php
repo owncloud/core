@@ -19,30 +19,57 @@ namespace Google\Service\Spanner;
 
 class ReplicaInfo extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $defaultLeaderLocation;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param bool
+   */
   public function setDefaultLeaderLocation($defaultLeaderLocation)
   {
     $this->defaultLeaderLocation = $defaultLeaderLocation;
   }
+  /**
+   * @return bool
+   */
   public function getDefaultLeaderLocation()
   {
     return $this->defaultLeaderLocation;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

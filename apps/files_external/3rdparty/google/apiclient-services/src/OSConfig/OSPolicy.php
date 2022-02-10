@@ -20,41 +20,77 @@ namespace Google\Service\OSConfig;
 class OSPolicy extends \Google\Collection
 {
   protected $collection_key = 'resourceGroups';
+  /**
+   * @var bool
+   */
   public $allowNoResourceGroupMatch;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $mode;
   protected $resourceGroupsType = OSPolicyResourceGroup::class;
   protected $resourceGroupsDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setAllowNoResourceGroupMatch($allowNoResourceGroupMatch)
   {
     $this->allowNoResourceGroupMatch = $allowNoResourceGroupMatch;
   }
+  /**
+   * @return bool
+   */
   public function getAllowNoResourceGroupMatch()
   {
     return $this->allowNoResourceGroupMatch;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;

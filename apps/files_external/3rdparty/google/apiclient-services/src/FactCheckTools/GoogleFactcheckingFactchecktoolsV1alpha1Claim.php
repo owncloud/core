@@ -20,16 +20,31 @@ namespace Google\Service\FactCheckTools;
 class GoogleFactcheckingFactchecktoolsV1alpha1Claim extends \Google\Collection
 {
   protected $collection_key = 'claimReview';
+  /**
+   * @var string
+   */
   public $claimDate;
   protected $claimReviewType = GoogleFactcheckingFactchecktoolsV1alpha1ClaimReview::class;
   protected $claimReviewDataType = 'array';
+  /**
+   * @var string
+   */
   public $claimant;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setClaimDate($claimDate)
   {
     $this->claimDate = $claimDate;
   }
+  /**
+   * @return string
+   */
   public function getClaimDate()
   {
     return $this->claimDate;
@@ -48,18 +63,30 @@ class GoogleFactcheckingFactchecktoolsV1alpha1Claim extends \Google\Collection
   {
     return $this->claimReview;
   }
+  /**
+   * @param string
+   */
   public function setClaimant($claimant)
   {
     $this->claimant = $claimant;
   }
+  /**
+   * @return string
+   */
   public function getClaimant()
   {
     return $this->claimant;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

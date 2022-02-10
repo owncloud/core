@@ -21,15 +21,39 @@ class ImportJob extends \Google\Model
 {
   protected $attestationType = KeyOperationAttestation::class;
   protected $attestationDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $expireEventTime;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $generateTime;
+  /**
+   * @var string
+   */
   public $importMethod;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $protectionLevel;
   protected $publicKeyType = WrappingPublicKey::class;
   protected $publicKeyDataType = '';
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -46,58 +70,100 @@ class ImportJob extends \Google\Model
   {
     return $this->attestation;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setExpireEventTime($expireEventTime)
   {
     $this->expireEventTime = $expireEventTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireEventTime()
   {
     return $this->expireEventTime;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setGenerateTime($generateTime)
   {
     $this->generateTime = $generateTime;
   }
+  /**
+   * @return string
+   */
   public function getGenerateTime()
   {
     return $this->generateTime;
   }
+  /**
+   * @param string
+   */
   public function setImportMethod($importMethod)
   {
     $this->importMethod = $importMethod;
   }
+  /**
+   * @return string
+   */
   public function getImportMethod()
   {
     return $this->importMethod;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProtectionLevel($protectionLevel)
   {
     $this->protectionLevel = $protectionLevel;
   }
+  /**
+   * @return string
+   */
   public function getProtectionLevel()
   {
     return $this->protectionLevel;
@@ -116,10 +182,16 @@ class ImportJob extends \Google\Model
   {
     return $this->publicKey;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

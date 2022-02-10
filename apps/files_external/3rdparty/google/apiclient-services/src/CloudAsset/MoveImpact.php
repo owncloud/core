@@ -19,12 +19,21 @@ namespace Google\Service\CloudAsset;
 
 class MoveImpact extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $detail;
 
+  /**
+   * @param string
+   */
   public function setDetail($detail)
   {
     $this->detail = $detail;
   }
+  /**
+   * @return string
+   */
   public function getDetail()
   {
     return $this->detail;

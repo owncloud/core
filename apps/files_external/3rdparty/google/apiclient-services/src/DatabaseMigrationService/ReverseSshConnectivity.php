@@ -19,39 +19,75 @@ namespace Google\Service\DatabaseMigrationService;
 
 class ReverseSshConnectivity extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $vm;
+  /**
+   * @var string
+   */
   public $vmIp;
+  /**
+   * @var int
+   */
   public $vmPort;
+  /**
+   * @var string
+   */
   public $vpc;
 
+  /**
+   * @param string
+   */
   public function setVm($vm)
   {
     $this->vm = $vm;
   }
+  /**
+   * @return string
+   */
   public function getVm()
   {
     return $this->vm;
   }
+  /**
+   * @param string
+   */
   public function setVmIp($vmIp)
   {
     $this->vmIp = $vmIp;
   }
+  /**
+   * @return string
+   */
   public function getVmIp()
   {
     return $this->vmIp;
   }
+  /**
+   * @param int
+   */
   public function setVmPort($vmPort)
   {
     $this->vmPort = $vmPort;
   }
+  /**
+   * @return int
+   */
   public function getVmPort()
   {
     return $this->vmPort;
   }
+  /**
+   * @param string
+   */
   public function setVpc($vpc)
   {
     $this->vpc = $vpc;
   }
+  /**
+   * @return string
+   */
   public function getVpc()
   {
     return $this->vpc;

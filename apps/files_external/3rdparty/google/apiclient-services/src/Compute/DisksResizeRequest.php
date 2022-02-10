@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class DisksResizeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sizeGb;
 
+  /**
+   * @param string
+   */
   public function setSizeGb($sizeGb)
   {
     $this->sizeGb = $sizeGb;
   }
+  /**
+   * @return string
+   */
   public function getSizeGb()
   {
     return $this->sizeGb;

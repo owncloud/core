@@ -19,12 +19,21 @@ namespace Google\Service\Sasportal;
 
 class SasPortalMoveDeploymentRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destination;
 
+  /**
+   * @param string
+   */
   public function setDestination($destination)
   {
     $this->destination = $destination;
   }
+  /**
+   * @return string
+   */
   public function getDestination()
   {
     return $this->destination;

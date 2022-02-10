@@ -19,12 +19,21 @@ namespace Google\Service\CloudSearch;
 
 class PropertyDisplayOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayLabel;
 
+  /**
+   * @param string
+   */
   public function setDisplayLabel($displayLabel)
   {
     $this->displayLabel = $displayLabel;
   }
+  /**
+   * @return string
+   */
   public function getDisplayLabel()
   {
     return $this->displayLabel;

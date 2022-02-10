@@ -19,30 +19,57 @@ namespace Google\Service\CloudHealthcare;
 
 class GoogleCloudHealthcareV1DicomBigQueryDestination extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $force;
+  /**
+   * @var string
+   */
   public $tableUri;
+  /**
+   * @var string
+   */
   public $writeDisposition;
 
+  /**
+   * @param bool
+   */
   public function setForce($force)
   {
     $this->force = $force;
   }
+  /**
+   * @return bool
+   */
   public function getForce()
   {
     return $this->force;
   }
+  /**
+   * @param string
+   */
   public function setTableUri($tableUri)
   {
     $this->tableUri = $tableUri;
   }
+  /**
+   * @return string
+   */
   public function getTableUri()
   {
     return $this->tableUri;
   }
+  /**
+   * @param string
+   */
   public function setWriteDisposition($writeDisposition)
   {
     $this->writeDisposition = $writeDisposition;
   }
+  /**
+   * @return string
+   */
   public function getWriteDisposition()
   {
     return $this->writeDisposition;

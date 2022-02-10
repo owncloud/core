@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class Site extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $urlOrAppId;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setUrlOrAppId($urlOrAppId)
   {
     $this->urlOrAppId = $urlOrAppId;
   }
+  /**
+   * @return string
+   */
   public function getUrlOrAppId()
   {
     return $this->urlOrAppId;

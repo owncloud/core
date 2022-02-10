@@ -19,21 +19,39 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class GetInstanceHealthResponse extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $healthInfo;
+  /**
+   * @var string
+   */
   public $healthState;
 
+  /**
+   * @param string[]
+   */
   public function setHealthInfo($healthInfo)
   {
     $this->healthInfo = $healthInfo;
   }
+  /**
+   * @return string[]
+   */
   public function getHealthInfo()
   {
     return $this->healthInfo;
   }
+  /**
+   * @param string
+   */
   public function setHealthState($healthState)
   {
     $this->healthState = $healthState;
   }
+  /**
+   * @return string
+   */
   public function getHealthState()
   {
     return $this->healthState;

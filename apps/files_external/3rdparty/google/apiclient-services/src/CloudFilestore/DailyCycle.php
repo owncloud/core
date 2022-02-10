@@ -19,14 +19,23 @@ namespace Google\Service\CloudFilestore;
 
 class DailyCycle extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $duration;
   protected $startTimeType = TimeOfDay::class;
   protected $startTimeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;

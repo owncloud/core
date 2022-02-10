@@ -19,16 +19,34 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1alpha1Value extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $boolValue;
   public $doubleValue;
+  /**
+   * @var string
+   */
   public $int64Value;
+  /**
+   * @var array[]
+   */
   public $protoValue;
+  /**
+   * @var string
+   */
   public $stringValue;
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
@@ -41,26 +59,44 @@ class GoogleCloudChannelV1alpha1Value extends \Google\Model
   {
     return $this->doubleValue;
   }
+  /**
+   * @param string
+   */
   public function setInt64Value($int64Value)
   {
     $this->int64Value = $int64Value;
   }
+  /**
+   * @return string
+   */
   public function getInt64Value()
   {
     return $this->int64Value;
   }
+  /**
+   * @param array[]
+   */
   public function setProtoValue($protoValue)
   {
     $this->protoValue = $protoValue;
   }
+  /**
+   * @return array[]
+   */
   public function getProtoValue()
   {
     return $this->protoValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;

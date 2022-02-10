@@ -19,79 +19,157 @@ namespace Google\Service\ShoppingContent;
 
 class ProductShipping extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $locationGroupName;
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $maxHandlingTime;
+  /**
+   * @var string
+   */
   public $maxTransitTime;
+  /**
+   * @var string
+   */
   public $minHandlingTime;
+  /**
+   * @var string
+   */
   public $minTransitTime;
+  /**
+   * @var string
+   */
   public $postalCode;
   protected $priceType = Price::class;
   protected $priceDataType = '';
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setLocationGroupName($locationGroupName)
   {
     $this->locationGroupName = $locationGroupName;
   }
+  /**
+   * @return string
+   */
   public function getLocationGroupName()
   {
     return $this->locationGroupName;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setMaxHandlingTime($maxHandlingTime)
   {
     $this->maxHandlingTime = $maxHandlingTime;
   }
+  /**
+   * @return string
+   */
   public function getMaxHandlingTime()
   {
     return $this->maxHandlingTime;
   }
+  /**
+   * @param string
+   */
   public function setMaxTransitTime($maxTransitTime)
   {
     $this->maxTransitTime = $maxTransitTime;
   }
+  /**
+   * @return string
+   */
   public function getMaxTransitTime()
   {
     return $this->maxTransitTime;
   }
+  /**
+   * @param string
+   */
   public function setMinHandlingTime($minHandlingTime)
   {
     $this->minHandlingTime = $minHandlingTime;
   }
+  /**
+   * @return string
+   */
   public function getMinHandlingTime()
   {
     return $this->minHandlingTime;
   }
+  /**
+   * @param string
+   */
   public function setMinTransitTime($minTransitTime)
   {
     $this->minTransitTime = $minTransitTime;
   }
+  /**
+   * @return string
+   */
   public function getMinTransitTime()
   {
     return $this->minTransitTime;
   }
+  /**
+   * @param string
+   */
   public function setPostalCode($postalCode)
   {
     $this->postalCode = $postalCode;
   }
+  /**
+   * @return string
+   */
   public function getPostalCode()
   {
     return $this->postalCode;
@@ -110,18 +188,30 @@ class ProductShipping extends \Google\Model
   {
     return $this->price;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

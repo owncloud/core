@@ -22,6 +22,9 @@ class ListBiddersResponse extends \Google\Collection
   protected $collection_key = 'bidders';
   protected $biddersType = Bidder::class;
   protected $biddersDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListBiddersResponse extends \Google\Collection
   {
     return $this->bidders;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

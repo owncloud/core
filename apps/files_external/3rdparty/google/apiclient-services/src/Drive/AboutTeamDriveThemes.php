@@ -19,30 +19,57 @@ namespace Google\Service\Drive;
 
 class AboutTeamDriveThemes extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backgroundImageLink;
+  /**
+   * @var string
+   */
   public $colorRgb;
+  /**
+   * @var string
+   */
   public $id;
 
+  /**
+   * @param string
+   */
   public function setBackgroundImageLink($backgroundImageLink)
   {
     $this->backgroundImageLink = $backgroundImageLink;
   }
+  /**
+   * @return string
+   */
   public function getBackgroundImageLink()
   {
     return $this->backgroundImageLink;
   }
+  /**
+   * @param string
+   */
   public function setColorRgb($colorRgb)
   {
     $this->colorRgb = $colorRgb;
   }
+  /**
+   * @return string
+   */
   public function getColorRgb()
   {
     return $this->colorRgb;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

@@ -20,74 +20,149 @@ namespace Google\Service\Reseller;
 class Subscription extends \Google\Collection
 {
   protected $collection_key = 'suspensionReasons';
+  /**
+   * @var string
+   */
   public $billingMethod;
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string
+   */
   public $customerDomain;
+  /**
+   * @var string
+   */
   public $customerId;
+  /**
+   * @var string
+   */
   public $dealCode;
+  /**
+   * @var string
+   */
   public $kind;
   protected $planType = SubscriptionPlan::class;
   protected $planDataType = '';
+  /**
+   * @var string
+   */
   public $purchaseOrderId;
   protected $renewalSettingsType = RenewalSettings::class;
   protected $renewalSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $resourceUiUrl;
   protected $seatsType = Seats::class;
   protected $seatsDataType = '';
+  /**
+   * @var string
+   */
   public $skuId;
+  /**
+   * @var string
+   */
   public $skuName;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $subscriptionId;
+  /**
+   * @var string[]
+   */
   public $suspensionReasons;
   protected $transferInfoType = SubscriptionTransferInfo::class;
   protected $transferInfoDataType = '';
   protected $trialSettingsType = SubscriptionTrialSettings::class;
   protected $trialSettingsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setBillingMethod($billingMethod)
   {
     $this->billingMethod = $billingMethod;
   }
+  /**
+   * @return string
+   */
   public function getBillingMethod()
   {
     return $this->billingMethod;
   }
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setCustomerDomain($customerDomain)
   {
     $this->customerDomain = $customerDomain;
   }
+  /**
+   * @return string
+   */
   public function getCustomerDomain()
   {
     return $this->customerDomain;
   }
+  /**
+   * @param string
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerId()
   {
     return $this->customerId;
   }
+  /**
+   * @param string
+   */
   public function setDealCode($dealCode)
   {
     $this->dealCode = $dealCode;
   }
+  /**
+   * @return string
+   */
   public function getDealCode()
   {
     return $this->dealCode;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -106,10 +181,16 @@ class Subscription extends \Google\Collection
   {
     return $this->plan;
   }
+  /**
+   * @param string
+   */
   public function setPurchaseOrderId($purchaseOrderId)
   {
     $this->purchaseOrderId = $purchaseOrderId;
   }
+  /**
+   * @return string
+   */
   public function getPurchaseOrderId()
   {
     return $this->purchaseOrderId;
@@ -128,10 +209,16 @@ class Subscription extends \Google\Collection
   {
     return $this->renewalSettings;
   }
+  /**
+   * @param string
+   */
   public function setResourceUiUrl($resourceUiUrl)
   {
     $this->resourceUiUrl = $resourceUiUrl;
   }
+  /**
+   * @return string
+   */
   public function getResourceUiUrl()
   {
     return $this->resourceUiUrl;
@@ -150,42 +237,72 @@ class Subscription extends \Google\Collection
   {
     return $this->seats;
   }
+  /**
+   * @param string
+   */
   public function setSkuId($skuId)
   {
     $this->skuId = $skuId;
   }
+  /**
+   * @return string
+   */
   public function getSkuId()
   {
     return $this->skuId;
   }
+  /**
+   * @param string
+   */
   public function setSkuName($skuName)
   {
     $this->skuName = $skuName;
   }
+  /**
+   * @return string
+   */
   public function getSkuName()
   {
     return $this->skuName;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setSubscriptionId($subscriptionId)
   {
     $this->subscriptionId = $subscriptionId;
   }
+  /**
+   * @return string
+   */
   public function getSubscriptionId()
   {
     return $this->subscriptionId;
   }
+  /**
+   * @param string[]
+   */
   public function setSuspensionReasons($suspensionReasons)
   {
     $this->suspensionReasons = $suspensionReasons;
   }
+  /**
+   * @return string[]
+   */
   public function getSuspensionReasons()
   {
     return $this->suspensionReasons;

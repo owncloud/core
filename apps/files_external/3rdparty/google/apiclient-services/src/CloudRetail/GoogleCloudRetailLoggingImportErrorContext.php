@@ -19,57 +19,111 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailLoggingImportErrorContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $catalogItem;
+  /**
+   * @var string
+   */
   public $gcsPath;
+  /**
+   * @var string
+   */
   public $lineNumber;
+  /**
+   * @var string
+   */
   public $operationName;
+  /**
+   * @var string
+   */
   public $product;
+  /**
+   * @var string
+   */
   public $userEvent;
 
+  /**
+   * @param string
+   */
   public function setCatalogItem($catalogItem)
   {
     $this->catalogItem = $catalogItem;
   }
+  /**
+   * @return string
+   */
   public function getCatalogItem()
   {
     return $this->catalogItem;
   }
+  /**
+   * @param string
+   */
   public function setGcsPath($gcsPath)
   {
     $this->gcsPath = $gcsPath;
   }
+  /**
+   * @return string
+   */
   public function getGcsPath()
   {
     return $this->gcsPath;
   }
+  /**
+   * @param string
+   */
   public function setLineNumber($lineNumber)
   {
     $this->lineNumber = $lineNumber;
   }
+  /**
+   * @return string
+   */
   public function getLineNumber()
   {
     return $this->lineNumber;
   }
+  /**
+   * @param string
+   */
   public function setOperationName($operationName)
   {
     $this->operationName = $operationName;
   }
+  /**
+   * @return string
+   */
   public function getOperationName()
   {
     return $this->operationName;
   }
+  /**
+   * @param string
+   */
   public function setProduct($product)
   {
     $this->product = $product;
   }
+  /**
+   * @return string
+   */
   public function getProduct()
   {
     return $this->product;
   }
+  /**
+   * @param string
+   */
   public function setUserEvent($userEvent)
   {
     $this->userEvent = $userEvent;
   }
+  /**
+   * @return string
+   */
   public function getUserEvent()
   {
     return $this->userEvent;

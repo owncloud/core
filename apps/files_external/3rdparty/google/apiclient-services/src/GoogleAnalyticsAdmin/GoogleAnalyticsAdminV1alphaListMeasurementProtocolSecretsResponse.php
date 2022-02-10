@@ -22,6 +22,9 @@ class GoogleAnalyticsAdminV1alphaListMeasurementProtocolSecretsResponse extends 
   protected $collection_key = 'measurementProtocolSecrets';
   protected $measurementProtocolSecretsType = GoogleAnalyticsAdminV1alphaMeasurementProtocolSecret::class;
   protected $measurementProtocolSecretsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAnalyticsAdminV1alphaListMeasurementProtocolSecretsResponse extends 
   {
     return $this->measurementProtocolSecrets;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

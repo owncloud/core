@@ -19,12 +19,21 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailLoggingSourceLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $functionName;
 
+  /**
+   * @param string
+   */
   public function setFunctionName($functionName)
   {
     $this->functionName = $functionName;
   }
+  /**
+   * @return string
+   */
   public function getFunctionName()
   {
     return $this->functionName;

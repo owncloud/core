@@ -19,39 +19,75 @@ namespace Google\Service\DataprocMetastore;
 
 class DatabaseDump extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $databaseType;
+  /**
+   * @var string
+   */
   public $gcsUri;
+  /**
+   * @var string
+   */
   public $sourceDatabase;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDatabaseType($databaseType)
   {
     $this->databaseType = $databaseType;
   }
+  /**
+   * @return string
+   */
   public function getDatabaseType()
   {
     return $this->databaseType;
   }
+  /**
+   * @param string
+   */
   public function setGcsUri($gcsUri)
   {
     $this->gcsUri = $gcsUri;
   }
+  /**
+   * @return string
+   */
   public function getGcsUri()
   {
     return $this->gcsUri;
   }
+  /**
+   * @param string
+   */
   public function setSourceDatabase($sourceDatabase)
   {
     $this->sourceDatabase = $sourceDatabase;
   }
+  /**
+   * @return string
+   */
   public function getSourceDatabase()
   {
     return $this->sourceDatabase;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

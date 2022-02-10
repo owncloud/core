@@ -20,39 +20,93 @@ namespace Google\Service\Books;
 class Annotation extends \Google\Collection
 {
   protected $collection_key = 'pageIds';
+  /**
+   * @var string
+   */
   public $afterSelectedText;
+  /**
+   * @var string
+   */
   public $beforeSelectedText;
   protected $clientVersionRangesType = AnnotationClientVersionRanges::class;
   protected $clientVersionRangesDataType = '';
+  /**
+   * @var string
+   */
   public $created;
   protected $currentVersionRangesType = AnnotationCurrentVersionRanges::class;
   protected $currentVersionRangesDataType = '';
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var bool
+   */
   public $deleted;
+  /**
+   * @var string
+   */
   public $highlightStyle;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $layerId;
   protected $layerSummaryType = AnnotationLayerSummary::class;
   protected $layerSummaryDataType = '';
+  /**
+   * @var string[]
+   */
   public $pageIds;
+  /**
+   * @var string
+   */
   public $selectedText;
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $updated;
+  /**
+   * @var string
+   */
   public $volumeId;
 
+  /**
+   * @param string
+   */
   public function setAfterSelectedText($afterSelectedText)
   {
     $this->afterSelectedText = $afterSelectedText;
   }
+  /**
+   * @return string
+   */
   public function getAfterSelectedText()
   {
     return $this->afterSelectedText;
   }
+  /**
+   * @param string
+   */
   public function setBeforeSelectedText($beforeSelectedText)
   {
     $this->beforeSelectedText = $beforeSelectedText;
   }
+  /**
+   * @return string
+   */
   public function getBeforeSelectedText()
   {
     return $this->beforeSelectedText;
@@ -71,10 +125,16 @@ class Annotation extends \Google\Collection
   {
     return $this->clientVersionRanges;
   }
+  /**
+   * @param string
+   */
   public function setCreated($created)
   {
     $this->created = $created;
   }
+  /**
+   * @return string
+   */
   public function getCreated()
   {
     return $this->created;
@@ -93,50 +153,86 @@ class Annotation extends \Google\Collection
   {
     return $this->currentVersionRanges;
   }
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param bool
+   */
   public function setDeleted($deleted)
   {
     $this->deleted = $deleted;
   }
+  /**
+   * @return bool
+   */
   public function getDeleted()
   {
     return $this->deleted;
   }
+  /**
+   * @param string
+   */
   public function setHighlightStyle($highlightStyle)
   {
     $this->highlightStyle = $highlightStyle;
   }
+  /**
+   * @return string
+   */
   public function getHighlightStyle()
   {
     return $this->highlightStyle;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLayerId($layerId)
   {
     $this->layerId = $layerId;
   }
+  /**
+   * @return string
+   */
   public function getLayerId()
   {
     return $this->layerId;
@@ -155,42 +251,72 @@ class Annotation extends \Google\Collection
   {
     return $this->layerSummary;
   }
+  /**
+   * @param string[]
+   */
   public function setPageIds($pageIds)
   {
     $this->pageIds = $pageIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPageIds()
   {
     return $this->pageIds;
   }
+  /**
+   * @param string
+   */
   public function setSelectedText($selectedText)
   {
     $this->selectedText = $selectedText;
   }
+  /**
+   * @return string
+   */
   public function getSelectedText()
   {
     return $this->selectedText;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setUpdated($updated)
   {
     $this->updated = $updated;
   }
+  /**
+   * @return string
+   */
   public function getUpdated()
   {
     return $this->updated;
   }
+  /**
+   * @param string
+   */
   public function setVolumeId($volumeId)
   {
     $this->volumeId = $volumeId;
   }
+  /**
+   * @return string
+   */
   public function getVolumeId()
   {
     return $this->volumeId;

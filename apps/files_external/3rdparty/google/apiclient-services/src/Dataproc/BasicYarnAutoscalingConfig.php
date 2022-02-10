@@ -19,16 +19,25 @@ namespace Google\Service\Dataproc;
 
 class BasicYarnAutoscalingConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gracefulDecommissionTimeout;
   public $scaleDownFactor;
   public $scaleDownMinWorkerFraction;
   public $scaleUpFactor;
   public $scaleUpMinWorkerFraction;
 
+  /**
+   * @param string
+   */
   public function setGracefulDecommissionTimeout($gracefulDecommissionTimeout)
   {
     $this->gracefulDecommissionTimeout = $gracefulDecommissionTimeout;
   }
+  /**
+   * @return string
+   */
   public function getGracefulDecommissionTimeout()
   {
     return $this->gracefulDecommissionTimeout;

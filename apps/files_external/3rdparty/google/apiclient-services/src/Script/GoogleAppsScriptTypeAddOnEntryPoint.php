@@ -19,57 +19,111 @@ namespace Google\Service\Script;
 
 class GoogleAppsScriptTypeAddOnEntryPoint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $addOnType;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $helpUrl;
+  /**
+   * @var string
+   */
   public $postInstallTipUrl;
+  /**
+   * @var string
+   */
   public $reportIssueUrl;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setAddOnType($addOnType)
   {
     $this->addOnType = $addOnType;
   }
+  /**
+   * @return string
+   */
   public function getAddOnType()
   {
     return $this->addOnType;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setHelpUrl($helpUrl)
   {
     $this->helpUrl = $helpUrl;
   }
+  /**
+   * @return string
+   */
   public function getHelpUrl()
   {
     return $this->helpUrl;
   }
+  /**
+   * @param string
+   */
   public function setPostInstallTipUrl($postInstallTipUrl)
   {
     $this->postInstallTipUrl = $postInstallTipUrl;
   }
+  /**
+   * @return string
+   */
   public function getPostInstallTipUrl()
   {
     return $this->postInstallTipUrl;
   }
+  /**
+   * @param string
+   */
   public function setReportIssueUrl($reportIssueUrl)
   {
     $this->reportIssueUrl = $reportIssueUrl;
   }
+  /**
+   * @return string
+   */
   public function getReportIssueUrl()
   {
     return $this->reportIssueUrl;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

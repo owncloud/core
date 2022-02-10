@@ -21,6 +21,9 @@ class GoogleCloudVideointelligenceV1p2beta1TextFrame extends \Google\Model
 {
   protected $rotatedBoundingBoxType = GoogleCloudVideointelligenceV1p2beta1NormalizedBoundingPoly::class;
   protected $rotatedBoundingBoxDataType = '';
+  /**
+   * @var string
+   */
   public $timeOffset;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudVideointelligenceV1p2beta1TextFrame extends \Google\Model
   {
     return $this->rotatedBoundingBox;
   }
+  /**
+   * @param string
+   */
   public function setTimeOffset($timeOffset)
   {
     $this->timeOffset = $timeOffset;
   }
+  /**
+   * @return string
+   */
   public function getTimeOffset()
   {
     return $this->timeOffset;

@@ -20,23 +20,41 @@ namespace Google\Service\Bigquery;
 class JobConfigurationTableCopy extends \Google\Collection
 {
   protected $collection_key = 'sourceTables';
+  /**
+   * @var string
+   */
   public $createDisposition;
   protected $destinationEncryptionConfigurationType = EncryptionConfiguration::class;
   protected $destinationEncryptionConfigurationDataType = '';
+  /**
+   * @var array
+   */
   public $destinationExpirationTime;
   protected $destinationTableType = TableReference::class;
   protected $destinationTableDataType = '';
+  /**
+   * @var string
+   */
   public $operationType;
   protected $sourceTableType = TableReference::class;
   protected $sourceTableDataType = '';
   protected $sourceTablesType = TableReference::class;
   protected $sourceTablesDataType = 'array';
+  /**
+   * @var string
+   */
   public $writeDisposition;
 
+  /**
+   * @param string
+   */
   public function setCreateDisposition($createDisposition)
   {
     $this->createDisposition = $createDisposition;
   }
+  /**
+   * @return string
+   */
   public function getCreateDisposition()
   {
     return $this->createDisposition;
@@ -55,10 +73,16 @@ class JobConfigurationTableCopy extends \Google\Collection
   {
     return $this->destinationEncryptionConfiguration;
   }
+  /**
+   * @param array
+   */
   public function setDestinationExpirationTime($destinationExpirationTime)
   {
     $this->destinationExpirationTime = $destinationExpirationTime;
   }
+  /**
+   * @return array
+   */
   public function getDestinationExpirationTime()
   {
     return $this->destinationExpirationTime;
@@ -77,10 +101,16 @@ class JobConfigurationTableCopy extends \Google\Collection
   {
     return $this->destinationTable;
   }
+  /**
+   * @param string
+   */
   public function setOperationType($operationType)
   {
     $this->operationType = $operationType;
   }
+  /**
+   * @return string
+   */
   public function getOperationType()
   {
     return $this->operationType;
@@ -113,10 +143,16 @@ class JobConfigurationTableCopy extends \Google\Collection
   {
     return $this->sourceTables;
   }
+  /**
+   * @param string
+   */
   public function setWriteDisposition($writeDisposition)
   {
     $this->writeDisposition = $writeDisposition;
   }
+  /**
+   * @return string
+   */
   public function getWriteDisposition()
   {
     return $this->writeDisposition;

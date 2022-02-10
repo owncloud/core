@@ -20,41 +20,89 @@ namespace Google\Service\AIPlatformNotebooks;
 class LocalDisk extends \Google\Collection
 {
   protected $collection_key = 'licenses';
+  /**
+   * @var bool
+   */
   public $autoDelete;
+  /**
+   * @var bool
+   */
   public $boot;
+  /**
+   * @var string
+   */
   public $deviceName;
   protected $guestOsFeaturesType = RuntimeGuestOsFeature::class;
   protected $guestOsFeaturesDataType = 'array';
+  /**
+   * @var int
+   */
   public $index;
   protected $initializeParamsType = LocalDiskInitializeParams::class;
   protected $initializeParamsDataType = '';
+  /**
+   * @var string
+   */
   public $interface;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $licenses;
+  /**
+   * @var string
+   */
   public $mode;
+  /**
+   * @var string
+   */
   public $source;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param bool
+   */
   public function setAutoDelete($autoDelete)
   {
     $this->autoDelete = $autoDelete;
   }
+  /**
+   * @return bool
+   */
   public function getAutoDelete()
   {
     return $this->autoDelete;
   }
+  /**
+   * @param bool
+   */
   public function setBoot($boot)
   {
     $this->boot = $boot;
   }
+  /**
+   * @return bool
+   */
   public function getBoot()
   {
     return $this->boot;
   }
+  /**
+   * @param string
+   */
   public function setDeviceName($deviceName)
   {
     $this->deviceName = $deviceName;
   }
+  /**
+   * @return string
+   */
   public function getDeviceName()
   {
     return $this->deviceName;
@@ -73,10 +121,16 @@ class LocalDisk extends \Google\Collection
   {
     return $this->guestOsFeatures;
   }
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;
@@ -95,50 +149,86 @@ class LocalDisk extends \Google\Collection
   {
     return $this->initializeParams;
   }
+  /**
+   * @param string
+   */
   public function setInterface($interface)
   {
     $this->interface = $interface;
   }
+  /**
+   * @return string
+   */
   public function getInterface()
   {
     return $this->interface;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setLicenses($licenses)
   {
     $this->licenses = $licenses;
   }
+  /**
+   * @return string[]
+   */
   public function getLicenses()
   {
     return $this->licenses;
   }
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

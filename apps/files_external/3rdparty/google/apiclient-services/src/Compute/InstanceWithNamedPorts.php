@@ -20,15 +20,27 @@ namespace Google\Service\Compute;
 class InstanceWithNamedPorts extends \Google\Collection
 {
   protected $collection_key = 'namedPorts';
+  /**
+   * @var string
+   */
   public $instance;
   protected $namedPortsType = NamedPort::class;
   protected $namedPortsDataType = 'array';
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setInstance($instance)
   {
     $this->instance = $instance;
   }
+  /**
+   * @return string
+   */
   public function getInstance()
   {
     return $this->instance;
@@ -47,10 +59,16 @@ class InstanceWithNamedPorts extends \Google\Collection
   {
     return $this->namedPorts;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

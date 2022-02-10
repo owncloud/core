@@ -20,14 +20,23 @@ namespace Google\Service\NetworkServices;
 class EndpointMatcherMetadataLabelMatcher extends \Google\Collection
 {
   protected $collection_key = 'metadataLabels';
+  /**
+   * @var string
+   */
   public $metadataLabelMatchCriteria;
   protected $metadataLabelsType = EndpointMatcherMetadataLabelMatcherMetadataLabels::class;
   protected $metadataLabelsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setMetadataLabelMatchCriteria($metadataLabelMatchCriteria)
   {
     $this->metadataLabelMatchCriteria = $metadataLabelMatchCriteria;
   }
+  /**
+   * @return string
+   */
   public function getMetadataLabelMatchCriteria()
   {
     return $this->metadataLabelMatchCriteria;

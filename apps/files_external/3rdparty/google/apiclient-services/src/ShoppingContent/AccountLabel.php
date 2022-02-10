@@ -19,48 +19,93 @@ namespace Google\Service\ShoppingContent;
 
 class AccountLabel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $labelId;
+  /**
+   * @var string
+   */
   public $labelType;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setLabelId($labelId)
   {
     $this->labelId = $labelId;
   }
+  /**
+   * @return string
+   */
   public function getLabelId()
   {
     return $this->labelId;
   }
+  /**
+   * @param string
+   */
   public function setLabelType($labelType)
   {
     $this->labelType = $labelType;
   }
+  /**
+   * @return string
+   */
   public function getLabelType()
   {
     return $this->labelType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

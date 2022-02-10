@@ -19,48 +19,93 @@ namespace Google\Service\HangoutsChat;
 
 class User extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $domainId;
+  /**
+   * @var bool
+   */
   public $isAnonymous;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setDomainId($domainId)
   {
     $this->domainId = $domainId;
   }
+  /**
+   * @return string
+   */
   public function getDomainId()
   {
     return $this->domainId;
   }
+  /**
+   * @param bool
+   */
   public function setIsAnonymous($isAnonymous)
   {
     $this->isAnonymous = $isAnonymous;
   }
+  /**
+   * @return bool
+   */
   public function getIsAnonymous()
   {
     return $this->isAnonymous;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

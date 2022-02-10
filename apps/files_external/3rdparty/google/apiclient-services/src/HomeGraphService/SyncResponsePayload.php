@@ -20,14 +20,23 @@ namespace Google\Service\HomeGraphService;
 class SyncResponsePayload extends \Google\Collection
 {
   protected $collection_key = 'devices';
+  /**
+   * @var string
+   */
   public $agentUserId;
   protected $devicesType = Device::class;
   protected $devicesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAgentUserId($agentUserId)
   {
     $this->agentUserId = $agentUserId;
   }
+  /**
+   * @return string
+   */
   public function getAgentUserId()
   {
     return $this->agentUserId;

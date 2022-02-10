@@ -19,30 +19,57 @@ namespace Google\Service\AnalyticsData;
 
 class Metric extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expression;
+  /**
+   * @var bool
+   */
   public $invisible;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setExpression($expression)
   {
     $this->expression = $expression;
   }
+  /**
+   * @return string
+   */
   public function getExpression()
   {
     return $this->expression;
   }
+  /**
+   * @param bool
+   */
   public function setInvisible($invisible)
   {
     $this->invisible = $invisible;
   }
+  /**
+   * @return bool
+   */
   public function getInvisible()
   {
     return $this->invisible;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

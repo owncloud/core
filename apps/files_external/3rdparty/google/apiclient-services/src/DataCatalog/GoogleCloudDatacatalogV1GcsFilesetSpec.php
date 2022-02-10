@@ -20,14 +20,23 @@ namespace Google\Service\DataCatalog;
 class GoogleCloudDatacatalogV1GcsFilesetSpec extends \Google\Collection
 {
   protected $collection_key = 'sampleGcsFileSpecs';
+  /**
+   * @var string[]
+   */
   public $filePatterns;
   protected $sampleGcsFileSpecsType = GoogleCloudDatacatalogV1GcsFileSpec::class;
   protected $sampleGcsFileSpecsDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setFilePatterns($filePatterns)
   {
     $this->filePatterns = $filePatterns;
   }
+  /**
+   * @return string[]
+   */
   public function getFilePatterns()
   {
     return $this->filePatterns;

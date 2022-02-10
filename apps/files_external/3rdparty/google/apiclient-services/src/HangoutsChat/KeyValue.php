@@ -19,21 +19,45 @@ namespace Google\Service\HangoutsChat;
 
 class KeyValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bottomLabel;
   protected $buttonType = Button::class;
   protected $buttonDataType = '';
+  /**
+   * @var string
+   */
   public $content;
+  /**
+   * @var bool
+   */
   public $contentMultiline;
+  /**
+   * @var string
+   */
   public $icon;
+  /**
+   * @var string
+   */
   public $iconUrl;
   protected $onClickType = OnClick::class;
   protected $onClickDataType = '';
+  /**
+   * @var string
+   */
   public $topLabel;
 
+  /**
+   * @param string
+   */
   public function setBottomLabel($bottomLabel)
   {
     $this->bottomLabel = $bottomLabel;
   }
+  /**
+   * @return string
+   */
   public function getBottomLabel()
   {
     return $this->bottomLabel;
@@ -52,34 +76,58 @@ class KeyValue extends \Google\Model
   {
     return $this->button;
   }
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
   }
+  /**
+   * @param bool
+   */
   public function setContentMultiline($contentMultiline)
   {
     $this->contentMultiline = $contentMultiline;
   }
+  /**
+   * @return bool
+   */
   public function getContentMultiline()
   {
     return $this->contentMultiline;
   }
+  /**
+   * @param string
+   */
   public function setIcon($icon)
   {
     $this->icon = $icon;
   }
+  /**
+   * @return string
+   */
   public function getIcon()
   {
     return $this->icon;
   }
+  /**
+   * @param string
+   */
   public function setIconUrl($iconUrl)
   {
     $this->iconUrl = $iconUrl;
   }
+  /**
+   * @return string
+   */
   public function getIconUrl()
   {
     return $this->iconUrl;
@@ -98,10 +146,16 @@ class KeyValue extends \Google\Model
   {
     return $this->onClick;
   }
+  /**
+   * @param string
+   */
   public function setTopLabel($topLabel)
   {
     $this->topLabel = $topLabel;
   }
+  /**
+   * @return string
+   */
   public function getTopLabel()
   {
     return $this->topLabel;

@@ -19,39 +19,75 @@ namespace Google\Service\FirebaseManagement;
 
 class DefaultResources extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hostingSite;
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $realtimeDatabaseInstance;
+  /**
+   * @var string
+   */
   public $storageBucket;
 
+  /**
+   * @param string
+   */
   public function setHostingSite($hostingSite)
   {
     $this->hostingSite = $hostingSite;
   }
+  /**
+   * @return string
+   */
   public function getHostingSite()
   {
     return $this->hostingSite;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setRealtimeDatabaseInstance($realtimeDatabaseInstance)
   {
     $this->realtimeDatabaseInstance = $realtimeDatabaseInstance;
   }
+  /**
+   * @return string
+   */
   public function getRealtimeDatabaseInstance()
   {
     return $this->realtimeDatabaseInstance;
   }
+  /**
+   * @param string
+   */
   public function setStorageBucket($storageBucket)
   {
     $this->storageBucket = $storageBucket;
   }
+  /**
+   * @return string
+   */
   public function getStorageBucket()
   {
     return $this->storageBucket;

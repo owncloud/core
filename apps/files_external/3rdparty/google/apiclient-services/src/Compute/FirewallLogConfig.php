@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class FirewallLogConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enable;
+  /**
+   * @var string
+   */
   public $metadata;
 
+  /**
+   * @param bool
+   */
   public function setEnable($enable)
   {
     $this->enable = $enable;
   }
+  /**
+   * @return bool
+   */
   public function getEnable()
   {
     return $this->enable;
   }
+  /**
+   * @param string
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string
+   */
   public function getMetadata()
   {
     return $this->metadata;

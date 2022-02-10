@@ -20,9 +20,27 @@ namespace Google\Service\CloudSearch;
 class GetDataSourceIndexStatsResponse extends \Google\Collection
 {
   protected $collection_key = 'stats';
+  /**
+   * @var string
+   */
+  public $averageIndexedItemCount;
   protected $statsType = DataSourceIndexStats::class;
   protected $statsDataType = 'array';
 
+  /**
+   * @param string
+   */
+  public function setAverageIndexedItemCount($averageIndexedItemCount)
+  {
+    $this->averageIndexedItemCount = $averageIndexedItemCount;
+  }
+  /**
+   * @return string
+   */
+  public function getAverageIndexedItemCount()
+  {
+    return $this->averageIndexedItemCount;
+  }
   /**
    * @param DataSourceIndexStats[]
    */

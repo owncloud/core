@@ -21,6 +21,9 @@ class EnvFromSource extends \Google\Model
 {
   protected $configMapRefType = ConfigMapEnvSource::class;
   protected $configMapRefDataType = '';
+  /**
+   * @var string
+   */
   public $prefix;
   protected $secretRefType = SecretEnvSource::class;
   protected $secretRefDataType = '';
@@ -39,10 +42,16 @@ class EnvFromSource extends \Google\Model
   {
     return $this->configMapRef;
   }
+  /**
+   * @param string
+   */
   public function setPrefix($prefix)
   {
     $this->prefix = $prefix;
   }
+  /**
+   * @return string
+   */
   public function getPrefix()
   {
     return $this->prefix;

@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class FirstAndThirdPartyAudienceTargetingSetting extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $firstAndThirdPartyAudienceId;
+  /**
+   * @var string
+   */
   public $recency;
 
+  /**
+   * @param string
+   */
   public function setFirstAndThirdPartyAudienceId($firstAndThirdPartyAudienceId)
   {
     $this->firstAndThirdPartyAudienceId = $firstAndThirdPartyAudienceId;
   }
+  /**
+   * @return string
+   */
   public function getFirstAndThirdPartyAudienceId()
   {
     return $this->firstAndThirdPartyAudienceId;
   }
+  /**
+   * @param string
+   */
   public function setRecency($recency)
   {
     $this->recency = $recency;
   }
+  /**
+   * @return string
+   */
   public function getRecency()
   {
     return $this->recency;

@@ -20,15 +20,27 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3IntentTrainingPhrase extends \Google\Collection
 {
   protected $collection_key = 'parts';
+  /**
+   * @var string
+   */
   public $id;
   protected $partsType = GoogleCloudDialogflowCxV3IntentTrainingPhrasePart::class;
   protected $partsDataType = 'array';
+  /**
+   * @var int
+   */
   public $repeatCount;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -47,10 +59,16 @@ class GoogleCloudDialogflowCxV3IntentTrainingPhrase extends \Google\Collection
   {
     return $this->parts;
   }
+  /**
+   * @param int
+   */
   public function setRepeatCount($repeatCount)
   {
     $this->repeatCount = $repeatCount;
   }
+  /**
+   * @return int
+   */
   public function getRepeatCount()
   {
     return $this->repeatCount;

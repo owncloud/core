@@ -19,12 +19,21 @@ namespace Google\Service\CloudKMS;
 
 class ExternalProtectionLevelOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $externalKeyUri;
 
+  /**
+   * @param string
+   */
   public function setExternalKeyUri($externalKeyUri)
   {
     $this->externalKeyUri = $externalKeyUri;
   }
+  /**
+   * @return string
+   */
   public function getExternalKeyUri()
   {
     return $this->externalKeyUri;

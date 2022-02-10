@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class NetworkEndpointGroupCloudRun extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $service;
+  /**
+   * @var string
+   */
   public $tag;
+  /**
+   * @var string
+   */
   public $urlMask;
 
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;
   }
+  /**
+   * @param string
+   */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
+  /**
+   * @return string
+   */
   public function getTag()
   {
     return $this->tag;
   }
+  /**
+   * @param string
+   */
   public function setUrlMask($urlMask)
   {
     $this->urlMask = $urlMask;
   }
+  /**
+   * @return string
+   */
   public function getUrlMask()
   {
     return $this->urlMask;

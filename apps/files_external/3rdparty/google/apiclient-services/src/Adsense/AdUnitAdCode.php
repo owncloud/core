@@ -19,12 +19,21 @@ namespace Google\Service\Adsense;
 
 class AdUnitAdCode extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adCode;
 
+  /**
+   * @param string
+   */
   public function setAdCode($adCode)
   {
     $this->adCode = $adCode;
   }
+  /**
+   * @return string
+   */
   public function getAdCode()
   {
     return $this->adCode;

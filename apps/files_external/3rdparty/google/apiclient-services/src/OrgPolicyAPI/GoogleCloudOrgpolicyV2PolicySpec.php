@@ -20,33 +20,63 @@ namespace Google\Service\OrgPolicyAPI;
 class GoogleCloudOrgpolicyV2PolicySpec extends \Google\Collection
 {
   protected $collection_key = 'rules';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var bool
+   */
   public $inheritFromParent;
+  /**
+   * @var bool
+   */
   public $reset;
   protected $rulesType = GoogleCloudOrgpolicyV2PolicySpecPolicyRule::class;
   protected $rulesDataType = 'array';
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param bool
+   */
   public function setInheritFromParent($inheritFromParent)
   {
     $this->inheritFromParent = $inheritFromParent;
   }
+  /**
+   * @return bool
+   */
   public function getInheritFromParent()
   {
     return $this->inheritFromParent;
   }
+  /**
+   * @param bool
+   */
   public function setReset($reset)
   {
     $this->reset = $reset;
   }
+  /**
+   * @return bool
+   */
   public function getReset()
   {
     return $this->reset;
@@ -65,10 +95,16 @@ class GoogleCloudOrgpolicyV2PolicySpec extends \Google\Collection
   {
     return $this->rules;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

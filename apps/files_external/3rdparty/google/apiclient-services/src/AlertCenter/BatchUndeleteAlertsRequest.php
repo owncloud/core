@@ -20,21 +20,39 @@ namespace Google\Service\AlertCenter;
 class BatchUndeleteAlertsRequest extends \Google\Collection
 {
   protected $collection_key = 'alertId';
+  /**
+   * @var string[]
+   */
   public $alertId;
+  /**
+   * @var string
+   */
   public $customerId;
 
+  /**
+   * @param string[]
+   */
   public function setAlertId($alertId)
   {
     $this->alertId = $alertId;
   }
+  /**
+   * @return string[]
+   */
   public function getAlertId()
   {
     return $this->alertId;
   }
+  /**
+   * @param string
+   */
   public function setCustomerId($customerId)
   {
     $this->customerId = $customerId;
   }
+  /**
+   * @return string
+   */
   public function getCustomerId()
   {
     return $this->customerId;

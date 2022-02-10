@@ -19,14 +19,23 @@ namespace Google\Service\CertificateAuthorityService;
 
 class SubordinateConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $certificateAuthority;
   protected $pemIssuerChainType = SubordinateConfigChain::class;
   protected $pemIssuerChainDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCertificateAuthority($certificateAuthority)
   {
     $this->certificateAuthority = $certificateAuthority;
   }
+  /**
+   * @return string
+   */
   public function getCertificateAuthority()
   {
     return $this->certificateAuthority;

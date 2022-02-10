@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class BlockAction extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $blockAfterDays;
+  /**
+   * @var string
+   */
   public $blockScope;
 
+  /**
+   * @param int
+   */
   public function setBlockAfterDays($blockAfterDays)
   {
     $this->blockAfterDays = $blockAfterDays;
   }
+  /**
+   * @return int
+   */
   public function getBlockAfterDays()
   {
     return $this->blockAfterDays;
   }
+  /**
+   * @param string
+   */
   public function setBlockScope($blockScope)
   {
     $this->blockScope = $blockScope;
   }
+  /**
+   * @return string
+   */
   public function getBlockScope()
   {
     return $this->blockScope;

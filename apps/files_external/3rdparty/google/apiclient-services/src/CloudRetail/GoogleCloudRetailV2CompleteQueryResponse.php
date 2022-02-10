@@ -20,16 +20,25 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2CompleteQueryResponse extends \Google\Collection
 {
   protected $collection_key = 'recentSearchResults';
+  /**
+   * @var string
+   */
   public $attributionToken;
   protected $completionResultsType = GoogleCloudRetailV2CompleteQueryResponseCompletionResult::class;
   protected $completionResultsDataType = 'array';
   protected $recentSearchResultsType = GoogleCloudRetailV2CompleteQueryResponseRecentSearchResult::class;
   protected $recentSearchResultsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAttributionToken($attributionToken)
   {
     $this->attributionToken = $attributionToken;
   }
+  /**
+   * @return string
+   */
   public function getAttributionToken()
   {
     return $this->attributionToken;

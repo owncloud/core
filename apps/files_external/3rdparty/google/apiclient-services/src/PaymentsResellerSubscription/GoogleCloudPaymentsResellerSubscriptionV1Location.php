@@ -19,21 +19,39 @@ namespace Google\Service\PaymentsResellerSubscription;
 
 class GoogleCloudPaymentsResellerSubscriptionV1Location extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $postalCode;
+  /**
+   * @var string
+   */
   public $regionCode;
 
+  /**
+   * @param string
+   */
   public function setPostalCode($postalCode)
   {
     $this->postalCode = $postalCode;
   }
+  /**
+   * @return string
+   */
   public function getPostalCode()
   {
     return $this->postalCode;
   }
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;

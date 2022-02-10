@@ -19,16 +19,25 @@ namespace Google\Service\Sheets;
 
 class DataFilter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $a1Range;
   protected $developerMetadataLookupType = DeveloperMetadataLookup::class;
   protected $developerMetadataLookupDataType = '';
   protected $gridRangeType = GridRange::class;
   protected $gridRangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setA1Range($a1Range)
   {
     $this->a1Range = $a1Range;
   }
+  /**
+   * @return string
+   */
   public function getA1Range()
   {
     return $this->a1Range;

@@ -21,10 +21,19 @@ class GdataDiffChecksumsResponse extends \Google\Model
 {
   protected $checksumsLocationType = GdataCompositeMedia::class;
   protected $checksumsLocationDataType = '';
+  /**
+   * @var string
+   */
   public $chunkSizeBytes;
   protected $objectLocationType = GdataCompositeMedia::class;
   protected $objectLocationDataType = '';
+  /**
+   * @var string
+   */
   public $objectSizeBytes;
+  /**
+   * @var string
+   */
   public $objectVersion;
 
   /**
@@ -41,10 +50,16 @@ class GdataDiffChecksumsResponse extends \Google\Model
   {
     return $this->checksumsLocation;
   }
+  /**
+   * @param string
+   */
   public function setChunkSizeBytes($chunkSizeBytes)
   {
     $this->chunkSizeBytes = $chunkSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getChunkSizeBytes()
   {
     return $this->chunkSizeBytes;
@@ -63,18 +78,30 @@ class GdataDiffChecksumsResponse extends \Google\Model
   {
     return $this->objectLocation;
   }
+  /**
+   * @param string
+   */
   public function setObjectSizeBytes($objectSizeBytes)
   {
     $this->objectSizeBytes = $objectSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getObjectSizeBytes()
   {
     return $this->objectSizeBytes;
   }
+  /**
+   * @param string
+   */
   public function setObjectVersion($objectVersion)
   {
     $this->objectVersion = $objectVersion;
   }
+  /**
+   * @return string
+   */
   public function getObjectVersion()
   {
     return $this->objectVersion;

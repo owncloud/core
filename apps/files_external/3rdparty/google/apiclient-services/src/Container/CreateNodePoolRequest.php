@@ -19,17 +19,35 @@ namespace Google\Service\Container;
 
 class CreateNodePoolRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterId;
   protected $nodePoolType = NodePool::class;
   protected $nodePoolDataType = '';
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string
+   */
   public function setClusterId($clusterId)
   {
     $this->clusterId = $clusterId;
   }
+  /**
+   * @return string
+   */
   public function getClusterId()
   {
     return $this->clusterId;
@@ -48,26 +66,44 @@ class CreateNodePoolRequest extends \Google\Model
   {
     return $this->nodePool;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

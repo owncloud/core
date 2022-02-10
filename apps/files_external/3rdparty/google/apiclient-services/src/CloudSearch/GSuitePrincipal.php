@@ -19,30 +19,57 @@ namespace Google\Service\CloudSearch;
 
 class GSuitePrincipal extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $gsuiteDomain;
+  /**
+   * @var string
+   */
   public $gsuiteGroupEmail;
+  /**
+   * @var string
+   */
   public $gsuiteUserEmail;
 
+  /**
+   * @param bool
+   */
   public function setGsuiteDomain($gsuiteDomain)
   {
     $this->gsuiteDomain = $gsuiteDomain;
   }
+  /**
+   * @return bool
+   */
   public function getGsuiteDomain()
   {
     return $this->gsuiteDomain;
   }
+  /**
+   * @param string
+   */
   public function setGsuiteGroupEmail($gsuiteGroupEmail)
   {
     $this->gsuiteGroupEmail = $gsuiteGroupEmail;
   }
+  /**
+   * @return string
+   */
   public function getGsuiteGroupEmail()
   {
     return $this->gsuiteGroupEmail;
   }
+  /**
+   * @param string
+   */
   public function setGsuiteUserEmail($gsuiteUserEmail)
   {
     $this->gsuiteUserEmail = $gsuiteUserEmail;
   }
+  /**
+   * @return string
+   */
   public function getGsuiteUserEmail()
   {
     return $this->gsuiteUserEmail;

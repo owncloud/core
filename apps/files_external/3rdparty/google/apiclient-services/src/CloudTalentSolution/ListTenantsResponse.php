@@ -22,6 +22,9 @@ class ListTenantsResponse extends \Google\Collection
   protected $collection_key = 'tenants';
   protected $metadataType = ResponseMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $tenantsType = Tenant::class;
   protected $tenantsDataType = 'array';
@@ -40,10 +43,16 @@ class ListTenantsResponse extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

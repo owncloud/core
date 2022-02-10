@@ -19,23 +19,41 @@ namespace Google\Service\Slides;
 
 class UpdatePageElementTransformRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $applyMode;
+  /**
+   * @var string
+   */
   public $objectId;
   protected $transformType = AffineTransform::class;
   protected $transformDataType = '';
 
+  /**
+   * @param string
+   */
   public function setApplyMode($applyMode)
   {
     $this->applyMode = $applyMode;
   }
+  /**
+   * @return string
+   */
   public function getApplyMode()
   {
     return $this->applyMode;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;

@@ -19,26 +19,53 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1alpha1RenewalSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $disableCommitment;
+  /**
+   * @var bool
+   */
   public $enableRenewal;
   protected $paymentCycleType = GoogleCloudChannelV1alpha1Period::class;
   protected $paymentCycleDataType = '';
+  /**
+   * @var string
+   */
   public $paymentOption;
+  /**
+   * @var string
+   */
   public $paymentPlan;
+  /**
+   * @var bool
+   */
   public $resizeUnitCount;
 
+  /**
+   * @param bool
+   */
   public function setDisableCommitment($disableCommitment)
   {
     $this->disableCommitment = $disableCommitment;
   }
+  /**
+   * @return bool
+   */
   public function getDisableCommitment()
   {
     return $this->disableCommitment;
   }
+  /**
+   * @param bool
+   */
   public function setEnableRenewal($enableRenewal)
   {
     $this->enableRenewal = $enableRenewal;
   }
+  /**
+   * @return bool
+   */
   public function getEnableRenewal()
   {
     return $this->enableRenewal;
@@ -57,26 +84,44 @@ class GoogleCloudChannelV1alpha1RenewalSettings extends \Google\Model
   {
     return $this->paymentCycle;
   }
+  /**
+   * @param string
+   */
   public function setPaymentOption($paymentOption)
   {
     $this->paymentOption = $paymentOption;
   }
+  /**
+   * @return string
+   */
   public function getPaymentOption()
   {
     return $this->paymentOption;
   }
+  /**
+   * @param string
+   */
   public function setPaymentPlan($paymentPlan)
   {
     $this->paymentPlan = $paymentPlan;
   }
+  /**
+   * @return string
+   */
   public function getPaymentPlan()
   {
     return $this->paymentPlan;
   }
+  /**
+   * @param bool
+   */
   public function setResizeUnitCount($resizeUnitCount)
   {
     $this->resizeUnitCount = $resizeUnitCount;
   }
+  /**
+   * @return bool
+   */
   public function getResizeUnitCount()
   {
     return $this->resizeUnitCount;

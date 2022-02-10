@@ -20,30 +20,57 @@ namespace Google\Service\GamesManagement;
 class PlayerScoreResetResponse extends \Google\Collection
 {
   protected $collection_key = 'resetScoreTimeSpans';
+  /**
+   * @var string
+   */
   public $definitionId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $resetScoreTimeSpans;
 
+  /**
+   * @param string
+   */
   public function setDefinitionId($definitionId)
   {
     $this->definitionId = $definitionId;
   }
+  /**
+   * @return string
+   */
   public function getDefinitionId()
   {
     return $this->definitionId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setResetScoreTimeSpans($resetScoreTimeSpans)
   {
     $this->resetScoreTimeSpans = $resetScoreTimeSpans;
   }
+  /**
+   * @return string[]
+   */
   public function getResetScoreTimeSpans()
   {
     return $this->resetScoreTimeSpans;

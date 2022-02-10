@@ -21,8 +21,17 @@ class ResultSetStats extends \Google\Model
 {
   protected $queryPlanType = QueryPlan::class;
   protected $queryPlanDataType = '';
+  /**
+   * @var array[]
+   */
   public $queryStats;
+  /**
+   * @var string
+   */
   public $rowCountExact;
+  /**
+   * @var string
+   */
   public $rowCountLowerBound;
 
   /**
@@ -39,26 +48,44 @@ class ResultSetStats extends \Google\Model
   {
     return $this->queryPlan;
   }
+  /**
+   * @param array[]
+   */
   public function setQueryStats($queryStats)
   {
     $this->queryStats = $queryStats;
   }
+  /**
+   * @return array[]
+   */
   public function getQueryStats()
   {
     return $this->queryStats;
   }
+  /**
+   * @param string
+   */
   public function setRowCountExact($rowCountExact)
   {
     $this->rowCountExact = $rowCountExact;
   }
+  /**
+   * @return string
+   */
   public function getRowCountExact()
   {
     return $this->rowCountExact;
   }
+  /**
+   * @param string
+   */
   public function setRowCountLowerBound($rowCountLowerBound)
   {
     $this->rowCountLowerBound = $rowCountLowerBound;
   }
+  /**
+   * @return string
+   */
   public function getRowCountLowerBound()
   {
     return $this->rowCountLowerBound;

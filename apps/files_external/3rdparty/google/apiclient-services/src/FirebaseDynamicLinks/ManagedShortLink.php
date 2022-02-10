@@ -20,26 +20,53 @@ namespace Google\Service\FirebaseDynamicLinks;
 class ManagedShortLink extends \Google\Collection
 {
   protected $collection_key = 'flaggedAttribute';
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string[]
+   */
   public $flaggedAttribute;
   protected $infoType = DynamicLinkInfo::class;
   protected $infoDataType = '';
+  /**
+   * @var string
+   */
   public $link;
+  /**
+   * @var string
+   */
   public $linkName;
+  /**
+   * @var string
+   */
   public $visibility;
 
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string[]
+   */
   public function setFlaggedAttribute($flaggedAttribute)
   {
     $this->flaggedAttribute = $flaggedAttribute;
   }
+  /**
+   * @return string[]
+   */
   public function getFlaggedAttribute()
   {
     return $this->flaggedAttribute;
@@ -58,26 +85,44 @@ class ManagedShortLink extends \Google\Collection
   {
     return $this->info;
   }
+  /**
+   * @param string
+   */
   public function setLink($link)
   {
     $this->link = $link;
   }
+  /**
+   * @return string
+   */
   public function getLink()
   {
     return $this->link;
   }
+  /**
+   * @param string
+   */
   public function setLinkName($linkName)
   {
     $this->linkName = $linkName;
   }
+  /**
+   * @return string
+   */
   public function getLinkName()
   {
     return $this->linkName;
   }
+  /**
+   * @param string
+   */
   public function setVisibility($visibility)
   {
     $this->visibility = $visibility;
   }
+  /**
+   * @return string
+   */
   public function getVisibility()
   {
     return $this->visibility;

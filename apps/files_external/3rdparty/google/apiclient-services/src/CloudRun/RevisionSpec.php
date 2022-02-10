@@ -20,18 +20,33 @@ namespace Google\Service\CloudRun;
 class RevisionSpec extends \Google\Collection
 {
   protected $collection_key = 'volumes';
+  /**
+   * @var int
+   */
   public $containerConcurrency;
   protected $containersType = Container::class;
   protected $containersDataType = 'array';
+  /**
+   * @var string
+   */
   public $serviceAccountName;
+  /**
+   * @var int
+   */
   public $timeoutSeconds;
   protected $volumesType = Volume::class;
   protected $volumesDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setContainerConcurrency($containerConcurrency)
   {
     $this->containerConcurrency = $containerConcurrency;
   }
+  /**
+   * @return int
+   */
   public function getContainerConcurrency()
   {
     return $this->containerConcurrency;
@@ -50,18 +65,30 @@ class RevisionSpec extends \Google\Collection
   {
     return $this->containers;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccountName($serviceAccountName)
   {
     $this->serviceAccountName = $serviceAccountName;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccountName()
   {
     return $this->serviceAccountName;
   }
+  /**
+   * @param int
+   */
   public function setTimeoutSeconds($timeoutSeconds)
   {
     $this->timeoutSeconds = $timeoutSeconds;
   }
+  /**
+   * @return int
+   */
   public function getTimeoutSeconds()
   {
     return $this->timeoutSeconds;

@@ -19,75 +19,147 @@ namespace Google\Service\CloudBuild;
 
 class GitHubEnterpriseSecrets extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $oauthClientIdName;
+  /**
+   * @var string
+   */
   public $oauthClientIdVersionName;
+  /**
+   * @var string
+   */
   public $oauthSecretName;
+  /**
+   * @var string
+   */
   public $oauthSecretVersionName;
+  /**
+   * @var string
+   */
   public $privateKeyName;
+  /**
+   * @var string
+   */
   public $privateKeyVersionName;
+  /**
+   * @var string
+   */
   public $webhookSecretName;
+  /**
+   * @var string
+   */
   public $webhookSecretVersionName;
 
+  /**
+   * @param string
+   */
   public function setOauthClientIdName($oauthClientIdName)
   {
     $this->oauthClientIdName = $oauthClientIdName;
   }
+  /**
+   * @return string
+   */
   public function getOauthClientIdName()
   {
     return $this->oauthClientIdName;
   }
+  /**
+   * @param string
+   */
   public function setOauthClientIdVersionName($oauthClientIdVersionName)
   {
     $this->oauthClientIdVersionName = $oauthClientIdVersionName;
   }
+  /**
+   * @return string
+   */
   public function getOauthClientIdVersionName()
   {
     return $this->oauthClientIdVersionName;
   }
+  /**
+   * @param string
+   */
   public function setOauthSecretName($oauthSecretName)
   {
     $this->oauthSecretName = $oauthSecretName;
   }
+  /**
+   * @return string
+   */
   public function getOauthSecretName()
   {
     return $this->oauthSecretName;
   }
+  /**
+   * @param string
+   */
   public function setOauthSecretVersionName($oauthSecretVersionName)
   {
     $this->oauthSecretVersionName = $oauthSecretVersionName;
   }
+  /**
+   * @return string
+   */
   public function getOauthSecretVersionName()
   {
     return $this->oauthSecretVersionName;
   }
+  /**
+   * @param string
+   */
   public function setPrivateKeyName($privateKeyName)
   {
     $this->privateKeyName = $privateKeyName;
   }
+  /**
+   * @return string
+   */
   public function getPrivateKeyName()
   {
     return $this->privateKeyName;
   }
+  /**
+   * @param string
+   */
   public function setPrivateKeyVersionName($privateKeyVersionName)
   {
     $this->privateKeyVersionName = $privateKeyVersionName;
   }
+  /**
+   * @return string
+   */
   public function getPrivateKeyVersionName()
   {
     return $this->privateKeyVersionName;
   }
+  /**
+   * @param string
+   */
   public function setWebhookSecretName($webhookSecretName)
   {
     $this->webhookSecretName = $webhookSecretName;
   }
+  /**
+   * @return string
+   */
   public function getWebhookSecretName()
   {
     return $this->webhookSecretName;
   }
+  /**
+   * @param string
+   */
   public function setWebhookSecretVersionName($webhookSecretVersionName)
   {
     $this->webhookSecretVersionName = $webhookSecretVersionName;
   }
+  /**
+   * @return string
+   */
   public function getWebhookSecretVersionName()
   {
     return $this->webhookSecretVersionName;

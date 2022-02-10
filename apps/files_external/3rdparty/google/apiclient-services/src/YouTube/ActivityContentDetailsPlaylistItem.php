@@ -19,23 +19,41 @@ namespace Google\Service\YouTube;
 
 class ActivityContentDetailsPlaylistItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $playlistId;
+  /**
+   * @var string
+   */
   public $playlistItemId;
   protected $resourceIdType = ResourceId::class;
   protected $resourceIdDataType = '';
 
+  /**
+   * @param string
+   */
   public function setPlaylistId($playlistId)
   {
     $this->playlistId = $playlistId;
   }
+  /**
+   * @return string
+   */
   public function getPlaylistId()
   {
     return $this->playlistId;
   }
+  /**
+   * @param string
+   */
   public function setPlaylistItemId($playlistItemId)
   {
     $this->playlistItemId = $playlistItemId;
   }
+  /**
+   * @return string
+   */
   public function getPlaylistItemId()
   {
     return $this->playlistItemId;

@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class MeasurementPartnerCampaignLink extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $linkStatus;
+  /**
+   * @var string
+   */
   public $measurementPartner;
+  /**
+   * @var string
+   */
   public $partnerCampaignId;
 
+  /**
+   * @param string
+   */
   public function setLinkStatus($linkStatus)
   {
     $this->linkStatus = $linkStatus;
   }
+  /**
+   * @return string
+   */
   public function getLinkStatus()
   {
     return $this->linkStatus;
   }
+  /**
+   * @param string
+   */
   public function setMeasurementPartner($measurementPartner)
   {
     $this->measurementPartner = $measurementPartner;
   }
+  /**
+   * @return string
+   */
   public function getMeasurementPartner()
   {
     return $this->measurementPartner;
   }
+  /**
+   * @param string
+   */
   public function setPartnerCampaignId($partnerCampaignId)
   {
     $this->partnerCampaignId = $partnerCampaignId;
   }
+  /**
+   * @return string
+   */
   public function getPartnerCampaignId()
   {
     return $this->partnerCampaignId;

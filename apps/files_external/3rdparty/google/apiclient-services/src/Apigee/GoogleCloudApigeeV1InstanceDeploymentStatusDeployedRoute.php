@@ -19,39 +19,75 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1InstanceDeploymentStatusDeployedRoute extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $basepath;
+  /**
+   * @var string
+   */
   public $envgroup;
+  /**
+   * @var string
+   */
   public $environment;
+  /**
+   * @var int
+   */
   public $percentage;
 
+  /**
+   * @param string
+   */
   public function setBasepath($basepath)
   {
     $this->basepath = $basepath;
   }
+  /**
+   * @return string
+   */
   public function getBasepath()
   {
     return $this->basepath;
   }
+  /**
+   * @param string
+   */
   public function setEnvgroup($envgroup)
   {
     $this->envgroup = $envgroup;
   }
+  /**
+   * @return string
+   */
   public function getEnvgroup()
   {
     return $this->envgroup;
   }
+  /**
+   * @param string
+   */
   public function setEnvironment($environment)
   {
     $this->environment = $environment;
   }
+  /**
+   * @return string
+   */
   public function getEnvironment()
   {
     return $this->environment;
   }
+  /**
+   * @param int
+   */
   public function setPercentage($percentage)
   {
     $this->percentage = $percentage;
   }
+  /**
+   * @return int
+   */
   public function getPercentage()
   {
     return $this->percentage;

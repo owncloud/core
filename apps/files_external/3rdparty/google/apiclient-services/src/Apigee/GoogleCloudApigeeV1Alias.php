@@ -19,15 +19,27 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1Alias extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alias;
   protected $certsInfoType = GoogleCloudApigeeV1Certificate::class;
   protected $certsInfoDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAlias($alias)
   {
     $this->alias = $alias;
   }
+  /**
+   * @return string
+   */
   public function getAlias()
   {
     return $this->alias;
@@ -46,10 +58,16 @@ class GoogleCloudApigeeV1Alias extends \Google\Model
   {
     return $this->certsInfo;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

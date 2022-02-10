@@ -19,39 +19,75 @@ namespace Google\Service\Dataflow;
 
 class SnapshotJobRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var bool
+   */
   public $snapshotSources;
+  /**
+   * @var string
+   */
   public $ttl;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param bool
+   */
   public function setSnapshotSources($snapshotSources)
   {
     $this->snapshotSources = $snapshotSources;
   }
+  /**
+   * @return bool
+   */
   public function getSnapshotSources()
   {
     return $this->snapshotSources;
   }
+  /**
+   * @param string
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return string
+   */
   public function getTtl()
   {
     return $this->ttl;

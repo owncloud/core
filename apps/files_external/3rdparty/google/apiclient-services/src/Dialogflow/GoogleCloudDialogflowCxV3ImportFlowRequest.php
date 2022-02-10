@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3ImportFlowRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $flowContent;
+  /**
+   * @var string
+   */
   public $flowUri;
+  /**
+   * @var string
+   */
   public $importOption;
 
+  /**
+   * @param string
+   */
   public function setFlowContent($flowContent)
   {
     $this->flowContent = $flowContent;
   }
+  /**
+   * @return string
+   */
   public function getFlowContent()
   {
     return $this->flowContent;
   }
+  /**
+   * @param string
+   */
   public function setFlowUri($flowUri)
   {
     $this->flowUri = $flowUri;
   }
+  /**
+   * @return string
+   */
   public function getFlowUri()
   {
     return $this->flowUri;
   }
+  /**
+   * @param string
+   */
   public function setImportOption($importOption)
   {
     $this->importOption = $importOption;
   }
+  /**
+   * @return string
+   */
   public function getImportOption()
   {
     return $this->importOption;

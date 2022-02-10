@@ -19,21 +19,39 @@ namespace Google\Service\FirebaseDynamicLinks;
 
 class Suffix extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customSuffix;
+  /**
+   * @var string
+   */
   public $option;
 
+  /**
+   * @param string
+   */
   public function setCustomSuffix($customSuffix)
   {
     $this->customSuffix = $customSuffix;
   }
+  /**
+   * @return string
+   */
   public function getCustomSuffix()
   {
     return $this->customSuffix;
   }
+  /**
+   * @param string
+   */
   public function setOption($option)
   {
     $this->option = $option;
   }
+  /**
+   * @return string
+   */
   public function getOption()
   {
     return $this->option;

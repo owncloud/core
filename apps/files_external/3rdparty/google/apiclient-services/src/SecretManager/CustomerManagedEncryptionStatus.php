@@ -19,12 +19,21 @@ namespace Google\Service\SecretManager;
 
 class CustomerManagedEncryptionStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kmsKeyVersionName;
 
+  /**
+   * @param string
+   */
   public function setKmsKeyVersionName($kmsKeyVersionName)
   {
     $this->kmsKeyVersionName = $kmsKeyVersionName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyVersionName()
   {
     return $this->kmsKeyVersionName;

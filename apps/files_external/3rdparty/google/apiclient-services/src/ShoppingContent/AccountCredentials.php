@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class AccountCredentials extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessToken;
+  /**
+   * @var string
+   */
   public $expiresIn;
+  /**
+   * @var string
+   */
   public $purpose;
 
+  /**
+   * @param string
+   */
   public function setAccessToken($accessToken)
   {
     $this->accessToken = $accessToken;
   }
+  /**
+   * @return string
+   */
   public function getAccessToken()
   {
     return $this->accessToken;
   }
+  /**
+   * @param string
+   */
   public function setExpiresIn($expiresIn)
   {
     $this->expiresIn = $expiresIn;
   }
+  /**
+   * @return string
+   */
   public function getExpiresIn()
   {
     return $this->expiresIn;
   }
+  /**
+   * @param string
+   */
   public function setPurpose($purpose)
   {
     $this->purpose = $purpose;
   }
+  /**
+   * @return string
+   */
   public function getPurpose()
   {
     return $this->purpose;

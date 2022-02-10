@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1AsyncQueryResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expires;
+  /**
+   * @var string
+   */
   public $self;
 
+  /**
+   * @param string
+   */
   public function setExpires($expires)
   {
     $this->expires = $expires;
   }
+  /**
+   * @return string
+   */
   public function getExpires()
   {
     return $this->expires;
   }
+  /**
+   * @param string
+   */
   public function setSelf($self)
   {
     $this->self = $self;
   }
+  /**
+   * @return string
+   */
   public function getSelf()
   {
     return $this->self;

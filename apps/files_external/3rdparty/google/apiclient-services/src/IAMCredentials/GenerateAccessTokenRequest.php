@@ -20,30 +20,57 @@ namespace Google\Service\IAMCredentials;
 class GenerateAccessTokenRequest extends \Google\Collection
 {
   protected $collection_key = 'scope';
+  /**
+   * @var string[]
+   */
   public $delegates;
+  /**
+   * @var string
+   */
   public $lifetime;
+  /**
+   * @var string[]
+   */
   public $scope;
 
+  /**
+   * @param string[]
+   */
   public function setDelegates($delegates)
   {
     $this->delegates = $delegates;
   }
+  /**
+   * @return string[]
+   */
   public function getDelegates()
   {
     return $this->delegates;
   }
+  /**
+   * @param string
+   */
   public function setLifetime($lifetime)
   {
     $this->lifetime = $lifetime;
   }
+  /**
+   * @return string
+   */
   public function getLifetime()
   {
     return $this->lifetime;
   }
+  /**
+   * @param string[]
+   */
   public function setScope($scope)
   {
     $this->scope = $scope;
   }
+  /**
+   * @return string[]
+   */
   public function getScope()
   {
     return $this->scope;

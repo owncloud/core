@@ -19,12 +19,21 @@ namespace Google\Service\Directory;
 
 class MembersHasMember extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isMember;
 
+  /**
+   * @param bool
+   */
   public function setIsMember($isMember)
   {
     $this->isMember = $isMember;
   }
+  /**
+   * @return bool
+   */
   public function getIsMember()
   {
     return $this->isMember;

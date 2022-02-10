@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class ForwardingRuleReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $forwardingRule;
 
+  /**
+   * @param string
+   */
   public function setForwardingRule($forwardingRule)
   {
     $this->forwardingRule = $forwardingRule;
   }
+  /**
+   * @return string
+   */
   public function getForwardingRule()
   {
     return $this->forwardingRule;

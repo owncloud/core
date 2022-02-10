@@ -20,15 +20,27 @@ namespace Google\Service\Books;
 class Seriesmembership extends \Google\Collection
 {
   protected $collection_key = 'member';
+  /**
+   * @var string
+   */
   public $kind;
   protected $memberType = Volume::class;
   protected $memberDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -47,10 +59,16 @@ class Seriesmembership extends \Google\Collection
   {
     return $this->member;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

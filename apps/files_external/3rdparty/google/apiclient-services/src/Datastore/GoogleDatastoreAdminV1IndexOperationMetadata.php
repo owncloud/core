@@ -21,6 +21,9 @@ class GoogleDatastoreAdminV1IndexOperationMetadata extends \Google\Model
 {
   protected $commonType = GoogleDatastoreAdminV1CommonMetadata::class;
   protected $commonDataType = '';
+  /**
+   * @var string
+   */
   public $indexId;
   protected $progressEntitiesType = GoogleDatastoreAdminV1Progress::class;
   protected $progressEntitiesDataType = '';
@@ -39,10 +42,16 @@ class GoogleDatastoreAdminV1IndexOperationMetadata extends \Google\Model
   {
     return $this->common;
   }
+  /**
+   * @param string
+   */
   public function setIndexId($indexId)
   {
     $this->indexId = $indexId;
   }
+  /**
+   * @return string
+   */
   public function getIndexId()
   {
     return $this->indexId;

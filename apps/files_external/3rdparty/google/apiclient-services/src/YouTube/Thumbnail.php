@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class Thumbnail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $url;
+  /**
+   * @var string
+   */
   public $width;
 
+  /**
+   * @param string
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return string
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;
   }
+  /**
+   * @param string
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return string
+   */
   public function getWidth()
   {
     return $this->width;

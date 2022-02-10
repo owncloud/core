@@ -20,12 +20,21 @@ namespace Google\Service\PolyService;
 class RemixInfo extends \Google\Collection
 {
   protected $collection_key = 'sourceAsset';
+  /**
+   * @var string[]
+   */
   public $sourceAsset;
 
+  /**
+   * @param string[]
+   */
   public function setSourceAsset($sourceAsset)
   {
     $this->sourceAsset = $sourceAsset;
   }
+  /**
+   * @return string[]
+   */
   public function getSourceAsset()
   {
     return $this->sourceAsset;

@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class CollectionFeaturedProduct extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $offerId;
+  /**
+   * @var float
+   */
   public $x;
+  /**
+   * @var float
+   */
   public $y;
 
+  /**
+   * @param string
+   */
   public function setOfferId($offerId)
   {
     $this->offerId = $offerId;
   }
+  /**
+   * @return string
+   */
   public function getOfferId()
   {
     return $this->offerId;
   }
+  /**
+   * @param float
+   */
   public function setX($x)
   {
     $this->x = $x;
   }
+  /**
+   * @return float
+   */
   public function getX()
   {
     return $this->x;
   }
+  /**
+   * @param float
+   */
   public function setY($y)
   {
     $this->y = $y;
   }
+  /**
+   * @return float
+   */
   public function getY()
   {
     return $this->y;

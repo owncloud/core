@@ -19,21 +19,39 @@ namespace Google\Service\Bigquery;
 
 class GoogleSheetsOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $range;
+  /**
+   * @var string
+   */
   public $skipLeadingRows;
 
+  /**
+   * @param string
+   */
   public function setRange($range)
   {
     $this->range = $range;
   }
+  /**
+   * @return string
+   */
   public function getRange()
   {
     return $this->range;
   }
+  /**
+   * @param string
+   */
   public function setSkipLeadingRows($skipLeadingRows)
   {
     $this->skipLeadingRows = $skipLeadingRows;
   }
+  /**
+   * @return string
+   */
   public function getSkipLeadingRows()
   {
     return $this->skipLeadingRows;

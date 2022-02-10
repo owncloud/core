@@ -19,21 +19,39 @@ namespace Google\Service\ServiceUsage;
 
 class AuthRequirement extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audiences;
+  /**
+   * @var string
+   */
   public $providerId;
 
+  /**
+   * @param string
+   */
   public function setAudiences($audiences)
   {
     $this->audiences = $audiences;
   }
+  /**
+   * @return string
+   */
   public function getAudiences()
   {
     return $this->audiences;
   }
+  /**
+   * @param string
+   */
   public function setProviderId($providerId)
   {
     $this->providerId = $providerId;
   }
+  /**
+   * @return string
+   */
   public function getProviderId()
   {
     return $this->providerId;

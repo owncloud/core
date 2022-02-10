@@ -20,15 +20,27 @@ namespace Google\Service\Dfareporting;
 class MobileAppsListResponse extends \Google\Collection
 {
   protected $collection_key = 'mobileApps';
+  /**
+   * @var string
+   */
   public $kind;
   protected $mobileAppsType = MobileApp::class;
   protected $mobileAppsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -47,10 +59,16 @@ class MobileAppsListResponse extends \Google\Collection
   {
     return $this->mobileApps;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

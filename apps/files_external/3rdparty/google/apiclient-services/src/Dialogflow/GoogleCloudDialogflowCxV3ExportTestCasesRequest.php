@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3ExportTestCasesRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataFormat;
+  /**
+   * @var string
+   */
   public $filter;
+  /**
+   * @var string
+   */
   public $gcsUri;
 
+  /**
+   * @param string
+   */
   public function setDataFormat($dataFormat)
   {
     $this->dataFormat = $dataFormat;
   }
+  /**
+   * @return string
+   */
   public function getDataFormat()
   {
     return $this->dataFormat;
   }
+  /**
+   * @param string
+   */
   public function setFilter($filter)
   {
     $this->filter = $filter;
   }
+  /**
+   * @return string
+   */
   public function getFilter()
   {
     return $this->filter;
   }
+  /**
+   * @param string
+   */
   public function setGcsUri($gcsUri)
   {
     $this->gcsUri = $gcsUri;
   }
+  /**
+   * @return string
+   */
   public function getGcsUri()
   {
     return $this->gcsUri;

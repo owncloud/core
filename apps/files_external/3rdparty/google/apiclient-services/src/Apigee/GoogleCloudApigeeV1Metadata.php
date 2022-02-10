@@ -20,21 +20,39 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1Metadata extends \Google\Collection
 {
   protected $collection_key = 'notices';
+  /**
+   * @var string[]
+   */
   public $errors;
+  /**
+   * @var string[]
+   */
   public $notices;
 
+  /**
+   * @param string[]
+   */
   public function setErrors($errors)
   {
     $this->errors = $errors;
   }
+  /**
+   * @return string[]
+   */
   public function getErrors()
   {
     return $this->errors;
   }
+  /**
+   * @param string[]
+   */
   public function setNotices($notices)
   {
     $this->notices = $notices;
   }
+  /**
+   * @return string[]
+   */
   public function getNotices()
   {
     return $this->notices;

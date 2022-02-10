@@ -19,57 +19,111 @@ namespace Google\Service\Spanner;
 
 class ReadOnly extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exactStaleness;
+  /**
+   * @var string
+   */
   public $maxStaleness;
+  /**
+   * @var string
+   */
   public $minReadTimestamp;
+  /**
+   * @var string
+   */
   public $readTimestamp;
+  /**
+   * @var bool
+   */
   public $returnReadTimestamp;
+  /**
+   * @var bool
+   */
   public $strong;
 
+  /**
+   * @param string
+   */
   public function setExactStaleness($exactStaleness)
   {
     $this->exactStaleness = $exactStaleness;
   }
+  /**
+   * @return string
+   */
   public function getExactStaleness()
   {
     return $this->exactStaleness;
   }
+  /**
+   * @param string
+   */
   public function setMaxStaleness($maxStaleness)
   {
     $this->maxStaleness = $maxStaleness;
   }
+  /**
+   * @return string
+   */
   public function getMaxStaleness()
   {
     return $this->maxStaleness;
   }
+  /**
+   * @param string
+   */
   public function setMinReadTimestamp($minReadTimestamp)
   {
     $this->minReadTimestamp = $minReadTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getMinReadTimestamp()
   {
     return $this->minReadTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setReadTimestamp($readTimestamp)
   {
     $this->readTimestamp = $readTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getReadTimestamp()
   {
     return $this->readTimestamp;
   }
+  /**
+   * @param bool
+   */
   public function setReturnReadTimestamp($returnReadTimestamp)
   {
     $this->returnReadTimestamp = $returnReadTimestamp;
   }
+  /**
+   * @return bool
+   */
   public function getReturnReadTimestamp()
   {
     return $this->returnReadTimestamp;
   }
+  /**
+   * @param bool
+   */
   public function setStrong($strong)
   {
     $this->strong = $strong;
   }
+  /**
+   * @return bool
+   */
   public function getStrong()
   {
     return $this->strong;

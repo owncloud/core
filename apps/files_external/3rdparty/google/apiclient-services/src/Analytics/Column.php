@@ -19,30 +19,57 @@ namespace Google\Service\Analytics;
 
 class Column extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $attributes;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string[]
+   */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
+  /**
+   * @return string[]
+   */
   public function getAttributes()
   {
     return $this->attributes;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

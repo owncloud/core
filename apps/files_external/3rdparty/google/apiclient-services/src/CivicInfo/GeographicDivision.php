@@ -20,30 +20,57 @@ namespace Google\Service\CivicInfo;
 class GeographicDivision extends \Google\Collection
 {
   protected $collection_key = 'officeIndices';
+  /**
+   * @var string[]
+   */
   public $alsoKnownAs;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $officeIndices;
 
+  /**
+   * @param string[]
+   */
   public function setAlsoKnownAs($alsoKnownAs)
   {
     $this->alsoKnownAs = $alsoKnownAs;
   }
+  /**
+   * @return string[]
+   */
   public function getAlsoKnownAs()
   {
     return $this->alsoKnownAs;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setOfficeIndices($officeIndices)
   {
     $this->officeIndices = $officeIndices;
   }
+  /**
+   * @return string[]
+   */
   public function getOfficeIndices()
   {
     return $this->officeIndices;

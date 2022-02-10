@@ -19,33 +19,63 @@ namespace Google\Service\ContainerAnalysis;
 
 class Metadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $buildFinishedOn;
+  /**
+   * @var string
+   */
   public $buildInvocationId;
+  /**
+   * @var string
+   */
   public $buildStartedOn;
   protected $completenessType = Completeness::class;
   protected $completenessDataType = '';
+  /**
+   * @var bool
+   */
   public $reproducible;
 
+  /**
+   * @param string
+   */
   public function setBuildFinishedOn($buildFinishedOn)
   {
     $this->buildFinishedOn = $buildFinishedOn;
   }
+  /**
+   * @return string
+   */
   public function getBuildFinishedOn()
   {
     return $this->buildFinishedOn;
   }
+  /**
+   * @param string
+   */
   public function setBuildInvocationId($buildInvocationId)
   {
     $this->buildInvocationId = $buildInvocationId;
   }
+  /**
+   * @return string
+   */
   public function getBuildInvocationId()
   {
     return $this->buildInvocationId;
   }
+  /**
+   * @param string
+   */
   public function setBuildStartedOn($buildStartedOn)
   {
     $this->buildStartedOn = $buildStartedOn;
   }
+  /**
+   * @return string
+   */
   public function getBuildStartedOn()
   {
     return $this->buildStartedOn;
@@ -64,10 +94,16 @@ class Metadata extends \Google\Model
   {
     return $this->completeness;
   }
+  /**
+   * @param bool
+   */
   public function setReproducible($reproducible)
   {
     $this->reproducible = $reproducible;
   }
+  /**
+   * @return bool
+   */
   public function getReproducible()
   {
     return $this->reproducible;

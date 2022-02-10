@@ -24,8 +24,17 @@ class BasicSli extends \Google\Collection
   protected $availabilityDataType = '';
   protected $latencyType = LatencyCriteria::class;
   protected $latencyDataType = '';
+  /**
+   * @var string[]
+   */
   public $location;
+  /**
+   * @var string[]
+   */
   public $method;
+  /**
+   * @var string[]
+   */
   public $version;
 
   /**
@@ -56,26 +65,44 @@ class BasicSli extends \Google\Collection
   {
     return $this->latency;
   }
+  /**
+   * @param string[]
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string[]
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string[]
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string[]
+   */
   public function getMethod()
   {
     return $this->method;
   }
+  /**
+   * @param string[]
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string[]
+   */
   public function getVersion()
   {
     return $this->version;

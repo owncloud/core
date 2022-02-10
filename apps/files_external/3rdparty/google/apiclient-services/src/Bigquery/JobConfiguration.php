@@ -21,11 +21,23 @@ class JobConfiguration extends \Google\Model
 {
   protected $copyType = JobConfigurationTableCopy::class;
   protected $copyDataType = '';
+  /**
+   * @var bool
+   */
   public $dryRun;
   protected $extractType = JobConfigurationExtract::class;
   protected $extractDataType = '';
+  /**
+   * @var string
+   */
   public $jobTimeoutMs;
+  /**
+   * @var string
+   */
   public $jobType;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $loadType = JobConfigurationLoad::class;
   protected $loadDataType = '';
@@ -46,10 +58,16 @@ class JobConfiguration extends \Google\Model
   {
     return $this->copy;
   }
+  /**
+   * @param bool
+   */
   public function setDryRun($dryRun)
   {
     $this->dryRun = $dryRun;
   }
+  /**
+   * @return bool
+   */
   public function getDryRun()
   {
     return $this->dryRun;
@@ -68,26 +86,44 @@ class JobConfiguration extends \Google\Model
   {
     return $this->extract;
   }
+  /**
+   * @param string
+   */
   public function setJobTimeoutMs($jobTimeoutMs)
   {
     $this->jobTimeoutMs = $jobTimeoutMs;
   }
+  /**
+   * @return string
+   */
   public function getJobTimeoutMs()
   {
     return $this->jobTimeoutMs;
   }
+  /**
+   * @param string
+   */
   public function setJobType($jobType)
   {
     $this->jobType = $jobType;
   }
+  /**
+   * @return string
+   */
   public function getJobType()
   {
     return $this->jobType;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

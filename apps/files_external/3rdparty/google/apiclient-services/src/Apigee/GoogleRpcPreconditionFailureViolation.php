@@ -19,30 +19,57 @@ namespace Google\Service\Apigee;
 
 class GoogleRpcPreconditionFailureViolation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $subject;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setSubject($subject)
   {
     $this->subject = $subject;
   }
+  /**
+   * @return string
+   */
   public function getSubject()
   {
     return $this->subject;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

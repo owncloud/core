@@ -19,77 +19,149 @@ namespace Google\Service\SQLAdmin;
 
 class Database extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $charset;
+  /**
+   * @var string
+   */
   public $collation;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $instance;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $project;
+  /**
+   * @var string
+   */
   public $selfLink;
   protected $sqlserverDatabaseDetailsType = SqlServerDatabaseDetails::class;
   protected $sqlserverDatabaseDetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCharset($charset)
   {
     $this->charset = $charset;
   }
+  /**
+   * @return string
+   */
   public function getCharset()
   {
     return $this->charset;
   }
+  /**
+   * @param string
+   */
   public function setCollation($collation)
   {
     $this->collation = $collation;
   }
+  /**
+   * @return string
+   */
   public function getCollation()
   {
     return $this->collation;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setInstance($instance)
   {
     $this->instance = $instance;
   }
+  /**
+   * @return string
+   */
   public function getInstance()
   {
     return $this->instance;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

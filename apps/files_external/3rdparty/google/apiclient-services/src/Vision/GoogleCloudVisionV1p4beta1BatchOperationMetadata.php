@@ -19,30 +19,57 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p4beta1BatchOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $submitTime;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setSubmitTime($submitTime)
   {
     $this->submitTime = $submitTime;
   }
+  /**
+   * @return string
+   */
   public function getSubmitTime()
   {
     return $this->submitTime;

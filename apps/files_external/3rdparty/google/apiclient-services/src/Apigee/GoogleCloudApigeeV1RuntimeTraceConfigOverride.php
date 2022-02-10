@@ -19,42 +19,81 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1RuntimeTraceConfigOverride extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiProxy;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $revisionCreateTime;
+  /**
+   * @var string
+   */
   public $revisionId;
   protected $samplingConfigType = GoogleCloudApigeeV1RuntimeTraceSamplingConfig::class;
   protected $samplingConfigDataType = '';
+  /**
+   * @var string
+   */
   public $uid;
 
+  /**
+   * @param string
+   */
   public function setApiProxy($apiProxy)
   {
     $this->apiProxy = $apiProxy;
   }
+  /**
+   * @return string
+   */
   public function getApiProxy()
   {
     return $this->apiProxy;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRevisionCreateTime($revisionCreateTime)
   {
     $this->revisionCreateTime = $revisionCreateTime;
   }
+  /**
+   * @return string
+   */
   public function getRevisionCreateTime()
   {
     return $this->revisionCreateTime;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;
@@ -73,10 +112,16 @@ class GoogleCloudApigeeV1RuntimeTraceConfigOverride extends \Google\Model
   {
     return $this->samplingConfig;
   }
+  /**
+   * @param string
+   */
   public function setUid($uid)
   {
     $this->uid = $uid;
   }
+  /**
+   * @return string
+   */
   public function getUid()
   {
     return $this->uid;

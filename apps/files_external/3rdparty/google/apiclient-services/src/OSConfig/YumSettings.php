@@ -20,39 +20,75 @@ namespace Google\Service\OSConfig;
 class YumSettings extends \Google\Collection
 {
   protected $collection_key = 'exclusivePackages';
+  /**
+   * @var string[]
+   */
   public $excludes;
+  /**
+   * @var string[]
+   */
   public $exclusivePackages;
+  /**
+   * @var bool
+   */
   public $minimal;
+  /**
+   * @var bool
+   */
   public $security;
 
+  /**
+   * @param string[]
+   */
   public function setExcludes($excludes)
   {
     $this->excludes = $excludes;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludes()
   {
     return $this->excludes;
   }
+  /**
+   * @param string[]
+   */
   public function setExclusivePackages($exclusivePackages)
   {
     $this->exclusivePackages = $exclusivePackages;
   }
+  /**
+   * @return string[]
+   */
   public function getExclusivePackages()
   {
     return $this->exclusivePackages;
   }
+  /**
+   * @param bool
+   */
   public function setMinimal($minimal)
   {
     $this->minimal = $minimal;
   }
+  /**
+   * @return bool
+   */
   public function getMinimal()
   {
     return $this->minimal;
   }
+  /**
+   * @param bool
+   */
   public function setSecurity($security)
   {
     $this->security = $security;
   }
+  /**
+   * @return bool
+   */
   public function getSecurity()
   {
     return $this->security;

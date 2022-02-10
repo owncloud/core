@@ -21,9 +21,21 @@ class SlashCommandMetadata extends \Google\Model
 {
   protected $botType = User::class;
   protected $botDataType = '';
+  /**
+   * @var string
+   */
   public $commandId;
+  /**
+   * @var string
+   */
   public $commandName;
+  /**
+   * @var bool
+   */
   public $triggersDialog;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -40,34 +52,58 @@ class SlashCommandMetadata extends \Google\Model
   {
     return $this->bot;
   }
+  /**
+   * @param string
+   */
   public function setCommandId($commandId)
   {
     $this->commandId = $commandId;
   }
+  /**
+   * @return string
+   */
   public function getCommandId()
   {
     return $this->commandId;
   }
+  /**
+   * @param string
+   */
   public function setCommandName($commandName)
   {
     $this->commandName = $commandName;
   }
+  /**
+   * @return string
+   */
   public function getCommandName()
   {
     return $this->commandName;
   }
+  /**
+   * @param bool
+   */
   public function setTriggersDialog($triggersDialog)
   {
     $this->triggersDialog = $triggersDialog;
   }
+  /**
+   * @return bool
+   */
   public function getTriggersDialog()
   {
     return $this->triggersDialog;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

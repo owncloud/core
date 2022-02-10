@@ -20,18 +20,47 @@ namespace Google\Service\Dns;
 class ManagedZone extends \Google\Collection
 {
   protected $collection_key = 'nameServers';
+  protected $cloudLoggingConfigType = ManagedZoneCloudLoggingConfig::class;
+  protected $cloudLoggingConfigDataType = '';
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $dnsName;
   protected $dnssecConfigType = ManagedZoneDnsSecConfig::class;
   protected $dnssecConfigDataType = '';
   protected $forwardingConfigType = ManagedZoneForwardingConfig::class;
   protected $forwardingConfigDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $nameServerSet;
+  /**
+   * @var string[]
+   */
   public $nameServers;
   protected $peeringConfigType = ManagedZonePeeringConfig::class;
   protected $peeringConfigDataType = '';
@@ -41,28 +70,63 @@ class ManagedZone extends \Google\Collection
   protected $reverseLookupConfigDataType = '';
   protected $serviceDirectoryConfigType = ManagedZoneServiceDirectoryConfig::class;
   protected $serviceDirectoryConfigDataType = '';
+  /**
+   * @var string
+   */
   public $visibility;
 
+  /**
+   * @param ManagedZoneCloudLoggingConfig
+   */
+  public function setCloudLoggingConfig(ManagedZoneCloudLoggingConfig $cloudLoggingConfig)
+  {
+    $this->cloudLoggingConfig = $cloudLoggingConfig;
+  }
+  /**
+   * @return ManagedZoneCloudLoggingConfig
+   */
+  public function getCloudLoggingConfig()
+  {
+    return $this->cloudLoggingConfig;
+  }
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDnsName($dnsName)
   {
     $this->dnsName = $dnsName;
   }
+  /**
+   * @return string
+   */
   public function getDnsName()
   {
     return $this->dnsName;
@@ -95,50 +159,86 @@ class ManagedZone extends \Google\Collection
   {
     return $this->forwardingConfig;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNameServerSet($nameServerSet)
   {
     $this->nameServerSet = $nameServerSet;
   }
+  /**
+   * @return string
+   */
   public function getNameServerSet()
   {
     return $this->nameServerSet;
   }
+  /**
+   * @param string[]
+   */
   public function setNameServers($nameServers)
   {
     $this->nameServers = $nameServers;
   }
+  /**
+   * @return string[]
+   */
   public function getNameServers()
   {
     return $this->nameServers;
@@ -199,10 +299,16 @@ class ManagedZone extends \Google\Collection
   {
     return $this->serviceDirectoryConfig;
   }
+  /**
+   * @param string
+   */
   public function setVisibility($visibility)
   {
     $this->visibility = $visibility;
   }
+  /**
+   * @return string
+   */
   public function getVisibility()
   {
     return $this->visibility;

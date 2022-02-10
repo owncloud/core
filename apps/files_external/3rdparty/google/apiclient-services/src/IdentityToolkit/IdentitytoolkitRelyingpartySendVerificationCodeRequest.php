@@ -19,39 +19,75 @@ namespace Google\Service\IdentityToolkit;
 
 class IdentitytoolkitRelyingpartySendVerificationCodeRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $iosReceipt;
+  /**
+   * @var string
+   */
   public $iosSecret;
+  /**
+   * @var string
+   */
   public $phoneNumber;
+  /**
+   * @var string
+   */
   public $recaptchaToken;
 
+  /**
+   * @param string
+   */
   public function setIosReceipt($iosReceipt)
   {
     $this->iosReceipt = $iosReceipt;
   }
+  /**
+   * @return string
+   */
   public function getIosReceipt()
   {
     return $this->iosReceipt;
   }
+  /**
+   * @param string
+   */
   public function setIosSecret($iosSecret)
   {
     $this->iosSecret = $iosSecret;
   }
+  /**
+   * @return string
+   */
   public function getIosSecret()
   {
     return $this->iosSecret;
   }
+  /**
+   * @param string
+   */
   public function setPhoneNumber($phoneNumber)
   {
     $this->phoneNumber = $phoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getPhoneNumber()
   {
     return $this->phoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setRecaptchaToken($recaptchaToken)
   {
     $this->recaptchaToken = $recaptchaToken;
   }
+  /**
+   * @return string
+   */
   public function getRecaptchaToken()
   {
     return $this->recaptchaToken;

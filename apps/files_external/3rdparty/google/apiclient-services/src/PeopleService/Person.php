@@ -22,6 +22,9 @@ class Person extends \Google\Collection
   protected $collection_key = 'userDefined';
   protected $addressesType = Address::class;
   protected $addressesDataType = 'array';
+  /**
+   * @var string
+   */
   public $ageRange;
   protected $ageRangesType = AgeRangeType::class;
   protected $ageRangesDataType = 'array';
@@ -39,6 +42,9 @@ class Person extends \Google\Collection
   protected $coverPhotosDataType = 'array';
   protected $emailAddressesType = EmailAddress::class;
   protected $emailAddressesDataType = 'array';
+  /**
+   * @var string
+   */
   public $etag;
   protected $eventsType = Event::class;
   protected $eventsDataType = 'array';
@@ -82,6 +88,9 @@ class Person extends \Google\Collection
   protected $relationshipStatusesDataType = 'array';
   protected $residencesType = Residence::class;
   protected $residencesDataType = 'array';
+  /**
+   * @var string
+   */
   public $resourceName;
   protected $sipAddressesType = SipAddress::class;
   protected $sipAddressesDataType = 'array';
@@ -108,10 +117,16 @@ class Person extends \Google\Collection
   {
     return $this->addresses;
   }
+  /**
+   * @param string
+   */
   public function setAgeRange($ageRange)
   {
     $this->ageRange = $ageRange;
   }
+  /**
+   * @return string
+   */
   public function getAgeRange()
   {
     return $this->ageRange;
@@ -228,10 +243,16 @@ class Person extends \Google\Collection
   {
     return $this->emailAddresses;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
@@ -530,10 +551,16 @@ class Person extends \Google\Collection
   {
     return $this->residences;
   }
+  /**
+   * @param string
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string
+   */
   public function getResourceName()
   {
     return $this->resourceName;

@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class WorkerLifecycleEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $containerStartTime;
+  /**
+   * @var string
+   */
   public $event;
+  /**
+   * @var string[]
+   */
   public $metadata;
 
+  /**
+   * @param string
+   */
   public function setContainerStartTime($containerStartTime)
   {
     $this->containerStartTime = $containerStartTime;
   }
+  /**
+   * @return string
+   */
   public function getContainerStartTime()
   {
     return $this->containerStartTime;
   }
+  /**
+   * @param string
+   */
   public function setEvent($event)
   {
     $this->event = $event;
   }
+  /**
+   * @return string
+   */
   public function getEvent()
   {
     return $this->event;
   }
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;

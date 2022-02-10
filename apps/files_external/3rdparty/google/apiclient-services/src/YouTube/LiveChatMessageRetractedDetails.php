@@ -19,12 +19,21 @@ namespace Google\Service\YouTube;
 
 class LiveChatMessageRetractedDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $retractedMessageId;
 
+  /**
+   * @param string
+   */
   public function setRetractedMessageId($retractedMessageId)
   {
     $this->retractedMessageId = $retractedMessageId;
   }
+  /**
+   * @return string
+   */
   public function getRetractedMessageId()
   {
     return $this->retractedMessageId;

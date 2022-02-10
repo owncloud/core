@@ -19,39 +19,75 @@ namespace Google\Service\Appengine;
 
 class NetworkUtilization extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $targetReceivedBytesPerSecond;
+  /**
+   * @var int
+   */
   public $targetReceivedPacketsPerSecond;
+  /**
+   * @var int
+   */
   public $targetSentBytesPerSecond;
+  /**
+   * @var int
+   */
   public $targetSentPacketsPerSecond;
 
+  /**
+   * @param int
+   */
   public function setTargetReceivedBytesPerSecond($targetReceivedBytesPerSecond)
   {
     $this->targetReceivedBytesPerSecond = $targetReceivedBytesPerSecond;
   }
+  /**
+   * @return int
+   */
   public function getTargetReceivedBytesPerSecond()
   {
     return $this->targetReceivedBytesPerSecond;
   }
+  /**
+   * @param int
+   */
   public function setTargetReceivedPacketsPerSecond($targetReceivedPacketsPerSecond)
   {
     $this->targetReceivedPacketsPerSecond = $targetReceivedPacketsPerSecond;
   }
+  /**
+   * @return int
+   */
   public function getTargetReceivedPacketsPerSecond()
   {
     return $this->targetReceivedPacketsPerSecond;
   }
+  /**
+   * @param int
+   */
   public function setTargetSentBytesPerSecond($targetSentBytesPerSecond)
   {
     $this->targetSentBytesPerSecond = $targetSentBytesPerSecond;
   }
+  /**
+   * @return int
+   */
   public function getTargetSentBytesPerSecond()
   {
     return $this->targetSentBytesPerSecond;
   }
+  /**
+   * @param int
+   */
   public function setTargetSentPacketsPerSecond($targetSentPacketsPerSecond)
   {
     $this->targetSentPacketsPerSecond = $targetSentPacketsPerSecond;
   }
+  /**
+   * @return int
+   */
   public function getTargetSentPacketsPerSecond()
   {
     return $this->targetSentPacketsPerSecond;

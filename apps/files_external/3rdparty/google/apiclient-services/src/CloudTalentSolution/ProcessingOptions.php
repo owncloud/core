@@ -19,21 +19,39 @@ namespace Google\Service\CloudTalentSolution;
 
 class ProcessingOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $disableStreetAddressResolution;
+  /**
+   * @var string
+   */
   public $htmlSanitization;
 
+  /**
+   * @param bool
+   */
   public function setDisableStreetAddressResolution($disableStreetAddressResolution)
   {
     $this->disableStreetAddressResolution = $disableStreetAddressResolution;
   }
+  /**
+   * @return bool
+   */
   public function getDisableStreetAddressResolution()
   {
     return $this->disableStreetAddressResolution;
   }
+  /**
+   * @param string
+   */
   public function setHtmlSanitization($htmlSanitization)
   {
     $this->htmlSanitization = $htmlSanitization;
   }
+  /**
+   * @return string
+   */
   public function getHtmlSanitization()
   {
     return $this->htmlSanitization;

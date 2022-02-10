@@ -19,19 +19,31 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2StoredInfoTypeConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
   protected $dictionaryType = GooglePrivacyDlpV2Dictionary::class;
   protected $dictionaryDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
   protected $largeCustomDictionaryType = GooglePrivacyDlpV2LargeCustomDictionaryConfig::class;
   protected $largeCustomDictionaryDataType = '';
   protected $regexType = GooglePrivacyDlpV2Regex::class;
   protected $regexDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -50,10 +62,16 @@ class GooglePrivacyDlpV2StoredInfoTypeConfig extends \Google\Model
   {
     return $this->dictionary;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;

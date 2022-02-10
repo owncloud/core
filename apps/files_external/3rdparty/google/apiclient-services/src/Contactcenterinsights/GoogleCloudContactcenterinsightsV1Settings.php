@@ -21,11 +21,29 @@ class GoogleCloudContactcenterinsightsV1Settings extends \Google\Model
 {
   protected $analysisConfigType = GoogleCloudContactcenterinsightsV1SettingsAnalysisConfig::class;
   protected $analysisConfigDataType = '';
+  /**
+   * @var string
+   */
   public $conversationTtl;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $pubsubNotificationSettings;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -42,50 +60,86 @@ class GoogleCloudContactcenterinsightsV1Settings extends \Google\Model
   {
     return $this->analysisConfig;
   }
+  /**
+   * @param string
+   */
   public function setConversationTtl($conversationTtl)
   {
     $this->conversationTtl = $conversationTtl;
   }
+  /**
+   * @return string
+   */
   public function getConversationTtl()
   {
     return $this->conversationTtl;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setPubsubNotificationSettings($pubsubNotificationSettings)
   {
     $this->pubsubNotificationSettings = $pubsubNotificationSettings;
   }
+  /**
+   * @return string[]
+   */
   public function getPubsubNotificationSettings()
   {
     return $this->pubsubNotificationSettings;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

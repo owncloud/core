@@ -21,8 +21,17 @@ class DeliverySchedule extends \Google\Model
 {
   protected $frequencyCapType = FrequencyCap::class;
   protected $frequencyCapDataType = '';
+  /**
+   * @var bool
+   */
   public $hardCutoff;
+  /**
+   * @var string
+   */
   public $impressionRatio;
+  /**
+   * @var string
+   */
   public $priority;
 
   /**
@@ -39,26 +48,44 @@ class DeliverySchedule extends \Google\Model
   {
     return $this->frequencyCap;
   }
+  /**
+   * @param bool
+   */
   public function setHardCutoff($hardCutoff)
   {
     $this->hardCutoff = $hardCutoff;
   }
+  /**
+   * @return bool
+   */
   public function getHardCutoff()
   {
     return $this->hardCutoff;
   }
+  /**
+   * @param string
+   */
   public function setImpressionRatio($impressionRatio)
   {
     $this->impressionRatio = $impressionRatio;
   }
+  /**
+   * @return string
+   */
   public function getImpressionRatio()
   {
     return $this->impressionRatio;
   }
+  /**
+   * @param string
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return string
+   */
   public function getPriority()
   {
     return $this->priority;

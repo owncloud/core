@@ -21,8 +21,17 @@ class InsertTextRequest extends \Google\Model
 {
   protected $cellLocationType = TableCellLocation::class;
   protected $cellLocationDataType = '';
+  /**
+   * @var int
+   */
   public $insertionIndex;
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var string
+   */
   public $text;
 
   /**
@@ -39,26 +48,44 @@ class InsertTextRequest extends \Google\Model
   {
     return $this->cellLocation;
   }
+  /**
+   * @param int
+   */
   public function setInsertionIndex($insertionIndex)
   {
     $this->insertionIndex = $insertionIndex;
   }
+  /**
+   * @return int
+   */
   public function getInsertionIndex()
   {
     return $this->insertionIndex;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

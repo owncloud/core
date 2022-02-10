@@ -21,7 +21,13 @@ class CreateShortDynamicLinkRequest extends \Google\Model
 {
   protected $dynamicLinkInfoType = DynamicLinkInfo::class;
   protected $dynamicLinkInfoDataType = '';
+  /**
+   * @var string
+   */
   public $longDynamicLink;
+  /**
+   * @var string
+   */
   public $sdkVersion;
   protected $suffixType = Suffix::class;
   protected $suffixDataType = '';
@@ -40,18 +46,30 @@ class CreateShortDynamicLinkRequest extends \Google\Model
   {
     return $this->dynamicLinkInfo;
   }
+  /**
+   * @param string
+   */
   public function setLongDynamicLink($longDynamicLink)
   {
     $this->longDynamicLink = $longDynamicLink;
   }
+  /**
+   * @return string
+   */
   public function getLongDynamicLink()
   {
     return $this->longDynamicLink;
   }
+  /**
+   * @param string
+   */
   public function setSdkVersion($sdkVersion)
   {
     $this->sdkVersion = $sdkVersion;
   }
+  /**
+   * @return string
+   */
   public function getSdkVersion()
   {
     return $this->sdkVersion;

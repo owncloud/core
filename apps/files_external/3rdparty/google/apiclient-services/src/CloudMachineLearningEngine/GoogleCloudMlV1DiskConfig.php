@@ -19,21 +19,39 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1DiskConfig extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $bootDiskSizeGb;
+  /**
+   * @var string
+   */
   public $bootDiskType;
 
+  /**
+   * @param int
+   */
   public function setBootDiskSizeGb($bootDiskSizeGb)
   {
     $this->bootDiskSizeGb = $bootDiskSizeGb;
   }
+  /**
+   * @return int
+   */
   public function getBootDiskSizeGb()
   {
     return $this->bootDiskSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setBootDiskType($bootDiskType)
   {
     $this->bootDiskType = $bootDiskType;
   }
+  /**
+   * @return string
+   */
   public function getBootDiskType()
   {
     return $this->bootDiskType;

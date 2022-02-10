@@ -20,57 +20,117 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1QueryResult extends \Google\Collection
 {
   protected $collection_key = 'outputContexts';
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var bool
+   */
   public $allRequiredParamsPresent;
+  /**
+   * @var bool
+   */
   public $cancelsSlotFilling;
+  /**
+   * @var array[]
+   */
   public $diagnosticInfo;
   protected $fulfillmentMessagesType = GoogleCloudDialogflowV2beta1IntentMessage::class;
   protected $fulfillmentMessagesDataType = 'array';
+  /**
+   * @var string
+   */
   public $fulfillmentText;
   protected $intentType = GoogleCloudDialogflowV2beta1Intent::class;
   protected $intentDataType = '';
+  /**
+   * @var float
+   */
   public $intentDetectionConfidence;
   protected $knowledgeAnswersType = GoogleCloudDialogflowV2beta1KnowledgeAnswers::class;
   protected $knowledgeAnswersDataType = '';
+  /**
+   * @var string
+   */
   public $languageCode;
   protected $outputContextsType = GoogleCloudDialogflowV2beta1Context::class;
   protected $outputContextsDataType = 'array';
+  /**
+   * @var array[]
+   */
   public $parameters;
+  /**
+   * @var string
+   */
   public $queryText;
   protected $sentimentAnalysisResultType = GoogleCloudDialogflowV2beta1SentimentAnalysisResult::class;
   protected $sentimentAnalysisResultDataType = '';
+  /**
+   * @var float
+   */
   public $speechRecognitionConfidence;
+  /**
+   * @var array[]
+   */
   public $webhookPayload;
+  /**
+   * @var string
+   */
   public $webhookSource;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param bool
+   */
   public function setAllRequiredParamsPresent($allRequiredParamsPresent)
   {
     $this->allRequiredParamsPresent = $allRequiredParamsPresent;
   }
+  /**
+   * @return bool
+   */
   public function getAllRequiredParamsPresent()
   {
     return $this->allRequiredParamsPresent;
   }
+  /**
+   * @param bool
+   */
   public function setCancelsSlotFilling($cancelsSlotFilling)
   {
     $this->cancelsSlotFilling = $cancelsSlotFilling;
   }
+  /**
+   * @return bool
+   */
   public function getCancelsSlotFilling()
   {
     return $this->cancelsSlotFilling;
   }
+  /**
+   * @param array[]
+   */
   public function setDiagnosticInfo($diagnosticInfo)
   {
     $this->diagnosticInfo = $diagnosticInfo;
   }
+  /**
+   * @return array[]
+   */
   public function getDiagnosticInfo()
   {
     return $this->diagnosticInfo;
@@ -89,10 +149,16 @@ class GoogleCloudDialogflowV2beta1QueryResult extends \Google\Collection
   {
     return $this->fulfillmentMessages;
   }
+  /**
+   * @param string
+   */
   public function setFulfillmentText($fulfillmentText)
   {
     $this->fulfillmentText = $fulfillmentText;
   }
+  /**
+   * @return string
+   */
   public function getFulfillmentText()
   {
     return $this->fulfillmentText;
@@ -111,10 +177,16 @@ class GoogleCloudDialogflowV2beta1QueryResult extends \Google\Collection
   {
     return $this->intent;
   }
+  /**
+   * @param float
+   */
   public function setIntentDetectionConfidence($intentDetectionConfidence)
   {
     $this->intentDetectionConfidence = $intentDetectionConfidence;
   }
+  /**
+   * @return float
+   */
   public function getIntentDetectionConfidence()
   {
     return $this->intentDetectionConfidence;
@@ -133,10 +205,16 @@ class GoogleCloudDialogflowV2beta1QueryResult extends \Google\Collection
   {
     return $this->knowledgeAnswers;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
@@ -155,18 +233,30 @@ class GoogleCloudDialogflowV2beta1QueryResult extends \Google\Collection
   {
     return $this->outputContexts;
   }
+  /**
+   * @param array[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return array[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setQueryText($queryText)
   {
     $this->queryText = $queryText;
   }
+  /**
+   * @return string
+   */
   public function getQueryText()
   {
     return $this->queryText;
@@ -185,26 +275,44 @@ class GoogleCloudDialogflowV2beta1QueryResult extends \Google\Collection
   {
     return $this->sentimentAnalysisResult;
   }
+  /**
+   * @param float
+   */
   public function setSpeechRecognitionConfidence($speechRecognitionConfidence)
   {
     $this->speechRecognitionConfidence = $speechRecognitionConfidence;
   }
+  /**
+   * @return float
+   */
   public function getSpeechRecognitionConfidence()
   {
     return $this->speechRecognitionConfidence;
   }
+  /**
+   * @param array[]
+   */
   public function setWebhookPayload($webhookPayload)
   {
     $this->webhookPayload = $webhookPayload;
   }
+  /**
+   * @return array[]
+   */
   public function getWebhookPayload()
   {
     return $this->webhookPayload;
   }
+  /**
+   * @param string
+   */
   public function setWebhookSource($webhookSource)
   {
     $this->webhookSource = $webhookSource;
   }
+  /**
+   * @return string
+   */
   public function getWebhookSource()
   {
     return $this->webhookSource;

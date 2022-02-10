@@ -19,21 +19,39 @@ namespace Google\Service\Spanner;
 
 class RestoreDatabaseEncryptionConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $encryptionType;
+  /**
+   * @var string
+   */
   public $kmsKeyName;
 
+  /**
+   * @param string
+   */
   public function setEncryptionType($encryptionType)
   {
     $this->encryptionType = $encryptionType;
   }
+  /**
+   * @return string
+   */
   public function getEncryptionType()
   {
     return $this->encryptionType;
   }
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;

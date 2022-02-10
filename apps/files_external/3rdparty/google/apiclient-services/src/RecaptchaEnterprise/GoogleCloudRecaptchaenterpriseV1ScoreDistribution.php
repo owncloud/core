@@ -19,12 +19,21 @@ namespace Google\Service\RecaptchaEnterprise;
 
 class GoogleCloudRecaptchaenterpriseV1ScoreDistribution extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $scoreBuckets;
 
+  /**
+   * @param string[]
+   */
   public function setScoreBuckets($scoreBuckets)
   {
     $this->scoreBuckets = $scoreBuckets;
   }
+  /**
+   * @return string[]
+   */
   public function getScoreBuckets()
   {
     return $this->scoreBuckets;

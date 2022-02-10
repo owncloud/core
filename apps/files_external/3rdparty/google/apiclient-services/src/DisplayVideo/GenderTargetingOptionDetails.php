@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class GenderTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gender;
 
+  /**
+   * @param string
+   */
   public function setGender($gender)
   {
     $this->gender = $gender;
   }
+  /**
+   * @return string
+   */
   public function getGender()
   {
     return $this->gender;

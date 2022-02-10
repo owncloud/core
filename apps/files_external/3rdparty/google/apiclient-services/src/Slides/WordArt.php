@@ -19,12 +19,21 @@ namespace Google\Service\Slides;
 
 class WordArt extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $renderedText;
 
+  /**
+   * @param string
+   */
   public function setRenderedText($renderedText)
   {
     $this->renderedText = $renderedText;
   }
+  /**
+   * @return string
+   */
   public function getRenderedText()
   {
     return $this->renderedText;

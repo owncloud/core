@@ -20,33 +20,69 @@ namespace Google\Service\NetworkManagement;
 class ConnectivityTest extends \Google\Collection
 {
   protected $collection_key = 'relatedProjects';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
   protected $destinationType = Endpoint::class;
   protected $destinationDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $protocol;
   protected $reachabilityDetailsType = ReachabilityDetails::class;
   protected $reachabilityDetailsDataType = '';
+  /**
+   * @var string[]
+   */
   public $relatedProjects;
   protected $sourceType = Endpoint::class;
   protected $sourceDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -65,34 +101,58 @@ class ConnectivityTest extends \Google\Collection
   {
     return $this->destination;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProtocol($protocol)
   {
     $this->protocol = $protocol;
   }
+  /**
+   * @return string
+   */
   public function getProtocol()
   {
     return $this->protocol;
@@ -111,10 +171,16 @@ class ConnectivityTest extends \Google\Collection
   {
     return $this->reachabilityDetails;
   }
+  /**
+   * @param string[]
+   */
   public function setRelatedProjects($relatedProjects)
   {
     $this->relatedProjects = $relatedProjects;
   }
+  /**
+   * @return string[]
+   */
   public function getRelatedProjects()
   {
     return $this->relatedProjects;
@@ -133,10 +199,16 @@ class ConnectivityTest extends \Google\Collection
   {
     return $this->source;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

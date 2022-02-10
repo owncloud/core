@@ -20,28 +20,55 @@ namespace Google\Service\Dataproc;
 class PrestoJob extends \Google\Collection
 {
   protected $collection_key = 'clientTags';
+  /**
+   * @var string[]
+   */
   public $clientTags;
+  /**
+   * @var bool
+   */
   public $continueOnFailure;
   protected $loggingConfigType = LoggingConfig::class;
   protected $loggingConfigDataType = '';
+  /**
+   * @var string
+   */
   public $outputFormat;
+  /**
+   * @var string[]
+   */
   public $properties;
+  /**
+   * @var string
+   */
   public $queryFileUri;
   protected $queryListType = QueryList::class;
   protected $queryListDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setClientTags($clientTags)
   {
     $this->clientTags = $clientTags;
   }
+  /**
+   * @return string[]
+   */
   public function getClientTags()
   {
     return $this->clientTags;
   }
+  /**
+   * @param bool
+   */
   public function setContinueOnFailure($continueOnFailure)
   {
     $this->continueOnFailure = $continueOnFailure;
   }
+  /**
+   * @return bool
+   */
   public function getContinueOnFailure()
   {
     return $this->continueOnFailure;
@@ -60,26 +87,44 @@ class PrestoJob extends \Google\Collection
   {
     return $this->loggingConfig;
   }
+  /**
+   * @param string
+   */
   public function setOutputFormat($outputFormat)
   {
     $this->outputFormat = $outputFormat;
   }
+  /**
+   * @return string
+   */
   public function getOutputFormat()
   {
     return $this->outputFormat;
   }
+  /**
+   * @param string[]
+   */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
+  /**
+   * @return string[]
+   */
   public function getProperties()
   {
     return $this->properties;
   }
+  /**
+   * @param string
+   */
   public function setQueryFileUri($queryFileUri)
   {
     $this->queryFileUri = $queryFileUri;
   }
+  /**
+   * @return string
+   */
   public function getQueryFileUri()
   {
     return $this->queryFileUri;

@@ -20,28 +20,49 @@ namespace Google\Service\Spanner;
 class PartitionReadRequest extends \Google\Collection
 {
   protected $collection_key = 'columns';
+  /**
+   * @var string[]
+   */
   public $columns;
+  /**
+   * @var string
+   */
   public $index;
   protected $keySetType = KeySet::class;
   protected $keySetDataType = '';
   protected $partitionOptionsType = PartitionOptions::class;
   protected $partitionOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $table;
   protected $transactionType = TransactionSelector::class;
   protected $transactionDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setColumns($columns)
   {
     $this->columns = $columns;
   }
+  /**
+   * @return string[]
+   */
   public function getColumns()
   {
     return $this->columns;
   }
+  /**
+   * @param string
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return string
+   */
   public function getIndex()
   {
     return $this->index;
@@ -74,10 +95,16 @@ class PartitionReadRequest extends \Google\Collection
   {
     return $this->partitionOptions;
   }
+  /**
+   * @param string
+   */
   public function setTable($table)
   {
     $this->table = $table;
   }
+  /**
+   * @return string
+   */
   public function getTable()
   {
     return $this->table;

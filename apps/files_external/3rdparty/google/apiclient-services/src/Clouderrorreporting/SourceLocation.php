@@ -19,30 +19,57 @@ namespace Google\Service\Clouderrorreporting;
 
 class SourceLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $filePath;
+  /**
+   * @var string
+   */
   public $functionName;
+  /**
+   * @var int
+   */
   public $lineNumber;
 
+  /**
+   * @param string
+   */
   public function setFilePath($filePath)
   {
     $this->filePath = $filePath;
   }
+  /**
+   * @return string
+   */
   public function getFilePath()
   {
     return $this->filePath;
   }
+  /**
+   * @param string
+   */
   public function setFunctionName($functionName)
   {
     $this->functionName = $functionName;
   }
+  /**
+   * @return string
+   */
   public function getFunctionName()
   {
     return $this->functionName;
   }
+  /**
+   * @param int
+   */
   public function setLineNumber($lineNumber)
   {
     $this->lineNumber = $lineNumber;
   }
+  /**
+   * @return int
+   */
   public function getLineNumber()
   {
     return $this->lineNumber;

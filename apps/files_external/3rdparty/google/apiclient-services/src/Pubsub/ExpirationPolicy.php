@@ -19,12 +19,21 @@ namespace Google\Service\Pubsub;
 
 class ExpirationPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ttl;
 
+  /**
+   * @param string
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return string
+   */
   public function getTtl()
   {
     return $this->ttl;

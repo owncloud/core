@@ -19,12 +19,21 @@ namespace Google\Service\Area120Tables;
 
 class RelationshipDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $linkedTable;
 
+  /**
+   * @param string
+   */
   public function setLinkedTable($linkedTable)
   {
     $this->linkedTable = $linkedTable;
   }
+  /**
+   * @return string
+   */
   public function getLinkedTable()
   {
     return $this->linkedTable;

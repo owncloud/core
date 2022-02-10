@@ -21,6 +21,9 @@ class ColorStyle extends \Google\Model
 {
   protected $rgbColorType = Color::class;
   protected $rgbColorDataType = '';
+  /**
+   * @var string
+   */
   public $themeColor;
 
   /**
@@ -37,10 +40,16 @@ class ColorStyle extends \Google\Model
   {
     return $this->rgbColor;
   }
+  /**
+   * @param string
+   */
   public function setThemeColor($themeColor)
   {
     $this->themeColor = $themeColor;
   }
+  /**
+   * @return string
+   */
   public function getThemeColor()
   {
     return $this->themeColor;

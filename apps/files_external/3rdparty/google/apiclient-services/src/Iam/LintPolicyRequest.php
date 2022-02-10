@@ -21,6 +21,9 @@ class LintPolicyRequest extends \Google\Model
 {
   protected $conditionType = Expr::class;
   protected $conditionDataType = '';
+  /**
+   * @var string
+   */
   public $fullResourceName;
 
   /**
@@ -37,10 +40,16 @@ class LintPolicyRequest extends \Google\Model
   {
     return $this->condition;
   }
+  /**
+   * @param string
+   */
   public function setFullResourceName($fullResourceName)
   {
     $this->fullResourceName = $fullResourceName;
   }
+  /**
+   * @return string
+   */
   public function getFullResourceName()
   {
     return $this->fullResourceName;

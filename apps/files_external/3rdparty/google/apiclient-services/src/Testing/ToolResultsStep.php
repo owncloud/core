@@ -19,39 +19,75 @@ namespace Google\Service\Testing;
 
 class ToolResultsStep extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $executionId;
+  /**
+   * @var string
+   */
   public $historyId;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $stepId;
 
+  /**
+   * @param string
+   */
   public function setExecutionId($executionId)
   {
     $this->executionId = $executionId;
   }
+  /**
+   * @return string
+   */
   public function getExecutionId()
   {
     return $this->executionId;
   }
+  /**
+   * @param string
+   */
   public function setHistoryId($historyId)
   {
     $this->historyId = $historyId;
   }
+  /**
+   * @return string
+   */
   public function getHistoryId()
   {
     return $this->historyId;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setStepId($stepId)
   {
     $this->stepId = $stepId;
   }
+  /**
+   * @return string
+   */
   public function getStepId()
   {
     return $this->stepId;

@@ -19,21 +19,51 @@ namespace Google\Service\Books;
 
 class DictionaryAnnotationdata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $annotationType;
   protected $dataType = Dictlayerdata::class;
   protected $dataDataType = '';
+  /**
+   * @var string
+   */
   public $encodedData;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $layerId;
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $updated;
+  /**
+   * @var string
+   */
   public $volumeId;
 
+  /**
+   * @param string
+   */
   public function setAnnotationType($annotationType)
   {
     $this->annotationType = $annotationType;
   }
+  /**
+   * @return string
+   */
   public function getAnnotationType()
   {
     return $this->annotationType;
@@ -52,58 +82,100 @@ class DictionaryAnnotationdata extends \Google\Model
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setEncodedData($encodedData)
   {
     $this->encodedData = $encodedData;
   }
+  /**
+   * @return string
+   */
   public function getEncodedData()
   {
     return $this->encodedData;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLayerId($layerId)
   {
     $this->layerId = $layerId;
   }
+  /**
+   * @return string
+   */
   public function getLayerId()
   {
     return $this->layerId;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setUpdated($updated)
   {
     $this->updated = $updated;
   }
+  /**
+   * @return string
+   */
   public function getUpdated()
   {
     return $this->updated;
   }
+  /**
+   * @param string
+   */
   public function setVolumeId($volumeId)
   {
     $this->volumeId = $volumeId;
   }
+  /**
+   * @return string
+   */
   public function getVolumeId()
   {
     return $this->volumeId;

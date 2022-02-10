@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class OrderLineItemProductVariantAttribute extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dimension;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setDimension($dimension)
   {
     $this->dimension = $dimension;
   }
+  /**
+   * @return string
+   */
   public function getDimension()
   {
     return $this->dimension;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

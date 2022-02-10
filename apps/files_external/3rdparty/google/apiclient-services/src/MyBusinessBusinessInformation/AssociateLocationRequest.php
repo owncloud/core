@@ -19,12 +19,21 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class AssociateLocationRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $placeId;
 
+  /**
+   * @param string
+   */
   public function setPlaceId($placeId)
   {
     $this->placeId = $placeId;
   }
+  /**
+   * @return string
+   */
   public function getPlaceId()
   {
     return $this->placeId;

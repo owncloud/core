@@ -19,14 +19,23 @@ namespace Google\Service\Slides;
 
 class StretchedPictureFill extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentUrl;
   protected $sizeType = Size::class;
   protected $sizeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setContentUrl($contentUrl)
   {
     $this->contentUrl = $contentUrl;
   }
+  /**
+   * @return string
+   */
   public function getContentUrl()
   {
     return $this->contentUrl;

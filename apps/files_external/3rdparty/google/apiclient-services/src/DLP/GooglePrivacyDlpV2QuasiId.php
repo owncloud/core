@@ -19,6 +19,9 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2QuasiId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customTag;
   protected $fieldType = GooglePrivacyDlpV2FieldId::class;
   protected $fieldDataType = '';
@@ -27,10 +30,16 @@ class GooglePrivacyDlpV2QuasiId extends \Google\Model
   protected $infoTypeType = GooglePrivacyDlpV2InfoType::class;
   protected $infoTypeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCustomTag($customTag)
   {
     $this->customTag = $customTag;
   }
+  /**
+   * @return string
+   */
   public function getCustomTag()
   {
     return $this->customTag;

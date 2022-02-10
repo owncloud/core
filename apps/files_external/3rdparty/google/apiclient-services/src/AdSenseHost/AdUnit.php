@@ -19,22 +19,43 @@ namespace Google\Service\AdSenseHost;
 
 class AdUnit extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $code;
   protected $contentAdsSettingsType = AdUnitContentAdsSettings::class;
   protected $contentAdsSettingsDataType = '';
   protected $customStyleType = AdStyle::class;
   protected $customStyleDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
   protected $mobileContentAdsSettingsType = AdUnitMobileContentAdsSettings::class;
   protected $mobileContentAdsSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
@@ -67,18 +88,30 @@ class AdUnit extends \Google\Model
   {
     return $this->customStyle;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -97,18 +130,30 @@ class AdUnit extends \Google\Model
   {
     return $this->mobileContentAdsSettings;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

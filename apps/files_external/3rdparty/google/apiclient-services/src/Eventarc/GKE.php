@@ -19,48 +19,93 @@ namespace Google\Service\Eventarc;
 
 class GKE extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cluster;
+  /**
+   * @var string
+   */
   public $location;
+  /**
+   * @var string
+   */
   public $namespace;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string
+   */
   public function setCluster($cluster)
   {
     $this->cluster = $cluster;
   }
+  /**
+   * @return string
+   */
   public function getCluster()
   {
     return $this->cluster;
   }
+  /**
+   * @param string
+   */
   public function setLocation($location)
   {
     $this->location = $location;
   }
+  /**
+   * @return string
+   */
   public function getLocation()
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setNamespace($namespace)
   {
     $this->namespace = $namespace;
   }
+  /**
+   * @return string
+   */
   public function getNamespace()
   {
     return $this->namespace;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

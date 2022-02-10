@@ -22,6 +22,9 @@ class ModifyMembershipRolesRequest extends \Google\Collection
   protected $collection_key = 'updateRolesParams';
   protected $addRolesType = MembershipRole::class;
   protected $addRolesDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $removeRoles;
   protected $updateRolesParamsType = UpdateMembershipRolesParams::class;
   protected $updateRolesParamsDataType = 'array';
@@ -40,10 +43,16 @@ class ModifyMembershipRolesRequest extends \Google\Collection
   {
     return $this->addRoles;
   }
+  /**
+   * @param string[]
+   */
   public function setRemoveRoles($removeRoles)
   {
     $this->removeRoles = $removeRoles;
   }
+  /**
+   * @return string[]
+   */
   public function getRemoveRoles()
   {
     return $this->removeRoles;

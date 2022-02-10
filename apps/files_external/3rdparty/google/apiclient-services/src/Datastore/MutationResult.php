@@ -19,15 +19,27 @@ namespace Google\Service\Datastore;
 
 class MutationResult extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $conflictDetected;
   protected $keyType = Key::class;
   protected $keyDataType = '';
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param bool
+   */
   public function setConflictDetected($conflictDetected)
   {
     $this->conflictDetected = $conflictDetected;
   }
+  /**
+   * @return bool
+   */
   public function getConflictDetected()
   {
     return $this->conflictDetected;
@@ -46,10 +58,16 @@ class MutationResult extends \Google\Model
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

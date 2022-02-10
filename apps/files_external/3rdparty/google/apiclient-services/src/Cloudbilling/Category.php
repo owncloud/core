@@ -19,39 +19,75 @@ namespace Google\Service\Cloudbilling;
 
 class Category extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resourceFamily;
+  /**
+   * @var string
+   */
   public $resourceGroup;
+  /**
+   * @var string
+   */
   public $serviceDisplayName;
+  /**
+   * @var string
+   */
   public $usageType;
 
+  /**
+   * @param string
+   */
   public function setResourceFamily($resourceFamily)
   {
     $this->resourceFamily = $resourceFamily;
   }
+  /**
+   * @return string
+   */
   public function getResourceFamily()
   {
     return $this->resourceFamily;
   }
+  /**
+   * @param string
+   */
   public function setResourceGroup($resourceGroup)
   {
     $this->resourceGroup = $resourceGroup;
   }
+  /**
+   * @return string
+   */
   public function getResourceGroup()
   {
     return $this->resourceGroup;
   }
+  /**
+   * @param string
+   */
   public function setServiceDisplayName($serviceDisplayName)
   {
     $this->serviceDisplayName = $serviceDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getServiceDisplayName()
   {
     return $this->serviceDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setUsageType($usageType)
   {
     $this->usageType = $usageType;
   }
+  /**
+   * @return string
+   */
   public function getUsageType()
   {
     return $this->usageType;

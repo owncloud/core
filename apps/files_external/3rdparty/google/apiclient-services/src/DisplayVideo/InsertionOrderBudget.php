@@ -20,15 +20,27 @@ namespace Google\Service\DisplayVideo;
 class InsertionOrderBudget extends \Google\Collection
 {
   protected $collection_key = 'budgetSegments';
+  /**
+   * @var string
+   */
   public $automationType;
   protected $budgetSegmentsType = InsertionOrderBudgetSegment::class;
   protected $budgetSegmentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $budgetUnit;
 
+  /**
+   * @param string
+   */
   public function setAutomationType($automationType)
   {
     $this->automationType = $automationType;
   }
+  /**
+   * @return string
+   */
   public function getAutomationType()
   {
     return $this->automationType;
@@ -47,10 +59,16 @@ class InsertionOrderBudget extends \Google\Collection
   {
     return $this->budgetSegments;
   }
+  /**
+   * @param string
+   */
   public function setBudgetUnit($budgetUnit)
   {
     $this->budgetUnit = $budgetUnit;
   }
+  /**
+   * @return string
+   */
   public function getBudgetUnit()
   {
     return $this->budgetUnit;

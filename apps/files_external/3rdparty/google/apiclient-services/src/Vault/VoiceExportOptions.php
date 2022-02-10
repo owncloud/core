@@ -19,12 +19,21 @@ namespace Google\Service\Vault;
 
 class VoiceExportOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exportFormat;
 
+  /**
+   * @param string
+   */
   public function setExportFormat($exportFormat)
   {
     $this->exportFormat = $exportFormat;
   }
+  /**
+   * @return string
+   */
   public function getExportFormat()
   {
     return $this->exportFormat;

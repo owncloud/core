@@ -19,15 +19,27 @@ namespace Google\Service\Transcoder;
 
 class Input extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $key;
   protected $preprocessingConfigType = PreprocessingConfig::class;
   protected $preprocessingConfigDataType = '';
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
@@ -46,10 +58,16 @@ class Input extends \Google\Model
   {
     return $this->preprocessingConfig;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

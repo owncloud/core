@@ -20,52 +20,103 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1beta1Dataset extends \Google\Collection
 {
   protected $collection_key = 'inputConfigs';
+  /**
+   * @var string[]
+   */
   public $blockingResources;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $dataItemCount;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $inputConfigsType = GoogleCloudDatalabelingV1beta1InputConfig::class;
   protected $inputConfigsDataType = 'array';
+  /**
+   * @var string
+   */
   public $lastMigrateTime;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string[]
+   */
   public function setBlockingResources($blockingResources)
   {
     $this->blockingResources = $blockingResources;
   }
+  /**
+   * @return string[]
+   */
   public function getBlockingResources()
   {
     return $this->blockingResources;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDataItemCount($dataItemCount)
   {
     $this->dataItemCount = $dataItemCount;
   }
+  /**
+   * @return string
+   */
   public function getDataItemCount()
   {
     return $this->dataItemCount;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -84,18 +135,30 @@ class GoogleCloudDatalabelingV1beta1Dataset extends \Google\Collection
   {
     return $this->inputConfigs;
   }
+  /**
+   * @param string
+   */
   public function setLastMigrateTime($lastMigrateTime)
   {
     $this->lastMigrateTime = $lastMigrateTime;
   }
+  /**
+   * @return string
+   */
   public function getLastMigrateTime()
   {
     return $this->lastMigrateTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

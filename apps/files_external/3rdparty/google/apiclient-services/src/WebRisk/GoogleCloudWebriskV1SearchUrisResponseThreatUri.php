@@ -20,21 +20,39 @@ namespace Google\Service\WebRisk;
 class GoogleCloudWebriskV1SearchUrisResponseThreatUri extends \Google\Collection
 {
   protected $collection_key = 'threatTypes';
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string[]
+   */
   public $threatTypes;
 
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string[]
+   */
   public function setThreatTypes($threatTypes)
   {
     $this->threatTypes = $threatTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getThreatTypes()
   {
     return $this->threatTypes;

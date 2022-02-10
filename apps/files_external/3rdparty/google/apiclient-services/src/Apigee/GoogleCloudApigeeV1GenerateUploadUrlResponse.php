@@ -19,12 +19,21 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1GenerateUploadUrlResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $uploadUri;
 
+  /**
+   * @param string
+   */
   public function setUploadUri($uploadUri)
   {
     $this->uploadUri = $uploadUri;
   }
+  /**
+   * @return string
+   */
   public function getUploadUri()
   {
     return $this->uploadUri;

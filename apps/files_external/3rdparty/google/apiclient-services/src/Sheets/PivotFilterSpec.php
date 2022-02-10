@@ -19,16 +19,25 @@ namespace Google\Service\Sheets;
 
 class PivotFilterSpec extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $columnOffsetIndex;
   protected $dataSourceColumnReferenceType = DataSourceColumnReference::class;
   protected $dataSourceColumnReferenceDataType = '';
   protected $filterCriteriaType = PivotFilterCriteria::class;
   protected $filterCriteriaDataType = '';
 
+  /**
+   * @param int
+   */
   public function setColumnOffsetIndex($columnOffsetIndex)
   {
     $this->columnOffsetIndex = $columnOffsetIndex;
   }
+  /**
+   * @return int
+   */
   public function getColumnOffsetIndex()
   {
     return $this->columnOffsetIndex;

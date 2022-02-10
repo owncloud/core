@@ -20,30 +20,57 @@ namespace Google\Service\AndroidEnterprise;
 class NewPermissionsEvent extends \Google\Collection
 {
   protected $collection_key = 'requestedPermissions';
+  /**
+   * @var string[]
+   */
   public $approvedPermissions;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string[]
+   */
   public $requestedPermissions;
 
+  /**
+   * @param string[]
+   */
   public function setApprovedPermissions($approvedPermissions)
   {
     $this->approvedPermissions = $approvedPermissions;
   }
+  /**
+   * @return string[]
+   */
   public function getApprovedPermissions()
   {
     return $this->approvedPermissions;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string[]
+   */
   public function setRequestedPermissions($requestedPermissions)
   {
     $this->requestedPermissions = $requestedPermissions;
   }
+  /**
+   * @return string[]
+   */
   public function getRequestedPermissions()
   {
     return $this->requestedPermissions;

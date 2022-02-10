@@ -19,23 +19,41 @@ namespace Google\Service\CloudTrace;
 
 class AttributeValue extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $boolValue;
+  /**
+   * @var string
+   */
   public $intValue;
   protected $stringValueType = TruncatableString::class;
   protected $stringValueDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
   }
+  /**
+   * @param string
+   */
   public function setIntValue($intValue)
   {
     $this->intValue = $intValue;
   }
+  /**
+   * @return string
+   */
   public function getIntValue()
   {
     return $this->intValue;

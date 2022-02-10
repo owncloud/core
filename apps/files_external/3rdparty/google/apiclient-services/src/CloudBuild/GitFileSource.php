@@ -19,39 +19,75 @@ namespace Google\Service\CloudBuild;
 
 class GitFileSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $repoType;
+  /**
+   * @var string
+   */
   public $revision;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setRepoType($repoType)
   {
     $this->repoType = $repoType;
   }
+  /**
+   * @return string
+   */
   public function getRepoType()
   {
     return $this->repoType;
   }
+  /**
+   * @param string
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return string
+   */
   public function getRevision()
   {
     return $this->revision;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

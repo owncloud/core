@@ -19,36 +19,81 @@ namespace Google\Service\Books;
 
 class VolumeAccessInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accessViewStatus;
+  /**
+   * @var string
+   */
   public $country;
   protected $downloadAccessType = DownloadAccessRestriction::class;
   protected $downloadAccessDataType = '';
+  /**
+   * @var string
+   */
   public $driveImportedContentLink;
+  /**
+   * @var bool
+   */
   public $embeddable;
   protected $epubType = VolumeAccessInfoEpub::class;
   protected $epubDataType = '';
+  /**
+   * @var bool
+   */
   public $explicitOfflineLicenseManagement;
   protected $pdfType = VolumeAccessInfoPdf::class;
   protected $pdfDataType = '';
+  /**
+   * @var bool
+   */
   public $publicDomain;
+  /**
+   * @var bool
+   */
   public $quoteSharingAllowed;
+  /**
+   * @var string
+   */
   public $textToSpeechPermission;
+  /**
+   * @var string
+   */
   public $viewOrderUrl;
+  /**
+   * @var string
+   */
   public $viewability;
+  /**
+   * @var string
+   */
   public $webReaderLink;
 
+  /**
+   * @param string
+   */
   public function setAccessViewStatus($accessViewStatus)
   {
     $this->accessViewStatus = $accessViewStatus;
   }
+  /**
+   * @return string
+   */
   public function getAccessViewStatus()
   {
     return $this->accessViewStatus;
   }
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
@@ -67,18 +112,30 @@ class VolumeAccessInfo extends \Google\Model
   {
     return $this->downloadAccess;
   }
+  /**
+   * @param string
+   */
   public function setDriveImportedContentLink($driveImportedContentLink)
   {
     $this->driveImportedContentLink = $driveImportedContentLink;
   }
+  /**
+   * @return string
+   */
   public function getDriveImportedContentLink()
   {
     return $this->driveImportedContentLink;
   }
+  /**
+   * @param bool
+   */
   public function setEmbeddable($embeddable)
   {
     $this->embeddable = $embeddable;
   }
+  /**
+   * @return bool
+   */
   public function getEmbeddable()
   {
     return $this->embeddable;
@@ -97,10 +154,16 @@ class VolumeAccessInfo extends \Google\Model
   {
     return $this->epub;
   }
+  /**
+   * @param bool
+   */
   public function setExplicitOfflineLicenseManagement($explicitOfflineLicenseManagement)
   {
     $this->explicitOfflineLicenseManagement = $explicitOfflineLicenseManagement;
   }
+  /**
+   * @return bool
+   */
   public function getExplicitOfflineLicenseManagement()
   {
     return $this->explicitOfflineLicenseManagement;
@@ -119,50 +182,86 @@ class VolumeAccessInfo extends \Google\Model
   {
     return $this->pdf;
   }
+  /**
+   * @param bool
+   */
   public function setPublicDomain($publicDomain)
   {
     $this->publicDomain = $publicDomain;
   }
+  /**
+   * @return bool
+   */
   public function getPublicDomain()
   {
     return $this->publicDomain;
   }
+  /**
+   * @param bool
+   */
   public function setQuoteSharingAllowed($quoteSharingAllowed)
   {
     $this->quoteSharingAllowed = $quoteSharingAllowed;
   }
+  /**
+   * @return bool
+   */
   public function getQuoteSharingAllowed()
   {
     return $this->quoteSharingAllowed;
   }
+  /**
+   * @param string
+   */
   public function setTextToSpeechPermission($textToSpeechPermission)
   {
     $this->textToSpeechPermission = $textToSpeechPermission;
   }
+  /**
+   * @return string
+   */
   public function getTextToSpeechPermission()
   {
     return $this->textToSpeechPermission;
   }
+  /**
+   * @param string
+   */
   public function setViewOrderUrl($viewOrderUrl)
   {
     $this->viewOrderUrl = $viewOrderUrl;
   }
+  /**
+   * @return string
+   */
   public function getViewOrderUrl()
   {
     return $this->viewOrderUrl;
   }
+  /**
+   * @param string
+   */
   public function setViewability($viewability)
   {
     $this->viewability = $viewability;
   }
+  /**
+   * @return string
+   */
   public function getViewability()
   {
     return $this->viewability;
   }
+  /**
+   * @param string
+   */
   public function setWebReaderLink($webReaderLink)
   {
     $this->webReaderLink = $webReaderLink;
   }
+  /**
+   * @return string
+   */
   public function getWebReaderLink()
   {
     return $this->webReaderLink;

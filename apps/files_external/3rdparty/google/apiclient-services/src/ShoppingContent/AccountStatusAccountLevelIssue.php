@@ -19,66 +19,129 @@ namespace Google\Service\ShoppingContent;
 
 class AccountStatusAccountLevelIssue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $destination;
+  /**
+   * @var string
+   */
   public $detail;
+  /**
+   * @var string
+   */
   public $documentation;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $severity;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setDestination($destination)
   {
     $this->destination = $destination;
   }
+  /**
+   * @return string
+   */
   public function getDestination()
   {
     return $this->destination;
   }
+  /**
+   * @param string
+   */
   public function setDetail($detail)
   {
     $this->detail = $detail;
   }
+  /**
+   * @return string
+   */
   public function getDetail()
   {
     return $this->detail;
   }
+  /**
+   * @param string
+   */
   public function setDocumentation($documentation)
   {
     $this->documentation = $documentation;
   }
+  /**
+   * @return string
+   */
   public function getDocumentation()
   {
     return $this->documentation;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

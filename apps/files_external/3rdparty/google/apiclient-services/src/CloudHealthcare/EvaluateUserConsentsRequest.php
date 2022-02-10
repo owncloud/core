@@ -21,11 +21,29 @@ class EvaluateUserConsentsRequest extends \Google\Model
 {
   protected $consentListType = ConsentList::class;
   protected $consentListDataType = '';
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var string[]
+   */
   public $requestAttributes;
+  /**
+   * @var string[]
+   */
   public $resourceAttributes;
+  /**
+   * @var string
+   */
   public $responseView;
+  /**
+   * @var string
+   */
   public $userId;
 
   /**
@@ -42,50 +60,86 @@ class EvaluateUserConsentsRequest extends \Google\Model
   {
     return $this->consentList;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setRequestAttributes($requestAttributes)
   {
     $this->requestAttributes = $requestAttributes;
   }
+  /**
+   * @return string[]
+   */
   public function getRequestAttributes()
   {
     return $this->requestAttributes;
   }
+  /**
+   * @param string[]
+   */
   public function setResourceAttributes($resourceAttributes)
   {
     $this->resourceAttributes = $resourceAttributes;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceAttributes()
   {
     return $this->resourceAttributes;
   }
+  /**
+   * @param string
+   */
   public function setResponseView($responseView)
   {
     $this->responseView = $responseView;
   }
+  /**
+   * @return string
+   */
   public function getResponseView()
   {
     return $this->responseView;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

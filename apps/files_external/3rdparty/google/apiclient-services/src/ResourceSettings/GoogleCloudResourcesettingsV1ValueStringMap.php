@@ -19,12 +19,21 @@ namespace Google\Service\ResourceSettings;
 
 class GoogleCloudResourcesettingsV1ValueStringMap extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $mappings;
 
+  /**
+   * @param string[]
+   */
   public function setMappings($mappings)
   {
     $this->mappings = $mappings;
   }
+  /**
+   * @return string[]
+   */
   public function getMappings()
   {
     return $this->mappings;

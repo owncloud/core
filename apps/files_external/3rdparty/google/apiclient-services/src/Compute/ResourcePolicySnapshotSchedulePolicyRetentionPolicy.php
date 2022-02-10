@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class ResourcePolicySnapshotSchedulePolicyRetentionPolicy extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxRetentionDays;
+  /**
+   * @var string
+   */
   public $onSourceDiskDelete;
 
+  /**
+   * @param int
+   */
   public function setMaxRetentionDays($maxRetentionDays)
   {
     $this->maxRetentionDays = $maxRetentionDays;
   }
+  /**
+   * @return int
+   */
   public function getMaxRetentionDays()
   {
     return $this->maxRetentionDays;
   }
+  /**
+   * @param string
+   */
   public function setOnSourceDiskDelete($onSourceDiskDelete)
   {
     $this->onSourceDiskDelete = $onSourceDiskDelete;
   }
+  /**
+   * @return string
+   */
   public function getOnSourceDiskDelete()
   {
     return $this->onSourceDiskDelete;

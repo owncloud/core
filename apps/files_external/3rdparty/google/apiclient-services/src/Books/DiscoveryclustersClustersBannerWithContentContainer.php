@@ -19,57 +19,111 @@ namespace Google\Service\Books;
 
 class DiscoveryclustersClustersBannerWithContentContainer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fillColorArgb;
+  /**
+   * @var string
+   */
   public $imageUrl;
+  /**
+   * @var string
+   */
   public $maskColorArgb;
+  /**
+   * @var string
+   */
   public $moreButtonText;
+  /**
+   * @var string
+   */
   public $moreButtonUrl;
+  /**
+   * @var string
+   */
   public $textColorArgb;
 
+  /**
+   * @param string
+   */
   public function setFillColorArgb($fillColorArgb)
   {
     $this->fillColorArgb = $fillColorArgb;
   }
+  /**
+   * @return string
+   */
   public function getFillColorArgb()
   {
     return $this->fillColorArgb;
   }
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;
   }
+  /**
+   * @param string
+   */
   public function setMaskColorArgb($maskColorArgb)
   {
     $this->maskColorArgb = $maskColorArgb;
   }
+  /**
+   * @return string
+   */
   public function getMaskColorArgb()
   {
     return $this->maskColorArgb;
   }
+  /**
+   * @param string
+   */
   public function setMoreButtonText($moreButtonText)
   {
     $this->moreButtonText = $moreButtonText;
   }
+  /**
+   * @return string
+   */
   public function getMoreButtonText()
   {
     return $this->moreButtonText;
   }
+  /**
+   * @param string
+   */
   public function setMoreButtonUrl($moreButtonUrl)
   {
     $this->moreButtonUrl = $moreButtonUrl;
   }
+  /**
+   * @return string
+   */
   public function getMoreButtonUrl()
   {
     return $this->moreButtonUrl;
   }
+  /**
+   * @param string
+   */
   public function setTextColorArgb($textColorArgb)
   {
     $this->textColorArgb = $textColorArgb;
   }
+  /**
+   * @return string
+   */
   public function getTextColorArgb()
   {
     return $this->textColorArgb;

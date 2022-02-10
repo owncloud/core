@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class LiaOnDisplayToOrderSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $shippingCostPolicyUrl;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setShippingCostPolicyUrl($shippingCostPolicyUrl)
   {
     $this->shippingCostPolicyUrl = $shippingCostPolicyUrl;
   }
+  /**
+   * @return string
+   */
   public function getShippingCostPolicyUrl()
   {
     return $this->shippingCostPolicyUrl;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

@@ -20,23 +20,41 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3FlowValidationResult extends \Google\Collection
 {
   protected $collection_key = 'validationMessages';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $updateTime;
   protected $validationMessagesType = GoogleCloudDialogflowCxV3ValidationMessage::class;
   protected $validationMessagesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

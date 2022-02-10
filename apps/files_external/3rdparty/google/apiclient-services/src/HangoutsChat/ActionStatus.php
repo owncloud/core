@@ -19,21 +19,39 @@ namespace Google\Service\HangoutsChat;
 
 class ActionStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $statusCode;
+  /**
+   * @var string
+   */
   public $userFacingMessage;
 
+  /**
+   * @param string
+   */
   public function setStatusCode($statusCode)
   {
     $this->statusCode = $statusCode;
   }
+  /**
+   * @return string
+   */
   public function getStatusCode()
   {
     return $this->statusCode;
   }
+  /**
+   * @param string
+   */
   public function setUserFacingMessage($userFacingMessage)
   {
     $this->userFacingMessage = $userFacingMessage;
   }
+  /**
+   * @return string
+   */
   public function getUserFacingMessage()
   {
     return $this->userFacingMessage;

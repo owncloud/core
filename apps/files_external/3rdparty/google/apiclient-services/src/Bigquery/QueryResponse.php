@@ -20,16 +20,31 @@ namespace Google\Service\Bigquery;
 class QueryResponse extends \Google\Collection
 {
   protected $collection_key = 'rows';
+  /**
+   * @var bool
+   */
   public $cacheHit;
   protected $dmlStatsType = DmlStatistics::class;
   protected $dmlStatsDataType = '';
   protected $errorsType = ErrorProto::class;
   protected $errorsDataType = 'array';
+  /**
+   * @var bool
+   */
   public $jobComplete;
   protected $jobReferenceType = JobReference::class;
   protected $jobReferenceDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $numDmlAffectedRows;
+  /**
+   * @var string
+   */
   public $pageToken;
   protected $rowsType = TableRow::class;
   protected $rowsDataType = 'array';
@@ -37,13 +52,25 @@ class QueryResponse extends \Google\Collection
   protected $schemaDataType = '';
   protected $sessionInfoType = SessionInfo::class;
   protected $sessionInfoDataType = '';
+  /**
+   * @var string
+   */
   public $totalBytesProcessed;
+  /**
+   * @var string
+   */
   public $totalRows;
 
+  /**
+   * @param bool
+   */
   public function setCacheHit($cacheHit)
   {
     $this->cacheHit = $cacheHit;
   }
+  /**
+   * @return bool
+   */
   public function getCacheHit()
   {
     return $this->cacheHit;
@@ -76,10 +103,16 @@ class QueryResponse extends \Google\Collection
   {
     return $this->errors;
   }
+  /**
+   * @param bool
+   */
   public function setJobComplete($jobComplete)
   {
     $this->jobComplete = $jobComplete;
   }
+  /**
+   * @return bool
+   */
   public function getJobComplete()
   {
     return $this->jobComplete;
@@ -98,26 +131,44 @@ class QueryResponse extends \Google\Collection
   {
     return $this->jobReference;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNumDmlAffectedRows($numDmlAffectedRows)
   {
     $this->numDmlAffectedRows = $numDmlAffectedRows;
   }
+  /**
+   * @return string
+   */
   public function getNumDmlAffectedRows()
   {
     return $this->numDmlAffectedRows;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
@@ -164,18 +215,30 @@ class QueryResponse extends \Google\Collection
   {
     return $this->sessionInfo;
   }
+  /**
+   * @param string
+   */
   public function setTotalBytesProcessed($totalBytesProcessed)
   {
     $this->totalBytesProcessed = $totalBytesProcessed;
   }
+  /**
+   * @return string
+   */
   public function getTotalBytesProcessed()
   {
     return $this->totalBytesProcessed;
   }
+  /**
+   * @param string
+   */
   public function setTotalRows($totalRows)
   {
     $this->totalRows = $totalRows;
   }
+  /**
+   * @return string
+   */
   public function getTotalRows()
   {
     return $this->totalRows;

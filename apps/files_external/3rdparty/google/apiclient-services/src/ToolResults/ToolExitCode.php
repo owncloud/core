@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class ToolExitCode extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $number;
 
+  /**
+   * @param int
+   */
   public function setNumber($number)
   {
     $this->number = $number;
   }
+  /**
+   * @return int
+   */
   public function getNumber()
   {
     return $this->number;

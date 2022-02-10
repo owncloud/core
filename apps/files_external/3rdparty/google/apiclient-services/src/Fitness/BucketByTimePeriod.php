@@ -19,30 +19,57 @@ namespace Google\Service\Fitness;
 
 class BucketByTimePeriod extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $timeZoneId;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var int
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setTimeZoneId($timeZoneId)
   {
     $this->timeZoneId = $timeZoneId;
   }
+  /**
+   * @return string
+   */
   public function getTimeZoneId()
   {
     return $this->timeZoneId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param int
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return int
+   */
   public function getValue()
   {
     return $this->value;

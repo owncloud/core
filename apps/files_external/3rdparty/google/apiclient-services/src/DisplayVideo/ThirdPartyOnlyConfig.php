@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class ThirdPartyOnlyConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $pixelOrderIdReportingEnabled;
 
+  /**
+   * @param bool
+   */
   public function setPixelOrderIdReportingEnabled($pixelOrderIdReportingEnabled)
   {
     $this->pixelOrderIdReportingEnabled = $pixelOrderIdReportingEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getPixelOrderIdReportingEnabled()
   {
     return $this->pixelOrderIdReportingEnabled;

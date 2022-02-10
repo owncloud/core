@@ -19,17 +19,29 @@ namespace Google\Service\OSConfig;
 
 class OSPolicyResourceFile extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowInsecure;
   protected $gcsType = OSPolicyResourceFileGcs::class;
   protected $gcsDataType = '';
+  /**
+   * @var string
+   */
   public $localPath;
   protected $remoteType = OSPolicyResourceFileRemote::class;
   protected $remoteDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setAllowInsecure($allowInsecure)
   {
     $this->allowInsecure = $allowInsecure;
   }
+  /**
+   * @return bool
+   */
   public function getAllowInsecure()
   {
     return $this->allowInsecure;
@@ -48,10 +60,16 @@ class OSPolicyResourceFile extends \Google\Model
   {
     return $this->gcs;
   }
+  /**
+   * @param string
+   */
   public function setLocalPath($localPath)
   {
     $this->localPath = $localPath;
   }
+  /**
+   * @return string
+   */
   public function getLocalPath()
   {
     return $this->localPath;

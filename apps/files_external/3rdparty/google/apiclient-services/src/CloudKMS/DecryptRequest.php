@@ -19,39 +19,75 @@ namespace Google\Service\CloudKMS;
 
 class DecryptRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $additionalAuthenticatedData;
+  /**
+   * @var string
+   */
   public $additionalAuthenticatedDataCrc32c;
+  /**
+   * @var string
+   */
   public $ciphertext;
+  /**
+   * @var string
+   */
   public $ciphertextCrc32c;
 
+  /**
+   * @param string
+   */
   public function setAdditionalAuthenticatedData($additionalAuthenticatedData)
   {
     $this->additionalAuthenticatedData = $additionalAuthenticatedData;
   }
+  /**
+   * @return string
+   */
   public function getAdditionalAuthenticatedData()
   {
     return $this->additionalAuthenticatedData;
   }
+  /**
+   * @param string
+   */
   public function setAdditionalAuthenticatedDataCrc32c($additionalAuthenticatedDataCrc32c)
   {
     $this->additionalAuthenticatedDataCrc32c = $additionalAuthenticatedDataCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getAdditionalAuthenticatedDataCrc32c()
   {
     return $this->additionalAuthenticatedDataCrc32c;
   }
+  /**
+   * @param string
+   */
   public function setCiphertext($ciphertext)
   {
     $this->ciphertext = $ciphertext;
   }
+  /**
+   * @return string
+   */
   public function getCiphertext()
   {
     return $this->ciphertext;
   }
+  /**
+   * @param string
+   */
   public function setCiphertextCrc32c($ciphertextCrc32c)
   {
     $this->ciphertextCrc32c = $ciphertextCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getCiphertextCrc32c()
   {
     return $this->ciphertextCrc32c;

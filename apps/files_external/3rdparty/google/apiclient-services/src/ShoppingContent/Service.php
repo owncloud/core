@@ -20,43 +20,79 @@ namespace Google\Service\ShoppingContent;
 class Service extends \Google\Collection
 {
   protected $collection_key = 'rateGroups';
+  /**
+   * @var bool
+   */
   public $active;
+  /**
+   * @var string
+   */
   public $currency;
+  /**
+   * @var string
+   */
   public $deliveryCountry;
   protected $deliveryTimeType = DeliveryTime::class;
   protected $deliveryTimeDataType = '';
+  /**
+   * @var string
+   */
   public $eligibility;
   protected $minimumOrderValueType = Price::class;
   protected $minimumOrderValueDataType = '';
   protected $minimumOrderValueTableType = MinimumOrderValueTable::class;
   protected $minimumOrderValueTableDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $pickupServiceType = PickupCarrierService::class;
   protected $pickupServiceDataType = '';
   protected $rateGroupsType = RateGroup::class;
   protected $rateGroupsDataType = 'array';
+  /**
+   * @var string
+   */
   public $shipmentType;
 
+  /**
+   * @param bool
+   */
   public function setActive($active)
   {
     $this->active = $active;
   }
+  /**
+   * @return bool
+   */
   public function getActive()
   {
     return $this->active;
   }
+  /**
+   * @param string
+   */
   public function setCurrency($currency)
   {
     $this->currency = $currency;
   }
+  /**
+   * @return string
+   */
   public function getCurrency()
   {
     return $this->currency;
   }
+  /**
+   * @param string
+   */
   public function setDeliveryCountry($deliveryCountry)
   {
     $this->deliveryCountry = $deliveryCountry;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryCountry()
   {
     return $this->deliveryCountry;
@@ -75,10 +111,16 @@ class Service extends \Google\Collection
   {
     return $this->deliveryTime;
   }
+  /**
+   * @param string
+   */
   public function setEligibility($eligibility)
   {
     $this->eligibility = $eligibility;
   }
+  /**
+   * @return string
+   */
   public function getEligibility()
   {
     return $this->eligibility;
@@ -111,10 +153,16 @@ class Service extends \Google\Collection
   {
     return $this->minimumOrderValueTable;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -147,10 +195,16 @@ class Service extends \Google\Collection
   {
     return $this->rateGroups;
   }
+  /**
+   * @param string
+   */
   public function setShipmentType($shipmentType)
   {
     $this->shipmentType = $shipmentType;
   }
+  /**
+   * @return string
+   */
   public function getShipmentType()
   {
     return $this->shipmentType;

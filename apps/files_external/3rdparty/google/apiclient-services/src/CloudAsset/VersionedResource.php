@@ -19,21 +19,39 @@ namespace Google\Service\CloudAsset;
 
 class VersionedResource extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $resource;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param array[]
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return array[]
+   */
   public function getResource()
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

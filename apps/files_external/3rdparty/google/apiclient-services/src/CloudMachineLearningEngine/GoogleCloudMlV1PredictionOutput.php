@@ -19,15 +19,30 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1PredictionOutput extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorCount;
   public $nodeHours;
+  /**
+   * @var string
+   */
   public $outputPath;
+  /**
+   * @var string
+   */
   public $predictionCount;
 
+  /**
+   * @param string
+   */
   public function setErrorCount($errorCount)
   {
     $this->errorCount = $errorCount;
   }
+  /**
+   * @return string
+   */
   public function getErrorCount()
   {
     return $this->errorCount;
@@ -40,18 +55,30 @@ class GoogleCloudMlV1PredictionOutput extends \Google\Model
   {
     return $this->nodeHours;
   }
+  /**
+   * @param string
+   */
   public function setOutputPath($outputPath)
   {
     $this->outputPath = $outputPath;
   }
+  /**
+   * @return string
+   */
   public function getOutputPath()
   {
     return $this->outputPath;
   }
+  /**
+   * @param string
+   */
   public function setPredictionCount($predictionCount)
   {
     $this->predictionCount = $predictionCount;
   }
+  /**
+   * @return string
+   */
   public function getPredictionCount()
   {
     return $this->predictionCount;

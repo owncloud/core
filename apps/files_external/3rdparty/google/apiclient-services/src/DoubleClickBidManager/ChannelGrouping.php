@@ -20,23 +20,41 @@ namespace Google\Service\DoubleClickBidManager;
 class ChannelGrouping extends \Google\Collection
 {
   protected $collection_key = 'rules';
+  /**
+   * @var string
+   */
   public $fallbackName;
+  /**
+   * @var string
+   */
   public $name;
   protected $rulesType = Rule::class;
   protected $rulesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setFallbackName($fallbackName)
   {
     $this->fallbackName = $fallbackName;
   }
+  /**
+   * @return string
+   */
   public function getFallbackName()
   {
     return $this->fallbackName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -19,39 +19,75 @@ namespace Google\Service\YouTube;
 
 class ChannelProfileDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var string
+   */
   public $channelUrl;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $profileImageUrl;
 
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param string
+   */
   public function setChannelUrl($channelUrl)
   {
     $this->channelUrl = $channelUrl;
   }
+  /**
+   * @return string
+   */
   public function getChannelUrl()
   {
     return $this->channelUrl;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setProfileImageUrl($profileImageUrl)
   {
     $this->profileImageUrl = $profileImageUrl;
   }
+  /**
+   * @return string
+   */
   public function getProfileImageUrl()
   {
     return $this->profileImageUrl;

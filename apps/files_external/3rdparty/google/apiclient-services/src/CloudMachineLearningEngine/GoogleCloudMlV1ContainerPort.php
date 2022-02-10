@@ -19,12 +19,21 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1ContainerPort extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $containerPort;
 
+  /**
+   * @param int
+   */
   public function setContainerPort($containerPort)
   {
     $this->containerPort = $containerPort;
   }
+  /**
+   * @return int
+   */
   public function getContainerPort()
   {
     return $this->containerPort;

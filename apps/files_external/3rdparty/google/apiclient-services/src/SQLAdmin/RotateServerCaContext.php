@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class RotateServerCaContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $nextVersion;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNextVersion($nextVersion)
   {
     $this->nextVersion = $nextVersion;
   }
+  /**
+   * @return string
+   */
   public function getNextVersion()
   {
     return $this->nextVersion;

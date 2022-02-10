@@ -22,6 +22,9 @@ class GlobalOrganizationSetPolicyRequest extends \Google\Collection
   protected $collection_key = 'bindings';
   protected $bindingsType = Binding::class;
   protected $bindingsDataType = 'array';
+  /**
+   * @var string
+   */
   public $etag;
   protected $policyType = Policy::class;
   protected $policyDataType = '';
@@ -40,10 +43,16 @@ class GlobalOrganizationSetPolicyRequest extends \Google\Collection
   {
     return $this->bindings;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;

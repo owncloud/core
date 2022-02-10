@@ -19,12 +19,21 @@ namespace Google\Service\Iam;
 
 class SignJwtRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $payload;
 
+  /**
+   * @param string
+   */
   public function setPayload($payload)
   {
     $this->payload = $payload;
   }
+  /**
+   * @return string
+   */
   public function getPayload()
   {
     return $this->payload;

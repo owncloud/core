@@ -20,21 +20,39 @@ namespace Google\Service\NetworkSecurity;
 class Source extends \Google\Collection
 {
   protected $collection_key = 'principals';
+  /**
+   * @var string[]
+   */
   public $ipBlocks;
+  /**
+   * @var string[]
+   */
   public $principals;
 
+  /**
+   * @param string[]
+   */
   public function setIpBlocks($ipBlocks)
   {
     $this->ipBlocks = $ipBlocks;
   }
+  /**
+   * @return string[]
+   */
   public function getIpBlocks()
   {
     return $this->ipBlocks;
   }
+  /**
+   * @param string[]
+   */
   public function setPrincipals($principals)
   {
     $this->principals = $principals;
   }
+  /**
+   * @return string[]
+   */
   public function getPrincipals()
   {
     return $this->principals;

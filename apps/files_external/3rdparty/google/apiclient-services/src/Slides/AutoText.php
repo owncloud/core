@@ -19,15 +19,27 @@ namespace Google\Service\Slides;
 
 class AutoText extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $content;
   protected $styleType = TextStyle::class;
   protected $styleDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setContent($content)
   {
     $this->content = $content;
   }
+  /**
+   * @return string
+   */
   public function getContent()
   {
     return $this->content;
@@ -46,10 +58,16 @@ class AutoText extends \Google\Model
   {
     return $this->style;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

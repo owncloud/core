@@ -27,6 +27,9 @@ class PerXdsConfig extends \Google\Model
   protected $routeConfigDataType = '';
   protected $scopedRouteConfigType = ScopedRoutesConfigDump::class;
   protected $scopedRouteConfigDataType = '';
+  /**
+   * @var string
+   */
   public $status;
 
   /**
@@ -85,10 +88,16 @@ class PerXdsConfig extends \Google\Model
   {
     return $this->scopedRouteConfig;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

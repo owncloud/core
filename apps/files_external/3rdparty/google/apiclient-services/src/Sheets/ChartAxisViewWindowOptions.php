@@ -21,6 +21,9 @@ class ChartAxisViewWindowOptions extends \Google\Model
 {
   public $viewWindowMax;
   public $viewWindowMin;
+  /**
+   * @var string
+   */
   public $viewWindowMode;
 
   public function setViewWindowMax($viewWindowMax)
@@ -39,10 +42,16 @@ class ChartAxisViewWindowOptions extends \Google\Model
   {
     return $this->viewWindowMin;
   }
+  /**
+   * @param string
+   */
   public function setViewWindowMode($viewWindowMode)
   {
     $this->viewWindowMode = $viewWindowMode;
   }
+  /**
+   * @return string
+   */
   public function getViewWindowMode()
   {
     return $this->viewWindowMode;

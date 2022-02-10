@@ -19,14 +19,23 @@ namespace Google\Service\PeopleService;
 
 class AgeRangeType extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ageRange;
   protected $metadataType = FieldMetadata::class;
   protected $metadataDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAgeRange($ageRange)
   {
     $this->ageRange = $ageRange;
   }
+  /**
+   * @return string
+   */
   public function getAgeRange()
   {
     return $this->ageRange;

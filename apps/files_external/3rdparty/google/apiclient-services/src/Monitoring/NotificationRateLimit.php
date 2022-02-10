@@ -19,12 +19,21 @@ namespace Google\Service\Monitoring;
 
 class NotificationRateLimit extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $period;
 
+  /**
+   * @param string
+   */
   public function setPeriod($period)
   {
     $this->period = $period;
   }
+  /**
+   * @return string
+   */
   public function getPeriod()
   {
     return $this->period;

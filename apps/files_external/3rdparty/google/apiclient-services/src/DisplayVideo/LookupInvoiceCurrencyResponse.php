@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class LookupInvoiceCurrencyResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currencyCode;
 
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;

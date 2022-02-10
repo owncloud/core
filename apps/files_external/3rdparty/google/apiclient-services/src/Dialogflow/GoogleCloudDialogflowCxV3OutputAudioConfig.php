@@ -19,23 +19,41 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3OutputAudioConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audioEncoding;
+  /**
+   * @var int
+   */
   public $sampleRateHertz;
   protected $synthesizeSpeechConfigType = GoogleCloudDialogflowCxV3SynthesizeSpeechConfig::class;
   protected $synthesizeSpeechConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAudioEncoding($audioEncoding)
   {
     $this->audioEncoding = $audioEncoding;
   }
+  /**
+   * @return string
+   */
   public function getAudioEncoding()
   {
     return $this->audioEncoding;
   }
+  /**
+   * @param int
+   */
   public function setSampleRateHertz($sampleRateHertz)
   {
     $this->sampleRateHertz = $sampleRateHertz;
   }
+  /**
+   * @return int
+   */
   public function getSampleRateHertz()
   {
     return $this->sampleRateHertz;

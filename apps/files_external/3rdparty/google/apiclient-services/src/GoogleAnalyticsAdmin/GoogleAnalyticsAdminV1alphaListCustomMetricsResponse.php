@@ -22,6 +22,9 @@ class GoogleAnalyticsAdminV1alphaListCustomMetricsResponse extends \Google\Colle
   protected $collection_key = 'customMetrics';
   protected $customMetricsType = GoogleAnalyticsAdminV1alphaCustomMetric::class;
   protected $customMetricsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAnalyticsAdminV1alphaListCustomMetricsResponse extends \Google\Colle
   {
     return $this->customMetrics;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

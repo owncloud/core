@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class TargetingExpansionConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $excludeFirstPartyAudience;
+  /**
+   * @var string
+   */
   public $targetingExpansionLevel;
 
+  /**
+   * @param bool
+   */
   public function setExcludeFirstPartyAudience($excludeFirstPartyAudience)
   {
     $this->excludeFirstPartyAudience = $excludeFirstPartyAudience;
   }
+  /**
+   * @return bool
+   */
   public function getExcludeFirstPartyAudience()
   {
     return $this->excludeFirstPartyAudience;
   }
+  /**
+   * @param string
+   */
   public function setTargetingExpansionLevel($targetingExpansionLevel)
   {
     $this->targetingExpansionLevel = $targetingExpansionLevel;
   }
+  /**
+   * @return string
+   */
   public function getTargetingExpansionLevel()
   {
     return $this->targetingExpansionLevel;

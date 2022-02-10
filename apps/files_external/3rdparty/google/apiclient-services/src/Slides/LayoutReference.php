@@ -19,21 +19,39 @@ namespace Google\Service\Slides;
 
 class LayoutReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $layoutId;
+  /**
+   * @var string
+   */
   public $predefinedLayout;
 
+  /**
+   * @param string
+   */
   public function setLayoutId($layoutId)
   {
     $this->layoutId = $layoutId;
   }
+  /**
+   * @return string
+   */
   public function getLayoutId()
   {
     return $this->layoutId;
   }
+  /**
+   * @param string
+   */
   public function setPredefinedLayout($predefinedLayout)
   {
     $this->predefinedLayout = $predefinedLayout;
   }
+  /**
+   * @return string
+   */
   public function getPredefinedLayout()
   {
     return $this->predefinedLayout;

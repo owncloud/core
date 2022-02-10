@@ -20,23 +20,41 @@ namespace Google\Service\Spanner;
 class KeySet extends \Google\Collection
 {
   protected $collection_key = 'ranges';
+  /**
+   * @var bool
+   */
   public $all;
+  /**
+   * @var array[]
+   */
   public $keys;
   protected $rangesType = KeyRange::class;
   protected $rangesDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setAll($all)
   {
     $this->all = $all;
   }
+  /**
+   * @return bool
+   */
   public function getAll()
   {
     return $this->all;
   }
+  /**
+   * @param array[]
+   */
   public function setKeys($keys)
   {
     $this->keys = $keys;
   }
+  /**
+   * @return array[]
+   */
   public function getKeys()
   {
     return $this->keys;

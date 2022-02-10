@@ -19,32 +19,62 @@ namespace Google\Service\Analytics;
 
 class ExperimentVariations extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $url;
   public $weight;
+  /**
+   * @var bool
+   */
   public $won;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;
@@ -57,10 +87,16 @@ class ExperimentVariations extends \Google\Model
   {
     return $this->weight;
   }
+  /**
+   * @param bool
+   */
   public function setWon($won)
   {
     $this->won = $won;
   }
+  /**
+   * @return bool
+   */
   public function getWon()
   {
     return $this->won;

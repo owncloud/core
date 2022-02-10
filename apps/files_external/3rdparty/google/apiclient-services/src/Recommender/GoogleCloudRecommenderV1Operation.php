@@ -19,39 +19,81 @@ namespace Google\Service\Recommender;
 
 class GoogleCloudRecommenderV1Operation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var array[]
+   */
   public $pathFilters;
   protected $pathValueMatchersType = GoogleCloudRecommenderV1ValueMatcher::class;
   protected $pathValueMatchersDataType = 'map';
+  /**
+   * @var string
+   */
   public $resource;
+  /**
+   * @var string
+   */
   public $resourceType;
+  /**
+   * @var string
+   */
   public $sourcePath;
+  /**
+   * @var string
+   */
   public $sourceResource;
+  /**
+   * @var array
+   */
   public $value;
   protected $valueMatcherType = GoogleCloudRecommenderV1ValueMatcher::class;
   protected $valueMatcherDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param array[]
+   */
   public function setPathFilters($pathFilters)
   {
     $this->pathFilters = $pathFilters;
   }
+  /**
+   * @return array[]
+   */
   public function getPathFilters()
   {
     return $this->pathFilters;
@@ -70,42 +112,72 @@ class GoogleCloudRecommenderV1Operation extends \Google\Model
   {
     return $this->pathValueMatchers;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;
   }
+  /**
+   * @param string
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string
+   */
   public function getResourceType()
   {
     return $this->resourceType;
   }
+  /**
+   * @param string
+   */
   public function setSourcePath($sourcePath)
   {
     $this->sourcePath = $sourcePath;
   }
+  /**
+   * @return string
+   */
   public function getSourcePath()
   {
     return $this->sourcePath;
   }
+  /**
+   * @param string
+   */
   public function setSourceResource($sourceResource)
   {
     $this->sourceResource = $sourceResource;
   }
+  /**
+   * @return string
+   */
   public function getSourceResource()
   {
     return $this->sourceResource;
   }
+  /**
+   * @param array
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array
+   */
   public function getValue()
   {
     return $this->value;

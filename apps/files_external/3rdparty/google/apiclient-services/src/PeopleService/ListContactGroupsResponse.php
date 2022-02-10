@@ -22,8 +22,17 @@ class ListContactGroupsResponse extends \Google\Collection
   protected $collection_key = 'contactGroups';
   protected $contactGroupsType = ContactGroup::class;
   protected $contactGroupsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string
+   */
   public $nextSyncToken;
+  /**
+   * @var int
+   */
   public $totalItems;
 
   /**
@@ -40,26 +49,44 @@ class ListContactGroupsResponse extends \Google\Collection
   {
     return $this->contactGroups;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string
+   */
   public function setNextSyncToken($nextSyncToken)
   {
     $this->nextSyncToken = $nextSyncToken;
   }
+  /**
+   * @return string
+   */
   public function getNextSyncToken()
   {
     return $this->nextSyncToken;
   }
+  /**
+   * @param int
+   */
   public function setTotalItems($totalItems)
   {
     $this->totalItems = $totalItems;
   }
+  /**
+   * @return int
+   */
   public function getTotalItems()
   {
     return $this->totalItems;

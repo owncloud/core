@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class WatchSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backgroundColor;
+  /**
+   * @var string
+   */
   public $featuredPlaylistId;
+  /**
+   * @var string
+   */
   public $textColor;
 
+  /**
+   * @param string
+   */
   public function setBackgroundColor($backgroundColor)
   {
     $this->backgroundColor = $backgroundColor;
   }
+  /**
+   * @return string
+   */
   public function getBackgroundColor()
   {
     return $this->backgroundColor;
   }
+  /**
+   * @param string
+   */
   public function setFeaturedPlaylistId($featuredPlaylistId)
   {
     $this->featuredPlaylistId = $featuredPlaylistId;
   }
+  /**
+   * @return string
+   */
   public function getFeaturedPlaylistId()
   {
     return $this->featuredPlaylistId;
   }
+  /**
+   * @param string
+   */
   public function setTextColor($textColor)
   {
     $this->textColor = $textColor;
   }
+  /**
+   * @return string
+   */
   public function getTextColor()
   {
     return $this->textColor;

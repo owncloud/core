@@ -20,32 +20,59 @@ namespace Google\Service\Slides;
 class UpdateTableRowPropertiesRequest extends \Google\Collection
 {
   protected $collection_key = 'rowIndices';
+  /**
+   * @var string
+   */
   public $fields;
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var int[]
+   */
   public $rowIndices;
   protected $tableRowPropertiesType = TableRowProperties::class;
   protected $tableRowPropertiesDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param int[]
+   */
   public function setRowIndices($rowIndices)
   {
     $this->rowIndices = $rowIndices;
   }
+  /**
+   * @return int[]
+   */
   public function getRowIndices()
   {
     return $this->rowIndices;

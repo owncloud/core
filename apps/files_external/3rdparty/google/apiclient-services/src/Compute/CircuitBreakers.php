@@ -19,48 +19,93 @@ namespace Google\Service\Compute;
 
 class CircuitBreakers extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxConnections;
+  /**
+   * @var int
+   */
   public $maxPendingRequests;
+  /**
+   * @var int
+   */
   public $maxRequests;
+  /**
+   * @var int
+   */
   public $maxRequestsPerConnection;
+  /**
+   * @var int
+   */
   public $maxRetries;
 
+  /**
+   * @param int
+   */
   public function setMaxConnections($maxConnections)
   {
     $this->maxConnections = $maxConnections;
   }
+  /**
+   * @return int
+   */
   public function getMaxConnections()
   {
     return $this->maxConnections;
   }
+  /**
+   * @param int
+   */
   public function setMaxPendingRequests($maxPendingRequests)
   {
     $this->maxPendingRequests = $maxPendingRequests;
   }
+  /**
+   * @return int
+   */
   public function getMaxPendingRequests()
   {
     return $this->maxPendingRequests;
   }
+  /**
+   * @param int
+   */
   public function setMaxRequests($maxRequests)
   {
     $this->maxRequests = $maxRequests;
   }
+  /**
+   * @return int
+   */
   public function getMaxRequests()
   {
     return $this->maxRequests;
   }
+  /**
+   * @param int
+   */
   public function setMaxRequestsPerConnection($maxRequestsPerConnection)
   {
     $this->maxRequestsPerConnection = $maxRequestsPerConnection;
   }
+  /**
+   * @return int
+   */
   public function getMaxRequestsPerConnection()
   {
     return $this->maxRequestsPerConnection;
   }
+  /**
+   * @param int
+   */
   public function setMaxRetries($maxRetries)
   {
     $this->maxRetries = $maxRetries;
   }
+  /**
+   * @return int
+   */
   public function getMaxRetries()
   {
     return $this->maxRetries;

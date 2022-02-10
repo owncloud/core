@@ -19,12 +19,21 @@ namespace Google\Service\CertificateAuthorityService;
 
 class FetchCertificateAuthorityCsrResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pemCsr;
 
+  /**
+   * @param string
+   */
   public function setPemCsr($pemCsr)
   {
     $this->pemCsr = $pemCsr;
   }
+  /**
+   * @return string
+   */
   public function getPemCsr()
   {
     return $this->pemCsr;

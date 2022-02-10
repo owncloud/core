@@ -20,21 +20,39 @@ namespace Google\Service\Sasportal;
 class SasPortalTestPermissionsRequest extends \Google\Collection
 {
   protected $collection_key = 'permissions';
+  /**
+   * @var string[]
+   */
   public $permissions;
+  /**
+   * @var string
+   */
   public $resource;
 
+  /**
+   * @param string[]
+   */
   public function setPermissions($permissions)
   {
     $this->permissions = $permissions;
   }
+  /**
+   * @return string[]
+   */
   public function getPermissions()
   {
     return $this->permissions;
   }
+  /**
+   * @param string
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return string
+   */
   public function getResource()
   {
     return $this->resource;

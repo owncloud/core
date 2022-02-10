@@ -19,30 +19,57 @@ namespace Google\Service\AndroidEnterprise;
 
 class SignupInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $completionToken;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setCompletionToken($completionToken)
   {
     $this->completionToken = $completionToken;
   }
+  /**
+   * @return string
+   */
   public function getCompletionToken()
   {
     return $this->completionToken;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

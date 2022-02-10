@@ -19,12 +19,21 @@ namespace Google\Service\CloudIdentity;
 
 class CheckTransitiveMembershipResponse extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $hasMembership;
 
+  /**
+   * @param bool
+   */
   public function setHasMembership($hasMembership)
   {
     $this->hasMembership = $hasMembership;
   }
+  /**
+   * @return bool
+   */
   public function getHasMembership()
   {
     return $this->hasMembership;

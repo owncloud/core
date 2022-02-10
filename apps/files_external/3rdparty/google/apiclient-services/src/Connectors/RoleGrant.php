@@ -20,24 +20,45 @@ namespace Google\Service\Connectors;
 class RoleGrant extends \Google\Collection
 {
   protected $collection_key = 'roles';
+  /**
+   * @var string
+   */
   public $helperTextTemplate;
+  /**
+   * @var string
+   */
   public $principal;
   protected $resourceType = ConnectorsResource::class;
   protected $resourceDataType = '';
+  /**
+   * @var string[]
+   */
   public $roles;
 
+  /**
+   * @param string
+   */
   public function setHelperTextTemplate($helperTextTemplate)
   {
     $this->helperTextTemplate = $helperTextTemplate;
   }
+  /**
+   * @return string
+   */
   public function getHelperTextTemplate()
   {
     return $this->helperTextTemplate;
   }
+  /**
+   * @param string
+   */
   public function setPrincipal($principal)
   {
     $this->principal = $principal;
   }
+  /**
+   * @return string
+   */
   public function getPrincipal()
   {
     return $this->principal;
@@ -56,10 +77,16 @@ class RoleGrant extends \Google\Collection
   {
     return $this->resource;
   }
+  /**
+   * @param string[]
+   */
   public function setRoles($roles)
   {
     $this->roles = $roles;
   }
+  /**
+   * @return string[]
+   */
   public function getRoles()
   {
     return $this->roles;

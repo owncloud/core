@@ -19,12 +19,21 @@ namespace Google\Service\YouTube;
 
 class LiveChatTextMessageDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $messageText;
 
+  /**
+   * @param string
+   */
   public function setMessageText($messageText)
   {
     $this->messageText = $messageText;
   }
+  /**
+   * @return string
+   */
   public function getMessageText()
   {
     return $this->messageText;

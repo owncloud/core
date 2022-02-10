@@ -19,30 +19,57 @@ namespace Google\Service\CloudAsset;
 
 class Date extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $day;
+  /**
+   * @var int
+   */
   public $month;
+  /**
+   * @var int
+   */
   public $year;
 
+  /**
+   * @param int
+   */
   public function setDay($day)
   {
     $this->day = $day;
   }
+  /**
+   * @return int
+   */
   public function getDay()
   {
     return $this->day;
   }
+  /**
+   * @param int
+   */
   public function setMonth($month)
   {
     $this->month = $month;
   }
+  /**
+   * @return int
+   */
   public function getMonth()
   {
     return $this->month;
   }
+  /**
+   * @param int
+   */
   public function setYear($year)
   {
     $this->year = $year;
   }
+  /**
+   * @return int
+   */
   public function getYear()
   {
     return $this->year;

@@ -19,48 +19,93 @@ namespace Google\Service\BigQueryReservation;
 
 class Reservation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var bool
+   */
   public $ignoreIdleSlots;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $slotCapacity;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param bool
+   */
   public function setIgnoreIdleSlots($ignoreIdleSlots)
   {
     $this->ignoreIdleSlots = $ignoreIdleSlots;
   }
+  /**
+   * @return bool
+   */
   public function getIgnoreIdleSlots()
   {
     return $this->ignoreIdleSlots;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSlotCapacity($slotCapacity)
   {
     $this->slotCapacity = $slotCapacity;
   }
+  /**
+   * @return string
+   */
   public function getSlotCapacity()
   {
     return $this->slotCapacity;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

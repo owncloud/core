@@ -21,10 +21,25 @@ class Profile extends \Google\Model
 {
   protected $deploymentType = Deployment::class;
   protected $deploymentDataType = '';
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $profileBytes;
+  /**
+   * @var string
+   */
   public $profileType;
 
   /**
@@ -41,42 +56,72 @@ class Profile extends \Google\Model
   {
     return $this->deployment;
   }
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProfileBytes($profileBytes)
   {
     $this->profileBytes = $profileBytes;
   }
+  /**
+   * @return string
+   */
   public function getProfileBytes()
   {
     return $this->profileBytes;
   }
+  /**
+   * @param string
+   */
   public function setProfileType($profileType)
   {
     $this->profileType = $profileType;
   }
+  /**
+   * @return string
+   */
   public function getProfileType()
   {
     return $this->profileType;

@@ -21,6 +21,9 @@ class SiteVerificationWebResourceGettokenRequest extends \Google\Model
 {
   protected $siteType = SiteVerificationWebResourceGettokenRequestSite::class;
   protected $siteDataType = '';
+  /**
+   * @var string
+   */
   public $verificationMethod;
 
   /**
@@ -37,10 +40,16 @@ class SiteVerificationWebResourceGettokenRequest extends \Google\Model
   {
     return $this->site;
   }
+  /**
+   * @param string
+   */
   public function setVerificationMethod($verificationMethod)
   {
     $this->verificationMethod = $verificationMethod;
   }
+  /**
+   * @return string
+   */
   public function getVerificationMethod()
   {
     return $this->verificationMethod;

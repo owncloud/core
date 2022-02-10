@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1ApiProductRef extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiproduct;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setApiproduct($apiproduct)
   {
     $this->apiproduct = $apiproduct;
   }
+  /**
+   * @return string
+   */
   public function getApiproduct()
   {
     return $this->apiproduct;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

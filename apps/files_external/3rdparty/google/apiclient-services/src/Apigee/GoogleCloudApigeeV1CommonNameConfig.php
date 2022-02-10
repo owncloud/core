@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1CommonNameConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $matchWildCards;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param bool
+   */
   public function setMatchWildCards($matchWildCards)
   {
     $this->matchWildCards = $matchWildCards;
   }
+  /**
+   * @return bool
+   */
   public function getMatchWildCards()
   {
     return $this->matchWildCards;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

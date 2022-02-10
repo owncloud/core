@@ -20,58 +20,121 @@ namespace Google\Service\CloudDebugger;
 class Breakpoint extends \Google\Collection
 {
   protected $collection_key = 'variableTable';
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string
+   */
   public $canaryExpireTime;
+  /**
+   * @var string
+   */
   public $condition;
+  /**
+   * @var string
+   */
   public $createTime;
   protected $evaluatedExpressionsType = Variable::class;
   protected $evaluatedExpressionsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $expressions;
+  /**
+   * @var string
+   */
   public $finalTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var bool
+   */
   public $isFinalState;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $locationType = SourceLocation::class;
   protected $locationDataType = '';
+  /**
+   * @var string
+   */
   public $logLevel;
+  /**
+   * @var string
+   */
   public $logMessageFormat;
   protected $stackFramesType = StackFrame::class;
   protected $stackFramesDataType = 'array';
+  /**
+   * @var string
+   */
   public $state;
   protected $statusType = StatusMessage::class;
   protected $statusDataType = '';
+  /**
+   * @var string
+   */
   public $userEmail;
   protected $variableTableType = Variable::class;
   protected $variableTableDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string
+   */
   public function setCanaryExpireTime($canaryExpireTime)
   {
     $this->canaryExpireTime = $canaryExpireTime;
   }
+  /**
+   * @return string
+   */
   public function getCanaryExpireTime()
   {
     return $this->canaryExpireTime;
   }
+  /**
+   * @param string
+   */
   public function setCondition($condition)
   {
     $this->condition = $condition;
   }
+  /**
+   * @return string
+   */
   public function getCondition()
   {
     return $this->condition;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -90,42 +153,72 @@ class Breakpoint extends \Google\Collection
   {
     return $this->evaluatedExpressions;
   }
+  /**
+   * @param string[]
+   */
   public function setExpressions($expressions)
   {
     $this->expressions = $expressions;
   }
+  /**
+   * @return string[]
+   */
   public function getExpressions()
   {
     return $this->expressions;
   }
+  /**
+   * @param string
+   */
   public function setFinalTime($finalTime)
   {
     $this->finalTime = $finalTime;
   }
+  /**
+   * @return string
+   */
   public function getFinalTime()
   {
     return $this->finalTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param bool
+   */
   public function setIsFinalState($isFinalState)
   {
     $this->isFinalState = $isFinalState;
   }
+  /**
+   * @return bool
+   */
   public function getIsFinalState()
   {
     return $this->isFinalState;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -144,18 +237,30 @@ class Breakpoint extends \Google\Collection
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setLogLevel($logLevel)
   {
     $this->logLevel = $logLevel;
   }
+  /**
+   * @return string
+   */
   public function getLogLevel()
   {
     return $this->logLevel;
   }
+  /**
+   * @param string
+   */
   public function setLogMessageFormat($logMessageFormat)
   {
     $this->logMessageFormat = $logMessageFormat;
   }
+  /**
+   * @return string
+   */
   public function getLogMessageFormat()
   {
     return $this->logMessageFormat;
@@ -174,10 +279,16 @@ class Breakpoint extends \Google\Collection
   {
     return $this->stackFrames;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
@@ -196,10 +307,16 @@ class Breakpoint extends \Google\Collection
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setUserEmail($userEmail)
   {
     $this->userEmail = $userEmail;
   }
+  /**
+   * @return string
+   */
   public function getUserEmail()
   {
     return $this->userEmail;

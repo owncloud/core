@@ -20,14 +20,23 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1DebugSessionTransaction extends \Google\Collection
 {
   protected $collection_key = 'point';
+  /**
+   * @var bool
+   */
   public $completed;
   protected $pointType = GoogleCloudApigeeV1Point::class;
   protected $pointDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setCompleted($completed)
   {
     $this->completed = $completed;
   }
+  /**
+   * @return bool
+   */
   public function getCompleted()
   {
     return $this->completed;

@@ -19,39 +19,75 @@ namespace Google\Service\FirebaseDynamicLinks;
 
 class ITunesConnectAnalytics extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $at;
+  /**
+   * @var string
+   */
   public $ct;
+  /**
+   * @var string
+   */
   public $mt;
+  /**
+   * @var string
+   */
   public $pt;
 
+  /**
+   * @param string
+   */
   public function setAt($at)
   {
     $this->at = $at;
   }
+  /**
+   * @return string
+   */
   public function getAt()
   {
     return $this->at;
   }
+  /**
+   * @param string
+   */
   public function setCt($ct)
   {
     $this->ct = $ct;
   }
+  /**
+   * @return string
+   */
   public function getCt()
   {
     return $this->ct;
   }
+  /**
+   * @param string
+   */
   public function setMt($mt)
   {
     $this->mt = $mt;
   }
+  /**
+   * @return string
+   */
   public function getMt()
   {
     return $this->mt;
   }
+  /**
+   * @param string
+   */
   public function setPt($pt)
   {
     $this->pt = $pt;
   }
+  /**
+   * @return string
+   */
   public function getPt()
   {
     return $this->pt;

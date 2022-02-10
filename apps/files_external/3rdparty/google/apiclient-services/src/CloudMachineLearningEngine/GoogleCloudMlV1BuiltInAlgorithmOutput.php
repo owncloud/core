@@ -19,39 +19,75 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1BuiltInAlgorithmOutput extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $framework;
+  /**
+   * @var string
+   */
   public $modelPath;
+  /**
+   * @var string
+   */
   public $pythonVersion;
+  /**
+   * @var string
+   */
   public $runtimeVersion;
 
+  /**
+   * @param string
+   */
   public function setFramework($framework)
   {
     $this->framework = $framework;
   }
+  /**
+   * @return string
+   */
   public function getFramework()
   {
     return $this->framework;
   }
+  /**
+   * @param string
+   */
   public function setModelPath($modelPath)
   {
     $this->modelPath = $modelPath;
   }
+  /**
+   * @return string
+   */
   public function getModelPath()
   {
     return $this->modelPath;
   }
+  /**
+   * @param string
+   */
   public function setPythonVersion($pythonVersion)
   {
     $this->pythonVersion = $pythonVersion;
   }
+  /**
+   * @return string
+   */
   public function getPythonVersion()
   {
     return $this->pythonVersion;
   }
+  /**
+   * @param string
+   */
   public function setRuntimeVersion($runtimeVersion)
   {
     $this->runtimeVersion = $runtimeVersion;
   }
+  /**
+   * @return string
+   */
   public function getRuntimeVersion()
   {
     return $this->runtimeVersion;

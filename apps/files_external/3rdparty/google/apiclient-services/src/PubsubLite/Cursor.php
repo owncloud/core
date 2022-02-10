@@ -19,12 +19,21 @@ namespace Google\Service\PubsubLite;
 
 class Cursor extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $offset;
 
+  /**
+   * @param string
+   */
   public function setOffset($offset)
   {
     $this->offset = $offset;
   }
+  /**
+   * @return string
+   */
   public function getOffset()
   {
     return $this->offset;

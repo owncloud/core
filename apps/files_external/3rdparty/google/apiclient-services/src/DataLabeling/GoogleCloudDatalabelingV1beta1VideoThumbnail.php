@@ -19,21 +19,39 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1VideoThumbnail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $thumbnail;
+  /**
+   * @var string
+   */
   public $timeOffset;
 
+  /**
+   * @param string
+   */
   public function setThumbnail($thumbnail)
   {
     $this->thumbnail = $thumbnail;
   }
+  /**
+   * @return string
+   */
   public function getThumbnail()
   {
     return $this->thumbnail;
   }
+  /**
+   * @param string
+   */
   public function setTimeOffset($timeOffset)
   {
     $this->timeOffset = $timeOffset;
   }
+  /**
+   * @return string
+   */
   public function getTimeOffset()
   {
     return $this->timeOffset;

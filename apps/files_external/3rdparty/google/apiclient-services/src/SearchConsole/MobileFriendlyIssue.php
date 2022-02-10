@@ -19,12 +19,21 @@ namespace Google\Service\SearchConsole;
 
 class MobileFriendlyIssue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rule;
 
+  /**
+   * @param string
+   */
   public function setRule($rule)
   {
     $this->rule = $rule;
   }
+  /**
+   * @return string
+   */
   public function getRule()
   {
     return $this->rule;

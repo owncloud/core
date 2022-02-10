@@ -20,48 +20,93 @@ namespace Google\Service\Testing;
 class IosVersion extends \Google\Collection
 {
   protected $collection_key = 'tags';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var int
+   */
   public $majorVersion;
+  /**
+   * @var int
+   */
   public $minorVersion;
+  /**
+   * @var string[]
+   */
   public $supportedXcodeVersionIds;
+  /**
+   * @var string[]
+   */
   public $tags;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param int
+   */
   public function setMajorVersion($majorVersion)
   {
     $this->majorVersion = $majorVersion;
   }
+  /**
+   * @return int
+   */
   public function getMajorVersion()
   {
     return $this->majorVersion;
   }
+  /**
+   * @param int
+   */
   public function setMinorVersion($minorVersion)
   {
     $this->minorVersion = $minorVersion;
   }
+  /**
+   * @return int
+   */
   public function getMinorVersion()
   {
     return $this->minorVersion;
   }
+  /**
+   * @param string[]
+   */
   public function setSupportedXcodeVersionIds($supportedXcodeVersionIds)
   {
     $this->supportedXcodeVersionIds = $supportedXcodeVersionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSupportedXcodeVersionIds()
   {
     return $this->supportedXcodeVersionIds;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;

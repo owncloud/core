@@ -19,48 +19,93 @@ namespace Google\Service\Fcmdata;
 
 class GoogleFirebaseFcmDataV1beta1MessageOutcomePercents extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $delivered;
+  /**
+   * @var float
+   */
   public $droppedAppForceStopped;
+  /**
+   * @var float
+   */
   public $droppedDeviceInactive;
+  /**
+   * @var float
+   */
   public $droppedTooManyPendingMessages;
+  /**
+   * @var float
+   */
   public $pending;
 
+  /**
+   * @param float
+   */
   public function setDelivered($delivered)
   {
     $this->delivered = $delivered;
   }
+  /**
+   * @return float
+   */
   public function getDelivered()
   {
     return $this->delivered;
   }
+  /**
+   * @param float
+   */
   public function setDroppedAppForceStopped($droppedAppForceStopped)
   {
     $this->droppedAppForceStopped = $droppedAppForceStopped;
   }
+  /**
+   * @return float
+   */
   public function getDroppedAppForceStopped()
   {
     return $this->droppedAppForceStopped;
   }
+  /**
+   * @param float
+   */
   public function setDroppedDeviceInactive($droppedDeviceInactive)
   {
     $this->droppedDeviceInactive = $droppedDeviceInactive;
   }
+  /**
+   * @return float
+   */
   public function getDroppedDeviceInactive()
   {
     return $this->droppedDeviceInactive;
   }
+  /**
+   * @param float
+   */
   public function setDroppedTooManyPendingMessages($droppedTooManyPendingMessages)
   {
     $this->droppedTooManyPendingMessages = $droppedTooManyPendingMessages;
   }
+  /**
+   * @return float
+   */
   public function getDroppedTooManyPendingMessages()
   {
     return $this->droppedTooManyPendingMessages;
   }
+  /**
+   * @param float
+   */
   public function setPending($pending)
   {
     $this->pending = $pending;
   }
+  /**
+   * @return float
+   */
   public function getPending()
   {
     return $this->pending;

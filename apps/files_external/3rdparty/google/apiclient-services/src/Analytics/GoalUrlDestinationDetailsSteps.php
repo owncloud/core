@@ -19,30 +19,57 @@ namespace Google\Service\Analytics;
 
 class GoalUrlDestinationDetailsSteps extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $number;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setNumber($number)
   {
     $this->number = $number;
   }
+  /**
+   * @return int
+   */
   public function getNumber()
   {
     return $this->number;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

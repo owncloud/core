@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class FsCommand extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $left;
+  /**
+   * @var string
+   */
   public $positionOption;
+  /**
+   * @var int
+   */
   public $top;
+  /**
+   * @var int
+   */
   public $windowHeight;
+  /**
+   * @var int
+   */
   public $windowWidth;
 
+  /**
+   * @param int
+   */
   public function setLeft($left)
   {
     $this->left = $left;
   }
+  /**
+   * @return int
+   */
   public function getLeft()
   {
     return $this->left;
   }
+  /**
+   * @param string
+   */
   public function setPositionOption($positionOption)
   {
     $this->positionOption = $positionOption;
   }
+  /**
+   * @return string
+   */
   public function getPositionOption()
   {
     return $this->positionOption;
   }
+  /**
+   * @param int
+   */
   public function setTop($top)
   {
     $this->top = $top;
   }
+  /**
+   * @return int
+   */
   public function getTop()
   {
     return $this->top;
   }
+  /**
+   * @param int
+   */
   public function setWindowHeight($windowHeight)
   {
     $this->windowHeight = $windowHeight;
   }
+  /**
+   * @return int
+   */
   public function getWindowHeight()
   {
     return $this->windowHeight;
   }
+  /**
+   * @param int
+   */
   public function setWindowWidth($windowWidth)
   {
     $this->windowWidth = $windowWidth;
   }
+  /**
+   * @return int
+   */
   public function getWindowWidth()
   {
     return $this->windowWidth;

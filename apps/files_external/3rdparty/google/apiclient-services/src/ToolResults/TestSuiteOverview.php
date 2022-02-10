@@ -21,11 +21,29 @@ class TestSuiteOverview extends \Google\Model
 {
   protected $elapsedTimeType = Duration::class;
   protected $elapsedTimeDataType = '';
+  /**
+   * @var int
+   */
   public $errorCount;
+  /**
+   * @var int
+   */
   public $failureCount;
+  /**
+   * @var int
+   */
   public $flakyCount;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $skippedCount;
+  /**
+   * @var int
+   */
   public $totalCount;
   protected $xmlSourceType = FileReference::class;
   protected $xmlSourceDataType = '';
@@ -44,50 +62,86 @@ class TestSuiteOverview extends \Google\Model
   {
     return $this->elapsedTime;
   }
+  /**
+   * @param int
+   */
   public function setErrorCount($errorCount)
   {
     $this->errorCount = $errorCount;
   }
+  /**
+   * @return int
+   */
   public function getErrorCount()
   {
     return $this->errorCount;
   }
+  /**
+   * @param int
+   */
   public function setFailureCount($failureCount)
   {
     $this->failureCount = $failureCount;
   }
+  /**
+   * @return int
+   */
   public function getFailureCount()
   {
     return $this->failureCount;
   }
+  /**
+   * @param int
+   */
   public function setFlakyCount($flakyCount)
   {
     $this->flakyCount = $flakyCount;
   }
+  /**
+   * @return int
+   */
   public function getFlakyCount()
   {
     return $this->flakyCount;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setSkippedCount($skippedCount)
   {
     $this->skippedCount = $skippedCount;
   }
+  /**
+   * @return int
+   */
   public function getSkippedCount()
   {
     return $this->skippedCount;
   }
+  /**
+   * @param int
+   */
   public function setTotalCount($totalCount)
   {
     $this->totalCount = $totalCount;
   }
+  /**
+   * @return int
+   */
   public function getTotalCount()
   {
     return $this->totalCount;

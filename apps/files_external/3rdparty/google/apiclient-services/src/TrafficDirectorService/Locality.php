@@ -19,30 +19,57 @@ namespace Google\Service\TrafficDirectorService;
 
 class Locality extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $subZone;
+  /**
+   * @var string
+   */
   public $zone;
 
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setSubZone($subZone)
   {
     $this->subZone = $subZone;
   }
+  /**
+   * @return string
+   */
   public function getSubZone()
   {
     return $this->subZone;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

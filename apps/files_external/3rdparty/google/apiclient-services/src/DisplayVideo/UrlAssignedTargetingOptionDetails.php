@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class UrlAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $negative;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param bool
+   */
   public function setNegative($negative)
   {
     $this->negative = $negative;
   }
+  /**
+   * @return bool
+   */
   public function getNegative()
   {
     return $this->negative;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

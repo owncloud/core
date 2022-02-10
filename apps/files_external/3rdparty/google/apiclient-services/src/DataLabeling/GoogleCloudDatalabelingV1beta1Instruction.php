@@ -20,30 +20,63 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1beta1Instruction extends \Google\Collection
 {
   protected $collection_key = 'blockingResources';
+  /**
+   * @var string[]
+   */
   public $blockingResources;
+  /**
+   * @var string
+   */
   public $createTime;
   protected $csvInstructionType = GoogleCloudDatalabelingV1beta1CsvInstruction::class;
   protected $csvInstructionDataType = '';
+  /**
+   * @var string
+   */
   public $dataType;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
   protected $pdfInstructionType = GoogleCloudDatalabelingV1beta1PdfInstruction::class;
   protected $pdfInstructionDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string[]
+   */
   public function setBlockingResources($blockingResources)
   {
     $this->blockingResources = $blockingResources;
   }
+  /**
+   * @return string[]
+   */
   public function getBlockingResources()
   {
     return $this->blockingResources;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -62,34 +95,58 @@ class GoogleCloudDatalabelingV1beta1Instruction extends \Google\Collection
   {
     return $this->csvInstruction;
   }
+  /**
+   * @param string
+   */
   public function setDataType($dataType)
   {
     $this->dataType = $dataType;
   }
+  /**
+   * @return string
+   */
   public function getDataType()
   {
     return $this->dataType;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -108,10 +165,16 @@ class GoogleCloudDatalabelingV1beta1Instruction extends \Google\Collection
   {
     return $this->pdfInstruction;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

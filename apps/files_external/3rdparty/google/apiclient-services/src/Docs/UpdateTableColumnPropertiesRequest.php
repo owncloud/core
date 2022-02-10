@@ -20,25 +20,43 @@ namespace Google\Service\Docs;
 class UpdateTableColumnPropertiesRequest extends \Google\Collection
 {
   protected $collection_key = 'columnIndices';
+  /**
+   * @var int[]
+   */
   public $columnIndices;
+  /**
+   * @var string
+   */
   public $fields;
   protected $tableColumnPropertiesType = TableColumnProperties::class;
   protected $tableColumnPropertiesDataType = '';
   protected $tableStartLocationType = Location::class;
   protected $tableStartLocationDataType = '';
 
+  /**
+   * @param int[]
+   */
   public function setColumnIndices($columnIndices)
   {
     $this->columnIndices = $columnIndices;
   }
+  /**
+   * @return int[]
+   */
   public function getColumnIndices()
   {
     return $this->columnIndices;
   }
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

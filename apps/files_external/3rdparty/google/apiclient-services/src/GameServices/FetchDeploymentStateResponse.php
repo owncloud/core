@@ -22,6 +22,9 @@ class FetchDeploymentStateResponse extends \Google\Collection
   protected $collection_key = 'unavailable';
   protected $clusterStateType = DeployedClusterState::class;
   protected $clusterStateDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $unavailable;
 
   /**
@@ -38,10 +41,16 @@ class FetchDeploymentStateResponse extends \Google\Collection
   {
     return $this->clusterState;
   }
+  /**
+   * @param string[]
+   */
   public function setUnavailable($unavailable)
   {
     $this->unavailable = $unavailable;
   }
+  /**
+   * @return string[]
+   */
   public function getUnavailable()
   {
     return $this->unavailable;

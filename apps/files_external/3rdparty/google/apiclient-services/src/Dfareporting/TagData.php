@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class TagData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adId;
+  /**
+   * @var string
+   */
   public $clickTag;
+  /**
+   * @var string
+   */
   public $creativeId;
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $impressionTag;
 
+  /**
+   * @param string
+   */
   public function setAdId($adId)
   {
     $this->adId = $adId;
   }
+  /**
+   * @return string
+   */
   public function getAdId()
   {
     return $this->adId;
   }
+  /**
+   * @param string
+   */
   public function setClickTag($clickTag)
   {
     $this->clickTag = $clickTag;
   }
+  /**
+   * @return string
+   */
   public function getClickTag()
   {
     return $this->clickTag;
   }
+  /**
+   * @param string
+   */
   public function setCreativeId($creativeId)
   {
     $this->creativeId = $creativeId;
   }
+  /**
+   * @return string
+   */
   public function getCreativeId()
   {
     return $this->creativeId;
   }
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setImpressionTag($impressionTag)
   {
     $this->impressionTag = $impressionTag;
   }
+  /**
+   * @return string
+   */
   public function getImpressionTag()
   {
     return $this->impressionTag;

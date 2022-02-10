@@ -20,14 +20,23 @@ namespace Google\Service\ShoppingContent;
 class ListRepricingRuleReportsResponse extends \Google\Collection
 {
   protected $collection_key = 'repricingRuleReports';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $repricingRuleReportsType = RepricingRuleReport::class;
   protected $repricingRuleReportsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -20,15 +20,27 @@ namespace Google\Service\BigtableAdmin;
 class ListInstancesResponse extends \Google\Collection
 {
   protected $collection_key = 'instances';
+  /**
+   * @var string[]
+   */
   public $failedLocations;
   protected $instancesType = Instance::class;
   protected $instancesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string[]
+   */
   public function setFailedLocations($failedLocations)
   {
     $this->failedLocations = $failedLocations;
   }
+  /**
+   * @return string[]
+   */
   public function getFailedLocations()
   {
     return $this->failedLocations;
@@ -47,10 +59,16 @@ class ListInstancesResponse extends \Google\Collection
   {
     return $this->instances;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

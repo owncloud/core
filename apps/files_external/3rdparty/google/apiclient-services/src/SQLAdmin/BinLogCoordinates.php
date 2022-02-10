@@ -19,30 +19,57 @@ namespace Google\Service\SQLAdmin;
 
 class BinLogCoordinates extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $binLogFileName;
+  /**
+   * @var string
+   */
   public $binLogPosition;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setBinLogFileName($binLogFileName)
   {
     $this->binLogFileName = $binLogFileName;
   }
+  /**
+   * @return string
+   */
   public function getBinLogFileName()
   {
     return $this->binLogFileName;
   }
+  /**
+   * @param string
+   */
   public function setBinLogPosition($binLogPosition)
   {
     $this->binLogPosition = $binLogPosition;
   }
+  /**
+   * @return string
+   */
   public function getBinLogPosition()
   {
     return $this->binLogPosition;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

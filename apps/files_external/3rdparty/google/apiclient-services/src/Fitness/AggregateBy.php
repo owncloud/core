@@ -19,21 +19,39 @@ namespace Google\Service\Fitness;
 
 class AggregateBy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataSourceId;
+  /**
+   * @var string
+   */
   public $dataTypeName;
 
+  /**
+   * @param string
+   */
   public function setDataSourceId($dataSourceId)
   {
     $this->dataSourceId = $dataSourceId;
   }
+  /**
+   * @return string
+   */
   public function getDataSourceId()
   {
     return $this->dataSourceId;
   }
+  /**
+   * @param string
+   */
   public function setDataTypeName($dataTypeName)
   {
     $this->dataTypeName = $dataTypeName;
   }
+  /**
+   * @return string
+   */
   public function getDataTypeName()
   {
     return $this->dataTypeName;

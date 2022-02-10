@@ -22,6 +22,9 @@ class StackFrame extends \Google\Collection
   protected $collection_key = 'locals';
   protected $argumentsType = Variable::class;
   protected $argumentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $function;
   protected $localsType = Variable::class;
   protected $localsDataType = 'array';
@@ -42,10 +45,16 @@ class StackFrame extends \Google\Collection
   {
     return $this->arguments;
   }
+  /**
+   * @param string
+   */
   public function setFunction($function)
   {
     $this->function = $function;
   }
+  /**
+   * @return string
+   */
   public function getFunction()
   {
     return $this->function;

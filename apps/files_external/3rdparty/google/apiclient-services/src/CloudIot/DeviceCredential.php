@@ -19,14 +19,23 @@ namespace Google\Service\CloudIot;
 
 class DeviceCredential extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expirationTime;
   protected $publicKeyType = PublicKeyCredential::class;
   protected $publicKeyDataType = '';
 
+  /**
+   * @param string
+   */
   public function setExpirationTime($expirationTime)
   {
     $this->expirationTime = $expirationTime;
   }
+  /**
+   * @return string
+   */
   public function getExpirationTime()
   {
     return $this->expirationTime;

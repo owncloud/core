@@ -24,8 +24,17 @@ class Proto2FileDescriptorProto extends \Google\Collection
   protected $enumTypeDataType = 'array';
   protected $messageTypeType = Proto2DescriptorProto::class;
   protected $messageTypeDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $package;
+  /**
+   * @var string
+   */
   public $syntax;
 
   /**
@@ -56,26 +65,44 @@ class Proto2FileDescriptorProto extends \Google\Collection
   {
     return $this->messageType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPackage($package)
   {
     $this->package = $package;
   }
+  /**
+   * @return string
+   */
   public function getPackage()
   {
     return $this->package;
   }
+  /**
+   * @param string
+   */
   public function setSyntax($syntax)
   {
     $this->syntax = $syntax;
   }
+  /**
+   * @return string
+   */
   public function getSyntax()
   {
     return $this->syntax;

@@ -20,25 +20,49 @@ namespace Google\Service\CloudAsset;
 class ExportAssetsRequest extends \Google\Collection
 {
   protected $collection_key = 'relationshipTypes';
+  /**
+   * @var string[]
+   */
   public $assetTypes;
+  /**
+   * @var string
+   */
   public $contentType;
   protected $outputConfigType = OutputConfig::class;
   protected $outputConfigDataType = '';
+  /**
+   * @var string
+   */
   public $readTime;
+  /**
+   * @var string[]
+   */
   public $relationshipTypes;
 
+  /**
+   * @param string[]
+   */
   public function setAssetTypes($assetTypes)
   {
     $this->assetTypes = $assetTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getAssetTypes()
   {
     return $this->assetTypes;
   }
+  /**
+   * @param string
+   */
   public function setContentType($contentType)
   {
     $this->contentType = $contentType;
   }
+  /**
+   * @return string
+   */
   public function getContentType()
   {
     return $this->contentType;
@@ -57,18 +81,30 @@ class ExportAssetsRequest extends \Google\Collection
   {
     return $this->outputConfig;
   }
+  /**
+   * @param string
+   */
   public function setReadTime($readTime)
   {
     $this->readTime = $readTime;
   }
+  /**
+   * @return string
+   */
   public function getReadTime()
   {
     return $this->readTime;
   }
+  /**
+   * @param string[]
+   */
   public function setRelationshipTypes($relationshipTypes)
   {
     $this->relationshipTypes = $relationshipTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getRelationshipTypes()
   {
     return $this->relationshipTypes;

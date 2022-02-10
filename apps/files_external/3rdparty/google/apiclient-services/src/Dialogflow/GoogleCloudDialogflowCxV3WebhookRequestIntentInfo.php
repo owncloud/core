@@ -19,32 +19,59 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3WebhookRequestIntentInfo extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $lastMatchedIntent;
   protected $parametersType = GoogleCloudDialogflowCxV3WebhookRequestIntentInfoIntentParameterValue::class;
   protected $parametersDataType = 'map';
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setLastMatchedIntent($lastMatchedIntent)
   {
     $this->lastMatchedIntent = $lastMatchedIntent;
   }
+  /**
+   * @return string
+   */
   public function getLastMatchedIntent()
   {
     return $this->lastMatchedIntent;

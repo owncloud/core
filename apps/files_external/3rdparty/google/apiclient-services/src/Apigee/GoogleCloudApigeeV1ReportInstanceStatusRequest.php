@@ -20,23 +20,41 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1ReportInstanceStatusRequest extends \Google\Collection
 {
   protected $collection_key = 'resources';
+  /**
+   * @var string
+   */
   public $instanceUid;
+  /**
+   * @var string
+   */
   public $reportTime;
   protected $resourcesType = GoogleCloudApigeeV1ResourceStatus::class;
   protected $resourcesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setInstanceUid($instanceUid)
   {
     $this->instanceUid = $instanceUid;
   }
+  /**
+   * @return string
+   */
   public function getInstanceUid()
   {
     return $this->instanceUid;
   }
+  /**
+   * @param string
+   */
   public function setReportTime($reportTime)
   {
     $this->reportTime = $reportTime;
   }
+  /**
+   * @return string
+   */
   public function getReportTime()
   {
     return $this->reportTime;

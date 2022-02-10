@@ -19,48 +19,93 @@ namespace Google\Service\Docs;
 
 class CropPropertiesSuggestionState extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $angleSuggested;
+  /**
+   * @var bool
+   */
   public $offsetBottomSuggested;
+  /**
+   * @var bool
+   */
   public $offsetLeftSuggested;
+  /**
+   * @var bool
+   */
   public $offsetRightSuggested;
+  /**
+   * @var bool
+   */
   public $offsetTopSuggested;
 
+  /**
+   * @param bool
+   */
   public function setAngleSuggested($angleSuggested)
   {
     $this->angleSuggested = $angleSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getAngleSuggested()
   {
     return $this->angleSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setOffsetBottomSuggested($offsetBottomSuggested)
   {
     $this->offsetBottomSuggested = $offsetBottomSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getOffsetBottomSuggested()
   {
     return $this->offsetBottomSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setOffsetLeftSuggested($offsetLeftSuggested)
   {
     $this->offsetLeftSuggested = $offsetLeftSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getOffsetLeftSuggested()
   {
     return $this->offsetLeftSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setOffsetRightSuggested($offsetRightSuggested)
   {
     $this->offsetRightSuggested = $offsetRightSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getOffsetRightSuggested()
   {
     return $this->offsetRightSuggested;
   }
+  /**
+   * @param bool
+   */
   public function setOffsetTopSuggested($offsetTopSuggested)
   {
     $this->offsetTopSuggested = $offsetTopSuggested;
   }
+  /**
+   * @return bool
+   */
   public function getOffsetTopSuggested()
   {
     return $this->offsetTopSuggested;

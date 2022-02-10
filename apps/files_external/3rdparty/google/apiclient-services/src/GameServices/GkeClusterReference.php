@@ -19,12 +19,21 @@ namespace Google\Service\GameServices;
 
 class GkeClusterReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cluster;
 
+  /**
+   * @param string
+   */
   public function setCluster($cluster)
   {
     $this->cluster = $cluster;
   }
+  /**
+   * @return string
+   */
   public function getCluster()
   {
     return $this->cluster;

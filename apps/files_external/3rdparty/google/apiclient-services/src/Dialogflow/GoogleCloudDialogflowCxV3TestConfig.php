@@ -20,21 +20,39 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3TestConfig extends \Google\Collection
 {
   protected $collection_key = 'trackingParameters';
+  /**
+   * @var string
+   */
   public $flow;
+  /**
+   * @var string[]
+   */
   public $trackingParameters;
 
+  /**
+   * @param string
+   */
   public function setFlow($flow)
   {
     $this->flow = $flow;
   }
+  /**
+   * @return string
+   */
   public function getFlow()
   {
     return $this->flow;
   }
+  /**
+   * @param string[]
+   */
   public function setTrackingParameters($trackingParameters)
   {
     $this->trackingParameters = $trackingParameters;
   }
+  /**
+   * @return string[]
+   */
   public function getTrackingParameters()
   {
     return $this->trackingParameters;

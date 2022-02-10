@@ -20,23 +20,41 @@ namespace Google\Service\ShoppingContent;
 class PostalCodeGroup extends \Google\Collection
 {
   protected $collection_key = 'postalCodeRanges';
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $name;
   protected $postalCodeRangesType = PostalCodeRange::class;
   protected $postalCodeRangesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

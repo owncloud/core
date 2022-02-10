@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class InterconnectAttachmentPartnerMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $interconnectName;
+  /**
+   * @var string
+   */
   public $partnerName;
+  /**
+   * @var string
+   */
   public $portalUrl;
 
+  /**
+   * @param string
+   */
   public function setInterconnectName($interconnectName)
   {
     $this->interconnectName = $interconnectName;
   }
+  /**
+   * @return string
+   */
   public function getInterconnectName()
   {
     return $this->interconnectName;
   }
+  /**
+   * @param string
+   */
   public function setPartnerName($partnerName)
   {
     $this->partnerName = $partnerName;
   }
+  /**
+   * @return string
+   */
   public function getPartnerName()
   {
     return $this->partnerName;
   }
+  /**
+   * @param string
+   */
   public function setPortalUrl($portalUrl)
   {
     $this->portalUrl = $portalUrl;
   }
+  /**
+   * @return string
+   */
   public function getPortalUrl()
   {
     return $this->portalUrl;

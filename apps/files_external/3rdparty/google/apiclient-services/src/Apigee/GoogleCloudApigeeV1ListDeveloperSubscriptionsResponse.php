@@ -22,6 +22,9 @@ class GoogleCloudApigeeV1ListDeveloperSubscriptionsResponse extends \Google\Coll
   protected $collection_key = 'developerSubscriptions';
   protected $developerSubscriptionsType = GoogleCloudApigeeV1DeveloperSubscription::class;
   protected $developerSubscriptionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextStartKey;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudApigeeV1ListDeveloperSubscriptionsResponse extends \Google\Coll
   {
     return $this->developerSubscriptions;
   }
+  /**
+   * @param string
+   */
   public function setNextStartKey($nextStartKey)
   {
     $this->nextStartKey = $nextStartKey;
   }
+  /**
+   * @return string
+   */
   public function getNextStartKey()
   {
     return $this->nextStartKey;

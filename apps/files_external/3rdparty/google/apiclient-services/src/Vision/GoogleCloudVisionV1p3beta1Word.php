@@ -22,6 +22,9 @@ class GoogleCloudVisionV1p3beta1Word extends \Google\Collection
   protected $collection_key = 'symbols';
   protected $boundingBoxType = GoogleCloudVisionV1p3beta1BoundingPoly::class;
   protected $boundingBoxDataType = '';
+  /**
+   * @var float
+   */
   public $confidence;
   protected $propertyType = GoogleCloudVisionV1p3beta1TextAnnotationTextProperty::class;
   protected $propertyDataType = '';
@@ -42,10 +45,16 @@ class GoogleCloudVisionV1p3beta1Word extends \Google\Collection
   {
     return $this->boundingBox;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;

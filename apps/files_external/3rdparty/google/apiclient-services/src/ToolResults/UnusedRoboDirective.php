@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class UnusedRoboDirective extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resourceName;
 
+  /**
+   * @param string
+   */
   public function setResourceName($resourceName)
   {
     $this->resourceName = $resourceName;
   }
+  /**
+   * @return string
+   */
   public function getResourceName()
   {
     return $this->resourceName;

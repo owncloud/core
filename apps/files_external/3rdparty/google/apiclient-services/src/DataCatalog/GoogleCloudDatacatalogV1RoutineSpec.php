@@ -22,11 +22,23 @@ class GoogleCloudDatacatalogV1RoutineSpec extends \Google\Collection
   protected $collection_key = 'routineArguments';
   protected $bigqueryRoutineSpecType = GoogleCloudDatacatalogV1BigQueryRoutineSpec::class;
   protected $bigqueryRoutineSpecDataType = '';
+  /**
+   * @var string
+   */
   public $definitionBody;
+  /**
+   * @var string
+   */
   public $language;
+  /**
+   * @var string
+   */
   public $returnType;
   protected $routineArgumentsType = GoogleCloudDatacatalogV1RoutineSpecArgument::class;
   protected $routineArgumentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $routineType;
 
   /**
@@ -43,26 +55,44 @@ class GoogleCloudDatacatalogV1RoutineSpec extends \Google\Collection
   {
     return $this->bigqueryRoutineSpec;
   }
+  /**
+   * @param string
+   */
   public function setDefinitionBody($definitionBody)
   {
     $this->definitionBody = $definitionBody;
   }
+  /**
+   * @return string
+   */
   public function getDefinitionBody()
   {
     return $this->definitionBody;
   }
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;
   }
+  /**
+   * @param string
+   */
   public function setReturnType($returnType)
   {
     $this->returnType = $returnType;
   }
+  /**
+   * @return string
+   */
   public function getReturnType()
   {
     return $this->returnType;
@@ -81,10 +111,16 @@ class GoogleCloudDatacatalogV1RoutineSpec extends \Google\Collection
   {
     return $this->routineArguments;
   }
+  /**
+   * @param string
+   */
   public function setRoutineType($routineType)
   {
     $this->routineType = $routineType;
   }
+  /**
+   * @return string
+   */
   public function getRoutineType()
   {
     return $this->routineType;

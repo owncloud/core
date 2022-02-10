@@ -19,33 +19,63 @@ namespace Google\Service\Compute;
 
 class NotificationEndpointGrpcSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $authority;
+  /**
+   * @var string
+   */
   public $endpoint;
+  /**
+   * @var string
+   */
   public $payloadName;
   protected $resendIntervalType = Duration::class;
   protected $resendIntervalDataType = '';
+  /**
+   * @var string
+   */
   public $retryDurationSec;
 
+  /**
+   * @param string
+   */
   public function setAuthority($authority)
   {
     $this->authority = $authority;
   }
+  /**
+   * @return string
+   */
   public function getAuthority()
   {
     return $this->authority;
   }
+  /**
+   * @param string
+   */
   public function setEndpoint($endpoint)
   {
     $this->endpoint = $endpoint;
   }
+  /**
+   * @return string
+   */
   public function getEndpoint()
   {
     return $this->endpoint;
   }
+  /**
+   * @param string
+   */
   public function setPayloadName($payloadName)
   {
     $this->payloadName = $payloadName;
   }
+  /**
+   * @return string
+   */
   public function getPayloadName()
   {
     return $this->payloadName;
@@ -64,10 +94,16 @@ class NotificationEndpointGrpcSettings extends \Google\Model
   {
     return $this->resendInterval;
   }
+  /**
+   * @param string
+   */
   public function setRetryDurationSec($retryDurationSec)
   {
     $this->retryDurationSec = $retryDurationSec;
   }
+  /**
+   * @return string
+   */
   public function getRetryDurationSec()
   {
     return $this->retryDurationSec;

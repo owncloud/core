@@ -19,14 +19,23 @@ namespace Google\Service\Slides;
 
 class TableCellProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentAlignment;
   protected $tableCellBackgroundFillType = TableCellBackgroundFill::class;
   protected $tableCellBackgroundFillDataType = '';
 
+  /**
+   * @param string
+   */
   public function setContentAlignment($contentAlignment)
   {
     $this->contentAlignment = $contentAlignment;
   }
+  /**
+   * @return string
+   */
   public function getContentAlignment()
   {
     return $this->contentAlignment;

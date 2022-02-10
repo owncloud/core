@@ -20,21 +20,39 @@ namespace Google\Service\Firestore;
 class GoogleFirestoreAdminV1ExportDocumentsRequest extends \Google\Collection
 {
   protected $collection_key = 'collectionIds';
+  /**
+   * @var string[]
+   */
   public $collectionIds;
+  /**
+   * @var string
+   */
   public $outputUriPrefix;
 
+  /**
+   * @param string[]
+   */
   public function setCollectionIds($collectionIds)
   {
     $this->collectionIds = $collectionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getCollectionIds()
   {
     return $this->collectionIds;
   }
+  /**
+   * @param string
+   */
   public function setOutputUriPrefix($outputUriPrefix)
   {
     $this->outputUriPrefix = $outputUriPrefix;
   }
+  /**
+   * @return string
+   */
   public function getOutputUriPrefix()
   {
     return $this->outputUriPrefix;

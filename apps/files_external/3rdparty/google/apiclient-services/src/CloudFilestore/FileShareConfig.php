@@ -20,24 +20,45 @@ namespace Google\Service\CloudFilestore;
 class FileShareConfig extends \Google\Collection
 {
   protected $collection_key = 'nfsExportOptions';
+  /**
+   * @var string
+   */
   public $capacityGb;
+  /**
+   * @var string
+   */
   public $name;
   protected $nfsExportOptionsType = NfsExportOptions::class;
   protected $nfsExportOptionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $sourceBackup;
 
+  /**
+   * @param string
+   */
   public function setCapacityGb($capacityGb)
   {
     $this->capacityGb = $capacityGb;
   }
+  /**
+   * @return string
+   */
   public function getCapacityGb()
   {
     return $this->capacityGb;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -56,10 +77,16 @@ class FileShareConfig extends \Google\Collection
   {
     return $this->nfsExportOptions;
   }
+  /**
+   * @param string
+   */
   public function setSourceBackup($sourceBackup)
   {
     $this->sourceBackup = $sourceBackup;
   }
+  /**
+   * @return string
+   */
   public function getSourceBackup()
   {
     return $this->sourceBackup;

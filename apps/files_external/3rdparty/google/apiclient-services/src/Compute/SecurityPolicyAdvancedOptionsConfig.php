@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class SecurityPolicyAdvancedOptionsConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $jsonParsing;
+  /**
+   * @var string
+   */
   public $logLevel;
 
+  /**
+   * @param string
+   */
   public function setJsonParsing($jsonParsing)
   {
     $this->jsonParsing = $jsonParsing;
   }
+  /**
+   * @return string
+   */
   public function getJsonParsing()
   {
     return $this->jsonParsing;
   }
+  /**
+   * @param string
+   */
   public function setLogLevel($logLevel)
   {
     $this->logLevel = $logLevel;
   }
+  /**
+   * @return string
+   */
   public function getLogLevel()
   {
     return $this->logLevel;

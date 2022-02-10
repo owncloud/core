@@ -22,7 +22,13 @@ class LiveStreamHealthStatus extends \Google\Collection
   protected $collection_key = 'configurationIssues';
   protected $configurationIssuesType = LiveStreamConfigurationIssue::class;
   protected $configurationIssuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $lastUpdateTimeSeconds;
+  /**
+   * @var string
+   */
   public $status;
 
   /**
@@ -39,18 +45,30 @@ class LiveStreamHealthStatus extends \Google\Collection
   {
     return $this->configurationIssues;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdateTimeSeconds($lastUpdateTimeSeconds)
   {
     $this->lastUpdateTimeSeconds = $lastUpdateTimeSeconds;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateTimeSeconds()
   {
     return $this->lastUpdateTimeSeconds;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

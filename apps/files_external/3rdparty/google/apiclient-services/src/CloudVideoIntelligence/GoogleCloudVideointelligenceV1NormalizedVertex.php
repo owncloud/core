@@ -19,21 +19,39 @@ namespace Google\Service\CloudVideoIntelligence;
 
 class GoogleCloudVideointelligenceV1NormalizedVertex extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $x;
+  /**
+   * @var float
+   */
   public $y;
 
+  /**
+   * @param float
+   */
   public function setX($x)
   {
     $this->x = $x;
   }
+  /**
+   * @return float
+   */
   public function getX()
   {
     return $this->x;
   }
+  /**
+   * @param float
+   */
   public function setY($y)
   {
     $this->y = $y;
   }
+  /**
+   * @return float
+   */
   public function getY()
   {
     return $this->y;

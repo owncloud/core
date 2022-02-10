@@ -20,15 +20,27 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1Measurement extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var string
+   */
   public $elapsedTime;
   protected $metricsType = GoogleCloudMlV1MeasurementMetric::class;
   protected $metricsDataType = 'array';
+  /**
+   * @var string
+   */
   public $stepCount;
 
+  /**
+   * @param string
+   */
   public function setElapsedTime($elapsedTime)
   {
     $this->elapsedTime = $elapsedTime;
   }
+  /**
+   * @return string
+   */
   public function getElapsedTime()
   {
     return $this->elapsedTime;
@@ -47,10 +59,16 @@ class GoogleCloudMlV1Measurement extends \Google\Collection
   {
     return $this->metrics;
   }
+  /**
+   * @param string
+   */
   public function setStepCount($stepCount)
   {
     $this->stepCount = $stepCount;
   }
+  /**
+   * @return string
+   */
   public function getStepCount()
   {
     return $this->stepCount;

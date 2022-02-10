@@ -20,15 +20,27 @@ namespace Google\Service\GKEHub;
 class ConfigManagementOperatorState extends \Google\Collection
 {
   protected $collection_key = 'errors';
+  /**
+   * @var string
+   */
   public $deploymentState;
   protected $errorsType = ConfigManagementInstallError::class;
   protected $errorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setDeploymentState($deploymentState)
   {
     $this->deploymentState = $deploymentState;
   }
+  /**
+   * @return string
+   */
   public function getDeploymentState()
   {
     return $this->deploymentState;
@@ -47,10 +59,16 @@ class ConfigManagementOperatorState extends \Google\Collection
   {
     return $this->errors;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

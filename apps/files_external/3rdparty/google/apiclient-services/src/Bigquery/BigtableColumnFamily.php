@@ -22,9 +22,21 @@ class BigtableColumnFamily extends \Google\Collection
   protected $collection_key = 'columns';
   protected $columnsType = BigtableColumn::class;
   protected $columnsDataType = 'array';
+  /**
+   * @var string
+   */
   public $encoding;
+  /**
+   * @var string
+   */
   public $familyId;
+  /**
+   * @var bool
+   */
   public $onlyReadLatest;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -41,34 +53,58 @@ class BigtableColumnFamily extends \Google\Collection
   {
     return $this->columns;
   }
+  /**
+   * @param string
+   */
   public function setEncoding($encoding)
   {
     $this->encoding = $encoding;
   }
+  /**
+   * @return string
+   */
   public function getEncoding()
   {
     return $this->encoding;
   }
+  /**
+   * @param string
+   */
   public function setFamilyId($familyId)
   {
     $this->familyId = $familyId;
   }
+  /**
+   * @return string
+   */
   public function getFamilyId()
   {
     return $this->familyId;
   }
+  /**
+   * @param bool
+   */
   public function setOnlyReadLatest($onlyReadLatest)
   {
     $this->onlyReadLatest = $onlyReadLatest;
   }
+  /**
+   * @return bool
+   */
   public function getOnlyReadLatest()
   {
     return $this->onlyReadLatest;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

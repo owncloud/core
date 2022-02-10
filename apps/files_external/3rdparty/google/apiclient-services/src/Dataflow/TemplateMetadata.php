@@ -20,23 +20,41 @@ namespace Google\Service\Dataflow;
 class TemplateMetadata extends \Google\Collection
 {
   protected $collection_key = 'parameters';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $name;
   protected $parametersType = ParameterMetadata::class;
   protected $parametersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

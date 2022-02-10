@@ -24,11 +24,23 @@ class ReportCrossDimensionReachCriteria extends \Google\Collection
   protected $breakdownDataType = 'array';
   protected $dateRangeType = DateRange::class;
   protected $dateRangeDataType = '';
+  /**
+   * @var string
+   */
   public $dimension;
   protected $dimensionFiltersType = DimensionValue::class;
   protected $dimensionFiltersDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $metricNames;
+  /**
+   * @var string[]
+   */
   public $overlapMetricNames;
+  /**
+   * @var bool
+   */
   public $pivoted;
 
   /**
@@ -59,10 +71,16 @@ class ReportCrossDimensionReachCriteria extends \Google\Collection
   {
     return $this->dateRange;
   }
+  /**
+   * @param string
+   */
   public function setDimension($dimension)
   {
     $this->dimension = $dimension;
   }
+  /**
+   * @return string
+   */
   public function getDimension()
   {
     return $this->dimension;
@@ -81,26 +99,44 @@ class ReportCrossDimensionReachCriteria extends \Google\Collection
   {
     return $this->dimensionFilters;
   }
+  /**
+   * @param string[]
+   */
   public function setMetricNames($metricNames)
   {
     $this->metricNames = $metricNames;
   }
+  /**
+   * @return string[]
+   */
   public function getMetricNames()
   {
     return $this->metricNames;
   }
+  /**
+   * @param string[]
+   */
   public function setOverlapMetricNames($overlapMetricNames)
   {
     $this->overlapMetricNames = $overlapMetricNames;
   }
+  /**
+   * @return string[]
+   */
   public function getOverlapMetricNames()
   {
     return $this->overlapMetricNames;
   }
+  /**
+   * @param bool
+   */
   public function setPivoted($pivoted)
   {
     $this->pivoted = $pivoted;
   }
+  /**
+   * @return bool
+   */
   public function getPivoted()
   {
     return $this->pivoted;

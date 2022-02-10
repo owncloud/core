@@ -20,14 +20,23 @@ namespace Google\Service\HangoutsChat;
 class FormAction extends \Google\Collection
 {
   protected $collection_key = 'parameters';
+  /**
+   * @var string
+   */
   public $actionMethodName;
   protected $parametersType = ActionParameter::class;
   protected $parametersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setActionMethodName($actionMethodName)
   {
     $this->actionMethodName = $actionMethodName;
   }
+  /**
+   * @return string
+   */
   public function getActionMethodName()
   {
     return $this->actionMethodName;

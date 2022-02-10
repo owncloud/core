@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class Int64RangeMatch extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $rangeEnd;
+  /**
+   * @var string
+   */
   public $rangeStart;
 
+  /**
+   * @param string
+   */
   public function setRangeEnd($rangeEnd)
   {
     $this->rangeEnd = $rangeEnd;
   }
+  /**
+   * @return string
+   */
   public function getRangeEnd()
   {
     return $this->rangeEnd;
   }
+  /**
+   * @param string
+   */
   public function setRangeStart($rangeStart)
   {
     $this->rangeStart = $rangeStart;
   }
+  /**
+   * @return string
+   */
   public function getRangeStart()
   {
     return $this->rangeStart;

@@ -20,33 +20,63 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1beta1VideoPayload extends \Google\Collection
 {
   protected $collection_key = 'videoThumbnails';
+  /**
+   * @var float
+   */
   public $frameRate;
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $signedUri;
   protected $videoThumbnailsType = GoogleCloudDatalabelingV1beta1VideoThumbnail::class;
   protected $videoThumbnailsDataType = 'array';
+  /**
+   * @var string
+   */
   public $videoUri;
 
+  /**
+   * @param float
+   */
   public function setFrameRate($frameRate)
   {
     $this->frameRate = $frameRate;
   }
+  /**
+   * @return float
+   */
   public function getFrameRate()
   {
     return $this->frameRate;
   }
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setSignedUri($signedUri)
   {
     $this->signedUri = $signedUri;
   }
+  /**
+   * @return string
+   */
   public function getSignedUri()
   {
     return $this->signedUri;
@@ -65,10 +95,16 @@ class GoogleCloudDatalabelingV1beta1VideoPayload extends \Google\Collection
   {
     return $this->videoThumbnails;
   }
+  /**
+   * @param string
+   */
   public function setVideoUri($videoUri)
   {
     $this->videoUri = $videoUri;
   }
+  /**
+   * @return string
+   */
   public function getVideoUri()
   {
     return $this->videoUri;

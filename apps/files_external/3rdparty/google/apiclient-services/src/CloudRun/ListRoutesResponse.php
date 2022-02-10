@@ -20,18 +20,33 @@ namespace Google\Service\CloudRun;
 class ListRoutesResponse extends \Google\Collection
 {
   protected $collection_key = 'unreachable';
+  /**
+   * @var string
+   */
   public $apiVersion;
   protected $itemsType = Route::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
   protected $metadataType = ListMeta::class;
   protected $metadataDataType = '';
+  /**
+   * @var string[]
+   */
   public $unreachable;
 
+  /**
+   * @param string
+   */
   public function setApiVersion($apiVersion)
   {
     $this->apiVersion = $apiVersion;
   }
+  /**
+   * @return string
+   */
   public function getApiVersion()
   {
     return $this->apiVersion;
@@ -50,10 +65,16 @@ class ListRoutesResponse extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -72,10 +93,16 @@ class ListRoutesResponse extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param string[]
+   */
   public function setUnreachable($unreachable)
   {
     $this->unreachable = $unreachable;
   }
+  /**
+   * @return string[]
+   */
   public function getUnreachable()
   {
     return $this->unreachable;

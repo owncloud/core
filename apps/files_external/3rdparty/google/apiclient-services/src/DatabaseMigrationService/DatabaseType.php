@@ -19,21 +19,39 @@ namespace Google\Service\DatabaseMigrationService;
 
 class DatabaseType extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $engine;
+  /**
+   * @var string
+   */
   public $provider;
 
+  /**
+   * @param string
+   */
   public function setEngine($engine)
   {
     $this->engine = $engine;
   }
+  /**
+   * @return string
+   */
   public function getEngine()
   {
     return $this->engine;
   }
+  /**
+   * @param string
+   */
   public function setProvider($provider)
   {
     $this->provider = $provider;
   }
+  /**
+   * @return string
+   */
   public function getProvider()
   {
     return $this->provider;

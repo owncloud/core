@@ -21,6 +21,9 @@ class Type extends \Google\Model
 {
   protected $arrayElementTypeType = Type::class;
   protected $arrayElementTypeDataType = '';
+  /**
+   * @var string
+   */
   public $code;
   protected $structTypeType = StructType::class;
   protected $structTypeDataType = '';
@@ -39,10 +42,16 @@ class Type extends \Google\Model
   {
     return $this->arrayElementType;
   }
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;

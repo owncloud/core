@@ -21,7 +21,13 @@ class UpdateContactGroupRequest extends \Google\Model
 {
   protected $contactGroupType = ContactGroup::class;
   protected $contactGroupDataType = '';
+  /**
+   * @var string
+   */
   public $readGroupFields;
+  /**
+   * @var string
+   */
   public $updateGroupFields;
 
   /**
@@ -38,18 +44,30 @@ class UpdateContactGroupRequest extends \Google\Model
   {
     return $this->contactGroup;
   }
+  /**
+   * @param string
+   */
   public function setReadGroupFields($readGroupFields)
   {
     $this->readGroupFields = $readGroupFields;
   }
+  /**
+   * @return string
+   */
   public function getReadGroupFields()
   {
     return $this->readGroupFields;
   }
+  /**
+   * @param string
+   */
   public function setUpdateGroupFields($updateGroupFields)
   {
     $this->updateGroupFields = $updateGroupFields;
   }
+  /**
+   * @return string
+   */
   public function getUpdateGroupFields()
   {
     return $this->updateGroupFields;

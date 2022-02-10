@@ -19,30 +19,57 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1ObjectTrackingConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $annotationSpecSet;
+  /**
+   * @var int
+   */
   public $clipLength;
+  /**
+   * @var int
+   */
   public $overlapLength;
 
+  /**
+   * @param string
+   */
   public function setAnnotationSpecSet($annotationSpecSet)
   {
     $this->annotationSpecSet = $annotationSpecSet;
   }
+  /**
+   * @return string
+   */
   public function getAnnotationSpecSet()
   {
     return $this->annotationSpecSet;
   }
+  /**
+   * @param int
+   */
   public function setClipLength($clipLength)
   {
     $this->clipLength = $clipLength;
   }
+  /**
+   * @return int
+   */
   public function getClipLength()
   {
     return $this->clipLength;
   }
+  /**
+   * @param int
+   */
   public function setOverlapLength($overlapLength)
   {
     $this->overlapLength = $overlapLength;
   }
+  /**
+   * @return int
+   */
   public function getOverlapLength()
   {
     return $this->overlapLength;

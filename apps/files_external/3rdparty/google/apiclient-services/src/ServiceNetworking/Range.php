@@ -19,21 +19,39 @@ namespace Google\Service\ServiceNetworking;
 
 class Range extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipCidrRange;
+  /**
+   * @var string
+   */
   public $network;
 
+  /**
+   * @param string
+   */
   public function setIpCidrRange($ipCidrRange)
   {
     $this->ipCidrRange = $ipCidrRange;
   }
+  /**
+   * @return string
+   */
   public function getIpCidrRange()
   {
     return $this->ipCidrRange;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;

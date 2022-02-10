@@ -20,31 +20,55 @@ namespace Google\Service\Dataproc;
 class Cluster extends \Google\Collection
 {
   protected $collection_key = 'statusHistory';
+  /**
+   * @var string
+   */
   public $clusterName;
+  /**
+   * @var string
+   */
   public $clusterUuid;
   protected $configType = ClusterConfig::class;
   protected $configDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $metricsType = ClusterMetrics::class;
   protected $metricsDataType = '';
+  /**
+   * @var string
+   */
   public $projectId;
   protected $statusType = ClusterStatus::class;
   protected $statusDataType = '';
   protected $statusHistoryType = ClusterStatus::class;
   protected $statusHistoryDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setClusterName($clusterName)
   {
     $this->clusterName = $clusterName;
   }
+  /**
+   * @return string
+   */
   public function getClusterName()
   {
     return $this->clusterName;
   }
+  /**
+   * @param string
+   */
   public function setClusterUuid($clusterUuid)
   {
     $this->clusterUuid = $clusterUuid;
   }
+  /**
+   * @return string
+   */
   public function getClusterUuid()
   {
     return $this->clusterUuid;
@@ -63,10 +87,16 @@ class Cluster extends \Google\Collection
   {
     return $this->config;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -85,10 +115,16 @@ class Cluster extends \Google\Collection
   {
     return $this->metrics;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;

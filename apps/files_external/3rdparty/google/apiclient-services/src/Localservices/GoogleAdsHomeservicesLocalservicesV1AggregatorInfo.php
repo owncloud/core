@@ -19,12 +19,21 @@ namespace Google\Service\Localservices;
 
 class GoogleAdsHomeservicesLocalservicesV1AggregatorInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $aggregatorProviderId;
 
+  /**
+   * @param string
+   */
   public function setAggregatorProviderId($aggregatorProviderId)
   {
     $this->aggregatorProviderId = $aggregatorProviderId;
   }
+  /**
+   * @return string
+   */
   public function getAggregatorProviderId()
   {
     return $this->aggregatorProviderId;

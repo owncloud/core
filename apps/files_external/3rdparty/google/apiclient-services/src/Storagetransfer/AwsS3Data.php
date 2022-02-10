@@ -21,8 +21,17 @@ class AwsS3Data extends \Google\Model
 {
   protected $awsAccessKeyType = AwsAccessKey::class;
   protected $awsAccessKeyDataType = '';
+  /**
+   * @var string
+   */
   public $bucketName;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $roleArn;
 
   /**
@@ -39,26 +48,44 @@ class AwsS3Data extends \Google\Model
   {
     return $this->awsAccessKey;
   }
+  /**
+   * @param string
+   */
   public function setBucketName($bucketName)
   {
     $this->bucketName = $bucketName;
   }
+  /**
+   * @return string
+   */
   public function getBucketName()
   {
     return $this->bucketName;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setRoleArn($roleArn)
   {
     $this->roleArn = $roleArn;
   }
+  /**
+   * @return string
+   */
   public function getRoleArn()
   {
     return $this->roleArn;

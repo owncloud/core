@@ -22,6 +22,9 @@ class AuditConfig extends \Google\Collection
   protected $collection_key = 'auditLogConfigs';
   protected $auditLogConfigsType = AuditLogConfig::class;
   protected $auditLogConfigsDataType = 'array';
+  /**
+   * @var string
+   */
   public $service;
 
   /**
@@ -38,10 +41,16 @@ class AuditConfig extends \Google\Collection
   {
     return $this->auditLogConfigs;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

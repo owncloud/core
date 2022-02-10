@@ -19,39 +19,75 @@ namespace Google\Service\AdMob;
 
 class PublisherAccount extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $publisherId;
+  /**
+   * @var string
+   */
   public $reportingTimeZone;
 
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPublisherId($publisherId)
   {
     $this->publisherId = $publisherId;
   }
+  /**
+   * @return string
+   */
   public function getPublisherId()
   {
     return $this->publisherId;
   }
+  /**
+   * @param string
+   */
   public function setReportingTimeZone($reportingTimeZone)
   {
     $this->reportingTimeZone = $reportingTimeZone;
   }
+  /**
+   * @return string
+   */
   public function getReportingTimeZone()
   {
     return $this->reportingTimeZone;

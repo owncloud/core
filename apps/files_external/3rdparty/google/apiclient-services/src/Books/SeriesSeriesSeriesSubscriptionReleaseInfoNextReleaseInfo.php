@@ -20,8 +20,17 @@ namespace Google\Service\Books;
 class SeriesSeriesSeriesSubscriptionReleaseInfoNextReleaseInfo extends \Google\Model
 {
   public $amountInMicros;
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var string
+   */
   public $releaseNumber;
+  /**
+   * @var string
+   */
   public $releaseTime;
 
   public function setAmountInMicros($amountInMicros)
@@ -32,26 +41,44 @@ class SeriesSeriesSeriesSubscriptionReleaseInfoNextReleaseInfo extends \Google\M
   {
     return $this->amountInMicros;
   }
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param string
+   */
   public function setReleaseNumber($releaseNumber)
   {
     $this->releaseNumber = $releaseNumber;
   }
+  /**
+   * @return string
+   */
   public function getReleaseNumber()
   {
     return $this->releaseNumber;
   }
+  /**
+   * @param string
+   */
   public function setReleaseTime($releaseTime)
   {
     $this->releaseTime = $releaseTime;
   }
+  /**
+   * @return string
+   */
   public function getReleaseTime()
   {
     return $this->releaseTime;

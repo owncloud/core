@@ -23,14 +23,29 @@ class Message extends \Google\Model
   protected $androidDataType = '';
   protected $apnsType = ApnsConfig::class;
   protected $apnsDataType = '';
+  /**
+   * @var string
+   */
   public $condition;
+  /**
+   * @var string[]
+   */
   public $data;
   protected $fcmOptionsType = FcmOptions::class;
   protected $fcmOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $notificationType = Notification::class;
   protected $notificationDataType = '';
+  /**
+   * @var string
+   */
   public $token;
+  /**
+   * @var string
+   */
   public $topic;
   protected $webpushType = WebpushConfig::class;
   protected $webpushDataType = '';
@@ -63,18 +78,30 @@ class Message extends \Google\Model
   {
     return $this->apns;
   }
+  /**
+   * @param string
+   */
   public function setCondition($condition)
   {
     $this->condition = $condition;
   }
+  /**
+   * @return string
+   */
   public function getCondition()
   {
     return $this->condition;
   }
+  /**
+   * @param string[]
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string[]
+   */
   public function getData()
   {
     return $this->data;
@@ -93,10 +120,16 @@ class Message extends \Google\Model
   {
     return $this->fcmOptions;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -115,18 +148,30 @@ class Message extends \Google\Model
   {
     return $this->notification;
   }
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;
   }
+  /**
+   * @param string
+   */
   public function setTopic($topic)
   {
     $this->topic = $topic;
   }
+  /**
+   * @return string
+   */
   public function getTopic()
   {
     return $this->topic;

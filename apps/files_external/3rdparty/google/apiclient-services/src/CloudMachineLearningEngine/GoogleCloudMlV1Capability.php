@@ -20,21 +20,39 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1Capability extends \Google\Collection
 {
   protected $collection_key = 'availableAccelerators';
+  /**
+   * @var string[]
+   */
   public $availableAccelerators;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setAvailableAccelerators($availableAccelerators)
   {
     $this->availableAccelerators = $availableAccelerators;
   }
+  /**
+   * @return string[]
+   */
   public function getAvailableAccelerators()
   {
     return $this->availableAccelerators;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

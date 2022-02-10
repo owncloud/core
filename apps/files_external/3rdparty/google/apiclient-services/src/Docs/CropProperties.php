@@ -19,48 +19,93 @@ namespace Google\Service\Docs;
 
 class CropProperties extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $angle;
+  /**
+   * @var float
+   */
   public $offsetBottom;
+  /**
+   * @var float
+   */
   public $offsetLeft;
+  /**
+   * @var float
+   */
   public $offsetRight;
+  /**
+   * @var float
+   */
   public $offsetTop;
 
+  /**
+   * @param float
+   */
   public function setAngle($angle)
   {
     $this->angle = $angle;
   }
+  /**
+   * @return float
+   */
   public function getAngle()
   {
     return $this->angle;
   }
+  /**
+   * @param float
+   */
   public function setOffsetBottom($offsetBottom)
   {
     $this->offsetBottom = $offsetBottom;
   }
+  /**
+   * @return float
+   */
   public function getOffsetBottom()
   {
     return $this->offsetBottom;
   }
+  /**
+   * @param float
+   */
   public function setOffsetLeft($offsetLeft)
   {
     $this->offsetLeft = $offsetLeft;
   }
+  /**
+   * @return float
+   */
   public function getOffsetLeft()
   {
     return $this->offsetLeft;
   }
+  /**
+   * @param float
+   */
   public function setOffsetRight($offsetRight)
   {
     $this->offsetRight = $offsetRight;
   }
+  /**
+   * @return float
+   */
   public function getOffsetRight()
   {
     return $this->offsetRight;
   }
+  /**
+   * @param float
+   */
   public function setOffsetTop($offsetTop)
   {
     $this->offsetTop = $offsetTop;
   }
+  /**
+   * @return float
+   */
   public function getOffsetTop()
   {
     return $this->offsetTop;

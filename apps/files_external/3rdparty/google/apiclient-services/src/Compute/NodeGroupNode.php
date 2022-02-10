@@ -22,16 +22,37 @@ class NodeGroupNode extends \Google\Collection
   protected $collection_key = 'instances';
   protected $acceleratorsType = AcceleratorConfig::class;
   protected $acceleratorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $cpuOvercommitType;
   protected $disksType = LocalDisk::class;
   protected $disksDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $instances;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $nodeType;
+  /**
+   * @var bool
+   */
   public $satisfiesPzs;
   protected $serverBindingType = ServerBinding::class;
   protected $serverBindingDataType = '';
+  /**
+   * @var string
+   */
   public $serverId;
+  /**
+   * @var string
+   */
   public $status;
 
   /**
@@ -48,10 +69,16 @@ class NodeGroupNode extends \Google\Collection
   {
     return $this->accelerators;
   }
+  /**
+   * @param string
+   */
   public function setCpuOvercommitType($cpuOvercommitType)
   {
     $this->cpuOvercommitType = $cpuOvercommitType;
   }
+  /**
+   * @return string
+   */
   public function getCpuOvercommitType()
   {
     return $this->cpuOvercommitType;
@@ -70,34 +97,58 @@ class NodeGroupNode extends \Google\Collection
   {
     return $this->disks;
   }
+  /**
+   * @param string[]
+   */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
+  /**
+   * @return string[]
+   */
   public function getInstances()
   {
     return $this->instances;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNodeType($nodeType)
   {
     $this->nodeType = $nodeType;
   }
+  /**
+   * @return string
+   */
   public function getNodeType()
   {
     return $this->nodeType;
   }
+  /**
+   * @param bool
+   */
   public function setSatisfiesPzs($satisfiesPzs)
   {
     $this->satisfiesPzs = $satisfiesPzs;
   }
+  /**
+   * @return bool
+   */
   public function getSatisfiesPzs()
   {
     return $this->satisfiesPzs;
@@ -116,18 +167,30 @@ class NodeGroupNode extends \Google\Collection
   {
     return $this->serverBinding;
   }
+  /**
+   * @param string
+   */
   public function setServerId($serverId)
   {
     $this->serverId = $serverId;
   }
+  /**
+   * @return string
+   */
   public function getServerId()
   {
     return $this->serverId;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

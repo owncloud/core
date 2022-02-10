@@ -19,12 +19,21 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1Config extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $tpuServiceAccount;
 
+  /**
+   * @param string
+   */
   public function setTpuServiceAccount($tpuServiceAccount)
   {
     $this->tpuServiceAccount = $tpuServiceAccount;
   }
+  /**
+   * @return string
+   */
   public function getTpuServiceAccount()
   {
     return $this->tpuServiceAccount;

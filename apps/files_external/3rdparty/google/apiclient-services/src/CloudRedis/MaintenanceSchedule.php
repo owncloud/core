@@ -19,39 +19,75 @@ namespace Google\Service\CloudRedis;
 
 class MaintenanceSchedule extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $canReschedule;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $scheduleDeadlineTime;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param bool
+   */
   public function setCanReschedule($canReschedule)
   {
     $this->canReschedule = $canReschedule;
   }
+  /**
+   * @return bool
+   */
   public function getCanReschedule()
   {
     return $this->canReschedule;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setScheduleDeadlineTime($scheduleDeadlineTime)
   {
     $this->scheduleDeadlineTime = $scheduleDeadlineTime;
   }
+  /**
+   * @return string
+   */
   public function getScheduleDeadlineTime()
   {
     return $this->scheduleDeadlineTime;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

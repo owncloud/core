@@ -22,10 +22,19 @@ class GoogleCloudVisionV1p4beta1Page extends \Google\Collection
   protected $collection_key = 'blocks';
   protected $blocksType = GoogleCloudVisionV1p4beta1Block::class;
   protected $blocksDataType = 'array';
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var int
+   */
   public $height;
   protected $propertyType = GoogleCloudVisionV1p4beta1TextAnnotationTextProperty::class;
   protected $propertyDataType = '';
+  /**
+   * @var int
+   */
   public $width;
 
   /**
@@ -42,18 +51,30 @@ class GoogleCloudVisionV1p4beta1Page extends \Google\Collection
   {
     return $this->blocks;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
@@ -72,10 +93,16 @@ class GoogleCloudVisionV1p4beta1Page extends \Google\Collection
   {
     return $this->property;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

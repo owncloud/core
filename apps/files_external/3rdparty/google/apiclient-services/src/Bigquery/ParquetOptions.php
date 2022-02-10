@@ -19,21 +19,39 @@ namespace Google\Service\Bigquery;
 
 class ParquetOptions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableListInference;
+  /**
+   * @var bool
+   */
   public $enumAsString;
 
+  /**
+   * @param bool
+   */
   public function setEnableListInference($enableListInference)
   {
     $this->enableListInference = $enableListInference;
   }
+  /**
+   * @return bool
+   */
   public function getEnableListInference()
   {
     return $this->enableListInference;
   }
+  /**
+   * @param bool
+   */
   public function setEnumAsString($enumAsString)
   {
     $this->enumAsString = $enumAsString;
   }
+  /**
+   * @return bool
+   */
   public function getEnumAsString()
   {
     return $this->enumAsString;

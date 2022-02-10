@@ -24,16 +24,37 @@ class PlayerLeaderboardScore extends \Google\Model
   ];
   protected $friendsRankType = LeaderboardScoreRank::class;
   protected $friendsRankDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $leaderboardId;
   protected $publicRankType = LeaderboardScoreRank::class;
   protected $publicRankDataType = '';
+  /**
+   * @var string
+   */
   public $scoreString;
+  /**
+   * @var string
+   */
   public $scoreTag;
+  /**
+   * @var string
+   */
   public $scoreValue;
   protected $socialRankType = LeaderboardScoreRank::class;
   protected $socialRankDataType = '';
+  /**
+   * @var string
+   */
   public $timeSpan;
+  /**
+   * @var string
+   */
   public $writeTimestamp;
 
   /**
@@ -50,18 +71,30 @@ class PlayerLeaderboardScore extends \Google\Model
   {
     return $this->friendsRank;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLeaderboardId($leaderboardId)
   {
     $this->leaderboardId = $leaderboardId;
   }
+  /**
+   * @return string
+   */
   public function getLeaderboardId()
   {
     return $this->leaderboardId;
@@ -80,26 +113,44 @@ class PlayerLeaderboardScore extends \Google\Model
   {
     return $this->publicRank;
   }
+  /**
+   * @param string
+   */
   public function setScoreString($scoreString)
   {
     $this->scoreString = $scoreString;
   }
+  /**
+   * @return string
+   */
   public function getScoreString()
   {
     return $this->scoreString;
   }
+  /**
+   * @param string
+   */
   public function setScoreTag($scoreTag)
   {
     $this->scoreTag = $scoreTag;
   }
+  /**
+   * @return string
+   */
   public function getScoreTag()
   {
     return $this->scoreTag;
   }
+  /**
+   * @param string
+   */
   public function setScoreValue($scoreValue)
   {
     $this->scoreValue = $scoreValue;
   }
+  /**
+   * @return string
+   */
   public function getScoreValue()
   {
     return $this->scoreValue;
@@ -118,18 +169,30 @@ class PlayerLeaderboardScore extends \Google\Model
   {
     return $this->socialRank;
   }
+  /**
+   * @param string
+   */
   public function setTimeSpan($timeSpan)
   {
     $this->timeSpan = $timeSpan;
   }
+  /**
+   * @return string
+   */
   public function getTimeSpan()
   {
     return $this->timeSpan;
   }
+  /**
+   * @param string
+   */
   public function setWriteTimestamp($writeTimestamp)
   {
     $this->writeTimestamp = $writeTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getWriteTimestamp()
   {
     return $this->writeTimestamp;

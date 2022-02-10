@@ -20,30 +20,57 @@ namespace Google\Service\PostmasterTools;
 class IpReputation extends \Google\Collection
 {
   protected $collection_key = 'sampleIps';
+  /**
+   * @var string
+   */
   public $ipCount;
+  /**
+   * @var string
+   */
   public $reputation;
+  /**
+   * @var string[]
+   */
   public $sampleIps;
 
+  /**
+   * @param string
+   */
   public function setIpCount($ipCount)
   {
     $this->ipCount = $ipCount;
   }
+  /**
+   * @return string
+   */
   public function getIpCount()
   {
     return $this->ipCount;
   }
+  /**
+   * @param string
+   */
   public function setReputation($reputation)
   {
     $this->reputation = $reputation;
   }
+  /**
+   * @return string
+   */
   public function getReputation()
   {
     return $this->reputation;
   }
+  /**
+   * @param string[]
+   */
   public function setSampleIps($sampleIps)
   {
     $this->sampleIps = $sampleIps;
   }
+  /**
+   * @return string[]
+   */
   public function getSampleIps()
   {
     return $this->sampleIps;

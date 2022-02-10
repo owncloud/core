@@ -19,12 +19,21 @@ namespace Google\Service\Dataproc;
 
 class AutoscalingConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $policyUri;
 
+  /**
+   * @param string
+   */
   public function setPolicyUri($policyUri)
   {
     $this->policyUri = $policyUri;
   }
+  /**
+   * @return string
+   */
   public function getPolicyUri()
   {
     return $this->policyUri;

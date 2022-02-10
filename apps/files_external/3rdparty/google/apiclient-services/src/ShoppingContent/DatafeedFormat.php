@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class DatafeedFormat extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $columnDelimiter;
+  /**
+   * @var string
+   */
   public $fileEncoding;
+  /**
+   * @var string
+   */
   public $quotingMode;
 
+  /**
+   * @param string
+   */
   public function setColumnDelimiter($columnDelimiter)
   {
     $this->columnDelimiter = $columnDelimiter;
   }
+  /**
+   * @return string
+   */
   public function getColumnDelimiter()
   {
     return $this->columnDelimiter;
   }
+  /**
+   * @param string
+   */
   public function setFileEncoding($fileEncoding)
   {
     $this->fileEncoding = $fileEncoding;
   }
+  /**
+   * @return string
+   */
   public function getFileEncoding()
   {
     return $this->fileEncoding;
   }
+  /**
+   * @param string
+   */
   public function setQuotingMode($quotingMode)
   {
     $this->quotingMode = $quotingMode;
   }
+  /**
+   * @return string
+   */
   public function getQuotingMode()
   {
     return $this->quotingMode;

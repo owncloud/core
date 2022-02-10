@@ -19,21 +19,39 @@ namespace Google\Service\Datastore;
 
 class GoogleDatastoreAdminV1beta1Progress extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $workCompleted;
+  /**
+   * @var string
+   */
   public $workEstimated;
 
+  /**
+   * @param string
+   */
   public function setWorkCompleted($workCompleted)
   {
     $this->workCompleted = $workCompleted;
   }
+  /**
+   * @return string
+   */
   public function getWorkCompleted()
   {
     return $this->workCompleted;
   }
+  /**
+   * @param string
+   */
   public function setWorkEstimated($workEstimated)
   {
     $this->workEstimated = $workEstimated;
   }
+  /**
+   * @return string
+   */
   public function getWorkEstimated()
   {
     return $this->workEstimated;

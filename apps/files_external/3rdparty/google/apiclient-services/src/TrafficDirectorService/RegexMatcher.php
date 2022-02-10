@@ -21,6 +21,9 @@ class RegexMatcher extends \Google\Model
 {
   protected $googleRe2Type = GoogleRE2::class;
   protected $googleRe2DataType = '';
+  /**
+   * @var string
+   */
   public $regex;
 
   /**
@@ -37,10 +40,16 @@ class RegexMatcher extends \Google\Model
   {
     return $this->googleRe2;
   }
+  /**
+   * @param string
+   */
   public function setRegex($regex)
   {
     $this->regex = $regex;
   }
+  /**
+   * @return string
+   */
   public function getRegex()
   {
     return $this->regex;

@@ -22,16 +22,25 @@ class PostUserInfo extends \Google\Model
   protected $internal_gapi_mappings = [
         "postUserInfo" => "post_user_info",
   ];
+  /**
+   * @var string
+   */
   public $kind;
   protected $postType = Post::class;
   protected $postDataType = '';
   protected $postUserInfoType = PostPerUserInfo::class;
   protected $postUserInfoDataType = '';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

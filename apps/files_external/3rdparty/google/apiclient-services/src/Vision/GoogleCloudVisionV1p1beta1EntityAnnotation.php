@@ -22,15 +22,33 @@ class GoogleCloudVisionV1p1beta1EntityAnnotation extends \Google\Collection
   protected $collection_key = 'properties';
   protected $boundingPolyType = GoogleCloudVisionV1p1beta1BoundingPoly::class;
   protected $boundingPolyDataType = '';
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $locale;
   protected $locationsType = GoogleCloudVisionV1p1beta1LocationInfo::class;
   protected $locationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $mid;
   protected $propertiesType = GoogleCloudVisionV1p1beta1Property::class;
   protected $propertiesDataType = 'array';
+  /**
+   * @var float
+   */
   public $score;
+  /**
+   * @var float
+   */
   public $topicality;
 
   /**
@@ -47,26 +65,44 @@ class GoogleCloudVisionV1p1beta1EntityAnnotation extends \Google\Collection
   {
     return $this->boundingPoly;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setLocale($locale)
   {
     $this->locale = $locale;
   }
+  /**
+   * @return string
+   */
   public function getLocale()
   {
     return $this->locale;
@@ -85,10 +121,16 @@ class GoogleCloudVisionV1p1beta1EntityAnnotation extends \Google\Collection
   {
     return $this->locations;
   }
+  /**
+   * @param string
+   */
   public function setMid($mid)
   {
     $this->mid = $mid;
   }
+  /**
+   * @return string
+   */
   public function getMid()
   {
     return $this->mid;
@@ -107,18 +149,30 @@ class GoogleCloudVisionV1p1beta1EntityAnnotation extends \Google\Collection
   {
     return $this->properties;
   }
+  /**
+   * @param float
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return float
+   */
   public function getScore()
   {
     return $this->score;
   }
+  /**
+   * @param float
+   */
   public function setTopicality($topicality)
   {
     $this->topicality = $topicality;
   }
+  /**
+   * @return float
+   */
   public function getTopicality()
   {
     return $this->topicality;

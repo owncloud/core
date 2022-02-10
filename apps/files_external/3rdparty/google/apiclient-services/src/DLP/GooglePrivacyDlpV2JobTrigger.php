@@ -20,40 +20,79 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2JobTrigger extends \Google\Collection
 {
   protected $collection_key = 'triggers';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $errorsType = GooglePrivacyDlpV2Error::class;
   protected $errorsDataType = 'array';
   protected $inspectJobType = GooglePrivacyDlpV2InspectJobConfig::class;
   protected $inspectJobDataType = '';
+  /**
+   * @var string
+   */
   public $lastRunTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $status;
   protected $triggersType = GooglePrivacyDlpV2Trigger::class;
   protected $triggersDataType = 'array';
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -86,26 +125,44 @@ class GooglePrivacyDlpV2JobTrigger extends \Google\Collection
   {
     return $this->inspectJob;
   }
+  /**
+   * @param string
+   */
   public function setLastRunTime($lastRunTime)
   {
     $this->lastRunTime = $lastRunTime;
   }
+  /**
+   * @return string
+   */
   public function getLastRunTime()
   {
     return $this->lastRunTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
@@ -124,10 +181,16 @@ class GooglePrivacyDlpV2JobTrigger extends \Google\Collection
   {
     return $this->triggers;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

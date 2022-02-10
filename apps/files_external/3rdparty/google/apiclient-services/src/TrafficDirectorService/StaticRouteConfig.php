@@ -19,21 +19,39 @@ namespace Google\Service\TrafficDirectorService;
 
 class StaticRouteConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lastUpdated;
+  /**
+   * @var array[]
+   */
   public $routeConfig;
 
+  /**
+   * @param string
+   */
   public function setLastUpdated($lastUpdated)
   {
     $this->lastUpdated = $lastUpdated;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdated()
   {
     return $this->lastUpdated;
   }
+  /**
+   * @param array[]
+   */
   public function setRouteConfig($routeConfig)
   {
     $this->routeConfig = $routeConfig;
   }
+  /**
+   * @return array[]
+   */
   public function getRouteConfig()
   {
     return $this->routeConfig;

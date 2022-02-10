@@ -20,14 +20,23 @@ namespace Google\Service\Compute;
 class VmEndpointNatMappings extends \Google\Collection
 {
   protected $collection_key = 'interfaceNatMappings';
+  /**
+   * @var string
+   */
   public $instanceName;
   protected $interfaceNatMappingsType = VmEndpointNatMappingsInterfaceNatMappings::class;
   protected $interfaceNatMappingsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setInstanceName($instanceName)
   {
     $this->instanceName = $instanceName;
   }
+  /**
+   * @return string
+   */
   public function getInstanceName()
   {
     return $this->instanceName;

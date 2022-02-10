@@ -19,21 +19,39 @@ namespace Google\Service\Books;
 
 class VolumeVolumeInfoReadingModes extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $image;
+  /**
+   * @var bool
+   */
   public $text;
 
+  /**
+   * @param bool
+   */
   public function setImage($image)
   {
     $this->image = $image;
   }
+  /**
+   * @return bool
+   */
   public function getImage()
   {
     return $this->image;
   }
+  /**
+   * @param bool
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return bool
+   */
   public function getText()
   {
     return $this->text;

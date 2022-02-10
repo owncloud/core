@@ -21,6 +21,9 @@ class ReviewReplyResult extends \Google\Model
 {
   protected $lastEditedType = Timestamp::class;
   protected $lastEditedDataType = '';
+  /**
+   * @var string
+   */
   public $replyText;
 
   /**
@@ -37,10 +40,16 @@ class ReviewReplyResult extends \Google\Model
   {
     return $this->lastEdited;
   }
+  /**
+   * @param string
+   */
   public function setReplyText($replyText)
   {
     $this->replyText = $replyText;
   }
+  /**
+   * @return string
+   */
   public function getReplyText()
   {
     return $this->replyText;

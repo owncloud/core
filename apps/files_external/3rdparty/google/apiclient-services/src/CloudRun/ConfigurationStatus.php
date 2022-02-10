@@ -22,8 +22,17 @@ class ConfigurationStatus extends \Google\Collection
   protected $collection_key = 'conditions';
   protected $conditionsType = GoogleCloudRunV1Condition::class;
   protected $conditionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $latestCreatedRevisionName;
+  /**
+   * @var string
+   */
   public $latestReadyRevisionName;
+  /**
+   * @var int
+   */
   public $observedGeneration;
 
   /**
@@ -40,26 +49,44 @@ class ConfigurationStatus extends \Google\Collection
   {
     return $this->conditions;
   }
+  /**
+   * @param string
+   */
   public function setLatestCreatedRevisionName($latestCreatedRevisionName)
   {
     $this->latestCreatedRevisionName = $latestCreatedRevisionName;
   }
+  /**
+   * @return string
+   */
   public function getLatestCreatedRevisionName()
   {
     return $this->latestCreatedRevisionName;
   }
+  /**
+   * @param string
+   */
   public function setLatestReadyRevisionName($latestReadyRevisionName)
   {
     $this->latestReadyRevisionName = $latestReadyRevisionName;
   }
+  /**
+   * @return string
+   */
   public function getLatestReadyRevisionName()
   {
     return $this->latestReadyRevisionName;
   }
+  /**
+   * @param int
+   */
   public function setObservedGeneration($observedGeneration)
   {
     $this->observedGeneration = $observedGeneration;
   }
+  /**
+   * @return int
+   */
   public function getObservedGeneration()
   {
     return $this->observedGeneration;

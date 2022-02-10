@@ -126,7 +126,17 @@ class ArtifactRegistry extends \Google\Service
         'dockerImages',
         [
           'methods' => [
-            'list' => [
+            'get' => [
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'list' => [
               'path' => 'v1/{+parent}/dockerImages',
               'httpMethod' => 'GET',
               'parameters' => [

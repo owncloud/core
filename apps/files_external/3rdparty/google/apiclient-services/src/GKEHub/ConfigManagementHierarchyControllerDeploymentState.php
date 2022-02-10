@@ -19,21 +19,39 @@ namespace Google\Service\GKEHub;
 
 class ConfigManagementHierarchyControllerDeploymentState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $extension;
+  /**
+   * @var string
+   */
   public $hnc;
 
+  /**
+   * @param string
+   */
   public function setExtension($extension)
   {
     $this->extension = $extension;
   }
+  /**
+   * @return string
+   */
   public function getExtension()
   {
     return $this->extension;
   }
+  /**
+   * @param string
+   */
   public function setHnc($hnc)
   {
     $this->hnc = $hnc;
   }
+  /**
+   * @return string
+   */
   public function getHnc()
   {
     return $this->hnc;

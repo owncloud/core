@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class OrderreturnsRejectOperation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $reason;
+  /**
+   * @var string
+   */
   public $reasonText;
 
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
   }
+  /**
+   * @param string
+   */
   public function setReasonText($reasonText)
   {
     $this->reasonText = $reasonText;
   }
+  /**
+   * @return string
+   */
   public function getReasonText()
   {
     return $this->reasonText;

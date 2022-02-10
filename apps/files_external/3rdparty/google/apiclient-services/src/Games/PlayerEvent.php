@@ -19,48 +19,93 @@ namespace Google\Service\Games;
 
 class PlayerEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $definitionId;
+  /**
+   * @var string
+   */
   public $formattedNumEvents;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $numEvents;
+  /**
+   * @var string
+   */
   public $playerId;
 
+  /**
+   * @param string
+   */
   public function setDefinitionId($definitionId)
   {
     $this->definitionId = $definitionId;
   }
+  /**
+   * @return string
+   */
   public function getDefinitionId()
   {
     return $this->definitionId;
   }
+  /**
+   * @param string
+   */
   public function setFormattedNumEvents($formattedNumEvents)
   {
     $this->formattedNumEvents = $formattedNumEvents;
   }
+  /**
+   * @return string
+   */
   public function getFormattedNumEvents()
   {
     return $this->formattedNumEvents;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNumEvents($numEvents)
   {
     $this->numEvents = $numEvents;
   }
+  /**
+   * @return string
+   */
   public function getNumEvents()
   {
     return $this->numEvents;
   }
+  /**
+   * @param string
+   */
   public function setPlayerId($playerId)
   {
     $this->playerId = $playerId;
   }
+  /**
+   * @return string
+   */
   public function getPlayerId()
   {
     return $this->playerId;

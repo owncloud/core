@@ -20,15 +20,27 @@ namespace Google\Service\YouTubeAnalytics;
 class Errors extends \Google\Collection
 {
   protected $collection_key = 'error';
+  /**
+   * @var string
+   */
   public $code;
   protected $errorType = ErrorProto::class;
   protected $errorDataType = 'array';
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
@@ -47,10 +59,16 @@ class Errors extends \Google\Collection
   {
     return $this->error;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

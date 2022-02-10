@@ -19,30 +19,57 @@ namespace Google\Service\Logging;
 
 class MetricDescriptorMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ingestDelay;
+  /**
+   * @var string
+   */
   public $launchStage;
+  /**
+   * @var string
+   */
   public $samplePeriod;
 
+  /**
+   * @param string
+   */
   public function setIngestDelay($ingestDelay)
   {
     $this->ingestDelay = $ingestDelay;
   }
+  /**
+   * @return string
+   */
   public function getIngestDelay()
   {
     return $this->ingestDelay;
   }
+  /**
+   * @param string
+   */
   public function setLaunchStage($launchStage)
   {
     $this->launchStage = $launchStage;
   }
+  /**
+   * @return string
+   */
   public function getLaunchStage()
   {
     return $this->launchStage;
   }
+  /**
+   * @param string
+   */
   public function setSamplePeriod($samplePeriod)
   {
     $this->samplePeriod = $samplePeriod;
   }
+  /**
+   * @return string
+   */
   public function getSamplePeriod()
   {
     return $this->samplePeriod;

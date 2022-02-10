@@ -20,14 +20,29 @@ namespace Google\Service\Dataproc;
 class Job extends \Google\Collection
 {
   protected $collection_key = 'yarnApplications';
+  /**
+   * @var bool
+   */
   public $done;
+  /**
+   * @var string
+   */
   public $driverControlFilesUri;
+  /**
+   * @var string
+   */
   public $driverOutputResourceUri;
   protected $hadoopJobType = HadoopJob::class;
   protected $hadoopJobDataType = '';
   protected $hiveJobType = HiveJob::class;
   protected $hiveJobDataType = '';
+  /**
+   * @var string
+   */
   public $jobUuid;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $pigJobType = PigJob::class;
   protected $pigJobDataType = '';
@@ -54,26 +69,44 @@ class Job extends \Google\Collection
   protected $yarnApplicationsType = YarnApplication::class;
   protected $yarnApplicationsDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setDone($done)
   {
     $this->done = $done;
   }
+  /**
+   * @return bool
+   */
   public function getDone()
   {
     return $this->done;
   }
+  /**
+   * @param string
+   */
   public function setDriverControlFilesUri($driverControlFilesUri)
   {
     $this->driverControlFilesUri = $driverControlFilesUri;
   }
+  /**
+   * @return string
+   */
   public function getDriverControlFilesUri()
   {
     return $this->driverControlFilesUri;
   }
+  /**
+   * @param string
+   */
   public function setDriverOutputResourceUri($driverOutputResourceUri)
   {
     $this->driverOutputResourceUri = $driverOutputResourceUri;
   }
+  /**
+   * @return string
+   */
   public function getDriverOutputResourceUri()
   {
     return $this->driverOutputResourceUri;
@@ -106,18 +139,30 @@ class Job extends \Google\Collection
   {
     return $this->hiveJob;
   }
+  /**
+   * @param string
+   */
   public function setJobUuid($jobUuid)
   {
     $this->jobUuid = $jobUuid;
   }
+  /**
+   * @return string
+   */
   public function getJobUuid()
   {
     return $this->jobUuid;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

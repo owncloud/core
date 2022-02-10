@@ -20,32 +20,59 @@ namespace Google\Service\Contactcenterinsights;
 class GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegment extends \Google\Collection
 {
   protected $collection_key = 'words';
+  /**
+   * @var int
+   */
   public $channelTag;
+  /**
+   * @var float
+   */
   public $confidence;
   protected $dialogflowSegmentMetadataType = GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentDialogflowSegmentMetadata::class;
   protected $dialogflowSegmentMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $messageTime;
   protected $segmentParticipantType = GoogleCloudContactcenterinsightsV1ConversationParticipant::class;
   protected $segmentParticipantDataType = '';
   protected $sentimentType = GoogleCloudContactcenterinsightsV1SentimentData::class;
   protected $sentimentDataType = '';
+  /**
+   * @var string
+   */
   public $text;
   protected $wordsType = GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegmentWordInfo::class;
   protected $wordsDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setChannelTag($channelTag)
   {
     $this->channelTag = $channelTag;
   }
+  /**
+   * @return int
+   */
   public function getChannelTag()
   {
     return $this->channelTag;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
@@ -64,18 +91,30 @@ class GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegment 
   {
     return $this->dialogflowSegmentMetadata;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setMessageTime($messageTime)
   {
     $this->messageTime = $messageTime;
   }
+  /**
+   * @return string
+   */
   public function getMessageTime()
   {
     return $this->messageTime;
@@ -108,10 +147,16 @@ class GoogleCloudContactcenterinsightsV1ConversationTranscriptTranscriptSegment 
   {
     return $this->sentiment;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

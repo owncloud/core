@@ -20,21 +20,39 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3BatchRunTestCasesRequest extends \Google\Collection
 {
   protected $collection_key = 'testCases';
+  /**
+   * @var string
+   */
   public $environment;
+  /**
+   * @var string[]
+   */
   public $testCases;
 
+  /**
+   * @param string
+   */
   public function setEnvironment($environment)
   {
     $this->environment = $environment;
   }
+  /**
+   * @return string
+   */
   public function getEnvironment()
   {
     return $this->environment;
   }
+  /**
+   * @param string[]
+   */
   public function setTestCases($testCases)
   {
     $this->testCases = $testCases;
   }
+  /**
+   * @return string[]
+   */
   public function getTestCases()
   {
     return $this->testCases;

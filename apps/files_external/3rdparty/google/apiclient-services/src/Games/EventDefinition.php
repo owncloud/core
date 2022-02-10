@@ -22,12 +22,33 @@ class EventDefinition extends \Google\Collection
   protected $collection_key = 'childEvents';
   protected $childEventsType = EventChild::class;
   protected $childEventsDataType = 'array';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $imageUrl;
+  /**
+   * @var bool
+   */
   public $isDefaultImageUrl;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $visibility;
 
   /**
@@ -44,58 +65,100 @@ class EventDefinition extends \Google\Collection
   {
     return $this->childEvents;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;
   }
+  /**
+   * @param bool
+   */
   public function setIsDefaultImageUrl($isDefaultImageUrl)
   {
     $this->isDefaultImageUrl = $isDefaultImageUrl;
   }
+  /**
+   * @return bool
+   */
   public function getIsDefaultImageUrl()
   {
     return $this->isDefaultImageUrl;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setVisibility($visibility)
   {
     $this->visibility = $visibility;
   }
+  /**
+   * @return string
+   */
   public function getVisibility()
   {
     return $this->visibility;

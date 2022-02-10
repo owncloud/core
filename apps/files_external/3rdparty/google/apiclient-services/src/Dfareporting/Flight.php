@@ -19,39 +19,75 @@ namespace Google\Service\Dfareporting;
 
 class Flight extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endDate;
+  /**
+   * @var string
+   */
   public $rateOrCost;
+  /**
+   * @var string
+   */
   public $startDate;
+  /**
+   * @var string
+   */
   public $units;
 
+  /**
+   * @param string
+   */
   public function setEndDate($endDate)
   {
     $this->endDate = $endDate;
   }
+  /**
+   * @return string
+   */
   public function getEndDate()
   {
     return $this->endDate;
   }
+  /**
+   * @param string
+   */
   public function setRateOrCost($rateOrCost)
   {
     $this->rateOrCost = $rateOrCost;
   }
+  /**
+   * @return string
+   */
   public function getRateOrCost()
   {
     return $this->rateOrCost;
   }
+  /**
+   * @param string
+   */
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
   }
+  /**
+   * @return string
+   */
   public function getStartDate()
   {
     return $this->startDate;
   }
+  /**
+   * @param string
+   */
   public function setUnits($units)
   {
     $this->units = $units;
   }
+  /**
+   * @return string
+   */
   public function getUnits()
   {
     return $this->units;

@@ -24,7 +24,13 @@ class StructuredQuery extends \Google\Collection
   protected $endAtDataType = '';
   protected $fromType = CollectionSelector::class;
   protected $fromDataType = 'array';
+  /**
+   * @var int
+   */
   public $limit;
+  /**
+   * @var int
+   */
   public $offset;
   protected $orderByType = Order::class;
   protected $orderByDataType = 'array';
@@ -63,18 +69,30 @@ class StructuredQuery extends \Google\Collection
   {
     return $this->from;
   }
+  /**
+   * @param int
+   */
   public function setLimit($limit)
   {
     $this->limit = $limit;
   }
+  /**
+   * @return int
+   */
   public function getLimit()
   {
     return $this->limit;
   }
+  /**
+   * @param int
+   */
   public function setOffset($offset)
   {
     $this->offset = $offset;
   }
+  /**
+   * @return int
+   */
   public function getOffset()
   {
     return $this->offset;

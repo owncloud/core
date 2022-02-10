@@ -19,21 +19,39 @@ namespace Google\Service\CloudHealthcare;
 
 class Image extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $gcsUri;
+  /**
+   * @var string
+   */
   public $rawBytes;
 
+  /**
+   * @param string
+   */
   public function setGcsUri($gcsUri)
   {
     $this->gcsUri = $gcsUri;
   }
+  /**
+   * @return string
+   */
   public function getGcsUri()
   {
     return $this->gcsUri;
   }
+  /**
+   * @param string
+   */
   public function setRawBytes($rawBytes)
   {
     $this->rawBytes = $rawBytes;
   }
+  /**
+   * @return string
+   */
   public function getRawBytes()
   {
     return $this->rawBytes;

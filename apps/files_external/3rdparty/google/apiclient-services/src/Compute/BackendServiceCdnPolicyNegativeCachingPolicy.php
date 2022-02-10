@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class BackendServiceCdnPolicyNegativeCachingPolicy extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $code;
+  /**
+   * @var int
+   */
   public $ttl;
 
+  /**
+   * @param int
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return int
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param int
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return int
+   */
   public function getTtl()
   {
     return $this->ttl;

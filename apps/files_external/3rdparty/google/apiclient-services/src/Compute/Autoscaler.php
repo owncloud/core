@@ -22,20 +22,53 @@ class Autoscaler extends \Google\Collection
   protected $collection_key = 'statusDetails';
   protected $autoscalingPolicyType = AutoscalingPolicy::class;
   protected $autoscalingPolicyDataType = '';
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $recommendedSize;
+  /**
+   * @var string
+   */
   public $region;
   protected $scalingScheduleStatusType = ScalingScheduleStatus::class;
   protected $scalingScheduleStatusDataType = 'map';
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $status;
   protected $statusDetailsType = AutoscalerStatusDetails::class;
   protected $statusDetailsDataType = 'array';
+  /**
+   * @var string
+   */
   public $target;
+  /**
+   * @var string
+   */
   public $zone;
 
   /**
@@ -52,58 +85,100 @@ class Autoscaler extends \Google\Collection
   {
     return $this->autoscalingPolicy;
   }
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setRecommendedSize($recommendedSize)
   {
     $this->recommendedSize = $recommendedSize;
   }
+  /**
+   * @return int
+   */
   public function getRecommendedSize()
   {
     return $this->recommendedSize;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
@@ -122,18 +197,30 @@ class Autoscaler extends \Google\Collection
   {
     return $this->scalingScheduleStatus;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
@@ -152,18 +239,30 @@ class Autoscaler extends \Google\Collection
   {
     return $this->statusDetails;
   }
+  /**
+   * @param string
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return string
+   */
   public function getTarget()
   {
     return $this->target;
   }
+  /**
+   * @param string
+   */
   public function setZone($zone)
   {
     $this->zone = $zone;
   }
+  /**
+   * @return string
+   */
   public function getZone()
   {
     return $this->zone;

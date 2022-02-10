@@ -22,7 +22,13 @@ class ApigatewayBinding extends \Google\Collection
   protected $collection_key = 'members';
   protected $conditionType = ApigatewayExpr::class;
   protected $conditionDataType = '';
+  /**
+   * @var string[]
+   */
   public $members;
+  /**
+   * @var string
+   */
   public $role;
 
   /**
@@ -39,18 +45,30 @@ class ApigatewayBinding extends \Google\Collection
   {
     return $this->condition;
   }
+  /**
+   * @param string[]
+   */
   public function setMembers($members)
   {
     $this->members = $members;
   }
+  /**
+   * @return string[]
+   */
   public function getMembers()
   {
     return $this->members;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;

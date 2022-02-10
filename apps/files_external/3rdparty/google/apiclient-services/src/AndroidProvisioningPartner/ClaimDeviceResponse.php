@@ -19,21 +19,39 @@ namespace Google\Service\AndroidProvisioningPartner;
 
 class ClaimDeviceResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceId;
+  /**
+   * @var string
+   */
   public $deviceName;
 
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
   }
+  /**
+   * @param string
+   */
   public function setDeviceName($deviceName)
   {
     $this->deviceName = $deviceName;
   }
+  /**
+   * @return string
+   */
   public function getDeviceName()
   {
     return $this->deviceName;

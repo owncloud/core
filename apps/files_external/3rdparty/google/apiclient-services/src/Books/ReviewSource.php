@@ -19,30 +19,57 @@ namespace Google\Service\Books;
 
 class ReviewSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $extraDescription;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setExtraDescription($extraDescription)
   {
     $this->extraDescription = $extraDescription;
   }
+  /**
+   * @return string
+   */
   public function getExtraDescription()
   {
     return $this->extraDescription;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

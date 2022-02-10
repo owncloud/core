@@ -20,14 +20,23 @@ namespace Google\Service\AndroidManagement;
 class SecurityPosture extends \Google\Collection
 {
   protected $collection_key = 'postureDetails';
+  /**
+   * @var string
+   */
   public $devicePosture;
   protected $postureDetailsType = PostureDetail::class;
   protected $postureDetailsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDevicePosture($devicePosture)
   {
     $this->devicePosture = $devicePosture;
   }
+  /**
+   * @return string
+   */
   public function getDevicePosture()
   {
     return $this->devicePosture;

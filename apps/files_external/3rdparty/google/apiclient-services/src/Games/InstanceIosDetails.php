@@ -19,66 +19,129 @@ namespace Google\Service\Games;
 
 class InstanceIosDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bundleIdentifier;
+  /**
+   * @var string
+   */
   public $itunesAppId;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $preferredForIpad;
+  /**
+   * @var bool
+   */
   public $preferredForIphone;
+  /**
+   * @var bool
+   */
   public $supportIpad;
+  /**
+   * @var bool
+   */
   public $supportIphone;
 
+  /**
+   * @param string
+   */
   public function setBundleIdentifier($bundleIdentifier)
   {
     $this->bundleIdentifier = $bundleIdentifier;
   }
+  /**
+   * @return string
+   */
   public function getBundleIdentifier()
   {
     return $this->bundleIdentifier;
   }
+  /**
+   * @param string
+   */
   public function setItunesAppId($itunesAppId)
   {
     $this->itunesAppId = $itunesAppId;
   }
+  /**
+   * @return string
+   */
   public function getItunesAppId()
   {
     return $this->itunesAppId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setPreferredForIpad($preferredForIpad)
   {
     $this->preferredForIpad = $preferredForIpad;
   }
+  /**
+   * @return bool
+   */
   public function getPreferredForIpad()
   {
     return $this->preferredForIpad;
   }
+  /**
+   * @param bool
+   */
   public function setPreferredForIphone($preferredForIphone)
   {
     $this->preferredForIphone = $preferredForIphone;
   }
+  /**
+   * @return bool
+   */
   public function getPreferredForIphone()
   {
     return $this->preferredForIphone;
   }
+  /**
+   * @param bool
+   */
   public function setSupportIpad($supportIpad)
   {
     $this->supportIpad = $supportIpad;
   }
+  /**
+   * @return bool
+   */
   public function getSupportIpad()
   {
     return $this->supportIpad;
   }
+  /**
+   * @param bool
+   */
   public function setSupportIphone($supportIphone)
   {
     $this->supportIphone = $supportIphone;
   }
+  /**
+   * @return bool
+   */
   public function getSupportIphone()
   {
     return $this->supportIphone;

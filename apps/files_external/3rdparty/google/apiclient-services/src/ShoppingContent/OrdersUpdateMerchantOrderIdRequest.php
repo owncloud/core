@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersUpdateMerchantOrderIdRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $merchantOrderId;
+  /**
+   * @var string
+   */
   public $operationId;
 
+  /**
+   * @param string
+   */
   public function setMerchantOrderId($merchantOrderId)
   {
     $this->merchantOrderId = $merchantOrderId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantOrderId()
   {
     return $this->merchantOrderId;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;

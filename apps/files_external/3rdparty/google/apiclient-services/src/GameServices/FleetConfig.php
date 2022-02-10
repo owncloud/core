@@ -19,21 +19,39 @@ namespace Google\Service\GameServices;
 
 class FleetConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fleetSpec;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setFleetSpec($fleetSpec)
   {
     $this->fleetSpec = $fleetSpec;
   }
+  /**
+   * @return string
+   */
   public function getFleetSpec()
   {
     return $this->fleetSpec;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

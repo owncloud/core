@@ -19,12 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1KnowledgeOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
+  public $knowledgeBase;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
+  public function setKnowledgeBase($knowledgeBase)
+  {
+    $this->knowledgeBase = $knowledgeBase;
+  }
+  /**
+   * @return string
+   */
+  public function getKnowledgeBase()
+  {
+    return $this->knowledgeBase;
+  }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

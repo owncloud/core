@@ -22,6 +22,9 @@ class GoogleAdsHomeservicesLocalservicesV1SearchAccountReportsResponse extends \
   protected $collection_key = 'accountReports';
   protected $accountReportsType = GoogleAdsHomeservicesLocalservicesV1AccountReport::class;
   protected $accountReportsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAdsHomeservicesLocalservicesV1SearchAccountReportsResponse extends \
   {
     return $this->accountReports;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

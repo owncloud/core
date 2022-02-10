@@ -19,30 +19,57 @@ namespace Google\Service\Acceleratedmobilepageurl;
 
 class AmpUrl extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ampUrl;
+  /**
+   * @var string
+   */
   public $cdnAmpUrl;
+  /**
+   * @var string
+   */
   public $originalUrl;
 
+  /**
+   * @param string
+   */
   public function setAmpUrl($ampUrl)
   {
     $this->ampUrl = $ampUrl;
   }
+  /**
+   * @return string
+   */
   public function getAmpUrl()
   {
     return $this->ampUrl;
   }
+  /**
+   * @param string
+   */
   public function setCdnAmpUrl($cdnAmpUrl)
   {
     $this->cdnAmpUrl = $cdnAmpUrl;
   }
+  /**
+   * @return string
+   */
   public function getCdnAmpUrl()
   {
     return $this->cdnAmpUrl;
   }
+  /**
+   * @param string
+   */
   public function setOriginalUrl($originalUrl)
   {
     $this->originalUrl = $originalUrl;
   }
+  /**
+   * @return string
+   */
   public function getOriginalUrl()
   {
     return $this->originalUrl;

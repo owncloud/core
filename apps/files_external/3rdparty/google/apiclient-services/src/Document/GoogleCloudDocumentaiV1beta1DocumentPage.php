@@ -34,6 +34,9 @@ class GoogleCloudDocumentaiV1beta1DocumentPage extends \Google\Collection
   protected $layoutDataType = '';
   protected $linesType = GoogleCloudDocumentaiV1beta1DocumentPageLine::class;
   protected $linesDataType = 'array';
+  /**
+   * @var int
+   */
   public $pageNumber;
   protected $paragraphsType = GoogleCloudDocumentaiV1beta1DocumentPageParagraph::class;
   protected $paragraphsDataType = 'array';
@@ -146,10 +149,16 @@ class GoogleCloudDocumentaiV1beta1DocumentPage extends \Google\Collection
   {
     return $this->lines;
   }
+  /**
+   * @param int
+   */
   public function setPageNumber($pageNumber)
   {
     $this->pageNumber = $pageNumber;
   }
+  /**
+   * @return int
+   */
   public function getPageNumber()
   {
     return $this->pageNumber;

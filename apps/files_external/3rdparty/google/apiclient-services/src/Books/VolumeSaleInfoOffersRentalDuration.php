@@ -20,6 +20,9 @@ namespace Google\Service\Books;
 class VolumeSaleInfoOffersRentalDuration extends \Google\Model
 {
   public $count;
+  /**
+   * @var string
+   */
   public $unit;
 
   public function setCount($count)
@@ -30,10 +33,16 @@ class VolumeSaleInfoOffersRentalDuration extends \Google\Model
   {
     return $this->count;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;

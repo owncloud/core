@@ -19,30 +19,57 @@ namespace Google\Service\CloudHealthcare;
 
 class Segment extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $fields;
+  /**
+   * @var string
+   */
   public $segmentId;
+  /**
+   * @var string
+   */
   public $setId;
 
+  /**
+   * @param string[]
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string[]
+   */
   public function getFields()
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setSegmentId($segmentId)
   {
     $this->segmentId = $segmentId;
   }
+  /**
+   * @return string
+   */
   public function getSegmentId()
   {
     return $this->segmentId;
   }
+  /**
+   * @param string
+   */
   public function setSetId($setId)
   {
     $this->setId = $setId;
   }
+  /**
+   * @return string
+   */
   public function getSetId()
   {
     return $this->setId;

@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class OrderreturnsLineItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $quantity;
 
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return string
+   */
   public function getQuantity()
   {
     return $this->quantity;

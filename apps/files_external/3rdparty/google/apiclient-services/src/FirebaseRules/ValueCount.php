@@ -19,21 +19,39 @@ namespace Google\Service\FirebaseRules;
 
 class ValueCount extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $count;
+  /**
+   * @var array
+   */
   public $value;
 
+  /**
+   * @param int
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return int
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param array
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array
+   */
   public function getValue()
   {
     return $this->value;

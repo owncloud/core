@@ -20,16 +20,25 @@ namespace Google\Service\CloudSearch;
 class ItemStatus extends \Google\Collection
 {
   protected $collection_key = 'repositoryErrors';
+  /**
+   * @var string
+   */
   public $code;
   protected $processingErrorsType = ProcessingError::class;
   protected $processingErrorsDataType = 'array';
   protected $repositoryErrorsType = RepositoryError::class;
   protected $repositoryErrorsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;

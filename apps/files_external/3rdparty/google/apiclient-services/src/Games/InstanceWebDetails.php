@@ -19,30 +19,57 @@ namespace Google\Service\Games;
 
 class InstanceWebDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $launchUrl;
+  /**
+   * @var bool
+   */
   public $preferred;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLaunchUrl($launchUrl)
   {
     $this->launchUrl = $launchUrl;
   }
+  /**
+   * @return string
+   */
   public function getLaunchUrl()
   {
     return $this->launchUrl;
   }
+  /**
+   * @param bool
+   */
   public function setPreferred($preferred)
   {
     $this->preferred = $preferred;
   }
+  /**
+   * @return bool
+   */
   public function getPreferred()
   {
     return $this->preferred;

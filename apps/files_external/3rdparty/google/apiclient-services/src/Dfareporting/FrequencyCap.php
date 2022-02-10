@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class FrequencyCap extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $duration;
+  /**
+   * @var string
+   */
   public $impressions;
 
+  /**
+   * @param string
+   */
   public function setDuration($duration)
   {
     $this->duration = $duration;
   }
+  /**
+   * @return string
+   */
   public function getDuration()
   {
     return $this->duration;
   }
+  /**
+   * @param string
+   */
   public function setImpressions($impressions)
   {
     $this->impressions = $impressions;
   }
+  /**
+   * @return string
+   */
   public function getImpressions()
   {
     return $this->impressions;

@@ -19,48 +19,93 @@ namespace Google\Service\ShoppingContent;
 
 class HolidayCutoff extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deadlineDate;
+  /**
+   * @var string
+   */
   public $deadlineHour;
+  /**
+   * @var string
+   */
   public $deadlineTimezone;
+  /**
+   * @var string
+   */
   public $holidayId;
+  /**
+   * @var string
+   */
   public $visibleFromDate;
 
+  /**
+   * @param string
+   */
   public function setDeadlineDate($deadlineDate)
   {
     $this->deadlineDate = $deadlineDate;
   }
+  /**
+   * @return string
+   */
   public function getDeadlineDate()
   {
     return $this->deadlineDate;
   }
+  /**
+   * @param string
+   */
   public function setDeadlineHour($deadlineHour)
   {
     $this->deadlineHour = $deadlineHour;
   }
+  /**
+   * @return string
+   */
   public function getDeadlineHour()
   {
     return $this->deadlineHour;
   }
+  /**
+   * @param string
+   */
   public function setDeadlineTimezone($deadlineTimezone)
   {
     $this->deadlineTimezone = $deadlineTimezone;
   }
+  /**
+   * @return string
+   */
   public function getDeadlineTimezone()
   {
     return $this->deadlineTimezone;
   }
+  /**
+   * @param string
+   */
   public function setHolidayId($holidayId)
   {
     $this->holidayId = $holidayId;
   }
+  /**
+   * @return string
+   */
   public function getHolidayId()
   {
     return $this->holidayId;
   }
+  /**
+   * @param string
+   */
   public function setVisibleFromDate($visibleFromDate)
   {
     $this->visibleFromDate = $visibleFromDate;
   }
+  /**
+   * @return string
+   */
   public function getVisibleFromDate()
   {
     return $this->visibleFromDate;

@@ -20,14 +20,23 @@ namespace Google\Service\CloudResourceManager;
 class ListTagBindingsResponse extends \Google\Collection
 {
   protected $collection_key = 'tagBindings';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $tagBindingsType = TagBinding::class;
   protected $tagBindingsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

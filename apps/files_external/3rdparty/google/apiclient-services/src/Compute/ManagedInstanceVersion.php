@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class ManagedInstanceVersion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $instanceTemplate;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setInstanceTemplate($instanceTemplate)
   {
     $this->instanceTemplate = $instanceTemplate;
   }
+  /**
+   * @return string
+   */
   public function getInstanceTemplate()
   {
     return $this->instanceTemplate;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

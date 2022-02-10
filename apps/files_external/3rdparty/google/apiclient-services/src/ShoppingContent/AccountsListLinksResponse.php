@@ -20,15 +20,27 @@ namespace Google\Service\ShoppingContent;
 class AccountsListLinksResponse extends \Google\Collection
 {
   protected $collection_key = 'links';
+  /**
+   * @var string
+   */
   public $kind;
   protected $linksType = LinkedAccount::class;
   protected $linksDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -47,10 +59,16 @@ class AccountsListLinksResponse extends \Google\Collection
   {
     return $this->links;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

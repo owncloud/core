@@ -20,16 +20,31 @@ namespace Google\Service\Compute;
 class Binding extends \Google\Collection
 {
   protected $collection_key = 'members';
+  /**
+   * @var string
+   */
   public $bindingId;
   protected $conditionType = Expr::class;
   protected $conditionDataType = '';
+  /**
+   * @var string[]
+   */
   public $members;
+  /**
+   * @var string
+   */
   public $role;
 
+  /**
+   * @param string
+   */
   public function setBindingId($bindingId)
   {
     $this->bindingId = $bindingId;
   }
+  /**
+   * @return string
+   */
   public function getBindingId()
   {
     return $this->bindingId;
@@ -48,18 +63,30 @@ class Binding extends \Google\Collection
   {
     return $this->condition;
   }
+  /**
+   * @param string[]
+   */
   public function setMembers($members)
   {
     $this->members = $members;
   }
+  /**
+   * @return string[]
+   */
   public function getMembers()
   {
     return $this->members;
   }
+  /**
+   * @param string
+   */
   public function setRole($role)
   {
     $this->role = $role;
   }
+  /**
+   * @return string
+   */
   public function getRole()
   {
     return $this->role;

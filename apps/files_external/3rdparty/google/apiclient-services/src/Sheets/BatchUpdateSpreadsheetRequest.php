@@ -20,16 +20,31 @@ namespace Google\Service\Sheets;
 class BatchUpdateSpreadsheetRequest extends \Google\Collection
 {
   protected $collection_key = 'responseRanges';
+  /**
+   * @var bool
+   */
   public $includeSpreadsheetInResponse;
   protected $requestsType = Request::class;
   protected $requestsDataType = 'array';
+  /**
+   * @var bool
+   */
   public $responseIncludeGridData;
+  /**
+   * @var string[]
+   */
   public $responseRanges;
 
+  /**
+   * @param bool
+   */
   public function setIncludeSpreadsheetInResponse($includeSpreadsheetInResponse)
   {
     $this->includeSpreadsheetInResponse = $includeSpreadsheetInResponse;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeSpreadsheetInResponse()
   {
     return $this->includeSpreadsheetInResponse;
@@ -48,18 +63,30 @@ class BatchUpdateSpreadsheetRequest extends \Google\Collection
   {
     return $this->requests;
   }
+  /**
+   * @param bool
+   */
   public function setResponseIncludeGridData($responseIncludeGridData)
   {
     $this->responseIncludeGridData = $responseIncludeGridData;
   }
+  /**
+   * @return bool
+   */
   public function getResponseIncludeGridData()
   {
     return $this->responseIncludeGridData;
   }
+  /**
+   * @param string[]
+   */
   public function setResponseRanges($responseRanges)
   {
     $this->responseRanges = $responseRanges;
   }
+  /**
+   * @return string[]
+   */
   public function getResponseRanges()
   {
     return $this->responseRanges;

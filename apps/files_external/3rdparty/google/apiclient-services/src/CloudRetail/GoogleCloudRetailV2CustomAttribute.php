@@ -20,15 +20,30 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2CustomAttribute extends \Google\Collection
 {
   protected $collection_key = 'text';
+  /**
+   * @var bool
+   */
   public $indexable;
   public $numbers;
+  /**
+   * @var bool
+   */
   public $searchable;
+  /**
+   * @var string[]
+   */
   public $text;
 
+  /**
+   * @param bool
+   */
   public function setIndexable($indexable)
   {
     $this->indexable = $indexable;
   }
+  /**
+   * @return bool
+   */
   public function getIndexable()
   {
     return $this->indexable;
@@ -41,18 +56,30 @@ class GoogleCloudRetailV2CustomAttribute extends \Google\Collection
   {
     return $this->numbers;
   }
+  /**
+   * @param bool
+   */
   public function setSearchable($searchable)
   {
     $this->searchable = $searchable;
   }
+  /**
+   * @return bool
+   */
   public function getSearchable()
   {
     return $this->searchable;
   }
+  /**
+   * @param string[]
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string[]
+   */
   public function getText()
   {
     return $this->text;

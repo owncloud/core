@@ -20,28 +20,67 @@ namespace Google\Service\Analytics;
 class RemarketingAudience extends \Google\Collection
 {
   protected $collection_key = 'linkedViews';
+  /**
+   * @var string
+   */
   public $accountId;
   protected $audienceDefinitionType = RemarketingAudienceAudienceDefinition::class;
   protected $audienceDefinitionDataType = '';
+  /**
+   * @var string
+   */
   public $audienceType;
+  /**
+   * @var string
+   */
   public $created;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $internalWebPropertyId;
+  /**
+   * @var string
+   */
   public $kind;
   protected $linkedAdAccountsType = LinkedForeignAccount::class;
   protected $linkedAdAccountsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $linkedViews;
+  /**
+   * @var string
+   */
   public $name;
   protected $stateBasedAudienceDefinitionType = RemarketingAudienceStateBasedAudienceDefinition::class;
   protected $stateBasedAudienceDefinitionDataType = '';
+  /**
+   * @var string
+   */
   public $updated;
+  /**
+   * @var string
+   */
   public $webPropertyId;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -60,50 +99,86 @@ class RemarketingAudience extends \Google\Collection
   {
     return $this->audienceDefinition;
   }
+  /**
+   * @param string
+   */
   public function setAudienceType($audienceType)
   {
     $this->audienceType = $audienceType;
   }
+  /**
+   * @return string
+   */
   public function getAudienceType()
   {
     return $this->audienceType;
   }
+  /**
+   * @param string
+   */
   public function setCreated($created)
   {
     $this->created = $created;
   }
+  /**
+   * @return string
+   */
   public function getCreated()
   {
     return $this->created;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setInternalWebPropertyId($internalWebPropertyId)
   {
     $this->internalWebPropertyId = $internalWebPropertyId;
   }
+  /**
+   * @return string
+   */
   public function getInternalWebPropertyId()
   {
     return $this->internalWebPropertyId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -122,18 +197,30 @@ class RemarketingAudience extends \Google\Collection
   {
     return $this->linkedAdAccounts;
   }
+  /**
+   * @param string[]
+   */
   public function setLinkedViews($linkedViews)
   {
     $this->linkedViews = $linkedViews;
   }
+  /**
+   * @return string[]
+   */
   public function getLinkedViews()
   {
     return $this->linkedViews;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -152,18 +239,30 @@ class RemarketingAudience extends \Google\Collection
   {
     return $this->stateBasedAudienceDefinition;
   }
+  /**
+   * @param string
+   */
   public function setUpdated($updated)
   {
     $this->updated = $updated;
   }
+  /**
+   * @return string
+   */
   public function getUpdated()
   {
     return $this->updated;
   }
+  /**
+   * @param string
+   */
   public function setWebPropertyId($webPropertyId)
   {
     $this->webPropertyId = $webPropertyId;
   }
+  /**
+   * @return string
+   */
   public function getWebPropertyId()
   {
     return $this->webPropertyId;

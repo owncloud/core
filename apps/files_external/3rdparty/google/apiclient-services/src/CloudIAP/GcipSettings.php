@@ -20,21 +20,39 @@ namespace Google\Service\CloudIAP;
 class GcipSettings extends \Google\Collection
 {
   protected $collection_key = 'tenantIds';
+  /**
+   * @var string
+   */
   public $loginPageUri;
+  /**
+   * @var string[]
+   */
   public $tenantIds;
 
+  /**
+   * @param string
+   */
   public function setLoginPageUri($loginPageUri)
   {
     $this->loginPageUri = $loginPageUri;
   }
+  /**
+   * @return string
+   */
   public function getLoginPageUri()
   {
     return $this->loginPageUri;
   }
+  /**
+   * @param string[]
+   */
   public function setTenantIds($tenantIds)
   {
     $this->tenantIds = $tenantIds;
   }
+  /**
+   * @return string[]
+   */
   public function getTenantIds()
   {
     return $this->tenantIds;

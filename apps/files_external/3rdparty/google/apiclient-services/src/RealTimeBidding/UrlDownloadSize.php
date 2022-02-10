@@ -19,21 +19,39 @@ namespace Google\Service\RealTimeBidding;
 
 class UrlDownloadSize extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $downloadSizeKb;
+  /**
+   * @var string
+   */
   public $normalizedUrl;
 
+  /**
+   * @param int
+   */
   public function setDownloadSizeKb($downloadSizeKb)
   {
     $this->downloadSizeKb = $downloadSizeKb;
   }
+  /**
+   * @return int
+   */
   public function getDownloadSizeKb()
   {
     return $this->downloadSizeKb;
   }
+  /**
+   * @param string
+   */
   public function setNormalizedUrl($normalizedUrl)
   {
     $this->normalizedUrl = $normalizedUrl;
   }
+  /**
+   * @return string
+   */
   public function getNormalizedUrl()
   {
     return $this->normalizedUrl;

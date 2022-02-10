@@ -20,21 +20,39 @@ namespace Google\Service\RealTimeBidding;
 class HttpCookieEvidence extends \Google\Collection
 {
   protected $collection_key = 'cookieNames';
+  /**
+   * @var string[]
+   */
   public $cookieNames;
+  /**
+   * @var int
+   */
   public $maxCookieCount;
 
+  /**
+   * @param string[]
+   */
   public function setCookieNames($cookieNames)
   {
     $this->cookieNames = $cookieNames;
   }
+  /**
+   * @return string[]
+   */
   public function getCookieNames()
   {
     return $this->cookieNames;
   }
+  /**
+   * @param int
+   */
   public function setMaxCookieCount($maxCookieCount)
   {
     $this->maxCookieCount = $maxCookieCount;
   }
+  /**
+   * @return int
+   */
   public function getMaxCookieCount()
   {
     return $this->maxCookieCount;

@@ -19,21 +19,39 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p4beta1TextAnnotationDetectedBreak extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isPrefix;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param bool
+   */
   public function setIsPrefix($isPrefix)
   {
     $this->isPrefix = $isPrefix;
   }
+  /**
+   * @return bool
+   */
   public function getIsPrefix()
   {
     return $this->isPrefix;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

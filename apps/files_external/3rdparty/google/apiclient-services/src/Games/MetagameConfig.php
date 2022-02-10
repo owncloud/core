@@ -20,23 +20,41 @@ namespace Google\Service\Games;
 class MetagameConfig extends \Google\Collection
 {
   protected $collection_key = 'playerLevels';
+  /**
+   * @var int
+   */
   public $currentVersion;
+  /**
+   * @var string
+   */
   public $kind;
   protected $playerLevelsType = PlayerLevel::class;
   protected $playerLevelsDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setCurrentVersion($currentVersion)
   {
     $this->currentVersion = $currentVersion;
   }
+  /**
+   * @return int
+   */
   public function getCurrentVersion()
   {
     return $this->currentVersion;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

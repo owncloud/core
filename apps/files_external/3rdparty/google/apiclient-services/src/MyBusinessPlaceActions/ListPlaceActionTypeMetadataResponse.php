@@ -20,14 +20,23 @@ namespace Google\Service\MyBusinessPlaceActions;
 class ListPlaceActionTypeMetadataResponse extends \Google\Collection
 {
   protected $collection_key = 'placeActionTypeMetadata';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $placeActionTypeMetadataType = PlaceActionTypeMetadata::class;
   protected $placeActionTypeMetadataDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

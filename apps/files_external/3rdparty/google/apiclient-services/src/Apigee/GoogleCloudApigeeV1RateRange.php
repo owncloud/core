@@ -19,15 +19,27 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1RateRange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $end;
   protected $feeType = GoogleTypeMoney::class;
   protected $feeDataType = '';
+  /**
+   * @var string
+   */
   public $start;
 
+  /**
+   * @param string
+   */
   public function setEnd($end)
   {
     $this->end = $end;
   }
+  /**
+   * @return string
+   */
   public function getEnd()
   {
     return $this->end;
@@ -46,10 +58,16 @@ class GoogleCloudApigeeV1RateRange extends \Google\Model
   {
     return $this->fee;
   }
+  /**
+   * @param string
+   */
   public function setStart($start)
   {
     $this->start = $start;
   }
+  /**
+   * @return string
+   */
   public function getStart()
   {
     return $this->start;

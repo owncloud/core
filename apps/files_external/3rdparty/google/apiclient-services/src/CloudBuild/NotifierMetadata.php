@@ -19,21 +19,39 @@ namespace Google\Service\CloudBuild;
 
 class NotifierMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $notifier;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNotifier($notifier)
   {
     $this->notifier = $notifier;
   }
+  /**
+   * @return string
+   */
   public function getNotifier()
   {
     return $this->notifier;

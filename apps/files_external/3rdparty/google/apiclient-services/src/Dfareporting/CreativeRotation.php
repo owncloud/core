@@ -22,8 +22,17 @@ class CreativeRotation extends \Google\Collection
   protected $collection_key = 'creativeAssignments';
   protected $creativeAssignmentsType = CreativeAssignment::class;
   protected $creativeAssignmentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $creativeOptimizationConfigurationId;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $weightCalculationStrategy;
 
   /**
@@ -40,26 +49,44 @@ class CreativeRotation extends \Google\Collection
   {
     return $this->creativeAssignments;
   }
+  /**
+   * @param string
+   */
   public function setCreativeOptimizationConfigurationId($creativeOptimizationConfigurationId)
   {
     $this->creativeOptimizationConfigurationId = $creativeOptimizationConfigurationId;
   }
+  /**
+   * @return string
+   */
   public function getCreativeOptimizationConfigurationId()
   {
     return $this->creativeOptimizationConfigurationId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setWeightCalculationStrategy($weightCalculationStrategy)
   {
     $this->weightCalculationStrategy = $weightCalculationStrategy;
   }
+  /**
+   * @return string
+   */
   public function getWeightCalculationStrategy()
   {
     return $this->weightCalculationStrategy;

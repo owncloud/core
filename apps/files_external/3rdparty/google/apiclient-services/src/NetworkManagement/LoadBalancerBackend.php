@@ -20,48 +20,93 @@ namespace Google\Service\NetworkManagement;
 class LoadBalancerBackend extends \Google\Collection
 {
   protected $collection_key = 'healthCheckBlockingFirewallRules';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string[]
+   */
   public $healthCheckAllowingFirewallRules;
+  /**
+   * @var string[]
+   */
   public $healthCheckBlockingFirewallRules;
+  /**
+   * @var string
+   */
   public $healthCheckFirewallState;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string[]
+   */
   public function setHealthCheckAllowingFirewallRules($healthCheckAllowingFirewallRules)
   {
     $this->healthCheckAllowingFirewallRules = $healthCheckAllowingFirewallRules;
   }
+  /**
+   * @return string[]
+   */
   public function getHealthCheckAllowingFirewallRules()
   {
     return $this->healthCheckAllowingFirewallRules;
   }
+  /**
+   * @param string[]
+   */
   public function setHealthCheckBlockingFirewallRules($healthCheckBlockingFirewallRules)
   {
     $this->healthCheckBlockingFirewallRules = $healthCheckBlockingFirewallRules;
   }
+  /**
+   * @return string[]
+   */
   public function getHealthCheckBlockingFirewallRules()
   {
     return $this->healthCheckBlockingFirewallRules;
   }
+  /**
+   * @param string
+   */
   public function setHealthCheckFirewallState($healthCheckFirewallState)
   {
     $this->healthCheckFirewallState = $healthCheckFirewallState;
   }
+  /**
+   * @return string
+   */
   public function getHealthCheckFirewallState()
   {
     return $this->healthCheckFirewallState;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

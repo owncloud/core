@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class OffsetPosition extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $left;
+  /**
+   * @var int
+   */
   public $top;
 
+  /**
+   * @param int
+   */
   public function setLeft($left)
   {
     $this->left = $left;
   }
+  /**
+   * @return int
+   */
   public function getLeft()
   {
     return $this->left;
   }
+  /**
+   * @param int
+   */
   public function setTop($top)
   {
     $this->top = $top;
   }
+  /**
+   * @return int
+   */
   public function getTop()
   {
     return $this->top;

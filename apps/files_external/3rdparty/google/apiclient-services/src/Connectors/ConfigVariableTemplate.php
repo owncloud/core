@@ -19,43 +19,85 @@ namespace Google\Service\Connectors;
 
 class ConfigVariableTemplate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var bool
+   */
   public $required;
   protected $roleGrantType = RoleGrant::class;
   protected $roleGrantDataType = '';
+  /**
+   * @var string
+   */
   public $validationRegex;
+  /**
+   * @var string
+   */
   public $valueType;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param bool
+   */
   public function setRequired($required)
   {
     $this->required = $required;
   }
+  /**
+   * @return bool
+   */
   public function getRequired()
   {
     return $this->required;
@@ -74,18 +116,30 @@ class ConfigVariableTemplate extends \Google\Model
   {
     return $this->roleGrant;
   }
+  /**
+   * @param string
+   */
   public function setValidationRegex($validationRegex)
   {
     $this->validationRegex = $validationRegex;
   }
+  /**
+   * @return string
+   */
   public function getValidationRegex()
   {
     return $this->validationRegex;
   }
+  /**
+   * @param string
+   */
   public function setValueType($valueType)
   {
     $this->valueType = $valueType;
   }
+  /**
+   * @return string
+   */
   public function getValueType()
   {
     return $this->valueType;

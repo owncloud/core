@@ -19,36 +19,69 @@ namespace Google\Service\Pubsub;
 
 class Topic extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kmsKeyName;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $messageRetentionDuration;
   protected $messageStoragePolicyType = MessageStoragePolicy::class;
   protected $messageStoragePolicyDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $satisfiesPzs;
   protected $schemaSettingsType = SchemaSettings::class;
   protected $schemaSettingsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setMessageRetentionDuration($messageRetentionDuration)
   {
     $this->messageRetentionDuration = $messageRetentionDuration;
   }
+  /**
+   * @return string
+   */
   public function getMessageRetentionDuration()
   {
     return $this->messageRetentionDuration;
@@ -67,18 +100,30 @@ class Topic extends \Google\Model
   {
     return $this->messageStoragePolicy;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setSatisfiesPzs($satisfiesPzs)
   {
     $this->satisfiesPzs = $satisfiesPzs;
   }
+  /**
+   * @return bool
+   */
   public function getSatisfiesPzs()
   {
     return $this->satisfiesPzs;

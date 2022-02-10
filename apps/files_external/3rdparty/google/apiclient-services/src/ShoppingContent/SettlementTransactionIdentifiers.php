@@ -20,57 +20,111 @@ namespace Google\Service\ShoppingContent;
 class SettlementTransactionIdentifiers extends \Google\Collection
 {
   protected $collection_key = 'shipmentIds';
+  /**
+   * @var string
+   */
   public $adjustmentId;
+  /**
+   * @var string
+   */
   public $merchantOrderId;
+  /**
+   * @var string
+   */
   public $orderItemId;
+  /**
+   * @var string
+   */
   public $settlementEntryId;
+  /**
+   * @var string[]
+   */
   public $shipmentIds;
+  /**
+   * @var string
+   */
   public $transactionId;
 
+  /**
+   * @param string
+   */
   public function setAdjustmentId($adjustmentId)
   {
     $this->adjustmentId = $adjustmentId;
   }
+  /**
+   * @return string
+   */
   public function getAdjustmentId()
   {
     return $this->adjustmentId;
   }
+  /**
+   * @param string
+   */
   public function setMerchantOrderId($merchantOrderId)
   {
     $this->merchantOrderId = $merchantOrderId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantOrderId()
   {
     return $this->merchantOrderId;
   }
+  /**
+   * @param string
+   */
   public function setOrderItemId($orderItemId)
   {
     $this->orderItemId = $orderItemId;
   }
+  /**
+   * @return string
+   */
   public function getOrderItemId()
   {
     return $this->orderItemId;
   }
+  /**
+   * @param string
+   */
   public function setSettlementEntryId($settlementEntryId)
   {
     $this->settlementEntryId = $settlementEntryId;
   }
+  /**
+   * @return string
+   */
   public function getSettlementEntryId()
   {
     return $this->settlementEntryId;
   }
+  /**
+   * @param string[]
+   */
   public function setShipmentIds($shipmentIds)
   {
     $this->shipmentIds = $shipmentIds;
   }
+  /**
+   * @return string[]
+   */
   public function getShipmentIds()
   {
     return $this->shipmentIds;
   }
+  /**
+   * @param string
+   */
   public function setTransactionId($transactionId)
   {
     $this->transactionId = $transactionId;
   }
+  /**
+   * @return string
+   */
   public function getTransactionId()
   {
     return $this->transactionId;

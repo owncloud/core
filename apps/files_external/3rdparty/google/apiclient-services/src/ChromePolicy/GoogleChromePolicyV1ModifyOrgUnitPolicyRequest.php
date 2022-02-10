@@ -23,6 +23,9 @@ class GoogleChromePolicyV1ModifyOrgUnitPolicyRequest extends \Google\Model
   protected $policyTargetKeyDataType = '';
   protected $policyValueType = GoogleChromePolicyV1PolicyValue::class;
   protected $policyValueDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
 
   /**
@@ -53,10 +56,16 @@ class GoogleChromePolicyV1ModifyOrgUnitPolicyRequest extends \Google\Model
   {
     return $this->policyValue;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;

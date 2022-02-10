@@ -21,7 +21,13 @@ class DeviceIpBlock extends \Google\Model
 {
   protected $addedDateType = Date::class;
   protected $addedDateDataType = '';
+  /**
+   * @var string
+   */
   public $block;
+  /**
+   * @var string
+   */
   public $form;
 
   /**
@@ -38,18 +44,30 @@ class DeviceIpBlock extends \Google\Model
   {
     return $this->addedDate;
   }
+  /**
+   * @param string
+   */
   public function setBlock($block)
   {
     $this->block = $block;
   }
+  /**
+   * @return string
+   */
   public function getBlock()
   {
     return $this->block;
   }
+  /**
+   * @param string
+   */
   public function setForm($form)
   {
     $this->form = $form;
   }
+  /**
+   * @return string
+   */
   public function getForm()
   {
     return $this->form;

@@ -19,21 +19,39 @@ namespace Google\Service\DoubleClickBidManager;
 
 class ReportKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $queryId;
+  /**
+   * @var string
+   */
   public $reportId;
 
+  /**
+   * @param string
+   */
   public function setQueryId($queryId)
   {
     $this->queryId = $queryId;
   }
+  /**
+   * @return string
+   */
   public function getQueryId()
   {
     return $this->queryId;
   }
+  /**
+   * @param string
+   */
   public function setReportId($reportId)
   {
     $this->reportId = $reportId;
   }
+  /**
+   * @return string
+   */
   public function getReportId()
   {
     return $this->reportId;

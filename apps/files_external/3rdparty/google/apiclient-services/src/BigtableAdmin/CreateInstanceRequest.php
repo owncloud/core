@@ -23,7 +23,13 @@ class CreateInstanceRequest extends \Google\Model
   protected $clustersDataType = 'map';
   protected $instanceType = Instance::class;
   protected $instanceDataType = '';
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var string
+   */
   public $parent;
 
   /**
@@ -54,18 +60,30 @@ class CreateInstanceRequest extends \Google\Model
   {
     return $this->instance;
   }
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;

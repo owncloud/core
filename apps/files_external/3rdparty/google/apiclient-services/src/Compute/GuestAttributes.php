@@ -19,26 +19,53 @@ namespace Google\Service\Compute;
 
 class GuestAttributes extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $queryPath;
   protected $queryValueType = GuestAttributesValue::class;
   protected $queryValueDataType = '';
+  /**
+   * @var string
+   */
   public $selfLink;
+  /**
+   * @var string
+   */
   public $variableKey;
+  /**
+   * @var string
+   */
   public $variableValue;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setQueryPath($queryPath)
   {
     $this->queryPath = $queryPath;
   }
+  /**
+   * @return string
+   */
   public function getQueryPath()
   {
     return $this->queryPath;
@@ -57,26 +84,44 @@ class GuestAttributes extends \Google\Model
   {
     return $this->queryValue;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
   }
+  /**
+   * @param string
+   */
   public function setVariableKey($variableKey)
   {
     $this->variableKey = $variableKey;
   }
+  /**
+   * @return string
+   */
   public function getVariableKey()
   {
     return $this->variableKey;
   }
+  /**
+   * @param string
+   */
   public function setVariableValue($variableValue)
   {
     $this->variableValue = $variableValue;
   }
+  /**
+   * @return string
+   */
   public function getVariableValue()
   {
     return $this->variableValue;

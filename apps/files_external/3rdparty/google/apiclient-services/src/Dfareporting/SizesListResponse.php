@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class SizesListResponse extends \Google\Collection
 {
   protected $collection_key = 'sizes';
+  /**
+   * @var string
+   */
   public $kind;
   protected $sizesType = Size::class;
   protected $sizesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

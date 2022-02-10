@@ -19,21 +19,39 @@ namespace Google\Service\Pubsub;
 
 class OidcToken extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $audience;
+  /**
+   * @var string
+   */
   public $serviceAccountEmail;
 
+  /**
+   * @param string
+   */
   public function setAudience($audience)
   {
     $this->audience = $audience;
   }
+  /**
+   * @return string
+   */
   public function getAudience()
   {
     return $this->audience;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccountEmail($serviceAccountEmail)
   {
     $this->serviceAccountEmail = $serviceAccountEmail;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccountEmail()
   {
     return $this->serviceAccountEmail;

@@ -19,12 +19,21 @@ namespace Google\Service\DriveActivity;
 
 class Suggestion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $subtype;
 
+  /**
+   * @param string
+   */
   public function setSubtype($subtype)
   {
     $this->subtype = $subtype;
   }
+  /**
+   * @return string
+   */
   public function getSubtype()
   {
     return $this->subtype;

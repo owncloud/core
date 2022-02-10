@@ -21,17 +21,41 @@ class Drive extends \Google\Model
 {
   protected $backgroundImageFileType = DriveBackgroundImageFile::class;
   protected $backgroundImageFileDataType = '';
+  /**
+   * @var string
+   */
   public $backgroundImageLink;
   protected $capabilitiesType = DriveCapabilities::class;
   protected $capabilitiesDataType = '';
+  /**
+   * @var string
+   */
   public $colorRgb;
+  /**
+   * @var string
+   */
   public $createdTime;
+  /**
+   * @var bool
+   */
   public $hidden;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $restrictionsType = DriveRestrictions::class;
   protected $restrictionsDataType = '';
+  /**
+   * @var string
+   */
   public $themeId;
 
   /**
@@ -48,10 +72,16 @@ class Drive extends \Google\Model
   {
     return $this->backgroundImageFile;
   }
+  /**
+   * @param string
+   */
   public function setBackgroundImageLink($backgroundImageLink)
   {
     $this->backgroundImageLink = $backgroundImageLink;
   }
+  /**
+   * @return string
+   */
   public function getBackgroundImageLink()
   {
     return $this->backgroundImageLink;
@@ -70,50 +100,86 @@ class Drive extends \Google\Model
   {
     return $this->capabilities;
   }
+  /**
+   * @param string
+   */
   public function setColorRgb($colorRgb)
   {
     $this->colorRgb = $colorRgb;
   }
+  /**
+   * @return string
+   */
   public function getColorRgb()
   {
     return $this->colorRgb;
   }
+  /**
+   * @param string
+   */
   public function setCreatedTime($createdTime)
   {
     $this->createdTime = $createdTime;
   }
+  /**
+   * @return string
+   */
   public function getCreatedTime()
   {
     return $this->createdTime;
   }
+  /**
+   * @param bool
+   */
   public function setHidden($hidden)
   {
     $this->hidden = $hidden;
   }
+  /**
+   * @return bool
+   */
   public function getHidden()
   {
     return $this->hidden;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -132,10 +198,16 @@ class Drive extends \Google\Model
   {
     return $this->restrictions;
   }
+  /**
+   * @param string
+   */
   public function setThemeId($themeId)
   {
     $this->themeId = $themeId;
   }
+  /**
+   * @return string
+   */
   public function getThemeId()
   {
     return $this->themeId;

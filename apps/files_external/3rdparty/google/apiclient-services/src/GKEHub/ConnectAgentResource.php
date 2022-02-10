@@ -19,14 +19,23 @@ namespace Google\Service\GKEHub;
 
 class ConnectAgentResource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $manifest;
   protected $typeType = TypeMeta::class;
   protected $typeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setManifest($manifest)
   {
     $this->manifest = $manifest;
   }
+  /**
+   * @return string
+   */
   public function getManifest()
   {
     return $this->manifest;

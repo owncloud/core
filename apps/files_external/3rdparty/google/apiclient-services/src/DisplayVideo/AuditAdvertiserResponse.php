@@ -19,75 +19,147 @@ namespace Google\Service\DisplayVideo;
 
 class AuditAdvertiserResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adGroupCriteriaCount;
+  /**
+   * @var string
+   */
   public $campaignCriteriaCount;
+  /**
+   * @var string
+   */
   public $channelsCount;
+  /**
+   * @var string
+   */
   public $negativeKeywordListsCount;
+  /**
+   * @var string
+   */
   public $negativelyTargetedChannelsCount;
+  /**
+   * @var string
+   */
   public $usedCampaignsCount;
+  /**
+   * @var string
+   */
   public $usedInsertionOrdersCount;
+  /**
+   * @var string
+   */
   public $usedLineItemsCount;
 
+  /**
+   * @param string
+   */
   public function setAdGroupCriteriaCount($adGroupCriteriaCount)
   {
     $this->adGroupCriteriaCount = $adGroupCriteriaCount;
   }
+  /**
+   * @return string
+   */
   public function getAdGroupCriteriaCount()
   {
     return $this->adGroupCriteriaCount;
   }
+  /**
+   * @param string
+   */
   public function setCampaignCriteriaCount($campaignCriteriaCount)
   {
     $this->campaignCriteriaCount = $campaignCriteriaCount;
   }
+  /**
+   * @return string
+   */
   public function getCampaignCriteriaCount()
   {
     return $this->campaignCriteriaCount;
   }
+  /**
+   * @param string
+   */
   public function setChannelsCount($channelsCount)
   {
     $this->channelsCount = $channelsCount;
   }
+  /**
+   * @return string
+   */
   public function getChannelsCount()
   {
     return $this->channelsCount;
   }
+  /**
+   * @param string
+   */
   public function setNegativeKeywordListsCount($negativeKeywordListsCount)
   {
     $this->negativeKeywordListsCount = $negativeKeywordListsCount;
   }
+  /**
+   * @return string
+   */
   public function getNegativeKeywordListsCount()
   {
     return $this->negativeKeywordListsCount;
   }
+  /**
+   * @param string
+   */
   public function setNegativelyTargetedChannelsCount($negativelyTargetedChannelsCount)
   {
     $this->negativelyTargetedChannelsCount = $negativelyTargetedChannelsCount;
   }
+  /**
+   * @return string
+   */
   public function getNegativelyTargetedChannelsCount()
   {
     return $this->negativelyTargetedChannelsCount;
   }
+  /**
+   * @param string
+   */
   public function setUsedCampaignsCount($usedCampaignsCount)
   {
     $this->usedCampaignsCount = $usedCampaignsCount;
   }
+  /**
+   * @return string
+   */
   public function getUsedCampaignsCount()
   {
     return $this->usedCampaignsCount;
   }
+  /**
+   * @param string
+   */
   public function setUsedInsertionOrdersCount($usedInsertionOrdersCount)
   {
     $this->usedInsertionOrdersCount = $usedInsertionOrdersCount;
   }
+  /**
+   * @return string
+   */
   public function getUsedInsertionOrdersCount()
   {
     return $this->usedInsertionOrdersCount;
   }
+  /**
+   * @param string
+   */
   public function setUsedLineItemsCount($usedLineItemsCount)
   {
     $this->usedLineItemsCount = $usedLineItemsCount;
   }
+  /**
+   * @return string
+   */
   public function getUsedLineItemsCount()
   {
     return $this->usedLineItemsCount;

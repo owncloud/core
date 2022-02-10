@@ -19,30 +19,57 @@ namespace Google\Service\CloudRun;
 
 class StatusCause extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $field;
+  /**
+   * @var string
+   */
   public $message;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string
+   */
   public function setField($field)
   {
     $this->field = $field;
   }
+  /**
+   * @return string
+   */
   public function getField()
   {
     return $this->field;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

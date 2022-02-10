@@ -19,57 +19,111 @@ namespace Google\Service\ContainerAnalysis;
 
 class Version extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $epoch;
+  /**
+   * @var string
+   */
   public $fullName;
+  /**
+   * @var bool
+   */
   public $inclusive;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $revision;
 
+  /**
+   * @param int
+   */
   public function setEpoch($epoch)
   {
     $this->epoch = $epoch;
   }
+  /**
+   * @return int
+   */
   public function getEpoch()
   {
     return $this->epoch;
   }
+  /**
+   * @param string
+   */
   public function setFullName($fullName)
   {
     $this->fullName = $fullName;
   }
+  /**
+   * @return string
+   */
   public function getFullName()
   {
     return $this->fullName;
   }
+  /**
+   * @param bool
+   */
   public function setInclusive($inclusive)
   {
     $this->inclusive = $inclusive;
   }
+  /**
+   * @return bool
+   */
   public function getInclusive()
   {
     return $this->inclusive;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return string
+   */
   public function getRevision()
   {
     return $this->revision;

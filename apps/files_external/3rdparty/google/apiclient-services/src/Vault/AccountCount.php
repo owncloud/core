@@ -21,6 +21,9 @@ class AccountCount extends \Google\Model
 {
   protected $accountType = UserInfo::class;
   protected $accountDataType = '';
+  /**
+   * @var string
+   */
   public $count;
 
   /**
@@ -37,10 +40,16 @@ class AccountCount extends \Google\Model
   {
     return $this->account;
   }
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;

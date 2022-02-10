@@ -20,21 +20,39 @@ namespace Google\Service\YouTube;
 class AccessPolicy extends \Google\Collection
 {
   protected $collection_key = 'exception';
+  /**
+   * @var bool
+   */
   public $allowed;
+  /**
+   * @var string[]
+   */
   public $exception;
 
+  /**
+   * @param bool
+   */
   public function setAllowed($allowed)
   {
     $this->allowed = $allowed;
   }
+  /**
+   * @return bool
+   */
   public function getAllowed()
   {
     return $this->allowed;
   }
+  /**
+   * @param string[]
+   */
   public function setException($exception)
   {
     $this->exception = $exception;
   }
+  /**
+   * @return string[]
+   */
   public function getException()
   {
     return $this->exception;

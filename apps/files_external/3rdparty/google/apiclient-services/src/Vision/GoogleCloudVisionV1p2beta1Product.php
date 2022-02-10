@@ -20,41 +20,77 @@ namespace Google\Service\Vision;
 class GoogleCloudVisionV1p2beta1Product extends \Google\Collection
 {
   protected $collection_key = 'productLabels';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $productCategory;
   protected $productLabelsType = GoogleCloudVisionV1p2beta1ProductKeyValue::class;
   protected $productLabelsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProductCategory($productCategory)
   {
     $this->productCategory = $productCategory;
   }
+  /**
+   * @return string
+   */
   public function getProductCategory()
   {
     return $this->productCategory;

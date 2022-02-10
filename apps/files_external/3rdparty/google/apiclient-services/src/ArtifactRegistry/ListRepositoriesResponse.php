@@ -20,14 +20,23 @@ namespace Google\Service\ArtifactRegistry;
 class ListRepositoriesResponse extends \Google\Collection
 {
   protected $collection_key = 'repositories';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $repositoriesType = Repository::class;
   protected $repositoriesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

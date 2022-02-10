@@ -19,14 +19,23 @@ namespace Google\Service\Keep;
 
 class CreatePermissionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $parent;
   protected $permissionType = Permission::class;
   protected $permissionDataType = '';
 
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;

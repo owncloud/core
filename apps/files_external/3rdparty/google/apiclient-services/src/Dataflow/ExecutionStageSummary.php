@@ -24,13 +24,25 @@ class ExecutionStageSummary extends \Google\Collection
   protected $componentSourceDataType = 'array';
   protected $componentTransformType = ComponentTransform::class;
   protected $componentTransformDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
   protected $inputSourceType = StageSource::class;
   protected $inputSourceDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
   protected $outputSourceType = StageSource::class;
   protected $outputSourceDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $prerequisiteStage;
 
   /**
@@ -61,10 +73,16 @@ class ExecutionStageSummary extends \Google\Collection
   {
     return $this->componentTransform;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -83,18 +101,30 @@ class ExecutionStageSummary extends \Google\Collection
   {
     return $this->inputSource;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -113,10 +143,16 @@ class ExecutionStageSummary extends \Google\Collection
   {
     return $this->outputSource;
   }
+  /**
+   * @param string[]
+   */
   public function setPrerequisiteStage($prerequisiteStage)
   {
     $this->prerequisiteStage = $prerequisiteStage;
   }
+  /**
+   * @return string[]
+   */
   public function getPrerequisiteStage()
   {
     return $this->prerequisiteStage;

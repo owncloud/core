@@ -20,26 +20,53 @@ namespace Google\Service\Calendar;
 class FreeBusyRequest extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var int
+   */
   public $calendarExpansionMax;
+  /**
+   * @var int
+   */
   public $groupExpansionMax;
   protected $itemsType = FreeBusyRequestItem::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $timeMax;
+  /**
+   * @var string
+   */
   public $timeMin;
+  /**
+   * @var string
+   */
   public $timeZone;
 
+  /**
+   * @param int
+   */
   public function setCalendarExpansionMax($calendarExpansionMax)
   {
     $this->calendarExpansionMax = $calendarExpansionMax;
   }
+  /**
+   * @return int
+   */
   public function getCalendarExpansionMax()
   {
     return $this->calendarExpansionMax;
   }
+  /**
+   * @param int
+   */
   public function setGroupExpansionMax($groupExpansionMax)
   {
     $this->groupExpansionMax = $groupExpansionMax;
   }
+  /**
+   * @return int
+   */
   public function getGroupExpansionMax()
   {
     return $this->groupExpansionMax;
@@ -58,26 +85,44 @@ class FreeBusyRequest extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setTimeMax($timeMax)
   {
     $this->timeMax = $timeMax;
   }
+  /**
+   * @return string
+   */
   public function getTimeMax()
   {
     return $this->timeMax;
   }
+  /**
+   * @param string
+   */
   public function setTimeMin($timeMin)
   {
     $this->timeMin = $timeMin;
   }
+  /**
+   * @return string
+   */
   public function getTimeMin()
   {
     return $this->timeMin;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;

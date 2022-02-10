@@ -20,62 +20,125 @@ namespace Google\Service\CertificateAuthorityService;
 class CertificateRevocationList extends \Google\Collection
 {
   protected $collection_key = 'revokedCertificates';
+  /**
+   * @var string
+   */
   public $accessUrl;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $pemCrl;
+  /**
+   * @var string
+   */
   public $revisionId;
   protected $revokedCertificatesType = RevokedCertificate::class;
   protected $revokedCertificatesDataType = 'array';
+  /**
+   * @var string
+   */
   public $sequenceNumber;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setAccessUrl($accessUrl)
   {
     $this->accessUrl = $accessUrl;
   }
+  /**
+   * @return string
+   */
   public function getAccessUrl()
   {
     return $this->accessUrl;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPemCrl($pemCrl)
   {
     $this->pemCrl = $pemCrl;
   }
+  /**
+   * @return string
+   */
   public function getPemCrl()
   {
     return $this->pemCrl;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;
@@ -94,26 +157,44 @@ class CertificateRevocationList extends \Google\Collection
   {
     return $this->revokedCertificates;
   }
+  /**
+   * @param string
+   */
   public function setSequenceNumber($sequenceNumber)
   {
     $this->sequenceNumber = $sequenceNumber;
   }
+  /**
+   * @return string
+   */
   public function getSequenceNumber()
   {
     return $this->sequenceNumber;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

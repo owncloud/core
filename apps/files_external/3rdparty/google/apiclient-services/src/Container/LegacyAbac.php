@@ -19,12 +19,21 @@ namespace Google\Service\Container;
 
 class LegacyAbac extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;

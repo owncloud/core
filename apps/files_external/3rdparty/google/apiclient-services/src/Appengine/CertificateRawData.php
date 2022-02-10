@@ -19,21 +19,39 @@ namespace Google\Service\Appengine;
 
 class CertificateRawData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $privateKey;
+  /**
+   * @var string
+   */
   public $publicCertificate;
 
+  /**
+   * @param string
+   */
   public function setPrivateKey($privateKey)
   {
     $this->privateKey = $privateKey;
   }
+  /**
+   * @return string
+   */
   public function getPrivateKey()
   {
     return $this->privateKey;
   }
+  /**
+   * @param string
+   */
   public function setPublicCertificate($publicCertificate)
   {
     $this->publicCertificate = $publicCertificate;
   }
+  /**
+   * @return string
+   */
   public function getPublicCertificate()
   {
     return $this->publicCertificate;

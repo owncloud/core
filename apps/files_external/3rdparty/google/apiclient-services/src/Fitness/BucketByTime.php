@@ -19,14 +19,23 @@ namespace Google\Service\Fitness;
 
 class BucketByTime extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $durationMillis;
   protected $periodType = BucketByTimePeriod::class;
   protected $periodDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDurationMillis($durationMillis)
   {
     $this->durationMillis = $durationMillis;
   }
+  /**
+   * @return string
+   */
   public function getDurationMillis()
   {
     return $this->durationMillis;

@@ -20,23 +20,41 @@ namespace Google\Service\BinaryAuthorization;
 class UserOwnedGrafeasNote extends \Google\Collection
 {
   protected $collection_key = 'publicKeys';
+  /**
+   * @var string
+   */
   public $delegationServiceAccountEmail;
+  /**
+   * @var string
+   */
   public $noteReference;
   protected $publicKeysType = AttestorPublicKey::class;
   protected $publicKeysDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDelegationServiceAccountEmail($delegationServiceAccountEmail)
   {
     $this->delegationServiceAccountEmail = $delegationServiceAccountEmail;
   }
+  /**
+   * @return string
+   */
   public function getDelegationServiceAccountEmail()
   {
     return $this->delegationServiceAccountEmail;
   }
+  /**
+   * @param string
+   */
   public function setNoteReference($noteReference)
   {
     $this->noteReference = $noteReference;
   }
+  /**
+   * @return string
+   */
   public function getNoteReference()
   {
     return $this->noteReference;

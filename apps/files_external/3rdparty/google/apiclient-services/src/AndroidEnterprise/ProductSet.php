@@ -20,23 +20,41 @@ namespace Google\Service\AndroidEnterprise;
 class ProductSet extends \Google\Collection
 {
   protected $collection_key = 'productVisibility';
+  /**
+   * @var string[]
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $productSetBehavior;
   protected $productVisibilityType = ProductVisibility::class;
   protected $productVisibilityDataType = 'array';
 
+  /**
+   * @param string[]
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string[]
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setProductSetBehavior($productSetBehavior)
   {
     $this->productSetBehavior = $productSetBehavior;
   }
+  /**
+   * @return string
+   */
   public function getProductSetBehavior()
   {
     return $this->productSetBehavior;

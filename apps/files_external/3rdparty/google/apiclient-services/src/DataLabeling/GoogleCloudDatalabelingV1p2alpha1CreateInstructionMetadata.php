@@ -20,23 +20,41 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1p2alpha1CreateInstructionMetadata extends \Google\Collection
 {
   protected $collection_key = 'partialFailures';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $instruction;
   protected $partialFailuresType = GoogleRpcStatus::class;
   protected $partialFailuresDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setInstruction($instruction)
   {
     $this->instruction = $instruction;
   }
+  /**
+   * @return string
+   */
   public function getInstruction()
   {
     return $this->instruction;

@@ -19,12 +19,21 @@ namespace Google\Service\Translate;
 
 class GcsDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $outputUriPrefix;
 
+  /**
+   * @param string
+   */
   public function setOutputUriPrefix($outputUriPrefix)
   {
     $this->outputUriPrefix = $outputUriPrefix;
   }
+  /**
+   * @return string
+   */
   public function getOutputUriPrefix()
   {
     return $this->outputUriPrefix;

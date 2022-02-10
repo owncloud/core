@@ -22,6 +22,9 @@ class ListEndpointPoliciesResponse extends \Google\Collection
   protected $collection_key = 'endpointPolicies';
   protected $endpointPoliciesType = EndpointPolicy::class;
   protected $endpointPoliciesDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListEndpointPoliciesResponse extends \Google\Collection
   {
     return $this->endpointPolicies;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

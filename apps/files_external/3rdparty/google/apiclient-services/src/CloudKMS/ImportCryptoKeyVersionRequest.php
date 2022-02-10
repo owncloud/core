@@ -19,39 +19,75 @@ namespace Google\Service\CloudKMS;
 
 class ImportCryptoKeyVersionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $algorithm;
+  /**
+   * @var string
+   */
   public $cryptoKeyVersion;
+  /**
+   * @var string
+   */
   public $importJob;
+  /**
+   * @var string
+   */
   public $rsaAesWrappedKey;
 
+  /**
+   * @param string
+   */
   public function setAlgorithm($algorithm)
   {
     $this->algorithm = $algorithm;
   }
+  /**
+   * @return string
+   */
   public function getAlgorithm()
   {
     return $this->algorithm;
   }
+  /**
+   * @param string
+   */
   public function setCryptoKeyVersion($cryptoKeyVersion)
   {
     $this->cryptoKeyVersion = $cryptoKeyVersion;
   }
+  /**
+   * @return string
+   */
   public function getCryptoKeyVersion()
   {
     return $this->cryptoKeyVersion;
   }
+  /**
+   * @param string
+   */
   public function setImportJob($importJob)
   {
     $this->importJob = $importJob;
   }
+  /**
+   * @return string
+   */
   public function getImportJob()
   {
     return $this->importJob;
   }
+  /**
+   * @param string
+   */
   public function setRsaAesWrappedKey($rsaAesWrappedKey)
   {
     $this->rsaAesWrappedKey = $rsaAesWrappedKey;
   }
+  /**
+   * @return string
+   */
   public function getRsaAesWrappedKey()
   {
     return $this->rsaAesWrappedKey;

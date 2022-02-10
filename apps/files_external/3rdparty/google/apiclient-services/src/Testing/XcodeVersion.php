@@ -20,21 +20,39 @@ namespace Google\Service\Testing;
 class XcodeVersion extends \Google\Collection
 {
   protected $collection_key = 'tags';
+  /**
+   * @var string[]
+   */
   public $tags;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

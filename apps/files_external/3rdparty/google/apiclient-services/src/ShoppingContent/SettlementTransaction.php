@@ -23,6 +23,9 @@ class SettlementTransaction extends \Google\Model
   protected $amountDataType = '';
   protected $identifiersType = SettlementTransactionIdentifiers::class;
   protected $identifiersDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $transactionType = SettlementTransactionTransaction::class;
   protected $transactionDataType = '';
@@ -55,10 +58,16 @@ class SettlementTransaction extends \Google\Model
   {
     return $this->identifiers;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

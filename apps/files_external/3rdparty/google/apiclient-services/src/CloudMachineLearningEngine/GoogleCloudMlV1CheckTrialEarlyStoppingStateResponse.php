@@ -19,30 +19,57 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1CheckTrialEarlyStoppingStateResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var bool
+   */
   public $shouldStop;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param bool
+   */
   public function setShouldStop($shouldStop)
   {
     $this->shouldStop = $shouldStop;
   }
+  /**
+   * @return bool
+   */
   public function getShouldStop()
   {
     return $this->shouldStop;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

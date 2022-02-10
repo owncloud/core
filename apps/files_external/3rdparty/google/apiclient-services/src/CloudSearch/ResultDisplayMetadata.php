@@ -22,6 +22,9 @@ class ResultDisplayMetadata extends \Google\Collection
   protected $collection_key = 'metalines';
   protected $metalinesType = ResultDisplayLine::class;
   protected $metalinesDataType = 'array';
+  /**
+   * @var string
+   */
   public $objectTypeLabel;
 
   /**
@@ -38,10 +41,16 @@ class ResultDisplayMetadata extends \Google\Collection
   {
     return $this->metalines;
   }
+  /**
+   * @param string
+   */
   public function setObjectTypeLabel($objectTypeLabel)
   {
     $this->objectTypeLabel = $objectTypeLabel;
   }
+  /**
+   * @return string
+   */
   public function getObjectTypeLabel()
   {
     return $this->objectTypeLabel;

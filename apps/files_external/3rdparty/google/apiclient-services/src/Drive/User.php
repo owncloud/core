@@ -19,57 +19,111 @@ namespace Google\Service\Drive;
 
 class User extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $emailAddress;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $me;
+  /**
+   * @var string
+   */
   public $permissionId;
+  /**
+   * @var string
+   */
   public $photoLink;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setEmailAddress($emailAddress)
   {
     $this->emailAddress = $emailAddress;
   }
+  /**
+   * @return string
+   */
   public function getEmailAddress()
   {
     return $this->emailAddress;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setMe($me)
   {
     $this->me = $me;
   }
+  /**
+   * @return bool
+   */
   public function getMe()
   {
     return $this->me;
   }
+  /**
+   * @param string
+   */
   public function setPermissionId($permissionId)
   {
     $this->permissionId = $permissionId;
   }
+  /**
+   * @return string
+   */
   public function getPermissionId()
   {
     return $this->permissionId;
   }
+  /**
+   * @param string
+   */
   public function setPhotoLink($photoLink)
   {
     $this->photoLink = $photoLink;
   }
+  /**
+   * @return string
+   */
   public function getPhotoLink()
   {
     return $this->photoLink;

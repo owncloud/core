@@ -19,21 +19,39 @@ namespace Google\Service\Sheets;
 
 class DeleteConditionalFormatRuleRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $index;
+  /**
+   * @var int
+   */
   public $sheetId;
 
+  /**
+   * @param int
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return int
+   */
   public function getIndex()
   {
     return $this->index;
   }
+  /**
+   * @param int
+   */
   public function setSheetId($sheetId)
   {
     $this->sheetId = $sheetId;
   }
+  /**
+   * @return int
+   */
   public function getSheetId()
   {
     return $this->sheetId;

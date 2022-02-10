@@ -19,21 +19,39 @@ namespace Google\Service\CloudIot;
 
 class EventNotificationConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pubsubTopicName;
+  /**
+   * @var string
+   */
   public $subfolderMatches;
 
+  /**
+   * @param string
+   */
   public function setPubsubTopicName($pubsubTopicName)
   {
     $this->pubsubTopicName = $pubsubTopicName;
   }
+  /**
+   * @return string
+   */
   public function getPubsubTopicName()
   {
     return $this->pubsubTopicName;
   }
+  /**
+   * @param string
+   */
   public function setSubfolderMatches($subfolderMatches)
   {
     $this->subfolderMatches = $subfolderMatches;
   }
+  /**
+   * @return string
+   */
   public function getSubfolderMatches()
   {
     return $this->subfolderMatches;

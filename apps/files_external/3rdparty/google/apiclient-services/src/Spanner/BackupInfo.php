@@ -19,39 +19,75 @@ namespace Google\Service\Spanner;
 
 class BackupInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backup;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $sourceDatabase;
+  /**
+   * @var string
+   */
   public $versionTime;
 
+  /**
+   * @param string
+   */
   public function setBackup($backup)
   {
     $this->backup = $backup;
   }
+  /**
+   * @return string
+   */
   public function getBackup()
   {
     return $this->backup;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setSourceDatabase($sourceDatabase)
   {
     $this->sourceDatabase = $sourceDatabase;
   }
+  /**
+   * @return string
+   */
   public function getSourceDatabase()
   {
     return $this->sourceDatabase;
   }
+  /**
+   * @param string
+   */
   public function setVersionTime($versionTime)
   {
     $this->versionTime = $versionTime;
   }
+  /**
+   * @return string
+   */
   public function getVersionTime()
   {
     return $this->versionTime;

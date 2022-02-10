@@ -19,17 +19,29 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3FulfillIntentResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $outputAudio;
   protected $outputAudioConfigType = GoogleCloudDialogflowCxV3OutputAudioConfig::class;
   protected $outputAudioConfigDataType = '';
   protected $queryResultType = GoogleCloudDialogflowCxV3QueryResult::class;
   protected $queryResultDataType = '';
+  /**
+   * @var string
+   */
   public $responseId;
 
+  /**
+   * @param string
+   */
   public function setOutputAudio($outputAudio)
   {
     $this->outputAudio = $outputAudio;
   }
+  /**
+   * @return string
+   */
   public function getOutputAudio()
   {
     return $this->outputAudio;
@@ -62,10 +74,16 @@ class GoogleCloudDialogflowCxV3FulfillIntentResponse extends \Google\Model
   {
     return $this->queryResult;
   }
+  /**
+   * @param string
+   */
   public function setResponseId($responseId)
   {
     $this->responseId = $responseId;
   }
+  /**
+   * @return string
+   */
   public function getResponseId()
   {
     return $this->responseId;

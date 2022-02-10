@@ -20,30 +20,57 @@ namespace Google\Service\Container;
 class ReleaseChannelConfig extends \Google\Collection
 {
   protected $collection_key = 'validVersions';
+  /**
+   * @var string
+   */
   public $channel;
+  /**
+   * @var string
+   */
   public $defaultVersion;
+  /**
+   * @var string[]
+   */
   public $validVersions;
 
+  /**
+   * @param string
+   */
   public function setChannel($channel)
   {
     $this->channel = $channel;
   }
+  /**
+   * @return string
+   */
   public function getChannel()
   {
     return $this->channel;
   }
+  /**
+   * @param string
+   */
   public function setDefaultVersion($defaultVersion)
   {
     $this->defaultVersion = $defaultVersion;
   }
+  /**
+   * @return string
+   */
   public function getDefaultVersion()
   {
     return $this->defaultVersion;
   }
+  /**
+   * @param string[]
+   */
   public function setValidVersions($validVersions)
   {
     $this->validVersions = $validVersions;
   }
+  /**
+   * @return string[]
+   */
   public function getValidVersions()
   {
     return $this->validVersions;

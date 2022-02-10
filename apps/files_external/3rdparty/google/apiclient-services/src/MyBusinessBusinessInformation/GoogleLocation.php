@@ -21,7 +21,13 @@ class GoogleLocation extends \Google\Model
 {
   protected $locationType = Location::class;
   protected $locationDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $requestAdminRightsUri;
 
   /**
@@ -38,18 +44,30 @@ class GoogleLocation extends \Google\Model
   {
     return $this->location;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRequestAdminRightsUri($requestAdminRightsUri)
   {
     $this->requestAdminRightsUri = $requestAdminRightsUri;
   }
+  /**
+   * @return string
+   */
   public function getRequestAdminRightsUri()
   {
     return $this->requestAdminRightsUri;

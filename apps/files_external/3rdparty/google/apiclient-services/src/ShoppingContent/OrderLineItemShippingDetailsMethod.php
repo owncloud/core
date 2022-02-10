@@ -19,39 +19,75 @@ namespace Google\Service\ShoppingContent;
 
 class OrderLineItemShippingDetailsMethod extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $carrier;
+  /**
+   * @var string
+   */
   public $maxDaysInTransit;
+  /**
+   * @var string
+   */
   public $methodName;
+  /**
+   * @var string
+   */
   public $minDaysInTransit;
 
+  /**
+   * @param string
+   */
   public function setCarrier($carrier)
   {
     $this->carrier = $carrier;
   }
+  /**
+   * @return string
+   */
   public function getCarrier()
   {
     return $this->carrier;
   }
+  /**
+   * @param string
+   */
   public function setMaxDaysInTransit($maxDaysInTransit)
   {
     $this->maxDaysInTransit = $maxDaysInTransit;
   }
+  /**
+   * @return string
+   */
   public function getMaxDaysInTransit()
   {
     return $this->maxDaysInTransit;
   }
+  /**
+   * @param string
+   */
   public function setMethodName($methodName)
   {
     $this->methodName = $methodName;
   }
+  /**
+   * @return string
+   */
   public function getMethodName()
   {
     return $this->methodName;
   }
+  /**
+   * @param string
+   */
   public function setMinDaysInTransit($minDaysInTransit)
   {
     $this->minDaysInTransit = $minDaysInTransit;
   }
+  /**
+   * @return string
+   */
   public function getMinDaysInTransit()
   {
     return $this->minDaysInTransit;

@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class DfareportingFileUrls extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiUrl;
+  /**
+   * @var string
+   */
   public $browserUrl;
 
+  /**
+   * @param string
+   */
   public function setApiUrl($apiUrl)
   {
     $this->apiUrl = $apiUrl;
   }
+  /**
+   * @return string
+   */
   public function getApiUrl()
   {
     return $this->apiUrl;
   }
+  /**
+   * @param string
+   */
   public function setBrowserUrl($browserUrl)
   {
     $this->browserUrl = $browserUrl;
   }
+  /**
+   * @return string
+   */
   public function getBrowserUrl()
   {
     return $this->browserUrl;

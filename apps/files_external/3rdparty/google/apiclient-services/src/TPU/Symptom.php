@@ -19,39 +19,75 @@ namespace Google\Service\TPU;
 
 class Symptom extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $symptomType;
+  /**
+   * @var string
+   */
   public $workerId;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return string
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setSymptomType($symptomType)
   {
     $this->symptomType = $symptomType;
   }
+  /**
+   * @return string
+   */
   public function getSymptomType()
   {
     return $this->symptomType;
   }
+  /**
+   * @param string
+   */
   public function setWorkerId($workerId)
   {
     $this->workerId = $workerId;
   }
+  /**
+   * @return string
+   */
   public function getWorkerId()
   {
     return $this->workerId;

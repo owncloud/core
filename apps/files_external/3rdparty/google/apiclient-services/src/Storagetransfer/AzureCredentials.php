@@ -19,12 +19,21 @@ namespace Google\Service\Storagetransfer;
 
 class AzureCredentials extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sasToken;
 
+  /**
+   * @param string
+   */
   public function setSasToken($sasToken)
   {
     $this->sasToken = $sasToken;
   }
+  /**
+   * @return string
+   */
   public function getSasToken()
   {
     return $this->sasToken;

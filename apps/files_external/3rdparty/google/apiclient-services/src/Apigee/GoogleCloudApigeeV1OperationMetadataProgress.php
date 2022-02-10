@@ -19,39 +19,75 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1OperationMetadataProgress extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var array[]
+   */
   public $details;
+  /**
+   * @var int
+   */
   public $percentDone;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param array[]
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return array[]
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param int
+   */
   public function setPercentDone($percentDone)
   {
     $this->percentDone = $percentDone;
   }
+  /**
+   * @return int
+   */
   public function getPercentDone()
   {
     return $this->percentDone;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

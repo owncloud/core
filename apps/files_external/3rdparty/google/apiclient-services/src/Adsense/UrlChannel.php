@@ -19,30 +19,57 @@ namespace Google\Service\Adsense;
 
 class UrlChannel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $reportingDimensionId;
+  /**
+   * @var string
+   */
   public $uriPattern;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setReportingDimensionId($reportingDimensionId)
   {
     $this->reportingDimensionId = $reportingDimensionId;
   }
+  /**
+   * @return string
+   */
   public function getReportingDimensionId()
   {
     return $this->reportingDimensionId;
   }
+  /**
+   * @param string
+   */
   public function setUriPattern($uriPattern)
   {
     $this->uriPattern = $uriPattern;
   }
+  /**
+   * @return string
+   */
   public function getUriPattern()
   {
     return $this->uriPattern;

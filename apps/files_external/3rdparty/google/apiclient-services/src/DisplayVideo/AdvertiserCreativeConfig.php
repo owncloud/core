@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class AdvertiserCreativeConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $dynamicCreativeEnabled;
+  /**
+   * @var string
+   */
   public $iasClientId;
+  /**
+   * @var bool
+   */
   public $obaComplianceDisabled;
+  /**
+   * @var bool
+   */
   public $videoCreativeDataSharingAuthorized;
 
+  /**
+   * @param bool
+   */
   public function setDynamicCreativeEnabled($dynamicCreativeEnabled)
   {
     $this->dynamicCreativeEnabled = $dynamicCreativeEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getDynamicCreativeEnabled()
   {
     return $this->dynamicCreativeEnabled;
   }
+  /**
+   * @param string
+   */
   public function setIasClientId($iasClientId)
   {
     $this->iasClientId = $iasClientId;
   }
+  /**
+   * @return string
+   */
   public function getIasClientId()
   {
     return $this->iasClientId;
   }
+  /**
+   * @param bool
+   */
   public function setObaComplianceDisabled($obaComplianceDisabled)
   {
     $this->obaComplianceDisabled = $obaComplianceDisabled;
   }
+  /**
+   * @return bool
+   */
   public function getObaComplianceDisabled()
   {
     return $this->obaComplianceDisabled;
   }
+  /**
+   * @param bool
+   */
   public function setVideoCreativeDataSharingAuthorized($videoCreativeDataSharingAuthorized)
   {
     $this->videoCreativeDataSharingAuthorized = $videoCreativeDataSharingAuthorized;
   }
+  /**
+   * @return bool
+   */
   public function getVideoCreativeDataSharingAuthorized()
   {
     return $this->videoCreativeDataSharingAuthorized;

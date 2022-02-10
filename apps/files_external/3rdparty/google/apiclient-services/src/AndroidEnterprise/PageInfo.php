@@ -19,30 +19,57 @@ namespace Google\Service\AndroidEnterprise;
 
 class PageInfo extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $resultPerPage;
+  /**
+   * @var int
+   */
   public $startIndex;
+  /**
+   * @var int
+   */
   public $totalResults;
 
+  /**
+   * @param int
+   */
   public function setResultPerPage($resultPerPage)
   {
     $this->resultPerPage = $resultPerPage;
   }
+  /**
+   * @return int
+   */
   public function getResultPerPage()
   {
     return $this->resultPerPage;
   }
+  /**
+   * @param int
+   */
   public function setStartIndex($startIndex)
   {
     $this->startIndex = $startIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartIndex()
   {
     return $this->startIndex;
   }
+  /**
+   * @param int
+   */
   public function setTotalResults($totalResults)
   {
     $this->totalResults = $totalResults;
   }
+  /**
+   * @return int
+   */
   public function getTotalResults()
   {
     return $this->totalResults;

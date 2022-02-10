@@ -19,21 +19,39 @@ namespace Google\Service\Directory;
 
 class RoleRolePrivileges extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $privilegeName;
+  /**
+   * @var string
+   */
   public $serviceId;
 
+  /**
+   * @param string
+   */
   public function setPrivilegeName($privilegeName)
   {
     $this->privilegeName = $privilegeName;
   }
+  /**
+   * @return string
+   */
   public function getPrivilegeName()
   {
     return $this->privilegeName;
   }
+  /**
+   * @param string
+   */
   public function setServiceId($serviceId)
   {
     $this->serviceId = $serviceId;
   }
+  /**
+   * @return string
+   */
   public function getServiceId()
   {
     return $this->serviceId;

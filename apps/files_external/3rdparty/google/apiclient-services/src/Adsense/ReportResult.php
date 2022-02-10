@@ -30,9 +30,15 @@ class ReportResult extends \Google\Collection
   protected $rowsDataType = 'array';
   protected $startDateType = Date::class;
   protected $startDateDataType = '';
+  /**
+   * @var string
+   */
   public $totalMatchedRows;
   protected $totalsType = Row::class;
   protected $totalsDataType = '';
+  /**
+   * @var string[]
+   */
   public $warnings;
 
   /**
@@ -105,10 +111,16 @@ class ReportResult extends \Google\Collection
   {
     return $this->startDate;
   }
+  /**
+   * @param string
+   */
   public function setTotalMatchedRows($totalMatchedRows)
   {
     $this->totalMatchedRows = $totalMatchedRows;
   }
+  /**
+   * @return string
+   */
   public function getTotalMatchedRows()
   {
     return $this->totalMatchedRows;
@@ -127,10 +139,16 @@ class ReportResult extends \Google\Collection
   {
     return $this->totals;
   }
+  /**
+   * @param string[]
+   */
   public function setWarnings($warnings)
   {
     $this->warnings = $warnings;
   }
+  /**
+   * @return string[]
+   */
   public function getWarnings()
   {
     return $this->warnings;

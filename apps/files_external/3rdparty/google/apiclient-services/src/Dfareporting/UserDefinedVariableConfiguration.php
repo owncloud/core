@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class UserDefinedVariableConfiguration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataType;
+  /**
+   * @var string
+   */
   public $reportName;
+  /**
+   * @var string
+   */
   public $variableType;
 
+  /**
+   * @param string
+   */
   public function setDataType($dataType)
   {
     $this->dataType = $dataType;
   }
+  /**
+   * @return string
+   */
   public function getDataType()
   {
     return $this->dataType;
   }
+  /**
+   * @param string
+   */
   public function setReportName($reportName)
   {
     $this->reportName = $reportName;
   }
+  /**
+   * @return string
+   */
   public function getReportName()
   {
     return $this->reportName;
   }
+  /**
+   * @param string
+   */
   public function setVariableType($variableType)
   {
     $this->variableType = $variableType;
   }
+  /**
+   * @return string
+   */
   public function getVariableType()
   {
     return $this->variableType;

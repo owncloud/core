@@ -20,14 +20,23 @@ namespace Google\Service\ShoppingContent;
 class GmbAccounts extends \Google\Collection
 {
   protected $collection_key = 'gmbAccounts';
+  /**
+   * @var string
+   */
   public $accountId;
   protected $gmbAccountsType = GmbAccountsGmbAccount::class;
   protected $gmbAccountsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;

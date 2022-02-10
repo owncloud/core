@@ -19,30 +19,57 @@ namespace Google\Service\Slides;
 
 class Shadow extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alignment;
+  /**
+   * @var float
+   */
   public $alpha;
   protected $blurRadiusType = Dimension::class;
   protected $blurRadiusDataType = '';
   protected $colorType = OpaqueColor::class;
   protected $colorDataType = '';
+  /**
+   * @var string
+   */
   public $propertyState;
+  /**
+   * @var bool
+   */
   public $rotateWithShape;
   protected $transformType = AffineTransform::class;
   protected $transformDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAlignment($alignment)
   {
     $this->alignment = $alignment;
   }
+  /**
+   * @return string
+   */
   public function getAlignment()
   {
     return $this->alignment;
   }
+  /**
+   * @param float
+   */
   public function setAlpha($alpha)
   {
     $this->alpha = $alpha;
   }
+  /**
+   * @return float
+   */
   public function getAlpha()
   {
     return $this->alpha;
@@ -75,18 +102,30 @@ class Shadow extends \Google\Model
   {
     return $this->color;
   }
+  /**
+   * @param string
+   */
   public function setPropertyState($propertyState)
   {
     $this->propertyState = $propertyState;
   }
+  /**
+   * @return string
+   */
   public function getPropertyState()
   {
     return $this->propertyState;
   }
+  /**
+   * @param bool
+   */
   public function setRotateWithShape($rotateWithShape)
   {
     $this->rotateWithShape = $rotateWithShape;
   }
+  /**
+   * @return bool
+   */
   public function getRotateWithShape()
   {
     return $this->rotateWithShape;
@@ -105,10 +144,16 @@ class Shadow extends \Google\Model
   {
     return $this->transform;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

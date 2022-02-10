@@ -20,30 +20,57 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 class GoogleAnalyticsAdminV1alphaUserLink extends \Google\Collection
 {
   protected $collection_key = 'directRoles';
+  /**
+   * @var string[]
+   */
   public $directRoles;
+  /**
+   * @var string
+   */
   public $emailAddress;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string[]
+   */
   public function setDirectRoles($directRoles)
   {
     $this->directRoles = $directRoles;
   }
+  /**
+   * @return string[]
+   */
   public function getDirectRoles()
   {
     return $this->directRoles;
   }
+  /**
+   * @param string
+   */
   public function setEmailAddress($emailAddress)
   {
     $this->emailAddress = $emailAddress;
   }
+  /**
+   * @return string
+   */
   public function getEmailAddress()
   {
     return $this->emailAddress;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

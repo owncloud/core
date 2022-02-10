@@ -20,14 +20,23 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1ListOffersResponse extends \Google\Collection
 {
   protected $collection_key = 'offers';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $offersType = GoogleCloudChannelV1Offer::class;
   protected $offersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

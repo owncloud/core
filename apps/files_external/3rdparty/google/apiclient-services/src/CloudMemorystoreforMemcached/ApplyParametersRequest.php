@@ -20,21 +20,39 @@ namespace Google\Service\CloudMemorystoreforMemcached;
 class ApplyParametersRequest extends \Google\Collection
 {
   protected $collection_key = 'nodeIds';
+  /**
+   * @var bool
+   */
   public $applyAll;
+  /**
+   * @var string[]
+   */
   public $nodeIds;
 
+  /**
+   * @param bool
+   */
   public function setApplyAll($applyAll)
   {
     $this->applyAll = $applyAll;
   }
+  /**
+   * @return bool
+   */
   public function getApplyAll()
   {
     return $this->applyAll;
   }
+  /**
+   * @param string[]
+   */
   public function setNodeIds($nodeIds)
   {
     $this->nodeIds = $nodeIds;
   }
+  /**
+   * @return string[]
+   */
   public function getNodeIds()
   {
     return $this->nodeIds;

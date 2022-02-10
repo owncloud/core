@@ -19,21 +19,39 @@ namespace Google\Service\ContainerAnalysis;
 
 class EnvelopeSignature extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyid;
+  /**
+   * @var string
+   */
   public $sig;
 
+  /**
+   * @param string
+   */
   public function setKeyid($keyid)
   {
     $this->keyid = $keyid;
   }
+  /**
+   * @return string
+   */
   public function getKeyid()
   {
     return $this->keyid;
   }
+  /**
+   * @param string
+   */
   public function setSig($sig)
   {
     $this->sig = $sig;
   }
+  /**
+   * @return string
+   */
   public function getSig()
   {
     return $this->sig;

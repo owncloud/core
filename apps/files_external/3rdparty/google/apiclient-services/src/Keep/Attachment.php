@@ -20,21 +20,39 @@ namespace Google\Service\Keep;
 class Attachment extends \Google\Collection
 {
   protected $collection_key = 'mimeType';
+  /**
+   * @var string[]
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string[]
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string[]
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

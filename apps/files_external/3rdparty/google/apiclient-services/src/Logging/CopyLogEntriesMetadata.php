@@ -19,35 +19,71 @@ namespace Google\Service\Logging;
 
 class CopyLogEntriesMetadata extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $cancellationRequested;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var int
+   */
   public $progress;
   protected $requestType = CopyLogEntriesRequest::class;
   protected $requestDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $writerIdentity;
 
+  /**
+   * @param bool
+   */
   public function setCancellationRequested($cancellationRequested)
   {
     $this->cancellationRequested = $cancellationRequested;
   }
+  /**
+   * @return bool
+   */
   public function getCancellationRequested()
   {
     return $this->cancellationRequested;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param int
+   */
   public function setProgress($progress)
   {
     $this->progress = $progress;
   }
+  /**
+   * @return int
+   */
   public function getProgress()
   {
     return $this->progress;
@@ -66,26 +102,44 @@ class CopyLogEntriesMetadata extends \Google\Model
   {
     return $this->request;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setWriterIdentity($writerIdentity)
   {
     $this->writerIdentity = $writerIdentity;
   }
+  /**
+   * @return string
+   */
   public function getWriterIdentity()
   {
     return $this->writerIdentity;

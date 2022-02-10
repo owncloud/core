@@ -19,17 +19,41 @@ namespace Google\Service\Appengine;
 
 class AutomaticScaling extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $coolDownPeriod;
   protected $cpuUtilizationType = CpuUtilization::class;
   protected $cpuUtilizationDataType = '';
   protected $diskUtilizationType = DiskUtilization::class;
   protected $diskUtilizationDataType = '';
+  /**
+   * @var int
+   */
   public $maxConcurrentRequests;
+  /**
+   * @var int
+   */
   public $maxIdleInstances;
+  /**
+   * @var string
+   */
   public $maxPendingLatency;
+  /**
+   * @var int
+   */
   public $maxTotalInstances;
+  /**
+   * @var int
+   */
   public $minIdleInstances;
+  /**
+   * @var string
+   */
   public $minPendingLatency;
+  /**
+   * @var int
+   */
   public $minTotalInstances;
   protected $networkUtilizationType = NetworkUtilization::class;
   protected $networkUtilizationDataType = '';
@@ -38,10 +62,16 @@ class AutomaticScaling extends \Google\Model
   protected $standardSchedulerSettingsType = StandardSchedulerSettings::class;
   protected $standardSchedulerSettingsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCoolDownPeriod($coolDownPeriod)
   {
     $this->coolDownPeriod = $coolDownPeriod;
   }
+  /**
+   * @return string
+   */
   public function getCoolDownPeriod()
   {
     return $this->coolDownPeriod;
@@ -74,58 +104,100 @@ class AutomaticScaling extends \Google\Model
   {
     return $this->diskUtilization;
   }
+  /**
+   * @param int
+   */
   public function setMaxConcurrentRequests($maxConcurrentRequests)
   {
     $this->maxConcurrentRequests = $maxConcurrentRequests;
   }
+  /**
+   * @return int
+   */
   public function getMaxConcurrentRequests()
   {
     return $this->maxConcurrentRequests;
   }
+  /**
+   * @param int
+   */
   public function setMaxIdleInstances($maxIdleInstances)
   {
     $this->maxIdleInstances = $maxIdleInstances;
   }
+  /**
+   * @return int
+   */
   public function getMaxIdleInstances()
   {
     return $this->maxIdleInstances;
   }
+  /**
+   * @param string
+   */
   public function setMaxPendingLatency($maxPendingLatency)
   {
     $this->maxPendingLatency = $maxPendingLatency;
   }
+  /**
+   * @return string
+   */
   public function getMaxPendingLatency()
   {
     return $this->maxPendingLatency;
   }
+  /**
+   * @param int
+   */
   public function setMaxTotalInstances($maxTotalInstances)
   {
     $this->maxTotalInstances = $maxTotalInstances;
   }
+  /**
+   * @return int
+   */
   public function getMaxTotalInstances()
   {
     return $this->maxTotalInstances;
   }
+  /**
+   * @param int
+   */
   public function setMinIdleInstances($minIdleInstances)
   {
     $this->minIdleInstances = $minIdleInstances;
   }
+  /**
+   * @return int
+   */
   public function getMinIdleInstances()
   {
     return $this->minIdleInstances;
   }
+  /**
+   * @param string
+   */
   public function setMinPendingLatency($minPendingLatency)
   {
     $this->minPendingLatency = $minPendingLatency;
   }
+  /**
+   * @return string
+   */
   public function getMinPendingLatency()
   {
     return $this->minPendingLatency;
   }
+  /**
+   * @param int
+   */
   public function setMinTotalInstances($minTotalInstances)
   {
     $this->minTotalInstances = $minTotalInstances;
   }
+  /**
+   * @return int
+   */
   public function getMinTotalInstances()
   {
     return $this->minTotalInstances;

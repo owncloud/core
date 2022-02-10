@@ -19,21 +19,39 @@ namespace Google\Service\OnDemandScanning;
 
 class Material extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $digest;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string[]
+   */
   public function setDigest($digest)
   {
     $this->digest = $digest;
   }
+  /**
+   * @return string[]
+   */
   public function getDigest()
   {
     return $this->digest;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

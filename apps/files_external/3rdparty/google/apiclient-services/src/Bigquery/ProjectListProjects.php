@@ -19,41 +19,77 @@ namespace Google\Service\Bigquery;
 
 class ProjectListProjects extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $friendlyName;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $numericId;
   protected $projectReferenceType = ProjectReference::class;
   protected $projectReferenceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFriendlyName($friendlyName)
   {
     $this->friendlyName = $friendlyName;
   }
+  /**
+   * @return string
+   */
   public function getFriendlyName()
   {
     return $this->friendlyName;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNumericId($numericId)
   {
     $this->numericId = $numericId;
   }
+  /**
+   * @return string
+   */
   public function getNumericId()
   {
     return $this->numericId;

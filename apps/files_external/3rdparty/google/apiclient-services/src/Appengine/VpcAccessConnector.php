@@ -19,21 +19,39 @@ namespace Google\Service\Appengine;
 
 class VpcAccessConnector extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $egressSetting;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setEgressSetting($egressSetting)
   {
     $this->egressSetting = $egressSetting;
   }
+  /**
+   * @return string
+   */
   public function getEgressSetting()
   {
     return $this->egressSetting;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

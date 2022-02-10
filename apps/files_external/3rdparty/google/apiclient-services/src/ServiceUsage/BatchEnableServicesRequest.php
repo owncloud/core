@@ -20,12 +20,21 @@ namespace Google\Service\ServiceUsage;
 class BatchEnableServicesRequest extends \Google\Collection
 {
   protected $collection_key = 'serviceIds';
+  /**
+   * @var string[]
+   */
   public $serviceIds;
 
+  /**
+   * @param string[]
+   */
   public function setServiceIds($serviceIds)
   {
     $this->serviceIds = $serviceIds;
   }
+  /**
+   * @return string[]
+   */
   public function getServiceIds()
   {
     return $this->serviceIds;

@@ -19,21 +19,39 @@ namespace Google\Service\ServiceManagement;
 
 class ResourceReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $childType;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setChildType($childType)
   {
     $this->childType = $childType;
   }
+  /**
+   * @return string
+   */
   public function getChildType()
   {
     return $this->childType;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

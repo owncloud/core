@@ -19,12 +19,21 @@ namespace Google\Service\CloudSearch;
 
 class CheckAccessResponse extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $hasAccess;
 
+  /**
+   * @param bool
+   */
   public function setHasAccess($hasAccess)
   {
     $this->hasAccess = $hasAccess;
   }
+  /**
+   * @return bool
+   */
   public function getHasAccess()
   {
     return $this->hasAccess;

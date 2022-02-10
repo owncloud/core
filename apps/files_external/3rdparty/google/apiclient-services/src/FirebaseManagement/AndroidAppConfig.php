@@ -19,21 +19,39 @@ namespace Google\Service\FirebaseManagement;
 
 class AndroidAppConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $configFileContents;
+  /**
+   * @var string
+   */
   public $configFilename;
 
+  /**
+   * @param string
+   */
   public function setConfigFileContents($configFileContents)
   {
     $this->configFileContents = $configFileContents;
   }
+  /**
+   * @return string
+   */
   public function getConfigFileContents()
   {
     return $this->configFileContents;
   }
+  /**
+   * @param string
+   */
   public function setConfigFilename($configFilename)
   {
     $this->configFilename = $configFilename;
   }
+  /**
+   * @return string
+   */
   public function getConfigFilename()
   {
     return $this->configFilename;

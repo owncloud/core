@@ -19,21 +19,39 @@ namespace Google\Service\AndroidPublisher;
 
 class ExpansionFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fileSize;
+  /**
+   * @var int
+   */
   public $referencesVersion;
 
+  /**
+   * @param string
+   */
   public function setFileSize($fileSize)
   {
     $this->fileSize = $fileSize;
   }
+  /**
+   * @return string
+   */
   public function getFileSize()
   {
     return $this->fileSize;
   }
+  /**
+   * @param int
+   */
   public function setReferencesVersion($referencesVersion)
   {
     $this->referencesVersion = $referencesVersion;
   }
+  /**
+   * @return int
+   */
   public function getReferencesVersion()
   {
     return $this->referencesVersion;

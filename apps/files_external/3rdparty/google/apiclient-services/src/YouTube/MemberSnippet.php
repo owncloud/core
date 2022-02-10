@@ -19,16 +19,25 @@ namespace Google\Service\YouTube;
 
 class MemberSnippet extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creatorChannelId;
   protected $memberDetailsType = ChannelProfileDetails::class;
   protected $memberDetailsDataType = '';
   protected $membershipsDetailsType = MembershipsDetails::class;
   protected $membershipsDetailsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreatorChannelId($creatorChannelId)
   {
     $this->creatorChannelId = $creatorChannelId;
   }
+  /**
+   * @return string
+   */
   public function getCreatorChannelId()
   {
     return $this->creatorChannelId;

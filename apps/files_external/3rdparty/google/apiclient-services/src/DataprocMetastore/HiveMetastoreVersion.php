@@ -19,21 +19,39 @@ namespace Google\Service\DataprocMetastore;
 
 class HiveMetastoreVersion extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isDefault;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param bool
+   */
   public function setIsDefault($isDefault)
   {
     $this->isDefault = $isDefault;
   }
+  /**
+   * @return bool
+   */
   public function getIsDefault()
   {
     return $this->isDefault;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

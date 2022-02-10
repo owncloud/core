@@ -19,21 +19,39 @@ namespace Google\Service\HangoutsChat;
 
 class TimeZone extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var int
+   */
   public $offset;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param int
+   */
   public function setOffset($offset)
   {
     $this->offset = $offset;
   }
+  /**
+   * @return int
+   */
   public function getOffset()
   {
     return $this->offset;

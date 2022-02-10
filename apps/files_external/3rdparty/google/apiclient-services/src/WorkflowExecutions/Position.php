@@ -19,30 +19,57 @@ namespace Google\Service\WorkflowExecutions;
 
 class Position extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $column;
+  /**
+   * @var string
+   */
   public $length;
+  /**
+   * @var string
+   */
   public $line;
 
+  /**
+   * @param string
+   */
   public function setColumn($column)
   {
     $this->column = $column;
   }
+  /**
+   * @return string
+   */
   public function getColumn()
   {
     return $this->column;
   }
+  /**
+   * @param string
+   */
   public function setLength($length)
   {
     $this->length = $length;
   }
+  /**
+   * @return string
+   */
   public function getLength()
   {
     return $this->length;
   }
+  /**
+   * @param string
+   */
   public function setLine($line)
   {
     $this->line = $line;
   }
+  /**
+   * @return string
+   */
   public function getLine()
   {
     return $this->line;

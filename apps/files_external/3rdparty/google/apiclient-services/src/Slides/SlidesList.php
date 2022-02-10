@@ -19,14 +19,23 @@ namespace Google\Service\Slides;
 
 class SlidesList extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $listId;
   protected $nestingLevelType = NestingLevel::class;
   protected $nestingLevelDataType = 'map';
 
+  /**
+   * @param string
+   */
   public function setListId($listId)
   {
     $this->listId = $listId;
   }
+  /**
+   * @return string
+   */
   public function getListId()
   {
     return $this->listId;

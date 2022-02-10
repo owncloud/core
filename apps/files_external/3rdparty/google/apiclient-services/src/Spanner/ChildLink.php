@@ -19,30 +19,57 @@ namespace Google\Service\Spanner;
 
 class ChildLink extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $childIndex;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $variable;
 
+  /**
+   * @param int
+   */
   public function setChildIndex($childIndex)
   {
     $this->childIndex = $childIndex;
   }
+  /**
+   * @return int
+   */
   public function getChildIndex()
   {
     return $this->childIndex;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setVariable($variable)
   {
     $this->variable = $variable;
   }
+  /**
+   * @return string
+   */
   public function getVariable()
   {
     return $this->variable;

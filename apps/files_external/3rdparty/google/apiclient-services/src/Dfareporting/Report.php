@@ -19,6 +19,9 @@ namespace Google\Service\Dfareporting;
 
 class Report extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
   protected $criteriaType = ReportCriteria::class;
   protected $criteriaDataType = '';
@@ -26,15 +29,39 @@ class Report extends \Google\Model
   protected $crossDimensionReachCriteriaDataType = '';
   protected $deliveryType = ReportDelivery::class;
   protected $deliveryDataType = '';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $fileName;
   protected $floodlightCriteriaType = ReportFloodlightCriteria::class;
   protected $floodlightCriteriaDataType = '';
+  /**
+   * @var string
+   */
   public $format;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $lastModifiedTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $ownerProfileId;
   protected $pathAttributionCriteriaType = ReportPathAttributionCriteria::class;
   protected $pathAttributionCriteriaDataType = '';
@@ -46,13 +73,25 @@ class Report extends \Google\Model
   protected $reachCriteriaDataType = '';
   protected $scheduleType = ReportSchedule::class;
   protected $scheduleDataType = '';
+  /**
+   * @var string
+   */
   public $subAccountId;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -99,18 +138,30 @@ class Report extends \Google\Model
   {
     return $this->delivery;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setFileName($fileName)
   {
     $this->fileName = $fileName;
   }
+  /**
+   * @return string
+   */
   public function getFileName()
   {
     return $this->fileName;
@@ -129,50 +180,86 @@ class Report extends \Google\Model
   {
     return $this->floodlightCriteria;
   }
+  /**
+   * @param string
+   */
   public function setFormat($format)
   {
     $this->format = $format;
   }
+  /**
+   * @return string
+   */
   public function getFormat()
   {
     return $this->format;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedTime($lastModifiedTime)
   {
     $this->lastModifiedTime = $lastModifiedTime;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedTime()
   {
     return $this->lastModifiedTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOwnerProfileId($ownerProfileId)
   {
     $this->ownerProfileId = $ownerProfileId;
   }
+  /**
+   * @return string
+   */
   public function getOwnerProfileId()
   {
     return $this->ownerProfileId;
@@ -247,18 +334,30 @@ class Report extends \Google\Model
   {
     return $this->schedule;
   }
+  /**
+   * @param string
+   */
   public function setSubAccountId($subAccountId)
   {
     $this->subAccountId = $subAccountId;
   }
+  /**
+   * @return string
+   */
   public function getSubAccountId()
   {
     return $this->subAccountId;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -19,48 +19,93 @@ namespace Google\Service\AndroidEnterprise;
 
 class KeyedAppState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $message;
+  /**
+   * @var string
+   */
   public $severity;
+  /**
+   * @var string
+   */
   public $stateTimestampMillis;
 
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;
   }
+  /**
+   * @param string
+   */
   public function setStateTimestampMillis($stateTimestampMillis)
   {
     $this->stateTimestampMillis = $stateTimestampMillis;
   }
+  /**
+   * @return string
+   */
   public function getStateTimestampMillis()
   {
     return $this->stateTimestampMillis;

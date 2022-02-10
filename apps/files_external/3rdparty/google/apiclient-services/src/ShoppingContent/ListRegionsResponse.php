@@ -20,14 +20,23 @@ namespace Google\Service\ShoppingContent;
 class ListRegionsResponse extends \Google\Collection
 {
   protected $collection_key = 'regions';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $regionsType = Region::class;
   protected $regionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

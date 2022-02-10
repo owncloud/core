@@ -21,6 +21,9 @@ class GoogleCloudVideointelligenceV1p3beta1ObjectTrackingFrame extends \Google\M
 {
   protected $normalizedBoundingBoxType = GoogleCloudVideointelligenceV1p3beta1NormalizedBoundingBox::class;
   protected $normalizedBoundingBoxDataType = '';
+  /**
+   * @var string
+   */
   public $timeOffset;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudVideointelligenceV1p3beta1ObjectTrackingFrame extends \Google\M
   {
     return $this->normalizedBoundingBox;
   }
+  /**
+   * @param string
+   */
   public function setTimeOffset($timeOffset)
   {
     $this->timeOffset = $timeOffset;
   }
+  /**
+   * @return string
+   */
   public function getTimeOffset()
   {
     return $this->timeOffset;

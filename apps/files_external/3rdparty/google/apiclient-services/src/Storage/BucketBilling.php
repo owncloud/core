@@ -19,12 +19,21 @@ namespace Google\Service\Storage;
 
 class BucketBilling extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $requesterPays;
 
+  /**
+   * @param bool
+   */
   public function setRequesterPays($requesterPays)
   {
     $this->requesterPays = $requesterPays;
   }
+  /**
+   * @return bool
+   */
   public function getRequesterPays()
   {
     return $this->requesterPays;

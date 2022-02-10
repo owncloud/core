@@ -19,39 +19,75 @@ namespace Google\Service\Dfareporting;
 
 class CustomViewabilityMetricConfiguration extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $audible;
+  /**
+   * @var int
+   */
   public $timeMillis;
+  /**
+   * @var int
+   */
   public $timePercent;
+  /**
+   * @var int
+   */
   public $viewabilityPercent;
 
+  /**
+   * @param bool
+   */
   public function setAudible($audible)
   {
     $this->audible = $audible;
   }
+  /**
+   * @return bool
+   */
   public function getAudible()
   {
     return $this->audible;
   }
+  /**
+   * @param int
+   */
   public function setTimeMillis($timeMillis)
   {
     $this->timeMillis = $timeMillis;
   }
+  /**
+   * @return int
+   */
   public function getTimeMillis()
   {
     return $this->timeMillis;
   }
+  /**
+   * @param int
+   */
   public function setTimePercent($timePercent)
   {
     $this->timePercent = $timePercent;
   }
+  /**
+   * @return int
+   */
   public function getTimePercent()
   {
     return $this->timePercent;
   }
+  /**
+   * @param int
+   */
   public function setViewabilityPercent($viewabilityPercent)
   {
     $this->viewabilityPercent = $viewabilityPercent;
   }
+  /**
+   * @return int
+   */
   public function getViewabilityPercent()
   {
     return $this->viewabilityPercent;

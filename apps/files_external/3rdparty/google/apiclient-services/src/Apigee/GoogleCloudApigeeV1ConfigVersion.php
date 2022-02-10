@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1ConfigVersion extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $majorVersion;
+  /**
+   * @var int
+   */
   public $minorVersion;
 
+  /**
+   * @param int
+   */
   public function setMajorVersion($majorVersion)
   {
     $this->majorVersion = $majorVersion;
   }
+  /**
+   * @return int
+   */
   public function getMajorVersion()
   {
     return $this->majorVersion;
   }
+  /**
+   * @param int
+   */
   public function setMinorVersion($minorVersion)
   {
     $this->minorVersion = $minorVersion;
   }
+  /**
+   * @return int
+   */
   public function getMinorVersion()
   {
     return $this->minorVersion;

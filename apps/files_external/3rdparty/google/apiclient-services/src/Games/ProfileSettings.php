@@ -19,30 +19,57 @@ namespace Google\Service\Games;
 
 class ProfileSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $friendsListVisibility;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var bool
+   */
   public $profileVisible;
 
+  /**
+   * @param string
+   */
   public function setFriendsListVisibility($friendsListVisibility)
   {
     $this->friendsListVisibility = $friendsListVisibility;
   }
+  /**
+   * @return string
+   */
   public function getFriendsListVisibility()
   {
     return $this->friendsListVisibility;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param bool
+   */
   public function setProfileVisible($profileVisible)
   {
     $this->profileVisible = $profileVisible;
   }
+  /**
+   * @return bool
+   */
   public function getProfileVisible()
   {
     return $this->profileVisible;

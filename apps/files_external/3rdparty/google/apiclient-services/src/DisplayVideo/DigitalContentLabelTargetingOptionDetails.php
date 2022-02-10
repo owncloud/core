@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class DigitalContentLabelTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentRatingTier;
 
+  /**
+   * @param string
+   */
   public function setContentRatingTier($contentRatingTier)
   {
     $this->contentRatingTier = $contentRatingTier;
   }
+  /**
+   * @return string
+   */
   public function getContentRatingTier()
   {
     return $this->contentRatingTier;

@@ -19,21 +19,39 @@ namespace Google\Service\Spanner;
 
 class PartitionOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maxPartitions;
+  /**
+   * @var string
+   */
   public $partitionSizeBytes;
 
+  /**
+   * @param string
+   */
   public function setMaxPartitions($maxPartitions)
   {
     $this->maxPartitions = $maxPartitions;
   }
+  /**
+   * @return string
+   */
   public function getMaxPartitions()
   {
     return $this->maxPartitions;
   }
+  /**
+   * @param string
+   */
   public function setPartitionSizeBytes($partitionSizeBytes)
   {
     $this->partitionSizeBytes = $partitionSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getPartitionSizeBytes()
   {
     return $this->partitionSizeBytes;

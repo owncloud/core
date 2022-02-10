@@ -22,13 +22,28 @@ class GoogleCloudMlV1TrainingOutput extends \Google\Collection
   protected $collection_key = 'trials';
   protected $builtInAlgorithmOutputType = GoogleCloudMlV1BuiltInAlgorithmOutput::class;
   protected $builtInAlgorithmOutputDataType = '';
+  /**
+   * @var string
+   */
   public $completedTrialCount;
   public $consumedMLUnits;
+  /**
+   * @var string
+   */
   public $hyperparameterMetricTag;
+  /**
+   * @var bool
+   */
   public $isBuiltInAlgorithmJob;
+  /**
+   * @var bool
+   */
   public $isHyperparameterTuningJob;
   protected $trialsType = GoogleCloudMlV1HyperparameterOutput::class;
   protected $trialsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $webAccessUris;
 
   /**
@@ -45,10 +60,16 @@ class GoogleCloudMlV1TrainingOutput extends \Google\Collection
   {
     return $this->builtInAlgorithmOutput;
   }
+  /**
+   * @param string
+   */
   public function setCompletedTrialCount($completedTrialCount)
   {
     $this->completedTrialCount = $completedTrialCount;
   }
+  /**
+   * @return string
+   */
   public function getCompletedTrialCount()
   {
     return $this->completedTrialCount;
@@ -61,26 +82,44 @@ class GoogleCloudMlV1TrainingOutput extends \Google\Collection
   {
     return $this->consumedMLUnits;
   }
+  /**
+   * @param string
+   */
   public function setHyperparameterMetricTag($hyperparameterMetricTag)
   {
     $this->hyperparameterMetricTag = $hyperparameterMetricTag;
   }
+  /**
+   * @return string
+   */
   public function getHyperparameterMetricTag()
   {
     return $this->hyperparameterMetricTag;
   }
+  /**
+   * @param bool
+   */
   public function setIsBuiltInAlgorithmJob($isBuiltInAlgorithmJob)
   {
     $this->isBuiltInAlgorithmJob = $isBuiltInAlgorithmJob;
   }
+  /**
+   * @return bool
+   */
   public function getIsBuiltInAlgorithmJob()
   {
     return $this->isBuiltInAlgorithmJob;
   }
+  /**
+   * @param bool
+   */
   public function setIsHyperparameterTuningJob($isHyperparameterTuningJob)
   {
     $this->isHyperparameterTuningJob = $isHyperparameterTuningJob;
   }
+  /**
+   * @return bool
+   */
   public function getIsHyperparameterTuningJob()
   {
     return $this->isHyperparameterTuningJob;
@@ -99,10 +138,16 @@ class GoogleCloudMlV1TrainingOutput extends \Google\Collection
   {
     return $this->trials;
   }
+  /**
+   * @param string[]
+   */
   public function setWebAccessUris($webAccessUris)
   {
     $this->webAccessUris = $webAccessUris;
   }
+  /**
+   * @return string[]
+   */
   public function getWebAccessUris()
   {
     return $this->webAccessUris;

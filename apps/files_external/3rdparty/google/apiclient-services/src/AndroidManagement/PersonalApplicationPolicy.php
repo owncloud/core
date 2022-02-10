@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class PersonalApplicationPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $installType;
+  /**
+   * @var string
+   */
   public $packageName;
 
+  /**
+   * @param string
+   */
   public function setInstallType($installType)
   {
     $this->installType = $installType;
   }
+  /**
+   * @return string
+   */
   public function getInstallType()
   {
     return $this->installType;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;

@@ -26,6 +26,9 @@ class LongRunningRecognizeResponse extends \Google\Collection
   protected $outputErrorDataType = '';
   protected $resultsType = SpeechRecognitionResult::class;
   protected $resultsDataType = 'array';
+  /**
+   * @var string
+   */
   public $totalBilledTime;
 
   /**
@@ -70,10 +73,16 @@ class LongRunningRecognizeResponse extends \Google\Collection
   {
     return $this->results;
   }
+  /**
+   * @param string
+   */
   public function setTotalBilledTime($totalBilledTime)
   {
     $this->totalBilledTime = $totalBilledTime;
   }
+  /**
+   * @return string
+   */
   public function getTotalBilledTime()
   {
     return $this->totalBilledTime;

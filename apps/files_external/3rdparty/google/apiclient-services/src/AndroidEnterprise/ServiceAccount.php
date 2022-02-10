@@ -21,6 +21,9 @@ class ServiceAccount extends \Google\Model
 {
   protected $keyType = ServiceAccountKey::class;
   protected $keyDataType = '';
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -37,10 +40,16 @@ class ServiceAccount extends \Google\Model
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

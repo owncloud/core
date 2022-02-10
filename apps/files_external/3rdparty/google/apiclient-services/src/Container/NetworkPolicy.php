@@ -19,21 +19,39 @@ namespace Google\Service\Container;
 
 class NetworkPolicy extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $provider;
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setProvider($provider)
   {
     $this->provider = $provider;
   }
+  /**
+   * @return string
+   */
   public function getProvider()
   {
     return $this->provider;

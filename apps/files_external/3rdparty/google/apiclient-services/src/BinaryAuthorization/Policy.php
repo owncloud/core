@@ -26,7 +26,13 @@ class Policy extends \Google\Collection
   protected $clusterAdmissionRulesDataType = 'map';
   protected $defaultAdmissionRuleType = AdmissionRule::class;
   protected $defaultAdmissionRuleDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $globalPolicyEvaluationMode;
   protected $istioServiceIdentityAdmissionRulesType = AdmissionRule::class;
   protected $istioServiceIdentityAdmissionRulesDataType = 'map';
@@ -34,7 +40,13 @@ class Policy extends \Google\Collection
   protected $kubernetesNamespaceAdmissionRulesDataType = 'map';
   protected $kubernetesServiceAccountAdmissionRulesType = AdmissionRule::class;
   protected $kubernetesServiceAccountAdmissionRulesDataType = 'map';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -79,18 +91,30 @@ class Policy extends \Google\Collection
   {
     return $this->defaultAdmissionRule;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setGlobalPolicyEvaluationMode($globalPolicyEvaluationMode)
   {
     $this->globalPolicyEvaluationMode = $globalPolicyEvaluationMode;
   }
+  /**
+   * @return string
+   */
   public function getGlobalPolicyEvaluationMode()
   {
     return $this->globalPolicyEvaluationMode;
@@ -137,18 +161,30 @@ class Policy extends \Google\Collection
   {
     return $this->kubernetesServiceAccountAdmissionRules;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

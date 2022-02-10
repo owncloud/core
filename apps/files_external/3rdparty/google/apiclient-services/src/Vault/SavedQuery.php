@@ -19,33 +19,63 @@ namespace Google\Service\Vault;
 
 class SavedQuery extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $matterId;
   protected $queryType = Query::class;
   protected $queryDataType = '';
+  /**
+   * @var string
+   */
   public $savedQueryId;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setMatterId($matterId)
   {
     $this->matterId = $matterId;
   }
+  /**
+   * @return string
+   */
   public function getMatterId()
   {
     return $this->matterId;
@@ -64,10 +94,16 @@ class SavedQuery extends \Google\Model
   {
     return $this->query;
   }
+  /**
+   * @param string
+   */
   public function setSavedQueryId($savedQueryId)
   {
     $this->savedQueryId = $savedQueryId;
   }
+  /**
+   * @return string
+   */
   public function getSavedQueryId()
   {
     return $this->savedQueryId;

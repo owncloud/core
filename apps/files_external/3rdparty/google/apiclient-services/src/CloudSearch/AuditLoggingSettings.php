@@ -19,39 +19,75 @@ namespace Google\Service\CloudSearch;
 
 class AuditLoggingSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $logAdminReadActions;
+  /**
+   * @var bool
+   */
   public $logDataReadActions;
+  /**
+   * @var bool
+   */
   public $logDataWriteActions;
+  /**
+   * @var string
+   */
   public $project;
 
+  /**
+   * @param bool
+   */
   public function setLogAdminReadActions($logAdminReadActions)
   {
     $this->logAdminReadActions = $logAdminReadActions;
   }
+  /**
+   * @return bool
+   */
   public function getLogAdminReadActions()
   {
     return $this->logAdminReadActions;
   }
+  /**
+   * @param bool
+   */
   public function setLogDataReadActions($logDataReadActions)
   {
     $this->logDataReadActions = $logDataReadActions;
   }
+  /**
+   * @return bool
+   */
   public function getLogDataReadActions()
   {
     return $this->logDataReadActions;
   }
+  /**
+   * @param bool
+   */
   public function setLogDataWriteActions($logDataWriteActions)
   {
     $this->logDataWriteActions = $logDataWriteActions;
   }
+  /**
+   * @return bool
+   */
   public function getLogDataWriteActions()
   {
     return $this->logDataWriteActions;
   }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;

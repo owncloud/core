@@ -19,21 +19,39 @@ namespace Google\Service\ServiceManagement;
 
 class OperationInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $metadataType;
+  /**
+   * @var string
+   */
   public $responseType;
 
+  /**
+   * @param string
+   */
   public function setMetadataType($metadataType)
   {
     $this->metadataType = $metadataType;
   }
+  /**
+   * @return string
+   */
   public function getMetadataType()
   {
     return $this->metadataType;
   }
+  /**
+   * @param string
+   */
   public function setResponseType($responseType)
   {
     $this->responseType = $responseType;
   }
+  /**
+   * @return string
+   */
   public function getResponseType()
   {
     return $this->responseType;

@@ -19,12 +19,21 @@ namespace Google\Service\NetworkSecurity;
 
 class CertificateProviderInstance extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pluginInstance;
 
+  /**
+   * @param string
+   */
   public function setPluginInstance($pluginInstance)
   {
     $this->pluginInstance = $pluginInstance;
   }
+  /**
+   * @return string
+   */
   public function getPluginInstance()
   {
     return $this->pluginInstance;

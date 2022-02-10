@@ -19,21 +19,39 @@ namespace Google\Service\Storage;
 
 class BucketIamConfigurationBucketPolicyOnly extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $lockedTime;
 
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setLockedTime($lockedTime)
   {
     $this->lockedTime = $lockedTime;
   }
+  /**
+   * @return string
+   */
   public function getLockedTime()
   {
     return $this->lockedTime;

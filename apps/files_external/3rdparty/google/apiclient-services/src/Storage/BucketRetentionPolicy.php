@@ -19,30 +19,57 @@ namespace Google\Service\Storage;
 
 class BucketRetentionPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $effectiveTime;
+  /**
+   * @var bool
+   */
   public $isLocked;
+  /**
+   * @var string
+   */
   public $retentionPeriod;
 
+  /**
+   * @param string
+   */
   public function setEffectiveTime($effectiveTime)
   {
     $this->effectiveTime = $effectiveTime;
   }
+  /**
+   * @return string
+   */
   public function getEffectiveTime()
   {
     return $this->effectiveTime;
   }
+  /**
+   * @param bool
+   */
   public function setIsLocked($isLocked)
   {
     $this->isLocked = $isLocked;
   }
+  /**
+   * @return bool
+   */
   public function getIsLocked()
   {
     return $this->isLocked;
   }
+  /**
+   * @param string
+   */
   public function setRetentionPeriod($retentionPeriod)
   {
     $this->retentionPeriod = $retentionPeriod;
   }
+  /**
+   * @return string
+   */
   public function getRetentionPeriod()
   {
     return $this->retentionPeriod;

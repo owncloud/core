@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class NegativeKeyword extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keywordValue;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setKeywordValue($keywordValue)
   {
     $this->keywordValue = $keywordValue;
   }
+  /**
+   * @return string
+   */
   public function getKeywordValue()
   {
     return $this->keywordValue;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

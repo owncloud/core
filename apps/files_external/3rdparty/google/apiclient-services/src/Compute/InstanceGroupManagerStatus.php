@@ -19,25 +19,43 @@ namespace Google\Service\Compute;
 
 class InstanceGroupManagerStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $autoscaler;
+  /**
+   * @var bool
+   */
   public $isStable;
   protected $statefulType = InstanceGroupManagerStatusStateful::class;
   protected $statefulDataType = '';
   protected $versionTargetType = InstanceGroupManagerStatusVersionTarget::class;
   protected $versionTargetDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAutoscaler($autoscaler)
   {
     $this->autoscaler = $autoscaler;
   }
+  /**
+   * @return string
+   */
   public function getAutoscaler()
   {
     return $this->autoscaler;
   }
+  /**
+   * @param bool
+   */
   public function setIsStable($isStable)
   {
     $this->isStable = $isStable;
   }
+  /**
+   * @return bool
+   */
   public function getIsStable()
   {
     return $this->isStable;

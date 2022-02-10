@@ -20,14 +20,23 @@ namespace Google\Service\SecurityCommandCenter;
 class ListNotificationConfigsResponse extends \Google\Collection
 {
   protected $collection_key = 'notificationConfigs';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $notificationConfigsType = NotificationConfig::class;
   protected $notificationConfigsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

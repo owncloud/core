@@ -20,14 +20,23 @@ namespace Google\Service\Books;
 class DictlayerdataDictWordsSensesDefinitions extends \Google\Collection
 {
   protected $collection_key = 'examples';
+  /**
+   * @var string
+   */
   public $definition;
   protected $examplesType = DictlayerdataDictWordsSensesDefinitionsExamples::class;
   protected $examplesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setDefinition($definition)
   {
     $this->definition = $definition;
   }
+  /**
+   * @return string
+   */
   public function getDefinition()
   {
     return $this->definition;

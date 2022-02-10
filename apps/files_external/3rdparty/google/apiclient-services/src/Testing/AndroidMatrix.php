@@ -20,39 +20,75 @@ namespace Google\Service\Testing;
 class AndroidMatrix extends \Google\Collection
 {
   protected $collection_key = 'orientations';
+  /**
+   * @var string[]
+   */
   public $androidModelIds;
+  /**
+   * @var string[]
+   */
   public $androidVersionIds;
+  /**
+   * @var string[]
+   */
   public $locales;
+  /**
+   * @var string[]
+   */
   public $orientations;
 
+  /**
+   * @param string[]
+   */
   public function setAndroidModelIds($androidModelIds)
   {
     $this->androidModelIds = $androidModelIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAndroidModelIds()
   {
     return $this->androidModelIds;
   }
+  /**
+   * @param string[]
+   */
   public function setAndroidVersionIds($androidVersionIds)
   {
     $this->androidVersionIds = $androidVersionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getAndroidVersionIds()
   {
     return $this->androidVersionIds;
   }
+  /**
+   * @param string[]
+   */
   public function setLocales($locales)
   {
     $this->locales = $locales;
   }
+  /**
+   * @return string[]
+   */
   public function getLocales()
   {
     return $this->locales;
   }
+  /**
+   * @param string[]
+   */
   public function setOrientations($orientations)
   {
     $this->orientations = $orientations;
   }
+  /**
+   * @return string[]
+   */
   public function getOrientations()
   {
     return $this->orientations;

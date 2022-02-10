@@ -24,7 +24,13 @@ class Location extends \Google\Collection
   protected $adWordsLocationExtensionsDataType = '';
   protected $categoriesType = Categories::class;
   protected $categoriesDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $languageCode;
   protected $latlngType = LatLng::class;
   protected $latlngDataType = '';
@@ -32,6 +38,9 @@ class Location extends \Google\Collection
   protected $metadataDataType = '';
   protected $moreHoursType = MoreHours::class;
   protected $moreHoursDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $openInfoType = OpenInfo::class;
   protected $openInfoDataType = '';
@@ -49,10 +58,19 @@ class Location extends \Google\Collection
   protected $serviceItemsDataType = 'array';
   protected $specialHoursType = SpecialHours::class;
   protected $specialHoursDataType = '';
+  /**
+   * @var string
+   */
   public $storeCode;
   protected $storefrontAddressType = PostalAddress::class;
   protected $storefrontAddressDataType = '';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $websiteUri;
 
   /**
@@ -83,18 +101,30 @@ class Location extends \Google\Collection
   {
     return $this->categories;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
@@ -141,10 +171,16 @@ class Location extends \Google\Collection
   {
     return $this->moreHours;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -261,10 +297,16 @@ class Location extends \Google\Collection
   {
     return $this->specialHours;
   }
+  /**
+   * @param string
+   */
   public function setStoreCode($storeCode)
   {
     $this->storeCode = $storeCode;
   }
+  /**
+   * @return string
+   */
   public function getStoreCode()
   {
     return $this->storeCode;
@@ -283,18 +325,30 @@ class Location extends \Google\Collection
   {
     return $this->storefrontAddress;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setWebsiteUri($websiteUri)
   {
     $this->websiteUri = $websiteUri;
   }
+  /**
+   * @return string
+   */
   public function getWebsiteUri()
   {
     return $this->websiteUri;

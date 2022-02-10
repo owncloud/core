@@ -19,34 +19,67 @@ namespace Google\Service\YouTube;
 
 class CommentThreadSnippet extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $canReply;
+  /**
+   * @var string
+   */
   public $channelId;
+  /**
+   * @var bool
+   */
   public $isPublic;
   protected $topLevelCommentType = Comment::class;
   protected $topLevelCommentDataType = '';
+  /**
+   * @var string
+   */
   public $totalReplyCount;
+  /**
+   * @var string
+   */
   public $videoId;
 
+  /**
+   * @param bool
+   */
   public function setCanReply($canReply)
   {
     $this->canReply = $canReply;
   }
+  /**
+   * @return bool
+   */
   public function getCanReply()
   {
     return $this->canReply;
   }
+  /**
+   * @param string
+   */
   public function setChannelId($channelId)
   {
     $this->channelId = $channelId;
   }
+  /**
+   * @return string
+   */
   public function getChannelId()
   {
     return $this->channelId;
   }
+  /**
+   * @param bool
+   */
   public function setIsPublic($isPublic)
   {
     $this->isPublic = $isPublic;
   }
+  /**
+   * @return bool
+   */
   public function getIsPublic()
   {
     return $this->isPublic;
@@ -65,18 +98,30 @@ class CommentThreadSnippet extends \Google\Model
   {
     return $this->topLevelComment;
   }
+  /**
+   * @param string
+   */
   public function setTotalReplyCount($totalReplyCount)
   {
     $this->totalReplyCount = $totalReplyCount;
   }
+  /**
+   * @return string
+   */
   public function getTotalReplyCount()
   {
     return $this->totalReplyCount;
   }
+  /**
+   * @param string
+   */
   public function setVideoId($videoId)
   {
     $this->videoId = $videoId;
   }
+  /**
+   * @return string
+   */
   public function getVideoId()
   {
     return $this->videoId;

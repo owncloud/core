@@ -24,9 +24,15 @@ class RouteStatus extends \Google\Collection
   protected $addressDataType = '';
   protected $conditionsType = GoogleCloudRunV1Condition::class;
   protected $conditionsDataType = 'array';
+  /**
+   * @var int
+   */
   public $observedGeneration;
   protected $trafficType = TrafficTarget::class;
   protected $trafficDataType = 'array';
+  /**
+   * @var string
+   */
   public $url;
 
   /**
@@ -57,10 +63,16 @@ class RouteStatus extends \Google\Collection
   {
     return $this->conditions;
   }
+  /**
+   * @param int
+   */
   public function setObservedGeneration($observedGeneration)
   {
     $this->observedGeneration = $observedGeneration;
   }
+  /**
+   * @return int
+   */
   public function getObservedGeneration()
   {
     return $this->observedGeneration;
@@ -79,10 +91,16 @@ class RouteStatus extends \Google\Collection
   {
     return $this->traffic;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

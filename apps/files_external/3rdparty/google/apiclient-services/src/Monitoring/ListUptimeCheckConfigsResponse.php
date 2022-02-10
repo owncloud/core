@@ -20,23 +20,41 @@ namespace Google\Service\Monitoring;
 class ListUptimeCheckConfigsResponse extends \Google\Collection
 {
   protected $collection_key = 'uptimeCheckConfigs';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var int
+   */
   public $totalSize;
   protected $uptimeCheckConfigsType = UptimeCheckConfig::class;
   protected $uptimeCheckConfigsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

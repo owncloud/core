@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class PublisherReviewStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $publisherName;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setPublisherName($publisherName)
   {
     $this->publisherName = $publisherName;
   }
+  /**
+   * @return string
+   */
   public function getPublisherName()
   {
     return $this->publisherName;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

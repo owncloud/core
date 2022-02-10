@@ -20,14 +20,23 @@ namespace Google\Service\WebRisk;
 class GoogleCloudWebriskV1SearchHashesResponse extends \Google\Collection
 {
   protected $collection_key = 'threats';
+  /**
+   * @var string
+   */
   public $negativeExpireTime;
   protected $threatsType = GoogleCloudWebriskV1SearchHashesResponseThreatHash::class;
   protected $threatsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNegativeExpireTime($negativeExpireTime)
   {
     $this->negativeExpireTime = $negativeExpireTime;
   }
+  /**
+   * @return string
+   */
   public function getNegativeExpireTime()
   {
     return $this->negativeExpireTime;

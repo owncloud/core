@@ -19,39 +19,75 @@ namespace Google\Service\CloudTrace;
 
 class MessageEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $compressedSizeBytes;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $uncompressedSizeBytes;
 
+  /**
+   * @param string
+   */
   public function setCompressedSizeBytes($compressedSizeBytes)
   {
     $this->compressedSizeBytes = $compressedSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getCompressedSizeBytes()
   {
     return $this->compressedSizeBytes;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUncompressedSizeBytes($uncompressedSizeBytes)
   {
     $this->uncompressedSizeBytes = $uncompressedSizeBytes;
   }
+  /**
+   * @return string
+   */
   public function getUncompressedSizeBytes()
   {
     return $this->uncompressedSizeBytes;

@@ -19,30 +19,57 @@ namespace Google\Service\ServiceManagement;
 
 class ConfigFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fileContents;
+  /**
+   * @var string
+   */
   public $filePath;
+  /**
+   * @var string
+   */
   public $fileType;
 
+  /**
+   * @param string
+   */
   public function setFileContents($fileContents)
   {
     $this->fileContents = $fileContents;
   }
+  /**
+   * @return string
+   */
   public function getFileContents()
   {
     return $this->fileContents;
   }
+  /**
+   * @param string
+   */
   public function setFilePath($filePath)
   {
     $this->filePath = $filePath;
   }
+  /**
+   * @return string
+   */
   public function getFilePath()
   {
     return $this->filePath;
   }
+  /**
+   * @param string
+   */
   public function setFileType($fileType)
   {
     $this->fileType = $fileType;
   }
+  /**
+   * @return string
+   */
   public function getFileType()
   {
     return $this->fileType;

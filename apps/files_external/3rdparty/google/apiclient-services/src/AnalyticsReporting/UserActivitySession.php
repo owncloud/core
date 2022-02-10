@@ -22,10 +22,25 @@ class UserActivitySession extends \Google\Collection
   protected $collection_key = 'activities';
   protected $activitiesType = Activity::class;
   protected $activitiesDataType = 'array';
+  /**
+   * @var string
+   */
   public $dataSource;
+  /**
+   * @var string
+   */
   public $deviceCategory;
+  /**
+   * @var string
+   */
   public $platform;
+  /**
+   * @var string
+   */
   public $sessionDate;
+  /**
+   * @var string
+   */
   public $sessionId;
 
   /**
@@ -42,42 +57,72 @@ class UserActivitySession extends \Google\Collection
   {
     return $this->activities;
   }
+  /**
+   * @param string
+   */
   public function setDataSource($dataSource)
   {
     $this->dataSource = $dataSource;
   }
+  /**
+   * @return string
+   */
   public function getDataSource()
   {
     return $this->dataSource;
   }
+  /**
+   * @param string
+   */
   public function setDeviceCategory($deviceCategory)
   {
     $this->deviceCategory = $deviceCategory;
   }
+  /**
+   * @return string
+   */
   public function getDeviceCategory()
   {
     return $this->deviceCategory;
   }
+  /**
+   * @param string
+   */
   public function setPlatform($platform)
   {
     $this->platform = $platform;
   }
+  /**
+   * @return string
+   */
   public function getPlatform()
   {
     return $this->platform;
   }
+  /**
+   * @param string
+   */
   public function setSessionDate($sessionDate)
   {
     $this->sessionDate = $sessionDate;
   }
+  /**
+   * @return string
+   */
   public function getSessionDate()
   {
     return $this->sessionDate;
   }
+  /**
+   * @param string
+   */
   public function setSessionId($sessionId)
   {
     $this->sessionId = $sessionId;
   }
+  /**
+   * @return string
+   */
   public function getSessionId()
   {
     return $this->sessionId;

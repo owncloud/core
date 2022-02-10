@@ -19,12 +19,21 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1SentimentConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableLabelSentimentSelection;
 
+  /**
+   * @param bool
+   */
   public function setEnableLabelSentimentSelection($enableLabelSentimentSelection)
   {
     $this->enableLabelSentimentSelection = $enableLabelSentimentSelection;
   }
+  /**
+   * @return bool
+   */
   public function getEnableLabelSentimentSelection()
   {
     return $this->enableLabelSentimentSelection;

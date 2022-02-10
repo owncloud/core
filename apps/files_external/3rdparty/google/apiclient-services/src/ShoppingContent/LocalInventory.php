@@ -19,55 +19,109 @@ namespace Google\Service\ShoppingContent;
 
 class LocalInventory extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $availability;
+  /**
+   * @var string
+   */
   public $instoreProductLocation;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $pickupMethod;
+  /**
+   * @var string
+   */
   public $pickupSla;
   protected $priceType = Price::class;
   protected $priceDataType = '';
+  /**
+   * @var string
+   */
   public $quantity;
   protected $salePriceType = Price::class;
   protected $salePriceDataType = '';
+  /**
+   * @var string
+   */
   public $salePriceEffectiveDate;
+  /**
+   * @var string
+   */
   public $storeCode;
 
+  /**
+   * @param string
+   */
   public function setAvailability($availability)
   {
     $this->availability = $availability;
   }
+  /**
+   * @return string
+   */
   public function getAvailability()
   {
     return $this->availability;
   }
+  /**
+   * @param string
+   */
   public function setInstoreProductLocation($instoreProductLocation)
   {
     $this->instoreProductLocation = $instoreProductLocation;
   }
+  /**
+   * @return string
+   */
   public function getInstoreProductLocation()
   {
     return $this->instoreProductLocation;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPickupMethod($pickupMethod)
   {
     $this->pickupMethod = $pickupMethod;
   }
+  /**
+   * @return string
+   */
   public function getPickupMethod()
   {
     return $this->pickupMethod;
   }
+  /**
+   * @param string
+   */
   public function setPickupSla($pickupSla)
   {
     $this->pickupSla = $pickupSla;
   }
+  /**
+   * @return string
+   */
   public function getPickupSla()
   {
     return $this->pickupSla;
@@ -86,10 +140,16 @@ class LocalInventory extends \Google\Model
   {
     return $this->price;
   }
+  /**
+   * @param string
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return string
+   */
   public function getQuantity()
   {
     return $this->quantity;
@@ -108,18 +168,30 @@ class LocalInventory extends \Google\Model
   {
     return $this->salePrice;
   }
+  /**
+   * @param string
+   */
   public function setSalePriceEffectiveDate($salePriceEffectiveDate)
   {
     $this->salePriceEffectiveDate = $salePriceEffectiveDate;
   }
+  /**
+   * @return string
+   */
   public function getSalePriceEffectiveDate()
   {
     return $this->salePriceEffectiveDate;
   }
+  /**
+   * @param string
+   */
   public function setStoreCode($storeCode)
   {
     $this->storeCode = $storeCode;
   }
+  /**
+   * @return string
+   */
   public function getStoreCode()
   {
     return $this->storeCode;

@@ -24,13 +24,31 @@ class ConnectorVersion extends \Google\Collection
   protected $authConfigTemplatesDataType = 'array';
   protected $configVariableTemplatesType = ConfigVariableTemplate::class;
   protected $configVariableTemplatesDataType = 'array';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $egressControlConfigType = EgressControlConfig::class;
   protected $egressControlConfigDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $launchStage;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $releaseVersion;
   protected $roleGrantType = RoleGrant::class;
   protected $roleGrantDataType = '';
@@ -38,6 +56,9 @@ class ConnectorVersion extends \Google\Collection
   protected $roleGrantsDataType = 'array';
   protected $supportedRuntimeFeaturesType = SupportedRuntimeFeatures::class;
   protected $supportedRuntimeFeaturesDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -68,18 +89,30 @@ class ConnectorVersion extends \Google\Collection
   {
     return $this->configVariableTemplates;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -98,34 +131,58 @@ class ConnectorVersion extends \Google\Collection
   {
     return $this->egressControlConfig;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLaunchStage($launchStage)
   {
     $this->launchStage = $launchStage;
   }
+  /**
+   * @return string
+   */
   public function getLaunchStage()
   {
     return $this->launchStage;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setReleaseVersion($releaseVersion)
   {
     $this->releaseVersion = $releaseVersion;
   }
+  /**
+   * @return string
+   */
   public function getReleaseVersion()
   {
     return $this->releaseVersion;
@@ -172,10 +229,16 @@ class ConnectorVersion extends \Google\Collection
   {
     return $this->supportedRuntimeFeatures;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

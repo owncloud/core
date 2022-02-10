@@ -19,21 +19,39 @@ namespace Google\Service\ServiceNetworking;
 
 class SearchRangeRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $ipPrefixLength;
+  /**
+   * @var string
+   */
   public $network;
 
+  /**
+   * @param int
+   */
   public function setIpPrefixLength($ipPrefixLength)
   {
     $this->ipPrefixLength = $ipPrefixLength;
   }
+  /**
+   * @return int
+   */
   public function getIpPrefixLength()
   {
     return $this->ipPrefixLength;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;

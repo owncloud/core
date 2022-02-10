@@ -23,30 +23,57 @@ class PacketMirroringFilter extends \Google\Collection
   protected $internal_gapi_mappings = [
         "iPProtocols" => "IPProtocols",
   ];
+  /**
+   * @var string[]
+   */
   public $iPProtocols;
+  /**
+   * @var string[]
+   */
   public $cidrRanges;
+  /**
+   * @var string
+   */
   public $direction;
 
+  /**
+   * @param string[]
+   */
   public function setIPProtocols($iPProtocols)
   {
     $this->iPProtocols = $iPProtocols;
   }
+  /**
+   * @return string[]
+   */
   public function getIPProtocols()
   {
     return $this->iPProtocols;
   }
+  /**
+   * @param string[]
+   */
   public function setCidrRanges($cidrRanges)
   {
     $this->cidrRanges = $cidrRanges;
   }
+  /**
+   * @return string[]
+   */
   public function getCidrRanges()
   {
     return $this->cidrRanges;
   }
+  /**
+   * @param string
+   */
   public function setDirection($direction)
   {
     $this->direction = $direction;
   }
+  /**
+   * @return string
+   */
   public function getDirection()
   {
     return $this->direction;

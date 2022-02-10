@@ -20,21 +20,39 @@ namespace Google\Service\AdExchangeBuyerII;
 class PauseProposalDealsRequest extends \Google\Collection
 {
   protected $collection_key = 'externalDealIds';
+  /**
+   * @var string[]
+   */
   public $externalDealIds;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string[]
+   */
   public function setExternalDealIds($externalDealIds)
   {
     $this->externalDealIds = $externalDealIds;
   }
+  /**
+   * @return string[]
+   */
   public function getExternalDealIds()
   {
     return $this->externalDealIds;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

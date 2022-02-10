@@ -20,20 +20,47 @@ namespace Google\Service\SecurityCommandCenter;
 class SecuritycenterResource extends \Google\Collection
 {
   protected $collection_key = 'folders';
+  /**
+   * @var string
+   */
   public $displayName;
   protected $foldersType = Folder::class;
   protected $foldersDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $parentDisplayName;
+  /**
+   * @var string
+   */
   public $parentName;
+  /**
+   * @var string
+   */
   public $projectDisplayName;
+  /**
+   * @var string
+   */
   public $projectName;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -52,50 +79,86 @@ class SecuritycenterResource extends \Google\Collection
   {
     return $this->folders;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setParentDisplayName($parentDisplayName)
   {
     $this->parentDisplayName = $parentDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getParentDisplayName()
   {
     return $this->parentDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setParentName($parentName)
   {
     $this->parentName = $parentName;
   }
+  /**
+   * @return string
+   */
   public function getParentName()
   {
     return $this->parentName;
   }
+  /**
+   * @param string
+   */
   public function setProjectDisplayName($projectDisplayName)
   {
     $this->projectDisplayName = $projectDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getProjectDisplayName()
   {
     return $this->projectDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setProjectName($projectName)
   {
     $this->projectName = $projectName;
   }
+  /**
+   * @return string
+   */
   public function getProjectName()
   {
     return $this->projectName;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

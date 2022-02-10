@@ -19,30 +19,57 @@ namespace Google\Service\CloudLifeSciences;
 
 class ContainerStoppedEvent extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $actionId;
+  /**
+   * @var int
+   */
   public $exitStatus;
+  /**
+   * @var string
+   */
   public $stderr;
 
+  /**
+   * @param int
+   */
   public function setActionId($actionId)
   {
     $this->actionId = $actionId;
   }
+  /**
+   * @return int
+   */
   public function getActionId()
   {
     return $this->actionId;
   }
+  /**
+   * @param int
+   */
   public function setExitStatus($exitStatus)
   {
     $this->exitStatus = $exitStatus;
   }
+  /**
+   * @return int
+   */
   public function getExitStatus()
   {
     return $this->exitStatus;
   }
+  /**
+   * @param string
+   */
   public function setStderr($stderr)
   {
     $this->stderr = $stderr;
   }
+  /**
+   * @return string
+   */
   public function getStderr()
   {
     return $this->stderr;

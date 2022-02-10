@@ -19,25 +19,43 @@ namespace Google\Service\ShoppingContent;
 
 class OrderCustomer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fullName;
+  /**
+   * @var string
+   */
   public $invoiceReceivingEmail;
   protected $loyaltyInfoType = OrderCustomerLoyaltyInfo::class;
   protected $loyaltyInfoDataType = '';
   protected $marketingRightsInfoType = OrderCustomerMarketingRightsInfo::class;
   protected $marketingRightsInfoDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFullName($fullName)
   {
     $this->fullName = $fullName;
   }
+  /**
+   * @return string
+   */
   public function getFullName()
   {
     return $this->fullName;
   }
+  /**
+   * @param string
+   */
   public function setInvoiceReceivingEmail($invoiceReceivingEmail)
   {
     $this->invoiceReceivingEmail = $invoiceReceivingEmail;
   }
+  /**
+   * @return string
+   */
   public function getInvoiceReceivingEmail()
   {
     return $this->invoiceReceivingEmail;

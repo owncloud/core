@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class CreativeClickThroughUrl extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $computedClickThroughUrl;
+  /**
+   * @var string
+   */
   public $customClickThroughUrl;
+  /**
+   * @var string
+   */
   public $landingPageId;
 
+  /**
+   * @param string
+   */
   public function setComputedClickThroughUrl($computedClickThroughUrl)
   {
     $this->computedClickThroughUrl = $computedClickThroughUrl;
   }
+  /**
+   * @return string
+   */
   public function getComputedClickThroughUrl()
   {
     return $this->computedClickThroughUrl;
   }
+  /**
+   * @param string
+   */
   public function setCustomClickThroughUrl($customClickThroughUrl)
   {
     $this->customClickThroughUrl = $customClickThroughUrl;
   }
+  /**
+   * @return string
+   */
   public function getCustomClickThroughUrl()
   {
     return $this->customClickThroughUrl;
   }
+  /**
+   * @param string
+   */
   public function setLandingPageId($landingPageId)
   {
     $this->landingPageId = $landingPageId;
   }
+  /**
+   * @return string
+   */
   public function getLandingPageId()
   {
     return $this->landingPageId;

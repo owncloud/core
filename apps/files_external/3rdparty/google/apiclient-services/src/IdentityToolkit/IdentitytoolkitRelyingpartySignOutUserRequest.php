@@ -19,21 +19,39 @@ namespace Google\Service\IdentityToolkit;
 
 class IdentitytoolkitRelyingpartySignOutUserRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $instanceId;
+  /**
+   * @var string
+   */
   public $localId;
 
+  /**
+   * @param string
+   */
   public function setInstanceId($instanceId)
   {
     $this->instanceId = $instanceId;
   }
+  /**
+   * @return string
+   */
   public function getInstanceId()
   {
     return $this->instanceId;
   }
+  /**
+   * @param string
+   */
   public function setLocalId($localId)
   {
     $this->localId = $localId;
   }
+  /**
+   * @return string
+   */
   public function getLocalId()
   {
     return $this->localId;

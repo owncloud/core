@@ -19,20 +19,50 @@ namespace Google\Service\Localservices;
 
 class GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
   protected $aggregatorInfoType = GoogleAdsHomeservicesLocalservicesV1AggregatorInfo::class;
   protected $aggregatorInfoDataType = '';
   protected $bookingLeadType = GoogleAdsHomeservicesLocalservicesV1BookingLead::class;
   protected $bookingLeadDataType = '';
+  /**
+   * @var string
+   */
   public $businessName;
+  /**
+   * @var string
+   */
   public $chargeStatus;
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var string
+   */
   public $disputeStatus;
+  /**
+   * @var string
+   */
   public $geo;
+  /**
+   * @var string
+   */
   public $leadCategory;
+  /**
+   * @var string
+   */
   public $leadCreationTimestamp;
+  /**
+   * @var string
+   */
   public $leadId;
   public $leadPrice;
+  /**
+   * @var string
+   */
   public $leadType;
   protected $messageLeadType = GoogleAdsHomeservicesLocalservicesV1MessageLead::class;
   protected $messageLeadDataType = '';
@@ -41,10 +71,16 @@ class GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport extends \Google\Mod
   protected $timezoneType = GoogleTypeTimeZone::class;
   protected $timezoneDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
@@ -77,66 +113,114 @@ class GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport extends \Google\Mod
   {
     return $this->bookingLead;
   }
+  /**
+   * @param string
+   */
   public function setBusinessName($businessName)
   {
     $this->businessName = $businessName;
   }
+  /**
+   * @return string
+   */
   public function getBusinessName()
   {
     return $this->businessName;
   }
+  /**
+   * @param string
+   */
   public function setChargeStatus($chargeStatus)
   {
     $this->chargeStatus = $chargeStatus;
   }
+  /**
+   * @return string
+   */
   public function getChargeStatus()
   {
     return $this->chargeStatus;
   }
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param string
+   */
   public function setDisputeStatus($disputeStatus)
   {
     $this->disputeStatus = $disputeStatus;
   }
+  /**
+   * @return string
+   */
   public function getDisputeStatus()
   {
     return $this->disputeStatus;
   }
+  /**
+   * @param string
+   */
   public function setGeo($geo)
   {
     $this->geo = $geo;
   }
+  /**
+   * @return string
+   */
   public function getGeo()
   {
     return $this->geo;
   }
+  /**
+   * @param string
+   */
   public function setLeadCategory($leadCategory)
   {
     $this->leadCategory = $leadCategory;
   }
+  /**
+   * @return string
+   */
   public function getLeadCategory()
   {
     return $this->leadCategory;
   }
+  /**
+   * @param string
+   */
   public function setLeadCreationTimestamp($leadCreationTimestamp)
   {
     $this->leadCreationTimestamp = $leadCreationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getLeadCreationTimestamp()
   {
     return $this->leadCreationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setLeadId($leadId)
   {
     $this->leadId = $leadId;
   }
+  /**
+   * @return string
+   */
   public function getLeadId()
   {
     return $this->leadId;
@@ -149,10 +233,16 @@ class GoogleAdsHomeservicesLocalservicesV1DetailedLeadReport extends \Google\Mod
   {
     return $this->leadPrice;
   }
+  /**
+   * @param string
+   */
   public function setLeadType($leadType)
   {
     $this->leadType = $leadType;
   }
+  /**
+   * @return string
+   */
   public function getLeadType()
   {
     return $this->leadType;

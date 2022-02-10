@@ -20,16 +20,25 @@ namespace Google\Service\Keep;
 class ListItem extends \Google\Collection
 {
   protected $collection_key = 'childListItems';
+  /**
+   * @var bool
+   */
   public $checked;
   protected $childListItemsType = ListItem::class;
   protected $childListItemsDataType = 'array';
   protected $textType = TextContent::class;
   protected $textDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setChecked($checked)
   {
     $this->checked = $checked;
   }
+  /**
+   * @return bool
+   */
   public function getChecked()
   {
     return $this->checked;

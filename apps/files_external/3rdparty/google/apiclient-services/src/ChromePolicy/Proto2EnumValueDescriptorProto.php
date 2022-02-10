@@ -19,21 +19,39 @@ namespace Google\Service\ChromePolicy;
 
 class Proto2EnumValueDescriptorProto extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $number;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setNumber($number)
   {
     $this->number = $number;
   }
+  /**
+   * @return int
+   */
   public function getNumber()
   {
     return $this->number;

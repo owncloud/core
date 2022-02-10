@@ -19,14 +19,23 @@ namespace Google\Service\CloudSearch;
 
 class ItemStructuredData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hash;
   protected $objectType = StructuredDataObject::class;
   protected $objectDataType = '';
 
+  /**
+   * @param string
+   */
   public function setHash($hash)
   {
     $this->hash = $hash;
   }
+  /**
+   * @return string
+   */
   public function getHash()
   {
     return $this->hash;

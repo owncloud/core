@@ -19,12 +19,21 @@ namespace Google\Service\Calendar;
 
 class ConferenceParametersAddOnParameters extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $parameters;
 
+  /**
+   * @param string[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return string[]
+   */
   public function getParameters()
   {
     return $this->parameters;

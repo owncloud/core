@@ -20,39 +20,75 @@ namespace Google\Service\ServiceNetworking;
 class DnsRecordSet extends \Google\Collection
 {
   protected $collection_key = 'data';
+  /**
+   * @var string[]
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $domain;
+  /**
+   * @var string
+   */
   public $ttl;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string[]
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;
   }
+  /**
+   * @param string
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return string
+   */
   public function getTtl()
   {
     return $this->ttl;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

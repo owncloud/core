@@ -19,30 +19,57 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaExchangeAppAttestAttestationRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $attestationStatement;
+  /**
+   * @var string
+   */
   public $challenge;
+  /**
+   * @var string
+   */
   public $keyId;
 
+  /**
+   * @param string
+   */
   public function setAttestationStatement($attestationStatement)
   {
     $this->attestationStatement = $attestationStatement;
   }
+  /**
+   * @return string
+   */
   public function getAttestationStatement()
   {
     return $this->attestationStatement;
   }
+  /**
+   * @param string
+   */
   public function setChallenge($challenge)
   {
     $this->challenge = $challenge;
   }
+  /**
+   * @return string
+   */
   public function getChallenge()
   {
     return $this->challenge;
   }
+  /**
+   * @param string
+   */
   public function setKeyId($keyId)
   {
     $this->keyId = $keyId;
   }
+  /**
+   * @return string
+   */
   public function getKeyId()
   {
     return $this->keyId;

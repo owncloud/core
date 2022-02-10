@@ -19,30 +19,57 @@ namespace Google\Service\Classroom;
 
 class Link extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $thumbnailUrl;
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setThumbnailUrl($thumbnailUrl)
   {
     $this->thumbnailUrl = $thumbnailUrl;
   }
+  /**
+   * @return string
+   */
   public function getThumbnailUrl()
   {
     return $this->thumbnailUrl;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

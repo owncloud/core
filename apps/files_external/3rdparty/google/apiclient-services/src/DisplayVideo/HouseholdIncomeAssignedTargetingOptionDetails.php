@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class HouseholdIncomeAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $householdIncome;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setHouseholdIncome($householdIncome)
   {
     $this->householdIncome = $householdIncome;
   }
+  /**
+   * @return string
+   */
   public function getHouseholdIncome()
   {
     return $this->householdIncome;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

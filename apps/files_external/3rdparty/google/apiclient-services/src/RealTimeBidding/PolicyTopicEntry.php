@@ -22,7 +22,13 @@ class PolicyTopicEntry extends \Google\Collection
   protected $collection_key = 'evidences';
   protected $evidencesType = PolicyTopicEvidence::class;
   protected $evidencesDataType = 'array';
+  /**
+   * @var string
+   */
   public $helpCenterUrl;
+  /**
+   * @var string
+   */
   public $policyTopic;
 
   /**
@@ -39,18 +45,30 @@ class PolicyTopicEntry extends \Google\Collection
   {
     return $this->evidences;
   }
+  /**
+   * @param string
+   */
   public function setHelpCenterUrl($helpCenterUrl)
   {
     $this->helpCenterUrl = $helpCenterUrl;
   }
+  /**
+   * @return string
+   */
   public function getHelpCenterUrl()
   {
     return $this->helpCenterUrl;
   }
+  /**
+   * @param string
+   */
   public function setPolicyTopic($policyTopic)
   {
     $this->policyTopic = $policyTopic;
   }
+  /**
+   * @return string
+   */
   public function getPolicyTopic()
   {
     return $this->policyTopic;

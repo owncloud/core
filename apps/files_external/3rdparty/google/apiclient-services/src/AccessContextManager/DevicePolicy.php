@@ -20,26 +20,53 @@ namespace Google\Service\AccessContextManager;
 class DevicePolicy extends \Google\Collection
 {
   protected $collection_key = 'osConstraints';
+  /**
+   * @var string[]
+   */
   public $allowedDeviceManagementLevels;
+  /**
+   * @var string[]
+   */
   public $allowedEncryptionStatuses;
   protected $osConstraintsType = OsConstraint::class;
   protected $osConstraintsDataType = 'array';
+  /**
+   * @var bool
+   */
   public $requireAdminApproval;
+  /**
+   * @var bool
+   */
   public $requireCorpOwned;
+  /**
+   * @var bool
+   */
   public $requireScreenlock;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedDeviceManagementLevels($allowedDeviceManagementLevels)
   {
     $this->allowedDeviceManagementLevels = $allowedDeviceManagementLevels;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedDeviceManagementLevels()
   {
     return $this->allowedDeviceManagementLevels;
   }
+  /**
+   * @param string[]
+   */
   public function setAllowedEncryptionStatuses($allowedEncryptionStatuses)
   {
     $this->allowedEncryptionStatuses = $allowedEncryptionStatuses;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedEncryptionStatuses()
   {
     return $this->allowedEncryptionStatuses;
@@ -58,26 +85,44 @@ class DevicePolicy extends \Google\Collection
   {
     return $this->osConstraints;
   }
+  /**
+   * @param bool
+   */
   public function setRequireAdminApproval($requireAdminApproval)
   {
     $this->requireAdminApproval = $requireAdminApproval;
   }
+  /**
+   * @return bool
+   */
   public function getRequireAdminApproval()
   {
     return $this->requireAdminApproval;
   }
+  /**
+   * @param bool
+   */
   public function setRequireCorpOwned($requireCorpOwned)
   {
     $this->requireCorpOwned = $requireCorpOwned;
   }
+  /**
+   * @return bool
+   */
   public function getRequireCorpOwned()
   {
     return $this->requireCorpOwned;
   }
+  /**
+   * @param bool
+   */
   public function setRequireScreenlock($requireScreenlock)
   {
     $this->requireScreenlock = $requireScreenlock;
   }
+  /**
+   * @return bool
+   */
   public function getRequireScreenlock()
   {
     return $this->requireScreenlock;

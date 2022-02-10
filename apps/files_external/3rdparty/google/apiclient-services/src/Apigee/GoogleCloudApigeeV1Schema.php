@@ -22,6 +22,9 @@ class GoogleCloudApigeeV1Schema extends \Google\Collection
   protected $collection_key = 'metrics';
   protected $dimensionsType = GoogleCloudApigeeV1SchemaSchemaElement::class;
   protected $dimensionsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $meta;
   protected $metricsType = GoogleCloudApigeeV1SchemaSchemaElement::class;
   protected $metricsDataType = 'array';
@@ -40,10 +43,16 @@ class GoogleCloudApigeeV1Schema extends \Google\Collection
   {
     return $this->dimensions;
   }
+  /**
+   * @param string[]
+   */
   public function setMeta($meta)
   {
     $this->meta = $meta;
   }
+  /**
+   * @return string[]
+   */
   public function getMeta()
   {
     return $this->meta;

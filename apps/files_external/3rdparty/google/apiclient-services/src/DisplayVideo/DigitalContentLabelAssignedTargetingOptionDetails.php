@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class DigitalContentLabelAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentRatingTier;
+  /**
+   * @var string
+   */
   public $excludedTargetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setContentRatingTier($contentRatingTier)
   {
     $this->contentRatingTier = $contentRatingTier;
   }
+  /**
+   * @return string
+   */
   public function getContentRatingTier()
   {
     return $this->contentRatingTier;
   }
+  /**
+   * @param string
+   */
   public function setExcludedTargetingOptionId($excludedTargetingOptionId)
   {
     $this->excludedTargetingOptionId = $excludedTargetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getExcludedTargetingOptionId()
   {
     return $this->excludedTargetingOptionId;

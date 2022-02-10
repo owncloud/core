@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class FileReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fileUri;
 
+  /**
+   * @param string
+   */
   public function setFileUri($fileUri)
   {
     $this->fileUri = $fileUri;
   }
+  /**
+   * @return string
+   */
   public function getFileUri()
   {
     return $this->fileUri;

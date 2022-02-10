@@ -19,14 +19,23 @@ namespace Google\Service\Monitoring;
 
 class DistributionCut extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $distributionFilter;
   protected $rangeType = GoogleMonitoringV3Range::class;
   protected $rangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDistributionFilter($distributionFilter)
   {
     $this->distributionFilter = $distributionFilter;
   }
+  /**
+   * @return string
+   */
   public function getDistributionFilter()
   {
     return $this->distributionFilter;

@@ -24,21 +24,57 @@ class Connection extends \Google\Collection
   protected $authConfigDataType = '';
   protected $configVariablesType = ConfigVariable::class;
   protected $configVariablesDataType = 'array';
+  /**
+   * @var string
+   */
   public $connectorVersion;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string[]
+   */
   public $egressBackends;
+  /**
+   * @var string
+   */
   public $envoyImageLocation;
+  /**
+   * @var string
+   */
   public $imageLocation;
+  /**
+   * @var bool
+   */
   public $inactive;
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $lockConfigType = LockConfig::class;
   protected $lockConfigDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $serviceAccount;
+  /**
+   * @var string
+   */
   public $serviceDirectory;
   protected $statusType = ConnectionStatus::class;
   protected $statusDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -69,66 +105,114 @@ class Connection extends \Google\Collection
   {
     return $this->configVariables;
   }
+  /**
+   * @param string
+   */
   public function setConnectorVersion($connectorVersion)
   {
     $this->connectorVersion = $connectorVersion;
   }
+  /**
+   * @return string
+   */
   public function getConnectorVersion()
   {
     return $this->connectorVersion;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string[]
+   */
   public function setEgressBackends($egressBackends)
   {
     $this->egressBackends = $egressBackends;
   }
+  /**
+   * @return string[]
+   */
   public function getEgressBackends()
   {
     return $this->egressBackends;
   }
+  /**
+   * @param string
+   */
   public function setEnvoyImageLocation($envoyImageLocation)
   {
     $this->envoyImageLocation = $envoyImageLocation;
   }
+  /**
+   * @return string
+   */
   public function getEnvoyImageLocation()
   {
     return $this->envoyImageLocation;
   }
+  /**
+   * @param string
+   */
   public function setImageLocation($imageLocation)
   {
     $this->imageLocation = $imageLocation;
   }
+  /**
+   * @return string
+   */
   public function getImageLocation()
   {
     return $this->imageLocation;
   }
+  /**
+   * @param bool
+   */
   public function setInactive($inactive)
   {
     $this->inactive = $inactive;
   }
+  /**
+   * @return bool
+   */
   public function getInactive()
   {
     return $this->inactive;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -147,26 +231,44 @@ class Connection extends \Google\Collection
   {
     return $this->lockConfig;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setServiceAccount($serviceAccount)
   {
     $this->serviceAccount = $serviceAccount;
   }
+  /**
+   * @return string
+   */
   public function getServiceAccount()
   {
     return $this->serviceAccount;
   }
+  /**
+   * @param string
+   */
   public function setServiceDirectory($serviceDirectory)
   {
     $this->serviceDirectory = $serviceDirectory;
   }
+  /**
+   * @return string
+   */
   public function getServiceDirectory()
   {
     return $this->serviceDirectory;
@@ -185,10 +287,16 @@ class Connection extends \Google\Collection
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

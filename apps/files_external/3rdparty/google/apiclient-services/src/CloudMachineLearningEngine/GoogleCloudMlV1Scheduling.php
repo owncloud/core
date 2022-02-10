@@ -19,30 +19,57 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1Scheduling extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maxRunningTime;
+  /**
+   * @var string
+   */
   public $maxWaitTime;
+  /**
+   * @var int
+   */
   public $priority;
 
+  /**
+   * @param string
+   */
   public function setMaxRunningTime($maxRunningTime)
   {
     $this->maxRunningTime = $maxRunningTime;
   }
+  /**
+   * @return string
+   */
   public function getMaxRunningTime()
   {
     return $this->maxRunningTime;
   }
+  /**
+   * @param string
+   */
   public function setMaxWaitTime($maxWaitTime)
   {
     $this->maxWaitTime = $maxWaitTime;
   }
+  /**
+   * @return string
+   */
   public function getMaxWaitTime()
   {
     return $this->maxWaitTime;
   }
+  /**
+   * @param int
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return int
+   */
   public function getPriority()
   {
     return $this->priority;

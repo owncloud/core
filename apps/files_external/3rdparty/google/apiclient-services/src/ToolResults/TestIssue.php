@@ -19,35 +19,65 @@ namespace Google\Service\ToolResults;
 
 class TestIssue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $category;
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string
+   */
   public $severity;
   protected $stackTraceType = StackTrace::class;
   protected $stackTraceDataType = '';
+  /**
+   * @var string
+   */
   public $type;
   protected $warningType = Any::class;
   protected $warningDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string
+   */
   public function setSeverity($severity)
   {
     $this->severity = $severity;
   }
+  /**
+   * @return string
+   */
   public function getSeverity()
   {
     return $this->severity;
@@ -66,10 +96,16 @@ class TestIssue extends \Google\Model
   {
     return $this->stackTrace;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

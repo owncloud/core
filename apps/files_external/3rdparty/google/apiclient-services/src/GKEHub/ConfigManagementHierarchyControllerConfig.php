@@ -19,30 +19,57 @@ namespace Google\Service\GKEHub;
 
 class ConfigManagementHierarchyControllerConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enableHierarchicalResourceQuota;
+  /**
+   * @var bool
+   */
   public $enablePodTreeLabels;
+  /**
+   * @var bool
+   */
   public $enabled;
 
+  /**
+   * @param bool
+   */
   public function setEnableHierarchicalResourceQuota($enableHierarchicalResourceQuota)
   {
     $this->enableHierarchicalResourceQuota = $enableHierarchicalResourceQuota;
   }
+  /**
+   * @return bool
+   */
   public function getEnableHierarchicalResourceQuota()
   {
     return $this->enableHierarchicalResourceQuota;
   }
+  /**
+   * @param bool
+   */
   public function setEnablePodTreeLabels($enablePodTreeLabels)
   {
     $this->enablePodTreeLabels = $enablePodTreeLabels;
   }
+  /**
+   * @return bool
+   */
   public function getEnablePodTreeLabels()
   {
     return $this->enablePodTreeLabels;
   }
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;

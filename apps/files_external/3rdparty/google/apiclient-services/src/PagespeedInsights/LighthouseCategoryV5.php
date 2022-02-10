@@ -22,10 +22,25 @@ class LighthouseCategoryV5 extends \Google\Collection
   protected $collection_key = 'auditRefs';
   protected $auditRefsType = AuditRefs::class;
   protected $auditRefsDataType = 'array';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $manualDescription;
+  /**
+   * @var array
+   */
   public $score;
+  /**
+   * @var string
+   */
   public $title;
 
   /**
@@ -42,42 +57,72 @@ class LighthouseCategoryV5 extends \Google\Collection
   {
     return $this->auditRefs;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setManualDescription($manualDescription)
   {
     $this->manualDescription = $manualDescription;
   }
+  /**
+   * @return string
+   */
   public function getManualDescription()
   {
     return $this->manualDescription;
   }
+  /**
+   * @param array
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return array
+   */
   public function getScore()
   {
     return $this->score;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

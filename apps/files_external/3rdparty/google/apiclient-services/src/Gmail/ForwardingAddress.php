@@ -19,21 +19,39 @@ namespace Google\Service\Gmail;
 
 class ForwardingAddress extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $forwardingEmail;
+  /**
+   * @var string
+   */
   public $verificationStatus;
 
+  /**
+   * @param string
+   */
   public function setForwardingEmail($forwardingEmail)
   {
     $this->forwardingEmail = $forwardingEmail;
   }
+  /**
+   * @return string
+   */
   public function getForwardingEmail()
   {
     return $this->forwardingEmail;
   }
+  /**
+   * @param string
+   */
   public function setVerificationStatus($verificationStatus)
   {
     $this->verificationStatus = $verificationStatus;
   }
+  /**
+   * @return string
+   */
   public function getVerificationStatus()
   {
     return $this->verificationStatus;

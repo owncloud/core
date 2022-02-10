@@ -19,21 +19,39 @@ namespace Google\Service\ServiceNetworking;
 
 class RemoveDnsZoneRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $consumerNetwork;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setConsumerNetwork($consumerNetwork)
   {
     $this->consumerNetwork = $consumerNetwork;
   }
+  /**
+   * @return string
+   */
   public function getConsumerNetwork()
   {
     return $this->consumerNetwork;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

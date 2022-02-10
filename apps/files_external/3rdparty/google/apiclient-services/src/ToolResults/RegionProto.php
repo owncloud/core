@@ -19,39 +19,75 @@ namespace Google\Service\ToolResults;
 
 class RegionProto extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $heightPx;
+  /**
+   * @var int
+   */
   public $leftPx;
+  /**
+   * @var int
+   */
   public $topPx;
+  /**
+   * @var int
+   */
   public $widthPx;
 
+  /**
+   * @param int
+   */
   public function setHeightPx($heightPx)
   {
     $this->heightPx = $heightPx;
   }
+  /**
+   * @return int
+   */
   public function getHeightPx()
   {
     return $this->heightPx;
   }
+  /**
+   * @param int
+   */
   public function setLeftPx($leftPx)
   {
     $this->leftPx = $leftPx;
   }
+  /**
+   * @return int
+   */
   public function getLeftPx()
   {
     return $this->leftPx;
   }
+  /**
+   * @param int
+   */
   public function setTopPx($topPx)
   {
     $this->topPx = $topPx;
   }
+  /**
+   * @return int
+   */
   public function getTopPx()
   {
     return $this->topPx;
   }
+  /**
+   * @param int
+   */
   public function setWidthPx($widthPx)
   {
     $this->widthPx = $widthPx;
   }
+  /**
+   * @return int
+   */
   public function getWidthPx()
   {
     return $this->widthPx;

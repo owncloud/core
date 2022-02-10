@@ -19,39 +19,75 @@ namespace Google\Service\AndroidManagement;
 
 class SigninDetail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $allowPersonalUsage;
+  /**
+   * @var string
+   */
   public $qrCode;
+  /**
+   * @var string
+   */
   public $signinEnrollmentToken;
+  /**
+   * @var string
+   */
   public $signinUrl;
 
+  /**
+   * @param string
+   */
   public function setAllowPersonalUsage($allowPersonalUsage)
   {
     $this->allowPersonalUsage = $allowPersonalUsage;
   }
+  /**
+   * @return string
+   */
   public function getAllowPersonalUsage()
   {
     return $this->allowPersonalUsage;
   }
+  /**
+   * @param string
+   */
   public function setQrCode($qrCode)
   {
     $this->qrCode = $qrCode;
   }
+  /**
+   * @return string
+   */
   public function getQrCode()
   {
     return $this->qrCode;
   }
+  /**
+   * @param string
+   */
   public function setSigninEnrollmentToken($signinEnrollmentToken)
   {
     $this->signinEnrollmentToken = $signinEnrollmentToken;
   }
+  /**
+   * @return string
+   */
   public function getSigninEnrollmentToken()
   {
     return $this->signinEnrollmentToken;
   }
+  /**
+   * @param string
+   */
   public function setSigninUrl($signinUrl)
   {
     $this->signinUrl = $signinUrl;
   }
+  /**
+   * @return string
+   */
   public function getSigninUrl()
   {
     return $this->signinUrl;

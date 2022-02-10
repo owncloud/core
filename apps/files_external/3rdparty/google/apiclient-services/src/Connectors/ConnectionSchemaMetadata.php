@@ -20,21 +20,39 @@ namespace Google\Service\Connectors;
 class ConnectionSchemaMetadata extends \Google\Collection
 {
   protected $collection_key = 'entities';
+  /**
+   * @var string[]
+   */
   public $actions;
+  /**
+   * @var string[]
+   */
   public $entities;
 
+  /**
+   * @param string[]
+   */
   public function setActions($actions)
   {
     $this->actions = $actions;
   }
+  /**
+   * @return string[]
+   */
   public function getActions()
   {
     return $this->actions;
   }
+  /**
+   * @param string[]
+   */
   public function setEntities($entities)
   {
     $this->entities = $entities;
   }
+  /**
+   * @return string[]
+   */
   public function getEntities()
   {
     return $this->entities;

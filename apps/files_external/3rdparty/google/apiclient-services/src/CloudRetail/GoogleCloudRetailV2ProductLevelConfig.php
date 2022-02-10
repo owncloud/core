@@ -19,21 +19,39 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2ProductLevelConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ingestionProductType;
+  /**
+   * @var string
+   */
   public $merchantCenterProductIdField;
 
+  /**
+   * @param string
+   */
   public function setIngestionProductType($ingestionProductType)
   {
     $this->ingestionProductType = $ingestionProductType;
   }
+  /**
+   * @return string
+   */
   public function getIngestionProductType()
   {
     return $this->ingestionProductType;
   }
+  /**
+   * @param string
+   */
   public function setMerchantCenterProductIdField($merchantCenterProductIdField)
   {
     $this->merchantCenterProductIdField = $merchantCenterProductIdField;
   }
+  /**
+   * @return string
+   */
   public function getMerchantCenterProductIdField()
   {
     return $this->merchantCenterProductIdField;

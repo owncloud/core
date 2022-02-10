@@ -32,6 +32,9 @@ class GoogleCloudVideointelligenceV1p3beta1VideoAnnotationResults extends \Googl
   protected $faceDetectionAnnotationsDataType = 'array';
   protected $frameLabelAnnotationsType = GoogleCloudVideointelligenceV1p3beta1LabelAnnotation::class;
   protected $frameLabelAnnotationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $inputUri;
   protected $logoRecognitionAnnotationsType = GoogleCloudVideointelligenceV1p3beta1LogoRecognitionAnnotation::class;
   protected $logoRecognitionAnnotationsDataType = 'array';
@@ -140,10 +143,16 @@ class GoogleCloudVideointelligenceV1p3beta1VideoAnnotationResults extends \Googl
   {
     return $this->frameLabelAnnotations;
   }
+  /**
+   * @param string
+   */
   public function setInputUri($inputUri)
   {
     $this->inputUri = $inputUri;
   }
+  /**
+   * @return string
+   */
   public function getInputUri()
   {
     return $this->inputUri;

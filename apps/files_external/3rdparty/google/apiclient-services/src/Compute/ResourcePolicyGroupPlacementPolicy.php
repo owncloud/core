@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class ResourcePolicyGroupPlacementPolicy extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $availabilityDomainCount;
+  /**
+   * @var string
+   */
   public $collocation;
+  /**
+   * @var int
+   */
   public $vmCount;
 
+  /**
+   * @param int
+   */
   public function setAvailabilityDomainCount($availabilityDomainCount)
   {
     $this->availabilityDomainCount = $availabilityDomainCount;
   }
+  /**
+   * @return int
+   */
   public function getAvailabilityDomainCount()
   {
     return $this->availabilityDomainCount;
   }
+  /**
+   * @param string
+   */
   public function setCollocation($collocation)
   {
     $this->collocation = $collocation;
   }
+  /**
+   * @return string
+   */
   public function getCollocation()
   {
     return $this->collocation;
   }
+  /**
+   * @param int
+   */
   public function setVmCount($vmCount)
   {
     $this->vmCount = $vmCount;
   }
+  /**
+   * @return int
+   */
   public function getVmCount()
   {
     return $this->vmCount;

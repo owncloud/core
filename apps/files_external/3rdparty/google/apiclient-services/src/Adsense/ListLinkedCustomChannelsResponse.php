@@ -22,6 +22,9 @@ class ListLinkedCustomChannelsResponse extends \Google\Collection
   protected $collection_key = 'customChannels';
   protected $customChannelsType = CustomChannel::class;
   protected $customChannelsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListLinkedCustomChannelsResponse extends \Google\Collection
   {
     return $this->customChannels;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

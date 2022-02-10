@@ -21,12 +21,27 @@ class CommonEventObject extends \Google\Model
 {
   protected $formInputsType = Inputs::class;
   protected $formInputsDataType = 'map';
+  /**
+   * @var string
+   */
   public $hostApp;
+  /**
+   * @var string
+   */
   public $invokedFunction;
+  /**
+   * @var string[]
+   */
   public $parameters;
+  /**
+   * @var string
+   */
   public $platform;
   protected $timeZoneType = TimeZone::class;
   protected $timeZoneDataType = '';
+  /**
+   * @var string
+   */
   public $userLocale;
 
   /**
@@ -43,34 +58,58 @@ class CommonEventObject extends \Google\Model
   {
     return $this->formInputs;
   }
+  /**
+   * @param string
+   */
   public function setHostApp($hostApp)
   {
     $this->hostApp = $hostApp;
   }
+  /**
+   * @return string
+   */
   public function getHostApp()
   {
     return $this->hostApp;
   }
+  /**
+   * @param string
+   */
   public function setInvokedFunction($invokedFunction)
   {
     $this->invokedFunction = $invokedFunction;
   }
+  /**
+   * @return string
+   */
   public function getInvokedFunction()
   {
     return $this->invokedFunction;
   }
+  /**
+   * @param string[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return string[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setPlatform($platform)
   {
     $this->platform = $platform;
   }
+  /**
+   * @return string
+   */
   public function getPlatform()
   {
     return $this->platform;
@@ -89,10 +128,16 @@ class CommonEventObject extends \Google\Model
   {
     return $this->timeZone;
   }
+  /**
+   * @param string
+   */
   public function setUserLocale($userLocale)
   {
     $this->userLocale = $userLocale;
   }
+  /**
+   * @return string
+   */
   public function getUserLocale()
   {
     return $this->userLocale;

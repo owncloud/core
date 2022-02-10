@@ -21,12 +21,24 @@ class BinaryConfusionMatrix extends \Google\Model
 {
   public $accuracy;
   public $f1Score;
+  /**
+   * @var string
+   */
   public $falseNegatives;
+  /**
+   * @var string
+   */
   public $falsePositives;
   public $positiveClassThreshold;
   public $precision;
   public $recall;
+  /**
+   * @var string
+   */
   public $trueNegatives;
+  /**
+   * @var string
+   */
   public $truePositives;
 
   public function setAccuracy($accuracy)
@@ -45,18 +57,30 @@ class BinaryConfusionMatrix extends \Google\Model
   {
     return $this->f1Score;
   }
+  /**
+   * @param string
+   */
   public function setFalseNegatives($falseNegatives)
   {
     $this->falseNegatives = $falseNegatives;
   }
+  /**
+   * @return string
+   */
   public function getFalseNegatives()
   {
     return $this->falseNegatives;
   }
+  /**
+   * @param string
+   */
   public function setFalsePositives($falsePositives)
   {
     $this->falsePositives = $falsePositives;
   }
+  /**
+   * @return string
+   */
   public function getFalsePositives()
   {
     return $this->falsePositives;
@@ -85,18 +109,30 @@ class BinaryConfusionMatrix extends \Google\Model
   {
     return $this->recall;
   }
+  /**
+   * @param string
+   */
   public function setTrueNegatives($trueNegatives)
   {
     $this->trueNegatives = $trueNegatives;
   }
+  /**
+   * @return string
+   */
   public function getTrueNegatives()
   {
     return $this->trueNegatives;
   }
+  /**
+   * @param string
+   */
   public function setTruePositives($truePositives)
   {
     $this->truePositives = $truePositives;
   }
+  /**
+   * @return string
+   */
   public function getTruePositives()
   {
     return $this->truePositives;

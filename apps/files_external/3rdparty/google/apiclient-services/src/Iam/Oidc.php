@@ -20,21 +20,39 @@ namespace Google\Service\Iam;
 class Oidc extends \Google\Collection
 {
   protected $collection_key = 'allowedAudiences';
+  /**
+   * @var string[]
+   */
   public $allowedAudiences;
+  /**
+   * @var string
+   */
   public $issuerUri;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedAudiences($allowedAudiences)
   {
     $this->allowedAudiences = $allowedAudiences;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedAudiences()
   {
     return $this->allowedAudiences;
   }
+  /**
+   * @param string
+   */
   public function setIssuerUri($issuerUri)
   {
     $this->issuerUri = $issuerUri;
   }
+  /**
+   * @return string
+   */
   public function getIssuerUri()
   {
     return $this->issuerUri;

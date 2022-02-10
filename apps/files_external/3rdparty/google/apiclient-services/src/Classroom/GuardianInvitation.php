@@ -19,48 +19,93 @@ namespace Google\Service\Classroom;
 
 class GuardianInvitation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creationTime;
+  /**
+   * @var string
+   */
   public $invitationId;
+  /**
+   * @var string
+   */
   public $invitedEmailAddress;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $studentId;
 
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setInvitationId($invitationId)
   {
     $this->invitationId = $invitationId;
   }
+  /**
+   * @return string
+   */
   public function getInvitationId()
   {
     return $this->invitationId;
   }
+  /**
+   * @param string
+   */
   public function setInvitedEmailAddress($invitedEmailAddress)
   {
     $this->invitedEmailAddress = $invitedEmailAddress;
   }
+  /**
+   * @return string
+   */
   public function getInvitedEmailAddress()
   {
     return $this->invitedEmailAddress;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStudentId($studentId)
   {
     $this->studentId = $studentId;
   }
+  /**
+   * @return string
+   */
   public function getStudentId()
   {
     return $this->studentId;

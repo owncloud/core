@@ -20,27 +20,57 @@ namespace Google\Service\Dfareporting;
 class LandingPage extends \Google\Collection
 {
   protected $collection_key = 'deepLinks';
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var bool
+   */
   public $archived;
   protected $deepLinksType = DeepLink::class;
   protected $deepLinksDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param bool
+   */
   public function setArchived($archived)
   {
     $this->archived = $archived;
   }
+  /**
+   * @return bool
+   */
   public function getArchived()
   {
     return $this->archived;
@@ -59,34 +89,58 @@ class LandingPage extends \Google\Collection
   {
     return $this->deepLinks;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

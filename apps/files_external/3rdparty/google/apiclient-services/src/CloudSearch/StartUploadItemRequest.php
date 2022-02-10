@@ -19,14 +19,23 @@ namespace Google\Service\CloudSearch;
 
 class StartUploadItemRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $connectorName;
   protected $debugOptionsType = DebugOptions::class;
   protected $debugOptionsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setConnectorName($connectorName)
   {
     $this->connectorName = $connectorName;
   }
+  /**
+   * @return string
+   */
   public function getConnectorName()
   {
     return $this->connectorName;

@@ -19,39 +19,75 @@ namespace Google\Service\Reseller;
 
 class Seats extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var int
+   */
   public $licensedNumberOfSeats;
+  /**
+   * @var int
+   */
   public $maximumNumberOfSeats;
+  /**
+   * @var int
+   */
   public $numberOfSeats;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param int
+   */
   public function setLicensedNumberOfSeats($licensedNumberOfSeats)
   {
     $this->licensedNumberOfSeats = $licensedNumberOfSeats;
   }
+  /**
+   * @return int
+   */
   public function getLicensedNumberOfSeats()
   {
     return $this->licensedNumberOfSeats;
   }
+  /**
+   * @param int
+   */
   public function setMaximumNumberOfSeats($maximumNumberOfSeats)
   {
     $this->maximumNumberOfSeats = $maximumNumberOfSeats;
   }
+  /**
+   * @return int
+   */
   public function getMaximumNumberOfSeats()
   {
     return $this->maximumNumberOfSeats;
   }
+  /**
+   * @param int
+   */
   public function setNumberOfSeats($numberOfSeats)
   {
     $this->numberOfSeats = $numberOfSeats;
   }
+  /**
+   * @return int
+   */
   public function getNumberOfSeats()
   {
     return $this->numberOfSeats;

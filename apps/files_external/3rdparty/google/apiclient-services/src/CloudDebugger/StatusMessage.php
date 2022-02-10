@@ -21,7 +21,13 @@ class StatusMessage extends \Google\Model
 {
   protected $descriptionType = FormatMessage::class;
   protected $descriptionDataType = '';
+  /**
+   * @var bool
+   */
   public $isError;
+  /**
+   * @var string
+   */
   public $refersTo;
 
   /**
@@ -38,18 +44,30 @@ class StatusMessage extends \Google\Model
   {
     return $this->description;
   }
+  /**
+   * @param bool
+   */
   public function setIsError($isError)
   {
     $this->isError = $isError;
   }
+  /**
+   * @return bool
+   */
   public function getIsError()
   {
     return $this->isError;
   }
+  /**
+   * @param string
+   */
   public function setRefersTo($refersTo)
   {
     $this->refersTo = $refersTo;
   }
+  /**
+   * @return string
+   */
   public function getRefersTo()
   {
     return $this->refersTo;

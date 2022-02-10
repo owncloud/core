@@ -21,8 +21,17 @@ class InsertTableColumnsRequest extends \Google\Model
 {
   protected $cellLocationType = TableCellLocation::class;
   protected $cellLocationDataType = '';
+  /**
+   * @var bool
+   */
   public $insertRight;
+  /**
+   * @var int
+   */
   public $number;
+  /**
+   * @var string
+   */
   public $tableObjectId;
 
   /**
@@ -39,26 +48,44 @@ class InsertTableColumnsRequest extends \Google\Model
   {
     return $this->cellLocation;
   }
+  /**
+   * @param bool
+   */
   public function setInsertRight($insertRight)
   {
     $this->insertRight = $insertRight;
   }
+  /**
+   * @return bool
+   */
   public function getInsertRight()
   {
     return $this->insertRight;
   }
+  /**
+   * @param int
+   */
   public function setNumber($number)
   {
     $this->number = $number;
   }
+  /**
+   * @return int
+   */
   public function getNumber()
   {
     return $this->number;
   }
+  /**
+   * @param string
+   */
   public function setTableObjectId($tableObjectId)
   {
     $this->tableObjectId = $tableObjectId;
   }
+  /**
+   * @return string
+   */
   public function getTableObjectId()
   {
     return $this->tableObjectId;

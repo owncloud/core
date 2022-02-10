@@ -19,21 +19,39 @@ namespace Google\Service\FirebaseML;
 
 class ModelOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $basicOperationStatus;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setBasicOperationStatus($basicOperationStatus)
   {
     $this->basicOperationStatus = $basicOperationStatus;
   }
+  /**
+   * @return string
+   */
   public function getBasicOperationStatus()
   {
     return $this->basicOperationStatus;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

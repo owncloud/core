@@ -19,30 +19,57 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta1DocumentShardInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $shardCount;
+  /**
+   * @var string
+   */
   public $shardIndex;
+  /**
+   * @var string
+   */
   public $textOffset;
 
+  /**
+   * @param string
+   */
   public function setShardCount($shardCount)
   {
     $this->shardCount = $shardCount;
   }
+  /**
+   * @return string
+   */
   public function getShardCount()
   {
     return $this->shardCount;
   }
+  /**
+   * @param string
+   */
   public function setShardIndex($shardIndex)
   {
     $this->shardIndex = $shardIndex;
   }
+  /**
+   * @return string
+   */
   public function getShardIndex()
   {
     return $this->shardIndex;
   }
+  /**
+   * @param string
+   */
   public function setTextOffset($textOffset)
   {
     $this->textOffset = $textOffset;
   }
+  /**
+   * @return string
+   */
   public function getTextOffset()
   {
     return $this->textOffset;

@@ -20,21 +20,39 @@ namespace Google\Service\ServiceControl;
 class ResourceLocation extends \Google\Collection
 {
   protected $collection_key = 'originalLocations';
+  /**
+   * @var string[]
+   */
   public $currentLocations;
+  /**
+   * @var string[]
+   */
   public $originalLocations;
 
+  /**
+   * @param string[]
+   */
   public function setCurrentLocations($currentLocations)
   {
     $this->currentLocations = $currentLocations;
   }
+  /**
+   * @return string[]
+   */
   public function getCurrentLocations()
   {
     return $this->currentLocations;
   }
+  /**
+   * @param string[]
+   */
   public function setOriginalLocations($originalLocations)
   {
     $this->originalLocations = $originalLocations;
   }
+  /**
+   * @return string[]
+   */
   public function getOriginalLocations()
   {
     return $this->originalLocations;

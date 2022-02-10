@@ -20,25 +20,49 @@ namespace Google\Service\Dfareporting;
 class DimensionValueRequest extends \Google\Collection
 {
   protected $collection_key = 'filters';
+  /**
+   * @var string
+   */
   public $dimensionName;
+  /**
+   * @var string
+   */
   public $endDate;
   protected $filtersType = DimensionFilter::class;
   protected $filtersDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $startDate;
 
+  /**
+   * @param string
+   */
   public function setDimensionName($dimensionName)
   {
     $this->dimensionName = $dimensionName;
   }
+  /**
+   * @return string
+   */
   public function getDimensionName()
   {
     return $this->dimensionName;
   }
+  /**
+   * @param string
+   */
   public function setEndDate($endDate)
   {
     $this->endDate = $endDate;
   }
+  /**
+   * @return string
+   */
   public function getEndDate()
   {
     return $this->endDate;
@@ -57,18 +81,30 @@ class DimensionValueRequest extends \Google\Collection
   {
     return $this->filters;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setStartDate($startDate)
   {
     $this->startDate = $startDate;
   }
+  /**
+   * @return string
+   */
   public function getStartDate()
   {
     return $this->startDate;

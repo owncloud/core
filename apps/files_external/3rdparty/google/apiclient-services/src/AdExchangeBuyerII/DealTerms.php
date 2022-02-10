@@ -19,10 +19,19 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class DealTerms extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $brandingType;
+  /**
+   * @var string
+   */
   public $description;
   protected $estimatedGrossSpendType = Price::class;
   protected $estimatedGrossSpendDataType = '';
+  /**
+   * @var string
+   */
   public $estimatedImpressionsPerDay;
   protected $guaranteedFixedPriceTermsType = GuaranteedFixedPriceTerms::class;
   protected $guaranteedFixedPriceTermsDataType = '';
@@ -30,20 +39,35 @@ class DealTerms extends \Google\Model
   protected $nonGuaranteedAuctionTermsDataType = '';
   protected $nonGuaranteedFixedPriceTermsType = NonGuaranteedFixedPriceTerms::class;
   protected $nonGuaranteedFixedPriceTermsDataType = '';
+  /**
+   * @var string
+   */
   public $sellerTimeZone;
 
+  /**
+   * @param string
+   */
   public function setBrandingType($brandingType)
   {
     $this->brandingType = $brandingType;
   }
+  /**
+   * @return string
+   */
   public function getBrandingType()
   {
     return $this->brandingType;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -62,10 +86,16 @@ class DealTerms extends \Google\Model
   {
     return $this->estimatedGrossSpend;
   }
+  /**
+   * @param string
+   */
   public function setEstimatedImpressionsPerDay($estimatedImpressionsPerDay)
   {
     $this->estimatedImpressionsPerDay = $estimatedImpressionsPerDay;
   }
+  /**
+   * @return string
+   */
   public function getEstimatedImpressionsPerDay()
   {
     return $this->estimatedImpressionsPerDay;
@@ -112,10 +142,16 @@ class DealTerms extends \Google\Model
   {
     return $this->nonGuaranteedFixedPriceTerms;
   }
+  /**
+   * @param string
+   */
   public function setSellerTimeZone($sellerTimeZone)
   {
     $this->sellerTimeZone = $sellerTimeZone;
   }
+  /**
+   * @return string
+   */
   public function getSellerTimeZone()
   {
     return $this->sellerTimeZone;

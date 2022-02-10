@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class NativeContentPositionAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentPosition;
+  /**
+   * @var string
+   */
   public $targetingOptionId;
 
+  /**
+   * @param string
+   */
   public function setContentPosition($contentPosition)
   {
     $this->contentPosition = $contentPosition;
   }
+  /**
+   * @return string
+   */
   public function getContentPosition()
   {
     return $this->contentPosition;
   }
+  /**
+   * @param string
+   */
   public function setTargetingOptionId($targetingOptionId)
   {
     $this->targetingOptionId = $targetingOptionId;
   }
+  /**
+   * @return string
+   */
   public function getTargetingOptionId()
   {
     return $this->targetingOptionId;

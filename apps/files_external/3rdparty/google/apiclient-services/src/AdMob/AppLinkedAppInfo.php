@@ -19,21 +19,39 @@ namespace Google\Service\AdMob;
 
 class AppLinkedAppInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appStoreId;
+  /**
+   * @var string
+   */
   public $displayName;
 
+  /**
+   * @param string
+   */
   public function setAppStoreId($appStoreId)
   {
     $this->appStoreId = $appStoreId;
   }
+  /**
+   * @return string
+   */
   public function getAppStoreId()
   {
     return $this->appStoreId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;

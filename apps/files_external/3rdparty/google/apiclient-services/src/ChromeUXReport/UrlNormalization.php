@@ -19,21 +19,39 @@ namespace Google\Service\ChromeUXReport;
 
 class UrlNormalization extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $normalizedUrl;
+  /**
+   * @var string
+   */
   public $originalUrl;
 
+  /**
+   * @param string
+   */
   public function setNormalizedUrl($normalizedUrl)
   {
     $this->normalizedUrl = $normalizedUrl;
   }
+  /**
+   * @return string
+   */
   public function getNormalizedUrl()
   {
     return $this->normalizedUrl;
   }
+  /**
+   * @param string
+   */
   public function setOriginalUrl($originalUrl)
   {
     $this->originalUrl = $originalUrl;
   }
+  /**
+   * @return string
+   */
   public function getOriginalUrl()
   {
     return $this->originalUrl;

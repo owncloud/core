@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class VideoOffset extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $offsetPercentage;
+  /**
+   * @var int
+   */
   public $offsetSeconds;
 
+  /**
+   * @param int
+   */
   public function setOffsetPercentage($offsetPercentage)
   {
     $this->offsetPercentage = $offsetPercentage;
   }
+  /**
+   * @return int
+   */
   public function getOffsetPercentage()
   {
     return $this->offsetPercentage;
   }
+  /**
+   * @param int
+   */
   public function setOffsetSeconds($offsetSeconds)
   {
     $this->offsetSeconds = $offsetSeconds;
   }
+  /**
+   * @return int
+   */
   public function getOffsetSeconds()
   {
     return $this->offsetSeconds;

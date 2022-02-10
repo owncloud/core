@@ -19,23 +19,41 @@ namespace Google\Service\Pubsub;
 
 class ReceivedMessage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ackId;
+  /**
+   * @var int
+   */
   public $deliveryAttempt;
   protected $messageType = PubsubMessage::class;
   protected $messageDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAckId($ackId)
   {
     $this->ackId = $ackId;
   }
+  /**
+   * @return string
+   */
   public function getAckId()
   {
     return $this->ackId;
   }
+  /**
+   * @param int
+   */
   public function setDeliveryAttempt($deliveryAttempt)
   {
     $this->deliveryAttempt = $deliveryAttempt;
   }
+  /**
+   * @return int
+   */
   public function getDeliveryAttempt()
   {
     return $this->deliveryAttempt;

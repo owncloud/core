@@ -17,41 +17,96 @@
 
 namespace Google\Service\Dialogflow;
 
-class GoogleCloudDialogflowCxV3WebhookGenericWebService extends \Google\Model
+class GoogleCloudDialogflowCxV3WebhookGenericWebService extends \Google\Collection
 {
+  protected $collection_key = 'allowedCaCerts';
+  /**
+   * @var string[]
+   */
+  public $allowedCaCerts;
+  /**
+   * @var string
+   */
   public $password;
+  /**
+   * @var string[]
+   */
   public $requestHeaders;
+  /**
+   * @var string
+   */
   public $uri;
+  /**
+   * @var string
+   */
   public $username;
 
+  /**
+   * @param string[]
+   */
+  public function setAllowedCaCerts($allowedCaCerts)
+  {
+    $this->allowedCaCerts = $allowedCaCerts;
+  }
+  /**
+   * @return string[]
+   */
+  public function getAllowedCaCerts()
+  {
+    return $this->allowedCaCerts;
+  }
+  /**
+   * @param string
+   */
   public function setPassword($password)
   {
     $this->password = $password;
   }
+  /**
+   * @return string
+   */
   public function getPassword()
   {
     return $this->password;
   }
+  /**
+   * @param string[]
+   */
   public function setRequestHeaders($requestHeaders)
   {
     $this->requestHeaders = $requestHeaders;
   }
+  /**
+   * @return string[]
+   */
   public function getRequestHeaders()
   {
     return $this->requestHeaders;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;
   }
+  /**
+   * @param string
+   */
   public function setUsername($username)
   {
     $this->username = $username;
   }
+  /**
+   * @return string
+   */
   public function getUsername()
   {
     return $this->username;

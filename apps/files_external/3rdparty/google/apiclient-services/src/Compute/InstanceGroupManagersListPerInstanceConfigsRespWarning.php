@@ -20,15 +20,27 @@ namespace Google\Service\Compute;
 class InstanceGroupManagersListPerInstanceConfigsRespWarning extends \Google\Collection
 {
   protected $collection_key = 'data';
+  /**
+   * @var string
+   */
   public $code;
   protected $dataType = InstanceGroupManagersListPerInstanceConfigsRespWarningData::class;
   protected $dataDataType = 'array';
+  /**
+   * @var string
+   */
   public $message;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
@@ -47,10 +59,16 @@ class InstanceGroupManagersListPerInstanceConfigsRespWarning extends \Google\Col
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;

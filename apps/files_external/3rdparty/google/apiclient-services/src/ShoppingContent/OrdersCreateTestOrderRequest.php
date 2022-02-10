@@ -19,23 +19,41 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersCreateTestOrderRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $templateName;
   protected $testOrderType = TestOrder::class;
   protected $testOrderDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setTemplateName($templateName)
   {
     $this->templateName = $templateName;
   }
+  /**
+   * @return string
+   */
   public function getTemplateName()
   {
     return $this->templateName;

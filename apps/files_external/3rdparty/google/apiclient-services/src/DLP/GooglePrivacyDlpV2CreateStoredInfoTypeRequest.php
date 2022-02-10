@@ -21,7 +21,13 @@ class GooglePrivacyDlpV2CreateStoredInfoTypeRequest extends \Google\Model
 {
   protected $configType = GooglePrivacyDlpV2StoredInfoTypeConfig::class;
   protected $configDataType = '';
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $storedInfoTypeId;
 
   /**
@@ -38,18 +44,30 @@ class GooglePrivacyDlpV2CreateStoredInfoTypeRequest extends \Google\Model
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setStoredInfoTypeId($storedInfoTypeId)
   {
     $this->storedInfoTypeId = $storedInfoTypeId;
   }
+  /**
+   * @return string
+   */
   public function getStoredInfoTypeId()
   {
     return $this->storedInfoTypeId;

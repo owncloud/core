@@ -101,15 +101,15 @@ class Chromeosdevices extends \Google\Service\Resource
    * be provided.
    * @opt_param int maxResults Maximum number of results to return.
    * @opt_param string orderBy Device property to use for sorting results.
-   * @opt_param string orgUnitPath The full path of the organizational unit or its
-   * unique ID.
+   * @opt_param string orgUnitPath The full path of the organizational unit (minus
+   * the leading `/`) or its unique ID.
    * @opt_param string pageToken The `pageToken` query parameter is used to
    * request the next page of query results. The follow-on request's `pageToken`
    * query parameter is the `nextPageToken` from your previous response.
    * @opt_param string projection Restrict information returned to a set of
    * selected fields.
    * @opt_param string query Search string in the format given at
-   * http://support.google.com/chromeos/a/bin/answer.py?answer=1698333
+   * https://developers.google.com/admin-sdk/directory/v1/list-query-operators
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order. Must be used with the `orderBy` parameter.
    * @return ChromeOsDevicesModel

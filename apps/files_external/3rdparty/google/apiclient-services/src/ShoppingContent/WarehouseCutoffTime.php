@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class WarehouseCutoffTime extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $hour;
+  /**
+   * @var int
+   */
   public $minute;
 
+  /**
+   * @param int
+   */
   public function setHour($hour)
   {
     $this->hour = $hour;
   }
+  /**
+   * @return int
+   */
   public function getHour()
   {
     return $this->hour;
   }
+  /**
+   * @param int
+   */
   public function setMinute($minute)
   {
     $this->minute = $minute;
   }
+  /**
+   * @return int
+   */
   public function getMinute()
   {
     return $this->minute;

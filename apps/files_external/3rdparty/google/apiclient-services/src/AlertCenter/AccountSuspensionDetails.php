@@ -19,21 +19,39 @@ namespace Google\Service\AlertCenter;
 
 class AccountSuspensionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $abuseReason;
+  /**
+   * @var string
+   */
   public $productName;
 
+  /**
+   * @param string
+   */
   public function setAbuseReason($abuseReason)
   {
     $this->abuseReason = $abuseReason;
   }
+  /**
+   * @return string
+   */
   public function getAbuseReason()
   {
     return $this->abuseReason;
   }
+  /**
+   * @param string
+   */
   public function setProductName($productName)
   {
     $this->productName = $productName;
   }
+  /**
+   * @return string
+   */
   public function getProductName()
   {
     return $this->productName;

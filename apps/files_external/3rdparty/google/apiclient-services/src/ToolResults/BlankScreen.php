@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class BlankScreen extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $screenId;
 
+  /**
+   * @param string
+   */
   public function setScreenId($screenId)
   {
     $this->screenId = $screenId;
   }
+  /**
+   * @return string
+   */
   public function getScreenId()
   {
     return $this->screenId;

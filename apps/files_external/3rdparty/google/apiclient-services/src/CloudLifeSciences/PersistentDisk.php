@@ -19,30 +19,57 @@ namespace Google\Service\CloudLifeSciences;
 
 class PersistentDisk extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $sizeGb;
+  /**
+   * @var string
+   */
   public $sourceImage;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setSizeGb($sizeGb)
   {
     $this->sizeGb = $sizeGb;
   }
+  /**
+   * @return int
+   */
   public function getSizeGb()
   {
     return $this->sizeGb;
   }
+  /**
+   * @param string
+   */
   public function setSourceImage($sourceImage)
   {
     $this->sourceImage = $sourceImage;
   }
+  /**
+   * @return string
+   */
   public function getSourceImage()
   {
     return $this->sourceImage;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

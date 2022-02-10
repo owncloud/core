@@ -20,21 +20,39 @@ namespace Google\Service\Storagetransfer;
 class ErrorLogEntry extends \Google\Collection
 {
   protected $collection_key = 'errorDetails';
+  /**
+   * @var string[]
+   */
   public $errorDetails;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string[]
+   */
   public function setErrorDetails($errorDetails)
   {
     $this->errorDetails = $errorDetails;
   }
+  /**
+   * @return string[]
+   */
   public function getErrorDetails()
   {
     return $this->errorDetails;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

@@ -20,21 +20,39 @@ namespace Google\Service\Slides;
 class UpdatePageElementsZOrderRequest extends \Google\Collection
 {
   protected $collection_key = 'pageElementObjectIds';
+  /**
+   * @var string
+   */
   public $operation;
+  /**
+   * @var string[]
+   */
   public $pageElementObjectIds;
 
+  /**
+   * @param string
+   */
   public function setOperation($operation)
   {
     $this->operation = $operation;
   }
+  /**
+   * @return string
+   */
   public function getOperation()
   {
     return $this->operation;
   }
+  /**
+   * @param string[]
+   */
   public function setPageElementObjectIds($pageElementObjectIds)
   {
     $this->pageElementObjectIds = $pageElementObjectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPageElementObjectIds()
   {
     return $this->pageElementObjectIds;

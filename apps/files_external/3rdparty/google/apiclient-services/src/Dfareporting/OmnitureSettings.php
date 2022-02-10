@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class OmnitureSettings extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $omnitureCostDataEnabled;
+  /**
+   * @var bool
+   */
   public $omnitureIntegrationEnabled;
 
+  /**
+   * @param bool
+   */
   public function setOmnitureCostDataEnabled($omnitureCostDataEnabled)
   {
     $this->omnitureCostDataEnabled = $omnitureCostDataEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getOmnitureCostDataEnabled()
   {
     return $this->omnitureCostDataEnabled;
   }
+  /**
+   * @param bool
+   */
   public function setOmnitureIntegrationEnabled($omnitureIntegrationEnabled)
   {
     $this->omnitureIntegrationEnabled = $omnitureIntegrationEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getOmnitureIntegrationEnabled()
   {
     return $this->omnitureIntegrationEnabled;

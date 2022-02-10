@@ -20,12 +20,21 @@ namespace Google\Service\AdExchangeBuyerII;
 class SecurityContext extends \Google\Collection
 {
   protected $collection_key = 'securities';
+  /**
+   * @var string[]
+   */
   public $securities;
 
+  /**
+   * @param string[]
+   */
   public function setSecurities($securities)
   {
     $this->securities = $securities;
   }
+  /**
+   * @return string[]
+   */
   public function getSecurities()
   {
     return $this->securities;

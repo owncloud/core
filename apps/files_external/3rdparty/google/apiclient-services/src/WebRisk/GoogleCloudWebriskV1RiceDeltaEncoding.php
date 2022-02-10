@@ -19,39 +19,75 @@ namespace Google\Service\WebRisk;
 
 class GoogleCloudWebriskV1RiceDeltaEncoding extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $encodedData;
+  /**
+   * @var int
+   */
   public $entryCount;
+  /**
+   * @var string
+   */
   public $firstValue;
+  /**
+   * @var int
+   */
   public $riceParameter;
 
+  /**
+   * @param string
+   */
   public function setEncodedData($encodedData)
   {
     $this->encodedData = $encodedData;
   }
+  /**
+   * @return string
+   */
   public function getEncodedData()
   {
     return $this->encodedData;
   }
+  /**
+   * @param int
+   */
   public function setEntryCount($entryCount)
   {
     $this->entryCount = $entryCount;
   }
+  /**
+   * @return int
+   */
   public function getEntryCount()
   {
     return $this->entryCount;
   }
+  /**
+   * @param string
+   */
   public function setFirstValue($firstValue)
   {
     $this->firstValue = $firstValue;
   }
+  /**
+   * @return string
+   */
   public function getFirstValue()
   {
     return $this->firstValue;
   }
+  /**
+   * @param int
+   */
   public function setRiceParameter($riceParameter)
   {
     $this->riceParameter = $riceParameter;
   }
+  /**
+   * @return int
+   */
   public function getRiceParameter()
   {
     return $this->riceParameter;

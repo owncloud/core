@@ -19,21 +19,39 @@ namespace Google\Service\AdSenseHost;
 
 class AdCode extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adCode;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param string
+   */
   public function setAdCode($adCode)
   {
     $this->adCode = $adCode;
   }
+  /**
+   * @return string
+   */
   public function getAdCode()
   {
     return $this->adCode;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

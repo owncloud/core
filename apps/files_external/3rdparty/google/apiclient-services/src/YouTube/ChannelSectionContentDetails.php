@@ -20,21 +20,39 @@ namespace Google\Service\YouTube;
 class ChannelSectionContentDetails extends \Google\Collection
 {
   protected $collection_key = 'playlists';
+  /**
+   * @var string[]
+   */
   public $channels;
+  /**
+   * @var string[]
+   */
   public $playlists;
 
+  /**
+   * @param string[]
+   */
   public function setChannels($channels)
   {
     $this->channels = $channels;
   }
+  /**
+   * @return string[]
+   */
   public function getChannels()
   {
     return $this->channels;
   }
+  /**
+   * @param string[]
+   */
   public function setPlaylists($playlists)
   {
     $this->playlists = $playlists;
   }
+  /**
+   * @return string[]
+   */
   public function getPlaylists()
   {
     return $this->playlists;

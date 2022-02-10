@@ -20,30 +20,57 @@ namespace Google\Service\CloudKMS;
 class CertificateChains extends \Google\Collection
 {
   protected $collection_key = 'googlePartitionCerts';
+  /**
+   * @var string[]
+   */
   public $caviumCerts;
+  /**
+   * @var string[]
+   */
   public $googleCardCerts;
+  /**
+   * @var string[]
+   */
   public $googlePartitionCerts;
 
+  /**
+   * @param string[]
+   */
   public function setCaviumCerts($caviumCerts)
   {
     $this->caviumCerts = $caviumCerts;
   }
+  /**
+   * @return string[]
+   */
   public function getCaviumCerts()
   {
     return $this->caviumCerts;
   }
+  /**
+   * @param string[]
+   */
   public function setGoogleCardCerts($googleCardCerts)
   {
     $this->googleCardCerts = $googleCardCerts;
   }
+  /**
+   * @return string[]
+   */
   public function getGoogleCardCerts()
   {
     return $this->googleCardCerts;
   }
+  /**
+   * @param string[]
+   */
   public function setGooglePartitionCerts($googlePartitionCerts)
   {
     $this->googlePartitionCerts = $googlePartitionCerts;
   }
+  /**
+   * @return string[]
+   */
   public function getGooglePartitionCerts()
   {
     return $this->googlePartitionCerts;

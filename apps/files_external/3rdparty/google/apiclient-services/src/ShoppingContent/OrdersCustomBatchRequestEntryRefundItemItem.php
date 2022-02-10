@@ -21,9 +21,21 @@ class OrdersCustomBatchRequestEntryRefundItemItem extends \Google\Model
 {
   protected $amountType = MonetaryAmount::class;
   protected $amountDataType = '';
+  /**
+   * @var bool
+   */
   public $fullRefund;
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var int
+   */
   public $quantity;
 
   /**
@@ -40,34 +52,58 @@ class OrdersCustomBatchRequestEntryRefundItemItem extends \Google\Model
   {
     return $this->amount;
   }
+  /**
+   * @param bool
+   */
   public function setFullRefund($fullRefund)
   {
     $this->fullRefund = $fullRefund;
   }
+  /**
+   * @return bool
+   */
   public function getFullRefund()
   {
     return $this->fullRefund;
   }
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param int
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return int
+   */
   public function getQuantity()
   {
     return $this->quantity;

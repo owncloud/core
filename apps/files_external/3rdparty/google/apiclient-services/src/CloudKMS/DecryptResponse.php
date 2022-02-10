@@ -19,39 +19,75 @@ namespace Google\Service\CloudKMS;
 
 class DecryptResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $plaintext;
+  /**
+   * @var string
+   */
   public $plaintextCrc32c;
+  /**
+   * @var string
+   */
   public $protectionLevel;
+  /**
+   * @var bool
+   */
   public $usedPrimary;
 
+  /**
+   * @param string
+   */
   public function setPlaintext($plaintext)
   {
     $this->plaintext = $plaintext;
   }
+  /**
+   * @return string
+   */
   public function getPlaintext()
   {
     return $this->plaintext;
   }
+  /**
+   * @param string
+   */
   public function setPlaintextCrc32c($plaintextCrc32c)
   {
     $this->plaintextCrc32c = $plaintextCrc32c;
   }
+  /**
+   * @return string
+   */
   public function getPlaintextCrc32c()
   {
     return $this->plaintextCrc32c;
   }
+  /**
+   * @param string
+   */
   public function setProtectionLevel($protectionLevel)
   {
     $this->protectionLevel = $protectionLevel;
   }
+  /**
+   * @return string
+   */
   public function getProtectionLevel()
   {
     return $this->protectionLevel;
   }
+  /**
+   * @param bool
+   */
   public function setUsedPrimary($usedPrimary)
   {
     $this->usedPrimary = $usedPrimary;
   }
+  /**
+   * @return bool
+   */
   public function getUsedPrimary()
   {
     return $this->usedPrimary;

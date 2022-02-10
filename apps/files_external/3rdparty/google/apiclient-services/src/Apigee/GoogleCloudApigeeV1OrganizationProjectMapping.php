@@ -20,21 +20,57 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1OrganizationProjectMapping extends \Google\Collection
 {
   protected $collection_key = 'projectIds';
+  /**
+   * @var string
+   */
   public $organization;
+  /**
+   * @var string
+   */
+  public $projectId;
+  /**
+   * @var string[]
+   */
   public $projectIds;
 
+  /**
+   * @param string
+   */
   public function setOrganization($organization)
   {
     $this->organization = $organization;
   }
+  /**
+   * @return string
+   */
   public function getOrganization()
   {
     return $this->organization;
   }
+  /**
+   * @param string
+   */
+  public function setProjectId($projectId)
+  {
+    $this->projectId = $projectId;
+  }
+  /**
+   * @return string
+   */
+  public function getProjectId()
+  {
+    return $this->projectId;
+  }
+  /**
+   * @param string[]
+   */
   public function setProjectIds($projectIds)
   {
     $this->projectIds = $projectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getProjectIds()
   {
     return $this->projectIds;

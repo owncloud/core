@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class RegionSetLabelsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $labelFingerprint;
+  /**
+   * @var string[]
+   */
   public $labels;
 
+  /**
+   * @param string
+   */
   public function setLabelFingerprint($labelFingerprint)
   {
     $this->labelFingerprint = $labelFingerprint;
   }
+  /**
+   * @return string
+   */
   public function getLabelFingerprint()
   {
     return $this->labelFingerprint;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

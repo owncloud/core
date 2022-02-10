@@ -20,21 +20,39 @@ namespace Google\Service\MyBusinessBusinessInformation;
 class PhoneNumbers extends \Google\Collection
 {
   protected $collection_key = 'additionalPhones';
+  /**
+   * @var string[]
+   */
   public $additionalPhones;
+  /**
+   * @var string
+   */
   public $primaryPhone;
 
+  /**
+   * @param string[]
+   */
   public function setAdditionalPhones($additionalPhones)
   {
     $this->additionalPhones = $additionalPhones;
   }
+  /**
+   * @return string[]
+   */
   public function getAdditionalPhones()
   {
     return $this->additionalPhones;
   }
+  /**
+   * @param string
+   */
   public function setPrimaryPhone($primaryPhone)
   {
     $this->primaryPhone = $primaryPhone;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryPhone()
   {
     return $this->primaryPhone;

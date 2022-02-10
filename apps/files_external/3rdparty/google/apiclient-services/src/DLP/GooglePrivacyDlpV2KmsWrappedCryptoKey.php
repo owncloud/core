@@ -19,21 +19,39 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2KmsWrappedCryptoKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cryptoKeyName;
+  /**
+   * @var string
+   */
   public $wrappedKey;
 
+  /**
+   * @param string
+   */
   public function setCryptoKeyName($cryptoKeyName)
   {
     $this->cryptoKeyName = $cryptoKeyName;
   }
+  /**
+   * @return string
+   */
   public function getCryptoKeyName()
   {
     return $this->cryptoKeyName;
   }
+  /**
+   * @param string
+   */
   public function setWrappedKey($wrappedKey)
   {
     $this->wrappedKey = $wrappedKey;
   }
+  /**
+   * @return string
+   */
   public function getWrappedKey()
   {
     return $this->wrappedKey;

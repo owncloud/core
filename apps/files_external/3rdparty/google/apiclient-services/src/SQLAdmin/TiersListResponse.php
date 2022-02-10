@@ -22,6 +22,9 @@ class TiersListResponse extends \Google\Collection
   protected $collection_key = 'items';
   protected $itemsType = Tier::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -38,10 +41,16 @@ class TiersListResponse extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

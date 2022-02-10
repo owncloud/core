@@ -22,6 +22,9 @@ class ComposeRequest extends \Google\Collection
   protected $collection_key = 'sourceObjects';
   protected $destinationType = StorageObject::class;
   protected $destinationDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $sourceObjectsType = ComposeRequestSourceObjects::class;
   protected $sourceObjectsDataType = 'array';
@@ -40,10 +43,16 @@ class ComposeRequest extends \Google\Collection
   {
     return $this->destination;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

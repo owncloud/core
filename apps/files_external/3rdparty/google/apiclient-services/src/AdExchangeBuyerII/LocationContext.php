@@ -20,12 +20,21 @@ namespace Google\Service\AdExchangeBuyerII;
 class LocationContext extends \Google\Collection
 {
   protected $collection_key = 'geoCriteriaIds';
+  /**
+   * @var int[]
+   */
   public $geoCriteriaIds;
 
+  /**
+   * @param int[]
+   */
   public function setGeoCriteriaIds($geoCriteriaIds)
   {
     $this->geoCriteriaIds = $geoCriteriaIds;
   }
+  /**
+   * @return int[]
+   */
   public function getGeoCriteriaIds()
   {
     return $this->geoCriteriaIds;

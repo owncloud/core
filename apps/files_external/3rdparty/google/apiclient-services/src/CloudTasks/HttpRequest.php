@@ -19,35 +19,65 @@ namespace Google\Service\CloudTasks;
 
 class HttpRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $body;
+  /**
+   * @var string[]
+   */
   public $headers;
+  /**
+   * @var string
+   */
   public $httpMethod;
   protected $oauthTokenType = OAuthToken::class;
   protected $oauthTokenDataType = '';
   protected $oidcTokenType = OidcToken::class;
   protected $oidcTokenDataType = '';
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setBody($body)
   {
     $this->body = $body;
   }
+  /**
+   * @return string
+   */
   public function getBody()
   {
     return $this->body;
   }
+  /**
+   * @param string[]
+   */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
+  /**
+   * @return string[]
+   */
   public function getHeaders()
   {
     return $this->headers;
   }
+  /**
+   * @param string
+   */
   public function setHttpMethod($httpMethod)
   {
     $this->httpMethod = $httpMethod;
   }
+  /**
+   * @return string
+   */
   public function getHttpMethod()
   {
     return $this->httpMethod;
@@ -80,10 +110,16 @@ class HttpRequest extends \Google\Model
   {
     return $this->oidcToken;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

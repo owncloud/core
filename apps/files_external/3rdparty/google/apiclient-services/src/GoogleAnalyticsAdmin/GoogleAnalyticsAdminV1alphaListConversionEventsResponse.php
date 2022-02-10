@@ -22,6 +22,9 @@ class GoogleAnalyticsAdminV1alphaListConversionEventsResponse extends \Google\Co
   protected $collection_key = 'conversionEvents';
   protected $conversionEventsType = GoogleAnalyticsAdminV1alphaConversionEvent::class;
   protected $conversionEventsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleAnalyticsAdminV1alphaListConversionEventsResponse extends \Google\Co
   {
     return $this->conversionEvents;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

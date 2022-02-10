@@ -20,19 +20,37 @@ namespace Google\Service\Logging;
 class WriteLogEntriesRequest extends \Google\Collection
 {
   protected $collection_key = 'entries';
+  /**
+   * @var bool
+   */
   public $dryRun;
   protected $entriesType = LogEntry::class;
   protected $entriesDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $logName;
+  /**
+   * @var bool
+   */
   public $partialSuccess;
   protected $resourceType = MonitoredResource::class;
   protected $resourceDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setDryRun($dryRun)
   {
     $this->dryRun = $dryRun;
   }
+  /**
+   * @return bool
+   */
   public function getDryRun()
   {
     return $this->dryRun;
@@ -51,26 +69,44 @@ class WriteLogEntriesRequest extends \Google\Collection
   {
     return $this->entries;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLogName($logName)
   {
     $this->logName = $logName;
   }
+  /**
+   * @return string
+   */
   public function getLogName()
   {
     return $this->logName;
   }
+  /**
+   * @param bool
+   */
   public function setPartialSuccess($partialSuccess)
   {
     $this->partialSuccess = $partialSuccess;
   }
+  /**
+   * @return bool
+   */
   public function getPartialSuccess()
   {
     return $this->partialSuccess;

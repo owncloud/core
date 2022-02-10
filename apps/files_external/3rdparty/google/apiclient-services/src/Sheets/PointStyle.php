@@ -19,13 +19,22 @@ namespace Google\Service\Sheets;
 
 class PointStyle extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $shape;
   public $size;
 
+  /**
+   * @param string
+   */
   public function setShape($shape)
   {
     $this->shape = $shape;
   }
+  /**
+   * @return string
+   */
   public function getShape()
   {
     return $this->shape;

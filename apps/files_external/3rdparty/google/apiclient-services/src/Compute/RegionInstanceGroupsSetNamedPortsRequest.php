@@ -20,14 +20,23 @@ namespace Google\Service\Compute;
 class RegionInstanceGroupsSetNamedPortsRequest extends \Google\Collection
 {
   protected $collection_key = 'namedPorts';
+  /**
+   * @var string
+   */
   public $fingerprint;
   protected $namedPortsType = NamedPort::class;
   protected $namedPortsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;

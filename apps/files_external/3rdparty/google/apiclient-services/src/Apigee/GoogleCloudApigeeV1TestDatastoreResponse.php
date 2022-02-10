@@ -19,21 +19,39 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1TestDatastoreResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $error;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setError($error)
   {
     $this->error = $error;
   }
+  /**
+   * @return string
+   */
   public function getError()
   {
     return $this->error;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

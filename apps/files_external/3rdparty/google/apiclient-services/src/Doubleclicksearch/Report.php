@@ -22,14 +22,35 @@ class Report extends \Google\Collection
   protected $collection_key = 'rows';
   protected $filesType = ReportFiles::class;
   protected $filesDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var bool
+   */
   public $isReportReady;
+  /**
+   * @var string
+   */
   public $kind;
   protected $requestType = ReportRequest::class;
   protected $requestDataType = '';
+  /**
+   * @var int
+   */
   public $rowCount;
+  /**
+   * @var array[]
+   */
   public $rows;
+  /**
+   * @var string
+   */
   public $statisticsCurrencyCode;
+  /**
+   * @var string
+   */
   public $statisticsTimeZone;
 
   /**
@@ -46,26 +67,44 @@ class Report extends \Google\Collection
   {
     return $this->files;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param bool
+   */
   public function setIsReportReady($isReportReady)
   {
     $this->isReportReady = $isReportReady;
   }
+  /**
+   * @return bool
+   */
   public function getIsReportReady()
   {
     return $this->isReportReady;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -84,34 +123,58 @@ class Report extends \Google\Collection
   {
     return $this->request;
   }
+  /**
+   * @param int
+   */
   public function setRowCount($rowCount)
   {
     $this->rowCount = $rowCount;
   }
+  /**
+   * @return int
+   */
   public function getRowCount()
   {
     return $this->rowCount;
   }
+  /**
+   * @param array[]
+   */
   public function setRows($rows)
   {
     $this->rows = $rows;
   }
+  /**
+   * @return array[]
+   */
   public function getRows()
   {
     return $this->rows;
   }
+  /**
+   * @param string
+   */
   public function setStatisticsCurrencyCode($statisticsCurrencyCode)
   {
     $this->statisticsCurrencyCode = $statisticsCurrencyCode;
   }
+  /**
+   * @return string
+   */
   public function getStatisticsCurrencyCode()
   {
     return $this->statisticsCurrencyCode;
   }
+  /**
+   * @param string
+   */
   public function setStatisticsTimeZone($statisticsTimeZone)
   {
     $this->statisticsTimeZone = $statisticsTimeZone;
   }
+  /**
+   * @return string
+   */
   public function getStatisticsTimeZone()
   {
     return $this->statisticsTimeZone;

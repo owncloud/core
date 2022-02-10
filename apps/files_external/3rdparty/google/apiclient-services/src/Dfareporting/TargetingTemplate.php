@@ -19,7 +19,13 @@ namespace Google\Service\Dfareporting;
 
 class TargetingTemplate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $advertiserId;
   protected $advertiserIdDimensionValueType = DimensionValue::class;
   protected $advertiserIdDimensionValueDataType = '';
@@ -27,31 +33,55 @@ class TargetingTemplate extends \Google\Model
   protected $dayPartTargetingDataType = '';
   protected $geoTargetingType = GeoTargeting::class;
   protected $geoTargetingDataType = '';
+  /**
+   * @var string
+   */
   public $id;
   protected $keyValueTargetingExpressionType = KeyValueTargetingExpression::class;
   protected $keyValueTargetingExpressionDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
   protected $languageTargetingType = LanguageTargeting::class;
   protected $languageTargetingDataType = '';
   protected $listTargetingExpressionType = ListTargetingExpression::class;
   protected $listTargetingExpressionDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $subaccountId;
   protected $technologyTargetingType = TechnologyTargeting::class;
   protected $technologyTargetingDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
@@ -98,10 +128,16 @@ class TargetingTemplate extends \Google\Model
   {
     return $this->geoTargeting;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -120,10 +156,16 @@ class TargetingTemplate extends \Google\Model
   {
     return $this->keyValueTargetingExpression;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -156,18 +198,30 @@ class TargetingTemplate extends \Google\Model
   {
     return $this->listTargetingExpression;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSubaccountId($subaccountId)
   {
     $this->subaccountId = $subaccountId;
   }
+  /**
+   * @return string
+   */
   public function getSubaccountId()
   {
     return $this->subaccountId;

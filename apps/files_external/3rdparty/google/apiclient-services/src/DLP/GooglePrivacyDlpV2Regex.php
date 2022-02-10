@@ -20,21 +20,39 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2Regex extends \Google\Collection
 {
   protected $collection_key = 'groupIndexes';
+  /**
+   * @var int[]
+   */
   public $groupIndexes;
+  /**
+   * @var string
+   */
   public $pattern;
 
+  /**
+   * @param int[]
+   */
   public function setGroupIndexes($groupIndexes)
   {
     $this->groupIndexes = $groupIndexes;
   }
+  /**
+   * @return int[]
+   */
   public function getGroupIndexes()
   {
     return $this->groupIndexes;
   }
+  /**
+   * @param string
+   */
   public function setPattern($pattern)
   {
     $this->pattern = $pattern;
   }
+  /**
+   * @return string
+   */
   public function getPattern()
   {
     return $this->pattern;

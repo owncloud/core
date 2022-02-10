@@ -19,18 +19,39 @@ namespace Google\Service\Dataflow;
 
 class Position extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $byteOffset;
   protected $concatPositionType = ConcatPosition::class;
   protected $concatPositionDataType = '';
+  /**
+   * @var bool
+   */
   public $end;
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var string
+   */
   public $recordIndex;
+  /**
+   * @var string
+   */
   public $shufflePosition;
 
+  /**
+   * @param string
+   */
   public function setByteOffset($byteOffset)
   {
     $this->byteOffset = $byteOffset;
   }
+  /**
+   * @return string
+   */
   public function getByteOffset()
   {
     return $this->byteOffset;
@@ -49,34 +70,58 @@ class Position extends \Google\Model
   {
     return $this->concatPosition;
   }
+  /**
+   * @param bool
+   */
   public function setEnd($end)
   {
     $this->end = $end;
   }
+  /**
+   * @return bool
+   */
   public function getEnd()
   {
     return $this->end;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param string
+   */
   public function setRecordIndex($recordIndex)
   {
     $this->recordIndex = $recordIndex;
   }
+  /**
+   * @return string
+   */
   public function getRecordIndex()
   {
     return $this->recordIndex;
   }
+  /**
+   * @param string
+   */
   public function setShufflePosition($shufflePosition)
   {
     $this->shufflePosition = $shufflePosition;
   }
+  /**
+   * @return string
+   */
   public function getShufflePosition()
   {
     return $this->shufflePosition;

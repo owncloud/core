@@ -19,21 +19,39 @@ namespace Google\Service\Firestore;
 
 class CollectionSelector extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allDescendants;
+  /**
+   * @var string
+   */
   public $collectionId;
 
+  /**
+   * @param bool
+   */
   public function setAllDescendants($allDescendants)
   {
     $this->allDescendants = $allDescendants;
   }
+  /**
+   * @return bool
+   */
   public function getAllDescendants()
   {
     return $this->allDescendants;
   }
+  /**
+   * @param string
+   */
   public function setCollectionId($collectionId)
   {
     $this->collectionId = $collectionId;
   }
+  /**
+   * @return string
+   */
   public function getCollectionId()
   {
     return $this->collectionId;

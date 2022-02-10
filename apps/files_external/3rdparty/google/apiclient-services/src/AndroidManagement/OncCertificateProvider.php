@@ -20,14 +20,23 @@ namespace Google\Service\AndroidManagement;
 class OncCertificateProvider extends \Google\Collection
 {
   protected $collection_key = 'certificateReferences';
+  /**
+   * @var string[]
+   */
   public $certificateReferences;
   protected $contentProviderEndpointType = ContentProviderEndpoint::class;
   protected $contentProviderEndpointDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setCertificateReferences($certificateReferences)
   {
     $this->certificateReferences = $certificateReferences;
   }
+  /**
+   * @return string[]
+   */
   public function getCertificateReferences()
   {
     return $this->certificateReferences;

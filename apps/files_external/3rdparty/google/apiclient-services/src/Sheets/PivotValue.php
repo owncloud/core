@@ -19,18 +19,39 @@ namespace Google\Service\Sheets;
 
 class PivotValue extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $calculatedDisplayType;
   protected $dataSourceColumnReferenceType = DataSourceColumnReference::class;
   protected $dataSourceColumnReferenceDataType = '';
+  /**
+   * @var string
+   */
   public $formula;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $sourceColumnOffset;
+  /**
+   * @var string
+   */
   public $summarizeFunction;
 
+  /**
+   * @param string
+   */
   public function setCalculatedDisplayType($calculatedDisplayType)
   {
     $this->calculatedDisplayType = $calculatedDisplayType;
   }
+  /**
+   * @return string
+   */
   public function getCalculatedDisplayType()
   {
     return $this->calculatedDisplayType;
@@ -49,34 +70,58 @@ class PivotValue extends \Google\Model
   {
     return $this->dataSourceColumnReference;
   }
+  /**
+   * @param string
+   */
   public function setFormula($formula)
   {
     $this->formula = $formula;
   }
+  /**
+   * @return string
+   */
   public function getFormula()
   {
     return $this->formula;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setSourceColumnOffset($sourceColumnOffset)
   {
     $this->sourceColumnOffset = $sourceColumnOffset;
   }
+  /**
+   * @return int
+   */
   public function getSourceColumnOffset()
   {
     return $this->sourceColumnOffset;
   }
+  /**
+   * @param string
+   */
   public function setSummarizeFunction($summarizeFunction)
   {
     $this->summarizeFunction = $summarizeFunction;
   }
+  /**
+   * @return string
+   */
   public function getSummarizeFunction()
   {
     return $this->summarizeFunction;

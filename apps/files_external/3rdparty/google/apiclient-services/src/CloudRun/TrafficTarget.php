@@ -19,57 +19,111 @@ namespace Google\Service\CloudRun;
 
 class TrafficTarget extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $configurationName;
+  /**
+   * @var bool
+   */
   public $latestRevision;
+  /**
+   * @var int
+   */
   public $percent;
+  /**
+   * @var string
+   */
   public $revisionName;
+  /**
+   * @var string
+   */
   public $tag;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setConfigurationName($configurationName)
   {
     $this->configurationName = $configurationName;
   }
+  /**
+   * @return string
+   */
   public function getConfigurationName()
   {
     return $this->configurationName;
   }
+  /**
+   * @param bool
+   */
   public function setLatestRevision($latestRevision)
   {
     $this->latestRevision = $latestRevision;
   }
+  /**
+   * @return bool
+   */
   public function getLatestRevision()
   {
     return $this->latestRevision;
   }
+  /**
+   * @param int
+   */
   public function setPercent($percent)
   {
     $this->percent = $percent;
   }
+  /**
+   * @return int
+   */
   public function getPercent()
   {
     return $this->percent;
   }
+  /**
+   * @param string
+   */
   public function setRevisionName($revisionName)
   {
     $this->revisionName = $revisionName;
   }
+  /**
+   * @return string
+   */
   public function getRevisionName()
   {
     return $this->revisionName;
   }
+  /**
+   * @param string
+   */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
+  /**
+   * @return string
+   */
   public function getTag()
   {
     return $this->tag;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

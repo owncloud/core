@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class AcceleratorConfig extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $acceleratorCount;
+  /**
+   * @var string
+   */
   public $acceleratorType;
 
+  /**
+   * @param int
+   */
   public function setAcceleratorCount($acceleratorCount)
   {
     $this->acceleratorCount = $acceleratorCount;
   }
+  /**
+   * @return int
+   */
   public function getAcceleratorCount()
   {
     return $this->acceleratorCount;
   }
+  /**
+   * @param string
+   */
   public function setAcceleratorType($acceleratorType)
   {
     $this->acceleratorType = $acceleratorType;
   }
+  /**
+   * @return string
+   */
   public function getAcceleratorType()
   {
     return $this->acceleratorType;

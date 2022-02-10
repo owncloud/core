@@ -19,13 +19,22 @@ namespace Google\Service\Compute;
 
 class AutoscalingPolicyCpuUtilization extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $predictiveMethod;
   public $utilizationTarget;
 
+  /**
+   * @param string
+   */
   public function setPredictiveMethod($predictiveMethod)
   {
     $this->predictiveMethod = $predictiveMethod;
   }
+  /**
+   * @return string
+   */
   public function getPredictiveMethod()
   {
     return $this->predictiveMethod;

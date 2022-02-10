@@ -24,6 +24,9 @@ class GeoTargeting extends \Google\Collection
   protected $citiesDataType = 'array';
   protected $countriesType = Country::class;
   protected $countriesDataType = 'array';
+  /**
+   * @var bool
+   */
   public $excludeCountries;
   protected $metrosType = Metro::class;
   protected $metrosDataType = 'array';
@@ -60,10 +63,16 @@ class GeoTargeting extends \Google\Collection
   {
     return $this->countries;
   }
+  /**
+   * @param bool
+   */
   public function setExcludeCountries($excludeCountries)
   {
     $this->excludeCountries = $excludeCountries;
   }
+  /**
+   * @return bool
+   */
   public function getExcludeCountries()
   {
     return $this->excludeCountries;

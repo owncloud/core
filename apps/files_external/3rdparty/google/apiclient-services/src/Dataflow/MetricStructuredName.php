@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class MetricStructuredName extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $context;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $origin;
 
+  /**
+   * @param string[]
+   */
   public function setContext($context)
   {
     $this->context = $context;
   }
+  /**
+   * @return string[]
+   */
   public function getContext()
   {
     return $this->context;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOrigin($origin)
   {
     $this->origin = $origin;
   }
+  /**
+   * @return string
+   */
   public function getOrigin()
   {
     return $this->origin;

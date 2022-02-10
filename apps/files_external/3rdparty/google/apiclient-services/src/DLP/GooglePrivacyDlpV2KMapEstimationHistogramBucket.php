@@ -20,25 +20,49 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2KMapEstimationHistogramBucket extends \Google\Collection
 {
   protected $collection_key = 'bucketValues';
+  /**
+   * @var string
+   */
   public $bucketSize;
+  /**
+   * @var string
+   */
   public $bucketValueCount;
   protected $bucketValuesType = GooglePrivacyDlpV2KMapEstimationQuasiIdValues::class;
   protected $bucketValuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $maxAnonymity;
+  /**
+   * @var string
+   */
   public $minAnonymity;
 
+  /**
+   * @param string
+   */
   public function setBucketSize($bucketSize)
   {
     $this->bucketSize = $bucketSize;
   }
+  /**
+   * @return string
+   */
   public function getBucketSize()
   {
     return $this->bucketSize;
   }
+  /**
+   * @param string
+   */
   public function setBucketValueCount($bucketValueCount)
   {
     $this->bucketValueCount = $bucketValueCount;
   }
+  /**
+   * @return string
+   */
   public function getBucketValueCount()
   {
     return $this->bucketValueCount;
@@ -57,18 +81,30 @@ class GooglePrivacyDlpV2KMapEstimationHistogramBucket extends \Google\Collection
   {
     return $this->bucketValues;
   }
+  /**
+   * @param string
+   */
   public function setMaxAnonymity($maxAnonymity)
   {
     $this->maxAnonymity = $maxAnonymity;
   }
+  /**
+   * @return string
+   */
   public function getMaxAnonymity()
   {
     return $this->maxAnonymity;
   }
+  /**
+   * @param string
+   */
   public function setMinAnonymity($minAnonymity)
   {
     $this->minAnonymity = $minAnonymity;
   }
+  /**
+   * @return string
+   */
   public function getMinAnonymity()
   {
     return $this->minAnonymity;

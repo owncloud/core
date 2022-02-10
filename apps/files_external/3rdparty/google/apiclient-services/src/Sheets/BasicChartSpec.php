@@ -22,17 +22,41 @@ class BasicChartSpec extends \Google\Collection
   protected $collection_key = 'series';
   protected $axisType = BasicChartAxis::class;
   protected $axisDataType = 'array';
+  /**
+   * @var string
+   */
   public $chartType;
+  /**
+   * @var string
+   */
   public $compareMode;
   protected $domainsType = BasicChartDomain::class;
   protected $domainsDataType = 'array';
+  /**
+   * @var int
+   */
   public $headerCount;
+  /**
+   * @var bool
+   */
   public $interpolateNulls;
+  /**
+   * @var string
+   */
   public $legendPosition;
+  /**
+   * @var bool
+   */
   public $lineSmoothing;
   protected $seriesType = BasicChartSeries::class;
   protected $seriesDataType = 'array';
+  /**
+   * @var string
+   */
   public $stackedType;
+  /**
+   * @var bool
+   */
   public $threeDimensional;
   protected $totalDataLabelType = DataLabel::class;
   protected $totalDataLabelDataType = '';
@@ -51,18 +75,30 @@ class BasicChartSpec extends \Google\Collection
   {
     return $this->axis;
   }
+  /**
+   * @param string
+   */
   public function setChartType($chartType)
   {
     $this->chartType = $chartType;
   }
+  /**
+   * @return string
+   */
   public function getChartType()
   {
     return $this->chartType;
   }
+  /**
+   * @param string
+   */
   public function setCompareMode($compareMode)
   {
     $this->compareMode = $compareMode;
   }
+  /**
+   * @return string
+   */
   public function getCompareMode()
   {
     return $this->compareMode;
@@ -81,34 +117,58 @@ class BasicChartSpec extends \Google\Collection
   {
     return $this->domains;
   }
+  /**
+   * @param int
+   */
   public function setHeaderCount($headerCount)
   {
     $this->headerCount = $headerCount;
   }
+  /**
+   * @return int
+   */
   public function getHeaderCount()
   {
     return $this->headerCount;
   }
+  /**
+   * @param bool
+   */
   public function setInterpolateNulls($interpolateNulls)
   {
     $this->interpolateNulls = $interpolateNulls;
   }
+  /**
+   * @return bool
+   */
   public function getInterpolateNulls()
   {
     return $this->interpolateNulls;
   }
+  /**
+   * @param string
+   */
   public function setLegendPosition($legendPosition)
   {
     $this->legendPosition = $legendPosition;
   }
+  /**
+   * @return string
+   */
   public function getLegendPosition()
   {
     return $this->legendPosition;
   }
+  /**
+   * @param bool
+   */
   public function setLineSmoothing($lineSmoothing)
   {
     $this->lineSmoothing = $lineSmoothing;
   }
+  /**
+   * @return bool
+   */
   public function getLineSmoothing()
   {
     return $this->lineSmoothing;
@@ -127,18 +187,30 @@ class BasicChartSpec extends \Google\Collection
   {
     return $this->series;
   }
+  /**
+   * @param string
+   */
   public function setStackedType($stackedType)
   {
     $this->stackedType = $stackedType;
   }
+  /**
+   * @return string
+   */
   public function getStackedType()
   {
     return $this->stackedType;
   }
+  /**
+   * @param bool
+   */
   public function setThreeDimensional($threeDimensional)
   {
     $this->threeDimensional = $threeDimensional;
   }
+  /**
+   * @return bool
+   */
   public function getThreeDimensional()
   {
     return $this->threeDimensional;

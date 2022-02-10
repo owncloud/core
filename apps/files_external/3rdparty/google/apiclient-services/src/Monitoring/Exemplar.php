@@ -20,22 +20,40 @@ namespace Google\Service\Monitoring;
 class Exemplar extends \Google\Collection
 {
   protected $collection_key = 'attachments';
+  /**
+   * @var array[]
+   */
   public $attachments;
+  /**
+   * @var string
+   */
   public $timestamp;
   public $value;
 
+  /**
+   * @param array[]
+   */
   public function setAttachments($attachments)
   {
     $this->attachments = $attachments;
   }
+  /**
+   * @return array[]
+   */
   public function getAttachments()
   {
     return $this->attachments;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

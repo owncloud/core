@@ -20,48 +20,93 @@ namespace Google\Service\CloudAsset;
 class GoogleCloudOrgpolicyV1ListPolicy extends \Google\Collection
 {
   protected $collection_key = 'deniedValues';
+  /**
+   * @var string
+   */
   public $allValues;
+  /**
+   * @var string[]
+   */
   public $allowedValues;
+  /**
+   * @var string[]
+   */
   public $deniedValues;
+  /**
+   * @var bool
+   */
   public $inheritFromParent;
+  /**
+   * @var string
+   */
   public $suggestedValue;
 
+  /**
+   * @param string
+   */
   public function setAllValues($allValues)
   {
     $this->allValues = $allValues;
   }
+  /**
+   * @return string
+   */
   public function getAllValues()
   {
     return $this->allValues;
   }
+  /**
+   * @param string[]
+   */
   public function setAllowedValues($allowedValues)
   {
     $this->allowedValues = $allowedValues;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedValues()
   {
     return $this->allowedValues;
   }
+  /**
+   * @param string[]
+   */
   public function setDeniedValues($deniedValues)
   {
     $this->deniedValues = $deniedValues;
   }
+  /**
+   * @return string[]
+   */
   public function getDeniedValues()
   {
     return $this->deniedValues;
   }
+  /**
+   * @param bool
+   */
   public function setInheritFromParent($inheritFromParent)
   {
     $this->inheritFromParent = $inheritFromParent;
   }
+  /**
+   * @return bool
+   */
   public function getInheritFromParent()
   {
     return $this->inheritFromParent;
   }
+  /**
+   * @param string
+   */
   public function setSuggestedValue($suggestedValue)
   {
     $this->suggestedValue = $suggestedValue;
   }
+  /**
+   * @return string
+   */
   public function getSuggestedValue()
   {
     return $this->suggestedValue;

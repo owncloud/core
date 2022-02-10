@@ -23,6 +23,9 @@ class GoogleCloudContactcenterinsightsV1CallAnnotation extends \Google\Model
   protected $annotationEndBoundaryDataType = '';
   protected $annotationStartBoundaryType = GoogleCloudContactcenterinsightsV1AnnotationBoundary::class;
   protected $annotationStartBoundaryDataType = '';
+  /**
+   * @var int
+   */
   public $channelTag;
   protected $entityMentionDataType = GoogleCloudContactcenterinsightsV1EntityMentionData::class;
   protected $entityMentionDataDataType = '';
@@ -67,10 +70,16 @@ class GoogleCloudContactcenterinsightsV1CallAnnotation extends \Google\Model
   {
     return $this->annotationStartBoundary;
   }
+  /**
+   * @param int
+   */
   public function setChannelTag($channelTag)
   {
     $this->channelTag = $channelTag;
   }
+  /**
+   * @return int
+   */
   public function getChannelTag()
   {
     return $this->channelTag;

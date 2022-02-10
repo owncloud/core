@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class AppAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appId;
+  /**
+   * @var string
+   */
   public $appPlatform;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $negative;
 
+  /**
+   * @param string
+   */
   public function setAppId($appId)
   {
     $this->appId = $appId;
   }
+  /**
+   * @return string
+   */
   public function getAppId()
   {
     return $this->appId;
   }
+  /**
+   * @param string
+   */
   public function setAppPlatform($appPlatform)
   {
     $this->appPlatform = $appPlatform;
   }
+  /**
+   * @return string
+   */
   public function getAppPlatform()
   {
     return $this->appPlatform;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setNegative($negative)
   {
     $this->negative = $negative;
   }
+  /**
+   * @return bool
+   */
   public function getNegative()
   {
     return $this->negative;

@@ -20,48 +20,93 @@ namespace Google\Service\ServiceUsage;
 class ContextRule extends \Google\Collection
 {
   protected $collection_key = 'requested';
+  /**
+   * @var string[]
+   */
   public $allowedRequestExtensions;
+  /**
+   * @var string[]
+   */
   public $allowedResponseExtensions;
+  /**
+   * @var string[]
+   */
   public $provided;
+  /**
+   * @var string[]
+   */
   public $requested;
+  /**
+   * @var string
+   */
   public $selector;
 
+  /**
+   * @param string[]
+   */
   public function setAllowedRequestExtensions($allowedRequestExtensions)
   {
     $this->allowedRequestExtensions = $allowedRequestExtensions;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedRequestExtensions()
   {
     return $this->allowedRequestExtensions;
   }
+  /**
+   * @param string[]
+   */
   public function setAllowedResponseExtensions($allowedResponseExtensions)
   {
     $this->allowedResponseExtensions = $allowedResponseExtensions;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowedResponseExtensions()
   {
     return $this->allowedResponseExtensions;
   }
+  /**
+   * @param string[]
+   */
   public function setProvided($provided)
   {
     $this->provided = $provided;
   }
+  /**
+   * @return string[]
+   */
   public function getProvided()
   {
     return $this->provided;
   }
+  /**
+   * @param string[]
+   */
   public function setRequested($requested)
   {
     $this->requested = $requested;
   }
+  /**
+   * @return string[]
+   */
   public function getRequested()
   {
     return $this->requested;
   }
+  /**
+   * @param string
+   */
   public function setSelector($selector)
   {
     $this->selector = $selector;
   }
+  /**
+   * @return string
+   */
   public function getSelector()
   {
     return $this->selector;

@@ -20,14 +20,23 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3IntentCoverage extends \Google\Collection
 {
   protected $collection_key = 'intents';
+  /**
+   * @var float
+   */
   public $coverageScore;
   protected $intentsType = GoogleCloudDialogflowCxV3IntentCoverageIntent::class;
   protected $intentsDataType = 'array';
 
+  /**
+   * @param float
+   */
   public function setCoverageScore($coverageScore)
   {
     $this->coverageScore = $coverageScore;
   }
+  /**
+   * @return float
+   */
   public function getCoverageScore()
   {
     return $this->coverageScore;

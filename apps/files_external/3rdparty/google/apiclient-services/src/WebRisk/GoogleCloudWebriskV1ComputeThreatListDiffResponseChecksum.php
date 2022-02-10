@@ -19,12 +19,21 @@ namespace Google\Service\WebRisk;
 
 class GoogleCloudWebriskV1ComputeThreatListDiffResponseChecksum extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $sha256;
 
+  /**
+   * @param string
+   */
   public function setSha256($sha256)
   {
     $this->sha256 = $sha256;
   }
+  /**
+   * @return string
+   */
   public function getSha256()
   {
     return $this->sha256;

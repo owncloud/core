@@ -19,14 +19,23 @@ namespace Google\Service\HangoutsChat;
 
 class GoogleAppsCardV1CardAction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $actionLabel;
   protected $onClickType = GoogleAppsCardV1OnClick::class;
   protected $onClickDataType = '';
 
+  /**
+   * @param string
+   */
   public function setActionLabel($actionLabel)
   {
     $this->actionLabel = $actionLabel;
   }
+  /**
+   * @return string
+   */
   public function getActionLabel()
   {
     return $this->actionLabel;

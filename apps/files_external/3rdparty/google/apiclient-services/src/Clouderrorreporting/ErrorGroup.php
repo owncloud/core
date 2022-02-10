@@ -20,32 +20,59 @@ namespace Google\Service\Clouderrorreporting;
 class ErrorGroup extends \Google\Collection
 {
   protected $collection_key = 'trackingIssues';
+  /**
+   * @var string
+   */
   public $groupId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $resolutionStatus;
   protected $trackingIssuesType = TrackingIssue::class;
   protected $trackingIssuesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setGroupId($groupId)
   {
     $this->groupId = $groupId;
   }
+  /**
+   * @return string
+   */
   public function getGroupId()
   {
     return $this->groupId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setResolutionStatus($resolutionStatus)
   {
     $this->resolutionStatus = $resolutionStatus;
   }
+  /**
+   * @return string
+   */
   public function getResolutionStatus()
   {
     return $this->resolutionStatus;

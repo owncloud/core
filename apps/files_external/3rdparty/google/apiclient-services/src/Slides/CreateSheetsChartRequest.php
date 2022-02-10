@@ -19,17 +19,35 @@ namespace Google\Service\Slides;
 
 class CreateSheetsChartRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $chartId;
   protected $elementPropertiesType = PageElementProperties::class;
   protected $elementPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $linkingMode;
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var string
+   */
   public $spreadsheetId;
 
+  /**
+   * @param int
+   */
   public function setChartId($chartId)
   {
     $this->chartId = $chartId;
   }
+  /**
+   * @return int
+   */
   public function getChartId()
   {
     return $this->chartId;
@@ -48,26 +66,44 @@ class CreateSheetsChartRequest extends \Google\Model
   {
     return $this->elementProperties;
   }
+  /**
+   * @param string
+   */
   public function setLinkingMode($linkingMode)
   {
     $this->linkingMode = $linkingMode;
   }
+  /**
+   * @return string
+   */
   public function getLinkingMode()
   {
     return $this->linkingMode;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;

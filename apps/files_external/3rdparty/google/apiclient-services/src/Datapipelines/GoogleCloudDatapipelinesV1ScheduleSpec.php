@@ -19,30 +19,57 @@ namespace Google\Service\Datapipelines;
 
 class GoogleCloudDatapipelinesV1ScheduleSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $nextJobTime;
+  /**
+   * @var string
+   */
   public $schedule;
+  /**
+   * @var string
+   */
   public $timeZone;
 
+  /**
+   * @param string
+   */
   public function setNextJobTime($nextJobTime)
   {
     $this->nextJobTime = $nextJobTime;
   }
+  /**
+   * @return string
+   */
   public function getNextJobTime()
   {
     return $this->nextJobTime;
   }
+  /**
+   * @param string
+   */
   public function setSchedule($schedule)
   {
     $this->schedule = $schedule;
   }
+  /**
+   * @return string
+   */
   public function getSchedule()
   {
     return $this->schedule;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;

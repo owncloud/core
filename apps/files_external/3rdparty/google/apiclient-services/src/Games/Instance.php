@@ -19,23 +19,47 @@ namespace Google\Service\Games;
 
 class Instance extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $acquisitionUri;
   protected $androidInstanceType = InstanceAndroidDetails::class;
   protected $androidInstanceDataType = '';
   protected $iosInstanceType = InstanceIosDetails::class;
   protected $iosInstanceDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $platformType;
+  /**
+   * @var bool
+   */
   public $realtimePlay;
+  /**
+   * @var bool
+   */
   public $turnBasedPlay;
   protected $webInstanceType = InstanceWebDetails::class;
   protected $webInstanceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAcquisitionUri($acquisitionUri)
   {
     $this->acquisitionUri = $acquisitionUri;
   }
+  /**
+   * @return string
+   */
   public function getAcquisitionUri()
   {
     return $this->acquisitionUri;
@@ -68,42 +92,72 @@ class Instance extends \Google\Model
   {
     return $this->iosInstance;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPlatformType($platformType)
   {
     $this->platformType = $platformType;
   }
+  /**
+   * @return string
+   */
   public function getPlatformType()
   {
     return $this->platformType;
   }
+  /**
+   * @param bool
+   */
   public function setRealtimePlay($realtimePlay)
   {
     $this->realtimePlay = $realtimePlay;
   }
+  /**
+   * @return bool
+   */
   public function getRealtimePlay()
   {
     return $this->realtimePlay;
   }
+  /**
+   * @param bool
+   */
   public function setTurnBasedPlay($turnBasedPlay)
   {
     $this->turnBasedPlay = $turnBasedPlay;
   }
+  /**
+   * @return bool
+   */
   public function getTurnBasedPlay()
   {
     return $this->turnBasedPlay;

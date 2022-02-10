@@ -20,32 +20,71 @@ namespace Google\Service\ServiceUsage;
 class MetricDescriptor extends \Google\Collection
 {
   protected $collection_key = 'monitoredResourceTypes';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $labelsType = LabelDescriptor::class;
   protected $labelsDataType = 'array';
+  /**
+   * @var string
+   */
   public $launchStage;
   protected $metadataType = MetricDescriptorMetadata::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $metricKind;
+  /**
+   * @var string[]
+   */
   public $monitoredResourceTypes;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $unit;
+  /**
+   * @var string
+   */
   public $valueType;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -64,10 +103,16 @@ class MetricDescriptor extends \Google\Collection
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setLaunchStage($launchStage)
   {
     $this->launchStage = $launchStage;
   }
+  /**
+   * @return string
+   */
   public function getLaunchStage()
   {
     return $this->launchStage;
@@ -86,50 +131,86 @@ class MetricDescriptor extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setMetricKind($metricKind)
   {
     $this->metricKind = $metricKind;
   }
+  /**
+   * @return string
+   */
   public function getMetricKind()
   {
     return $this->metricKind;
   }
+  /**
+   * @param string[]
+   */
   public function setMonitoredResourceTypes($monitoredResourceTypes)
   {
     $this->monitoredResourceTypes = $monitoredResourceTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getMonitoredResourceTypes()
   {
     return $this->monitoredResourceTypes;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;
   }
+  /**
+   * @param string
+   */
   public function setValueType($valueType)
   {
     $this->valueType = $valueType;
   }
+  /**
+   * @return string
+   */
   public function getValueType()
   {
     return $this->valueType;

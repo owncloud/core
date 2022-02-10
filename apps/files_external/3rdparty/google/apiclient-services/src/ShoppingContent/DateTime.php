@@ -19,61 +19,121 @@ namespace Google\Service\ShoppingContent;
 
 class DateTime extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $day;
+  /**
+   * @var int
+   */
   public $hours;
+  /**
+   * @var int
+   */
   public $minutes;
+  /**
+   * @var int
+   */
   public $month;
+  /**
+   * @var int
+   */
   public $nanos;
+  /**
+   * @var int
+   */
   public $seconds;
   protected $timeZoneType = TimeZone::class;
   protected $timeZoneDataType = '';
+  /**
+   * @var string
+   */
   public $utcOffset;
+  /**
+   * @var int
+   */
   public $year;
 
+  /**
+   * @param int
+   */
   public function setDay($day)
   {
     $this->day = $day;
   }
+  /**
+   * @return int
+   */
   public function getDay()
   {
     return $this->day;
   }
+  /**
+   * @param int
+   */
   public function setHours($hours)
   {
     $this->hours = $hours;
   }
+  /**
+   * @return int
+   */
   public function getHours()
   {
     return $this->hours;
   }
+  /**
+   * @param int
+   */
   public function setMinutes($minutes)
   {
     $this->minutes = $minutes;
   }
+  /**
+   * @return int
+   */
   public function getMinutes()
   {
     return $this->minutes;
   }
+  /**
+   * @param int
+   */
   public function setMonth($month)
   {
     $this->month = $month;
   }
+  /**
+   * @return int
+   */
   public function getMonth()
   {
     return $this->month;
   }
+  /**
+   * @param int
+   */
   public function setNanos($nanos)
   {
     $this->nanos = $nanos;
   }
+  /**
+   * @return int
+   */
   public function getNanos()
   {
     return $this->nanos;
   }
+  /**
+   * @param int
+   */
   public function setSeconds($seconds)
   {
     $this->seconds = $seconds;
   }
+  /**
+   * @return int
+   */
   public function getSeconds()
   {
     return $this->seconds;
@@ -92,18 +152,30 @@ class DateTime extends \Google\Model
   {
     return $this->timeZone;
   }
+  /**
+   * @param string
+   */
   public function setUtcOffset($utcOffset)
   {
     $this->utcOffset = $utcOffset;
   }
+  /**
+   * @return string
+   */
   public function getUtcOffset()
   {
     return $this->utcOffset;
   }
+  /**
+   * @param int
+   */
   public function setYear($year)
   {
     $this->year = $year;
   }
+  /**
+   * @return int
+   */
   public function getYear()
   {
     return $this->year;

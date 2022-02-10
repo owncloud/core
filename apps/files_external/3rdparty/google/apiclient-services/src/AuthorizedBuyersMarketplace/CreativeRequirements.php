@@ -19,30 +19,57 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 
 class CreativeRequirements extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $creativePreApprovalPolicy;
+  /**
+   * @var string
+   */
   public $creativeSafeFrameCompatibility;
+  /**
+   * @var string
+   */
   public $programmaticCreativeSource;
 
+  /**
+   * @param string
+   */
   public function setCreativePreApprovalPolicy($creativePreApprovalPolicy)
   {
     $this->creativePreApprovalPolicy = $creativePreApprovalPolicy;
   }
+  /**
+   * @return string
+   */
   public function getCreativePreApprovalPolicy()
   {
     return $this->creativePreApprovalPolicy;
   }
+  /**
+   * @param string
+   */
   public function setCreativeSafeFrameCompatibility($creativeSafeFrameCompatibility)
   {
     $this->creativeSafeFrameCompatibility = $creativeSafeFrameCompatibility;
   }
+  /**
+   * @return string
+   */
   public function getCreativeSafeFrameCompatibility()
   {
     return $this->creativeSafeFrameCompatibility;
   }
+  /**
+   * @param string
+   */
   public function setProgrammaticCreativeSource($programmaticCreativeSource)
   {
     $this->programmaticCreativeSource = $programmaticCreativeSource;
   }
+  /**
+   * @return string
+   */
   public function getProgrammaticCreativeSource()
   {
     return $this->programmaticCreativeSource;

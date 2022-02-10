@@ -20,12 +20,21 @@ namespace Google\Service\ShoppingContent;
 class BusinessDayConfig extends \Google\Collection
 {
   protected $collection_key = 'businessDays';
+  /**
+   * @var string[]
+   */
   public $businessDays;
 
+  /**
+   * @param string[]
+   */
   public function setBusinessDays($businessDays)
   {
     $this->businessDays = $businessDays;
   }
+  /**
+   * @return string[]
+   */
   public function getBusinessDays()
   {
     return $this->businessDays;

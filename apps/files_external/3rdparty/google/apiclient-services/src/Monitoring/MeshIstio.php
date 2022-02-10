@@ -19,30 +19,57 @@ namespace Google\Service\Monitoring;
 
 class MeshIstio extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $meshUid;
+  /**
+   * @var string
+   */
   public $serviceName;
+  /**
+   * @var string
+   */
   public $serviceNamespace;
 
+  /**
+   * @param string
+   */
   public function setMeshUid($meshUid)
   {
     $this->meshUid = $meshUid;
   }
+  /**
+   * @return string
+   */
   public function getMeshUid()
   {
     return $this->meshUid;
   }
+  /**
+   * @param string
+   */
   public function setServiceName($serviceName)
   {
     $this->serviceName = $serviceName;
   }
+  /**
+   * @return string
+   */
   public function getServiceName()
   {
     return $this->serviceName;
   }
+  /**
+   * @param string
+   */
   public function setServiceNamespace($serviceNamespace)
   {
     $this->serviceNamespace = $serviceNamespace;
   }
+  /**
+   * @return string
+   */
   public function getServiceNamespace()
   {
     return $this->serviceNamespace;

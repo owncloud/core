@@ -19,21 +19,39 @@ namespace Google\Service\Genomics;
 
 class DiskStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $freeSpaceBytes;
+  /**
+   * @var string
+   */
   public $totalSpaceBytes;
 
+  /**
+   * @param string
+   */
   public function setFreeSpaceBytes($freeSpaceBytes)
   {
     $this->freeSpaceBytes = $freeSpaceBytes;
   }
+  /**
+   * @return string
+   */
   public function getFreeSpaceBytes()
   {
     return $this->freeSpaceBytes;
   }
+  /**
+   * @param string
+   */
   public function setTotalSpaceBytes($totalSpaceBytes)
   {
     $this->totalSpaceBytes = $totalSpaceBytes;
   }
+  /**
+   * @return string
+   */
   public function getTotalSpaceBytes()
   {
     return $this->totalSpaceBytes;

@@ -25,10 +25,19 @@ class GoogleCloudDocumentaiV1beta1DocumentStyle extends \Google\Model
   protected $colorDataType = '';
   protected $fontSizeType = GoogleCloudDocumentaiV1beta1DocumentStyleFontSize::class;
   protected $fontSizeDataType = '';
+  /**
+   * @var string
+   */
   public $fontWeight;
   protected $textAnchorType = GoogleCloudDocumentaiV1beta1DocumentTextAnchor::class;
   protected $textAnchorDataType = '';
+  /**
+   * @var string
+   */
   public $textDecoration;
+  /**
+   * @var string
+   */
   public $textStyle;
 
   /**
@@ -73,10 +82,16 @@ class GoogleCloudDocumentaiV1beta1DocumentStyle extends \Google\Model
   {
     return $this->fontSize;
   }
+  /**
+   * @param string
+   */
   public function setFontWeight($fontWeight)
   {
     $this->fontWeight = $fontWeight;
   }
+  /**
+   * @return string
+   */
   public function getFontWeight()
   {
     return $this->fontWeight;
@@ -95,18 +110,30 @@ class GoogleCloudDocumentaiV1beta1DocumentStyle extends \Google\Model
   {
     return $this->textAnchor;
   }
+  /**
+   * @param string
+   */
   public function setTextDecoration($textDecoration)
   {
     $this->textDecoration = $textDecoration;
   }
+  /**
+   * @return string
+   */
   public function getTextDecoration()
   {
     return $this->textDecoration;
   }
+  /**
+   * @param string
+   */
   public function setTextStyle($textStyle)
   {
     $this->textStyle = $textStyle;
   }
+  /**
+   * @return string
+   */
   public function getTextStyle()
   {
     return $this->textStyle;

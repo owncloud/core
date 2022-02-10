@@ -20,93 +20,183 @@ namespace Google\Service\TagManager;
 class Container extends \Google\Collection
 {
   protected $collection_key = 'usageContext';
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $containerId;
+  /**
+   * @var string[]
+   */
   public $domainName;
+  /**
+   * @var string
+   */
   public $fingerprint;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $notes;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $publicId;
+  /**
+   * @var string
+   */
   public $tagManagerUrl;
+  /**
+   * @var string[]
+   */
   public $usageContext;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setContainerId($containerId)
   {
     $this->containerId = $containerId;
   }
+  /**
+   * @return string
+   */
   public function getContainerId()
   {
     return $this->containerId;
   }
+  /**
+   * @param string[]
+   */
   public function setDomainName($domainName)
   {
     $this->domainName = $domainName;
   }
+  /**
+   * @return string[]
+   */
   public function getDomainName()
   {
     return $this->domainName;
   }
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNotes($notes)
   {
     $this->notes = $notes;
   }
+  /**
+   * @return string
+   */
   public function getNotes()
   {
     return $this->notes;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setPublicId($publicId)
   {
     $this->publicId = $publicId;
   }
+  /**
+   * @return string
+   */
   public function getPublicId()
   {
     return $this->publicId;
   }
+  /**
+   * @param string
+   */
   public function setTagManagerUrl($tagManagerUrl)
   {
     $this->tagManagerUrl = $tagManagerUrl;
   }
+  /**
+   * @return string
+   */
   public function getTagManagerUrl()
   {
     return $this->tagManagerUrl;
   }
+  /**
+   * @param string[]
+   */
   public function setUsageContext($usageContext)
   {
     $this->usageContext = $usageContext;
   }
+  /**
+   * @return string[]
+   */
   public function getUsageContext()
   {
     return $this->usageContext;

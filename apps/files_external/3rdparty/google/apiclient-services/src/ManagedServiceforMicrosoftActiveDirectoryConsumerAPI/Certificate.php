@@ -20,17 +20,35 @@ namespace Google\Service\ManagedServiceforMicrosoftActiveDirectoryConsumerAPI;
 class Certificate extends \Google\Collection
 {
   protected $collection_key = 'subjectAlternativeName';
+  /**
+   * @var string
+   */
   public $expireTime;
   protected $issuingCertificateType = Certificate::class;
   protected $issuingCertificateDataType = '';
+  /**
+   * @var string
+   */
   public $subject;
+  /**
+   * @var string[]
+   */
   public $subjectAlternativeName;
+  /**
+   * @var string
+   */
   public $thumbprint;
 
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
@@ -49,26 +67,44 @@ class Certificate extends \Google\Collection
   {
     return $this->issuingCertificate;
   }
+  /**
+   * @param string
+   */
   public function setSubject($subject)
   {
     $this->subject = $subject;
   }
+  /**
+   * @return string
+   */
   public function getSubject()
   {
     return $this->subject;
   }
+  /**
+   * @param string[]
+   */
   public function setSubjectAlternativeName($subjectAlternativeName)
   {
     $this->subjectAlternativeName = $subjectAlternativeName;
   }
+  /**
+   * @return string[]
+   */
   public function getSubjectAlternativeName()
   {
     return $this->subjectAlternativeName;
   }
+  /**
+   * @param string
+   */
   public function setThumbprint($thumbprint)
   {
     $this->thumbprint = $thumbprint;
   }
+  /**
+   * @return string
+   */
   public function getThumbprint()
   {
     return $this->thumbprint;

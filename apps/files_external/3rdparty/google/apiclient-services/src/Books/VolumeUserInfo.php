@@ -19,44 +19,95 @@ namespace Google\Service\Books;
 
 class VolumeUserInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $acquiredTime;
+  /**
+   * @var int
+   */
   public $acquisitionType;
   protected $copyType = VolumeUserInfoCopy::class;
   protected $copyDataType = '';
+  /**
+   * @var int
+   */
   public $entitlementType;
   protected $familySharingType = VolumeUserInfoFamilySharing::class;
   protected $familySharingDataType = '';
+  /**
+   * @var bool
+   */
   public $isFamilySharedFromUser;
+  /**
+   * @var bool
+   */
   public $isFamilySharedToUser;
+  /**
+   * @var bool
+   */
   public $isFamilySharingAllowed;
+  /**
+   * @var bool
+   */
   public $isFamilySharingDisabledByFop;
+  /**
+   * @var bool
+   */
   public $isInMyBooks;
+  /**
+   * @var bool
+   */
   public $isPreordered;
+  /**
+   * @var bool
+   */
   public $isPurchased;
+  /**
+   * @var bool
+   */
   public $isUploaded;
   protected $readingPositionType = ReadingPosition::class;
   protected $readingPositionDataType = '';
   protected $rentalPeriodType = VolumeUserInfoRentalPeriod::class;
   protected $rentalPeriodDataType = '';
+  /**
+   * @var string
+   */
   public $rentalState;
   protected $reviewType = Review::class;
   protected $reviewDataType = '';
+  /**
+   * @var string
+   */
   public $updated;
   protected $userUploadedVolumeInfoType = VolumeUserInfoUserUploadedVolumeInfo::class;
   protected $userUploadedVolumeInfoDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAcquiredTime($acquiredTime)
   {
     $this->acquiredTime = $acquiredTime;
   }
+  /**
+   * @return string
+   */
   public function getAcquiredTime()
   {
     return $this->acquiredTime;
   }
+  /**
+   * @param int
+   */
   public function setAcquisitionType($acquisitionType)
   {
     $this->acquisitionType = $acquisitionType;
   }
+  /**
+   * @return int
+   */
   public function getAcquisitionType()
   {
     return $this->acquisitionType;
@@ -75,10 +126,16 @@ class VolumeUserInfo extends \Google\Model
   {
     return $this->copy;
   }
+  /**
+   * @param int
+   */
   public function setEntitlementType($entitlementType)
   {
     $this->entitlementType = $entitlementType;
   }
+  /**
+   * @return int
+   */
   public function getEntitlementType()
   {
     return $this->entitlementType;
@@ -97,66 +154,114 @@ class VolumeUserInfo extends \Google\Model
   {
     return $this->familySharing;
   }
+  /**
+   * @param bool
+   */
   public function setIsFamilySharedFromUser($isFamilySharedFromUser)
   {
     $this->isFamilySharedFromUser = $isFamilySharedFromUser;
   }
+  /**
+   * @return bool
+   */
   public function getIsFamilySharedFromUser()
   {
     return $this->isFamilySharedFromUser;
   }
+  /**
+   * @param bool
+   */
   public function setIsFamilySharedToUser($isFamilySharedToUser)
   {
     $this->isFamilySharedToUser = $isFamilySharedToUser;
   }
+  /**
+   * @return bool
+   */
   public function getIsFamilySharedToUser()
   {
     return $this->isFamilySharedToUser;
   }
+  /**
+   * @param bool
+   */
   public function setIsFamilySharingAllowed($isFamilySharingAllowed)
   {
     $this->isFamilySharingAllowed = $isFamilySharingAllowed;
   }
+  /**
+   * @return bool
+   */
   public function getIsFamilySharingAllowed()
   {
     return $this->isFamilySharingAllowed;
   }
+  /**
+   * @param bool
+   */
   public function setIsFamilySharingDisabledByFop($isFamilySharingDisabledByFop)
   {
     $this->isFamilySharingDisabledByFop = $isFamilySharingDisabledByFop;
   }
+  /**
+   * @return bool
+   */
   public function getIsFamilySharingDisabledByFop()
   {
     return $this->isFamilySharingDisabledByFop;
   }
+  /**
+   * @param bool
+   */
   public function setIsInMyBooks($isInMyBooks)
   {
     $this->isInMyBooks = $isInMyBooks;
   }
+  /**
+   * @return bool
+   */
   public function getIsInMyBooks()
   {
     return $this->isInMyBooks;
   }
+  /**
+   * @param bool
+   */
   public function setIsPreordered($isPreordered)
   {
     $this->isPreordered = $isPreordered;
   }
+  /**
+   * @return bool
+   */
   public function getIsPreordered()
   {
     return $this->isPreordered;
   }
+  /**
+   * @param bool
+   */
   public function setIsPurchased($isPurchased)
   {
     $this->isPurchased = $isPurchased;
   }
+  /**
+   * @return bool
+   */
   public function getIsPurchased()
   {
     return $this->isPurchased;
   }
+  /**
+   * @param bool
+   */
   public function setIsUploaded($isUploaded)
   {
     $this->isUploaded = $isUploaded;
   }
+  /**
+   * @return bool
+   */
   public function getIsUploaded()
   {
     return $this->isUploaded;
@@ -189,10 +294,16 @@ class VolumeUserInfo extends \Google\Model
   {
     return $this->rentalPeriod;
   }
+  /**
+   * @param string
+   */
   public function setRentalState($rentalState)
   {
     $this->rentalState = $rentalState;
   }
+  /**
+   * @return string
+   */
   public function getRentalState()
   {
     return $this->rentalState;
@@ -211,10 +322,16 @@ class VolumeUserInfo extends \Google\Model
   {
     return $this->review;
   }
+  /**
+   * @param string
+   */
   public function setUpdated($updated)
   {
     $this->updated = $updated;
   }
+  /**
+   * @return string
+   */
   public function getUpdated()
   {
     return $this->updated;

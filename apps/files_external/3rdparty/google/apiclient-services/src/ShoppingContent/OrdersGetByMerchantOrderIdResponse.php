@@ -19,14 +19,23 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersGetByMerchantOrderIdResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
   protected $orderType = Order::class;
   protected $orderDataType = '';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

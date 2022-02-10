@@ -20,16 +20,31 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1ChangeOfferRequest extends \Google\Collection
 {
   protected $collection_key = 'parameters';
+  /**
+   * @var string
+   */
   public $offer;
   protected $parametersType = GoogleCloudChannelV1Parameter::class;
   protected $parametersDataType = 'array';
+  /**
+   * @var string
+   */
   public $purchaseOrderId;
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setOffer($offer)
   {
     $this->offer = $offer;
   }
+  /**
+   * @return string
+   */
   public function getOffer()
   {
     return $this->offer;
@@ -48,18 +63,30 @@ class GoogleCloudChannelV1ChangeOfferRequest extends \Google\Collection
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setPurchaseOrderId($purchaseOrderId)
   {
     $this->purchaseOrderId = $purchaseOrderId;
   }
+  /**
+   * @return string
+   */
   public function getPurchaseOrderId()
   {
     return $this->purchaseOrderId;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

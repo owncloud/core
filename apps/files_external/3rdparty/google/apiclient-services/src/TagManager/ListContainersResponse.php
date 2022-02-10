@@ -22,6 +22,9 @@ class ListContainersResponse extends \Google\Collection
   protected $collection_key = 'container';
   protected $containerType = Container::class;
   protected $containerDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListContainersResponse extends \Google\Collection
   {
     return $this->container;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

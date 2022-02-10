@@ -20,34 +20,67 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowV2beta1EntityType extends \Google\Collection
 {
   protected $collection_key = 'entities';
+  /**
+   * @var string
+   */
   public $autoExpansionMode;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $enableFuzzyExtraction;
   protected $entitiesType = GoogleCloudDialogflowV2beta1EntityTypeEntity::class;
   protected $entitiesDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setAutoExpansionMode($autoExpansionMode)
   {
     $this->autoExpansionMode = $autoExpansionMode;
   }
+  /**
+   * @return string
+   */
   public function getAutoExpansionMode()
   {
     return $this->autoExpansionMode;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setEnableFuzzyExtraction($enableFuzzyExtraction)
   {
     $this->enableFuzzyExtraction = $enableFuzzyExtraction;
   }
+  /**
+   * @return bool
+   */
   public function getEnableFuzzyExtraction()
   {
     return $this->enableFuzzyExtraction;
@@ -66,18 +99,30 @@ class GoogleCloudDialogflowV2beta1EntityType extends \Google\Collection
   {
     return $this->entities;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

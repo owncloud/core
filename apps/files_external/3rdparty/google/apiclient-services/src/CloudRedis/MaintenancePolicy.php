@@ -20,32 +20,59 @@ namespace Google\Service\CloudRedis;
 class MaintenancePolicy extends \Google\Collection
 {
   protected $collection_key = 'weeklyMaintenanceWindow';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $updateTime;
   protected $weeklyMaintenanceWindowType = WeeklyMaintenanceWindow::class;
   protected $weeklyMaintenanceWindowDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

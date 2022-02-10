@@ -19,14 +19,23 @@ namespace Google\Service\Directory;
 
 class CreatePrinterRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $parent;
   protected $printerType = Printer::class;
   protected $printerDataType = '';
 
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;

@@ -19,12 +19,21 @@ namespace Google\Service\TrafficDirectorService;
 
 class GoogleRE2 extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maxProgramSize;
 
+  /**
+   * @param string
+   */
   public function setMaxProgramSize($maxProgramSize)
   {
     $this->maxProgramSize = $maxProgramSize;
   }
+  /**
+   * @return string
+   */
   public function getMaxProgramSize()
   {
     return $this->maxProgramSize;

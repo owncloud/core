@@ -20,21 +20,39 @@ namespace Google\Service\Datastore;
 class GoogleDatastoreAdminV1beta1EntityFilter extends \Google\Collection
 {
   protected $collection_key = 'namespaceIds';
+  /**
+   * @var string[]
+   */
   public $kinds;
+  /**
+   * @var string[]
+   */
   public $namespaceIds;
 
+  /**
+   * @param string[]
+   */
   public function setKinds($kinds)
   {
     $this->kinds = $kinds;
   }
+  /**
+   * @return string[]
+   */
   public function getKinds()
   {
     return $this->kinds;
   }
+  /**
+   * @param string[]
+   */
   public function setNamespaceIds($namespaceIds)
   {
     $this->namespaceIds = $namespaceIds;
   }
+  /**
+   * @return string[]
+   */
   public function getNamespaceIds()
   {
     return $this->namespaceIds;

@@ -19,15 +19,30 @@ namespace Google\Service\Transcoder;
 
 class AudioChannelInput extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $channel;
   public $gainDb;
+  /**
+   * @var string
+   */
   public $key;
+  /**
+   * @var int
+   */
   public $track;
 
+  /**
+   * @param int
+   */
   public function setChannel($channel)
   {
     $this->channel = $channel;
   }
+  /**
+   * @return int
+   */
   public function getChannel()
   {
     return $this->channel;
@@ -40,18 +55,30 @@ class AudioChannelInput extends \Google\Model
   {
     return $this->gainDb;
   }
+  /**
+   * @param string
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return string
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param int
+   */
   public function setTrack($track)
   {
     $this->track = $track;
   }
+  /**
+   * @return int
+   */
   public function getTrack()
   {
     return $this->track;

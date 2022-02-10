@@ -19,21 +19,39 @@ namespace Google\Service\Storage;
 
 class BucketWebsite extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mainPageSuffix;
+  /**
+   * @var string
+   */
   public $notFoundPage;
 
+  /**
+   * @param string
+   */
   public function setMainPageSuffix($mainPageSuffix)
   {
     $this->mainPageSuffix = $mainPageSuffix;
   }
+  /**
+   * @return string
+   */
   public function getMainPageSuffix()
   {
     return $this->mainPageSuffix;
   }
+  /**
+   * @param string
+   */
   public function setNotFoundPage($notFoundPage)
   {
     $this->notFoundPage = $notFoundPage;
   }
+  /**
+   * @return string
+   */
   public function getNotFoundPage()
   {
     return $this->notFoundPage;

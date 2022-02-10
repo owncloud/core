@@ -19,66 +19,129 @@ namespace Google\Service\AbusiveExperienceReport;
 
 class SiteSummaryResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $abusiveStatus;
+  /**
+   * @var string
+   */
   public $enforcementTime;
+  /**
+   * @var string
+   */
   public $filterStatus;
+  /**
+   * @var string
+   */
   public $lastChangeTime;
+  /**
+   * @var string
+   */
   public $reportUrl;
+  /**
+   * @var string
+   */
   public $reviewedSite;
+  /**
+   * @var bool
+   */
   public $underReview;
 
+  /**
+   * @param string
+   */
   public function setAbusiveStatus($abusiveStatus)
   {
     $this->abusiveStatus = $abusiveStatus;
   }
+  /**
+   * @return string
+   */
   public function getAbusiveStatus()
   {
     return $this->abusiveStatus;
   }
+  /**
+   * @param string
+   */
   public function setEnforcementTime($enforcementTime)
   {
     $this->enforcementTime = $enforcementTime;
   }
+  /**
+   * @return string
+   */
   public function getEnforcementTime()
   {
     return $this->enforcementTime;
   }
+  /**
+   * @param string
+   */
   public function setFilterStatus($filterStatus)
   {
     $this->filterStatus = $filterStatus;
   }
+  /**
+   * @return string
+   */
   public function getFilterStatus()
   {
     return $this->filterStatus;
   }
+  /**
+   * @param string
+   */
   public function setLastChangeTime($lastChangeTime)
   {
     $this->lastChangeTime = $lastChangeTime;
   }
+  /**
+   * @return string
+   */
   public function getLastChangeTime()
   {
     return $this->lastChangeTime;
   }
+  /**
+   * @param string
+   */
   public function setReportUrl($reportUrl)
   {
     $this->reportUrl = $reportUrl;
   }
+  /**
+   * @return string
+   */
   public function getReportUrl()
   {
     return $this->reportUrl;
   }
+  /**
+   * @param string
+   */
   public function setReviewedSite($reviewedSite)
   {
     $this->reviewedSite = $reviewedSite;
   }
+  /**
+   * @return string
+   */
   public function getReviewedSite()
   {
     return $this->reviewedSite;
   }
+  /**
+   * @param bool
+   */
   public function setUnderReview($underReview)
   {
     $this->underReview = $underReview;
   }
+  /**
+   * @return bool
+   */
   public function getUnderReview()
   {
     return $this->underReview;

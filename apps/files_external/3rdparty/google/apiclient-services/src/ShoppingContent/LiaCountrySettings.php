@@ -21,7 +21,13 @@ class LiaCountrySettings extends \Google\Model
 {
   protected $aboutType = LiaAboutPageSettings::class;
   protected $aboutDataType = '';
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var bool
+   */
   public $hostedLocalStorefrontActive;
   protected $inventoryType = LiaInventorySettings::class;
   protected $inventoryDataType = '';
@@ -29,6 +35,9 @@ class LiaCountrySettings extends \Google\Model
   protected $onDisplayToOrderDataType = '';
   protected $posDataProviderType = LiaPosDataProvider::class;
   protected $posDataProviderDataType = '';
+  /**
+   * @var bool
+   */
   public $storePickupActive;
 
   /**
@@ -45,18 +54,30 @@ class LiaCountrySettings extends \Google\Model
   {
     return $this->about;
   }
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param bool
+   */
   public function setHostedLocalStorefrontActive($hostedLocalStorefrontActive)
   {
     $this->hostedLocalStorefrontActive = $hostedLocalStorefrontActive;
   }
+  /**
+   * @return bool
+   */
   public function getHostedLocalStorefrontActive()
   {
     return $this->hostedLocalStorefrontActive;
@@ -103,10 +124,16 @@ class LiaCountrySettings extends \Google\Model
   {
     return $this->posDataProvider;
   }
+  /**
+   * @param bool
+   */
   public function setStorePickupActive($storePickupActive)
   {
     $this->storePickupActive = $storePickupActive;
   }
+  /**
+   * @return bool
+   */
   public function getStorePickupActive()
   {
     return $this->storePickupActive;

@@ -20,8 +20,17 @@ namespace Google\Service\Contactcenterinsights;
 class GoogleCloudContactcenterinsightsV1SmartReplyData extends \Google\Model
 {
   public $confidenceScore;
+  /**
+   * @var string[]
+   */
   public $metadata;
+  /**
+   * @var string
+   */
   public $queryRecord;
+  /**
+   * @var string
+   */
   public $reply;
 
   public function setConfidenceScore($confidenceScore)
@@ -32,26 +41,44 @@ class GoogleCloudContactcenterinsightsV1SmartReplyData extends \Google\Model
   {
     return $this->confidenceScore;
   }
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setQueryRecord($queryRecord)
   {
     $this->queryRecord = $queryRecord;
   }
+  /**
+   * @return string
+   */
   public function getQueryRecord()
   {
     return $this->queryRecord;
   }
+  /**
+   * @param string
+   */
   public function setReply($reply)
   {
     $this->reply = $reply;
   }
+  /**
+   * @return string
+   */
   public function getReply()
   {
     return $this->reply;

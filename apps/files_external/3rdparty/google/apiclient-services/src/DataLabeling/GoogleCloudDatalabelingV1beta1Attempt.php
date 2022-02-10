@@ -20,14 +20,23 @@ namespace Google\Service\DataLabeling;
 class GoogleCloudDatalabelingV1beta1Attempt extends \Google\Collection
 {
   protected $collection_key = 'partialFailures';
+  /**
+   * @var string
+   */
   public $attemptTime;
   protected $partialFailuresType = GoogleRpcStatus::class;
   protected $partialFailuresDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAttemptTime($attemptTime)
   {
     $this->attemptTime = $attemptTime;
   }
+  /**
+   * @return string
+   */
   public function getAttemptTime()
   {
     return $this->attemptTime;

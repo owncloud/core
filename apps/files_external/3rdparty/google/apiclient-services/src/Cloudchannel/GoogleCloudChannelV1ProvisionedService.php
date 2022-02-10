@@ -19,30 +19,57 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1ProvisionedService extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $provisioningId;
+  /**
+   * @var string
+   */
   public $skuId;
 
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setProvisioningId($provisioningId)
   {
     $this->provisioningId = $provisioningId;
   }
+  /**
+   * @return string
+   */
   public function getProvisioningId()
   {
     return $this->provisioningId;
   }
+  /**
+   * @param string
+   */
   public function setSkuId($skuId)
   {
     $this->skuId = $skuId;
   }
+  /**
+   * @return string
+   */
   public function getSkuId()
   {
     return $this->skuId;

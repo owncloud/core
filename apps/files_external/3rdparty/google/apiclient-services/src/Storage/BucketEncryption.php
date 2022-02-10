@@ -19,12 +19,21 @@ namespace Google\Service\Storage;
 
 class BucketEncryption extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $defaultKmsKeyName;
 
+  /**
+   * @param string
+   */
   public function setDefaultKmsKeyName($defaultKmsKeyName)
   {
     $this->defaultKmsKeyName = $defaultKmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getDefaultKmsKeyName()
   {
     return $this->defaultKmsKeyName;

@@ -19,48 +19,93 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1PurchaseTransaction extends \Google\Model
 {
+  /**
+   * @var float[]
+   */
   public $costs;
+  /**
+   * @var string
+   */
   public $currencyCode;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var float
+   */
   public $revenue;
+  /**
+   * @var float[]
+   */
   public $taxes;
 
+  /**
+   * @param float[]
+   */
   public function setCosts($costs)
   {
     $this->costs = $costs;
   }
+  /**
+   * @return float[]
+   */
   public function getCosts()
   {
     return $this->costs;
   }
+  /**
+   * @param string
+   */
   public function setCurrencyCode($currencyCode)
   {
     $this->currencyCode = $currencyCode;
   }
+  /**
+   * @return string
+   */
   public function getCurrencyCode()
   {
     return $this->currencyCode;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param float
+   */
   public function setRevenue($revenue)
   {
     $this->revenue = $revenue;
   }
+  /**
+   * @return float
+   */
   public function getRevenue()
   {
     return $this->revenue;
   }
+  /**
+   * @param float[]
+   */
   public function setTaxes($taxes)
   {
     $this->taxes = $taxes;
   }
+  /**
+   * @return float[]
+   */
   public function getTaxes()
   {
     return $this->taxes;

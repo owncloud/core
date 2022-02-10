@@ -19,43 +19,85 @@ namespace Google\Service\Docs;
 
 class ImageProperties extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $angle;
+  /**
+   * @var float
+   */
   public $brightness;
+  /**
+   * @var string
+   */
   public $contentUri;
+  /**
+   * @var float
+   */
   public $contrast;
   protected $cropPropertiesType = CropProperties::class;
   protected $cropPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $sourceUri;
+  /**
+   * @var float
+   */
   public $transparency;
 
+  /**
+   * @param float
+   */
   public function setAngle($angle)
   {
     $this->angle = $angle;
   }
+  /**
+   * @return float
+   */
   public function getAngle()
   {
     return $this->angle;
   }
+  /**
+   * @param float
+   */
   public function setBrightness($brightness)
   {
     $this->brightness = $brightness;
   }
+  /**
+   * @return float
+   */
   public function getBrightness()
   {
     return $this->brightness;
   }
+  /**
+   * @param string
+   */
   public function setContentUri($contentUri)
   {
     $this->contentUri = $contentUri;
   }
+  /**
+   * @return string
+   */
   public function getContentUri()
   {
     return $this->contentUri;
   }
+  /**
+   * @param float
+   */
   public function setContrast($contrast)
   {
     $this->contrast = $contrast;
   }
+  /**
+   * @return float
+   */
   public function getContrast()
   {
     return $this->contrast;
@@ -74,18 +116,30 @@ class ImageProperties extends \Google\Model
   {
     return $this->cropProperties;
   }
+  /**
+   * @param string
+   */
   public function setSourceUri($sourceUri)
   {
     $this->sourceUri = $sourceUri;
   }
+  /**
+   * @return string
+   */
   public function getSourceUri()
   {
     return $this->sourceUri;
   }
+  /**
+   * @param float
+   */
   public function setTransparency($transparency)
   {
     $this->transparency = $transparency;
   }
+  /**
+   * @return float
+   */
   public function getTransparency()
   {
     return $this->transparency;

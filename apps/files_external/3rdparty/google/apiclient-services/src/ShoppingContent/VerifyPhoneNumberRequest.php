@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class VerifyPhoneNumberRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $phoneVerificationMethod;
+  /**
+   * @var string
+   */
   public $verificationCode;
+  /**
+   * @var string
+   */
   public $verificationId;
 
+  /**
+   * @param string
+   */
   public function setPhoneVerificationMethod($phoneVerificationMethod)
   {
     $this->phoneVerificationMethod = $phoneVerificationMethod;
   }
+  /**
+   * @return string
+   */
   public function getPhoneVerificationMethod()
   {
     return $this->phoneVerificationMethod;
   }
+  /**
+   * @param string
+   */
   public function setVerificationCode($verificationCode)
   {
     $this->verificationCode = $verificationCode;
   }
+  /**
+   * @return string
+   */
   public function getVerificationCode()
   {
     return $this->verificationCode;
   }
+  /**
+   * @param string
+   */
   public function setVerificationId($verificationId)
   {
     $this->verificationId = $verificationId;
   }
+  /**
+   * @return string
+   */
   public function getVerificationId()
   {
     return $this->verificationId;

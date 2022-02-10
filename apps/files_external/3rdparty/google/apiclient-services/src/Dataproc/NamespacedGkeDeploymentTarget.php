@@ -19,21 +19,39 @@ namespace Google\Service\Dataproc;
 
 class NamespacedGkeDeploymentTarget extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterNamespace;
+  /**
+   * @var string
+   */
   public $targetGkeCluster;
 
+  /**
+   * @param string
+   */
   public function setClusterNamespace($clusterNamespace)
   {
     $this->clusterNamespace = $clusterNamespace;
   }
+  /**
+   * @return string
+   */
   public function getClusterNamespace()
   {
     return $this->clusterNamespace;
   }
+  /**
+   * @param string
+   */
   public function setTargetGkeCluster($targetGkeCluster)
   {
     $this->targetGkeCluster = $targetGkeCluster;
   }
+  /**
+   * @return string
+   */
   public function getTargetGkeCluster()
   {
     return $this->targetGkeCluster;

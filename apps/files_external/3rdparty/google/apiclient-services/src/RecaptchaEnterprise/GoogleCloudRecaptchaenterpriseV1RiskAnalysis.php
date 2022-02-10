@@ -20,21 +20,39 @@ namespace Google\Service\RecaptchaEnterprise;
 class GoogleCloudRecaptchaenterpriseV1RiskAnalysis extends \Google\Collection
 {
   protected $collection_key = 'reasons';
+  /**
+   * @var string[]
+   */
   public $reasons;
+  /**
+   * @var float
+   */
   public $score;
 
+  /**
+   * @param string[]
+   */
   public function setReasons($reasons)
   {
     $this->reasons = $reasons;
   }
+  /**
+   * @return string[]
+   */
   public function getReasons()
   {
     return $this->reasons;
   }
+  /**
+   * @param float
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return float
+   */
   public function getScore()
   {
     return $this->score;

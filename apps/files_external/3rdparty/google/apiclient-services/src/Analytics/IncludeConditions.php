@@ -19,48 +19,93 @@ namespace Google\Service\Analytics;
 
 class IncludeConditions extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $daysToLookBack;
+  /**
+   * @var bool
+   */
   public $isSmartList;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var int
+   */
   public $membershipDurationDays;
+  /**
+   * @var string
+   */
   public $segment;
 
+  /**
+   * @param int
+   */
   public function setDaysToLookBack($daysToLookBack)
   {
     $this->daysToLookBack = $daysToLookBack;
   }
+  /**
+   * @return int
+   */
   public function getDaysToLookBack()
   {
     return $this->daysToLookBack;
   }
+  /**
+   * @param bool
+   */
   public function setIsSmartList($isSmartList)
   {
     $this->isSmartList = $isSmartList;
   }
+  /**
+   * @return bool
+   */
   public function getIsSmartList()
   {
     return $this->isSmartList;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param int
+   */
   public function setMembershipDurationDays($membershipDurationDays)
   {
     $this->membershipDurationDays = $membershipDurationDays;
   }
+  /**
+   * @return int
+   */
   public function getMembershipDurationDays()
   {
     return $this->membershipDurationDays;
   }
+  /**
+   * @param string
+   */
   public function setSegment($segment)
   {
     $this->segment = $segment;
   }
+  /**
+   * @return string
+   */
   public function getSegment()
   {
     return $this->segment;

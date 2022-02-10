@@ -20,25 +20,43 @@ namespace Google\Service\Compute;
 class VpnGatewayStatusVpnConnection extends \Google\Collection
 {
   protected $collection_key = 'tunnels';
+  /**
+   * @var string
+   */
   public $peerExternalGateway;
+  /**
+   * @var string
+   */
   public $peerGcpGateway;
   protected $stateType = VpnGatewayStatusHighAvailabilityRequirementState::class;
   protected $stateDataType = '';
   protected $tunnelsType = VpnGatewayStatusTunnel::class;
   protected $tunnelsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setPeerExternalGateway($peerExternalGateway)
   {
     $this->peerExternalGateway = $peerExternalGateway;
   }
+  /**
+   * @return string
+   */
   public function getPeerExternalGateway()
   {
     return $this->peerExternalGateway;
   }
+  /**
+   * @param string
+   */
   public function setPeerGcpGateway($peerGcpGateway)
   {
     $this->peerGcpGateway = $peerGcpGateway;
   }
+  /**
+   * @return string
+   */
   public function getPeerGcpGateway()
   {
     return $this->peerGcpGateway;

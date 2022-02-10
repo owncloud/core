@@ -19,41 +19,77 @@ namespace Google\Service\Reseller;
 
 class ChangePlanRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dealCode;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $planName;
+  /**
+   * @var string
+   */
   public $purchaseOrderId;
   protected $seatsType = Seats::class;
   protected $seatsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDealCode($dealCode)
   {
     $this->dealCode = $dealCode;
   }
+  /**
+   * @return string
+   */
   public function getDealCode()
   {
     return $this->dealCode;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPlanName($planName)
   {
     $this->planName = $planName;
   }
+  /**
+   * @return string
+   */
   public function getPlanName()
   {
     return $this->planName;
   }
+  /**
+   * @param string
+   */
   public function setPurchaseOrderId($purchaseOrderId)
   {
     $this->purchaseOrderId = $purchaseOrderId;
   }
+  /**
+   * @return string
+   */
   public function getPurchaseOrderId()
   {
     return $this->purchaseOrderId;

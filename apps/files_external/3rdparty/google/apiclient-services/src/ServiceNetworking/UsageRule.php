@@ -19,30 +19,57 @@ namespace Google\Service\ServiceNetworking;
 
 class UsageRule extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowUnregisteredCalls;
+  /**
+   * @var string
+   */
   public $selector;
+  /**
+   * @var bool
+   */
   public $skipServiceControl;
 
+  /**
+   * @param bool
+   */
   public function setAllowUnregisteredCalls($allowUnregisteredCalls)
   {
     $this->allowUnregisteredCalls = $allowUnregisteredCalls;
   }
+  /**
+   * @return bool
+   */
   public function getAllowUnregisteredCalls()
   {
     return $this->allowUnregisteredCalls;
   }
+  /**
+   * @param string
+   */
   public function setSelector($selector)
   {
     $this->selector = $selector;
   }
+  /**
+   * @return string
+   */
   public function getSelector()
   {
     return $this->selector;
   }
+  /**
+   * @param bool
+   */
   public function setSkipServiceControl($skipServiceControl)
   {
     $this->skipServiceControl = $skipServiceControl;
   }
+  /**
+   * @return bool
+   */
   public function getSkipServiceControl()
   {
     return $this->skipServiceControl;

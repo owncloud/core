@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class DfpSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dfpNetworkCode;
+  /**
+   * @var string
+   */
   public $dfpNetworkName;
+  /**
+   * @var bool
+   */
   public $programmaticPlacementAccepted;
+  /**
+   * @var bool
+   */
   public $pubPaidPlacementAccepted;
+  /**
+   * @var bool
+   */
   public $publisherPortalOnly;
 
+  /**
+   * @param string
+   */
   public function setDfpNetworkCode($dfpNetworkCode)
   {
     $this->dfpNetworkCode = $dfpNetworkCode;
   }
+  /**
+   * @return string
+   */
   public function getDfpNetworkCode()
   {
     return $this->dfpNetworkCode;
   }
+  /**
+   * @param string
+   */
   public function setDfpNetworkName($dfpNetworkName)
   {
     $this->dfpNetworkName = $dfpNetworkName;
   }
+  /**
+   * @return string
+   */
   public function getDfpNetworkName()
   {
     return $this->dfpNetworkName;
   }
+  /**
+   * @param bool
+   */
   public function setProgrammaticPlacementAccepted($programmaticPlacementAccepted)
   {
     $this->programmaticPlacementAccepted = $programmaticPlacementAccepted;
   }
+  /**
+   * @return bool
+   */
   public function getProgrammaticPlacementAccepted()
   {
     return $this->programmaticPlacementAccepted;
   }
+  /**
+   * @param bool
+   */
   public function setPubPaidPlacementAccepted($pubPaidPlacementAccepted)
   {
     $this->pubPaidPlacementAccepted = $pubPaidPlacementAccepted;
   }
+  /**
+   * @return bool
+   */
   public function getPubPaidPlacementAccepted()
   {
     return $this->pubPaidPlacementAccepted;
   }
+  /**
+   * @param bool
+   */
   public function setPublisherPortalOnly($publisherPortalOnly)
   {
     $this->publisherPortalOnly = $publisherPortalOnly;
   }
+  /**
+   * @return bool
+   */
   public function getPublisherPortalOnly()
   {
     return $this->publisherPortalOnly;

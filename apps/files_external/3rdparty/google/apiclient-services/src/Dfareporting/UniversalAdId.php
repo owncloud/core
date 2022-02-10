@@ -19,21 +19,39 @@ namespace Google\Service\Dfareporting;
 
 class UniversalAdId extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $registry;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setRegistry($registry)
   {
     $this->registry = $registry;
   }
+  /**
+   * @return string
+   */
   public function getRegistry()
   {
     return $this->registry;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

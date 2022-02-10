@@ -19,57 +19,111 @@ namespace Google\Service\FactCheckTools;
 
 class GoogleFactcheckingFactchecktoolsV1alpha1ClaimRating extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $bestRating;
+  /**
+   * @var string
+   */
   public $imageUrl;
+  /**
+   * @var string
+   */
   public $ratingExplanation;
+  /**
+   * @var int
+   */
   public $ratingValue;
+  /**
+   * @var string
+   */
   public $textualRating;
+  /**
+   * @var int
+   */
   public $worstRating;
 
+  /**
+   * @param int
+   */
   public function setBestRating($bestRating)
   {
     $this->bestRating = $bestRating;
   }
+  /**
+   * @return int
+   */
   public function getBestRating()
   {
     return $this->bestRating;
   }
+  /**
+   * @param string
+   */
   public function setImageUrl($imageUrl)
   {
     $this->imageUrl = $imageUrl;
   }
+  /**
+   * @return string
+   */
   public function getImageUrl()
   {
     return $this->imageUrl;
   }
+  /**
+   * @param string
+   */
   public function setRatingExplanation($ratingExplanation)
   {
     $this->ratingExplanation = $ratingExplanation;
   }
+  /**
+   * @return string
+   */
   public function getRatingExplanation()
   {
     return $this->ratingExplanation;
   }
+  /**
+   * @param int
+   */
   public function setRatingValue($ratingValue)
   {
     $this->ratingValue = $ratingValue;
   }
+  /**
+   * @return int
+   */
   public function getRatingValue()
   {
     return $this->ratingValue;
   }
+  /**
+   * @param string
+   */
   public function setTextualRating($textualRating)
   {
     $this->textualRating = $textualRating;
   }
+  /**
+   * @return string
+   */
   public function getTextualRating()
   {
     return $this->textualRating;
   }
+  /**
+   * @param int
+   */
   public function setWorstRating($worstRating)
   {
     $this->worstRating = $worstRating;
   }
+  /**
+   * @return int
+   */
   public function getWorstRating()
   {
     return $this->worstRating;

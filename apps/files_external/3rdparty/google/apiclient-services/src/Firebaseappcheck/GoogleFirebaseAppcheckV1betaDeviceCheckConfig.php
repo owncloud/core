@@ -19,48 +19,93 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaDeviceCheckConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $privateKey;
+  /**
+   * @var bool
+   */
   public $privateKeySet;
+  /**
+   * @var string
+   */
   public $tokenTtl;
 
+  /**
+   * @param string
+   */
   public function setKeyId($keyId)
   {
     $this->keyId = $keyId;
   }
+  /**
+   * @return string
+   */
   public function getKeyId()
   {
     return $this->keyId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPrivateKey($privateKey)
   {
     $this->privateKey = $privateKey;
   }
+  /**
+   * @return string
+   */
   public function getPrivateKey()
   {
     return $this->privateKey;
   }
+  /**
+   * @param bool
+   */
   public function setPrivateKeySet($privateKeySet)
   {
     $this->privateKeySet = $privateKeySet;
   }
+  /**
+   * @return bool
+   */
   public function getPrivateKeySet()
   {
     return $this->privateKeySet;
   }
+  /**
+   * @param string
+   */
   public function setTokenTtl($tokenTtl)
   {
     $this->tokenTtl = $tokenTtl;
   }
+  /**
+   * @return string
+   */
   public function getTokenTtl()
   {
     return $this->tokenTtl;

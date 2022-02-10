@@ -20,30 +20,57 @@ namespace Google\Service\CloudIdentity;
 class GoogleAppsCloudidentityDevicesV1LookupSelfDeviceUsersResponse extends \Google\Collection
 {
   protected $collection_key = 'names';
+  /**
+   * @var string
+   */
   public $customer;
+  /**
+   * @var string[]
+   */
   public $names;
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
+  /**
+   * @param string
+   */
   public function setCustomer($customer)
   {
     $this->customer = $customer;
   }
+  /**
+   * @return string
+   */
   public function getCustomer()
   {
     return $this->customer;
   }
+  /**
+   * @param string[]
+   */
   public function setNames($names)
   {
     $this->names = $names;
   }
+  /**
+   * @return string[]
+   */
   public function getNames()
   {
     return $this->names;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

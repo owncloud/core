@@ -19,48 +19,93 @@ namespace Google\Service\Dataflow;
 
 class KeyRangeLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataDisk;
+  /**
+   * @var string
+   */
   public $deliveryEndpoint;
+  /**
+   * @var string
+   */
   public $deprecatedPersistentDirectory;
+  /**
+   * @var string
+   */
   public $end;
+  /**
+   * @var string
+   */
   public $start;
 
+  /**
+   * @param string
+   */
   public function setDataDisk($dataDisk)
   {
     $this->dataDisk = $dataDisk;
   }
+  /**
+   * @return string
+   */
   public function getDataDisk()
   {
     return $this->dataDisk;
   }
+  /**
+   * @param string
+   */
   public function setDeliveryEndpoint($deliveryEndpoint)
   {
     $this->deliveryEndpoint = $deliveryEndpoint;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryEndpoint()
   {
     return $this->deliveryEndpoint;
   }
+  /**
+   * @param string
+   */
   public function setDeprecatedPersistentDirectory($deprecatedPersistentDirectory)
   {
     $this->deprecatedPersistentDirectory = $deprecatedPersistentDirectory;
   }
+  /**
+   * @return string
+   */
   public function getDeprecatedPersistentDirectory()
   {
     return $this->deprecatedPersistentDirectory;
   }
+  /**
+   * @param string
+   */
   public function setEnd($end)
   {
     $this->end = $end;
   }
+  /**
+   * @return string
+   */
   public function getEnd()
   {
     return $this->end;
   }
+  /**
+   * @param string
+   */
   public function setStart($start)
   {
     $this->start = $start;
   }
+  /**
+   * @return string
+   */
   public function getStart()
   {
     return $this->start;

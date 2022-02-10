@@ -19,39 +19,75 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1FlowHook extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $continueOnError;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $flowHookPoint;
+  /**
+   * @var string
+   */
   public $sharedFlow;
 
+  /**
+   * @param bool
+   */
   public function setContinueOnError($continueOnError)
   {
     $this->continueOnError = $continueOnError;
   }
+  /**
+   * @return bool
+   */
   public function getContinueOnError()
   {
     return $this->continueOnError;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setFlowHookPoint($flowHookPoint)
   {
     $this->flowHookPoint = $flowHookPoint;
   }
+  /**
+   * @return string
+   */
   public function getFlowHookPoint()
   {
     return $this->flowHookPoint;
   }
+  /**
+   * @param string
+   */
   public function setSharedFlow($sharedFlow)
   {
     $this->sharedFlow = $sharedFlow;
   }
+  /**
+   * @return string
+   */
   public function getSharedFlow()
   {
     return $this->sharedFlow;

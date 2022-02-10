@@ -19,32 +19,59 @@ namespace Google\Service\BinaryAuthorization;
 
 class AttestorPublicKey extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $asciiArmoredPgpPublicKey;
+  /**
+   * @var string
+   */
   public $comment;
+  /**
+   * @var string
+   */
   public $id;
   protected $pkixPublicKeyType = PkixPublicKey::class;
   protected $pkixPublicKeyDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAsciiArmoredPgpPublicKey($asciiArmoredPgpPublicKey)
   {
     $this->asciiArmoredPgpPublicKey = $asciiArmoredPgpPublicKey;
   }
+  /**
+   * @return string
+   */
   public function getAsciiArmoredPgpPublicKey()
   {
     return $this->asciiArmoredPgpPublicKey;
   }
+  /**
+   * @param string
+   */
   public function setComment($comment)
   {
     $this->comment = $comment;
   }
+  /**
+   * @return string
+   */
   public function getComment()
   {
     return $this->comment;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

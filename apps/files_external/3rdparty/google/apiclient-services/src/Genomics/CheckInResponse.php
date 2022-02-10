@@ -19,30 +19,57 @@ namespace Google\Service\Genomics;
 
 class CheckInResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deadline;
+  /**
+   * @var array[]
+   */
   public $features;
+  /**
+   * @var array[]
+   */
   public $metadata;
 
+  /**
+   * @param string
+   */
   public function setDeadline($deadline)
   {
     $this->deadline = $deadline;
   }
+  /**
+   * @return string
+   */
   public function getDeadline()
   {
     return $this->deadline;
   }
+  /**
+   * @param array[]
+   */
   public function setFeatures($features)
   {
     $this->features = $features;
   }
+  /**
+   * @return array[]
+   */
   public function getFeatures()
   {
     return $this->features;
   }
+  /**
+   * @param array[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return array[]
+   */
   public function getMetadata()
   {
     return $this->metadata;

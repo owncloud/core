@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class UserRolePermissionGroupsListResponse extends \Google\Collection
 {
   protected $collection_key = 'userRolePermissionGroups';
+  /**
+   * @var string
+   */
   public $kind;
   protected $userRolePermissionGroupsType = UserRolePermissionGroup::class;
   protected $userRolePermissionGroupsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

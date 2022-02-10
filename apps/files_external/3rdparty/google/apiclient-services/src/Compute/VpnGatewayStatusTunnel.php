@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class VpnGatewayStatusTunnel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $localGatewayInterface;
+  /**
+   * @var string
+   */
   public $peerGatewayInterface;
+  /**
+   * @var string
+   */
   public $tunnelUrl;
 
+  /**
+   * @param string
+   */
   public function setLocalGatewayInterface($localGatewayInterface)
   {
     $this->localGatewayInterface = $localGatewayInterface;
   }
+  /**
+   * @return string
+   */
   public function getLocalGatewayInterface()
   {
     return $this->localGatewayInterface;
   }
+  /**
+   * @param string
+   */
   public function setPeerGatewayInterface($peerGatewayInterface)
   {
     $this->peerGatewayInterface = $peerGatewayInterface;
   }
+  /**
+   * @return string
+   */
   public function getPeerGatewayInterface()
   {
     return $this->peerGatewayInterface;
   }
+  /**
+   * @param string
+   */
   public function setTunnelUrl($tunnelUrl)
   {
     $this->tunnelUrl = $tunnelUrl;
   }
+  /**
+   * @return string
+   */
   public function getTunnelUrl()
   {
     return $this->tunnelUrl;

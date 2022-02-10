@@ -20,21 +20,39 @@ namespace Google\Service\ServiceUsage;
 class BillingDestination extends \Google\Collection
 {
   protected $collection_key = 'metrics';
+  /**
+   * @var string[]
+   */
   public $metrics;
+  /**
+   * @var string
+   */
   public $monitoredResource;
 
+  /**
+   * @param string[]
+   */
   public function setMetrics($metrics)
   {
     $this->metrics = $metrics;
   }
+  /**
+   * @return string[]
+   */
   public function getMetrics()
   {
     return $this->metrics;
   }
+  /**
+   * @param string
+   */
   public function setMonitoredResource($monitoredResource)
   {
     $this->monitoredResource = $monitoredResource;
   }
+  /**
+   * @return string
+   */
   public function getMonitoredResource()
   {
     return $this->monitoredResource;

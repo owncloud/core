@@ -22,7 +22,13 @@ class ListMigratingVmsResponse extends \Google\Collection
   protected $collection_key = 'unreachable';
   protected $migratingVmsType = MigratingVm::class;
   protected $migratingVmsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $unreachable;
 
   /**
@@ -39,18 +45,30 @@ class ListMigratingVmsResponse extends \Google\Collection
   {
     return $this->migratingVms;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setUnreachable($unreachable)
   {
     $this->unreachable = $unreachable;
   }
+  /**
+   * @return string[]
+   */
   public function getUnreachable()
   {
     return $this->unreachable;

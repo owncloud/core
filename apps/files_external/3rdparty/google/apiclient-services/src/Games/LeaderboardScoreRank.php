@@ -19,48 +19,93 @@ namespace Google\Service\Games;
 
 class LeaderboardScoreRank extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $formattedNumScores;
+  /**
+   * @var string
+   */
   public $formattedRank;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $numScores;
+  /**
+   * @var string
+   */
   public $rank;
 
+  /**
+   * @param string
+   */
   public function setFormattedNumScores($formattedNumScores)
   {
     $this->formattedNumScores = $formattedNumScores;
   }
+  /**
+   * @return string
+   */
   public function getFormattedNumScores()
   {
     return $this->formattedNumScores;
   }
+  /**
+   * @param string
+   */
   public function setFormattedRank($formattedRank)
   {
     $this->formattedRank = $formattedRank;
   }
+  /**
+   * @return string
+   */
   public function getFormattedRank()
   {
     return $this->formattedRank;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNumScores($numScores)
   {
     $this->numScores = $numScores;
   }
+  /**
+   * @return string
+   */
   public function getNumScores()
   {
     return $this->numScores;
   }
+  /**
+   * @param string
+   */
   public function setRank($rank)
   {
     $this->rank = $rank;
   }
+  /**
+   * @return string
+   */
   public function getRank()
   {
     return $this->rank;

@@ -19,48 +19,93 @@ namespace Google\Service\FirebaseRealtimeDatabase;
 
 class DatabaseInstance extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $databaseUrl;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $project;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDatabaseUrl($databaseUrl)
   {
     $this->databaseUrl = $databaseUrl;
   }
+  /**
+   * @return string
+   */
   public function getDatabaseUrl()
   {
     return $this->databaseUrl;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -22,8 +22,17 @@ class GoogleCloudApigeeV1RevisionStatus extends \Google\Collection
   protected $collection_key = 'errors';
   protected $errorsType = GoogleCloudApigeeV1UpdateError::class;
   protected $errorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $jsonSpec;
+  /**
+   * @var int
+   */
   public $replicas;
+  /**
+   * @var string
+   */
   public $revisionId;
 
   /**
@@ -40,26 +49,44 @@ class GoogleCloudApigeeV1RevisionStatus extends \Google\Collection
   {
     return $this->errors;
   }
+  /**
+   * @param string
+   */
   public function setJsonSpec($jsonSpec)
   {
     $this->jsonSpec = $jsonSpec;
   }
+  /**
+   * @return string
+   */
   public function getJsonSpec()
   {
     return $this->jsonSpec;
   }
+  /**
+   * @param int
+   */
   public function setReplicas($replicas)
   {
     $this->replicas = $replicas;
   }
+  /**
+   * @return int
+   */
   public function getReplicas()
   {
     return $this->replicas;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;

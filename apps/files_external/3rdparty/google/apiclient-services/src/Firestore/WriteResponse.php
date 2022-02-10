@@ -20,32 +20,59 @@ namespace Google\Service\Firestore;
 class WriteResponse extends \Google\Collection
 {
   protected $collection_key = 'writeResults';
+  /**
+   * @var string
+   */
   public $commitTime;
+  /**
+   * @var string
+   */
   public $streamId;
+  /**
+   * @var string
+   */
   public $streamToken;
   protected $writeResultsType = WriteResult::class;
   protected $writeResultsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCommitTime($commitTime)
   {
     $this->commitTime = $commitTime;
   }
+  /**
+   * @return string
+   */
   public function getCommitTime()
   {
     return $this->commitTime;
   }
+  /**
+   * @param string
+   */
   public function setStreamId($streamId)
   {
     $this->streamId = $streamId;
   }
+  /**
+   * @return string
+   */
   public function getStreamId()
   {
     return $this->streamId;
   }
+  /**
+   * @param string
+   */
   public function setStreamToken($streamToken)
   {
     $this->streamToken = $streamToken;
   }
+  /**
+   * @return string
+   */
   public function getStreamToken()
   {
     return $this->streamToken;

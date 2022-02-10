@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class LineItemBudget extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $budgetAllocationType;
+  /**
+   * @var string
+   */
   public $budgetUnit;
+  /**
+   * @var string
+   */
   public $maxAmount;
 
+  /**
+   * @param string
+   */
   public function setBudgetAllocationType($budgetAllocationType)
   {
     $this->budgetAllocationType = $budgetAllocationType;
   }
+  /**
+   * @return string
+   */
   public function getBudgetAllocationType()
   {
     return $this->budgetAllocationType;
   }
+  /**
+   * @param string
+   */
   public function setBudgetUnit($budgetUnit)
   {
     $this->budgetUnit = $budgetUnit;
   }
+  /**
+   * @return string
+   */
   public function getBudgetUnit()
   {
     return $this->budgetUnit;
   }
+  /**
+   * @param string
+   */
   public function setMaxAmount($maxAmount)
   {
     $this->maxAmount = $maxAmount;
   }
+  /**
+   * @return string
+   */
   public function getMaxAmount()
   {
     return $this->maxAmount;

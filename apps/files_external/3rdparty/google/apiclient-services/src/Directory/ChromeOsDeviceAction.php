@@ -19,21 +19,39 @@ namespace Google\Service\Directory;
 
 class ChromeOsDeviceAction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string
+   */
   public $deprovisionReason;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string
+   */
   public function setDeprovisionReason($deprovisionReason)
   {
     $this->deprovisionReason = $deprovisionReason;
   }
+  /**
+   * @return string
+   */
   public function getDeprovisionReason()
   {
     return $this->deprovisionReason;

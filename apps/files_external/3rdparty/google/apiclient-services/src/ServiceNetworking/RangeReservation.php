@@ -20,32 +20,59 @@ namespace Google\Service\ServiceNetworking;
 class RangeReservation extends \Google\Collection
 {
   protected $collection_key = 'subnetworkCandidates';
+  /**
+   * @var int
+   */
   public $ipPrefixLength;
+  /**
+   * @var string[]
+   */
   public $requestedRanges;
+  /**
+   * @var int[]
+   */
   public $secondaryRangeIpPrefixLengths;
   protected $subnetworkCandidatesType = Subnetwork::class;
   protected $subnetworkCandidatesDataType = 'array';
 
+  /**
+   * @param int
+   */
   public function setIpPrefixLength($ipPrefixLength)
   {
     $this->ipPrefixLength = $ipPrefixLength;
   }
+  /**
+   * @return int
+   */
   public function getIpPrefixLength()
   {
     return $this->ipPrefixLength;
   }
+  /**
+   * @param string[]
+   */
   public function setRequestedRanges($requestedRanges)
   {
     $this->requestedRanges = $requestedRanges;
   }
+  /**
+   * @return string[]
+   */
   public function getRequestedRanges()
   {
     return $this->requestedRanges;
   }
+  /**
+   * @param int[]
+   */
   public function setSecondaryRangeIpPrefixLengths($secondaryRangeIpPrefixLengths)
   {
     $this->secondaryRangeIpPrefixLengths = $secondaryRangeIpPrefixLengths;
   }
+  /**
+   * @return int[]
+   */
   public function getSecondaryRangeIpPrefixLengths()
   {
     return $this->secondaryRangeIpPrefixLengths;

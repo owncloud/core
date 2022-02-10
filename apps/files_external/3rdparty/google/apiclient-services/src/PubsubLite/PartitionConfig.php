@@ -21,7 +21,13 @@ class PartitionConfig extends \Google\Model
 {
   protected $capacityType = Capacity::class;
   protected $capacityDataType = '';
+  /**
+   * @var string
+   */
   public $count;
+  /**
+   * @var int
+   */
   public $scale;
 
   /**
@@ -38,18 +44,30 @@ class PartitionConfig extends \Google\Model
   {
     return $this->capacity;
   }
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param int
+   */
   public function setScale($scale)
   {
     $this->scale = $scale;
   }
+  /**
+   * @return int
+   */
   public function getScale()
   {
     return $this->scale;

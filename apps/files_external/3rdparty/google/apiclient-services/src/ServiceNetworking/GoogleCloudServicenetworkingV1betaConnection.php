@@ -20,39 +20,75 @@ namespace Google\Service\ServiceNetworking;
 class GoogleCloudServicenetworkingV1betaConnection extends \Google\Collection
 {
   protected $collection_key = 'reservedPeeringRanges';
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string
+   */
   public $peering;
+  /**
+   * @var string[]
+   */
   public $reservedPeeringRanges;
+  /**
+   * @var string
+   */
   public $service;
 
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setPeering($peering)
   {
     $this->peering = $peering;
   }
+  /**
+   * @return string
+   */
   public function getPeering()
   {
     return $this->peering;
   }
+  /**
+   * @param string[]
+   */
   public function setReservedPeeringRanges($reservedPeeringRanges)
   {
     $this->reservedPeeringRanges = $reservedPeeringRanges;
   }
+  /**
+   * @return string[]
+   */
   public function getReservedPeeringRanges()
   {
     return $this->reservedPeeringRanges;
   }
+  /**
+   * @param string
+   */
   public function setService($service)
   {
     $this->service = $service;
   }
+  /**
+   * @return string
+   */
   public function getService()
   {
     return $this->service;

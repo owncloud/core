@@ -22,6 +22,9 @@ class ListAttributeMetadataResponse extends \Google\Collection
   protected $collection_key = 'attributeMetadata';
   protected $attributeMetadataType = AttributeMetadata::class;
   protected $attributeMetadataDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListAttributeMetadataResponse extends \Google\Collection
   {
     return $this->attributeMetadata;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

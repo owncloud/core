@@ -19,30 +19,57 @@ namespace Google\Service\CloudSupport;
 
 class WorkflowOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $namespace;
+  /**
+   * @var string
+   */
   public $operationAction;
+  /**
+   * @var string
+   */
   public $workflowOperationType;
 
+  /**
+   * @param string
+   */
   public function setNamespace($namespace)
   {
     $this->namespace = $namespace;
   }
+  /**
+   * @return string
+   */
   public function getNamespace()
   {
     return $this->namespace;
   }
+  /**
+   * @param string
+   */
   public function setOperationAction($operationAction)
   {
     $this->operationAction = $operationAction;
   }
+  /**
+   * @return string
+   */
   public function getOperationAction()
   {
     return $this->operationAction;
   }
+  /**
+   * @param string
+   */
   public function setWorkflowOperationType($workflowOperationType)
   {
     $this->workflowOperationType = $workflowOperationType;
   }
+  /**
+   * @return string
+   */
   public function getWorkflowOperationType()
   {
     return $this->workflowOperationType;

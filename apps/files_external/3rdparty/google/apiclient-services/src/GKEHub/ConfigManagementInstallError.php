@@ -19,12 +19,21 @@ namespace Google\Service\GKEHub;
 
 class ConfigManagementInstallError extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorMessage;
 
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;

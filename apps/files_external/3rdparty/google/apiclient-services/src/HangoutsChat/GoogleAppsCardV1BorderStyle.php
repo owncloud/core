@@ -19,15 +19,27 @@ namespace Google\Service\HangoutsChat;
 
 class GoogleAppsCardV1BorderStyle extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $cornerRadius;
   protected $strokeColorType = Color::class;
   protected $strokeColorDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setCornerRadius($cornerRadius)
   {
     $this->cornerRadius = $cornerRadius;
   }
+  /**
+   * @return int
+   */
   public function getCornerRadius()
   {
     return $this->cornerRadius;
@@ -46,10 +58,16 @@ class GoogleAppsCardV1BorderStyle extends \Google\Model
   {
     return $this->strokeColor;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

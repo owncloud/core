@@ -19,30 +19,57 @@ namespace Google\Service\Games;
 
 class ApplicationCategory extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $primary;
+  /**
+   * @var string
+   */
   public $secondary;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPrimary($primary)
   {
     $this->primary = $primary;
   }
+  /**
+   * @return string
+   */
   public function getPrimary()
   {
     return $this->primary;
   }
+  /**
+   * @param string
+   */
   public function setSecondary($secondary)
   {
     $this->secondary = $secondary;
   }
+  /**
+   * @return string
+   */
   public function getSecondary()
   {
     return $this->secondary;

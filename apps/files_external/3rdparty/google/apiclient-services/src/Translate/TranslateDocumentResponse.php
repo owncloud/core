@@ -25,6 +25,9 @@ class TranslateDocumentResponse extends \Google\Model
   protected $glossaryConfigDataType = '';
   protected $glossaryDocumentTranslationType = DocumentTranslation::class;
   protected $glossaryDocumentTranslationDataType = '';
+  /**
+   * @var string
+   */
   public $model;
 
   /**
@@ -69,10 +72,16 @@ class TranslateDocumentResponse extends \Google\Model
   {
     return $this->glossaryDocumentTranslation;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;

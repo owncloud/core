@@ -22,12 +22,21 @@ class BooksVolumesRecommendedRateResponse extends \Google\Model
   protected $internal_gapi_mappings = [
         "consistencyToken" => "consistency_token",
   ];
+  /**
+   * @var string
+   */
   public $consistencyToken;
 
+  /**
+   * @param string
+   */
   public function setConsistencyToken($consistencyToken)
   {
     $this->consistencyToken = $consistencyToken;
   }
+  /**
+   * @return string
+   */
   public function getConsistencyToken()
   {
     return $this->consistencyToken;

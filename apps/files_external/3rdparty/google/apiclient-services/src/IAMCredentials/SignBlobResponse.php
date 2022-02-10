@@ -19,21 +19,39 @@ namespace Google\Service\IAMCredentials;
 
 class SignBlobResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $keyId;
+  /**
+   * @var string
+   */
   public $signedBlob;
 
+  /**
+   * @param string
+   */
   public function setKeyId($keyId)
   {
     $this->keyId = $keyId;
   }
+  /**
+   * @return string
+   */
   public function getKeyId()
   {
     return $this->keyId;
   }
+  /**
+   * @param string
+   */
   public function setSignedBlob($signedBlob)
   {
     $this->signedBlob = $signedBlob;
   }
+  /**
+   * @return string
+   */
   public function getSignedBlob()
   {
     return $this->signedBlob;

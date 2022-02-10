@@ -19,12 +19,21 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaExchangeDeviceCheckTokenRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceToken;
 
+  /**
+   * @param string
+   */
   public function setDeviceToken($deviceToken)
   {
     $this->deviceToken = $deviceToken;
   }
+  /**
+   * @return string
+   */
   public function getDeviceToken()
   {
     return $this->deviceToken;

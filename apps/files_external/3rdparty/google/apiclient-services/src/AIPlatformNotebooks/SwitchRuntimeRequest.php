@@ -21,6 +21,9 @@ class SwitchRuntimeRequest extends \Google\Model
 {
   protected $acceleratorConfigType = RuntimeAcceleratorConfig::class;
   protected $acceleratorConfigDataType = '';
+  /**
+   * @var string
+   */
   public $machineType;
 
   /**
@@ -37,10 +40,16 @@ class SwitchRuntimeRequest extends \Google\Model
   {
     return $this->acceleratorConfig;
   }
+  /**
+   * @param string
+   */
   public function setMachineType($machineType)
   {
     $this->machineType = $machineType;
   }
+  /**
+   * @return string
+   */
   public function getMachineType()
   {
     return $this->machineType;

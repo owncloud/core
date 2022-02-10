@@ -19,21 +19,39 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1EntitlementEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $entitlement;
+  /**
+   * @var string
+   */
   public $eventType;
 
+  /**
+   * @param string
+   */
   public function setEntitlement($entitlement)
   {
     $this->entitlement = $entitlement;
   }
+  /**
+   * @return string
+   */
   public function getEntitlement()
   {
     return $this->entitlement;
   }
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;

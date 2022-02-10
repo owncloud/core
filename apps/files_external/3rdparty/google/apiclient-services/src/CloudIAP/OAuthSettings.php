@@ -19,12 +19,21 @@ namespace Google\Service\CloudIAP;
 
 class OAuthSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $loginHint;
 
+  /**
+   * @param string
+   */
   public function setLoginHint($loginHint)
   {
     $this->loginHint = $loginHint;
   }
+  /**
+   * @return string
+   */
   public function getLoginHint()
   {
     return $this->loginHint;

@@ -19,12 +19,21 @@ namespace Google\Service\Sheets;
 
 class DeleteEmbeddedObjectRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $objectId;
 
+  /**
+   * @param int
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return int
+   */
   public function getObjectId()
   {
     return $this->objectId;

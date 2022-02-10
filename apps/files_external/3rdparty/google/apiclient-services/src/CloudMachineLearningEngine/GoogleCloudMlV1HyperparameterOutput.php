@@ -24,14 +24,35 @@ class GoogleCloudMlV1HyperparameterOutput extends \Google\Collection
   protected $allMetricsDataType = 'array';
   protected $builtInAlgorithmOutputType = GoogleCloudMlV1BuiltInAlgorithmOutput::class;
   protected $builtInAlgorithmOutputDataType = '';
+  /**
+   * @var string
+   */
   public $endTime;
   protected $finalMetricType = GoogleCloudMlV1HyperparameterOutputHyperparameterMetric::class;
   protected $finalMetricDataType = '';
+  /**
+   * @var string[]
+   */
   public $hyperparameters;
+  /**
+   * @var bool
+   */
   public $isTrialStoppedEarly;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $trialId;
+  /**
+   * @var string[]
+   */
   public $webAccessUris;
 
   /**
@@ -62,10 +83,16 @@ class GoogleCloudMlV1HyperparameterOutput extends \Google\Collection
   {
     return $this->builtInAlgorithmOutput;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -84,50 +111,86 @@ class GoogleCloudMlV1HyperparameterOutput extends \Google\Collection
   {
     return $this->finalMetric;
   }
+  /**
+   * @param string[]
+   */
   public function setHyperparameters($hyperparameters)
   {
     $this->hyperparameters = $hyperparameters;
   }
+  /**
+   * @return string[]
+   */
   public function getHyperparameters()
   {
     return $this->hyperparameters;
   }
+  /**
+   * @param bool
+   */
   public function setIsTrialStoppedEarly($isTrialStoppedEarly)
   {
     $this->isTrialStoppedEarly = $isTrialStoppedEarly;
   }
+  /**
+   * @return bool
+   */
   public function getIsTrialStoppedEarly()
   {
     return $this->isTrialStoppedEarly;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setTrialId($trialId)
   {
     $this->trialId = $trialId;
   }
+  /**
+   * @return string
+   */
   public function getTrialId()
   {
     return $this->trialId;
   }
+  /**
+   * @param string[]
+   */
   public function setWebAccessUris($webAccessUris)
   {
     $this->webAccessUris = $webAccessUris;
   }
+  /**
+   * @return string[]
+   */
   public function getWebAccessUris()
   {
     return $this->webAccessUris;

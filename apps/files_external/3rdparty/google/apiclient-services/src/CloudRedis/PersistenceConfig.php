@@ -19,39 +19,75 @@ namespace Google\Service\CloudRedis;
 
 class PersistenceConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $persistenceMode;
+  /**
+   * @var string
+   */
   public $rdbNextSnapshotTime;
+  /**
+   * @var string
+   */
   public $rdbSnapshotPeriod;
+  /**
+   * @var string
+   */
   public $rdbSnapshotStartTime;
 
+  /**
+   * @param string
+   */
   public function setPersistenceMode($persistenceMode)
   {
     $this->persistenceMode = $persistenceMode;
   }
+  /**
+   * @return string
+   */
   public function getPersistenceMode()
   {
     return $this->persistenceMode;
   }
+  /**
+   * @param string
+   */
   public function setRdbNextSnapshotTime($rdbNextSnapshotTime)
   {
     $this->rdbNextSnapshotTime = $rdbNextSnapshotTime;
   }
+  /**
+   * @return string
+   */
   public function getRdbNextSnapshotTime()
   {
     return $this->rdbNextSnapshotTime;
   }
+  /**
+   * @param string
+   */
   public function setRdbSnapshotPeriod($rdbSnapshotPeriod)
   {
     $this->rdbSnapshotPeriod = $rdbSnapshotPeriod;
   }
+  /**
+   * @return string
+   */
   public function getRdbSnapshotPeriod()
   {
     return $this->rdbSnapshotPeriod;
   }
+  /**
+   * @param string
+   */
   public function setRdbSnapshotStartTime($rdbSnapshotStartTime)
   {
     $this->rdbSnapshotStartTime = $rdbSnapshotStartTime;
   }
+  /**
+   * @return string
+   */
   public function getRdbSnapshotStartTime()
   {
     return $this->rdbSnapshotStartTime;

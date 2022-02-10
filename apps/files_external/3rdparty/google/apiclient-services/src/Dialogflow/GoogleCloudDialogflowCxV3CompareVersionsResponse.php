@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3CompareVersionsResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $baseVersionContentJson;
+  /**
+   * @var string
+   */
   public $compareTime;
+  /**
+   * @var string
+   */
   public $targetVersionContentJson;
 
+  /**
+   * @param string
+   */
   public function setBaseVersionContentJson($baseVersionContentJson)
   {
     $this->baseVersionContentJson = $baseVersionContentJson;
   }
+  /**
+   * @return string
+   */
   public function getBaseVersionContentJson()
   {
     return $this->baseVersionContentJson;
   }
+  /**
+   * @param string
+   */
   public function setCompareTime($compareTime)
   {
     $this->compareTime = $compareTime;
   }
+  /**
+   * @return string
+   */
   public function getCompareTime()
   {
     return $this->compareTime;
   }
+  /**
+   * @param string
+   */
   public function setTargetVersionContentJson($targetVersionContentJson)
   {
     $this->targetVersionContentJson = $targetVersionContentJson;
   }
+  /**
+   * @return string
+   */
   public function getTargetVersionContentJson()
   {
     return $this->targetVersionContentJson;

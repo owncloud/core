@@ -19,12 +19,21 @@ namespace Google\Service\Area120Tables;
 
 class DateDetails extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $hasTime;
 
+  /**
+   * @param bool
+   */
   public function setHasTime($hasTime)
   {
     $this->hasTime = $hasTime;
   }
+  /**
+   * @return bool
+   */
   public function getHasTime()
   {
     return $this->hasTime;

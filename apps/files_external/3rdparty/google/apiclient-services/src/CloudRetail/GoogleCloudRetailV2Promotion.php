@@ -19,12 +19,21 @@ namespace Google\Service\CloudRetail;
 
 class GoogleCloudRetailV2Promotion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $promotionId;
 
+  /**
+   * @param string
+   */
   public function setPromotionId($promotionId)
   {
     $this->promotionId = $promotionId;
   }
+  /**
+   * @return string
+   */
   public function getPromotionId()
   {
     return $this->promotionId;

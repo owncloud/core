@@ -19,21 +19,39 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p4beta1WebDetectionWebImage extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $score;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param float
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return float
+   */
   public function getScore()
   {
     return $this->score;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

@@ -28,7 +28,13 @@ class GoogleCloudDialogflowV2IntentMessageTableCard extends \Google\Collection
   protected $imageDataType = '';
   protected $rowsType = GoogleCloudDialogflowV2IntentMessageTableCardRow::class;
   protected $rowsDataType = 'array';
+  /**
+   * @var string
+   */
   public $subtitle;
+  /**
+   * @var string
+   */
   public $title;
 
   /**
@@ -87,18 +93,30 @@ class GoogleCloudDialogflowV2IntentMessageTableCard extends \Google\Collection
   {
     return $this->rows;
   }
+  /**
+   * @param string
+   */
   public function setSubtitle($subtitle)
   {
     $this->subtitle = $subtitle;
   }
+  /**
+   * @return string
+   */
   public function getSubtitle()
   {
     return $this->subtitle;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

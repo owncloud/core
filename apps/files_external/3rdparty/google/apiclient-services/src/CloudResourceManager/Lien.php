@@ -20,57 +20,111 @@ namespace Google\Service\CloudResourceManager;
 class Lien extends \Google\Collection
 {
   protected $collection_key = 'restrictions';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $origin;
+  /**
+   * @var string
+   */
   public $parent;
+  /**
+   * @var string
+   */
   public $reason;
+  /**
+   * @var string[]
+   */
   public $restrictions;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOrigin($origin)
   {
     $this->origin = $origin;
   }
+  /**
+   * @return string
+   */
   public function getOrigin()
   {
     return $this->origin;
   }
+  /**
+   * @param string
+   */
   public function setParent($parent)
   {
     $this->parent = $parent;
   }
+  /**
+   * @return string
+   */
   public function getParent()
   {
     return $this->parent;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
   }
+  /**
+   * @param string[]
+   */
   public function setRestrictions($restrictions)
   {
     $this->restrictions = $restrictions;
   }
+  /**
+   * @return string[]
+   */
   public function getRestrictions()
   {
     return $this->restrictions;

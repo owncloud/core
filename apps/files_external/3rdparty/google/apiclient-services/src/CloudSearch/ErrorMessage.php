@@ -19,14 +19,23 @@ namespace Google\Service\CloudSearch;
 
 class ErrorMessage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorMessage;
   protected $sourceType = Source::class;
   protected $sourceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;

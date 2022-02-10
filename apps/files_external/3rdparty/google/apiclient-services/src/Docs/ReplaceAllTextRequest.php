@@ -21,6 +21,9 @@ class ReplaceAllTextRequest extends \Google\Model
 {
   protected $containsTextType = SubstringMatchCriteria::class;
   protected $containsTextDataType = '';
+  /**
+   * @var string
+   */
   public $replaceText;
 
   /**
@@ -37,10 +40,16 @@ class ReplaceAllTextRequest extends \Google\Model
   {
     return $this->containsText;
   }
+  /**
+   * @param string
+   */
   public function setReplaceText($replaceText)
   {
     $this->replaceText = $replaceText;
   }
+  /**
+   * @return string
+   */
   public function getReplaceText()
   {
     return $this->replaceText;

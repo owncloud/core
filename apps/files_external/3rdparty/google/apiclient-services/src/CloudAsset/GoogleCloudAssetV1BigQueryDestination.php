@@ -19,39 +19,75 @@ namespace Google\Service\CloudAsset;
 
 class GoogleCloudAssetV1BigQueryDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dataset;
+  /**
+   * @var string
+   */
   public $partitionKey;
+  /**
+   * @var string
+   */
   public $tablePrefix;
+  /**
+   * @var string
+   */
   public $writeDisposition;
 
+  /**
+   * @param string
+   */
   public function setDataset($dataset)
   {
     $this->dataset = $dataset;
   }
+  /**
+   * @return string
+   */
   public function getDataset()
   {
     return $this->dataset;
   }
+  /**
+   * @param string
+   */
   public function setPartitionKey($partitionKey)
   {
     $this->partitionKey = $partitionKey;
   }
+  /**
+   * @return string
+   */
   public function getPartitionKey()
   {
     return $this->partitionKey;
   }
+  /**
+   * @param string
+   */
   public function setTablePrefix($tablePrefix)
   {
     $this->tablePrefix = $tablePrefix;
   }
+  /**
+   * @return string
+   */
   public function getTablePrefix()
   {
     return $this->tablePrefix;
   }
+  /**
+   * @param string
+   */
   public function setWriteDisposition($writeDisposition)
   {
     $this->writeDisposition = $writeDisposition;
   }
+  /**
+   * @return string
+   */
   public function getWriteDisposition()
   {
     return $this->writeDisposition;

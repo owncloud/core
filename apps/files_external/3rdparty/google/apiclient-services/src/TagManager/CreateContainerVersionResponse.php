@@ -19,17 +19,29 @@ namespace Google\Service\TagManager;
 
 class CreateContainerVersionResponse extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $compilerError;
   protected $containerVersionType = ContainerVersion::class;
   protected $containerVersionDataType = '';
+  /**
+   * @var string
+   */
   public $newWorkspacePath;
   protected $syncStatusType = SyncStatus::class;
   protected $syncStatusDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setCompilerError($compilerError)
   {
     $this->compilerError = $compilerError;
   }
+  /**
+   * @return bool
+   */
   public function getCompilerError()
   {
     return $this->compilerError;
@@ -48,10 +60,16 @@ class CreateContainerVersionResponse extends \Google\Model
   {
     return $this->containerVersion;
   }
+  /**
+   * @param string
+   */
   public function setNewWorkspacePath($newWorkspacePath)
   {
     $this->newWorkspacePath = $newWorkspacePath;
   }
+  /**
+   * @return string
+   */
   public function getNewWorkspacePath()
   {
     return $this->newWorkspacePath;

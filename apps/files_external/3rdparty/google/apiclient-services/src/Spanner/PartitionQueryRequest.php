@@ -21,9 +21,15 @@ class PartitionQueryRequest extends \Google\Model
 {
   protected $paramTypesType = Type::class;
   protected $paramTypesDataType = 'map';
+  /**
+   * @var array[]
+   */
   public $params;
   protected $partitionOptionsType = PartitionOptions::class;
   protected $partitionOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $sql;
   protected $transactionType = TransactionSelector::class;
   protected $transactionDataType = '';
@@ -42,10 +48,16 @@ class PartitionQueryRequest extends \Google\Model
   {
     return $this->paramTypes;
   }
+  /**
+   * @param array[]
+   */
   public function setParams($params)
   {
     $this->params = $params;
   }
+  /**
+   * @return array[]
+   */
   public function getParams()
   {
     return $this->params;
@@ -64,10 +76,16 @@ class PartitionQueryRequest extends \Google\Model
   {
     return $this->partitionOptions;
   }
+  /**
+   * @param string
+   */
   public function setSql($sql)
   {
     $this->sql = $sql;
   }
+  /**
+   * @return string
+   */
   public function getSql()
   {
     return $this->sql;

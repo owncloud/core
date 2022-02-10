@@ -19,39 +19,75 @@ namespace Google\Service\Compute;
 
 class Reference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $referenceType;
+  /**
+   * @var string
+   */
   public $referrer;
+  /**
+   * @var string
+   */
   public $target;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setReferenceType($referenceType)
   {
     $this->referenceType = $referenceType;
   }
+  /**
+   * @return string
+   */
   public function getReferenceType()
   {
     return $this->referenceType;
   }
+  /**
+   * @param string
+   */
   public function setReferrer($referrer)
   {
     $this->referrer = $referrer;
   }
+  /**
+   * @return string
+   */
   public function getReferrer()
   {
     return $this->referrer;
   }
+  /**
+   * @param string
+   */
   public function setTarget($target)
   {
     $this->target = $target;
   }
+  /**
+   * @return string
+   */
   public function getTarget()
   {
     return $this->target;

@@ -19,21 +19,39 @@ namespace Google\Service\Slides;
 
 class UpdateLineCategoryRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lineCategory;
+  /**
+   * @var string
+   */
   public $objectId;
 
+  /**
+   * @param string
+   */
   public function setLineCategory($lineCategory)
   {
     $this->lineCategory = $lineCategory;
   }
+  /**
+   * @return string
+   */
   public function getLineCategory()
   {
     return $this->lineCategory;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;

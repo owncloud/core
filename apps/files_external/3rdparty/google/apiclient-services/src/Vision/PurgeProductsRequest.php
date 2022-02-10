@@ -19,23 +19,41 @@ namespace Google\Service\Vision;
 
 class PurgeProductsRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $deleteOrphanProducts;
+  /**
+   * @var bool
+   */
   public $force;
   protected $productSetPurgeConfigType = ProductSetPurgeConfig::class;
   protected $productSetPurgeConfigDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setDeleteOrphanProducts($deleteOrphanProducts)
   {
     $this->deleteOrphanProducts = $deleteOrphanProducts;
   }
+  /**
+   * @return bool
+   */
   public function getDeleteOrphanProducts()
   {
     return $this->deleteOrphanProducts;
   }
+  /**
+   * @param bool
+   */
   public function setForce($force)
   {
     $this->force = $force;
   }
+  /**
+   * @return bool
+   */
   public function getForce()
   {
     return $this->force;

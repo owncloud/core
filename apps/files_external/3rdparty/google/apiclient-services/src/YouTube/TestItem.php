@@ -19,32 +19,59 @@ namespace Google\Service\YouTube;
 
 class TestItem extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $featuredPart;
+  /**
+   * @var string
+   */
   public $gaia;
+  /**
+   * @var string
+   */
   public $id;
   protected $snippetType = TestItemTestItemSnippet::class;
   protected $snippetDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setFeaturedPart($featuredPart)
   {
     $this->featuredPart = $featuredPart;
   }
+  /**
+   * @return bool
+   */
   public function getFeaturedPart()
   {
     return $this->featuredPart;
   }
+  /**
+   * @param string
+   */
   public function setGaia($gaia)
   {
     $this->gaia = $gaia;
   }
+  /**
+   * @return string
+   */
   public function getGaia()
   {
     return $this->gaia;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;

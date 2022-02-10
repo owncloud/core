@@ -19,21 +19,39 @@ namespace Google\Service\CloudRun;
 
 class TCPSocketAction extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $host;
+  /**
+   * @var int
+   */
   public $port;
 
+  /**
+   * @param string
+   */
   public function setHost($host)
   {
     $this->host = $host;
   }
+  /**
+   * @return string
+   */
   public function getHost()
   {
     return $this->host;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;

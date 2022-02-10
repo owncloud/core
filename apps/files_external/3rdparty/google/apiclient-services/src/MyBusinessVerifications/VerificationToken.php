@@ -19,12 +19,21 @@ namespace Google\Service\MyBusinessVerifications;
 
 class VerificationToken extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $tokenString;
 
+  /**
+   * @param string
+   */
   public function setTokenString($tokenString)
   {
     $this->tokenString = $tokenString;
   }
+  /**
+   * @return string
+   */
   public function getTokenString()
   {
     return $this->tokenString;

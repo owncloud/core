@@ -19,21 +19,39 @@ namespace Google\Service\Connectors;
 
 class LockConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $locked;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param bool
+   */
   public function setLocked($locked)
   {
     $this->locked = $locked;
   }
+  /**
+   * @return bool
+   */
   public function getLocked()
   {
     return $this->locked;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

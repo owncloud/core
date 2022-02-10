@@ -24,8 +24,17 @@ class AllocationSpecificSKUAllocationReservedInstanceProperties extends \Google\
   protected $guestAcceleratorsDataType = 'array';
   protected $localSsdsType = AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk::class;
   protected $localSsdsDataType = 'array';
+  /**
+   * @var string
+   */
   public $locationHint;
+  /**
+   * @var string
+   */
   public $machineType;
+  /**
+   * @var string
+   */
   public $minCpuPlatform;
 
   /**
@@ -56,26 +65,44 @@ class AllocationSpecificSKUAllocationReservedInstanceProperties extends \Google\
   {
     return $this->localSsds;
   }
+  /**
+   * @param string
+   */
   public function setLocationHint($locationHint)
   {
     $this->locationHint = $locationHint;
   }
+  /**
+   * @return string
+   */
   public function getLocationHint()
   {
     return $this->locationHint;
   }
+  /**
+   * @param string
+   */
   public function setMachineType($machineType)
   {
     $this->machineType = $machineType;
   }
+  /**
+   * @return string
+   */
   public function getMachineType()
   {
     return $this->machineType;
   }
+  /**
+   * @param string
+   */
   public function setMinCpuPlatform($minCpuPlatform)
   {
     $this->minCpuPlatform = $minCpuPlatform;
   }
+  /**
+   * @return string
+   */
   public function getMinCpuPlatform()
   {
     return $this->minCpuPlatform;

@@ -21,14 +21,29 @@ class Probe extends \Google\Model
 {
   protected $execType = ExecAction::class;
   protected $execDataType = '';
+  /**
+   * @var int
+   */
   public $failureThreshold;
   protected $httpGetType = HTTPGetAction::class;
   protected $httpGetDataType = '';
+  /**
+   * @var int
+   */
   public $initialDelaySeconds;
+  /**
+   * @var int
+   */
   public $periodSeconds;
+  /**
+   * @var int
+   */
   public $successThreshold;
   protected $tcpSocketType = TCPSocketAction::class;
   protected $tcpSocketDataType = '';
+  /**
+   * @var int
+   */
   public $timeoutSeconds;
 
   /**
@@ -45,10 +60,16 @@ class Probe extends \Google\Model
   {
     return $this->exec;
   }
+  /**
+   * @param int
+   */
   public function setFailureThreshold($failureThreshold)
   {
     $this->failureThreshold = $failureThreshold;
   }
+  /**
+   * @return int
+   */
   public function getFailureThreshold()
   {
     return $this->failureThreshold;
@@ -67,26 +88,44 @@ class Probe extends \Google\Model
   {
     return $this->httpGet;
   }
+  /**
+   * @param int
+   */
   public function setInitialDelaySeconds($initialDelaySeconds)
   {
     $this->initialDelaySeconds = $initialDelaySeconds;
   }
+  /**
+   * @return int
+   */
   public function getInitialDelaySeconds()
   {
     return $this->initialDelaySeconds;
   }
+  /**
+   * @param int
+   */
   public function setPeriodSeconds($periodSeconds)
   {
     $this->periodSeconds = $periodSeconds;
   }
+  /**
+   * @return int
+   */
   public function getPeriodSeconds()
   {
     return $this->periodSeconds;
   }
+  /**
+   * @param int
+   */
   public function setSuccessThreshold($successThreshold)
   {
     $this->successThreshold = $successThreshold;
   }
+  /**
+   * @return int
+   */
   public function getSuccessThreshold()
   {
     return $this->successThreshold;
@@ -105,10 +144,16 @@ class Probe extends \Google\Model
   {
     return $this->tcpSocket;
   }
+  /**
+   * @param int
+   */
   public function setTimeoutSeconds($timeoutSeconds)
   {
     $this->timeoutSeconds = $timeoutSeconds;
   }
+  /**
+   * @return int
+   */
   public function getTimeoutSeconds()
   {
     return $this->timeoutSeconds;

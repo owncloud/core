@@ -20,30 +20,57 @@ namespace Google\Service\Dfareporting;
 class DayPartTargeting extends \Google\Collection
 {
   protected $collection_key = 'hoursOfDay';
+  /**
+   * @var string[]
+   */
   public $daysOfWeek;
+  /**
+   * @var int[]
+   */
   public $hoursOfDay;
+  /**
+   * @var bool
+   */
   public $userLocalTime;
 
+  /**
+   * @param string[]
+   */
   public function setDaysOfWeek($daysOfWeek)
   {
     $this->daysOfWeek = $daysOfWeek;
   }
+  /**
+   * @return string[]
+   */
   public function getDaysOfWeek()
   {
     return $this->daysOfWeek;
   }
+  /**
+   * @param int[]
+   */
   public function setHoursOfDay($hoursOfDay)
   {
     $this->hoursOfDay = $hoursOfDay;
   }
+  /**
+   * @return int[]
+   */
   public function getHoursOfDay()
   {
     return $this->hoursOfDay;
   }
+  /**
+   * @param bool
+   */
   public function setUserLocalTime($userLocalTime)
   {
     $this->userLocalTime = $userLocalTime;
   }
+  /**
+   * @return bool
+   */
   public function getUserLocalTime()
   {
     return $this->userLocalTime;

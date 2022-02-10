@@ -19,12 +19,21 @@ namespace Google\Service\Spanner;
 
 class IndexedHotKey extends \Google\Model
 {
+  /**
+   * @var int[]
+   */
   public $sparseHotKeys;
 
+  /**
+   * @param int[]
+   */
   public function setSparseHotKeys($sparseHotKeys)
   {
     $this->sparseHotKeys = $sparseHotKeys;
   }
+  /**
+   * @return int[]
+   */
   public function getSparseHotKeys()
   {
     return $this->sparseHotKeys;

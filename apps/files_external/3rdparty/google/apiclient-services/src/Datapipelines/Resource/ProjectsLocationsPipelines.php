@@ -71,7 +71,7 @@ class ProjectsLocationsPipelines extends \Google\Service\Resource
    * exists. Returns a "FORBIDDEN" error if the caller doesn't have permission to
    * access it. (pipelines.get)
    *
-   * @param string $name Required. The pipeeline name. For example:
+   * @param string $name Required. The pipeline name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/pipelines/PIPELINE_ID`.
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDatapipelinesV1Pipeline
@@ -83,21 +83,21 @@ class ProjectsLocationsPipelines extends \Google\Service\Resource
     return $this->call('get', [$params], GoogleCloudDatapipelinesV1Pipeline::class);
   }
   /**
-   * Updates a pipeline. If successful, the updated [Pipeline] is returned.
-   * Returns `NOT_FOUND` if the pipeline doesn't exist. If UpdatePipeline does not
-   * return successfully, you can retry the UpdatePipeline request until you
-   * receive a successful response. (pipelines.patch)
+   * Updates a pipeline. If successful, the updated Pipeline is returned. Returns
+   * `NOT_FOUND` if the pipeline doesn't exist. If UpdatePipeline does not return
+   * successfully, you can retry the UpdatePipeline request until you receive a
+   * successful response. (pipelines.patch)
    *
    * @param string $name The pipeline name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/pipelines/PIPELINE_ID`. *
    * `PROJECT_ID` can contain letters ([A-Za-z]), numbers ([0-9]), hyphens (-),
    * colons (:), and periods (.). For more information, see [Identifying
    * projects](https://cloud.google.com/resource-manager/docs/creating-managing-
-   * projects#identifying_projects) * `LOCATION_ID` is the canonical ID for the
+   * projects#identifying_projects). * `LOCATION_ID` is the canonical ID for the
    * pipeline's location. The list of available locations can be obtained by
-   * calling ListLocations. Note that the Data Pipelines service is not available
-   * in all regions. It depends on Cloud Scheduler, an App Engine application, so
-   * it's only available in [App Engine
+   * calling `google.cloud.location.Locations.ListLocations`. Note that the Data
+   * Pipelines service is not available in all regions. It depends on Cloud
+   * Scheduler, an App Engine application, so it's only available in [App Engine
    * regions](https://cloud.google.com/about/locations#region). * `PIPELINE_ID` is
    * the ID of the pipeline. Must be unique for the selected project and location.
    * @param GoogleCloudDatapipelinesV1Pipeline $postBody
@@ -116,7 +116,7 @@ class ProjectsLocationsPipelines extends \Google\Service\Resource
    * Creates a job for the specified pipeline directly. You can use this method
    * when the internal scheduler is not configured and you want to trigger the job
    * directly or through an external system. Returns a "NOT_FOUND" error if the
-   * pipeline doesn't exist. Returns a "FOBIDDEN" error if the user doesn't have
+   * pipeline doesn't exist. Returns a "FORBIDDEN" error if the user doesn't have
    * permission to access the pipeline or run jobs for the pipeline.
    * (pipelines.run)
    *
@@ -135,8 +135,7 @@ class ProjectsLocationsPipelines extends \Google\Service\Resource
   /**
    * Freezes pipeline execution permanently. If there's a corresponding scheduler
    * entry, it's deleted, and the pipeline state is changed to "ARCHIVED".
-   * However, pipeline metadata is retained. Upon success, the pipeline state is
-   * updated to ARCHIVED. (pipelines.stop)
+   * However, pipeline metadata is retained. (pipelines.stop)
    *
    * @param string $name Required. The pipeline name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/pipelines/PIPELINE_ID`.

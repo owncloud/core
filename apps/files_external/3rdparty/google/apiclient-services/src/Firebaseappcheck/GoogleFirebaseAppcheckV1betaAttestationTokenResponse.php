@@ -19,21 +19,39 @@ namespace Google\Service\Firebaseappcheck;
 
 class GoogleFirebaseAppcheckV1betaAttestationTokenResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $attestationToken;
+  /**
+   * @var string
+   */
   public $ttl;
 
+  /**
+   * @param string
+   */
   public function setAttestationToken($attestationToken)
   {
     $this->attestationToken = $attestationToken;
   }
+  /**
+   * @return string
+   */
   public function getAttestationToken()
   {
     return $this->attestationToken;
   }
+  /**
+   * @param string
+   */
   public function setTtl($ttl)
   {
     $this->ttl = $ttl;
   }
+  /**
+   * @return string
+   */
   public function getTtl()
   {
     return $this->ttl;

@@ -20,18 +20,33 @@ namespace Google\Service\MyBusinessBusinessInformation;
 class Attribute extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $name;
   protected $repeatedEnumValueType = RepeatedEnumAttributeValue::class;
   protected $repeatedEnumValueDataType = '';
   protected $uriValuesType = UriAttributeValue::class;
   protected $uriValuesDataType = 'array';
+  /**
+   * @var string
+   */
   public $valueType;
+  /**
+   * @var array[]
+   */
   public $values;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -64,18 +79,30 @@ class Attribute extends \Google\Collection
   {
     return $this->uriValues;
   }
+  /**
+   * @param string
+   */
   public function setValueType($valueType)
   {
     $this->valueType = $valueType;
   }
+  /**
+   * @return string
+   */
   public function getValueType()
   {
     return $this->valueType;
   }
+  /**
+   * @param array[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return array[]
+   */
   public function getValues()
   {
     return $this->values;

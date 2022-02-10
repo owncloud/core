@@ -19,26 +19,53 @@ namespace Google\Service\HangoutsChat;
 
 class GoogleAppsCardV1DateTimePicker extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $name;
   protected $onChangeActionType = GoogleAppsCardV1Action::class;
   protected $onChangeActionDataType = '';
+  /**
+   * @var int
+   */
   public $timezoneOffsetDate;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $valueMsEpoch;
 
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -57,26 +84,44 @@ class GoogleAppsCardV1DateTimePicker extends \Google\Model
   {
     return $this->onChangeAction;
   }
+  /**
+   * @param int
+   */
   public function setTimezoneOffsetDate($timezoneOffsetDate)
   {
     $this->timezoneOffsetDate = $timezoneOffsetDate;
   }
+  /**
+   * @return int
+   */
   public function getTimezoneOffsetDate()
   {
     return $this->timezoneOffsetDate;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setValueMsEpoch($valueMsEpoch)
   {
     $this->valueMsEpoch = $valueMsEpoch;
   }
+  /**
+   * @return string
+   */
   public function getValueMsEpoch()
   {
     return $this->valueMsEpoch;

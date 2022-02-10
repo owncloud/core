@@ -20,39 +20,75 @@ namespace Google\Service\CloudTalentSolution;
 class CustomAttribute extends \Google\Collection
 {
   protected $collection_key = 'stringValues';
+  /**
+   * @var bool
+   */
   public $filterable;
+  /**
+   * @var bool
+   */
   public $keywordSearchable;
+  /**
+   * @var string[]
+   */
   public $longValues;
+  /**
+   * @var string[]
+   */
   public $stringValues;
 
+  /**
+   * @param bool
+   */
   public function setFilterable($filterable)
   {
     $this->filterable = $filterable;
   }
+  /**
+   * @return bool
+   */
   public function getFilterable()
   {
     return $this->filterable;
   }
+  /**
+   * @param bool
+   */
   public function setKeywordSearchable($keywordSearchable)
   {
     $this->keywordSearchable = $keywordSearchable;
   }
+  /**
+   * @return bool
+   */
   public function getKeywordSearchable()
   {
     return $this->keywordSearchable;
   }
+  /**
+   * @param string[]
+   */
   public function setLongValues($longValues)
   {
     $this->longValues = $longValues;
   }
+  /**
+   * @return string[]
+   */
   public function getLongValues()
   {
     return $this->longValues;
   }
+  /**
+   * @param string[]
+   */
   public function setStringValues($stringValues)
   {
     $this->stringValues = $stringValues;
   }
+  /**
+   * @return string[]
+   */
   public function getStringValues()
   {
     return $this->stringValues;

@@ -19,21 +19,39 @@ namespace Google\Service\CloudFilestore;
 
 class GoogleCloudSaasacceleratorManagementProvidersV1ProvisionedResource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $resourceType;
+  /**
+   * @var string
+   */
   public $resourceUrl;
 
+  /**
+   * @param string
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string
+   */
   public function getResourceType()
   {
     return $this->resourceType;
   }
+  /**
+   * @param string
+   */
   public function setResourceUrl($resourceUrl)
   {
     $this->resourceUrl = $resourceUrl;
   }
+  /**
+   * @return string
+   */
   public function getResourceUrl()
   {
     return $this->resourceUrl;

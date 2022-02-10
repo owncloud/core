@@ -20,16 +20,25 @@ namespace Google\Service\Docs;
 class BatchUpdateDocumentResponse extends \Google\Collection
 {
   protected $collection_key = 'replies';
+  /**
+   * @var string
+   */
   public $documentId;
   protected $repliesType = Response::class;
   protected $repliesDataType = 'array';
   protected $writeControlType = WriteControl::class;
   protected $writeControlDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDocumentId($documentId)
   {
     $this->documentId = $documentId;
   }
+  /**
+   * @return string
+   */
   public function getDocumentId()
   {
     return $this->documentId;

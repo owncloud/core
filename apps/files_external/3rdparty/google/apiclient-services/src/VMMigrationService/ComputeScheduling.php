@@ -20,16 +20,31 @@ namespace Google\Service\VMMigrationService;
 class ComputeScheduling extends \Google\Collection
 {
   protected $collection_key = 'nodeAffinities';
+  /**
+   * @var int
+   */
   public $minNodeCpus;
   protected $nodeAffinitiesType = SchedulingNodeAffinity::class;
   protected $nodeAffinitiesDataType = 'array';
+  /**
+   * @var string
+   */
   public $onHostMaintenance;
+  /**
+   * @var string
+   */
   public $restartType;
 
+  /**
+   * @param int
+   */
   public function setMinNodeCpus($minNodeCpus)
   {
     $this->minNodeCpus = $minNodeCpus;
   }
+  /**
+   * @return int
+   */
   public function getMinNodeCpus()
   {
     return $this->minNodeCpus;
@@ -48,18 +63,30 @@ class ComputeScheduling extends \Google\Collection
   {
     return $this->nodeAffinities;
   }
+  /**
+   * @param string
+   */
   public function setOnHostMaintenance($onHostMaintenance)
   {
     $this->onHostMaintenance = $onHostMaintenance;
   }
+  /**
+   * @return string
+   */
   public function getOnHostMaintenance()
   {
     return $this->onHostMaintenance;
   }
+  /**
+   * @param string
+   */
   public function setRestartType($restartType)
   {
     $this->restartType = $restartType;
   }
+  /**
+   * @return string
+   */
   public function getRestartType()
   {
     return $this->restartType;

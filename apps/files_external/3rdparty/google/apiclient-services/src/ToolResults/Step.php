@@ -24,22 +24,37 @@ class Step extends \Google\Collection
   protected $completionTimeDataType = '';
   protected $creationTimeType = Timestamp::class;
   protected $creationTimeDataType = '';
+  /**
+   * @var string
+   */
   public $description;
   protected $deviceUsageDurationType = Duration::class;
   protected $deviceUsageDurationDataType = '';
   protected $dimensionValueType = StepDimensionValueEntry::class;
   protected $dimensionValueDataType = 'array';
+  /**
+   * @var bool
+   */
   public $hasImages;
   protected $labelsType = StepLabelsEntry::class;
   protected $labelsDataType = 'array';
   protected $multiStepType = MultiStep::class;
   protected $multiStepDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $outcomeType = Outcome::class;
   protected $outcomeDataType = '';
   protected $runDurationType = Duration::class;
   protected $runDurationDataType = '';
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $stepId;
   protected $testExecutionStepType = TestExecutionStep::class;
   protected $testExecutionStepDataType = '';
@@ -74,10 +89,16 @@ class Step extends \Google\Collection
   {
     return $this->creationTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -110,10 +131,16 @@ class Step extends \Google\Collection
   {
     return $this->dimensionValue;
   }
+  /**
+   * @param bool
+   */
   public function setHasImages($hasImages)
   {
     $this->hasImages = $hasImages;
   }
+  /**
+   * @return bool
+   */
   public function getHasImages()
   {
     return $this->hasImages;
@@ -146,10 +173,16 @@ class Step extends \Google\Collection
   {
     return $this->multiStep;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -182,18 +215,30 @@ class Step extends \Google\Collection
   {
     return $this->runDuration;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setStepId($stepId)
   {
     $this->stepId = $stepId;
   }
+  /**
+   * @return string
+   */
   public function getStepId()
   {
     return $this->stepId;

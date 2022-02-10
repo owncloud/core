@@ -21,9 +21,21 @@ class Location extends \Google\Model
 {
   protected $addressType = PostalAddress::class;
   protected $addressDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $primaryCategoryId;
+  /**
+   * @var string
+   */
   public $primaryPhone;
+  /**
+   * @var string
+   */
   public $websiteUri;
 
   /**
@@ -40,34 +52,58 @@ class Location extends \Google\Model
   {
     return $this->address;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPrimaryCategoryId($primaryCategoryId)
   {
     $this->primaryCategoryId = $primaryCategoryId;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryCategoryId()
   {
     return $this->primaryCategoryId;
   }
+  /**
+   * @param string
+   */
   public function setPrimaryPhone($primaryPhone)
   {
     $this->primaryPhone = $primaryPhone;
   }
+  /**
+   * @return string
+   */
   public function getPrimaryPhone()
   {
     return $this->primaryPhone;
   }
+  /**
+   * @param string
+   */
   public function setWebsiteUri($websiteUri)
   {
     $this->websiteUri = $websiteUri;
   }
+  /**
+   * @return string
+   */
   public function getWebsiteUri()
   {
     return $this->websiteUri;

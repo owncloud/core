@@ -19,30 +19,57 @@ namespace Google\Service\AnalyticsData;
 
 class StringFilter extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $caseSensitive;
+  /**
+   * @var string
+   */
   public $matchType;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param bool
+   */
   public function setCaseSensitive($caseSensitive)
   {
     $this->caseSensitive = $caseSensitive;
   }
+  /**
+   * @return bool
+   */
   public function getCaseSensitive()
   {
     return $this->caseSensitive;
   }
+  /**
+   * @param string
+   */
   public function setMatchType($matchType)
   {
     $this->matchType = $matchType;
   }
+  /**
+   * @return string
+   */
   public function getMatchType()
   {
     return $this->matchType;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

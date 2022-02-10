@@ -19,14 +19,23 @@ namespace Google\Service\Sheets;
 
 class MergeCellsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mergeType;
   protected $rangeType = GridRange::class;
   protected $rangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setMergeType($mergeType)
   {
     $this->mergeType = $mergeType;
   }
+  /**
+   * @return string
+   */
   public function getMergeType()
   {
     return $this->mergeType;

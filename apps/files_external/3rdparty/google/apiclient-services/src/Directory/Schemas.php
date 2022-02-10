@@ -20,23 +20,41 @@ namespace Google\Service\Directory;
 class Schemas extends \Google\Collection
 {
   protected $collection_key = 'schemas';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
   protected $schemasType = Schema::class;
   protected $schemasDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

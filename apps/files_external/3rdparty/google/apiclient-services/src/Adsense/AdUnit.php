@@ -21,9 +21,21 @@ class AdUnit extends \Google\Model
 {
   protected $contentAdsSettingsType = ContentAdsSettings::class;
   protected $contentAdsSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $reportingDimensionId;
+  /**
+   * @var string
+   */
   public $state;
 
   /**
@@ -40,34 +52,58 @@ class AdUnit extends \Google\Model
   {
     return $this->contentAdsSettings;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setReportingDimensionId($reportingDimensionId)
   {
     $this->reportingDimensionId = $reportingDimensionId;
   }
+  /**
+   * @return string
+   */
   public function getReportingDimensionId()
   {
     return $this->reportingDimensionId;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

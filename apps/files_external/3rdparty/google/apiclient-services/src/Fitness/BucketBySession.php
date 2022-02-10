@@ -19,12 +19,21 @@ namespace Google\Service\Fitness;
 
 class BucketBySession extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $minDurationMillis;
 
+  /**
+   * @param string
+   */
   public function setMinDurationMillis($minDurationMillis)
   {
     $this->minDurationMillis = $minDurationMillis;
   }
+  /**
+   * @return string
+   */
   public function getMinDurationMillis()
   {
     return $this->minDurationMillis;

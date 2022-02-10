@@ -20,57 +20,111 @@ namespace Google\Service\AdMob;
 class AdUnit extends \Google\Collection
 {
   protected $collection_key = 'adTypes';
+  /**
+   * @var string
+   */
   public $adFormat;
+  /**
+   * @var string[]
+   */
   public $adTypes;
+  /**
+   * @var string
+   */
   public $adUnitId;
+  /**
+   * @var string
+   */
   public $appId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setAdFormat($adFormat)
   {
     $this->adFormat = $adFormat;
   }
+  /**
+   * @return string
+   */
   public function getAdFormat()
   {
     return $this->adFormat;
   }
+  /**
+   * @param string[]
+   */
   public function setAdTypes($adTypes)
   {
     $this->adTypes = $adTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getAdTypes()
   {
     return $this->adTypes;
   }
+  /**
+   * @param string
+   */
   public function setAdUnitId($adUnitId)
   {
     $this->adUnitId = $adUnitId;
   }
+  /**
+   * @return string
+   */
   public function getAdUnitId()
   {
     return $this->adUnitId;
   }
+  /**
+   * @param string
+   */
   public function setAppId($appId)
   {
     $this->appId = $appId;
   }
+  /**
+   * @return string
+   */
   public function getAppId()
   {
     return $this->appId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -20,89 +20,191 @@ namespace Google\Service\Compute;
 class AttachedDiskInitializeParams extends \Google\Collection
 {
   protected $collection_key = 'resourcePolicies';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $diskName;
+  /**
+   * @var string
+   */
   public $diskSizeGb;
+  /**
+   * @var string
+   */
   public $diskType;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string[]
+   */
+  public $licenses;
+  /**
+   * @var string
+   */
   public $onUpdateAction;
+  /**
+   * @var string
+   */
   public $provisionedIops;
+  /**
+   * @var string[]
+   */
   public $resourcePolicies;
+  /**
+   * @var string
+   */
   public $sourceImage;
   protected $sourceImageEncryptionKeyType = CustomerEncryptionKey::class;
   protected $sourceImageEncryptionKeyDataType = '';
+  /**
+   * @var string
+   */
   public $sourceSnapshot;
   protected $sourceSnapshotEncryptionKeyType = CustomerEncryptionKey::class;
   protected $sourceSnapshotEncryptionKeyDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDiskName($diskName)
   {
     $this->diskName = $diskName;
   }
+  /**
+   * @return string
+   */
   public function getDiskName()
   {
     return $this->diskName;
   }
+  /**
+   * @param string
+   */
   public function setDiskSizeGb($diskSizeGb)
   {
     $this->diskSizeGb = $diskSizeGb;
   }
+  /**
+   * @return string
+   */
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setDiskType($diskType)
   {
     $this->diskType = $diskType;
   }
+  /**
+   * @return string
+   */
   public function getDiskType()
   {
     return $this->diskType;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string[]
+   */
+  public function setLicenses($licenses)
+  {
+    $this->licenses = $licenses;
+  }
+  /**
+   * @return string[]
+   */
+  public function getLicenses()
+  {
+    return $this->licenses;
+  }
+  /**
+   * @param string
+   */
   public function setOnUpdateAction($onUpdateAction)
   {
     $this->onUpdateAction = $onUpdateAction;
   }
+  /**
+   * @return string
+   */
   public function getOnUpdateAction()
   {
     return $this->onUpdateAction;
   }
+  /**
+   * @param string
+   */
   public function setProvisionedIops($provisionedIops)
   {
     $this->provisionedIops = $provisionedIops;
   }
+  /**
+   * @return string
+   */
   public function getProvisionedIops()
   {
     return $this->provisionedIops;
   }
+  /**
+   * @param string[]
+   */
   public function setResourcePolicies($resourcePolicies)
   {
     $this->resourcePolicies = $resourcePolicies;
   }
+  /**
+   * @return string[]
+   */
   public function getResourcePolicies()
   {
     return $this->resourcePolicies;
   }
+  /**
+   * @param string
+   */
   public function setSourceImage($sourceImage)
   {
     $this->sourceImage = $sourceImage;
   }
+  /**
+   * @return string
+   */
   public function getSourceImage()
   {
     return $this->sourceImage;
@@ -121,10 +223,16 @@ class AttachedDiskInitializeParams extends \Google\Collection
   {
     return $this->sourceImageEncryptionKey;
   }
+  /**
+   * @param string
+   */
   public function setSourceSnapshot($sourceSnapshot)
   {
     $this->sourceSnapshot = $sourceSnapshot;
   }
+  /**
+   * @return string
+   */
   public function getSourceSnapshot()
   {
     return $this->sourceSnapshot;

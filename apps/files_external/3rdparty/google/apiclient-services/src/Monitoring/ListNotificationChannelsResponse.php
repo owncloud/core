@@ -20,15 +20,27 @@ namespace Google\Service\Monitoring;
 class ListNotificationChannelsResponse extends \Google\Collection
 {
   protected $collection_key = 'notificationChannels';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $notificationChannelsType = NotificationChannel::class;
   protected $notificationChannelsDataType = 'array';
+  /**
+   * @var int
+   */
   public $totalSize;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
@@ -47,10 +59,16 @@ class ListNotificationChannelsResponse extends \Google\Collection
   {
     return $this->notificationChannels;
   }
+  /**
+   * @param int
+   */
   public function setTotalSize($totalSize)
   {
     $this->totalSize = $totalSize;
   }
+  /**
+   * @return int
+   */
   public function getTotalSize()
   {
     return $this->totalSize;

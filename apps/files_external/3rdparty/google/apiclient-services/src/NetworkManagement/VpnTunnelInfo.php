@@ -19,84 +19,165 @@ namespace Google\Service\NetworkManagement;
 
 class VpnTunnelInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $networkUri;
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $remoteGateway;
+  /**
+   * @var string
+   */
   public $remoteGatewayIp;
+  /**
+   * @var string
+   */
   public $routingType;
+  /**
+   * @var string
+   */
   public $sourceGateway;
+  /**
+   * @var string
+   */
   public $sourceGatewayIp;
+  /**
+   * @var string
+   */
   public $uri;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setNetworkUri($networkUri)
   {
     $this->networkUri = $networkUri;
   }
+  /**
+   * @return string
+   */
   public function getNetworkUri()
   {
     return $this->networkUri;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setRemoteGateway($remoteGateway)
   {
     $this->remoteGateway = $remoteGateway;
   }
+  /**
+   * @return string
+   */
   public function getRemoteGateway()
   {
     return $this->remoteGateway;
   }
+  /**
+   * @param string
+   */
   public function setRemoteGatewayIp($remoteGatewayIp)
   {
     $this->remoteGatewayIp = $remoteGatewayIp;
   }
+  /**
+   * @return string
+   */
   public function getRemoteGatewayIp()
   {
     return $this->remoteGatewayIp;
   }
+  /**
+   * @param string
+   */
   public function setRoutingType($routingType)
   {
     $this->routingType = $routingType;
   }
+  /**
+   * @return string
+   */
   public function getRoutingType()
   {
     return $this->routingType;
   }
+  /**
+   * @param string
+   */
   public function setSourceGateway($sourceGateway)
   {
     $this->sourceGateway = $sourceGateway;
   }
+  /**
+   * @return string
+   */
   public function getSourceGateway()
   {
     return $this->sourceGateway;
   }
+  /**
+   * @param string
+   */
   public function setSourceGatewayIp($sourceGatewayIp)
   {
     $this->sourceGatewayIp = $sourceGatewayIp;
   }
+  /**
+   * @return string
+   */
   public function getSourceGatewayIp()
   {
     return $this->sourceGatewayIp;
   }
+  /**
+   * @param string
+   */
   public function setUri($uri)
   {
     $this->uri = $uri;
   }
+  /**
+   * @return string
+   */
   public function getUri()
   {
     return $this->uri;

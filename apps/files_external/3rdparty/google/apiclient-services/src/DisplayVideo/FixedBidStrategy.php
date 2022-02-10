@@ -19,12 +19,21 @@ namespace Google\Service\DisplayVideo;
 
 class FixedBidStrategy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bidAmountMicros;
 
+  /**
+   * @param string
+   */
   public function setBidAmountMicros($bidAmountMicros)
   {
     $this->bidAmountMicros = $bidAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getBidAmountMicros()
   {
     return $this->bidAmountMicros;

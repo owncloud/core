@@ -19,39 +19,75 @@ namespace Google\Service\Drive;
 
 class DriveRestrictions extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $adminManagedRestrictions;
+  /**
+   * @var bool
+   */
   public $copyRequiresWriterPermission;
+  /**
+   * @var bool
+   */
   public $domainUsersOnly;
+  /**
+   * @var bool
+   */
   public $driveMembersOnly;
 
+  /**
+   * @param bool
+   */
   public function setAdminManagedRestrictions($adminManagedRestrictions)
   {
     $this->adminManagedRestrictions = $adminManagedRestrictions;
   }
+  /**
+   * @return bool
+   */
   public function getAdminManagedRestrictions()
   {
     return $this->adminManagedRestrictions;
   }
+  /**
+   * @param bool
+   */
   public function setCopyRequiresWriterPermission($copyRequiresWriterPermission)
   {
     $this->copyRequiresWriterPermission = $copyRequiresWriterPermission;
   }
+  /**
+   * @return bool
+   */
   public function getCopyRequiresWriterPermission()
   {
     return $this->copyRequiresWriterPermission;
   }
+  /**
+   * @param bool
+   */
   public function setDomainUsersOnly($domainUsersOnly)
   {
     $this->domainUsersOnly = $domainUsersOnly;
   }
+  /**
+   * @return bool
+   */
   public function getDomainUsersOnly()
   {
     return $this->domainUsersOnly;
   }
+  /**
+   * @param bool
+   */
   public function setDriveMembersOnly($driveMembersOnly)
   {
     $this->driveMembersOnly = $driveMembersOnly;
   }
+  /**
+   * @return bool
+   */
   public function getDriveMembersOnly()
   {
     return $this->driveMembersOnly;

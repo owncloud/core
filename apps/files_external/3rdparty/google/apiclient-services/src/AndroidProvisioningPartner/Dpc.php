@@ -19,30 +19,57 @@ namespace Google\Service\AndroidProvisioningPartner;
 
 class Dpc extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dpcName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $packageName;
 
+  /**
+   * @param string
+   */
   public function setDpcName($dpcName)
   {
     $this->dpcName = $dpcName;
   }
+  /**
+   * @return string
+   */
   public function getDpcName()
   {
     return $this->dpcName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;

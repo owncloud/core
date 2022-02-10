@@ -19,21 +19,39 @@ namespace Google\Service\RecommendationsAI;
 
 class GoogleCloudRecommendationengineV1beta1UserEventImportSummary extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $joinedEventsCount;
+  /**
+   * @var string
+   */
   public $unjoinedEventsCount;
 
+  /**
+   * @param string
+   */
   public function setJoinedEventsCount($joinedEventsCount)
   {
     $this->joinedEventsCount = $joinedEventsCount;
   }
+  /**
+   * @return string
+   */
   public function getJoinedEventsCount()
   {
     return $this->joinedEventsCount;
   }
+  /**
+   * @param string
+   */
   public function setUnjoinedEventsCount($unjoinedEventsCount)
   {
     $this->unjoinedEventsCount = $unjoinedEventsCount;
   }
+  /**
+   * @return string
+   */
   public function getUnjoinedEventsCount()
   {
     return $this->unjoinedEventsCount;

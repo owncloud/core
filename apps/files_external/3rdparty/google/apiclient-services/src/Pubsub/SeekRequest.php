@@ -19,21 +19,39 @@ namespace Google\Service\Pubsub;
 
 class SeekRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $snapshot;
+  /**
+   * @var string
+   */
   public $time;
 
+  /**
+   * @param string
+   */
   public function setSnapshot($snapshot)
   {
     $this->snapshot = $snapshot;
   }
+  /**
+   * @return string
+   */
   public function getSnapshot()
   {
     return $this->snapshot;
   }
+  /**
+   * @param string
+   */
   public function setTime($time)
   {
     $this->time = $time;
   }
+  /**
+   * @return string
+   */
   public function getTime()
   {
     return $this->time;

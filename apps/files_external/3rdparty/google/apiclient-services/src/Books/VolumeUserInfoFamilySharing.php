@@ -19,30 +19,57 @@ namespace Google\Service\Books;
 
 class VolumeUserInfoFamilySharing extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $familyRole;
+  /**
+   * @var bool
+   */
   public $isSharingAllowed;
+  /**
+   * @var bool
+   */
   public $isSharingDisabledByFop;
 
+  /**
+   * @param string
+   */
   public function setFamilyRole($familyRole)
   {
     $this->familyRole = $familyRole;
   }
+  /**
+   * @return string
+   */
   public function getFamilyRole()
   {
     return $this->familyRole;
   }
+  /**
+   * @param bool
+   */
   public function setIsSharingAllowed($isSharingAllowed)
   {
     $this->isSharingAllowed = $isSharingAllowed;
   }
+  /**
+   * @return bool
+   */
   public function getIsSharingAllowed()
   {
     return $this->isSharingAllowed;
   }
+  /**
+   * @param bool
+   */
   public function setIsSharingDisabledByFop($isSharingDisabledByFop)
   {
     $this->isSharingDisabledByFop = $isSharingDisabledByFop;
   }
+  /**
+   * @return bool
+   */
   public function getIsSharingDisabledByFop()
   {
     return $this->isSharingDisabledByFop;

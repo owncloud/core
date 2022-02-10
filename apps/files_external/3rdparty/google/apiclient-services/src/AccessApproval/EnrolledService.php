@@ -19,21 +19,39 @@ namespace Google\Service\AccessApproval;
 
 class EnrolledService extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cloudProduct;
+  /**
+   * @var string
+   */
   public $enrollmentLevel;
 
+  /**
+   * @param string
+   */
   public function setCloudProduct($cloudProduct)
   {
     $this->cloudProduct = $cloudProduct;
   }
+  /**
+   * @return string
+   */
   public function getCloudProduct()
   {
     return $this->cloudProduct;
   }
+  /**
+   * @param string
+   */
   public function setEnrollmentLevel($enrollmentLevel)
   {
     $this->enrollmentLevel = $enrollmentLevel;
   }
+  /**
+   * @return string
+   */
   public function getEnrollmentLevel()
   {
     return $this->enrollmentLevel;

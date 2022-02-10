@@ -19,14 +19,26 @@ namespace Google\Service\CloudIdentity;
 
 class GoogleAppsCloudidentityDevicesV1CustomAttributeValue extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $boolValue;
   public $numberValue;
+  /**
+   * @var string
+   */
   public $stringValue;
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
@@ -39,10 +51,16 @@ class GoogleAppsCloudidentityDevicesV1CustomAttributeValue extends \Google\Model
   {
     return $this->numberValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;

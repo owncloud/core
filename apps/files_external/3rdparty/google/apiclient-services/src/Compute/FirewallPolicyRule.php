@@ -20,63 +20,129 @@ namespace Google\Service\Compute;
 class FirewallPolicyRule extends \Google\Collection
 {
   protected $collection_key = 'targetServiceAccounts';
+  /**
+   * @var string
+   */
   public $action;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $direction;
+  /**
+   * @var bool
+   */
   public $disabled;
+  /**
+   * @var bool
+   */
   public $enableLogging;
+  /**
+   * @var string
+   */
   public $kind;
   protected $matchType = FirewallPolicyRuleMatcher::class;
   protected $matchDataType = '';
+  /**
+   * @var int
+   */
   public $priority;
+  /**
+   * @var int
+   */
   public $ruleTupleCount;
+  /**
+   * @var string[]
+   */
   public $targetResources;
+  /**
+   * @var string[]
+   */
   public $targetServiceAccounts;
 
+  /**
+   * @param string
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDirection($direction)
   {
     $this->direction = $direction;
   }
+  /**
+   * @return string
+   */
   public function getDirection()
   {
     return $this->direction;
   }
+  /**
+   * @param bool
+   */
   public function setDisabled($disabled)
   {
     $this->disabled = $disabled;
   }
+  /**
+   * @return bool
+   */
   public function getDisabled()
   {
     return $this->disabled;
   }
+  /**
+   * @param bool
+   */
   public function setEnableLogging($enableLogging)
   {
     $this->enableLogging = $enableLogging;
   }
+  /**
+   * @return bool
+   */
   public function getEnableLogging()
   {
     return $this->enableLogging;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -95,34 +161,58 @@ class FirewallPolicyRule extends \Google\Collection
   {
     return $this->match;
   }
+  /**
+   * @param int
+   */
   public function setPriority($priority)
   {
     $this->priority = $priority;
   }
+  /**
+   * @return int
+   */
   public function getPriority()
   {
     return $this->priority;
   }
+  /**
+   * @param int
+   */
   public function setRuleTupleCount($ruleTupleCount)
   {
     $this->ruleTupleCount = $ruleTupleCount;
   }
+  /**
+   * @return int
+   */
   public function getRuleTupleCount()
   {
     return $this->ruleTupleCount;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetResources($targetResources)
   {
     $this->targetResources = $targetResources;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetResources()
   {
     return $this->targetResources;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetServiceAccounts($targetServiceAccounts)
   {
     $this->targetServiceAccounts = $targetServiceAccounts;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetServiceAccounts()
   {
     return $this->targetServiceAccounts;

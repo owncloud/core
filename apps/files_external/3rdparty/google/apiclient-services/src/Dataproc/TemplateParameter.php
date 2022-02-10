@@ -20,32 +20,59 @@ namespace Google\Service\Dataproc;
 class TemplateParameter extends \Google\Collection
 {
   protected $collection_key = 'fields';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string[]
+   */
   public $fields;
+  /**
+   * @var string
+   */
   public $name;
   protected $validationType = ParameterValidation::class;
   protected $validationDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string[]
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string[]
+   */
   public function getFields()
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

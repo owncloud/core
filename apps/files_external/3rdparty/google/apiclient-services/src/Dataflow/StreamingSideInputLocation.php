@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class StreamingSideInputLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $stateFamily;
+  /**
+   * @var string
+   */
   public $tag;
 
+  /**
+   * @param string
+   */
   public function setStateFamily($stateFamily)
   {
     $this->stateFamily = $stateFamily;
   }
+  /**
+   * @return string
+   */
   public function getStateFamily()
   {
     return $this->stateFamily;
   }
+  /**
+   * @param string
+   */
   public function setTag($tag)
   {
     $this->tag = $tag;
   }
+  /**
+   * @return string
+   */
   public function getTag()
   {
     return $this->tag;

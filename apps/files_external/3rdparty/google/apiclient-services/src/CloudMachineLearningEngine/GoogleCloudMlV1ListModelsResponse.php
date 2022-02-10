@@ -22,6 +22,9 @@ class GoogleCloudMlV1ListModelsResponse extends \Google\Collection
   protected $collection_key = 'models';
   protected $modelsType = GoogleCloudMlV1Model::class;
   protected $modelsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudMlV1ListModelsResponse extends \Google\Collection
   {
     return $this->models;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

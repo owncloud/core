@@ -20,21 +20,39 @@ namespace Google\Service\FirebaseRules;
 class FunctionCall extends \Google\Collection
 {
   protected $collection_key = 'args';
+  /**
+   * @var array[]
+   */
   public $args;
+  /**
+   * @var string
+   */
   public $function;
 
+  /**
+   * @param array[]
+   */
   public function setArgs($args)
   {
     $this->args = $args;
   }
+  /**
+   * @return array[]
+   */
   public function getArgs()
   {
     return $this->args;
   }
+  /**
+   * @param string
+   */
   public function setFunction($function)
   {
     $this->function = $function;
   }
+  /**
+   * @return string
+   */
   public function getFunction()
   {
     return $this->function;

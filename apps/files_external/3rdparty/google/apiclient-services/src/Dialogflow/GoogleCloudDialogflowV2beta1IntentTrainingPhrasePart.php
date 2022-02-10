@@ -19,39 +19,75 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2beta1IntentTrainingPhrasePart extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $alias;
+  /**
+   * @var string
+   */
   public $entityType;
+  /**
+   * @var string
+   */
   public $text;
+  /**
+   * @var bool
+   */
   public $userDefined;
 
+  /**
+   * @param string
+   */
   public function setAlias($alias)
   {
     $this->alias = $alias;
   }
+  /**
+   * @return string
+   */
   public function getAlias()
   {
     return $this->alias;
   }
+  /**
+   * @param string
+   */
   public function setEntityType($entityType)
   {
     $this->entityType = $entityType;
   }
+  /**
+   * @return string
+   */
   public function getEntityType()
   {
     return $this->entityType;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;
   }
+  /**
+   * @param bool
+   */
   public function setUserDefined($userDefined)
   {
     $this->userDefined = $userDefined;
   }
+  /**
+   * @return bool
+   */
   public function getUserDefined()
   {
     return $this->userDefined;

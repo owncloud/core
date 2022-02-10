@@ -20,14 +20,23 @@ namespace Google\Service\Document;
 class GoogleCloudDocumentaiV1ListProcessorsResponse extends \Google\Collection
 {
   protected $collection_key = 'processors';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $processorsType = GoogleCloudDocumentaiV1Processor::class;
   protected $processorsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

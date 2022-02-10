@@ -20,30 +20,57 @@ namespace Google\Service\Directory;
 class Aliases extends \Google\Collection
 {
   protected $collection_key = 'aliases';
+  /**
+   * @var array[]
+   */
   public $aliases;
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
 
+  /**
+   * @param array[]
+   */
   public function setAliases($aliases)
   {
     $this->aliases = $aliases;
   }
+  /**
+   * @return array[]
+   */
   public function getAliases()
   {
     return $this->aliases;
   }
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

@@ -38,8 +38,8 @@ class Orgunits extends \Google\Service\Resource
    * alias to represent your account's `customerId`. The `customerId` is also
    * returned as part of the [Users resource](/admin-
    * sdk/directory/v1/reference/users).
-   * @param string $orgUnitPath The full path of the organizational unit or its
-   * unique ID.
+   * @param string $orgUnitPath The full path of the organizational unit (minus
+   * the leading `/`) or its unique ID.
    * @param array $optParams Optional parameters.
    */
   public function delete($customerId, $orgUnitPath, $optParams = [])
@@ -56,8 +56,8 @@ class Orgunits extends \Google\Service\Resource
    * alias to represent your account's `customerId`. The `customerId` is also
    * returned as part of the [Users resource](/admin-
    * sdk/directory/v1/reference/users).
-   * @param string $orgUnitPath The full path of the organizational unit or its
-   * unique ID.
+   * @param string $orgUnitPath The full path of the organizational unit (minus
+   * the leading `/`) or its unique ID.
    * @param array $optParams Optional parameters.
    * @return OrgUnit
    */
@@ -117,8 +117,8 @@ class Orgunits extends \Google\Service\Resource
    * alias to represent your account's `customerId`. The `customerId` is also
    * returned as part of the [Users resource](/admin-
    * sdk/directory/v1/reference/users).
-   * @param string $orgUnitPath The full path of the organizational unit or its
-   * unique ID.
+   * @param string $orgUnitPath The full path of the organizational unit (minus
+   * the leading `/`) or its unique ID.
    * @param OrgUnit $postBody
    * @param array $optParams Optional parameters.
    * @return OrgUnit
@@ -137,8 +137,8 @@ class Orgunits extends \Google\Service\Resource
    * alias to represent your account's `customerId`. The `customerId` is also
    * returned as part of the [Users resource](/admin-
    * sdk/directory/v1/reference/users).
-   * @param string $orgUnitPath The full path of the organizational unit or its
-   * unique ID.
+   * @param string $orgUnitPath The full path of the organizational unit (minus
+   * the leading `/`) or its unique ID.
    * @param OrgUnit $postBody
    * @param array $optParams Optional parameters.
    * @return OrgUnit

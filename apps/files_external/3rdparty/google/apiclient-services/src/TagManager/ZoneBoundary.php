@@ -22,6 +22,9 @@ class ZoneBoundary extends \Google\Collection
   protected $collection_key = 'customEvaluationTriggerId';
   protected $conditionType = Condition::class;
   protected $conditionDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $customEvaluationTriggerId;
 
   /**
@@ -38,10 +41,16 @@ class ZoneBoundary extends \Google\Collection
   {
     return $this->condition;
   }
+  /**
+   * @param string[]
+   */
   public function setCustomEvaluationTriggerId($customEvaluationTriggerId)
   {
     $this->customEvaluationTriggerId = $customEvaluationTriggerId;
   }
+  /**
+   * @return string[]
+   */
   public function getCustomEvaluationTriggerId()
   {
     return $this->customEvaluationTriggerId;

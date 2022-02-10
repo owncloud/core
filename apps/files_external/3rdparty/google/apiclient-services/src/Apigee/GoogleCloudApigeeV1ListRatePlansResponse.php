@@ -20,14 +20,23 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1ListRatePlansResponse extends \Google\Collection
 {
   protected $collection_key = 'ratePlans';
+  /**
+   * @var string
+   */
   public $nextStartKey;
   protected $ratePlansType = GoogleCloudApigeeV1RatePlan::class;
   protected $ratePlansDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextStartKey($nextStartKey)
   {
     $this->nextStartKey = $nextStartKey;
   }
+  /**
+   * @return string
+   */
   public function getNextStartKey()
   {
     return $this->nextStartKey;

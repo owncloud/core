@@ -20,24 +20,45 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2SearchRequestFacetSpec extends \Google\Collection
 {
   protected $collection_key = 'excludedFilterKeys';
+  /**
+   * @var bool
+   */
   public $enableDynamicPosition;
+  /**
+   * @var string[]
+   */
   public $excludedFilterKeys;
   protected $facetKeyType = GoogleCloudRetailV2SearchRequestFacetSpecFacetKey::class;
   protected $facetKeyDataType = '';
+  /**
+   * @var int
+   */
   public $limit;
 
+  /**
+   * @param bool
+   */
   public function setEnableDynamicPosition($enableDynamicPosition)
   {
     $this->enableDynamicPosition = $enableDynamicPosition;
   }
+  /**
+   * @return bool
+   */
   public function getEnableDynamicPosition()
   {
     return $this->enableDynamicPosition;
   }
+  /**
+   * @param string[]
+   */
   public function setExcludedFilterKeys($excludedFilterKeys)
   {
     $this->excludedFilterKeys = $excludedFilterKeys;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludedFilterKeys()
   {
     return $this->excludedFilterKeys;
@@ -56,10 +77,16 @@ class GoogleCloudRetailV2SearchRequestFacetSpec extends \Google\Collection
   {
     return $this->facetKey;
   }
+  /**
+   * @param int
+   */
   public function setLimit($limit)
   {
     $this->limit = $limit;
   }
+  /**
+   * @return int
+   */
   public function getLimit()
   {
     return $this->limit;

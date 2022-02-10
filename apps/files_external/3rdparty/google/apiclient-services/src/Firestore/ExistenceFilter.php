@@ -19,21 +19,39 @@ namespace Google\Service\Firestore;
 
 class ExistenceFilter extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $count;
+  /**
+   * @var int
+   */
   public $targetId;
 
+  /**
+   * @param int
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return int
+   */
   public function getCount()
   {
     return $this->count;
   }
+  /**
+   * @param int
+   */
   public function setTargetId($targetId)
   {
     $this->targetId = $targetId;
   }
+  /**
+   * @return int
+   */
   public function getTargetId()
   {
     return $this->targetId;

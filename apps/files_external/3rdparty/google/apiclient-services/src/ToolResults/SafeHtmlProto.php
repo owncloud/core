@@ -19,12 +19,21 @@ namespace Google\Service\ToolResults;
 
 class SafeHtmlProto extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $privateDoNotAccessOrElseSafeHtmlWrappedValue;
 
+  /**
+   * @param string
+   */
   public function setPrivateDoNotAccessOrElseSafeHtmlWrappedValue($privateDoNotAccessOrElseSafeHtmlWrappedValue)
   {
     $this->privateDoNotAccessOrElseSafeHtmlWrappedValue = $privateDoNotAccessOrElseSafeHtmlWrappedValue;
   }
+  /**
+   * @return string
+   */
   public function getPrivateDoNotAccessOrElseSafeHtmlWrappedValue()
   {
     return $this->privateDoNotAccessOrElseSafeHtmlWrappedValue;

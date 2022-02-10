@@ -20,9 +20,21 @@ namespace Google\Service\Document;
 class GoogleCloudDocumentaiV1beta2DocumentEntity extends \Google\Collection
 {
   protected $collection_key = 'properties';
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $mentionId;
+  /**
+   * @var string
+   */
   public $mentionText;
   protected $normalizedValueType = GoogleCloudDocumentaiV1beta2DocumentEntityNormalizedValue::class;
   protected $normalizedValueDataType = '';
@@ -32,39 +44,69 @@ class GoogleCloudDocumentaiV1beta2DocumentEntity extends \Google\Collection
   protected $propertiesDataType = 'array';
   protected $provenanceType = GoogleCloudDocumentaiV1beta2DocumentProvenance::class;
   protected $provenanceDataType = '';
+  /**
+   * @var bool
+   */
   public $redacted;
   protected $textAnchorType = GoogleCloudDocumentaiV1beta2DocumentTextAnchor::class;
   protected $textAnchorDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setMentionId($mentionId)
   {
     $this->mentionId = $mentionId;
   }
+  /**
+   * @return string
+   */
   public function getMentionId()
   {
     return $this->mentionId;
   }
+  /**
+   * @param string
+   */
   public function setMentionText($mentionText)
   {
     $this->mentionText = $mentionText;
   }
+  /**
+   * @return string
+   */
   public function getMentionText()
   {
     return $this->mentionText;
@@ -125,10 +167,16 @@ class GoogleCloudDocumentaiV1beta2DocumentEntity extends \Google\Collection
   {
     return $this->provenance;
   }
+  /**
+   * @param bool
+   */
   public function setRedacted($redacted)
   {
     $this->redacted = $redacted;
   }
+  /**
+   * @return bool
+   */
   public function getRedacted()
   {
     return $this->redacted;
@@ -147,10 +195,16 @@ class GoogleCloudDocumentaiV1beta2DocumentEntity extends \Google\Collection
   {
     return $this->textAnchor;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

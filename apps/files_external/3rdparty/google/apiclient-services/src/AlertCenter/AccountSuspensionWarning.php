@@ -20,23 +20,41 @@ namespace Google\Service\AlertCenter;
 class AccountSuspensionWarning extends \Google\Collection
 {
   protected $collection_key = 'suspensionDetails';
+  /**
+   * @var string
+   */
   public $appealWindow;
+  /**
+   * @var string
+   */
   public $state;
   protected $suspensionDetailsType = AccountSuspensionDetails::class;
   protected $suspensionDetailsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAppealWindow($appealWindow)
   {
     $this->appealWindow = $appealWindow;
   }
+  /**
+   * @return string
+   */
   public function getAppealWindow()
   {
     return $this->appealWindow;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

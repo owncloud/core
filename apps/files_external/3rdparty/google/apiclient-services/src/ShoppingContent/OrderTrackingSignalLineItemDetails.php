@@ -19,93 +19,183 @@ namespace Google\Service\ShoppingContent;
 
 class OrderTrackingSignalLineItemDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $brand;
+  /**
+   * @var string
+   */
   public $gtin;
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $mpn;
+  /**
+   * @var string
+   */
   public $productDescription;
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $productTitle;
+  /**
+   * @var string
+   */
   public $quantity;
+  /**
+   * @var string
+   */
   public $sku;
+  /**
+   * @var string
+   */
   public $upc;
 
+  /**
+   * @param string
+   */
   public function setBrand($brand)
   {
     $this->brand = $brand;
   }
+  /**
+   * @return string
+   */
   public function getBrand()
   {
     return $this->brand;
   }
+  /**
+   * @param string
+   */
   public function setGtin($gtin)
   {
     $this->gtin = $gtin;
   }
+  /**
+   * @return string
+   */
   public function getGtin()
   {
     return $this->gtin;
   }
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setMpn($mpn)
   {
     $this->mpn = $mpn;
   }
+  /**
+   * @return string
+   */
   public function getMpn()
   {
     return $this->mpn;
   }
+  /**
+   * @param string
+   */
   public function setProductDescription($productDescription)
   {
     $this->productDescription = $productDescription;
   }
+  /**
+   * @return string
+   */
   public function getProductDescription()
   {
     return $this->productDescription;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setProductTitle($productTitle)
   {
     $this->productTitle = $productTitle;
   }
+  /**
+   * @return string
+   */
   public function getProductTitle()
   {
     return $this->productTitle;
   }
+  /**
+   * @param string
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return string
+   */
   public function getQuantity()
   {
     return $this->quantity;
   }
+  /**
+   * @param string
+   */
   public function setSku($sku)
   {
     $this->sku = $sku;
   }
+  /**
+   * @return string
+   */
   public function getSku()
   {
     return $this->sku;
   }
+  /**
+   * @param string
+   */
   public function setUpc($upc)
   {
     $this->upc = $upc;
   }
+  /**
+   * @return string
+   */
   public function getUpc()
   {
     return $this->upc;

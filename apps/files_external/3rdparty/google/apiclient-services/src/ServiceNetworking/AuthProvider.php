@@ -20,50 +20,95 @@ namespace Google\Service\ServiceNetworking;
 class AuthProvider extends \Google\Collection
 {
   protected $collection_key = 'jwtLocations';
+  /**
+   * @var string
+   */
   public $audiences;
+  /**
+   * @var string
+   */
   public $authorizationUrl;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $issuer;
+  /**
+   * @var string
+   */
   public $jwksUri;
   protected $jwtLocationsType = JwtLocation::class;
   protected $jwtLocationsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setAudiences($audiences)
   {
     $this->audiences = $audiences;
   }
+  /**
+   * @return string
+   */
   public function getAudiences()
   {
     return $this->audiences;
   }
+  /**
+   * @param string
+   */
   public function setAuthorizationUrl($authorizationUrl)
   {
     $this->authorizationUrl = $authorizationUrl;
   }
+  /**
+   * @return string
+   */
   public function getAuthorizationUrl()
   {
     return $this->authorizationUrl;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setIssuer($issuer)
   {
     $this->issuer = $issuer;
   }
+  /**
+   * @return string
+   */
   public function getIssuer()
   {
     return $this->issuer;
   }
+  /**
+   * @param string
+   */
   public function setJwksUri($jwksUri)
   {
     $this->jwksUri = $jwksUri;
   }
+  /**
+   * @return string
+   */
   public function getJwksUri()
   {
     return $this->jwksUri;

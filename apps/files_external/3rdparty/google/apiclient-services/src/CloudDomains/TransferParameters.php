@@ -20,50 +20,95 @@ namespace Google\Service\CloudDomains;
 class TransferParameters extends \Google\Collection
 {
   protected $collection_key = 'supportedPrivacy';
+  /**
+   * @var string
+   */
   public $currentRegistrar;
+  /**
+   * @var string
+   */
   public $domainName;
+  /**
+   * @var string[]
+   */
   public $nameServers;
+  /**
+   * @var string[]
+   */
   public $supportedPrivacy;
+  /**
+   * @var string
+   */
   public $transferLockState;
   protected $yearlyPriceType = Money::class;
   protected $yearlyPriceDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCurrentRegistrar($currentRegistrar)
   {
     $this->currentRegistrar = $currentRegistrar;
   }
+  /**
+   * @return string
+   */
   public function getCurrentRegistrar()
   {
     return $this->currentRegistrar;
   }
+  /**
+   * @param string
+   */
   public function setDomainName($domainName)
   {
     $this->domainName = $domainName;
   }
+  /**
+   * @return string
+   */
   public function getDomainName()
   {
     return $this->domainName;
   }
+  /**
+   * @param string[]
+   */
   public function setNameServers($nameServers)
   {
     $this->nameServers = $nameServers;
   }
+  /**
+   * @return string[]
+   */
   public function getNameServers()
   {
     return $this->nameServers;
   }
+  /**
+   * @param string[]
+   */
   public function setSupportedPrivacy($supportedPrivacy)
   {
     $this->supportedPrivacy = $supportedPrivacy;
   }
+  /**
+   * @return string[]
+   */
   public function getSupportedPrivacy()
   {
     return $this->supportedPrivacy;
   }
+  /**
+   * @param string
+   */
   public function setTransferLockState($transferLockState)
   {
     $this->transferLockState = $transferLockState;
   }
+  /**
+   * @return string
+   */
   public function getTransferLockState()
   {
     return $this->transferLockState;

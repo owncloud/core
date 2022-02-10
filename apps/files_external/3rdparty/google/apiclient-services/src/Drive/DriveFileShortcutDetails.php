@@ -19,30 +19,57 @@ namespace Google\Service\Drive;
 
 class DriveFileShortcutDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $targetId;
+  /**
+   * @var string
+   */
   public $targetMimeType;
+  /**
+   * @var string
+   */
   public $targetResourceKey;
 
+  /**
+   * @param string
+   */
   public function setTargetId($targetId)
   {
     $this->targetId = $targetId;
   }
+  /**
+   * @return string
+   */
   public function getTargetId()
   {
     return $this->targetId;
   }
+  /**
+   * @param string
+   */
   public function setTargetMimeType($targetMimeType)
   {
     $this->targetMimeType = $targetMimeType;
   }
+  /**
+   * @return string
+   */
   public function getTargetMimeType()
   {
     return $this->targetMimeType;
   }
+  /**
+   * @param string
+   */
   public function setTargetResourceKey($targetResourceKey)
   {
     $this->targetResourceKey = $targetResourceKey;
   }
+  /**
+   * @return string
+   */
   public function getTargetResourceKey()
   {
     return $this->targetResourceKey;

@@ -19,20 +19,41 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1Evaluation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $annotationType;
   protected $configType = GoogleCloudDatalabelingV1beta1EvaluationConfig::class;
   protected $configDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $evaluatedItemCount;
+  /**
+   * @var string
+   */
   public $evaluationJobRunTime;
   protected $evaluationMetricsType = GoogleCloudDatalabelingV1beta1EvaluationMetrics::class;
   protected $evaluationMetricsDataType = '';
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setAnnotationType($annotationType)
   {
     $this->annotationType = $annotationType;
   }
+  /**
+   * @return string
+   */
   public function getAnnotationType()
   {
     return $this->annotationType;
@@ -51,26 +72,44 @@ class GoogleCloudDatalabelingV1beta1Evaluation extends \Google\Model
   {
     return $this->config;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setEvaluatedItemCount($evaluatedItemCount)
   {
     $this->evaluatedItemCount = $evaluatedItemCount;
   }
+  /**
+   * @return string
+   */
   public function getEvaluatedItemCount()
   {
     return $this->evaluatedItemCount;
   }
+  /**
+   * @param string
+   */
   public function setEvaluationJobRunTime($evaluationJobRunTime)
   {
     $this->evaluationJobRunTime = $evaluationJobRunTime;
   }
+  /**
+   * @return string
+   */
   public function getEvaluationJobRunTime()
   {
     return $this->evaluationJobRunTime;
@@ -89,10 +128,16 @@ class GoogleCloudDatalabelingV1beta1Evaluation extends \Google\Model
   {
     return $this->evaluationMetrics;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

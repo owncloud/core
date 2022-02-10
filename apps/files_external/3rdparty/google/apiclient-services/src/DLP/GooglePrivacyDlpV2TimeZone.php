@@ -19,12 +19,21 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2TimeZone extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $offsetMinutes;
 
+  /**
+   * @param int
+   */
   public function setOffsetMinutes($offsetMinutes)
   {
     $this->offsetMinutes = $offsetMinutes;
   }
+  /**
+   * @return int
+   */
   public function getOffsetMinutes()
   {
     return $this->offsetMinutes;

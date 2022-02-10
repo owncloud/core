@@ -24,12 +24,21 @@ class TestSetup extends \Google\Collection
   protected $accountDataType = '';
   protected $additionalApksType = Apk::class;
   protected $additionalApksDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $directoriesToPull;
+  /**
+   * @var bool
+   */
   public $dontAutograntPermissions;
   protected $environmentVariablesType = EnvironmentVariable::class;
   protected $environmentVariablesDataType = 'array';
   protected $filesToPushType = DeviceFile::class;
   protected $filesToPushDataType = 'array';
+  /**
+   * @var string
+   */
   public $networkProfile;
   protected $systraceType = SystraceSetup::class;
   protected $systraceDataType = '';
@@ -62,18 +71,30 @@ class TestSetup extends \Google\Collection
   {
     return $this->additionalApks;
   }
+  /**
+   * @param string[]
+   */
   public function setDirectoriesToPull($directoriesToPull)
   {
     $this->directoriesToPull = $directoriesToPull;
   }
+  /**
+   * @return string[]
+   */
   public function getDirectoriesToPull()
   {
     return $this->directoriesToPull;
   }
+  /**
+   * @param bool
+   */
   public function setDontAutograntPermissions($dontAutograntPermissions)
   {
     $this->dontAutograntPermissions = $dontAutograntPermissions;
   }
+  /**
+   * @return bool
+   */
   public function getDontAutograntPermissions()
   {
     return $this->dontAutograntPermissions;
@@ -106,10 +127,16 @@ class TestSetup extends \Google\Collection
   {
     return $this->filesToPush;
   }
+  /**
+   * @param string
+   */
   public function setNetworkProfile($networkProfile)
   {
     $this->networkProfile = $networkProfile;
   }
+  /**
+   * @return string
+   */
   public function getNetworkProfile()
   {
     return $this->networkProfile;

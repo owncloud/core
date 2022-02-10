@@ -34,15 +34,19 @@ class ProjectsAgentPools extends \Google\Service\Resource
   /**
    * Creates an agent pool resource. (agentPools.create)
    *
-   * @param string $projectId Required. The ID of the Google Cloud Platform
-   * Console project that owns the agent pool.
+   * @param string $projectId Required. The ID of the Google Cloud project that
+   * owns the agent pool.
    * @param AgentPool $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string agentPoolId Required. The id of the agent pool to create.
-   * The agent_pool_id must be non-empty, less than or equal to 128 characters,
-   * and satisfy the following regex: "^[a-z]([a-z0-9-._~]*[a-z0-9])?$". Also,
-   * agent pool names cannot start with the string "goog".
+   * @opt_param string agentPoolId Required. The ID of the agent pool to create.
+   * The `agent_pool_id` must meet the following requirements: * Length of 128
+   * characters or less. * Not start with the string `goog`. * Start with a
+   * lowercase ASCII character, followed by: * Zero or more: lowercase Latin
+   * alphabet characters, numerals, hyphens (`-`), periods (`.`), underscores
+   * (`_`), or tildes (`~`). * One or more numerals or lowercase ASCII characters.
+   * As expressed by the regular expression:
+   * `^(?!goog)[a-z]([a-z0-9-._~]*[a-z0-9])?$`.
    * @return AgentPool
    */
   public function create($projectId, AgentPool $postBody, $optParams = [])
@@ -54,7 +58,7 @@ class ProjectsAgentPools extends \Google\Service\Resource
   /**
    * Deletes an agent pool. (agentPools.delete)
    *
-   * @param string $name Required. The agent pool name to delete.
+   * @param string $name Required. The name of the agent pool to delete.
    * @param array $optParams Optional parameters.
    * @return StoragetransferEmpty
    */
@@ -67,7 +71,7 @@ class ProjectsAgentPools extends \Google\Service\Resource
   /**
    * Gets an agent pool. (agentPools.get)
    *
-   * @param string $name Required. The agent pool to get.
+   * @param string $name Required. The name of the agent pool to get.
    * @param array $optParams Optional parameters.
    * @return AgentPool
    */
@@ -80,17 +84,17 @@ class ProjectsAgentPools extends \Google\Service\Resource
   /**
    * Lists agent pools. (agentPools.listProjectsAgentPools)
    *
-   * @param string $projectId Required. The ID of the Google Cloud Platform
-   * Console project that owns the job.
+   * @param string $projectId Required. The ID of the Google Cloud project that
+   * owns the job.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter A list of optional query parameters specified as
+   * @opt_param string filter An optional list of query parameters specified as
    * JSON text in the form of:
    * `{"agentPoolNames":["agentpool1","agentpool2",...]}` Since `agentPoolNames`
    * support multiple values, its values must be specified with array notation.
-   * `agentPoolNames` is an optional field. The list returns all agent pools for
-   * the project when the filter is not provided or empty.
-   * @opt_param int pageSize The list page size. The max allowed value is 256.
+   * When the filter is either empty or not provided, the list returns all agent
+   * pools for the project.
+   * @opt_param int pageSize The list page size. The max allowed value is `256`.
    * @opt_param string pageToken The list page token.
    * @return ListAgentPoolsResponse
    */
@@ -104,13 +108,14 @@ class ProjectsAgentPools extends \Google\Service\Resource
    * Updates an existing agent pool resource. (agentPools.patch)
    *
    * @param string $name Required. Specifies a unique string that identifies the
-   * agent pool. Format: projects/{project_id}/agentPools/{agent_pool_id}
+   * agent pool. Format: `projects/{project_id}/agentPools/{agent_pool_id}`
    * @param AgentPool $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask The field mask of the fields in `agentPool` that
-   * are to be updated in this request. Fields in `agentPool` that can be updated
-   * are: display_name, bandwidth_limit,
+   * @opt_param string updateMask The [field mask] (https://developers.google.com
+   * /protocol-buffers/docs/reference/google.protobuf) of the fields in
+   * `agentPool` to update in this request. The following `agentPool` fields can
+   * be updated: * display_name * bandwidth_limit
    * @return AgentPool
    */
   public function patch($name, AgentPool $postBody, $optParams = [])

@@ -21,11 +21,20 @@ class CompensationEntry extends \Google\Model
 {
   protected $amountType = Money::class;
   protected $amountDataType = '';
+  /**
+   * @var string
+   */
   public $description;
   public $expectedUnitsPerYear;
   protected $rangeType = CompensationRange::class;
   protected $rangeDataType = '';
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $unit;
 
   /**
@@ -42,10 +51,16 @@ class CompensationEntry extends \Google\Model
   {
     return $this->amount;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -72,18 +87,30 @@ class CompensationEntry extends \Google\Model
   {
     return $this->range;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;

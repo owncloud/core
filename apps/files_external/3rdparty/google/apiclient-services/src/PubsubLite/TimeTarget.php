@@ -19,21 +19,39 @@ namespace Google\Service\PubsubLite;
 
 class TimeTarget extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $eventTime;
+  /**
+   * @var string
+   */
   public $publishTime;
 
+  /**
+   * @param string
+   */
   public function setEventTime($eventTime)
   {
     $this->eventTime = $eventTime;
   }
+  /**
+   * @return string
+   */
   public function getEventTime()
   {
     return $this->eventTime;
   }
+  /**
+   * @param string
+   */
   public function setPublishTime($publishTime)
   {
     $this->publishTime = $publishTime;
   }
+  /**
+   * @return string
+   */
   public function getPublishTime()
   {
     return $this->publishTime;

@@ -19,39 +19,75 @@ namespace Google\Service\ServiceNetworking;
 
 class Route extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destRange;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string
+   */
   public $nextHopGateway;
 
+  /**
+   * @param string
+   */
   public function setDestRange($destRange)
   {
     $this->destRange = $destRange;
   }
+  /**
+   * @return string
+   */
   public function getDestRange()
   {
     return $this->destRange;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setNextHopGateway($nextHopGateway)
   {
     $this->nextHopGateway = $nextHopGateway;
   }
+  /**
+   * @return string
+   */
   public function getNextHopGateway()
   {
     return $this->nextHopGateway;

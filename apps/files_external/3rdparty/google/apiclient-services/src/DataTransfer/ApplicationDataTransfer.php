@@ -20,15 +20,27 @@ namespace Google\Service\DataTransfer;
 class ApplicationDataTransfer extends \Google\Collection
 {
   protected $collection_key = 'applicationTransferParams';
+  /**
+   * @var string
+   */
   public $applicationId;
   protected $applicationTransferParamsType = ApplicationTransferParam::class;
   protected $applicationTransferParamsDataType = 'array';
+  /**
+   * @var string
+   */
   public $applicationTransferStatus;
 
+  /**
+   * @param string
+   */
   public function setApplicationId($applicationId)
   {
     $this->applicationId = $applicationId;
   }
+  /**
+   * @return string
+   */
   public function getApplicationId()
   {
     return $this->applicationId;
@@ -47,10 +59,16 @@ class ApplicationDataTransfer extends \Google\Collection
   {
     return $this->applicationTransferParams;
   }
+  /**
+   * @param string
+   */
   public function setApplicationTransferStatus($applicationTransferStatus)
   {
     $this->applicationTransferStatus = $applicationTransferStatus;
   }
+  /**
+   * @return string
+   */
   public function getApplicationTransferStatus()
   {
     return $this->applicationTransferStatus;

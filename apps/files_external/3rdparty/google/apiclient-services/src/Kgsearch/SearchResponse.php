@@ -24,30 +24,57 @@ class SearchResponse extends \Google\Collection
         "context" => "@context",
         "type" => "@type",
   ];
+  /**
+   * @var array
+   */
   public $context;
+  /**
+   * @var array
+   */
   public $type;
+  /**
+   * @var array[]
+   */
   public $itemListElement;
 
+  /**
+   * @param array
+   */
   public function setContext($context)
   {
     $this->context = $context;
   }
+  /**
+   * @return array
+   */
   public function getContext()
   {
     return $this->context;
   }
+  /**
+   * @param array
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return array
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param array[]
+   */
   public function setItemListElement($itemListElement)
   {
     $this->itemListElement = $itemListElement;
   }
+  /**
+   * @return array[]
+   */
   public function getItemListElement()
   {
     return $this->itemListElement;

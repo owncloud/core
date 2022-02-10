@@ -19,48 +19,93 @@ namespace Google\Service\CloudVideoIntelligence;
 
 class GoogleCloudVideointelligenceV1LabelDetectionConfig extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $frameConfidenceThreshold;
+  /**
+   * @var string
+   */
   public $labelDetectionMode;
+  /**
+   * @var string
+   */
   public $model;
+  /**
+   * @var bool
+   */
   public $stationaryCamera;
+  /**
+   * @var float
+   */
   public $videoConfidenceThreshold;
 
+  /**
+   * @param float
+   */
   public function setFrameConfidenceThreshold($frameConfidenceThreshold)
   {
     $this->frameConfidenceThreshold = $frameConfidenceThreshold;
   }
+  /**
+   * @return float
+   */
   public function getFrameConfidenceThreshold()
   {
     return $this->frameConfidenceThreshold;
   }
+  /**
+   * @param string
+   */
   public function setLabelDetectionMode($labelDetectionMode)
   {
     $this->labelDetectionMode = $labelDetectionMode;
   }
+  /**
+   * @return string
+   */
   public function getLabelDetectionMode()
   {
     return $this->labelDetectionMode;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;
   }
+  /**
+   * @param bool
+   */
   public function setStationaryCamera($stationaryCamera)
   {
     $this->stationaryCamera = $stationaryCamera;
   }
+  /**
+   * @return bool
+   */
   public function getStationaryCamera()
   {
     return $this->stationaryCamera;
   }
+  /**
+   * @param float
+   */
   public function setVideoConfidenceThreshold($videoConfidenceThreshold)
   {
     $this->videoConfidenceThreshold = $videoConfidenceThreshold;
   }
+  /**
+   * @return float
+   */
   public function getVideoConfidenceThreshold()
   {
     return $this->videoConfidenceThreshold;

@@ -19,39 +19,75 @@ namespace Google\Service\Compute;
 
 class HttpQueryParameterMatch extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $exactMatch;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $presentMatch;
+  /**
+   * @var string
+   */
   public $regexMatch;
 
+  /**
+   * @param string
+   */
   public function setExactMatch($exactMatch)
   {
     $this->exactMatch = $exactMatch;
   }
+  /**
+   * @return string
+   */
   public function getExactMatch()
   {
     return $this->exactMatch;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setPresentMatch($presentMatch)
   {
     $this->presentMatch = $presentMatch;
   }
+  /**
+   * @return bool
+   */
   public function getPresentMatch()
   {
     return $this->presentMatch;
   }
+  /**
+   * @param string
+   */
   public function setRegexMatch($regexMatch)
   {
     $this->regexMatch = $regexMatch;
   }
+  /**
+   * @return string
+   */
   public function getRegexMatch()
   {
     return $this->regexMatch;

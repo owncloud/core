@@ -19,16 +19,25 @@ namespace Google\Service\Slides;
 
 class PageElementProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pageObjectId;
   protected $sizeType = Size::class;
   protected $sizeDataType = '';
   protected $transformType = AffineTransform::class;
   protected $transformDataType = '';
 
+  /**
+   * @param string
+   */
   public function setPageObjectId($pageObjectId)
   {
     $this->pageObjectId = $pageObjectId;
   }
+  /**
+   * @return string
+   */
   public function getPageObjectId()
   {
     return $this->pageObjectId;

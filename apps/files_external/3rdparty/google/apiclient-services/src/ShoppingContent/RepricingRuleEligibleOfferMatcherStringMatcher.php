@@ -20,12 +20,21 @@ namespace Google\Service\ShoppingContent;
 class RepricingRuleEligibleOfferMatcherStringMatcher extends \Google\Collection
 {
   protected $collection_key = 'strAttributes';
+  /**
+   * @var string[]
+   */
   public $strAttributes;
 
+  /**
+   * @param string[]
+   */
   public function setStrAttributes($strAttributes)
   {
     $this->strAttributes = $strAttributes;
   }
+  /**
+   * @return string[]
+   */
   public function getStrAttributes()
   {
     return $this->strAttributes;

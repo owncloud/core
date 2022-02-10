@@ -19,21 +19,39 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class Seller extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var string
+   */
   public $subAccountId;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param string
+   */
   public function setSubAccountId($subAccountId)
   {
     $this->subAccountId = $subAccountId;
   }
+  /**
+   * @return string
+   */
   public function getSubAccountId()
   {
     return $this->subAccountId;

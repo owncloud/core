@@ -19,48 +19,93 @@ namespace Google\Service\Dfareporting;
 
 class UserRolePermission extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $availability;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $permissionGroupId;
 
+  /**
+   * @param string
+   */
   public function setAvailability($availability)
   {
     $this->availability = $availability;
   }
+  /**
+   * @return string
+   */
   public function getAvailability()
   {
     return $this->availability;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPermissionGroupId($permissionGroupId)
   {
     $this->permissionGroupId = $permissionGroupId;
   }
+  /**
+   * @return string
+   */
   public function getPermissionGroupId()
   {
     return $this->permissionGroupId;

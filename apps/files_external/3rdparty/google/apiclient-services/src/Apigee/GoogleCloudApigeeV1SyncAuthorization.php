@@ -20,21 +20,39 @@ namespace Google\Service\Apigee;
 class GoogleCloudApigeeV1SyncAuthorization extends \Google\Collection
 {
   protected $collection_key = 'identities';
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string[]
+   */
   public $identities;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string[]
+   */
   public function setIdentities($identities)
   {
     $this->identities = $identities;
   }
+  /**
+   * @return string[]
+   */
   public function getIdentities()
   {
     return $this->identities;

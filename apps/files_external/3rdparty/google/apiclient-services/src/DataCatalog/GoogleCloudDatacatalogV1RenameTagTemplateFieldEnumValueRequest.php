@@ -19,12 +19,21 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1RenameTagTemplateFieldEnumValueRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $newEnumValueDisplayName;
 
+  /**
+   * @param string
+   */
   public function setNewEnumValueDisplayName($newEnumValueDisplayName)
   {
     $this->newEnumValueDisplayName = $newEnumValueDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getNewEnumValueDisplayName()
   {
     return $this->newEnumValueDisplayName;

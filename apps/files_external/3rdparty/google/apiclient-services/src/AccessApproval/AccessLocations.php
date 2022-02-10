@@ -19,21 +19,39 @@ namespace Google\Service\AccessApproval;
 
 class AccessLocations extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $principalOfficeCountry;
+  /**
+   * @var string
+   */
   public $principalPhysicalLocationCountry;
 
+  /**
+   * @param string
+   */
   public function setPrincipalOfficeCountry($principalOfficeCountry)
   {
     $this->principalOfficeCountry = $principalOfficeCountry;
   }
+  /**
+   * @return string
+   */
   public function getPrincipalOfficeCountry()
   {
     return $this->principalOfficeCountry;
   }
+  /**
+   * @param string
+   */
   public function setPrincipalPhysicalLocationCountry($principalPhysicalLocationCountry)
   {
     $this->principalPhysicalLocationCountry = $principalPhysicalLocationCountry;
   }
+  /**
+   * @return string
+   */
   public function getPrincipalPhysicalLocationCountry()
   {
     return $this->principalPhysicalLocationCountry;

@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class WipeAction extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $preserveFrp;
+  /**
+   * @var int
+   */
   public $wipeAfterDays;
 
+  /**
+   * @param bool
+   */
   public function setPreserveFrp($preserveFrp)
   {
     $this->preserveFrp = $preserveFrp;
   }
+  /**
+   * @return bool
+   */
   public function getPreserveFrp()
   {
     return $this->preserveFrp;
   }
+  /**
+   * @param int
+   */
   public function setWipeAfterDays($wipeAfterDays)
   {
     $this->wipeAfterDays = $wipeAfterDays;
   }
+  /**
+   * @return int
+   */
   public function getWipeAfterDays()
   {
     return $this->wipeAfterDays;

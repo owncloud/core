@@ -19,16 +19,31 @@ namespace Google\Service\CloudTasks;
 
 class Attempt extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dispatchTime;
   protected $responseStatusType = Status::class;
   protected $responseStatusDataType = '';
+  /**
+   * @var string
+   */
   public $responseTime;
+  /**
+   * @var string
+   */
   public $scheduleTime;
 
+  /**
+   * @param string
+   */
   public function setDispatchTime($dispatchTime)
   {
     $this->dispatchTime = $dispatchTime;
   }
+  /**
+   * @return string
+   */
   public function getDispatchTime()
   {
     return $this->dispatchTime;
@@ -47,18 +62,30 @@ class Attempt extends \Google\Model
   {
     return $this->responseStatus;
   }
+  /**
+   * @param string
+   */
   public function setResponseTime($responseTime)
   {
     $this->responseTime = $responseTime;
   }
+  /**
+   * @return string
+   */
   public function getResponseTime()
   {
     return $this->responseTime;
   }
+  /**
+   * @param string
+   */
   public function setScheduleTime($scheduleTime)
   {
     $this->scheduleTime = $scheduleTime;
   }
+  /**
+   * @return string
+   */
   public function getScheduleTime()
   {
     return $this->scheduleTime;

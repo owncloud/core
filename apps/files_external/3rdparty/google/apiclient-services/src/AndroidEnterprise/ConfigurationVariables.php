@@ -20,14 +20,23 @@ namespace Google\Service\AndroidEnterprise;
 class ConfigurationVariables extends \Google\Collection
 {
   protected $collection_key = 'variableSet';
+  /**
+   * @var string
+   */
   public $mcmId;
   protected $variableSetType = VariableSet::class;
   protected $variableSetDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setMcmId($mcmId)
   {
     $this->mcmId = $mcmId;
   }
+  /**
+   * @return string
+   */
   public function getMcmId()
   {
     return $this->mcmId;

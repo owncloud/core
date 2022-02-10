@@ -19,30 +19,57 @@ namespace Google\Service\Appengine;
 
 class ResourceRecord extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $rrdata;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setRrdata($rrdata)
   {
     $this->rrdata = $rrdata;
   }
+  /**
+   * @return string
+   */
   public function getRrdata()
   {
     return $this->rrdata;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

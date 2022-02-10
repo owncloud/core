@@ -19,18 +19,39 @@ namespace Google\Service\HangoutsChat;
 
 class GoogleAppsCardV1GridItem extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
   protected $imageType = GoogleAppsCardV1ImageComponent::class;
   protected $imageDataType = '';
+  /**
+   * @var string
+   */
   public $layout;
+  /**
+   * @var string
+   */
   public $subtitle;
+  /**
+   * @var string
+   */
   public $textAlignment;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -49,34 +70,58 @@ class GoogleAppsCardV1GridItem extends \Google\Model
   {
     return $this->image;
   }
+  /**
+   * @param string
+   */
   public function setLayout($layout)
   {
     $this->layout = $layout;
   }
+  /**
+   * @return string
+   */
   public function getLayout()
   {
     return $this->layout;
   }
+  /**
+   * @param string
+   */
   public function setSubtitle($subtitle)
   {
     $this->subtitle = $subtitle;
   }
+  /**
+   * @return string
+   */
   public function getSubtitle()
   {
     return $this->subtitle;
   }
+  /**
+   * @param string
+   */
   public function setTextAlignment($textAlignment)
   {
     $this->textAlignment = $textAlignment;
   }
+  /**
+   * @return string
+   */
   public function getTextAlignment()
   {
     return $this->textAlignment;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

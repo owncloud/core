@@ -20,48 +20,93 @@ namespace Google\Service\Appengine;
 class Network extends \Google\Collection
 {
   protected $collection_key = 'forwardedPorts';
+  /**
+   * @var string[]
+   */
   public $forwardedPorts;
+  /**
+   * @var string
+   */
   public $instanceTag;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var bool
+   */
   public $sessionAffinity;
+  /**
+   * @var string
+   */
   public $subnetworkName;
 
+  /**
+   * @param string[]
+   */
   public function setForwardedPorts($forwardedPorts)
   {
     $this->forwardedPorts = $forwardedPorts;
   }
+  /**
+   * @return string[]
+   */
   public function getForwardedPorts()
   {
     return $this->forwardedPorts;
   }
+  /**
+   * @param string
+   */
   public function setInstanceTag($instanceTag)
   {
     $this->instanceTag = $instanceTag;
   }
+  /**
+   * @return string
+   */
   public function getInstanceTag()
   {
     return $this->instanceTag;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param bool
+   */
   public function setSessionAffinity($sessionAffinity)
   {
     $this->sessionAffinity = $sessionAffinity;
   }
+  /**
+   * @return bool
+   */
   public function getSessionAffinity()
   {
     return $this->sessionAffinity;
   }
+  /**
+   * @param string
+   */
   public function setSubnetworkName($subnetworkName)
   {
     $this->subnetworkName = $subnetworkName;
   }
+  /**
+   * @return string
+   */
   public function getSubnetworkName()
   {
     return $this->subnetworkName;

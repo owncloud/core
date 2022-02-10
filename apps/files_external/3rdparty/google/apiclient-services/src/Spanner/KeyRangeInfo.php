@@ -22,16 +22,31 @@ class KeyRangeInfo extends \Google\Collection
   protected $collection_key = 'contextValues';
   protected $contextValuesType = ContextValue::class;
   protected $contextValuesDataType = 'array';
+  /**
+   * @var int
+   */
   public $endKeyIndex;
   protected $infoType = LocalizedString::class;
   protected $infoDataType = '';
+  /**
+   * @var string
+   */
   public $keysCount;
   protected $metricType = LocalizedString::class;
   protected $metricDataType = '';
+  /**
+   * @var int
+   */
   public $startKeyIndex;
+  /**
+   * @var string
+   */
   public $timeOffset;
   protected $unitType = LocalizedString::class;
   protected $unitDataType = '';
+  /**
+   * @var float
+   */
   public $value;
 
   /**
@@ -48,10 +63,16 @@ class KeyRangeInfo extends \Google\Collection
   {
     return $this->contextValues;
   }
+  /**
+   * @param int
+   */
   public function setEndKeyIndex($endKeyIndex)
   {
     $this->endKeyIndex = $endKeyIndex;
   }
+  /**
+   * @return int
+   */
   public function getEndKeyIndex()
   {
     return $this->endKeyIndex;
@@ -70,10 +91,16 @@ class KeyRangeInfo extends \Google\Collection
   {
     return $this->info;
   }
+  /**
+   * @param string
+   */
   public function setKeysCount($keysCount)
   {
     $this->keysCount = $keysCount;
   }
+  /**
+   * @return string
+   */
   public function getKeysCount()
   {
     return $this->keysCount;
@@ -92,18 +119,30 @@ class KeyRangeInfo extends \Google\Collection
   {
     return $this->metric;
   }
+  /**
+   * @param int
+   */
   public function setStartKeyIndex($startKeyIndex)
   {
     $this->startKeyIndex = $startKeyIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartKeyIndex()
   {
     return $this->startKeyIndex;
   }
+  /**
+   * @param string
+   */
   public function setTimeOffset($timeOffset)
   {
     $this->timeOffset = $timeOffset;
   }
+  /**
+   * @return string
+   */
   public function getTimeOffset()
   {
     return $this->timeOffset;
@@ -122,10 +161,16 @@ class KeyRangeInfo extends \Google\Collection
   {
     return $this->unit;
   }
+  /**
+   * @param float
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return float
+   */
   public function getValue()
   {
     return $this->value;

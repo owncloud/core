@@ -19,12 +19,21 @@ namespace Google\Service\Datastore;
 
 class KindExpression extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

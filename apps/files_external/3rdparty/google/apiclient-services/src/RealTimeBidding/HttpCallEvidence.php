@@ -20,12 +20,21 @@ namespace Google\Service\RealTimeBidding;
 class HttpCallEvidence extends \Google\Collection
 {
   protected $collection_key = 'urls';
+  /**
+   * @var string[]
+   */
   public $urls;
 
+  /**
+   * @param string[]
+   */
   public function setUrls($urls)
   {
     $this->urls = $urls;
   }
+  /**
+   * @return string[]
+   */
   public function getUrls()
   {
     return $this->urls;

@@ -19,14 +19,23 @@ namespace Google\Service\Firestore;
 
 class GoogleFirestoreAdminV1IndexConfigDelta extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $changeType;
   protected $indexType = GoogleFirestoreAdminV1Index::class;
   protected $indexDataType = '';
 
+  /**
+   * @param string
+   */
   public function setChangeType($changeType)
   {
     $this->changeType = $changeType;
   }
+  /**
+   * @return string
+   */
   public function getChangeType()
   {
     return $this->changeType;

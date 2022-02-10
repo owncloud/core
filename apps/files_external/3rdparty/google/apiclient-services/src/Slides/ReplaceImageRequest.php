@@ -19,30 +19,57 @@ namespace Google\Service\Slides;
 
 class ReplaceImageRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $imageObjectId;
+  /**
+   * @var string
+   */
   public $imageReplaceMethod;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setImageObjectId($imageObjectId)
   {
     $this->imageObjectId = $imageObjectId;
   }
+  /**
+   * @return string
+   */
   public function getImageObjectId()
   {
     return $this->imageObjectId;
   }
+  /**
+   * @param string
+   */
   public function setImageReplaceMethod($imageReplaceMethod)
   {
     $this->imageReplaceMethod = $imageReplaceMethod;
   }
+  /**
+   * @return string
+   */
   public function getImageReplaceMethod()
   {
     return $this->imageReplaceMethod;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

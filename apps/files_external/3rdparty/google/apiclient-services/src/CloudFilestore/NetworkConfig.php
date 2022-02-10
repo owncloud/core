@@ -20,39 +20,93 @@ namespace Google\Service\CloudFilestore;
 class NetworkConfig extends \Google\Collection
 {
   protected $collection_key = 'modes';
+  /**
+   * @var string
+   */
+  public $connectMode;
+  /**
+   * @var string[]
+   */
   public $ipAddresses;
+  /**
+   * @var string[]
+   */
   public $modes;
+  /**
+   * @var string
+   */
   public $network;
+  /**
+   * @var string
+   */
   public $reservedIpRange;
 
+  /**
+   * @param string
+   */
+  public function setConnectMode($connectMode)
+  {
+    $this->connectMode = $connectMode;
+  }
+  /**
+   * @return string
+   */
+  public function getConnectMode()
+  {
+    return $this->connectMode;
+  }
+  /**
+   * @param string[]
+   */
   public function setIpAddresses($ipAddresses)
   {
     $this->ipAddresses = $ipAddresses;
   }
+  /**
+   * @return string[]
+   */
   public function getIpAddresses()
   {
     return $this->ipAddresses;
   }
+  /**
+   * @param string[]
+   */
   public function setModes($modes)
   {
     $this->modes = $modes;
   }
+  /**
+   * @return string[]
+   */
   public function getModes()
   {
     return $this->modes;
   }
+  /**
+   * @param string
+   */
   public function setNetwork($network)
   {
     $this->network = $network;
   }
+  /**
+   * @return string
+   */
   public function getNetwork()
   {
     return $this->network;
   }
+  /**
+   * @param string
+   */
   public function setReservedIpRange($reservedIpRange)
   {
     $this->reservedIpRange = $reservedIpRange;
   }
+  /**
+   * @return string
+   */
   public function getReservedIpRange()
   {
     return $this->reservedIpRange;

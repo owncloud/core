@@ -19,30 +19,57 @@ namespace Google\Service\Compute;
 
 class ResourceCommitment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $acceleratorType;
+  /**
+   * @var string
+   */
   public $amount;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAcceleratorType($acceleratorType)
   {
     $this->acceleratorType = $acceleratorType;
   }
+  /**
+   * @return string
+   */
   public function getAcceleratorType()
   {
     return $this->acceleratorType;
   }
+  /**
+   * @param string
+   */
   public function setAmount($amount)
   {
     $this->amount = $amount;
   }
+  /**
+   * @return string
+   */
   public function getAmount()
   {
     return $this->amount;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

@@ -19,14 +19,23 @@ namespace Google\Service\Datastore;
 
 class GqlQueryParameter extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cursor;
   protected $valueType = Value::class;
   protected $valueDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCursor($cursor)
   {
     $this->cursor = $cursor;
   }
+  /**
+   * @return string
+   */
   public function getCursor()
   {
     return $this->cursor;

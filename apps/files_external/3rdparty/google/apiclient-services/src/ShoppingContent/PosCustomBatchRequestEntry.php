@@ -19,22 +19,43 @@ namespace Google\Service\ShoppingContent;
 
 class PosCustomBatchRequestEntry extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $batchId;
   protected $inventoryType = PosInventory::class;
   protected $inventoryDataType = '';
+  /**
+   * @var string
+   */
   public $merchantId;
+  /**
+   * @var string
+   */
   public $method;
   protected $saleType = PosSale::class;
   protected $saleDataType = '';
   protected $storeType = PosStore::class;
   protected $storeDataType = '';
+  /**
+   * @var string
+   */
   public $storeCode;
+  /**
+   * @var string
+   */
   public $targetMerchantId;
 
+  /**
+   * @param string
+   */
   public function setBatchId($batchId)
   {
     $this->batchId = $batchId;
   }
+  /**
+   * @return string
+   */
   public function getBatchId()
   {
     return $this->batchId;
@@ -53,18 +74,30 @@ class PosCustomBatchRequestEntry extends \Google\Model
   {
     return $this->inventory;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;
   }
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;
@@ -97,18 +130,30 @@ class PosCustomBatchRequestEntry extends \Google\Model
   {
     return $this->store;
   }
+  /**
+   * @param string
+   */
   public function setStoreCode($storeCode)
   {
     $this->storeCode = $storeCode;
   }
+  /**
+   * @return string
+   */
   public function getStoreCode()
   {
     return $this->storeCode;
   }
+  /**
+   * @param string
+   */
   public function setTargetMerchantId($targetMerchantId)
   {
     $this->targetMerchantId = $targetMerchantId;
   }
+  /**
+   * @return string
+   */
   public function getTargetMerchantId()
   {
     return $this->targetMerchantId;

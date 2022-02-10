@@ -20,12 +20,39 @@ namespace Google\Service\Speech;
 class SpeechContext extends \Google\Collection
 {
   protected $collection_key = 'phrases';
+  /**
+   * @var float
+   */
+  public $boost;
+  /**
+   * @var string[]
+   */
   public $phrases;
 
+  /**
+   * @param float
+   */
+  public function setBoost($boost)
+  {
+    $this->boost = $boost;
+  }
+  /**
+   * @return float
+   */
+  public function getBoost()
+  {
+    return $this->boost;
+  }
+  /**
+   * @param string[]
+   */
   public function setPhrases($phrases)
   {
     $this->phrases = $phrases;
   }
+  /**
+   * @return string[]
+   */
   public function getPhrases()
   {
     return $this->phrases;

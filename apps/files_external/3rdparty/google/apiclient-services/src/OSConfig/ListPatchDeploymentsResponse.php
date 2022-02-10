@@ -20,14 +20,23 @@ namespace Google\Service\OSConfig;
 class ListPatchDeploymentsResponse extends \Google\Collection
 {
   protected $collection_key = 'patchDeployments';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $patchDeploymentsType = PatchDeployment::class;
   protected $patchDeploymentsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

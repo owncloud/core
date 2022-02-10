@@ -19,22 +19,40 @@ namespace Google\Service\CloudTasks;
 
 class RateLimits extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxBurstSize;
+  /**
+   * @var int
+   */
   public $maxConcurrentDispatches;
   public $maxDispatchesPerSecond;
 
+  /**
+   * @param int
+   */
   public function setMaxBurstSize($maxBurstSize)
   {
     $this->maxBurstSize = $maxBurstSize;
   }
+  /**
+   * @return int
+   */
   public function getMaxBurstSize()
   {
     return $this->maxBurstSize;
   }
+  /**
+   * @param int
+   */
   public function setMaxConcurrentDispatches($maxConcurrentDispatches)
   {
     $this->maxConcurrentDispatches = $maxConcurrentDispatches;
   }
+  /**
+   * @return int
+   */
   public function getMaxConcurrentDispatches()
   {
     return $this->maxConcurrentDispatches;

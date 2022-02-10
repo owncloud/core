@@ -19,21 +19,39 @@ namespace Google\Service\DisplayVideo;
 
 class DoubleVerifyAppStarRating extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $avoidInsufficientStarRating;
+  /**
+   * @var string
+   */
   public $avoidedStarRating;
 
+  /**
+   * @param bool
+   */
   public function setAvoidInsufficientStarRating($avoidInsufficientStarRating)
   {
     $this->avoidInsufficientStarRating = $avoidInsufficientStarRating;
   }
+  /**
+   * @return bool
+   */
   public function getAvoidInsufficientStarRating()
   {
     return $this->avoidInsufficientStarRating;
   }
+  /**
+   * @param string
+   */
   public function setAvoidedStarRating($avoidedStarRating)
   {
     $this->avoidedStarRating = $avoidedStarRating;
   }
+  /**
+   * @return string
+   */
   public function getAvoidedStarRating()
   {
     return $this->avoidedStarRating;

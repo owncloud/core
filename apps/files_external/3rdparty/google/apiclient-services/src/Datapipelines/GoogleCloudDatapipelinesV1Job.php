@@ -19,20 +19,41 @@ namespace Google\Service\Datapipelines;
 
 class GoogleCloudDatapipelinesV1Job extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
   protected $dataflowJobDetailsType = GoogleCloudDatapipelinesV1DataflowJobDetails::class;
   protected $dataflowJobDetailsDataType = '';
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $state;
   protected $statusType = GoogleRpcStatus::class;
   protected $statusDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -51,34 +72,58 @@ class GoogleCloudDatapipelinesV1Job extends \Google\Model
   {
     return $this->dataflowJobDetails;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

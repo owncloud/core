@@ -19,48 +19,93 @@ namespace Google\Service\Compute;
 
 class PublicAdvertisedPrefixPublicDelegatedPrefix extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipRange;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $project;
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setIpRange($ipRange)
   {
     $this->ipRange = $ipRange;
   }
+  /**
+   * @return string
+   */
   public function getIpRange()
   {
     return $this->ipRange;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProject($project)
   {
     $this->project = $project;
   }
+  /**
+   * @return string
+   */
   public function getProject()
   {
     return $this->project;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

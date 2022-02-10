@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2AnnotatedMessagePart extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $entityType;
+  /**
+   * @var array
+   */
   public $formattedValue;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setEntityType($entityType)
   {
     $this->entityType = $entityType;
   }
+  /**
+   * @return string
+   */
   public function getEntityType()
   {
     return $this->entityType;
   }
+  /**
+   * @param array
+   */
   public function setFormattedValue($formattedValue)
   {
     $this->formattedValue = $formattedValue;
   }
+  /**
+   * @return array
+   */
   public function getFormattedValue()
   {
     return $this->formattedValue;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

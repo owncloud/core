@@ -23,10 +23,7 @@ use Google\Client;
  * Service definition for Logging (v2).
  *
  * <p>
- * Writes log entries and manages your Cloud Logging configuration. The table
- * entries below are presented in alphabetical order, not in order of common
- * use. For explanations of the concepts found in the table entries, read the
- * documentation at https://cloud.google.com/logging/docs.</p>
+ * Writes log entries and manages your Cloud Logging configuration.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -53,6 +50,7 @@ class Logging extends \Google\Service
   const LOGGING_WRITE =
       "https://www.googleapis.com/auth/logging.write";
 
+  public $billingAccounts;
   public $billingAccounts_buckets;
   public $billingAccounts_buckets_views;
   public $billingAccounts_exclusions;
@@ -65,6 +63,7 @@ class Logging extends \Google\Service
   public $billingAccounts_sinks;
   public $entries;
   public $exclusions;
+  public $folders;
   public $folders_exclusions;
   public $folders_locations;
   public $folders_locations_buckets;
@@ -86,6 +85,7 @@ class Logging extends \Google\Service
   public $organizations_locations_operations;
   public $organizations_logs;
   public $organizations_sinks;
+  public $projects;
   public $projects_exclusions;
   public $projects_locations;
   public $projects_locations_buckets;
@@ -113,6 +113,26 @@ class Logging extends \Google\Service
     $this->version = 'v2';
     $this->serviceName = 'logging';
 
+    $this->billingAccounts = new Logging\Resource\BillingAccounts(
+        $this,
+        $this->serviceName,
+        'billingAccounts',
+        [
+          'methods' => [
+            'getCmekSettings' => [
+              'path' => 'v2/{+name}/cmekSettings',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
     $this->billingAccounts_buckets = new Logging\Resource\BillingAccountsBuckets(
         $this,
         $this->serviceName,
@@ -704,6 +724,26 @@ class Logging extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->folders = new Logging\Resource\Folders(
+        $this,
+        $this->serviceName,
+        'folders',
+        [
+          'methods' => [
+            'getCmekSettings' => [
+              'path' => 'v2/{+name}/cmekSettings',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],
@@ -1998,6 +2038,26 @@ class Logging extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects = new Logging\Resource\Projects(
+        $this,
+        $this->serviceName,
+        'projects',
+        [
+          'methods' => [
+            'getCmekSettings' => [
+              'path' => 'v2/{+name}/cmekSettings',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

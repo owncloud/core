@@ -19,34 +19,67 @@ namespace Google\Service\ContainerAnalysis;
 
 class Distribution extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $architecture;
+  /**
+   * @var string
+   */
   public $cpeUri;
+  /**
+   * @var string
+   */
   public $description;
   protected $latestVersionType = Version::class;
   protected $latestVersionDataType = '';
+  /**
+   * @var string
+   */
   public $maintainer;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setArchitecture($architecture)
   {
     $this->architecture = $architecture;
   }
+  /**
+   * @return string
+   */
   public function getArchitecture()
   {
     return $this->architecture;
   }
+  /**
+   * @param string
+   */
   public function setCpeUri($cpeUri)
   {
     $this->cpeUri = $cpeUri;
   }
+  /**
+   * @return string
+   */
   public function getCpeUri()
   {
     return $this->cpeUri;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -65,18 +98,30 @@ class Distribution extends \Google\Model
   {
     return $this->latestVersion;
   }
+  /**
+   * @param string
+   */
   public function setMaintainer($maintainer)
   {
     $this->maintainer = $maintainer;
   }
+  /**
+   * @return string
+   */
   public function getMaintainer()
   {
     return $this->maintainer;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

@@ -19,21 +19,39 @@ namespace Google\Service\ApiKeysService;
 
 class V2AndroidApplication extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string
+   */
   public $sha1Fingerprint;
 
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string
+   */
   public function setSha1Fingerprint($sha1Fingerprint)
   {
     $this->sha1Fingerprint = $sha1Fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getSha1Fingerprint()
   {
     return $this->sha1Fingerprint;

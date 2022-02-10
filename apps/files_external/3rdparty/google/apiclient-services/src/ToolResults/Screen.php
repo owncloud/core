@@ -19,39 +19,75 @@ namespace Google\Service\ToolResults;
 
 class Screen extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $fileReference;
+  /**
+   * @var string
+   */
   public $locale;
+  /**
+   * @var string
+   */
   public $model;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setFileReference($fileReference)
   {
     $this->fileReference = $fileReference;
   }
+  /**
+   * @return string
+   */
   public function getFileReference()
   {
     return $this->fileReference;
   }
+  /**
+   * @param string
+   */
   public function setLocale($locale)
   {
     $this->locale = $locale;
   }
+  /**
+   * @return string
+   */
   public function getLocale()
   {
     return $this->locale;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

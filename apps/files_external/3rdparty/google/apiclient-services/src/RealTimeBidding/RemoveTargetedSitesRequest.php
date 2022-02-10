@@ -20,12 +20,21 @@ namespace Google\Service\RealTimeBidding;
 class RemoveTargetedSitesRequest extends \Google\Collection
 {
   protected $collection_key = 'sites';
+  /**
+   * @var string[]
+   */
   public $sites;
 
+  /**
+   * @param string[]
+   */
   public function setSites($sites)
   {
     $this->sites = $sites;
   }
+  /**
+   * @return string[]
+   */
   public function getSites()
   {
     return $this->sites;

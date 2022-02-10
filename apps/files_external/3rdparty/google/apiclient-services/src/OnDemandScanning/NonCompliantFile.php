@@ -19,30 +19,57 @@ namespace Google\Service\OnDemandScanning;
 
 class NonCompliantFile extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayCommand;
+  /**
+   * @var string
+   */
   public $path;
+  /**
+   * @var string
+   */
   public $reason;
 
+  /**
+   * @param string
+   */
   public function setDisplayCommand($displayCommand)
   {
     $this->displayCommand = $displayCommand;
   }
+  /**
+   * @return string
+   */
   public function getDisplayCommand()
   {
     return $this->displayCommand;
   }
+  /**
+   * @param string
+   */
   public function setPath($path)
   {
     $this->path = $path;
   }
+  /**
+   * @return string
+   */
   public function getPath()
   {
     return $this->path;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

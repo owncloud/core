@@ -22,6 +22,9 @@ class Table extends \Google\Collection
   protected $collection_key = 'rows';
   protected $columnHeadersType = Headers::class;
   protected $columnHeadersDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $rowHeadersType = Headers::class;
   protected $rowHeadersDataType = '';
@@ -42,10 +45,16 @@ class Table extends \Google\Collection
   {
     return $this->columnHeaders;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

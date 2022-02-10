@@ -19,12 +19,21 @@ namespace Google\Service\AndroidEnterprise;
 
 class DeviceState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $accountState;
 
+  /**
+   * @param string
+   */
   public function setAccountState($accountState)
   {
     $this->accountState = $accountState;
   }
+  /**
+   * @return string
+   */
   public function getAccountState()
   {
     return $this->accountState;

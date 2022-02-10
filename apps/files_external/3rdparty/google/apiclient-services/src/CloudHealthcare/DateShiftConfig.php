@@ -19,12 +19,21 @@ namespace Google\Service\CloudHealthcare;
 
 class DateShiftConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cryptoKey;
 
+  /**
+   * @param string
+   */
   public function setCryptoKey($cryptoKey)
   {
     $this->cryptoKey = $cryptoKey;
   }
+  /**
+   * @return string
+   */
   public function getCryptoKey()
   {
     return $this->cryptoKey;

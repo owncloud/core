@@ -19,57 +19,111 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 
 class GoogleAnalyticsAdminV1alphaDisplayVideo360AdvertiserLink extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $adsPersonalizationEnabled;
+  /**
+   * @var string
+   */
   public $advertiserDisplayName;
+  /**
+   * @var string
+   */
   public $advertiserId;
+  /**
+   * @var bool
+   */
   public $campaignDataSharingEnabled;
+  /**
+   * @var bool
+   */
   public $costDataSharingEnabled;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param bool
+   */
   public function setAdsPersonalizationEnabled($adsPersonalizationEnabled)
   {
     $this->adsPersonalizationEnabled = $adsPersonalizationEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getAdsPersonalizationEnabled()
   {
     return $this->adsPersonalizationEnabled;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserDisplayName($advertiserDisplayName)
   {
     $this->advertiserDisplayName = $advertiserDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserDisplayName()
   {
     return $this->advertiserDisplayName;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
   }
+  /**
+   * @param bool
+   */
   public function setCampaignDataSharingEnabled($campaignDataSharingEnabled)
   {
     $this->campaignDataSharingEnabled = $campaignDataSharingEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getCampaignDataSharingEnabled()
   {
     return $this->campaignDataSharingEnabled;
   }
+  /**
+   * @param bool
+   */
   public function setCostDataSharingEnabled($costDataSharingEnabled)
   {
     $this->costDataSharingEnabled = $costDataSharingEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getCostDataSharingEnabled()
   {
     return $this->costDataSharingEnabled;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

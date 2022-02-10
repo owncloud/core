@@ -19,21 +19,39 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1DialogflowInteractionData extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $dialogflowIntentId;
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setDialogflowIntentId($dialogflowIntentId)
   {
     $this->dialogflowIntentId = $dialogflowIntentId;
   }
+  /**
+   * @return string
+   */
   public function getDialogflowIntentId()
   {
     return $this->dialogflowIntentId;

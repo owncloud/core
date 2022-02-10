@@ -19,30 +19,57 @@ namespace Google\Service\DatabaseMigrationService;
 
 class VmCreationConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $subnet;
+  /**
+   * @var string
+   */
   public $vmMachineType;
+  /**
+   * @var string
+   */
   public $vmZone;
 
+  /**
+   * @param string
+   */
   public function setSubnet($subnet)
   {
     $this->subnet = $subnet;
   }
+  /**
+   * @return string
+   */
   public function getSubnet()
   {
     return $this->subnet;
   }
+  /**
+   * @param string
+   */
   public function setVmMachineType($vmMachineType)
   {
     $this->vmMachineType = $vmMachineType;
   }
+  /**
+   * @return string
+   */
   public function getVmMachineType()
   {
     return $this->vmMachineType;
   }
+  /**
+   * @param string
+   */
   public function setVmZone($vmZone)
   {
     $this->vmZone = $vmZone;
   }
+  /**
+   * @return string
+   */
   public function getVmZone()
   {
     return $this->vmZone;

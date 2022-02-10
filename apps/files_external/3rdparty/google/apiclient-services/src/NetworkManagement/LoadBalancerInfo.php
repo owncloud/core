@@ -20,25 +20,49 @@ namespace Google\Service\NetworkManagement;
 class LoadBalancerInfo extends \Google\Collection
 {
   protected $collection_key = 'backends';
+  /**
+   * @var string
+   */
   public $backendType;
+  /**
+   * @var string
+   */
   public $backendUri;
   protected $backendsType = LoadBalancerBackend::class;
   protected $backendsDataType = 'array';
+  /**
+   * @var string
+   */
   public $healthCheckUri;
+  /**
+   * @var string
+   */
   public $loadBalancerType;
 
+  /**
+   * @param string
+   */
   public function setBackendType($backendType)
   {
     $this->backendType = $backendType;
   }
+  /**
+   * @return string
+   */
   public function getBackendType()
   {
     return $this->backendType;
   }
+  /**
+   * @param string
+   */
   public function setBackendUri($backendUri)
   {
     $this->backendUri = $backendUri;
   }
+  /**
+   * @return string
+   */
   public function getBackendUri()
   {
     return $this->backendUri;
@@ -57,18 +81,30 @@ class LoadBalancerInfo extends \Google\Collection
   {
     return $this->backends;
   }
+  /**
+   * @param string
+   */
   public function setHealthCheckUri($healthCheckUri)
   {
     $this->healthCheckUri = $healthCheckUri;
   }
+  /**
+   * @return string
+   */
   public function getHealthCheckUri()
   {
     return $this->healthCheckUri;
   }
+  /**
+   * @param string
+   */
   public function setLoadBalancerType($loadBalancerType)
   {
     $this->loadBalancerType = $loadBalancerType;
   }
+  /**
+   * @return string
+   */
   public function getLoadBalancerType()
   {
     return $this->loadBalancerType;

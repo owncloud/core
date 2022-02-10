@@ -20,12 +20,21 @@ namespace Google\Service\Slides;
 class UngroupObjectsRequest extends \Google\Collection
 {
   protected $collection_key = 'objectIds';
+  /**
+   * @var string[]
+   */
   public $objectIds;
 
+  /**
+   * @param string[]
+   */
   public function setObjectIds($objectIds)
   {
     $this->objectIds = $objectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getObjectIds()
   {
     return $this->objectIds;

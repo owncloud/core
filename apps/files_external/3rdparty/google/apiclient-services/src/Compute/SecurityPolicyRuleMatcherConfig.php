@@ -20,12 +20,21 @@ namespace Google\Service\Compute;
 class SecurityPolicyRuleMatcherConfig extends \Google\Collection
 {
   protected $collection_key = 'srcIpRanges';
+  /**
+   * @var string[]
+   */
   public $srcIpRanges;
 
+  /**
+   * @param string[]
+   */
   public function setSrcIpRanges($srcIpRanges)
   {
     $this->srcIpRanges = $srcIpRanges;
   }
+  /**
+   * @return string[]
+   */
   public function getSrcIpRanges()
   {
     return $this->srcIpRanges;

@@ -19,14 +19,23 @@ namespace Google\Service\Sheets;
 
 class MoveDimensionRequest extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $destinationIndex;
   protected $sourceType = DimensionRange::class;
   protected $sourceDataType = '';
 
+  /**
+   * @param int
+   */
   public function setDestinationIndex($destinationIndex)
   {
     $this->destinationIndex = $destinationIndex;
   }
+  /**
+   * @return int
+   */
   public function getDestinationIndex()
   {
     return $this->destinationIndex;

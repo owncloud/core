@@ -24,6 +24,9 @@ class UpdateDeveloperMetadataRequest extends \Google\Collection
   protected $dataFiltersDataType = 'array';
   protected $developerMetadataType = DeveloperMetadata::class;
   protected $developerMetadataDataType = '';
+  /**
+   * @var string
+   */
   public $fields;
 
   /**
@@ -54,10 +57,16 @@ class UpdateDeveloperMetadataRequest extends \Google\Collection
   {
     return $this->developerMetadata;
   }
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;

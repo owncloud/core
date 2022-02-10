@@ -24,10 +24,25 @@ class ResourceUpdate extends \Google\Collection
   protected $accessControlDataType = '';
   protected $errorType = ResourceUpdateError::class;
   protected $errorDataType = '';
+  /**
+   * @var string
+   */
   public $finalProperties;
+  /**
+   * @var string
+   */
   public $intent;
+  /**
+   * @var string
+   */
   public $manifest;
+  /**
+   * @var string
+   */
   public $properties;
+  /**
+   * @var string
+   */
   public $state;
   protected $warningsType = ResourceUpdateWarnings::class;
   protected $warningsDataType = 'array';
@@ -60,42 +75,72 @@ class ResourceUpdate extends \Google\Collection
   {
     return $this->error;
   }
+  /**
+   * @param string
+   */
   public function setFinalProperties($finalProperties)
   {
     $this->finalProperties = $finalProperties;
   }
+  /**
+   * @return string
+   */
   public function getFinalProperties()
   {
     return $this->finalProperties;
   }
+  /**
+   * @param string
+   */
   public function setIntent($intent)
   {
     $this->intent = $intent;
   }
+  /**
+   * @return string
+   */
   public function getIntent()
   {
     return $this->intent;
   }
+  /**
+   * @param string
+   */
   public function setManifest($manifest)
   {
     $this->manifest = $manifest;
   }
+  /**
+   * @return string
+   */
   public function getManifest()
   {
     return $this->manifest;
   }
+  /**
+   * @param string
+   */
   public function setProperties($properties)
   {
     $this->properties = $properties;
   }
+  /**
+   * @return string
+   */
   public function getProperties()
   {
     return $this->properties;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

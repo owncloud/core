@@ -19,21 +19,39 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2CharsToIgnore extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $charactersToSkip;
+  /**
+   * @var string
+   */
   public $commonCharactersToIgnore;
 
+  /**
+   * @param string
+   */
   public function setCharactersToSkip($charactersToSkip)
   {
     $this->charactersToSkip = $charactersToSkip;
   }
+  /**
+   * @return string
+   */
   public function getCharactersToSkip()
   {
     return $this->charactersToSkip;
   }
+  /**
+   * @param string
+   */
   public function setCommonCharactersToIgnore($commonCharactersToIgnore)
   {
     $this->commonCharactersToIgnore = $commonCharactersToIgnore;
   }
+  /**
+   * @return string
+   */
   public function getCommonCharactersToIgnore()
   {
     return $this->commonCharactersToIgnore;

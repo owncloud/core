@@ -19,12 +19,21 @@ namespace Google\Service\Blogger;
 
 class UserBlogs extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $selfLink;
 
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;

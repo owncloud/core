@@ -22,14 +22,29 @@ class OrderTrackingSignal extends \Google\Collection
   protected $collection_key = 'shippingInfo';
   protected $customerShippingFeeType = PriceAmount::class;
   protected $customerShippingFeeDataType = '';
+  /**
+   * @var string
+   */
   public $deliveryPostalCode;
+  /**
+   * @var string
+   */
   public $deliveryRegionCode;
   protected $lineItemsType = OrderTrackingSignalLineItemDetails::class;
   protected $lineItemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $merchantId;
   protected $orderCreatedTimeType = DateTime::class;
   protected $orderCreatedTimeDataType = '';
+  /**
+   * @var string
+   */
   public $orderId;
+  /**
+   * @var string
+   */
   public $orderTrackingSignalId;
   protected $shipmentLineItemMappingType = OrderTrackingSignalShipmentLineItemMapping::class;
   protected $shipmentLineItemMappingDataType = 'array';
@@ -50,18 +65,30 @@ class OrderTrackingSignal extends \Google\Collection
   {
     return $this->customerShippingFee;
   }
+  /**
+   * @param string
+   */
   public function setDeliveryPostalCode($deliveryPostalCode)
   {
     $this->deliveryPostalCode = $deliveryPostalCode;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryPostalCode()
   {
     return $this->deliveryPostalCode;
   }
+  /**
+   * @param string
+   */
   public function setDeliveryRegionCode($deliveryRegionCode)
   {
     $this->deliveryRegionCode = $deliveryRegionCode;
   }
+  /**
+   * @return string
+   */
   public function getDeliveryRegionCode()
   {
     return $this->deliveryRegionCode;
@@ -80,10 +107,16 @@ class OrderTrackingSignal extends \Google\Collection
   {
     return $this->lineItems;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;
@@ -102,18 +135,30 @@ class OrderTrackingSignal extends \Google\Collection
   {
     return $this->orderCreatedTime;
   }
+  /**
+   * @param string
+   */
   public function setOrderId($orderId)
   {
     $this->orderId = $orderId;
   }
+  /**
+   * @return string
+   */
   public function getOrderId()
   {
     return $this->orderId;
   }
+  /**
+   * @param string
+   */
   public function setOrderTrackingSignalId($orderTrackingSignalId)
   {
     $this->orderTrackingSignalId = $orderTrackingSignalId;
   }
+  /**
+   * @return string
+   */
   public function getOrderTrackingSignalId()
   {
     return $this->orderTrackingSignalId;

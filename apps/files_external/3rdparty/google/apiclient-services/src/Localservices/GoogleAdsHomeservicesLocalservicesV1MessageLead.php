@@ -19,39 +19,75 @@ namespace Google\Service\Localservices;
 
 class GoogleAdsHomeservicesLocalservicesV1MessageLead extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $consumerPhoneNumber;
+  /**
+   * @var string
+   */
   public $customerName;
+  /**
+   * @var string
+   */
   public $jobType;
+  /**
+   * @var string
+   */
   public $postalCode;
 
+  /**
+   * @param string
+   */
   public function setConsumerPhoneNumber($consumerPhoneNumber)
   {
     $this->consumerPhoneNumber = $consumerPhoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getConsumerPhoneNumber()
   {
     return $this->consumerPhoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setCustomerName($customerName)
   {
     $this->customerName = $customerName;
   }
+  /**
+   * @return string
+   */
   public function getCustomerName()
   {
     return $this->customerName;
   }
+  /**
+   * @param string
+   */
   public function setJobType($jobType)
   {
     $this->jobType = $jobType;
   }
+  /**
+   * @return string
+   */
   public function getJobType()
   {
     return $this->jobType;
   }
+  /**
+   * @param string
+   */
   public function setPostalCode($postalCode)
   {
     $this->postalCode = $postalCode;
   }
+  /**
+   * @return string
+   */
   public function getPostalCode()
   {
     return $this->postalCode;

@@ -22,6 +22,9 @@ class ListEnabledBuiltInVariablesResponse extends \Google\Collection
   protected $collection_key = 'builtInVariable';
   protected $builtInVariableType = BuiltInVariable::class;
   protected $builtInVariableDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListEnabledBuiltInVariablesResponse extends \Google\Collection
   {
     return $this->builtInVariable;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -19,12 +19,21 @@ namespace Google\Service\CloudIdentity;
 
 class GoogleAppsCloudidentityDevicesV1ApproveDeviceUserRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customer;
 
+  /**
+   * @param string
+   */
   public function setCustomer($customer)
   {
     $this->customer = $customer;
   }
+  /**
+   * @return string
+   */
   public function getCustomer()
   {
     return $this->customer;

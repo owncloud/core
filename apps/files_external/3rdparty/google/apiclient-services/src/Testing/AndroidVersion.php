@@ -20,28 +20,55 @@ namespace Google\Service\Testing;
 class AndroidVersion extends \Google\Collection
 {
   protected $collection_key = 'tags';
+  /**
+   * @var int
+   */
   public $apiLevel;
+  /**
+   * @var string
+   */
   public $codeName;
   protected $distributionType = Distribution::class;
   protected $distributionDataType = '';
+  /**
+   * @var string
+   */
   public $id;
   protected $releaseDateType = Date::class;
   protected $releaseDateDataType = '';
+  /**
+   * @var string[]
+   */
   public $tags;
+  /**
+   * @var string
+   */
   public $versionString;
 
+  /**
+   * @param int
+   */
   public function setApiLevel($apiLevel)
   {
     $this->apiLevel = $apiLevel;
   }
+  /**
+   * @return int
+   */
   public function getApiLevel()
   {
     return $this->apiLevel;
   }
+  /**
+   * @param string
+   */
   public function setCodeName($codeName)
   {
     $this->codeName = $codeName;
   }
+  /**
+   * @return string
+   */
   public function getCodeName()
   {
     return $this->codeName;
@@ -60,10 +87,16 @@ class AndroidVersion extends \Google\Collection
   {
     return $this->distribution;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -82,18 +115,30 @@ class AndroidVersion extends \Google\Collection
   {
     return $this->releaseDate;
   }
+  /**
+   * @param string[]
+   */
   public function setTags($tags)
   {
     $this->tags = $tags;
   }
+  /**
+   * @return string[]
+   */
   public function getTags()
   {
     return $this->tags;
   }
+  /**
+   * @param string
+   */
   public function setVersionString($versionString)
   {
     $this->versionString = $versionString;
   }
+  /**
+   * @return string
+   */
   public function getVersionString()
   {
     return $this->versionString;

@@ -19,33 +19,63 @@ namespace Google\Service\Spanner;
 
 class Scan extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $details;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $name;
   protected $scanDataType = ScanData::class;
   protected $scanDataDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param array[]
+   */
   public function setDetails($details)
   {
     $this->details = $details;
   }
+  /**
+   * @return array[]
+   */
   public function getDetails()
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -64,10 +94,16 @@ class Scan extends \Google\Model
   {
     return $this->scanData;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

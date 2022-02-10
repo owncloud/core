@@ -19,66 +19,129 @@ namespace Google\Service\FirebaseManagement;
 
 class IosApp extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appId;
+  /**
+   * @var string
+   */
   public $appStoreId;
+  /**
+   * @var string
+   */
   public $bundleId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $projectId;
+  /**
+   * @var string
+   */
   public $teamId;
 
+  /**
+   * @param string
+   */
   public function setAppId($appId)
   {
     $this->appId = $appId;
   }
+  /**
+   * @return string
+   */
   public function getAppId()
   {
     return $this->appId;
   }
+  /**
+   * @param string
+   */
   public function setAppStoreId($appStoreId)
   {
     $this->appStoreId = $appStoreId;
   }
+  /**
+   * @return string
+   */
   public function getAppStoreId()
   {
     return $this->appStoreId;
   }
+  /**
+   * @param string
+   */
   public function setBundleId($bundleId)
   {
     $this->bundleId = $bundleId;
   }
+  /**
+   * @return string
+   */
   public function getBundleId()
   {
     return $this->bundleId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProjectId($projectId)
   {
     $this->projectId = $projectId;
   }
+  /**
+   * @return string
+   */
   public function getProjectId()
   {
     return $this->projectId;
   }
+  /**
+   * @param string
+   */
   public function setTeamId($teamId)
   {
     $this->teamId = $teamId;
   }
+  /**
+   * @return string
+   */
   public function getTeamId()
   {
     return $this->teamId;

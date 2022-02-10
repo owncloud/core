@@ -20,102 +20,201 @@ namespace Google\Service\CloudTalentSolution;
 class PostalAddress extends \Google\Collection
 {
   protected $collection_key = 'recipients';
+  /**
+   * @var string[]
+   */
   public $addressLines;
+  /**
+   * @var string
+   */
   public $administrativeArea;
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
   public $locality;
+  /**
+   * @var string
+   */
   public $organization;
+  /**
+   * @var string
+   */
   public $postalCode;
+  /**
+   * @var string[]
+   */
   public $recipients;
+  /**
+   * @var string
+   */
   public $regionCode;
+  /**
+   * @var int
+   */
   public $revision;
+  /**
+   * @var string
+   */
   public $sortingCode;
+  /**
+   * @var string
+   */
   public $sublocality;
 
+  /**
+   * @param string[]
+   */
   public function setAddressLines($addressLines)
   {
     $this->addressLines = $addressLines;
   }
+  /**
+   * @return string[]
+   */
   public function getAddressLines()
   {
     return $this->addressLines;
   }
+  /**
+   * @param string
+   */
   public function setAdministrativeArea($administrativeArea)
   {
     $this->administrativeArea = $administrativeArea;
   }
+  /**
+   * @return string
+   */
   public function getAdministrativeArea()
   {
     return $this->administrativeArea;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
   }
+  /**
+   * @param string
+   */
   public function setLocality($locality)
   {
     $this->locality = $locality;
   }
+  /**
+   * @return string
+   */
   public function getLocality()
   {
     return $this->locality;
   }
+  /**
+   * @param string
+   */
   public function setOrganization($organization)
   {
     $this->organization = $organization;
   }
+  /**
+   * @return string
+   */
   public function getOrganization()
   {
     return $this->organization;
   }
+  /**
+   * @param string
+   */
   public function setPostalCode($postalCode)
   {
     $this->postalCode = $postalCode;
   }
+  /**
+   * @return string
+   */
   public function getPostalCode()
   {
     return $this->postalCode;
   }
+  /**
+   * @param string[]
+   */
   public function setRecipients($recipients)
   {
     $this->recipients = $recipients;
   }
+  /**
+   * @return string[]
+   */
   public function getRecipients()
   {
     return $this->recipients;
   }
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;
   }
+  /**
+   * @param int
+   */
   public function setRevision($revision)
   {
     $this->revision = $revision;
   }
+  /**
+   * @return int
+   */
   public function getRevision()
   {
     return $this->revision;
   }
+  /**
+   * @param string
+   */
   public function setSortingCode($sortingCode)
   {
     $this->sortingCode = $sortingCode;
   }
+  /**
+   * @return string
+   */
   public function getSortingCode()
   {
     return $this->sortingCode;
   }
+  /**
+   * @param string
+   */
   public function setSublocality($sublocality)
   {
     $this->sublocality = $sublocality;
   }
+  /**
+   * @return string
+   */
   public function getSublocality()
   {
     return $this->sublocality;

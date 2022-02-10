@@ -19,21 +19,39 @@ namespace Google\Service\Container;
 
 class AutoUpgradeOptions extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $autoUpgradeStartTime;
+  /**
+   * @var string
+   */
   public $description;
 
+  /**
+   * @param string
+   */
   public function setAutoUpgradeStartTime($autoUpgradeStartTime)
   {
     $this->autoUpgradeStartTime = $autoUpgradeStartTime;
   }
+  /**
+   * @return string
+   */
   public function getAutoUpgradeStartTime()
   {
     return $this->autoUpgradeStartTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;

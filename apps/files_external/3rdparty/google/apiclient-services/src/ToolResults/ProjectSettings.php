@@ -19,21 +19,39 @@ namespace Google\Service\ToolResults;
 
 class ProjectSettings extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $defaultBucket;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setDefaultBucket($defaultBucket)
   {
     $this->defaultBucket = $defaultBucket;
   }
+  /**
+   * @return string
+   */
   public function getDefaultBucket()
   {
     return $this->defaultBucket;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

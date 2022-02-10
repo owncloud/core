@@ -20,39 +20,75 @@ namespace Google\Service\Spanner;
 class Database extends \Google\Collection
 {
   protected $collection_key = 'encryptionInfo';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $defaultLeader;
+  /**
+   * @var string
+   */
   public $earliestVersionTime;
   protected $encryptionConfigType = EncryptionConfig::class;
   protected $encryptionConfigDataType = '';
   protected $encryptionInfoType = EncryptionInfo::class;
   protected $encryptionInfoDataType = 'array';
+  /**
+   * @var string
+   */
   public $name;
   protected $restoreInfoType = RestoreInfo::class;
   protected $restoreInfoDataType = '';
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $versionRetentionPeriod;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDefaultLeader($defaultLeader)
   {
     $this->defaultLeader = $defaultLeader;
   }
+  /**
+   * @return string
+   */
   public function getDefaultLeader()
   {
     return $this->defaultLeader;
   }
+  /**
+   * @param string
+   */
   public function setEarliestVersionTime($earliestVersionTime)
   {
     $this->earliestVersionTime = $earliestVersionTime;
   }
+  /**
+   * @return string
+   */
   public function getEarliestVersionTime()
   {
     return $this->earliestVersionTime;
@@ -85,10 +121,16 @@ class Database extends \Google\Collection
   {
     return $this->encryptionInfo;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -107,18 +149,30 @@ class Database extends \Google\Collection
   {
     return $this->restoreInfo;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setVersionRetentionPeriod($versionRetentionPeriod)
   {
     $this->versionRetentionPeriod = $versionRetentionPeriod;
   }
+  /**
+   * @return string
+   */
   public function getVersionRetentionPeriod()
   {
     return $this->versionRetentionPeriod;

@@ -19,32 +19,59 @@ namespace Google\Service\Dataproc;
 
 class JobMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $jobId;
+  /**
+   * @var string
+   */
   public $operationType;
+  /**
+   * @var string
+   */
   public $startTime;
   protected $statusType = JobStatus::class;
   protected $statusDataType = '';
 
+  /**
+   * @param string
+   */
   public function setJobId($jobId)
   {
     $this->jobId = $jobId;
   }
+  /**
+   * @return string
+   */
   public function getJobId()
   {
     return $this->jobId;
   }
+  /**
+   * @param string
+   */
   public function setOperationType($operationType)
   {
     $this->operationType = $operationType;
   }
+  /**
+   * @return string
+   */
   public function getOperationType()
   {
     return $this->operationType;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

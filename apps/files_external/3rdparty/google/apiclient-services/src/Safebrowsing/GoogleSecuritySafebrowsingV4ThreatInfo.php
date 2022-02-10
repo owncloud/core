@@ -20,16 +20,31 @@ namespace Google\Service\Safebrowsing;
 class GoogleSecuritySafebrowsingV4ThreatInfo extends \Google\Collection
 {
   protected $collection_key = 'threatTypes';
+  /**
+   * @var string[]
+   */
   public $platformTypes;
   protected $threatEntriesType = GoogleSecuritySafebrowsingV4ThreatEntry::class;
   protected $threatEntriesDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $threatEntryTypes;
+  /**
+   * @var string[]
+   */
   public $threatTypes;
 
+  /**
+   * @param string[]
+   */
   public function setPlatformTypes($platformTypes)
   {
     $this->platformTypes = $platformTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getPlatformTypes()
   {
     return $this->platformTypes;
@@ -48,18 +63,30 @@ class GoogleSecuritySafebrowsingV4ThreatInfo extends \Google\Collection
   {
     return $this->threatEntries;
   }
+  /**
+   * @param string[]
+   */
   public function setThreatEntryTypes($threatEntryTypes)
   {
     $this->threatEntryTypes = $threatEntryTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getThreatEntryTypes()
   {
     return $this->threatEntryTypes;
   }
+  /**
+   * @param string[]
+   */
   public function setThreatTypes($threatTypes)
   {
     $this->threatTypes = $threatTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getThreatTypes()
   {
     return $this->threatTypes;

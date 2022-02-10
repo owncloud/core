@@ -28,6 +28,9 @@ class GoogleCloudVideointelligenceV1LabelAnnotation extends \Google\Collection
   protected $framesDataType = 'array';
   protected $segmentsType = GoogleCloudVideointelligenceV1LabelSegment::class;
   protected $segmentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $version;
 
   /**
@@ -86,10 +89,16 @@ class GoogleCloudVideointelligenceV1LabelAnnotation extends \Google\Collection
   {
     return $this->segments;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

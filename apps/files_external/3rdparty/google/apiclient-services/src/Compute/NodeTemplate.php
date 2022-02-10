@@ -22,23 +22,59 @@ class NodeTemplate extends \Google\Collection
   protected $collection_key = 'disks';
   protected $acceleratorsType = AcceleratorConfig::class;
   protected $acceleratorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $cpuOvercommitType;
+  /**
+   * @var string
+   */
   public $creationTimestamp;
+  /**
+   * @var string
+   */
   public $description;
   protected $disksType = LocalDisk::class;
   protected $disksDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $nodeAffinityLabels;
+  /**
+   * @var string
+   */
   public $nodeType;
   protected $nodeTypeFlexibilityType = NodeTemplateNodeTypeFlexibility::class;
   protected $nodeTypeFlexibilityDataType = '';
+  /**
+   * @var string
+   */
   public $region;
+  /**
+   * @var string
+   */
   public $selfLink;
   protected $serverBindingType = ServerBinding::class;
   protected $serverBindingDataType = '';
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $statusMessage;
 
   /**
@@ -55,26 +91,44 @@ class NodeTemplate extends \Google\Collection
   {
     return $this->accelerators;
   }
+  /**
+   * @param string
+   */
   public function setCpuOvercommitType($cpuOvercommitType)
   {
     $this->cpuOvercommitType = $cpuOvercommitType;
   }
+  /**
+   * @return string
+   */
   public function getCpuOvercommitType()
   {
     return $this->cpuOvercommitType;
   }
+  /**
+   * @param string
+   */
   public function setCreationTimestamp($creationTimestamp)
   {
     $this->creationTimestamp = $creationTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getCreationTimestamp()
   {
     return $this->creationTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -93,42 +147,72 @@ class NodeTemplate extends \Google\Collection
   {
     return $this->disks;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setNodeAffinityLabels($nodeAffinityLabels)
   {
     $this->nodeAffinityLabels = $nodeAffinityLabels;
   }
+  /**
+   * @return string[]
+   */
   public function getNodeAffinityLabels()
   {
     return $this->nodeAffinityLabels;
   }
+  /**
+   * @param string
+   */
   public function setNodeType($nodeType)
   {
     $this->nodeType = $nodeType;
   }
+  /**
+   * @return string
+   */
   public function getNodeType()
   {
     return $this->nodeType;
@@ -147,18 +231,30 @@ class NodeTemplate extends \Google\Collection
   {
     return $this->nodeTypeFlexibility;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;
   }
+  /**
+   * @param string
+   */
   public function setSelfLink($selfLink)
   {
     $this->selfLink = $selfLink;
   }
+  /**
+   * @return string
+   */
   public function getSelfLink()
   {
     return $this->selfLink;
@@ -177,18 +273,30 @@ class NodeTemplate extends \Google\Collection
   {
     return $this->serverBinding;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setStatusMessage($statusMessage)
   {
     $this->statusMessage = $statusMessage;
   }
+  /**
+   * @return string
+   */
   public function getStatusMessage()
   {
     return $this->statusMessage;

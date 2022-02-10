@@ -20,75 +20,147 @@ namespace Google\Service\GoogleAnalyticsAdmin;
 class GoogleAnalyticsAdminV1alphaSearchChangeHistoryEventsRequest extends \Google\Collection
 {
   protected $collection_key = 'resourceType';
+  /**
+   * @var string[]
+   */
   public $action;
+  /**
+   * @var string[]
+   */
   public $actorEmail;
+  /**
+   * @var string
+   */
   public $earliestChangeTime;
+  /**
+   * @var string
+   */
   public $latestChangeTime;
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  /**
+   * @var string
+   */
   public $property;
+  /**
+   * @var string[]
+   */
   public $resourceType;
 
+  /**
+   * @param string[]
+   */
   public function setAction($action)
   {
     $this->action = $action;
   }
+  /**
+   * @return string[]
+   */
   public function getAction()
   {
     return $this->action;
   }
+  /**
+   * @param string[]
+   */
   public function setActorEmail($actorEmail)
   {
     $this->actorEmail = $actorEmail;
   }
+  /**
+   * @return string[]
+   */
   public function getActorEmail()
   {
     return $this->actorEmail;
   }
+  /**
+   * @param string
+   */
   public function setEarliestChangeTime($earliestChangeTime)
   {
     $this->earliestChangeTime = $earliestChangeTime;
   }
+  /**
+   * @return string
+   */
   public function getEarliestChangeTime()
   {
     return $this->earliestChangeTime;
   }
+  /**
+   * @param string
+   */
   public function setLatestChangeTime($latestChangeTime)
   {
     $this->latestChangeTime = $latestChangeTime;
   }
+  /**
+   * @return string
+   */
   public function getLatestChangeTime()
   {
     return $this->latestChangeTime;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
   }
+  /**
+   * @param string
+   */
   public function setProperty($property)
   {
     $this->property = $property;
   }
+  /**
+   * @return string
+   */
   public function getProperty()
   {
     return $this->property;
   }
+  /**
+   * @param string[]
+   */
   public function setResourceType($resourceType)
   {
     $this->resourceType = $resourceType;
   }
+  /**
+   * @return string[]
+   */
   public function getResourceType()
   {
     return $this->resourceType;

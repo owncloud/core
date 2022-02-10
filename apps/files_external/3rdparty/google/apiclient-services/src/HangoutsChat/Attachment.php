@@ -21,13 +21,31 @@ class Attachment extends \Google\Model
 {
   protected $attachmentDataRefType = AttachmentDataRef::class;
   protected $attachmentDataRefDataType = '';
+  /**
+   * @var string
+   */
   public $contentName;
+  /**
+   * @var string
+   */
   public $contentType;
+  /**
+   * @var string
+   */
   public $downloadUri;
   protected $driveDataRefType = DriveDataRef::class;
   protected $driveDataRefDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $source;
+  /**
+   * @var string
+   */
   public $thumbnailUri;
 
   /**
@@ -44,26 +62,44 @@ class Attachment extends \Google\Model
   {
     return $this->attachmentDataRef;
   }
+  /**
+   * @param string
+   */
   public function setContentName($contentName)
   {
     $this->contentName = $contentName;
   }
+  /**
+   * @return string
+   */
   public function getContentName()
   {
     return $this->contentName;
   }
+  /**
+   * @param string
+   */
   public function setContentType($contentType)
   {
     $this->contentType = $contentType;
   }
+  /**
+   * @return string
+   */
   public function getContentType()
   {
     return $this->contentType;
   }
+  /**
+   * @param string
+   */
   public function setDownloadUri($downloadUri)
   {
     $this->downloadUri = $downloadUri;
   }
+  /**
+   * @return string
+   */
   public function getDownloadUri()
   {
     return $this->downloadUri;
@@ -82,26 +118,44 @@ class Attachment extends \Google\Model
   {
     return $this->driveDataRef;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSource($source)
   {
     $this->source = $source;
   }
+  /**
+   * @return string
+   */
   public function getSource()
   {
     return $this->source;
   }
+  /**
+   * @param string
+   */
   public function setThumbnailUri($thumbnailUri)
   {
     $this->thumbnailUri = $thumbnailUri;
   }
+  /**
+   * @return string
+   */
   public function getThumbnailUri()
   {
     return $this->thumbnailUri;

@@ -19,30 +19,57 @@ namespace Google\Service\Dataflow;
 
 class PubsubSnapshotMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $snapshotName;
+  /**
+   * @var string
+   */
   public $topicName;
 
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setSnapshotName($snapshotName)
   {
     $this->snapshotName = $snapshotName;
   }
+  /**
+   * @return string
+   */
   public function getSnapshotName()
   {
     return $this->snapshotName;
   }
+  /**
+   * @param string
+   */
   public function setTopicName($topicName)
   {
     $this->topicName = $topicName;
   }
+  /**
+   * @return string
+   */
   public function getTopicName()
   {
     return $this->topicName;

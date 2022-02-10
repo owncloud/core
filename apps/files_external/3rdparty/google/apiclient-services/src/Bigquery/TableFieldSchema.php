@@ -22,17 +22,41 @@ class TableFieldSchema extends \Google\Collection
   protected $collection_key = 'fields';
   protected $categoriesType = TableFieldSchemaCategories::class;
   protected $categoriesDataType = '';
+  /**
+   * @var string
+   */
   public $collationSpec;
+  /**
+   * @var string
+   */
   public $description;
   protected $fieldsType = TableFieldSchema::class;
   protected $fieldsDataType = 'array';
+  /**
+   * @var string
+   */
   public $maxLength;
+  /**
+   * @var string
+   */
   public $mode;
+  /**
+   * @var string
+   */
   public $name;
   protected $policyTagsType = TableFieldSchemaPolicyTags::class;
   protected $policyTagsDataType = '';
+  /**
+   * @var string
+   */
   public $precision;
+  /**
+   * @var string
+   */
   public $scale;
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -49,18 +73,30 @@ class TableFieldSchema extends \Google\Collection
   {
     return $this->categories;
   }
+  /**
+   * @param string
+   */
   public function setCollationSpec($collationSpec)
   {
     $this->collationSpec = $collationSpec;
   }
+  /**
+   * @return string
+   */
   public function getCollationSpec()
   {
     return $this->collationSpec;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -79,26 +115,44 @@ class TableFieldSchema extends \Google\Collection
   {
     return $this->fields;
   }
+  /**
+   * @param string
+   */
   public function setMaxLength($maxLength)
   {
     $this->maxLength = $maxLength;
   }
+  /**
+   * @return string
+   */
   public function getMaxLength()
   {
     return $this->maxLength;
   }
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -117,26 +171,44 @@ class TableFieldSchema extends \Google\Collection
   {
     return $this->policyTags;
   }
+  /**
+   * @param string
+   */
   public function setPrecision($precision)
   {
     $this->precision = $precision;
   }
+  /**
+   * @return string
+   */
   public function getPrecision()
   {
     return $this->precision;
   }
+  /**
+   * @param string
+   */
   public function setScale($scale)
   {
     $this->scale = $scale;
   }
+  /**
+   * @return string
+   */
   public function getScale()
   {
     return $this->scale;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

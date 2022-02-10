@@ -19,18 +19,39 @@ namespace Google\Service\FactCheckTools;
 
 class GoogleFactcheckingFactchecktoolsV1alpha1ClaimReview extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $languageCode;
   protected $publisherType = GoogleFactcheckingFactchecktoolsV1alpha1Publisher::class;
   protected $publisherDataType = '';
+  /**
+   * @var string
+   */
   public $reviewDate;
+  /**
+   * @var string
+   */
   public $textualRating;
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
@@ -49,34 +70,58 @@ class GoogleFactcheckingFactchecktoolsV1alpha1ClaimReview extends \Google\Model
   {
     return $this->publisher;
   }
+  /**
+   * @param string
+   */
   public function setReviewDate($reviewDate)
   {
     $this->reviewDate = $reviewDate;
   }
+  /**
+   * @return string
+   */
   public function getReviewDate()
   {
     return $this->reviewDate;
   }
+  /**
+   * @param string
+   */
   public function setTextualRating($textualRating)
   {
     $this->textualRating = $textualRating;
   }
+  /**
+   * @return string
+   */
   public function getTextualRating()
   {
     return $this->textualRating;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

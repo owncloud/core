@@ -19,30 +19,57 @@ namespace Google\Service\CloudScheduler;
 
 class PubsubTarget extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $attributes;
+  /**
+   * @var string
+   */
   public $data;
+  /**
+   * @var string
+   */
   public $topicName;
 
+  /**
+   * @param string[]
+   */
   public function setAttributes($attributes)
   {
     $this->attributes = $attributes;
   }
+  /**
+   * @return string[]
+   */
   public function getAttributes()
   {
     return $this->attributes;
   }
+  /**
+   * @param string
+   */
   public function setData($data)
   {
     $this->data = $data;
   }
+  /**
+   * @return string
+   */
   public function getData()
   {
     return $this->data;
   }
+  /**
+   * @param string
+   */
   public function setTopicName($topicName)
   {
     $this->topicName = $topicName;
   }
+  /**
+   * @return string
+   */
   public function getTopicName()
   {
     return $this->topicName;

@@ -19,21 +19,39 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1StudyConfigParameterSpecIntegerValueSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $maxValue;
+  /**
+   * @var string
+   */
   public $minValue;
 
+  /**
+   * @param string
+   */
   public function setMaxValue($maxValue)
   {
     $this->maxValue = $maxValue;
   }
+  /**
+   * @return string
+   */
   public function getMaxValue()
   {
     return $this->maxValue;
   }
+  /**
+   * @param string
+   */
   public function setMinValue($minValue)
   {
     $this->minValue = $minValue;
   }
+  /**
+   * @return string
+   */
   public function getMinValue()
   {
     return $this->minValue;

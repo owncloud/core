@@ -19,21 +19,39 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class RelevantLocation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $placeId;
+  /**
+   * @var string
+   */
   public $relationType;
 
+  /**
+   * @param string
+   */
   public function setPlaceId($placeId)
   {
     $this->placeId = $placeId;
   }
+  /**
+   * @return string
+   */
   public function getPlaceId()
   {
     return $this->placeId;
   }
+  /**
+   * @param string
+   */
   public function setRelationType($relationType)
   {
     $this->relationType = $relationType;
   }
+  /**
+   * @return string
+   */
   public function getRelationType()
   {
     return $this->relationType;

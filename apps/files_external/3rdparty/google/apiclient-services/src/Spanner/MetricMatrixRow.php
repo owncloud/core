@@ -20,12 +20,21 @@ namespace Google\Service\Spanner;
 class MetricMatrixRow extends \Google\Collection
 {
   protected $collection_key = 'cols';
+  /**
+   * @var float[]
+   */
   public $cols;
 
+  /**
+   * @param float[]
+   */
   public function setCols($cols)
   {
     $this->cols = $cols;
   }
+  /**
+   * @return float[]
+   */
   public function getCols()
   {
     return $this->cols;

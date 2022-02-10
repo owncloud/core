@@ -19,30 +19,57 @@ namespace Google\Service\ChromeManagement;
 
 class GoogleChromeManagementV1ChromeAppPermission extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $accessUserData;
+  /**
+   * @var string
+   */
   public $documentationUri;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param bool
+   */
   public function setAccessUserData($accessUserData)
   {
     $this->accessUserData = $accessUserData;
   }
+  /**
+   * @return bool
+   */
   public function getAccessUserData()
   {
     return $this->accessUserData;
   }
+  /**
+   * @param string
+   */
   public function setDocumentationUri($documentationUri)
   {
     $this->documentationUri = $documentationUri;
   }
+  /**
+   * @return string
+   */
   public function getDocumentationUri()
   {
     return $this->documentationUri;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

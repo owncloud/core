@@ -19,39 +19,75 @@ namespace Google\Service\DataLabeling;
 
 class GoogleCloudDatalabelingV1beta1FeedbackThreadMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $lastUpdateTime;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $thumbnail;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdateTime($lastUpdateTime)
   {
     $this->lastUpdateTime = $lastUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateTime()
   {
     return $this->lastUpdateTime;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setThumbnail($thumbnail)
   {
     $this->thumbnail = $thumbnail;
   }
+  /**
+   * @return string
+   */
   public function getThumbnail()
   {
     return $this->thumbnail;

@@ -19,30 +19,57 @@ namespace Google\Service\Directory;
 
 class UserRelation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customType;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setCustomType($customType)
   {
     $this->customType = $customType;
   }
+  /**
+   * @return string
+   */
   public function getCustomType()
   {
     return $this->customType;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

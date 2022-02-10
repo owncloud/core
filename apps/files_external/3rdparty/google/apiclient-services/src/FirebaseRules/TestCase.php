@@ -20,26 +20,53 @@ namespace Google\Service\FirebaseRules;
 class TestCase extends \Google\Collection
 {
   protected $collection_key = 'functionMocks';
+  /**
+   * @var string
+   */
   public $expectation;
+  /**
+   * @var string
+   */
   public $expressionReportLevel;
   protected $functionMocksType = FunctionMock::class;
   protected $functionMocksDataType = 'array';
+  /**
+   * @var string
+   */
   public $pathEncoding;
+  /**
+   * @var array
+   */
   public $request;
+  /**
+   * @var array
+   */
   public $resource;
 
+  /**
+   * @param string
+   */
   public function setExpectation($expectation)
   {
     $this->expectation = $expectation;
   }
+  /**
+   * @return string
+   */
   public function getExpectation()
   {
     return $this->expectation;
   }
+  /**
+   * @param string
+   */
   public function setExpressionReportLevel($expressionReportLevel)
   {
     $this->expressionReportLevel = $expressionReportLevel;
   }
+  /**
+   * @return string
+   */
   public function getExpressionReportLevel()
   {
     return $this->expressionReportLevel;
@@ -58,26 +85,44 @@ class TestCase extends \Google\Collection
   {
     return $this->functionMocks;
   }
+  /**
+   * @param string
+   */
   public function setPathEncoding($pathEncoding)
   {
     $this->pathEncoding = $pathEncoding;
   }
+  /**
+   * @return string
+   */
   public function getPathEncoding()
   {
     return $this->pathEncoding;
   }
+  /**
+   * @param array
+   */
   public function setRequest($request)
   {
     $this->request = $request;
   }
+  /**
+   * @return array
+   */
   public function getRequest()
   {
     return $this->request;
   }
+  /**
+   * @param array
+   */
   public function setResource($resource)
   {
     $this->resource = $resource;
   }
+  /**
+   * @return array
+   */
   public function getResource()
   {
     return $this->resource;

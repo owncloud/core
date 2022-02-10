@@ -19,21 +19,39 @@ namespace Google\Service\BigtableAdmin;
 
 class SingleClusterRouting extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowTransactionalWrites;
+  /**
+   * @var string
+   */
   public $clusterId;
 
+  /**
+   * @param bool
+   */
   public function setAllowTransactionalWrites($allowTransactionalWrites)
   {
     $this->allowTransactionalWrites = $allowTransactionalWrites;
   }
+  /**
+   * @return bool
+   */
   public function getAllowTransactionalWrites()
   {
     return $this->allowTransactionalWrites;
   }
+  /**
+   * @param string
+   */
   public function setClusterId($clusterId)
   {
     $this->clusterId = $clusterId;
   }
+  /**
+   * @return string
+   */
   public function getClusterId()
   {
     return $this->clusterId;

@@ -19,12 +19,21 @@ namespace Google\Service\MyBusinessVerifications;
 
 class CompleteVerificationRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $pin;
 
+  /**
+   * @param string
+   */
   public function setPin($pin)
   {
     $this->pin = $pin;
   }
+  /**
+   * @return string
+   */
   public function getPin()
   {
     return $this->pin;

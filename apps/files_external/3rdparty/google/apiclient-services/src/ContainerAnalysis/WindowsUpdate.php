@@ -22,12 +22,27 @@ class WindowsUpdate extends \Google\Collection
   protected $collection_key = 'kbArticleIds';
   protected $categoriesType = Category::class;
   protected $categoriesDataType = 'array';
+  /**
+   * @var string
+   */
   public $description;
   protected $identityType = Identity::class;
   protected $identityDataType = '';
+  /**
+   * @var string[]
+   */
   public $kbArticleIds;
+  /**
+   * @var string
+   */
   public $lastPublishedTimestamp;
+  /**
+   * @var string
+   */
   public $supportUrl;
+  /**
+   * @var string
+   */
   public $title;
 
   /**
@@ -44,10 +59,16 @@ class WindowsUpdate extends \Google\Collection
   {
     return $this->categories;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -66,34 +87,58 @@ class WindowsUpdate extends \Google\Collection
   {
     return $this->identity;
   }
+  /**
+   * @param string[]
+   */
   public function setKbArticleIds($kbArticleIds)
   {
     $this->kbArticleIds = $kbArticleIds;
   }
+  /**
+   * @return string[]
+   */
   public function getKbArticleIds()
   {
     return $this->kbArticleIds;
   }
+  /**
+   * @param string
+   */
   public function setLastPublishedTimestamp($lastPublishedTimestamp)
   {
     $this->lastPublishedTimestamp = $lastPublishedTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getLastPublishedTimestamp()
   {
     return $this->lastPublishedTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setSupportUrl($supportUrl)
   {
     $this->supportUrl = $supportUrl;
   }
+  /**
+   * @return string
+   */
   public function getSupportUrl()
   {
     return $this->supportUrl;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

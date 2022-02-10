@@ -24,6 +24,9 @@ class QueryParameterType extends \Google\Collection
   protected $arrayTypeDataType = '';
   protected $structTypesType = QueryParameterTypeStructTypes::class;
   protected $structTypesDataType = 'array';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -54,10 +57,16 @@ class QueryParameterType extends \Google\Collection
   {
     return $this->structTypes;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

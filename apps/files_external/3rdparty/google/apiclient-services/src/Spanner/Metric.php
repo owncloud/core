@@ -19,6 +19,9 @@ namespace Google\Service\Spanner;
 
 class Metric extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $aggregation;
   protected $categoryType = LocalizedString::class;
   protected $categoryDataType = '';
@@ -26,7 +29,13 @@ class Metric extends \Google\Model
   protected $derivedDataType = '';
   protected $displayLabelType = LocalizedString::class;
   protected $displayLabelDataType = '';
+  /**
+   * @var bool
+   */
   public $hasNonzeroData;
+  /**
+   * @var float
+   */
   public $hotValue;
   protected $indexedHotKeysType = IndexedHotKey::class;
   protected $indexedHotKeysDataType = 'map';
@@ -38,12 +47,21 @@ class Metric extends \Google\Model
   protected $matrixDataType = '';
   protected $unitType = LocalizedString::class;
   protected $unitDataType = '';
+  /**
+   * @var bool
+   */
   public $visible;
 
+  /**
+   * @param string
+   */
   public function setAggregation($aggregation)
   {
     $this->aggregation = $aggregation;
   }
+  /**
+   * @return string
+   */
   public function getAggregation()
   {
     return $this->aggregation;
@@ -90,18 +108,30 @@ class Metric extends \Google\Model
   {
     return $this->displayLabel;
   }
+  /**
+   * @param bool
+   */
   public function setHasNonzeroData($hasNonzeroData)
   {
     $this->hasNonzeroData = $hasNonzeroData;
   }
+  /**
+   * @return bool
+   */
   public function getHasNonzeroData()
   {
     return $this->hasNonzeroData;
   }
+  /**
+   * @param float
+   */
   public function setHotValue($hotValue)
   {
     $this->hotValue = $hotValue;
   }
+  /**
+   * @return float
+   */
   public function getHotValue()
   {
     return $this->hotValue;
@@ -176,10 +206,16 @@ class Metric extends \Google\Model
   {
     return $this->unit;
   }
+  /**
+   * @param bool
+   */
   public function setVisible($visible)
   {
     $this->visible = $visible;
   }
+  /**
+   * @return bool
+   */
   public function getVisible()
   {
     return $this->visible;

@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3RolloutState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $step;
+  /**
+   * @var int
+   */
   public $stepIndex;
 
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setStep($step)
   {
     $this->step = $step;
   }
+  /**
+   * @return string
+   */
   public function getStep()
   {
     return $this->step;
   }
+  /**
+   * @param int
+   */
   public function setStepIndex($stepIndex)
   {
     $this->stepIndex = $stepIndex;
   }
+  /**
+   * @return int
+   */
   public function getStepIndex()
   {
     return $this->stepIndex;

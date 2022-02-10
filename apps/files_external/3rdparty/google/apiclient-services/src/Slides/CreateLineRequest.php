@@ -19,16 +19,31 @@ namespace Google\Service\Slides;
 
 class CreateLineRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $category;
   protected $elementPropertiesType = PageElementProperties::class;
   protected $elementPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $lineCategory;
+  /**
+   * @var string
+   */
   public $objectId;
 
+  /**
+   * @param string
+   */
   public function setCategory($category)
   {
     $this->category = $category;
   }
+  /**
+   * @return string
+   */
   public function getCategory()
   {
     return $this->category;
@@ -47,18 +62,30 @@ class CreateLineRequest extends \Google\Model
   {
     return $this->elementProperties;
   }
+  /**
+   * @param string
+   */
   public function setLineCategory($lineCategory)
   {
     $this->lineCategory = $lineCategory;
   }
+  /**
+   * @return string
+   */
   public function getLineCategory()
   {
     return $this->lineCategory;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;

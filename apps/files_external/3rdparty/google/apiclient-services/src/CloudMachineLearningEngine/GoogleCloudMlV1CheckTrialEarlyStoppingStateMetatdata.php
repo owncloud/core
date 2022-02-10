@@ -19,30 +19,57 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1CheckTrialEarlyStoppingStateMetatdata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $study;
+  /**
+   * @var string
+   */
   public $trial;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setStudy($study)
   {
     $this->study = $study;
   }
+  /**
+   * @return string
+   */
   public function getStudy()
   {
     return $this->study;
   }
+  /**
+   * @param string
+   */
   public function setTrial($trial)
   {
     $this->trial = $trial;
   }
+  /**
+   * @return string
+   */
   public function getTrial()
   {
     return $this->trial;

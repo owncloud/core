@@ -20,24 +20,45 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2PredictResponse extends \Google\Collection
 {
   protected $collection_key = 'results';
+  /**
+   * @var string
+   */
   public $attributionToken;
+  /**
+   * @var string[]
+   */
   public $missingIds;
   protected $resultsType = GoogleCloudRetailV2PredictResponsePredictionResult::class;
   protected $resultsDataType = 'array';
+  /**
+   * @var bool
+   */
   public $validateOnly;
 
+  /**
+   * @param string
+   */
   public function setAttributionToken($attributionToken)
   {
     $this->attributionToken = $attributionToken;
   }
+  /**
+   * @return string
+   */
   public function getAttributionToken()
   {
     return $this->attributionToken;
   }
+  /**
+   * @param string[]
+   */
   public function setMissingIds($missingIds)
   {
     $this->missingIds = $missingIds;
   }
+  /**
+   * @return string[]
+   */
   public function getMissingIds()
   {
     return $this->missingIds;
@@ -56,10 +77,16 @@ class GoogleCloudRetailV2PredictResponse extends \Google\Collection
   {
     return $this->results;
   }
+  /**
+   * @param bool
+   */
   public function setValidateOnly($validateOnly)
   {
     $this->validateOnly = $validateOnly;
   }
+  /**
+   * @return bool
+   */
   public function getValidateOnly()
   {
     return $this->validateOnly;

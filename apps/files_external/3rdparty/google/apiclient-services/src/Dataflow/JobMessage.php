@@ -19,39 +19,75 @@ namespace Google\Service\Dataflow;
 
 class JobMessage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $messageImportance;
+  /**
+   * @var string
+   */
   public $messageText;
+  /**
+   * @var string
+   */
   public $time;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setMessageImportance($messageImportance)
   {
     $this->messageImportance = $messageImportance;
   }
+  /**
+   * @return string
+   */
   public function getMessageImportance()
   {
     return $this->messageImportance;
   }
+  /**
+   * @param string
+   */
   public function setMessageText($messageText)
   {
     $this->messageText = $messageText;
   }
+  /**
+   * @return string
+   */
   public function getMessageText()
   {
     return $this->messageText;
   }
+  /**
+   * @param string
+   */
   public function setTime($time)
   {
     $this->time = $time;
   }
+  /**
+   * @return string
+   */
   public function getTime()
   {
     return $this->time;

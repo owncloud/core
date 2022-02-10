@@ -19,23 +19,41 @@ namespace Google\Service\GamesManagement;
 
 class HiddenPlayer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $hiddenTimeMillis;
+  /**
+   * @var string
+   */
   public $kind;
   protected $playerType = Player::class;
   protected $playerDataType = '';
 
+  /**
+   * @param string
+   */
   public function setHiddenTimeMillis($hiddenTimeMillis)
   {
     $this->hiddenTimeMillis = $hiddenTimeMillis;
   }
+  /**
+   * @return string
+   */
   public function getHiddenTimeMillis()
   {
     return $this->hiddenTimeMillis;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

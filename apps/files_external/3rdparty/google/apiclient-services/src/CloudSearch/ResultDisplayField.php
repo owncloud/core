@@ -19,23 +19,41 @@ namespace Google\Service\CloudSearch;
 
 class ResultDisplayField extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $operatorName;
   protected $propertyType = NamedProperty::class;
   protected $propertyDataType = '';
 
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setOperatorName($operatorName)
   {
     $this->operatorName = $operatorName;
   }
+  /**
+   * @return string
+   */
   public function getOperatorName()
   {
     return $this->operatorName;

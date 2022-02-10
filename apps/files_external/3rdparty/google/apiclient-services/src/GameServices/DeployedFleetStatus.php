@@ -19,39 +19,75 @@ namespace Google\Service\GameServices;
 
 class DeployedFleetStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $allocatedReplicas;
+  /**
+   * @var string
+   */
   public $readyReplicas;
+  /**
+   * @var string
+   */
   public $replicas;
+  /**
+   * @var string
+   */
   public $reservedReplicas;
 
+  /**
+   * @param string
+   */
   public function setAllocatedReplicas($allocatedReplicas)
   {
     $this->allocatedReplicas = $allocatedReplicas;
   }
+  /**
+   * @return string
+   */
   public function getAllocatedReplicas()
   {
     return $this->allocatedReplicas;
   }
+  /**
+   * @param string
+   */
   public function setReadyReplicas($readyReplicas)
   {
     $this->readyReplicas = $readyReplicas;
   }
+  /**
+   * @return string
+   */
   public function getReadyReplicas()
   {
     return $this->readyReplicas;
   }
+  /**
+   * @param string
+   */
   public function setReplicas($replicas)
   {
     $this->replicas = $replicas;
   }
+  /**
+   * @return string
+   */
   public function getReplicas()
   {
     return $this->replicas;
   }
+  /**
+   * @param string
+   */
   public function setReservedReplicas($reservedReplicas)
   {
     $this->reservedReplicas = $reservedReplicas;
   }
+  /**
+   * @return string
+   */
   public function getReservedReplicas()
   {
     return $this->reservedReplicas;

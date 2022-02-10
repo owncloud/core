@@ -26,12 +26,21 @@ class Page extends \Google\Collection
   protected $masterPropertiesDataType = '';
   protected $notesPropertiesType = NotesProperties::class;
   protected $notesPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $objectId;
   protected $pageElementsType = PageElement::class;
   protected $pageElementsDataType = 'array';
   protected $pagePropertiesType = PageProperties::class;
   protected $pagePropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $pageType;
+  /**
+   * @var string
+   */
   public $revisionId;
   protected $slidePropertiesType = SlideProperties::class;
   protected $slidePropertiesDataType = '';
@@ -78,10 +87,16 @@ class Page extends \Google\Collection
   {
     return $this->notesProperties;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
@@ -114,18 +129,30 @@ class Page extends \Google\Collection
   {
     return $this->pageProperties;
   }
+  /**
+   * @param string
+   */
   public function setPageType($pageType)
   {
     $this->pageType = $pageType;
   }
+  /**
+   * @return string
+   */
   public function getPageType()
   {
     return $this->pageType;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;

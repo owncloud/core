@@ -19,30 +19,57 @@ namespace Google\Service\DisplayVideo;
 
 class CombinedAudience extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $combinedAudienceId;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setCombinedAudienceId($combinedAudienceId)
   {
     $this->combinedAudienceId = $combinedAudienceId;
   }
+  /**
+   * @return string
+   */
   public function getCombinedAudienceId()
   {
     return $this->combinedAudienceId;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

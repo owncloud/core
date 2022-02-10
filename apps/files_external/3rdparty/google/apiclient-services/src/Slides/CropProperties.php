@@ -19,48 +19,93 @@ namespace Google\Service\Slides;
 
 class CropProperties extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $angle;
+  /**
+   * @var float
+   */
   public $bottomOffset;
+  /**
+   * @var float
+   */
   public $leftOffset;
+  /**
+   * @var float
+   */
   public $rightOffset;
+  /**
+   * @var float
+   */
   public $topOffset;
 
+  /**
+   * @param float
+   */
   public function setAngle($angle)
   {
     $this->angle = $angle;
   }
+  /**
+   * @return float
+   */
   public function getAngle()
   {
     return $this->angle;
   }
+  /**
+   * @param float
+   */
   public function setBottomOffset($bottomOffset)
   {
     $this->bottomOffset = $bottomOffset;
   }
+  /**
+   * @return float
+   */
   public function getBottomOffset()
   {
     return $this->bottomOffset;
   }
+  /**
+   * @param float
+   */
   public function setLeftOffset($leftOffset)
   {
     $this->leftOffset = $leftOffset;
   }
+  /**
+   * @return float
+   */
   public function getLeftOffset()
   {
     return $this->leftOffset;
   }
+  /**
+   * @param float
+   */
   public function setRightOffset($rightOffset)
   {
     $this->rightOffset = $rightOffset;
   }
+  /**
+   * @return float
+   */
   public function getRightOffset()
   {
     return $this->rightOffset;
   }
+  /**
+   * @param float
+   */
   public function setTopOffset($topOffset)
   {
     $this->topOffset = $topOffset;
   }
+  /**
+   * @return float
+   */
   public function getTopOffset()
   {
     return $this->topOffset;

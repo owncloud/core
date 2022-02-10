@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class WorkerMessageCode extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var array[]
+   */
   public $parameters;
 
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param array[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return array[]
+   */
   public function getParameters()
   {
     return $this->parameters;

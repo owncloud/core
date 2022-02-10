@@ -19,21 +19,39 @@ namespace Google\Service\DriveActivity;
 
 class RestrictionChange extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $feature;
+  /**
+   * @var string
+   */
   public $newRestriction;
 
+  /**
+   * @param string
+   */
   public function setFeature($feature)
   {
     $this->feature = $feature;
   }
+  /**
+   * @return string
+   */
   public function getFeature()
   {
     return $this->feature;
   }
+  /**
+   * @param string
+   */
   public function setNewRestriction($newRestriction)
   {
     $this->newRestriction = $newRestriction;
   }
+  /**
+   * @return string
+   */
   public function getNewRestriction()
   {
     return $this->newRestriction;

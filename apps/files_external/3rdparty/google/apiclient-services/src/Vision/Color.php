@@ -19,39 +19,75 @@ namespace Google\Service\Vision;
 
 class Color extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $alpha;
+  /**
+   * @var float
+   */
   public $blue;
+  /**
+   * @var float
+   */
   public $green;
+  /**
+   * @var float
+   */
   public $red;
 
+  /**
+   * @param float
+   */
   public function setAlpha($alpha)
   {
     $this->alpha = $alpha;
   }
+  /**
+   * @return float
+   */
   public function getAlpha()
   {
     return $this->alpha;
   }
+  /**
+   * @param float
+   */
   public function setBlue($blue)
   {
     $this->blue = $blue;
   }
+  /**
+   * @return float
+   */
   public function getBlue()
   {
     return $this->blue;
   }
+  /**
+   * @param float
+   */
   public function setGreen($green)
   {
     $this->green = $green;
   }
+  /**
+   * @return float
+   */
   public function getGreen()
   {
     return $this->green;
   }
+  /**
+   * @param float
+   */
   public function setRed($red)
   {
     $this->red = $red;
   }
+  /**
+   * @return float
+   */
   public function getRed()
   {
     return $this->red;

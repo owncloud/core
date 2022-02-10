@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class PacketMirroringForwardingRuleInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $canonicalUrl;
+  /**
+   * @var string
+   */
   public $url;
 
+  /**
+   * @param string
+   */
   public function setCanonicalUrl($canonicalUrl)
   {
     $this->canonicalUrl = $canonicalUrl;
   }
+  /**
+   * @return string
+   */
   public function getCanonicalUrl()
   {
     return $this->canonicalUrl;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

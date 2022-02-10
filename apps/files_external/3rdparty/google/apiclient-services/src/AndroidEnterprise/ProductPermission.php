@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class ProductPermission extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $permissionId;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setPermissionId($permissionId)
   {
     $this->permissionId = $permissionId;
   }
+  /**
+   * @return string
+   */
   public function getPermissionId()
   {
     return $this->permissionId;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

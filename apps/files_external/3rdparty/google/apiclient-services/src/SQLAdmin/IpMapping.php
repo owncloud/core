@@ -19,30 +19,57 @@ namespace Google\Service\SQLAdmin;
 
 class IpMapping extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ipAddress;
+  /**
+   * @var string
+   */
   public $timeToRetire;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setIpAddress($ipAddress)
   {
     $this->ipAddress = $ipAddress;
   }
+  /**
+   * @return string
+   */
   public function getIpAddress()
   {
     return $this->ipAddress;
   }
+  /**
+   * @param string
+   */
   public function setTimeToRetire($timeToRetire)
   {
     $this->timeToRetire = $timeToRetire;
   }
+  /**
+   * @return string
+   */
   public function getTimeToRetire()
   {
     return $this->timeToRetire;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

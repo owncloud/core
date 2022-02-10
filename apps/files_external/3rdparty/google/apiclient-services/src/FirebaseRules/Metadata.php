@@ -20,12 +20,21 @@ namespace Google\Service\FirebaseRules;
 class Metadata extends \Google\Collection
 {
   protected $collection_key = 'services';
+  /**
+   * @var string[]
+   */
   public $services;
 
+  /**
+   * @param string[]
+   */
   public function setServices($services)
   {
     $this->services = $services;
   }
+  /**
+   * @return string[]
+   */
   public function getServices()
   {
     return $this->services;

@@ -19,30 +19,57 @@ namespace Google\Service\TrafficDirectorService;
 
 class SemanticVersion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $majorNumber;
+  /**
+   * @var string
+   */
   public $minorNumber;
+  /**
+   * @var string
+   */
   public $patch;
 
+  /**
+   * @param string
+   */
   public function setMajorNumber($majorNumber)
   {
     $this->majorNumber = $majorNumber;
   }
+  /**
+   * @return string
+   */
   public function getMajorNumber()
   {
     return $this->majorNumber;
   }
+  /**
+   * @param string
+   */
   public function setMinorNumber($minorNumber)
   {
     $this->minorNumber = $minorNumber;
   }
+  /**
+   * @return string
+   */
   public function getMinorNumber()
   {
     return $this->minorNumber;
   }
+  /**
+   * @param string
+   */
   public function setPatch($patch)
   {
     $this->patch = $patch;
   }
+  /**
+   * @return string
+   */
   public function getPatch()
   {
     return $this->patch;

@@ -19,39 +19,75 @@ namespace Google\Service\Directory;
 
 class VerificationCode extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $etag;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $userId;
+  /**
+   * @var string
+   */
   public $verificationCode;
 
+  /**
+   * @param string
+   */
   public function setEtag($etag)
   {
     $this->etag = $etag;
   }
+  /**
+   * @return string
+   */
   public function getEtag()
   {
     return $this->etag;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;
   }
+  /**
+   * @param string
+   */
   public function setVerificationCode($verificationCode)
   {
     $this->verificationCode = $verificationCode;
   }
+  /**
+   * @return string
+   */
   public function getVerificationCode()
   {
     return $this->verificationCode;

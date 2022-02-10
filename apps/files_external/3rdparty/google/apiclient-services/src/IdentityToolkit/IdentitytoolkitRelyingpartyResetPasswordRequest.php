@@ -19,39 +19,75 @@ namespace Google\Service\IdentityToolkit;
 
 class IdentitytoolkitRelyingpartyResetPasswordRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $newPassword;
+  /**
+   * @var string
+   */
   public $oldPassword;
+  /**
+   * @var string
+   */
   public $oobCode;
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setNewPassword($newPassword)
   {
     $this->newPassword = $newPassword;
   }
+  /**
+   * @return string
+   */
   public function getNewPassword()
   {
     return $this->newPassword;
   }
+  /**
+   * @param string
+   */
   public function setOldPassword($oldPassword)
   {
     $this->oldPassword = $oldPassword;
   }
+  /**
+   * @return string
+   */
   public function getOldPassword()
   {
     return $this->oldPassword;
   }
+  /**
+   * @param string
+   */
   public function setOobCode($oobCode)
   {
     $this->oobCode = $oobCode;
   }
+  /**
+   * @return string
+   */
   public function getOobCode()
   {
     return $this->oobCode;

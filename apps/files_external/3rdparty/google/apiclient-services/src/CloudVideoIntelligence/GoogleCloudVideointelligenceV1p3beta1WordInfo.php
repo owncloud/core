@@ -19,48 +19,93 @@ namespace Google\Service\CloudVideoIntelligence;
 
 class GoogleCloudVideointelligenceV1p3beta1WordInfo extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var int
+   */
   public $speakerTag;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $word;
 
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param int
+   */
   public function setSpeakerTag($speakerTag)
   {
     $this->speakerTag = $speakerTag;
   }
+  /**
+   * @return int
+   */
   public function getSpeakerTag()
   {
     return $this->speakerTag;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setWord($word)
   {
     $this->word = $word;
   }
+  /**
+   * @return string
+   */
   public function getWord()
   {
     return $this->word;

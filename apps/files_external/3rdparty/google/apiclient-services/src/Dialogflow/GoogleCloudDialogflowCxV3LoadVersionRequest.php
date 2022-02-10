@@ -19,12 +19,21 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3LoadVersionRequest extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $allowOverrideAgentResources;
 
+  /**
+   * @param bool
+   */
   public function setAllowOverrideAgentResources($allowOverrideAgentResources)
   {
     $this->allowOverrideAgentResources = $allowOverrideAgentResources;
   }
+  /**
+   * @return bool
+   */
   public function getAllowOverrideAgentResources()
   {
     return $this->allowOverrideAgentResources;

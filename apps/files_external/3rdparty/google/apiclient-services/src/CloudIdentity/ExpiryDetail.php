@@ -19,12 +19,21 @@ namespace Google\Service\CloudIdentity;
 
 class ExpiryDetail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $expireTime;
 
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;

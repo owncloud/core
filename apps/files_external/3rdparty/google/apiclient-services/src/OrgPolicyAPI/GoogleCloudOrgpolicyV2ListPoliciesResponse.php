@@ -20,14 +20,23 @@ namespace Google\Service\OrgPolicyAPI;
 class GoogleCloudOrgpolicyV2ListPoliciesResponse extends \Google\Collection
 {
   protected $collection_key = 'policies';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $policiesType = GoogleCloudOrgpolicyV2Policy::class;
   protected $policiesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

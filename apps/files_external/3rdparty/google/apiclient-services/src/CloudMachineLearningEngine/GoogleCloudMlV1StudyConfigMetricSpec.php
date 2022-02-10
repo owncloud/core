@@ -19,21 +19,39 @@ namespace Google\Service\CloudMachineLearningEngine;
 
 class GoogleCloudMlV1StudyConfigMetricSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $goal;
+  /**
+   * @var string
+   */
   public $metric;
 
+  /**
+   * @param string
+   */
   public function setGoal($goal)
   {
     $this->goal = $goal;
   }
+  /**
+   * @return string
+   */
   public function getGoal()
   {
     return $this->goal;
   }
+  /**
+   * @param string
+   */
   public function setMetric($metric)
   {
     $this->metric = $metric;
   }
+  /**
+   * @return string
+   */
   public function getMetric()
   {
     return $this->metric;

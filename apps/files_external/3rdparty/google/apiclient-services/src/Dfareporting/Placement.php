@@ -20,78 +20,171 @@ namespace Google\Service\Dfareporting;
 class Placement extends \Google\Collection
 {
   protected $collection_key = 'tagFormats';
+  /**
+   * @var string
+   */
   public $accountId;
+  /**
+   * @var bool
+   */
   public $adBlockingOptOut;
   protected $additionalSizesType = Size::class;
   protected $additionalSizesDataType = 'array';
+  /**
+   * @var string
+   */
   public $advertiserId;
   protected $advertiserIdDimensionValueType = DimensionValue::class;
   protected $advertiserIdDimensionValueDataType = '';
+  /**
+   * @var bool
+   */
   public $archived;
+  /**
+   * @var string
+   */
   public $campaignId;
   protected $campaignIdDimensionValueType = DimensionValue::class;
   protected $campaignIdDimensionValueDataType = '';
+  /**
+   * @var string
+   */
   public $comment;
+  /**
+   * @var string
+   */
   public $compatibility;
+  /**
+   * @var string
+   */
   public $contentCategoryId;
   protected $createInfoType = LastModifiedInfo::class;
   protected $createInfoDataType = '';
+  /**
+   * @var string
+   */
   public $directorySiteId;
   protected $directorySiteIdDimensionValueType = DimensionValue::class;
   protected $directorySiteIdDimensionValueDataType = '';
+  /**
+   * @var string
+   */
   public $externalId;
+  /**
+   * @var string
+   */
   public $id;
   protected $idDimensionValueType = DimensionValue::class;
   protected $idDimensionValueDataType = '';
+  /**
+   * @var string
+   */
   public $keyName;
+  /**
+   * @var string
+   */
   public $kind;
   protected $lastModifiedInfoType = LastModifiedInfo::class;
   protected $lastModifiedInfoDataType = '';
   protected $lookbackConfigurationType = LookbackConfiguration::class;
   protected $lookbackConfigurationDataType = '';
+  /**
+   * @var string
+   */
   public $name;
   protected $partnerWrappingDataType = MeasurementPartnerWrappingData::class;
   protected $partnerWrappingDataDataType = '';
+  /**
+   * @var bool
+   */
   public $paymentApproved;
+  /**
+   * @var string
+   */
   public $paymentSource;
+  /**
+   * @var string
+   */
   public $placementGroupId;
   protected $placementGroupIdDimensionValueType = DimensionValue::class;
   protected $placementGroupIdDimensionValueDataType = '';
+  /**
+   * @var string
+   */
   public $placementStrategyId;
   protected $pricingScheduleType = PricingSchedule::class;
   protected $pricingScheduleDataType = '';
+  /**
+   * @var bool
+   */
   public $primary;
   protected $publisherUpdateInfoType = LastModifiedInfo::class;
   protected $publisherUpdateInfoDataType = '';
+  /**
+   * @var string
+   */
   public $siteId;
   protected $siteIdDimensionValueType = DimensionValue::class;
   protected $siteIdDimensionValueDataType = '';
   protected $sizeType = Size::class;
   protected $sizeDataType = '';
+  /**
+   * @var bool
+   */
   public $sslRequired;
+  /**
+   * @var string
+   */
   public $status;
+  /**
+   * @var string
+   */
   public $subaccountId;
+  /**
+   * @var string[]
+   */
   public $tagFormats;
   protected $tagSettingType = TagSetting::class;
   protected $tagSettingDataType = '';
+  /**
+   * @var bool
+   */
   public $videoActiveViewOptOut;
   protected $videoSettingsType = VideoSettings::class;
   protected $videoSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $vpaidAdapterChoice;
+  /**
+   * @var bool
+   */
   public $wrappingOptOut;
 
+  /**
+   * @param string
+   */
   public function setAccountId($accountId)
   {
     $this->accountId = $accountId;
   }
+  /**
+   * @return string
+   */
   public function getAccountId()
   {
     return $this->accountId;
   }
+  /**
+   * @param bool
+   */
   public function setAdBlockingOptOut($adBlockingOptOut)
   {
     $this->adBlockingOptOut = $adBlockingOptOut;
   }
+  /**
+   * @return bool
+   */
   public function getAdBlockingOptOut()
   {
     return $this->adBlockingOptOut;
@@ -110,10 +203,16 @@ class Placement extends \Google\Collection
   {
     return $this->additionalSizes;
   }
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
@@ -132,18 +231,30 @@ class Placement extends \Google\Collection
   {
     return $this->advertiserIdDimensionValue;
   }
+  /**
+   * @param bool
+   */
   public function setArchived($archived)
   {
     $this->archived = $archived;
   }
+  /**
+   * @return bool
+   */
   public function getArchived()
   {
     return $this->archived;
   }
+  /**
+   * @param string
+   */
   public function setCampaignId($campaignId)
   {
     $this->campaignId = $campaignId;
   }
+  /**
+   * @return string
+   */
   public function getCampaignId()
   {
     return $this->campaignId;
@@ -162,26 +273,44 @@ class Placement extends \Google\Collection
   {
     return $this->campaignIdDimensionValue;
   }
+  /**
+   * @param string
+   */
   public function setComment($comment)
   {
     $this->comment = $comment;
   }
+  /**
+   * @return string
+   */
   public function getComment()
   {
     return $this->comment;
   }
+  /**
+   * @param string
+   */
   public function setCompatibility($compatibility)
   {
     $this->compatibility = $compatibility;
   }
+  /**
+   * @return string
+   */
   public function getCompatibility()
   {
     return $this->compatibility;
   }
+  /**
+   * @param string
+   */
   public function setContentCategoryId($contentCategoryId)
   {
     $this->contentCategoryId = $contentCategoryId;
   }
+  /**
+   * @return string
+   */
   public function getContentCategoryId()
   {
     return $this->contentCategoryId;
@@ -200,10 +329,16 @@ class Placement extends \Google\Collection
   {
     return $this->createInfo;
   }
+  /**
+   * @param string
+   */
   public function setDirectorySiteId($directorySiteId)
   {
     $this->directorySiteId = $directorySiteId;
   }
+  /**
+   * @return string
+   */
   public function getDirectorySiteId()
   {
     return $this->directorySiteId;
@@ -222,18 +357,30 @@ class Placement extends \Google\Collection
   {
     return $this->directorySiteIdDimensionValue;
   }
+  /**
+   * @param string
+   */
   public function setExternalId($externalId)
   {
     $this->externalId = $externalId;
   }
+  /**
+   * @return string
+   */
   public function getExternalId()
   {
     return $this->externalId;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -252,18 +399,30 @@ class Placement extends \Google\Collection
   {
     return $this->idDimensionValue;
   }
+  /**
+   * @param string
+   */
   public function setKeyName($keyName)
   {
     $this->keyName = $keyName;
   }
+  /**
+   * @return string
+   */
   public function getKeyName()
   {
     return $this->keyName;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -296,10 +455,16 @@ class Placement extends \Google\Collection
   {
     return $this->lookbackConfiguration;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -318,26 +483,44 @@ class Placement extends \Google\Collection
   {
     return $this->partnerWrappingData;
   }
+  /**
+   * @param bool
+   */
   public function setPaymentApproved($paymentApproved)
   {
     $this->paymentApproved = $paymentApproved;
   }
+  /**
+   * @return bool
+   */
   public function getPaymentApproved()
   {
     return $this->paymentApproved;
   }
+  /**
+   * @param string
+   */
   public function setPaymentSource($paymentSource)
   {
     $this->paymentSource = $paymentSource;
   }
+  /**
+   * @return string
+   */
   public function getPaymentSource()
   {
     return $this->paymentSource;
   }
+  /**
+   * @param string
+   */
   public function setPlacementGroupId($placementGroupId)
   {
     $this->placementGroupId = $placementGroupId;
   }
+  /**
+   * @return string
+   */
   public function getPlacementGroupId()
   {
     return $this->placementGroupId;
@@ -356,10 +539,16 @@ class Placement extends \Google\Collection
   {
     return $this->placementGroupIdDimensionValue;
   }
+  /**
+   * @param string
+   */
   public function setPlacementStrategyId($placementStrategyId)
   {
     $this->placementStrategyId = $placementStrategyId;
   }
+  /**
+   * @return string
+   */
   public function getPlacementStrategyId()
   {
     return $this->placementStrategyId;
@@ -378,10 +567,16 @@ class Placement extends \Google\Collection
   {
     return $this->pricingSchedule;
   }
+  /**
+   * @param bool
+   */
   public function setPrimary($primary)
   {
     $this->primary = $primary;
   }
+  /**
+   * @return bool
+   */
   public function getPrimary()
   {
     return $this->primary;
@@ -400,10 +595,16 @@ class Placement extends \Google\Collection
   {
     return $this->publisherUpdateInfo;
   }
+  /**
+   * @param string
+   */
   public function setSiteId($siteId)
   {
     $this->siteId = $siteId;
   }
+  /**
+   * @return string
+   */
   public function getSiteId()
   {
     return $this->siteId;
@@ -436,34 +637,58 @@ class Placement extends \Google\Collection
   {
     return $this->size;
   }
+  /**
+   * @param bool
+   */
   public function setSslRequired($sslRequired)
   {
     $this->sslRequired = $sslRequired;
   }
+  /**
+   * @return bool
+   */
   public function getSslRequired()
   {
     return $this->sslRequired;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setSubaccountId($subaccountId)
   {
     $this->subaccountId = $subaccountId;
   }
+  /**
+   * @return string
+   */
   public function getSubaccountId()
   {
     return $this->subaccountId;
   }
+  /**
+   * @param string[]
+   */
   public function setTagFormats($tagFormats)
   {
     $this->tagFormats = $tagFormats;
   }
+  /**
+   * @return string[]
+   */
   public function getTagFormats()
   {
     return $this->tagFormats;
@@ -482,10 +707,16 @@ class Placement extends \Google\Collection
   {
     return $this->tagSetting;
   }
+  /**
+   * @param bool
+   */
   public function setVideoActiveViewOptOut($videoActiveViewOptOut)
   {
     $this->videoActiveViewOptOut = $videoActiveViewOptOut;
   }
+  /**
+   * @return bool
+   */
   public function getVideoActiveViewOptOut()
   {
     return $this->videoActiveViewOptOut;
@@ -504,18 +735,30 @@ class Placement extends \Google\Collection
   {
     return $this->videoSettings;
   }
+  /**
+   * @param string
+   */
   public function setVpaidAdapterChoice($vpaidAdapterChoice)
   {
     $this->vpaidAdapterChoice = $vpaidAdapterChoice;
   }
+  /**
+   * @return string
+   */
   public function getVpaidAdapterChoice()
   {
     return $this->vpaidAdapterChoice;
   }
+  /**
+   * @param bool
+   */
   public function setWrappingOptOut($wrappingOptOut)
   {
     $this->wrappingOptOut = $wrappingOptOut;
   }
+  /**
+   * @return bool
+   */
   public function getWrappingOptOut()
   {
     return $this->wrappingOptOut;

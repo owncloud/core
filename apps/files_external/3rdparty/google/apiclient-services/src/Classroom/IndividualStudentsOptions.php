@@ -20,12 +20,21 @@ namespace Google\Service\Classroom;
 class IndividualStudentsOptions extends \Google\Collection
 {
   protected $collection_key = 'studentIds';
+  /**
+   * @var string[]
+   */
   public $studentIds;
 
+  /**
+   * @param string[]
+   */
   public function setStudentIds($studentIds)
   {
     $this->studentIds = $studentIds;
   }
+  /**
+   * @return string[]
+   */
   public function getStudentIds()
   {
     return $this->studentIds;

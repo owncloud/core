@@ -19,18 +19,39 @@ namespace Google\Service\Dataflow;
 
 class AutoscalingEvent extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $currentNumWorkers;
   protected $descriptionType = StructuredMessage::class;
   protected $descriptionDataType = '';
+  /**
+   * @var string
+   */
   public $eventType;
+  /**
+   * @var string
+   */
   public $targetNumWorkers;
+  /**
+   * @var string
+   */
   public $time;
+  /**
+   * @var string
+   */
   public $workerPool;
 
+  /**
+   * @param string
+   */
   public function setCurrentNumWorkers($currentNumWorkers)
   {
     $this->currentNumWorkers = $currentNumWorkers;
   }
+  /**
+   * @return string
+   */
   public function getCurrentNumWorkers()
   {
     return $this->currentNumWorkers;
@@ -49,34 +70,58 @@ class AutoscalingEvent extends \Google\Model
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setEventType($eventType)
   {
     $this->eventType = $eventType;
   }
+  /**
+   * @return string
+   */
   public function getEventType()
   {
     return $this->eventType;
   }
+  /**
+   * @param string
+   */
   public function setTargetNumWorkers($targetNumWorkers)
   {
     $this->targetNumWorkers = $targetNumWorkers;
   }
+  /**
+   * @return string
+   */
   public function getTargetNumWorkers()
   {
     return $this->targetNumWorkers;
   }
+  /**
+   * @param string
+   */
   public function setTime($time)
   {
     $this->time = $time;
   }
+  /**
+   * @return string
+   */
   public function getTime()
   {
     return $this->time;
   }
+  /**
+   * @param string
+   */
   public function setWorkerPool($workerPool)
   {
     $this->workerPool = $workerPool;
   }
+  /**
+   * @return string
+   */
   public function getWorkerPool()
   {
     return $this->workerPool;

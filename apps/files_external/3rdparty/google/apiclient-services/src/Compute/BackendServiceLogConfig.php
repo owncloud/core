@@ -19,21 +19,39 @@ namespace Google\Service\Compute;
 
 class BackendServiceLogConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enable;
+  /**
+   * @var float
+   */
   public $sampleRate;
 
+  /**
+   * @param bool
+   */
   public function setEnable($enable)
   {
     $this->enable = $enable;
   }
+  /**
+   * @return bool
+   */
   public function getEnable()
   {
     return $this->enable;
   }
+  /**
+   * @param float
+   */
   public function setSampleRate($sampleRate)
   {
     $this->sampleRate = $sampleRate;
   }
+  /**
+   * @return float
+   */
   public function getSampleRate()
   {
     return $this->sampleRate;

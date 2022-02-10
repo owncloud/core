@@ -19,12 +19,21 @@ namespace Google\Service\Vault;
 
 class OrgUnitInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $orgUnitId;
 
+  /**
+   * @param string
+   */
   public function setOrgUnitId($orgUnitId)
   {
     $this->orgUnitId = $orgUnitId;
   }
+  /**
+   * @return string
+   */
   public function getOrgUnitId()
   {
     return $this->orgUnitId;

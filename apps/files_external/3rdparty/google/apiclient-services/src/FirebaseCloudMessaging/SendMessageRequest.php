@@ -21,6 +21,9 @@ class SendMessageRequest extends \Google\Model
 {
   protected $messageType = Message::class;
   protected $messageDataType = '';
+  /**
+   * @var bool
+   */
   public $validateOnly;
 
   /**
@@ -37,10 +40,16 @@ class SendMessageRequest extends \Google\Model
   {
     return $this->message;
   }
+  /**
+   * @param bool
+   */
   public function setValidateOnly($validateOnly)
   {
     $this->validateOnly = $validateOnly;
   }
+  /**
+   * @return bool
+   */
   public function getValidateOnly()
   {
     return $this->validateOnly;

@@ -20,21 +20,39 @@ namespace Google\Service\Slides;
 class UpdateSlidesPositionRequest extends \Google\Collection
 {
   protected $collection_key = 'slideObjectIds';
+  /**
+   * @var int
+   */
   public $insertionIndex;
+  /**
+   * @var string[]
+   */
   public $slideObjectIds;
 
+  /**
+   * @param int
+   */
   public function setInsertionIndex($insertionIndex)
   {
     $this->insertionIndex = $insertionIndex;
   }
+  /**
+   * @return int
+   */
   public function getInsertionIndex()
   {
     return $this->insertionIndex;
   }
+  /**
+   * @param string[]
+   */
   public function setSlideObjectIds($slideObjectIds)
   {
     $this->slideObjectIds = $slideObjectIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSlideObjectIds()
   {
     return $this->slideObjectIds;

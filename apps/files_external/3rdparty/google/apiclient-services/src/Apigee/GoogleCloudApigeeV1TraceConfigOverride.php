@@ -19,23 +19,41 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1TraceConfigOverride extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiProxy;
+  /**
+   * @var string
+   */
   public $name;
   protected $samplingConfigType = GoogleCloudApigeeV1TraceSamplingConfig::class;
   protected $samplingConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setApiProxy($apiProxy)
   {
     $this->apiProxy = $apiProxy;
   }
+  /**
+   * @return string
+   */
   public function getApiProxy()
   {
     return $this->apiProxy;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

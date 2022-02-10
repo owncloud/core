@@ -21,7 +21,13 @@ class KerberosConfig extends \Google\Model
 {
   protected $keytabType = Secret::class;
   protected $keytabDataType = '';
+  /**
+   * @var string
+   */
   public $krb5ConfigGcsUri;
+  /**
+   * @var string
+   */
   public $principal;
 
   /**
@@ -38,18 +44,30 @@ class KerberosConfig extends \Google\Model
   {
     return $this->keytab;
   }
+  /**
+   * @param string
+   */
   public function setKrb5ConfigGcsUri($krb5ConfigGcsUri)
   {
     $this->krb5ConfigGcsUri = $krb5ConfigGcsUri;
   }
+  /**
+   * @return string
+   */
   public function getKrb5ConfigGcsUri()
   {
     return $this->krb5ConfigGcsUri;
   }
+  /**
+   * @param string
+   */
   public function setPrincipal($principal)
   {
     $this->principal = $principal;
   }
+  /**
+   * @return string
+   */
   public function getPrincipal()
   {
     return $this->principal;

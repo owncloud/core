@@ -19,12 +19,21 @@ namespace Google\Service\ServiceConsumerManagement;
 
 class BillingConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $billingAccount;
 
+  /**
+   * @param string
+   */
   public function setBillingAccount($billingAccount)
   {
     $this->billingAccount = $billingAccount;
   }
+  /**
+   * @return string
+   */
   public function getBillingAccount()
   {
     return $this->billingAccount;

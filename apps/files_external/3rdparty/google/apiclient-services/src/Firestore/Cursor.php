@@ -20,14 +20,23 @@ namespace Google\Service\Firestore;
 class Cursor extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var bool
+   */
   public $before;
   protected $valuesType = Value::class;
   protected $valuesDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setBefore($before)
   {
     $this->before = $before;
   }
+  /**
+   * @return bool
+   */
   public function getBefore()
   {
     return $this->before;

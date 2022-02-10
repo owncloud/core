@@ -20,48 +20,93 @@ namespace Google\Service\ShoppingContent;
 class ProductStatusDestinationStatus extends \Google\Collection
 {
   protected $collection_key = 'pendingCountries';
+  /**
+   * @var string[]
+   */
   public $approvedCountries;
+  /**
+   * @var string
+   */
   public $destination;
+  /**
+   * @var string[]
+   */
   public $disapprovedCountries;
+  /**
+   * @var string[]
+   */
   public $pendingCountries;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string[]
+   */
   public function setApprovedCountries($approvedCountries)
   {
     $this->approvedCountries = $approvedCountries;
   }
+  /**
+   * @return string[]
+   */
   public function getApprovedCountries()
   {
     return $this->approvedCountries;
   }
+  /**
+   * @param string
+   */
   public function setDestination($destination)
   {
     $this->destination = $destination;
   }
+  /**
+   * @return string
+   */
   public function getDestination()
   {
     return $this->destination;
   }
+  /**
+   * @param string[]
+   */
   public function setDisapprovedCountries($disapprovedCountries)
   {
     $this->disapprovedCountries = $disapprovedCountries;
   }
+  /**
+   * @return string[]
+   */
   public function getDisapprovedCountries()
   {
     return $this->disapprovedCountries;
   }
+  /**
+   * @param string[]
+   */
   public function setPendingCountries($pendingCountries)
   {
     $this->pendingCountries = $pendingCountries;
   }
+  /**
+   * @return string[]
+   */
   public function getPendingCountries()
   {
     return $this->pendingCountries;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

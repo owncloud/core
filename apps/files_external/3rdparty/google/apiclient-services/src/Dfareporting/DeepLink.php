@@ -20,33 +20,63 @@ namespace Google\Service\Dfareporting;
 class DeepLink extends \Google\Collection
 {
   protected $collection_key = 'remarketingListIds';
+  /**
+   * @var string
+   */
   public $appUrl;
+  /**
+   * @var string
+   */
   public $fallbackUrl;
+  /**
+   * @var string
+   */
   public $kind;
   protected $mobileAppType = MobileApp::class;
   protected $mobileAppDataType = '';
+  /**
+   * @var string[]
+   */
   public $remarketingListIds;
 
+  /**
+   * @param string
+   */
   public function setAppUrl($appUrl)
   {
     $this->appUrl = $appUrl;
   }
+  /**
+   * @return string
+   */
   public function getAppUrl()
   {
     return $this->appUrl;
   }
+  /**
+   * @param string
+   */
   public function setFallbackUrl($fallbackUrl)
   {
     $this->fallbackUrl = $fallbackUrl;
   }
+  /**
+   * @return string
+   */
   public function getFallbackUrl()
   {
     return $this->fallbackUrl;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -65,10 +95,16 @@ class DeepLink extends \Google\Collection
   {
     return $this->mobileApp;
   }
+  /**
+   * @param string[]
+   */
   public function setRemarketingListIds($remarketingListIds)
   {
     $this->remarketingListIds = $remarketingListIds;
   }
+  /**
+   * @return string[]
+   */
   public function getRemarketingListIds()
   {
     return $this->remarketingListIds;

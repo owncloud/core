@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class DayAndTimeAssignedTargetingOptionDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $dayOfWeek;
+  /**
+   * @var int
+   */
   public $endHour;
+  /**
+   * @var int
+   */
   public $startHour;
+  /**
+   * @var string
+   */
   public $timeZoneResolution;
 
+  /**
+   * @param string
+   */
   public function setDayOfWeek($dayOfWeek)
   {
     $this->dayOfWeek = $dayOfWeek;
   }
+  /**
+   * @return string
+   */
   public function getDayOfWeek()
   {
     return $this->dayOfWeek;
   }
+  /**
+   * @param int
+   */
   public function setEndHour($endHour)
   {
     $this->endHour = $endHour;
   }
+  /**
+   * @return int
+   */
   public function getEndHour()
   {
     return $this->endHour;
   }
+  /**
+   * @param int
+   */
   public function setStartHour($startHour)
   {
     $this->startHour = $startHour;
   }
+  /**
+   * @return int
+   */
   public function getStartHour()
   {
     return $this->startHour;
   }
+  /**
+   * @param string
+   */
   public function setTimeZoneResolution($timeZoneResolution)
   {
     $this->timeZoneResolution = $timeZoneResolution;
   }
+  /**
+   * @return string
+   */
   public function getTimeZoneResolution()
   {
     return $this->timeZoneResolution;

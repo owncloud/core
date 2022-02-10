@@ -27,6 +27,9 @@ class Action extends \Google\Model
   protected $targetDataType = '';
   protected $timeRangeType = TimeRange::class;
   protected $timeRangeDataType = '';
+  /**
+   * @var string
+   */
   public $timestamp;
 
   /**
@@ -85,10 +88,16 @@ class Action extends \Google\Model
   {
     return $this->timeRange;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

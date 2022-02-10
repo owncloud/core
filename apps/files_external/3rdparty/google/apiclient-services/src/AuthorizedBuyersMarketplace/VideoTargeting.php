@@ -20,21 +20,39 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 class VideoTargeting extends \Google\Collection
 {
   protected $collection_key = 'targetedPositionTypes';
+  /**
+   * @var string[]
+   */
   public $excludedPositionTypes;
+  /**
+   * @var string[]
+   */
   public $targetedPositionTypes;
 
+  /**
+   * @param string[]
+   */
   public function setExcludedPositionTypes($excludedPositionTypes)
   {
     $this->excludedPositionTypes = $excludedPositionTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludedPositionTypes()
   {
     return $this->excludedPositionTypes;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetedPositionTypes($targetedPositionTypes)
   {
     $this->targetedPositionTypes = $targetedPositionTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetedPositionTypes()
   {
     return $this->targetedPositionTypes;

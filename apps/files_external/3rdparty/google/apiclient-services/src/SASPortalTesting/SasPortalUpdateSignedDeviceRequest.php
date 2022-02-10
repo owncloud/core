@@ -19,21 +19,39 @@ namespace Google\Service\SASPortalTesting;
 
 class SasPortalUpdateSignedDeviceRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $encodedDevice;
+  /**
+   * @var string
+   */
   public $installerId;
 
+  /**
+   * @param string
+   */
   public function setEncodedDevice($encodedDevice)
   {
     $this->encodedDevice = $encodedDevice;
   }
+  /**
+   * @return string
+   */
   public function getEncodedDevice()
   {
     return $this->encodedDevice;
   }
+  /**
+   * @param string
+   */
   public function setInstallerId($installerId)
   {
     $this->installerId = $installerId;
   }
+  /**
+   * @return string
+   */
   public function getInstallerId()
   {
     return $this->installerId;

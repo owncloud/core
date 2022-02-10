@@ -19,17 +19,29 @@ namespace Google\Service\Books;
 
 class SeriesSeriesSeriesSubscriptionReleaseInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cancelTime;
   protected $currentReleaseInfoType = SeriesSeriesSeriesSubscriptionReleaseInfoCurrentReleaseInfo::class;
   protected $currentReleaseInfoDataType = '';
   protected $nextReleaseInfoType = SeriesSeriesSeriesSubscriptionReleaseInfoNextReleaseInfo::class;
   protected $nextReleaseInfoDataType = '';
+  /**
+   * @var string
+   */
   public $seriesSubscriptionType;
 
+  /**
+   * @param string
+   */
   public function setCancelTime($cancelTime)
   {
     $this->cancelTime = $cancelTime;
   }
+  /**
+   * @return string
+   */
   public function getCancelTime()
   {
     return $this->cancelTime;
@@ -62,10 +74,16 @@ class SeriesSeriesSeriesSubscriptionReleaseInfo extends \Google\Model
   {
     return $this->nextReleaseInfo;
   }
+  /**
+   * @param string
+   */
   public function setSeriesSubscriptionType($seriesSubscriptionType)
   {
     $this->seriesSubscriptionType = $seriesSubscriptionType;
   }
+  /**
+   * @return string
+   */
   public function getSeriesSubscriptionType()
   {
     return $this->seriesSubscriptionType;

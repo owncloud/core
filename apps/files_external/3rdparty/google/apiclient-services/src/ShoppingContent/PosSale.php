@@ -19,46 +19,97 @@ namespace Google\Service\ShoppingContent;
 
 class PosSale extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $contentLanguage;
+  /**
+   * @var string
+   */
   public $gtin;
+  /**
+   * @var string
+   */
   public $itemId;
+  /**
+   * @var string
+   */
   public $kind;
   protected $priceType = Price::class;
   protected $priceDataType = '';
+  /**
+   * @var string
+   */
   public $quantity;
+  /**
+   * @var string
+   */
   public $saleId;
+  /**
+   * @var string
+   */
   public $storeCode;
+  /**
+   * @var string
+   */
   public $targetCountry;
+  /**
+   * @var string
+   */
   public $timestamp;
 
+  /**
+   * @param string
+   */
   public function setContentLanguage($contentLanguage)
   {
     $this->contentLanguage = $contentLanguage;
   }
+  /**
+   * @return string
+   */
   public function getContentLanguage()
   {
     return $this->contentLanguage;
   }
+  /**
+   * @param string
+   */
   public function setGtin($gtin)
   {
     $this->gtin = $gtin;
   }
+  /**
+   * @return string
+   */
   public function getGtin()
   {
     return $this->gtin;
   }
+  /**
+   * @param string
+   */
   public function setItemId($itemId)
   {
     $this->itemId = $itemId;
   }
+  /**
+   * @return string
+   */
   public function getItemId()
   {
     return $this->itemId;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -77,42 +128,72 @@ class PosSale extends \Google\Model
   {
     return $this->price;
   }
+  /**
+   * @param string
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return string
+   */
   public function getQuantity()
   {
     return $this->quantity;
   }
+  /**
+   * @param string
+   */
   public function setSaleId($saleId)
   {
     $this->saleId = $saleId;
   }
+  /**
+   * @return string
+   */
   public function getSaleId()
   {
     return $this->saleId;
   }
+  /**
+   * @param string
+   */
   public function setStoreCode($storeCode)
   {
     $this->storeCode = $storeCode;
   }
+  /**
+   * @return string
+   */
   public function getStoreCode()
   {
     return $this->storeCode;
   }
+  /**
+   * @param string
+   */
   public function setTargetCountry($targetCountry)
   {
     $this->targetCountry = $targetCountry;
   }
+  /**
+   * @return string
+   */
   public function getTargetCountry()
   {
     return $this->targetCountry;
   }
+  /**
+   * @param string
+   */
   public function setTimestamp($timestamp)
   {
     $this->timestamp = $timestamp;
   }
+  /**
+   * @return string
+   */
   public function getTimestamp()
   {
     return $this->timestamp;

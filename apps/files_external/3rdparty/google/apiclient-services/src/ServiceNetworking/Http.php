@@ -20,14 +20,23 @@ namespace Google\Service\ServiceNetworking;
 class Http extends \Google\Collection
 {
   protected $collection_key = 'rules';
+  /**
+   * @var bool
+   */
   public $fullyDecodeReservedExpansion;
   protected $rulesType = HttpRule::class;
   protected $rulesDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setFullyDecodeReservedExpansion($fullyDecodeReservedExpansion)
   {
     $this->fullyDecodeReservedExpansion = $fullyDecodeReservedExpansion;
   }
+  /**
+   * @return bool
+   */
   public function getFullyDecodeReservedExpansion()
   {
     return $this->fullyDecodeReservedExpansion;

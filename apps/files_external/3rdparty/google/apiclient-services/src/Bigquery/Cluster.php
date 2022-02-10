@@ -20,23 +20,41 @@ namespace Google\Service\Bigquery;
 class Cluster extends \Google\Collection
 {
   protected $collection_key = 'featureValues';
+  /**
+   * @var string
+   */
   public $centroidId;
+  /**
+   * @var string
+   */
   public $count;
   protected $featureValuesType = FeatureValue::class;
   protected $featureValuesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCentroidId($centroidId)
   {
     $this->centroidId = $centroidId;
   }
+  /**
+   * @return string
+   */
   public function getCentroidId()
   {
     return $this->centroidId;
   }
+  /**
+   * @param string
+   */
   public function setCount($count)
   {
     $this->count = $count;
   }
+  /**
+   * @return string
+   */
   public function getCount()
   {
     return $this->count;

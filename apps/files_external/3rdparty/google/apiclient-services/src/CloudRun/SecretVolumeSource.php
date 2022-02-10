@@ -20,16 +20,31 @@ namespace Google\Service\CloudRun;
 class SecretVolumeSource extends \Google\Collection
 {
   protected $collection_key = 'items';
+  /**
+   * @var int
+   */
   public $defaultMode;
   protected $itemsType = KeyToPath::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var bool
+   */
   public $optional;
+  /**
+   * @var string
+   */
   public $secretName;
 
+  /**
+   * @param int
+   */
   public function setDefaultMode($defaultMode)
   {
     $this->defaultMode = $defaultMode;
   }
+  /**
+   * @return int
+   */
   public function getDefaultMode()
   {
     return $this->defaultMode;
@@ -48,18 +63,30 @@ class SecretVolumeSource extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param bool
+   */
   public function setOptional($optional)
   {
     $this->optional = $optional;
   }
+  /**
+   * @return bool
+   */
   public function getOptional()
   {
     return $this->optional;
   }
+  /**
+   * @param string
+   */
   public function setSecretName($secretName)
   {
     $this->secretName = $secretName;
   }
+  /**
+   * @return string
+   */
   public function getSecretName()
   {
     return $this->secretName;

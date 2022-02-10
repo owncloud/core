@@ -19,44 +19,89 @@ namespace Google\Service\YouTube;
 
 class VideoProcessingDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $editorSuggestionsAvailability;
+  /**
+   * @var string
+   */
   public $fileDetailsAvailability;
+  /**
+   * @var string
+   */
   public $processingFailureReason;
+  /**
+   * @var string
+   */
   public $processingIssuesAvailability;
   protected $processingProgressType = VideoProcessingDetailsProcessingProgress::class;
   protected $processingProgressDataType = '';
+  /**
+   * @var string
+   */
   public $processingStatus;
+  /**
+   * @var string
+   */
   public $tagSuggestionsAvailability;
+  /**
+   * @var string
+   */
   public $thumbnailsAvailability;
 
+  /**
+   * @param string
+   */
   public function setEditorSuggestionsAvailability($editorSuggestionsAvailability)
   {
     $this->editorSuggestionsAvailability = $editorSuggestionsAvailability;
   }
+  /**
+   * @return string
+   */
   public function getEditorSuggestionsAvailability()
   {
     return $this->editorSuggestionsAvailability;
   }
+  /**
+   * @param string
+   */
   public function setFileDetailsAvailability($fileDetailsAvailability)
   {
     $this->fileDetailsAvailability = $fileDetailsAvailability;
   }
+  /**
+   * @return string
+   */
   public function getFileDetailsAvailability()
   {
     return $this->fileDetailsAvailability;
   }
+  /**
+   * @param string
+   */
   public function setProcessingFailureReason($processingFailureReason)
   {
     $this->processingFailureReason = $processingFailureReason;
   }
+  /**
+   * @return string
+   */
   public function getProcessingFailureReason()
   {
     return $this->processingFailureReason;
   }
+  /**
+   * @param string
+   */
   public function setProcessingIssuesAvailability($processingIssuesAvailability)
   {
     $this->processingIssuesAvailability = $processingIssuesAvailability;
   }
+  /**
+   * @return string
+   */
   public function getProcessingIssuesAvailability()
   {
     return $this->processingIssuesAvailability;
@@ -75,26 +120,44 @@ class VideoProcessingDetails extends \Google\Model
   {
     return $this->processingProgress;
   }
+  /**
+   * @param string
+   */
   public function setProcessingStatus($processingStatus)
   {
     $this->processingStatus = $processingStatus;
   }
+  /**
+   * @return string
+   */
   public function getProcessingStatus()
   {
     return $this->processingStatus;
   }
+  /**
+   * @param string
+   */
   public function setTagSuggestionsAvailability($tagSuggestionsAvailability)
   {
     $this->tagSuggestionsAvailability = $tagSuggestionsAvailability;
   }
+  /**
+   * @return string
+   */
   public function getTagSuggestionsAvailability()
   {
     return $this->tagSuggestionsAvailability;
   }
+  /**
+   * @param string
+   */
   public function setThumbnailsAvailability($thumbnailsAvailability)
   {
     $this->thumbnailsAvailability = $thumbnailsAvailability;
   }
+  /**
+   * @return string
+   */
   public function getThumbnailsAvailability()
   {
     return $this->thumbnailsAvailability;

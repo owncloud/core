@@ -19,93 +19,183 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1SearchCatalogResult extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $fullyQualifiedName;
+  /**
+   * @var string
+   */
   public $integratedSystem;
+  /**
+   * @var string
+   */
   public $linkedResource;
+  /**
+   * @var string
+   */
   public $modifyTime;
+  /**
+   * @var string
+   */
   public $relativeResourceName;
+  /**
+   * @var string
+   */
   public $searchResultSubtype;
+  /**
+   * @var string
+   */
   public $searchResultType;
+  /**
+   * @var string
+   */
   public $userSpecifiedSystem;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setFullyQualifiedName($fullyQualifiedName)
   {
     $this->fullyQualifiedName = $fullyQualifiedName;
   }
+  /**
+   * @return string
+   */
   public function getFullyQualifiedName()
   {
     return $this->fullyQualifiedName;
   }
+  /**
+   * @param string
+   */
   public function setIntegratedSystem($integratedSystem)
   {
     $this->integratedSystem = $integratedSystem;
   }
+  /**
+   * @return string
+   */
   public function getIntegratedSystem()
   {
     return $this->integratedSystem;
   }
+  /**
+   * @param string
+   */
   public function setLinkedResource($linkedResource)
   {
     $this->linkedResource = $linkedResource;
   }
+  /**
+   * @return string
+   */
   public function getLinkedResource()
   {
     return $this->linkedResource;
   }
+  /**
+   * @param string
+   */
   public function setModifyTime($modifyTime)
   {
     $this->modifyTime = $modifyTime;
   }
+  /**
+   * @return string
+   */
   public function getModifyTime()
   {
     return $this->modifyTime;
   }
+  /**
+   * @param string
+   */
   public function setRelativeResourceName($relativeResourceName)
   {
     $this->relativeResourceName = $relativeResourceName;
   }
+  /**
+   * @return string
+   */
   public function getRelativeResourceName()
   {
     return $this->relativeResourceName;
   }
+  /**
+   * @param string
+   */
   public function setSearchResultSubtype($searchResultSubtype)
   {
     $this->searchResultSubtype = $searchResultSubtype;
   }
+  /**
+   * @return string
+   */
   public function getSearchResultSubtype()
   {
     return $this->searchResultSubtype;
   }
+  /**
+   * @param string
+   */
   public function setSearchResultType($searchResultType)
   {
     $this->searchResultType = $searchResultType;
   }
+  /**
+   * @return string
+   */
   public function getSearchResultType()
   {
     return $this->searchResultType;
   }
+  /**
+   * @param string
+   */
   public function setUserSpecifiedSystem($userSpecifiedSystem)
   {
     $this->userSpecifiedSystem = $userSpecifiedSystem;
   }
+  /**
+   * @return string
+   */
   public function getUserSpecifiedSystem()
   {
     return $this->userSpecifiedSystem;

@@ -19,21 +19,39 @@ namespace Google\Service\AndroidManagement;
 
 class ManagedConfigurationTemplate extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $configurationVariables;
+  /**
+   * @var string
+   */
   public $templateId;
 
+  /**
+   * @param string[]
+   */
   public function setConfigurationVariables($configurationVariables)
   {
     $this->configurationVariables = $configurationVariables;
   }
+  /**
+   * @return string[]
+   */
   public function getConfigurationVariables()
   {
     return $this->configurationVariables;
   }
+  /**
+   * @param string
+   */
   public function setTemplateId($templateId)
   {
     $this->templateId = $templateId;
   }
+  /**
+   * @return string
+   */
   public function getTemplateId()
   {
     return $this->templateId;

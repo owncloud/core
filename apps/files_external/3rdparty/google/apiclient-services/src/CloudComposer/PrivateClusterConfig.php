@@ -19,30 +19,57 @@ namespace Google\Service\CloudComposer;
 
 class PrivateClusterConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $enablePrivateEndpoint;
+  /**
+   * @var string
+   */
   public $masterIpv4CidrBlock;
+  /**
+   * @var string
+   */
   public $masterIpv4ReservedRange;
 
+  /**
+   * @param bool
+   */
   public function setEnablePrivateEndpoint($enablePrivateEndpoint)
   {
     $this->enablePrivateEndpoint = $enablePrivateEndpoint;
   }
+  /**
+   * @return bool
+   */
   public function getEnablePrivateEndpoint()
   {
     return $this->enablePrivateEndpoint;
   }
+  /**
+   * @param string
+   */
   public function setMasterIpv4CidrBlock($masterIpv4CidrBlock)
   {
     $this->masterIpv4CidrBlock = $masterIpv4CidrBlock;
   }
+  /**
+   * @return string
+   */
   public function getMasterIpv4CidrBlock()
   {
     return $this->masterIpv4CidrBlock;
   }
+  /**
+   * @param string
+   */
   public function setMasterIpv4ReservedRange($masterIpv4ReservedRange)
   {
     $this->masterIpv4ReservedRange = $masterIpv4ReservedRange;
   }
+  /**
+   * @return string
+   */
   public function getMasterIpv4ReservedRange()
   {
     return $this->masterIpv4ReservedRange;

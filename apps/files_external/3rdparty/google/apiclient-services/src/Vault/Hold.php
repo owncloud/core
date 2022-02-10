@@ -22,13 +22,25 @@ class Hold extends \Google\Collection
   protected $collection_key = 'accounts';
   protected $accountsType = HeldAccount::class;
   protected $accountsDataType = 'array';
+  /**
+   * @var string
+   */
   public $corpus;
+  /**
+   * @var string
+   */
   public $holdId;
+  /**
+   * @var string
+   */
   public $name;
   protected $orgUnitType = HeldOrgUnit::class;
   protected $orgUnitDataType = '';
   protected $queryType = CorpusQuery::class;
   protected $queryDataType = '';
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -45,26 +57,44 @@ class Hold extends \Google\Collection
   {
     return $this->accounts;
   }
+  /**
+   * @param string
+   */
   public function setCorpus($corpus)
   {
     $this->corpus = $corpus;
   }
+  /**
+   * @return string
+   */
   public function getCorpus()
   {
     return $this->corpus;
   }
+  /**
+   * @param string
+   */
   public function setHoldId($holdId)
   {
     $this->holdId = $holdId;
   }
+  /**
+   * @return string
+   */
   public function getHoldId()
   {
     return $this->holdId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -97,10 +127,16 @@ class Hold extends \Google\Collection
   {
     return $this->query;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

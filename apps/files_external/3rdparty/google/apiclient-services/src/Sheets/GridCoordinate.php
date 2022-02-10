@@ -19,30 +19,57 @@ namespace Google\Service\Sheets;
 
 class GridCoordinate extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $columnIndex;
+  /**
+   * @var int
+   */
   public $rowIndex;
+  /**
+   * @var int
+   */
   public $sheetId;
 
+  /**
+   * @param int
+   */
   public function setColumnIndex($columnIndex)
   {
     $this->columnIndex = $columnIndex;
   }
+  /**
+   * @return int
+   */
   public function getColumnIndex()
   {
     return $this->columnIndex;
   }
+  /**
+   * @param int
+   */
   public function setRowIndex($rowIndex)
   {
     $this->rowIndex = $rowIndex;
   }
+  /**
+   * @return int
+   */
   public function getRowIndex()
   {
     return $this->rowIndex;
   }
+  /**
+   * @param int
+   */
   public function setSheetId($sheetId)
   {
     $this->sheetId = $sheetId;
   }
+  /**
+   * @return int
+   */
   public function getSheetId()
   {
     return $this->sheetId;

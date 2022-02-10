@@ -19,12 +19,21 @@ namespace Google\Service\BinaryAuthorization;
 
 class AdmissionWhitelistPattern extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $namePattern;
 
+  /**
+   * @param string
+   */
   public function setNamePattern($namePattern)
   {
     $this->namePattern = $namePattern;
   }
+  /**
+   * @return string
+   */
   public function getNamePattern()
   {
     return $this->namePattern;

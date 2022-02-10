@@ -19,39 +19,75 @@ namespace Google\Service\Dataproc;
 
 class LifecycleConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $autoDeleteTime;
+  /**
+   * @var string
+   */
   public $autoDeleteTtl;
+  /**
+   * @var string
+   */
   public $idleDeleteTtl;
+  /**
+   * @var string
+   */
   public $idleStartTime;
 
+  /**
+   * @param string
+   */
   public function setAutoDeleteTime($autoDeleteTime)
   {
     $this->autoDeleteTime = $autoDeleteTime;
   }
+  /**
+   * @return string
+   */
   public function getAutoDeleteTime()
   {
     return $this->autoDeleteTime;
   }
+  /**
+   * @param string
+   */
   public function setAutoDeleteTtl($autoDeleteTtl)
   {
     $this->autoDeleteTtl = $autoDeleteTtl;
   }
+  /**
+   * @return string
+   */
   public function getAutoDeleteTtl()
   {
     return $this->autoDeleteTtl;
   }
+  /**
+   * @param string
+   */
   public function setIdleDeleteTtl($idleDeleteTtl)
   {
     $this->idleDeleteTtl = $idleDeleteTtl;
   }
+  /**
+   * @return string
+   */
   public function getIdleDeleteTtl()
   {
     return $this->idleDeleteTtl;
   }
+  /**
+   * @param string
+   */
   public function setIdleStartTime($idleStartTime)
   {
     $this->idleStartTime = $idleStartTime;
   }
+  /**
+   * @return string
+   */
   public function getIdleStartTime()
   {
     return $this->idleStartTime;

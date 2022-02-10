@@ -20,14 +20,23 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1ListPurchasableOffersResponse extends \Google\Collection
 {
   protected $collection_key = 'purchasableOffers';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $purchasableOffersType = GoogleCloudChannelV1PurchasableOffer::class;
   protected $purchasableOffersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

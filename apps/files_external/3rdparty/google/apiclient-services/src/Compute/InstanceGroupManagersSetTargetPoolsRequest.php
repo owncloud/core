@@ -20,21 +20,39 @@ namespace Google\Service\Compute;
 class InstanceGroupManagersSetTargetPoolsRequest extends \Google\Collection
 {
   protected $collection_key = 'targetPools';
+  /**
+   * @var string
+   */
   public $fingerprint;
+  /**
+   * @var string[]
+   */
   public $targetPools;
 
+  /**
+   * @param string
+   */
   public function setFingerprint($fingerprint)
   {
     $this->fingerprint = $fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getFingerprint()
   {
     return $this->fingerprint;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetPools($targetPools)
   {
     $this->targetPools = $targetPools;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetPools()
   {
     return $this->targetPools;

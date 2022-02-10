@@ -19,21 +19,45 @@ namespace Google\Service\GamesConfiguration;
 
 class AchievementConfiguration extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $achievementType;
   protected $draftType = AchievementConfigurationDetail::class;
   protected $draftDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $initialState;
+  /**
+   * @var string
+   */
   public $kind;
   protected $publishedType = AchievementConfigurationDetail::class;
   protected $publishedDataType = '';
+  /**
+   * @var int
+   */
   public $stepsToUnlock;
+  /**
+   * @var string
+   */
   public $token;
 
+  /**
+   * @param string
+   */
   public function setAchievementType($achievementType)
   {
     $this->achievementType = $achievementType;
   }
+  /**
+   * @return string
+   */
   public function getAchievementType()
   {
     return $this->achievementType;
@@ -52,26 +76,44 @@ class AchievementConfiguration extends \Google\Model
   {
     return $this->draft;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setInitialState($initialState)
   {
     $this->initialState = $initialState;
   }
+  /**
+   * @return string
+   */
   public function getInitialState()
   {
     return $this->initialState;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
@@ -90,18 +132,30 @@ class AchievementConfiguration extends \Google\Model
   {
     return $this->published;
   }
+  /**
+   * @param int
+   */
   public function setStepsToUnlock($stepsToUnlock)
   {
     $this->stepsToUnlock = $stepsToUnlock;
   }
+  /**
+   * @return int
+   */
   public function getStepsToUnlock()
   {
     return $this->stepsToUnlock;
   }
+  /**
+   * @param string
+   */
   public function setToken($token)
   {
     $this->token = $token;
   }
+  /**
+   * @return string
+   */
   public function getToken()
   {
     return $this->token;

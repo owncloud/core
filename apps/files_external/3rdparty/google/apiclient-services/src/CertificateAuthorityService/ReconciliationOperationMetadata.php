@@ -19,21 +19,39 @@ namespace Google\Service\CertificateAuthorityService;
 
 class ReconciliationOperationMetadata extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $deleteResource;
+  /**
+   * @var string
+   */
   public $exclusiveAction;
 
+  /**
+   * @param bool
+   */
   public function setDeleteResource($deleteResource)
   {
     $this->deleteResource = $deleteResource;
   }
+  /**
+   * @return bool
+   */
   public function getDeleteResource()
   {
     return $this->deleteResource;
   }
+  /**
+   * @param string
+   */
   public function setExclusiveAction($exclusiveAction)
   {
     $this->exclusiveAction = $exclusiveAction;
   }
+  /**
+   * @return string
+   */
   public function getExclusiveAction()
   {
     return $this->exclusiveAction;

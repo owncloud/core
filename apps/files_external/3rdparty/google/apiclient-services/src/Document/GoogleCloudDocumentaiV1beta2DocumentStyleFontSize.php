@@ -19,21 +19,39 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1beta2DocumentStyleFontSize extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $size;
+  /**
+   * @var string
+   */
   public $unit;
 
+  /**
+   * @param float
+   */
   public function setSize($size)
   {
     $this->size = $size;
   }
+  /**
+   * @return float
+   */
   public function getSize()
   {
     return $this->size;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;

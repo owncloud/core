@@ -22,6 +22,9 @@ class FirewallPoliciesListAssociationsResponse extends \Google\Collection
   protected $collection_key = 'associations';
   protected $associationsType = FirewallPolicyAssociation::class;
   protected $associationsDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
 
   /**
@@ -38,10 +41,16 @@ class FirewallPoliciesListAssociationsResponse extends \Google\Collection
   {
     return $this->associations;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

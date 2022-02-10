@@ -19,39 +19,75 @@ namespace Google\Service\DisplayVideo;
 
 class PerformanceGoalBidStrategy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customBiddingAlgorithmId;
+  /**
+   * @var string
+   */
   public $maxAverageCpmBidAmountMicros;
+  /**
+   * @var string
+   */
   public $performanceGoalAmountMicros;
+  /**
+   * @var string
+   */
   public $performanceGoalType;
 
+  /**
+   * @param string
+   */
   public function setCustomBiddingAlgorithmId($customBiddingAlgorithmId)
   {
     $this->customBiddingAlgorithmId = $customBiddingAlgorithmId;
   }
+  /**
+   * @return string
+   */
   public function getCustomBiddingAlgorithmId()
   {
     return $this->customBiddingAlgorithmId;
   }
+  /**
+   * @param string
+   */
   public function setMaxAverageCpmBidAmountMicros($maxAverageCpmBidAmountMicros)
   {
     $this->maxAverageCpmBidAmountMicros = $maxAverageCpmBidAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getMaxAverageCpmBidAmountMicros()
   {
     return $this->maxAverageCpmBidAmountMicros;
   }
+  /**
+   * @param string
+   */
   public function setPerformanceGoalAmountMicros($performanceGoalAmountMicros)
   {
     $this->performanceGoalAmountMicros = $performanceGoalAmountMicros;
   }
+  /**
+   * @return string
+   */
   public function getPerformanceGoalAmountMicros()
   {
     return $this->performanceGoalAmountMicros;
   }
+  /**
+   * @param string
+   */
   public function setPerformanceGoalType($performanceGoalType)
   {
     $this->performanceGoalType = $performanceGoalType;
   }
+  /**
+   * @return string
+   */
   public function getPerformanceGoalType()
   {
     return $this->performanceGoalType;

@@ -19,57 +19,111 @@ namespace Google\Service\GameServices;
 
 class KubernetesClusterState extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $agonesVersionInstalled;
+  /**
+   * @var string
+   */
   public $agonesVersionTargeted;
+  /**
+   * @var string
+   */
   public $installationState;
+  /**
+   * @var string
+   */
   public $kubernetesVersionInstalled;
+  /**
+   * @var string
+   */
   public $provider;
+  /**
+   * @var string
+   */
   public $versionInstalledErrorMessage;
 
+  /**
+   * @param string
+   */
   public function setAgonesVersionInstalled($agonesVersionInstalled)
   {
     $this->agonesVersionInstalled = $agonesVersionInstalled;
   }
+  /**
+   * @return string
+   */
   public function getAgonesVersionInstalled()
   {
     return $this->agonesVersionInstalled;
   }
+  /**
+   * @param string
+   */
   public function setAgonesVersionTargeted($agonesVersionTargeted)
   {
     $this->agonesVersionTargeted = $agonesVersionTargeted;
   }
+  /**
+   * @return string
+   */
   public function getAgonesVersionTargeted()
   {
     return $this->agonesVersionTargeted;
   }
+  /**
+   * @param string
+   */
   public function setInstallationState($installationState)
   {
     $this->installationState = $installationState;
   }
+  /**
+   * @return string
+   */
   public function getInstallationState()
   {
     return $this->installationState;
   }
+  /**
+   * @param string
+   */
   public function setKubernetesVersionInstalled($kubernetesVersionInstalled)
   {
     $this->kubernetesVersionInstalled = $kubernetesVersionInstalled;
   }
+  /**
+   * @return string
+   */
   public function getKubernetesVersionInstalled()
   {
     return $this->kubernetesVersionInstalled;
   }
+  /**
+   * @param string
+   */
   public function setProvider($provider)
   {
     $this->provider = $provider;
   }
+  /**
+   * @return string
+   */
   public function getProvider()
   {
     return $this->provider;
   }
+  /**
+   * @param string
+   */
   public function setVersionInstalledErrorMessage($versionInstalledErrorMessage)
   {
     $this->versionInstalledErrorMessage = $versionInstalledErrorMessage;
   }
+  /**
+   * @return string
+   */
   public function getVersionInstalledErrorMessage()
   {
     return $this->versionInstalledErrorMessage;

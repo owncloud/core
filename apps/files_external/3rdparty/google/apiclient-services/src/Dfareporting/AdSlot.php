@@ -19,75 +19,147 @@ namespace Google\Service\Dfareporting;
 
 class AdSlot extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $comment;
+  /**
+   * @var string
+   */
   public $compatibility;
+  /**
+   * @var string
+   */
   public $height;
+  /**
+   * @var string
+   */
   public $linkedPlacementId;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $paymentSourceType;
+  /**
+   * @var bool
+   */
   public $primary;
+  /**
+   * @var string
+   */
   public $width;
 
+  /**
+   * @param string
+   */
   public function setComment($comment)
   {
     $this->comment = $comment;
   }
+  /**
+   * @return string
+   */
   public function getComment()
   {
     return $this->comment;
   }
+  /**
+   * @param string
+   */
   public function setCompatibility($compatibility)
   {
     $this->compatibility = $compatibility;
   }
+  /**
+   * @return string
+   */
   public function getCompatibility()
   {
     return $this->compatibility;
   }
+  /**
+   * @param string
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return string
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param string
+   */
   public function setLinkedPlacementId($linkedPlacementId)
   {
     $this->linkedPlacementId = $linkedPlacementId;
   }
+  /**
+   * @return string
+   */
   public function getLinkedPlacementId()
   {
     return $this->linkedPlacementId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPaymentSourceType($paymentSourceType)
   {
     $this->paymentSourceType = $paymentSourceType;
   }
+  /**
+   * @return string
+   */
   public function getPaymentSourceType()
   {
     return $this->paymentSourceType;
   }
+  /**
+   * @param bool
+   */
   public function setPrimary($primary)
   {
     $this->primary = $primary;
   }
+  /**
+   * @return bool
+   */
   public function getPrimary()
   {
     return $this->primary;
   }
+  /**
+   * @param string
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return string
+   */
   public function getWidth()
   {
     return $this->width;

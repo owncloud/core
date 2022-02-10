@@ -19,21 +19,39 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class ReportInstanceInfoRequest extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $metadata;
+  /**
+   * @var string
+   */
   public $vmId;
 
+  /**
+   * @param string[]
+   */
   public function setMetadata($metadata)
   {
     $this->metadata = $metadata;
   }
+  /**
+   * @return string[]
+   */
   public function getMetadata()
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setVmId($vmId)
   {
     $this->vmId = $vmId;
   }
+  /**
+   * @return string
+   */
   public function getVmId()
   {
     return $this->vmId;

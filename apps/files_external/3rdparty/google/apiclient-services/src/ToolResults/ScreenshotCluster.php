@@ -20,25 +20,43 @@ namespace Google\Service\ToolResults;
 class ScreenshotCluster extends \Google\Collection
 {
   protected $collection_key = 'screens';
+  /**
+   * @var string
+   */
   public $activity;
+  /**
+   * @var string
+   */
   public $clusterId;
   protected $keyScreenType = Screen::class;
   protected $keyScreenDataType = '';
   protected $screensType = Screen::class;
   protected $screensDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setActivity($activity)
   {
     $this->activity = $activity;
   }
+  /**
+   * @return string
+   */
   public function getActivity()
   {
     return $this->activity;
   }
+  /**
+   * @param string
+   */
   public function setClusterId($clusterId)
   {
     $this->clusterId = $clusterId;
   }
+  /**
+   * @return string
+   */
   public function getClusterId()
   {
     return $this->clusterId;

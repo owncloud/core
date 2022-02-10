@@ -19,30 +19,57 @@ namespace Google\Service\Directory;
 
 class PrinterModel extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $makeAndModel;
+  /**
+   * @var string
+   */
   public $manufacturer;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setMakeAndModel($makeAndModel)
   {
     $this->makeAndModel = $makeAndModel;
   }
+  /**
+   * @return string
+   */
   public function getMakeAndModel()
   {
     return $this->makeAndModel;
   }
+  /**
+   * @param string
+   */
   public function setManufacturer($manufacturer)
   {
     $this->manufacturer = $manufacturer;
   }
+  /**
+   * @return string
+   */
   public function getManufacturer()
   {
     return $this->manufacturer;

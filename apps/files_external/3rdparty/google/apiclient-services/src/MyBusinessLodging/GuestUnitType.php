@@ -20,15 +20,27 @@ namespace Google\Service\MyBusinessLodging;
 class GuestUnitType extends \Google\Collection
 {
   protected $collection_key = 'codes';
+  /**
+   * @var string[]
+   */
   public $codes;
   protected $featuresType = GuestUnitFeatures::class;
   protected $featuresDataType = '';
+  /**
+   * @var string
+   */
   public $label;
 
+  /**
+   * @param string[]
+   */
   public function setCodes($codes)
   {
     $this->codes = $codes;
   }
+  /**
+   * @return string[]
+   */
   public function getCodes()
   {
     return $this->codes;
@@ -47,10 +59,16 @@ class GuestUnitType extends \Google\Collection
   {
     return $this->features;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;

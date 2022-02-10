@@ -19,30 +19,57 @@ namespace Google\Service\Analytics;
 
 class RealtimeDataColumnHeaders extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $columnType;
+  /**
+   * @var string
+   */
   public $dataType;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setColumnType($columnType)
   {
     $this->columnType = $columnType;
   }
+  /**
+   * @return string
+   */
   public function getColumnType()
   {
     return $this->columnType;
   }
+  /**
+   * @param string
+   */
   public function setDataType($dataType)
   {
     $this->dataType = $dataType;
   }
+  /**
+   * @return string
+   */
   public function getDataType()
   {
     return $this->dataType;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowV2IntentMessageColumnProperties extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $header;
+  /**
+   * @var string
+   */
   public $horizontalAlignment;
 
+  /**
+   * @param string
+   */
   public function setHeader($header)
   {
     $this->header = $header;
   }
+  /**
+   * @return string
+   */
   public function getHeader()
   {
     return $this->header;
   }
+  /**
+   * @param string
+   */
   public function setHorizontalAlignment($horizontalAlignment)
   {
     $this->horizontalAlignment = $horizontalAlignment;
   }
+  /**
+   * @return string
+   */
   public function getHorizontalAlignment()
   {
     return $this->horizontalAlignment;

@@ -22,8 +22,17 @@ class OrdersRefundItemRequest extends \Google\Collection
   protected $collection_key = 'items';
   protected $itemsType = OrdersCustomBatchRequestEntryRefundItemItem::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $operationId;
+  /**
+   * @var string
+   */
   public $reason;
+  /**
+   * @var string
+   */
   public $reasonText;
   protected $shippingType = OrdersCustomBatchRequestEntryRefundItemShipping::class;
   protected $shippingDataType = '';
@@ -42,26 +51,44 @@ class OrdersRefundItemRequest extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
   }
+  /**
+   * @param string
+   */
   public function setReasonText($reasonText)
   {
     $this->reasonText = $reasonText;
   }
+  /**
+   * @return string
+   */
   public function getReasonText()
   {
     return $this->reasonText;

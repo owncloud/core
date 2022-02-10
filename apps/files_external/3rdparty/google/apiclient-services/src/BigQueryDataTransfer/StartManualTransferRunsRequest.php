@@ -19,14 +19,23 @@ namespace Google\Service\BigQueryDataTransfer;
 
 class StartManualTransferRunsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $requestedRunTime;
   protected $requestedTimeRangeType = TimeRange::class;
   protected $requestedTimeRangeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setRequestedRunTime($requestedRunTime)
   {
     $this->requestedRunTime = $requestedRunTime;
   }
+  /**
+   * @return string
+   */
   public function getRequestedRunTime()
   {
     return $this->requestedRunTime;

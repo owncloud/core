@@ -22,7 +22,13 @@ class GoogleCloudDialogflowV2SuggestArticlesResponse extends \Google\Collection
   protected $collection_key = 'articleAnswers';
   protected $articleAnswersType = GoogleCloudDialogflowV2ArticleAnswer::class;
   protected $articleAnswersDataType = 'array';
+  /**
+   * @var int
+   */
   public $contextSize;
+  /**
+   * @var string
+   */
   public $latestMessage;
 
   /**
@@ -39,18 +45,30 @@ class GoogleCloudDialogflowV2SuggestArticlesResponse extends \Google\Collection
   {
     return $this->articleAnswers;
   }
+  /**
+   * @param int
+   */
   public function setContextSize($contextSize)
   {
     $this->contextSize = $contextSize;
   }
+  /**
+   * @return int
+   */
   public function getContextSize()
   {
     return $this->contextSize;
   }
+  /**
+   * @param string
+   */
   public function setLatestMessage($latestMessage)
   {
     $this->latestMessage = $latestMessage;
   }
+  /**
+   * @return string
+   */
   public function getLatestMessage()
   {
     return $this->latestMessage;

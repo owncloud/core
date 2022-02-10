@@ -20,30 +20,57 @@ namespace Google\Service\HomeGraphService;
 class DeviceNames extends \Google\Collection
 {
   protected $collection_key = 'nicknames';
+  /**
+   * @var string[]
+   */
   public $defaultNames;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $nicknames;
 
+  /**
+   * @param string[]
+   */
   public function setDefaultNames($defaultNames)
   {
     $this->defaultNames = $defaultNames;
   }
+  /**
+   * @return string[]
+   */
   public function getDefaultNames()
   {
     return $this->defaultNames;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setNicknames($nicknames)
   {
     $this->nicknames = $nicknames;
   }
+  /**
+   * @return string[]
+   */
   public function getNicknames()
   {
     return $this->nicknames;

@@ -26,15 +26,27 @@ class JobListJobs extends \Google\Model
   protected $configurationDataType = '';
   protected $errorResultType = ErrorProto::class;
   protected $errorResultDataType = '';
+  /**
+   * @var string
+   */
   public $id;
   protected $jobReferenceType = JobReference::class;
   protected $jobReferenceDataType = '';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $state;
   protected $statisticsType = JobStatistics::class;
   protected $statisticsDataType = '';
   protected $statusType = JobStatus::class;
   protected $statusDataType = '';
+  /**
+   * @var string
+   */
   public $userEmail;
 
   /**
@@ -65,10 +77,16 @@ class JobListJobs extends \Google\Model
   {
     return $this->errorResult;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -87,18 +105,30 @@ class JobListJobs extends \Google\Model
   {
     return $this->jobReference;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
@@ -131,10 +161,16 @@ class JobListJobs extends \Google\Model
   {
     return $this->status;
   }
+  /**
+   * @param string
+   */
   public function setUserEmail($userEmail)
   {
     $this->userEmail = $userEmail;
   }
+  /**
+   * @return string
+   */
   public function getUserEmail()
   {
     return $this->userEmail;

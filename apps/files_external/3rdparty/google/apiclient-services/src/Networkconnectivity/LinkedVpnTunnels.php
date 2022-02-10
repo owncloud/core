@@ -20,21 +20,39 @@ namespace Google\Service\Networkconnectivity;
 class LinkedVpnTunnels extends \Google\Collection
 {
   protected $collection_key = 'uris';
+  /**
+   * @var bool
+   */
   public $siteToSiteDataTransfer;
+  /**
+   * @var string[]
+   */
   public $uris;
 
+  /**
+   * @param bool
+   */
   public function setSiteToSiteDataTransfer($siteToSiteDataTransfer)
   {
     $this->siteToSiteDataTransfer = $siteToSiteDataTransfer;
   }
+  /**
+   * @return bool
+   */
   public function getSiteToSiteDataTransfer()
   {
     return $this->siteToSiteDataTransfer;
   }
+  /**
+   * @param string[]
+   */
   public function setUris($uris)
   {
     $this->uris = $uris;
   }
+  /**
+   * @return string[]
+   */
   public function getUris()
   {
     return $this->uris;

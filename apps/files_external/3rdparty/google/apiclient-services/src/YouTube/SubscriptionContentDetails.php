@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class SubscriptionContentDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $activityType;
+  /**
+   * @var string
+   */
   public $newItemCount;
+  /**
+   * @var string
+   */
   public $totalItemCount;
 
+  /**
+   * @param string
+   */
   public function setActivityType($activityType)
   {
     $this->activityType = $activityType;
   }
+  /**
+   * @return string
+   */
   public function getActivityType()
   {
     return $this->activityType;
   }
+  /**
+   * @param string
+   */
   public function setNewItemCount($newItemCount)
   {
     $this->newItemCount = $newItemCount;
   }
+  /**
+   * @return string
+   */
   public function getNewItemCount()
   {
     return $this->newItemCount;
   }
+  /**
+   * @param string
+   */
   public function setTotalItemCount($totalItemCount)
   {
     $this->totalItemCount = $totalItemCount;
   }
+  /**
+   * @return string
+   */
   public function getTotalItemCount()
   {
     return $this->totalItemCount;

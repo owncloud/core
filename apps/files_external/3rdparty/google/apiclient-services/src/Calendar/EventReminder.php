@@ -19,21 +19,39 @@ namespace Google\Service\Calendar;
 
 class EventReminder extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $method;
+  /**
+   * @var int
+   */
   public $minutes;
 
+  /**
+   * @param string
+   */
   public function setMethod($method)
   {
     $this->method = $method;
   }
+  /**
+   * @return string
+   */
   public function getMethod()
   {
     return $this->method;
   }
+  /**
+   * @param int
+   */
   public function setMinutes($minutes)
   {
     $this->minutes = $minutes;
   }
+  /**
+   * @return int
+   */
   public function getMinutes()
   {
     return $this->minutes;

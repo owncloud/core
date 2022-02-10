@@ -22,6 +22,9 @@ class GoogleFactcheckingFactchecktoolsV1alpha1FactCheckedClaimSearchResponse ext
   protected $collection_key = 'claims';
   protected $claimsType = GoogleFactcheckingFactchecktoolsV1alpha1Claim::class;
   protected $claimsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class GoogleFactcheckingFactchecktoolsV1alpha1FactCheckedClaimSearchResponse ext
   {
     return $this->claims;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

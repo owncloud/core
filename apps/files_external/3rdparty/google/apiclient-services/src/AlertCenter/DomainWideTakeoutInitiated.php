@@ -19,21 +19,39 @@ namespace Google\Service\AlertCenter;
 
 class DomainWideTakeoutInitiated extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $email;
+  /**
+   * @var string
+   */
   public $takeoutRequestId;
 
+  /**
+   * @param string
+   */
   public function setEmail($email)
   {
     $this->email = $email;
   }
+  /**
+   * @return string
+   */
   public function getEmail()
   {
     return $this->email;
   }
+  /**
+   * @param string
+   */
   public function setTakeoutRequestId($takeoutRequestId)
   {
     $this->takeoutRequestId = $takeoutRequestId;
   }
+  /**
+   * @return string
+   */
   public function getTakeoutRequestId()
   {
     return $this->takeoutRequestId;

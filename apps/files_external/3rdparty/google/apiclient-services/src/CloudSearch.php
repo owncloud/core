@@ -795,6 +795,35 @@ class CloudSearch extends \Google\Service
                   'type' => 'integer',
                 ],
               ],
+            ],'getSearchapplication' => [
+              'path' => 'v1/stats/searchapplication',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'endDate.day' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'endDate.month' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'endDate.year' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'startDate.day' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'startDate.month' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+                'startDate.year' => [
+                  'location' => 'query',
+                  'type' => 'integer',
+                ],
+              ],
             ],'getSession' => [
               'path' => 'v1/stats/session',
               'httpMethod' => 'GET',

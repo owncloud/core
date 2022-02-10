@@ -19,30 +19,57 @@ namespace Google\Service\CloudVideoIntelligence;
 
 class GoogleCloudVideointelligenceV1FaceDetectionConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $includeAttributes;
+  /**
+   * @var bool
+   */
   public $includeBoundingBoxes;
+  /**
+   * @var string
+   */
   public $model;
 
+  /**
+   * @param bool
+   */
   public function setIncludeAttributes($includeAttributes)
   {
     $this->includeAttributes = $includeAttributes;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeAttributes()
   {
     return $this->includeAttributes;
   }
+  /**
+   * @param bool
+   */
   public function setIncludeBoundingBoxes($includeBoundingBoxes)
   {
     $this->includeBoundingBoxes = $includeBoundingBoxes;
   }
+  /**
+   * @return bool
+   */
   public function getIncludeBoundingBoxes()
   {
     return $this->includeBoundingBoxes;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;

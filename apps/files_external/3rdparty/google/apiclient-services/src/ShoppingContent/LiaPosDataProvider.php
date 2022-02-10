@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class LiaPosDataProvider extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $posDataProviderId;
+  /**
+   * @var string
+   */
   public $posExternalAccountId;
 
+  /**
+   * @param string
+   */
   public function setPosDataProviderId($posDataProviderId)
   {
     $this->posDataProviderId = $posDataProviderId;
   }
+  /**
+   * @return string
+   */
   public function getPosDataProviderId()
   {
     return $this->posDataProviderId;
   }
+  /**
+   * @param string
+   */
   public function setPosExternalAccountId($posExternalAccountId)
   {
     $this->posExternalAccountId = $posExternalAccountId;
   }
+  /**
+   * @return string
+   */
   public function getPosExternalAccountId()
   {
     return $this->posExternalAccountId;

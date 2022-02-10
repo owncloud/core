@@ -22,6 +22,9 @@ class ListFilteredBidRequestsResponse extends \Google\Collection
   protected $collection_key = 'calloutStatusRows';
   protected $calloutStatusRowsType = CalloutStatusRow::class;
   protected $calloutStatusRowsDataType = 'array';
+  /**
+   * @var string
+   */
   public $nextPageToken;
 
   /**
@@ -38,10 +41,16 @@ class ListFilteredBidRequestsResponse extends \Google\Collection
   {
     return $this->calloutStatusRows;
   }
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

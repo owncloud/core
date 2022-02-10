@@ -19,48 +19,93 @@ namespace Google\Service\SQLAdmin;
 
 class InsightsConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $queryInsightsEnabled;
+  /**
+   * @var int
+   */
   public $queryPlansPerMinute;
+  /**
+   * @var int
+   */
   public $queryStringLength;
+  /**
+   * @var bool
+   */
   public $recordApplicationTags;
+  /**
+   * @var bool
+   */
   public $recordClientAddress;
 
+  /**
+   * @param bool
+   */
   public function setQueryInsightsEnabled($queryInsightsEnabled)
   {
     $this->queryInsightsEnabled = $queryInsightsEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getQueryInsightsEnabled()
   {
     return $this->queryInsightsEnabled;
   }
+  /**
+   * @param int
+   */
   public function setQueryPlansPerMinute($queryPlansPerMinute)
   {
     $this->queryPlansPerMinute = $queryPlansPerMinute;
   }
+  /**
+   * @return int
+   */
   public function getQueryPlansPerMinute()
   {
     return $this->queryPlansPerMinute;
   }
+  /**
+   * @param int
+   */
   public function setQueryStringLength($queryStringLength)
   {
     $this->queryStringLength = $queryStringLength;
   }
+  /**
+   * @return int
+   */
   public function getQueryStringLength()
   {
     return $this->queryStringLength;
   }
+  /**
+   * @param bool
+   */
   public function setRecordApplicationTags($recordApplicationTags)
   {
     $this->recordApplicationTags = $recordApplicationTags;
   }
+  /**
+   * @return bool
+   */
   public function getRecordApplicationTags()
   {
     return $this->recordApplicationTags;
   }
+  /**
+   * @param bool
+   */
   public function setRecordClientAddress($recordClientAddress)
   {
     $this->recordClientAddress = $recordClientAddress;
   }
+  /**
+   * @return bool
+   */
   public function getRecordClientAddress()
   {
     return $this->recordClientAddress;

@@ -19,21 +19,39 @@ namespace Google\Service\CloudSearch;
 
 class FieldViolation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $field;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setField($field)
   {
     $this->field = $field;
   }
+  /**
+   * @return string
+   */
   public function getField()
   {
     return $this->field;

@@ -20,14 +20,23 @@ namespace Google\Service\HangoutsChat;
 class Section extends \Google\Collection
 {
   protected $collection_key = 'widgets';
+  /**
+   * @var string
+   */
   public $header;
   protected $widgetsType = WidgetMarkup::class;
   protected $widgetsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setHeader($header)
   {
     $this->header = $header;
   }
+  /**
+   * @return string
+   */
   public function getHeader()
   {
     return $this->header;

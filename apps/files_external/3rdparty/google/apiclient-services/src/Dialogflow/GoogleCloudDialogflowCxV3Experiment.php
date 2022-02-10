@@ -20,31 +20,67 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3Experiment extends \Google\Collection
 {
   protected $collection_key = 'variantsHistory';
+  /**
+   * @var string
+   */
   public $createTime;
   protected $definitionType = GoogleCloudDialogflowCxV3ExperimentDefinition::class;
   protected $definitionDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $experimentLength;
+  /**
+   * @var string
+   */
   public $lastUpdateTime;
+  /**
+   * @var string
+   */
   public $name;
   protected $resultType = GoogleCloudDialogflowCxV3ExperimentResult::class;
   protected $resultDataType = '';
   protected $rolloutConfigType = GoogleCloudDialogflowCxV3RolloutConfig::class;
   protected $rolloutConfigDataType = '';
+  /**
+   * @var string
+   */
   public $rolloutFailureReason;
   protected $rolloutStateType = GoogleCloudDialogflowCxV3RolloutState::class;
   protected $rolloutStateDataType = '';
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $state;
   protected $variantsHistoryType = GoogleCloudDialogflowCxV3VariantsHistory::class;
   protected $variantsHistoryDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -63,50 +99,86 @@ class GoogleCloudDialogflowCxV3Experiment extends \Google\Collection
   {
     return $this->definition;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setExperimentLength($experimentLength)
   {
     $this->experimentLength = $experimentLength;
   }
+  /**
+   * @return string
+   */
   public function getExperimentLength()
   {
     return $this->experimentLength;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdateTime($lastUpdateTime)
   {
     $this->lastUpdateTime = $lastUpdateTime;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateTime()
   {
     return $this->lastUpdateTime;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -139,10 +211,16 @@ class GoogleCloudDialogflowCxV3Experiment extends \Google\Collection
   {
     return $this->rolloutConfig;
   }
+  /**
+   * @param string
+   */
   public function setRolloutFailureReason($rolloutFailureReason)
   {
     $this->rolloutFailureReason = $rolloutFailureReason;
   }
+  /**
+   * @return string
+   */
   public function getRolloutFailureReason()
   {
     return $this->rolloutFailureReason;
@@ -161,18 +239,30 @@ class GoogleCloudDialogflowCxV3Experiment extends \Google\Collection
   {
     return $this->rolloutState;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

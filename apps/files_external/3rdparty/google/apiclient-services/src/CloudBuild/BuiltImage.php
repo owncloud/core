@@ -19,23 +19,41 @@ namespace Google\Service\CloudBuild;
 
 class BuiltImage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $digest;
+  /**
+   * @var string
+   */
   public $name;
   protected $pushTimingType = TimeSpan::class;
   protected $pushTimingDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDigest($digest)
   {
     $this->digest = $digest;
   }
+  /**
+   * @return string
+   */
   public function getDigest()
   {
     return $this->digest;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

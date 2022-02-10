@@ -19,12 +19,21 @@ namespace Google\Service\DLP;
 
 class GooglePrivacyDlpV2TimePartConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $partToExtract;
 
+  /**
+   * @param string
+   */
   public function setPartToExtract($partToExtract)
   {
     $this->partToExtract = $partToExtract;
   }
+  /**
+   * @return string
+   */
   public function getPartToExtract()
   {
     return $this->partToExtract;

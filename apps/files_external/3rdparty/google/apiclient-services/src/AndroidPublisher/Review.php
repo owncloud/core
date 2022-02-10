@@ -20,15 +20,27 @@ namespace Google\Service\AndroidPublisher;
 class Review extends \Google\Collection
 {
   protected $collection_key = 'comments';
+  /**
+   * @var string
+   */
   public $authorName;
   protected $commentsType = Comment::class;
   protected $commentsDataType = 'array';
+  /**
+   * @var string
+   */
   public $reviewId;
 
+  /**
+   * @param string
+   */
   public function setAuthorName($authorName)
   {
     $this->authorName = $authorName;
   }
+  /**
+   * @return string
+   */
   public function getAuthorName()
   {
     return $this->authorName;
@@ -47,10 +59,16 @@ class Review extends \Google\Collection
   {
     return $this->comments;
   }
+  /**
+   * @param string
+   */
   public function setReviewId($reviewId)
   {
     $this->reviewId = $reviewId;
   }
+  /**
+   * @return string
+   */
   public function getReviewId()
   {
     return $this->reviewId;

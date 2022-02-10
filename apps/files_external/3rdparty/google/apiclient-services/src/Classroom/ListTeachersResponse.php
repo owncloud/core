@@ -20,14 +20,23 @@ namespace Google\Service\Classroom;
 class ListTeachersResponse extends \Google\Collection
 {
   protected $collection_key = 'teachers';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $teachersType = Teacher::class;
   protected $teachersDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

@@ -21,6 +21,9 @@ class Filter extends \Google\Model
 {
   protected $betweenFilterType = BetweenFilter::class;
   protected $betweenFilterDataType = '';
+  /**
+   * @var string
+   */
   public $fieldName;
   protected $inListFilterType = InListFilter::class;
   protected $inListFilterDataType = '';
@@ -43,10 +46,16 @@ class Filter extends \Google\Model
   {
     return $this->betweenFilter;
   }
+  /**
+   * @param string
+   */
   public function setFieldName($fieldName)
   {
     $this->fieldName = $fieldName;
   }
+  /**
+   * @return string
+   */
   public function getFieldName()
   {
     return $this->fieldName;

@@ -19,30 +19,57 @@ namespace Google\Service\Dns;
 
 class ManagedZonePeeringConfigTargetNetwork extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deactivateTime;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $networkUrl;
 
+  /**
+   * @param string
+   */
   public function setDeactivateTime($deactivateTime)
   {
     $this->deactivateTime = $deactivateTime;
   }
+  /**
+   * @return string
+   */
   public function getDeactivateTime()
   {
     return $this->deactivateTime;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setNetworkUrl($networkUrl)
   {
     $this->networkUrl = $networkUrl;
   }
+  /**
+   * @return string
+   */
   public function getNetworkUrl()
   {
     return $this->networkUrl;

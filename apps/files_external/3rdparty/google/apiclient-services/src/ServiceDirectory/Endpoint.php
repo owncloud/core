@@ -19,39 +19,75 @@ namespace Google\Service\ServiceDirectory;
 
 class Endpoint extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $address;
+  /**
+   * @var string[]
+   */
   public $annotations;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $port;
 
+  /**
+   * @param string
+   */
   public function setAddress($address)
   {
     $this->address = $address;
   }
+  /**
+   * @return string
+   */
   public function getAddress()
   {
     return $this->address;
   }
+  /**
+   * @param string[]
+   */
   public function setAnnotations($annotations)
   {
     $this->annotations = $annotations;
   }
+  /**
+   * @return string[]
+   */
   public function getAnnotations()
   {
     return $this->annotations;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setPort($port)
   {
     $this->port = $port;
   }
+  /**
+   * @return int
+   */
   public function getPort()
   {
     return $this->port;

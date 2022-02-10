@@ -20,39 +20,75 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2AddFulfillmentPlacesRequest extends \Google\Collection
 {
   protected $collection_key = 'placeIds';
+  /**
+   * @var string
+   */
   public $addTime;
+  /**
+   * @var bool
+   */
   public $allowMissing;
+  /**
+   * @var string[]
+   */
   public $placeIds;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setAddTime($addTime)
   {
     $this->addTime = $addTime;
   }
+  /**
+   * @return string
+   */
   public function getAddTime()
   {
     return $this->addTime;
   }
+  /**
+   * @param bool
+   */
   public function setAllowMissing($allowMissing)
   {
     $this->allowMissing = $allowMissing;
   }
+  /**
+   * @return bool
+   */
   public function getAllowMissing()
   {
     return $this->allowMissing;
   }
+  /**
+   * @param string[]
+   */
   public function setPlaceIds($placeIds)
   {
     $this->placeIds = $placeIds;
   }
+  /**
+   * @return string[]
+   */
   public function getPlaceIds()
   {
     return $this->placeIds;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

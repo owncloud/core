@@ -20,21 +20,45 @@ namespace Google\Service\Monitoring;
 class CollectdPayload extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string
+   */
   public $endTime;
   protected $metadataType = TypedValue::class;
   protected $metadataDataType = 'map';
+  /**
+   * @var string
+   */
   public $plugin;
+  /**
+   * @var string
+   */
   public $pluginInstance;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $typeInstance;
   protected $valuesType = CollectdValue::class;
   protected $valuesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
@@ -53,42 +77,72 @@ class CollectdPayload extends \Google\Collection
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setPlugin($plugin)
   {
     $this->plugin = $plugin;
   }
+  /**
+   * @return string
+   */
   public function getPlugin()
   {
     return $this->plugin;
   }
+  /**
+   * @param string
+   */
   public function setPluginInstance($pluginInstance)
   {
     $this->pluginInstance = $pluginInstance;
   }
+  /**
+   * @return string
+   */
   public function getPluginInstance()
   {
     return $this->pluginInstance;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setTypeInstance($typeInstance)
   {
     $this->typeInstance = $typeInstance;
   }
+  /**
+   * @return string
+   */
   public function getTypeInstance()
   {
     return $this->typeInstance;

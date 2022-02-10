@@ -19,21 +19,39 @@ namespace Google\Service\SQLAdmin;
 
 class DiskEncryptionStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $kmsKeyVersionName;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setKmsKeyVersionName($kmsKeyVersionName)
   {
     $this->kmsKeyVersionName = $kmsKeyVersionName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyVersionName()
   {
     return $this->kmsKeyVersionName;

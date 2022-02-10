@@ -19,57 +19,111 @@ namespace Google\Service\ArtifactRegistry;
 
 class AptArtifact extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $architecture;
+  /**
+   * @var string
+   */
   public $component;
+  /**
+   * @var string
+   */
   public $controlFile;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $packageName;
+  /**
+   * @var string
+   */
   public $packageType;
 
+  /**
+   * @param string
+   */
   public function setArchitecture($architecture)
   {
     $this->architecture = $architecture;
   }
+  /**
+   * @return string
+   */
   public function getArchitecture()
   {
     return $this->architecture;
   }
+  /**
+   * @param string
+   */
   public function setComponent($component)
   {
     $this->component = $component;
   }
+  /**
+   * @return string
+   */
   public function getComponent()
   {
     return $this->component;
   }
+  /**
+   * @param string
+   */
   public function setControlFile($controlFile)
   {
     $this->controlFile = $controlFile;
   }
+  /**
+   * @return string
+   */
   public function getControlFile()
   {
     return $this->controlFile;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPackageName($packageName)
   {
     $this->packageName = $packageName;
   }
+  /**
+   * @return string
+   */
   public function getPackageName()
   {
     return $this->packageName;
   }
+  /**
+   * @param string
+   */
   public function setPackageType($packageType)
   {
     $this->packageType = $packageType;
   }
+  /**
+   * @return string
+   */
   public function getPackageType()
   {
     return $this->packageType;

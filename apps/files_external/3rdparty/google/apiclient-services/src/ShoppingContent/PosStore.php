@@ -19,30 +19,57 @@ namespace Google\Service\ShoppingContent;
 
 class PosStore extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $storeAddress;
+  /**
+   * @var string
+   */
   public $storeCode;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setStoreAddress($storeAddress)
   {
     $this->storeAddress = $storeAddress;
   }
+  /**
+   * @return string
+   */
   public function getStoreAddress()
   {
     return $this->storeAddress;
   }
+  /**
+   * @param string
+   */
   public function setStoreCode($storeCode)
   {
     $this->storeCode = $storeCode;
   }
+  /**
+   * @return string
+   */
   public function getStoreCode()
   {
     return $this->storeCode;

@@ -19,48 +19,93 @@ namespace Google\Service\AndroidManagement;
 
 class KioskCustomization extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceSettings;
+  /**
+   * @var string
+   */
   public $powerButtonActions;
+  /**
+   * @var string
+   */
   public $statusBar;
+  /**
+   * @var string
+   */
   public $systemErrorWarnings;
+  /**
+   * @var string
+   */
   public $systemNavigation;
 
+  /**
+   * @param string
+   */
   public function setDeviceSettings($deviceSettings)
   {
     $this->deviceSettings = $deviceSettings;
   }
+  /**
+   * @return string
+   */
   public function getDeviceSettings()
   {
     return $this->deviceSettings;
   }
+  /**
+   * @param string
+   */
   public function setPowerButtonActions($powerButtonActions)
   {
     $this->powerButtonActions = $powerButtonActions;
   }
+  /**
+   * @return string
+   */
   public function getPowerButtonActions()
   {
     return $this->powerButtonActions;
   }
+  /**
+   * @param string
+   */
   public function setStatusBar($statusBar)
   {
     $this->statusBar = $statusBar;
   }
+  /**
+   * @return string
+   */
   public function getStatusBar()
   {
     return $this->statusBar;
   }
+  /**
+   * @param string
+   */
   public function setSystemErrorWarnings($systemErrorWarnings)
   {
     $this->systemErrorWarnings = $systemErrorWarnings;
   }
+  /**
+   * @return string
+   */
   public function getSystemErrorWarnings()
   {
     return $this->systemErrorWarnings;
   }
+  /**
+   * @param string
+   */
   public function setSystemNavigation($systemNavigation)
   {
     $this->systemNavigation = $systemNavigation;
   }
+  /**
+   * @return string
+   */
   public function getSystemNavigation()
   {
     return $this->systemNavigation;

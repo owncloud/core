@@ -19,30 +19,57 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 
 class Note extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $creatorRole;
+  /**
+   * @var string
+   */
   public $note;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setCreatorRole($creatorRole)
   {
     $this->creatorRole = $creatorRole;
   }
+  /**
+   * @return string
+   */
   public function getCreatorRole()
   {
     return $this->creatorRole;
   }
+  /**
+   * @param string
+   */
   public function setNote($note)
   {
     $this->note = $note;
   }
+  /**
+   * @return string
+   */
   public function getNote()
   {
     return $this->note;

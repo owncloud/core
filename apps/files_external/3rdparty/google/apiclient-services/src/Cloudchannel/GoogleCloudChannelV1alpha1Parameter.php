@@ -19,23 +19,41 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1alpha1Parameter extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $editable;
+  /**
+   * @var string
+   */
   public $name;
   protected $valueType = GoogleCloudChannelV1alpha1Value::class;
   protected $valueDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setEditable($editable)
   {
     $this->editable = $editable;
   }
+  /**
+   * @return bool
+   */
   public function getEditable()
   {
     return $this->editable;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

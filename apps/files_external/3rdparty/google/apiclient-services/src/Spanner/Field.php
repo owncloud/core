@@ -19,14 +19,23 @@ namespace Google\Service\Spanner;
 
 class Field extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
   protected $typeType = Type::class;
   protected $typeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

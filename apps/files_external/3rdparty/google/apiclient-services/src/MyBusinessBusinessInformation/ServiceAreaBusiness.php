@@ -19,15 +19,27 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class ServiceAreaBusiness extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $businessType;
   protected $placesType = Places::class;
   protected $placesDataType = '';
+  /**
+   * @var string
+   */
   public $regionCode;
 
+  /**
+   * @param string
+   */
   public function setBusinessType($businessType)
   {
     $this->businessType = $businessType;
   }
+  /**
+   * @return string
+   */
   public function getBusinessType()
   {
     return $this->businessType;
@@ -46,10 +58,16 @@ class ServiceAreaBusiness extends \Google\Model
   {
     return $this->places;
   }
+  /**
+   * @param string
+   */
   public function setRegionCode($regionCode)
   {
     $this->regionCode = $regionCode;
   }
+  /**
+   * @return string
+   */
   public function getRegionCode()
   {
     return $this->regionCode;

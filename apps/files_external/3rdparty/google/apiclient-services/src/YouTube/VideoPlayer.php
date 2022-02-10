@@ -19,30 +19,57 @@ namespace Google\Service\YouTube;
 
 class VideoPlayer extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $embedHeight;
+  /**
+   * @var string
+   */
   public $embedHtml;
+  /**
+   * @var string
+   */
   public $embedWidth;
 
+  /**
+   * @param string
+   */
   public function setEmbedHeight($embedHeight)
   {
     $this->embedHeight = $embedHeight;
   }
+  /**
+   * @return string
+   */
   public function getEmbedHeight()
   {
     return $this->embedHeight;
   }
+  /**
+   * @param string
+   */
   public function setEmbedHtml($embedHtml)
   {
     $this->embedHtml = $embedHtml;
   }
+  /**
+   * @return string
+   */
   public function getEmbedHtml()
   {
     return $this->embedHtml;
   }
+  /**
+   * @param string
+   */
   public function setEmbedWidth($embedWidth)
   {
     $this->embedWidth = $embedWidth;
   }
+  /**
+   * @return string
+   */
   public function getEmbedWidth()
   {
     return $this->embedWidth;

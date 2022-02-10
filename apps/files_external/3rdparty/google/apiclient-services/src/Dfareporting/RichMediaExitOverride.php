@@ -21,7 +21,13 @@ class RichMediaExitOverride extends \Google\Model
 {
   protected $clickThroughUrlType = ClickThroughUrl::class;
   protected $clickThroughUrlDataType = '';
+  /**
+   * @var bool
+   */
   public $enabled;
+  /**
+   * @var string
+   */
   public $exitId;
 
   /**
@@ -38,18 +44,30 @@ class RichMediaExitOverride extends \Google\Model
   {
     return $this->clickThroughUrl;
   }
+  /**
+   * @param bool
+   */
   public function setEnabled($enabled)
   {
     $this->enabled = $enabled;
   }
+  /**
+   * @return bool
+   */
   public function getEnabled()
   {
     return $this->enabled;
   }
+  /**
+   * @param string
+   */
   public function setExitId($exitId)
   {
     $this->exitId = $exitId;
   }
+  /**
+   * @return string
+   */
   public function getExitId()
   {
     return $this->exitId;

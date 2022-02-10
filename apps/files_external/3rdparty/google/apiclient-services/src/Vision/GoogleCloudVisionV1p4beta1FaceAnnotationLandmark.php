@@ -21,6 +21,9 @@ class GoogleCloudVisionV1p4beta1FaceAnnotationLandmark extends \Google\Model
 {
   protected $positionType = GoogleCloudVisionV1p4beta1Position::class;
   protected $positionDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -37,10 +40,16 @@ class GoogleCloudVisionV1p4beta1FaceAnnotationLandmark extends \Google\Model
   {
     return $this->position;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

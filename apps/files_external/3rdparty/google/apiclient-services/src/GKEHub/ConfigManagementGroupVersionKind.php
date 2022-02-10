@@ -19,30 +19,57 @@ namespace Google\Service\GKEHub;
 
 class ConfigManagementGroupVersionKind extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $group;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param string
+   */
   public function setGroup($group)
   {
     $this->group = $group;
   }
+  /**
+   * @return string
+   */
   public function getGroup()
   {
     return $this->group;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

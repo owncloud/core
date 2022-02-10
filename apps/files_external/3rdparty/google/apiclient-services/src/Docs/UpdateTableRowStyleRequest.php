@@ -20,25 +20,43 @@ namespace Google\Service\Docs;
 class UpdateTableRowStyleRequest extends \Google\Collection
 {
   protected $collection_key = 'rowIndices';
+  /**
+   * @var string
+   */
   public $fields;
+  /**
+   * @var int[]
+   */
   public $rowIndices;
   protected $tableRowStyleType = TableRowStyle::class;
   protected $tableRowStyleDataType = '';
   protected $tableStartLocationType = Location::class;
   protected $tableStartLocationDataType = '';
 
+  /**
+   * @param string
+   */
   public function setFields($fields)
   {
     $this->fields = $fields;
   }
+  /**
+   * @return string
+   */
   public function getFields()
   {
     return $this->fields;
   }
+  /**
+   * @param int[]
+   */
   public function setRowIndices($rowIndices)
   {
     $this->rowIndices = $rowIndices;
   }
+  /**
+   * @return int[]
+   */
   public function getRowIndices()
   {
     return $this->rowIndices;

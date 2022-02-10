@@ -21,6 +21,9 @@ class PatchServiceAccountRequest extends \Google\Model
 {
   protected $serviceAccountType = ServiceAccount::class;
   protected $serviceAccountDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
 
   /**
@@ -37,10 +40,16 @@ class PatchServiceAccountRequest extends \Google\Model
   {
     return $this->serviceAccount;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;

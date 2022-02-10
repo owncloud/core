@@ -19,12 +19,21 @@ namespace Google\Service\AndroidProvisioningPartner;
 
 class DeviceMetadata extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $entries;
 
+  /**
+   * @param string[]
+   */
   public function setEntries($entries)
   {
     $this->entries = $entries;
   }
+  /**
+   * @return string[]
+   */
   public function getEntries()
   {
     return $this->entries;

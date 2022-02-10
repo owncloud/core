@@ -20,12 +20,21 @@ namespace Google\Service\Testing;
 class TestTargetsForShard extends \Google\Collection
 {
   protected $collection_key = 'testTargets';
+  /**
+   * @var string[]
+   */
   public $testTargets;
 
+  /**
+   * @param string[]
+   */
   public function setTestTargets($testTargets)
   {
     $this->testTargets = $testTargets;
   }
+  /**
+   * @return string[]
+   */
   public function getTestTargets()
   {
     return $this->testTargets;

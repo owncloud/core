@@ -20,30 +20,57 @@ namespace Google\Service\Gmail;
 class WatchRequest extends \Google\Collection
 {
   protected $collection_key = 'labelIds';
+  /**
+   * @var string
+   */
   public $labelFilterAction;
+  /**
+   * @var string[]
+   */
   public $labelIds;
+  /**
+   * @var string
+   */
   public $topicName;
 
+  /**
+   * @param string
+   */
   public function setLabelFilterAction($labelFilterAction)
   {
     $this->labelFilterAction = $labelFilterAction;
   }
+  /**
+   * @return string
+   */
   public function getLabelFilterAction()
   {
     return $this->labelFilterAction;
   }
+  /**
+   * @param string[]
+   */
   public function setLabelIds($labelIds)
   {
     $this->labelIds = $labelIds;
   }
+  /**
+   * @return string[]
+   */
   public function getLabelIds()
   {
     return $this->labelIds;
   }
+  /**
+   * @param string
+   */
   public function setTopicName($topicName)
   {
     $this->topicName = $topicName;
   }
+  /**
+   * @return string
+   */
   public function getTopicName()
   {
     return $this->topicName;

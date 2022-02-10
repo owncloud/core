@@ -19,21 +19,39 @@ namespace Google\Service\CloudBuild;
 
 class SecretManagerSecret extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $env;
+  /**
+   * @var string
+   */
   public $versionName;
 
+  /**
+   * @param string
+   */
   public function setEnv($env)
   {
     $this->env = $env;
   }
+  /**
+   * @return string
+   */
   public function getEnv()
   {
     return $this->env;
   }
+  /**
+   * @param string
+   */
   public function setVersionName($versionName)
   {
     $this->versionName = $versionName;
   }
+  /**
+   * @return string
+   */
   public function getVersionName()
   {
     return $this->versionName;

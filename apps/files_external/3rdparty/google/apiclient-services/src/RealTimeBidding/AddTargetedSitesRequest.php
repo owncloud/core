@@ -20,21 +20,39 @@ namespace Google\Service\RealTimeBidding;
 class AddTargetedSitesRequest extends \Google\Collection
 {
   protected $collection_key = 'sites';
+  /**
+   * @var string[]
+   */
   public $sites;
+  /**
+   * @var string
+   */
   public $targetingMode;
 
+  /**
+   * @param string[]
+   */
   public function setSites($sites)
   {
     $this->sites = $sites;
   }
+  /**
+   * @return string[]
+   */
   public function getSites()
   {
     return $this->sites;
   }
+  /**
+   * @param string
+   */
   public function setTargetingMode($targetingMode)
   {
     $this->targetingMode = $targetingMode;
   }
+  /**
+   * @return string
+   */
   public function getTargetingMode()
   {
     return $this->targetingMode;

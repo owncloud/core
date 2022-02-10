@@ -20,21 +20,39 @@ namespace Google\Service\Pubsub;
 class ListTopicSnapshotsResponse extends \Google\Collection
 {
   protected $collection_key = 'snapshots';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $snapshots;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setSnapshots($snapshots)
   {
     $this->snapshots = $snapshots;
   }
+  /**
+   * @return string[]
+   */
   public function getSnapshots()
   {
     return $this->snapshots;

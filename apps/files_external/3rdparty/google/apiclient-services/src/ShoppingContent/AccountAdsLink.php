@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class AccountAdsLink extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adsId;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param string
+   */
   public function setAdsId($adsId)
   {
     $this->adsId = $adsId;
   }
+  /**
+   * @return string
+   */
   public function getAdsId()
   {
     return $this->adsId;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

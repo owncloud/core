@@ -20,21 +20,39 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 class UriTargeting extends \Google\Collection
 {
   protected $collection_key = 'targetedUris';
+  /**
+   * @var string[]
+   */
   public $excludedUris;
+  /**
+   * @var string[]
+   */
   public $targetedUris;
 
+  /**
+   * @param string[]
+   */
   public function setExcludedUris($excludedUris)
   {
     $this->excludedUris = $excludedUris;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludedUris()
   {
     return $this->excludedUris;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetedUris($targetedUris)
   {
     $this->targetedUris = $targetedUris;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetedUris()
   {
     return $this->targetedUris;

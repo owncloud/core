@@ -22,7 +22,13 @@ class Activities extends \Google\Collection
   protected $collection_key = 'metricNames';
   protected $filtersType = DimensionValue::class;
   protected $filtersDataType = 'array';
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string[]
+   */
   public $metricNames;
 
   /**
@@ -39,18 +45,30 @@ class Activities extends \Google\Collection
   {
     return $this->filters;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string[]
+   */
   public function setMetricNames($metricNames)
   {
     $this->metricNames = $metricNames;
   }
+  /**
+   * @return string[]
+   */
   public function getMetricNames()
   {
     return $this->metricNames;

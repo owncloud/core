@@ -19,21 +19,39 @@ namespace Google\Service\Logging;
 
 class SourceReference extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $repository;
+  /**
+   * @var string
+   */
   public $revisionId;
 
+  /**
+   * @param string
+   */
   public function setRepository($repository)
   {
     $this->repository = $repository;
   }
+  /**
+   * @return string
+   */
   public function getRepository()
   {
     return $this->repository;
   }
+  /**
+   * @param string
+   */
   public function setRevisionId($revisionId)
   {
     $this->revisionId = $revisionId;
   }
+  /**
+   * @return string
+   */
   public function getRevisionId()
   {
     return $this->revisionId;

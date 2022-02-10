@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3beta1SessionInfo extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $parameters;
+  /**
+   * @var string
+   */
   public $session;
 
+  /**
+   * @param array[]
+   */
   public function setParameters($parameters)
   {
     $this->parameters = $parameters;
   }
+  /**
+   * @return array[]
+   */
   public function getParameters()
   {
     return $this->parameters;
   }
+  /**
+   * @param string
+   */
   public function setSession($session)
   {
     $this->session = $session;
   }
+  /**
+   * @return string
+   */
   public function getSession()
   {
     return $this->session;

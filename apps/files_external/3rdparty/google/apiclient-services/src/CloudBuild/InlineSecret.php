@@ -19,21 +19,39 @@ namespace Google\Service\CloudBuild;
 
 class InlineSecret extends \Google\Model
 {
+  /**
+   * @var string[]
+   */
   public $envMap;
+  /**
+   * @var string
+   */
   public $kmsKeyName;
 
+  /**
+   * @param string[]
+   */
   public function setEnvMap($envMap)
   {
     $this->envMap = $envMap;
   }
+  /**
+   * @return string[]
+   */
   public function getEnvMap()
   {
     return $this->envMap;
   }
+  /**
+   * @param string
+   */
   public function setKmsKeyName($kmsKeyName)
   {
     $this->kmsKeyName = $kmsKeyName;
   }
+  /**
+   * @return string
+   */
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;

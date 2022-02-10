@@ -20,16 +20,31 @@ namespace Google\Service\AndroidEnterprise;
 class StoreCluster extends \Google\Collection
 {
   protected $collection_key = 'productId';
+  /**
+   * @var string
+   */
   public $id;
   protected $nameType = LocalizedText::class;
   protected $nameDataType = 'array';
+  /**
+   * @var string
+   */
   public $orderInPage;
+  /**
+   * @var string[]
+   */
   public $productId;
 
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
@@ -48,18 +63,30 @@ class StoreCluster extends \Google\Collection
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOrderInPage($orderInPage)
   {
     $this->orderInPage = $orderInPage;
   }
+  /**
+   * @return string
+   */
   public function getOrderInPage()
   {
     return $this->orderInPage;
   }
+  /**
+   * @param string[]
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string[]
+   */
   public function getProductId()
   {
     return $this->productId;

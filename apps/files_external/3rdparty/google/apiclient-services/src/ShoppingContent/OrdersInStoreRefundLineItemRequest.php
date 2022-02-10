@@ -19,29 +19,59 @@ namespace Google\Service\ShoppingContent;
 
 class OrdersInStoreRefundLineItemRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lineItemId;
+  /**
+   * @var string
+   */
   public $operationId;
   protected $priceAmountType = Price::class;
   protected $priceAmountDataType = '';
+  /**
+   * @var string
+   */
   public $productId;
+  /**
+   * @var string
+   */
   public $quantity;
+  /**
+   * @var string
+   */
   public $reason;
+  /**
+   * @var string
+   */
   public $reasonText;
   protected $taxAmountType = Price::class;
   protected $taxAmountDataType = '';
 
+  /**
+   * @param string
+   */
   public function setLineItemId($lineItemId)
   {
     $this->lineItemId = $lineItemId;
   }
+  /**
+   * @return string
+   */
   public function getLineItemId()
   {
     return $this->lineItemId;
   }
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;
@@ -60,34 +90,58 @@ class OrdersInStoreRefundLineItemRequest extends \Google\Model
   {
     return $this->priceAmount;
   }
+  /**
+   * @param string
+   */
   public function setProductId($productId)
   {
     $this->productId = $productId;
   }
+  /**
+   * @return string
+   */
   public function getProductId()
   {
     return $this->productId;
   }
+  /**
+   * @param string
+   */
   public function setQuantity($quantity)
   {
     $this->quantity = $quantity;
   }
+  /**
+   * @return string
+   */
   public function getQuantity()
   {
     return $this->quantity;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
   }
+  /**
+   * @param string
+   */
   public function setReasonText($reasonText)
   {
     $this->reasonText = $reasonText;
   }
+  /**
+   * @return string
+   */
   public function getReasonText()
   {
     return $this->reasonText;

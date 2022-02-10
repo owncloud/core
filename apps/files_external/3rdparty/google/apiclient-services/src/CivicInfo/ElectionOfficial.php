@@ -19,48 +19,93 @@ namespace Google\Service\CivicInfo;
 
 class ElectionOfficial extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $emailAddress;
+  /**
+   * @var string
+   */
   public $faxNumber;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $officePhoneNumber;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string
+   */
   public function setEmailAddress($emailAddress)
   {
     $this->emailAddress = $emailAddress;
   }
+  /**
+   * @return string
+   */
   public function getEmailAddress()
   {
     return $this->emailAddress;
   }
+  /**
+   * @param string
+   */
   public function setFaxNumber($faxNumber)
   {
     $this->faxNumber = $faxNumber;
   }
+  /**
+   * @return string
+   */
   public function getFaxNumber()
   {
     return $this->faxNumber;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOfficePhoneNumber($officePhoneNumber)
   {
     $this->officePhoneNumber = $officePhoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getOfficePhoneNumber()
   {
     return $this->officePhoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

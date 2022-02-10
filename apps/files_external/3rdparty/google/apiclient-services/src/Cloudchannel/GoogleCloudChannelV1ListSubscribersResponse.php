@@ -20,30 +20,57 @@ namespace Google\Service\Cloudchannel;
 class GoogleCloudChannelV1ListSubscribersResponse extends \Google\Collection
 {
   protected $collection_key = 'serviceAccounts';
+  /**
+   * @var string
+   */
   public $nextPageToken;
+  /**
+   * @var string[]
+   */
   public $serviceAccounts;
+  /**
+   * @var string
+   */
   public $topic;
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;
   }
+  /**
+   * @param string[]
+   */
   public function setServiceAccounts($serviceAccounts)
   {
     $this->serviceAccounts = $serviceAccounts;
   }
+  /**
+   * @return string[]
+   */
   public function getServiceAccounts()
   {
     return $this->serviceAccounts;
   }
+  /**
+   * @param string
+   */
   public function setTopic($topic)
   {
     $this->topic = $topic;
   }
+  /**
+   * @return string
+   */
   public function getTopic()
   {
     return $this->topic;

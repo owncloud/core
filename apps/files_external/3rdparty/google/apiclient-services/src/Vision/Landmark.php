@@ -21,6 +21,9 @@ class Landmark extends \Google\Model
 {
   protected $positionType = Position::class;
   protected $positionDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -37,10 +40,16 @@ class Landmark extends \Google\Model
   {
     return $this->position;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

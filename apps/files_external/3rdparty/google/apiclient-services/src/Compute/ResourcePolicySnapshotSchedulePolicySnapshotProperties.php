@@ -20,39 +20,75 @@ namespace Google\Service\Compute;
 class ResourcePolicySnapshotSchedulePolicySnapshotProperties extends \Google\Collection
 {
   protected $collection_key = 'storageLocations';
+  /**
+   * @var string
+   */
   public $chainName;
+  /**
+   * @var bool
+   */
   public $guestFlush;
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string[]
+   */
   public $storageLocations;
 
+  /**
+   * @param string
+   */
   public function setChainName($chainName)
   {
     $this->chainName = $chainName;
   }
+  /**
+   * @return string
+   */
   public function getChainName()
   {
     return $this->chainName;
   }
+  /**
+   * @param bool
+   */
   public function setGuestFlush($guestFlush)
   {
     $this->guestFlush = $guestFlush;
   }
+  /**
+   * @return bool
+   */
   public function getGuestFlush()
   {
     return $this->guestFlush;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string[]
+   */
   public function setStorageLocations($storageLocations)
   {
     $this->storageLocations = $storageLocations;
   }
+  /**
+   * @return string[]
+   */
   public function getStorageLocations()
   {
     return $this->storageLocations;

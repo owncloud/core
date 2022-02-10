@@ -19,32 +19,59 @@ namespace Google\Service\DriveActivity;
 
 class FileComment extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $legacyCommentId;
+  /**
+   * @var string
+   */
   public $legacyDiscussionId;
+  /**
+   * @var string
+   */
   public $linkToDiscussion;
   protected $parentType = DriveItem::class;
   protected $parentDataType = '';
 
+  /**
+   * @param string
+   */
   public function setLegacyCommentId($legacyCommentId)
   {
     $this->legacyCommentId = $legacyCommentId;
   }
+  /**
+   * @return string
+   */
   public function getLegacyCommentId()
   {
     return $this->legacyCommentId;
   }
+  /**
+   * @param string
+   */
   public function setLegacyDiscussionId($legacyDiscussionId)
   {
     $this->legacyDiscussionId = $legacyDiscussionId;
   }
+  /**
+   * @return string
+   */
   public function getLegacyDiscussionId()
   {
     return $this->legacyDiscussionId;
   }
+  /**
+   * @param string
+   */
   public function setLinkToDiscussion($linkToDiscussion)
   {
     $this->linkToDiscussion = $linkToDiscussion;
   }
+  /**
+   * @return string
+   */
   public function getLinkToDiscussion()
   {
     return $this->linkToDiscussion;

@@ -19,66 +19,129 @@ namespace Google\Service\AlertCenter;
 
 class DeviceCompromisedSecurityDetail extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deviceCompromisedState;
+  /**
+   * @var string
+   */
   public $deviceId;
+  /**
+   * @var string
+   */
   public $deviceModel;
+  /**
+   * @var string
+   */
   public $deviceType;
+  /**
+   * @var string
+   */
   public $iosVendorId;
+  /**
+   * @var string
+   */
   public $resourceId;
+  /**
+   * @var string
+   */
   public $serialNumber;
 
+  /**
+   * @param string
+   */
   public function setDeviceCompromisedState($deviceCompromisedState)
   {
     $this->deviceCompromisedState = $deviceCompromisedState;
   }
+  /**
+   * @return string
+   */
   public function getDeviceCompromisedState()
   {
     return $this->deviceCompromisedState;
   }
+  /**
+   * @param string
+   */
   public function setDeviceId($deviceId)
   {
     $this->deviceId = $deviceId;
   }
+  /**
+   * @return string
+   */
   public function getDeviceId()
   {
     return $this->deviceId;
   }
+  /**
+   * @param string
+   */
   public function setDeviceModel($deviceModel)
   {
     $this->deviceModel = $deviceModel;
   }
+  /**
+   * @return string
+   */
   public function getDeviceModel()
   {
     return $this->deviceModel;
   }
+  /**
+   * @param string
+   */
   public function setDeviceType($deviceType)
   {
     $this->deviceType = $deviceType;
   }
+  /**
+   * @return string
+   */
   public function getDeviceType()
   {
     return $this->deviceType;
   }
+  /**
+   * @param string
+   */
   public function setIosVendorId($iosVendorId)
   {
     $this->iosVendorId = $iosVendorId;
   }
+  /**
+   * @return string
+   */
   public function getIosVendorId()
   {
     return $this->iosVendorId;
   }
+  /**
+   * @param string
+   */
   public function setResourceId($resourceId)
   {
     $this->resourceId = $resourceId;
   }
+  /**
+   * @return string
+   */
   public function getResourceId()
   {
     return $this->resourceId;
   }
+  /**
+   * @param string
+   */
   public function setSerialNumber($serialNumber)
   {
     $this->serialNumber = $serialNumber;
   }
+  /**
+   * @return string
+   */
   public function getSerialNumber()
   {
     return $this->serialNumber;

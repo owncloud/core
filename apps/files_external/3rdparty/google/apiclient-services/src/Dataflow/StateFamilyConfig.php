@@ -19,21 +19,39 @@ namespace Google\Service\Dataflow;
 
 class StateFamilyConfig extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isRead;
+  /**
+   * @var string
+   */
   public $stateFamily;
 
+  /**
+   * @param bool
+   */
   public function setIsRead($isRead)
   {
     $this->isRead = $isRead;
   }
+  /**
+   * @return bool
+   */
   public function getIsRead()
   {
     return $this->isRead;
   }
+  /**
+   * @param string
+   */
   public function setStateFamily($stateFamily)
   {
     $this->stateFamily = $stateFamily;
   }
+  /**
+   * @return string
+   */
   public function getStateFamily()
   {
     return $this->stateFamily;

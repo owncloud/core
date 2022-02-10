@@ -21,6 +21,9 @@ class UnaryFilter extends \Google\Model
 {
   protected $fieldType = FieldReference::class;
   protected $fieldDataType = '';
+  /**
+   * @var string
+   */
   public $op;
 
   /**
@@ -37,10 +40,16 @@ class UnaryFilter extends \Google\Model
   {
     return $this->field;
   }
+  /**
+   * @param string
+   */
   public function setOp($op)
   {
     $this->op = $op;
   }
+  /**
+   * @return string
+   */
   public function getOp()
   {
     return $this->op;

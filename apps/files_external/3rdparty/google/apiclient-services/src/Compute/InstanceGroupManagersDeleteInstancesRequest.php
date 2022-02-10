@@ -20,21 +20,39 @@ namespace Google\Service\Compute;
 class InstanceGroupManagersDeleteInstancesRequest extends \Google\Collection
 {
   protected $collection_key = 'instances';
+  /**
+   * @var string[]
+   */
   public $instances;
+  /**
+   * @var bool
+   */
   public $skipInstancesOnValidationError;
 
+  /**
+   * @param string[]
+   */
   public function setInstances($instances)
   {
     $this->instances = $instances;
   }
+  /**
+   * @return string[]
+   */
   public function getInstances()
   {
     return $this->instances;
   }
+  /**
+   * @param bool
+   */
   public function setSkipInstancesOnValidationError($skipInstancesOnValidationError)
   {
     $this->skipInstancesOnValidationError = $skipInstancesOnValidationError;
   }
+  /**
+   * @return bool
+   */
   public function getSkipInstancesOnValidationError()
   {
     return $this->skipInstancesOnValidationError;

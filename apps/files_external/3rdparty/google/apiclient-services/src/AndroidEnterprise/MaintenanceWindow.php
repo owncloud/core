@@ -19,21 +19,39 @@ namespace Google\Service\AndroidEnterprise;
 
 class MaintenanceWindow extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $durationMs;
+  /**
+   * @var string
+   */
   public $startTimeAfterMidnightMs;
 
+  /**
+   * @param string
+   */
   public function setDurationMs($durationMs)
   {
     $this->durationMs = $durationMs;
   }
+  /**
+   * @return string
+   */
   public function getDurationMs()
   {
     return $this->durationMs;
   }
+  /**
+   * @param string
+   */
   public function setStartTimeAfterMidnightMs($startTimeAfterMidnightMs)
   {
     $this->startTimeAfterMidnightMs = $startTimeAfterMidnightMs;
   }
+  /**
+   * @return string
+   */
   public function getStartTimeAfterMidnightMs()
   {
     return $this->startTimeAfterMidnightMs;

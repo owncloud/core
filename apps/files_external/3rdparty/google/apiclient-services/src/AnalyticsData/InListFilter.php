@@ -20,21 +20,39 @@ namespace Google\Service\AnalyticsData;
 class InListFilter extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var bool
+   */
   public $caseSensitive;
+  /**
+   * @var string[]
+   */
   public $values;
 
+  /**
+   * @param bool
+   */
   public function setCaseSensitive($caseSensitive)
   {
     $this->caseSensitive = $caseSensitive;
   }
+  /**
+   * @return bool
+   */
   public function getCaseSensitive()
   {
     return $this->caseSensitive;
   }
+  /**
+   * @param string[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return string[]
+   */
   public function getValues()
   {
     return $this->values;

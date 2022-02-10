@@ -19,17 +19,29 @@ namespace Google\Service\MyBusinessBusinessInformation;
 
 class TimePeriod extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $closeDay;
   protected $closeTimeType = TimeOfDay::class;
   protected $closeTimeDataType = '';
+  /**
+   * @var string
+   */
   public $openDay;
   protected $openTimeType = TimeOfDay::class;
   protected $openTimeDataType = '';
 
+  /**
+   * @param string
+   */
   public function setCloseDay($closeDay)
   {
     $this->closeDay = $closeDay;
   }
+  /**
+   * @return string
+   */
   public function getCloseDay()
   {
     return $this->closeDay;
@@ -48,10 +60,16 @@ class TimePeriod extends \Google\Model
   {
     return $this->closeTime;
   }
+  /**
+   * @param string
+   */
   public function setOpenDay($openDay)
   {
     $this->openDay = $openDay;
   }
+  /**
+   * @return string
+   */
   public function getOpenDay()
   {
     return $this->openDay;

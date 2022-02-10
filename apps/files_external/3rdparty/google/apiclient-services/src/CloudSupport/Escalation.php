@@ -21,9 +21,21 @@ class Escalation extends \Google\Model
 {
   protected $actorType = Actor::class;
   protected $actorDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $justification;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $reason;
 
   /**
@@ -40,34 +52,58 @@ class Escalation extends \Google\Model
   {
     return $this->actor;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setJustification($justification)
   {
     $this->justification = $justification;
   }
+  /**
+   * @return string
+   */
   public function getJustification()
   {
     return $this->justification;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;

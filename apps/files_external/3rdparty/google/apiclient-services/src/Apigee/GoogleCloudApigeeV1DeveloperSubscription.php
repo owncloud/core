@@ -19,57 +19,111 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1DeveloperSubscription extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $apiproduct;
+  /**
+   * @var string
+   */
   public $createdAt;
+  /**
+   * @var string
+   */
   public $endTime;
+  /**
+   * @var string
+   */
   public $lastModifiedAt;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $startTime;
 
+  /**
+   * @param string
+   */
   public function setApiproduct($apiproduct)
   {
     $this->apiproduct = $apiproduct;
   }
+  /**
+   * @return string
+   */
   public function getApiproduct()
   {
     return $this->apiproduct;
   }
+  /**
+   * @param string
+   */
   public function setCreatedAt($createdAt)
   {
     $this->createdAt = $createdAt;
   }
+  /**
+   * @return string
+   */
   public function getCreatedAt()
   {
     return $this->createdAt;
   }
+  /**
+   * @param string
+   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
   }
+  /**
+   * @return string
+   */
   public function getEndTime()
   {
     return $this->endTime;
   }
+  /**
+   * @param string
+   */
   public function setLastModifiedAt($lastModifiedAt)
   {
     $this->lastModifiedAt = $lastModifiedAt;
   }
+  /**
+   * @return string
+   */
   public function getLastModifiedAt()
   {
     return $this->lastModifiedAt;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;

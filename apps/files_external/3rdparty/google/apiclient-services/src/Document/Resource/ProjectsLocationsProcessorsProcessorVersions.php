@@ -42,9 +42,9 @@ class ProjectsLocationsProcessorsProcessorVersions extends \Google\Service\Resou
    *
    * @param string $name Required. The resource name of Processor or
    * ProcessorVersion. Format:
-   * projects/{project}/locations/{location}/processors/{processor}, or projects/{
-   * project}/locations/{location}/processors/{processor}/processorVersions/{proce
-   * ssorVersion}
+   * `projects/{project}/locations/{location}/processors/{processor}`, or `project
+   * s/{project}/locations/{location}/processors/{processor}/processorVersions/{pr
+   * ocessorVersion}`
    * @param GoogleCloudDocumentaiV1BatchProcessRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleLongrunningOperation
@@ -104,7 +104,7 @@ class ProjectsLocationsProcessorsProcessorVersions extends \Google\Service\Resou
    *
    * @param string $parent Required. The parent (project, location and processor)
    * to list all versions. Format:
-   * projects/{project}/locations/{location}/processors/{processor}
+   * `projects/{project}/locations/{location}/processors/{processor}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of processor versions to return.
@@ -126,9 +126,9 @@ class ProjectsLocationsProcessorsProcessorVersions extends \Google\Service\Resou
    * @param string $name Required. The resource name of the Processor or
    * ProcessorVersion to use for processing. If a Processor is specified, the
    * server will use its default version. Format:
-   * projects/{project}/locations/{location}/processors/{processor}, or projects/{
-   * project}/locations/{location}/processors/{processor}/processorVersions/{proce
-   * ssorVersion}
+   * `projects/{project}/locations/{location}/processors/{processor}`, or `project
+   * s/{project}/locations/{location}/processors/{processor}/processorVersions/{pr
+   * ocessorVersion}`
    * @param GoogleCloudDocumentaiV1ProcessRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudDocumentaiV1ProcessResponse

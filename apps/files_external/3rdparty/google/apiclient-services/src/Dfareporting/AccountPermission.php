@@ -20,57 +20,111 @@ namespace Google\Service\Dfareporting;
 class AccountPermission extends \Google\Collection
 {
   protected $collection_key = 'accountProfiles';
+  /**
+   * @var string[]
+   */
   public $accountProfiles;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $level;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $permissionGroupId;
 
+  /**
+   * @param string[]
+   */
   public function setAccountProfiles($accountProfiles)
   {
     $this->accountProfiles = $accountProfiles;
   }
+  /**
+   * @return string[]
+   */
   public function getAccountProfiles()
   {
     return $this->accountProfiles;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLevel($level)
   {
     $this->level = $level;
   }
+  /**
+   * @return string
+   */
   public function getLevel()
   {
     return $this->level;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setPermissionGroupId($permissionGroupId)
   {
     $this->permissionGroupId = $permissionGroupId;
   }
+  /**
+   * @return string
+   */
   public function getPermissionGroupId()
   {
     return $this->permissionGroupId;

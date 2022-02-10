@@ -20,21 +20,39 @@ namespace Google\Service\CloudHealthcare;
 class AnalyzeEntitiesRequest extends \Google\Collection
 {
   protected $collection_key = 'licensedVocabularies';
+  /**
+   * @var string
+   */
   public $documentContent;
+  /**
+   * @var string[]
+   */
   public $licensedVocabularies;
 
+  /**
+   * @param string
+   */
   public function setDocumentContent($documentContent)
   {
     $this->documentContent = $documentContent;
   }
+  /**
+   * @return string
+   */
   public function getDocumentContent()
   {
     return $this->documentContent;
   }
+  /**
+   * @param string[]
+   */
   public function setLicensedVocabularies($licensedVocabularies)
   {
     $this->licensedVocabularies = $licensedVocabularies;
   }
+  /**
+   * @return string[]
+   */
   public function getLicensedVocabularies()
   {
     return $this->licensedVocabularies;

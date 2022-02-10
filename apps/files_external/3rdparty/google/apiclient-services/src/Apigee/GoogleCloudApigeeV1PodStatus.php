@@ -19,84 +19,165 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1PodStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $appVersion;
+  /**
+   * @var string
+   */
   public $deploymentStatus;
+  /**
+   * @var string
+   */
   public $deploymentStatusTime;
+  /**
+   * @var string
+   */
   public $deploymentTime;
+  /**
+   * @var string
+   */
   public $podName;
+  /**
+   * @var string
+   */
   public $podStatus;
+  /**
+   * @var string
+   */
   public $podStatusTime;
+  /**
+   * @var string
+   */
   public $statusCode;
+  /**
+   * @var string
+   */
   public $statusCodeDetails;
 
+  /**
+   * @param string
+   */
   public function setAppVersion($appVersion)
   {
     $this->appVersion = $appVersion;
   }
+  /**
+   * @return string
+   */
   public function getAppVersion()
   {
     return $this->appVersion;
   }
+  /**
+   * @param string
+   */
   public function setDeploymentStatus($deploymentStatus)
   {
     $this->deploymentStatus = $deploymentStatus;
   }
+  /**
+   * @return string
+   */
   public function getDeploymentStatus()
   {
     return $this->deploymentStatus;
   }
+  /**
+   * @param string
+   */
   public function setDeploymentStatusTime($deploymentStatusTime)
   {
     $this->deploymentStatusTime = $deploymentStatusTime;
   }
+  /**
+   * @return string
+   */
   public function getDeploymentStatusTime()
   {
     return $this->deploymentStatusTime;
   }
+  /**
+   * @param string
+   */
   public function setDeploymentTime($deploymentTime)
   {
     $this->deploymentTime = $deploymentTime;
   }
+  /**
+   * @return string
+   */
   public function getDeploymentTime()
   {
     return $this->deploymentTime;
   }
+  /**
+   * @param string
+   */
   public function setPodName($podName)
   {
     $this->podName = $podName;
   }
+  /**
+   * @return string
+   */
   public function getPodName()
   {
     return $this->podName;
   }
+  /**
+   * @param string
+   */
   public function setPodStatus($podStatus)
   {
     $this->podStatus = $podStatus;
   }
+  /**
+   * @return string
+   */
   public function getPodStatus()
   {
     return $this->podStatus;
   }
+  /**
+   * @param string
+   */
   public function setPodStatusTime($podStatusTime)
   {
     $this->podStatusTime = $podStatusTime;
   }
+  /**
+   * @return string
+   */
   public function getPodStatusTime()
   {
     return $this->podStatusTime;
   }
+  /**
+   * @param string
+   */
   public function setStatusCode($statusCode)
   {
     $this->statusCode = $statusCode;
   }
+  /**
+   * @return string
+   */
   public function getStatusCode()
   {
     return $this->statusCode;
   }
+  /**
+   * @param string
+   */
   public function setStatusCodeDetails($statusCodeDetails)
   {
     $this->statusCodeDetails = $statusCodeDetails;
   }
+  /**
+   * @return string
+   */
   public function getStatusCodeDetails()
   {
     return $this->statusCodeDetails;

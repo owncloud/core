@@ -19,30 +19,57 @@ namespace Google\Service\Vision;
 
 class GoogleCloudVisionV1p1beta1WebDetectionWebEntity extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $entityId;
+  /**
+   * @var float
+   */
   public $score;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setEntityId($entityId)
   {
     $this->entityId = $entityId;
   }
+  /**
+   * @return string
+   */
   public function getEntityId()
   {
     return $this->entityId;
   }
+  /**
+   * @param float
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return float
+   */
   public function getScore()
   {
     return $this->score;

@@ -19,12 +19,21 @@ namespace Google\Service\Cloudchannel;
 
 class GoogleCloudChannelV1CheckCloudIdentityAccountsExistRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $domain;
 
+  /**
+   * @param string
+   */
   public function setDomain($domain)
   {
     $this->domain = $domain;
   }
+  /**
+   * @return string
+   */
   public function getDomain()
   {
     return $this->domain;

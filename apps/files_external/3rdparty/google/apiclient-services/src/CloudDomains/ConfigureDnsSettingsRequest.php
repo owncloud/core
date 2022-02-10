@@ -21,7 +21,13 @@ class ConfigureDnsSettingsRequest extends \Google\Model
 {
   protected $dnsSettingsType = DnsSettings::class;
   protected $dnsSettingsDataType = '';
+  /**
+   * @var string
+   */
   public $updateMask;
+  /**
+   * @var bool
+   */
   public $validateOnly;
 
   /**
@@ -38,18 +44,30 @@ class ConfigureDnsSettingsRequest extends \Google\Model
   {
     return $this->dnsSettings;
   }
+  /**
+   * @param string
+   */
   public function setUpdateMask($updateMask)
   {
     $this->updateMask = $updateMask;
   }
+  /**
+   * @return string
+   */
   public function getUpdateMask()
   {
     return $this->updateMask;
   }
+  /**
+   * @param bool
+   */
   public function setValidateOnly($validateOnly)
   {
     $this->validateOnly = $validateOnly;
   }
+  /**
+   * @return bool
+   */
   public function getValidateOnly()
   {
     return $this->validateOnly;

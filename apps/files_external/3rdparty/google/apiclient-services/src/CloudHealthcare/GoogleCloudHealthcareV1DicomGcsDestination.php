@@ -19,21 +19,39 @@ namespace Google\Service\CloudHealthcare;
 
 class GoogleCloudHealthcareV1DicomGcsDestination extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $mimeType;
+  /**
+   * @var string
+   */
   public $uriPrefix;
 
+  /**
+   * @param string
+   */
   public function setMimeType($mimeType)
   {
     $this->mimeType = $mimeType;
   }
+  /**
+   * @return string
+   */
   public function getMimeType()
   {
     return $this->mimeType;
   }
+  /**
+   * @param string
+   */
   public function setUriPrefix($uriPrefix)
   {
     $this->uriPrefix = $uriPrefix;
   }
+  /**
+   * @return string
+   */
   public function getUriPrefix()
   {
     return $this->uriPrefix;

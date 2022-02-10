@@ -19,30 +19,57 @@ namespace Google\Service\Vision;
 
 class Feature extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $maxResults;
+  /**
+   * @var string
+   */
   public $model;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param int
+   */
   public function setMaxResults($maxResults)
   {
     $this->maxResults = $maxResults;
   }
+  /**
+   * @return int
+   */
   public function getMaxResults()
   {
     return $this->maxResults;
   }
+  /**
+   * @param string
+   */
   public function setModel($model)
   {
     $this->model = $model;
   }
+  /**
+   * @return string
+   */
   public function getModel()
   {
     return $this->model;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

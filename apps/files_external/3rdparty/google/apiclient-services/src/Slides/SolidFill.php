@@ -19,14 +19,23 @@ namespace Google\Service\Slides;
 
 class SolidFill extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $alpha;
   protected $colorType = OpaqueColor::class;
   protected $colorDataType = '';
 
+  /**
+   * @param float
+   */
   public function setAlpha($alpha)
   {
     $this->alpha = $alpha;
   }
+  /**
+   * @return float
+   */
   public function getAlpha()
   {
     return $this->alpha;

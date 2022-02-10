@@ -19,23 +19,41 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1TraceConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endpoint;
+  /**
+   * @var string
+   */
   public $exporter;
   protected $samplingConfigType = GoogleCloudApigeeV1TraceSamplingConfig::class;
   protected $samplingConfigDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEndpoint($endpoint)
   {
     $this->endpoint = $endpoint;
   }
+  /**
+   * @return string
+   */
   public function getEndpoint()
   {
     return $this->endpoint;
   }
+  /**
+   * @param string
+   */
   public function setExporter($exporter)
   {
     $this->exporter = $exporter;
   }
+  /**
+   * @return string
+   */
   public function getExporter()
   {
     return $this->exporter;

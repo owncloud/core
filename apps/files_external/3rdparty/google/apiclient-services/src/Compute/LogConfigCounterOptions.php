@@ -22,7 +22,13 @@ class LogConfigCounterOptions extends \Google\Collection
   protected $collection_key = 'customFields';
   protected $customFieldsType = LogConfigCounterOptionsCustomField::class;
   protected $customFieldsDataType = 'array';
+  /**
+   * @var string
+   */
   public $field;
+  /**
+   * @var string
+   */
   public $metric;
 
   /**
@@ -39,18 +45,30 @@ class LogConfigCounterOptions extends \Google\Collection
   {
     return $this->customFields;
   }
+  /**
+   * @param string
+   */
   public function setField($field)
   {
     $this->field = $field;
   }
+  /**
+   * @return string
+   */
   public function getField()
   {
     return $this->field;
   }
+  /**
+   * @param string
+   */
   public function setMetric($metric)
   {
     $this->metric = $metric;
   }
+  /**
+   * @return string
+   */
   public function getMetric()
   {
     return $this->metric;

@@ -20,12 +20,21 @@ namespace Google\Service\AdExchangeBuyerII;
 class AppContext extends \Google\Collection
 {
   protected $collection_key = 'appTypes';
+  /**
+   * @var string[]
+   */
   public $appTypes;
 
+  /**
+   * @param string[]
+   */
   public function setAppTypes($appTypes)
   {
     $this->appTypes = $appTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getAppTypes()
   {
     return $this->appTypes;

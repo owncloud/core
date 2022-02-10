@@ -19,12 +19,21 @@ namespace Google\Service\ContainerAnalysis;
 
 class BuildNote extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $builderVersion;
 
+  /**
+   * @param string
+   */
   public function setBuilderVersion($builderVersion)
   {
     $this->builderVersion = $builderVersion;
   }
+  /**
+   * @return string
+   */
   public function getBuilderVersion()
   {
     return $this->builderVersion;

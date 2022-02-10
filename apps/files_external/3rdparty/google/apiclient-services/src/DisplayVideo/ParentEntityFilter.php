@@ -20,30 +20,57 @@ namespace Google\Service\DisplayVideo;
 class ParentEntityFilter extends \Google\Collection
 {
   protected $collection_key = 'filterIds';
+  /**
+   * @var string[]
+   */
   public $fileType;
+  /**
+   * @var string[]
+   */
   public $filterIds;
+  /**
+   * @var string
+   */
   public $filterType;
 
+  /**
+   * @param string[]
+   */
   public function setFileType($fileType)
   {
     $this->fileType = $fileType;
   }
+  /**
+   * @return string[]
+   */
   public function getFileType()
   {
     return $this->fileType;
   }
+  /**
+   * @param string[]
+   */
   public function setFilterIds($filterIds)
   {
     $this->filterIds = $filterIds;
   }
+  /**
+   * @return string[]
+   */
   public function getFilterIds()
   {
     return $this->filterIds;
   }
+  /**
+   * @param string
+   */
   public function setFilterType($filterType)
   {
     $this->filterType = $filterType;
   }
+  /**
+   * @return string
+   */
   public function getFilterType()
   {
     return $this->filterType;

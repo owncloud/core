@@ -19,30 +19,57 @@ namespace Google\Service\Monitoring;
 
 class TimeSeriesRatio extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $badServiceFilter;
+  /**
+   * @var string
+   */
   public $goodServiceFilter;
+  /**
+   * @var string
+   */
   public $totalServiceFilter;
 
+  /**
+   * @param string
+   */
   public function setBadServiceFilter($badServiceFilter)
   {
     $this->badServiceFilter = $badServiceFilter;
   }
+  /**
+   * @return string
+   */
   public function getBadServiceFilter()
   {
     return $this->badServiceFilter;
   }
+  /**
+   * @param string
+   */
   public function setGoodServiceFilter($goodServiceFilter)
   {
     $this->goodServiceFilter = $goodServiceFilter;
   }
+  /**
+   * @return string
+   */
   public function getGoodServiceFilter()
   {
     return $this->goodServiceFilter;
   }
+  /**
+   * @param string
+   */
   public function setTotalServiceFilter($totalServiceFilter)
   {
     $this->totalServiceFilter = $totalServiceFilter;
   }
+  /**
+   * @return string
+   */
   public function getTotalServiceFilter()
   {
     return $this->totalServiceFilter;

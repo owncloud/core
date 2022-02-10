@@ -21,9 +21,21 @@ class GoogleCloudDocumentaiV1DocumentPageAnchorPageRef extends \Google\Model
 {
   protected $boundingPolyType = GoogleCloudDocumentaiV1BoundingPoly::class;
   protected $boundingPolyDataType = '';
+  /**
+   * @var float
+   */
   public $confidence;
+  /**
+   * @var string
+   */
   public $layoutId;
+  /**
+   * @var string
+   */
   public $layoutType;
+  /**
+   * @var string
+   */
   public $page;
 
   /**
@@ -40,34 +52,58 @@ class GoogleCloudDocumentaiV1DocumentPageAnchorPageRef extends \Google\Model
   {
     return $this->boundingPoly;
   }
+  /**
+   * @param float
+   */
   public function setConfidence($confidence)
   {
     $this->confidence = $confidence;
   }
+  /**
+   * @return float
+   */
   public function getConfidence()
   {
     return $this->confidence;
   }
+  /**
+   * @param string
+   */
   public function setLayoutId($layoutId)
   {
     $this->layoutId = $layoutId;
   }
+  /**
+   * @return string
+   */
   public function getLayoutId()
   {
     return $this->layoutId;
   }
+  /**
+   * @param string
+   */
   public function setLayoutType($layoutType)
   {
     $this->layoutType = $layoutType;
   }
+  /**
+   * @return string
+   */
   public function getLayoutType()
   {
     return $this->layoutType;
   }
+  /**
+   * @param string
+   */
   public function setPage($page)
   {
     $this->page = $page;
   }
+  /**
+   * @return string
+   */
   public function getPage()
   {
     return $this->page;

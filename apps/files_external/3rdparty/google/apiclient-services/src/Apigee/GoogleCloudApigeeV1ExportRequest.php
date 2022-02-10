@@ -19,26 +19,53 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1ExportRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $csvDelimiter;
+  /**
+   * @var string
+   */
   public $datastoreName;
   protected $dateRangeType = GoogleCloudApigeeV1DateRange::class;
   protected $dateRangeDataType = '';
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $outputFormat;
 
+  /**
+   * @param string
+   */
   public function setCsvDelimiter($csvDelimiter)
   {
     $this->csvDelimiter = $csvDelimiter;
   }
+  /**
+   * @return string
+   */
   public function getCsvDelimiter()
   {
     return $this->csvDelimiter;
   }
+  /**
+   * @param string
+   */
   public function setDatastoreName($datastoreName)
   {
     $this->datastoreName = $datastoreName;
   }
+  /**
+   * @return string
+   */
   public function getDatastoreName()
   {
     return $this->datastoreName;
@@ -57,26 +84,44 @@ class GoogleCloudApigeeV1ExportRequest extends \Google\Model
   {
     return $this->dateRange;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOutputFormat($outputFormat)
   {
     $this->outputFormat = $outputFormat;
   }
+  /**
+   * @return string
+   */
   public function getOutputFormat()
   {
     return $this->outputFormat;

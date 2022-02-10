@@ -20,25 +20,49 @@ namespace Google\Service\AlertCenter;
 class RuleViolationInfo extends \Google\Collection
 {
   protected $collection_key = 'triggeredActionTypes';
+  /**
+   * @var string
+   */
   public $dataSource;
   protected $matchInfoType = MatchInfo::class;
   protected $matchInfoDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $recipients;
   protected $resourceInfoType = ResourceInfo::class;
   protected $resourceInfoDataType = '';
   protected $ruleInfoType = RuleInfo::class;
   protected $ruleInfoDataType = '';
+  /**
+   * @var string[]
+   */
   public $suppressedActionTypes;
+  /**
+   * @var string
+   */
   public $trigger;
   protected $triggeredActionInfoType = ActionInfo::class;
   protected $triggeredActionInfoDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $triggeredActionTypes;
+  /**
+   * @var string
+   */
   public $triggeringUserEmail;
 
+  /**
+   * @param string
+   */
   public function setDataSource($dataSource)
   {
     $this->dataSource = $dataSource;
   }
+  /**
+   * @return string
+   */
   public function getDataSource()
   {
     return $this->dataSource;
@@ -57,10 +81,16 @@ class RuleViolationInfo extends \Google\Collection
   {
     return $this->matchInfo;
   }
+  /**
+   * @param string[]
+   */
   public function setRecipients($recipients)
   {
     $this->recipients = $recipients;
   }
+  /**
+   * @return string[]
+   */
   public function getRecipients()
   {
     return $this->recipients;
@@ -93,18 +123,30 @@ class RuleViolationInfo extends \Google\Collection
   {
     return $this->ruleInfo;
   }
+  /**
+   * @param string[]
+   */
   public function setSuppressedActionTypes($suppressedActionTypes)
   {
     $this->suppressedActionTypes = $suppressedActionTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getSuppressedActionTypes()
   {
     return $this->suppressedActionTypes;
   }
+  /**
+   * @param string
+   */
   public function setTrigger($trigger)
   {
     $this->trigger = $trigger;
   }
+  /**
+   * @return string
+   */
   public function getTrigger()
   {
     return $this->trigger;
@@ -123,18 +165,30 @@ class RuleViolationInfo extends \Google\Collection
   {
     return $this->triggeredActionInfo;
   }
+  /**
+   * @param string[]
+   */
   public function setTriggeredActionTypes($triggeredActionTypes)
   {
     $this->triggeredActionTypes = $triggeredActionTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getTriggeredActionTypes()
   {
     return $this->triggeredActionTypes;
   }
+  /**
+   * @param string
+   */
   public function setTriggeringUserEmail($triggeringUserEmail)
   {
     $this->triggeringUserEmail = $triggeringUserEmail;
   }
+  /**
+   * @return string
+   */
   public function getTriggeringUserEmail()
   {
     return $this->triggeringUserEmail;

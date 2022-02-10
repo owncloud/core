@@ -19,21 +19,39 @@ namespace Google\Service\CertificateAuthorityService;
 
 class RevokeCertificateRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $reason;
+  /**
+   * @var string
+   */
   public $requestId;
 
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
   }
+  /**
+   * @param string
+   */
   public function setRequestId($requestId)
   {
     $this->requestId = $requestId;
   }
+  /**
+   * @return string
+   */
   public function getRequestId()
   {
     return $this->requestId;

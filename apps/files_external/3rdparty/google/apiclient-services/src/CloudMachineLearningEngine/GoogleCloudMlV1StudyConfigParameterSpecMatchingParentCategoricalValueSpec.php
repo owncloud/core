@@ -20,12 +20,21 @@ namespace Google\Service\CloudMachineLearningEngine;
 class GoogleCloudMlV1StudyConfigParameterSpecMatchingParentCategoricalValueSpec extends \Google\Collection
 {
   protected $collection_key = 'values';
+  /**
+   * @var string[]
+   */
   public $values;
 
+  /**
+   * @param string[]
+   */
   public function setValues($values)
   {
     $this->values = $values;
   }
+  /**
+   * @return string[]
+   */
   public function getValues()
   {
     return $this->values;

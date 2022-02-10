@@ -19,48 +19,93 @@ namespace Google\Service\CloudRedis;
 
 class TlsCertificate extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $cert;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $expireTime;
+  /**
+   * @var string
+   */
   public $serialNumber;
+  /**
+   * @var string
+   */
   public $sha1Fingerprint;
 
+  /**
+   * @param string
+   */
   public function setCert($cert)
   {
     $this->cert = $cert;
   }
+  /**
+   * @return string
+   */
   public function getCert()
   {
     return $this->cert;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setExpireTime($expireTime)
   {
     $this->expireTime = $expireTime;
   }
+  /**
+   * @return string
+   */
   public function getExpireTime()
   {
     return $this->expireTime;
   }
+  /**
+   * @param string
+   */
   public function setSerialNumber($serialNumber)
   {
     $this->serialNumber = $serialNumber;
   }
+  /**
+   * @return string
+   */
   public function getSerialNumber()
   {
     return $this->serialNumber;
   }
+  /**
+   * @param string
+   */
   public function setSha1Fingerprint($sha1Fingerprint)
   {
     $this->sha1Fingerprint = $sha1Fingerprint;
   }
+  /**
+   * @return string
+   */
   public function getSha1Fingerprint()
   {
     return $this->sha1Fingerprint;

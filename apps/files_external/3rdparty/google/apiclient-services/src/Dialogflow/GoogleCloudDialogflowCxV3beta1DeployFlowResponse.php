@@ -19,14 +19,23 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3beta1DeployFlowResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $deployment;
   protected $environmentType = GoogleCloudDialogflowCxV3beta1Environment::class;
   protected $environmentDataType = '';
 
+  /**
+   * @param string
+   */
   public function setDeployment($deployment)
   {
     $this->deployment = $deployment;
   }
+  /**
+   * @return string
+   */
   public function getDeployment()
   {
     return $this->deployment;

@@ -20,32 +20,71 @@ namespace Google\Service\Classroom;
 class StudentSubmission extends \Google\Collection
 {
   protected $collection_key = 'submissionHistory';
+  /**
+   * @var string
+   */
   public $alternateLink;
   public $assignedGrade;
   protected $assignmentSubmissionType = AssignmentSubmission::class;
   protected $assignmentSubmissionDataType = '';
+  /**
+   * @var bool
+   */
   public $associatedWithDeveloper;
+  /**
+   * @var string
+   */
   public $courseId;
+  /**
+   * @var string
+   */
   public $courseWorkId;
+  /**
+   * @var string
+   */
   public $courseWorkType;
+  /**
+   * @var string
+   */
   public $creationTime;
   public $draftGrade;
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var bool
+   */
   public $late;
   protected $multipleChoiceSubmissionType = MultipleChoiceSubmission::class;
   protected $multipleChoiceSubmissionDataType = '';
   protected $shortAnswerSubmissionType = ShortAnswerSubmission::class;
   protected $shortAnswerSubmissionDataType = '';
+  /**
+   * @var string
+   */
   public $state;
   protected $submissionHistoryType = SubmissionHistory::class;
   protected $submissionHistoryDataType = 'array';
+  /**
+   * @var string
+   */
   public $updateTime;
+  /**
+   * @var string
+   */
   public $userId;
 
+  /**
+   * @param string
+   */
   public function setAlternateLink($alternateLink)
   {
     $this->alternateLink = $alternateLink;
   }
+  /**
+   * @return string
+   */
   public function getAlternateLink()
   {
     return $this->alternateLink;
@@ -72,42 +111,72 @@ class StudentSubmission extends \Google\Collection
   {
     return $this->assignmentSubmission;
   }
+  /**
+   * @param bool
+   */
   public function setAssociatedWithDeveloper($associatedWithDeveloper)
   {
     $this->associatedWithDeveloper = $associatedWithDeveloper;
   }
+  /**
+   * @return bool
+   */
   public function getAssociatedWithDeveloper()
   {
     return $this->associatedWithDeveloper;
   }
+  /**
+   * @param string
+   */
   public function setCourseId($courseId)
   {
     $this->courseId = $courseId;
   }
+  /**
+   * @return string
+   */
   public function getCourseId()
   {
     return $this->courseId;
   }
+  /**
+   * @param string
+   */
   public function setCourseWorkId($courseWorkId)
   {
     $this->courseWorkId = $courseWorkId;
   }
+  /**
+   * @return string
+   */
   public function getCourseWorkId()
   {
     return $this->courseWorkId;
   }
+  /**
+   * @param string
+   */
   public function setCourseWorkType($courseWorkType)
   {
     $this->courseWorkType = $courseWorkType;
   }
+  /**
+   * @return string
+   */
   public function getCourseWorkType()
   {
     return $this->courseWorkType;
   }
+  /**
+   * @param string
+   */
   public function setCreationTime($creationTime)
   {
     $this->creationTime = $creationTime;
   }
+  /**
+   * @return string
+   */
   public function getCreationTime()
   {
     return $this->creationTime;
@@ -120,18 +189,30 @@ class StudentSubmission extends \Google\Collection
   {
     return $this->draftGrade;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param bool
+   */
   public function setLate($late)
   {
     $this->late = $late;
   }
+  /**
+   * @return bool
+   */
   public function getLate()
   {
     return $this->late;
@@ -164,10 +245,16 @@ class StudentSubmission extends \Google\Collection
   {
     return $this->shortAnswerSubmission;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
@@ -186,18 +273,30 @@ class StudentSubmission extends \Google\Collection
   {
     return $this->submissionHistory;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;
   }
+  /**
+   * @param string
+   */
   public function setUserId($userId)
   {
     $this->userId = $userId;
   }
+  /**
+   * @return string
+   */
   public function getUserId()
   {
     return $this->userId;

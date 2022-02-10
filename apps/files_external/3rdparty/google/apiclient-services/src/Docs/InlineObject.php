@@ -22,10 +22,19 @@ class InlineObject extends \Google\Collection
   protected $collection_key = 'suggestedDeletionIds';
   protected $inlineObjectPropertiesType = InlineObjectProperties::class;
   protected $inlineObjectPropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $objectId;
+  /**
+   * @var string[]
+   */
   public $suggestedDeletionIds;
   protected $suggestedInlineObjectPropertiesChangesType = SuggestedInlineObjectProperties::class;
   protected $suggestedInlineObjectPropertiesChangesDataType = 'map';
+  /**
+   * @var string
+   */
   public $suggestedInsertionId;
 
   /**
@@ -42,18 +51,30 @@ class InlineObject extends \Google\Collection
   {
     return $this->inlineObjectProperties;
   }
+  /**
+   * @param string
+   */
   public function setObjectId($objectId)
   {
     $this->objectId = $objectId;
   }
+  /**
+   * @return string
+   */
   public function getObjectId()
   {
     return $this->objectId;
   }
+  /**
+   * @param string[]
+   */
   public function setSuggestedDeletionIds($suggestedDeletionIds)
   {
     $this->suggestedDeletionIds = $suggestedDeletionIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSuggestedDeletionIds()
   {
     return $this->suggestedDeletionIds;
@@ -72,10 +93,16 @@ class InlineObject extends \Google\Collection
   {
     return $this->suggestedInlineObjectPropertiesChanges;
   }
+  /**
+   * @param string
+   */
   public function setSuggestedInsertionId($suggestedInsertionId)
   {
     $this->suggestedInsertionId = $suggestedInsertionId;
   }
+  /**
+   * @return string
+   */
   public function getSuggestedInsertionId()
   {
     return $this->suggestedInsertionId;

@@ -20,14 +20,23 @@ namespace Google\Service\OSConfig;
 class ListPatchJobsResponse extends \Google\Collection
 {
   protected $collection_key = 'patchJobs';
+  /**
+   * @var string
+   */
   public $nextPageToken;
   protected $patchJobsType = PatchJob::class;
   protected $patchJobsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setNextPageToken($nextPageToken)
   {
     $this->nextPageToken = $nextPageToken;
   }
+  /**
+   * @return string
+   */
   public function getNextPageToken()
   {
     return $this->nextPageToken;

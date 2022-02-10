@@ -19,21 +19,39 @@ namespace Google\Service\DataFusion;
 
 class Accelerator extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $acceleratorType;
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setAcceleratorType($acceleratorType)
   {
     $this->acceleratorType = $acceleratorType;
   }
+  /**
+   * @return string
+   */
   public function getAcceleratorType()
   {
     return $this->acceleratorType;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

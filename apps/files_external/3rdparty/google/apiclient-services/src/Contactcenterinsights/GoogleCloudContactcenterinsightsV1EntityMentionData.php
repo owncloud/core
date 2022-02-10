@@ -19,15 +19,27 @@ namespace Google\Service\Contactcenterinsights;
 
 class GoogleCloudContactcenterinsightsV1EntityMentionData extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $entityUniqueId;
   protected $sentimentType = GoogleCloudContactcenterinsightsV1SentimentData::class;
   protected $sentimentDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setEntityUniqueId($entityUniqueId)
   {
     $this->entityUniqueId = $entityUniqueId;
   }
+  /**
+   * @return string
+   */
   public function getEntityUniqueId()
   {
     return $this->entityUniqueId;
@@ -46,10 +58,16 @@ class GoogleCloudContactcenterinsightsV1EntityMentionData extends \Google\Model
   {
     return $this->sentiment;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

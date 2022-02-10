@@ -19,39 +19,75 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1RuntimeConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $analyticsBucket;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $tenantProjectId;
+  /**
+   * @var string
+   */
   public $traceBucket;
 
+  /**
+   * @param string
+   */
   public function setAnalyticsBucket($analyticsBucket)
   {
     $this->analyticsBucket = $analyticsBucket;
   }
+  /**
+   * @return string
+   */
   public function getAnalyticsBucket()
   {
     return $this->analyticsBucket;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTenantProjectId($tenantProjectId)
   {
     $this->tenantProjectId = $tenantProjectId;
   }
+  /**
+   * @return string
+   */
   public function getTenantProjectId()
   {
     return $this->tenantProjectId;
   }
+  /**
+   * @param string
+   */
   public function setTraceBucket($traceBucket)
   {
     $this->traceBucket = $traceBucket;
   }
+  /**
+   * @return string
+   */
   public function getTraceBucket()
   {
     return $this->traceBucket;

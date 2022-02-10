@@ -21,7 +21,13 @@ class ValidateAttestationOccurrenceRequest extends \Google\Model
 {
   protected $attestationType = AttestationOccurrence::class;
   protected $attestationDataType = '';
+  /**
+   * @var string
+   */
   public $occurrenceNote;
+  /**
+   * @var string
+   */
   public $occurrenceResourceUri;
 
   /**
@@ -38,18 +44,30 @@ class ValidateAttestationOccurrenceRequest extends \Google\Model
   {
     return $this->attestation;
   }
+  /**
+   * @param string
+   */
   public function setOccurrenceNote($occurrenceNote)
   {
     $this->occurrenceNote = $occurrenceNote;
   }
+  /**
+   * @return string
+   */
   public function getOccurrenceNote()
   {
     return $this->occurrenceNote;
   }
+  /**
+   * @param string
+   */
   public function setOccurrenceResourceUri($occurrenceResourceUri)
   {
     $this->occurrenceResourceUri = $occurrenceResourceUri;
   }
+  /**
+   * @return string
+   */
   public function getOccurrenceResourceUri()
   {
     return $this->occurrenceResourceUri;

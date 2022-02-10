@@ -19,30 +19,57 @@ namespace Google\Service\Drive;
 
 class DriveFileVideoMediaMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $durationMillis;
+  /**
+   * @var int
+   */
   public $height;
+  /**
+   * @var int
+   */
   public $width;
 
+  /**
+   * @param string
+   */
   public function setDurationMillis($durationMillis)
   {
     $this->durationMillis = $durationMillis;
   }
+  /**
+   * @return string
+   */
   public function getDurationMillis()
   {
     return $this->durationMillis;
   }
+  /**
+   * @param int
+   */
   public function setHeight($height)
   {
     $this->height = $height;
   }
+  /**
+   * @return int
+   */
   public function getHeight()
   {
     return $this->height;
   }
+  /**
+   * @param int
+   */
   public function setWidth($width)
   {
     $this->width = $width;
   }
+  /**
+   * @return int
+   */
   public function getWidth()
   {
     return $this->width;

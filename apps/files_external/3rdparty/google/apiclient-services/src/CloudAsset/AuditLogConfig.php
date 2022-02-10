@@ -20,21 +20,39 @@ namespace Google\Service\CloudAsset;
 class AuditLogConfig extends \Google\Collection
 {
   protected $collection_key = 'exemptedMembers';
+  /**
+   * @var string[]
+   */
   public $exemptedMembers;
+  /**
+   * @var string
+   */
   public $logType;
 
+  /**
+   * @param string[]
+   */
   public function setExemptedMembers($exemptedMembers)
   {
     $this->exemptedMembers = $exemptedMembers;
   }
+  /**
+   * @return string[]
+   */
   public function getExemptedMembers()
   {
     return $this->exemptedMembers;
   }
+  /**
+   * @param string
+   */
   public function setLogType($logType)
   {
     $this->logType = $logType;
   }
+  /**
+   * @return string
+   */
   public function getLogType()
   {
     return $this->logType;

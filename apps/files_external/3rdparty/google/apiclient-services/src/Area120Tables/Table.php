@@ -22,12 +22,27 @@ class Table extends \Google\Collection
   protected $collection_key = 'savedViews';
   protected $columnsType = ColumnDescription::class;
   protected $columnsDataType = 'array';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
   protected $savedViewsType = SavedView::class;
   protected $savedViewsDataType = 'array';
+  /**
+   * @var string
+   */
   public $timeZone;
+  /**
+   * @var string
+   */
   public $updateTime;
 
   /**
@@ -44,26 +59,44 @@ class Table extends \Google\Collection
   {
     return $this->columns;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -82,18 +115,30 @@ class Table extends \Google\Collection
   {
     return $this->savedViews;
   }
+  /**
+   * @param string
+   */
   public function setTimeZone($timeZone)
   {
     $this->timeZone = $timeZone;
   }
+  /**
+   * @return string
+   */
   public function getTimeZone()
   {
     return $this->timeZone;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

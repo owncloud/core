@@ -20,21 +20,39 @@ namespace Google\Service\Dialogflow;
 class GoogleCloudDialogflowCxV3EntityTypeEntity extends \Google\Collection
 {
   protected $collection_key = 'synonyms';
+  /**
+   * @var string[]
+   */
   public $synonyms;
+  /**
+   * @var string
+   */
   public $value;
 
+  /**
+   * @param string[]
+   */
   public function setSynonyms($synonyms)
   {
     $this->synonyms = $synonyms;
   }
+  /**
+   * @return string[]
+   */
   public function getSynonyms()
   {
     return $this->synonyms;
   }
+  /**
+   * @param string
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return string
+   */
   public function getValue()
   {
     return $this->value;

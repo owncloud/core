@@ -20,12 +20,21 @@ namespace Google\Service\Dataflow;
 class StringList extends \Google\Collection
 {
   protected $collection_key = 'elements';
+  /**
+   * @var string[]
+   */
   public $elements;
 
+  /**
+   * @param string[]
+   */
   public function setElements($elements)
   {
     $this->elements = $elements;
   }
+  /**
+   * @return string[]
+   */
   public function getElements()
   {
     return $this->elements;

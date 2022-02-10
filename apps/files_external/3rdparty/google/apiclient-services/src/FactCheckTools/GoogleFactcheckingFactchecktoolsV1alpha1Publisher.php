@@ -19,21 +19,39 @@ namespace Google\Service\FactCheckTools;
 
 class GoogleFactcheckingFactchecktoolsV1alpha1Publisher extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $site;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSite($site)
   {
     $this->site = $site;
   }
+  /**
+   * @return string
+   */
   public function getSite()
   {
     return $this->site;

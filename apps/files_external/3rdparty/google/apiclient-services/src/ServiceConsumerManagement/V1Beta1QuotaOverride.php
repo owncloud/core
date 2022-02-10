@@ -19,57 +19,111 @@ namespace Google\Service\ServiceConsumerManagement;
 
 class V1Beta1QuotaOverride extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $adminOverrideAncestor;
+  /**
+   * @var string[]
+   */
   public $dimensions;
+  /**
+   * @var string
+   */
   public $metric;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $overrideValue;
+  /**
+   * @var string
+   */
   public $unit;
 
+  /**
+   * @param string
+   */
   public function setAdminOverrideAncestor($adminOverrideAncestor)
   {
     $this->adminOverrideAncestor = $adminOverrideAncestor;
   }
+  /**
+   * @return string
+   */
   public function getAdminOverrideAncestor()
   {
     return $this->adminOverrideAncestor;
   }
+  /**
+   * @param string[]
+   */
   public function setDimensions($dimensions)
   {
     $this->dimensions = $dimensions;
   }
+  /**
+   * @return string[]
+   */
   public function getDimensions()
   {
     return $this->dimensions;
   }
+  /**
+   * @param string
+   */
   public function setMetric($metric)
   {
     $this->metric = $metric;
   }
+  /**
+   * @return string
+   */
   public function getMetric()
   {
     return $this->metric;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOverrideValue($overrideValue)
   {
     $this->overrideValue = $overrideValue;
   }
+  /**
+   * @return string
+   */
   public function getOverrideValue()
   {
     return $this->overrideValue;
   }
+  /**
+   * @param string
+   */
   public function setUnit($unit)
   {
     $this->unit = $unit;
   }
+  /**
+   * @return string
+   */
   public function getUnit()
   {
     return $this->unit;

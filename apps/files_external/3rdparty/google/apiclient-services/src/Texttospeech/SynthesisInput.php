@@ -19,21 +19,39 @@ namespace Google\Service\Texttospeech;
 
 class SynthesisInput extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $ssml;
+  /**
+   * @var string
+   */
   public $text;
 
+  /**
+   * @param string
+   */
   public function setSsml($ssml)
   {
     $this->ssml = $ssml;
   }
+  /**
+   * @return string
+   */
   public function getSsml()
   {
     return $this->ssml;
   }
+  /**
+   * @param string
+   */
   public function setText($text)
   {
     $this->text = $text;
   }
+  /**
+   * @return string
+   */
   public function getText()
   {
     return $this->text;

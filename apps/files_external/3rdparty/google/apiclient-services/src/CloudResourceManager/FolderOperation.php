@@ -19,39 +19,75 @@ namespace Google\Service\CloudResourceManager;
 
 class FolderOperation extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $destinationParent;
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $operationType;
+  /**
+   * @var string
+   */
   public $sourceParent;
 
+  /**
+   * @param string
+   */
   public function setDestinationParent($destinationParent)
   {
     $this->destinationParent = $destinationParent;
   }
+  /**
+   * @return string
+   */
   public function getDestinationParent()
   {
     return $this->destinationParent;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setOperationType($operationType)
   {
     $this->operationType = $operationType;
   }
+  /**
+   * @return string
+   */
   public function getOperationType()
   {
     return $this->operationType;
   }
+  /**
+   * @param string
+   */
   public function setSourceParent($sourceParent)
   {
     $this->sourceParent = $sourceParent;
   }
+  /**
+   * @return string
+   */
   public function getSourceParent()
   {
     return $this->sourceParent;

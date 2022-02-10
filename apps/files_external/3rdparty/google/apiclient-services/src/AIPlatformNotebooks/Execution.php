@@ -19,37 +19,79 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class Execution extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $executionTemplateType = ExecutionTemplate::class;
   protected $executionTemplateDataType = '';
+  /**
+   * @var string
+   */
   public $jobUri;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $outputNotebookFile;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -68,42 +110,72 @@ class Execution extends \Google\Model
   {
     return $this->executionTemplate;
   }
+  /**
+   * @param string
+   */
   public function setJobUri($jobUri)
   {
     $this->jobUri = $jobUri;
   }
+  /**
+   * @return string
+   */
   public function getJobUri()
   {
     return $this->jobUri;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setOutputNotebookFile($outputNotebookFile)
   {
     $this->outputNotebookFile = $outputNotebookFile;
   }
+  /**
+   * @return string
+   */
   public function getOutputNotebookFile()
   {
     return $this->outputNotebookFile;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

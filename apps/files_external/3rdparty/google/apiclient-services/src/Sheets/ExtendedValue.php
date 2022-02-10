@@ -19,17 +19,32 @@ namespace Google\Service\Sheets;
 
 class ExtendedValue extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $boolValue;
   protected $errorValueType = ErrorValue::class;
   protected $errorValueDataType = '';
+  /**
+   * @var string
+   */
   public $formulaValue;
   public $numberValue;
+  /**
+   * @var string
+   */
   public $stringValue;
 
+  /**
+   * @param bool
+   */
   public function setBoolValue($boolValue)
   {
     $this->boolValue = $boolValue;
   }
+  /**
+   * @return bool
+   */
   public function getBoolValue()
   {
     return $this->boolValue;
@@ -48,10 +63,16 @@ class ExtendedValue extends \Google\Model
   {
     return $this->errorValue;
   }
+  /**
+   * @param string
+   */
   public function setFormulaValue($formulaValue)
   {
     $this->formulaValue = $formulaValue;
   }
+  /**
+   * @return string
+   */
   public function getFormulaValue()
   {
     return $this->formulaValue;
@@ -64,10 +85,16 @@ class ExtendedValue extends \Google\Model
   {
     return $this->numberValue;
   }
+  /**
+   * @param string
+   */
   public function setStringValue($stringValue)
   {
     $this->stringValue = $stringValue;
   }
+  /**
+   * @return string
+   */
   public function getStringValue()
   {
     return $this->stringValue;

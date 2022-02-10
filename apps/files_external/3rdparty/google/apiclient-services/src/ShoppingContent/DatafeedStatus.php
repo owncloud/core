@@ -20,31 +20,67 @@ namespace Google\Service\ShoppingContent;
 class DatafeedStatus extends \Google\Collection
 {
   protected $collection_key = 'warnings';
+  /**
+   * @var string
+   */
   public $country;
+  /**
+   * @var string
+   */
   public $datafeedId;
   protected $errorsType = DatafeedStatusError::class;
   protected $errorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $itemsTotal;
+  /**
+   * @var string
+   */
   public $itemsValid;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $language;
+  /**
+   * @var string
+   */
   public $lastUploadDate;
+  /**
+   * @var string
+   */
   public $processingStatus;
   protected $warningsType = DatafeedStatusError::class;
   protected $warningsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setCountry($country)
   {
     $this->country = $country;
   }
+  /**
+   * @return string
+   */
   public function getCountry()
   {
     return $this->country;
   }
+  /**
+   * @param string
+   */
   public function setDatafeedId($datafeedId)
   {
     $this->datafeedId = $datafeedId;
   }
+  /**
+   * @return string
+   */
   public function getDatafeedId()
   {
     return $this->datafeedId;
@@ -63,50 +99,86 @@ class DatafeedStatus extends \Google\Collection
   {
     return $this->errors;
   }
+  /**
+   * @param string
+   */
   public function setItemsTotal($itemsTotal)
   {
     $this->itemsTotal = $itemsTotal;
   }
+  /**
+   * @return string
+   */
   public function getItemsTotal()
   {
     return $this->itemsTotal;
   }
+  /**
+   * @param string
+   */
   public function setItemsValid($itemsValid)
   {
     $this->itemsValid = $itemsValid;
   }
+  /**
+   * @return string
+   */
   public function getItemsValid()
   {
     return $this->itemsValid;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setLanguage($language)
   {
     $this->language = $language;
   }
+  /**
+   * @return string
+   */
   public function getLanguage()
   {
     return $this->language;
   }
+  /**
+   * @param string
+   */
   public function setLastUploadDate($lastUploadDate)
   {
     $this->lastUploadDate = $lastUploadDate;
   }
+  /**
+   * @return string
+   */
   public function getLastUploadDate()
   {
     return $this->lastUploadDate;
   }
+  /**
+   * @param string
+   */
   public function setProcessingStatus($processingStatus)
   {
     $this->processingStatus = $processingStatus;
   }
+  /**
+   * @return string
+   */
   public function getProcessingStatus()
   {
     return $this->processingStatus;

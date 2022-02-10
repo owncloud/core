@@ -20,15 +20,27 @@ namespace Google\Service\Compute;
 class FirewallPolicyRuleMatcher extends \Google\Collection
 {
   protected $collection_key = 'srcIpRanges';
+  /**
+   * @var string[]
+   */
   public $destIpRanges;
   protected $layer4ConfigsType = FirewallPolicyRuleMatcherLayer4Config::class;
   protected $layer4ConfigsDataType = 'array';
+  /**
+   * @var string[]
+   */
   public $srcIpRanges;
 
+  /**
+   * @param string[]
+   */
   public function setDestIpRanges($destIpRanges)
   {
     $this->destIpRanges = $destIpRanges;
   }
+  /**
+   * @return string[]
+   */
   public function getDestIpRanges()
   {
     return $this->destIpRanges;
@@ -47,10 +59,16 @@ class FirewallPolicyRuleMatcher extends \Google\Collection
   {
     return $this->layer4Configs;
   }
+  /**
+   * @param string[]
+   */
   public function setSrcIpRanges($srcIpRanges)
   {
     $this->srcIpRanges = $srcIpRanges;
   }
+  /**
+   * @return string[]
+   */
   public function getSrcIpRanges()
   {
     return $this->srcIpRanges;

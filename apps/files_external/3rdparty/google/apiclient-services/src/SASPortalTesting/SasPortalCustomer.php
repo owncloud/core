@@ -20,30 +20,57 @@ namespace Google\Service\SASPortalTesting;
 class SasPortalCustomer extends \Google\Collection
 {
   protected $collection_key = 'sasUserIds';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string[]
+   */
   public $sasUserIds;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string[]
+   */
   public function setSasUserIds($sasUserIds)
   {
     $this->sasUserIds = $sasUserIds;
   }
+  /**
+   * @return string[]
+   */
   public function getSasUserIds()
   {
     return $this->sasUserIds;

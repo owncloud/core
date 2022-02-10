@@ -19,19 +19,37 @@ namespace Google\Service\CloudRun;
 
 class Status extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $code;
   protected $detailsType = StatusDetails::class;
   protected $detailsDataType = '';
+  /**
+   * @var string
+   */
   public $message;
   protected $metadataType = ListMeta::class;
   protected $metadataDataType = '';
+  /**
+   * @var string
+   */
   public $reason;
+  /**
+   * @var string
+   */
   public $status;
 
+  /**
+   * @param int
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return int
+   */
   public function getCode()
   {
     return $this->code;
@@ -50,10 +68,16 @@ class Status extends \Google\Model
   {
     return $this->details;
   }
+  /**
+   * @param string
+   */
   public function setMessage($message)
   {
     $this->message = $message;
   }
+  /**
+   * @return string
+   */
   public function getMessage()
   {
     return $this->message;
@@ -72,18 +96,30 @@ class Status extends \Google\Model
   {
     return $this->metadata;
   }
+  /**
+   * @param string
+   */
   public function setReason($reason)
   {
     $this->reason = $reason;
   }
+  /**
+   * @return string
+   */
   public function getReason()
   {
     return $this->reason;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

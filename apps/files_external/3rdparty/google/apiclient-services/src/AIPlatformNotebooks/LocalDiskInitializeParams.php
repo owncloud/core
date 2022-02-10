@@ -19,48 +19,93 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class LocalDiskInitializeParams extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $diskName;
+  /**
+   * @var string
+   */
   public $diskSizeGb;
+  /**
+   * @var string
+   */
   public $diskType;
+  /**
+   * @var string[]
+   */
   public $labels;
 
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setDiskName($diskName)
   {
     $this->diskName = $diskName;
   }
+  /**
+   * @return string
+   */
   public function getDiskName()
   {
     return $this->diskName;
   }
+  /**
+   * @param string
+   */
   public function setDiskSizeGb($diskSizeGb)
   {
     $this->diskSizeGb = $diskSizeGb;
   }
+  /**
+   * @return string
+   */
   public function getDiskSizeGb()
   {
     return $this->diskSizeGb;
   }
+  /**
+   * @param string
+   */
   public function setDiskType($diskType)
   {
     $this->diskType = $diskType;
   }
+  /**
+   * @return string
+   */
   public function getDiskType()
   {
     return $this->diskType;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;

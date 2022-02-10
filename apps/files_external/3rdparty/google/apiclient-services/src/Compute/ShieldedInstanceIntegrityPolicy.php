@@ -19,12 +19,21 @@ namespace Google\Service\Compute;
 
 class ShieldedInstanceIntegrityPolicy extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $updateAutoLearnPolicy;
 
+  /**
+   * @param bool
+   */
   public function setUpdateAutoLearnPolicy($updateAutoLearnPolicy)
   {
     $this->updateAutoLearnPolicy = $updateAutoLearnPolicy;
   }
+  /**
+   * @return bool
+   */
   public function getUpdateAutoLearnPolicy()
   {
     return $this->updateAutoLearnPolicy;

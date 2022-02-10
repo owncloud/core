@@ -20,21 +20,39 @@ namespace Google\Service\Spanner;
 class UpdateDatabaseDdlRequest extends \Google\Collection
 {
   protected $collection_key = 'statements';
+  /**
+   * @var string
+   */
   public $operationId;
+  /**
+   * @var string[]
+   */
   public $statements;
 
+  /**
+   * @param string
+   */
   public function setOperationId($operationId)
   {
     $this->operationId = $operationId;
   }
+  /**
+   * @return string
+   */
   public function getOperationId()
   {
     return $this->operationId;
   }
+  /**
+   * @param string[]
+   */
   public function setStatements($statements)
   {
     $this->statements = $statements;
   }
+  /**
+   * @return string[]
+   */
   public function getStatements()
   {
     return $this->statements;

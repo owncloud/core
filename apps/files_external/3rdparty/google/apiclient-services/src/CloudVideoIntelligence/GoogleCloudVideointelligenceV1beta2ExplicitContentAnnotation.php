@@ -22,6 +22,9 @@ class GoogleCloudVideointelligenceV1beta2ExplicitContentAnnotation extends \Goog
   protected $collection_key = 'frames';
   protected $framesType = GoogleCloudVideointelligenceV1beta2ExplicitContentFrame::class;
   protected $framesDataType = 'array';
+  /**
+   * @var string
+   */
   public $version;
 
   /**
@@ -38,10 +41,16 @@ class GoogleCloudVideointelligenceV1beta2ExplicitContentAnnotation extends \Goog
   {
     return $this->frames;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

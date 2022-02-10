@@ -19,14 +19,23 @@ namespace Google\Service\CloudDebugger;
 
 class CloudWorkspaceSourceContext extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $snapshotId;
   protected $workspaceIdType = CloudWorkspaceId::class;
   protected $workspaceIdDataType = '';
 
+  /**
+   * @param string
+   */
   public function setSnapshotId($snapshotId)
   {
     $this->snapshotId = $snapshotId;
   }
+  /**
+   * @return string
+   */
   public function getSnapshotId()
   {
     return $this->snapshotId;

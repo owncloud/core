@@ -19,15 +19,27 @@ namespace Google\Service\Slides;
 
 class Line extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $lineCategory;
   protected $linePropertiesType = LineProperties::class;
   protected $linePropertiesDataType = '';
+  /**
+   * @var string
+   */
   public $lineType;
 
+  /**
+   * @param string
+   */
   public function setLineCategory($lineCategory)
   {
     $this->lineCategory = $lineCategory;
   }
+  /**
+   * @return string
+   */
   public function getLineCategory()
   {
     return $this->lineCategory;
@@ -46,10 +58,16 @@ class Line extends \Google\Model
   {
     return $this->lineProperties;
   }
+  /**
+   * @param string
+   */
   public function setLineType($lineType)
   {
     $this->lineType = $lineType;
   }
+  /**
+   * @return string
+   */
   public function getLineType()
   {
     return $this->lineType;

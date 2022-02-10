@@ -23,7 +23,13 @@ class VerificationOption extends \Google\Model
   protected $addressDataDataType = '';
   protected $emailDataType = EmailVerificationData::class;
   protected $emailDataDataType = '';
+  /**
+   * @var string
+   */
   public $phoneNumber;
+  /**
+   * @var string
+   */
   public $verificationMethod;
 
   /**
@@ -54,18 +60,30 @@ class VerificationOption extends \Google\Model
   {
     return $this->emailData;
   }
+  /**
+   * @param string
+   */
   public function setPhoneNumber($phoneNumber)
   {
     $this->phoneNumber = $phoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getPhoneNumber()
   {
     return $this->phoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setVerificationMethod($verificationMethod)
   {
     $this->verificationMethod = $verificationMethod;
   }
+  /**
+   * @return string
+   */
   public function getVerificationMethod()
   {
     return $this->verificationMethod;

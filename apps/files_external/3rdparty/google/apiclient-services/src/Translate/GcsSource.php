@@ -19,12 +19,21 @@ namespace Google\Service\Translate;
 
 class GcsSource extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $inputUri;
 
+  /**
+   * @param string
+   */
   public function setInputUri($inputUri)
   {
     $this->inputUri = $inputUri;
   }
+  /**
+   * @return string
+   */
   public function getInputUri()
   {
     return $this->inputUri;

@@ -20,12 +20,21 @@ namespace Google\Service\Vault;
 class HangoutsChatInfo extends \Google\Collection
 {
   protected $collection_key = 'roomId';
+  /**
+   * @var string[]
+   */
   public $roomId;
 
+  /**
+   * @param string[]
+   */
   public function setRoomId($roomId)
   {
     $this->roomId = $roomId;
   }
+  /**
+   * @return string[]
+   */
   public function getRoomId()
   {
     return $this->roomId;

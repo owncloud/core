@@ -20,21 +20,39 @@ namespace Google\Service\CloudRetail;
 class GoogleCloudRetailV2Audience extends \Google\Collection
 {
   protected $collection_key = 'genders';
+  /**
+   * @var string[]
+   */
   public $ageGroups;
+  /**
+   * @var string[]
+   */
   public $genders;
 
+  /**
+   * @param string[]
+   */
   public function setAgeGroups($ageGroups)
   {
     $this->ageGroups = $ageGroups;
   }
+  /**
+   * @return string[]
+   */
   public function getAgeGroups()
   {
     return $this->ageGroups;
   }
+  /**
+   * @param string[]
+   */
   public function setGenders($genders)
   {
     $this->genders = $genders;
   }
+  /**
+   * @return string[]
+   */
   public function getGenders()
   {
     return $this->genders;

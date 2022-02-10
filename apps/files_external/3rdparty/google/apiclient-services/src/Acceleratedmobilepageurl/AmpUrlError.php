@@ -19,30 +19,57 @@ namespace Google\Service\Acceleratedmobilepageurl;
 
 class AmpUrlError extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $errorCode;
+  /**
+   * @var string
+   */
   public $errorMessage;
+  /**
+   * @var string
+   */
   public $originalUrl;
 
+  /**
+   * @param string
+   */
   public function setErrorCode($errorCode)
   {
     $this->errorCode = $errorCode;
   }
+  /**
+   * @return string
+   */
   public function getErrorCode()
   {
     return $this->errorCode;
   }
+  /**
+   * @param string
+   */
   public function setErrorMessage($errorMessage)
   {
     $this->errorMessage = $errorMessage;
   }
+  /**
+   * @return string
+   */
   public function getErrorMessage()
   {
     return $this->errorMessage;
   }
+  /**
+   * @param string
+   */
   public function setOriginalUrl($originalUrl)
   {
     $this->originalUrl = $originalUrl;
   }
+  /**
+   * @return string
+   */
   public function getOriginalUrl()
   {
     return $this->originalUrl;

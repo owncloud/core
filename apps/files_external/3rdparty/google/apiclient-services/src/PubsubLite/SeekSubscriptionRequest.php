@@ -19,14 +19,23 @@ namespace Google\Service\PubsubLite;
 
 class SeekSubscriptionRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $namedTarget;
   protected $timeTargetType = TimeTarget::class;
   protected $timeTargetDataType = '';
 
+  /**
+   * @param string
+   */
   public function setNamedTarget($namedTarget)
   {
     $this->namedTarget = $namedTarget;
   }
+  /**
+   * @return string
+   */
   public function getNamedTarget()
   {
     return $this->namedTarget;

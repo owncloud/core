@@ -21,6 +21,9 @@ class CloudAuditOptions extends \Google\Model
 {
   protected $authorizationLoggingOptionsType = AuthorizationLoggingOptions::class;
   protected $authorizationLoggingOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $logName;
 
   /**
@@ -37,10 +40,16 @@ class CloudAuditOptions extends \Google\Model
   {
     return $this->authorizationLoggingOptions;
   }
+  /**
+   * @param string
+   */
   public function setLogName($logName)
   {
     $this->logName = $logName;
   }
+  /**
+   * @return string
+   */
   public function getLogName()
   {
     return $this->logName;

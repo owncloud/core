@@ -19,48 +19,99 @@ namespace Google\Service\NetworkServices;
 
 class EndpointPolicy extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $authorizationPolicy;
+  /**
+   * @var string
+   */
   public $clientTlsPolicy;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $description;
   protected $endpointMatcherType = EndpointMatcher::class;
   protected $endpointMatcherDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $serverTlsPolicy;
   protected $trafficPortSelectorType = TrafficPortSelector::class;
   protected $trafficPortSelectorDataType = '';
+  /**
+   * @var string
+   */
   public $type;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param string
+   */
   public function setAuthorizationPolicy($authorizationPolicy)
   {
     $this->authorizationPolicy = $authorizationPolicy;
   }
+  /**
+   * @return string
+   */
   public function getAuthorizationPolicy()
   {
     return $this->authorizationPolicy;
   }
+  /**
+   * @param string
+   */
   public function setClientTlsPolicy($clientTlsPolicy)
   {
     $this->clientTlsPolicy = $clientTlsPolicy;
   }
+  /**
+   * @return string
+   */
   public function getClientTlsPolicy()
   {
     return $this->clientTlsPolicy;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
@@ -79,26 +130,44 @@ class EndpointPolicy extends \Google\Model
   {
     return $this->endpointMatcher;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setServerTlsPolicy($serverTlsPolicy)
   {
     $this->serverTlsPolicy = $serverTlsPolicy;
   }
+  /**
+   * @return string
+   */
   public function getServerTlsPolicy()
   {
     return $this->serverTlsPolicy;
@@ -117,18 +186,30 @@ class EndpointPolicy extends \Google\Model
   {
     return $this->trafficPortSelector;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

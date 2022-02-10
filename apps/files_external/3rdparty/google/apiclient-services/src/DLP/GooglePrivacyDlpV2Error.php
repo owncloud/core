@@ -22,6 +22,9 @@ class GooglePrivacyDlpV2Error extends \Google\Collection
   protected $collection_key = 'timestamps';
   protected $detailsType = GoogleRpcStatus::class;
   protected $detailsDataType = '';
+  /**
+   * @var string[]
+   */
   public $timestamps;
 
   /**
@@ -38,10 +41,16 @@ class GooglePrivacyDlpV2Error extends \Google\Collection
   {
     return $this->details;
   }
+  /**
+   * @param string[]
+   */
   public function setTimestamps($timestamps)
   {
     $this->timestamps = $timestamps;
   }
+  /**
+   * @return string[]
+   */
   public function getTimestamps()
   {
     return $this->timestamps;

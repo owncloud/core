@@ -19,30 +19,57 @@ namespace Google\Service\AndroidProvisioningPartner;
 
 class DevicesLongRunningOperationMetadata extends \Google\Model
 {
+  /**
+   * @var int
+   */
   public $devicesCount;
+  /**
+   * @var string
+   */
   public $processingStatus;
+  /**
+   * @var int
+   */
   public $progress;
 
+  /**
+   * @param int
+   */
   public function setDevicesCount($devicesCount)
   {
     $this->devicesCount = $devicesCount;
   }
+  /**
+   * @return int
+   */
   public function getDevicesCount()
   {
     return $this->devicesCount;
   }
+  /**
+   * @param string
+   */
   public function setProcessingStatus($processingStatus)
   {
     $this->processingStatus = $processingStatus;
   }
+  /**
+   * @return string
+   */
   public function getProcessingStatus()
   {
     return $this->processingStatus;
   }
+  /**
+   * @param int
+   */
   public function setProgress($progress)
   {
     $this->progress = $progress;
   }
+  /**
+   * @return int
+   */
   public function getProgress()
   {
     return $this->progress;

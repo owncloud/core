@@ -19,57 +19,111 @@ namespace Google\Service\CloudKMS;
 
 class MacVerifyResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $protectionLevel;
+  /**
+   * @var bool
+   */
   public $success;
+  /**
+   * @var bool
+   */
   public $verifiedDataCrc32c;
+  /**
+   * @var bool
+   */
   public $verifiedMacCrc32c;
+  /**
+   * @var bool
+   */
   public $verifiedSuccessIntegrity;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setProtectionLevel($protectionLevel)
   {
     $this->protectionLevel = $protectionLevel;
   }
+  /**
+   * @return string
+   */
   public function getProtectionLevel()
   {
     return $this->protectionLevel;
   }
+  /**
+   * @param bool
+   */
   public function setSuccess($success)
   {
     $this->success = $success;
   }
+  /**
+   * @return bool
+   */
   public function getSuccess()
   {
     return $this->success;
   }
+  /**
+   * @param bool
+   */
   public function setVerifiedDataCrc32c($verifiedDataCrc32c)
   {
     $this->verifiedDataCrc32c = $verifiedDataCrc32c;
   }
+  /**
+   * @return bool
+   */
   public function getVerifiedDataCrc32c()
   {
     return $this->verifiedDataCrc32c;
   }
+  /**
+   * @param bool
+   */
   public function setVerifiedMacCrc32c($verifiedMacCrc32c)
   {
     $this->verifiedMacCrc32c = $verifiedMacCrc32c;
   }
+  /**
+   * @return bool
+   */
   public function getVerifiedMacCrc32c()
   {
     return $this->verifiedMacCrc32c;
   }
+  /**
+   * @param bool
+   */
   public function setVerifiedSuccessIntegrity($verifiedSuccessIntegrity)
   {
     $this->verifiedSuccessIntegrity = $verifiedSuccessIntegrity;
   }
+  /**
+   * @return bool
+   */
   public function getVerifiedSuccessIntegrity()
   {
     return $this->verifiedSuccessIntegrity;

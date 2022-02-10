@@ -20,84 +20,165 @@ namespace Google\Service\ShoppingContent;
 class BuyOnGoogleProgramStatus extends \Google\Collection
 {
   protected $collection_key = 'businessModel';
+  /**
+   * @var string[]
+   */
   public $businessModel;
+  /**
+   * @var string
+   */
   public $customerServicePendingEmail;
+  /**
+   * @var string
+   */
   public $customerServicePendingPhoneNumber;
+  /**
+   * @var string
+   */
   public $customerServicePendingPhoneRegionCode;
+  /**
+   * @var string
+   */
   public $customerServiceVerifiedEmail;
+  /**
+   * @var string
+   */
   public $customerServiceVerifiedPhoneNumber;
+  /**
+   * @var string
+   */
   public $customerServiceVerifiedPhoneRegionCode;
+  /**
+   * @var string
+   */
   public $onlineSalesChannel;
+  /**
+   * @var string
+   */
   public $participationStage;
 
+  /**
+   * @param string[]
+   */
   public function setBusinessModel($businessModel)
   {
     $this->businessModel = $businessModel;
   }
+  /**
+   * @return string[]
+   */
   public function getBusinessModel()
   {
     return $this->businessModel;
   }
+  /**
+   * @param string
+   */
   public function setCustomerServicePendingEmail($customerServicePendingEmail)
   {
     $this->customerServicePendingEmail = $customerServicePendingEmail;
   }
+  /**
+   * @return string
+   */
   public function getCustomerServicePendingEmail()
   {
     return $this->customerServicePendingEmail;
   }
+  /**
+   * @param string
+   */
   public function setCustomerServicePendingPhoneNumber($customerServicePendingPhoneNumber)
   {
     $this->customerServicePendingPhoneNumber = $customerServicePendingPhoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getCustomerServicePendingPhoneNumber()
   {
     return $this->customerServicePendingPhoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setCustomerServicePendingPhoneRegionCode($customerServicePendingPhoneRegionCode)
   {
     $this->customerServicePendingPhoneRegionCode = $customerServicePendingPhoneRegionCode;
   }
+  /**
+   * @return string
+   */
   public function getCustomerServicePendingPhoneRegionCode()
   {
     return $this->customerServicePendingPhoneRegionCode;
   }
+  /**
+   * @param string
+   */
   public function setCustomerServiceVerifiedEmail($customerServiceVerifiedEmail)
   {
     $this->customerServiceVerifiedEmail = $customerServiceVerifiedEmail;
   }
+  /**
+   * @return string
+   */
   public function getCustomerServiceVerifiedEmail()
   {
     return $this->customerServiceVerifiedEmail;
   }
+  /**
+   * @param string
+   */
   public function setCustomerServiceVerifiedPhoneNumber($customerServiceVerifiedPhoneNumber)
   {
     $this->customerServiceVerifiedPhoneNumber = $customerServiceVerifiedPhoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getCustomerServiceVerifiedPhoneNumber()
   {
     return $this->customerServiceVerifiedPhoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setCustomerServiceVerifiedPhoneRegionCode($customerServiceVerifiedPhoneRegionCode)
   {
     $this->customerServiceVerifiedPhoneRegionCode = $customerServiceVerifiedPhoneRegionCode;
   }
+  /**
+   * @return string
+   */
   public function getCustomerServiceVerifiedPhoneRegionCode()
   {
     return $this->customerServiceVerifiedPhoneRegionCode;
   }
+  /**
+   * @param string
+   */
   public function setOnlineSalesChannel($onlineSalesChannel)
   {
     $this->onlineSalesChannel = $onlineSalesChannel;
   }
+  /**
+   * @return string
+   */
   public function getOnlineSalesChannel()
   {
     return $this->onlineSalesChannel;
   }
+  /**
+   * @param string
+   */
   public function setParticipationStage($participationStage)
   {
     $this->participationStage = $participationStage;
   }
+  /**
+   * @return string
+   */
   public function getParticipationStage()
   {
     return $this->participationStage;

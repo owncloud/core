@@ -21,11 +21,23 @@ class Export extends \Google\Model
 {
   protected $cloudStorageSinkType = CloudStorageSink::class;
   protected $cloudStorageSinkDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
   protected $exportOptionsType = ExportOptions::class;
   protected $exportOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $matterId;
+  /**
+   * @var string
+   */
   public $name;
   protected $queryType = Query::class;
   protected $queryDataType = '';
@@ -33,6 +45,9 @@ class Export extends \Google\Model
   protected $requesterDataType = '';
   protected $statsType = ExportStats::class;
   protected $statsDataType = '';
+  /**
+   * @var string
+   */
   public $status;
 
   /**
@@ -49,10 +64,16 @@ class Export extends \Google\Model
   {
     return $this->cloudStorageSink;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
@@ -71,26 +92,44 @@ class Export extends \Google\Model
   {
     return $this->exportOptions;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setMatterId($matterId)
   {
     $this->matterId = $matterId;
   }
+  /**
+   * @return string
+   */
   public function getMatterId()
   {
     return $this->matterId;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -137,10 +176,16 @@ class Export extends \Google\Model
   {
     return $this->stats;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

@@ -19,48 +19,93 @@ namespace Google\Service\Localservices;
 
 class GoogleAdsHomeservicesLocalservicesV1BookingLead extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bookingAppointmentTimestamp;
+  /**
+   * @var string
+   */
   public $consumerEmail;
+  /**
+   * @var string
+   */
   public $consumerPhoneNumber;
+  /**
+   * @var string
+   */
   public $customerName;
+  /**
+   * @var string
+   */
   public $jobType;
 
+  /**
+   * @param string
+   */
   public function setBookingAppointmentTimestamp($bookingAppointmentTimestamp)
   {
     $this->bookingAppointmentTimestamp = $bookingAppointmentTimestamp;
   }
+  /**
+   * @return string
+   */
   public function getBookingAppointmentTimestamp()
   {
     return $this->bookingAppointmentTimestamp;
   }
+  /**
+   * @param string
+   */
   public function setConsumerEmail($consumerEmail)
   {
     $this->consumerEmail = $consumerEmail;
   }
+  /**
+   * @return string
+   */
   public function getConsumerEmail()
   {
     return $this->consumerEmail;
   }
+  /**
+   * @param string
+   */
   public function setConsumerPhoneNumber($consumerPhoneNumber)
   {
     $this->consumerPhoneNumber = $consumerPhoneNumber;
   }
+  /**
+   * @return string
+   */
   public function getConsumerPhoneNumber()
   {
     return $this->consumerPhoneNumber;
   }
+  /**
+   * @param string
+   */
   public function setCustomerName($customerName)
   {
     $this->customerName = $customerName;
   }
+  /**
+   * @return string
+   */
   public function getCustomerName()
   {
     return $this->customerName;
   }
+  /**
+   * @param string
+   */
   public function setJobType($jobType)
   {
     $this->jobType = $jobType;
   }
+  /**
+   * @return string
+   */
   public function getJobType()
   {
     return $this->jobType;

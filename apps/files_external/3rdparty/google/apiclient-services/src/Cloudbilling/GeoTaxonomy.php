@@ -20,21 +20,39 @@ namespace Google\Service\Cloudbilling;
 class GeoTaxonomy extends \Google\Collection
 {
   protected $collection_key = 'regions';
+  /**
+   * @var string[]
+   */
   public $regions;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string[]
+   */
   public function setRegions($regions)
   {
     $this->regions = $regions;
   }
+  /**
+   * @return string[]
+   */
   public function getRegions()
   {
     return $this->regions;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

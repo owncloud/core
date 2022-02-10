@@ -22,6 +22,9 @@ class DeviceReport extends \Google\Collection
   protected $collection_key = 'appState';
   protected $appStateType = AppState::class;
   protected $appStateDataType = 'array';
+  /**
+   * @var string
+   */
   public $lastUpdatedTimestampMillis;
 
   /**
@@ -38,10 +41,16 @@ class DeviceReport extends \Google\Collection
   {
     return $this->appState;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdatedTimestampMillis($lastUpdatedTimestampMillis)
   {
     $this->lastUpdatedTimestampMillis = $lastUpdatedTimestampMillis;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdatedTimestampMillis()
   {
     return $this->lastUpdatedTimestampMillis;

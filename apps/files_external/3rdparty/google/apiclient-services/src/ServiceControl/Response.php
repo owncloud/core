@@ -19,48 +19,93 @@ namespace Google\Service\ServiceControl;
 
 class Response extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $backendLatency;
+  /**
+   * @var string
+   */
   public $code;
+  /**
+   * @var string[]
+   */
   public $headers;
+  /**
+   * @var string
+   */
   public $size;
+  /**
+   * @var string
+   */
   public $time;
 
+  /**
+   * @param string
+   */
   public function setBackendLatency($backendLatency)
   {
     $this->backendLatency = $backendLatency;
   }
+  /**
+   * @return string
+   */
   public function getBackendLatency()
   {
     return $this->backendLatency;
   }
+  /**
+   * @param string
+   */
   public function setCode($code)
   {
     $this->code = $code;
   }
+  /**
+   * @return string
+   */
   public function getCode()
   {
     return $this->code;
   }
+  /**
+   * @param string[]
+   */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
+  /**
+   * @return string[]
+   */
   public function getHeaders()
   {
     return $this->headers;
   }
+  /**
+   * @param string
+   */
   public function setSize($size)
   {
     $this->size = $size;
   }
+  /**
+   * @return string
+   */
   public function getSize()
   {
     return $this->size;
   }
+  /**
+   * @param string
+   */
   public function setTime($time)
   {
     $this->time = $time;
   }
+  /**
+   * @return string
+   */
   public function getTime()
   {
     return $this->time;

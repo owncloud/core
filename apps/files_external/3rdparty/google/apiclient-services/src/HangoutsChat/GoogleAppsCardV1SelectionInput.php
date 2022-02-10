@@ -22,10 +22,19 @@ class GoogleAppsCardV1SelectionInput extends \Google\Collection
   protected $collection_key = 'items';
   protected $itemsType = GoogleAppsCardV1SelectionItem::class;
   protected $itemsDataType = 'array';
+  /**
+   * @var string
+   */
   public $label;
+  /**
+   * @var string
+   */
   public $name;
   protected $onChangeActionType = GoogleAppsCardV1Action::class;
   protected $onChangeActionDataType = '';
+  /**
+   * @var string
+   */
   public $type;
 
   /**
@@ -42,18 +51,30 @@ class GoogleAppsCardV1SelectionInput extends \Google\Collection
   {
     return $this->items;
   }
+  /**
+   * @param string
+   */
   public function setLabel($label)
   {
     $this->label = $label;
   }
+  /**
+   * @return string
+   */
   public function getLabel()
   {
     return $this->label;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -72,10 +93,16 @@ class GoogleAppsCardV1SelectionInput extends \Google\Collection
   {
     return $this->onChangeAction;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

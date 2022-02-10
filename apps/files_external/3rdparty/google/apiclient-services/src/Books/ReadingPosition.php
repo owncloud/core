@@ -19,66 +19,129 @@ namespace Google\Service\Books;
 
 class ReadingPosition extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $epubCfiPosition;
+  /**
+   * @var string
+   */
   public $gbImagePosition;
+  /**
+   * @var string
+   */
   public $gbTextPosition;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $pdfPosition;
+  /**
+   * @var string
+   */
   public $updated;
+  /**
+   * @var string
+   */
   public $volumeId;
 
+  /**
+   * @param string
+   */
   public function setEpubCfiPosition($epubCfiPosition)
   {
     $this->epubCfiPosition = $epubCfiPosition;
   }
+  /**
+   * @return string
+   */
   public function getEpubCfiPosition()
   {
     return $this->epubCfiPosition;
   }
+  /**
+   * @param string
+   */
   public function setGbImagePosition($gbImagePosition)
   {
     $this->gbImagePosition = $gbImagePosition;
   }
+  /**
+   * @return string
+   */
   public function getGbImagePosition()
   {
     return $this->gbImagePosition;
   }
+  /**
+   * @param string
+   */
   public function setGbTextPosition($gbTextPosition)
   {
     $this->gbTextPosition = $gbTextPosition;
   }
+  /**
+   * @return string
+   */
   public function getGbTextPosition()
   {
     return $this->gbTextPosition;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setPdfPosition($pdfPosition)
   {
     $this->pdfPosition = $pdfPosition;
   }
+  /**
+   * @return string
+   */
   public function getPdfPosition()
   {
     return $this->pdfPosition;
   }
+  /**
+   * @param string
+   */
   public function setUpdated($updated)
   {
     $this->updated = $updated;
   }
+  /**
+   * @return string
+   */
   public function getUpdated()
   {
     return $this->updated;
   }
+  /**
+   * @param string
+   */
   public function setVolumeId($volumeId)
   {
     $this->volumeId = $volumeId;
   }
+  /**
+   * @return string
+   */
   public function getVolumeId()
   {
     return $this->volumeId;

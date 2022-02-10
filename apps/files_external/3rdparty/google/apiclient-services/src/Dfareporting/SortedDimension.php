@@ -19,30 +19,57 @@ namespace Google\Service\Dfareporting;
 
 class SortedDimension extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $sortOrder;
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setSortOrder($sortOrder)
   {
     $this->sortOrder = $sortOrder;
   }
+  /**
+   * @return string
+   */
   public function getSortOrder()
   {
     return $this->sortOrder;

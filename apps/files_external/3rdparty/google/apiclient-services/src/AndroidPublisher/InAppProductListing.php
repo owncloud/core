@@ -20,30 +20,57 @@ namespace Google\Service\AndroidPublisher;
 class InAppProductListing extends \Google\Collection
 {
   protected $collection_key = 'benefits';
+  /**
+   * @var string[]
+   */
   public $benefits;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $title;
 
+  /**
+   * @param string[]
+   */
   public function setBenefits($benefits)
   {
     $this->benefits = $benefits;
   }
+  /**
+   * @return string[]
+   */
   public function getBenefits()
   {
     return $this->benefits;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;

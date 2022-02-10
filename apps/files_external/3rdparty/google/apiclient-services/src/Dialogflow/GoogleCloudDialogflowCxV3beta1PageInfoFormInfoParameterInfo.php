@@ -19,48 +19,93 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3beta1PageInfoFormInfoParameterInfo extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var bool
+   */
   public $justCollected;
+  /**
+   * @var bool
+   */
   public $required;
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var array
+   */
   public $value;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param bool
+   */
   public function setJustCollected($justCollected)
   {
     $this->justCollected = $justCollected;
   }
+  /**
+   * @return bool
+   */
   public function getJustCollected()
   {
     return $this->justCollected;
   }
+  /**
+   * @param bool
+   */
   public function setRequired($required)
   {
     $this->required = $required;
   }
+  /**
+   * @return bool
+   */
   public function getRequired()
   {
     return $this->required;
   }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param array
+   */
   public function setValue($value)
   {
     $this->value = $value;
   }
+  /**
+   * @return array
+   */
   public function getValue()
   {
     return $this->value;

@@ -19,21 +19,39 @@ namespace Google\Service\SearchConsole;
 
 class WmxSite extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $permissionLevel;
+  /**
+   * @var string
+   */
   public $siteUrl;
 
+  /**
+   * @param string
+   */
   public function setPermissionLevel($permissionLevel)
   {
     $this->permissionLevel = $permissionLevel;
   }
+  /**
+   * @return string
+   */
   public function getPermissionLevel()
   {
     return $this->permissionLevel;
   }
+  /**
+   * @param string
+   */
   public function setSiteUrl($siteUrl)
   {
     $this->siteUrl = $siteUrl;
   }
+  /**
+   * @return string
+   */
   public function getSiteUrl()
   {
     return $this->siteUrl;

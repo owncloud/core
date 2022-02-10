@@ -27,6 +27,9 @@ class ExportOptions extends \Google\Model
   protected $hangoutsChatOptionsDataType = '';
   protected $mailOptionsType = MailExportOptions::class;
   protected $mailOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $region;
   protected $voiceOptionsType = VoiceExportOptions::class;
   protected $voiceOptionsDataType = '';
@@ -87,10 +90,16 @@ class ExportOptions extends \Google\Model
   {
     return $this->mailOptions;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;

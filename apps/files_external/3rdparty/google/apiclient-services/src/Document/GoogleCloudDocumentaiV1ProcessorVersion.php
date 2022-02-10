@@ -19,71 +19,75 @@ namespace Google\Service\Document;
 
 class GoogleCloudDocumentaiV1ProcessorVersion extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
-  protected $latestEvaluationType = GoogleCloudDocumentaiV1EvaluationReference::class;
-  protected $latestEvaluationDataType = '';
+  /**
+   * @var string
+   */
   public $name;
-  protected $schemaType = GoogleCloudDocumentaiV1Schema::class;
-  protected $schemaDataType = '';
+  /**
+   * @var string
+   */
   public $state;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
   /**
-   * @param GoogleCloudDocumentaiV1EvaluationReference
+   * @param string
    */
-  public function setLatestEvaluation(GoogleCloudDocumentaiV1EvaluationReference $latestEvaluation)
-  {
-    $this->latestEvaluation = $latestEvaluation;
-  }
-  /**
-   * @return GoogleCloudDocumentaiV1EvaluationReference
-   */
-  public function getLatestEvaluation()
-  {
-    return $this->latestEvaluation;
-  }
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
   /**
-   * @param GoogleCloudDocumentaiV1Schema
+   * @param string
    */
-  public function setSchema(GoogleCloudDocumentaiV1Schema $schema)
-  {
-    $this->schema = $schema;
-  }
-  /**
-   * @return GoogleCloudDocumentaiV1Schema
-   */
-  public function getSchema()
-  {
-    return $this->schema;
-  }
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;

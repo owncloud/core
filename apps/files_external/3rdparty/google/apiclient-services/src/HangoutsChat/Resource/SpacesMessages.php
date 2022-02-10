@@ -34,7 +34,7 @@ class SpacesMessages extends \Google\Service\Resource
    * Creates a message. (messages.create)
    *
    * @param string $parent Required. Space resource name, in the form "spaces".
-   * Example: spaces/AAAAMpdlehY
+   * Example: spaces/AAAAAAAAAAA
    * @param Message $postBody
    * @param array $optParams Optional parameters.
    *
@@ -63,7 +63,7 @@ class SpacesMessages extends \Google\Service\Resource
    *
    * @param string $name Required. Resource name of the message to be deleted, in
    * the form "spaces/messages" Example:
-   * spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
+   * spaces/AAAAAAAAAAA/messages/BBBBBBBBBBB.BBBBBBBBBBB
    * @param array $optParams Optional parameters.
    * @return ChatEmpty
    */
@@ -78,7 +78,7 @@ class SpacesMessages extends \Google\Service\Resource
    *
    * @param string $name Required. Resource name of the message to be retrieved,
    * in the form "spaces/messages". Example:
-   * spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
+   * spaces/AAAAAAAAAAA/messages/BBBBBBBBBBB.BBBBBBBBBBB
    * @param array $optParams Optional parameters.
    * @return Message
    */
@@ -92,7 +92,7 @@ class SpacesMessages extends \Google\Service\Resource
    * Updates a message. (messages.update)
    *
    * @param string $name Resource name in the form `spaces/messages`. Example:
-   * `spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4`
+   * `spaces/AAAAAAAAAAA/messages/BBBBBBBBBBB.BBBBBBBBBBB`
    * @param Message $postBody
    * @param array $optParams Optional parameters.
    *

@@ -20,30 +20,57 @@ namespace Google\Service\CloudTalentSolution;
 class ApplicationInfo extends \Google\Collection
 {
   protected $collection_key = 'uris';
+  /**
+   * @var string[]
+   */
   public $emails;
+  /**
+   * @var string
+   */
   public $instruction;
+  /**
+   * @var string[]
+   */
   public $uris;
 
+  /**
+   * @param string[]
+   */
   public function setEmails($emails)
   {
     $this->emails = $emails;
   }
+  /**
+   * @return string[]
+   */
   public function getEmails()
   {
     return $this->emails;
   }
+  /**
+   * @param string
+   */
   public function setInstruction($instruction)
   {
     $this->instruction = $instruction;
   }
+  /**
+   * @return string
+   */
   public function getInstruction()
   {
     return $this->instruction;
   }
+  /**
+   * @param string[]
+   */
   public function setUris($uris)
   {
     $this->uris = $uris;
   }
+  /**
+   * @return string[]
+   */
   public function getUris()
   {
     return $this->uris;

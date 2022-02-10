@@ -19,30 +19,57 @@ namespace Google\Service\OSConfig;
 
 class GcsObject extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $bucket;
+  /**
+   * @var string
+   */
   public $generationNumber;
+  /**
+   * @var string
+   */
   public $object;
 
+  /**
+   * @param string
+   */
   public function setBucket($bucket)
   {
     $this->bucket = $bucket;
   }
+  /**
+   * @return string
+   */
   public function getBucket()
   {
     return $this->bucket;
   }
+  /**
+   * @param string
+   */
   public function setGenerationNumber($generationNumber)
   {
     $this->generationNumber = $generationNumber;
   }
+  /**
+   * @return string
+   */
   public function getGenerationNumber()
   {
     return $this->generationNumber;
   }
+  /**
+   * @param string
+   */
   public function setObject($object)
   {
     $this->object = $object;
   }
+  /**
+   * @return string
+   */
   public function getObject()
   {
     return $this->object;

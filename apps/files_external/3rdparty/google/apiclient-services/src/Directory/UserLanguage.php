@@ -19,24 +19,60 @@ namespace Google\Service\Directory;
 
 class UserLanguage extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $customLanguage;
+  /**
+   * @var string
+   */
   public $languageCode;
+  /**
+   * @var string
+   */
+  public $preference;
 
+  /**
+   * @param string
+   */
   public function setCustomLanguage($customLanguage)
   {
     $this->customLanguage = $customLanguage;
   }
+  /**
+   * @return string
+   */
   public function getCustomLanguage()
   {
     return $this->customLanguage;
   }
+  /**
+   * @param string
+   */
   public function setLanguageCode($languageCode)
   {
     $this->languageCode = $languageCode;
   }
+  /**
+   * @return string
+   */
   public function getLanguageCode()
   {
     return $this->languageCode;
+  }
+  /**
+   * @param string
+   */
+  public function setPreference($preference)
+  {
+    $this->preference = $preference;
+  }
+  /**
+   * @return string
+   */
+  public function getPreference()
+  {
+    return $this->preference;
   }
 }
 

@@ -19,75 +19,147 @@ namespace Google\Service\Connectors;
 
 class Field extends \Google\Model
 {
+  /**
+   * @var array[]
+   */
   public $additionalDetails;
+  /**
+   * @var string
+   */
   public $dataType;
+  /**
+   * @var array
+   */
   public $defaultValue;
+  /**
+   * @var string
+   */
   public $description;
+  /**
+   * @var string
+   */
   public $field;
+  /**
+   * @var bool
+   */
   public $key;
+  /**
+   * @var bool
+   */
   public $nullable;
+  /**
+   * @var bool
+   */
   public $readonly;
 
+  /**
+   * @param array[]
+   */
   public function setAdditionalDetails($additionalDetails)
   {
     $this->additionalDetails = $additionalDetails;
   }
+  /**
+   * @return array[]
+   */
   public function getAdditionalDetails()
   {
     return $this->additionalDetails;
   }
+  /**
+   * @param string
+   */
   public function setDataType($dataType)
   {
     $this->dataType = $dataType;
   }
+  /**
+   * @return string
+   */
   public function getDataType()
   {
     return $this->dataType;
   }
+  /**
+   * @param array
+   */
   public function setDefaultValue($defaultValue)
   {
     $this->defaultValue = $defaultValue;
   }
+  /**
+   * @return array
+   */
   public function getDefaultValue()
   {
     return $this->defaultValue;
   }
+  /**
+   * @param string
+   */
   public function setDescription($description)
   {
     $this->description = $description;
   }
+  /**
+   * @return string
+   */
   public function getDescription()
   {
     return $this->description;
   }
+  /**
+   * @param string
+   */
   public function setField($field)
   {
     $this->field = $field;
   }
+  /**
+   * @return string
+   */
   public function getField()
   {
     return $this->field;
   }
+  /**
+   * @param bool
+   */
   public function setKey($key)
   {
     $this->key = $key;
   }
+  /**
+   * @return bool
+   */
   public function getKey()
   {
     return $this->key;
   }
+  /**
+   * @param bool
+   */
   public function setNullable($nullable)
   {
     $this->nullable = $nullable;
   }
+  /**
+   * @return bool
+   */
   public function getNullable()
   {
     return $this->nullable;
   }
+  /**
+   * @param bool
+   */
   public function setReadonly($readonly)
   {
     $this->readonly = $readonly;
   }
+  /**
+   * @return bool
+   */
   public function getReadonly()
   {
     return $this->readonly;

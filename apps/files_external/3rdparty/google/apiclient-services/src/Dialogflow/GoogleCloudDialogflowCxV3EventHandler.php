@@ -19,41 +19,77 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3EventHandler extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $event;
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var string
+   */
   public $targetFlow;
+  /**
+   * @var string
+   */
   public $targetPage;
   protected $triggerFulfillmentType = GoogleCloudDialogflowCxV3Fulfillment::class;
   protected $triggerFulfillmentDataType = '';
 
+  /**
+   * @param string
+   */
   public function setEvent($event)
   {
     $this->event = $event;
   }
+  /**
+   * @return string
+   */
   public function getEvent()
   {
     return $this->event;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param string
+   */
   public function setTargetFlow($targetFlow)
   {
     $this->targetFlow = $targetFlow;
   }
+  /**
+   * @return string
+   */
   public function getTargetFlow()
   {
     return $this->targetFlow;
   }
+  /**
+   * @param string
+   */
   public function setTargetPage($targetPage)
   {
     $this->targetPage = $targetPage;
   }
+  /**
+   * @return string
+   */
   public function getTargetPage()
   {
     return $this->targetPage;

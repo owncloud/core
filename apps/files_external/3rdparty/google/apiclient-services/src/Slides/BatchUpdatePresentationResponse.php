@@ -20,16 +20,25 @@ namespace Google\Service\Slides;
 class BatchUpdatePresentationResponse extends \Google\Collection
 {
   protected $collection_key = 'replies';
+  /**
+   * @var string
+   */
   public $presentationId;
   protected $repliesType = Response::class;
   protected $repliesDataType = 'array';
   protected $writeControlType = WriteControl::class;
   protected $writeControlDataType = '';
 
+  /**
+   * @param string
+   */
   public function setPresentationId($presentationId)
   {
     $this->presentationId = $presentationId;
   }
+  /**
+   * @return string
+   */
   public function getPresentationId()
   {
     return $this->presentationId;

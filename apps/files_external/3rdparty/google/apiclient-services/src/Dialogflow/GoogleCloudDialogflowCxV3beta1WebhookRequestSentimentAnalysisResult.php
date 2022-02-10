@@ -19,21 +19,39 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3beta1WebhookRequestSentimentAnalysisResult extends \Google\Model
 {
+  /**
+   * @var float
+   */
   public $magnitude;
+  /**
+   * @var float
+   */
   public $score;
 
+  /**
+   * @param float
+   */
   public function setMagnitude($magnitude)
   {
     $this->magnitude = $magnitude;
   }
+  /**
+   * @return float
+   */
   public function getMagnitude()
   {
     return $this->magnitude;
   }
+  /**
+   * @param float
+   */
   public function setScore($score)
   {
     $this->score = $score;
   }
+  /**
+   * @return float
+   */
   public function getScore()
   {
     return $this->score;

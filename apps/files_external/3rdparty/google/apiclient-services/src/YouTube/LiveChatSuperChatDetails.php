@@ -19,48 +19,93 @@ namespace Google\Service\YouTube;
 
 class LiveChatSuperChatDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $amountDisplayString;
+  /**
+   * @var string
+   */
   public $amountMicros;
+  /**
+   * @var string
+   */
   public $currency;
+  /**
+   * @var string
+   */
   public $tier;
+  /**
+   * @var string
+   */
   public $userComment;
 
+  /**
+   * @param string
+   */
   public function setAmountDisplayString($amountDisplayString)
   {
     $this->amountDisplayString = $amountDisplayString;
   }
+  /**
+   * @return string
+   */
   public function getAmountDisplayString()
   {
     return $this->amountDisplayString;
   }
+  /**
+   * @param string
+   */
   public function setAmountMicros($amountMicros)
   {
     $this->amountMicros = $amountMicros;
   }
+  /**
+   * @return string
+   */
   public function getAmountMicros()
   {
     return $this->amountMicros;
   }
+  /**
+   * @param string
+   */
   public function setCurrency($currency)
   {
     $this->currency = $currency;
   }
+  /**
+   * @return string
+   */
   public function getCurrency()
   {
     return $this->currency;
   }
+  /**
+   * @param string
+   */
   public function setTier($tier)
   {
     $this->tier = $tier;
   }
+  /**
+   * @return string
+   */
   public function getTier()
   {
     return $this->tier;
   }
+  /**
+   * @param string
+   */
   public function setUserComment($userComment)
   {
     $this->userComment = $userComment;
   }
+  /**
+   * @return string
+   */
   public function getUserComment()
   {
     return $this->userComment;

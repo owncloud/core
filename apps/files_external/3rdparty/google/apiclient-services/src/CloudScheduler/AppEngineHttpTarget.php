@@ -21,9 +21,21 @@ class AppEngineHttpTarget extends \Google\Model
 {
   protected $appEngineRoutingType = AppEngineRouting::class;
   protected $appEngineRoutingDataType = '';
+  /**
+   * @var string
+   */
   public $body;
+  /**
+   * @var string[]
+   */
   public $headers;
+  /**
+   * @var string
+   */
   public $httpMethod;
+  /**
+   * @var string
+   */
   public $relativeUri;
 
   /**
@@ -40,34 +52,58 @@ class AppEngineHttpTarget extends \Google\Model
   {
     return $this->appEngineRouting;
   }
+  /**
+   * @param string
+   */
   public function setBody($body)
   {
     $this->body = $body;
   }
+  /**
+   * @return string
+   */
   public function getBody()
   {
     return $this->body;
   }
+  /**
+   * @param string[]
+   */
   public function setHeaders($headers)
   {
     $this->headers = $headers;
   }
+  /**
+   * @return string[]
+   */
   public function getHeaders()
   {
     return $this->headers;
   }
+  /**
+   * @param string
+   */
   public function setHttpMethod($httpMethod)
   {
     $this->httpMethod = $httpMethod;
   }
+  /**
+   * @return string
+   */
   public function getHttpMethod()
   {
     return $this->httpMethod;
   }
+  /**
+   * @param string
+   */
   public function setRelativeUri($relativeUri)
   {
     $this->relativeUri = $relativeUri;
   }
+  /**
+   * @return string
+   */
   public function getRelativeUri()
   {
     return $this->relativeUri;

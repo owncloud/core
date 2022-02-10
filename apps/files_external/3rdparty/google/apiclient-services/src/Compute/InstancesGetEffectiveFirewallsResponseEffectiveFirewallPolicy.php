@@ -20,25 +20,49 @@ namespace Google\Service\Compute;
 class InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy extends \Google\Collection
 {
   protected $collection_key = 'rules';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
   protected $rulesType = FirewallPolicyRule::class;
   protected $rulesDataType = 'array';
+  /**
+   * @var string
+   */
   public $shortName;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
@@ -57,18 +81,30 @@ class InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy extends \Goo
   {
     return $this->rules;
   }
+  /**
+   * @param string
+   */
   public function setShortName($shortName)
   {
     $this->shortName = $shortName;
   }
+  /**
+   * @return string
+   */
   public function getShortName()
   {
     return $this->shortName;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

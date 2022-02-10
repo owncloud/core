@@ -21,7 +21,13 @@ class GooglePrivacyDlpV2CreateJobTriggerRequest extends \Google\Model
 {
   protected $jobTriggerType = GooglePrivacyDlpV2JobTrigger::class;
   protected $jobTriggerDataType = '';
+  /**
+   * @var string
+   */
   public $locationId;
+  /**
+   * @var string
+   */
   public $triggerId;
 
   /**
@@ -38,18 +44,30 @@ class GooglePrivacyDlpV2CreateJobTriggerRequest extends \Google\Model
   {
     return $this->jobTrigger;
   }
+  /**
+   * @param string
+   */
   public function setLocationId($locationId)
   {
     $this->locationId = $locationId;
   }
+  /**
+   * @return string
+   */
   public function getLocationId()
   {
     return $this->locationId;
   }
+  /**
+   * @param string
+   */
   public function setTriggerId($triggerId)
   {
     $this->triggerId = $triggerId;
   }
+  /**
+   * @return string
+   */
   public function getTriggerId()
   {
     return $this->triggerId;

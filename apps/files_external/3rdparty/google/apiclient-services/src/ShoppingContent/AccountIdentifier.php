@@ -19,21 +19,39 @@ namespace Google\Service\ShoppingContent;
 
 class AccountIdentifier extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $aggregatorId;
+  /**
+   * @var string
+   */
   public $merchantId;
 
+  /**
+   * @param string
+   */
   public function setAggregatorId($aggregatorId)
   {
     $this->aggregatorId = $aggregatorId;
   }
+  /**
+   * @return string
+   */
   public function getAggregatorId()
   {
     return $this->aggregatorId;
   }
+  /**
+   * @param string
+   */
   public function setMerchantId($merchantId)
   {
     $this->merchantId = $merchantId;
   }
+  /**
+   * @return string
+   */
   public function getMerchantId()
   {
     return $this->merchantId;

@@ -19,16 +19,31 @@ namespace Google\Service\Bigquery;
 
 class Argument extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $argumentKind;
   protected $dataTypeType = StandardSqlDataType::class;
   protected $dataTypeDataType = '';
+  /**
+   * @var string
+   */
   public $mode;
+  /**
+   * @var string
+   */
   public $name;
 
+  /**
+   * @param string
+   */
   public function setArgumentKind($argumentKind)
   {
     $this->argumentKind = $argumentKind;
   }
+  /**
+   * @return string
+   */
   public function getArgumentKind()
   {
     return $this->argumentKind;
@@ -47,18 +62,30 @@ class Argument extends \Google\Model
   {
     return $this->dataType;
   }
+  /**
+   * @param string
+   */
   public function setMode($mode)
   {
     $this->mode = $mode;
   }
+  /**
+   * @return string
+   */
   public function getMode()
   {
     return $this->mode;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

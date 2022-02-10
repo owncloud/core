@@ -20,14 +20,23 @@ namespace Google\Service\Slides;
 class Recolor extends \Google\Collection
 {
   protected $collection_key = 'recolorStops';
+  /**
+   * @var string
+   */
   public $name;
   protected $recolorStopsType = ColorStop::class;
   protected $recolorStopsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

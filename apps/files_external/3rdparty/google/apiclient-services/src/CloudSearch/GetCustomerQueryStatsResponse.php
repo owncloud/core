@@ -22,6 +22,10 @@ class GetCustomerQueryStatsResponse extends \Google\Collection
   protected $collection_key = 'stats';
   protected $statsType = CustomerQueryStats::class;
   protected $statsDataType = 'array';
+  /**
+   * @var string
+   */
+  public $totalQueryCount;
 
   /**
    * @param CustomerQueryStats[]
@@ -36,6 +40,20 @@ class GetCustomerQueryStatsResponse extends \Google\Collection
   public function getStats()
   {
     return $this->stats;
+  }
+  /**
+   * @param string
+   */
+  public function setTotalQueryCount($totalQueryCount)
+  {
+    $this->totalQueryCount = $totalQueryCount;
+  }
+  /**
+   * @return string
+   */
+  public function getTotalQueryCount()
+  {
+    return $this->totalQueryCount;
   }
 }
 

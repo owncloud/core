@@ -19,48 +19,93 @@ namespace Google\Service\YouTube;
 
 class PlaylistItemContentDetails extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $endAt;
+  /**
+   * @var string
+   */
   public $note;
+  /**
+   * @var string
+   */
   public $startAt;
+  /**
+   * @var string
+   */
   public $videoId;
+  /**
+   * @var string
+   */
   public $videoPublishedAt;
 
+  /**
+   * @param string
+   */
   public function setEndAt($endAt)
   {
     $this->endAt = $endAt;
   }
+  /**
+   * @return string
+   */
   public function getEndAt()
   {
     return $this->endAt;
   }
+  /**
+   * @param string
+   */
   public function setNote($note)
   {
     $this->note = $note;
   }
+  /**
+   * @return string
+   */
   public function getNote()
   {
     return $this->note;
   }
+  /**
+   * @param string
+   */
   public function setStartAt($startAt)
   {
     $this->startAt = $startAt;
   }
+  /**
+   * @return string
+   */
   public function getStartAt()
   {
     return $this->startAt;
   }
+  /**
+   * @param string
+   */
   public function setVideoId($videoId)
   {
     $this->videoId = $videoId;
   }
+  /**
+   * @return string
+   */
   public function getVideoId()
   {
     return $this->videoId;
   }
+  /**
+   * @param string
+   */
   public function setVideoPublishedAt($videoPublishedAt)
   {
     $this->videoPublishedAt = $videoPublishedAt;
   }
+  /**
+   * @return string
+   */
   public function getVideoPublishedAt()
   {
     return $this->videoPublishedAt;

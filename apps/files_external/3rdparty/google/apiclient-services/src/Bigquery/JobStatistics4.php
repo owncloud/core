@@ -20,21 +20,39 @@ namespace Google\Service\Bigquery;
 class JobStatistics4 extends \Google\Collection
 {
   protected $collection_key = 'destinationUriFileCounts';
+  /**
+   * @var string[]
+   */
   public $destinationUriFileCounts;
+  /**
+   * @var string
+   */
   public $inputBytes;
 
+  /**
+   * @param string[]
+   */
   public function setDestinationUriFileCounts($destinationUriFileCounts)
   {
     $this->destinationUriFileCounts = $destinationUriFileCounts;
   }
+  /**
+   * @return string[]
+   */
   public function getDestinationUriFileCounts()
   {
     return $this->destinationUriFileCounts;
   }
+  /**
+   * @param string
+   */
   public function setInputBytes($inputBytes)
   {
     $this->inputBytes = $inputBytes;
   }
+  /**
+   * @return string
+   */
   public function getInputBytes()
   {
     return $this->inputBytes;

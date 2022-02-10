@@ -20,14 +20,23 @@ namespace Google\Service\DLP;
 class GooglePrivacyDlpV2KMapEstimationQuasiIdValues extends \Google\Collection
 {
   protected $collection_key = 'quasiIdsValues';
+  /**
+   * @var string
+   */
   public $estimatedAnonymity;
   protected $quasiIdsValuesType = GooglePrivacyDlpV2Value::class;
   protected $quasiIdsValuesDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setEstimatedAnonymity($estimatedAnonymity)
   {
     $this->estimatedAnonymity = $estimatedAnonymity;
   }
+  /**
+   * @return string
+   */
   public function getEstimatedAnonymity()
   {
     return $this->estimatedAnonymity;

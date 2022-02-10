@@ -20,14 +20,23 @@ namespace Google\Service\Dfareporting;
 class RegionsListResponse extends \Google\Collection
 {
   protected $collection_key = 'regions';
+  /**
+   * @var string
+   */
   public $kind;
   protected $regionsType = Region::class;
   protected $regionsDataType = 'array';
 
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

@@ -19,12 +19,21 @@ namespace Google\Service\Calendar;
 
 class ConferenceRequestStatus extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $statusCode;
 
+  /**
+   * @param string
+   */
   public function setStatusCode($statusCode)
   {
     $this->statusCode = $statusCode;
   }
+  /**
+   * @return string
+   */
   public function getStatusCode()
   {
     return $this->statusCode;

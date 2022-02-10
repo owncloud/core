@@ -19,39 +19,75 @@ namespace Google\Service\PubsubLite;
 
 class ComputeMessageStatsResponse extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $messageBytes;
+  /**
+   * @var string
+   */
   public $messageCount;
+  /**
+   * @var string
+   */
   public $minimumEventTime;
+  /**
+   * @var string
+   */
   public $minimumPublishTime;
 
+  /**
+   * @param string
+   */
   public function setMessageBytes($messageBytes)
   {
     $this->messageBytes = $messageBytes;
   }
+  /**
+   * @return string
+   */
   public function getMessageBytes()
   {
     return $this->messageBytes;
   }
+  /**
+   * @param string
+   */
   public function setMessageCount($messageCount)
   {
     $this->messageCount = $messageCount;
   }
+  /**
+   * @return string
+   */
   public function getMessageCount()
   {
     return $this->messageCount;
   }
+  /**
+   * @param string
+   */
   public function setMinimumEventTime($minimumEventTime)
   {
     $this->minimumEventTime = $minimumEventTime;
   }
+  /**
+   * @return string
+   */
   public function getMinimumEventTime()
   {
     return $this->minimumEventTime;
   }
+  /**
+   * @param string
+   */
   public function setMinimumPublishTime($minimumPublishTime)
   {
     $this->minimumPublishTime = $minimumPublishTime;
   }
+  /**
+   * @return string
+   */
   public function getMinimumPublishTime()
   {
     return $this->minimumPublishTime;

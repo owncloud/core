@@ -19,30 +19,57 @@ namespace Google\Service\CloudBuild;
 
 class DeleteGitHubEnterpriseConfigOperationMetadata extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $completeTime;
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $githubEnterpriseConfig;
 
+  /**
+   * @param string
+   */
   public function setCompleteTime($completeTime)
   {
     $this->completeTime = $completeTime;
   }
+  /**
+   * @return string
+   */
   public function getCompleteTime()
   {
     return $this->completeTime;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setGithubEnterpriseConfig($githubEnterpriseConfig)
   {
     $this->githubEnterpriseConfig = $githubEnterpriseConfig;
   }
+  /**
+   * @return string
+   */
   public function getGithubEnterpriseConfig()
   {
     return $this->githubEnterpriseConfig;

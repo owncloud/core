@@ -19,48 +19,93 @@ namespace Google\Service\AdExchangeBuyerII;
 
 class Note extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $creatorRole;
+  /**
+   * @var string
+   */
   public $note;
+  /**
+   * @var string
+   */
   public $noteId;
+  /**
+   * @var string
+   */
   public $proposalRevision;
 
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setCreatorRole($creatorRole)
   {
     $this->creatorRole = $creatorRole;
   }
+  /**
+   * @return string
+   */
   public function getCreatorRole()
   {
     return $this->creatorRole;
   }
+  /**
+   * @param string
+   */
   public function setNote($note)
   {
     $this->note = $note;
   }
+  /**
+   * @return string
+   */
   public function getNote()
   {
     return $this->note;
   }
+  /**
+   * @param string
+   */
   public function setNoteId($noteId)
   {
     $this->noteId = $noteId;
   }
+  /**
+   * @return string
+   */
   public function getNoteId()
   {
     return $this->noteId;
   }
+  /**
+   * @param string
+   */
   public function setProposalRevision($proposalRevision)
   {
     $this->proposalRevision = $proposalRevision;
   }
+  /**
+   * @return string
+   */
   public function getProposalRevision()
   {
     return $this->proposalRevision;

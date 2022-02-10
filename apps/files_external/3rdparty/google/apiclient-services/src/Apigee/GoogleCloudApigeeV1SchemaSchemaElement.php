@@ -19,14 +19,23 @@ namespace Google\Service\Apigee;
 
 class GoogleCloudApigeeV1SchemaSchemaElement extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
   protected $propertiesType = GoogleCloudApigeeV1SchemaSchemaProperty::class;
   protected $propertiesDataType = '';
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

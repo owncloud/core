@@ -19,21 +19,39 @@ namespace Google\Service\AIPlatformNotebooks;
 
 class AcceleratorConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $coreCount;
+  /**
+   * @var string
+   */
   public $type;
 
+  /**
+   * @param string
+   */
   public function setCoreCount($coreCount)
   {
     $this->coreCount = $coreCount;
   }
+  /**
+   * @return string
+   */
   public function getCoreCount()
   {
     return $this->coreCount;
   }
+  /**
+   * @param string
+   */
   public function setType($type)
   {
     $this->type = $type;
   }
+  /**
+   * @return string
+   */
   public function getType()
   {
     return $this->type;

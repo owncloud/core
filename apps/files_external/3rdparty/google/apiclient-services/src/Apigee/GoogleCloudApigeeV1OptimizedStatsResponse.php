@@ -23,17 +23,29 @@ class GoogleCloudApigeeV1OptimizedStatsResponse extends \Google\Collection
   protected $internal_gapi_mappings = [
         "timeUnit" => "TimeUnit",
   ];
+  /**
+   * @var string[]
+   */
   public $timeUnit;
   protected $metaDataType = GoogleCloudApigeeV1Metadata::class;
   protected $metaDataDataType = '';
+  /**
+   * @var bool
+   */
   public $resultTruncated;
   protected $statsType = GoogleCloudApigeeV1OptimizedStatsNode::class;
   protected $statsDataType = '';
 
+  /**
+   * @param string[]
+   */
   public function setTimeUnit($timeUnit)
   {
     $this->timeUnit = $timeUnit;
   }
+  /**
+   * @return string[]
+   */
   public function getTimeUnit()
   {
     return $this->timeUnit;
@@ -52,10 +64,16 @@ class GoogleCloudApigeeV1OptimizedStatsResponse extends \Google\Collection
   {
     return $this->metaData;
   }
+  /**
+   * @param bool
+   */
   public function setResultTruncated($resultTruncated)
   {
     $this->resultTruncated = $resultTruncated;
   }
+  /**
+   * @return bool
+   */
   public function getResultTruncated()
   {
     return $this->resultTruncated;

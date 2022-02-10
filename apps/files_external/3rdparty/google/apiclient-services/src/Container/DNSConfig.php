@@ -19,30 +19,57 @@ namespace Google\Service\Container;
 
 class DNSConfig extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $clusterDns;
+  /**
+   * @var string
+   */
   public $clusterDnsDomain;
+  /**
+   * @var string
+   */
   public $clusterDnsScope;
 
+  /**
+   * @param string
+   */
   public function setClusterDns($clusterDns)
   {
     $this->clusterDns = $clusterDns;
   }
+  /**
+   * @return string
+   */
   public function getClusterDns()
   {
     return $this->clusterDns;
   }
+  /**
+   * @param string
+   */
   public function setClusterDnsDomain($clusterDnsDomain)
   {
     $this->clusterDnsDomain = $clusterDnsDomain;
   }
+  /**
+   * @return string
+   */
   public function getClusterDnsDomain()
   {
     return $this->clusterDnsDomain;
   }
+  /**
+   * @param string
+   */
   public function setClusterDnsScope($clusterDnsScope)
   {
     $this->clusterDnsScope = $clusterDnsScope;
   }
+  /**
+   * @return string
+   */
   public function getClusterDnsScope()
   {
     return $this->clusterDnsScope;

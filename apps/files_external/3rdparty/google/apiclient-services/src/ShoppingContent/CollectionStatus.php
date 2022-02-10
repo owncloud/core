@@ -22,10 +22,19 @@ class CollectionStatus extends \Google\Collection
   protected $collection_key = 'destinationStatuses';
   protected $collectionLevelIssusesType = CollectionStatusItemLevelIssue::class;
   protected $collectionLevelIssusesDataType = 'array';
+  /**
+   * @var string
+   */
   public $creationDate;
   protected $destinationStatusesType = CollectionStatusDestinationStatus::class;
   protected $destinationStatusesDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var string
+   */
   public $lastUpdateDate;
 
   /**
@@ -42,10 +51,16 @@ class CollectionStatus extends \Google\Collection
   {
     return $this->collectionLevelIssuses;
   }
+  /**
+   * @param string
+   */
   public function setCreationDate($creationDate)
   {
     $this->creationDate = $creationDate;
   }
+  /**
+   * @return string
+   */
   public function getCreationDate()
   {
     return $this->creationDate;
@@ -64,18 +79,30 @@ class CollectionStatus extends \Google\Collection
   {
     return $this->destinationStatuses;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param string
+   */
   public function setLastUpdateDate($lastUpdateDate)
   {
     $this->lastUpdateDate = $lastUpdateDate;
   }
+  /**
+   * @return string
+   */
   public function getLastUpdateDate()
   {
     return $this->lastUpdateDate;

@@ -28,7 +28,13 @@ class SearchResult extends \Google\Collection
   protected $metadataDataType = '';
   protected $snippetType = Snippet::class;
   protected $snippetDataType = '';
+  /**
+   * @var string
+   */
   public $title;
+  /**
+   * @var string
+   */
   public $url;
 
   /**
@@ -87,18 +93,30 @@ class SearchResult extends \Google\Collection
   {
     return $this->snippet;
   }
+  /**
+   * @param string
+   */
   public function setTitle($title)
   {
     $this->title = $title;
   }
+  /**
+   * @return string
+   */
   public function getTitle()
   {
     return $this->title;
   }
+  /**
+   * @param string
+   */
   public function setUrl($url)
   {
     $this->url = $url;
   }
+  /**
+   * @return string
+   */
   public function getUrl()
   {
     return $this->url;

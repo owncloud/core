@@ -20,6 +20,9 @@ namespace Google\Service\Docs;
 class TableColumnProperties extends \Google\Model
 {
   protected $widthDataType = '';
+  /**
+   * @var string
+   */
   public $widthType;
 
   /**
@@ -36,10 +39,16 @@ class TableColumnProperties extends \Google\Model
   {
     return $this->width;
   }
+  /**
+   * @param string
+   */
   public function setWidthType($widthType)
   {
     $this->widthType = $widthType;
   }
+  /**
+   * @return string
+   */
   public function getWidthType()
   {
     return $this->widthType;

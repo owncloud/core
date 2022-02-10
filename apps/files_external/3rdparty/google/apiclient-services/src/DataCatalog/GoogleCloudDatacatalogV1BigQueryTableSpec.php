@@ -19,16 +19,25 @@ namespace Google\Service\DataCatalog;
 
 class GoogleCloudDatacatalogV1BigQueryTableSpec extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $tableSourceType;
   protected $tableSpecType = GoogleCloudDatacatalogV1TableSpec::class;
   protected $tableSpecDataType = '';
   protected $viewSpecType = GoogleCloudDatacatalogV1ViewSpec::class;
   protected $viewSpecDataType = '';
 
+  /**
+   * @param string
+   */
   public function setTableSourceType($tableSourceType)
   {
     $this->tableSourceType = $tableSourceType;
   }
+  /**
+   * @return string
+   */
   public function getTableSourceType()
   {
     return $this->tableSourceType;

@@ -20,21 +20,39 @@ namespace Google\Service\YouTube;
 class VideoContentDetailsRegionRestriction extends \Google\Collection
 {
   protected $collection_key = 'blocked';
+  /**
+   * @var string[]
+   */
   public $allowed;
+  /**
+   * @var string[]
+   */
   public $blocked;
 
+  /**
+   * @param string[]
+   */
   public function setAllowed($allowed)
   {
     $this->allowed = $allowed;
   }
+  /**
+   * @return string[]
+   */
   public function getAllowed()
   {
     return $this->allowed;
   }
+  /**
+   * @param string[]
+   */
   public function setBlocked($blocked)
   {
     $this->blocked = $blocked;
   }
+  /**
+   * @return string[]
+   */
   public function getBlocked()
   {
     return $this->blocked;

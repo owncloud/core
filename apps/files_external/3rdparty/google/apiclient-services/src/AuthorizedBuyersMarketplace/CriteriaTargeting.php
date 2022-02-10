@@ -20,21 +20,39 @@ namespace Google\Service\AuthorizedBuyersMarketplace;
 class CriteriaTargeting extends \Google\Collection
 {
   protected $collection_key = 'targetedCriteriaIds';
+  /**
+   * @var string[]
+   */
   public $excludedCriteriaIds;
+  /**
+   * @var string[]
+   */
   public $targetedCriteriaIds;
 
+  /**
+   * @param string[]
+   */
   public function setExcludedCriteriaIds($excludedCriteriaIds)
   {
     $this->excludedCriteriaIds = $excludedCriteriaIds;
   }
+  /**
+   * @return string[]
+   */
   public function getExcludedCriteriaIds()
   {
     return $this->excludedCriteriaIds;
   }
+  /**
+   * @param string[]
+   */
   public function setTargetedCriteriaIds($targetedCriteriaIds)
   {
     $this->targetedCriteriaIds = $targetedCriteriaIds;
   }
+  /**
+   * @return string[]
+   */
   public function getTargetedCriteriaIds()
   {
     return $this->targetedCriteriaIds;

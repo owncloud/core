@@ -22,6 +22,9 @@ class TableDataInsertAllResponseInsertErrors extends \Google\Collection
   protected $collection_key = 'errors';
   protected $errorsType = ErrorProto::class;
   protected $errorsDataType = 'array';
+  /**
+   * @var string
+   */
   public $index;
 
   /**
@@ -38,10 +41,16 @@ class TableDataInsertAllResponseInsertErrors extends \Google\Collection
   {
     return $this->errors;
   }
+  /**
+   * @param string
+   */
   public function setIndex($index)
   {
     $this->index = $index;
   }
+  /**
+   * @return string
+   */
   public function getIndex()
   {
     return $this->index;

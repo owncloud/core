@@ -19,30 +19,57 @@ namespace Google\Service\Dialogflow;
 
 class GoogleCloudDialogflowCxV3VersionVariantsVariant extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $isControlGroup;
+  /**
+   * @var float
+   */
   public $trafficAllocation;
+  /**
+   * @var string
+   */
   public $version;
 
+  /**
+   * @param bool
+   */
   public function setIsControlGroup($isControlGroup)
   {
     $this->isControlGroup = $isControlGroup;
   }
+  /**
+   * @return bool
+   */
   public function getIsControlGroup()
   {
     return $this->isControlGroup;
   }
+  /**
+   * @param float
+   */
   public function setTrafficAllocation($trafficAllocation)
   {
     $this->trafficAllocation = $trafficAllocation;
   }
+  /**
+   * @return float
+   */
   public function getTrafficAllocation()
   {
     return $this->trafficAllocation;
   }
+  /**
+   * @param string
+   */
   public function setVersion($version)
   {
     $this->version = $version;
   }
+  /**
+   * @return string
+   */
   public function getVersion()
   {
     return $this->version;

@@ -20,21 +20,39 @@ namespace Google\Service\Sheets;
 class BatchClearValuesByDataFilterResponse extends \Google\Collection
 {
   protected $collection_key = 'clearedRanges';
+  /**
+   * @var string[]
+   */
   public $clearedRanges;
+  /**
+   * @var string
+   */
   public $spreadsheetId;
 
+  /**
+   * @param string[]
+   */
   public function setClearedRanges($clearedRanges)
   {
     $this->clearedRanges = $clearedRanges;
   }
+  /**
+   * @return string[]
+   */
   public function getClearedRanges()
   {
     return $this->clearedRanges;
   }
+  /**
+   * @param string
+   */
   public function setSpreadsheetId($spreadsheetId)
   {
     $this->spreadsheetId = $spreadsheetId;
   }
+  /**
+   * @return string
+   */
   public function getSpreadsheetId()
   {
     return $this->spreadsheetId;

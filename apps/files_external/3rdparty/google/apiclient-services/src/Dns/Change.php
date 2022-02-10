@@ -24,10 +24,25 @@ class Change extends \Google\Collection
   protected $additionsDataType = 'array';
   protected $deletionsType = ResourceRecordSet::class;
   protected $deletionsDataType = 'array';
+  /**
+   * @var string
+   */
   public $id;
+  /**
+   * @var bool
+   */
   public $isServing;
+  /**
+   * @var string
+   */
   public $kind;
+  /**
+   * @var string
+   */
   public $startTime;
+  /**
+   * @var string
+   */
   public $status;
 
   /**
@@ -58,42 +73,72 @@ class Change extends \Google\Collection
   {
     return $this->deletions;
   }
+  /**
+   * @param string
+   */
   public function setId($id)
   {
     $this->id = $id;
   }
+  /**
+   * @return string
+   */
   public function getId()
   {
     return $this->id;
   }
+  /**
+   * @param bool
+   */
   public function setIsServing($isServing)
   {
     $this->isServing = $isServing;
   }
+  /**
+   * @return bool
+   */
   public function getIsServing()
   {
     return $this->isServing;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;
   }
+  /**
+   * @param string
+   */
   public function setStartTime($startTime)
   {
     $this->startTime = $startTime;
   }
+  /**
+   * @return string
+   */
   public function getStartTime()
   {
     return $this->startTime;
   }
+  /**
+   * @param string
+   */
   public function setStatus($status)
   {
     $this->status = $status;
   }
+  /**
+   * @return string
+   */
   public function getStatus()
   {
     return $this->status;

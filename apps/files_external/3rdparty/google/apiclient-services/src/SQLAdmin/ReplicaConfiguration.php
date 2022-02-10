@@ -19,23 +19,41 @@ namespace Google\Service\SQLAdmin;
 
 class ReplicaConfiguration extends \Google\Model
 {
+  /**
+   * @var bool
+   */
   public $failoverTarget;
+  /**
+   * @var string
+   */
   public $kind;
   protected $mysqlReplicaConfigurationType = MySqlReplicaConfiguration::class;
   protected $mysqlReplicaConfigurationDataType = '';
 
+  /**
+   * @param bool
+   */
   public function setFailoverTarget($failoverTarget)
   {
     $this->failoverTarget = $failoverTarget;
   }
+  /**
+   * @return bool
+   */
   public function getFailoverTarget()
   {
     return $this->failoverTarget;
   }
+  /**
+   * @param string
+   */
   public function setKind($kind)
   {
     $this->kind = $kind;
   }
+  /**
+   * @return string
+   */
   public function getKind()
   {
     return $this->kind;

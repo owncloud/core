@@ -37,7 +37,10 @@ class ProjectsLocationsConnectionsRuntimeActionSchemas extends \Google\Service\R
    * Format: projects/{project}/locations/{location}/connections/{connection}
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string filter Filter
+   * @opt_param string filter Required. Filter Format: action="{actionId}" Only
+   * action field is supported with literal equality operator. Accepted filter
+   * example: action="CancelOrder" Wildcards are not supported in the filter
+   * currently.
    * @opt_param int pageSize Page size.
    * @opt_param string pageToken Page token.
    * @return ListRuntimeActionSchemasResponse
