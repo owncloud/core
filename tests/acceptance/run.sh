@@ -42,22 +42,13 @@ fi
 
 if [ -n "${EXPECTED_FAILURES_FILE}" ]
 then
-	if [ -f "${EXPECTED_FAILURES_FILE}" ]
+	# Check the expected-failures file
+	${SCRIPT_PATH}/lint-expected-failures.sh
+	LINT_STATUS=$?
+	if [ ${LINT_STATUS} -ne 0 ]
 	then
-		echo "Checking expected failures in ${EXPECTED_FAILURES_FILE}"
-	else
-		echo "Expected failures file ${EXPECTED_FAILURES_FILE} not found"
-		echo "Check the setting of EXPECTED_FAILURES_FILE environment variable"
-		exit 1
-	fi
-	# If the last line of the expected-failures file ends without a newline character
-	# then that line may not get processed by some of the bash code in this script
-	# So check that the last character in the file is a newline
-	if [ $(tail -c1 "${EXPECTED_FAILURES_FILE}" | wc -l) -eq 0 ]
-	then
-		echo "Expected failures file ${EXPECTED_FAILURES_FILE} must end with a newline"
-		echo "Put a newline at the end of the last line and try again"
-		exit 1
+		echo "Error: expected failures file ${EXPECTED_FAILURES_FILE} is invalid"
+		exit ${LINT_STATUS}
 	fi
 fi
 
