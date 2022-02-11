@@ -54,6 +54,7 @@ class WebDavHelper {
 	 * @param string|null $password
 	 * @param string|null $path
 	 * @param string|null $xRequestId
+	 * @param int|null $davPathVersionToUse
 	 *
 	 * @return string
 	 * @throws Exception
@@ -63,15 +64,16 @@ class WebDavHelper {
 		?string $user,
 		?string $password,
 		?string $path,
-		?string $xRequestId = ''
+		?string $xRequestId = '',
+		?int $davPathVersionToUse = self::DAV_VERSION_NEW
 	): string {
 		$body
 			= '<?xml version="1.0"?>
-<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-  <d:prop>
-    <oc:fileid />
-  </d:prop>
-</d:propfind>';
+				<d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+ 					<d:prop>
+    					<oc:fileid />
+  					</d:prop>
+				</d:propfind>';
 		$response = self::makeDavRequest(
 			$baseUrl,
 			$user,
@@ -80,7 +82,8 @@ class WebDavHelper {
 			$path,
 			null,
 			$xRequestId,
-			$body
+			$body,
+			$davPathVersionToUse
 		);
 		\preg_match(
 			'/\<oc:fileid\>([^\<]*)\<\/oc:fileid\>/',

@@ -9,6 +9,7 @@ Feature: users cannot move (rename) a file to or into an excluded directory
     And user "Alice" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile0.txt"
 
+
   Scenario Outline: rename a file to an excluded directory name
     Given using <dav_version> DAV path
     When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
@@ -18,6 +19,12 @@ Feature: users cannot move (rename) a file to or into an excluded directory
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
+      
 
   Scenario Outline: rename a file to an excluded directory name inside a parent directory
     Given using <dav_version> DAV path
@@ -29,6 +36,11 @@ Feature: users cannot move (rename) a file to or into an excluded directory
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
   @skipOnOcV10.3
   Scenario Outline: rename a file to a filename that matches (or not) excluded_directories_regex
@@ -65,3 +77,8 @@ Feature: users cannot move (rename) a file to or into an excluded directory
       | dav_version |
       | old         |
       | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |

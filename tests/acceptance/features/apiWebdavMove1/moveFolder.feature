@@ -151,3 +151,51 @@ Feature: move (rename) folder
     Examples:
       | dav_version |
       | spaces      |
+
+  @files_sharing-app-required @skipOnOcis
+  Scenario Outline: Moving a folder out of a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "/testshare"
+    And user "Brian" has created folder "/testshare/testsubfolder"
+    And user "Brian" has uploaded file with content "test data" to "/testshare/testsubfolder/testfile.txt"
+    And user "Brian" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | Alice     |
+    When user "<mover>" moves folder "/testshare/testsubfolder" to "/testsubfolder" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testsubfolder/testfile.txt" for user "<mover>" should be "test data"
+    And as "Alice" folder "/testshare/testsubfolder" should not exist
+    And as "Brian" folder "/testshare/testsubfolder" should not exist
+    Examples:
+      | dav_version | mover |
+      | old         | Alice |
+      | new         | Alice |
+      | old         | Brian |
+      | new         | Brian |
+
+  @files_sharing-app-required @skipOnOcis
+  Scenario Outline: Moving a folder into a shared folder as the sharee and as the sharer
+    Given using <dav_version> DAV path
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "/testshare"
+    And user "Brian" has created a share with settings
+      | path        | testshare |
+      | shareType   | user      |
+      | permissions | change    |
+      | shareWith   | Alice     |
+    And user "<mover>" has created folder "/testsubfolder"
+    And user "<mover>" has uploaded file with content "test data" to "/testsubfolder/testfile.txt"
+    When user "<mover>" moves folder "/testsubfolder" to "/testshare/testsubfolder" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And the content of file "/testshare/testsubfolder/testfile.txt" for user "Alice" should be "test data"
+    And the content of file "/testshare/testsubfolder/testfile.txt" for user "Brian" should be "test data"
+    And as "<mover>" file "/testsubfolder" should not exist
+    Examples:
+      | dav_version | mover |
+      | old         | Alice |
+      | new         | Alice |
+      | old         | Brian |
+      | new         | Brian |
