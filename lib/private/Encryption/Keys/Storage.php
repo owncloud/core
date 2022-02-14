@@ -338,7 +338,9 @@ class Storage implements IStorage {
 
 		if ($this->view->file_exists($sourcePath)) {
 			$this->keySetPreparation(\dirname($targetPath));
-			return $this->view->rename($sourcePath, $targetPath);
+			if ($sourcePath !== $targetPath) {
+				return $this->view->rename($sourcePath, $targetPath);
+			}
 		}
 
 		return true;
