@@ -322,3 +322,10 @@ Feature: download file
     Examples:
       | dav_version |
       | spaces      |
+
+
+  Scenario: download a zero byte size file
+    Given user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
+    When user "Alice" downloads file "/zerobyte.txt" using the WebDAV API
+    Then the size of the downloaded file should be 0 bytes
+    And the HTTP status code should be "200"
