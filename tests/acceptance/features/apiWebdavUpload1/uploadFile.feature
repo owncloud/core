@@ -308,3 +308,9 @@ Feature: upload file
     Examples:
       | dav_version |
       | spaces      |
+
+
+  Scenario: upload a file of size zero byte
+    When user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
+    Then the HTTP status code should be "201"
+    And as "Alice" file "zerobyte.txt" should exist
