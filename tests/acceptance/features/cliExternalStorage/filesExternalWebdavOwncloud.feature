@@ -375,7 +375,7 @@ Feature: using files external service with storage as webdav_owncloud
     # File should not be moved but here the file is moved to mount storage
     But as "Brian" file "TestMountPoint/test.txt" should exist
 
-  @issue-39550
+
   Scenario: share receiver tries to move a folder that they have received from someone, to external storage
     Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
@@ -390,16 +390,10 @@ Feature: using files external service with storage as webdav_owncloud
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "testFolder"
     And user "Brian" has shared folder "/testFolder" with user "Carol"
-    When user "Brian" moves folder "/testFolder" to "TestMountPoint/testFolder" using the WebDAV API
-    Then the HTTP status code should be "500"
-    # Uncomment the following line after the issue has been fixed
-    # Then the HTTP status code should be "403"
-    # Remove the following line after the issue has been fixed
-    And the HTTP response message should be "You are not allowed to share /Brian/files/TestMountPoint/testFolder"
-    # Uncomment the following line after the issue has been fixed
-    # And the HTTP response message should be "It is not allowed to move one mount point into another one"
+    When user "Carol" moves folder "/testFolder" to "TestMountPoint/testFolder" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And the HTTP response message should be "It is not allowed to move one mount point into another one"
 
-  @issue-39550
   Scenario: share receiver tries to move a file that they have received from someone, to external storage
     Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
@@ -414,11 +408,6 @@ Feature: using files external service with storage as webdav_owncloud
     And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has uploaded file with content "Test content for moving file." to "test.txt"
     And user "Brian" has shared file "test.txt" with user "Carol"
-    When user "Brian" moves file "/test.txt" to "TestMountPoint/test.txt" using the WebDAV API
-    Then the HTTP status code should be "500"
-    # Uncomment the following line after the issue has been fixed
-    # Then the HTTP status code should be "403"
-    # Remove the following line after the issue has been fixed
-    And the HTTP response message should be "You are not allowed to share /Brian/files/TestMountPoint/test.txt"
-    # Uncomment the following line after the issue has been fixed
-    # And the HTTP response message should be "It is not allowed to move one mount point into another one"
+    When user "Carol" moves file "/test.txt" to "TestMountPoint/test.txt" using the WebDAV API
+    Then the HTTP status code should be "403"
+    And the HTTP response message should be "It is not allowed to move one mount point into another one"
