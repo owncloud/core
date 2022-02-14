@@ -611,3 +611,12 @@ Feature: copy file
     Examples:
       | dav_version |
       | spaces      |
+
+
+  Scenario: copy a file of size zero byte
+    Given user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
+    And user "Alice" has created folder "/testZeroByte"
+    When user "Alice" copies file "/zerobyte.txt" to "/testZeroByte/zerobyte.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/testZeroByte/zerobyte.txt" should exist
+    And as "Alice" file "/zerobyte.txt" should exist
