@@ -17,7 +17,8 @@ Feature: Comments
       | oc:comments-href   |
       | oc:comments-count  |
       | oc:comments-unread |
-    Then the single response should contain a property "oc:comments-count" with value "1"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:comments-count" with value "1"
     And the single response should contain a property "oc:comments-unread" with value "0"
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
@@ -32,7 +33,8 @@ Feature: Comments
       | oc:comments-href   |
       | oc:comments-count  |
       | oc:comments-unread |
-    Then the single response should contain a property "oc:comments-count" with value "1"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:comments-count" with value "1"
     And the single response should contain a property "oc:comments-unread" with value "0"
     And the single response should contain a property "oc:comments-href" with value "%a_comment_url%"
 
@@ -40,7 +42,8 @@ Feature: Comments
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     And user "Alice" has commented with content "My first comment" on file "/myFileToComment.txt"
     When user "Alice" gets all information about the comments on file "myFileToComment.txt" using the WebDAV REPORT API
-    Then the following comment properties should be listed about user "Alice"
+    Then the HTTP status code should be "201"
+    And the following comment properties should be listed about user "Alice"
       | propertyName     | propertyValue    |
       | verb             | comment          |
       | actorType        | users            |

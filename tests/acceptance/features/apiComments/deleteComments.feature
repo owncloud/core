@@ -78,7 +78,8 @@ Feature: Comments
     When user "Alice" comments with content "This should be deleted" on folder "/FOLDER_TO_DELETE" using the WebDAV API
     And user "Alice" deletes folder "/FOLDER_TO_DELETE" using the WebDAV API
     And user "Alice" has created folder "/FOLDER_TO_DELETE"
-    Then user "Alice" should have 0 comments on folder "/FOLDER_TO_DELETE"
+    Then the HTTP status code should be "201"
+    And user "Alice" should have 0 comments on folder "/FOLDER_TO_DELETE"
 
   @files_sharing-app-required
   Scenario: deleting a user does not remove the comment
@@ -87,7 +88,9 @@ Feature: Comments
     And user "Alice" has shared folder "/FOLDER_TO_COMMENT" with user "Brian"
     And user "Brian" has commented with content "Comment from sharee" on folder "/FOLDER_TO_COMMENT"
     When the administrator deletes user "Brian" using the provisioning API
-    Then user "Alice" should have 1 comments on folder "/FOLDER_TO_COMMENT"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And user "Alice" should have 1 comments on folder "/FOLDER_TO_COMMENT"
     And user "Alice" should have the following comments on folder "/FOLDER_TO_COMMENT"
       | user          | comment             |
       | deleted_users | Comment from sharee |
@@ -98,4 +101,5 @@ Feature: Comments
     And user "Alice" has been deleted
     And user "Alice" has been created with default attributes and without skeleton files
     When user "Alice" creates folder "/FOLDER_TO_COMMENT" using the WebDAV API
-    Then user "Alice" should have 0 comments on folder "/FOLDER_TO_COMMENT"
+    Then the HTTP status code should be "201"
+    And user "Alice" should have 0 comments on folder "/FOLDER_TO_COMMENT"

@@ -12,7 +12,8 @@ Feature: Comments
   Scenario Outline: Creating a comment on a file belonging to myself
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
     When user "Alice" comments with content "<comment>" on file "/myFileToComment.txt" using the WebDAV API
-    Then user "Alice" should have the following comments on file "/myFileToComment.txt"
+    Then the HTTP status code should be "201"
+    And user "Alice" should have the following comments on file "/myFileToComment.txt"
       | user  | comment   |
       | Alice | <comment> |
     Examples:
@@ -70,7 +71,8 @@ Feature: Comments
   Scenario: Creating a comment on a folder belonging to myself
     Given user "Alice" has created folder "/FOLDER"
     When user "Alice" comments with content "My first comment" on folder "/FOLDER" using the WebDAV API
-    Then user "Alice" should have the following comments on folder "/FOLDER"
+    Then the HTTP status code should be "201"
+    And user "Alice" should have the following comments on folder "/FOLDER"
       | user  | comment          |
       | Alice | My first comment |
 

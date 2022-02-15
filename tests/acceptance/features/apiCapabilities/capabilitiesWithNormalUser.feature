@@ -10,7 +10,9 @@ Feature: default capabilities for normal user
   @issue-ocis-reva-175 @issue-ocis-reva-176
   Scenario: getting default capabilities with normal user
     When user "Alice" retrieves the capabilities using the capabilities API
-    Then the capabilities should contain
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the capabilities should contain
       | capability    | path_to_element                           | value             |
       | core          | pollinterval                              | 60                |
       | core          | webdav-root                               | remote.php/webdav |
