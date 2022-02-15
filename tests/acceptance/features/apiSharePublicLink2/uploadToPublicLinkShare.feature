@@ -194,7 +194,6 @@ Feature: upload to a public link share
     Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
     And user "Alice" has created a public link share with settings
       | path        | FOLDER |
-      | permissions | all    |
     When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "yes"
     Then uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "403"
