@@ -129,3 +129,10 @@ Feature: delete file
     Examples:
       | dav_version    |
       | spaces         |
+
+
+  Scenario: delete a file of size zero byte
+    Given user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
+    When user "Alice" deletes file "/zerobyte.txt" using the WebDAV API
+    Then the HTTP status code should be "204"
+    And as "Alice" file "/zerobyte.txt" should not exist
