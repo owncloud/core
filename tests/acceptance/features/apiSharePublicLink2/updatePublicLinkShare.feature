@@ -81,6 +81,7 @@ Feature: update a public link share
   @issue-product-295 @skipOnOcV10
   Scenario Outline: API responds with a full set of parameters when owner renames the file with a public link
     Given using OCS API version "<ocs_api_version>"
+    And using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
     When user "Alice" creates a public link share using the sharing API with settings
       | path | FOLDER |
@@ -113,9 +114,18 @@ Feature: update a public link share
       | mail_send                  | 0                    |
       | name                       |                      |
     Examples:
-      | ocs_api_version | ocs_status_code |
-      | 1               | 100             |
-      | 2               | 200             |
+      | dav-path | ocs_api_version | ocs_status_code |
+      | old      | 1               | 100             |
+      | old      | 2               | 200             |
+      | new      | 1               | 100             |
+      | new      | 2               | 200             |
+
+    @personalSpace
+    Examples:
+      | dav-path | ocs_api_version | ocs_status_code |
+      | spaces   | 1               | 100             |
+      | spaces   | 2               | 200             |
+
 
   Scenario Outline: Creating a new public link share with password and adding an expiration date using public API
     Given using OCS API version "<ocs_api_version>"
