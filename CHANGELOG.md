@@ -12,6 +12,7 @@ Summary
 * Bugfix - Prevent group names starting or ending with white space: [#39540](https://github.com/owncloud/core/pull/39540)
 * Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
 * Bugfix - Don't resend invitation mail if a user is guest: [#39602](https://github.com/owncloud/core/pull/39602)
+* Bugfix - Text previews had faulty content if BOM was present: [#39669](https://github.com/owncloud/core/pull/39669)
 * Bugfix - Fix files:checksums:verify for a single file: [#39683](https://github.com/owncloud/core/pull/39683)
 * Bugfix - Moving a file from one folder into a folder that is a number fails: [#39702](https://github.com/owncloud/core/issues/39702)
 * Bugfix - Make licenses expire at the end of the expiration date: [#39735](https://github.com/owncloud/core/pull/39735)
@@ -19,6 +20,7 @@ Summary
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
+* Enhancement - Unify API responses when setting permissions for public links: [#39194](https://github.com/owncloud/core/pull/39194)
 * Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
 
 Details
@@ -44,6 +46,14 @@ Details
 
    https://github.com/owncloud/enterprise/issues/4868
    https://github.com/owncloud/core/pull/39602
+
+* Bugfix - Text previews had faulty content if BOM was present: [#39669](https://github.com/owncloud/core/pull/39669)
+
+   The BOM was incorrectly detected and was causing ownCloud to choose the wrong font for the text,
+   showing unexpected results. The BOM is now processed correctly and the preview is shown as
+   expected
+
+   https://github.com/owncloud/core/pull/39669
 
 * Bugfix - Fix files:checksums:verify for a single file: [#39683](https://github.com/owncloud/core/pull/39683)
 
@@ -123,6 +133,16 @@ Details
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 
    https://github.com/owncloud/core/pull/38758
+
+* Enhancement - Unify API responses when setting permissions for public links: [#39194](https://github.com/owncloud/core/pull/39194)
+
+   Setting (and changing) the permissions of public links via the OCS API will now return proper
+   and unified API responses. Adding create permissions while public uploading is disabled
+   globally will always return a 403 response.
+
+   https://github.com/owncloud/core/issues/36442
+   https://github.com/owncloud/core/issues/36443
+   https://github.com/owncloud/core/pull/39194
 
 * Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
 
