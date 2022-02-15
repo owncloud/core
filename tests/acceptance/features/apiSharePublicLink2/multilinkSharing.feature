@@ -108,8 +108,9 @@ Feature: multilinksharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario: Deleting a file deletes also its public links
+  Scenario Outline: Deleting a file deletes also its public links
     Given using OCS API version "1"
+    And using <dav-path> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
@@ -128,6 +129,16 @@ Feature: multilinksharing
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as user "Alice" the file "/textfile0.txt" should not have any shares
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path |
+      | spaces   |
+
 
   Scenario Outline: Deleting one public link share of a file doesn't affect the rest
     Given using OCS API version "<ocs_api_version>"
@@ -162,8 +173,9 @@ Feature: multilinksharing
       | 1               | 100             |
       | 2               | 200             |
 
-  Scenario: Overwriting a file doesn't remove its public shares
+  Scenario Outline: Overwriting a file doesn't remove its public shares
     Given using OCS API version "1"
+    And using <dav-path> DAV path
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a public link share with settings
       | path        | textfile0.txt |
@@ -182,10 +194,20 @@ Feature: multilinksharing
       | path           | permissions | name        |
       | /textfile0.txt | 1           | sharedlink1 |
       | /textfile0.txt | 1           | sharedlink2 |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path |
+      | spaces   |
 
   @issue-ocis-reva-335
-  Scenario: Renaming a folder doesn't remove its public shares
+  Scenario Outline: Renaming a folder doesn't remove its public shares
     Given using OCS API version "1"
+    And using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share with settings
       | path         | FOLDER      |
@@ -206,3 +228,12 @@ Feature: multilinksharing
       | path            | permissions | name        |
       | /FOLDER_RENAMED | 15          | sharedlink1 |
       | /FOLDER_RENAMED | 15          | sharedlink2 |
+    Examples:
+      | dav-path |
+      | old      |
+      | new      |
+
+  @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path |
+      | spaces   |

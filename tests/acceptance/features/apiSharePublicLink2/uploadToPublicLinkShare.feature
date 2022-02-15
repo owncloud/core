@@ -41,7 +41,8 @@ Feature: upload to a public link share
       | path        | FOLDER |
       | permissions | create |
     When user "Alice" deletes file "/FOLDER" using the WebDAV API
-    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
+    Then the HTTP status code should be "204"
+    And uploading a file should not work using the <webdav_api_version> public WebDAV API
     And the HTTP status code should be "404"
 
     @notToImplementOnOCIS @issue-ocis-2079
@@ -55,6 +56,11 @@ Feature: upload to a public link share
       | dav-path | webdav_api_version |
       | old      | new                |
       | new      | new                |
+
+    @personalSpace @skipOnOcV10
+    Examples:
+      | dav-path | webdav_api_version |
+      | spaces   | new                |
 
 
   Scenario Outline: Uploading file to a public read-only share folder with public API does not work
