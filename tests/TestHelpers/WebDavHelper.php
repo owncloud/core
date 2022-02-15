@@ -433,19 +433,16 @@ class WebDavHelper {
 					__METHOD__ . " oc:id not found in webdav propfind for user $user - so the personal space id cannot be discovered"
 				);
 			}
-			// oc:id should be some base64 encoded string like:
-			// "NzQ2NGNhZjYtMTc5OS0xMDNjLTkwNDYtYzdiNzRkZWI1ZjYzOjc0NjRjYWY2LTE3OTktMTAzYy05MDQ2LWM3Yjc0ZGViNWY2Mw=="
-			$idBase64 = $xmlPart[0]->__toString();
-			// That should decode to something like:
-			// "7464caf6-1799-103c-9046-c7b74deb5f63:7464caf6-1799-103c-9046-c7b74deb5f63"
-			$decodedId = base64_decode($idBase64);
-			$decodedIdParts = \explode(":", $decodedId);
-			if (\count($decodedIdParts) !== 2) {
+			// oc:id should be something like:
+			// "7464caf6-1799-103c-9046-c7b74deb5f63!7464caf6-1799-103c-9046-c7b74deb5f63"
+			$ocId = $xmlPart[0]->__toString();
+			$ocIdParts = \explode("!", $ocId);
+			if (\count($ocIdParts) !== 2) {
 				throw new Exception(
-					__METHOD__ . " the decoded oc:id $decodedId for user $user does not have 2 parts separated by a colon, so the personal space id cannot be discovered"
+					__METHOD__ . " the oc:id $ocId for user $user does not have 2 parts separated by an exclamation mark, so the personal space id cannot be discovered"
 				);
 			}
-			$personalSpaceId = $decodedIdParts[0];
+			$personalSpaceId = $ocIdParts[0];
 		} else {
 			foreach ($json->value as $spaces) {
 				if ($spaces->driveType === "personal") {
