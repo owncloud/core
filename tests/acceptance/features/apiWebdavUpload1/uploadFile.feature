@@ -311,6 +311,6 @@ Feature: upload file
 
 
   Scenario: upload a file of size zero byte
-    When user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
+    When user "Alice" uploads file "filesForUpload/zerobyte.txt" to "/zerobyte.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "zerobyte.txt" should exist
