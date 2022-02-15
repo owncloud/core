@@ -92,7 +92,7 @@ class Utf8Analyzer {
 		['range' => [0xf900, 0xfaff], 'script' => 'Han'],
 		['range' => [0xfb1d, 0xfb4f], 'script' => 'Hebrew'],  // some unicode chars aren't assigned
 		['range' => [0xfb50, 0xfdff], 'script' => 'Arabic'],
-		['range' => [0xfe70, 0xfeff], 'script' => 'Arabic'],
+		['range' => [0xfe70, 0xfefc], 'script' => 'Arabic'],
 	];
 
 	/**

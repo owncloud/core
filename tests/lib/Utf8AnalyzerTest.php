@@ -230,6 +230,37 @@ class Utf8AnalyzerTest extends \Test\TestCase {
 					]
 				]
 			],
+			// Include BOM marker at the beginning
+			[
+				'data://text/plain;base64,77u/bGHMiHJsIMOxbwo=',
+				['count', 'details', 'lines'],
+				PHP_INT_MAX,
+				[
+					"count" => [
+						"_unknown" => 2,
+						"Latin" => 6,
+						"Common" => 2,
+					],
+					"details" => [
+						["range" => "0-2", "str" => "﻿", "unicode" => 65279, "unicodeHex" => "feff", "script" => "_unknown"],
+						["range" => "3-3", "str" => "l", "unicode" => 108, "unicodeHex" => "6c", "script" => "Latin"],
+						["range" => "4-4", "str" => "a", "unicode" => 97, "unicodeHex" => "61", "script" => "Latin"],
+						["range" => "5-6", "str" => \mb_chr(776), "unicode" => 776, "unicodeHex" => "308", "script" => "_unknown"],
+						["range" => "7-7", "str" => "r", "unicode" => 114, "unicodeHex" => "72", "script" => "Latin"],
+						["range" => "8-8", "str" => "l", "unicode" => 108, "unicodeHex" => "6c", "script" => "Latin"],
+						["range" => "9-9", "str" => " ", "unicode" => 32, "unicodeHex" => "20", "script" => "Common"],
+						["range" => "10-11", "str" => "ñ", "unicode" => 241, "unicodeHex" => "f1", "script" => "Latin"],
+						["range" => "12-12", "str" => "o", "unicode" => 111, "unicodeHex" => "6f", "script" => "Latin"],
+						["range" => "13-13", "str" => "\n", "unicode" => 10, "unicodeHex" => "a", "script" => "Common"],
+					],
+					"lines" => [
+						"linesNumber" => 2,
+						"lines" => [
+							["﻿", "l", "a", \mb_chr(776), "r", "l", " ", "ñ", "o"],
+						]
+					]
+				],
+			],
 			// with limited chars
 			[
 				'data://text/plain;base64,44Gr56e75YuVCuacnQo=',
@@ -446,6 +477,62 @@ class Utf8AnalyzerTest extends \Test\TestCase {
 						"lines" => [
 							["이", "동"],
 							["아", "침"]
+						]
+					]
+				],
+			],
+			// Include BOM marker at the beginning
+			[
+				"\xef\xbb\xbflat pos",
+				['count'],
+				[
+					"count" => [
+						"_unknown" => 1,
+						"Latin" => 6,
+						"Common" => 1,
+					],
+				],
+			],
+			[
+				"\xef\xbb\xbflat pos",
+				['count', 'lines'],
+				[
+					"count" => [
+						"_unknown" => 1,
+						"Latin" => 6,
+						"Common" => 1,
+					],
+					"lines" => [
+						"linesNumber" => 1,
+						"lines" => [
+							["﻿", "l", "a", "t", " ", "p", "o", "s"],
+						]
+					]
+				],
+			],
+			[
+				"\xef\xbb\xbflat pos",
+				['count', 'details', 'lines'],
+				[
+					"count" => [
+						"_unknown" => 1,
+						"Latin" => 6,
+						"Common" => 1,
+					],
+					"details" => [
+						["range" => "0-2", "str" => "﻿", "unicode" => 65279, "unicodeHex" => "feff", "script" => "_unknown"],
+						["range" => "3-3", "str" => "l", "unicode" => 108, "unicodeHex" => "6c", "script" => "Latin"],
+						["range" => "4-4", "str" => "a", "unicode" => 97, "unicodeHex" => "61", "script" => "Latin"],
+						["range" => "5-5", "str" => "t", "unicode" => 116, "unicodeHex" => "74", "script" => "Latin"],
+						["range" => "6-6", "str" => " ", "unicode" => 32, "unicodeHex" => "20", "script" => "Common"],
+						["range" => "7-7", "str" => "p", "unicode" => 112, "unicodeHex" => "70", "script" => "Latin"],
+						["range" => "8-8", "str" => "o", "unicode" => 111, "unicodeHex" => "6f", "script" => "Latin"],
+						["range" => "9-9", "str" => "s", "unicode" => 115, "unicodeHex" => "73", "script" => "Latin"],
+					],
+					"lines" => [
+						"linesNumber" => 1,
+						"lines" => [
+							["﻿", "l", "a", "t", " ", "p", "o", "s"],
 						]
 					]
 				],
