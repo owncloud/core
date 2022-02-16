@@ -433,19 +433,34 @@ class WebDavHelper {
 					__METHOD__ . " oc:id not found in webdav propfind for user $user - so the personal space id cannot be discovered"
 				);
 			}
-			// oc:id should be some base64 encoded string like:
-			// "NzQ2NGNhZjYtMTc5OS0xMDNjLTkwNDYtYzdiNzRkZWI1ZjYzOjc0NjRjYWY2LTE3OTktMTAzYy05MDQ2LWM3Yjc0ZGViNWY2Mw=="
-			$idBase64 = $xmlPart[0]->__toString();
-			// That should decode to something like:
-			// "7464caf6-1799-103c-9046-c7b74deb5f63:7464caf6-1799-103c-9046-c7b74deb5f63"
-			$decodedId = base64_decode($idBase64);
-			$decodedIdParts = \explode(":", $decodedId);
-			if (\count($decodedIdParts) !== 2) {
+			$ocIdRawString = $xmlPart[0]->__toString();
+			$separator = "!";
+			if (\strpos($ocIdRawString, $separator) !== false) {
+				// The string is not base64-encoded, because the exclamation mark is not in the base64 alphabet.
+				// We expect to have a string with 2 parts separated by the exclamation mark.
+				// This is the format introduced in 2022-02
+				// oc:id should be something like:
+				// "7464caf6-1799-103c-9046-c7b74deb5f63!7464caf6-1799-103c-9046-c7b74deb5f63"
+				// There is no encoding to decode.
+				$decodedId = $ocIdRawString;
+			} else {
+				// fall-back to assuming that the oc:id is base64-encoded
+				// That is the format used before and up to 2022-02
+				// This can be removed after both the edge and master branches of cs3org/reva are using the new format.
+				// oc:id should be some base64 encoded string like:
+				// "NzQ2NGNhZjYtMTc5OS0xMDNjLTkwNDYtYzdiNzRkZWI1ZjYzOjc0NjRjYWY2LTE3OTktMTAzYy05MDQ2LWM3Yjc0ZGViNWY2Mw=="
+				// That should decode to something like:
+				// "7464caf6-1799-103c-9046-c7b74deb5f63:7464caf6-1799-103c-9046-c7b74deb5f63"
+				$decodedId = base64_decode($ocIdRawString);
+				$separator = ":";
+			}
+			$ocIdParts = \explode($separator, $decodedId);
+			if (\count($ocIdParts) !== 2) {
 				throw new Exception(
-					__METHOD__ . " the decoded oc:id $decodedId for user $user does not have 2 parts separated by a colon, so the personal space id cannot be discovered"
+					__METHOD__ . " the oc:id $decodedId for user $user does not have 2 parts separated by '$separator', so the personal space id cannot be discovered"
 				);
 			}
-			$personalSpaceId = $decodedIdParts[0];
+			$personalSpaceId = $ocIdParts[0];
 		} else {
 			foreach ($json->value as $spaces) {
 				if ($spaces->driveType === "personal") {
