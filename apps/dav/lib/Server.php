@@ -224,7 +224,7 @@ class Server {
 			OC::$server->getLazyRootFolder()
 		));
 
-		if ($this->isRequestForSubtree(['files', 'meta', 'trash-bin', 'public-files'])) {
+		if ($this->isRequestForSubtree(['files', 'meta', 'trash-bin'])) {
 			\Sabre\DAV\Server::$streamMultiStatus = true;
 			$this->server->addPlugin(new ViewOnlyPlugin(
 				OC::$server->getLogger()
