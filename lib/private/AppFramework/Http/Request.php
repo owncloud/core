@@ -395,12 +395,6 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			&& \strpos($this->getHeader('Content-Type'), 'application/x-www-form-urlencoded') === false
 			&& \strpos($this->getHeader('Content-Type'), 'application/json') === false
 		) {
-			if ($this->content === false) {
-				throw new \LogicException(
-					'"put" can only be accessed once if not '
-					. 'application/x-www-form-urlencoded or application/json.'
-				);
-			}
 			$this->content = false;
 			return \fopen($this->inputStream, 'rb');
 		} else {
