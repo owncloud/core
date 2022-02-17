@@ -36,7 +36,7 @@ then
 			# "The expected failures in this file are from features in the owncloud/ocis repo."
 			# Write a line near the top of the expected-failures file to "declare" this,
 			# overriding the default "owncloud/core"
-			if [[ "${INPUT_LINE}" =~ features[[:blank:]]in[[:blank:]]the[[:blank:]]([a-zA-Z0-9-]+/[a-zA-Z0-9-]+)[[:blank:]]repo ]]; then
+			if [[ "${INPUT_LINE}" =~ features[[:blank:]]in[[:blank:]]the[[:blank:]]([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+)[[:blank:]]repo ]]; then
 				FEATURE_FILE_REPO="${BASH_REMATCH[1]}"
 				echo "Features are expected to be in the ${FEATURE_FILE_REPO} repo"
 				continue
@@ -44,7 +44,7 @@ then
 			# Match lines that have [someSuite/someName.feature:n] - the part inside the
 			# brackets is the suite, feature and line number of the expected failure.
 			# Else ignore the line.
-			if [[ "${INPUT_LINE}" =~ \[([a-zA-Z0-9-]+/[a-zA-Z0-9-]+\.feature:[0-9]+)] ]]; then
+			if [[ "${INPUT_LINE}" =~ \[([a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+\.feature:[0-9]+)] ]]; then
 				SUITE_SCENARIO_LINE="${BASH_REMATCH[1]}"
 			else
 				continue
