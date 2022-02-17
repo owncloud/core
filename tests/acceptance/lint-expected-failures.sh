@@ -50,7 +50,7 @@ then
 				continue
 			fi
 			# Find the link in round-brackets that should be after the SUITE_SCENARIO_LINE
-			if [[ "${INPUT_LINE}" =~ \(([a-zA-Z0-9:/.#-]+)\) ]]; then
+			if [[ "${INPUT_LINE}" =~ \(([a-zA-Z0-9:/.#_-]+)\) ]]; then
 				ACTUAL_LINK="${BASH_REMATCH[1]}"
 			else
 				echo "Link not found in ${INPUT_LINE}"
