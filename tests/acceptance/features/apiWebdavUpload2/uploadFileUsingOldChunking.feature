@@ -37,7 +37,8 @@ Feature: upload file using old chunking
       | 3      | CCCCC   |
       | 2      | BBBBB   |
       | 1      | AAAAA   |
-    Then as "Alice" file "/myChunkedFile.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
     Examples:
       | dav_version |
@@ -55,7 +56,8 @@ Feature: upload file using old chunking
       | 2      | BBBBB   |
       | 3      | CCCCC   |
       | 1      | AAAAA   |
-    Then as "Alice" file "/myChunkedFile.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
     Examples:
       | dav_version |
@@ -74,7 +76,8 @@ Feature: upload file using old chunking
     And user "Alice" has copied file "/textfile0.txt" to "/existingFile.txt"
     And user "Alice" has stored id of file "/existingFile.txt"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/existingFile.txt" in 3 chunks with old chunking and using the WebDAV API
-    Then user "Alice" file "/existingFile.txt" should have the previously stored id
+    Then the HTTP status code should be "201"
+    And user "Alice" file "/existingFile.txt" should have the previously stored id
     And the content of file "/existingFile.txt" for user "Alice" should be:
       """
       This is a testfile.
@@ -100,7 +103,8 @@ Feature: upload file using old chunking
   Scenario Outline: Chunked upload files with difficult name
     Given using <dav_version> DAV path
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/<file-name>" in 3 chunks using the WebDAV API
-    Then as "Alice" file "/<file-name>" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "Alice" should be:
       """
       This is a testfile.
@@ -125,7 +129,8 @@ Feature: upload file using old chunking
     And the owncloud log level has been set to debug
     And the owncloud log has been cleared
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/<file-name>" in 3 chunks using the WebDAV API
-    Then as "Alice" file "/<file-name>" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "Alice" should be:
       """
       This is a testfile.

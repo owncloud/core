@@ -36,7 +36,8 @@ Feature: upload file using new chunking
       | 1      | AAAAA   |
       | 2      | BBBBB   |
       | 3      | CCCCC   |
-    Then as "Alice" file "/myChunkedFile.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -51,7 +52,8 @@ Feature: upload file using new chunking
       | 1      | AAAAA   |
       | 2      | BBBBB   |
       | 3      | CCCCC   |
-    Then as "Alice" file "/myChunkedFile.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/myChunkedFile.txt" should exist
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "AAAAABBBBBCCCCC"
     And the log file should not contain any log-entries containing these attributes:
       | app |
@@ -65,7 +67,8 @@ Feature: upload file using new chunking
     And user "Alice" has copied file "/textfile0.txt" to "/existingFile.txt"
     And user "Alice" has stored id of file "/existingFile.txt"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/existingFile.txt" in 3 chunks with new chunking and using the WebDAV API
-    Then user "Alice" file "/existingFile.txt" should have the previously stored id
+    Then the HTTP status code should be "204"
+    And user "Alice" file "/existingFile.txt" should have the previously stored id
     And the content of file "/existingFile.txt" for user "Alice" should be:
       """
       This is a testfile.
@@ -139,7 +142,8 @@ Feature: upload file using new chunking
     And user "Alice" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the WebDAV API
     And user "Alice" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the WebDAV API
     And user "Alice" moves new chunk file with id "chunking-42" to "/<file-name>" using the WebDAV API
-    Then as "Alice" file "/<file-name>" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "Alice" should be "AAAAABBBBBCCCCC"
     Examples:
       | file-name |
@@ -154,7 +158,8 @@ Feature: upload file using new chunking
     Given the owncloud log level has been set to debug
     And the owncloud log has been cleared
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/<file-name>" in 3 chunks with new chunking and using the WebDAV API
-    Then as "Alice" file "/<file-name>" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/<file-name>" should exist
     And the content of file "/<file-name>" for user "Alice" should be:
       """
       This is a testfile.
