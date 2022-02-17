@@ -323,7 +323,7 @@ Feature: create a public link share
       | 1               | 403             |
       | 2               | 403             |
 
-
+  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario Outline: Updating a public link share with read+create permissions is forbidden when public upload is disabled globally
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "/afolder"
@@ -342,7 +342,7 @@ Feature: create a public link share
       | 2               | 403             |
 
 
-  @issue-ocis-reva-41
+  @issue-ocis-reva-41 @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario Outline: Creating a link share with read+update+create permissions is forbidden when public upload is disabled globally
     Given using OCS API version "<ocs_api_version>"
     And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
