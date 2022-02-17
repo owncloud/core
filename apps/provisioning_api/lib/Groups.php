@@ -28,6 +28,7 @@ namespace OCA\Provisioning_API;
 use OC_OCS_Result;
 use OCP\IGroup;
 use OCP\IUser;
+use OCP\IConfig;
 
 class Groups {
 
@@ -37,21 +38,26 @@ class Groups {
 	/** @var \OCP\IUserSession */
 	private $userSession;
 
+	/** @var IConfig */
+	private $config;
 	/** @var \OCP\IRequest */
 	private $request;
 
 	/**
 	 * @param \OCP\IGroupManager $groupManager
 	 * @param \OCP\IUserSession $userSession
+	 * @param IConfig $config
 	 * @param \OCP\IRequest $request
 	 */
 	public function __construct(
 		\OCP\IGroupManager $groupManager,
 		\OCP\IUserSession $userSession,
+		IConfig $config,
 		\OCP\IRequest $request
 	) {
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
+		$this->config = $config;
 		$this->request = $request;
 	}
 
@@ -73,7 +79,49 @@ class Groups {
 			$offset = (int)$offset;
 		}
 
-		$groups = $this->groupManager->search($search, $limit, $offset, 'management');
+		$user = $this->userSession->getUser();
+		$userid = $user->getUID();
+
+		$groups = [];
+		if ($this->groupManager->isAdmin($userid)) {
+			// admins have access to all the groups
+			$groups = $this->groupManager->search($search, $limit, $offset, 'management');
+		} else {
+			// check if it's a subAdmin
+			$subAdmin = $this->groupManager->getSubAdmin();
+			if ($subAdmin->isSubAdmin($user)) {
+				// subAdmins have access to the groups they control
+				$unfilteredGroups = $subAdmin->getSubAdminsGroups($user);
+
+				if ($search !== '') {
+					// filter the groups
+					$currentIndex = 0;
+					foreach ($unfilteredGroups as $group) {
+						if (($limit !== null) && ($currentIndex >= $offset + $limit)) {
+							// no need to check further groups
+							break;
+						}
+						$guid = $group->getGID();
+						$allowMedialSearches = $this->config->getSystemValue("groups.enable_medial_search", true);
+						$initialPos = \mb_stripos($guid, $search); // case insensitive search
+						if (
+							($allowMedialSearches && $initialPos !== false) ||
+							(!$allowMedialSearches && $initialPos === 0)
+						) {
+							$groups[] = $group;
+							$currentIndex++;
+						}
+					}
+				} else {
+					$groups = $unfilteredGroups;
+				}
+
+				// slice the groups according to params
+				$groups = \array_slice($groups, $offset, $limit);
+			}
+			// regular users shouldn't be able to reach this point
+		}
+
 		$groups = \array_map(function ($group) {
 			/** @var IGroup $group */
 			return $group->getGID();
@@ -185,12 +233,19 @@ class Groups {
 			return new OC_OCS_Result(null, 101, 'Group does not exist');
 		}
 
-		'@phan-var \OC\Group\Manager $this->groupManager';
-		$subadmins = $this->groupManager->getSubAdmin()->getGroupsSubAdmins($targetGroup);
-		// New class returns IUser[] so convert back
+		$currentUser = $this->userSession->getUser();
+		$subAdminManager = $this->groupManager->getSubAdmin();
 		$uids = [];
-		foreach ($subadmins as $user) {
-			$uids[] = $user->getUID();
+		if (
+			$this->groupManager->isAdmin($currentUser->getUID()) ||
+			$subAdminManager->isSubAdminofGroup($currentUser, $targetGroup)
+		) {
+			'@phan-var \OC\Group\Manager $this->groupManager';
+			$subadmins = $subAdminManager->getGroupsSubAdmins($targetGroup);
+			// New class returns IUser[] so convert back
+			foreach ($subadmins as $user) {
+				$uids[] = $user->getUID();
+			}
 		}
 
 		return new OC_OCS_Result($uids);

@@ -664,23 +664,31 @@ class Users {
 			return new Result(null, API::RESPOND_NOT_FOUND, 'The requested user could not be found');
 		}
 
+		$groups = [];
 		// Check if same user or subadmin or admin
 		$subAdminManager = $this->groupManager->getSubAdmin();
-		if ($targetUserId === $currentLoggedInUserId
-			|| $subAdminManager->isUserAccessible($currentLoggedInUser, $targetUser)
-			|| $this->groupManager->isAdmin($currentLoggedInUserId)) {
-
-			// Get the subadmin groups
+		if ($this->groupManager->isAdmin($currentLoggedInUserId)) {
+			// admins can see all the subadmin's groups
 			$groups = $subAdminManager->getSubAdminsGroups($targetUser);
 			foreach ($groups as $key => $group) {
 				$groups[$key] = $group->getGID();
 			}
+		} elseif ($subAdminManager->isSubAdmin($currentLoggedInUser)) {
+			// Note: a subAdmin might not be part of the group he's administering
 
-			return new Result($groups ? $groups : []);
-		} else {
-			// No permission to access users groups
-			return new Result(null, API::RESPOND_UNAUTHORISED);
+			// subadmins can only see based on their own groups
+			$groups = $subAdminManager->getSubAdminsGroups($targetUser);
+			foreach ($groups as $key => $group) {
+				$groups[$key] = $group->getGID();
+			}
+			$subAdminGroups = $subAdminManager->getSubAdminsGroups($currentLoggedInUser);
+			foreach ($subAdminGroups as $key => $group) {
+				$subAdminGroups[$key] = $group->getGID();
+			}
+			$groups = \array_intersect($groups, $subAdminGroups);
 		}
+
+		return new Result($groups);
 	}
 
 	/**

@@ -54,20 +54,21 @@ API::register('post', '/cloud/users/{userid}/groups', [$users, 'addToGroup'], 'p
 API::register('delete', '/cloud/users/{userid}/groups', [$users, 'removeFromGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
 API::register('post', '/cloud/users/{userid}/subadmins', [$users, 'addSubAdmin'], 'provisioning_api', API::ADMIN_AUTH);
 API::register('delete', '/cloud/users/{userid}/subadmins', [$users, 'removeSubAdmin'], 'provisioning_api', API::ADMIN_AUTH);
-API::register('get', '/cloud/users/{userid}/subadmins', [$users, 'getUserSubAdminGroups'], 'provisioning_api', API::USER_AUTH);
+API::register('get', '/cloud/users/{userid}/subadmins', [$users, 'getUserSubAdminGroups'], 'provisioning_api', API::SUBADMIN_AUTH);
 
 // Groups
 $groups = new Groups(
 	\OC::$server->getGroupManager(),
 	\OC::$server->getUserSession(),
+	\OC::$server->getConfig(),
 	\OC::$server->getRequest()
 );
 
 API::register('get', '/cloud/groups', [$groups, 'getGroups'], 'provisioning_api', API::SUBADMIN_AUTH);
-API::register('post', '/cloud/groups', [$groups, 'addGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('post', '/cloud/groups', [$groups, 'addGroup'], 'provisioning_api', API::ADMIN_AUTH);
 API::register('get', '/cloud/groups/{groupid}', [$groups, 'getGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
 API::register('delete', '/cloud/groups/{groupid}', [$groups, 'deleteGroup'], 'provisioning_api', API::ADMIN_AUTH);
-API::register('get', '/cloud/groups/{groupid}/subadmins', [$groups, 'getSubAdminsOfGroup'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('get', '/cloud/groups/{groupid}/subadmins', [$groups, 'getSubAdminsOfGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
 
 // Apps
 $apps = new Apps(\OC::$server->getAppManager());
