@@ -2455,6 +2455,33 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then the HTTP status code of responses on each endpoint should be :statusCode respectively
+	 *
+	 * @param string $statusCodes
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theHTTPStatusCodeOfResponsesOnEachEndpointShouldBe(string $statusCodes):void {
+		$statusCodes = \explode(',', $statusCodes);
+		$count = \count($statusCodes);
+		if ($count === \count($this->lastHttpStatusCodesArray)) {
+			for ($i = 0; $i < $count; $i++) {
+				Assert::assertSame(
+					(int)\trim($statusCodes[$i]),
+					(int)$this->lastHttpStatusCodesArray[$i],
+					'Responses did not return expected http status code'
+				);
+			}
+		} else {
+			throw new Exception(
+				'Expected status codes: "' . \implode(',', $statusCodes) .
+				'". Found status codes: "' . \implode(',', $this->lastHttpStatusCodesArray) . '"'
+			);
+		}
+	}
+
+	/**
 	 * @Then the HTTP status code of responses on all endpoints should be :statusCode1 or :statusCode2
 	 *
 	 * @param string $statusCode1
@@ -3974,6 +4001,7 @@ trait WebDav {
 			$data,
 			"uploads"
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -4093,6 +4121,7 @@ trait WebDav {
 			$dest,
 			$headers
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -4151,6 +4180,7 @@ trait WebDav {
 			$dest,
 			$headers
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
