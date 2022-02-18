@@ -40,9 +40,7 @@ Feature: get groups
     Then the OCS status code should be "200"
     And the HTTP status code should be "200"
     And the extra groups returned by the API should be
-      | España          |
       | brand-new-group |
-      | 0               |
 
 
   Scenario: normal user cannot get a list of all the groups
