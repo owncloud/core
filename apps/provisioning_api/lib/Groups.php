@@ -88,6 +88,7 @@ class Groups {
 			$groups = $this->groupManager->search($search, $limit, $offset, 'management');
 		} else {
 			// check if it's a subAdmin
+			/* @phan-suppress-next-line PhanUndeclaredMethod */
 			$subAdmin = $this->groupManager->getSubAdmin();
 			if ($subAdmin->isSubAdmin($user)) {
 				// subAdmins have access to the groups they control
@@ -234,6 +235,7 @@ class Groups {
 		}
 
 		$currentUser = $this->userSession->getUser();
+		/* @phan-suppress-next-line PhanUndeclaredMethod */
 		$subAdminManager = $this->groupManager->getSubAdmin();
 		$uids = [];
 		if (

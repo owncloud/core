@@ -2658,75 +2658,46 @@ class UsersTest extends OriginalTest {
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
 	}
 
-	public function testGetUserSubAdminGroupsWithGroupsAsSameUser() {
-		$targetUser = $this->createMock(IUser::class);
-		$targetGroup = $this->createMock(IGroup::class);
-		$this->userSession
-			->expects($this->once())
-			->method('getUser')
-			->will($this->returnValue($targetUser));
-		$targetUser
-			->expects($this->once())
-			->method('getUID')
-			->will($this->returnValue('RequestedUser'));
-		$targetGroup
-			->expects($this->once())
-			->method('getGID')
-			->will($this->returnValue('TargetGroup'));
-		$this->userManager
-			->expects($this->once())
-			->method('get')
-			->with('RequestedUser')
-			->will($this->returnValue($targetUser));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
-		$subAdminManager
-			->expects($this->once())
-			->method('getSubAdminsGroups')
-			->with($targetUser)
-			->will($this->returnValue([$targetGroup]));
-		$this->groupManager
-			->expects($this->once())
-			->method('getSubAdmin')
-			->will($this->returnValue($subAdminManager));
-
-		$expected = new Result(['TargetGroup'], 100);
-		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
-	}
-
 	public function testGetUserSubAdminGroupsAsSubadmin() {
 		$currentUser = $this->createMock(IUser::class);
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
+		$secondaryGroup = $this->createMock(IGroup::class);
+		$terciaryGroup = $this->createMock(IGroup::class);
+		$currentUser->method('getUID')->willReturn('CurrentUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
 			->will($this->returnValue($currentUser));
-		$targetGroup
-			->expects($this->once())
-			->method('getGID')
-			->will($this->returnValue('TargetGroup'));
+		$targetGroup->method('getGID')->willReturn('TargetGroup');
+		$secondaryGroup->method('getGID')->willReturn('SecondaryGroup');
+		$terciaryGroup->method('getGID')->willReturn('TerciaryGroup');
 		$this->userManager
 			->expects($this->once())
 			->method('get')
 			->with('RequestedUser')
 			->will($this->returnValue($targetUser));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
+		$subAdminManager = $this->createMock(SubAdmin::class);
 		$subAdminManager
 			->expects($this->once())
+			->method('isSubAdmin')
+			->with($this->equalTo($currentUser))
+			->willReturn(true);
+		$subAdminManager
 			->method('getSubAdminsGroups')
-			->with($targetUser)
-			->will($this->returnValue([$targetGroup]));
-		$subAdminManager
-			->expects($this->once())
-			->method('isUserAccessible')
-			->with($currentUser, $targetUser)
-			->will($this->returnValue(true));
+			->will($this->returnValueMap([
+				[$currentUser, [$targetGroup, $secondaryGroup]],
+				[$targetUser, [$targetGroup, $terciaryGroup]]
+			]));
 		$this->groupManager
 			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->with('CurrentUser')
+			->willReturn(false);
 
 		$expected = new Result(['TargetGroup'], 100);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));
@@ -2736,6 +2707,9 @@ class UsersTest extends OriginalTest {
 		$currentUser = $this->createMock(IUser::class);
 		$targetUser = $this->createMock(IUser::class);
 		$targetGroup = $this->createMock(IGroup::class);
+		$secondaryGroup = $this->createMock(IGroup::class);
+		$terciaryGroup = $this->createMock(IGroup::class);
+		$currentUser->method('getUID')->willReturn('CurrentUser');
 		$this->userSession
 			->expects($this->once())
 			->method('getUser')
@@ -2745,17 +2719,30 @@ class UsersTest extends OriginalTest {
 			->method('get')
 			->with('RequestedUser')
 			->will($this->returnValue($targetUser));
-		$subAdminManager = $this->getMockBuilder(SubAdmin::class)
-			->disableOriginalConstructor()->getMock();
+		$targetGroup->method('getGID')->willReturn('TargetGroup');
+		$secondaryGroup->method('getGID')->willReturn('SecondaryGroup');
+		$terciaryGroup->method('getGID')->willReturn('TerciaryGroup');
+		$subAdminManager = $this->createMock(SubAdmin::class);
 		$subAdminManager
 			->expects($this->once())
-			->method('isUserAccessible')
-			->with($currentUser, $targetUser)
-			->will($this->returnValue(false));
+			->method('isSubAdmin')
+			->with($this->equalTo($currentUser))
+			->willReturn(true);
+		$subAdminManager
+			->method('getSubAdminsGroups')
+			->will($this->returnValueMap([
+				[$currentUser, [$secondaryGroup]],
+				[$targetUser, [$targetGroup, $terciaryGroup]]
+			]));
 		$this->groupManager
 			->expects($this->once())
 			->method('getSubAdmin')
 			->will($this->returnValue($subAdminManager));
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->with('CurrentUser')
+			->willReturn(false);
 
 		$expected = new Result(null, 997);
 		$this->assertEquals($expected, $this->api->getUserSubAdminGroups(['userid' => 'RequestedUser']));

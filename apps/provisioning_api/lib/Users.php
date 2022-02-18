@@ -693,6 +693,11 @@ class Users {
 				$subAdminGroups[$key] = $group->getGID();
 			}
 			$groups = \array_intersect($groups, $subAdminGroups);
+
+			if (empty($groups)) {
+				// target user isn't reachable
+				return new Result(null, 997);
+			}
 		}
 
 		return new Result($groups);

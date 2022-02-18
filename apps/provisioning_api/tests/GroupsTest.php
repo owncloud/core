@@ -31,6 +31,7 @@ use OCP\API;
 use OCP\IGroupManager;
 use OCP\IRequest;
 use OCP\IUser;
+use OCP\IConfig;
 use OCP\IUserSession;
 
 class GroupsTest extends \Test\TestCase {
@@ -42,6 +43,8 @@ class GroupsTest extends \Test\TestCase {
 	protected $request;
 	/** @var \OC\SubAdmin|\PHPUnit\Framework\MockObject\MockObject */
 	protected $subAdminManager;
+	/** @var IConfig */
+	protected $config;
 	/** @var Groups */
 	protected $api;
 
@@ -61,9 +64,11 @@ class GroupsTest extends \Test\TestCase {
 
 		$this->userSession = $this->createMock('OCP\IUserSession');
 		$this->request = $this->createMock('OCP\IRequest');
+		$this->config = $this->createMock(IConfig::class);
 		$this->api = new Groups(
 			$this->groupManager,
 			$this->userSession,
+			$this->config,
 			$this->request
 		);
 	}
@@ -145,6 +150,10 @@ class GroupsTest extends \Test\TestCase {
 	 * @param int|null $offset
 	 */
 	public function testGetGroups($search, $limit, $offset) {
+		$currentUser = $this->createMock(IUser::class);
+		$currentUser->method('getUID')->willReturn('CurrentUser');
+
+		$this->userSession->method('getUser')->willReturn($currentUser);
 		$this->request
 			->expects($this->exactly(3))
 			->method('getParam')
@@ -158,6 +167,11 @@ class GroupsTest extends \Test\TestCase {
 
 		$search = $search === null ? '' : $search;
 
+		$this->groupManager
+			->expects($this->once())
+			->method('isAdmin')
+			->with('CurrentUser')
+			->willReturn(true);
 		$this->groupManager
 			->expects($this->once())
 			->method('search')
@@ -286,7 +300,16 @@ class GroupsTest extends \Test\TestCase {
 	}
 
 	public function testGetSubAdminsOfGroup() {
+		$currentUser = $this->createMock(IUser::class);
+		$currentUser->method('getUID')->willReturn('CurrentUser');
+
+		$this->userSession->method('getUser')->willReturn($currentUser);
+
 		$group = $this->createGroup('GroupWithSubAdmins');
+		$this->groupManager
+			->method('isAdmin')
+			->with('CurrentUser')
+			->willReturn(true);
 		$this->groupManager
 			->method('get')
 			->with('GroupWithSubAdmins')
@@ -311,7 +334,16 @@ class GroupsTest extends \Test\TestCase {
 	}
 
 	public function testGetSubAdminsOfGroupEmptyList() {
+		$currentUser = $this->createMock(IUser::class);
+		$currentUser->method('getUID')->willReturn('CurrentUser');
+
+		$this->userSession->method('getUser')->willReturn($currentUser);
+
 		$group = $this->createGroup('GroupWithOutSubAdmins');
+		$this->groupManager
+			->method('isAdmin')
+			->with('CurrentUser')
+			->willReturn(true);
 		$this->groupManager
 			->method('get')
 			->with('GroupWithOutSubAdmins')
