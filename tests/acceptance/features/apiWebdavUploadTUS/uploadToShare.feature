@@ -17,7 +17,8 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "/FOLDER" with user "Brian"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then as "Alice" file "/FOLDER/textfile.txt" should exist
+    Then the HTTP status code should be "200"
+    And as "Alice" file "/FOLDER/textfile.txt" should exist
     And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |
@@ -78,7 +79,8 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "/FOLDER" with user "Brian"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "overwritten content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then as "Alice" file "/FOLDER/textfile.txt" should exist
+    Then the HTTP status code should be "200"
+    And as "Alice" file "/FOLDER/textfile.txt" should exist
     And the content of file "/FOLDER/textfile.txt" for user "Alice" should be "overwritten content"
     Examples:
       | dav_version |
@@ -96,7 +98,8 @@ Feature: upload file to shared folder
     And user "Alice" has shared folder "/FOLDER" with user "Brian" with permissions "read"
     And user "Brian" has accepted share "/FOLDER" offered by user "Alice"
     When user "Brian" uploads file with content "uploaded content" to "/Shares/FOLDER/textfile.txt" using the TUS protocol on the WebDAV API
-    Then as "Brian" file "/Shares/FOLDER/textfile.txt" should not exist
+    Then the HTTP status code should be "200"
+    And as "Brian" file "/Shares/FOLDER/textfile.txt" should not exist
     Examples:
       | dav_version |
       | old         |
@@ -119,7 +122,8 @@ Feature: upload file to shared folder
       | Upload-Metadata | filename L0ZPTERFUi90ZXh0RmlsZS50eHQ= |
     And user "Alice" has uploaded file with checksum "SHA1 8cb2237d0679ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     When user "Brian" requests the checksum of "/Shares/FOLDER/textFile.txt" via propfind
-    Then the webdav checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964 MD5:827ccb0eea8a706c4c34a16891f84e7b ADLER32:02f80100"
+    Then the HTTP status code should be "207"
+    And the webdav checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964 MD5:827ccb0eea8a706c4c34a16891f84e7b ADLER32:02f80100"
     Examples:
       | dav_version |
       | old         |
@@ -142,7 +146,8 @@ Feature: upload file to shared folder
       | Upload-Metadata | filename L0ZPTERFUi90ZXh0RmlsZS50eHQ= |
     And user "Alice" has uploaded file with checksum "SHA1 8cb2237d069ca88db6464eac60da96345513964" to the last created TUS Location with offset "0" and content "12345" using the TUS protocol on the WebDAV API
     When user "Brian" downloads file "/Shares/FOLDER/textFile.txt" using the WebDAV API
-    Then the header checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964"
+    Then the HTTP status code should be "200"
+    And the header checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964"
     Examples:
       | dav_version |
       | old         |
@@ -164,7 +169,8 @@ Feature: upload file to shared folder
     And user "Alice" has shared file "/textFile.txt" with user "Brian"
     And user "Brian" has accepted share "/textFile.txt" offered by user "Alice"
     When user "Brian" requests the checksum of "/Shares/textFile.txt" via propfind
-    Then the webdav checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964 MD5:827ccb0eea8a706c4c34a16891f84e7b ADLER32:02f80100"
+    Then the HTTP status code should be "207"
+    And the webdav checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964 MD5:827ccb0eea8a706c4c34a16891f84e7b ADLER32:02f80100"
     Examples:
       | dav_version |
       | old         |
@@ -186,7 +192,8 @@ Feature: upload file to shared folder
     And user "Alice" has shared file "/textFile.txt" with user "Brian"
     And user "Brian" has accepted share "/textFile.txt" offered by user "Alice"
     When user "Brian" downloads file "/Shares/textFile.txt" using the WebDAV API
-    Then the header checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964"
+    Then the HTTP status code should be "200"
+    And the header checksum should match "SHA1:8cb2237d0679ca88db6464eac60da96345513964"
     Examples:
       | dav_version |
       | old         |
@@ -209,7 +216,8 @@ Feature: upload file to shared folder
       #    L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 is the base64 encode of /Shares/FOLDER/textFile.txt
       | Upload-Metadata | filename L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 |
     And user "Brian" uploads file with checksum "MD5 827ccb0eea8a706c4c34a16891f84e7b" to the last created TUS Location with offset "0" and content "uploaded content" using the TUS protocol on the WebDAV API
-    Then as "Alice" file "/FOLDER/textFile.txt" should exist
+    Then the HTTP status code should be "204"
+    And as "Alice" file "/FOLDER/textFile.txt" should exist
     And the content of file "/FOLDER/textFile.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |
@@ -280,7 +288,8 @@ Feature: upload file to shared folder
     And user "Alice" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
     And user "Alice" shares file "textFile.txt" with user "Brian" using the sharing API
     And user "Brian" accepts share "/textFile.txt" offered by user "Alice" using the sharing API
-    Then the content of file "/Shares/textFile.txt" for user "Brian" should be "0123456789"
+    Then the HTTP status code should be "200"
+    And the content of file "/Shares/textFile.txt" for user "Brian" should be "0123456789"
     Examples:
       | dav_version |
       | old         |
@@ -303,7 +312,8 @@ Feature: upload file to shared folder
       | Upload-Metadata | filename L1NoYXJlcy9GT0xERVIvdGV4dGZpbGUudHh0 |
     When user "Brian" sends a chunk to the last created TUS Location with offset "0" and data "01234" with checksum "MD5 4100c4d44da9177247e44a5fc1546778" using the TUS protocol on the WebDAV API
     And user "Brian" sends a chunk to the last created TUS Location with offset "5" and data "56789" with checksum "MD5 099ebea48ea9666a7da2177267983138" using the TUS protocol on the WebDAV API
-    Then as "Alice" file "/FOLDER/textFile.txt" should exist
+    Then the HTTP status code should be "204"
+    And as "Alice" file "/FOLDER/textFile.txt" should exist
     And the content of file "/FOLDER/textFile.txt" for user "Alice" should be "0123456789"
     Examples:
       | dav_version |
@@ -329,7 +339,8 @@ Feature: upload file to shared folder
       | Upload-Length   | 19                                    |
         #    dGV4dEZpbGUudHh0 is the base64 encode of /Shares/textFile.txt
       | Upload-Metadata | filename L1NoYXJlcy90ZXh0RmlsZS50eHQ= |
-    Then the content of file "/textFile.txt" for user "Alice" should be "overwritten content"
+    Then the HTTP status code should be "204"
+    And the content of file "/textFile.txt" for user "Alice" should be "overwritten content"
     Examples:
       | dav_version |
       | old         |
