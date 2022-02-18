@@ -12,7 +12,8 @@ Feature: upload file
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
-    Then the following headers should match these regular expressions for user "Alice"
+    Then the HTTP status code should be "201"
+    And the following headers should match these regular expressions for user "Alice"
       | ETag | /^"[a-f0-9:\.]{1,32}"$/ |
     And the content of file "<file_name>" for user "Alice" should be "uploaded content"
     Examples:
@@ -38,7 +39,8 @@ Feature: upload file
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
-    Then the content of file <file_name> for user "Alice" should be "uploaded content"
+    Then the HTTP status code should be "201"
+    And the content of file <file_name> for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | file_name      |
       | old         | "C++ file.cpp" |
@@ -57,7 +59,8 @@ Feature: upload file
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to <file_name> using the WebDAV API
-    Then the content of file <file_name> for user "Alice" should be "uploaded content"
+    Then the HTTP status code should be "201"
+    And the content of file <file_name> for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | file_name           |
       | old         | "file ?2.txt"       |
@@ -78,7 +81,8 @@ Feature: upload file
   Scenario Outline: upload a file with comma in the filename and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "file with comma" to <file_name> using the WebDAV API
-    Then the content of file <file_name> for user "Alice" should be "file with comma"
+    Then the HTTP status code should be "201"
+    And the content of file <file_name> for user "Alice" should be "file with comma"
     Examples:
       | dav_version | file_name      |
       | old         | "sample,1.txt" |
@@ -100,7 +104,8 @@ Feature: upload file
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
     When user "Alice" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
-    Then the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
+    Then the HTTP status code should be "201"
+    And the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | folder_name                      | file_name                     |
       | old         | /upload                          | abc.txt                       |
@@ -129,7 +134,8 @@ Feature: upload file
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
     When user "Alice" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
-    Then the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
+    Then the HTTP status code should be "201"
+    And the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | folder_name       | file_name    |
       | old         | /folder ?2.txt    | file ?2.txt  |
@@ -185,7 +191,8 @@ Feature: upload file
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
     When user "Alice" uploads file with content "uploaded content for file name ending with a dot" to "<folder_name>/<file_name>" using the WebDAV API
-    Then as "Alice" file "/<folder_name>/<file_name>" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/<folder_name>/<file_name>" should exist
     And the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content for file name ending with a dot"
     Examples:
       | dav_version | folder_name   | file_name   |
@@ -251,8 +258,8 @@ Feature: upload file
     And user "Alice" has created folder "testFolder"
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "file.txt" with mtime "Thu, 08 Aug 2019 04:18:13 GMT" using the WebDAV API
     And user "Alice" moves file "file.txt" to "/testFolder/file.txt" using the WebDAV API
-    Then as "Alice" file "/testFolder/file.txt" should exist
-    And the HTTP status code should be "201"
+    Then the HTTP status code should be "201"
+    And as "Alice" file "/testFolder/file.txt" should exist
     And as "Alice" the mtime of the file "/testFolder/file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
     Examples:
       | dav_version |
@@ -269,7 +276,8 @@ Feature: upload file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "first time upload content" to "file.txt"
     When user "Alice" uploads a file with content "Overwrite file" and mtime "Thu, 08 Aug 2019 04:18:13 GMT" to "file.txt" using the WebDAV API
-    Then as "Alice" file "file.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" file "file.txt" should exist
     And as "Alice" the mtime of the file "file.txt" should be "Thu, 08 Aug 2019 04:18:13 GMT"
     And the content of file "file.txt" for user "Alice" should be "Overwrite file"
     Examples:
