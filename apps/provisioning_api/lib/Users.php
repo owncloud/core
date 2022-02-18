@@ -508,13 +508,20 @@ class Users {
 			return new Result(null, 103);
 		}
 
-		if (!$this->groupManager->isAdmin($user->getUID()) && !$this->groupManager->getSubAdmin()->isUserAccessible($user, $targetUser)) {
-			return new Result(null, 104);
+		if ($this->groupManager->isAdmin($user->getUID())) {
+			// if the user is admin, add the target user
+			$group->addUser($targetUser);
+			return new Result(null, 100);
+		} else {
+			$subAdminManager = $this->groupManager->getSubAdmin();
+			if ($subAdminManager->isUserAccessible($user, $targetUser) && $subAdminManager->isSubAdminofGroup($user, $group)) {
+				// if the user is subadmin, add the user if he's being added to a group controlled by the subadmin
+				$group->addUser($targetUser);
+				return new Result(null, 100);
+			} else {
+				return new Result(null, 104);
+			}
 		}
-
-		// Add user to group
-		$group->addUser($targetUser);
-		return new Result(null, 100);
 	}
 
 	/**
