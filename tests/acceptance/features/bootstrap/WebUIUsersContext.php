@@ -924,6 +924,22 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then /^the user count of group "([^"]*)" should not be displayed on the webUI$/
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function theUserCountOfGroupShouldNotBeDisplayedOnTheWebUI(string $group):void {
+		Assert::assertFalse(
+			$this->usersPage->groupUserCountElementExists($group),
+			__METHOD__
+			. " The user count of group '$group' is not expected to be displayed on the webUI, "
+			. "but it is displayed."
+		);
+	}
+
+	/**
 	 * @Then /^the user count of group "([^"]*)" should display (\d+) users on the webUI$/
 	 *
 	 * @param string $group
