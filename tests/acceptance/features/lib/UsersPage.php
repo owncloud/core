@@ -955,19 +955,40 @@ class UsersPage extends OwncloudPage {
 	/**
 	 * @param string $group
 	 *
+	 * @return NodeElement|null
+	 */
+	public function getGroupUserCountElement(string $group): ?NodeElement {
+		$groupUserCountXpath = \sprintf($this->groupUserCountXpath, $group);
+		return $this->find('xpath', $groupUserCountXpath);
+	}
+
+	/**
+	 * @param string $group
+	 *
+	 * @return bool
+	 */
+	public function groupUserCountElementExists(string $group): bool {
+		if ($this->getGroupUserCountElement($group) === null) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param string $group
+	 *
 	 * @return int|null
 	 * @throws ElementNotFoundException
 	 */
 	public function getUserCountOfGroup(string $group): ?int {
-		$groupUserCountXpath = \sprintf($this->groupUserCountXpath, $group);
-		$groupUserCount = $this->find('xpath', $groupUserCountXpath);
+		$groupUserCountElement = $this->getGroupUserCountElement($group);
 		$this->assertElementNotNull(
-			$groupUserCount,
+			$groupUserCountElement,
 			__METHOD__ .
-			" xpath $groupUserCountXpath " .
+			" xpath $this->groupUserCountXpath " .
 			"could not find user count for group $group"
 		);
-		$groupUserCount = \trim($groupUserCount->getText());
+		$groupUserCount = \trim($groupUserCountElement->getText());
 		if ($groupUserCount === "") {
 			return null;
 		}
