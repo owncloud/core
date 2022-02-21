@@ -23,7 +23,8 @@ Feature: current oC10 behavior for issue-33840
     And user "Alice" has favorited element "/textfile4.txt"
     When user "Alice" lists the favorites and limits the result to 3 elements using the WebDAV API
     #Then the search result should contain any "3" of these entries:
-    Then the search result should contain any "0" of these entries:
+    Then the HTTP status code should be "207"
+    And the search result should contain any "0" of these entries:
       | /textfile0.txt |
       | /textfile1.txt |
       | /textfile2.txt |
@@ -52,7 +53,8 @@ Feature: current oC10 behavior for issue-33840
     And user "Alice" has favorited element "/subfolder/textfile5.txt"
     When user "Alice" lists the favorites and limits the result to 3 elements using the WebDAV API
     #Then the search result should contain any "3" of these entries:
-    Then the search result should contain any "0" of these entries:
+    Then the HTTP status code should be "207"
+    And the search result should contain any "0" of these entries:
       | /subfolder/textfile0.txt |
       | /subfolder/textfile1.txt |
       | /subfolder/textfile2.txt |
