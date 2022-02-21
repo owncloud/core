@@ -9,7 +9,8 @@ Feature: OPTIONS request
       | endpoint                          |
       | /remote.php/webdav/               |
       | /remote.php/dav/files/%username%/ |
-    Then the following headers should be set
+    Then the HTTP status code should be "204"
+    And the following headers should be set
       | header                 | value                                             |
       | Tus-Resumable          | 1.0.0                                             |
       | Tus-Version            | 1.0.0                                             |
@@ -21,7 +22,8 @@ Feature: OPTIONS request
     When user "Alice" requests these endpoints with "OPTIONS" including body "doesnotmatter" using the password of user "Alice"
       | endpoint                          |
       | /remote.php/dav/spaces/%spaceid%/ |
-    Then the following headers should be set
+    Then the HTTP status code should be "204"
+    And the following headers should be set
       | header                 | value                                             |
       | Tus-Resumable          | 1.0.0                                             |
       | Tus-Version            | 1.0.0                                             |
@@ -33,7 +35,8 @@ Feature: OPTIONS request
       | endpoint                          |
       | /remote.php/webdav/               |
       | /remote.php/dav/files/%username%/ |
-    Then the following headers should be set
+    Then the HTTP status code should be "204"
+    And the following headers should be set
       | header                 | value                                             |
       | Tus-Resumable          | 1.0.0                                             |
       | Tus-Version            | 1.0.0                                             |
@@ -45,7 +48,8 @@ Feature: OPTIONS request
     When a user requests these endpoints with "OPTIONS" with body "doesnotmatter" and no authentication about user "Alice"
       | endpoint                          |
       | /remote.php/dav/spaces/%spaceid%/ |
-    Then the following headers should be set
+    Then the HTTP status code should be "204"
+    And the following headers should be set
       | header                 | value                                             |
       | Tus-Resumable          | 1.0.0                                             |
       | Tus-Version            | 1.0.0                                             |
@@ -57,7 +61,8 @@ Feature: OPTIONS request
       | endpoint                          |
       | /remote.php/webdav/               |
       | /remote.php/dav/files/%username%/ |
-    Then the following headers should be set
+    Then the HTTP status code should be "401"
+    And the following headers should be set
       | header                 | value                                             |
       | Tus-Resumable          | 1.0.0                                             |
       | Tus-Version            | 1.0.0                                             |
@@ -69,7 +74,8 @@ Feature: OPTIONS request
     When user "Alice" requests these endpoints with "OPTIONS" including body "doesnotmatter" using password "invalid" about user "Alice"
       | endpoint                          |
       | /remote.php/dav/spaces/%spaceid%/ |
-    Then the following headers should be set
+    Then the HTTP status code should be "401"
+    And the following headers should be set
       | header                 | value                                             |
       | Tus-Resumable          | 1.0.0                                             |
       | Tus-Version            | 1.0.0                                             |
@@ -82,7 +88,8 @@ Feature: OPTIONS request
       | endpoint                          |
       | /remote.php/webdav/               |
       | /remote.php/dav/files/%username%/ |
-    Then the following headers should be set
+    Then the HTTP status code should be "401"
+    And the following headers should be set
       | header                 | value                                             |
       | Tus-Resumable          | 1.0.0                                             |
       | Tus-Version            | 1.0.0                                             |
@@ -95,7 +102,8 @@ Feature: OPTIONS request
     When user "Brian" requests these endpoints with "OPTIONS" including body "doesnotmatter" using the password of user "Alice"
       | endpoint                          |
       | /remote.php/dav/spaces/%spaceid%/ |
-    Then the following headers should be set
+    Then the HTTP status code should be "401"
+    And the following headers should be set
       | header                 | value                                             |
       | Tus-Resumable          | 1.0.0                                             |
       | Tus-Version            | 1.0.0                                             |

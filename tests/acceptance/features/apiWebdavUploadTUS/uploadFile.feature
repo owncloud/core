@@ -10,7 +10,8 @@ Feature: upload file
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "<file_name>" using the TUS protocol on the WebDAV API
-    Then the content of file "<file_name>" for user "Alice" should be "uploaded content"
+    Then the HTTP status code should be "200"
+    And the content of file "<file_name>" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | file_name         |
       | old         | /upload.txt       |
@@ -44,7 +45,8 @@ Feature: upload file
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
     When user "Alice" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the TUS protocol on the WebDAV API
-    Then the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
+    Then the HTTP status code should be "201"
+    And the content of file "<folder_name>/<file_name>" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version | folder_name                      | file_name                     |
       | old         | /upload                          | abc.txt                       |
@@ -76,7 +78,8 @@ Feature: upload file
   Scenario Outline: Upload chunked file with TUS
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" in 3 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
-    Then the content of file "/myChunkedFile.txt" for user "Alice" should be "uploaded content"
+    Then the HTTP status code should be "200"
+    And the content of file "/myChunkedFile.txt" for user "Alice" should be "uploaded content"
     Examples:
       | dav_version |
       | old         |
@@ -91,7 +94,8 @@ Feature: upload file
   Scenario Outline: Upload 1 byte chunks with TUS
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "0123456789" in 10 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
-    Then the content of file "/myChunkedFile.txt" for user "Alice" should be "0123456789"
+    Then the HTTP status code should be "200"
+    And the content of file "/myChunkedFile.txt" for user "Alice" should be "0123456789"
     Examples:
       | dav_version |
       | old         |
@@ -107,7 +111,8 @@ Feature: upload file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "original content" to "textfile.txt"
     When user "Alice" uploads file with content "overwritten content" to "textfile.txt" using the TUS protocol on the WebDAV API
-    Then the content of file "textfile.txt" for user "Alice" should be "overwritten content"
+    Then the HTTP status code should be "201"
+    And the content of file "textfile.txt" for user "Alice" should be "overwritten content"
     Examples:
       | dav_version |
       | old         |
@@ -122,7 +127,8 @@ Feature: upload file
   Scenario Outline: upload a file and no version is available
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "/upload.txt" using the TUS protocol on the WebDAV API
-    Then the version folder of file "/upload.txt" for user "Alice" should contain "0" elements
+    Then the HTTP status code should be "200"
+    And the version folder of file "/upload.txt" for user "Alice" should contain "0" elements
     Examples:
       | dav_version |
       | old         |
@@ -138,7 +144,8 @@ Feature: upload file
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "uploaded content" to "/upload.txt" using the TUS protocol on the WebDAV API
     And user "Alice" uploads file with content "re-uploaded content" to "/upload.txt" using the TUS protocol on the WebDAV API
-    Then the version folder of file "/upload.txt" for user "Alice" should contain "1" element
+    Then the HTTP status code should be "200"
+    And the version folder of file "/upload.txt" for user "Alice" should contain "1" element
     And the content of file "/upload.txt" for user "Alice" should be "re-uploaded content"
     Examples:
       | dav_version |
@@ -154,7 +161,8 @@ Feature: upload file
   Scenario Outline: upload a file in chunks with TUS and no version is available
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "0123456789" in 10 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
-    Then the version folder of file "/myChunkedFile.txt" for user "Alice" should contain "0" elements
+    Then the HTTP status code should be "200"
+    And the version folder of file "/myChunkedFile.txt" for user "Alice" should contain "0" elements
     Examples:
       | dav_version |
       | old         |
@@ -165,7 +173,8 @@ Feature: upload file
     Given using <dav_version> DAV path
     When user "Alice" uploads file with content "0123456789" in 10 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
     And user "Alice" uploads file with content "01234" in 5 chunks to "/myChunkedFile.txt" using the TUS protocol on the WebDAV API
-    Then the version folder of file "/myChunkedFile.txt" for user "Alice" should contain "1" elements
+    Then the HTTP status code should be "200"
+    And the version folder of file "/myChunkedFile.txt" for user "Alice" should contain "1" elements
     And the content of file "/myChunkedFile.txt" for user "Alice" should be "01234"
     Examples:
       | dav_version |
