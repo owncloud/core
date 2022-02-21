@@ -2623,7 +2623,7 @@ class FeatureContext extends BehatVariablesContext {
 
 		if (!\strlen($edition)) {
 			Assert::fail(
-				"Cannot get edition from capabilities"
+				"Cannot get edition from core capabilities"
 			);
 		}
 
@@ -2635,41 +2635,95 @@ class FeatureContext extends BehatVariablesContext {
 
 		if (!\strlen($edition)) {
 			Assert::fail(
-				"Cannot get productname from capabilities"
+				"Cannot get productname from core capabilities"
 			);
 		}
 
 		$jsonExpectedDecoded['edition'] = $edition;
 		$jsonExpectedDecoded['productname'] = $productName;
 
-		$runOccStatus = $this->runOcc(['status']);
-		if ($runOccStatus === 0) {
-			$output = \explode("- ", $this->lastStdOut);
-			$version = \explode(": ", $output[3]);
-			Assert::assertEquals(
-				"version",
-				$version[0],
-				"Expected 'version' but got $version[0]"
-			);
-			$versionString = \explode(": ", $output[4]);
-			Assert::assertEquals(
-				"versionstring",
-				$versionString[0],
-				"Expected 'versionstring' but got $versionString[0]"
-			);
-			$jsonExpectedDecoded['version'] = \trim($version[1]);
-			$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
-			$jsonExpectedEncoded = \json_encode($jsonExpectedDecoded);
-			Assert::assertEquals(
-				$jsonExpectedEncoded,
-				$jsonRespondedEncoded,
-				"The json responded: $jsonRespondedEncoded does not match with json expected: $jsonExpectedEncoded"
-			);
+		if (OcisHelper::isTestingOnOc10()) {
+			// On oC10 get the expected version values by parsing the output of "occ status"
+			$runOccStatus = $this->runOcc(['status']);
+			if ($runOccStatus === 0) {
+				$output = \explode("- ", $this->lastStdOut);
+				$version = \explode(": ", $output[3]);
+				Assert::assertEquals(
+					"version",
+					$version[0],
+					"Expected 'version' but got $version[0]"
+				);
+				$versionString = \explode(": ", $output[4]);
+				Assert::assertEquals(
+					"versionstring",
+					$versionString[0],
+					"Expected 'versionstring' but got $versionString[0]"
+				);
+				$jsonExpectedDecoded['version'] = \trim($version[1]);
+				$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
+			} else {
+				Assert::fail(
+					"Cannot get version variables from occ - status $runOccStatus"
+				);
+			}
 		} else {
-			Assert::fail(
-				"Cannot get version variables from occ - status $runOccStatus"
+			// We are on oCIS or reva or some other implementation. We cannot do "occ status".
+			// So get the expected version values by looking in the capabilities response.
+			$version = $this->appConfigurationContext->getParameterValueFromXml(
+				$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
+				'core',
+				'status@@@version'
 			);
+
+			if (!\strlen($version)) {
+				Assert::fail(
+					"Cannot get version from core capabilities"
+				);
+			}
+
+			$versionString = $this->appConfigurationContext->getParameterValueFromXml(
+				$this->appConfigurationContext->getCapabilitiesXml(__METHOD__),
+				'core',
+				'status@@@versionstring'
+			);
+
+			if (!\strlen($versionString)) {
+				Assert::fail(
+					"Cannot get versionstring from core capabilities"
+				);
+			}
+
+			$jsonExpectedDecoded['version'] = $version;
+			$jsonExpectedDecoded['versionstring'] = $versionString;
 		}
+		$jsonExpectedEncoded = \json_encode($jsonExpectedDecoded);
+		Assert::assertEquals(
+			$jsonExpectedEncoded,
+			$jsonRespondedEncoded,
+			"The json responded: $jsonRespondedEncoded does not match with json expected: $jsonExpectedEncoded"
+		);
+		// We have checked that the status.php response has data that matches up with
+		// data found in the capabilities response and/or the "occ status" command output.
+		// But the output might be reported wrongly in all of these in the same way.
+		// So check that the values also seem "reasonable".
+		$version = $jsonExpectedDecoded['version'];
+		$versionString = $jsonExpectedDecoded['versionstring'];
+		Assert::assertMatchesRegularExpression(
+			"/^\d+\.\d+\.\d+\.\d+$/",
+			$version,
+			"version should be in a form like 10.9.8.1 but is $version"
+		);
+		if (\preg_match("/^\d+\.\d+\.\d+/", $version, $matches)) {
+			// We should have matched something like 10.9.8 - the first 3 numbers in the version.
+			$majorMinorPatchVersion = $matches[0];
+		} else {
+			Assert::fail("version '$version' does not start in a form like 10.9.8");
+		}
+		Assert::assertStringStartsWith(
+			$majorMinorPatchVersion,
+			$versionString,
+			"versionstring should start with $majorMinorPatchVersion but is $versionString"
+		);
 	}
 
 	/**
