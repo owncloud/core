@@ -22,7 +22,8 @@ Feature: favorite
     When user "Alice" gets the following properties of folder "/FOLDER" using the WebDAV API
       | propertyName |
       | oc:favorite  |
-    Then the single response should contain a property "oc:favorite" with value "1"
+    Then the HTTP status code should be "207"
+    And the single response should contain a property "oc:favorite" with value "1"
     Examples:
       | dav_version |
       | old         |
@@ -34,16 +35,17 @@ Feature: favorite
       | spaces      |
 
   @issue-ocis-reva-276
-  Scenario Outline: Favorite and unfavorite a folder
+  Scenario Outline: Unfavorite a folder
     Given using <dav_version> DAV path
-    When user "Alice" favorites element "/FOLDER" using the WebDAV API
-    And user "Alice" unfavorites element "/FOLDER" using the WebDAV API
+    And user "Alice" has favorited element "/FOLDER"
+    When user "Alice" unfavorites element "/FOLDER" using the WebDAV API
     Then the HTTP status code should be "207"
     And as user "Alice" folder "/FOLDER" should not be favorited
     When user "Alice" gets the following properties of folder "/FOLDER" using the WebDAV API
       | propertyName |
       | oc:favorite  |
-    Then the single response should contain a property "oc:favorite" with value "0"
+    Then the HTTP status code should be "207"
+    And the single response should contain a property "oc:favorite" with value "0"
     Examples:
       | dav_version |
       | old         |
@@ -63,7 +65,8 @@ Feature: favorite
     When user "Alice" gets the following properties of file "/textfile0.txt" using the WebDAV API
       | propertyName |
       | oc:favorite  |
-    Then the single response should contain a property "oc:favorite" with value "1"
+    Then the HTTP status code should be "207"
+    And the single response should contain a property "oc:favorite" with value "1"
     Examples:
       | dav_version |
       | old         |
@@ -75,16 +78,17 @@ Feature: favorite
       | spaces      |
 
   @smokeTest @issue-ocis-reva-276
-  Scenario Outline: Favorite and unfavorite a file
+  Scenario Outline: Unfavorite a file
     Given using <dav_version> DAV path
-    When user "Alice" favorites element "/textfile0.txt" using the WebDAV API
-    And user "Alice" unfavorites element "/textfile0.txt" using the WebDAV API
+    And user "Alice" has favorited element "/textfile0.txt"
+    When user "Alice" unfavorites element "/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "207"
     And as user "Alice" file "/textfile0.txt" should not be favorited
     When user "Alice" gets the following properties of file "/textfile0.txt" using the WebDAV API
       | propertyName |
       | oc:favorite  |
-    Then the single response should contain a property "oc:favorite" with value "0"
+    Then the HTTP status code should be "207"
+    And the single response should contain a property "oc:favorite" with value "0"
     Examples:
       | dav_version |
       | old         |
@@ -229,6 +233,7 @@ Feature: favorite
     And user "Alice" has shared file "/favoriteFile.txt" with user "Brian"
     When user "Alice" favorites element "/favoriteFile.txt" using the WebDAV API
     Then the HTTP status code should be "207"
+    And as user "Alice" file "/favoriteFile.txt" should be favorited
     And as user "Brian" file "/favoriteFile.txt" should not be favorited
     Examples:
       | dav_version |
