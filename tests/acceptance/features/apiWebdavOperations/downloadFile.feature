@@ -13,7 +13,8 @@ Feature: download file
   Scenario Outline: download a file
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/textfile0.txt" using the WebDAV API
-    Then the downloaded content should be "ownCloud test text file 0"
+    Then the HTTP status code should be "200"
+    And the downloaded content should be "ownCloud test text file 0"
     Examples:
       | dav_version |
       | old         |
@@ -28,7 +29,8 @@ Feature: download file
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" with range "bytes=24-50" using the WebDAV API
-    Then the downloaded content should be "example file for developers"
+    Then the HTTP status code should be "206"
+    And the downloaded content should be "example file for developers"
     Examples:
       | dav_version |
       | old         |
@@ -44,7 +46,8 @@ Feature: download file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "/file9000000.txt" ending with "text at end of file" of size 9000000 bytes
     When user "Alice" downloads file "/file9000000.txt" using the WebDAV API
-    Then the size of the downloaded file should be 9000000 bytes
+    Then the HTTP status code should be "200"
+    And the size of the downloaded file should be 9000000 bytes
     And the downloaded content should end with "text at end of file"
     Examples:
       | dav_version |
@@ -60,7 +63,8 @@ Feature: download file
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" using the WebDAV API
-    Then the following headers should be set
+    Then the HTTP status code should be "200"
+    And the following headers should be set
       | header                            | value                                                            |
       | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
       | Content-Security-Policy           | default-src 'none';                                              |
@@ -81,8 +85,8 @@ Feature: download file
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
     When the client sends a "GET" to "/remote.php/dav/files/%username%/welcome.txt" of user "Alice" without requesttoken
-    Then the downloaded content should start with "Welcome"
-    And the HTTP status code should be "200"
+    Then the HTTP status code should be "200"
+    And the downloaded content should start with "Welcome"
     Examples:
       | dav_version |
       | old         |
@@ -93,8 +97,8 @@ Feature: download file
     Given using <dav_version> DAV path
     And user "Alice" has logged in to a web-style session
     When the client sends a "GET" to "/remote.php/dav/files/%username%/welcome.txt" of user "Alice" with requesttoken
-    Then the downloaded content should start with "Welcome"
-    And the HTTP status code should be "200"
+    Then the HTTP status code should be "200"
+    And the downloaded content should start with "Welcome"
     Examples:
       | dav_version |
       | old         |
@@ -123,7 +127,8 @@ Feature: download file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/simple.pdf" to "/simple.pdf"
     When user "Alice" downloads file "/simple.pdf" using the WebDAV API
-    Then the following headers should be set
+    Then the HTTP status code should be "200"
+    And the following headers should be set
       | header         | value |
       | Content-Length | 9622  |
     Examples:
@@ -141,7 +146,8 @@ Feature: download file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file "filesForUpload/testavatar.png" to "/testavatar.png"
     When user "Alice" downloads file "/testavatar.png" using the WebDAV API
-    Then the following headers should be set
+    Then the HTTP status code should be "200"
+    And the following headers should be set
       | header         | value |
       | Content-Length | 35323 |
     Examples:
@@ -159,7 +165,8 @@ Feature: download file
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "file with comma in filename" to <filename>
     When user "Alice" downloads file <filename> using the WebDAV API
-    Then the downloaded content should be "file with comma in filename"
+    Then the HTTP status code should be "200"
+    And the downloaded content should be "file with comma in filename"
     Examples:
       | dav_version | filename       |
       | old         | "sample,1.txt" |
@@ -275,19 +282,22 @@ Feature: download file
       | spaces      |
 
 
-  Scenario Outline: download a hidden file
+  Scenario Outline: download hidden files
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/FOLDER"
     And user "Alice" has uploaded the following files with content "hidden file"
       | path                 |
       | .hidden_file         |
       | /FOLDER/.hidden_file |
-    When user "Alice" downloads file ".hidden_file" using the WebDAV API
-    Then the HTTP status code should be "200"
-    And the downloaded content should be "hidden file"
-    When user "Alice" downloads file "./FOLDER/.hidden_file" using the WebDAV API
-    Then the HTTP status code should be "200"
-    And the downloaded content should be "hidden file"
+    When user "Alice" downloads the following files using the WebDAV API
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the content of the following files for user "Alice" should be "hidden file"
+      | path                 |
+      | .hidden_file         |
+      | /FOLDER/.hidden_file |
     Examples:
       | dav_version |
       | old         |
@@ -302,7 +312,8 @@ Feature: download file
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
     When user "Alice" downloads file "/welcome.txt" using the WebDAV API
-    Then the following headers should be set
+    Then the HTTP status code should be "200"
+    And the following headers should be set
       | header                            | value                                                            |
       | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
       | Content-Security-Policy           | default-src 'none';                                              |
@@ -327,5 +338,5 @@ Feature: download file
   Scenario: download a zero byte size file
     Given user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
     When user "Alice" downloads file "/zerobyte.txt" using the WebDAV API
-    Then the size of the downloaded file should be 0 bytes
-    And the HTTP status code should be "200"
+    Then the HTTP status code should be "200"
+    And the size of the downloaded file should be 0 bytes

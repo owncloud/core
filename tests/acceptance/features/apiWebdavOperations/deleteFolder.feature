@@ -79,10 +79,10 @@ Feature: delete folder
     And user "Brian" should be able to delete folder "/Top"
     Examples:
       | dav_version | share_folder    |
-      | old         | /ReceivedShares |
-      | new         | /ReceivedShares |
       | old         | ReceivedShares  |
+      | old         | /ReceivedShares |
       | new         | ReceivedShares  |
+      | new         | /ReceivedShares |
 
   @files_sharing-app-required @notToImplementOnOCIS
   Scenario Outline: delete a folder when there is a default folder for received shares that is a multi-level path
