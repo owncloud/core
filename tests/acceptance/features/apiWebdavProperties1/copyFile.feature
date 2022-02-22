@@ -77,8 +77,8 @@ Feature: copy file
     And user "Alice" has accepted share "/testshare" offered by user "Brian"
     When user "Alice" copies file "/textfile0.txt" to "/Shares/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    And user "Alice" downloads file "/Shares/testshare/textfile0.txt" using the WebDAV API
-    And the HTTP status code should be "404"
+    When user "Alice" downloads file "/Shares/testshare/textfile0.txt" using the WebDAV API
+    Then the HTTP status code should be "404"
     Examples:
       | dav_version |
       | old         |

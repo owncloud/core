@@ -13,7 +13,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
     When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
-    Then the properties response should contain an etag
+    Then the HTTP status code should be "201"
+    And the properties response should contain an etag
     Examples:
       | dav_version | file_name         |
       | old         | /upload.txt       |
@@ -38,7 +39,8 @@ Feature: get file properties
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with content "uploaded content" to "<file_name>"
     When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
-    Then the properties response should contain an etag
+    Then the HTTP status code should be "201"
+    And the properties response should contain an etag
     And the value of the item "//d:response/d:href" in the response to user "Alice" should match "/<expected_href>/"
     Examples:
       | dav_version | file_name     | expected_href                                                  |
@@ -66,7 +68,8 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file1.txt"
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
     When user "Alice" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
-    Then there should be an entry with href matching "/<expected_href>\//" in the response to user "Alice"
+    Then the HTTP status code should be "201"
+    And there should be an entry with href matching "/<expected_href>\//" in the response to user "Alice"
     And there should be an entry with href matching "/<expected_href>\/file1.txt/" in the response to user "Alice"
     And there should be an entry with href matching "/<expected_href>\/file2.txt/" in the response to user "Alice"
     Examples:
@@ -103,7 +106,8 @@ Feature: get file properties
     And user "Alice" has created folder "<folder_name>"
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/<file_name>"
     When user "Alice" gets the properties of file "<folder_name>/<file_name>" using the WebDAV API
-    Then the properties response should contain an etag
+    Then the HTTP status code should be "201"
+    And the properties response should contain an etag
     Examples:
       | dav_version | folder_name                      | file_name                     |
       | old         | /upload                          | abc.txt                       |
@@ -133,7 +137,8 @@ Feature: get file properties
     And user "Alice" has created folder "<folder_name>"
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/<file_name>"
     When user "Alice" gets the properties of file "<folder_name>/<file_name>" using the WebDAV API
-    Then the properties response should contain an etag
+    Then the HTTP status code should be "201"
+    And the properties response should contain an etag
     Examples:
       | dav_version | folder_name    | file_name   |
       | old         | /folder ?2.txt | file ?2.txt |
@@ -151,7 +156,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
-    Then the response should contain an empty property "oc:share-types"
+    Then the HTTP status code should be "201"
+    And the response should contain an empty property "oc:share-types"
     Examples:
       | dav_version |
       | old         |
@@ -175,7 +181,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
-    Then the response should contain a share-types property with
+    Then the HTTP status code should be "200"
+    And the response should contain a share-types property with
       | 0 |
     Examples:
       | dav_version |
@@ -200,7 +207,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
-    Then the response should contain a share-types property with
+    Then the HTTP status code should be "200"
+    And the response should contain a share-types property with
       | 1 |
     Examples:
       | dav_version |
@@ -222,7 +230,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
-    Then the response should contain a share-types property with
+    Then the HTTP status code should be "200"
+    And the response should contain a share-types property with
       | 3 |
     Examples:
       | dav_version |
@@ -256,7 +265,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:share-types |
-    Then the response should contain a share-types property with
+    Then the HTTP status code should be "200"
+    And the response should contain a share-types property with
       | 0 |
       | 1 |
       | 3 |
@@ -289,7 +299,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of file "/somefile.txt" using the WebDAV API
       | propertyName   |
       | oc:privatelink |
-    Then the single response should contain a property "oc:privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
     Examples:
       | dav_version |
       | old         |
@@ -303,7 +314,8 @@ Feature: get file properties
 
   Scenario Outline: Do a PROPFIND to a nonexistent URL
     When user "Alice" requests "<url>" with "PROPFIND" using basic auth
-    Then the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message1>" or "<message2>"
+    Then the HTTP status code should be "404"
+    And the value of the item "/d:error/s:message" in the response about user "Alice" should be "<message1>" or "<message2>"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
     @skipOnOcV10
@@ -405,7 +417,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName      |
       | d:getlastmodified |
-    Then the single response should contain a property "d:getlastmodified" with value like "/^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$/"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "d:getlastmodified" with value like "/^[MTWFS][uedhfriatno]{2},\s(\d){2}\s[JFMAJSOND][anebrpyulgctov]{2}\s\d{4}\s\d{2}:\d{2}:\d{2} GMT$/"
     Examples:
       | dav_version |
       | old         |
@@ -423,7 +436,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName     |
       | d:getcontenttype |
-    Then the single response should contain a property "d:getcontenttype" with value ""
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "d:getcontenttype" with value ""
     Examples:
       | dav_version |
       | old         |
@@ -441,7 +455,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName     |
       | d:getcontenttype |
-    Then the single response should contain a property "d:getcontenttype" with value "text/plain.*"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "d:getcontenttype" with value "text/plain.*"
     Examples:
       | dav_version |
       | old         |
@@ -459,7 +474,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName |
       | d:getetag    |
-    Then the single response should contain a property "d:getetag" with value like '%\"[a-z0-9:]{1,32}\"%'
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "d:getetag" with value like '%\"[a-z0-9:]{1,32}\"%'
     Examples:
       | dav_version |
       | old         |
@@ -477,7 +493,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName   |
       | d:resourcetype |
-    Then the single response should contain a property "d:resourcetype" with value ""
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "d:resourcetype" with value ""
     Examples:
       | dav_version |
       | old         |
@@ -495,7 +512,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName |
       | oc:size      |
-    Then the single response should contain a property "oc:size" with value "16"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:size" with value "16"
     Examples:
       | dav_version |
       | old         |
@@ -513,7 +531,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName |
       | oc:size      |
-    Then the single response should contain a property "oc:size" with value "0"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:size" with value "0"
     Examples:
       | dav_version |
       | old         |
@@ -531,7 +550,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName |
       | oc:fileid    |
-    Then the single response should contain a property "oc:fileid" with value like '/[a-zA-Z0-9]+/'
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:fileid" with value like '/[a-zA-Z0-9]+/'
     Examples:
       | dav_version |
       | old         |
@@ -549,7 +569,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName |
       | oc:fileid    |
-    Then the single response should contain a property "oc:fileid" with value like '/[a-zA-Z0-9]+/'
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:fileid" with value like '/[a-zA-Z0-9]+/'
     Examples:
       | dav_version |
       | old         |
@@ -567,7 +588,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of file "file.txt" using the WebDAV API
       | propertyName          |
       | oc:owner-display-name |
-    Then the single response about the file owned by "Alice" should contain a property "oc:owner-display-name" with value "%displayname%"
+    Then the HTTP status code should be "201"
+    And the single response about the file owned by "Alice" should contain a property "oc:owner-display-name" with value "%displayname%"
     Examples:
       | dav_version |
       | old         |
@@ -585,7 +607,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName          |
       | oc:owner-display-name |
-    Then the single response about the file owned by "Alice" should contain a property "oc:owner-display-name" with value "%displayname%"
+    Then the HTTP status code should be "201"
+    And the single response about the file owned by "Alice" should contain a property "oc:owner-display-name" with value "%displayname%"
     Examples:
       | dav_version |
       | old         |
@@ -603,7 +626,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "file.txt" using the WebDAV API
       | propertyName   |
       | oc:permissions |
-    Then the single response should contain a property "oc:permissions" with value like '/RM{0,1}DNVW/'
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:permissions" with value like '/RM{0,1}DNVW/'
     Examples:
       | dav_version |
       | old         |
@@ -621,7 +645,8 @@ Feature: get file properties
     When user "Alice" gets the following properties of folder "/test" using the WebDAV API
       | propertyName   |
       | oc:permissions |
-    Then the single response should contain a property "oc:permissions" with value like '/RM{0,1}DNVCK/'
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "oc:permissions" with value like '/RM{0,1}DNVCK/'
     Examples:
       | dav_version |
       | old         |
