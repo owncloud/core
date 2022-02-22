@@ -83,9 +83,9 @@ Feature: update a public link share
     Given using OCS API version "<ocs_api_version>"
     And using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" creates a public link share using the sharing API with settings
+    And user "Alice" has created a public link share with settings
       | path | FOLDER |
-    And user "Alice" moves folder "/FOLDER" to "/RENAMED_FOLDER" using the WebDAV API
+    When user "Alice" moves folder "/FOLDER" to "/RENAMED_FOLDER" using the WebDAV API
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -110,7 +110,7 @@ Feature: update a public link share
       | storage_id                 | A_STRING             |
       | storage                    | A_STRING             |
       | file_source                | A_STRING             |
-      # uncomment the following like and remove the next one after the issue has been fixed
+      # uncomment the following line and remove the next one after the issue has been fixed
       # | file_target                | /RENAMED_FOLDER  |
       | file_target                | /FOLDER              |
       | mail_send                  | 0                    |
@@ -501,9 +501,9 @@ Feature: update a public link share
     Given using OCS API version "<ocs_api_version>"
     And using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" creates a public link share using the sharing API with settings
+    And user "Alice" has created a public link share with settings
       | path | FOLDER |
-    And user "Alice" moves folder "/FOLDER" to "/RENAMED_FOLDER" using the WebDAV API
+    When user "Alice" moves folder "/FOLDER" to "/RENAMED_FOLDER" using the WebDAV API
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -546,10 +546,10 @@ Feature: update a public link share
   Scenario Outline: API responds with a full set of parameters when owner renames the file with a public link (bug demonstration)
     Given using OCS API version "<ocs_api_version>"
     And using <dav-path> DAV path
-    Given user "Alice" has uploaded file with content "some content" to "/lorem.txt"
-    When user "Alice" creates a public link share using the sharing API with settings
+    And user "Alice" has uploaded file with content "some content" to "/lorem.txt"
+    And user "Alice" has created a public link share with settings
       | path | lorem.txt |
-    And user "Alice" moves file "/lorem.txt" to "/new-lorem.txt" using the WebDAV API
+    When user "Alice" moves file "/lorem.txt" to "/new-lorem.txt" using the WebDAV API
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
@@ -574,7 +574,7 @@ Feature: update a public link share
       | storage_id                 | A_STRING       |
       | storage                    | A_STRING       |
       | file_source                | A_STRING       |
-      # uncomment the following like and remove the next one after the issue has been fixed
+      # uncomment the following line and remove the next one after the issue has been fixed
       # | file_target                | /new-lorem.txt  |
       | file_target                | /lorem.txt     |
       | mail_send                  | 0              |
@@ -590,10 +590,10 @@ Feature: update a public link share
   Scenario Outline: API responds with a full set of parameters when owner renames the file with a public link in ocis
     Given using OCS API version "<ocs_api_version>"
     And using <dav-path> DAV path
-    Given user "Alice" has uploaded file with content "some content" to "/lorem.txt"
-    When user "Alice" creates a public link share using the sharing API with settings
+    And user "Alice" has uploaded file with content "some content" to "/lorem.txt"
+    And user "Alice" has created a public link share with settings
       | path | lorem.txt |
-    And user "Alice" moves file "/lorem.txt" to "/new-lorem.txt" using the WebDAV API
+    When user "Alice" moves file "/lorem.txt" to "/new-lorem.txt" using the WebDAV API
     And user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
