@@ -83,8 +83,9 @@ Details
 
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 
-   The following have been updated: - follow-redirects (1.14.2 to 1.14.8) - karma (6.3.8 to
-   6.3.16) - karma-coverage (2.0.3 to 2.2.0) - log4js (6.3.0 to 6.4.1)
+   The following have been updated: - bower_components/underscore (1.13.1 to 1.13.2) -
+   follow-redirects (1.14.2 to 1.14.8) - karma (6.3.8 to 6.3.16) - karma-coverage (2.0.3 to
+   2.2.0) - log4js (6.3.0 to 6.4.1)
 
    https://github.com/owncloud/core/pull/39709
    https://github.com/owncloud/core/pull/39763
@@ -92,6 +93,7 @@ Details
    https://github.com/owncloud/core/pull/39785
    https://github.com/owncloud/core/pull/39788
    https://github.com/owncloud/core/pull/39814
+   https://github.com/owncloud/core/pull/39816
 
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 
