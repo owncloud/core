@@ -1017,6 +1017,37 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^user "([^"]*)" should not be able to download file "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $fileName
+	 *
+	 * @return void
+	 * @throws JsonException
+	 */
+	public function userShouldNotBeAbleToDownloadFile(
+		string $user,
+		string $fileName
+	):void {
+		$user = $this->getActualUsername($user);
+		$password = $this->getPasswordForUser($user);
+		$this->downloadFileAsUserUsingPassword($user, $fileName, $password);
+		Assert::assertGreaterThanOrEqual(
+			400,
+			$this->getResponse()->getStatusCode(),
+			__METHOD__
+			. ' download must fail'
+		);
+		Assert::assertLessThanOrEqual(
+			499,
+			$this->getResponse()->getStatusCode(),
+			__METHOD__
+			. ' 4xx error expected but got status code "'
+			. $this->getResponse()->getStatusCode() . '"'
+		);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should be able to access a skeleton file$/
 	 *
 	 * @param string $user

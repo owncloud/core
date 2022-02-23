@@ -12,7 +12,8 @@ Feature: create folder
   Scenario Outline: create a folder
     Given using <dav_version> DAV path
     When user "Alice" creates folder "<folder_name>" using the WebDAV API
-    Then as "Alice" folder "<folder_name>" should exist
+    Then the HTTP status code should be "201"
+    And as "Alice" folder "<folder_name>" should exist
     Examples:
       | dav_version | folder_name     |
       | old         | /upload         |
@@ -48,7 +49,8 @@ Feature: create folder
     When user "Alice" gets the following properties of folder "/test_folder" using the WebDAV API
       | propertyName   |
       | d:resourcetype |
-    Then the single response should contain a property "d:resourcetype" with a child property "d:collection"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "d:resourcetype" with a child property "d:collection"
     Examples:
       | dav_version |
       | old         |
@@ -66,7 +68,8 @@ Feature: create folder
     When user "Alice" gets the following properties of folder "/test_folder:5" using the WebDAV API
       | propertyName   |
       | d:resourcetype |
-    Then the single response should contain a property "d:resourcetype" with a child property "d:collection"
+    Then the HTTP status code should be "201"
+    And the single response should contain a property "d:resourcetype" with a child property "d:collection"
     Examples:
       | dav_version |
       | old         |
