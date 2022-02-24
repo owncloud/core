@@ -30,8 +30,8 @@ Feature: users cannot move (rename) a folder to a blacklisted name
   Scenario Outline: Rename a folder to a banned name
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
-    When the administrator updates system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json" using the occ command
-    And user "Alice" moves folder "/testshare" to "/blacklisted-file.txt" using the WebDAV API
+    And the administrator has updated system config key "blacklisted_files" with value '["blacklisted-file.txt",".htaccess"]' and type "json"
+    When user "Alice" moves folder "/testshare" to "/blacklisted-file.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And user "Alice" should see the following elements
       | /testshare/ |

@@ -12,8 +12,8 @@ Feature: users cannot move (rename) a folder to or into an excluded directory
   Scenario Outline: Rename a folder to an excluded directory name
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
-    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "Alice" moves folder "/testshare" to "/.github" using the WebDAV API
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    When user "Alice" moves folder "/testshare" to "/.github" using the WebDAV API
     Then the HTTP status code should be "403"
     And user "Alice" should see the following elements
       | /testshare/ |
@@ -32,8 +32,8 @@ Feature: users cannot move (rename) a folder to or into an excluded directory
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/testshare"
     And user "Alice" has created folder "/FOLDER"
-    When the administrator updates system config key "excluded_directories" with value '[".github"]' and type "json" using the occ command
-    And user "Alice" moves folder "/testshare" to "/FOLDER/.github" using the WebDAV API
+    And the administrator has updated system config key "excluded_directories" with value '[".github"]' and type "json"
+    When user "Alice" moves folder "/testshare" to "/FOLDER/.github" using the WebDAV API
     Then the HTTP status code should be "403"
     And user "Alice" should see the following elements
       | /testshare/ |

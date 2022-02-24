@@ -157,7 +157,8 @@ Feature: move (rename) file
     Given user "Alice" has stored id of file "/textfile0.txt"
     And user "Alice" has created folder "FOLDER"
     When user "Alice" moves file "/textfile0.txt" asynchronously to "/FOLDER/textfile0.txt" using the WebDAV API
-    Then user "Alice" file "/FOLDER/textfile0.txt" should have the previously stored id
+    Then the HTTP status code should be "202"
+    And user "Alice" file "/FOLDER/textfile0.txt" should have the previously stored id
     And user "Alice" should not see the following elements
       | /textfile0.txt |
 
@@ -208,8 +209,7 @@ Feature: move (rename) file
       | shareWith   | Alice     |
     When user "Alice" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    When user "Alice" downloads file "/testshare/textfile0.txt" using the WebDAV API
-    Then the HTTP status code should be "404"
+    And user "Alice" should not be able to download file "/testshare/textfile0.txt"
     Examples:
       | dav_version |
       | old         |

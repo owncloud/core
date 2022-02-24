@@ -231,7 +231,8 @@ Feature: move (rename) file
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "textfile0.txt"
     And user "Alice" has stored id of file "/textfile0.txt"
     When user "Alice" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
-    Then user "Alice" file "/FOLDER/textfile0.txt" should have the previously stored id
+    Then the HTTP status code should be "201"
+    And user "Alice" file "/FOLDER/textfile0.txt" should have the previously stored id
     And user "Alice" should not see the following elements
       | /textfile0.txt |
     Examples:
@@ -256,7 +257,8 @@ Feature: move (rename) file
     And user "Brian" has stored id of folder "/folderA/ONE"
     And user "Brian" has created folder "/folderA/ONE/TWO"
     When user "Brian" moves folder "/folderA/ONE" to "/folderB/ONE" using the WebDAV API
-    Then as "Brian" folder "/folderA" should exist
+#    Then the HTTP status code should be "201"
+    And as "Brian" folder "/folderA" should exist
     And as "Brian" folder "/folderA/ONE" should not exist
 		# yes, a weird bug used to make this one fail
     And as "Brian" folder "/folderA/ONE/TWO" should not exist
