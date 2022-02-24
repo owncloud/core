@@ -3230,6 +3230,7 @@ trait WebDav {
 			$content
 		);
 		$this->lastUploadDeleteTime = \time();
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**

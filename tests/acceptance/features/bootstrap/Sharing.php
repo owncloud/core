@@ -1388,6 +1388,7 @@ trait Sharing {
 			$user2,
 			$permissions
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2977,6 +2978,7 @@ trait Sharing {
 			$url,
 			null
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
