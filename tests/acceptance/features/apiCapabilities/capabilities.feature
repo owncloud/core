@@ -41,7 +41,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                           | value             |
-      | core          | pollinterval                              | 60                |
+      | core          | pollinterval                              | 30000             |
       | core          | webdav-root                               | remote.php/webdav |
       | core          | status@@@edition                          | %edition%         |
       | core          | status@@@productname                      | %productname%     |
@@ -304,7 +304,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -329,7 +329,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element       | value             |
-      | core          | pollinterval          | 60                |
+      | core          | pollinterval          | 30000             |
       | core          | webdav-root           | remote.php/webdav |
       | files_sharing | api_enabled           | EMPTY             |
       | files_sharing | can_share             | EMPTY             |
@@ -348,7 +348,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -371,7 +371,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -395,7 +395,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -419,7 +419,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -443,7 +443,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                                | value             |
-      | core          | pollinterval                                   | 60                |
+      | core          | pollinterval                                   | 30000             |
       | core          | webdav-root                                    | remote.php/webdav |
       | files_sharing | api_enabled                                    | 1                 |
       | files_sharing | can_share                                      | 1                 |
@@ -470,7 +470,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                                | value             |
-      | core          | pollinterval                                   | 60                |
+      | core          | pollinterval                                   | 30000             |
       | core          | webdav-root                                    | remote.php/webdav |
       | files_sharing | api_enabled                                    | 1                 |
       | files_sharing | can_share                                      | 1                 |
@@ -497,7 +497,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                                | value             |
-      | core          | pollinterval                                   | 60                |
+      | core          | pollinterval                                   | 30000             |
       | core          | webdav-root                                    | remote.php/webdav |
       | files_sharing | api_enabled                                    | 1                 |
       | files_sharing | can_share                                      | 1                 |
@@ -524,7 +524,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -548,7 +548,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -572,7 +572,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -598,7 +598,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -624,7 +624,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -648,7 +648,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -672,7 +672,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -697,7 +697,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -723,7 +723,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element               | value             |
-      | core          | pollinterval                  | 60                |
+      | core          | pollinterval                  | 30000             |
       | core          | webdav-root                   | remote.php/webdav |
       | files_sharing | api_enabled                   | 1                 |
       | files_sharing | can_share                     | 1                 |
@@ -746,7 +746,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -770,7 +770,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -799,7 +799,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -830,7 +830,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | EMPTY             |
@@ -861,7 +861,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | 1                 |
@@ -893,7 +893,7 @@ Feature: capabilities
     And the HTTP status code should be "200"
     And the capabilities should contain
       | capability    | path_to_element                       | value             |
-      | core          | pollinterval                          | 60                |
+      | core          | pollinterval                          | 30000             |
       | core          | webdav-root                           | remote.php/webdav |
       | files_sharing | api_enabled                           | 1                 |
       | files_sharing | can_share                             | EMPTY             |
