@@ -17,6 +17,7 @@ Summary
 * Bugfix - Moving a file from one folder into a folder that is a number fails: [#39702](https://github.com/owncloud/core/issues/39702)
 * Bugfix - Make licenses expire at the end of the expiration date: [#39735](https://github.com/owncloud/core/pull/39735)
 * Bugfix - Fix wrong formatted XML in public-files dav endpoint: [#39797](https://github.com/owncloud/core/pull/39797)
+* Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -80,6 +81,13 @@ Details
    response is properly formatted and can be parsed without problems.
 
    https://github.com/owncloud/core/pull/39797
+
+* Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
+
+   The default pollinterval advertised in capabilities has been set to 30000 milliseconds.
+   Previously it was 60 milliseconds.
+
+   https://github.com/owncloud/core/pull/39143
 
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 
