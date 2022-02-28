@@ -94,6 +94,15 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
+	 * @When the administrator clicks on store-credentials in the admin general settings page using the webUI
+	 *
+	 * @return void
+	 */
+	public function theAdministratorClicksOnStoreCredentialsInTheAdminGeneralSettingsPageUsingTheWebui():void {
+		$this->adminGeneralSettingsPage->storeCredentials($this->getSession());
+	}
+
+	/**
 	 * @When the administrator clicks on send test email in the admin general settings page using the webUI
 	 *
 	 * @return void
@@ -252,6 +261,46 @@ class WebUIAdminGeneralSettingsContext extends RawMinkContext implements Context
 				$this->featureContext->getStepLineRef()
 			);
 		}
+	}
+
+	/**
+	 * @Then the email credential name on the admin general settings page should be :expectedName
+	 *
+	 * @param string $expectedName
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theEmailCredentialNameOnTheAdminGeneralSettingsPageShouldBe(string $expectedName):void {
+		$actualName = $this->adminGeneralSettingsPage->getCredentialName();
+		Assert::assertEquals(
+			$expectedName,
+			$actualName,
+			__METHOD__
+			. " The expected credential name was '"
+			. $expectedName
+			. "' but got '$actualName' instead"
+		);
+	}
+
+	/**
+	 * @Then the email credential password on the admin general settings page should be :expectedPassword
+	 *
+	 * @param string $expectedPassword
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theEmailCredentialPasswordOnTheAdminGeneralSettingsPageShouldBe(string $expectedPassword):void {
+		$actualPassword = $this->adminGeneralSettingsPage->getCredentialPassword();
+		Assert::assertEquals(
+			$expectedPassword,
+			$actualPassword,
+			__METHOD__
+			. " The expected credential password was '"
+			. $expectedPassword
+			. "' but got '$actualPassword' instead"
+		);
 	}
 
 	/**
