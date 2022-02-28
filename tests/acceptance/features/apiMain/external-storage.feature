@@ -31,7 +31,8 @@ Feature: external-storage
       | Brian    |
     And user "Alice" has created folder "/local_storage/foo1"
     When user "Alice" moves file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt" using the WebDAV API
-    Then as "Brian" file "/local_storage/foo1/textfile0.txt" should exist
+    Then the HTTP status code should be "201"
+    And as "Brian" file "/local_storage/foo1/textfile0.txt" should exist
     And as "Alice" file "/local_storage/foo1/textfile0.txt" should exist
 
   Scenario: Move a file out of storage
@@ -42,7 +43,8 @@ Feature: external-storage
     And user "Alice" has created folder "/local_storage/foo2"
     And user "Alice" has moved file "/textfile0.txt" to "/local_storage/foo2/textfile0.txt"
     When user "Brian" moves file "/local_storage/foo2/textfile0.txt" to "/local.txt" using the WebDAV API
-    Then as "Brian" file "/local_storage/foo2/textfile0.txt" should not exist
+    Then the HTTP status code should be "201"
+    And as "Brian" file "/local_storage/foo2/textfile0.txt" should not exist
     And as "Alice" file "/local_storage/foo2/textfile0.txt" should not exist
     And as "Brian" file "/local.txt" should exist
 
