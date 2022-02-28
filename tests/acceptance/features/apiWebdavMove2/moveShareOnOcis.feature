@@ -19,8 +19,8 @@ Feature: move (rename) file
       | permissions | change    |
       | shareWith   | Alice     |
     And user "<mover>" has uploaded file with content "test data" to "/testfile.txt"
-    When user "Alice" accepts share "/testshare" offered by user "Brian" using the sharing API
-    And user "<mover>" moves file "/testfile.txt" to "<destination_folder>/testfile.txt" using the WebDAV API
+    And user "Alice" has accepted share "/testshare" offered by user "Brian"
+    When user "<mover>" moves file "/testfile.txt" to "<destination_folder>/testfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/Shares/testshare/testfile.txt" for user "Alice" should be "test data"
     And the content of file "/testshare/testfile.txt" for user "Brian" should be "test data"
@@ -28,8 +28,8 @@ Feature: move (rename) file
     Examples:
       | dav_version | mover | destination_folder |
       | old         | Alice | /Shares/testshare  |
-      | new         | Alice | /Shares/testshare  |
       | old         | Brian | /testshare         |
+      | new         | Alice | /Shares/testshare  |
       | new         | Brian | /testshare         |
 
     @personalSpace
@@ -49,8 +49,8 @@ Feature: move (rename) file
       | shareType   | user      |
       | permissions | change    |
       | shareWith   | Alice     |
-    When user "Alice" accepts share "/testshare" offered by user "Brian" using the sharing API
-    And user "<mover>" moves file "<source_folder>/testfile.txt" to "/testfile.txt" using the WebDAV API
+    And user "Alice" has accepted share "/testshare" offered by user "Brian"
+    When user "<mover>" moves file "<source_folder>/testfile.txt" to "/testfile.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/testfile.txt" for user "<mover>" should be "test data"
     And as "Alice" file "/Shares/testfile.txt" should not exist
@@ -58,8 +58,8 @@ Feature: move (rename) file
     Examples:
       | dav_version | mover | source_folder     |
       | old         | Alice | /Shares/testshare |
-      | new         | Alice | /Shares/testshare |
       | old         | Brian | /testshare        |
+      | new         | Alice | /Shares/testshare |
       | new         | Brian | /testshare        |
 
     @personalSpace
@@ -80,8 +80,8 @@ Feature: move (rename) file
       | shareWith   | Alice     |
     And user "<mover>" has created folder "/testsubfolder"
     And user "<mover>" has uploaded file with content "test data" to "/testsubfolder/testfile.txt"
-    When user "Alice" accepts share "/testshare" offered by user "Brian" using the sharing API
-    And user "<mover>" moves folder "/testsubfolder" to "<destination_folder>/testsubfolder" using the WebDAV API
+    And user "Alice" has accepted share "/testshare" offered by user "Brian"
+    When user "<mover>" moves folder "/testsubfolder" to "<destination_folder>/testsubfolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/Shares/testshare/testsubfolder/testfile.txt" for user "Alice" should be "test data"
     And the content of file "/testshare/testsubfolder/testfile.txt" for user "Brian" should be "test data"
@@ -89,8 +89,8 @@ Feature: move (rename) file
     Examples:
       | dav_version | mover | destination_folder |
       | old         | Alice | /Shares/testshare  |
-      | new         | Alice | /Shares/testshare  |
       | old         | Brian | /testshare         |
+      | new         | Alice | /Shares/testshare  |
       | new         | Brian | /testshare         |
 
     @personalSpace
@@ -103,16 +103,18 @@ Feature: move (rename) file
   Scenario Outline: Moving a folder out of a shared folder as the sharee and as the sharer
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Brian" has created folder "/testshare"
-    And user "Brian" has created folder "/testshare/testsubfolder"
+    And user "Brian" has created the following folders
+      | path                     |
+      | /testshare               |
+      | /testshare/testsubfolder |
     And user "Brian" has uploaded file with content "test data" to "/testshare/testsubfolder/testfile.txt"
     And user "Brian" has created a share with settings
       | path        | testshare |
       | shareType   | user      |
       | permissions | change    |
       | shareWith   | Alice     |
-    When user "Alice" accepts share "/testshare" offered by user "Brian" using the sharing API
-    And user "<mover>" moves folder "<source_folder>/testsubfolder" to "/testsubfolder" using the WebDAV API
+    And user "Alice" has accepted share "/testshare" offered by user "Brian"
+    When user "<mover>" moves folder "<source_folder>/testsubfolder" to "/testsubfolder" using the WebDAV API
     Then the HTTP status code should be "201"
     And the content of file "/testsubfolder/testfile.txt" for user "<mover>" should be "test data"
     And as "Alice" folder "<source_folder>/testsubfolder" should not exist
@@ -120,8 +122,8 @@ Feature: move (rename) file
     Examples:
       | dav_version | mover | source_folder     |
       | old         | Alice | /Shares/testshare |
-      | new         | Alice | /Shares/testshare |
       | old         | Brian | /testshare        |
+      | new         | Alice | /Shares/testshare |
       | new         | Brian | /testshare        |
 
     @personalSpace
@@ -141,11 +143,10 @@ Feature: move (rename) file
       | shareType   | user      |
       | permissions | read      |
       | shareWith   | Alice     |
-    When user "Alice" accepts share "/testshare" offered by user "Brian" using the sharing API
-    And user "Alice" moves file "/textfile0.txt" to "/Shares/testshare/textfile0.txt" using the WebDAV API
+    And user "Alice" has accepted share "/testshare" offered by user "Brian"
+    When user "Alice" moves file "/textfile0.txt" to "/Shares/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    When user "Alice" downloads file "/Shares/testshare/textfile0.txt" using the WebDAV API
-    Then the HTTP status code should be "404"
+    And user "Alice" should not be able to download file "/Shares/testshare/textfile0.txt"
     Examples:
       | dav_version |
       | old         |
@@ -169,8 +170,8 @@ Feature: move (rename) file
       | permissions | read      |
       | shareWith   | Alice     |
     And user "Brian" has copied file "/fileToCopy.txt" to "/testshare/overwritethis.txt"
-    When user "Alice" accepts share "/testshare" offered by user "Brian" using the sharing API
-    And user "Alice" moves file "/textfile0.txt" to "/Shares/testshare/overwritethis.txt" using the WebDAV API
+    And user "Alice" has accepted share "/testshare" offered by user "Brian"
+    When user "Alice" moves file "/textfile0.txt" to "/Shares/testshare/overwritethis.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And the content of file "/Shares/testshare/overwritethis.txt" for user "Alice" should be "Welcome to ownCloud"
     Examples:
@@ -187,19 +188,22 @@ Feature: move (rename) file
   Scenario Outline: Checking file id after a move between received shares
     Given using <dav_version> DAV path
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has created folder "/folderA"
-    And user "Alice" has created folder "/folderB"
+    And user "Alice" has created the following folders
+      | path     |
+      | /folderA |
+      | /folderB |
     And user "Alice" has shared folder "/folderA" with user "Brian"
     And user "Alice" has shared folder "/folderB" with user "Brian"
-    When user "Brian" accepts the following shares offered by user "Alice" using the sharing API
-      | path        |
-      | /folderA    |
-      | /folderB    |
-    And user "Brian" creates folder "/Shares/folderA/ONE" using the WebDAV API
-    And user "Brian" stores id of folder "/Shares/folderA/ONE"
-    And user "Brian" creates folder "/Shares/folderA/ONE/TWO" using the WebDAV API
-    And user "Brian" moves folder "/Shares/folderA/ONE" to "/Shares/folderB/ONE" using the WebDAV API
-    Then as "Brian" folder "/Shares/folderA" should exist
+    And user "Brian" has accepted share "/folderA" offered by user "Alice"
+    And user "Brian" has accepted share "/folderB" offered by user "Alice"
+    And user "Brian" has created the following folders
+      | path                    |
+      | /Shares/folderA/ONE     |
+      | /Shares/folderA/ONE/TWO |
+    And user "Brian" has stored id of folder "/Shares/folderA/ONE"
+    When user "Brian" moves folder "/Shares/folderA/ONE" to "/Shares/folderB/ONE" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Brian" folder "/Shares/folderA" should exist
     And as "Brian" folder "/Shares/folderA/ONE" should not exist
     And as "Brian" folder "/Shares/folderA/ONE/TWO" should not exist
     And as "Brian" folder "/Shares/folderB/ONE" should exist

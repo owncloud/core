@@ -164,8 +164,7 @@ Feature: move (rename) file
       | shareWith   | Alice     |
     When user "Alice" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
     Then the HTTP status code should be "403"
-    When user "Alice" downloads file "/testshare/textfile0.txt" using the WebDAV API
-    Then the HTTP status code should be "404"
+    And user "Alice" should not be able to download file "/testshare/textfile0.txt"
     Examples:
       | dav_version |
       | old         |
@@ -257,7 +256,7 @@ Feature: move (rename) file
     And user "Brian" has stored id of folder "/folderA/ONE"
     And user "Brian" has created folder "/folderA/ONE/TWO"
     When user "Brian" moves folder "/folderA/ONE" to "/folderB/ONE" using the WebDAV API
-#    Then the HTTP status code should be "201"
+    Then the HTTP status code should be "201"
     And as "Brian" folder "/folderA" should exist
     And as "Brian" folder "/folderA/ONE" should not exist
 		# yes, a weird bug used to make this one fail
@@ -343,8 +342,8 @@ Feature: move (rename) file
   Scenario Outline: renaming file with dots in the path
     Given using <dav_version> DAV path
     And user "Alice" has created folder "<folder_name>"
-    When user "Alice" uploads file with content "uploaded content for file name ending with a dot" to "<folder_name>/<file_name>" using the WebDAV API
-    And user "Alice" moves file "<folder_name>/<file_name>" to "<folder_name>/abc.txt" using the WebDAV API
+    And user "Alice" has uploaded file with content "uploaded content for file name ending with a dot" to "<folder_name>/<file_name>"
+    When user "Alice" moves file "<folder_name>/<file_name>" to "<folder_name>/abc.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "<folder_name>/abc.txt" should exist
     Examples:
@@ -422,6 +421,10 @@ Feature: move (rename) file
       | path                    |
       | .hidden_file102         |
       | /FOLDER/.hidden_file101 |
+    And the content of the following files for user "Alice" should be "hidden file"
+      | path                    |
+      | .hidden_file102         |
+      | /FOLDER/.hidden_file101 |
     Examples:
       | dav_version |
       | old         |
@@ -445,6 +448,10 @@ Feature: move (rename) file
       | hidden_file101.txt | .hidden_file102    |
     Then the HTTP status code of responses on all endpoints should be "201"
     And as "Alice" the following files should exist
+      | path               |
+      | .hidden_file102    |
+      | hidden_file102.txt |
+    And the content of the following files for user "Alice" should be "hidden file"
       | path               |
       | .hidden_file102    |
       | hidden_file102.txt |
@@ -536,18 +543,38 @@ Feature: move (rename) file
       | spaces      | texta         | file.txt    | 0           |
 
 
-  Scenario: move a file of size zero byte
-    Given user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
+  Scenario Outline: move a file of size zero byte
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
     And user "Alice" has created folder "/testZeroByte"
     When user "Alice" moves file "/zerobyte.txt" to "/testZeroByte/zerobyte.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "/testZeroByte/zerobyte.txt" should exist
     And as "Alice" file "/zerobyte.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
 
 
-  Scenario: rename a file of size zero byte
-    Given user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
+  Scenario Outline: rename a file of size zero byte
+    Given using <dav_version> DAV path
+    And user "Alice" has uploaded file "filesForUpload/zerobyte.txt" to "/zerobyte.txt"
     When user "Alice" moves file "/zerobyte.txt" to "/rename_zerobyte.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Alice" file "/rename_zerobyte.txt" should exist
     And as "Alice" file "/zerobyte.txt" should not exist
+    Examples:
+      | dav_version |
+      | old         |
+      | new         |
+
+    @skipOnOcV10 @personalSpace
+    Examples:
+      | dav_version |
+      | spaces      |
