@@ -147,6 +147,7 @@ Feature: reset user password
       | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
+    And the user "brand-new-user" resets the password of user "brand-new-user" to "%alt1%" using the provisioning API
     When the user "brand-new-user" requests these endpoints with "PROPFIND" to get property "d:getetag" using basic auth and generated app password about user "brand-new-user"
       | endpoint                                           |
       | /remote.php/dav/files/%username%/textfile0.txt     |

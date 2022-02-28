@@ -1751,6 +1751,23 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Given the user :arg1 resets the password of user :arg2 to :arg3 using the provisioning API
+	 *
+	 * @param string|null $user that does the password reset
+	 * @param string|null $username of the user whose password is reset
+	 * @param string|null $password
+	 *
+	 * @return void
+	 */
+	public function theUserResetsThePasswordOfUserToUsingTheProvisioningApi(?string $user, ?string $username, ?string $password):void {
+		$this->userResetUserPasswordUsingProvisioningApi(
+			$user,
+			$username,
+			$password
+		);
+	}
+
+	/**
 	 * @Given user :user has reset the password of user :username to :password
 	 *
 	 * @param string|null $user that does the password reset
@@ -1998,6 +2015,7 @@ trait Provisioning {
 		);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->rememberUserEmailAddress($targetUser, $email);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2234,6 +2252,7 @@ trait Provisioning {
 			'displayname',
 			$displayName
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2266,6 +2285,7 @@ trait Provisioning {
 			$displayName
 		);
 		$this->rememberUserDisplayName($targetUser, $displayName);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2414,6 +2434,7 @@ trait Provisioning {
 			$targetUser,
 			$quota
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**

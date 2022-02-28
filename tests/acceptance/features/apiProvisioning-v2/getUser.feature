@@ -31,6 +31,7 @@ Feature: get user
     And the display name returned by the API should be "<displayname>"
     And the email address returned by the API should be "<email>"
     And the quota definition returned by the API should be "default"
+    And the quota definition returned by the API should be "default"
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
     Examples:
