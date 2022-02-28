@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Security - Prevent stored mail settings password from showing in the webUI: [#39833](https://github.com/owncloud/core/pull/39833)
 * Bugfix - Properly setup share owner file system on public link shares: [#39518](https://github.com/owncloud/core/pull/39518)
 * Bugfix - Prevent group names starting or ending with white space: [#39540](https://github.com/owncloud/core/pull/39540)
 * Bugfix - Set page title for the tags file list: [#39556](https://github.com/owncloud/core/issues/39556)
@@ -18,6 +19,7 @@ Summary
 * Bugfix - Make licenses expire at the end of the expiration date: [#39735](https://github.com/owncloud/core/pull/39735)
 * Bugfix - Subadmin will be shown only his assignable groups in the users page: [#39752](https://github.com/owncloud/core/pull/39752)
 * Bugfix - Fix wrong formatted XML in public-files dav endpoint: [#39797](https://github.com/owncloud/core/pull/39797)
+* Bugfix - Fix issue restoring versions from the trashbin after sharing: [#39822](https://github.com/owncloud/core/pull/39822)
 * Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: [#39829](https://github.com/owncloud/core/pull/39829)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
@@ -29,6 +31,11 @@ Summary
 
 Details
 -------
+
+* Security - Prevent stored mail settings password from showing in the webUI: [#39833](https://github.com/owncloud/core/pull/39833)
+
+   https://github.com/owncloud/enterprise/issues/5035
+   https://github.com/owncloud/core/pull/39833
 
 * Bugfix - Properly setup share owner file system on public link shares: [#39518](https://github.com/owncloud/core/pull/39518)
 
@@ -90,6 +97,16 @@ Details
    response is properly formatted and can be parsed without problems.
 
    https://github.com/owncloud/core/pull/39797
+
+* Bugfix - Fix issue restoring versions from the trashbin after sharing: [#39822](https://github.com/owncloud/core/pull/39822)
+
+   Previously, having encryption enabled, if a user shared a folder with another user, and that
+   new user removed a file inside that shared folder, that file ended up in the new user's trashbin
+   along with the file's versions. Restoring that file from the trashbin caused the versions of
+   that file to get broken due to a bad signature. The file was restored correctly. Now, the
+   versions are also restored correctly from the trashbin too.
+
+   https://github.com/owncloud/core/pull/39822
 
 * Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: [#39829](https://github.com/owncloud/core/pull/39829)
 

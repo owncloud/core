@@ -6,6 +6,7 @@
     </p>
     <h3 id="unreleased-summary">Summary</h3>
     <ul class="summary">
+        <li class="type-security changelog-item">Security - Prevent stored mail settings password from showing in the webUI: <a href="https://github.com/owncloud/core/pull/39833">#39833</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Prevent group names starting or ending with white space: <a href="https://github.com/owncloud/core/pull/39540">#39540</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Set page title for the tags file list: <a href="https://github.com/owncloud/core/issues/39556">#39556</a></li>
@@ -16,6 +17,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Make licenses expire at the end of the expiration date: <a href="https://github.com/owncloud/core/pull/39735">#39735</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Subadmin will be shown only his assignable groups in the users page: <a href="https://github.com/owncloud/core/pull/39752">#39752</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix wrong formatted XML in public-files dav endpoint: <a href="https://github.com/owncloud/core/pull/39797">#39797</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix issue restoring versions from the trashbin after sharing: <a href="https://github.com/owncloud/core/pull/39822">#39822</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: <a href="https://github.com/owncloud/core/pull/39829">#39829</a></li>
         <li class="type-change changelog-item">Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></li>
         <li class="type-change changelog-item">Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></li>
@@ -27,6 +29,12 @@
     </ul>
     <h3 id="unreleased-details">Details</h3>
     <ul class="details">
+        <li class="type-security changelog-item">
+            <p>Security - Prevent stored mail settings password from showing in the webUI: <a href="https://github.com/owncloud/core/pull/39833">#39833</a></p>
+            <p>https://github.com/owncloud/enterprise/issues/5035<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39833<br></p>
+        </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Properly setup share owner file system on public link shares: <a href="https://github.com/owncloud/core/pull/39518">#39518</a></p>
             <p>https://github.com/owncloud/core/pull/39518<br></p>
@@ -90,6 +98,16 @@
    response is properly formatted and can be parsed without problems.
             </p>
             <p>https://github.com/owncloud/core/pull/39797<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix issue restoring versions from the trashbin after sharing: <a href="https://github.com/owncloud/core/pull/39822">#39822</a></p>
+            <p>Previously, having encryption enabled, if a user shared a folder with another user, and that
+   new user removed a file inside that shared folder, that file ended up in the new user's trashbin
+   along with the file's versions. Restoring that file from the trashbin caused the versions of
+   that file to get broken due to a bad signature. The file was restored correctly. Now, the
+   versions are also restored correctly from the trashbin too.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39822<br></p>
         </li>
         <li class="type-bugfix changelog-item">
             <p>Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: <a href="https://github.com/owncloud/core/pull/39829">#39829</a></p>
