@@ -3173,6 +3173,28 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" downloads the following files using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userDownloadsFollowingFiles(
+		string $user,
+		TableNode $table
+	):void {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$files = $table->getHash();
+		$this->emptyLastHTTPStatusCodesArray();
+		foreach ($files as $fileName) {
+			$this->downloadFileAsUserUsingPassword($user, $fileName["path"]);
+			$this->pushToLastStatusCodesArrays();
+		}
+	}
+
+	/**
 	 * @When user :user uploads a file with content :content and mtime :mtime to :destination using the WebDAV API
 	 *
 	 * @param string $user
