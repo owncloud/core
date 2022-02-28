@@ -722,10 +722,13 @@ class Encryption extends Wrapper {
 
 		// in case of a rename we need to manipulate the source cache because
 		// this information will be kept for the new target
-		if ($isRename) {
+		if ($isRename && !($this->isVersion($sourceInternalPath) || $this->isVersion($targetInternalPath))) {
 			/*
 			 * Rename is a process of creating a new file. Here we try to use the
 			 * incremented version of source file, for the destination file.
+			 * Note that if we're renaming or moving a version, the version is copied
+			 * without any change, so the encrypted version mustn't change in order to avoid
+			 * problems with the signature
 			 */
 			$encryptedVersion = $sourceStorage->getCache()->get($sourceInternalPath)['encryptedVersion'];
 			if ($this->encryptionManager->isEnabled() && $isEncrypted) {
