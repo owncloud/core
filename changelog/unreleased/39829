@@ -1,0 +1,10 @@
+Bugfix: Fix issue when encryption is enabled and a file is moved out of the share
+
+When encryption was used, moving a file out of a shared folder caused the
+versions of the file to get broken. The file was moved correctly though. This
+happened due to the key file not being copied to the new location and a new
+key file being generated for the file.
+Now, the key file is properly copied to the new location, so the versions can
+be decrypted properly.
+
+https://github.com/owncloud/core/pull/39829

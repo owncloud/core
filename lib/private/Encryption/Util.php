@@ -32,6 +32,7 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\Encryption\IEncryptionModule;
 use OCP\Files\Storage;
+use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\IUser;
 
@@ -227,20 +228,28 @@ class Util {
 	 * @throws \BadMethodCallException
 	 */
 	public function getUidAndFilename($path) {
-		$parts = \explode('/', $path);
-		$uid = '';
-		if (\count($parts) > 2) {
-			$uid = $parts[1];
-		}
-		if (!$this->userManager->userExists($uid)) {
-			throw new \BadMethodCallException(
-				'path needs to be relative to the system wide data folder and point to a user specific file'
-			);
+		list($storage, $internalPath) = $this->rootView->resolvePath($path);
+		$originalPath = "/{$internalPath}";
+		if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
+			// TODO: Improve sharedStorage detection.
+			// Note that ISharedStorage doesn't enforce any method
+			$share = $storage->getShare();
+			$node = $share->getNode();
+			$originalPath = "/{$node->getInternalPath()}/{$internalPath}";
 		}
 
-		$ownerPath = \implode('/', \array_slice($parts, 2));
+		$checkingPath = "/{$internalPath}";
+		$ownerUid = null;
+		while ($ownerUid === null) {
+			try {
+				$ownerUid = $storage->getOwner($checkingPath);
+			} catch (NotFoundException $e) {
+				// if the path doesn't exist, try the parent.
+				$checkingPath = \dirname($checkingPath);
+			}
+		}
 
-		return [$uid, Filesystem::normalizePath($ownerPath)];
+		return [$ownerUid, $originalPath];
 	}
 
 	/**
