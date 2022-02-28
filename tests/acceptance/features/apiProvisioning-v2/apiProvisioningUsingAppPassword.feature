@@ -75,3 +75,14 @@ Feature: access user provisioning API using app password
     When the user requests "/ocs/v2.php/cloud/users/another-new-user" with "GET" using the generated app password
     Then the HTTP status code should be "401"
     And the API should not return any data
+
+  Scenario: normal user gets his own resources using the app password
+    Given these users have been created with small skeleton files:
+      | username       | password  | displayname | email                    |
+      | brand-new-user | %regular% | New user    | brand.new.user@oc.com.np |
+    And a new browser session for "brand-new-user" has been started
+    And the user has generated a new app password named "my-client"
+    When the user "brand-new-user" requests these endpoints with "PROPFIND" to get property "d:getetag" using basic auth and generated app password about user "brand-new-user"
+      | endpoint                                       |
+      | /remote.php/dav/files/%username%/textfile0.txt |
+    Then the HTTP status code should be "207"

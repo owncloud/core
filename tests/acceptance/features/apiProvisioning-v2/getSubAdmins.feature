@@ -13,10 +13,11 @@ Feature: get subadmins
     And group "brand-new-group" has been created
     And user "brand-new-user" has been made a subadmin of group "brand-new-group"
     When the administrator gets all the subadmins of group "brand-new-group" using the provisioning API
-    Then the subadmin users returned by the API should be
-      | brand-new-user |
-    And the OCS status code should be "200"
+    Then the OCS status code should be "200"
     And the HTTP status code should be "200"
+    And the subadmin users returned by the API should be
+      | brand-new-user |
+
 
   Scenario: admin tries to get subadmin users of a group which does not exist
     Given user "brand-new-user" has been created with default attributes and without skeleton files
