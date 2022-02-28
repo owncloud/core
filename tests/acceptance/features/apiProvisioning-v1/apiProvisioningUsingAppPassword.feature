@@ -31,9 +31,9 @@ Feature: access user provisioning API using app password
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
     When the user requests "/ocs/v1.php/cloud/users" with "GET" using the generated app password
-    Then the users returned by the API should be
+    Then the HTTP status code should be "200"
+    And the users returned by the API should be
       | another-new-user |
-    And the HTTP status code should be "200"
 
   @smokeTest
   Scenario: normal user gets their own information using the app password
@@ -61,8 +61,9 @@ Feature: access user provisioning API using app password
     And a new browser session for "brand-new-user" has been started
     And the user has generated a new app password named "my-client"
     When the user requests "/ocs/v1.php/cloud/users" with "GET" using the generated app password
-    Then the users returned by the API should not include "another-new-user"
-    And the HTTP status code should be "200"
+    Then the HTTP status code should be "200"
+    And the users returned by the API should not include "another-new-user"
+
 
   Scenario: normal user tries to get other user information using the app password
     Given these users have been created with default attributes and without skeleton files:

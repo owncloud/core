@@ -65,8 +65,6 @@ Feature: edit users
   Scenario: the administrator can override an existing user email
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And the administrator has changed the email of user "brand-new-user" to "brand-new-user@gmail.com"
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
     When the administrator changes the email of user "brand-new-user" to "brand-new-user@example.com" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -76,8 +74,6 @@ Feature: edit users
   Scenario: the administrator can clear an existing user email
     Given user "brand-new-user" has been created with default attributes and without skeleton files
     And the administrator has changed the email of user "brand-new-user" to "brand-new-user@gmail.com"
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
     When the administrator changes the email of user "brand-new-user" to "" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
@@ -93,11 +89,17 @@ Feature: edit users
     And user "brand-new-user" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" changes the quota of user "brand-new-user" to "12MB" using the provisioning API
-    And user "subadmin" changes the email of user "brand-new-user" to "brand-new-user@example.com" using the provisioning API
-    And user "subadmin" changes the display of user "brand-new-user" to "Anne Brown" using the provisioning API
-    Then the display name of user "brand-new-user" should be "Anne Brown"
-    And the email address of user "brand-new-user" should be "brand-new-user@example.com"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
     And the quota definition of user "brand-new-user" should be "12 MB"
+    When user "subadmin" changes the email of user "brand-new-user" to "brand-new-user@example.com" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the email address of user "brand-new-user" should be "brand-new-user@example.com"
+    When user "subadmin" changes the display of user "brand-new-user" to "Anne Brown" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the display name of user "brand-new-user" should be "Anne Brown"
 
 
   Scenario: a normal user should be able to change their email address
@@ -140,11 +142,17 @@ Feature: edit users
       | another-admin |
     And user "another-admin" has been added to group "admin"
     When user "another-admin" changes the quota of user "another-admin" to "12MB" using the provisioning API
-    And user "another-admin" changes the email of user "another-admin" to "another-admin@example.com" using the provisioning API
-    And user "another-admin" changes the display of user "another-admin" to "Anne Brown" using the provisioning API
-    Then the display name of user "another-admin" should be "Anne Brown"
-    And the email address of user "another-admin" should be "another-admin@example.com"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
     And the quota definition of user "another-admin" should be "12 MB"
+    When user "another-admin" changes the email of user "another-admin" to "another-admin@example.com" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the email address of user "another-admin" should be "another-admin@example.com"
+    When user "another-admin" changes the display of user "another-admin" to "Anne Brown" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the display name of user "another-admin" should be "Anne Brown"
 
   @notToImplementOnOCIS
   Scenario: a subadmin should be able to edit user information with subadmin permissions in their group
@@ -157,11 +165,17 @@ Feature: edit users
     And user "another-subadmin" has been made a subadmin of group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
     When user "subadmin" changes the quota of user "another-subadmin" to "12MB" using the provisioning API
-    And user "subadmin" changes the email of user "another-subadmin" to "brand-new-user@example.com" using the provisioning API
-    And user "subadmin" changes the display of user "another-subadmin" to "Anne Brown" using the provisioning API
-    Then the display name of user "another-subadmin" should be "Anne Brown"
-    And the email address of user "another-subadmin" should be "brand-new-user@example.com"
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
     And the quota definition of user "another-subadmin" should be "12 MB"
+    When user "subadmin" changes the email of user "another-subadmin" to "brand-new-user@example.com" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the email address of user "another-subadmin" should be "brand-new-user@example.com"
+    When user "subadmin" changes the display of user "another-subadmin" to "Anne Brown" using the provisioning API
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the display name of user "another-subadmin" should be "Anne Brown"
 
   @notToImplementOnOCIS
   Scenario: a subadmin should not be able to edit user information of another subadmin of same group
@@ -175,15 +189,15 @@ Feature: edit users
     When user "subadmin" changes the quota of user "another-subadmin" to "12MB" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
+    And the quota definition of user "another-subadmin" should be "default"
     When user "subadmin" changes the email of user "another-subadmin" to "brand-new-user@example.com" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
+    And the email address of user "another-subadmin" should be "another-subadmin@owncloud.com"
     When user "subadmin" changes the display of user "another-subadmin" to "Anne Brown" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the display name of user "another-subadmin" should be "Regular User"
-    And the email address of user "another-subadmin" should be "another-subadmin@owncloud.com"
-    And the quota definition of user "another-subadmin" should be "default"
 
 
   Scenario: a normal user should not be able to edit another user's information
@@ -194,17 +208,17 @@ Feature: edit users
     When user "Alice" tries to change the display name of user "Brian" to "New Brian" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
+    And the display name of user "Brian" should not have changed
     When user "Alice" tries to change the email of user "Brian" to "brian-new-email@example.com" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
-    And the display name of user "Brian" should not have changed
     And the email address of user "Brian" should not have changed
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their email address
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_mail_address" with value "true" and type "boolean" using the occ command
-    And user "Alice" changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_mail_address" with value "true" and type "boolean"
+    When user "Alice" changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the attributes of user "Alice" returned by the API should include
@@ -214,8 +228,8 @@ Feature: edit users
   @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin does not give access to users to change their email address
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
-    And user "Alice" tries to change the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_mail_address" with value "false" and type "boolean"
+    When user "Alice" tries to change the email of user "Alice" to "alice@gmail.com" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the attributes of user "Alice" returned by the API should include
@@ -225,8 +239,8 @@ Feature: edit users
   @notToImplementOnOCIS @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario: Admin does not give access to users to change their email address, admin can still change the email address
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
-    And the administrator changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_mail_address" with value "false" and type "boolean"
+    When the administrator changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the attributes of user "Alice" returned by the API should include
@@ -235,8 +249,8 @@ Feature: edit users
 
   @notToImplementOnOCIS @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario: Admin does not give access to users to change their email address, admin can still change their own email address
-    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
-    And the administrator changes the email of user "admin" to "something@example.com" using the provisioning API
+    Given the administrator has updated system config key "allow_user_to_change_mail_address" with value "false" and type "boolean"
+    When the administrator changes the email of user "admin" to "something@example.com" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the attributes of user "admin" returned by the API should include
@@ -252,8 +266,8 @@ Feature: edit users
     And group "new-group" has been created
     And user "Alice" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
-    And user "subadmin" changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_mail_address" with value "false" and type "boolean"
+    When user "subadmin" changes the email of user "Alice" to "alice@gmail.com" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the attributes of user "Alice" returned by the API should include
@@ -269,8 +283,8 @@ Feature: edit users
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     # Note: Alice is not a member of new-group, so subadmin does not a priv to change the email address of Alice
-    When the administrator updates system config key "allow_user_to_change_mail_address" with value "false" and type "boolean" using the occ command
-    And user "subadmin" tries to change the email of user "Alice" to "alice@gmail.com" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_mail_address" with value "false" and type "boolean"
+    When user "subadmin" tries to change the email of user "Alice" to "alice@gmail.com" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the attributes of user "Alice" returned by the API should include
@@ -280,8 +294,8 @@ Feature: edit users
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin gives access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_display_name" with value "true" and type "boolean" using the occ command
-    And user "Alice" changes the display of user "Alice" to "Alice Wonderland" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_display_name" with value "true" and type "boolean"
+    When user "Alice" changes the display of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the attributes of user "Alice" returned by the API should include
@@ -291,8 +305,8 @@ Feature: edit users
   @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: Admin does not give access to users to change their display name
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
-    And user "Alice" tries to change the display name of user "Alice" to "Alice Wonderland" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_display_name" with value "false" and type "boolean"
+    When user "Alice" tries to change the display name of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the attributes of user "Alice" returned by the API should include
@@ -302,8 +316,8 @@ Feature: edit users
   @notToImplementOnOCIS @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario: Admin does not give access to users to change their display name, admin can still change display name
     Given user "Alice" has been created with default attributes and without skeleton files
-    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
-    And the administrator changes the display name of user "Alice" to "Alice Wonderland" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_display_name" with value "false" and type "boolean"
+    When the administrator changes the display name of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the attributes of user "Alice" returned by the API should include
@@ -312,8 +326,8 @@ Feature: edit users
 
   @notToImplementOnOCIS @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
   Scenario: Admin does not give access to users to change their display name, admin can still change their own display name
-    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
-    And the administrator changes the display name of user "admin" to "The Administrator" using the provisioning API
+    Given the administrator has updated system config key "allow_user_to_change_display_name" with value "false" and type "boolean"
+    When the administrator changes the display name of user "admin" to "The Administrator" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the attributes of user "admin" returned by the API should include
@@ -329,8 +343,8 @@ Feature: edit users
     And group "new-group" has been created
     And user "Alice" has been added to group "new-group"
     And user "subadmin" has been made a subadmin of group "new-group"
-    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
-    And user "subadmin" changes the display name of user "Alice" to "Alice Wonderland" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_display_name" with value "false" and type "boolean"
+    When user "subadmin" changes the display name of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
       | displayname | Alice Wonderland |
@@ -345,8 +359,8 @@ Feature: edit users
     And group "new-group" has been created
     And user "subadmin" has been made a subadmin of group "new-group"
     # Note: Alice is not a member of new-group, so subadmin does not a priv to change the email address of Alice
-    When the administrator updates system config key "allow_user_to_change_display_name" with value "false" and type "boolean" using the occ command
-    And user "subadmin" tries to change the display name of user "Alice" to "Alice Wonderland" using the provisioning API
+    And the administrator has updated system config key "allow_user_to_change_display_name" with value "false" and type "boolean"
+    When user "subadmin" tries to change the display name of user "Alice" to "Alice Wonderland" using the provisioning API
     Then the OCS status code should be "997"
     And the HTTP status code should be "401"
     And the attributes of user "Alice" returned by the API should include

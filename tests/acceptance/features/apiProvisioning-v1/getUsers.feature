@@ -35,10 +35,11 @@ Feature: get users
     And user "brand-new-user" has been added to group "brand-new-group"
     And user "brand-new-user" has been made a subadmin of group "brand-new-group"
     When user "brand-new-user" gets the list of all users using the provisioning API
-    Then the users returned by the API should be
-      | brand-new-user |
-    And the OCS status code should be "100"
+    Then the OCS status code should be "100"
     And the HTTP status code should be "200"
+    And the users returned by the API should be
+      | brand-new-user |
+
 
   Scenario: normal user tries to get other users
     Given these users have been created with default attributes and without skeleton files:

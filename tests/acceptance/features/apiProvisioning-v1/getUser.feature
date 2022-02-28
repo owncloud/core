@@ -113,56 +113,38 @@ Feature: get user
     And the last login returned by the API should be a current Unix timestamp
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-  Scenario: a normal user gets their own information, providing uppercase username as authentication
+  Scenario Outline: a normal user gets their own information, providing uppercase username as authentication and in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | brand-new-user | New User    |
-    When user "BRAND-NEW-USER" retrieves the information of user "brand-new-user" using the provisioning API
+    When user "<username1>" retrieves the information of user "<username2>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
+    Examples:
+      | username1      | username2      |
+      | BRAND-NEW-USER | brand-new-user |
+      | brand-new-user | BRAND-NEW-USER |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-  Scenario: a normal user gets their own information, providing uppercase username in the URL
-    Given these users have been created with default attributes and without skeleton files:
-      | username       | displayname |
-      | brand-new-user | New User    |
-    When user "brand-new-user" retrieves the information of user "BRAND-NEW-USER" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    And the display name returned by the API should be "New User"
-    And the quota definition returned by the API should be "default"
-    And the free, used, total and relative quota returned by the API should exist and be valid numbers
-    And the last login returned by the API should be a current Unix timestamp
-
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-  Scenario: a mixed-case normal user gets their own information, providing lowercase username in the URL
+  Scenario Outline: a mixed-case normal user gets their own information, providing lowercase and mixed-case username in the URL
     Given these users have been created with default attributes and without skeleton files:
       | username       | displayname |
       | Brand-New-User | New User    |
-    When user "Brand-New-User" retrieves the information of user "brand-new-user" using the provisioning API
+    When user "<username1>" retrieves the information of user "<username2>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the display name returned by the API should be "New User"
     And the quota definition returned by the API should be "default"
     And the free, used, total and relative quota returned by the API should exist and be valid numbers
     And the last login returned by the API should be a current Unix timestamp
-
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
-  Scenario: a mixed-case normal user gets their own information, providing the mixed-case username in the URL
-    Given these users have been created with default attributes and without skeleton files:
-      | username       | displayname |
-      | Brand-New-User | New User    |
-    When user "brand-new-user" retrieves the information of user "Brand-New-User" using the provisioning API
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    And the display name returned by the API should be "New User"
-    And the quota definition returned by the API should be "default"
-    And the free, used, total and relative quota returned by the API should exist and be valid numbers
-    And the last login returned by the API should be a current Unix timestamp
+    Examples:
+      | username1      | username2      |
+      | Brand-New-User | brand-new-user |
+      | brand-new-user | Brand-New-User |
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: admin gets information of a user with admin permissions

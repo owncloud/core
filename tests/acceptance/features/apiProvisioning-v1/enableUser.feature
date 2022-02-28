@@ -64,7 +64,9 @@ Feature: enable user
     And user "another-admin" has been added to group "admin"
     And user "another-admin" has been disabled
     When user "another-admin" tries to enable user "another-admin" using the provisioning API
-    Then user "another-admin" should be disabled
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
+    And user "another-admin" should be disabled
 
   Scenario: normal user tries to enable other user
     Given these users have been created with default attributes and without skeleton files:
