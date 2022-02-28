@@ -26,6 +26,31 @@ Feature: admin general settings
       If you received this email, the settings seem to be correct.
       """
 
+  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  Scenario: administrator sets email server credentials and re-displays them
+    Given the administrator has browsed to the admin general settings page
+    When the administrator sets the following email server settings using the webUI
+      | setting                 | value          |
+      | send mode               | smtp           |
+      | encryption              | None           |
+      | from address            | owncloud       |
+      | mail domain             | foobar.com     |
+      | authentication method   | None           |
+      | authentication required | true           |
+      | server address          | %MAILHOG_HOST% |
+      | port                    | 1025           |
+      | credential name         | mysmtp         |
+      | credential password     | SomePwd123     |
+    And the administrator clicks on store-credentials in the admin general settings page using the webUI
+    Then the email credential name on the admin general settings page should be "mysmtp"
+    And the email credential password on the admin general settings page should be "SomePwd123"
+    When the administrator reloads the current page of the webUI
+    Then system config key "mail_smtpname" should have value "mysmtp"
+    And system config key "mail_smtppassword" should have value "SomePwd123"
+    And the email credential name on the admin general settings page should be "mysmtp"
+    # the existing credential password should not be sent to the UI when the page loads
+    But the email credential password on the admin general settings page should be ""
+
   @smokeTest
   Scenario: administrator sets legal URLs
     Given the administrator has browsed to the admin general settings page

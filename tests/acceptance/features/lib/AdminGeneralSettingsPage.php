@@ -49,6 +49,9 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 	protected $authRequiredCheckboxId = 'mail_smtpauth';
 	protected $serverAddressFieldId = 'mail_smtphost';
 	protected $serverPortFieldId = 'mail_smtpport';
+	protected $credentialNameFieldId = 'mail_smtpname';
+	protected $credentialPasswordFieldId = 'mail_smtppassword';
+	protected $storeCredentialsBtnId = 'mail_credentials_settings_submit';
 	protected $sendTestEmailBtnId = 'sendtestmail';
 
 	protected $imprintUrlFieldId = 'legal_imprint';
@@ -98,8 +101,33 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 				$this->fillField($this->serverAddressFieldId, $row['value']);
 			} elseif ($row['setting'] === 'port') {
 				$this->fillField($this->serverPortFieldId, $row['value']);
+			} elseif ($row['setting'] === 'credential name') {
+				$this->fillField($this->credentialNameFieldId, $row['value']);
+			} elseif ($row['setting'] === 'credential password') {
+				$this->fillField($this->credentialPasswordFieldId, $row['value']);
 			}
 		}
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 * click the store-credentials button
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function storeCredentials(Session $session): void {
+		$storeCredentialsBtn = $this->findById($this->storeCredentialsBtnId);
+
+		$this->assertElementNotNull(
+			$storeCredentialsBtn,
+			__METHOD__ .
+			" id $this->storeCredentialsBtnId " .
+			"could not find button"
+		);
+
+		$storeCredentialsBtn->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
@@ -237,6 +265,38 @@ class AdminGeneralSettingsPage extends OwncloudPage {
 			);
 		}
 		$selectCron->click();
+	}
+
+	/**
+	 * get credential name
+	 *
+	 * @return string
+	 */
+	public function getCredentialName(): string {
+		$field = $this->findById($this->credentialNameFieldId);
+		$this->assertElementNotNull(
+			$field,
+			__METHOD__ .
+			" id $this->credentialNameFieldId " .
+			"could not find credential name field "
+		);
+		return $field->getValue();
+	}
+
+	/**
+	 * get credential password
+	 *
+	 * @return string
+	 */
+	public function getCredentialPassword(): string {
+		$field = $this->findById($this->credentialPasswordFieldId);
+		$this->assertElementNotNull(
+			$field,
+			__METHOD__ .
+			" id $this->credentialPasswordFieldId " .
+			"could not find credential password field "
+		);
+		return $field->getValue();
 	}
 
 	/**
