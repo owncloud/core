@@ -16,6 +16,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Make licenses expire at the end of the expiration date: <a href="https://github.com/owncloud/core/pull/39735">#39735</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Subadmin will be shown only his assignable groups in the users page: <a href="https://github.com/owncloud/core/pull/39752">#39752</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix wrong formatted XML in public-files dav endpoint: <a href="https://github.com/owncloud/core/pull/39797">#39797</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: <a href="https://github.com/owncloud/core/pull/39829">#39829</a></li>
         <li class="type-change changelog-item">Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></li>
         <li class="type-change changelog-item">Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
@@ -89,6 +90,15 @@
    response is properly formatted and can be parsed without problems.
             </p>
             <p>https://github.com/owncloud/core/pull/39797<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: <a href="https://github.com/owncloud/core/pull/39829">#39829</a></p>
+            <p>When encryption was used, moving a file out of a shared folder caused the versions of the file to
+   get broken. The file was moved correctly though. This happened due to the key file not being
+   copied to the new location and a new key file being generated for the file. Now, the key file is
+   properly copied to the new location, so the versions can be decrypted properly.
+            </p>
+            <p>https://github.com/owncloud/core/pull/39829<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></p>

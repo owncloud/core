@@ -18,6 +18,7 @@ Summary
 * Bugfix - Make licenses expire at the end of the expiration date: [#39735](https://github.com/owncloud/core/pull/39735)
 * Bugfix - Subadmin will be shown only his assignable groups in the users page: [#39752](https://github.com/owncloud/core/pull/39752)
 * Bugfix - Fix wrong formatted XML in public-files dav endpoint: [#39797](https://github.com/owncloud/core/pull/39797)
+* Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: [#39829](https://github.com/owncloud/core/pull/39829)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -89,6 +90,15 @@ Details
    response is properly formatted and can be parsed without problems.
 
    https://github.com/owncloud/core/pull/39797
+
+* Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: [#39829](https://github.com/owncloud/core/pull/39829)
+
+   When encryption was used, moving a file out of a shared folder caused the versions of the file to
+   get broken. The file was moved correctly though. This happened due to the key file not being
+   copied to the new location and a new key file being generated for the file. Now, the key file is
+   properly copied to the new location, so the versions can be decrypted properly.
+
+   https://github.com/owncloud/core/pull/39829
 
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 
