@@ -126,9 +126,9 @@ Details
 
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 
-   The following have been updated: - bower_components/underscore (1.13.1 to 1.13.2) -
-   follow-redirects (1.14.2 to 1.14.8) - karma (6.3.8 to 6.3.16) - karma-coverage (2.0.3 to
-   2.2.0) - log4js (6.3.0 to 6.4.1)
+   The following have been updated: - bower_components/showdown (1.9.1 to 2.0.0) -
+   bower_components/underscore (1.13.1 to 1.13.2) - follow-redirects (1.14.2 to 1.14.8) -
+   karma (6.3.8 to 6.3.16) - karma-coverage (2.0.3 to 2.2.0) - log4js (6.3.0 to 6.4.1)
 
    https://github.com/owncloud/core/pull/39709
    https://github.com/owncloud/core/pull/39763
@@ -137,11 +137,12 @@ Details
    https://github.com/owncloud/core/pull/39788
    https://github.com/owncloud/core/pull/39814
    https://github.com/owncloud/core/pull/39816
+   https://github.com/owncloud/core/pull/39838
 
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 
    The following have been updated: - christophwurst/id3parser (v0.1.3 to v0.1.4) -
-   doctrine/dbal (2.13.5 to 2.13.7) - doctrine/lexer (1.2.1 to 1.2.2) -
+   doctrine/dbal (2.13.5 to 2.13.7) - doctrine/lexer (1.2.1 to 1.2.3) -
    laminas/laminas-inputfilter (2.12.0 to 2.12.1) - laminas/laminas-stdlib (3.6.1 to 3.7.1)
    - laminas/laminas-validator (2.15.0 to 2.16.0) - laminas/laminas-zendframework-bridge
    (1.4.0 to 1.4.1) - league/flysystem (1.1.5 to 1.1.9) - league/mime-type-detection (1.8.0 to
@@ -165,10 +166,11 @@ Details
    https://github.com/owncloud/core/pull/39717
    https://github.com/owncloud/core/pull/39731
    https://github.com/owncloud/core/pull/39780
+   https://github.com/owncloud/core/pull/39838
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
-   The following Symfony components have been updated to: - console 4.4.37 - event-dispatcher
+   The following Symfony components have been updated to: - console 4.4.38 - event-dispatcher
    4.4.37 - event-dispatcher-contracts 4.4.34 - process 4.4.37 - routing 4.4.37 -
    service-contracts 4.4.34 - translation 4.4.37 - translation-contracts 2.5.0
 
@@ -182,6 +184,7 @@ Details
    https://github.com/owncloud/core/pull/39631
    https://github.com/owncloud/core/pull/39646
    https://github.com/owncloud/core/pull/39731
+   https://github.com/owncloud/core/pull/39838
    https://symfony.com/blog/symfony-4-4-34-released
    https://symfony.com/blog/symfony-4-4-36-released
 
