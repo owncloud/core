@@ -295,7 +295,7 @@ class Scanner extends BasicEmitter implements IScanner {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	protected function updateCache($path, $data, $fileId = -1) {
-		\OC_Hook::emit('Scanner', 'addToCache', ['file' => $path, 'data' => $data]);
+		\OC_Hook::emit('Scanner', 'updateCache', ['file' => $path, 'data' => $data]);
 		$this->emit('\OC\Files\Cache\Scanner', 'updateCache', [$path, $this->storageId, $data]);
 		if ($this->cacheActive) {
 			if ($fileId !== -1) {
