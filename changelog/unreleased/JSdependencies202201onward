@@ -1,6 +1,7 @@
 Change: Update JavaScript dependencies
 
 The following have been updated:
+- bower_components/showdown (1.9.1 to 2.0.0)
 - bower_components/underscore (1.13.1 to 1.13.2)
 - follow-redirects (1.14.2 to 1.14.8)
 - karma (6.3.8 to 6.3.16)
@@ -14,3 +15,4 @@ https://github.com/owncloud/core/pull/39785
 https://github.com/owncloud/core/pull/39788
 https://github.com/owncloud/core/pull/39814
 https://github.com/owncloud/core/pull/39816
+https://github.com/owncloud/core/pull/39838
