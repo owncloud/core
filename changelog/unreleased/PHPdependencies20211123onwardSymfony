@@ -1,7 +1,7 @@
 Change: Update Symfony components
 
 The following Symfony components have been updated to:
-- console 4.4.37
+- console 4.4.38
 - event-dispatcher 4.4.37
 - event-dispatcher-contracts 4.4.34
 - process 4.4.37
@@ -26,3 +26,4 @@ https://symfony.com/blog/symfony-4-4-36-released
 https://github.com/owncloud/core/pull/39631
 https://github.com/owncloud/core/pull/39646
 https://github.com/owncloud/core/pull/39731
+https://github.com/owncloud/core/pull/39838
