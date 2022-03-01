@@ -90,6 +90,7 @@ class UserGlobalStoragesController extends StoragesController {
 		// remove configuration data, this must be kept private
 		foreach ($storages as $storage) {
 			$this->sanitizeStorage($storage);
+			$this->replacePasswords($storage);
 		}
 
 		return new DataResponse(
@@ -131,6 +132,7 @@ class UserGlobalStoragesController extends StoragesController {
 		}
 
 		$this->sanitizeStorage($storage);
+		$this->replacePasswords($storage);
 
 		return new DataResponse(
 			$storage,
@@ -181,6 +183,9 @@ class UserGlobalStoragesController extends StoragesController {
 
 		$this->updateStorageStatus($storage, $testOnly);
 		$this->sanitizeStorage($storage);
+
+		// replace the password just before sending the response.
+		$this->replacePasswords($storage);
 
 		return new DataResponse(
 			$storage,
