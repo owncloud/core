@@ -13,14 +13,14 @@ Feature: add groups
       | groupname   | comment                               |
       | simplegroup | nothing special here                  |
       | España§àôœ€ | special European and other characters |
-      | नेपाली        | Unicode group name                    |
+      | नेपाली      | Unicode group name                    |
     Then the OCS status code of responses on all endpoints should be "100"
     And the HTTP status code of responses on all endpoints should be "200"
     And these groups should exist:
       | groupname   |
       | simplegroup |
       | España§àôœ€ |
-      | नेपाली        |
+      | नेपाली      |
 
   @sqliteDB
   Scenario: admin creates a group with special characters
@@ -60,23 +60,23 @@ Feature: add groups
   @toImplementOnOCIS @issue-product-284
   Scenario: admin creates a group with % and # in name
     When the administrator sends a group creation request for the following groups using the provisioning API
-      | groupname           | comment                                 |
-      | maintenance#123     | Hash sign                               |
-      | 50%pass             | Percent sign (special escaping happens) |
-      | 50%25=0             | %25 literal looks like an escaped "%"   |
-      | 50%2Fix             | %2F literal looks like an escaped slash |
-      | 50%2Eagle           | %2E literal looks like an escaped "."   |
-      | staff?group         | Question mark                           |
+      | groupname       | comment                                 |
+      | maintenance#123 | Hash sign                               |
+      | 50%pass         | Percent sign (special escaping happens) |
+      | 50%25=0         | %25 literal looks like an escaped "%"   |
+      | 50%2Fix         | %2F literal looks like an escaped slash |
+      | 50%2Eagle       | %2E literal looks like an escaped "."   |
+      | staff?group     | Question mark                           |
     Then the OCS status code of responses on all endpoints should be "100"
     And the HTTP status code of responses on all endpoints should be "200"
     And these groups should exist:
-      | groupname           |
-      | maintenance#123     |
-      | 50%pass             |
-      | 50%25=0             |
-      | 50%2Fix             |
-      | 50%2Eagle           |
-      | staff?group         |
+      | groupname       |
+      | maintenance#123 |
+      | 50%pass         |
+      | 50%25=0         |
+      | 50%2Fix         |
+      | 50%2Eagle       |
+      | staff?group     |
 
   @toImplementOnOCIS
   Scenario: group names are case-sensitive, multiple groups can exist with different upper and lower case names
