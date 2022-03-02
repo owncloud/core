@@ -765,7 +765,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 		$this->registerService('MimeTypeLoader', function (Server $c) {
 			return new \OC\Files\Type\Loader(
-				$c->getDatabaseConnection()
+				$c->getDatabaseConnection(),
+				$c->getMemCacheFactory()
 			);
 		});
 		$this->registerAlias('OCP\Files\IMimeTypeLoader', 'MimeTypeLoader');

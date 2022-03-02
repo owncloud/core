@@ -23,6 +23,8 @@ namespace OC\Files\Type;
 
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
+use OCP\ICacheFactory;
+use OCP\ICache;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
@@ -36,6 +38,9 @@ class Loader implements IMimeTypeLoader {
 	/** @var IDBConnection */
 	private $dbConnection;
 
+	/** @var ICache */
+	private $memcache;
+
 	/** @var array [id => mimetype] */
 	protected $mimetypes;
 
@@ -45,8 +50,9 @@ class Loader implements IMimeTypeLoader {
 	/**
 	 * @param IDBConnection $dbConnection
 	 */
-	public function __construct(IDBConnection $dbConnection) {
+	public function __construct(IDBConnection $dbConnection, ICacheFactory $cacheFactory) {
 		$this->dbConnection = $dbConnection;
+		$this->memcache = $cacheFactory->create('mimetypes');
 		$this->mimetypes = [];
 		$this->mimetypeIds = [];
 	}
@@ -58,13 +64,21 @@ class Loader implements IMimeTypeLoader {
 	 * @return string|null
 	 */
 	public function getMimetypeById($id) {
-		if (!$this->mimetypes) {
-			$this->loadMimetypes();
-		}
+		// Check local vars
 		if (isset($this->mimetypes[$id])) {
 			return $this->mimetypes[$id];
 		}
-		return null;
+
+		// Check memcache. It will update the local var if needed.
+		$mimetype = $this->getMimetypeFromMemcache($id);
+		if ($mimetype !== null) {
+			return $mimetype;
+		}
+
+		// Check the DB. Local vars and memcache will be updated if needed
+		$mimetype = $this->getMimetypeFromDB($id);
+		// if the id doesn't exists, null will be returned
+		return $mimetype;
 	}
 
 	/**
@@ -74,12 +88,12 @@ class Loader implements IMimeTypeLoader {
 	 * @return int
 	 */
 	public function getId($mimetype) {
-		if (!$this->mimetypeIds) {
-			$this->loadMimetypes();
+		$id = $this->lookFor($mimetype);
+		if ($id !== null) {
+			return $id;
 		}
-		if (isset($this->mimetypeIds[$mimetype])) {
-			return $this->mimetypeIds[$mimetype];
-		}
+
+		// store the new value, update caches and return new id
 		return $this->store($mimetype);
 	}
 
@@ -90,16 +104,35 @@ class Loader implements IMimeTypeLoader {
 	 * @return bool
 	 */
 	public function exists($mimetype) {
-		if (!$this->mimetypeIds) {
-			$this->loadMimetypes();
+		return $this->lookFor($mimetype) !== null;
+	}
+
+	/**
+	 * Check local vars, memcache and DB looking for the mimetype.
+	 * @return int|null the id of the mimetype or null if the mimetype isn't found anywhere
+	 */
+	private function lookFor($mimetype) {
+		// Check local vars
+		if (isset($this->mimetypeIds[$mimetype])) {
+			return $this->mimetypeIds[$mimetype];
 		}
-		return isset($this->mimetypeIds[$mimetype]);
+
+		// Check memcache. It will update the local var if needed.
+		$id = $this->getIdFromMemcache($mimetype);
+		if ($id !== null) {
+			return $id;
+		}
+
+		// Check the DB. Local vars and memcache will be updated if needed
+		$id = $this->getIdFromDB($mimetype);
+		return $id;
 	}
 
 	/**
 	 * Clear all loaded mimetypes, allow for re-loading
 	 */
 	public function reset() {
+		$this->memcache->clear();
 		$this->mimetypes = [];
 		$this->mimetypeIds = [];
 	}
@@ -133,24 +166,112 @@ class Loader implements IMimeTypeLoader {
 			);
 		$row = $fetch->execute()->fetch();
 
+		// update cache
+		$this->memcache->set(':id:' . $row['id'], $mimetype);
+		$this->memcache->set(':mime:' . $mimetype, $row['id']);
+
+		// update local vars
 		$this->mimetypes[$row['id']] = $mimetype;
 		$this->mimetypeIds[$mimetype] = $row['id'];
 		return $row['id'];
 	}
 
 	/**
-	 * Load all mimetypes from DB
+	 * Get the id from the memcache based on the mimetype
+	 * This method will also update the local vars if needed.
+	 * DB won't be accessed
+	 * @return int|null the id for the mimetype or null if it isn't found in the memcache
 	 */
-	private function loadMimetypes() {
+	private function getIdFromMemcache($mimetype) {
+		$id = $this->memcache->get(':mime:' . $mimetype);
+		if ($id !== null) {
+			$this->mimetypes[$id] = $mimetype;
+			$this->mimetypeIds[$mimetype] = $id;
+		}
+		return $id;
+	}
+
+	/**
+	 * Get the mimetype from the memcache based on the id
+	 * This method will also update the local vars if needed.
+	 * DB won't be accessed
+	 * @return string|null the mimetype for the id or null if it isn't found in the memcache
+	 */
+	private function getMimetypeFromMemcache($id) {
+		$mimetype = $this->memcache->get(':id:' . $id);
+		if ($mimetype !== null) {
+			$this->mimetypes[$id] = $mimetype;
+			$this->mimetypeIds[$mimetype] = $id;
+		}
+		return $mimetype;
+	}
+
+	/**
+	 * Get the id from the DB based on the mimetype
+	 * This method will also update the memcache and local vars if needed
+	 * @return int|null the id for the mimetype or null if it isn't found in the DB
+	 */
+	private function getIdFromDB($mimetype) {
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('id', 'mimetype')
-			->from('mimetypes');
-		$results = $qb->execute()->fetchAll();
+			->from('mimetypes')
+			->where(
+				$qb->expr()->eq(
+					'mimetype',
+					$qb->createNamedParameter($mimetype)
+				)
+			);
+		$result = $qb->execute();
 
-		foreach ($results as $row) {
+		$id = null;
+		if (($row = $result->fetch()) !== false) {
+			$id = $row['id'];
+
+			// update cache
+			$this->memcache->set(':id:' . $row['id'], $row['mimetype']);
+			$this->memcache->set(':mime:' . $row['mimetype'], $row['id']);
+
+			// update local vars
 			$this->mimetypes[$row['id']] = $row['mimetype'];
 			$this->mimetypeIds[$row['mimetype']] = $row['id'];
 		}
+		$result->closeCursor();
+
+		return $id;
+	}
+
+	/**
+	 * Get the mimetype from the DB based on the id
+	 * This method will also update the memcache and local vars if needed
+	 * @return string|null the mimetype for the id or null if it isn't found in the DB
+	 */
+	private function getMimetypeFromDB($id) {
+		$qb = $this->dbConnection->getQueryBuilder();
+		$qb->select('id', 'mimetype')
+			->from('mimetypes')
+			->where(
+				$qb->expr()->eq(
+					'id',
+					$qb->createNamedParameter($id)
+				)
+			);
+		$result = $qb->execute();
+
+		$mimetype = null;
+		if (($row = $result->fetch()) !== false) {
+			$mimetype = $row['mimetype'];
+
+			// update cache
+			$this->memcache->set(':id:' . $row['id'], $row['mimetype']);
+			$this->memcache->set(':mime:' . $row['mimetype'], $row['id']);
+
+			// update local vars
+			$this->mimetypes[$row['id']] = $row['mimetype'];
+			$this->mimetypeIds[$row['mimetype']] = $row['id'];
+		}
+		$result->closeCursor();
+
+		return $mimetype;
 	}
 
 	/**
