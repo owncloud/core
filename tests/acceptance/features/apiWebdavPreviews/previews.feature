@@ -71,8 +71,8 @@ Feature: previews of files downloaded through the webdav API
 
   Scenario: download previews of image after renaming it
     Given user "Alice" has uploaded file "filesForUpload/testavatar.jpg" to "/testimage.jpg"
-    When user "Alice" moves file "/testimage.jpg" to "/testimage.txt" using the WebDAV API
-    And user "Alice" downloads the preview of "/testimage.txt" with width "32" and height "32" using the WebDAV API
+    And user "Alice" has moved file "/testimage.jpg" to "/testimage.txt"
+    When user "Alice" downloads the preview of "/testimage.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixels wide and "32" pixels high
 
@@ -141,9 +141,8 @@ Feature: previews of files downloaded through the webdav API
 
   Scenario: set maximum size of previews
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
-    When the administrator updates system config key "preview_max_x" with value "null" using the occ command
-    And the administrator updates system config key "preview_max_y" with value "null" using the occ command
-    Then the HTTP status code should be "201"
+    And the administrator has updated system config key "preview_max_x" with value "null"
+    And the administrator has updated system config key "preview_max_y" with value "null"
     When user "Alice" downloads the preview of "/parent.txt" with width "null" and height "null" using the WebDAV API
     Then the HTTP status code should be "400"
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\BadRequest"
@@ -181,16 +180,18 @@ Feature: previews of files downloaded through the webdav API
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     And user "Alice" has downloaded the preview of "/parent.txt" with width "32" and height "32"
     When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
-    Then as user "Alice" the preview of "/parent.txt" with width "32" and height "32" should have been changed
+    Then the HTTP status code should be "204"
+    And as user "Alice" the preview of "/parent.txt" with width "32" and height "32" should have been changed
 
-  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: when owner updates a shared file, previews for sharee are also updated
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     And user "Alice" has shared file "/parent.txt" with user "Brian"
     And user "Brian" has downloaded the preview of "/parent.txt" with width "32" and height "32"
     When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
-    Then as user "Brian" the preview of "/parent.txt" with width "32" and height "32" should have been changed
+    Then the HTTP status code should be "204"
+    And as user "Brian" the preview of "/parent.txt" with width "32" and height "32" should have been changed
 
   @issue-ocis-2538 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: when owner updates a shared file, previews for sharee are also updated (to shared folder)
@@ -202,13 +203,14 @@ Feature: previews of files downloaded through the webdav API
     And user "Brian" has accepted share "/parent.txt" offered by user "Alice"
     And user "Brian" has downloaded the preview of "/Shares/parent.txt" with width "32" and height "32"
     When user "Alice" uploads file with content "this is a file to upload" to "/parent.txt" using the WebDAV API
-    Then as user "Brian" the preview of "/Shares/parent.txt" with width "32" and height "32" should have been changed
+    Then the HTTP status code should be "204"
+    And as user "Brian" the preview of "/Shares/parent.txt" with width "32" and height "32" should have been changed
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: it should update the preview content if the file content is updated (content with UTF chars)
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/lorem.txt"
-    When user "Alice" uploads file with content "सिमसिमे पानी" to "/lorem.txt" using the WebDAV API
-    And user "Alice" downloads the preview of "/lorem.txt" with width "32" and height "32" using the WebDAV API
+    And user "Alice" has uploaded file with content "सिमसिमे पानी" to "/lorem.txt"
+    When user "Alice" downloads the preview of "/lorem.txt" with width "32" and height "32" using the WebDAV API
     Then the HTTP status code should be "200"
     And the downloaded image should be "32" pixels wide and "32" pixels high
     And the downloaded preview content should match with "सिमसिमे-पानी.png" fixtures preview content
@@ -223,10 +225,12 @@ Feature: previews of files downloaded through the webdav API
     And user "Alice" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
     And user "Brian" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
     When user "Alice" uploads file "filesForUpload/lorem.txt" to "/FOLDER/lorem.txt" using the WebDAV API
-    Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    Then the HTTP status code should be "204"
+    And as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     When user "Brian" uploads file with content "new uploaded content" to "/FOLDER/lorem.txt" using the WebDAV API
-    Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    Then the HTTP status code should be "204"
+    And as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
 
   @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
@@ -245,11 +249,13 @@ Feature: previews of files downloaded through the webdav API
     And user "Brian" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
     And user "Carol" has downloaded the preview of "/FOLDER/lorem.txt" with width "32" and height "32"
     When user "Alice" uploads file "filesForUpload/lorem.txt" to "/FOLDER/lorem.txt" using the WebDAV API
-    Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    Then the HTTP status code should be "204"
+    And as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Carol" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     When user "Brian" uploads file with content "new uploaded content" to "/FOLDER/lorem.txt" using the WebDAV API
-    Then as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
+    Then the HTTP status code should be "204"
+    And as user "Alice" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Brian" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
     And as user "Carol" the preview of "/FOLDER/lorem.txt" with width "32" and height "32" should have been changed
 
