@@ -229,7 +229,12 @@ class Util {
 	 */
 	public function getUidAndFilename($path) {
 		list($storage, $internalPath) = $this->rootView->resolvePath($path);
-		$originalPath = "/{$internalPath}";
+
+		$absMountPoint = $this->rootView->getMountPoint($path);
+		// strip the first 2 directories (expected to be "<user>/files/path/to/files")
+		$mountPoint = \implode('/', \array_slice(\explode('/', $absMountPoint), 2));
+		$originalPath = "/{$mountPoint}/{$internalPath}";
+
 		if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
 			// TODO: Improve sharedStorage detection.
 			// Note that ISharedStorage doesn't enforce any method
