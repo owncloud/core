@@ -324,6 +324,7 @@ class Cache implements ICache {
 	 * @param array $data [$key => $value] the metadata to update, only the fields provided in the array will be updated, non-provided values will remain unchanged
 	 */
 	public function update($id, array $data) {
+		unset(self::$path_cache[(int)$id]);
 		if (isset($data['path'])) {
 			// normalize path
 			$data['path'] = $this->normalize($data['path']);
@@ -507,6 +508,7 @@ class Cache implements ICache {
 	public function remove($file) {
 		$entry = $this->get($file);
 		if ($entry !== false) {
+			unset(self::$path_cache[(int)$entry['fileid']]);
 			$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 			$this->connection->executeQuery($sql, [$entry['fileid']]);
 			if ($entry['mimetype'] === 'httpd/unix-directory') {
@@ -532,6 +534,7 @@ class Cache implements ICache {
 	 * @throws \OC\DatabaseException
 	 */
 	private function removeChildren($entry) {
+		self::$path_cache = [];
 		$subFolders = $this->getSubFolders($entry);
 		foreach ($subFolders as $folder) {
 			$this->removeChildren($folder);
@@ -570,6 +573,7 @@ class Cache implements ICache {
 	 * @throws \Exception if the given storages have an invalid id
 	 */
 	public function moveFromCache(ICache $sourceCache, $sourcePath, $targetPath) {
+		self::$path_cache = [];
 		if ($sourceCache instanceof Cache) {
 			// normalize source and target
 			$sourcePath = $this->normalize($sourcePath);
@@ -672,6 +676,7 @@ class Cache implements ICache {
 	 * remove all entries for files that are stored on the storage from the cache
 	 */
 	public function clear() {
+		self::$path_cache = [];
 		Storage::remove($this->storageId);
 	}
 
@@ -923,23 +928,41 @@ class Cache implements ICache {
 	}
 
 	/**
+	 * we use a static cache for the path lookup by id because to filecache already knows about all storages
+	 * and a single trip to the db is sufficient to answer subsequent calls.
+	 *  @var CE[] $path_cache
+	 */
+	private static $path_cache = [];
+
+	/**
 	 * get the path of a file on this storage by it's file id
 	 *
 	 * @param int $id the file id of the file or folder to search
 	 * @return string|null the path of the file (relative to the storage) or null if a file with the given id does not exists within this cache
 	 */
 	public function getPathById($id) {
-		$sql = 'SELECT `path` FROM `*PREFIX*filecache` WHERE `fileid` = ? AND `storage` = ?';
-		$result = $this->connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
-		if ($row = $result->fetch()) {
-			// Oracle stores empty strings as null...
-			if ($row['path'] === null) {
-				return '';
+		if (!isset(self::$path_cache[(int)$id])) {
+			$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
+			$result = $this->connection->executeQuery($sql, [$id]);
+			if ($row = $result->fetch()) {
+				$ce = new CE();
+				$ce->storage = (int)$row['storage'];
+				// Oracle stores empty strings as null...
+				if ($row['path'] === null) {
+					$ce->path = '';
+				} else {
+					$ce->path = $row['path'];
+				}
+				self::$path_cache[(int)$id] = $ce;
+			} else {
+				return null;
 			}
-			return $row['path'];
-		} else {
-			return null;
 		}
+		
+		if (self::$path_cache[(int)$id]->storage === (int)$this->getNumericStorageId()) {
+			return self::$path_cache[(int)$id]->path;
+		}
+		return null;
 	}
 
 	/**
@@ -978,4 +1001,15 @@ class Cache implements ICache {
 	public function normalize($path) {
 		return \trim(\OC_Util::normalizeUnicode($path), '/');
 	}
+}
+
+class CE {
+	/**
+	 * @var int
+	 */
+	public $storage;
+	/**
+	 * @var string
+	 */
+	public $path;
 }
