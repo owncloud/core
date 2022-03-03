@@ -1,0 +1,7 @@
+Bugfix: Avoid sending unneeded passwords in the files_external app
+
+Some passwords were being sent to the web UI in the external storage
+configuration. These passwords aren't required and they're now replaced
+in the web UI in order not to leak the actual password
+
+https://github.com/owncloud/core/pull/39841
