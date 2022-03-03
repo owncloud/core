@@ -64,6 +64,8 @@ Feature: enable user
     And user "another-admin" has been added to group "admin"
     And user "another-admin" has been disabled
     When user "another-admin" tries to enable user "another-admin" using the provisioning API
+    Then the OCS status code should be "997"
+    And the HTTP status code should be "401"
     Then user "another-admin" should be disabled
 
   @issue-31276 @skipOnOcV10

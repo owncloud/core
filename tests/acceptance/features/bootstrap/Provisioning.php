@@ -1998,6 +1998,7 @@ trait Provisioning {
 		);
 		$targetUser = $this->getActualUsername($targetUser);
 		$this->rememberUserEmailAddress($targetUser, $email);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2234,6 +2235,7 @@ trait Provisioning {
 			'displayname',
 			$displayName
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2266,6 +2268,7 @@ trait Provisioning {
 			$displayName
 		);
 		$this->rememberUserDisplayName($targetUser, $displayName);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2414,6 +2417,7 @@ trait Provisioning {
 			$targetUser,
 			$quota
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
