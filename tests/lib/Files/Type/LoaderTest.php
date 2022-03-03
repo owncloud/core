@@ -23,16 +23,26 @@ namespace Test\Files\Type;
 
 use OC\Files\Type\Loader;
 use OCP\IDBConnection;
+use OCP\ICacheFactory;
+use OCP\ICache;
 
 class LoaderTest extends \Test\TestCase {
 	/** @var IDBConnection */
 	protected $db;
 	/** @var Loader */
 	protected $loader;
+	/** @var ICache */
+	protected $memcache;
 
 	protected function setUp(): void {
+		$this->memcache = $this->createMock(ICache::class);
+		$cacheFactoryMock = $this->createMock(ICacheFactory::class);
+		$cacheFactoryMock->expects($this->once())
+			->method('create')
+			->willReturn($this->memcache);
+
 		$this->db = \OC::$server->getDatabaseConnection();
-		$this->loader = new Loader($this->db);
+		$this->loader = new Loader($this->db, $cacheFactoryMock);
 	}
 
 	protected function tearDown(): void {
