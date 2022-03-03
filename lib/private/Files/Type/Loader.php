@@ -34,6 +34,8 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
  * @package OC\Files\Type
  */
 class Loader implements IMimeTypeLoader {
+	public const CACHE_PREFIX_FOR_ID = ':id:';
+	public const CACHE_PREFIX_FOR_MIME = ':mime:';
 
 	/** @var IDBConnection */
 	private $dbConnection;
@@ -76,9 +78,8 @@ class Loader implements IMimeTypeLoader {
 		}
 
 		// Check the DB. Local vars and memcache will be updated if needed
-		$mimetype = $this->getMimetypeFromDB($id);
 		// if the id doesn't exists, null will be returned
-		return $mimetype;
+		return $this->getMimetypeFromDB($id);
 	}
 
 	/**
@@ -124,8 +125,7 @@ class Loader implements IMimeTypeLoader {
 		}
 
 		// Check the DB. Local vars and memcache will be updated if needed
-		$id = $this->getIdFromDB($mimetype);
-		return $id;
+		return $this->getIdFromDB($mimetype);
 	}
 
 	/**
@@ -167,8 +167,8 @@ class Loader implements IMimeTypeLoader {
 		$row = $fetch->execute()->fetch();
 
 		// update cache
-		$this->memcache->set(':id:' . $row['id'], $mimetype);
-		$this->memcache->set(':mime:' . $mimetype, $row['id']);
+		$this->memcache->set(self::CACHE_PREFIX_FOR_ID . $row['id'], $mimetype);
+		$this->memcache->set(self::CACHE_PREFIX_FOR_MIME . $mimetype, $row['id']);
 
 		// update local vars
 		$this->mimetypes[$row['id']] = $mimetype;
@@ -183,7 +183,7 @@ class Loader implements IMimeTypeLoader {
 	 * @return int|null the id for the mimetype or null if it isn't found in the memcache
 	 */
 	private function getIdFromMemcache($mimetype) {
-		$id = $this->memcache->get(':mime:' . $mimetype);
+		$id = $this->memcache->get(self::CACHE_PREFIX_FOR_MIME . $mimetype);
 		if ($id !== null) {
 			$this->mimetypes[$id] = $mimetype;
 			$this->mimetypeIds[$mimetype] = $id;
@@ -198,7 +198,7 @@ class Loader implements IMimeTypeLoader {
 	 * @return string|null the mimetype for the id or null if it isn't found in the memcache
 	 */
 	private function getMimetypeFromMemcache($id) {
-		$mimetype = $this->memcache->get(':id:' . $id);
+		$mimetype = $this->memcache->get(self::CACHE_PREFIX_FOR_ID . $id);
 		if ($mimetype !== null) {
 			$this->mimetypes[$id] = $mimetype;
 			$this->mimetypeIds[$mimetype] = $id;
@@ -228,8 +228,8 @@ class Loader implements IMimeTypeLoader {
 			$id = $row['id'];
 
 			// update cache
-			$this->memcache->set(':id:' . $row['id'], $row['mimetype']);
-			$this->memcache->set(':mime:' . $row['mimetype'], $row['id']);
+			$this->memcache->set(self::CACHE_PREFIX_FOR_ID . $row['id'], $row['mimetype']);
+			$this->memcache->set(self::CACHE_PREFIX_FOR_MIME . $row['mimetype'], $row['id']);
 
 			// update local vars
 			$this->mimetypes[$row['id']] = $row['mimetype'];
@@ -262,8 +262,8 @@ class Loader implements IMimeTypeLoader {
 			$mimetype = $row['mimetype'];
 
 			// update cache
-			$this->memcache->set(':id:' . $row['id'], $row['mimetype']);
-			$this->memcache->set(':mime:' . $row['mimetype'], $row['id']);
+			$this->memcache->set(self::CACHE_PREFIX_FOR_ID . $row['id'], $row['mimetype']);
+			$this->memcache->set(self::CACHE_PREFIX_FOR_MIME . $row['mimetype'], $row['id']);
 
 			// update local vars
 			$this->mimetypes[$row['id']] = $row['mimetype'];
