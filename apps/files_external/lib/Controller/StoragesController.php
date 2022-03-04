@@ -352,7 +352,10 @@ abstract class StoragesController extends Controller {
 	protected function replacePasswords(IStorageConfig $storage) {
 		$opts = $storage->getBackendOptions();
 		foreach ($opts as $key => $value) {
-			if (\strpos($key, 'password') !== false && \is_string($value) && $value !== '') {
+			if (
+				(\strpos($key, 'password') !== false && \is_string($value) && $value !== '') ||  // key contains "password"
+				($key === 'secret')  // key is "secret"
+			) {
 				$opts[$key] = IStoragesService::REDACTED_PASSWORD;
 			}
 		}
