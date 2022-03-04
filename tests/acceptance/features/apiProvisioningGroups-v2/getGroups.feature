@@ -13,7 +13,9 @@ Feature: get groups
     And group "brand-new-group" has been created
     And group "España" has been created
     When the administrator gets all the groups using the provisioning API
-    Then the extra groups returned by the API should be
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "200"
+    And the extra groups returned by the API should be
       | España          |
       | brand-new-group |
       | 0               |
@@ -24,7 +26,9 @@ Feature: get groups
     And group "Case-Sensitive-Group" has been created
     And group "CASE-SENSITIVE-GROUP" has been created
     When the administrator gets all the groups using the provisioning API
-    Then the extra groups returned by the API should be
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "200"
+    And the extra groups returned by the API should be
       | case-sensitive-group |
       | Case-Sensitive-Group |
       | CASE-SENSITIVE-GROUP |
