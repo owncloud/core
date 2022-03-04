@@ -139,7 +139,7 @@ Feature: previews of files downloaded through the webdav API
     And the value of the item "/d:error/s:exception" in the response about user "Alice" should be "Sabre\DAV\Exception\NotFound"
 
 
-  Scenario: set maximum size of previews
+  Scenario: download preview of size "null"
     Given user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
     And the administrator has updated system config key "preview_max_x" with value "null"
     And the administrator has updated system config key "preview_max_y" with value "null"
@@ -183,7 +183,7 @@ Feature: previews of files downloaded through the webdav API
     Then the HTTP status code should be "204"
     And as user "Alice" the preview of "/parent.txt" with width "32" and height "32" should have been changed
 
-  @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  @notToImplementOnOCIS @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: when owner updates a shared file, previews for sharee are also updated
     Given user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/lorem.txt" to "/parent.txt"
