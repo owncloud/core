@@ -41,6 +41,7 @@ class CloudController extends OCSController {
 	 */
 	public function getCapabilities() {
 		$result = [];
+		$defaults = new \OCP\Defaults();
 		list($major, $minor, $micro) = \OCP\Util::getVersion();
 		$result['version'] = [
 			'major' => $major,
@@ -48,6 +49,7 @@ class CloudController extends OCSController {
 			'micro' => $micro,
 			'string' => \OC_Util::getVersionString(),
 			'edition' => \OC_Util::getEditionString(),
+			'product' => $defaults->getName(),
 		];
 
 		$result['capabilities'] = \OC::$server->getCapabilitiesManager()->getCapabilities();
