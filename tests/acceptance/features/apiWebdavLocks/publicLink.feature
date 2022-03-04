@@ -13,10 +13,11 @@ Feature: persistent-locking in case of a public link
     Given using <dav-path> DAV path
     And user "Alice" has created folder "FOLDER"
     And user "Alice" has created a public link share of folder "FOLDER" with change permission
-    When user "Alice" locks folder "FOLDER" using the WebDAV API setting the following properties
+    And user "Alice" has locked folder "FOLDER" setting the following properties
       | lockscope | <lock-scope> |
-    Then uploading a file should not work using the <webdav_api_version> public WebDAV API
-    And the HTTP status code should be "423"
+    When the public uploads file "/test.txt" with content "test" using the <webdav_api_version> public WebDAV API
+    Then the HTTP status code should be "423"
+    And as "Alice" file "/FOLDER/test.txt" should not exist
 
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
@@ -49,8 +50,8 @@ Feature: persistent-locking in case of a public link
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
-    And the public uploads file "CHILD/test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
+    And the public has uploaded file "test.txt" with content "test"
+    When the public uploads file "CHILD/test.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And as "Alice" file "/PARENT/CHILD/test.txt" should not exist
     But the content of file "/PARENT/test.txt" for user "Alice" should be "test"
@@ -82,8 +83,8 @@ Feature: persistent-locking in case of a public link
     Given user "Alice" has created a public link share of folder "PARENT" with change permission
     And user "Alice" has locked folder "PARENT/CHILD" setting the following properties
       | lockscope | <lock-scope> |
-    When the public uploads file "parent.txt" with content "changed text" using the <public-webdav-api-version> public WebDAV API
-    And the public uploads file "CHILD/child.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
+    And the public has uploaded file "parent.txt" with content "changed text"
+    When the public uploads file "CHILD/child.txt" with content "test" using the <public-webdav-api-version> public WebDAV API
     Then the HTTP status code should be "423"
     And the content of file "/PARENT/parent.txt" for user "Alice" should be "changed text"
     But the content of file "/PARENT/CHILD/child.txt" for user "Alice" should be:

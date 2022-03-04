@@ -14,7 +14,8 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    Then the HTTP status code should be "200"
+    And the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the item "//d:locktoken/d:href" in the response should not exist
     And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
     Examples:
@@ -29,7 +30,8 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    Then the HTTP status code should be "200"
+    And the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the item "//d:locktoken/d:href" in the response should not exist
     And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
     Examples:
@@ -44,7 +46,8 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
+    Then the HTTP status code should be "200"
+    And the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
     And the item "//d:locktoken/d:href" in the response should not exist
     And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
     Examples:
@@ -59,7 +62,8 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
+    Then the HTTP status code should be "200"
+    And the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD$/"
     And the item "//d:locktoken/d:href" in the response should not exist
     And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
     Examples:
@@ -74,7 +78,8 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    Then the HTTP status code should be "200"
+    And the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the item "//d:locktoken/d:href" in the response should not exist
     And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
     Examples:
@@ -89,7 +94,8 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/CHILD/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD\/child.txt$/"
+    Then the HTTP status code should be "200"
+    And the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/CHILD\/child.txt$/"
     And the item "//d:locktoken/d:href" in the response should not exist
     And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
     Examples:
@@ -104,7 +110,8 @@ Feature: LOCKDISCOVERY for public links
     When the public gets the following properties of entry "/child.txt" in the last created public link using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
+    Then the HTTP status code should be "200"
+    And the value of the item "//d:lockroot/d:href" in the response should match "/%base_path%\/public.php\/webdav\/$/"
     And the item "//d:locktoken/d:href" in the response should not exist
     And the value of the item "//d:timeout" in the response should match "/Second-\d+/"
     Examples:

@@ -153,7 +153,8 @@ Feature: lock folders
     When user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
       | propertyName    |
       | d:lockdiscovery |
-    Then the value of the item "//d:lockroot/d:href" in the response to user "Alice" should match "<lock-root>"
+    Then the HTTP status code should be "200"
+    And the value of the item "//d:lockroot/d:href" in the response to user "Alice" should match "<lock-root>"
     And the value of the item "//d:locktoken/d:href" in the response to user "Alice" should match "/^opaquelocktoken:[a-z0-9-]+$/"
     Examples:
       | dav-path | lock-scope | lock-root                                                  |
