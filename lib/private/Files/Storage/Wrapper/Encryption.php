@@ -47,6 +47,9 @@ use OCP\Files\Cache\ICacheEntry;
 class Encryption extends Wrapper implements Storage\IVersionedStorage {
 	use LocalTempFileTrait;
 
+	/** @var bool */
+	public static $forceDisableUpdateEncryptedVersion = false;
+
 	/** @var string */
 	private $mountPoint;
 
@@ -709,6 +712,9 @@ class Encryption extends Wrapper implements Storage\IVersionedStorage {
 	 * @param bool $isRename
 	 */
 	private function updateEncryptedVersion(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename) {
+		if (self::$forceDisableUpdateEncryptedVersion) {
+			return;
+		}
 		$isEncrypted = $this->encryptionManager->isEnabled() && $this->mount->getOption('encrypt', true) ? 1 : 0;
 		$cacheInformation = [
 			'encrypted' => (bool)$isEncrypted,
