@@ -215,10 +215,10 @@ class Trashbin {
 	 * @param string $sourcePath
 	 * @param string $owner
 	 * @param string $targetPath
-	 * @param $user
+	 * @param string $user
 	 * @param integer $timestamp
 	 */
-	private static function copyFilesToUser($sourcePath, $owner, $targetPath, $user, $timestamp) {
+	public static function copyFilesToUser($sourcePath, $owner, $targetPath, $user, $timestamp) {
 		self::setUpTrash($owner);
 
 		$targetFilename = \basename($targetPath);
@@ -373,7 +373,16 @@ class Trashbin {
 			}
 			Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', [
 				'filePath' => Filesystem::normalizePath($file_path),
-				'trashPath' => Filesystem::normalizePath($filename . '.d' . $timestamp)
+				'trashPath' => Filesystem::normalizePath($filename . '.d' . $timestamp),
+				'sourceStorage' => $sourceStorage,
+				'sourceInternalPath' => $sourceInternalPath,
+				'trashStorage' => $trashStorage,
+				'trashInternalPath' => $trashInternalPath,
+				'trashVersionStorage' => $trashVersionStorage,
+				'trashVersionInternalPath' => $trashVersionInternalPath,
+				'ownerPath' => $ownerPath,
+				'owner' => $owner,
+				'timestamp' => $timestamp,
 			]);
 
 			if (!$sourceStorage->instanceOfStorage(IVersionedStorage::class)) {
