@@ -3337,6 +3337,7 @@ trait Sharing {
 		$shareData = $this->getLastShareData();
 		$token = (string) $shareData->data->token;
 		$this->getPublicPreviewOfFile($path, $token);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
