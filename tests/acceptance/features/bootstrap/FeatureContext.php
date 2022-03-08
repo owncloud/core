@@ -2640,6 +2640,7 @@ class FeatureContext extends BehatVariablesContext {
 		}
 
 		$jsonExpectedDecoded['edition'] = $edition;
+		$jsonExpectedDecoded['product'] = $productName;
 		$jsonExpectedDecoded['productname'] = $productName;
 
 		if (OcisHelper::isTestingOnOc10()) {
