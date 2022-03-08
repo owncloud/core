@@ -31,6 +31,14 @@ use OCP\Files\External\NotFoundException;
  */
 interface IStoragesService {
 	/**
+	 * The password to be used when we don't want the storage service to change
+	 * the actual password stored.
+	 * When a storage configuration uses this password with any field containing
+	 * the name "password", the storage service is expected to ignore the field
+	 * to prevent overwriting the stored password
+	 */
+	public const REDACTED_PASSWORD = '**PASSWORD SET**';
+	/**
 	 * Get a storage with status
 	 *
 	 * @param int $id storage mount numeric id

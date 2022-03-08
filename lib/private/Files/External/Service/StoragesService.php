@@ -457,8 +457,13 @@ abstract class StoragesService implements IStoragesService {
 
 		$backend = $updatedStorage->getBackend();
 		foreach ($changedConfig as $key => $value) {
-			$value = $this->encryptIfPassword($backend, $updatedStorage->getAuthMechanism(), $key, $value);
-			$this->dbConfig->setConfig($id, $key, $value);
+			if ((\strpos($key, 'password') === false && $key !== 'secret') || $value !== IStoragesService::REDACTED_PASSWORD) {
+				// check if we should change the password.
+				// Note that the key MUST contain "password", so some other keys that could be hidden in
+				// the UI such as the oAuth2 secret or private / public keys won't be affected
+				$value = $this->encryptIfPassword($backend, $updatedStorage->getAuthMechanism(), $key, $value);
+				$this->dbConfig->setConfig($id, $key, $value);
+			}
 		}
 		foreach ($changedOptions as $key => $value) {
 			$this->dbConfig->setOption($id, $key, $value);

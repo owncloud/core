@@ -282,6 +282,11 @@ abstract class StoragesController extends Controller {
 	public function index() {
 		$storages = $this->service->getStorages();
 
+		\array_map(function ($storage) {
+			$this->replacePasswords($storage);
+			return $storage;
+		}, $storages);
+
 		return new DataResponse(
 			$storages,
 			Http::STATUS_OK
@@ -310,6 +315,8 @@ abstract class StoragesController extends Controller {
 			);
 		}
 
+		$this->replacePasswords($storage);
+
 		return new DataResponse(
 			$storage,
 			Http::STATUS_OK
@@ -336,5 +343,22 @@ abstract class StoragesController extends Controller {
 		}
 
 		return new DataResponse([], Http::STATUS_NO_CONTENT);
+	}
+
+	/**
+	 * Replace the passwords found with a custom string in order to avoid leaking
+	 * the password
+	 */
+	protected function replacePasswords(IStorageConfig $storage) {
+		$opts = $storage->getBackendOptions();
+		foreach ($opts as $key => $value) {
+			if (
+				(\strpos($key, 'password') !== false && \is_string($value) && $value !== '') ||  // key contains "password"
+				($key === 'secret')  // key is "secret"
+			) {
+				$opts[$key] = IStoragesService::REDACTED_PASSWORD;
+			}
+		}
+		$storage->setBackendOptions($opts);
 	}
 }

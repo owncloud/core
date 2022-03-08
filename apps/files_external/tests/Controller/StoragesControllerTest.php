@@ -24,10 +24,13 @@
 namespace OCA\Files_External\Tests\Controller;
 
 use OC\Files\External\StorageConfig;
+use OCP\Files\External\IStorageConfig;
 use OCA\Files_External\Controller\GlobalStoragesController;
 use OCP\AppFramework\Http;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\Files\External\Service\IStoragesService;
+use OCP\Files\StorageNotAvailableException;
 
 abstract class StoragesControllerTest extends \Test\TestCase {
 
@@ -441,5 +444,156 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		} else {
 			$this->assertEquals(Http::STATUS_UNPROCESSABLE_ENTITY, $response->getStatus());
 		}
+	}
+
+	protected function getNewStorageConfigMock($params) {
+		$backendMock = $this->getBackendMock(
+			$params['backendClass'] ?? '\Random\Missing\Class',
+			$params['backendStorageClass'] ?? '\Random\Missing\Class\Storage'
+		);
+
+		$authMock = $this->getAuthMechMock(
+			$params['authScheme'] ?? 'Missing',
+			$params['authClass'] ?? '\Random\Missing\Auth\Class'
+		);
+
+		$storageConfig = new StorageConfig($params['id'] ?? 10);
+		$storageConfig->setMountPoint($params['mountPoint'] ?? 'mount');
+		$storageConfig->setBackend($backendMock);
+		$storageConfig->setAuthMechanism($authMock);
+		$storageConfig->setBackendOptions($params['backendOpts'] ?? []);
+		$storageConfig->setPriority($params['priority'] ?? 1);
+		$storageConfig->setApplicableUsers($params['applicableUsers'] ?? null);
+		$storageConfig->setApplicableGroups($params['applicableGroups'] ?? null);
+		$storageConfig->setMountOptions($params['mountOpts'] ?? null);
+		$storageConfig->setType($params['type'] ?? IStorageConfig::MOUNT_TYPE_ADMIN);
+
+		return $storageConfig;
+	}
+
+	public function testIndex() {
+		$storageConfig1 = $this->getNewStorageConfigMock([]);
+		$storageConfig2 = $this->getNewStorageConfigMock([
+			'id' => 20,
+			'backendOpts' => [
+				'host' => 'host001',
+				'user' => 'user001',
+				'password' => 'password001',
+			],
+		]);
+		$storageConfig3 = $this->getNewStorageConfigMock([
+			'id' => 30,
+			'backendClass' => '\This\Doesnt\Exist',
+			'backendStorageClass' => '\This\Doesnt\Exist\Storage',
+			'mountPoint' => 'randomMount',
+			'backendOpts' => [
+				'host' => 'host001',
+				'user' => 'user001',
+				'password' => 'password001',
+				'service-password' => '001password',
+				'keystore_password' => 'wordpass',
+			],
+			'priority' => 3,
+			'type' => IStorageConfig::MOUNT_TYPE_PERSONAl,
+		]);
+
+		$this->service->expects($this->once())
+		->method('getStorages')
+		->willReturn([$storageConfig1, $storageConfig2, $storageConfig3]);
+
+		$expectedStorage1 = [
+			'id' => 10,
+			'mountPoint' => '/mount',
+			'backend' => 'identifier:\Random\Missing\Class',
+			'authMechanism' => 'identifier:\Random\Missing\Auth\Class',
+			'backendOptions' => [],
+			'priority' => 1,
+			'userProvided' => false,
+			'type' => 'system',
+		];
+		$expectedStorage2 = [
+			'id' => 20,
+			'mountPoint' => '/mount',
+			'backend' => 'identifier:\Random\Missing\Class',
+			'authMechanism' => 'identifier:\Random\Missing\Auth\Class',
+			'backendOptions' => [
+				'host' => 'host001',
+				'user' => 'user001',
+				'password' => IStoragesService::REDACTED_PASSWORD,
+			],
+			'priority' => 1,
+			'userProvided' => false,
+			'type' => 'system',
+		];
+		$expectedStorage3 = [
+			'id' => 30,
+			'mountPoint' => '/randomMount',
+			'backend' => 'identifier:\This\Doesnt\Exist',
+			'authMechanism' => 'identifier:\Random\Missing\Auth\Class',
+			'backendOptions' => [
+				'host' => 'host001',
+				'user' => 'user001',
+				'password' => IStoragesService::REDACTED_PASSWORD,
+				'service-password' => IStoragesService::REDACTED_PASSWORD,
+				'keystore_password' => IStoragesService::REDACTED_PASSWORD,
+			],
+			'priority' => 3,
+			'userProvided' => false,
+			'type' => 'personal',
+		];
+
+		$expected = [$expectedStorage1, $expectedStorage2, $expectedStorage3];
+
+		$result = $this->controller->index();
+		$actual = \array_map(function ($item) {
+			return $item->jsonSerialize();
+		}, $result->getData());
+		$this->assertEquals(Http::STATUS_OK, $result->getStatus());
+		$this->assertEquals($expected, $actual);
+	}
+
+	public function testShow() {
+		$storageConfig = $this->getNewStorageConfigMock([
+			'id' => 30,
+			'backendClass' => '\This\Doesnt\Exist',
+			'backendStorageClass' => '\This\Doesnt\Exist\Storage',
+			'mountPoint' => 'randomMount',
+			'backendOpts' => [
+				'host' => 'host001',
+				'user' => 'user001',
+				'password' => 'password001',
+				'service-password' => '001password',
+				'keystore_password' => 'wordpass',
+			],
+			'priority' => 3,
+			'type' => IStorageConfig::MOUNT_TYPE_PERSONAl,
+		]);
+
+		$this->service->expects($this->once())
+		->method('getStorage')
+		->willReturn($storageConfig);
+
+		$expectedStorage = [
+			'id' => 30,
+			'mountPoint' => '/randomMount',
+			'backend' => 'identifier:\This\Doesnt\Exist',
+			'authMechanism' => 'identifier:\Random\Missing\Auth\Class',
+			'backendOptions' => [
+				'host' => 'host001',
+				'user' => 'user001',
+				'password' => IStoragesService::REDACTED_PASSWORD,
+				'service-password' => IStoragesService::REDACTED_PASSWORD,
+				'keystore_password' => IStoragesService::REDACTED_PASSWORD,
+			],
+			'priority' => 3,
+			'userProvided' => false,
+			'type' => 'personal',
+			'status' => StorageNotAvailableException::STATUS_SUCCESS, // status check for the storage is skipped and always returns this value
+		];
+
+		$result = $this->controller->show(30, true);
+		$actual = $result->getData()->jsonSerialize();
+		$this->assertEquals(Http::STATUS_OK, $result->getStatus());
+		$this->assertEquals($expectedStorage, $actual);
 	}
 }

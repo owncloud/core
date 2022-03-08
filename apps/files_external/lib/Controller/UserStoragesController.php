@@ -153,6 +153,9 @@ class UserStoragesController extends StoragesController {
 		$newStorage = $this->service->addStorage($newStorage);
 		$this->updateStorageStatus($newStorage);
 
+		// replace the password to prevent leaking it
+		$this->replacePasswords($newStorage);
+
 		return new DataResponse(
 			$newStorage,
 			Http::STATUS_CREATED
@@ -212,6 +215,9 @@ class UserStoragesController extends StoragesController {
 		}
 
 		$this->updateStorageStatus($storage, $testOnly);
+
+		// replace the password to prevent leaking it
+		$this->replacePasswords($storage);
 
 		return new DataResponse(
 			$storage,
