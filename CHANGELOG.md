@@ -21,6 +21,7 @@ Summary
 * Bugfix - Fix wrong formatted XML in public-files dav endpoint: [#39797](https://github.com/owncloud/core/pull/39797)
 * Bugfix - Fix issue restoring versions from the trashbin after sharing: [#39822](https://github.com/owncloud/core/pull/39822)
 * Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: [#39829](https://github.com/owncloud/core/pull/39829)
+* Bugfix - Avoid sending unneeded passwords in the files_external app: [#39841](https://github.com/owncloud/core/pull/39841)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -116,6 +117,14 @@ Details
    properly copied to the new location, so the versions can be decrypted properly.
 
    https://github.com/owncloud/core/pull/39829
+
+* Bugfix - Avoid sending unneeded passwords in the files_external app: [#39841](https://github.com/owncloud/core/pull/39841)
+
+   Some passwords were being sent to the web UI in the external storage configuration. These
+   passwords aren't required and they're now replaced in the web UI in order not to leak the actual
+   password
+
+   https://github.com/owncloud/core/pull/39841
 
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 
