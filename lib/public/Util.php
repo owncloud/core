@@ -760,6 +760,7 @@ class Util {
 			'version' => '',
 			'versionstring' => '',
 			'edition' => '',
+			'product' => '',
 			'productname' => ''];
 
 		// expose version and servername details
@@ -767,7 +768,8 @@ class Util {
 			$values['version'] = \implode('.', self::getVersion());
 			$values['versionstring'] = \OC_Util::getVersionString();
 			$values['edition'] = \OC_Util::getEditionString();
-			$values['productname'] = $defaults->getName();
+			$values['product'] = $defaults->getName();
+			$values['productname'] = $values['product'];
 			// expose the servername only if allowed via version, but never when called via status.php
 			if ($serverHide === false) {
 				$hostname = \gethostname();
