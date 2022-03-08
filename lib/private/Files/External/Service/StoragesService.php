@@ -457,7 +457,7 @@ abstract class StoragesService implements IStoragesService {
 
 		$backend = $updatedStorage->getBackend();
 		foreach ($changedConfig as $key => $value) {
-			if (\strpos($key, 'password') === false || $value !== IStoragesService::REDACTED_PASSWORD) {
+			if ((\strpos($key, 'password') === false && $key !== 'secret') || $value !== IStoragesService::REDACTED_PASSWORD) {
 				// check if we should change the password.
 				// Note that the key MUST contain "password", so some other keys that could be hidden in
 				// the UI such as the oAuth2 secret or private / public keys won't be affected

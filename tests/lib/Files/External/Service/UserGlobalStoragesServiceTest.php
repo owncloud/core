@@ -372,6 +372,11 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 		$this->assertTrue(true);
 	}
 
+	public function testUpdateStorageMountPointRedactedPassword() {
+		// we don't test this here
+		$this->assertTrue(true);
+	}
+
 	public function testCannotEditInvalidBackend() {
 		// we don't test this here
 		$this->assertTrue(true);

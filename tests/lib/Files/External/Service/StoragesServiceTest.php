@@ -25,6 +25,7 @@ namespace Test\Files\External\Service;
 
 use OC\Files\Cache\Storage;
 use OC\Files\External\Service\StoragesService;
+use OCP\Files\External\Service\IStoragesService;
 use OC\Files\External\StorageConfig;
 use OC\Files\Filesystem;
 use OCP\Files\External\IStoragesBackendService;
@@ -524,6 +525,46 @@ abstract class StoragesServiceTest extends TestCase {
 		$this->assertEquals('/mountpoint2', $savedStorage->getMountPoint());
 		$this->assertEquals($newAuthMechanism, $savedStorage->getAuthMechanism());
 		$this->assertEquals('password2', $savedStorage->getBackendOption('password'));
+	}
+
+	/**
+	 * Password mustn't change if it's the updated password is the "redacted" one
+	 */
+	public function testUpdateStorageMountPointRedactedPassword() {
+		$backend = $this->backendService->getBackend('identifier:\Test\Files\External\Backend\DummyBackend');
+		$authMechanism = $this->backendService->getAuthMechanism('identifier:\Auth\Mechanism');
+
+		$storage = new StorageConfig();
+		$storage->setMountPoint('mountpoint');
+		$storage->setBackend($backend);
+		$storage->setAuthMechanism($authMechanism);
+		$storage->setBackendOptions([
+			'password' => 'testPassword',
+			'service-password' => 'anotherPassword',
+			'secret' => 'notLeakedYet',
+		]);
+
+		$savedStorage = $this->service->addStorage($storage);
+
+		$newAuthMechanism = $this->backendService->getAuthMechanism('identifier:\Other\Auth\Mechanism');
+
+		$updatedStorage = new StorageConfig($savedStorage->getId());
+		$updatedStorage->setMountPoint('mountpoint2');
+		$updatedStorage->setBackend($backend);
+		$updatedStorage->setAuthMechanism($newAuthMechanism);
+		$updatedStorage->setBackendOptions(['password' => IStoragesService::REDACTED_PASSWORD]);
+		$updatedStorage->setBackendOptions(['service-password' => IStoragesService::REDACTED_PASSWORD]);
+		$updatedStorage->setBackendOptions(['secret' => IStoragesService::REDACTED_PASSWORD]);
+
+		$this->service->updateStorage($updatedStorage);
+
+		$savedStorage = $this->service->getStorage($updatedStorage->getId());
+
+		$this->assertEquals('/mountpoint2', $savedStorage->getMountPoint());
+		$this->assertEquals($newAuthMechanism, $savedStorage->getAuthMechanism());
+		$this->assertEquals('testPassword', $savedStorage->getBackendOption('password'));
+		$this->assertEquals('anotherPassword', $savedStorage->getBackendOption('service-password'));
+		$this->assertEquals('notLeakedYet', $savedStorage->getBackendOption('secret'));
 	}
 
 	/**
