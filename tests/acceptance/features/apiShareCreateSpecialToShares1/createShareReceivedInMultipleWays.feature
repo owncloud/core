@@ -578,9 +578,9 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | all     |
     And user "Carol" has created a share with settings
       | path        | /parent/child1 |
-      | shareType   | group           |
-      | shareWith   | grp2            |
-      | permissions | read            |
+      | shareType   | group          |
+      | shareWith   | grp2           |
+      | permissions | read           |
     When user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
     And user "Brian" accepts share "<path>" offered by user "Carol" using the sharing API
     Then the HTTP status code of responses on all endpoints should be "200"

@@ -1423,6 +1423,7 @@ trait Sharing {
 				$permissions
 			);
 		}
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -3056,6 +3057,7 @@ trait Sharing {
 				$offeredBy
 			);
 		}
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -3132,7 +3134,6 @@ trait Sharing {
 
 	/**
 	 * @Given /^user "([^"]*)" has accepted the (?:first|next|) pending share "([^"]*)" offered by user "([^"]*)"$/
-	 * @Then /^user "([^"]*)" should be able to accept pending share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $share
@@ -3148,6 +3149,30 @@ trait Sharing {
 			__METHOD__ . " could not accept the pending share $share to $user by $offeredBy"
 		);
 		$this->ocsContext->assertOCSResponseIndicatesSuccess();
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" should be able to (decline|accept) pending share "([^"]*)" offered by user "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $action
+	 * @param string $share
+	 * @param string $offeredBy
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userShouldBeAbleToAcceptShareOfferedBy(
+		string $user,
+		string $action,
+		string $share,
+		string $offeredBy
+	) {
+		if ($action === 'accept') {
+			$this->userHasAcceptedThePendingShareOfferedBy($user, $share, $offeredBy);
+		} elseif ($action === 'decline') {
+			$this->userHasReactedToShareOfferedBy($user, 'declined', $share, $offeredBy);
+		}
 	}
 
 	/**
