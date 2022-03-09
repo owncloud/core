@@ -24,10 +24,8 @@ namespace OCA\Files_External\Lib\Auth\PublicKey;
 
 use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\DefinitionParameter;
-use OCP\Files\External\IStorageConfig;
-use OCP\IConfig;
 use OCP\IL10N;
-use OCP\IUser;
+use OCA\Files_External\Lib\RSAStore;
 use phpseclib3\Crypt\RSA as RSACrypt;
 
 /**
@@ -36,12 +34,7 @@ use phpseclib3\Crypt\RSA as RSACrypt;
 class RSA extends AuthMechanism {
 	public const CREATE_KEY_BITS = 1024;
 
-	/** @var IConfig */
-	private $config;
-
-	public function __construct(IL10N $l, IConfig $config) {
-		$this->config = $config;
-
+	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('publickey::rsa')
 			->setScheme(self::SCHEME_PUBLICKEY)
@@ -56,33 +49,26 @@ class RSA extends AuthMechanism {
 		;
 	}
 
-	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
-		$privateKey = $storage->getBackendOption('private_key');
-		$password = $this->config->getSystemValue('secret', '');
-
-		try {
-			$rsaKey = RSACrypt::load($privateKey, $password)->withHash('sha1');
-		} catch (\phpseclib3\Exception\NoKeyLoadedException $e) {
-			throw new \RuntimeException('unable to load private key');
-		}
-
-		$storage->setBackendOption('private_key', \base64_encode($privateKey));
-		$storage->setBackendOption('public_key_auth', $rsaKey);
-	}
-
 	/**
-	 * Generate a keypair
-	 *
+	 * Generate a keypair.
+	 * The public key will be returned without any modification.
+	 * The private key will be stored using the RSAStore, and a token will
+	 * be returned instead. The token can be used to retrieve the private key
+	 * from the RSAStore later.
+	 * @params string $userId the userId holding the keys, or empty string if the keys are global
+	 * (for system-wide mount points, for example)
 	 * @return array ['privatekey' => $privateKey, 'publickey' => $publicKey]
 	 */
-	public function createKey() {
+	public function createKey($userId = '') {
 		/** @var RSACrypt\PrivateKey $rsaKey */
 		$rsaKey = RSACrypt::createKey(self::CREATE_KEY_BITS)
 			->withHash('sha1')
 			->withMGFHash('sha1');
-		$password = $this->config->getSystemValue('secret', '');
+
+		$rsaStore = RSAStore::getGlobalInstance();
+		$token = $rsaStore->storeData($rsaKey, $userId);
 		return [
-			'privatekey' => $rsaKey->withPassword($password)->toString('PKCS1'),
+			'privatekey' => $token,
 			'publickey' => $rsaKey->getPublicKey()->toString('OpenSSH')
 		];
 	}

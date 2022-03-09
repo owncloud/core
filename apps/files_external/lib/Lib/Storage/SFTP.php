@@ -35,6 +35,7 @@ namespace OCA\Files_External\Lib\Storage;
 use Icewind\Streams\IteratorDirectory;
 use Icewind\Streams\RetryWrapper;
 use phpseclib3\Net\SFTP\Stream;
+use OCA\Files_External\Lib\RSAStore;
 
 /**
 * Uses phpseclib's Net\SFTP class and the Net\SFTP\Stream stream wrapper to
@@ -92,8 +93,9 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 		}
 		$this->user = $params['user'];
 
-		if (isset($params['public_key_auth'])) {
-			$this->auth = $params['public_key_auth'];
+		if (isset($params['private_key'])) {
+			$rsaStore = RSAStore::getGlobalInstance();
+			$this->auth = $rsaStore->retrieveData($params['private_key']);
 		} elseif (isset($params['password'])) {
 			$this->auth = $params['password'];
 		} else {
