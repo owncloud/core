@@ -186,6 +186,7 @@ config = {
                 "apiWebdavUpload1",
                 "apiWebdavUpload2",
             ],
+            "filterTags": "~@local_storage&&~@files_external-app-required",
         },
         "apiNotifications": {
             "suites": [
