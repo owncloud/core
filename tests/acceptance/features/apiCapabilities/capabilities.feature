@@ -970,3 +970,4 @@ Feature: capabilities
       | string  | %versionstring%   |
       | edition | %edition%         |
       | product | %productname%     |
+    And the major-minor-micro version data in the response should match the version string
