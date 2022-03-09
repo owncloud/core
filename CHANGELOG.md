@@ -184,16 +184,17 @@ Details
    service-contracts 4.4.34 - translation 4.4.37 - translation-contracts 2.5.0
 
    The following Symfony polyfill components have been updated to: - symfony/polyfill-ctype
-   v1.24.0 - symfony/polyfill-iconv v1.24.0 - symfony/polyfill-intl-idn v1.24.0 -
-   symfony/polyfill-intl-normalizer v1.24.0 - symfony/polyfill-mbstring v1.24.0 -
-   symfony/polyfill-php72 v1.24.0 - symfony/polyfill-php73 v1.24.0 -
-   symfony/polyfill-php80 v1.24.0
+   v1.25.0 - symfony/polyfill-iconv v1.25.0 - symfony/polyfill-intl-idn v1.25.0 -
+   symfony/polyfill-intl-normalizer v1.25.0 - symfony/polyfill-mbstring v1.25.0 -
+   symfony/polyfill-php72 v1.25.0 - symfony/polyfill-php73 v1.25.0 -
+   symfony/polyfill-php80 v1.25.0
 
    https://github.com/owncloud/core/pull/39526
    https://github.com/owncloud/core/pull/39631
    https://github.com/owncloud/core/pull/39646
    https://github.com/owncloud/core/pull/39731
    https://github.com/owncloud/core/pull/39838
+   https://github.com/owncloud/core/pull/39855
    https://symfony.com/blog/symfony-4-4-34-released
    https://symfony.com/blog/symfony-4-4-36-released
 
