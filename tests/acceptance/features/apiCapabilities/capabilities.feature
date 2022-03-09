@@ -965,3 +965,8 @@ Feature: capabilities
       | core          | status@@@productname                      | %productname%     |
       | core          | status@@@version                          | %version%         |
       | core          | status@@@versionstring                    | %versionstring%   |
+    And the version data in the response should contain
+      | name    | value             |
+      | string  | %versionstring%   |
+      | edition | %edition%         |
+      | product | %productname%     |

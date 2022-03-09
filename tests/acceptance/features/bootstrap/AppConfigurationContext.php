@@ -213,6 +213,18 @@ class AppConfigurationContext implements Context {
 	}
 
 	/**
+	 * @param string $exceptionText text to put at the front of exception messages
+	 *
+	 * @return SimpleXMLElement latest retrieved version data in XML format
+	 */
+	public function getVersionXml(string $exceptionText = ''): SimpleXMLElement {
+		if ($exceptionText === '') {
+			$exceptionText = __METHOD__;
+		}
+		return $this->featureContext->getResponseXml(null, $exceptionText)->data->version;
+	}
+
+	/**
 	 * @param SimpleXMLElement $xml of the capabilities
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element

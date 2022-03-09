@@ -75,6 +75,39 @@ class CapabilitiesContext implements Context {
 	}
 
 	/**
+	 * @Then the version data in the response should contain
+	 *
+	 * @param TableNode|null $formData
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function checkVersionResponse(TableNode $formData):void {
+		$versionXML = $this->featureContext->appConfigurationContext->getVersionXml(__METHOD__);
+		$assertedSomething = false;
+
+		$this->featureContext->verifyTableNodeColumns($formData, ['name', 'value']);
+
+		foreach ($formData->getHash() as $row) {
+			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
+			$actualValue = $versionXML->{$row['name']};
+			\var_dump($actualValue);
+
+			Assert::assertEquals(
+				$row['value'] === "EMPTY" ? '' : $row['value'],
+				$actualValue,
+				"Failed field {$row['name']}"
+			);
+			$assertedSomething = true;
+		}
+
+		Assert::assertTrue(
+			$assertedSomething,
+			'there was nothing in the table of expected version data'
+		);
+	}
+
+	/**
 	 * @Then the :pathToElement capability of files sharing app should be :value
 	 *
 	 * @param string $pathToElement
