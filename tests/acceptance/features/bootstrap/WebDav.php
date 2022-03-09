@@ -2470,13 +2470,40 @@ trait WebDav {
 				Assert::assertSame(
 					(int)\trim($statusCodes[$i]),
 					(int)$this->lastHttpStatusCodesArray[$i],
-					'Responses did not return expected http status code'
+					'Responses did not return expected HTTP status code'
 				);
 			}
 		} else {
 			throw new Exception(
-				'Expected status codes: "' . \implode(',', $statusCodes) .
-				'". Found status codes: "' . \implode(',', $this->lastHttpStatusCodesArray) . '"'
+				'Expected HTTP status codes: "' . \implode(',', $statusCodes) .
+				'". Found HTTP status codes: "' . \implode(',', $this->lastHttpStatusCodesArray) . '"'
+			);
+		}
+	}
+
+	/**
+	 * @Then the OCS status code of responses on each endpoint should be :statusCode respectively
+	 *
+	 * @param string $statusCodes
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theOCStatusCodeOfResponsesOnEachEndpointShouldBe(string $statusCodes):void {
+		$statusCodes = \explode(',', $statusCodes);
+		$count = \count($statusCodes);
+		if ($count === \count($this->lastOCSStatusCodesArray)) {
+			for ($i = 0; $i < $count; $i++) {
+				Assert::assertSame(
+					(int)\trim($statusCodes[$i]),
+					(int)$this->lastOCSStatusCodesArray[$i],
+					'Responses did not return expected OCS status code'
+				);
+			}
+		} else {
+			throw new Exception(
+				'Expected OCS status codes: "' . \implode(',', $statusCodes) .
+				'". Found OCS status codes: "' . \implode(',', $this->lastOCSStatusCodesArray) . '"'
 			);
 		}
 	}

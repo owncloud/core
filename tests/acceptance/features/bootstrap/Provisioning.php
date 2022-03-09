@@ -3483,6 +3483,8 @@ trait Provisioning {
 	 * @param string $group
 	 * @param string|null $method how to add the user to the group api|occ
 	 * @param bool $checkResult if true, then check the status of the operation. default false.
+	 * 			                for given step checkResult is expected to be set as true
+	 * 			                for when step checkResult is expected to be set as false
 	 *
 	 * @return void
 	 * @throws Exception
@@ -3519,7 +3521,10 @@ trait Provisioning {
 					);
 				}
 				$this->response = $result;
-				$this->pushToLastStatusCodesArrays();
+				if (!$checkResult) {
+					// for when step only
+					$this->pushToLastStatusCodesArrays();
+				}
 				break;
 			case "occ":
 				$result = SetupHelper::addUserToGroup(
@@ -4278,8 +4283,11 @@ trait Provisioning {
 	 */
 	public function theAdministratorRemovesTheFollowingUserFromTheFollowingGroupUsingTheProvisioningApi(TableNode $table):void {
 		$this->verifyTableNodeColumns($table, ['username', 'groupname']);
+		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
 		foreach ($table as $row) {
 			$this->adminRemovesUserFromGroupUsingTheProvisioningApi($row['username'], $row['groupname']);
+			$this->pushToLastStatusCodesArrays();
 		}
 	}
 

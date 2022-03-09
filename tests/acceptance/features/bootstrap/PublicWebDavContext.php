@@ -147,6 +147,7 @@ class PublicWebDavContext implements Context {
 				$headers
 			)
 		);
+		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -629,6 +630,7 @@ class PublicWebDavContext implements Context {
 			$body,
 			$publicWebDAVAPIVersion
 		);
+		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**

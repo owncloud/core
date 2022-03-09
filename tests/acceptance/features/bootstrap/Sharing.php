@@ -372,6 +372,7 @@ trait Sharing {
 		$rows[] = ['shareType', 'public_link'];
 		$newBody = new TableNode($rows);
 		$this->createShareWithSettings($user, $newBody);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -387,6 +388,8 @@ trait Sharing {
 		$this->userCreatesAPublicLinkShareWithSettings($user, $body);
 		$this->ocsContext->theOCSStatusCodeShouldBe("100,200");
 		$this->theHTTPStatusCodeShouldBe(200);
+		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
 	}
 
 	/**
@@ -3338,6 +3341,29 @@ trait Sharing {
 		$token = (string) $shareData->data->token;
 		$this->getPublicPreviewOfFile($path, $token);
 		$this->pushToLastStatusCodesArrays();
+	}
+
+	/**
+	 * @When the public accesses the preview of file following files from the last shared public link using the sharing API
+	 *
+	 * @param TableNode $table
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	public function thePublicAccessesThePreviewOfTheFollowingSharedFileUsingTheSharingApi(
+		TableNode $table
+	):void {
+		$this->verifyTableNodeColumns($table, ["path"]);
+		$paths = $table->getHash();
+		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
+		foreach ($paths as $path) {
+			$shareData = $this->getLastShareData();
+			$token = (string) $shareData->data->token;
+			$this->getPublicPreviewOfFile($path["path"], $token);
+			$this->pushToLastStatusCodesArrays();
+		}
 	}
 
 	/**
