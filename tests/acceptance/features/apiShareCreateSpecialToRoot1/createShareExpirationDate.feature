@@ -81,26 +81,27 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "yes"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" creates a share using the sharing API with settings
+    And user "Alice" has created a share with settings
       | path        | /FOLDER    |
       | shareType   | user       |
       | shareWith   | Brian      |
       | permissions | read,share |
       | expireDate  | +15 days   |
-    And the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | share_type  | user       |
-      | file_target | /FOLDER    |
-      | uid_owner   | %username% |
-      | expiration  | +15 days   |
-      | share_with  | %username% |
+    When the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
+    Then the info about the last share by user "Alice" with user "Brian" should include
+      | share_type       | user               |
+      | file_target      | /FOLDER            |
+      | uid_owner        | %username%         |
+      | expiration       | +15 days           |
+      | share_with       | %username%         |
+      | ocs_status_code  | <ocs_status_code>  |
+      | http_status_code | <http_status_code> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +15 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled and enforced for users, user shares with expiration date and then disables
@@ -109,25 +110,26 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_enforce_expire_date_user_share" of app "core" has been set to "yes"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" creates a share using the sharing API with settings
+    And user "Alice" has created a share with settings
       | path        | /FOLDER    |
       | shareType   | user       |
       | shareWith   | Brian      |
       | permissions | read,share |
-    And the administrator sets parameter "shareapi_default_expire_date_user_share" of app "core" to "no"
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
-      | share_type  | user       |
-      | file_target | /FOLDER    |
-      | uid_owner   | %username% |
-      | share_with  | %username% |
-      | expiration  | +7 days    |
+    When parameter "shareapi_default_expire_date_user_share" of app "core" has been set to "no"
+    Then the info about the last share by user "Alice" with user "Brian" should include
+      | share_type       | user               |
+      | file_target      | /FOLDER            |
+      | uid_owner        | %username%         |
+      | share_with       | %username%         |
+      | expiration       | +7 days           |
+      | ocs_status_code  | <ocs_status_code>  |
+      | http_status_code | <http_status_code> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +7 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled but not enforced for groups, user shares without specifying expireDate
@@ -214,26 +216,27 @@ Feature: a default expiration date can be specified for shares with users or gro
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" creates a share using the sharing API with settings
+    And user "Alice" has created a share with settings
       | path        | /FOLDER    |
       | shareType   | group      |
       | shareWith   | grp1       |
       | permissions | read,share |
       | expireDate  | +15 days   |
-    And the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" sharing with group "grp1" should include
-      | share_type  | group      |
-      | file_target | /FOLDER    |
-      | uid_owner   | %username% |
-      | share_with  | grp1       |
-      | expiration  | +15 days   |
+    When the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
+    Then the info about the last share by user "Alice" with group "grp1" should include
+      | share_type       | group              |
+      | file_target      | /FOLDER            |
+      | uid_owner        | %username%         |
+      | share_with       | grp1               |
+      | expiration       | +15 days           |
+      | ocs_status_code  | <ocs_status_code>  |
+      | http_status_code | <http_status_code> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +15 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled and enforced for groups, user shares with expiration date and then disables
@@ -244,26 +247,27 @@ Feature: a default expiration date can be specified for shares with users or gro
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" creates a share using the sharing API with settings
+    And user "Alice" has created a share with settings
       | path        | /FOLDER    |
       | shareType   | group      |
       | shareWith   | grp1       |
       | permissions | read,share |
       | expireDate  | +3 days    |
-    And the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" sharing with group "grp1" should include
-      | share_type  | group      |
-      | file_target | /FOLDER    |
-      | uid_owner   | %username% |
-      | share_with  | grp1       |
-      | expiration  | +3 days    |
+    When the administrator sets parameter "shareapi_default_expire_date_group_share" of app "core" to "no"
+    Then the info about the last share by user "Alice" with group "grp1" should include
+      | share_type       | group              |
+      | file_target      | /FOLDER            |
+      | uid_owner        | %username%         |
+      | share_with       | grp1               |
+      | expiration       | +3 days            |
+      | ocs_status_code  | <ocs_status_code>  |
+      | http_status_code | <http_status_code> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +3 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled and enforced for users, user shares without setting expiration date
@@ -273,7 +277,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "<http_status_code>"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_type  | user           |
       | file_target | /textfile0.txt |
       | uid_owner   | %username%     |
@@ -282,9 +288,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +7 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code | http_status_code |
+      | 1               | 100             | 200              |
+      | 2               | 200             | 200              |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled and enforced for users, user shares with expiration date more than the default
@@ -317,7 +323,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with user "Brian" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with user "Brian" should include
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And the fields of the last response to user "Alice" sharing with user "Brian" should include
       | share_type  | user           |
       | file_target | /textfile0.txt |
       | uid_owner   | %username%     |
@@ -326,9 +334,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled and enforced for users/max expire date set, user shares with expiration date more than the max expire date
@@ -361,15 +369,16 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions "read,share" using the sharing API
-    And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "40"
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | expiration | +30 days |
+    And user "Alice" has shared file "textfile0.txt" with user "Brian" with permissions "read,share"
+    When the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "40"
+    Then the info about the last share by user "Alice" with user "Brian" should include
+      | expiration       | +30 days          |
+      | http_status_code | 200               |
+      | ocs_status_code  | <ocs_status_code> |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled for users/max expire date is set, user shares and changes max expire date less than the previous one
@@ -379,15 +388,16 @@ Feature: a default expiration date can be specified for shares with users or gro
     And parameter "shareapi_expire_after_n_days_user_share" of app "core" has been set to "30"
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    When user "Alice" shares file "textfile0.txt" with user "Brian" with permissions "read,share" using the sharing API
-    And the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "15"
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | expiration | +30 days |
+    And user "Alice" has shared file "textfile0.txt" with user "Brian" with permissions "read,share"
+    When the administrator sets parameter "shareapi_expire_after_n_days_user_share" of app "core" to "15"
+    Then the info about the last share by user "Alice" with user "Brian" should include
+      | expiration       | +30 days          |
+      | http_status_code | 200               |
+      | ocs_status_code  | <ocs_status_code> |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled and enforced for groups, user shares without setting expiration date
@@ -399,7 +409,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been added to group "grp1"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with group "grp1" should include
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
       | share_type  | group          |
       | file_target | /textfile0.txt |
       | uid_owner   | %username%     |
@@ -408,9 +420,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +7 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled and enforced for groups, user shares with expiration date more than the default
@@ -447,7 +459,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been added to group "grp1"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     When user "Alice" shares file "textfile0.txt" with group "grp1" using the sharing API
-    Then the fields of the last response to user "Alice" sharing with group "grp1" should include
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And the fields of the last response to user "Alice" sharing with group "grp1" should include
       | share_type  | group          |
       | file_target | /textfile0.txt |
       | uid_owner   | %username%     |
@@ -456,9 +470,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled and enforced for groups/max expire date set, user shares with expiration date more than the max expire date
@@ -495,17 +509,18 @@ Feature: a default expiration date can be specified for shares with users or gro
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    When user "Alice" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
-    And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "40"
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | expiration | +30 days |
+    And user "Alice" has shared file "textfile0.txt" with group "grp1" with permissions "read,share"
+    When the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "40"
+    Then the info about the last share by user "Alice" with user "Brian" should include
+      | expiration       | +30 days          |
+      | http_status_code | 200               |
+      | ocs_status_code  | <ocs_status_code> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enabled for groups/max expire date is set, user shares and changes max expire date less than the previous one
@@ -517,17 +532,19 @@ Feature: a default expiration date can be specified for shares with users or gro
     And group "grp1" has been created
     And user "Brian" has been added to group "grp1"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
-    When user "Alice" shares file "textfile0.txt" with group "grp1" with permissions "read,share" using the sharing API
-    And the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "15"
+    And user "Alice" has shared file "textfile0.txt" with group "grp1" with permissions "read,share"
+    When the administrator sets parameter "shareapi_expire_after_n_days_group_share" of app "core" to "15"
     And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the fields of the last response to user "Alice" should include
       | expiration | +30 days |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | +30 days |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enforced for users, user shares to a group without setting an expiration date
@@ -539,15 +556,16 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been added to group "grp1"
     And user "Alice" has created folder "FOLDER"
     When user "Alice" shares file "FOLDER" with group "grp1" with permissions "read,share" using the sharing API
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | expiration |  |
+    Then the info about the last share by user "Alice" with group "grp1" should include
+      | expiration       |                   |
+      | http_status_code | 200               |
+      | ocs_status_code  | <ocs_status_code> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enforced for groups, user shares to another user
@@ -557,15 +575,16 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been created with default attributes and without skeleton files
     And user "Alice" has created folder "FOLDER"
     When user "Alice" shares file "/FOLDER" with user "Brian" with permissions "read,share" using the sharing API
-    And user "Alice" gets the info of the last share using the sharing API
-    Then the fields of the last response to user "Alice" should include
-      | expiration |  |
+    Then the info about the last share by user "Alice" with user "Brian" should include
+      | expiration       |                   |
+      | http_status_code | 200               |
+      | ocs_status_code  | <ocs_status_code> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration |  |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enforced for users, user shares with invalid expiration date set
@@ -628,24 +647,26 @@ Feature: a default expiration date can be specified for shares with users or gro
       | shareWith          | Brian             |
       | permissions        | read,share        |
       | expireDateAsString | <expiration_date> |
-    Then the fields of the last response to user "Alice" should include
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And the fields of the last response to user "Alice" should include
       | expiration | <expiration_date> |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | <expiration_date> |
     Examples:
-      | ocs_api_version | expiration_date | default | enforce |
-      | 1               | today           | yes     | yes     |
-      | 2               | today           | yes     | yes     |
-      | 1               | tomorrow        | yes     | yes     |
-      | 2               | tomorrow        | yes     | yes     |
-      | 1               | today           | yes     | no      |
-      | 2               | today           | yes     | no      |
-      | 1               | tomorrow        | yes     | no      |
-      | 2               | tomorrow        | yes     | no      |
-      | 1               | today           | no      | no      |
-      | 2               | today           | no      | no      |
-      | 1               | tomorrow        | no      | no      |
-      | 2               | tomorrow        | no      | no      |
+      | ocs_api_version | expiration_date | default | enforce | ocs_status_code |
+      | 1               | today           | yes     | yes     | 100             |
+      | 2               | today           | yes     | yes     | 200             |
+      | 1               | tomorrow        | yes     | yes     | 100             |
+      | 2               | tomorrow        | yes     | yes     | 200             |
+      | 1               | today           | yes     | no      | 100             |
+      | 2               | today           | yes     | no      | 200             |
+      | 1               | tomorrow        | yes     | no      | 100             |
+      | 2               | tomorrow        | yes     | no      | 200             |
+      | 1               | today           | no      | no      | 100             |
+      | 2               | today           | no      | no      | 200             |
+      | 1               | tomorrow        | no      | no      | 100             |
+      | 2               | tomorrow        | no      | no      | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: user shares with humanized expiration date format in past
@@ -734,14 +755,16 @@ Feature: a default expiration date can be specified for shares with users or gro
       | shareType   | user          |
       | shareWith   | Brian         |
       | permissions | read,share    |
-    Then the fields of the last response to user "Alice" should include
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And the fields of the last response to user "Alice" should include
       | expiration | today |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | today |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.3
   Scenario Outline: sharing with default expiration date enforced for users, max expire date is 1, user shares without specifying expiration date
@@ -756,14 +779,16 @@ Feature: a default expiration date can be specified for shares with users or gro
       | shareType   | user          |
       | shareWith   | Brian         |
       | permissions | read,share    |
-    Then the fields of the last response to user "Alice" should include
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And the fields of the last response to user "Alice" should include
       | expiration | tomorrow |
     And the response when user "Brian" gets the info of the last share should include
       | expiration | tomorrow |
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10.6 @skipOnOcV10.7
   Scenario: accessing a user share that is expired should not be possible
@@ -772,10 +797,10 @@ Feature: a default expiration date can be specified for shares with users or gro
       | Brian    |
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a share with settings
-      | path        | /textfile0.txt |
-      | shareType   | user           |
-      | shareWith   | Brian          |
-      | expireDate  | +15 days       |
+      | path       | /textfile0.txt |
+      | shareType  | user           |
+      | shareWith  | Brian          |
+      | expireDate | +15 days       |
     And the administrator has expired the last created share using the testing API
     When user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "404"
@@ -794,10 +819,10 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been added to group "brand-new-group"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a share with settings
-      | path        | /textfile0.txt  |
-      | shareType   | group           |
-      | shareWith   | brand-new-group |
-      | expireDate  | +15 days        |
+      | path       | /textfile0.txt  |
+      | shareType  | group           |
+      | shareWith  | brand-new-group |
+      | expireDate | +15 days        |
     And the administrator has expired the last created share using the testing API
     When user "Alice" gets the info of the last share using the sharing API
     Then the OCS status code should be "404"
@@ -816,9 +841,9 @@ Feature: a default expiration date can be specified for shares with users or gro
     And user "Brian" has been added to group "brand-new-group"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/textfile0.txt"
     And user "Alice" has created a public link share with settings
-      | path        | /textfile0.txt  |
-      | shareWith   | brand-new-group |
-      | expireDate  | +15 days        |
+      | path       | /textfile0.txt  |
+      | shareWith  | brand-new-group |
+      | expireDate | +15 days        |
     And the administrator has expired the last created share using the testing API
     When the public accesses the preview of file "textfile0.txt" from the last shared public link using the sharing API
     Then the HTTP status code should be "404"
