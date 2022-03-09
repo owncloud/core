@@ -795,6 +795,7 @@ def phpstan():
                          composerInstall(phpVersion) +
                          vendorbinPhpstan(phpVersion) +
                          installServer(phpVersion, "sqlite", params["logLevel"]) +
+                         enableAppsForPhpStan(phpVersion) +
                          [
                              {
                                  "name": "php-phpstan",
@@ -2596,6 +2597,19 @@ def installServer(phpVersion, db, logLevel = "2", ssl = False, federatedServerNe
             "php occ security:certificates:import %s/federated.crt" % dir["base"],
         ] if federatedServerNeeded and ssl else []) + [
             "php occ security:certificates",
+        ],
+    }]
+
+def enableAppsForPhpStan(phpVersion):
+    return [{
+        "name": "enable-apps-for-phpstan",
+        "image": "owncloudci/php:%s" % phpVersion,
+        "pull": "always",
+        "commands": [
+            # files_external can be disabled.
+            # We need it to be enabled so that the PHP static analyser can find classes in it.
+            "php occ a:e files_external",
+            "php occ a:l",
         ],
     }]
 
