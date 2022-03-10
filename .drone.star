@@ -33,17 +33,7 @@ config = {
             # Gather coverage for all databases except Oracle
             "coverage": True,
             "databases": [
-                "sqlite",
-                "mariadb:10.2",
-                "mariadb:10.3",
-                "mariadb:10.4",
-                "mariadb:10.5",
-                "mariadb:10.6",
-                "mysql:5.5",
-                "mysql:5.7",
-                "mysql:8.0",
-                "postgres:9.4",
-                "postgres:10.3",
+                "postgres:11",
             ],
         },
         "slowDatabases": {
@@ -234,7 +224,7 @@ config = {
             "dbServices": [
                 "sqlite",
                 "mysql:8.0",
-                "postgres:10.3",
+                "postgres:11",
             ],
         },
         "cliExternalStorage": {
@@ -1504,7 +1494,7 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
-        "databases": ["mariadb:10.2"],
+        "databases": ["postgres:11"],
         "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
         "federatedDb": "",
