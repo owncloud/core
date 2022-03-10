@@ -446,8 +446,8 @@ Feature: update a public link share
     @notToImplementOnOCIS @issue-ocis-2079
     Examples:
       | ocs_api_version | webdav_api_version |
-      | 2               | old                |
       | 1               | old                |
+      | 2               | old                |
 
     @issue-ocis-reva-292
     Examples:

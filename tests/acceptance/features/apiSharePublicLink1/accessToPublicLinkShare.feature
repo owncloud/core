@@ -36,7 +36,7 @@ Feature: accessing a public link share
       | path        | /FOLDER   |
       | permissions | change    |
       | password    | testpass1 |
-    When the public accesses the preview of file following files from the last shared public link using the sharing API
+    When the public accesses the preview of the following files from the last shared public link using the sharing API
       | path           |
       | testavatar.jpg |
       | textfile0.txt  |
@@ -50,7 +50,7 @@ Feature: accessing a public link share
     And user "Alice" has created a public link share with settings
       | path        | /FOLDER |
       | permissions | change  |
-    When the public accesses the preview of file following files from the last shared public link using the sharing API
+    When the public accesses the preview of the following files from the last shared public link using the sharing API
       | path           |
       | testavatar.jpg |
       | textfile0.txt  |

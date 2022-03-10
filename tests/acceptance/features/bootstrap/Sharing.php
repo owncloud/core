@@ -3344,7 +3344,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public accesses the preview of file following files from the last shared public link using the sharing API
+	 * @When the public accesses the preview of the following files from the last shared public link using the sharing API
 	 *
 	 * @param TableNode $table
 	 *
