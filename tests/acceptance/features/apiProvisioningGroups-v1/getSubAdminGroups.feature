@@ -15,11 +15,11 @@ Feature: get subadmin groups
     And user "brand-new-user" has been made a subadmin of group "brand-new-group"
     And user "brand-new-user" has been made a subadmin of group "😅 😆"
     When the administrator gets all the groups where user "brand-new-user" is subadmin using the provisioning API
-    Then the subadmin groups returned by the API should be
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the subadmin groups returned by the API should be
       | brand-new-group |
       | 😅 😆           |
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
 
   @skipOnOcV10.5 @skipOnOcV10.6.0
   Scenario: admin tries to get subadmin groups of a user which does not exist
@@ -42,7 +42,7 @@ Feature: get subadmin groups
     And the HTTP status code should be "200"
     And the subadmin groups returned by the API should be
       | brand-new-group |
-      | 😅 😆          |
+      | 😅 😆           |
 
   Scenario: subadmin of a group should not be able to get subadmin groups of another subadmin user
     Given these users have been created with default attributes and without skeleton files:

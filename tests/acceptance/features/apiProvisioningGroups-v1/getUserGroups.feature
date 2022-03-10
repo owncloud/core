@@ -24,15 +24,15 @@ Feature: get user groups
     And user "brand-new-user" has been added to group "नेपाली"
     And user "brand-new-user" has been added to group "😅 😆"
     When the administrator gets all the groups of user "brand-new-user" using the provisioning API
-    Then the groups returned by the API should be
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the groups returned by the API should be
       | brand-new-group      |
       | 0                    |
       | Admin & Finance (NP) |
       | admin:Pokhara@Nepal  |
       | नेपाली               |
       | 😅 😆                |
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
 
   @issue-31015 @skipOnOcV10
   Scenario: admin gets groups of an user, including groups containing a slash
@@ -45,12 +45,12 @@ Feature: get user groups
     And user "brand-new-user" has been added to group "var/../etc"
     And user "brand-new-user" has been added to group "priv/subadmins/1"
     When the administrator gets all the groups of user "brand-new-user" using the provisioning API
-    Then the groups returned by the API should be
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the groups returned by the API should be
       | Mgmt/Sydney      |
       | var/../etc       |
       | priv/subadmins/1 |
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
 
   @smokeTest @notToImplementOnOCIS
   Scenario: subadmin tries to get other groups of a user in their group
@@ -64,10 +64,10 @@ Feature: get user groups
     And user "brand-new-user" has been added to group "brand-new-group"
     And user "brand-new-user" has been added to group "another-new-group"
     When user "subadmin" gets all the groups of user "brand-new-user" using the provisioning API
-    Then the groups returned by the API should include "brand-new-group"
-    And the groups returned by the API should not include "another-new-group"
-    And the OCS status code should be "100"
+    Then the OCS status code should be "100"
     And the HTTP status code should be "200"
+    And the groups returned by the API should include "brand-new-group"
+    And the groups returned by the API should not include "another-new-group"
 
   Scenario: normal user tries to get the groups of another user
     Given these users have been created with default attributes and without skeleton files:
@@ -107,7 +107,9 @@ Feature: get user groups
     And user "brand-new-user" has been added to group "नेपाली"
     And user "brand-new-user" has been added to group "😅 😆"
     When the administrator gets all the groups of user "brand-new-user" using the provisioning API
-    Then the groups returned by the API should be
+    Then the OCS status code should be "100"
+    And the HTTP status code should be "200"
+    And the groups returned by the API should be
       | brand-new-group      |
       | 0                    |
       | Admin & Finance (NP) |
@@ -115,8 +117,6 @@ Feature: get user groups
       | नेपाली               |
       | 😅 😆                |
       | users                |
-    And the OCS status code should be "100"
-    And the HTTP status code should be "200"
 
   @skipOnOcV10
   Scenario: admin gets groups of an user who is not in any groups on ocis
