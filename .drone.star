@@ -383,7 +383,7 @@ config = {
             },
             "proxyNeeded": True,
             "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required",
+            "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
             "runAllSuites": True,
             "numberOfParts": 8,
         },
