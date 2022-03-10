@@ -33,38 +33,7 @@ config = {
             # Gather coverage for all databases except Oracle
             "coverage": True,
             "databases": [
-                "sqlite",
-                "mariadb:10.2",
-                "mariadb:10.3",
-                "mariadb:10.4",
-                "mariadb:10.5",
-                "mariadb:10.6",
-                "mysql:5.5",
-                "mysql:5.7",
-                "mysql:8.0",
-                "postgres:9.4",
-                "postgres:10.3",
-            ],
-        },
-        "slowDatabases": {
-            "phpVersions": [
-                "7.3",
-            ],
-            # Oracle takes a long time to start and run
-            # So do not collect coverage for that
-            # This helps the SonarCloud analysis to be ready much more quickly
-            "coverage": False,
-            "databases": [
-                "oracle",
-            ],
-        },
-        "reducedDatabases": {
-            "phpVersions": [
-                "7.4",
-            ],
-            "databases": [
-                "sqlite",
-                "mariadb:10.2",
+                "postgres:12",
             ],
         },
         "external-samba-windows": {
@@ -73,7 +42,7 @@ config = {
                 "7.4",
             ],
             "databases": [
-                "sqlite",
+                "postgres:12",
             ],
             "externalTypes": [
                 "samba",
@@ -93,7 +62,7 @@ config = {
                 "7.4",
             ],
             "databases": [
-                "sqlite",
+                "postgres:12",
             ],
             "externalTypes": [
                 "webdav",
@@ -232,9 +201,7 @@ config = {
                 "sqlite",
             ],
             "dbServices": [
-                "sqlite",
-                "mysql:8.0",
-                "postgres:10.3",
+                "postgres:12",
             ],
         },
         "cliExternalStorage": {
@@ -361,15 +328,6 @@ config = {
             "filterTags": "@smokeTest&&~@notifications-app-required",
             "runAllSuites": True,
             "numberOfParts": 8,
-        },
-        "apiOnSqlite": {
-            "suites": {
-                "apiOnSqlite": "apiOnSqlite",
-            },
-            "databases": ["sqlite"],
-            "useHttps": False,
-            "filterTags": "@sqliteDB",
-            "runAllSuites": True,
         },
     },
 }
@@ -1504,7 +1462,7 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
-        "databases": ["mariadb:10.2"],
+        "databases": ["postgres:12"],
         "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
         "federatedDb": "",
