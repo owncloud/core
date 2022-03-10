@@ -215,6 +215,7 @@ config = {
                 "cliProvisioning",
                 "cliTrashbin",
             ],
+            "filterTags": "~@local_storage&&~@files_external-app-required",
             "emailNeeded": True,
         },
         "cliAppManagement": {
@@ -266,6 +267,7 @@ config = {
             "suites": [
                 "cliExternalStorage",
             ],
+            "filterTags": "~@local_storage&&~@files_external-app-required",
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
         },
@@ -301,6 +303,7 @@ config = {
                 "webUIWebdavLockProtection": "webUIWebdavLockProt",
                 "webUIWebdavLocks": "",
             },
+            "filterTags": "~@local_storage&&~@files_external-app-required",
             "emailNeeded": True,
             "useHttps": False,
             "selUserNeeded": True,

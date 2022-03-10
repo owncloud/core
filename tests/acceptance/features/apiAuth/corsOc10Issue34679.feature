@@ -27,14 +27,6 @@ Feature: CORS headers current oC10 behavior for issue-34679
     #  | Access-Control-Allow-Methods  | GET,OPTIONS,POST,PUT,DELETE,MKCOL,PROPFIND,PATCH,PROPPATCH,REPORT |
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
-      | 1               | /apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 2               | /apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
       | 1               | /privatedata/getattribute                        | 997      | 401       |
       | 2               | /privatedata/getattribute                        | 997      | 401       |
       | 1               | /cloud/apps                                      | 997      | 401       |
