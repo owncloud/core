@@ -388,7 +388,6 @@ class ManagerTest extends TestCase {
 			'dav',
 			'federatedfilesharing',
 			'files',
-			'files_external',
 			'test1',
 			'test3'
 		], $this->manager->getInstalledApps());
@@ -409,7 +408,6 @@ class ManagerTest extends TestCase {
 			'dav',
 			'federatedfilesharing',
 			'files',
-			'files_external',
 			'test1',
 			'test3'
 		], $this->manager->getEnabledAppsForUser($user));
