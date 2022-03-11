@@ -100,14 +100,10 @@ Feature: public share sharers groups setting
     And parameter "public_share_sharers_groups_allowlist" of app "files_sharing" has been set to '["grp1", "grp2"]'
     When user "Alice" creates a public link share using the sharing API with settings
       | path | fileToShare.txt |
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    When user "Brian" creates a public link share using the sharing API with settings
+    And user "Brian" creates a public link share using the sharing API with settings
       | path | fileToShare.txt |
-    Then the OCS status code should be "100"
-    And the HTTP status code should be "200"
-    When user "Carol" creates a public link share using the sharing API with settings
+    And user "Carol" creates a public link share using the sharing API with settings
       | path | fileToShare.txt |
-    Then the OCS status code should be "403"
-    And the HTTP status code should be "200"
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on each endpoint should be "100, 100, 403" respectively
     And the OCS status message should be "Public link creation is only possible for certain groups"

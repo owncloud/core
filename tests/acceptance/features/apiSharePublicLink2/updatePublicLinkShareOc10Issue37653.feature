@@ -9,9 +9,9 @@ Feature: update a public link share
   Scenario Outline: API responds with a full set of parameters when owner changes the expireDate of a public share
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" creates a public link share using the sharing API with settings
+    And user "Alice" has created a public link share with settings
       | path | FOLDER |
-    And user "Alice" updates the last share using the sharing API with
+    When user "Alice" updates the last share using the sharing API with
       | expireDate | +3 days |
     Then the OCS status code should be "<ocs_status_code>"
     And the OCS status message should be ""

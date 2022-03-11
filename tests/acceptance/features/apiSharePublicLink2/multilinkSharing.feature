@@ -190,7 +190,8 @@ Feature: multilinksharing
       | permissions | read          |
       | name        | sharedlink2   |
     When user "Alice" uploads file "filesForUpload/textfile.txt" to "/textfile0.txt" using the WebDAV API
-    Then as user "Alice" the public shares of file "/textfile0.txt" should be
+    Then the HTTP status code should be "204"
+    And as user "Alice" the public shares of file "/textfile0.txt" should be
       | path           | permissions | name        |
       | /textfile0.txt | 1           | sharedlink1 |
       | /textfile0.txt | 1           | sharedlink2 |
@@ -224,7 +225,8 @@ Feature: multilinksharing
       | permissions  | change      |
       | name         | sharedlink2 |
     When user "Alice" moves folder "/FOLDER" to "/FOLDER_RENAMED" using the WebDAV API
-    Then as user "Alice" the public shares of file "/FOLDER_RENAMED" should be
+    Then the HTTP status code should be "201"
+    And as user "Alice" the public shares of file "/FOLDER_RENAMED" should be
       | path            | permissions | name        |
       | /FOLDER_RENAMED | 15          | sharedlink1 |
       | /FOLDER_RENAMED | 15          | sharedlink2 |

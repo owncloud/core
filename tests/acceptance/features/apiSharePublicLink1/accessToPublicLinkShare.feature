@@ -36,10 +36,11 @@ Feature: accessing a public link share
       | path        | /FOLDER   |
       | permissions | change    |
       | password    | testpass1 |
-    When the public accesses the preview of file "testavatar.jpg" from the last shared public link using the sharing API
-    Then the HTTP status code should be "404"
-    When the public accesses the preview of file "textfile0.txt" from the last shared public link using the sharing API
-    Then the HTTP status code should be "404"
+    When the public accesses the preview of the following files from the last shared public link using the sharing API
+      | path           |
+      | testavatar.jpg |
+      | textfile0.txt  |
+    Then the HTTP status code of responses on all endpoints should be "404"
 
   Scenario: Access to the preview of public shared file inside a folder without password
     Given the administrator has enabled DAV tech_preview
@@ -49,7 +50,8 @@ Feature: accessing a public link share
     And user "Alice" has created a public link share with settings
       | path        | /FOLDER |
       | permissions | change  |
-    When the public accesses the preview of file "testavatar.jpg" from the last shared public link using the sharing API
-    Then the HTTP status code should be "200"
-    When the public accesses the preview of file "textfile0.txt" from the last shared public link using the sharing API
-    Then the HTTP status code should be "200"
+    When the public accesses the preview of the following files from the last shared public link using the sharing API
+      | path           |
+      | testavatar.jpg |
+      | textfile0.txt  |
+    Then the HTTP status code of responses on all endpoints should be "200"
