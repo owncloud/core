@@ -140,8 +140,14 @@ class LoginController extends Controller {
 
 		$parameters['messages'] = $messages;
 		if ($user !== null && $user !== '') {
-			$parameters['loginName'] = $user;
-			$parameters['user_autofocus'] = false;
+			// if the user exists, replace the userid with the username, eg. for LDAP accounts
+			// that have the owncloud internal username set to a uuid.
+			$u = $this->userManager->get($user);
+			if ($u === null) {
+				$parameters['loginName'] = $user;
+			} else {
+				$parameters['loginName'] = $u->getUserName();
+			}
 		} else {
 			$parameters['loginName'] = '';
 			$parameters['user_autofocus'] = true;
