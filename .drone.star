@@ -43,7 +43,7 @@ config = {
                 "mysql:5.7",
                 "mysql:8.0",
                 "postgres:9.4",
-                "postgres:10.3",
+                "postgres:10.20",
             ],
         },
         "slowDatabases": {
@@ -234,7 +234,7 @@ config = {
             "dbServices": [
                 "sqlite",
                 "mysql:8.0",
-                "postgres:10.3",
+                "postgres:10.20",
             ],
         },
         "cliExternalStorage": {
@@ -1265,7 +1265,7 @@ def phpTests(ctx, testType, withCoverage):
             "mysql:5.7",
             "mysql:8.0",
             "postgres:9.4",
-            "postgres:10.3",
+            "postgres:10.20",
             "oracle",
         ],
         "coverage": True,
