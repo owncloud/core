@@ -148,6 +148,7 @@ class LoginController extends Controller {
 			} else {
 				$parameters['loginName'] = $u->getUserName();
 			}
+			$parameters['user_autofocus'] = false;
 		} else {
 			$parameters['loginName'] = '';
 			$parameters['user_autofocus'] = true;
