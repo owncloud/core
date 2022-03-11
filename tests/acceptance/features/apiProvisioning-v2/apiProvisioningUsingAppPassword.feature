@@ -76,6 +76,7 @@ Feature: access user provisioning API using app password
     Then the HTTP status code should be "401"
     And the API should not return any data
 
+  @notToImplementOnOCIS
   Scenario: normal user gets his own resources using the app password
     Given these users have been created with small skeleton files:
       | username       | password  | displayname | email                    |
