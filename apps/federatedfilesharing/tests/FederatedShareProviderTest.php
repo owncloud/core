@@ -130,6 +130,26 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		parent::tearDown();
 	}
 
+	public function getShareByIdNotExistProvider() {
+		return [
+			[1],
+			[0],
+			[-1],
+			[42.42],
+			["text"],
+			["123text"],
+		];
+	}
+
+	/**
+	 * @dataProvider getShareByIdNotExistProvider
+	 */
+	public function testGetShareByIdNotExist($shareId) {
+		$this->expectException(\OCP\Share\Exceptions\ShareNotFound::class);
+
+		$this->provider->getShareById($shareId);
+	}
+
 	public function testCreate() {
 		$share = $this->shareManager->newShare();
 		$share->setSharedWith('user@server.com')
@@ -510,7 +530,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @dataProvider datatTestUpdate
+	 * @dataProvider dataTestUpdate
 	 * @param string $owner
 	 * @param string $sharedBy
 	 * @param bool $isOwnerLocal
@@ -598,7 +618,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->assertEquals($expirationDate->getTimestamp(), $share->getExpirationDate()->getTimestamp());
 	}
 
-	public function datatTestUpdate() {
+	public function dataTestUpdate() {
 		return [
 			// IRL it is not possible to get both true and false from userManager->userExists for the same uid
 			// so these cases are skipped
@@ -831,7 +851,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		return [
 			['a', 'b', 'c', 'a', true],
 			['a', 'b', 'c', 'b', false],
-			// The recipient is non local.
+			// The recipient is non-local.
 			['a', 'b', 'c', 'c', false],
 			['a', 'b', 'c', 'd', false],
 		];

@@ -160,12 +160,24 @@ class DefaultShareProviderTest extends TestCase {
 		return$qb->getLastInsertId();
 	}
 
+	public function getShareByIdNotExistProvider() {
+		return [
+			[1],
+			[0],
+			[-1],
+			[42.42],
+			["text"],
+			["123text"],
+		];
+	}
+
 	/**
+	 * @dataProvider getShareByIdNotExistProvider
 	 */
-	public function testGetShareByIdNotExist() {
+	public function testGetShareByIdNotExist($shareId) {
 		$this->expectException(\OCP\Share\Exceptions\ShareNotFound::class);
 
-		$this->provider->getShareById(1);
+		$this->provider->getShareById($shareId);
 	}
 
 	public function testGetShareByIdUserShare() {
