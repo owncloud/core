@@ -59,37 +59,7 @@ config = {
             "coverage": True,
             "databases": [
                 "sqlite",
-                "mariadb:10.2",
-                "mariadb:10.3",
-                "mariadb:10.4",
-                "mariadb:10.5",
-                "mariadb:10.6",
-                "mysql:5.5",
-                "mysql:5.7",
-                "mysql:8.0",
-                "postgres:9.4",
-                "postgres:10.20",
-            ],
-        },
-        "slowDatabases": {
-            "phpVersions": [
-                "7.3",
-            ],
-            # Oracle takes a long time to start and run
-            # So do not collect coverage for that
-            # This helps the SonarCloud analysis to be ready much more quickly
-            "coverage": False,
-            "databases": [
-                "oracle",
-            ],
-        },
-        "reducedDatabases": {
-            "phpVersions": [
-                "7.4",
-            ],
-            "databases": [
-                "sqlite",
-                "mariadb:10.2",
+                "postgres:14",
             ],
         },
         "external-samba-windows": {
@@ -99,6 +69,7 @@ config = {
             ],
             "databases": [
                 "sqlite",
+                "postgres:14",
             ],
             "externalTypes": [
                 "samba",
@@ -282,7 +253,7 @@ config = {
             "dbServices": [
                 "sqlite",
                 "mysql:8.0",
-                "postgres:10.20",
+                "postgres:14",
             ],
         },
         "cliExternalStorage": {
@@ -1557,7 +1528,7 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
-        "databases": ["mariadb:10.2"],
+        "databases": ["postgres:14"],
         "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
         "federatedDb": "",
