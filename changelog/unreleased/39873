@@ -1,0 +1,7 @@
+Bugfix: Fix issue with requesting an invalid share id
+
+When using the pgsql database and requesting an invalid share id, a 500 error status
+could be returned. This has been fixed. A 404 "not found" is now returned.
+
+https://github.com/owncloud/core/issues/39868
+https://github.com/owncloud/core/pull/39873

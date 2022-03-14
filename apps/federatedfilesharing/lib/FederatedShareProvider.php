@@ -723,6 +723,15 @@ class FederatedShareProvider implements IShareProvider {
 	 * @inheritdoc
 	 */
 	public function getShareById($id, $recipientId = null) {
+		if (!ctype_digit($id)) {
+			// share id is defined as a field of type integer
+			// if someone calls the API asking for a share id like "abc" or "42.1"
+			// then there is no point trying to query the database,
+			// and, depending on the database, the query may throw an exception
+			// with a message like "invalid input syntax for type integer"
+			// So throw ShareNotFound now.
+			throw new ShareNotFound();
+		}
 		$qb = $this->dbConnection->getQueryBuilder();
 
 		$qb->select('*')
