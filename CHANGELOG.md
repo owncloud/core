@@ -22,6 +22,7 @@ Summary
 * Bugfix - Fix issue restoring versions from the trashbin after sharing: [#39822](https://github.com/owncloud/core/pull/39822)
 * Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: [#39829](https://github.com/owncloud/core/pull/39829)
 * Bugfix - Avoid sending unneeded passwords in the files_external app: [#39841](https://github.com/owncloud/core/pull/39841)
+* Bugfix - Fix issue with requesting an invalid share id: [#39868](https://github.com/owncloud/core/issues/39868)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -125,6 +126,14 @@ Details
    password
 
    https://github.com/owncloud/core/pull/39841
+
+* Bugfix - Fix issue with requesting an invalid share id: [#39868](https://github.com/owncloud/core/issues/39868)
+
+   When using the pgsql database and requesting an invalid share id, a 500 error status could be
+   returned. This has been fixed. A 404 "not found" is now returned.
+
+   https://github.com/owncloud/core/issues/39868
+   https://github.com/owncloud/core/pull/39873
 
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 
