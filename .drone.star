@@ -90,7 +90,6 @@ config = {
             ],
             "databases": [
                 "sqlite",
-                "postgres:11",
             ],
             "externalTypes": [
                 "webdav",
@@ -254,7 +253,7 @@ config = {
             "dbServices": [
                 "sqlite",
                 "mysql:8.0",
-                "postgres:10.20",
+                "postgres:11",
             ],
         },
         "cliExternalStorage": {
