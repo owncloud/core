@@ -59,7 +59,7 @@ config = {
             "coverage": True,
             "databases": [
                 "sqlite",
-                "postgres:12",
+                "postgres:13",
             ],
         },
         "external-samba-windows": {
@@ -69,7 +69,7 @@ config = {
             ],
             "databases": [
                 "sqlite",
-                "postgres:12",
+                "postgres:13",
             ],
             "externalTypes": [
                 "samba",
@@ -90,7 +90,7 @@ config = {
             ],
             "databases": [
                 "sqlite",
-                "postgres:12",
+                "postgres:13",
             ],
             "externalTypes": [
                 "webdav",
@@ -1529,7 +1529,7 @@ def acceptance(ctx):
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
         "phpVersions": ["7.4"],
-        "databases": ["postgres:12"],
+        "databases": ["postgres:13"],
         "federatedPhpVersion": "7.4",
         "federatedServerNeeded": False,
         "federatedDb": "",
