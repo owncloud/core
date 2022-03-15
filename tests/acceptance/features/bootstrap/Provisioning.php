@@ -539,6 +539,7 @@ trait Provisioning {
 			$useSsl = OcisHelper::useSsl();
 			$this->ldapAdminUser = OcisHelper::getBindDN();
 			$this->ldapAdminPassword = OcisHelper::getBindPassword();
+			$this->skipImportLdif = (\getenv("REVA_LDAP_SKIP_LDIF_IMPORT") === "true");
 			if ($useSsl === true) {
 				\putenv('LDAPTLS_REQCERT=never');
 			}
@@ -596,7 +597,9 @@ trait Provisioning {
 				$ldifFile = $configPath . "/" . \basename($ldifFile);
 			}
 		}
-		$this->importLdifFile($ldifFile);
+		if (!$this->skipImportLdif) {
+			$this->importLdifFile($ldifFile);
+		}
 		$this->theLdapUsersHaveBeenResynced();
 	}
 
@@ -835,21 +838,29 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function deleteLdapUsersAndGroups():void {
-		//delete created ldap users
-		$this->ldap->delete(
-			"ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
-			true
-		);
-		//delete all created ldap groups
-		$this->ldap->delete(
-			"ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
-			true
-		);
 		foreach ($this->ldapCreatedUsers as $user) {
+			$this->ldap->delete(
+				"uid=" . ldap_escape($user, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
+			);
 			$this->rememberThatUserIsNotExpectedToExist($user);
 		}
 		foreach ($this->ldapCreatedGroups as $group) {
+			$this->ldap->delete(
+				"cn=" . ldap_escape($group, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
+			);
 			$this->rememberThatGroupIsNotExpectedToExist($group);
+		}
+		if (!$this->skipImportLdif) {
+			//delete ou from LDIF import
+			$this->ldap->delete(
+				"ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
+				true
+			);
+			//delete all created ldap groups
+			$this->ldap->delete(
+				"ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
+				true
+			);
 		}
 		$this->theLdapUsersHaveBeenResynced();
 	}
