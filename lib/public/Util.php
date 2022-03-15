@@ -74,7 +74,7 @@ class Util {
 	public static function getVersion() {
 		return(\OC_Util::getVersion());
 	}
-	
+
 	/**
 	 * Set current update channel
 	 * @param string $channel
@@ -85,7 +85,7 @@ class Util {
 		\OC::$server->getSession()->set('OC_Version_Timestamp', 0);
 		\OC::$server->getAppConfig()->setValue('core', 'OC_Channel', $channel);
 	}
-	
+
 	/**
 	 * Get current update channel
 	 * @return string
@@ -760,7 +760,8 @@ class Util {
 			'version' => '',
 			'versionstring' => '',
 			'edition' => '',
-			'productname' => ''];
+			'productname' => '', // deprecated
+			'product' => ''];
 
 		// expose version and servername details
 		if ($includeVersion || (bool) $systemConfig->getValue('version.hide', false) === false) {
@@ -768,6 +769,7 @@ class Util {
 			$values['versionstring'] = \OC_Util::getVersionString();
 			$values['edition'] = \OC_Util::getEditionString();
 			$values['productname'] = $defaults->getName();
+			$values['product'] = $defaults->getName();
 			// expose the servername only if allowed via version, but never when called via status.php
 			if ($serverHide === false) {
 				$hostname = \gethostname();

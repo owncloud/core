@@ -953,3 +953,21 @@ Feature: capabilities
       | capability | path_to_element         | value    |
       | files      | blacklisted_files_regex | \.(part\|filepart)$ |
 
+  @smokeTest
+  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  # This is a new capability after 10.9.1
+  Scenario: getting default capabilities with admin user
+    When the administrator retrieves the capabilities using the capabilities API
+    Then the capabilities should contain
+      | capability    | path_to_element                           | value             |
+      | core          | status@@@edition                          | %edition%         |
+      | core          | status@@@product                          | %productname%     |
+      | core          | status@@@productname                      | %productname%     |
+      | core          | status@@@version                          | %version%         |
+      | core          | status@@@versionstring                    | %versionstring%   |
+    And the version data in the response should contain
+      | name    | value             |
+      | string  | %versionstring%   |
+      | edition | %edition%         |
+      | product | %productname%     |
+    And the major-minor-micro version data in the response should match the version string

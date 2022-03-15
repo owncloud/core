@@ -75,6 +75,79 @@ class CapabilitiesContext implements Context {
 	}
 
 	/**
+	 * @Then the version data in the response should contain
+	 *
+	 * @param TableNode|null $formData
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function checkVersionResponse(TableNode $formData):void {
+		$versionXML = $this->featureContext->appConfigurationContext->getVersionXml(__METHOD__);
+		$assertedSomething = false;
+
+		$this->featureContext->verifyTableNodeColumns($formData, ['name', 'value']);
+
+		foreach ($formData->getHash() as $row) {
+			$row['value'] = $this->featureContext->substituteInLineCodes($row['value']);
+			$actualValue = $versionXML->{$row['name']};
+
+			Assert::assertEquals(
+				$row['value'] === "EMPTY" ? '' : $row['value'],
+				$actualValue,
+				"Failed field {$row['name']}"
+			);
+			$assertedSomething = true;
+		}
+
+		Assert::assertTrue(
+			$assertedSomething,
+			'there was nothing in the table of expected version data'
+		);
+	}
+
+	/**
+	 * @Then the major-minor-micro version data in the response should match the version string
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function checkVersionMajorMinorMicroResponse():void {
+		$versionXML = $this->featureContext->appConfigurationContext->getVersionXml(__METHOD__);
+		$versionString = (string) $versionXML->string;
+		// We expect that versionString will be in a format like "10.9.2 beta" or "10.9.2-alpha" or "10.9.2"
+		$result = \preg_match('/^[0-9]+\.[0-9]+\.[0-9]+/', $versionString, $matches);
+		Assert::assertSame(
+			1,
+			$result,
+			__METHOD__ . " version string '$versionString' does not start with a semver version"
+		);
+		// semVerParts should have an array with the 3 semver components of the version, e.g. "1", "9" and "2".
+		$semVerParts = \explode('.', $matches[0]);
+		$expectedMajor = $semVerParts[0];
+		$expectedMinor = $semVerParts[1];
+		$expectedMicro = $semVerParts[2];
+		$actualMajor = (string) $versionXML->major;
+		$actualMinor = (string) $versionXML->minor;
+		$actualMicro = (string) $versionXML->micro;
+		Assert::assertSame(
+			$expectedMajor,
+			$actualMajor,
+			__METHOD__ . "'major' data item does not match with major version in string '$versionString'"
+		);
+		Assert::assertSame(
+			$expectedMinor,
+			$actualMinor,
+			__METHOD__ . "'minor' data item does not match with minor version in string '$versionString'"
+		);
+		Assert::assertSame(
+			$expectedMicro,
+			$actualMicro,
+			__METHOD__ . "'micro' data item does not match with micro (patch) version in string '$versionString'"
+		);
+	}
+
+	/**
 	 * @Then the :pathToElement capability of files sharing app should be :value
 	 *
 	 * @param string $pathToElement
