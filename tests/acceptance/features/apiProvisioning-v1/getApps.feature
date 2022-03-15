@@ -24,7 +24,7 @@ Feature: get apps
       | provisioning_api     |
       | systemtags           |
       | updatenotification   |
-      | files_external       |
+
 
   Scenario: admin gets enabled apps - check for the minimal list of apps
     When the administrator gets all enabled apps using the provisioning API
@@ -37,7 +37,6 @@ Feature: get apps
       | files                |
       | files_sharing        |
       | updatenotification   |
-      | files_external       |
 
   @comments-app-required
   Scenario: admin gets enabled apps when some app is disabled
@@ -52,7 +51,6 @@ Feature: get apps
       | files                |
       | files_sharing        |
       | updatenotification   |
-      | files_external       |
     And the apps returned by the API should not include
       | comments |
 
@@ -71,7 +69,6 @@ Feature: get apps
       | files                |
       | files_sharing        |
       | updatenotification   |
-      | files_external       |
 
   @comments-app-required @skipOnOcV10.3 @skipOnOcV10.4 @skipOnOcV10.5
   Scenario: admin gets all apps

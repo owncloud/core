@@ -84,6 +84,14 @@ class LoginControllerTest extends TestCase {
 		);
 	}
 
+	private function getExpectedRememberLoginAllowedState() {
+		// TODO: Improve detection
+		if (\class_exists('\OCA\Files_Extenal\AppInfo\Application')) {
+			return false;
+		}
+		return true;
+	}
+
 	public function testLogoutWithoutToken() {
 		$this->request
 			->expects($this->once())
@@ -151,11 +159,15 @@ class LoginControllerTest extends TestCase {
 			'canResetPassword' => true,
 			'resetPasswordLink' => null,
 			'alt_login' => [],
-			'rememberLoginAllowed' => false,
+			'rememberLoginAllowed' => $this->getExpectedRememberLoginAllowedState(),
 			'rememberLoginState' => 0,
 			'strictLoginEnforced' => false
 		];
 
+		$this->config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['strict_login_enforced', false, false],
+			]));
 		$this->licenseManager->method('getLicenseMessageFor')
 			->willReturn([
 				'license_state' => ILicenseManager::LICENSE_STATE_MISSING
@@ -247,7 +259,7 @@ class LoginControllerTest extends TestCase {
 			'canResetPassword' => true,
 			'resetPasswordLink' => null,
 			'alt_login' => [],
-			'rememberLoginAllowed' => false,
+			'rememberLoginAllowed' => $this->getExpectedRememberLoginAllowedState(),
 			'rememberLoginState' => 0,
 			'strictLoginEnforced' => false
 		];
@@ -256,6 +268,10 @@ class LoginControllerTest extends TestCase {
 			$params['licenseMessage'] = \implode('<br/>', $licenseInfo['translated_message']);
 		}
 
+		$this->config->method('getSystemValue')
+			->will($this->returnValueMap([
+				['strict_login_enforced', false, false],
+			]));
 		$this->licenseManager->method('getLicenseMessageFor')->willReturn($licenseInfo);
 
 		$expectedResponse = new TemplateResponse('core', 'login', $params, 'guest');

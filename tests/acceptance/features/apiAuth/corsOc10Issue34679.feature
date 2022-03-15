@@ -4,7 +4,7 @@ Feature: CORS headers current oC10 behavior for issue-34679
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @issue-34679 @files_sharing-app-required
+  @issue-34679
   Scenario Outline: CORS headers should be returned when invalid password is used
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
@@ -27,14 +27,6 @@ Feature: CORS headers current oC10 behavior for issue-34679
     #  | Access-Control-Allow-Methods  | GET,OPTIONS,POST,PUT,DELETE,MKCOL,PROPFIND,PATCH,PROPPATCH,REPORT |
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
-      | 1               | /apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 2               | /apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
       | 1               | /privatedata/getattribute                        | 997      | 401       |
       | 2               | /privatedata/getattribute                        | 997      | 401       |
       | 1               | /cloud/apps                                      | 997      | 401       |
@@ -43,6 +35,22 @@ Feature: CORS headers current oC10 behavior for issue-34679
       | 2               | /cloud/groups                                    | 997      | 401       |
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
+
+    @files_external-app-required @notToImplementOnOCIS
+    Examples:
+      | ocs_api_version | endpoint                                         | ocs-code | http-code |
+      | 1               | /apps/files_external/api/v1/mounts               | 997      | 401       |
+      | 2               | /apps/files_external/api/v1/mounts               | 997      | 401       |
+
+    @files_sharing-app-required
+    Examples:
+      | ocs_api_version | endpoint                                         | ocs-code | http-code |
+      | 1               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | 2               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | 1               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | 2               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
 
   @issue-34679
   Scenario Outline: CORS headers should be returned when invalid password is used (admin only endpoints)

@@ -10,8 +10,6 @@ Feature: current oC10 behavior for issue-32068
   Scenario: using OCS anonymously
     When a user requests these endpoints with "GET" and no authentication
       | endpoint                                                    |
-      | /ocs/v1.php/apps/files_external/api/v1/mounts               |
-      | /ocs/v2.php/apps/files_external/api/v1/mounts               |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares         |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending |
@@ -41,7 +39,6 @@ Feature: current oC10 behavior for issue-32068
   Scenario: using OCS with non-admin basic auth
     When the user "Alice" requests these endpoints with "GET" with basic auth
       | endpoint                                                    |
-      | /ocs/v1.php/apps/files_external/api/v1/mounts               |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares         |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending |
       | /ocs/v1.php/apps/files_sharing/api/v1/shares                |
@@ -51,7 +48,6 @@ Feature: current oC10 behavior for issue-32068
     And the OCS status code of responses on all endpoints should be "100"
     When the user "Alice" requests these endpoints with "GET" with basic auth
       | endpoint                                                    |
-      | /ocs/v2.php/apps/files_external/api/v1/mounts               |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares/pending |
       | /ocs/v2.php/apps/files_sharing/api/v1/shares                |
@@ -77,8 +73,6 @@ Feature: current oC10 behavior for issue-32068
   Scenario: using OCS as normal user with wrong password
     When user "Alice" requests these endpoints with "GET" using password "invalid"
       | endpoint                                                    |
-      | /ocs/v1.php/apps/files_external/api/v1/mounts               |
-      | /ocs/v2.php/apps/files_external/api/v1/mounts               |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares         |
       | /ocs/v2.php/apps/files_sharing/api/v1/remote_shares         |
       | /ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending |

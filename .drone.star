@@ -186,6 +186,7 @@ config = {
                 "apiWebdavUpload1",
                 "apiWebdavUpload2",
             ],
+            "filterTags": "~@local_storage&&~@files_external-app-required",
         },
         "apiNotifications": {
             "suites": [
@@ -214,6 +215,7 @@ config = {
                 "cliProvisioning",
                 "cliTrashbin",
             ],
+            "filterTags": "~@local_storage&&~@files_external-app-required",
             "emailNeeded": True,
         },
         "cliAppManagement": {
@@ -265,6 +267,7 @@ config = {
             "suites": [
                 "cliExternalStorage",
             ],
+            "filterTags": "~@local_storage&&~@files_external-app-required",
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
         },
@@ -300,6 +303,7 @@ config = {
                 "webUIWebdavLockProtection": "webUIWebdavLockProt",
                 "webUIWebdavLocks": "",
             },
+            "filterTags": "~@local_storage&&~@files_external-app-required",
             "emailNeeded": True,
             "useHttps": False,
             "selUserNeeded": True,
@@ -382,7 +386,7 @@ config = {
             },
             "proxyNeeded": True,
             "useHttps": False,
-            "filterTags": "@smokeTest&&~@notifications-app-required",
+            "filterTags": "@smokeTest&&~@notifications-app-required&&~@local_storage&&~@files_external-app-required",
             "runAllSuites": True,
             "numberOfParts": 8,
         },
@@ -795,6 +799,7 @@ def phpstan():
                          composerInstall(phpVersion) +
                          vendorbinPhpstan(phpVersion) +
                          installServer(phpVersion, "sqlite", params["logLevel"]) +
+                         enableAppsForPhpStan(phpVersion) +
                          [
                              {
                                  "name": "php-phpstan",
@@ -2596,6 +2601,19 @@ def installServer(phpVersion, db, logLevel = "2", ssl = False, federatedServerNe
             "php occ security:certificates:import %s/federated.crt" % dir["base"],
         ] if federatedServerNeeded and ssl else []) + [
             "php occ security:certificates",
+        ],
+    }]
+
+def enableAppsForPhpStan(phpVersion):
+    return [{
+        "name": "enable-apps-for-phpstan",
+        "image": "owncloudci/php:%s" % phpVersion,
+        "pull": "always",
+        "commands": [
+            # files_external can be disabled.
+            # We need it to be enabled so that the PHP static analyser can find classes in it.
+            "php occ a:e files_external",
+            "php occ a:l",
         ],
     }]
 

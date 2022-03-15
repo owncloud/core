@@ -1,4 +1,4 @@
-@cli @external_storage @skipOnLDAP
+@cli @external_storage @skipOnLDAP @files_external-app-required
 Feature: using files external service with storage as webdav_owncloud
 
   As a user

@@ -20,7 +20,6 @@ Feature: get apps
       | provisioning_api     |
       | systemtags           |
       | updatenotification   |
-      | files_external       |
 
   Scenario: admin gets enabled apps - check for the minimal list of apps
     When the administrator gets the list of apps using the occ command
@@ -32,7 +31,6 @@ Feature: get apps
       | files                |
       | files_sharing        |
       | updatenotification   |
-      | files_external       |
 
   Scenario: admin checks the path of the given app
     When the administrator checks the location of the "testing" app using the occ command

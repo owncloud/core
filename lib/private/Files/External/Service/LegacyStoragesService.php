@@ -166,7 +166,7 @@ class LegacyStoragesService {
 					$relativeMountPath = \rtrim($parts[2], '/');
 					// note: we cannot do this after the loop because the decrypted config
 					// options might be needed for the config hash
-					$storageOptions['options'] = \OC_Mount_Config::decryptPasswords($storageOptions['options']);
+					$storageOptions['options'] = LegacyUtil::decryptPasswords($storageOptions['options']);
 					if (!isset($storageOptions['backend'])) {
 						$storageOptions['backend'] = $storageOptions['class']; // legacy compat
 					}

@@ -25,6 +25,11 @@ class AppTest extends \Test\TestCase {
 	public const TEST_GROUP1 = 'group1';
 	public const TEST_GROUP2 = 'group2';
 
+	private function isFilesExternalActive() {
+		// TODO: Improve detection
+		return \class_exists('\OCA\Files_External\AppInfo\Application');
+	}
+
 	public function appVersionsProvider() {
 		return [
 			// exact match
@@ -318,7 +323,6 @@ class AppTest extends \Test\TestCase {
 					'appforgroup12',
 					'dav',
 					'federatedfilesharing',
-					'files_external',
 				],
 				false
 			],
@@ -333,7 +337,6 @@ class AppTest extends \Test\TestCase {
 					'appforgroup2',
 					'dav',
 					'federatedfilesharing',
-					'files_external',
 				],
 				false
 			],
@@ -349,7 +352,6 @@ class AppTest extends \Test\TestCase {
 					'appforgroup2',
 					'dav',
 					'federatedfilesharing',
-					'files_external',
 				],
 				false
 			],
@@ -365,7 +367,6 @@ class AppTest extends \Test\TestCase {
 					'appforgroup2',
 					'dav',
 					'federatedfilesharing',
-					'files_external',
 				],
 				false,
 			],
@@ -381,7 +382,6 @@ class AppTest extends \Test\TestCase {
 					'appforgroup2',
 					'dav',
 					'federatedfilesharing',
-					'files_external',
 				],
 				true,
 			],
@@ -394,6 +394,11 @@ class AppTest extends \Test\TestCase {
 	 * @dataProvider appConfigValuesProvider
 	 */
 	public function testEnabledApps($user, $expectedApps, $forceAll) {
+		// if files_external app is enabled, add it to the expected apps
+		if ($this->isFilesExternalActive()) {
+			$expectedApps[] = 'files_external';
+		}
+
 		$groupManager = \OC::$server->getGroupManager();
 		$user1 = $this->createUser(self::TEST_USER1, self::TEST_USER1);
 		$user2 = $this->createUser(self::TEST_USER2, self::TEST_USER2);
@@ -459,29 +464,28 @@ class AppTest extends \Test\TestCase {
 				)
 			);
 
-		$apps = \OC_App::getEnabledApps();
-		$this->assertEquals([
-			'files',
-			'app3',
-			'dav',
-			'federatedfilesharing',
-			'files_external',
-		], $apps);
+		$apps1 = \OC_App::getEnabledApps();
 
 		// mock should not be called again here
-		$apps = \OC_App::getEnabledApps();
-		$this->assertEquals([
-			'files',
-			'app3',
-			'dav',
-			'federatedfilesharing',
-			'files_external',
-		], $apps);
+		$apps2 = \OC_App::getEnabledApps();
 
 		$this->restoreAppConfig();
 		\OC_User::setUserId(null);
 
 		$user1->delete();
+
+		$expectedApps = [
+			'files',
+			'app3',
+			'dav',
+			'federatedfilesharing',
+		];
+		if ($this->isFilesExternalActive()) {
+			$expectedApps[] = 'files_external';
+		}
+
+		$this->assertEquals($expectedApps, $apps1);
+		$this->assertEquals($expectedApps, $apps2);
 	}
 
 	private function setupAppConfigMock() {

@@ -57,8 +57,4 @@ class Helper {
 	public function getLogFilePath() {
 		return \OC\Log\Owncloud::getLogFilePath();
 	}
-
-	public function getMountDepMessage($backends) {
-		return \OC_Mount_Config::dependencyMessage($backends);
-	}
 }

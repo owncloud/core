@@ -48,6 +48,11 @@ class ManagerTest extends TestCase {
 	/** @var IConfig | \PHPUnit\Framework\MockObject\MockObject */
 	private $config;
 
+	private function isFilesExternalActive() {
+		// TODO: Improve detection
+		return \class_exists('\OCA\Files_External\AppInfo\Application');
+	}
+
 	/**
 	 * @return IAppConfig | \PHPUnit\Framework\MockObject\MockObject
 	 */
@@ -384,14 +389,19 @@ class ManagerTest extends TestCase {
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
-		$this->assertEquals([
+
+		$expectedApps = [
 			'dav',
 			'federatedfilesharing',
 			'files',
-			'files_external',
 			'test1',
 			'test3'
-		], $this->manager->getInstalledApps());
+		];
+		if ($this->isFilesExternalActive()) {
+			$expectedApps[] = 'files_external';
+		}
+
+		$this->assertEquals($expectedApps, $this->manager->getInstalledApps());
 	}
 
 	public function testGetAppsForUser() {
@@ -405,14 +415,19 @@ class ManagerTest extends TestCase {
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
 		$this->appConfig->setValue('test4', 'enabled', '["asd"]');
-		$this->assertEquals([
+
+		$expectedApps = [
 			'dav',
 			'federatedfilesharing',
 			'files',
-			'files_external',
 			'test1',
 			'test3'
-		], $this->manager->getEnabledAppsForUser($user));
+		];
+		if ($this->isFilesExternalActive()) {
+			$expectedApps[] = 'files_external';
+		}
+
+		$this->assertEquals($expectedApps, $this->manager->getEnabledAppsForUser($user));
 	}
 
 	public function testGetAppsNeedingUpgrade() {

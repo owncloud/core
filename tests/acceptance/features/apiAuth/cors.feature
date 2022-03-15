@@ -4,7 +4,7 @@ Feature: CORS headers
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files
 
-  @files_sharing-app-required @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
+  @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
@@ -21,14 +21,6 @@ Feature: CORS headers
       | Access-Control-Allow-Methods  | GET,OPTIONS,POST,PUT,DELETE,MKCOL,PROPFIND,PATCH,PROPPATCH,REPORT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
-      | 1               | /apps/files_external/api/v1/mounts               | 100      | 200       |
-      | 2               | /apps/files_external/api/v1/mounts               | 200      | 200       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares         | 100      | 200       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares         | 200      | 200       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 100      | 200       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 200      | 200       |
-      | 1               | /apps/files_sharing/api/v1/shares                | 100      | 200       |
-      | 2               | /apps/files_sharing/api/v1/shares                | 200      | 200       |
       | 1               | /privatedata/getattribute                        | 100      | 200       |
       | 2               | /privatedata/getattribute                        | 200      | 200       |
       | 1               | /cloud/apps                                      | 997      | 401       |
@@ -39,6 +31,22 @@ Feature: CORS headers
       | 2               | /cloud/users                                     | 997      | 401       |
       | 1               | /config                                          | 100      | 200       |
       | 2               | /config                                          | 200      | 200       |
+
+    @files_external-app-required @notToImplementOnOCIS
+    Examples:
+      | ocs_api_version | endpoint                                         | ocs-code | http-code |
+      | 1               | /apps/files_external/api/v1/mounts               | 100      | 200       |
+      | 2               | /apps/files_external/api/v1/mounts               | 200      | 200       |
+
+    @files_sharing-app-required
+    Examples:
+      | ocs_api_version | endpoint                                         | ocs-code | http-code |
+      | 1               | /apps/files_sharing/api/v1/remote_shares         | 100      | 200       |
+      | 2               | /apps/files_sharing/api/v1/remote_shares         | 200      | 200       |
+      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 100      | 200       |
+      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 200      | 200       |
+      | 1               | /apps/files_sharing/api/v1/shares                | 100      | 200       |
+      | 2               | /apps/files_sharing/api/v1/shares                | 200      | 200       |
 
   @skipOnOcV10.5 @skipOnOcV10.6 @skipOnOcV10.7.0
   Scenario Outline: CORS headers should be returned when setting CORS domain sending Origin header (admin only endpoints)
@@ -64,7 +72,7 @@ Feature: CORS headers
       | 1               | /cloud/users  | 100      | 200       |
       | 2               | /cloud/users  | 200      | 200       |
 
-  @files_sharing-app-required
+
   Scenario Outline: no CORS headers should be returned when CORS domain does not match Origin header
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has added "https://mero.badal" to the list of personal CORS domains
@@ -81,14 +89,6 @@ Feature: CORS headers
       | Access-Control-Allow-Methods  |
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
-      | 1               | /apps/files_external/api/v1/mounts               | 100      | 200       |
-      | 2               | /apps/files_external/api/v1/mounts               | 200      | 200       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares         | 100      | 200       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares         | 200      | 200       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 100      | 200       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 200      | 200       |
-      | 1               | /apps/files_sharing/api/v1/shares                | 100      | 200       |
-      | 2               | /apps/files_sharing/api/v1/shares                | 200      | 200       |
       | 1               | /config                                          | 100      | 200       |
       | 2               | /config                                          | 200      | 200       |
       | 1               | /privatedata/getattribute                        | 100      | 200       |
@@ -99,6 +99,22 @@ Feature: CORS headers
       | 2               | /cloud/groups                                    | 997      | 401       |
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
+
+    @files_external-app-required @notToImplementOnOCIS
+    Examples:
+      | ocs_api_version | endpoint                                         | ocs-code | http-code |
+      | 1               | /apps/files_external/api/v1/mounts               | 100      | 200       |
+      | 2               | /apps/files_external/api/v1/mounts               | 200      | 200       |
+
+    @files_sharing-app-required
+    Examples:
+      | ocs_api_version | endpoint                                         | ocs-code | http-code |
+      | 1               | /apps/files_sharing/api/v1/remote_shares         | 100      | 200       |
+      | 2               | /apps/files_sharing/api/v1/remote_shares         | 200      | 200       |
+      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 100      | 200       |
+      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 200      | 200       |
+      | 1               | /apps/files_sharing/api/v1/shares                | 100      | 200       |
+      | 2               | /apps/files_sharing/api/v1/shares                | 200      | 200       |
 
 
   Scenario Outline: no CORS headers should be returned when CORS domain does not match Origin header (admin only endpoints)
@@ -124,7 +140,7 @@ Feature: CORS headers
       | 1               | /cloud/users  | 100      | 200       |
       | 2               | /cloud/users  | 200      | 200       |
 
-  @issue-34679 @files_sharing-app-required @skipOnOcV10
+  @issue-34679 @skipOnOcV10
   Scenario Outline: CORS headers should be returned when invalid password is used
     Given using OCS API version "<ocs_api_version>"
     And user "Alice" has added "https://aphno.badal" to the list of personal CORS domains
@@ -141,14 +157,6 @@ Feature: CORS headers
       | Access-Control-Allow-Methods  | GET,OPTIONS,POST,PUT,DELETE,MKCOL,PROPFIND,PATCH,PROPPATCH,REPORT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
     Examples:
       | ocs_api_version | endpoint                                         | ocs-code | http-code |
-      | 1               | /apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 2               | /apps/files_external/api/v1/mounts               | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
-      | 1               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
-      | 2               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
       | 1               | /privatedata/getattribute                        | 997      | 401       |
       | 2               | /privatedata/getattribute                        | 997      | 401       |
       | 1               | /cloud/apps                                      | 997      | 401       |
@@ -157,6 +165,22 @@ Feature: CORS headers
       | 2               | /cloud/groups                                    | 997      | 401       |
       | 1               | /cloud/users                                     | 997      | 401       |
       | 2               | /cloud/users                                     | 997      | 401       |
+
+    @files_external-app-required @notToImplementOnOCIS
+    Examples:
+      | ocs_api_version | endpoint                                         | ocs-code | http-code |
+      | 1               | /apps/files_external/api/v1/mounts               | 997      | 401       |
+      | 2               | /apps/files_external/api/v1/mounts               | 997      | 401       |
+
+    @files_sharing-app-required
+    Examples:
+      | ocs_api_version | endpoint                                         | ocs-code | http-code |
+      | 1               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | 2               | /apps/files_sharing/api/v1/remote_shares         | 997      | 401       |
+      | 1               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | 2               | /apps/files_sharing/api/v1/remote_shares/pending | 997      | 401       |
+      | 1               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
+      | 2               | /apps/files_sharing/api/v1/shares                | 997      | 401       |
 
   @issue-34679 @skipOnOcV10
   Scenario Outline: CORS headers should be returned when invalid password is used (admin only endpoints)

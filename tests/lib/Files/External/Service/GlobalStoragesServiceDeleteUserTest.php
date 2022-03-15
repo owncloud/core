@@ -24,7 +24,7 @@ use OC\Files\Config\UserMountCache;
 use OC\Files\External\Service\DBConfigService;
 use OC\Files\External\Service\GlobalStoragesService;
 use OC\Files\External\StoragesBackendService;
-use OCA\Files_External\Lib\Backend\Backend;
+use OCP\Files\External\Backend\Backend;
 use OCP\IUser;
 use Test\TestCase;
 
@@ -133,7 +133,12 @@ class GlobalStoragesServiceDeleteUserTest extends TestCase {
 
 		$storageIds = [];
 		foreach ($storageParams as $storageParam) {
-			$backend = new Backend();
+			// create and assign a new anonymous class extending the public Backend,
+			// which is what the previous code was doing by instantiating the Backend class
+			// from the files_external app
+			// Note that the public Backend is an abstract class and can't be instantiated directly
+			$backend = new class extends Backend {
+			};
 			$backend->setIdentifier($storageParam['backendIdentifier']);
 			$backendService->registerBackend($backend);
 			$storageConfig = $service->createStorage(
