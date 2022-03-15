@@ -534,6 +534,8 @@ trait Provisioning {
 		$useSsl = false;
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->ldapBaseDN = OcisHelper::getBaseDN();
+			$this->ldapUsersOU = OcisHelper::getGroupsOU();
+			$this->ldapGroupsOU = OcisHelper::getUsersOU();
 			$this->ldapHost = OcisHelper::getHostname();
 			$this->ldapPort = OcisHelper::getLdapPort();
 			$useSsl = OcisHelper::useSsl();
@@ -570,13 +572,12 @@ trait Provisioning {
 			$this->ldapHost = (string)$ldapConfig['ldapHost'];
 			$this->ldapPort = (int)$ldapConfig['ldapPort'];
 			$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
+			$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
+			$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
 		}
 		if ($this->ldapAdminPassword === "") {
 			$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
 		}
-		$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
-		$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
-
 		$options = [
 			'host' => $this->ldapHost,
 			'port' => $this->ldapPort,

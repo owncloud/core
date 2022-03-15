@@ -251,6 +251,22 @@ class OcisHelper {
 	/**
 	 * @return string
 	 */
+	public static function getGroupsOU():string {
+		$ou = \getenv("REVA_LDAP_GROUPS_OU");
+		return $ou ? $ou : "TestGroups";
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getUsersOU():string {
+		$ou = \getenv("REVA_LDAP_USERS_OU");
+		return $ou ? $ou : "TestUsers";
+	}
+
+	/**
+	 * @return string
+	 */
 	public static function getHostname():string {
 		$hostname = \getenv("REVA_LDAP_HOSTNAME");
 		return $hostname ? $hostname : "localhost";
