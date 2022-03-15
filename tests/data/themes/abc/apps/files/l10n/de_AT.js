@@ -2,6 +2,8 @@ OC.L10N.register(
     "files",
     {
     "Unknown error" : "Unbekannter Fehler",
+    "Close" : "Schliessen",
+    "..." : "...",
     "Download" : "Herunterladen",
     "Rename" : "Umbenennen",
     "Delete" : "Löschen",
@@ -10,6 +12,7 @@ OC.L10N.register(
     "Details" : "Details",
     "group" : "Gruppe",
     "Name" : "Name",
+    "Size" : "Größe",
     "New folder" : "Neuer Ordner",
     "Cancel" : "Abbrechen",
     "Upload" : "Hochladen",

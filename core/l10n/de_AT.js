@@ -138,6 +138,7 @@ OC.L10N.register(
     "Expiration" : "Ablaufdatum",
     "Link" : "Link",
     "Edit" : "Bearbeiten",
+    "Remove" : "Entfernen",
     "Name" : "Name",
     "Password" : "Passwort",
     "Share" : "Teilen",
