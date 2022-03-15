@@ -232,7 +232,12 @@ class OcisHelper {
 	 * @return bool
 	 */
 	public static function useSsl():bool {
-		return (self::getLdapPort() === 636);
+		$useSsl = \getenv("REVA_LDAP_USESSL");
+		if ($useSsl === false) {
+			return (self::getLdapPort() === 636);
+		} else {
+			return $useSsl === "true";
+		}
 	}
 
 	/**
@@ -257,6 +262,14 @@ class OcisHelper {
 	public static function getBindDN():string {
 		$dn = \getenv("REVA_LDAP_BIND_DN");
 		return $dn ? $dn : "cn=admin,dc=owncloud,dc=com";
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getBindPassword():string {
+		$pw = \getenv("REVA_LDAP_BIND_PASSWORD");
+		return $pw ? $pw : "";
 	}
 
 	/**

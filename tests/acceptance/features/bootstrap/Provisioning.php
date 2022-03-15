@@ -538,6 +538,7 @@ trait Provisioning {
 			$this->ldapPort = OcisHelper::getLdapPort();
 			$useSsl = OcisHelper::useSsl();
 			$this->ldapAdminUser = OcisHelper::getBindDN();
+			$this->ldapAdminPassword = OcisHelper::getBindPassword();
 			if ($useSsl === true) {
 				\putenv('LDAPTLS_REQCERT=never');
 			}
@@ -569,7 +570,9 @@ trait Provisioning {
 			$this->ldapPort = (int)$ldapConfig['ldapPort'];
 			$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
 		}
-		$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
+		if ($this->ldapAdminPassword === "") {
+			$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
+		}
 		$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
 		$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
 
