@@ -31,6 +31,7 @@ Summary
 * Enhancement - Unify API responses when setting permissions for public links: [#39194](https://github.com/owncloud/core/pull/39194)
 * Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
 * Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
+* Enhancement - Allow files_external app to be disabled: [#39856](https://github.com/owncloud/core/pull/39856)
 
 Details
 -------
@@ -235,6 +236,15 @@ Details
 * Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
 
    https://github.com/owncloud/core/pull/39851
+
+* Enhancement - Allow files_external app to be disabled: [#39856](https://github.com/owncloud/core/pull/39856)
+
+   Previously, the files_external app couldn't be disabled. The corresponding section in the
+   settings page had a checkbox to show or not the settings for the files_external app. Now, if the
+   app is disabled, that section won't appear. The behavior will be the same as any other disabled
+   app.
+
+   https://github.com/owncloud/core/pull/39856
 
 Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
