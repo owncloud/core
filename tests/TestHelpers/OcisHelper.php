@@ -267,6 +267,13 @@ class OcisHelper {
 	/**
 	 * @return string
 	 */
+	public static function getGroupSchema():string {
+		$schema = \getenv("REVA_LDAP_GROUP_SCHEMA");
+		return $schema ? $schema : "rfc2307";
+	}
+	/**
+	 * @return string
+	 */
 	public static function getHostname():string {
 		$hostname = \getenv("REVA_LDAP_HOSTNAME");
 		return $hostname ? $hostname : "localhost";

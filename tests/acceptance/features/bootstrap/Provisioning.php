@@ -536,6 +536,7 @@ trait Provisioning {
 			$this->ldapBaseDN = OcisHelper::getBaseDN();
 			$this->ldapUsersOU = OcisHelper::getGroupsOU();
 			$this->ldapGroupsOU = OcisHelper::getUsersOU();
+			$this->ldapGroupSchema = OcisHelper::getGroupSchema();
 			$this->ldapHost = OcisHelper::getHostname();
 			$this->ldapPort = OcisHelper::getLdapPort();
 			$useSsl = OcisHelper::useSsl();
@@ -572,6 +573,7 @@ trait Provisioning {
 			$this->ldapHost = (string)$ldapConfig['ldapHost'];
 			$this->ldapPort = (int)$ldapConfig['ldapPort'];
 			$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
+			$this->ldapGroupSchema = "rfc2307";
 			$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
 			$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
 		}
@@ -767,9 +769,19 @@ trait Provisioning {
 		$newDN = 'cn=' . $group . ',ou=' . $this->ldapGroupsOU . ',' . $baseDN;
 		$entry = [];
 		$entry['cn'] = $group;
-		$entry['objectclass'][] = 'posixGroup';
 		$entry['objectclass'][] = 'top';
-		$entry['gidNumber'] = 5000;
+
+		if ($this->ldapGroupSchema == "rfc2307") {
+			$entry['objectclass'][] = 'posixGroup';
+			$entry['gidNumber'] = 5000;
+		} else {
+			$entry['objectclass'][] = 'groupOfNames';
+			$entry['member'] = "";
+		}
+		if (OcisHelper::isTestingOnOcis()) {
+			$entry['objectclass'][] = 'ownCloud';
+			$entry['ownCloudUUID'] = $this->generateUUIDv4();
+		}
 		$this->ldap->add($newDN, $entry);
 		\array_push($this->ldapCreatedGroups, $group);
 		// For syncing the ldap groups
@@ -3847,10 +3859,20 @@ trait Provisioning {
 		if ($ou === null) {
 			$ou = $this->getLdapGroupsOU();
 		}
+		$memberAttr = "";
+		$memberValue = "";
+		if ($this->ldapGroupSchema == "rfc2307") {
+			$memberAttr = "memberUID";
+			$memberValue = "$user";
+		} else {
+			$memberAttr = "member";
+			$userbase = "ou=" . $this->getLdapUsersOU() . "," . $this->ldapBaseDN;
+			$memberValue = "uid=$user" . "," . "$userbase";
+		}
 		$this->setTheLdapAttributeOfTheEntryTo(
-			"memberUid",
+			$memberAttr,
 			"cn=$group,ou=$ou",
-			$user,
+			$memberValue,
 			true
 		);
 	}
@@ -3881,9 +3903,19 @@ trait Provisioning {
 		if ($ou === null) {
 			$ou = $this->getLdapGroupsOU();
 		}
+		$memberAttr = "";
+		$memberValue = "";
+		if ($this->ldapGroupSchema == "rfc2307") {
+			$memberAttr = "memberUID";
+			$memberValue = "$user";
+		} else {
+			$memberAttr = "member";
+			$userbase = "ou=" . $this->getLdapUsersOU() . "," . $this->ldapBaseDN;
+			$memberValue = "uid=$user" . "," . "$userbase";
+		}
 		$this->deleteValueFromLdapAttribute(
-			$user,
-			"memberUid",
+			$memberValue,
+			$memberAttr,
 			"cn=$group,ou=$ou"
 		);
 		$this->theLdapUsersHaveBeenReSynced();

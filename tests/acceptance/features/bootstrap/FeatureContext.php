@@ -450,6 +450,10 @@ class FeatureContext extends BehatVariablesContext {
 	 */
 	private $ldapGroupsOU;
 	/**
+	 * @var string
+	 */
+	private $ldapGroupSchema;
+	/**
 	 * @var bool
 	 */
 	private $skipImportLdif;
