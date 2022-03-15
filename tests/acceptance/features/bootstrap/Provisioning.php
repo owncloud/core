@@ -721,6 +721,10 @@ trait Provisioning {
 		$entry['homeDirectory'] = '/home/openldap/' . $setting["userid"];
 		$entry['objectclass'][] = 'posixAccount';
 		$entry['objectclass'][] = 'inetOrgPerson';
+		$entry['objectclass'][] = 'organizationalPerson';
+		$entry['objectclass'][] = 'person';
+		$entry['objectclass'][] = 'top';
+
 		$entry['userPassword'] = $setting["password"];
 		if (isset($setting["displayName"])) {
 			$entry['displayName'] = $setting["displayName"];
@@ -731,14 +735,12 @@ trait Provisioning {
 		$entry['gidNumber'] = 5000;
 		$entry['uidNumber'] = $uidNumber;
 
-		if (OcisHelper::isTestingParallelDeployment()) {
-			$entry['objectclass'][] = 'organizationalPerson';
+		if (OcisHelper::isTestingOnOcis()) {
 			$entry['objectclass'][] = 'ownCloud';
-			$entry['objectclass'][] = 'person';
-			$entry['objectclass'][] = 'top';
-			$entry['uid'] = $setting["userid"];
-			$entry['ownCloudSelector'] = $this->getOCSelector();
 			$entry['ownCloudUUID'] = $this->generateUUIDv4();
+		}
+		if (OcisHelper::isTestingParallelDeployment()) {
+			$entry['ownCloudSelector'] = $this->getOCSelector();
 		}
 
 		if ($this->federatedServerExists()) {
