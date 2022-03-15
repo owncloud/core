@@ -714,6 +714,7 @@ trait Provisioning {
 		$entry = [];
 		$entry['cn'] = $userId;
 		$entry['sn'] = $userId;
+		$entry['uid'] = $setting["userid"];
 		$entry['homeDirectory'] = '/home/openldap/' . $setting["userid"];
 		$entry['objectclass'][] = 'posixAccount';
 		$entry['objectclass'][] = 'inetOrgPerson';
