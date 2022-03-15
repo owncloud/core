@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP
+@cli @local_storage @files_external-app-required @skipOnLDAP
 Feature: create local storage from the command line
   As an admin
   I want to create local storage available to a specific user(s) group(s) from the command line

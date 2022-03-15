@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+@cli @local_storage @files_external-app-required @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
 Feature: get file info using PROPFIND
 
   Background:

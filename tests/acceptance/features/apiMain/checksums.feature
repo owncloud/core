@@ -122,7 +122,7 @@ Feature: checksums
       | dav_version |
       | spaces      |
 
-  @local_storage @notToImplementOnOCIS
+  @local_storage @files_external-app-required @notToImplementOnOCIS
   Scenario Outline: Downloading a file from local storage has correct checksum
     Given using <dav_version> DAV path
     # Create the file directly in local storage, bypassing ownCloud
@@ -354,7 +354,7 @@ Feature: checksums
       | dav_version |
       | spaces      |
 
-  @local_storage @notToImplementOnOCIS @skipOnEncryptionType:user-keys @encryption-issue-42
+  @local_storage @files_external-app-required @notToImplementOnOCIS @skipOnEncryptionType:user-keys @encryption-issue-42
   Scenario Outline: Uploaded file to external storage should have the same checksum when downloaded
     Given using <dav_version> DAV path
     And user "Alice" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/local_storage/chksumtst.txt"
