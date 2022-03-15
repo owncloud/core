@@ -90,3 +90,63 @@ Feature: Versions of a file
     And the user has browsed to the files page
     And the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
     Then the versions list should contain 0 entries
+
+  @skipOnStorage:ceph @files_primary_s3-issue-67 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: versions author is displayed
+    Given the administrator has enabled the file version storage feature
+    And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "lorem content" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "new lorem content" to "/randomfile.txt"
+    And user "Alice" has logged in using the webUI
+    And the user has browsed to the files page
+    When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
+    Then the authors of the versions of file "randomfile.txt" should be:
+      | index | author |
+      | 1     | Alice  |
+      | 2     | Alice  |
+
+  @skipOnStorage:ceph @files_primary_s3-issue-67 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: sharee can see the versions' respective author
+    Given the administrator has enabled the file version storage feature
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Alice lorem content" to "/randomfile.txt"
+    And user "Alice" has shared file "randomfile.txt" with user "Brian"
+    And user "Alice" has shared file "randomfile.txt" with user "Carol"
+    And user "Brian" has uploaded file with content "Brian lorem content" to "/randomfile.txt"
+    And user "Brian" has uploaded file with content "Brian new lorem content" to "/randomfile.txt"
+    And user "Carol" has logged in using the webUI
+    And the user has browsed to the files page
+    When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
+    Then the authors of the versions of file "randomfile.txt" should be:
+      | index | author |
+      | 1     | Brian  |
+      | 2     | Alice  |
+      | 3     | Alice  |
+
+  @skipOnStorage:ceph @files_primary_s3-issue-67 @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
+  Scenario: sharee can see the versions' respective author after version restore
+    Given the administrator has enabled the file version storage feature
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Alice" has uploaded file with content "some content" to "/randomfile.txt"
+    And user "Alice" has shared file "randomfile.txt" with user "Brian"
+    And user "Alice" has shared file "randomfile.txt" with user "Carol"
+    And user "Brian" has uploaded file with content "Brian lorem content" to "/randomfile.txt"
+    And user "Alice" has uploaded file with content "Alice lorem content" to "/randomfile.txt"
+    And user "Carol" has uploaded file with content "Carol lorem content" to "/randomfile.txt"
+    And user "Carol" has logged in using the webUI
+    And the user has browsed to the files page
+    When the user browses directly to display the "versions" details of file "randomfile.txt" in folder "/"
+    Then the authors of the versions of file "randomfile.txt" should be:
+      | index | author |
+      | 1     | Alice  |
+      | 2     | Brian  |
+      | 3     | Alice  |
+    When the user restores the file to last version using the webUI
+    Then the authors of the versions of file "randomfile.txt" should be:
+      | index | author |
+      | 1     | Carol  |
+      | 2     | Brian  |
+      | 3     | Alice  |

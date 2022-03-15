@@ -80,6 +80,7 @@ class DetailsDialog extends OwncloudPage {
 	private $commentListXpath = "//ul[@class='comments']//div[@class='message']";
 
 	private $versionsListXpath = "//div[@id='versionsTabView']//ul[@class='versions']";
+	private $versionDetailsXpath = "//div[@id='versionsTabView']//ul[@class='versions']/li//div[@class='version-details']";
 	private $lastVersionRevertButton = "//div[@id='versionsTabView']//ul[@class='versions']//li[1]/div/a";
 
 	/**
@@ -171,6 +172,43 @@ class DetailsDialog extends OwncloudPage {
 		);
 		$this->waitTillElementIsNotNull($this->versionsListXpath);
 		return $versionsList;
+	}
+
+	/**
+	 * finds the list of versions and returns as array
+	 * versions are listed from latest to the oldest
+	 *
+	 * @return array
+	 * [
+	 * 	["size" => "> 1KB", "author" => "Alice Hansen"],
+	 * 	["size" => "> 2KB", "author" => "Alice Hansen"]
+	 * ]
+	 */
+	public function getVersionsAndDetailsList(): array {
+		$versionDetails = $this->detailsDialogElement->findAll(
+			"xpath",
+			$this->versionDetailsXpath
+		);
+		$this->assertElementNotNull(
+			$versionDetails,
+			__METHOD__ .
+			" could not find versions list for current file"
+		);
+		$this->waitTillElementIsNotNull($this->versionDetailsXpath);
+
+		$versions = [];
+		foreach ($versionDetails as $version) {
+			$size = $version->find("xpath", "/span[1]")->getText();
+			$author = $version->find("xpath", "/span[2]")->getText();
+			array_push(
+				$versions,
+				[
+					"size" => $size,
+					"author" => $author
+				]
+			);
+		}
+		return $versions;
 	}
 
 	/**
