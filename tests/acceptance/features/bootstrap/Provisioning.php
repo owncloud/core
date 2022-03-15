@@ -45,11 +45,6 @@ trait Provisioning {
 	private $createdUsers = [];
 
 	/**
-	 * @var string
-	 */
-	private $ou = "TestGroups";
-
-	/**
 	 * list of users that were created on the remote server during test runs
 	 * key is the lowercase username, value is an array of user attributes
 	 *
@@ -704,12 +699,12 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function createLdapUser(array $setting):void {
-		$ou = "TestUsers";
+		$ou =  $this->ldapUsersOU ;
 		// Some special characters need to be escaped in LDAP DN and attributes
 		// The special characters allowed in a username (UID) are +_.@-
 		// Of these, only + has to be escaped.
 		$userId = \str_replace('+', '\+', $setting["userid"]);
-		$newDN = 'uid=' . $userId . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		$newDN = 'uid=' . $userId . ',ou=' . $ou . ',' . $this->ldapBaseDN;
 
 		//pick a high number as uidnumber to make sure there are no conflicts with existing uidnumbers
 		$uidNumber = \count($this->ldapCreatedUsers) + 30000;
@@ -759,7 +754,7 @@ trait Provisioning {
 	 */
 	public function createLdapGroup(string $group):void {
 		$baseDN = $this->getLdapBaseDN();
-		$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
+		$newDN = 'cn=' . $group . ',ou=' . $this->ldapGroupsOU . ',' . $baseDN;
 		$entry = [];
 		$entry['cn'] = $group;
 		$entry['objectclass'][] = 'posixGroup';
@@ -3258,7 +3253,7 @@ trait Provisioning {
 	 */
 	public function getUsersOfLdapGroup(string $group):array {
 		$ou = $this->getLdapGroupsOU();
-		$entry = 'cn=' . $group . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		$entry = 'cn=' . $group . ',ou=' . $ou . ',' . $this->ldapBaseDN;
 		$ldapResponse = $this->ldap->getEntry($entry);
 		return $ldapResponse["memberuid"];
 	}
@@ -4221,7 +4216,7 @@ trait Provisioning {
 	public function groupExists(string $group):bool {
 		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcisOrReva()) {
 			$baseDN = $this->getLdapBaseDN();
-			$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
+			$newDN = 'cn=' . $group . ',ou=' . $this->ldapGroupsOU . ',' . $baseDN;
 			if ($this->ldap->getEntry($newDN) !== null) {
 				return true;
 			}
