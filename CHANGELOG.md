@@ -30,6 +30,7 @@ Summary
 * Enhancement - Allow OPTIONS request handling in framework controllers: [#38758](https://github.com/owncloud/core/pull/38758)
 * Enhancement - Unify API responses when setting permissions for public links: [#39194](https://github.com/owncloud/core/pull/39194)
 * Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
+* Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
 
 Details
 -------
@@ -230,6 +231,10 @@ Details
 
    https://github.com/owncloud/core/issues/39590
    https://github.com/owncloud/core/pull/39604
+
+* Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
+
+   https://github.com/owncloud/core/pull/39851
 
 Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
