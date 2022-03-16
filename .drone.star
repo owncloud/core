@@ -188,6 +188,17 @@ config = {
             ],
             "filterTags": "~@local_storage&&~@files_external-app-required",
         },
+        "apiFilesExternal": {
+            "suites": {
+                "apiFilesExternal": "apiFilesExt",
+            },
+            "filterTags": "@files_external-app-required",
+            "runAllSuites": True,
+            "numberOfParts": 1,
+            "extraApps": {
+                "files_external": "",
+            },
+        },
         "apiNotifications": {
             "suites": [
                 "apiSharingNotificationsToRoot",
@@ -217,6 +228,17 @@ config = {
             ],
             "filterTags": "~@local_storage&&~@files_external-app-required",
             "emailNeeded": True,
+        },
+        "cliFilesExternal": {
+            "suites": {
+                "cliFilesExternal": "cliFilesExt",
+            },
+            "filterTags": "@files_external-app-required",
+            "runAllSuites": True,
+            "numberOfParts": 1,
+            "extraApps": {
+                "files_external": "",
+            },
         },
         "cliAppManagement": {
             "suites": [
@@ -307,6 +329,17 @@ config = {
             "emailNeeded": True,
             "useHttps": False,
             "selUserNeeded": True,
+        },
+        "webUIFilesExternal": {
+            "suites": {
+                "webUIFilesExternal": "webUIFilesExt",
+            },
+            "filterTags": "@files_external-app-required",
+            "runAllSuites": True,
+            "numberOfParts": 1,
+            "extraApps": {
+                "files_external": "",
+            },
         },
         "webUINotifications": {
             "suites": {

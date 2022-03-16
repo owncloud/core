@@ -1,4 +1,4 @@
-@webUI @insulated @local_storage @disablePreviews
+@webUI @insulated @local_storage @files_external-app-required @disablePreviews
 Feature: external-storage
 
   Scenario: the external section shows a filtered view with just the external storage folders

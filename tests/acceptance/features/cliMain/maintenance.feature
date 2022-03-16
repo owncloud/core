@@ -1,4 +1,4 @@
-@cli @local_storage
+@cli @local_storage @files_external-app-required
 Feature: Maintenance command
 
   As an admin

@@ -189,7 +189,7 @@ Feature: using files external service with storage as webdav_owncloud
     Then the command should have been successful
     And the command should output configuration for local storage mount "TestMountPoint"
 
-  @local_storage
+  @local_storage @files_external-app-required
   Scenario: importing config to create a webdav_owncloud external storage
     Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
@@ -249,8 +249,7 @@ Feature: using files external service with storage as webdav_owncloud
 
 
   Scenario: user moves their own folder to the external storage
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -268,8 +267,7 @@ Feature: using files external service with storage as webdav_owncloud
 
 
   Scenario: user moves their own file to the external storage
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -288,8 +286,7 @@ Feature: using files external service with storage as webdav_owncloud
 
 
   Scenario: user moves a folder out of external storage to their own storage
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -307,8 +304,7 @@ Feature: using files external service with storage as webdav_owncloud
 
 
   Scenario: user moves a file out of external storage to their own storage
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -327,8 +323,7 @@ Feature: using files external service with storage as webdav_owncloud
 
   @issue-39550
   Scenario: user tries to move a folder that they have shared to someone, to external storage
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -352,8 +347,7 @@ Feature: using files external service with storage as webdav_owncloud
 
   @issue-39550
   Scenario: user tries to move a file that they have shared to someone, to external storage
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -377,8 +371,7 @@ Feature: using files external service with storage as webdav_owncloud
 
   @issue-39550
   Scenario: share receiver tries to move a folder that they have received from someone, to external storage
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |
@@ -399,8 +392,7 @@ Feature: using files external service with storage as webdav_owncloud
 
   @issue-39550
   Scenario: share receiver tries to move a file that they have received from someone, to external storage
-    Given user "Alice" has been created with default attributes and without skeleton files
-    And the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
+    Given the administrator has created an external mount point with the following configuration about user "Alice" using the occ command
       | host                   | %remote_server%    |
       | root                   | TestMnt            |
       | secure                 | false              |

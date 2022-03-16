@@ -115,7 +115,7 @@ Feature: transfer-ownership
     And as "Carol" folder "/testByAlice" should exist
     And as "Carol" folder "/testByBrian" should exist
 
-  @local_storage @skipOnEncryptionType:user-keys
+  @local_storage @files_external-app-required @skipOnEncryptionType:user-keys
   Scenario: transferring ownership does not transfer external storage
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files
@@ -282,7 +282,7 @@ Feature: transfer-ownership
     Then the command should have been successful
     And as "Alice" folder "/test" should not exist
 
-  @local_storage
+  @local_storage @files_external-app-required
   Scenario: transferring ownership of a folder does not transfer external storage
     Given user "Alice" has been created with default attributes and small skeleton files
     And user "Brian" has been created with default attributes and small skeleton files

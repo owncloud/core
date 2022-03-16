@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP
+@cli @local_storage @files_external-app-required @skipOnLDAP
 Feature: import exported local storage mounts from the command line
   As an admin
   I want to import exported local storage mounts from the command line

@@ -1,4 +1,4 @@
-@cli @local_storage @skipOnLDAP
+@cli @local_storage @files_external-app-required @skipOnLDAP
 Feature: show available backends using occ command
   As an admin
   I want to list backends

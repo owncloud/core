@@ -83,7 +83,7 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * An array of values of replacement values of user attributes.
 	 * These are only referenced when creating a user. After that, the
-	 * run-time values are maintained and referenced in the $createUsers array.
+	 * run-time values are maintained and referenced in the $createdUsers array.
 	 *
 	 * Key is the username, value is an array of user attributes
 	 *

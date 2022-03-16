@@ -122,7 +122,7 @@ Feature: files and folders exist in the trashbin after being deleted
       | old      |
       | new      |
 
-  @local_storage
+  @local_storage @files_external-app-required
   @skipOnEncryptionType:user-keys @encryption-issue-42
   @skip_on_objectstore
   Scenario Outline: Deleting a folder into external storage moves it to the trashbin
