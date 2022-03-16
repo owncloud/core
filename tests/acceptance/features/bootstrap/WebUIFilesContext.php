@@ -2597,6 +2597,42 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the author(s) of the version(s) of file/folder :resource should be:
+	 *
+	 * @param string $resource
+	 * @param TableNode $versionTable
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAuthorsOfVersionsOfFileShouldBe(string $resource, TableNode $versionTable):void {
+		$this->featureContext->verifyTableNodeColumns(
+			$versionTable,
+			['index', 'author']
+		);
+		$versionsMetadata = $versionTable->getHash();
+
+		$actualVersions = $this->filesPage->getDetailsDialog()->getVersionsAndDetailsList();
+		foreach ($versionsMetadata as $version) {
+			$index = (int) $version["index"] - 1;
+			if ($index < 0) {
+				throw new Exception(
+					"Version index must start from 1"
+				);
+			}
+			$expectedAuthor = $this->featureContext->getDisplayNameForUser($version["author"]);
+			$actualAuthor = $actualVersions[$index]["author"];
+
+			Assert::assertEquals(
+				$expectedAuthor,
+				$actualAuthor,
+				__METHOD__
+				. " Expected author '" . $expectedAuthor . "' at index '" . $version["index"] . "' but got '" . $actualAuthor . "'"
+			);
+		}
+	}
+
+	/**
 	 * @When the user restores the file to last version using the webUI
 	 *
 	 * @return void
