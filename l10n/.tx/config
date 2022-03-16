@@ -85,4 +85,3 @@ file_filter = <lang>/dav.po
 source_file = templates/dav.pot
 source_lang = en
 type = PO
-
