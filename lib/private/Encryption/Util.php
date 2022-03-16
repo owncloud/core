@@ -231,16 +231,30 @@ class Util {
 		list($storage, $internalPath) = $this->rootView->resolvePath($path);
 
 		$absMountPoint = $this->rootView->getMountPoint($path);
-		// strip the first 2 directories (expected to be "<user>/files/path/to/files")
-		$mountPoint = \implode('/', \array_slice(\explode('/', $absMountPoint), 2));
+		$parts = \explode('/', $absMountPoint);
+		// strip the first 2 directories (expected to be "/<user>/files/path/to/files")
+		// so mountPoint is expected to be "/files/path/to..."
+		$mountPoint = \implode('/', \array_slice($parts, 2));
 		$originalPath = "/{$mountPoint}/{$internalPath}";
 
 		if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
 			// TODO: Improve sharedStorage detection.
 			// Note that ISharedStorage doesn't enforce any method
-			$share = $storage->getShare();
-			$node = $share->getNode();
-			$originalPath = "/{$node->getInternalPath()}/{$internalPath}";
+			if ($storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
+				// local sharing
+				$share = $storage->getShare();
+				$node = $share->getNode();
+				$originalPath = "/{$node->getInternalPath()}/{$internalPath}";
+			} else {
+				// remote sharing
+				// FIXME: The original owner is a remote one who won't be present locally.
+				// However, keeping the previous behavior, we'll use the target user (obtained
+				// from the path) as owner. Fixing this properly requires heavy refactoring since
+				// the code requires the keys to have an owner and it isn't possible to return null
+				// to mark there is no local owner for the keys, or that the keys aren't
+				// locally available
+				return [$parts[1], $originalPath];
+			}
 		}
 
 		$checkingPath = "/{$internalPath}";
