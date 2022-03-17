@@ -1795,7 +1795,7 @@ def acceptance(ctx):
                                                          "path": "%s/downloads" % dir["server"],
                                                      }],
                                                  }),
-                                             ] + buildGithubCommentForBuildStopped(name, params["earlyFail"]) + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
+                                             ] + githubComment(params["earlyFail"]) + stopBuild(params["earlyFail"]),
                                     "services": dbServices +
                                                 browserService(browser) +
                                                 emailService(params["emailNeeded"]) +
@@ -1998,27 +1998,6 @@ def stopBuild(earlyFail):
     else:
         return []
 
-def buildGithubCommentForBuildStopped(alternateSuiteName, earlyFail):
-    if (earlyFail):
-        return [{
-            "name": "build-github-comment-buildStop",
-            "image": OC_UBUNTU,
-            "commands": [
-                'echo ":boom: Acceptance tests pipeline <strong>%s</strong> failed. The build has been cancelled.\\n\\n${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1\\n" >> %s/comments.file' % (alternateSuiteName, dir["server"]),
-            ],
-            "when": {
-                "status": [
-                    "failure",
-                ],
-                "event": [
-                    "pull_request",
-                ],
-            },
-        }]
-
-    else:
-        return []
-
 def githubComment(earlyFail):
     if (earlyFail):
         return [{
@@ -2026,10 +2005,10 @@ def githubComment(earlyFail):
             "image": THEGEEKLAB_DRONE_GITHUB_COMMENT,
             "pull": "if-not-exists",
             "settings": {
-                "message_file": "%s/comments.file" % dir["server"],
-            },
-            "environment": {
-                "GITHUB_TOKEN": {
+                "message": ":boom: Acceptance tests pipeline <strong>${DRONE_STAGE_NAME}</strong> failed. The build has been cancelled.\\n\\n${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}",
+                "key": "pr-${DRONE_PULL_REQUEST}",
+                "update": "true",
+                "api_key": {
                     "from_secret": "github_token",
                 },
             },
