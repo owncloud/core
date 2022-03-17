@@ -223,6 +223,13 @@ class File extends Node implements IFile, IFileNode {
 				$expected = -1;
 				if (isset($_SERVER['CONTENT_LENGTH'])) {
 					$expected = $_SERVER['CONTENT_LENGTH'];
+				} elseif (\is_resource($data)) {
+					$stat = \fstat($data);
+					if ($stat !== false) {
+						$expected = $stat['size'];
+					}
+				} elseif (\is_string($data)) {
+					$expected = \strlen($data);
 				}
 				throw new Exception('Error while copying file to target location (copied bytes: ' . $count . ', expected filesize: ' . $expected . ' )');
 			}
@@ -276,9 +283,21 @@ class File extends Node implements IFile, IFileNode {
 						throw new Exception('Could not rename part file to final file');
 					}
 				} catch (ForbiddenException $ex) {
+					// try to revert the lock state so it can be cleanup properly
+					try {
+						$this->changeLock(ILockingProvider::LOCK_SHARED);
+					} catch (LockedException $e) {
+						$this->convertToSabreException($e);
+					}
 					throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
 				} catch (\Exception $e) {
 					$partStorage->unlink($internalPartPath);
+					// try to revert the lock state so it can be cleanup properly
+					try {
+						$this->changeLock(ILockingProvider::LOCK_SHARED);
+					} catch (LockedException $e) {
+						$this->convertToSabreException($e);
+					}
 					$this->convertToSabreException($e);
 				}
 			}

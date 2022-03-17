@@ -29,6 +29,7 @@ use OCP\Files\StorageNotAvailableException;
 use Sabre\DAV\Exception\InsufficientStorage;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\INode;
+use Sabre\HTTP\RequestInterface;
 
 /**
  * This plugin check user quota and deny creating files when they exceeds the quota.
@@ -75,6 +76,15 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		$server->on('beforeWriteContent', [$this, 'handleBeforeWriteContent'], 10);
 		$server->on('beforeCreateFile', [$this, 'handleBeforeCreateFile'], 10);
 		$server->on('beforeMove', [$this, 'handleBeforeMove'], 10);
+
+		// QuotaPlugin is initialized during the processing of the "beforeMethod:*" event handling, which
+		// means that we can't listen on a "beforeMethod:*" event at this point because it's too late
+		// There is no "beforeCopy" event we can listen to neither.
+		// We'll assume the "beforeMethod:*" is being processed, so we'll process our "handleBeforeCopy"
+		// right away.
+		if ($server->httpRequest->getMethod() === 'COPY') {
+			$this->handleBeforeCopy($server->httpRequest);
+		}
 	}
 
 	/**
@@ -90,8 +100,12 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		$sourceNode = $this->server->tree->getNodeForPath($source);
 
 		// get target node for proper path conversion
+		$destinationSize = 0;
 		if ($this->server->tree->nodeExists($destination)) {
 			$targetNode = $this->server->tree->getNodeForPath($destination);
+			if ($targetNode instanceof Node) {
+				$destinationSize = $targetNode->getSize() ?? 0;
+			}
 		} else {
 			$dirname = \dirname($destination);
 			$dirname = $dirname === '.' ? '/' : $dirname;
@@ -112,7 +126,30 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 			}
 		}
 		$path = $targetNode->getPath();
-		return $this->checkQuota($path, $sourceNode->getSize());
+		return $this->checkQuota($path, $sourceNode->getSize(), $destinationSize);
+	}
+
+	public function handleBeforeCopy(RequestInterface $request) {
+		if ($request->getMethod() !== 'COPY') {
+			return;
+		}
+
+		$requestedPath = $request->getPath();
+		$sourceNode = $this->server->tree->getNodeForPath($requestedPath); // might throw a NotFound exception
+
+		$sourceSize = null;
+		if ($sourceNode instanceof Node) {
+			$sourceSize = $sourceNode->getSize();
+		}
+
+		$copyInfo = $this->server->getCopyAndMoveInfo($request);  // it might throw exceptions
+		$path = $copyInfo['destination'];
+
+		$destinationSize = 0;
+		if ($copyInfo['destinationExists'] && $copyInfo['destinationNode'] instanceof Node) {
+			$destinationSize = $copyInfo['destinationNode']->getSize() ?? 0;
+		}
+		return $this->checkQuota($path, $sourceSize, $destinationSize);
 	}
 
 	/**
@@ -127,7 +164,9 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		if (!$node instanceof Node) {
 			return;
 		}
-		return $this->checkQuota($node->getPath());
+
+		$nodeSize = $node->getSize() ?? 0;  // it might return null, so assume 0 in that case.
+		return $this->checkQuota($node->getPath(), null, $nodeSize);
 	}
 
 	/**
@@ -150,10 +189,11 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	 *
 	 * @param string $path path of the user's home
 	 * @param int $length size to check whether it fits
+	 * @param int $extraSpace additional space granted, usually used when overwriting files
 	 * @throws InsufficientStorage
 	 * @return bool
 	 */
-	public function checkQuota($path, $length = null) {
+	public function checkQuota($path, $length = null, $extraSpace = 0) {
 		if ($length === null) {
 			$length = $this->getLength();
 		}
@@ -173,7 +213,7 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 				$path = \rtrim($parentPath, '/') . '/' . $info['name'];
 			}
 			$freeSpace = $this->getFreeSpace($path);
-			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && $length > $freeSpace) {
+			if ($freeSpace !== FileInfo::SPACE_UNKNOWN && $freeSpace !== FileInfo::SPACE_UNLIMITED && $length > $freeSpace + $extraSpace) {
 				if (isset($chunkHandler)) {
 					$chunkHandler->cleanup();
 				}

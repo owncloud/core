@@ -142,14 +142,22 @@ class Quota extends Wrapper {
 	public function fopen($path, $mode) {
 		$source = $this->storage->fopen($path, $mode);
 
-		// don't apply quota for part files
-		if (!$this->isPartFile($path)) {
-			$free = $this->free_space('');
-			if ($source && $free >= 0 && $mode !== 'r' && $mode !== 'rb') {
-				// only apply quota for files, not metadata, trash or others
-				if (\strpos(\ltrim($path, '/'), 'files/') === 0) {
-					return \OC\Files\Stream\Quota::wrap($source, $free);
-				}
+		// if it's a .part file, check if we're trying to overwrite a file
+		$used = \OCP\Files\FileInfo::SPACE_NOT_COMPUTED;
+		if ($this->isPartFile($path)) {
+			$used = $this->getSize($this->stripPartialFileExtension($path));
+		}
+
+		$free = $this->free_space('');
+		if ($used >= 0) {
+			// if we're overwriting a file, add the size of that file to the available space
+			// so it's possible to overwrite in case the quota is limited
+			$free += $used;
+		}
+		if ($source && $free >= 0 && $mode !== 'r' && $mode !== 'rb') {
+			// only apply quota for files, not metadata, trash or others
+			if (\strpos(\ltrim($path, '/'), 'files/') === 0) {
+				return \OC\Files\Stream\Quota::wrap($source, $free);
 			}
 		}
 		return $source;
@@ -166,6 +174,25 @@ class Quota extends Wrapper {
 		$extension = \pathinfo($path, PATHINFO_EXTENSION);
 
 		return ($extension === 'part');
+	}
+
+	private function stripPartialFileExtension($path) {
+		$extension = \pathinfo($path, PATHINFO_EXTENSION);
+
+		if ($extension === 'part') {
+			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
+			$fPath = \substr($path, 0, $newLength);
+
+			// if path also contains a transaction id, we remove it too
+			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
+			if (\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
+				$newLength = \strlen($fPath) - \strlen($extension) -1;
+				$fPath = \substr($fPath, 0, $newLength);
+			}
+			return $fPath;
+		} else {
+			return $path;
+		}
 	}
 
 	/**
