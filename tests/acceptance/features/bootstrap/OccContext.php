@@ -319,9 +319,14 @@ class OccContext implements Context {
 			$mount,
 			$this->featureContext->getStepLineRef()
 		);
-		$storageId = (int)$result['storageId'];
+		$storageId = $result['storageId'];
+		if (!is_numeric($storageId)) {
+			throw new Exception(
+				__METHOD__ . " storageId '$storageId' is not numeric"
+			);
+		}
 		$this->featureContext->setResultOfOccCommand($result);
-		$this->featureContext->addStorageId($mount, $storageId);
+		$this->featureContext->addStorageId($mount, (int) $storageId);
 	}
 
 	/**
