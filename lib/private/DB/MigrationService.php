@@ -100,6 +100,8 @@ class MigrationService {
 			}
 		}
 
+		$this->toSchema = $this->connection->createSchema();
+
 		// load the app so that app code can be used during migrations
 		\OC_App::loadApp($this->appName, false);
 	}
@@ -406,6 +408,7 @@ class MigrationService {
 	 */
 	public function executeStep($version) {
 		$this->logger->debug("Migrations: starting $version from app {$this->appName}", ['app' => 'core']);
+
 		$instance = $this->createInstance($version);
 		if ($instance instanceof ISimpleMigration) {
 			$instance->run($this->output);
@@ -419,9 +422,8 @@ class MigrationService {
 			}
 		}
 		if ($instance instanceof ISchemaMigration) {
-			$toSchema = $this->connection->createSchema();
-			$instance->changeSchema($toSchema, ['tablePrefix' => $this->connection->getPrefix()]);
-			$this->connection->migrateToSchema($toSchema);
+			$instance->changeSchema($this->toSchema, ['tablePrefix' => $this->connection->getPrefix()]);
+			$this->connection->migrateToSchema($this->toSchema);
 		}
 		$this->markAsExecuted($version);
 		$this->logger->debug("Migrations: completed $version from app {$this->appName}", ['app' => 'core']);
