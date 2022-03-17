@@ -51,7 +51,7 @@ Feature: Comments
       | objectType       | files            |
       | isUnread         | false            |
       | actorDisplayName | %displayname%    |
-      | message          | My first comment |
+      | message          | My wrong comment |
 
   Scenario: Getting more info about comments using PROPFIND method
     Given user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToComment.txt"
