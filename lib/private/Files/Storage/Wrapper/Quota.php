@@ -26,6 +26,7 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\Cache\ICacheEntry;
+use OC\Files\Filesystem;
 
 class Quota extends Wrapper {
 
@@ -39,6 +40,9 @@ class Quota extends Wrapper {
 	 */
 	protected $sizeRoot;
 
+	/** @var string $mountPoint */
+	protected $mountPoint;
+
 	/**
 	 * @param array $parameters
 	 */
@@ -46,6 +50,7 @@ class Quota extends Wrapper {
 		parent::__construct($parameters);
 		$this->quota = $parameters['quota'];
 		$this->sizeRoot = isset($parameters['root']) ? $parameters['root'] : '';
+		$this->mountPoint = $parameters['mountPoint'] ?? '';
 	}
 
 	/**
@@ -142,13 +147,23 @@ class Quota extends Wrapper {
 	public function fopen($path, $mode) {
 		$source = $this->storage->fopen($path, $mode);
 
-		// if it's a .part file, check if we're trying to overwrite a file
 		$used = \OCP\Files\FileInfo::SPACE_NOT_COMPUTED;
+		$free = $this->free_space('');
+		// if it's a .part file, check if we're trying to overwrite a file
 		if ($this->isPartFile($path)) {
 			$used = $this->getSize($this->stripPartialFileExtension($path));
+
+			$view = new \OC\Files\View();
+			$fullPath = Filesystem::normalizePath("{$this->mountPoint}/{$path}", true, true, true);
+			$fullPath = $this->stripPartialFileExtension($fullPath);
+
+			$fInfo = $view->getFileInfo($fullPath);
+			if ($fInfo && $fInfo->isShared()) {
+				$free = $view->free_space($fullPath);
+				$used = $fInfo->getSize();
+			}
 		}
 
-		$free = $this->free_space('');
 		if ($used >= 0) {
 			// if we're overwriting a file, add the size of that file to the available space
 			// so it's possible to overwrite in case the quota is limited
