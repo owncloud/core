@@ -227,7 +227,12 @@ class OC_Util {
 					$user = $storage->getUser()->getUID();
 					$quota = OC_Util::getUserQuota($user);
 					if ($quota !== \OCP\Files\FileInfo::SPACE_UNLIMITED) {
-						return new \OC\Files\Storage\Wrapper\Quota(['storage' => $storage, 'quota' => $quota, 'root' => 'files']);
+						return new \OC\Files\Storage\Wrapper\Quota([
+							'mountPoint' => $mountPoint,
+							'storage' => $storage,
+							'quota' => $quota,
+							'root' => 'files'
+						]);
 					}
 				}
 			}
