@@ -220,17 +220,7 @@ class File extends Node implements IFile, IFileNode {
 			}
 
 			if ($result === false) {
-				$expected = -1;
-				if (isset($_SERVER['CONTENT_LENGTH'])) {
-					$expected = $_SERVER['CONTENT_LENGTH'];
-				} elseif (\is_resource($data)) {
-					$stat = \fstat($data);
-					if ($stat !== false) {
-						$expected = $stat['size'];
-					}
-				} elseif (\is_string($data)) {
-					$expected = \strlen($data);
-				}
+				$expected = $this->getExpectedContentLength($data);
 				throw new Exception('Error while copying file to target location (copied bytes: ' . $count . ', expected filesize: ' . $expected . ' )');
 			}
 
@@ -326,6 +316,26 @@ class File extends Node implements IFile, IFileNode {
 			\OC::$server->getEventDispatcher()->dispatch('file.afterupdate', $afterEvent);
 		}
 		return '"' . $this->info->getEtag() . '"';
+	}
+
+	/**
+	 * Figure out the content length for the data. The data could be a resource or a string.
+	 * The $_SERVER['CONTENT_LENGTH'] variable will be prioritized over anything if it's set
+	 * Return -1 if we can't figure out the content length
+	 */
+	private function getExpectedContentLength($data) {
+		$expected = -1;
+		if (isset($_SERVER['CONTENT_LENGTH'])) {
+			$expected = $_SERVER['CONTENT_LENGTH'];
+		} elseif (\is_resource($data)) {
+			$stat = \fstat($data);
+			if ($stat !== false) {
+				$expected = $stat['size'];
+			}
+		} elseif (\is_string($data)) {
+			$expected = \strlen($data);
+		}
+		return $expected;
 	}
 
 	private function getPartFileBasePath($path) {
