@@ -131,7 +131,7 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 
 	public function handleBeforeCopy(RequestInterface $request) {
 		if ($request->getMethod() !== 'COPY') {
-			return;
+			return true;
 		}
 
 		$requestedPath = $request->getPath();
