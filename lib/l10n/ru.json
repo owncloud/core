@@ -62,6 +62,7 @@
     "Please contact your administrator or %s for a new license key." : "Пожалуйста, свяжитесь с вашим администратором, или %s, чтобы получить новый лицензионный ключ.",
     "Your Enterprise license key has expired." : "Ваш лицензионный ключ для Enterprise устарел.",
     "Enterprise features have been disabled." : "Возможности Enterprise были отключены.",
+    "Evaluation - expires today." : "Пробный период — истекает сегодня.",
     "Evaluation - expires in %d days." : "Пробный период истекает через %d дней.",
     "Your Enterprise license key is about to expire (days remaining: %d)." : "Ваш лицензионный ключ для Enterprise скоро устареет (осталось дней: %d).",
     "The registered enterprise license key expires in %d days" : "Зарегистрированный лицензионный ключ для Enterprise устареет через %d days",

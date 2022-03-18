@@ -92,6 +92,8 @@ OC.L10N.register(
     "Public link expired" : "Срок действия публичной ссылки закончился",
     "Public link of %2$s expired" : "Срок действия публичной ссылки к %2$s закончился",
     "Shared by %2$s" : "Поделился %2$s",
+    "Received federated share from %1$s" : "Получен федеративный общий доступ от %1$s",
+    "Received federated share from %s" : "Получен федеративный общий ресурс от %s",
     "Shares" : "События обмена файлами",
     "File sharing" : "Совместный доступ к файлам",
     "Public link" : "Общедоступная ссылка",
