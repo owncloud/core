@@ -42,6 +42,7 @@ use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage;
 use OCP\ILogger;
 use OCP\Files\Cache\ICacheEntry;
+use OC_Util;
 
 class Encryption extends Wrapper {
 	use LocalTempFileTrait;
@@ -384,7 +385,7 @@ class Encryption extends Wrapper {
 
 		if ($this->util->isExcluded($fullPath) === false) {
 			$size = $unencryptedSize = 0;
-			$realFile = $this->util->stripPartialFileExtension($path);
+			$realFile = OC_Util::stripPartialFileExtension($path);
 			$targetExists = $this->file_exists($realFile) || $this->file_exists($path);
 			$targetIsEncrypted = false;
 			if ($targetExists) {
@@ -942,7 +943,7 @@ class Encryption extends Wrapper {
 	protected function getHeaderSize($path) {
 		$headerSize = 0;
 		if (!\is_resource($path)) {
-			$realFile = $this->util->stripPartialFileExtension($path);
+			$realFile = OC_Util::stripPartialFileExtension($path);
 			if ($this->storage->file_exists($realFile)) {
 				$path = $realFile;
 			}
@@ -994,7 +995,7 @@ class Encryption extends Wrapper {
 		if (\is_resource($path)) {
 			$exists = false;
 		} else {
-			$realFile = $this->util->stripPartialFileExtension($path);
+			$realFile = OC_Util::stripPartialFileExtension($path);
 			$exists = $this->storage->file_exists($realFile);
 			if ($exists) {
 				$path = $realFile;

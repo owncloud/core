@@ -596,8 +596,6 @@ class EncryptionTest extends Storage {
 				->with($path)->willReturn('');
 		}
 
-		$util->expects($this->once())->method('stripPartialFileExtension')
-			->with($path)->willReturn($strippedPath);
 		$sourceStorage->expects($this->once())
 			->method('file_exists')
 			->with($strippedPath)

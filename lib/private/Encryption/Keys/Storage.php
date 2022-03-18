@@ -30,6 +30,7 @@ use OC\Files\View;
 use OCP\Encryption\Keys\IStorage;
 use OCP\IUserSession;
 use OC\User\NoUserException;
+use OC_Util;
 
 class Storage implements IStorage {
 
@@ -89,7 +90,7 @@ class Storage implements IStorage {
 	 * @inheritdoc
 	 */
 	public function getFileKey($path, $keyId, $encryptionModuleId) {
-		$realFile = $this->util->stripPartialFileExtension($path);
+		$realFile = OC_Util::stripPartialFileExtension($path);
 		$keyDir = $this->getFileKeyDir($encryptionModuleId, $realFile);
 		$key = $this->getKey($keyDir . $keyId);
 

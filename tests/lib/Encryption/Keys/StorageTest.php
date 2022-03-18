@@ -91,9 +91,6 @@ class StorageTest extends TestCase {
 			->method('getUidAndFilename')
 			->willReturn(['user1', '/files/foo.txt']);
 		$this->util->expects($this->any())
-			->method('stripPartialFileExtension')
-			->willReturnArgument(0);
-		$this->util->expects($this->any())
 			->method('isSystemWideMountPoint')
 			->willReturn(false);
 		$this->view->expects($this->once())
@@ -132,11 +129,6 @@ class StorageTest extends TestCase {
 				['user1/files/foo.txt', ['user1', '/files/foo.txt']],
 				['user1/files/foo.txt.ocTransferId2111130212.part', ['user1', '/files/foo.txt.ocTransferId2111130212.part']],
 			]);
-		// we need to strip away the part file extension in order to reuse a
-		// existing key if it exists, otherwise versions will break
-		$this->util->expects($this->once())
-			->method('stripPartialFileExtension')
-			->willReturn('user1' . $strippedPartialName);
 		$this->util->expects($this->any())
 			->method('isSystemWideMountPoint')
 			->willReturn(false);
@@ -183,9 +175,6 @@ class StorageTest extends TestCase {
 		$this->util->expects($this->any())
 			->method('isSystemWideMountPoint')
 			->willReturn(true);
-		$this->util->expects($this->any())
-			->method('stripPartialFileExtension')
-			->willReturnArgument(0);
 		$this->view->expects($this->once())
 			->method('file_put_contents')
 			->with(
@@ -203,9 +192,6 @@ class StorageTest extends TestCase {
 		$this->util->expects($this->any())
 			->method('getUidAndFilename')
 			->willReturn(['user1', '/files/foo.txt']);
-		$this->util->expects($this->any())
-			->method('stripPartialFileExtension')
-			->willReturnArgument(0);
 		$this->util->expects($this->any())
 			->method('isSystemWideMountPoint')
 			->willReturn(true);
@@ -384,9 +370,6 @@ class StorageTest extends TestCase {
 			->method('getUidAndFilename')
 			->willReturn(['user1', '/files/foo.txt']);
 		$this->util->expects($this->any())
-			->method('stripPartialFileExtension')
-			->willReturnArgument(0);
-		$this->util->expects($this->any())
 			->method('isSystemWideMountPoint')
 			->willReturn(true);
 		$this->view->expects($this->once())
@@ -407,9 +390,6 @@ class StorageTest extends TestCase {
 		$this->util->expects($this->any())
 			->method('getUidAndFilename')
 			->willReturn(['user1', '/files/foo.txt']);
-		$this->util->expects($this->any())
-			->method('stripPartialFileExtension')
-			->willReturnArgument(0);
 		$this->util->expects($this->any())
 			->method('isSystemWideMountPoint')
 			->willReturn(false);

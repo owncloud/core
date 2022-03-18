@@ -1460,6 +1460,32 @@ class OC_Util {
 	}
 
 	/**
+	 * Remove the ".part" extension from the path. The "ocTransferId" part added for the uploads
+	 * can also be removed.
+	 * @params string $path the path to be cleaned up
+	 * @params bool $stripTransferId whether the method should also remove the "ocTransferId" if it exists
+	 * @return string the cleaned path
+	 */
+	public static function stripPartialFileExtension(string $path, bool $stripTransferId = true): string {
+		$extension = \pathinfo($path, PATHINFO_EXTENSION);
+
+		if ($extension === 'part') {
+			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
+			$fPath = \substr($path, 0, $newLength);
+
+			// if path also contains a transaction id, we remove it too
+			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
+			if ($stripTransferId && \substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
+				$newLength = \strlen($fPath) - \strlen($extension) -1;
+				$fPath = \substr($fPath, 0, $newLength);
+			}
+			return $fPath;
+		} else {
+			return $path;
+		}
+	}
+
+	/**
 	 * A human readable string is generated based on version, channel and build number
 	 *
 	 * @return string

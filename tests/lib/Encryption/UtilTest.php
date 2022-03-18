@@ -168,26 +168,4 @@ class UtilTest extends TestCase {
 			['/user/test.txt', false],
 		];
 	}
-
-	/**
-	 * @dataProvider dataTestStripPartialFileExtension
-	 *
-	 * @param string $path
-	 * @param string $expected
-	 */
-	public function testStripPartialFileExtension($path, $expected) {
-		$this->assertSame(
-			$expected,
-			$this->util->stripPartialFileExtension($path)
-		);
-	}
-
-	public function dataTestStripPartialFileExtension() {
-		return [
-			['/foo/test.txt', '/foo/test.txt'],
-			['/foo/test.txt.part', '/foo/test.txt'],
-			['/foo/test.txt.ocTransferId7567846853.part', '/foo/test.txt'],
-			['/foo/test.txt.ocTransferId7567.part', '/foo/test.txt'],
-		];
-	}
 }
