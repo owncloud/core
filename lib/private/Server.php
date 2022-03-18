@@ -811,8 +811,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getConfig(),
 				$c->getCrypto(),
 				$c->getSecureRandom(),
-				$request,
-				$c->getTimeFactory()
+				$request
 			);
 		});
 		$this->registerService('CsrfTokenManager', function (Server $c) {
