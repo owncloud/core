@@ -27,6 +27,7 @@ namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\Cache\ICacheEntry;
 use OC\Files\Filesystem;
+use OC_Util;
 
 class Quota extends Wrapper {
 
@@ -151,11 +152,11 @@ class Quota extends Wrapper {
 		$free = $this->free_space('');
 		// if it's a .part file, check if we're trying to overwrite a file
 		if ($this->isPartFile($path)) {
-			$used = $this->getSize($this->stripPartialFileExtension($path));
+			$strippedPath = OC_Util::stripPartialFileExtension($path);
+			$used = $this->getSize($strippedPath);
 
 			$view = new \OC\Files\View();
-			$fullPath = Filesystem::normalizePath("{$this->mountPoint}/{$path}", true, true, true);
-			$fullPath = $this->stripPartialFileExtension($fullPath);
+			$fullPath = Filesystem::normalizePath("{$this->mountPoint}/{$strippedPath}", true, true, true);
 
 			$fInfo = $view->getFileInfo($fullPath);
 			if ($fInfo && $fInfo->isShared()) {
@@ -189,25 +190,6 @@ class Quota extends Wrapper {
 		$extension = \pathinfo($path, PATHINFO_EXTENSION);
 
 		return ($extension === 'part');
-	}
-
-	private function stripPartialFileExtension($path) {
-		$extension = \pathinfo($path, PATHINFO_EXTENSION);
-
-		if ($extension === 'part') {
-			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
-			$fPath = \substr($path, 0, $newLength);
-
-			// if path also contains a transaction id, we remove it too
-			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
-			if (\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
-				$newLength = \strlen($fPath) - \strlen($extension) -1;
-				$fPath = \substr($fPath, 0, $newLength);
-			}
-			return $fPath;
-		} else {
-			return $path;
-		}
 	}
 
 	/**
