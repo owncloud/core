@@ -16,6 +16,7 @@ OC.L10N.register(
     "%s password reset" : "%s återställ lösenord",
     "Couldn't send reset email. Please contact your administrator." : "Kunde inte skicka återställningsmail. Vänligen kontakta din administratör.",
     "Download / View" : "Ladda ner / Granska",
+    "Download / View / Upload" : "Ladda ner / Granska / Ladda upp",
     "Upload only" : "Ladda bara upp",
     "Preparing update" : "Förbereder uppdatering",
     "[%d / %d]: %s" : "[%d / %d]: %s",
