@@ -258,10 +258,11 @@ Feature: using files external service with storage as webdav_owncloud
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
-    And user "Alice" has created folder "testFolder"
-    When user "Alice" moves folder "testFolder" to "TestMountPoint/testFolder" using the WebDAV API
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "testFolder"
+    When user "Brian" moves folder "testFolder" to "TestMountPoint/testFolder" using the WebDAV API
     Then the HTTP status code should be "201"
-    And as "Alice" folder "TestMountPoint/testFolder" should exist
+    And as "Brian" folder "TestMountPoint/testFolder" should exist
     And using server "REMOTE"
     And as "Alice" folder "TestMnt/testFolder" should exist
 
@@ -276,10 +277,11 @@ Feature: using files external service with storage as webdav_owncloud
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
-    And user "Alice" has uploaded file with content "Test content for moving file." to "test.txt"
-    When user "Alice" moves file "/test.txt" to "TestMountPoint/test.txt" using the WebDAV API
+    And user "Brian" has been created with default attributes and without skeleton files
+    And user "Brian" has uploaded file with content "Test content for moving file." to "test.txt"
+    When user "Brian" moves file "/test.txt" to "TestMountPoint/test.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And as "Alice" file "TestMountPoint/test.txt" should exist
+    And as "Brian" file "TestMountPoint/test.txt" should exist
     And using server "REMOTE"
     And as "Alice" file "TestMnt/test.txt" should exist
     And the content of file "TestMnt/test.txt" for user "Alice" should be "Test content for moving file."
@@ -295,12 +297,13 @@ Feature: using files external service with storage as webdav_owncloud
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
+    And user "Brian" has been created with default attributes and without skeleton files
     And using server "REMOTE"
     And user "Alice" has created folder "TestMnt/testFolder"
     And using server "LOCAL"
-    When user "Alice" moves folder "TestMountPoint/testFolder" to "/testFolder" using the WebDAV API
+    When user "Brian" moves folder "TestMountPoint/testFolder" to "/testFolder" using the WebDAV API
     Then the HTTP status code should be "201"
-    And as "Alice" folder "testFolder" should exist
+    And as "Brian" folder "testFolder" should exist
 
 
   Scenario: user moves a file out of external storage to their own storage
@@ -313,13 +316,14 @@ Feature: using files external service with storage as webdav_owncloud
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
+    And user "Brian" has been created with default attributes and without skeleton files
     And using server "REMOTE"
     And user "Alice" has uploaded file with content "Test content for moving file." to "TestMnt/test.txt"
     And using server "LOCAL"
-    When user "Alice" moves file "TestMountPoint/test.txt" to "/test.txt" using the WebDAV API
+    When user "Brian" moves file "TestMountPoint/test.txt" to "/test.txt" using the WebDAV API
     Then the HTTP status code should be "201"
-    And as "Alice" file "/test.txt" should exist
-    And the content of file "/test.txt" for user "Alice" should be "Test content for moving file."
+    And as "Brian" file "/test.txt" should exist
+    And the content of file "/test.txt" for user "Brian" should be "Test content for moving file."
 
   @issue-39550
   Scenario: user tries to move a folder that they have shared to someone, to external storage
@@ -332,18 +336,19 @@ Feature: using files external service with storage as webdav_owncloud
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
-    And user "Alice" has created folder "testFolder"
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has shared folder "/testFolder" with user "Brian"
-    When user "Alice" moves folder "testFolder" to "TestMountPoint/testFolder" using the WebDAV API
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Brian" has created folder "testFolder"
+    And user "Brian" has shared folder "/testFolder" with user "Carol"
+    When user "Brian" moves folder "testFolder" to "TestMountPoint/testFolder" using the WebDAV API
     # Remove the following lines after the issue has been fixed
     Then the HTTP status code should be "500"
-    And the HTTP response message should be "You are not allowed to share /Alice/files/TestMountPoint/testFolder"
+    And the HTTP response message should be "You are not allowed to share /Brian/files/TestMountPoint/testFolder"
     # Uncomment the following lines after the issue has been fixed
     # Then the HTTP status code should be "403"
     # And the HTTP response message should be "It is not allowed to move one mount point into another one"
-    # Folder should not be move but here the folder is moved to mount storage
-    But as "Alice" folder "TestMountPoint/testFolder" should exist
+    # Folder should not be moved but here the folder is moved to mount storage
+    But as "Brian" folder "TestMountPoint/testFolder" should exist
 
   @issue-39550
   Scenario: user tries to move a file that they have shared to someone, to external storage
@@ -356,18 +361,19 @@ Feature: using files external service with storage as webdav_owncloud
       | storage_backend        | owncloud           |
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
-    And user "Alice" has uploaded file with content "Test content for moving file." to "test.txt"
     And user "Brian" has been created with default attributes and without skeleton files
-    And user "Alice" has shared file "test.txt" with user "Brian"
-    When user "Alice" moves file "/test.txt" to "TestMountPoint/test.txt" using the WebDAV API
+    And user "Carol" has been created with default attributes and without skeleton files
+    And user "Brian" has uploaded file with content "Test content for moving file." to "test.txt"
+    And user "Brian" has shared file "test.txt" with user "Carol"
+    When user "Brian" moves file "/test.txt" to "TestMountPoint/test.txt" using the WebDAV API
     # Remove the following lines after the issue has been fixed
     Then the HTTP status code should be "500"
-    And the HTTP response message should be "You are not allowed to share /Alice/files/TestMountPoint/test.txt"
+    And the HTTP response message should be "You are not allowed to share /Brian/files/TestMountPoint/test.txt"
     # Uncomment the following lines after the issue has been fixed
     # Then the HTTP status code should be "403"
     # And the HTTP response message should be "It is not allowed to move one mount point into another one"
-    # File should not be move but here the file is moved to mount storage
-    But as "Alice" file "TestMountPoint/test.txt" should exist
+    # File should not be moved but here the file is moved to mount storage
+    But as "Brian" file "TestMountPoint/test.txt" should exist
 
   @issue-39550
   Scenario: share receiver tries to move a folder that they have received from someone, to external storage
@@ -381,12 +387,15 @@ Feature: using files external service with storage as webdav_owncloud
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
     And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has created folder "testFolder"
-    And user "Brian" has shared folder "/testFolder" with user "Alice"
-    When user "Alice" moves folder "/testFolder" to "TestMountPoint/testFolder" using the WebDAV API
-    Then the HTTP status code should be "403"
+    And user "Brian" has shared folder "/testFolder" with user "Carol"
+    When user "Brian" moves folder "/testFolder" to "TestMountPoint/testFolder" using the WebDAV API
+    Then the HTTP status code should be "500"
+    # Uncomment the following line after the issue has been fixed
+    # Then the HTTP status code should be "403"
     # Remove the following line after the issue has been fixed
-    And the HTTP response message should be "There was an error while renaming the file or directory"
+    And the HTTP response message should be "You are not allowed to share /Brian/files/TestMountPoint/testFolder"
     # Uncomment the following line after the issue has been fixed
     # And the HTTP response message should be "It is not allowed to move one mount point into another one"
 
@@ -402,11 +411,14 @@ Feature: using files external service with storage as webdav_owncloud
       | mount_point            | TestMountPoint     |
       | authentication_backend | password::password |
     And user "Brian" has been created with default attributes and without skeleton files
+    And user "Carol" has been created with default attributes and without skeleton files
     And user "Brian" has uploaded file with content "Test content for moving file." to "test.txt"
-    And user "Brian" has shared file "test.txt" with user "Alice"
-    When user "Alice" moves file "/test.txt" to "TestMountPoint/test.txt" using the WebDAV API
-    Then the HTTP status code should be "403"
+    And user "Brian" has shared file "test.txt" with user "Carol"
+    When user "Brian" moves file "/test.txt" to "TestMountPoint/test.txt" using the WebDAV API
+    Then the HTTP status code should be "500"
+    # Uncomment the following line after the issue has been fixed
+    # Then the HTTP status code should be "403"
     # Remove the following line after the issue has been fixed
-    And the HTTP response message should be "There was an error while renaming the file or directory"
+    And the HTTP response message should be "You are not allowed to share /Brian/files/TestMountPoint/test.txt"
     # Uncomment the following line after the issue has been fixed
     # And the HTTP response message should be "It is not allowed to move one mount point into another one"
