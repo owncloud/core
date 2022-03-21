@@ -36,6 +36,7 @@
 namespace OC\Files\Cache;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
+use OC\Cache\CappedMemoryCache;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\IScanner;
@@ -82,9 +83,25 @@ class Cache implements ICache {
 	protected $connection;
 
 	/**
+	 * we use a static cache for the path lookup by id because to filecache already knows about all storages
+	 * and a single trip to the db is sufficient to answer subsequent calls.
+	 * Each entry will contain a storage and a path, such as:
+	 *
+	 * $path_cache = [
+	 *   <fileid1> => ['storage' => 7, 'path' => '/path/to/file'],
+	 *   <fileid2> => ['storage' => 4, 'path' => '/another/path/to/file'],
+	 * ]
+	 */
+	private static $path_cache = null;
+
+	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
 	 */
 	public function __construct($storage) {
+		if (self::$path_cache === null) {
+			self::$path_cache = new CappedMemoryCache();
+		}
+
 		if ($storage instanceof \OC\Files\Storage\Storage) {
 			$this->storageId = $storage->getId();
 		} else {
@@ -534,7 +551,7 @@ class Cache implements ICache {
 	 * @throws \OC\DatabaseException
 	 */
 	private function removeChildren($entry) {
-		self::$path_cache = [];
+		self::$path_cache->clear();
 		$subFolders = $this->getSubFolders($entry);
 		foreach ($subFolders as $folder) {
 			$this->removeChildren($folder);
@@ -573,7 +590,7 @@ class Cache implements ICache {
 	 * @throws \Exception if the given storages have an invalid id
 	 */
 	public function moveFromCache(ICache $sourceCache, $sourcePath, $targetPath) {
-		self::$path_cache = [];
+		self::$path_cache->clear();
 		if ($sourceCache instanceof Cache) {
 			// normalize source and target
 			$sourcePath = $this->normalize($sourcePath);
@@ -676,7 +693,7 @@ class Cache implements ICache {
 	 * remove all entries for files that are stored on the storage from the cache
 	 */
 	public function clear() {
-		self::$path_cache = [];
+		self::$path_cache->clear();
 		Storage::remove($this->storageId);
 	}
 
@@ -928,13 +945,6 @@ class Cache implements ICache {
 	}
 
 	/**
-	 * we use a static cache for the path lookup by id because to filecache already knows about all storages
-	 * and a single trip to the db is sufficient to answer subsequent calls.
-	 *  @var CE[] $path_cache
-	 */
-	private static $path_cache = [];
-
-	/**
 	 * get the path of a file on this storage by it's file id
 	 *
 	 * @param int $id the file id of the file or folder to search
@@ -945,22 +955,25 @@ class Cache implements ICache {
 			$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 			$result = $this->connection->executeQuery($sql, [$id]);
 			if ($row = $result->fetch()) {
-				$ce = new CE();
-				$ce->storage = (int)$row['storage'];
+				$entryStorage = (int)$row['storage'];
 				// Oracle stores empty strings as null...
 				if ($row['path'] === null) {
-					$ce->path = '';
+					$entryPath = '';
 				} else {
-					$ce->path = $row['path'];
+					$entryPath = $row['path'];
 				}
-				self::$path_cache[(int)$id] = $ce;
+				$entry = [
+					'storage' => $entryStorage,
+					'path' => $entryPath,
+				];
+				self::$path_cache[(int)$id] = $entry;
 			} else {
 				return null;
 			}
 		}
 		
-		if (self::$path_cache[(int)$id]->storage === (int)$this->getNumericStorageId()) {
-			return self::$path_cache[(int)$id]->path;
+		if (self::$path_cache[(int)$id]['storage'] === (int)$this->getNumericStorageId()) {
+			return self::$path_cache[(int)$id]['path'];
 		}
 		return null;
 	}
@@ -1001,15 +1014,4 @@ class Cache implements ICache {
 	public function normalize($path) {
 		return \trim(\OC_Util::normalizeUnicode($path), '/');
 	}
-}
-
-class CE {
-	/**
-	 * @var int
-	 */
-	public $storage;
-	/**
-	 * @var string
-	 */
-	public $path;
 }
