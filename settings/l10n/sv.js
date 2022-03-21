@@ -87,6 +87,7 @@ OC.L10N.register(
     "So-so password" : "Okej lösenord",
     "Good password" : "Bra lösenord",
     "Strong password" : "Starkt lösenord",
+    "Passwords do not match" : "Lösenorden matchar inte",
     "Groups" : "Grupper",
     "Unable to delete {objName}" : "Kunde inte radera {objName}",
     "Error creating group: {message}" : "Fel uppstod vid skapande av grupp: {message}",
