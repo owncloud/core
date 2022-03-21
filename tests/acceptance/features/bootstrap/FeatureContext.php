@@ -1657,17 +1657,17 @@ class FeatureContext extends BehatVariablesContext {
 	 *
 	 * @Then /^the HTTP response message should be "([^"]*)"$/
 	 *
-	 * @param string $responseMessage
+	 * @param string $expectedMessage
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theHttpResponseMessageShouldBe(string $responseMessage):void {
-		$expectedMessage = $this->responseXml['value'][1]['value'];
+	public function theHttpResponseMessageShouldBe(string $expectedMessage):void {
+		$actualMessage = $this->responseXml['value'][1]['value'];
 		Assert::assertEquals(
-			$responseMessage,
 			$expectedMessage,
-			"Expected $expectedMessage HTTP response message but got $responseMessage"
+			$actualMessage,
+			"Expected $expectedMessage HTTP response message but got $actualMessage"
 		);
 	}
 
