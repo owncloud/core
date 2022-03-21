@@ -295,7 +295,7 @@ Feature: quota
     And the content of file "/testquota.txt" for user "Alice" should be "test"
 
   @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
-  Scenario: share receiver with 0 quota should not be able to copy file from shared folder to home folder
+  Scenario: share receiver with 0 quota should not be able to copy file from shared file to home folder
     Given the administrator has set the default folder for received shares to "Shares"
     And auto-accept shares has been disabled
     And user "Brian" has been created with default attributes and without skeleton files
@@ -307,6 +307,42 @@ Feature: quota
     When user "Brian" copies file "/Shares/testquota.txt" to "/testquota.txt" using the WebDAV API
     Then the HTTP status code should be "507"
     And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+
+  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  Scenario: share receiver with 0 quota should not be able to copy file from shared folder to home folder
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Brian" has been created with default attributes and without skeleton files
+    And the quota of user "Brian" has been set to "0 B"
+    And the quota of user "Alice" has been set to "10 MB"
+    And user "Alice" has created folder "shareFolder"
+    And user "Alice" has uploaded file with content "test" to "/shareFolder/testquota.txt"
+    And user "Alice" has shared folder "/shareFolder" with user "Brian"
+    And user "Brian" has accepted share "/shareFolder" offered by user "Alice"
+    When user "Brian" copies file "/Shares/shareFolder/testquota.txt" to "/testquota.txt" using the WebDAV API
+    Then the HTTP status code should be "507"
+    And the DAV exception should be "Sabre\DAV\Exception\InsufficientStorage"
+
+  @skipOnOcV10.7 @skipOnOcV10.8 @skipOnOcV10.9.0 @skipOnOcV10.9.1
+  Scenario: share receiver with 0 quota can copy empty file from shared folder to home folder
+    Given the administrator has set the default folder for received shares to "Shares"
+    And auto-accept shares has been disabled
+    And user "Brian" has been created with default attributes and without skeleton files
+    And the quota of user "Brian" has been set to "0 B"
+    And the quota of user "Alice" has been set to "10 MB"
+    And user "Alice" has created folder "shareFolder"
+    And user "Alice" has uploaded file with content "" to "/shareFolder/testquota.txt"
+    And user "Alice" has shared folder "/shareFolder" with user "Brian"
+    And user "Brian" has accepted share "/shareFolder" offered by user "Alice"
+    When user "Brian" copies file "/Shares/shareFolder/testquota.txt" to "/testquota.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Brian" file "testquota.txt" should exist
+
+  Scenario: User with zero quota can upload an empty file
+    Given the quota of user "Alice" has been set to "0 B"
+    When user "Alice" uploads file with content "" to "testquota.txt" using the WebDAV API
+    Then the HTTP status code should be "201"
+    And as "Alice" file "testquota.txt" should exist
 
   @files_sharing-app-required @skipOnOcV10
   Scenario: share receiver with insufficient quota should not be able to copy received shared file to home folder
