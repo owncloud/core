@@ -32,6 +32,7 @@ Summary
 * Enhancement - Add warnings for commands that are incompatible with object storage: [#39604](https://github.com/owncloud/core/pull/39604)
 * Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
 * Enhancement - Allow files_external app to be disabled: [#39856](https://github.com/owncloud/core/pull/39856)
+* Enhancement - Improve FileDrop view: [#39900](https://github.com/owncloud/core/pull/39900)
 
 Details
 -------
@@ -245,6 +246,16 @@ Details
    app.
 
    https://github.com/owncloud/core/pull/39856
+
+* Enhancement - Improve FileDrop view: [#39900](https://github.com/owncloud/core/pull/39900)
+
+   Small change in the design and behavior of the FileDrop view of Public Links.
+
+   - The font is bigger and thicker - Background color was added to the list of files - The text in the
+   "Dropbox" is wrapped properly, line-height was removed - Don't hide the logo on small
+   resolutions
+
+   https://github.com/owncloud/core/pull/39900
 
 Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
