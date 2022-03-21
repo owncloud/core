@@ -25,11 +25,16 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\File;
+use OCA\DAV\Connector\Sabre\Node;
 use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Upload\FutureFile;
+use Sabre\DAV\Exception\InsufficientStorage;
 use Sabre\DAV\Tree;
+use Sabre\DAV\Server;
+use Sabre\HTTP\RequestInterface;
 use Test\TestCase;
 use OC\Files\View;
+use OCP\Files\FileInfo;
 
 /**
  * Copyright (c) 2013 Thomas Müller <thomas.mueller@tmit.eu>
@@ -349,5 +354,129 @@ class QuotaPluginTest extends TestCase {
 			->with('/test/sub', 12345);
 
 		$server->emit('beforeMove', [$source, $destination]);
+	}
+
+	public function handleBeforeCopyNotCopyMethodProvider() {
+		return [
+			['GET'],
+			['POST'],
+			['PUT'],
+			['DELETE'],
+			['MOVE'],
+			['PROPFIND'],
+		];
+	}
+
+	/**
+	 * @dataProvider handleBeforeCopyNotCopyMethodProvider
+	 */
+	public function testHandleBeforeCopyNotCopyMethod($method) {
+		$view = $this->createMock(View::class);
+		$plugin = new QuotaPlugin($view);
+
+		$server = $this->createMock(Server::class);
+		$server->tree = $this->createMock(Tree::class);
+		$server->httpRequest = $this->createMock(RequestInterface::class);
+		$server->httpRequest->method('getMethod')->willReturn($method);
+
+		$server->httpRequest->expects($this->never())
+			->method('getPath');
+
+		$server->expects($this->never())
+			->method('getCopyAndMoveInfo');
+		$plugin->initialize($server); // it will trigger the handleBeforeCopy method
+	}
+
+	public function handleBeforeCopyProvider() {
+		return [
+			['/files/admin/path/to/text.txt', 4096, '/files/admin/newpath/text.txt', 4096, true, 5120],  // overwrite existing file
+			['/files/admin/path/to/text.txt', 4096, '/files/admin/newpath/text.txt', 4096, false, 5120],  // copy to new location
+			['/files/admin/path/to/text.txt', 12000, '/files/admin/newpath/text.txt', 10240, true, 5120],  // has enough space for the extra size (12000 - 10240)
+			['/files/admin/path/to/text.txt', 40960, '/files/admin/newpath/text.txt', 4096, true, FileInfo::SPACE_UNKNOWN],  // unknown free space
+			['/files/admin/path/to/text.txt', 40960, '/files/admin/newpath/text.txt', 4096, false, FileInfo::SPACE_UNKNOWN],  // unknown free space
+			['/files/admin/path/to/text.txt', 40960, '/files/admin/newpath/text.txt', 4096, true, FileInfo::SPACE_UNLIMITED],  // unlimited free space
+			['/files/admin/path/to/text.txt', 40960, '/files/admin/newpath/text.txt', 4096, false, FileInfo::SPACE_UNLIMITED],  // unlimited free space
+		];
+	}
+
+	/**
+	 * @dataProvider handleBeforeCopyProvider
+	 */
+	public function testHandleBeforeCopy($requestPath, $requestSize, $destinationPath, $destinationSize, $destinationExists, $freeSize) {
+		$view = $this->createMock(View::class);
+		$plugin = new QuotaPlugin($view);
+
+		$server = $this->createMock(Server::class);
+		$server->tree = $this->createMock(Tree::class);
+		$server->httpRequest = $this->createMock(RequestInterface::class);
+		$server->httpRequest->method('getMethod')->willReturn('COPY');
+
+		$server->httpRequest->method('getPath')->willReturn($requestPath);
+
+		$node = $this->createMock(Node::class);
+		$node->method('getSize')->willReturn($requestSize);
+		$server->tree->method('getNodeForPath')
+			->with($requestPath)
+			->willReturn($node);
+
+		$destinationNode = $this->createMock(Node::class);
+		$destinationNode->method('getSize')->willReturn($destinationSize);
+		$server->expects($this->once())
+			->method('getCopyAndMoveInfo')
+			->willReturn([
+				'destination' => $destinationPath,
+				'destinationExists' => $destinationExists,
+				'destinationNode' => $destinationNode,
+			]);
+
+		$view->method('free_space')
+			->with(\ltrim($destinationPath, '/'))
+			->willReturn($freeSize);
+		$this->assertNull($plugin->initialize($server)); // it will trigger the handleBeforeCopy method
+	}
+
+	public function handleBeforeCopyExceptionProvider() {
+		return [
+			['/files/admin/path/to/text.txt', 12000, '/files/admin/newpath/text.txt', 10240, false, 5120],  // copied without enough space
+			['/files/admin/path/to/text.txt', 17000, '/files/admin/newpath/text.txt', 10240, true, 5120],  // overwrite without extra space
+		];
+	}
+
+	/**
+	 * @dataProvider handleBeforeCopyExceptionProvider
+	 */
+	public function testHandleBeforeCopyException($requestPath, $requestSize, $destinationPath, $destinationSize, $destinationExists, $freeSize) {
+		$this->expectException(InsufficientStorage::class);
+
+		$view = $this->createMock(View::class);
+		$plugin = new QuotaPlugin($view);
+
+		$server = $this->createMock(Server::class);
+		$server->tree = $this->createMock(Tree::class);
+		$server->httpRequest = $this->createMock(RequestInterface::class);
+		$server->httpRequest->method('getMethod')->willReturn('COPY');
+
+		$server->httpRequest->method('getPath')->willReturn($requestPath);
+
+		$node = $this->createMock(Node::class);
+		$node->method('getSize')->willReturn($requestSize);
+		$server->tree->method('getNodeForPath')
+			->with($requestPath)
+			->willReturn($node);
+
+		$destinationNode = $this->createMock(Node::class);
+		$destinationNode->method('getSize')->willReturn($destinationSize);
+		$server->expects($this->once())
+			->method('getCopyAndMoveInfo')
+			->willReturn([
+				'destination' => $destinationPath,
+				'destinationExists' => $destinationExists,
+				'destinationNode' => $destinationNode,
+			]);
+
+		$view->method('free_space')
+			->with(\ltrim($destinationPath, '/'))
+			->willReturn($freeSize);
+		$this->assertNull($plugin->initialize($server)); // it will trigger the handleBeforeCopy method
 	}
 }

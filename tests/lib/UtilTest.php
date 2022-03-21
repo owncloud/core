@@ -628,6 +628,30 @@ class UtilTest extends \Test\TestCase {
 	public function testIsSameDomain($url1, $url2, $expectedResult) {
 		$this->assertEquals($expectedResult, \OCP\Util::isSameDomain($url1, $url2));
 	}
+
+	public function stripPartialFileExtensionProvider() {
+		return [
+			['myfile.txt', true, 'myfile.txt'],
+			['myfile.txt', false, 'myfile.txt'],
+			['my.file.tar.gz', true, 'my.file.tar.gz'],
+			['my.file.tar.gz', false, 'my.file.tar.gz'],
+			['myfile.txt.part', true, 'myfile.txt'],
+			['myfile.txt.part', false, 'myfile.txt'],
+			['my.file.tar.gz.part', true, 'my.file.tar.gz'],
+			['my.file.tar.gz.part', false, 'my.file.tar.gz'],
+			['myfile.txt.ocTransferId98398476.part', true, 'myfile.txt'],
+			['myfile.txt.ocTransferId98398476.part', false, 'myfile.txt.ocTransferId98398476'],
+			['my.file.tar.gz.ocTransferId98398476.part', true, 'my.file.tar.gz'],
+			['my.file.tar.gz.ocTransferId98398476.part', false, 'my.file.tar.gz.ocTransferId98398476'],
+		];
+	}
+
+	/**
+	 * @dataProvider stripPartialFileExtensionProvider
+	 */
+	public function testStripPartialFileExtension($path, $stripId, $expectedResult) {
+		$this->assertSame($expectedResult, \OC_Util::stripPartialFileExtension($path, $stripId));
+	}
 }
 
 /**
