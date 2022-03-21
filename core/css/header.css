@@ -46,7 +46,8 @@
 
 /* LOGO and APP NAME -------------------------------------------------------- */
 
-#owncloud {
+#owncloud,
+#owncloud-public {
 	position: absolute;
 	top: 0;
 	left: 50%;
