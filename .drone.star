@@ -289,9 +289,11 @@ config = {
             "suites": [
                 "cliExternalStorage",
             ],
-            "filterTags": "~@local_storage&&~@files_external-app-required",
             "federatedServerNeeded": True,
             "federatedServerVersions": ["git", "latest", "10.8.0"],
+            "extraApps": {
+                "files_external": "",
+            },
         },
         "webUI": {
             "suites": {
