@@ -33,6 +33,7 @@ Summary
 * Enhancement - Add product to version in capabilities response: [#39851](https://github.com/owncloud/core/pull/39851)
 * Enhancement - Allow files_external app to be disabled: [#39856](https://github.com/owncloud/core/pull/39856)
 * Enhancement - Improve FileDrop view: [#39900](https://github.com/owncloud/core/pull/39900)
+* Enhancement - Align "close" for messages: [#39907](https://github.com/owncloud/core/pull/39907)
 
 Details
 -------
@@ -256,6 +257,12 @@ Details
    resolutions
 
    https://github.com/owncloud/core/pull/39900
+
+* Enhancement - Align "close" for messages: [#39907](https://github.com/owncloud/core/pull/39907)
+
+   The close button for messages (yellow banner) was slightly displaced.
+
+   https://github.com/owncloud/core/pull/39907
 
 Changelog for ownCloud Core [10.9.1] (2022-01-12)
 =======================================
