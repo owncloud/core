@@ -232,7 +232,12 @@ class OcisHelper {
 	 * @return bool
 	 */
 	public static function useSsl():bool {
-		return (self::getLdapPort() === 636);
+		$useSsl = \getenv("REVA_LDAP_USESSL");
+		if ($useSsl === false) {
+			return (self::getLdapPort() === 636);
+		} else {
+			return $useSsl === "true";
+		}
 	}
 
 	/**
@@ -243,6 +248,29 @@ class OcisHelper {
 		return $dn ? $dn : "dc=owncloud,dc=com";
 	}
 
+	/**
+	 * @return string
+	 */
+	public static function getGroupsOU():string {
+		$ou = \getenv("REVA_LDAP_GROUPS_OU");
+		return $ou ? $ou : "TestGroups";
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getUsersOU():string {
+		$ou = \getenv("REVA_LDAP_USERS_OU");
+		return $ou ? $ou : "TestUsers";
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getGroupSchema():string {
+		$schema = \getenv("REVA_LDAP_GROUP_SCHEMA");
+		return $schema ? $schema : "rfc2307";
+	}
 	/**
 	 * @return string
 	 */
@@ -257,6 +285,14 @@ class OcisHelper {
 	public static function getBindDN():string {
 		$dn = \getenv("REVA_LDAP_BIND_DN");
 		return $dn ? $dn : "cn=admin,dc=owncloud,dc=com";
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getBindPassword():string {
+		$pw = \getenv("REVA_LDAP_BIND_PASSWORD");
+		return $pw ? $pw : "";
 	}
 
 	/**

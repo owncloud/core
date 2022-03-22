@@ -45,11 +45,6 @@ trait Provisioning {
 	private $createdUsers = [];
 
 	/**
-	 * @var string
-	 */
-	private $ou = "TestGroups";
-
-	/**
 	 * list of users that were created on the remote server during test runs
 	 * key is the lowercase username, value is an array of user attributes
 	 *
@@ -539,10 +534,15 @@ trait Provisioning {
 		$useSsl = false;
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->ldapBaseDN = OcisHelper::getBaseDN();
+			$this->ldapUsersOU = OcisHelper::getGroupsOU();
+			$this->ldapGroupsOU = OcisHelper::getUsersOU();
+			$this->ldapGroupSchema = OcisHelper::getGroupSchema();
 			$this->ldapHost = OcisHelper::getHostname();
 			$this->ldapPort = OcisHelper::getLdapPort();
 			$useSsl = OcisHelper::useSsl();
 			$this->ldapAdminUser = OcisHelper::getBindDN();
+			$this->ldapAdminPassword = OcisHelper::getBindPassword();
+			$this->skipImportLdif = (\getenv("REVA_LDAP_SKIP_LDIF_IMPORT") === "true");
 			if ($useSsl === true) {
 				\putenv('LDAPTLS_REQCERT=never');
 			}
@@ -573,11 +573,13 @@ trait Provisioning {
 			$this->ldapHost = (string)$ldapConfig['ldapHost'];
 			$this->ldapPort = (int)$ldapConfig['ldapPort'];
 			$this->ldapAdminUser = (string)$ldapConfig['ldapAgentName'];
+			$this->ldapGroupSchema = "rfc2307";
+			$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
+			$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
 		}
-		$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
-		$this->ldapUsersOU = (string)$suiteParameters['ldapUsersOU'];
-		$this->ldapGroupsOU = (string)$suiteParameters['ldapGroupsOU'];
-
+		if ($this->ldapAdminPassword === "") {
+			$this->ldapAdminPassword = (string)$suiteParameters['ldapAdminPassword'];
+		}
 		$options = [
 			'host' => $this->ldapHost,
 			'port' => $this->ldapPort,
@@ -598,7 +600,9 @@ trait Provisioning {
 				$ldifFile = $configPath . "/" . \basename($ldifFile);
 			}
 		}
-		$this->importLdifFile($ldifFile);
+		if (!$this->skipImportLdif) {
+			$this->importLdifFile($ldifFile);
+		}
 		$this->theLdapUsersHaveBeenResynced();
 	}
 
@@ -704,21 +708,26 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function createLdapUser(array $setting):void {
-		$ou = "TestUsers";
+		$ou =  $this->ldapUsersOU ;
 		// Some special characters need to be escaped in LDAP DN and attributes
 		// The special characters allowed in a username (UID) are +_.@-
 		// Of these, only + has to be escaped.
 		$userId = \str_replace('+', '\+', $setting["userid"]);
-		$newDN = 'uid=' . $userId . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		$newDN = 'uid=' . $userId . ',ou=' . $ou . ',' . $this->ldapBaseDN;
 
 		//pick a high number as uidnumber to make sure there are no conflicts with existing uidnumbers
 		$uidNumber = \count($this->ldapCreatedUsers) + 30000;
 		$entry = [];
 		$entry['cn'] = $userId;
 		$entry['sn'] = $userId;
+		$entry['uid'] = $setting["userid"];
 		$entry['homeDirectory'] = '/home/openldap/' . $setting["userid"];
 		$entry['objectclass'][] = 'posixAccount';
 		$entry['objectclass'][] = 'inetOrgPerson';
+		$entry['objectclass'][] = 'organizationalPerson';
+		$entry['objectclass'][] = 'person';
+		$entry['objectclass'][] = 'top';
+
 		$entry['userPassword'] = $setting["password"];
 		if (isset($setting["displayName"])) {
 			$entry['displayName'] = $setting["displayName"];
@@ -729,14 +738,12 @@ trait Provisioning {
 		$entry['gidNumber'] = 5000;
 		$entry['uidNumber'] = $uidNumber;
 
-		if (OcisHelper::isTestingParallelDeployment()) {
-			$entry['objectclass'][] = 'organizationalPerson';
+		if (OcisHelper::isTestingOnOcis()) {
 			$entry['objectclass'][] = 'ownCloud';
-			$entry['objectclass'][] = 'person';
-			$entry['objectclass'][] = 'top';
-			$entry['uid'] = $setting["userid"];
-			$entry['ownCloudSelector'] = $this->getOCSelector();
 			$entry['ownCloudUUID'] = $this->generateUUIDv4();
+		}
+		if (OcisHelper::isTestingParallelDeployment()) {
+			$entry['ownCloudSelector'] = $this->getOCSelector();
 		}
 
 		if ($this->federatedServerExists()) {
@@ -759,12 +766,22 @@ trait Provisioning {
 	 */
 	public function createLdapGroup(string $group):void {
 		$baseDN = $this->getLdapBaseDN();
-		$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
+		$newDN = 'cn=' . $group . ',ou=' . $this->ldapGroupsOU . ',' . $baseDN;
 		$entry = [];
 		$entry['cn'] = $group;
-		$entry['objectclass'][] = 'posixGroup';
 		$entry['objectclass'][] = 'top';
-		$entry['gidNumber'] = 5000;
+
+		if ($this->ldapGroupSchema == "rfc2307") {
+			$entry['objectclass'][] = 'posixGroup';
+			$entry['gidNumber'] = 5000;
+		} else {
+			$entry['objectclass'][] = 'groupOfNames';
+			$entry['member'] = "";
+		}
+		if (OcisHelper::isTestingOnOcis()) {
+			$entry['objectclass'][] = 'ownCloud';
+			$entry['ownCloudUUID'] = $this->generateUUIDv4();
+		}
 		$this->ldap->add($newDN, $entry);
 		\array_push($this->ldapCreatedGroups, $group);
 		// For syncing the ldap groups
@@ -836,21 +853,29 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function deleteLdapUsersAndGroups():void {
-		//delete created ldap users
-		$this->ldap->delete(
-			"ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
-			true
-		);
-		//delete all created ldap groups
-		$this->ldap->delete(
-			"ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
-			true
-		);
 		foreach ($this->ldapCreatedUsers as $user) {
+			$this->ldap->delete(
+				"uid=" . ldap_escape($user, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
+			);
 			$this->rememberThatUserIsNotExpectedToExist($user);
 		}
 		foreach ($this->ldapCreatedGroups as $group) {
+			$this->ldap->delete(
+				"cn=" . ldap_escape($group, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
+			);
 			$this->rememberThatGroupIsNotExpectedToExist($group);
+		}
+		if (!$this->skipImportLdif) {
+			//delete ou from LDIF import
+			$this->ldap->delete(
+				"ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
+				true
+			);
+			//delete all created ldap groups
+			$this->ldap->delete(
+				"ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
+				true
+			);
 		}
 		$this->theLdapUsersHaveBeenResynced();
 	}
@@ -3258,7 +3283,7 @@ trait Provisioning {
 	 */
 	public function getUsersOfLdapGroup(string $group):array {
 		$ou = $this->getLdapGroupsOU();
-		$entry = 'cn=' . $group . ',ou=' . $ou . ',' . 'dc=owncloud,dc=com';
+		$entry = 'cn=' . $group . ',ou=' . $ou . ',' . $this->ldapBaseDN;
 		$ldapResponse = $this->ldap->getEntry($entry);
 		return $ldapResponse["memberuid"];
 	}
@@ -3834,10 +3859,20 @@ trait Provisioning {
 		if ($ou === null) {
 			$ou = $this->getLdapGroupsOU();
 		}
+		$memberAttr = "";
+		$memberValue = "";
+		if ($this->ldapGroupSchema == "rfc2307") {
+			$memberAttr = "memberUID";
+			$memberValue = "$user";
+		} else {
+			$memberAttr = "member";
+			$userbase = "ou=" . $this->getLdapUsersOU() . "," . $this->ldapBaseDN;
+			$memberValue = "uid=$user" . "," . "$userbase";
+		}
 		$this->setTheLdapAttributeOfTheEntryTo(
-			"memberUid",
+			$memberAttr,
 			"cn=$group,ou=$ou",
-			$user,
+			$memberValue,
 			true
 		);
 	}
@@ -3868,9 +3903,19 @@ trait Provisioning {
 		if ($ou === null) {
 			$ou = $this->getLdapGroupsOU();
 		}
+		$memberAttr = "";
+		$memberValue = "";
+		if ($this->ldapGroupSchema == "rfc2307") {
+			$memberAttr = "memberUID";
+			$memberValue = "$user";
+		} else {
+			$memberAttr = "member";
+			$userbase = "ou=" . $this->getLdapUsersOU() . "," . $this->ldapBaseDN;
+			$memberValue = "uid=$user" . "," . "$userbase";
+		}
 		$this->deleteValueFromLdapAttribute(
-			$user,
-			"memberUid",
+			$memberValue,
+			$memberAttr,
 			"cn=$group,ou=$ou"
 		);
 		$this->theLdapUsersHaveBeenReSynced();
@@ -4221,7 +4266,7 @@ trait Provisioning {
 	public function groupExists(string $group):bool {
 		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcisOrReva()) {
 			$baseDN = $this->getLdapBaseDN();
-			$newDN = 'cn=' . $group . ',ou=' . $this->ou . ',' . $baseDN;
+			$newDN = 'cn=' . $group . ',ou=' . $this->ldapGroupsOU . ',' . $baseDN;
 			if ($this->ldap->getEntry($newDN) !== null) {
 				return true;
 			}
