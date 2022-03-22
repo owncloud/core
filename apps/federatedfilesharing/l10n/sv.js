@@ -2,12 +2,18 @@ OC.L10N.register(
     "federatedfilesharing",
     {
     "Federated sharing" : "Federated Delning",
+    "Add to" : "Lägg till till",
     "Loading..." : "Laddar ...",
+    "Change server..." : "Byt server...",
     "Invalid Federated Cloud ID" : "Ogiltig Federerad Cloud-ID",
     "Sharing %s failed, because this item is already shared with %s" : "Delning %s misslyckades därför att objektet redan är delat med %s",
     "Not allowed to create a federated share with the same user" : "Ej tillåtet att skapa en federerad delning med samma användare",
     "File is already shared with %s" : "Filen är redan delad med %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Misslyckades dela ut %s, kan inte hitta %s, kanske är servern inte åtkomlig för närvarande.",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" delade \"%3$s\" med dig (på uppdrag av \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" delade \"%3$s\" med dig",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" bjöd in dig att visa \"%3$s\" (på uppdrag av \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" bjöd in dig att visa \"%3$s\"",
     "Accept" : "Acceptera",
     "Decline" : "Neka",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Dela med mig genom min #owncloud Federated Cloud ID, se %s",
@@ -21,6 +27,7 @@ OC.L10N.register(
     "Share it:" : "Dela detta:",
     "Add to your website" : "Lägg till på din hemsida",
     "Share with me via ownCloud" : "Dela med mig via Owncloud",
-    "HTML Code:" : "HTML Kod:"
+    "HTML Code:" : "HTML Kod:",
+    "Nothing to configure." : "Inget att konfigurera."
 },
 "nplurals=2; plural=(n != 1);");

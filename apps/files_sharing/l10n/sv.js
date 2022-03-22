@@ -87,6 +87,10 @@ OC.L10N.register(
     "Could not lock path" : "Kunde inte låsa sökväg",
     "Not a directory" : "Inte en mapp",
     "Can't change permissions for public share links" : "Kan inte ändra rättigheter på publika delningslänkar",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" delade \"%3$s\" med dig (på uppdrag av \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" delade \"%3$s\" med dig",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" bjöd in dig att visa \"%3$s\" (på uppdrag av \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" bjöd in dig att visa \"%3$s\"",
     "Accept" : "Acceptera",
     "Decline" : "Neka",
     "This share is password-protected" : "Den här delningen är lösenordsskyddad",
@@ -106,6 +110,7 @@ OC.L10N.register(
     "%s is publicly shared" : "%s är publikt delad",
     "Download" : "Ladda ner",
     "Download %s" : "Ladda ner %s",
-    "Direct link" : "Direktlänk"
+    "Direct link" : "Direktlänk",
+    "Nothing to configure." : "Inget att konfigurera."
 },
 "nplurals=2; plural=(n != 1);");
