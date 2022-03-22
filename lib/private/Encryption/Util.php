@@ -235,7 +235,11 @@ class Util {
 		// strip the first 2 directories (expected to be "/<user>/files/path/to/files")
 		// so mountPoint is expected to be "/files/path/to..."
 		$mountPoint = \implode('/', \array_slice($parts, 2));
-		$originalPath = "/{$mountPoint}/{$internalPath}";
+		if ($mountPoint !== '') {
+			$originalPath = "/{$mountPoint}/{$internalPath}";
+		} else {
+			$originalPath = "/{$internalPath}";
+		}
 
 		if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
 			// TODO: Improve sharedStorage detection.
