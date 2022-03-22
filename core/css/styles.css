@@ -809,8 +809,8 @@ td.avatar {
 	display: inline-block;
 	vertical-align: middle;
 	position: absolute;
-	right: 0;
-	top: 0;
+	right: -4px;
+	top: 2px;
 }
 #notification .row.closeable {
 	padding-right: 20px;

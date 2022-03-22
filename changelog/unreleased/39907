@@ -1,0 +1,5 @@
+Enhancement: Align "close" for messages
+
+The close button for messages (yellow banner) was slightly displaced.
+
+https://github.com/owncloud/core/pull/39907
