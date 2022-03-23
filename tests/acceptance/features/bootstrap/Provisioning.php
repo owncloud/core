@@ -534,8 +534,8 @@ trait Provisioning {
 		$useSsl = false;
 		if (OcisHelper::isTestingOnOcisOrReva()) {
 			$this->ldapBaseDN = OcisHelper::getBaseDN();
-			$this->ldapUsersOU = OcisHelper::getGroupsOU();
-			$this->ldapGroupsOU = OcisHelper::getUsersOU();
+			$this->ldapUsersOU = OcisHelper::getUsersOU();
+			$this->ldapGroupsOU = OcisHelper::getGroupsOU();
 			$this->ldapGroupSchema = OcisHelper::getGroupSchema();
 			$this->ldapHost = OcisHelper::getHostname();
 			$this->ldapPort = OcisHelper::getLdapPort();
@@ -734,6 +734,8 @@ trait Provisioning {
 		}
 		if (isset($setting["email"])) {
 			$entry['mail'] = $setting["email"];
+		} elseif (OcisHelper::isTestingOnOcis()) {
+			$entry['mail'] = $userId . '@owncloud.com';
 		}
 		$entry['gidNumber'] = 5000;
 		$entry['uidNumber'] = $uidNumber;
