@@ -734,6 +734,8 @@ trait Provisioning {
 		}
 		if (isset($setting["email"])) {
 			$entry['mail'] = $setting["email"];
+		} elseif (OcisHelper::isTestingOnOcis()) {
+			$entry['mail'] = $userId . '@owncloud.com';
 		}
 		$entry['gidNumber'] = 5000;
 		$entry['uidNumber'] = $uidNumber;
