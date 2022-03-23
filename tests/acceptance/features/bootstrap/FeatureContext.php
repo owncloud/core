@@ -440,7 +440,7 @@ class FeatureContext extends BehatVariablesContext {
 	/**
 	 * @var string
 	 */
-	private $ldapAdminPassword;
+	private $ldapAdminPassword = "";
 	/**
 	 * @var string
 	 */
