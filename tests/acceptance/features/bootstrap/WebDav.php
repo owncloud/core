@@ -1897,7 +1897,6 @@ trait WebDav {
 		?array $properties = null,
 		string $type = "files"
 	):ResponseInterface {
-		$user = $this->getActualUsername($user);
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
 		}
@@ -2056,6 +2055,7 @@ trait WebDav {
 		$this->setResponseXml(
 			HttpRequestHelper::parseResponseAsXml($this->response)
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2073,6 +2073,7 @@ trait WebDav {
 			["201", "204"],
 			"HTTP status code was not 201 or 204 while trying to upload file '$source' to '$destination' for user '$user'"
 		);
+		$this->emptyLastHTTPStatusCodesArray();
 	}
 
 	/**

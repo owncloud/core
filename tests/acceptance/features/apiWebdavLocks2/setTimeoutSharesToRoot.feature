@@ -20,18 +20,10 @@ Feature: set timeouts of LOCKS on shares
     When user "Alice" locks folder "PARENT" using the WebDAV API setting the following properties
       | lockscope | shared    |
       | timeout   | <timeout> |
-    And user "Brian" gets the following properties of folder "PARENT (2)" using the WebDAV API
-      | propertyName    |
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "Brian" should match "<result>"
-    When user "Brian" gets the following properties of folder "PARENT (2)/CHILD" using the WebDAV API
-      | propertyName    |
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "Brian" should match "<result>"
-    When user "Brian" gets the following properties of folder "PARENT (2)/parent.txt" using the WebDAV API
-      | propertyName    |
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "Brian" should match "<result>"
+    Then the HTTP status code should be "200"
+    And as user "Brian" the lock discovery property "//d:timeout" of the folder "PARENT (2)" should match "<result>"
+    And as user "Brian" the lock discovery property "//d:timeout" of the folder "PARENT (2)/CHILD" should match "<result>"
+    And as user "Brian" the lock discovery property "//d:timeout" of the folder "PARENT (2)/parent.txt" should match "<result>"
     Examples:
       | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
@@ -52,18 +44,10 @@ Feature: set timeouts of LOCKS on shares
     When user "Brian" locks folder "PARENT (2)" using the WebDAV API setting the following properties
       | lockscope | shared    |
       | timeout   | <timeout> |
-    And user "Alice" gets the following properties of folder "PARENT" using the WebDAV API
-      | propertyName    |
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "Alice" should match "<result>"
-    When user "Alice" gets the following properties of folder "PARENT/CHILD" using the WebDAV API
-      | propertyName    |
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "Alice" should match "<result>"
-    When user "Alice" gets the following properties of folder "PARENT/parent.txt" using the WebDAV API
-      | propertyName    |
-      | d:lockdiscovery |
-    Then the value of the item "//d:timeout" in the response to user "Alice" should match "<result>"
+    Then the HTTP status code should be "200"
+    And as user "Alice" the lock discovery property "//d:timeout" of the folder "PARENT" should match "<result>"
+    And as user "Alice" the lock discovery property "//d:timeout" of the folder "PARENT/CHILD" should match "<result>"
+    And as user "Alice" the lock discovery property "//d:timeout" of the folder "PARENT/parent.txt" should match "<result>"
     Examples:
       | dav-path | timeout         | result          |
       | old      | second-999      | /Second-\d{3}$/ |
