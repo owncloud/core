@@ -25,6 +25,7 @@ namespace OC\Files\Config;
 
 use OC\Files\Filesystem;
 use OC\Files\Mount\MountPoint;
+use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
 use OC\Hooks\Emitter;
 use OC\Hooks\EmitterTrait;
@@ -86,31 +87,40 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 		});
 
 		$mergedMounts = [];
-		$takenMountpoints = [];
+		$takenMountPoints = [];
 		$maxMoveAttempts = $this->getMaxMoveAttempts();
+		$root = '/' . $user->getUID() . '/files/';
+		$view = new View($root);
+
 		foreach ($mounts as $providerMounts) {
 			foreach ($providerMounts as $mount) {
 				$mountpoint = $mount->getMountPoint();
-				if (\in_array($mountpoint, $takenMountpoints)) {
+				$mpInLocalFiles = $mountpoint;
+				if (substr_compare($mountpoint, $root, 0, strlen($root)) === 0) {
+					$mpInLocalFiles = substr($mountpoint, strlen($root));
+				}
+				$mountPointTaken = \in_array($mountpoint, $takenMountPoints, true);
+				$mountPointTaken = $mountPointTaken || $view->file_exists($mpInLocalFiles);
+				if ($mount instanceof MoveableMount && $mountPointTaken) {
 					for ($i = 0; $i < $maxMoveAttempts; $i++) {
-						$newMountpoint = $this->generateUniqueTarget(
+						$newMountPoint = $this->generateUniqueTarget(
 							$mountpoint,
-							new View('/' . $user->getUID() . '/files'),
-							$takenMountpoints
+							$view,
+							$takenMountPoints
 						);
 						/* @phan-suppress-next-line PhanUndeclaredMethod */
-						if ($mount->moveMount($newMountpoint) === true) {
+						if ($mount->moveMount($newMountPoint) === true) {
 							$fsMountManager = Filesystem::getMountManager();
 							if ($fsMountManager->findIn($mountpoint)) {
-								$fsMountManager->moveMount($mountpoint, $newMountpoint);
+								$fsMountManager->moveMount($mountpoint, $newMountPoint);
 							}
 							break;
 						}
-						$takenMountpoints[] = $newMountpoint;
+						$takenMountPoints[] = $newMountPoint;
 					}
-					$takenMountpoints[] = $mount->getMountPoint(); // mount might not have been moved
+					$takenMountPoints[] = $mount->getMountPoint(); // mount might not have been moved
 				} else {
-					$takenMountpoints[] = $mountpoint;
+					$takenMountPoints[] = $mountpoint;
 				}
 				$mergedMounts[] = $mount;
 			}
@@ -191,7 +201,7 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 		$dir = $pathinfo['dirname'];
 
 		$i = 2;
-		while (\in_array($path, $mountpoints) || $view->file_exists($path)) {
+		while (\in_array($path, $mountpoints, true) || $view->file_exists(substr($path, strlen($dir)))) {
 			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
 			$i++;
 		}
