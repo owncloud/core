@@ -853,19 +853,25 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function deleteLdapUsersAndGroups():void {
+		// pdd
+		$isOcisOrReva = OcisHelper::isTestingOnOcisOrReva();
 		foreach ($this->ldapCreatedUsers as $user) {
-			$this->ldap->delete(
-				"uid=" . ldap_escape($user, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
-			);
+			if ($isOcisOrReva) {
+				$this->ldap->delete(
+					"uid=" . ldap_escape($user, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
+				);
+			}
 			$this->rememberThatUserIsNotExpectedToExist($user);
 		}
 		foreach ($this->ldapCreatedGroups as $group) {
-			$this->ldap->delete(
-				"cn=" . ldap_escape($group, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
-			);
+			if ($isOcisOrReva) {
+				$this->ldap->delete(
+					"cn=" . ldap_escape($group, "", LDAP_ESCAPE_DN) . ",ou=" . $this->ldapGroupsOU . "," . $this->ldapBaseDN,
+				);
+			}
 			$this->rememberThatGroupIsNotExpectedToExist($group);
 		}
-		if (!$this->skipImportLdif) {
+		if (!$isOcisOrReva || !$this->skipImportLdif) {
 			//delete ou from LDIF import
 			$this->ldap->delete(
 				"ou=" . $this->ldapUsersOU . "," . $this->ldapBaseDN,
