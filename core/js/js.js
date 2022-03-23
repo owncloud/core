@@ -1567,7 +1567,6 @@ function initCore() {
 				$.post(url);
 			}, interval * 1000);
 		};
-		$(document).ajaxComplete(heartBeat);
 		heartBeat();
 	}
 
