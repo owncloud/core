@@ -33,7 +33,8 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 1               |
       | 2               |
 
-
+  # Note: after fixing the bug, this scenario is no longer relevant.
+  #       Brian should not get a chance to decline (or accept) the 2nd share of the resource from Alice
   Scenario Outline: Share receiver renames the received group share and declines another share of same folder through user share again
     Given using OCS API version "<ocs_api_version>"
     And group "grp" has been created
@@ -80,7 +81,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | 2               |
 
 
-  Scenario Outline:Share receiver renames a group share and receives same resource through user share with additional permissions
+  Scenario Outline: Share receiver renames a group share and receives same resource through user share with less permissions
     Given using OCS API version "<ocs_api_version> "
     And group "grp" has been created
     And user "Brian" has been added to group "grp"
