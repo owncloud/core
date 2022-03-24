@@ -16,7 +16,8 @@ Feature: independent locks
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/alsonotlocked/PARENT"
     When user "Alice" locks folder "locked/PARENT" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/PARENT/file.txt"
+    Then the HTTP status code should be "200"
+    And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/PARENT/file.txt"
     And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/alsonotlocked/PARENT"
     But user "Alice" should not be able to upload file "filesForUpload/lorem.txt" to "/locked/PARENT/textfile0.txt"
     Examples:
@@ -41,7 +42,8 @@ Feature: independent locks
     And user "Alice" has created folder "alsonotlocked/PARENT"
     When user "Alice" locks folder "PARENT" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/PARENT/file.txt"
+    Then the HTTP status code should be "201"
+    And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/PARENT/file.txt"
     And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/alsonotlocked/PARENT/file.txt"
     But user "Alice" should not be able to upload file "filesForUpload/lorem.txt" to "/PARENT/textfile0.txt"
     Examples:
@@ -66,7 +68,8 @@ Feature: independent locks
     And user "Alice" has created folder "notlocked/textfile0.txt"
     When user "Alice" locks file "locked/textfile0.txt" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/textfile0.txt/real-file.txt"
+    Then the HTTP status code should be "200"
+    And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/textfile0.txt/real-file.txt"
     And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/textfile0.txt"
     But user "Alice" should not be able to upload file "filesForUpload/lorem.txt" to "/locked/textfile0.txt"
     Examples:
@@ -93,7 +96,8 @@ Feature: independent locks
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "notlocked/<foldername>/<filename>"
     When user "Alice" locks file "locked/<to-lock>" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/<foldername>/file.txt"
+    Then the HTTP status code should be "200"
+    And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/<foldername>/file.txt"
     And user "Alice" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/<foldername>/<filename>"
     But user "Alice" should not be able to upload file "filesForUpload/lorem.txt" to "/locked/<foldername>/<filename>"
     Examples:

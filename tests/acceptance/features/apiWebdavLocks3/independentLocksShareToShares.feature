@@ -20,7 +20,8 @@ Feature: independent locks
     And user "Carol" has accepted share "/toShare" offered by user "Brian"
     When user "Carol" locks folder "/Shares/toShare" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/toShare (2)/file.txt"
+    Then the HTTP status code should be "200"
+    And user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/toShare (2)/file.txt"
     But user "Carol" should not be able to upload file "filesForUpload/lorem.txt" to "/Shares/toShare/file.txt"
     Examples:
       | dav-path | lock-scope |
@@ -48,7 +49,8 @@ Feature: independent locks
     And user "Brian" has accepted the next pending share "/toShare" offered by user "Alice"
     When user "Brian" locks folder "/Shares/toShare" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/toShare (2)/file.txt"
+    Then the HTTP status code should be "200"
+    And user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/toShare (2)/file.txt"
     But user "Brian" should not be able to upload file "filesForUpload/lorem.txt" to "/Shares/toShare/file.txt"
     Examples:
       | dav-path | lock-scope |
@@ -77,7 +79,8 @@ Feature: independent locks
     And user "Carol" has accepted share "/FromBrian" offered by user "Brian"
     When user "Carol" locks file "/Shares/FromBrian/textfile0.txt" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/FromAlice/textfile0.txt"
+    Then the HTTP status code should be "200"
+    And user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/FromAlice/textfile0.txt"
     But user "Carol" should not be able to upload file "filesForUpload/lorem.txt" to "/Shares/FromBrian/textfile0.txt"
     Examples:
       | dav-path | lock-scope |
@@ -105,7 +108,8 @@ Feature: independent locks
     And user "Brian" has accepted share "/notlocked" offered by user "Alice"
     When user "Brian" locks file "/Shares/locked/textfile0.txt" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/notlocked/textfile0.txt"
+    Then the HTTP status code should be "200"
+    And user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/Shares/notlocked/textfile0.txt"
     But user "Brian" should not be able to upload file "filesForUpload/lorem.txt" to "/Shares/locked/textfile0.txt"
     Examples:
       | dav-path | lock-scope |
