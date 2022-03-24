@@ -1,6 +1,7 @@
 @api @systemtags-app-required @issue-ocis-reva-51
-Feature: Title of your feature
-  I want to use this template for my feature file
+Feature: Assign tag to groups
+  As a user
+  I should be able to assign tag to groups
 
   Background:
     Given user "Alice" has been created with default attributes and without skeleton files

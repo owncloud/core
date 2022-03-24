@@ -129,6 +129,7 @@ class WebDavPropertiesContext implements Context {
 				$properties
 			)
 		);
+		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**

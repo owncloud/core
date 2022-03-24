@@ -188,6 +188,26 @@ class TagsContext implements Context {
 	}
 
 	/**
+	 * @When the administrator creates the following tags using the WebDAV API
+	 *
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theAdministratorCreatesFollowingTags(TableNode $table):void {
+		$this->featureContext->emptyLastHTTPStatusCodesArray();
+		$this->featureContext->verifyTableNodeColumns($table, ['name', 'type']);
+		foreach ($table->getHash() as $row) {
+			$this->createTagWithNameAsAdmin(
+				$row['type'],
+				$row['name']
+			);
+			$this->featureContext->pushToLastStatusCodesArrays();
+		}
+	}
+
+	/**
 	 * @When /^the administrator creates a "([^"]*)" tag with name "([^"]*)" sending (true-false-strings|numbers) in the request using the WebDAV API$/
 	 *
 	 * @param string $type
@@ -1515,6 +1535,25 @@ class TagsContext implements Context {
 			__METHOD__
 			. " Expected status is '$status' but got '$actualStatus'"
 		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" requests tags for (?:file|folder|entry) "([^"]*)" (?:shared|owned) by user "([^"]*)" using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $fileName
+	 * @param string $sharingUser
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function whenUserRequestsTagsForEntryOwnedByAnotherUser(
+		string $user,
+		string $fileName,
+		string $sharingUser
+	):void {
+		$this->requestTagsForFile($user, $fileName, $sharingUser);
+		$this->featureContext->pushToLastStatusCodesArrays();
 	}
 
 	/**
