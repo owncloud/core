@@ -136,15 +136,18 @@ class CryptoWrapper {
 	 * Try to delete the cookie
 	 */
 	public function deleteCookie() {
-		$options = [
-			'expires' => \time() - 3600,
-			'path' => '',
-			'domain' => '',
-			'secure' => false,
-			'httponly' => false,
-			'samesite' => 'None',
-		];
-		$this->sendCookieToBrowser('', $options);
+		// FIXME: Required for CI
+		if (!\defined('PHPUNIT_RUN')) {
+			$options = [
+				'expires' => \time() - 3600,
+				'path' => '',
+				'domain' => '',
+				'secure' => false,
+				'httponly' => false,
+				'samesite' => 'None',
+			];
+			$this->sendCookieToBrowser('', $options);
+		}
 	}
 
 	private function prepareOptions(IConfig $config) {
