@@ -16,7 +16,8 @@ Feature: independent locks
     And user "Brian" has shared folder "toShare" with user "Carol"
     When user "Carol" locks folder "/toShare" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/toShare (2)/file.txt"
+    Then the HTTP status code should be "200"
+    And user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/toShare (2)/file.txt"
     But user "Carol" should not be able to upload file "filesForUpload/lorem.txt" to "/toShare/file.txt"
     Examples:
       | dav-path | lock-scope |
@@ -36,7 +37,8 @@ Feature: independent locks
     And user "Alice" has shared folder "notlocked/toShare" with user "Brian"
     When user "Brian" locks folder "/toShare" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/toShare (2)/file.txt"
+    Then the HTTP status code should be "200"
+    And user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/toShare (2)/file.txt"
     But user "Brian" should not be able to upload file "filesForUpload/lorem.txt" to "/toShare/file.txt"
     Examples:
       | dav-path | lock-scope |
@@ -57,7 +59,8 @@ Feature: independent locks
     And user "Brian" has shared folder "FromBrian" with user "Carol"
     When user "Carol" locks file "/FromBrian/textfile0.txt" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/FromAlice/textfile0.txt"
+    Then the HTTP status code should be "200"
+    And user "Carol" should be able to upload file "filesForUpload/lorem.txt" to "/FromAlice/textfile0.txt"
     But user "Carol" should not be able to upload file "filesForUpload/lorem.txt" to "/FromBrian/textfile0.txt"
     Examples:
       | dav-path | lock-scope |
@@ -77,7 +80,8 @@ Feature: independent locks
     And user "Alice" has shared folder "notlocked" with user "Brian"
     When user "Brian" locks file "/locked/textfile0.txt" using the WebDAV API setting the following properties
       | lockscope | <lock-scope> |
-    Then user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/textfile0.txt"
+    Then the HTTP status code should be "200"
+    And user "Brian" should be able to upload file "filesForUpload/lorem.txt" to "/notlocked/textfile0.txt"
     But user "Brian" should not be able to upload file "filesForUpload/lorem.txt" to "/locked/textfile0.txt"
     Examples:
       | dav-path | lock-scope |

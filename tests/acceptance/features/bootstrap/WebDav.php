@@ -2581,6 +2581,10 @@ trait WebDav {
 	public function userShouldBeAbleToUploadFileTo(string $user, string $source, string $destination):void {
 		$user = $this->getActualUsername($user);
 		$this->userUploadsAFileTo($user, $source, $destination);
+		$this->theHTTPStatusCodeShouldBe(
+			["201", "204"],
+			"HTTP status code was not 201 or 204 while trying to upload file '$destination'"
+		);
 		$this->asFileOrFolderShouldExist($user, "file", $destination);
 	}
 
