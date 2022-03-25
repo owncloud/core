@@ -1573,6 +1573,7 @@ trait Sharing {
 			$group,
 			$permissions
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**

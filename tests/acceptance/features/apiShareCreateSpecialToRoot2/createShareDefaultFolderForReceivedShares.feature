@@ -10,12 +10,12 @@ Feature: shares are received in the default folder for received shares
     And user "Brian" has been created with default attributes and without skeleton files
     And the administrator has set the default folder for received shares to "<share_folder>"
     And user "Alice" has created folder "FOLDER"
-    When user "Alice" shares folder "/FOLDER" with user "Brian" using the sharing API
-    And user "Brian" unshares folder "ReceivedShares/FOLDER" using the WebDAV API
-    And user "Brian" shares folder "/ReceivedShares" with user "Alice" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
+    And user "Alice" has shared folder "/FOLDER" with user "Brian"
+    And user "Brian" has unshared folder "ReceivedShares/FOLDER"
+    When user "Brian" shares folder "/ReceivedShares" with user "Alice" using the sharing API
+    Then the OCS status code should be "404"
     And the HTTP status code should be "<http_status_code>"
     Examples:
-      | ocs_api_version | ocs_status_code | http_status_code | share_folder    |
-      | 1               | 404             | 200              | /ReceivedShares |
-      | 2               | 404             | 404              | /ReceivedShares |
+      | ocs_api_version | http_status_code | share_folder    |
+      | 1               | 200              | /ReceivedShares |
+      | 2               | 404              | /ReceivedShares |

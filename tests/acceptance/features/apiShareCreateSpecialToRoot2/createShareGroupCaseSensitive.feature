@@ -22,16 +22,12 @@ Feature: share with groups, group names are case-sensitive
     And user "Carol" has been added to group "<group_id2>"
     And user "David" has been added to group "<group_id3>"
     When user "Alice" shares file "textfile1.txt" with group "<group_id1>" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
+    And user "Alice" shares file "textfile2.txt" with group "<group_id2>" using the sharing API
+    And user "Alice" shares file "textfile3.txt" with group "<group_id3>" using the sharing API
+    Then the OCS status code of responses on all endpoints should be "<ocs_status_code>"
+    And the HTTP status code of responses on all endpoints should be "200"
     And the content of file "textfile1.txt" for user "Brian" should be "ownCloud test text file 1"
-    When user "Alice" shares folder "textfile2.txt" with group "<group_id2>" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     And the content of file "textfile2.txt" for user "Carol" should be "ownCloud test text file 2"
-    When user "Alice" shares folder "textfile3.txt" with group "<group_id3>" using the sharing API
-    Then the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     And the content of file "textfile3.txt" for user "David" should be "ownCloud test text file 3"
     Examples:
       | ocs_api_version | group_id1            | group_id2            | group_id3            | ocs_status_code |
