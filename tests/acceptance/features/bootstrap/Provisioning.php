@@ -21,11 +21,13 @@
 
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
+use TestHelpers\GraphHelper;
 use TestHelpers\HttpRequestHelper;
 use TestHelpers\OcisHelper;
 use Laminas\Ldap\Exception\LdapException;
@@ -1010,12 +1012,15 @@ trait Provisioning {
 			$this->getAdminPassword()
 		);
 
+		$useLdap = false;
+		$useGraph = false;
 		if ($method === null) {
 			$useLdap = $this->isTestingWithLdap();
+			$useGraph = GraphHelper::isTestingWithGraphApi();
 		} elseif ($method === "ldap") {
 			$useLdap = true;
-		} else {
-			$useLdap = false;
+		} elseif ($method === "graph") {
+			$useGraph = true;
 		}
 
 		foreach ($usersAttributes as $i => $userAttributes) {
@@ -1038,36 +1043,69 @@ trait Provisioning {
 						$attributesToCreateUser['email'] = $userAttributes['email'];
 					}
 				}
-				// Create a OCS request for creating the user. The request is not sent to the server yet.
-				$request = OcsApiHelper::createOcsRequest(
-					$this->getBaseUrl(),
-					'POST',
-					"/cloud/users",
-					$this->stepLineRef,
-					$attributesToCreateUser
-				);
+				if ($useGraph) {
+					$body = GraphHelper::prepareUserPayload(
+						$attributesToCreateUser['userid'],
+						$attributesToCreateUser['password'],
+						$attributesToCreateUser['email'],
+						$attributesToCreateUser['displayname']
+					);
+					$request = GraphHelper::createRequest(
+						$this->getBaseUrl(),
+						$this->getStepLineRef(),
+						"POST",
+						'users',
+						$body,
+					);
+				} else {
+					// Create a OCS request for creating the user. The request is not sent to the server yet.
+					$request = OcsApiHelper::createOcsRequest(
+						$this->getBaseUrl(),
+						'POST',
+						"/cloud/users",
+						$this->stepLineRef,
+						$attributesToCreateUser
+					);
+				}
 				// Add the request to the $requests array so that they can be sent in parallel.
-				\array_push($requests, $request);
+				$requests[] = $request;
 			}
 		}
 
 		$exceptionToThrow = null;
 		if (!$useLdap) {
 			$results = HttpRequestHelper::sendBatchRequest($requests, $client);
-			// Retrieve all failures.
-			foreach ($results as $e) {
-				if ($e instanceof ClientException) {
-					$responseXml = $this->getResponseXml($e->getResponse(), __METHOD__);
-					$messageText = (string) $responseXml->xpath("/ocs/meta/message")[0];
-					$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
-					$httpStatusCode = $e->getResponse()->getStatusCode();
-					$reasonPhrase = $e->getResponse()->getReasonPhrase();
-					$exceptionToThrow = new Exception(
-						__METHOD__ . " Unexpected failure when creating the user '" .
-						$userAttributes['userid'] . "': HTTP status $httpStatusCode " .
-						"HTTP reason $reasonPhrase OCS status $ocsStatusCode " .
-						"OCS message $messageText"
-					);
+			// Check all requests to inspect failures.
+			foreach ($results as $key => $e) {
+				// TODO: remove server exception after fix in graph api
+				// currently the server returns a 500 error code if user already exists
+				if ($e instanceof ClientException || $e instanceof ServerException) {
+					if ($useGraph) {
+						$responseBody = $this->getJsonDecodedResponse($e->getResponse());
+						$httpStatusCode = $e->getResponse()->getStatusCode();
+						$graphStatusCode = $responseBody['error']['code'];
+						$messageText = $responseBody['error']['message'];
+						$exceptionToThrow = new Exception(
+							__METHOD__ .
+							" Unexpected failure when creating the user '" .
+							$usersAttributes[$key]['userid'] . "'" .
+							"\nHTTP status $httpStatusCode " .
+							"\nGraph status $graphStatusCode " .
+							"\nError message $messageText"
+						);
+					} else {
+						$responseXml = $this->getResponseXml($e->getResponse(), __METHOD__);
+						$messageText = (string) $responseXml->xpath("/ocs/meta/message")[0];
+						$ocsStatusCode = (string) $responseXml->xpath("/ocs/meta/statuscode")[0];
+						$httpStatusCode = $e->getResponse()->getStatusCode();
+						$reasonPhrase = $e->getResponse()->getReasonPhrase();
+						$exceptionToThrow = new Exception(
+							__METHOD__ . " Unexpected failure when creating the user '" .
+							$usersAttributes[$key]['userid'] . "': HTTP status $httpStatusCode " .
+							"HTTP reason $reasonPhrase OCS status $ocsStatusCode " .
+							"OCS message $messageText"
+						);
+					}
 				}
 			}
 		}
@@ -2703,10 +2741,32 @@ trait Provisioning {
 	 */
 	public function theseGroupsShouldNotExist(string $shouldOrNot, TableNode $table):void {
 		$should = ($shouldOrNot !== "not");
-		$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
+		$graphMode = GraphHelper::isTestingWithGraphApi();
+		if ($graphMode) {
+			$groups = GraphHelper::getGroups(
+				$this->getBaseUrl(),
+				$this->getStepLineRef(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
+			);
+		} else {
+			$groups = $this->getArrayOfGroupsResponded($this->getAllGroups());
+		}
+
 		$this->verifyTableNodeColumns($table, ['groupname']);
 		foreach ($table as $row) {
-			if (\in_array($row['groupname'], $groups, true) !== $should) {
+			if ($graphMode) {
+				$exists = false;
+				foreach ($groups as $group) {
+					if ($group['displayName'] === $row['groupname']) {
+						$exists = true;
+						break;
+					}
+				}
+			} else {
+				$exists = \in_array($row['groupname'], $groups, true);
+			}
+			if ($exists !== $should) {
 				throw new Exception(
 					"group '" . $row['groupname'] .
 					"' does" . ($should ? " not" : "") .
@@ -3100,6 +3160,8 @@ trait Provisioning {
 		if ($method === null && $this->isTestingWithLdap()) {
 			//guess yourself
 			$method = "ldap";
+		} elseif (GraphHelper::isTestingWithGraphApi()) {
+			$method = "graph";
 		} elseif ($method === null) {
 			$method = "api";
 		}
@@ -3138,6 +3200,23 @@ trait Provisioning {
 				} catch (LdapException $exception) {
 					throw new Exception(
 						__METHOD__ . " cannot create a LDAP user with provided data. Error: {$exception}"
+					);
+				}
+				break;
+			case "graph":
+				$response = GraphHelper::createUser(
+					$this->getBaseUrl(),
+					$this->getStepLineRef(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$user,
+					$password,
+					$email,
+					$displayName
+				);
+				if ($response->getStatusCode() !== 200) {
+					throw new Exception(
+						__METHOD__ . " could not create user. {$response->getBody()}"
 					);
 				}
 				break;
@@ -3199,6 +3278,7 @@ trait Provisioning {
 	 * @param string|null $user
 	 *
 	 * @return bool
+	 * @throws JsonException
 	 */
 	public function userExists(?string $user):bool {
 		// in OCIS there is no admin user and in oC10 there are issues when
@@ -3213,6 +3293,9 @@ trait Provisioning {
 			if (OcisHelper::isTestingParallelDeployment()) {
 				$requestingUser = $this->getActualUsername($user);
 				$requestingPassword = $this->getPasswordForUser($user);
+			} elseif (GraphHelper::isTestingWithGraphApi()) {
+				$requestingUser = $this->getAdminUsername();
+				$requestingPassword = $this->getAdminPassword();
 			} elseif (OcisHelper::isTestingOnOcis()) {
 				$requestingUser = 'moss';
 				$requestingPassword = 'vista';
@@ -3224,7 +3307,11 @@ trait Provisioning {
 			$requestingUser = $this->getAdminUsername();
 			$requestingPassword = $this->getAdminPassword();
 		}
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user";
+		$path = (GraphHelper::isTestingWithGraphApi())
+			? "/graph/v1.0"
+			: "/ocs/v2.php/cloud";
+		$fullUrl = $this->getBaseUrl() . $path . "/users/$user";
+
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),
@@ -3530,6 +3617,8 @@ trait Provisioning {
 		) {
 			//guess yourself
 			$method = "ldap";
+		} elseif ($method ===null && GraphHelper::isTestingWithGraphApi()) {
+			$method = "graph";
 		} elseif ($method === null) {
 			$method = "api";
 		}
@@ -3583,6 +3672,16 @@ trait Provisioning {
 					);
 				};
 				break;
+			case "graph":
+				$result = GraphHelper::addUserToGroup(
+					$this->getBaseUrl(),
+					$this->getStepLineRef(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$user,
+					$group
+				);
+				break;
 			default:
 				throw new InvalidArgumentException(
 					"Invalid method to add a user to a group"
@@ -3607,18 +3706,23 @@ trait Provisioning {
 	 * @param string $group
 	 * @param bool $shouldExist - true if the group should exist
 	 * @param bool $possibleToDelete - true if it is possible to delete the group
+	 * @param string|null $id - id of the group, only required for the graph api created groups
 	 *
 	 * @return void
 	 */
 	public function addGroupToCreatedGroupsList(
 		string $group,
 		bool $shouldExist = true,
-		bool $possibleToDelete = true
+		bool $possibleToDelete = true,
+		?string $id = null
 	):void {
 		$groupData = [
 			"shouldExist" => $shouldExist,
 			"possibleToDelete" => $possibleToDelete
 		];
+		if ($id !== null) {
+			$groupData["id"] = $id;
+		}
 
 		if ($this->currentServer === 'LOCAL') {
 			$this->createdGroups[$group] = $groupData;
@@ -3777,10 +3881,14 @@ trait Provisioning {
 	 */
 	public function createTheGroup(string $group, ?string $method = null):void {
 		//guess yourself
-		if ($method === null && $this->isTestingWithLdap()) {
-			$method = "ldap";
-		} elseif ($method === null) {
-			$method = "api";
+		if ($method === null) {
+			if ($this->isTestingWithLdap()) {
+				$method = "ldap";
+			} else if (GraphHelper::isTestingWithGraphApi()) {
+				$method = "graph";
+			} else {
+				$method = "api";
+			}
 		}
 		$group = \trim($group);
 		$method = \trim(\strtolower($method));
@@ -3822,6 +3930,25 @@ trait Provisioning {
 				} catch (LdapException $e) {
 					throw new Exception(
 						"could not create group '$group'. Error: {$e}"
+					);
+				}
+				break;
+			case "graph":
+				$result = GraphHelper::createGroup(
+					$this->getBaseUrl(),
+					$this->getStepLineRef(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$group,
+				);
+				if ($result->getStatusCode() === 200) {
+					$groupCanBeDeleted = true;
+				} else {
+					$jsonBody = $this->getJsonDecodedResponse($result);
+					throw new Exception(
+						"Error: failed creating group '$group'. \n"
+						. "Status code: " . $jsonBody['error']['code'] ." \n"
+						. "Message: " . $jsonBody['error']['message'] . " \n"
 					);
 				}
 				break;
@@ -4129,14 +4256,24 @@ trait Provisioning {
 		$this->emptyLastHTTPStatusCodesArray();
 		$this->emptyLastOCSStatusCodesArray();
 		// Always try to delete the user
-		$this->response = UserHelper::deleteUser(
-			$this->getBaseUrl(),
-			$user,
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$this->getStepLineRef(),
-			$this->ocsApiVersion
-		);
+		if (GraphHelper::isTestingWithGraphApi()) {
+			$this->response = GraphHelper::deleteUser(
+				$this->getBaseUrl(),
+				$this->getStepLineRef(),
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				$user
+			);
+		} else {
+			$this->response = UserHelper::deleteUser(
+				$this->getBaseUrl(),
+				$user,
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				$this->getStepLineRef(),
+				$this->ocsApiVersion
+			);
+		}
 		$this->pushToLastStatusCodesArrays();
 
 		// Only log a message if the test really expected the user to have been
@@ -4144,7 +4281,7 @@ trait Provisioning {
 		// there was a problem deleting the user. Because in this case there
 		// might be an effect on later tests.
 		if ($this->theUserShouldExist($user)
-			&& ($this->response->getStatusCode() !== 200)
+			&& (!\in_array($this->response->getStatusCode(), [200, 204]))
 		) {
 			\error_log(
 				"INFORMATION: could not delete user '$user' "
@@ -4208,18 +4345,37 @@ trait Provisioning {
 	public function deleteTheGroupUsingTheProvisioningApi(string $group):void {
 		$this->emptyLastHTTPStatusCodesArray();
 		$this->emptyLastOCSStatusCodesArray();
-		$this->response = UserHelper::deleteGroup(
-			$this->getBaseUrl(),
-			$group,
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
-			$this->getStepLineRef(),
-			$this->ocsApiVersion
-		);
+		if (GraphHelper::isTestingWithGraphApi()) {
+			$groupData = $this->createdGroups[$group];
+			if ($groupData['id']) {
+				$this->response = GraphHelper::deleteGroup(
+					$this->getBaseUrl(),
+					$this->getStepLineRef(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$groupData['id']
+				);
+			} else {
+				throw Exception(
+					"Group id does not exist for '$group' in the created list."
+					. " Cannot delete group without id when using the Graph API."
+				);
+			}
+		} else {
+			$this->response = UserHelper::deleteGroup(
+				$this->getBaseUrl(),
+				$group,
+				$this->getAdminUsername(),
+				$this->getAdminPassword(),
+				$this->getStepLineRef(),
+				$this->ocsApiVersion
+			);
+		}
+		$expectedStatusCode = GraphHelper::isTestingWithGraphApi() ? 204 : 200;
 		$this->pushToLastStatusCodesArrays();
 		if ($this->theGroupShouldExist($group)
 			&& $this->theGroupShouldBeAbleToBeDeleted($group)
-			&& ($this->response->getStatusCode() !== 200)
+			&& ($this->response->getStatusCode() !== $expectedStatusCode)
 		) {
 			\error_log(
 				"INFORMATION: could not delete group '$group'"

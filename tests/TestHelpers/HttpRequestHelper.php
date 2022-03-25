@@ -25,14 +25,12 @@ namespace TestHelpers;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Sabre\VObject\Cli;
 use SimpleXMLElement;
 use Sabre\Xml\LibXMLException;
 use Sabre\Xml\Reader;
@@ -326,7 +324,6 @@ class HttpRequestHelper {
 			if (strpos($url, "/apps/testing") !== false) {
 				$oCISServerUrl = \getenv('TEST_SERVER_URL');
 				$oC10ServerUrl = \getenv('TEST_OC10_URL');
-	
 				$url = str_replace($oCISServerUrl, $oC10ServerUrl, $url);
 			} else {
 				// set 'owncloud-server' selector cookie for oCIS requests
