@@ -154,7 +154,7 @@ class CryptoWrapper {
 			$webRoot = '/';
 		}
 
-		$sessionLifetime = $config->getSystemValue('session_lifetime',  60 * 20);
+		$sessionLifetime = $config->getSystemValue('session_lifetime', 60 * 20);
 		if ($sessionLifetime > 0) {
 			$sessionLifetime += $this->timeFactory->getTime();
 		} else {
