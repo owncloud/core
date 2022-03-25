@@ -62,6 +62,9 @@ class CryptoWrapper {
 	/** @var string  */
 	private $passphrase;
 
+	/** @var IRequest  */
+	private $request;
+
 	/** @var ITimeFactory */
 	private $timeFactory;
 
