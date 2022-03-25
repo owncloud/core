@@ -14,7 +14,8 @@ Feature: using trashbin together with sharing
     And user "Alice" has shared folder "/shared" with user "Brian"
     And user "Brian" has moved folder "/shared" to "/renamed_shared"
     When user "Brian" deletes folder "/renamed_shared" using the WebDAV API
-    Then as "Brian" the folder with original path "/renamed_shared" should not exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Brian" the folder with original path "/renamed_shared" should not exist in the trashbin
     Examples:
       | dav-path |
       | old      |
@@ -29,7 +30,8 @@ Feature: using trashbin together with sharing
     And user "Alice" has shared folder "/shared" with user "Brian"
     And user "Brian" has moved file "/shared" to "/renamed_shared"
     When user "Brian" deletes file "/renamed_shared/shared_file.txt" using the WebDAV API
-    Then as "Brian" the file with original path "/renamed_shared/shared_file.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Brian" the file with original path "/renamed_shared/shared_file.txt" should exist in the trashbin
     And as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
     Examples:
       | dav-path |
@@ -48,7 +50,8 @@ Feature: using trashbin together with sharing
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared folder "/shared" with group "grp1"
     When user "Brian" deletes file "/shared/shared_file.txt" using the WebDAV API
-    Then as "Brian" the file with original path "/shared/shared_file.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Brian" the file with original path "/shared/shared_file.txt" should exist in the trashbin
     And as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
     And as "Carol" the file with original path "/shared/shared_file.txt" should not exist in the trashbin
     Examples:
@@ -68,7 +71,8 @@ Feature: using trashbin together with sharing
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared folder "/shared" with group "grp1"
     When user "Alice" deletes file "/shared/shared_file.txt" using the WebDAV API
-    Then as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
     And as "Brian" the file with original path "/shared/shared_file.txt" should not exist in the trashbin
     And as "Carol" the file with original path "/shared/shared_file.txt" should not exist in the trashbin
     Examples:
@@ -89,7 +93,8 @@ Feature: using trashbin together with sharing
     And user "Alice" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
     And user "Alice" has shared folder "/shared" with group "grp1"
     When user "Brian" deletes folder "/shared/sub" using the WebDAV API
-    Then as "Brian" the file with original path "/shared/sub/shared_file.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Brian" the file with original path "/shared/sub/shared_file.txt" should exist in the trashbin
     And as "Alice" the file with original path "/shared/sub/shared_file.txt" should exist in the trashbin
     And as "Carol" the file with original path "/shared/sub/shared_file.txt" should not exist in the trashbin
     Examples:
@@ -110,7 +115,8 @@ Feature: using trashbin together with sharing
     And user "Alice" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
     And user "Alice" has shared folder "/shared" with group "grp1"
     When user "Alice" deletes folder "/shared/sub" using the WebDAV API
-    Then as "Alice" the file with original path "/shared/sub/shared_file.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" the file with original path "/shared/sub/shared_file.txt" should exist in the trashbin
     And as "Brian" the file with original path "/shared/sub/shared_file.txt" should not exist in the trashbin
     And as "Carol" the file with original path "/shared/sub/shared_file.txt" should not exist in the trashbin
     Examples:

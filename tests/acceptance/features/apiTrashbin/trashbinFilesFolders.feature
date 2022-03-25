@@ -12,7 +12,8 @@ Feature: files and folders exist in the trashbin after being deleted
   Scenario Outline: deleting a file moves it to trashbin
     Given using <dav-path> DAV path
     When user "Alice" deletes file "/textfile0.txt" using the WebDAV API
-    Then as "Alice" file "/textfile0.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" file "/textfile0.txt" should exist in the trashbin
     But as "Alice" file "/textfile0.txt" should not exist
     Examples:
       | dav-path |
@@ -24,7 +25,8 @@ Feature: files and folders exist in the trashbin after being deleted
     Given using <dav-path> DAV path
     And user "Alice" has created folder "/tmp"
     When user "Alice" deletes folder "/tmp" using the WebDAV API
-    Then as "Alice" folder "/tmp" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" folder "/tmp" should exist in the trashbin
     Examples:
       | dav-path |
       | old      |
@@ -35,7 +37,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has created folder "/new-folder"
     And user "Alice" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
     When user "Alice" deletes file "/new-folder/new-file.txt" using the WebDAV API
-    Then as "Alice" the file with original path "/new-folder/new-file.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" the file with original path "/new-folder/new-file.txt" should exist in the trashbin
     And as "Alice" file "/new-file.txt" should exist in the trashbin
     But as "Alice" file "/new-folder/new-file.txt" should not exist
     Examples:
@@ -51,7 +54,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared folder "/shared" with user "Brian"
     When user "Alice" deletes file "/shared/shared_file.txt" using the WebDAV API
-    Then as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" the file with original path "/shared/shared_file.txt" should exist in the trashbin
     And as "Alice" file "/shared_file.txt" should exist in the trashbin
     But as "Alice" file "/shared/shared_file.txt" should not exist
     Examples:
@@ -67,7 +71,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
     And user "Alice" has shared folder "/shared" with user "Brian"
     When user "Alice" deletes folder "/shared" using the WebDAV API
-    Then as "Alice" the folder with original path "/shared" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" the folder with original path "/shared" should exist in the trashbin
     Examples:
       | dav-path |
       | old      |
@@ -94,11 +99,13 @@ Feature: files and folders exist in the trashbin after being deleted
       | /folderB/textfile0.txt |
       | /folderC/textfile0.txt |
       | /folderD/textfile0.txt |
-    Then as "Alice" the folder with original path "/folderA/textfile0.txt" should exist in the trashbin
-    And as "Alice" the folder with original path "/folderB/textfile0.txt" should exist in the trashbin
-    And as "Alice" the folder with original path "/folderC/textfile0.txt" should exist in the trashbin
-    And as "Alice" the folder with original path "/folderD/textfile0.txt" should exist in the trashbin
-    And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" the folders with following original paths should exist in the trashbin
+      | path                   |
+      | /folderA/textfile0.txt |
+      | /folderB/textfile0.txt |
+      | /folderC/textfile0.txt |
+      | /textfile0.txt         |
     Examples:
       | dav-path |
       | old      |
@@ -111,12 +118,17 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has created folder "/folderB"
     And user "Alice" has copied file "/textfile0.txt" to "/folderA/textfile0.txt"
     And user "Alice" has copied file "/textfile0.txt" to "/folderB/textfile0.txt"
-    When user "Alice" deletes file "/folderA/textfile0.txt" using the WebDAV API
-    And user "Alice" deletes file "/folderB/textfile0.txt" using the WebDAV API
-    And user "Alice" deletes file "/textfile0.txt" using the WebDAV API
-    Then as "Alice" the folder with original path "/folderA/textfile0.txt" should exist in the trashbin
-    And as "Alice" the folder with original path "/folderB/textfile0.txt" should exist in the trashbin
-    And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
+    When user "Alice" deletes the following files
+      | path                   |
+      | /folderA/textfile0.txt |
+      | /folderB/textfile0.txt |
+      | /textfile0.txt         |
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" the folders with following original paths should exist in the trashbin
+      | path                   |
+      | /folderA/textfile0.txt |
+      | /folderB/textfile0.txt |
+      | /textfile0.txt         |
     Examples:
       | dav-path |
       | old      |
@@ -131,7 +143,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has created folder "/local_storage/tmp"
     And user "Alice" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
     When user "Alice" deletes folder "/local_storage/tmp" using the WebDAV API
-    Then as "Alice" the folder with original path "/local_storage/tmp" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" the folder with original path "/local_storage/tmp" should exist in the trashbin
     Examples:
       | dav-path |
       | old      |
@@ -235,7 +248,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "<username>" has uploaded file with content "to delete" to "/textfile0.txt"
     And using <dav-path> DAV path
     When user "<username>" deletes file "/textfile0.txt" using the WebDAV API
-    Then as "<username>" file "/textfile0.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "<username>" file "/textfile0.txt" should exist in the trashbin
     But as "<username>" file "/textfile0.txt" should not exist
     Examples:
       | dav-path | username |
@@ -256,7 +270,8 @@ Feature: files and folders exist in the trashbin after being deleted
     Given using <dav-path> DAV path
     And user "Alice" has uploaded file with content "file with comma in filename" to "sample,1.txt"
     When user "Alice" deletes file "sample,1.txt" using the WebDAV API
-    Then as "Alice" file "sample,1.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" file "sample,1.txt" should exist in the trashbin
     But as "Alice" file "sample,1.txt" should not exist
     Examples:
       | dav-path |
@@ -269,7 +284,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has created folder "/new-folder"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/new-folder/new-file.txt"
     When user "Alice" deletes folder "/new-folder" using the WebDAV API
-    Then as "Alice" the file with original path "/new-folder/new-file.txt" should exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" the file with original path "/new-folder/new-file.txt" should exist in the trashbin
     And as "Alice" the folder with original path "/new-folder" should exist in the trashbin
     And as "Alice" file "/new-folder/new-file.txt" should exist in the trashbin
     But as "Alice" file "/new-folder/new-file.txt" should not exist
@@ -284,7 +300,8 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "file.txt" with mtime "Thu, 08 Aug 2018 04:18:13 GMT" using the WebDAV API
     And user "Alice" has deleted file "file.txt"
     When user "Alice" tries to list the trashbin content for user "Alice"
-    Then the deleted file "file.txt" should have the correct deletion mtime in the response
+    Then the HTTP status code should be "207"
+    And the deleted file "file.txt" should have the correct deletion mtime in the response
     Examples:
       | dav-path |
       | old      |

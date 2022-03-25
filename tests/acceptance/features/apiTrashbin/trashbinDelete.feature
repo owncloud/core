@@ -20,11 +20,12 @@ Feature: files and folders can be deleted from the trashbin
     And using <dav-path> DAV path
     And user "Alice" has deleted file "<filename1>"
     And user "Alice" has deleted file "<filename2>"
-    And as "Alice" file "<filename1>" should exist in the trashbin
-    And as "Alice" file "<filename2>" should exist in the trashbin
     When user "Alice" empties the trashbin using the trashbin API
-    Then as "Alice" the file with original path "<filename1>" should not exist in the trashbin
-    And as "Alice" the file with original path "<filename2>" should not exist in the trashbin
+    Then the HTTP status code should be "204"
+    And as "Alice" the files with following original paths should not exist in the trashbin
+      | path        |
+      | <filename1> |
+      | <filename2> |
     Examples:
       | dav-path | filename1     | filename2     |
       | old      | textfile0.txt | textfile1.txt |
@@ -55,12 +56,19 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted file "/PARENT/child.txt"
     And user "Alice" has deleted file "/PARENT/textfile0.txt"
     And user "Alice" has deleted file "/PARENT/CHILD/child.txt"
-    When user "Alice" deletes the file with original path "/PARENT/textfile0.txt" from the trashbin using the trashbin API
-    And user "Alice" deletes the file with original path "/PARENT/CHILD/child.txt" from the trashbin using the trashbin API
-    Then as "Alice" the file with original path "/PARENT/textfile0.txt" should not exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should not exist in the trashbin
-    But as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/child.txt" should exist in the trashbin
+    When user "Alice" deletes the following files with original path from the trashbin
+      | path                    |
+      | /PARENT/textfile0.txt   |
+      | /PARENT/CHILD/child.txt |
+    Then the HTTP status code of responses on all endpoints should be "204"
+    And as "Alice" the files with following original paths should not exist in the trashbin
+      | path        |
+      | /PARENT/textfile0.txt |
+      | /PARENT/CHILD/child.txt |
+    But as "Alice" the files with following original paths should exist in the trashbin
+      | path              |
+      | textfile0.txt     |
+      | /PARENT/child.txt |
 
   @skipOnOcV10.3
   Scenario: User tries to delete another user's trashbin
@@ -71,10 +79,12 @@ Feature: files and folders can be deleted from the trashbin
     And user "Alice" has deleted file "/PARENT/CHILD/child.txt"
     When user "Brian" tries to delete the file with original path "textfile1.txt" from the trashbin of user "Alice" using the trashbin API
     Then the HTTP status code should be "401"
-    And as "Alice" the file with original path "/textfile1.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/textfile0.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/parent.txt" should exist in the trashbin
-    And as "Alice" the file with original path "/PARENT/CHILD/child.txt" should exist in the trashbin
+    And as "Alice" the files with following original paths should exist in the trashbin
+      | path                    |
+      | /textfile0.txt          |
+      | /textfile1.txt          |
+      | /PARENT/parent.txt      |
+      | /PARENT/CHILD/child.txt |
 
   Scenario: User tries to delete trashbin file using invalid password
     Given user "Brian" has been created with default attributes and without skeleton files
@@ -136,7 +146,8 @@ Feature: files and folders can be deleted from the trashbin
 
 
   Scenario Outline: delete files with special characters from the trashbin
-    Given user "Alice" has uploaded the following files with content "special character file"
+    Given using <dav-path> DAV path
+    And user "Alice" has uploaded the following files with content "special character file"
       | path             |
       | qa&dev.txt       |
       | !@tester$^.txt   |
@@ -168,7 +179,8 @@ Feature: files and folders can be deleted from the trashbin
 
 
   Scenario Outline: delete folders with special characters from the trashbin
-    Given user "Alice" has created the following folders
+    Given using <dav-path> DAV path
+    And user "Alice" has created the following folders
       | path         |
       | qa&dev       |
       | !@tester$^   |
