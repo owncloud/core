@@ -117,23 +117,23 @@ Feature: Creation of tags
 
 
   Scenario: Creating tags in lowercase and uppercase should work
-    When the administrator creates a "normal" tag with name "UppercaseTag" using the WebDAV API
-    Then the HTTP status code should be "201"
-    When the administrator creates a "normal" tag with name "lowercasetag" using the WebDAV API
-    Then the HTTP status code should be "201"
+    When the administrator creates the following tags using the WebDAV API
+      | name         | type   |
+      | UppercaseTag | normal |
+      | lowercasetag | normal |
+    Then the HTTP status code of responses on all endpoints should be "201"
     And the following tags should exist for the administrator
       | name         | type   |
       | UppercaseTag | normal |
       | lowercasetag | normal |
 
-
   Scenario: Creating tags with the same name in lowercase and uppercase should work
-    When the administrator creates a "normal" tag with name "testtag" using the WebDAV API
-    Then the HTTP status code should be "201"
-    When the administrator creates a "normal" tag with name "Testtag" using the WebDAV API
-    Then the HTTP status code should be "201"
-    When the administrator creates a "normal" tag with name "TESTTAG" using the WebDAV API
-    Then the HTTP status code should be "201"
+    When the administrator creates the following tags using the WebDAV API
+      | name    | type   |
+      | testtag | normal |
+      | Testtag | normal |
+      | TESTTAG | normal |
+    Then the HTTP status code of responses on all endpoints should be "201"
     And the following tags should exist for the administrator
       | name    | type   |
       | testtag | normal |

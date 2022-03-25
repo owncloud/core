@@ -11,15 +11,13 @@ Feature: tags
   Scenario: Getting tags only works with access to the file
     Given the administrator has created a "normal" tag with name "MyFirstTag"
     And user "Alice" has uploaded file "filesForUpload/textfile.txt" to "/myFileToTag.txt"
-    When user "Alice" adds tag "MyFirstTag" to file "/myFileToTag.txt" using the WebDAV API
-    Then file "/myFileToTag.txt" should have the following tags for user "Alice"
-      | name       | type   |
-      | MyFirstTag | normal |
-    And the HTTP status when user "Brian" requests tags for file "/myFileToTag.txt" owned by user "Alice" should be "404"
-    When user "Alice" gets the following properties of file "/myFileToTag.txt" using the WebDAV API
+    And user "Alice" has added tag "MyFirstTag" to file "/myFileToTag.txt"
+    When user "Brian" requests tags for file "/myFileToTag.txt" owned by user "Alice" using the WebDAV API
+    And user "Alice" gets the following properties of file "/myFileToTag.txt" using the WebDAV API
       | propertyName |
       | oc:tags      |
-    Then the single response should contain a property "oc:tags" with value ""
+    Then the HTTP status code of responses on all endpoints should be "404"
+    And the single response should contain a property "oc:tags" with value ""
 
   @files_sharing-app-required
   Scenario: Static tags should be available while accessing the file if it is assigned to file
