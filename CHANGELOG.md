@@ -150,7 +150,8 @@ Details
 
    The following have been updated: - bower_components/showdown (1.9.1 to 2.0.0) -
    bower_components/underscore (1.13.1 to 1.13.2) - follow-redirects (1.14.2 to 1.14.8) -
-   karma (6.3.8 to 6.3.16) - karma-coverage (2.0.3 to 2.2.0) - log4js (6.3.0 to 6.4.1)
+   karma (6.3.8 to 6.3.16) - karma-coverage (2.0.3 to 2.2.0) - log4js (6.3.0 to 6.4.1) - minimist
+   (1.2.5 to 1.2.6)
 
    https://github.com/owncloud/core/pull/39709
    https://github.com/owncloud/core/pull/39763
@@ -160,6 +161,7 @@ Details
    https://github.com/owncloud/core/pull/39814
    https://github.com/owncloud/core/pull/39816
    https://github.com/owncloud/core/pull/39838
+   https://github.com/owncloud/core/pull/39926
 
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
 
