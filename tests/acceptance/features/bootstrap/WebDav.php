@@ -2074,6 +2074,7 @@ trait WebDav {
 			"HTTP status code was not 201 or 204 while trying to upload file '$source' to '$destination' for user '$user'"
 		);
 		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
 	}
 
 	/**

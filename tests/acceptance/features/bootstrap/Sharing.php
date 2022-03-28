@@ -1920,10 +1920,31 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the info about the last share by user "([^"]*)" with (user|group) "([^"]*)" should include$/
+	 * @Then /^as "([^"]*)" the info about the last share by user "([^"]*)" with user "([^"]*)" should include$/
+	 *
+	 * @param string $requestor
+	 * @param string $sharer
+	 * @param string $sharee
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function asLastShareInfoAboutUserSharingWithUserShouldInclude(
+		string $requestor,
+		string $sharer,
+		string $sharee,
+		TableNode $table
+	) {
+		$this->userGetsInfoOfLastShareUsingTheSharingApi($requestor);
+		$this->ocsContext->assertOCSResponseIndicatesSuccess();
+		$this->checkFieldsOfLastResponseToUser($sharer, $sharee, $table);
+	}
+
+	/**
+	 * @Then /^the info about the last share by user "([^"]*)" with (?:user|group) "([^"]*)" should include$/
 	 *
 	 * @param string $sharer
-	 * @param string $userOrGroup
 	 * @param string $sharee
 	 * @param TableNode $table
 	 *
@@ -1932,24 +1953,10 @@ trait Sharing {
 	 */
 	public function theInfoAboutTheLastShareByUserWithUserShouldInclude(
 		string $sharer,
-		string $userOrGroup,
 		string $sharee,
 		TableNode $table
 	):void {
-		$this->userGetsInfoOfLastShareUsingTheSharingApi($sharer);
-		$rows = $table->getRows();
-		$infoTable = [];
-		for ($index = 0; $index < \count($rows); $index++) {
-			if ($rows[$index][0] === "ocs_status_code") {
-				$this->ocsContext->theOCSStatusCodeShouldBe($rows[$index][1]);
-			} elseif ($rows[$index][0] === "http_status_code") {
-				$this->thenTheHTTPStatusCodeShouldBe($rows[$index][1]);
-			} else {
-				$infoTable[$index] = $rows[$index];
-			}
-		}
-		$table = new TableNode($infoTable);
-		$this->checkFieldsOfLastResponseToUser($sharer, $sharee, $table);
+		$this->asLastShareInfoAboutUserSharingWithUserShouldInclude($sharer, $sharer, $sharee, $table);
 	}
 
 	/**
@@ -2275,6 +2282,13 @@ trait Sharing {
 			200,
 			"Error getting info of last share for user $user"
 		);
+		$this->ocsContext->assertOCSResponseIndicatesSuccess(
+			__METHOD__ .
+			' Error getting info of last share for user $user\n' .
+			$this->ocsContext->getOCSResponseStatusMessage(
+				$this->getResponse()
+			) . '"'
+		);
 		$this->checkFields($user, $body);
 	}
 
@@ -2286,7 +2300,6 @@ trait Sharing {
 	 *
 	 * @return void
 	 * @throws Exception
-	 *
 	 */
 	public function informationOfLastShareShouldInclude(
 		string $user,
@@ -3132,6 +3145,7 @@ trait Sharing {
 			200,
 			__METHOD__ . " could not accept the pending share $share to $user by $offeredBy"
 		);
+		$this->ocsContext->assertOCSResponseIndicatesSuccess();
 	}
 
 	/**

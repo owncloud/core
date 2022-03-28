@@ -134,7 +134,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Carol" has uploaded file with content "Second data" to "/randomfile.txt"
     When user "Brian" shares file "randomfile.txt" with user "Alice" with permissions "read" using the sharing API
     And user "Alice" accepts share "/randomfile.txt" offered by user "Brian" using the sharing API
-    Then the info about the last share by user "Brian" with user "Alice" should include
+    Then as "Alice" the info about the last share by user "Brian" with user "Alice" should include
       | uid_owner   | %username%      |
       | share_with  | %username%      |
       | file_target | <file_target_1> |
@@ -142,7 +142,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read            |
     When user "Carol" shares file "randomfile.txt" with user "Alice" with permissions "read,update" using the sharing API
     And user "Alice" accepts share "/randomfile.txt" offered by user "Carol" using the sharing API
-    Then the info about the last share by user "Carol" with user "Alice" should include
+    Then as "Alice" the info about the last share by user "Carol" with user "Alice" should include
       | uid_owner   | %username%      |
       | share_with  | %username%      |
       | file_target | <file_target_2> |
@@ -172,7 +172,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Carol" has created folder "zzzfolder/Carol"
     When user "Brian" shares folder "zzzfolder" with user "Alice" with permissions "read,delete" using the sharing API
     And user "Alice" accepts share "/zzzfolder" offered by user "Brian" using the sharing API
-    Then the info about the last share by user "Brian" with user "Alice" should include
+    Then as "Alice" the info about the last share by user "Brian" with user "Alice" should include
       | uid_owner   | %username%      |
       | share_with  | %username%      |
       | file_target | <file_target_1> |
@@ -180,7 +180,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read,delete     |
     When user "Carol" shares folder "zzzfolder" with user "Alice" with permissions "read,share" using the sharing API
     And user "Alice" accepts share "/zzzfolder" offered by user "Carol" using the sharing API
-    Then the info about the last share by user "Carol" with user "Alice" should include
+    Then as "Alice" the info about the last share by user "Carol" with user "Alice" should include
       | uid_owner   | %username%      |
       | share_with  | %username%      |
       | file_target | <file_target_2> |
@@ -258,9 +258,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Brian" folder "/Shares/child1" should exist
     When user "Brian" creates folder "/Shares/child1/fo3" using the WebDAV API
     Then the HTTP status code should be "403"
-    And as "Alice" folder "/Shares/child1" should exist
+    And as "Alice" folder "/Shares/child1/fo3" should not exist
     When user "Alice" creates folder "/Shares/child1/fo3" using the WebDAV API
     Then the HTTP status code should be "403"
+    And as "Alice" folder "/Shares/child1/fo3" should not exist
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
@@ -299,11 +300,15 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Brian" moves file "/Shares/parent/child1/child2/textfile-2.txt" to "/Shares/parent/child1/child2/rename.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And as "Brian" file "/Shares/child1/child2/rename.txt" should exist
+    But as "Brian" file "/Shares/child1/child2/textfile-2.txt" should not exist
     When user "Brian" moves file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/Shares/child1/child2/rename.txt" should exist
+    But as "Alice" file "/Shares/child1/child2/rename2.txt" should not exist
     When user "Alice" moves file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt" using the WebDAV API
     Then the HTTP status code should be "403"
+    And as "Alice" file "/Shares/child1/child2/rename2.txt" should not exist
+    But as "Alice" file "/Shares/child1/child2/rename.txt" should exist
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
@@ -348,6 +353,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Alice" folder "/Shares/child1" should exist
     When user "Alice" deletes folder "/Shares/child1/child2" using the WebDAV API
     Then the HTTP status code should be "403"
+    And as "Alice" folder "/Shares/child1/child2" should exist
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
@@ -389,9 +395,7 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read           |
     Then the HTTP status code should be "200"
     And the OCS status code should be "100"
-    When user "Alice" accepts share "/parent" offered by user "Brian" using the sharing API
-    And the HTTP status code should be "200"
-    And the OCS status code should be "100"
+    And user "Alice" should be able to accept pending share "/parent" offered by user "Brian"
     And as "Brian" folder "/Shares/child1" should exist
     And as "Alice" folder "/Shares/child1" should exist
     And as "Alice" folder "/Shares/parent" should exist
@@ -426,23 +430,16 @@ Feature: share resources where the sharee receives the share in multiple ways
       | shareType   | user           |
       | shareWith   | Brian          |
       | permissions | all            |
-    And user "Brian" has accepted share "<path>" offered by user "Carol"
-    And user "Brian" has accepted share "/parent" offered by user "Carol"
-    And user "Alice" has accepted share "/parent" offered by user "Carol"
-    When user "Brian" creates folder "/Shares/child1/fo1" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Brian" folder "/Shares/child1/fo1" should exist
-    When user "Brian" creates folder "/Shares/child1/child2/fo2" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Brian" folder "/Shares/child1/child2/fo2" should exist
-    And as "Brian" folder "/Shares/parent" should exist
-    When user "Brian" creates folder "/Shares/parent/fo3" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Brian" folder "/Shares/parent/fo3" should not exist
-    And as "Alice" folder "/Shares/parent" should exist
-    When user "Alice" creates folder "/Shares/parent/fo3" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" folder "/Shares/parent/fo3" should not exist
+    When user "Brian" accepts share "<path>" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    And user "Brian" should be able to create folder "/Shares/child1/fo1"
+    And user "Brian" should be able to create folder "/Shares/child1/child2/fo2"
+    But user "Brian" should not be able to create folder "/Shares/parent/fo3"
+    And user "Brian" should not be able to create folder "/Shares/parent/fo3"
+    And user "Alice" should not be able to create folder "/Shares/parent/fo3"
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
     Examples:
       | path    |
