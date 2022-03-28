@@ -76,7 +76,6 @@ class CryptoWrapper {
 	 * @param ITimeFactory $timeFactory
 	 */
 	public function __construct(
-		IConfig $config,
 		ICrypto $crypto,
 		ISecureRandom $random,
 		IRequest $request,
@@ -165,7 +164,7 @@ class CryptoWrapper {
 		}
 
 		$samesite = $config->getSystemValue('http.cookie.samesite', 'Strict');
-		$options = [
+		return [
 			'expires' => $sessionLifetime,
 			'path' => $webRoot,
 			'domain' => '',
@@ -173,7 +172,6 @@ class CryptoWrapper {
 			'httponly' => true,
 			'samesite' => $samesite,
 		];
-		return $options;
 	}
 
 	private function sendCookieToBrowser($value, $options) {
