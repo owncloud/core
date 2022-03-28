@@ -3063,6 +3063,8 @@ trait Sharing {
 			200,
 			__METHOD__ . " could not $actionText share $share to $user by $offeredBy"
 		);
+		$this->emptyLastHTTPStatusCodesArray();
+		$this->emptyLastOCSStatusCodesArray();
 	}
 
 	/**

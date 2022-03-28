@@ -313,7 +313,7 @@ class WebDavPropertiesContext implements Context {
 				$path,
 				'0',
 				$properties,
-				"public-files"
+				$this->featureContext->getDavPathVersion() === 1 ? "public-files" : "public-files-new"
 			)
 		);
 	}
@@ -754,6 +754,28 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
+	 * @Then /^as a public the lock discovery property "([^"]*)" of the (?:file|folder|entry) "([^"]*)" should match "([^"]*)"$/
+	 *
+	 * @param string $xpath
+	 * @param string $path
+	 * @param string $pattern
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function publicGetsThePropertiesOfFolderAndAssertValueOfItemInResponseRegExp(string $xpath, string $path, string $pattern):void {
+		$propertiesTable = new TableNode([['propertyName'],['d:lockdiscovery']]);
+		$this->publicGetsThePropertiesOfFolder($path, $propertiesTable);
+
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->assertValueOfItemInResponseToUserRegExp(
+			$xpath,
+			null,
+			$pattern
+		);
+	}
+
+	/**
 	 * @Then there should be an entry with href matching :pattern in the response to user :user
 	 *
 	 * @param string $pattern
@@ -830,6 +852,33 @@ class WebDavPropertiesContext implements Context {
 			$value,
 			"item \"$xpath\" found with value \"$value\", " .
 			"expected to match regex pattern: \"$pattern\""
+		);
+	}
+
+	/**
+	 * @Then /^as user "([^"]*)" the lock discovery property "([^"]*)" of the (?:file|folder|entry) "([^"]*)" should match "([^"]*)"$/
+	 *
+	 * @param string|null $user
+	 * @param string $xpath
+	 * @param string $path
+	 * @param string $pattern
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userGetsPropertiesOfFolderAndAssertValueOfItemInResponseToUserRegExp(string $user, string $xpath, string $path, string $pattern):void {
+		$propertiesTable = new TableNode([['propertyName'],['d:lockdiscovery']]);
+		$this->userGetsPropertiesOfFolder(
+			$user,
+			$path,
+			$propertiesTable
+		);
+
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->assertValueOfItemInResponseToUserRegExp(
+			$xpath,
+			$user,
+			$pattern
 		);
 	}
 
