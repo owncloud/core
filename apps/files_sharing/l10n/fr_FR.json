@@ -1,0 +1,9 @@
+{ "translations": {
+    "Shared by link" : "Partager par lien public",
+    "Share" : "Partager",
+    "Pending" : "En attente",
+    "Password" : "Mot de passe",
+    "Name" : "Nom",
+    "Download" : "Télécharger"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

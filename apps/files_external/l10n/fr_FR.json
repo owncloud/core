@@ -1,0 +1,8 @@
+{ "translations": {
+    "Username" : "Identifiant",
+    "Password" : "Mot de passe",
+    "Share" : "Partager",
+    "Name" : "Nom",
+    "Folder name" : "Nom du dossier"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

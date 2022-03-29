@@ -1,0 +1,14 @@
+{ "translations": {
+    "All files" : "Tous les fichiers",
+    "Close" : "Fermer",
+    "Download" : "Télécharger",
+    "Files" : "Fichiers",
+    "Details" : "Détails",
+    "Pending" : "En attente",
+    "Name" : "Nom",
+    "Size" : "Taille",
+    "New folder" : "Nouveau dossier",
+    "Upload" : "Téléverser",
+    "Settings" : "Paramètres"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

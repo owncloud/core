@@ -1,0 +1,9 @@
+{ "translations": {
+    "seconds ago" : "à l'instant",
+    "Username" : "Identifiant",
+    "Password" : "Mot de passe",
+    "General" : "Généraux",
+    "Security" : "Sécurité",
+    "Settings" : "Paramètres"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
+}

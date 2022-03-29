@@ -13,6 +13,7 @@ OC.L10N.register(
     "group" : "Gruppe",
     "Name" : "Name",
     "Size" : "Größe",
+    "Folder" : "Ordner",
     "New folder" : "Neuer Ordner",
     "Cancel" : "Abbrechen",
     "Upload" : "Hochladen",

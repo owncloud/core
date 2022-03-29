@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Delete" : "Löschen",
     "Error" : "Fehler",
-    "Name" : "Name"
+    "Name" : "Name",
+    "Deleted" : "Gelöscht"
 },
 "nplurals=2; plural=(n != 1);");
