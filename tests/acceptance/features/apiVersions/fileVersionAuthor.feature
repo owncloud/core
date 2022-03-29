@@ -22,7 +22,8 @@ Feature: file versions remember the author of each version
     And user "Carol" has uploaded file with content "uploaded content carol" to "/test/textfile0.txt"
     And user "David" has uploaded file with content "uploaded content david" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
-    Then the number of versions should be "3"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "3"
     And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
     And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
@@ -44,7 +45,8 @@ Feature: file versions remember the author of each version
     And user "Brian" has uploaded file with content "uploaded content brian" to "/test/textfile0.txt"
     And user "Carol" has uploaded file with content "uploaded content carol" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
-    Then the number of versions should be "2"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "2"
     And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
     And as users "Alice,Brian,Carol" the authors of the versions of file "/test/textfile0.txt" should be:
@@ -63,7 +65,8 @@ Feature: file versions remember the author of each version
     And user "Brian" has uploaded file with content "uploaded content brian" to "/textfile0.txt"
     And user "Carol" has uploaded file with content "uploaded content carol" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
-    Then the number of versions should be "2"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "2"
     And the content of version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
     And as users "Alice,Brian,Carol" the authors of the versions of file "/textfile0.txt" should be:
@@ -82,12 +85,12 @@ Feature: file versions remember the author of each version
     And user "Alice" has uploaded file with content "uploaded content alice" to "/test/textfile0.txt"
     And user "Brian" has uploaded file with content "uploaded content brian" to "/test/textfile0.txt"
     And user "Carol" has uploaded file with content "uploaded content carol" to "/test/textfile0.txt"
-    When user "Brian" moves file "/test/textfile0.txt" to "/textfile0.txt" using the WebDAV API
-    And user "Brian" uploads file with content "uploaded content brian after moving file outside subfolder" to "/textfile0.txt" using the WebDAV API
-    And user "Brian" moves file "/textfile0.txt" to "/test/textfile0.txt" using the WebDAV API
-    Then as "Alice" file "/test/textfile0.txt" should exist
+    And user "Brian" has moved file "/test/textfile0.txt" to "/textfile0.txt"
+    And user "Brian" has uploaded file with content "uploaded content brian after moving file outside subfolder" to "/textfile0.txt"
+    And user "Brian" has moved file "/textfile0.txt" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
-    Then the number of versions should be "3"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "3"
     And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
     And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
@@ -107,12 +110,10 @@ Feature: file versions remember the author of each version
     And user "Alice" has shared file "/exist.txt" with group "grp1"
     And user "Brian" has uploaded file with content "uploaded content brian" to "/exist.txt"
     And user "Carol" has uploaded file with content "uploaded content carol" to "/exist.txt"
-    When user "Alice" moves file "/exist.txt" to "/textfile0.txt" using the WebDAV API
-    Then as "Alice" file "/textfile0.txt" should exist
-    And as "Brian" file "/textfile0.txt" should not exist
-    And as "Carol" file "/textfile0.txt" should not exist
+    And user "Alice" has moved file "/exist.txt" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "textfile0.txt"
-    Then the number of versions should be "2"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "2"
     And the content of version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
     And as user "Alice" the authors of the versions of file "/textfile0.txt" should be:
@@ -134,12 +135,10 @@ Feature: file versions remember the author of each version
     And user "Alice" has shared file "/exist.txt" with group "grp1"
     And user "Brian" has uploaded file with content "uploaded content brian" to "/exist.txt"
     And user "Carol" has uploaded file with content "uploaded content carol" to "/exist.txt"
-    When user "Brian" moves file "/exist.txt" to "/textfile0.txt" using the WebDAV API
-    Then as "Brian" file "/textfile0.txt" should exist
-    And as "Alice" file "/textfile0.txt" should not exist
-    And as "Carol" file "/textfile0.txt" should not exist
+    And user "Brian" has moved file "/exist.txt" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "exist.txt"
-    Then the number of versions should be "2"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "2"
     And the content of version index "1" of file "/exist.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "2" of file "/exist.txt" for user "Alice" should be "uploaded content alice"
     And as users "Alice,Carol" the authors of the versions of file "/exist.txt" should be:
@@ -153,7 +152,7 @@ Feature: file versions remember the author of each version
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes from multiple users when reshared after unshared by sharer
-    Given user "Alice" creates folder "/test" using the WebDAV API
+    Given user "Alice" has created folder "/test"
     And group "grp1" has been created
     And user "Alice" has been added to group "grp1"
     And user "Brian" has been added to group "grp1"
@@ -162,11 +161,12 @@ Feature: file versions remember the author of each version
     And user "Alice" has uploaded file with content "uploaded content alice" to "/test/textfile0.txt"
     And user "Brian" has uploaded file with content "uploaded content brian" to "/test/textfile0.txt"
     And user "Carol" has uploaded file with content "uploaded content carol" to "/test/textfile0.txt"
-    When user "Alice" deletes the last share using the sharing API
-    And user "Alice" uploads file with content "uploaded content alice after unshared folder" to "/test/textfile0.txt" using the WebDAV API
-    And user "Alice" shares folder "/test" with group "grp1" using the sharing API
-    And user "Alice" gets the number of versions of file "/test/textfile0.txt"
-    Then the number of versions should be "3"
+    And user "Alice" has deleted the last share
+    And user "Alice" has uploaded file with content "uploaded content alice after unshared folder" to "/test/textfile0.txt"
+    And user "Alice" has shared folder "/test" with group "grp1"
+    When user "Alice" gets the number of versions of file "/test/textfile0.txt"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "3"
     And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
     And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
@@ -193,7 +193,8 @@ Feature: file versions remember the author of each version
     And user "Carol" has uploaded file with content "uploaded content carol" to "/test (2)/textfile0.txt"
     And user "David" has uploaded file with content "uploaded content david" to "/test/textfile0.txt"
     When user "Alice" gets the number of versions of file "/test/textfile0.txt"
-    Then the number of versions should be "3"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "3"
     And the content of version index "1" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content carol"
     And the content of version index "2" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "3" of file "/test/textfile0.txt" for user "Alice" should be "uploaded content alice"
@@ -208,13 +209,15 @@ Feature: file versions remember the author of each version
       | 2     | Brian  |
       | 3     | Alice  |
     When user "Brian" gets the number of versions of file "/test/textfile0.txt"
-    Then the number of versions should be "1"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "1"
     And the content of version index "1" of file "/test/textfile0.txt" for user "Brian" should be "duplicate brian"
     And as user "Brian" the authors of the versions of file "/test/textfile0.txt" should be:
       | index | author |
       | 1     | Brian  |
     When user "Carol" gets the number of versions of file "/test/textfile0.txt"
-    Then the number of versions should be "0"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "0"
 
   @skip_on_objectstore @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0
   Scenario: enable file versioning and check the history of changes from multiple users who have a matching file
@@ -230,7 +233,8 @@ Feature: file versions remember the author of each version
     And user "Carol" has uploaded file with content "uploaded content carol" to "/textfile0 (2).txt"
     And user "David" has uploaded file with content "uploaded content david" to "/textfile0.txt"
     When user "Alice" gets the number of versions of file "/textfile0.txt"
-    Then the number of versions should be "3"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "3"
     And the content of version index "1" of file "/textfile0.txt" for user "Alice" should be "uploaded content carol"
     And the content of version index "2" of file "/textfile0.txt" for user "Alice" should be "uploaded content brian"
     And the content of version index "3" of file "/textfile0.txt" for user "Alice" should be "uploaded content alice"
@@ -245,10 +249,12 @@ Feature: file versions remember the author of each version
       | 2     | Brian  |
       | 3     | Alice  |
     When user "Brian" gets the number of versions of file "/textfile0.txt"
-    Then the number of versions should be "1"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "1"
     And the content of version index "1" of file "/textfile0.txt" for user "Brian" should be "duplicate brian"
     And as user "Brian" the authors of the versions of file "/textfile0.txt" should be:
       | index | author |
       | 1     | Brian  |
     When user "Carol" gets the number of versions of file "/textfile0.txt"
-    Then the number of versions should be "0"
+    Then the HTTP status code should be "207"
+    And the number of versions should be "0"

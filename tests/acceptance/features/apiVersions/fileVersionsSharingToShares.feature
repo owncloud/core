@@ -20,13 +20,14 @@ Feature: dav-versions
     And user "Alice" has uploaded file with content "123" to "/davtest.txt"
     And user "Alice" has uploaded file with content "456789" to "/davtest.txt"
     And we save it into "FILEID"
-    When user "Alice" creates a share using the sharing API with settings
+    And user "Alice" has created a share with settings
       | path        | /davtest.txt |
       | shareType   | user         |
       | shareWith   | Brian        |
       | permissions | read         |
-    And user "Brian" accepts share "/davtest.txt" offered by user "Alice" using the sharing API
-    Then the version folder of fileId "<<FILEID>>" for user "Brian" should contain "1" element
+    When user "Brian" accepts share "/davtest.txt" offered by user "Alice" using the sharing API
+    Then the HTTP status code should be "200"
+    And the version folder of fileId "<<FILEID>>" for user "Brian" should contain "1" element
 
   @files_sharing-app-required
   Scenario: sharer of a file can see the old version information when the sharee changes the content of the file

@@ -2242,6 +2242,7 @@ trait WebDav {
 			$headers,
 			$noOfChunks
 		);
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
@@ -2353,6 +2354,8 @@ trait WebDav {
 			false,
 			'new'
 		);
+
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**
