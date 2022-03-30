@@ -1,13 +1,32 @@
 { "translations": {
+    "Download / View" : "Téléchargement / Lecture",
+    "Download / View / Upload" : "Téléchargement / Lecture / Téléversement",
     "Settings" : "Paramètres",
     "seconds ago" : "à l'instant",
     "No" : "Non",
     "Yes" : "Oui",
+    "Choose" : "Choisir",
+    "Cancel" : "Annuler",
     "Error" : "Erreur",
+    "Expiration" : "Expiration",
+    "Remove link" : "Supprimer le lien",
+    "Remove" : "Supprimer",
+    "Anyone with the link has access to the file/folder" : "Toute personne disposant du lien a acces au fichier/dossier",
+    "Link name" : "Nom du lien",
     "Name" : "Nom",
+    "Filename" : "Nom du fichier",
     "Password" : "Mot de passe",
     "Share" : "Partager",
+    "Save" : "Enregistrer",
+    "can share" : "peut partager",
+    "can edit" : "peut modifier",
+    "create" : "peut créer",
+    "change" : "changer",
+    "delete" : "supprimer",
+    "Rename" : "Renommer",
     "Help" : "Aide",
-    "Username" : "Identifiant"
+    "Imprint" : "Mentions",
+    "Username" : "Identifiant",
+    "Search" : "Rechercher"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

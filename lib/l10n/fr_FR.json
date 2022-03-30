@@ -2,8 +2,11 @@
     "seconds ago" : "à l'instant",
     "Username" : "Identifiant",
     "Password" : "Mot de passe",
+    "File name contains at least one invalid character" : "Le nom de fichier contient au moins un caractère invalide",
     "General" : "Généraux",
     "Security" : "Sécurité",
-    "Settings" : "Paramètres"
+    "Search" : "Rechercher",
+    "Settings" : "Paramètres",
+    "Imprint" : "Mentions"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

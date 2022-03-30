@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Username" : "Identifiant",
     "Password" : "Mot de passe",
+    "Save" : "Enregistrer",
     "Share" : "Partager",
     "Name" : "Nom",
     "Folder name" : "Nom du dossier"
