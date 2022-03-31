@@ -1,6 +1,7 @@
 <?php
 namespace OCA\files_external\Migrations;
 
+use OC\NeedsUpdateException;
 use OCA\Files_External\Lib\Backend\SFTP;
 use OCA\Files_External\Lib\Auth\PublicKey\RSA;
 use OCA\Files_External\Lib\RSAStore;
