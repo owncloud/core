@@ -57,7 +57,7 @@ class RSAStore {
 	 * instance was there.
 	 * This shouldn't be needed outside of unit tests
 	 */
-	public static function setGlobalInstance(RSAStore $rsaStore) {
+	public static function setGlobalInstance(?RSAStore $rsaStore) {
 		self::$rsaStore = $rsaStore;
 	}
 
