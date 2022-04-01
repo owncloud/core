@@ -7,7 +7,8 @@ OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
 OC_CI_CEPH = "owncloudci/ceph:tag-build-master-jewel-ubuntu-16.04"
 OC_CI_CORE_NODEJS = "owncloudci/core:nodejs14"
 OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS = "owncloudci/drone-cancel-previous-builds"
-OC_CI_NODEJS = "owncloudci/nodejs:14"
+OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
+OC_CI_NODEJS = "owncloudci/nodejs:%s"
 OC_CI_ORACLE_XE = "owncloudci/oracle-xe:latest"
 OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_SAMBA = "owncloudci/samba:latest"
@@ -28,6 +29,9 @@ SONARSOURCE_SONAR_SCANNER_CLI = "sonarsource/sonar-scanner-cli"
 THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 WEBHIPPIE_REDIS = "webhippie/redis:latest"
+
+DEFAULT_PHP_VERSION = "7.4"
+DEFAULT_NODEJS_VERSION = "14"
 
 dir = {
     "base": "/drone",
@@ -85,7 +89,7 @@ config = {
         },
         "reducedDatabases": {
             "phpVersions": [
-                "7.4",
+                DEFAULT_PHP_VERSION,
             ],
             "databases": [
                 "sqlite",
@@ -95,7 +99,7 @@ config = {
         "external-samba-windows": {
             "phpVersions": [
                 "7.3",
-                "7.4",
+                DEFAULT_PHP_VERSION,
             ],
             "databases": [
                 "sqlite",
@@ -115,7 +119,7 @@ config = {
         "external-other": {
             "phpVersions": [
                 "7.3",
-                "7.4",
+                DEFAULT_PHP_VERSION,
             ],
             "databases": [
                 "sqlite",
@@ -256,7 +260,7 @@ config = {
             "testingRemoteSystem": False,
             "extraSetup": [{
                 "name": "configure-encryption",
-                "image": OC_CI_PHP % "7.4",
+                "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
                 "commands": [
                     "php occ maintenance:singleuser --on",
                     "php occ encryption:enable",
@@ -479,7 +483,7 @@ def initialPipelines(ctx):
     return dependencies(ctx) + checkStarlark()
 
 def beforePipelines(ctx):
-    return codestyle() + changelog(ctx) + cancelPreviousBuilds() + phpstan() + phan()
+    return codestyle(ctx) + changelog(ctx) + cancelPreviousBuilds() + phpstan(ctx) + phan(ctx)
 
 def coveragePipelines(ctx):
     # All unit test pipelines that have coverage or other test analysis reported
@@ -592,14 +596,14 @@ def dependencies(ctx):
 
     return pipelines
 
-def codestyle():
+def codestyle(ctx):
     pipelines = []
 
     if "codestyle" not in config:
         return pipelines
 
     default = {
-        "phpVersions": ["7.4"],
+        "phpVersions": [DEFAULT_PHP_VERSION],
     }
 
     if "defaults" in config:
@@ -636,7 +640,8 @@ def codestyle():
                     "base": dir["base"],
                     "path": "src",
                 },
-                "steps": cacheRestore() +
+                "steps": skipIfUnchanged(ctx, "lint") +
+                         cacheRestore() +
                          composerInstall(phpVersion) +
                          vendorbinCodestyle(phpVersion) +
                          vendorbinCodesniffer(phpVersion) +
@@ -785,14 +790,14 @@ def cancelPreviousBuilds():
         },
     }]
 
-def phpstan():
+def phpstan(ctx):
     pipelines = []
 
     if "phpstan" not in config:
         return pipelines
 
     default = {
-        "phpVersions": ["7.4"],
+        "phpVersions": [DEFAULT_PHP_VERSION],
         "logLevel": "2",
     }
 
@@ -830,7 +835,8 @@ def phpstan():
                     "base": dir["base"],
                     "path": "src",
                 },
-                "steps": cacheRestore() +
+                "steps": skipIfUnchanged(ctx, "lint") +
+                         cacheRestore() +
                          composerInstall(phpVersion) +
                          vendorbinPhpstan(phpVersion) +
                          installServer(phpVersion, "sqlite", params["logLevel"]) +
@@ -857,14 +863,14 @@ def phpstan():
 
     return pipelines
 
-def phan():
+def phan(ctx):
     pipelines = []
 
     if "phan" not in config:
         return pipelines
 
     default = {
-        "phpVersions": ["7.3", "7.4"],
+        "phpVersions": ["7.3", DEFAULT_PHP_VERSION],
         "logLevel": "2",
     }
 
@@ -902,7 +908,7 @@ def phan():
                     "base": dir["base"],
                     "path": "src",
                 },
-                "steps": cacheRestore() +
+                "steps": skipIfUnchanged(ctx, "lint") + cacheRestore() +
                          composerInstall(phpVersion) +
                          vendorbinPhan(phpVersion) +
                          installServer(phpVersion, "sqlite", params["logLevel"]) +
@@ -935,7 +941,7 @@ def litmus():
         return pipelines
 
     default = {
-        "phpVersions": ["7.3", "7.4"],
+        "phpVersions": ["7.3", DEFAULT_PHP_VERSION],
         "logLevel": "2",
         "useHttps": True,
     }
@@ -1086,7 +1092,7 @@ def dav():
         return pipelines
 
     default = {
-        "phpVersions": ["7.3", "7.4"],
+        "phpVersions": ["7.3", DEFAULT_PHP_VERSION],
         "logLevel": "2",
     }
 
@@ -1216,12 +1222,12 @@ def javascript(ctx, withCoverage):
             "base": dir["base"],
             "path": "src",
         },
-        "steps": cacheRestore() +
+        "steps": skipIfUnchanged(ctx, "unit-tests") + cacheRestore() +
                  yarnInstall() +
                  [
                      {
                          "name": "test-js",
-                         "image": OC_CI_NODEJS,
+                         "image": OC_CI_NODEJS % DEFAULT_NODEJS_VERSION,
                          "commands": [
                              "make test-js",
                          ],
@@ -1276,7 +1282,7 @@ def phpTests(ctx, testType, withCoverage):
     # The default PHP unit test settings for a PR.
     # Note: do not run Oracle by default in PRs.
     prDefault = {
-        "phpVersions": ["7.3", "7.4"],
+        "phpVersions": ["7.3", DEFAULT_PHP_VERSION],
         "databases": [
             "sqlite",
             "mariadb:10.2",
@@ -1306,7 +1312,7 @@ def phpTests(ctx, testType, withCoverage):
 
     # The default PHP unit test settings for the cron job (usually runs nightly).
     cronDefault = {
-        "phpVersions": ["7.3", "7.4"],
+        "phpVersions": ["7.3", DEFAULT_PHP_VERSION],
         "databases": [
             "sqlite",
             "mariadb:10.2",
@@ -1439,7 +1445,8 @@ def phpTests(ctx, testType, withCoverage):
                             "base": dir["base"],
                             "path": "src",
                         },
-                        "steps": cacheRestore() +
+                        "steps": skipIfUnchanged(ctx, "unit-tests") +
+                                 cacheRestore() +
                                  composerInstall(phpVersion) +
                                  installServer(phpVersion, db, params["logLevel"]) +
                                  installExtraApps(phpVersion, extraAppsDict, dir["server"]) +
@@ -1556,9 +1563,9 @@ def acceptance(ctx):
     default = {
         "federatedServerVersions": [""],
         "browsers": ["chrome"],
-        "phpVersions": ["7.4"],
+        "phpVersions": [DEFAULT_PHP_VERSION],
         "databases": ["mariadb:10.2"],
-        "federatedPhpVersion": "7.4",
+        "federatedPhpVersion": DEFAULT_PHP_VERSION,
         "federatedServerNeeded": False,
         "federatedDb": "",
         "filterTags": "",
@@ -1760,7 +1767,8 @@ def acceptance(ctx):
                                         "base": dir["base"],
                                         "path": "src",
                                     },
-                                    "steps": cacheRestore() +
+                                    "steps": skipIfUnchanged(ctx, "acceptance-tests") +
+                                             cacheRestore() +
                                              composerInstall(phpVersion) +
                                              vendorbinBehat() +
                                              yarnInstall() +
@@ -1831,7 +1839,7 @@ def acceptance(ctx):
 
     return pipelines
 
-def sonarAnalysis(ctx, phpVersion = "7.4"):
+def sonarAnalysis(ctx, phpVersion = DEFAULT_PHP_VERSION):
     sonar_env = {
         "SONAR_TOKEN": {
             "from_secret": "sonar_token",
@@ -1869,6 +1877,7 @@ def sonarAnalysis(ctx, phpVersion = "7.4"):
                          ],
                      },
                  ] +
+                 skipIfUnchanged(ctx, "unit-tests") +
                  cacheRestore() +
                  composerInstall(phpVersion) +
                  yarnInstall() +
@@ -2483,7 +2492,7 @@ def vendorbinPhpstan(phpVersion):
 def vendorbinBehat():
     return [{
         "name": "vendorbin-behat",
-        "image": OC_CI_PHP % "7.4",
+        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "environment": {
             "COMPOSER_HOME": "%s/.cache/composer" % dir["server"],
         },
@@ -2495,7 +2504,7 @@ def vendorbinBehat():
 def yarnInstall():
     return [{
         "name": "yarn-install",
-        "image": OC_CI_NODEJS,
+        "image": OC_CI_NODEJS % DEFAULT_NODEJS_VERSION,
         "environment": {
             "NPM_CONFIG_CACHE": "%s/.cache/npm" % dir["server"],
             "YARN_CACHE_FOLDER": "%s/.cache/yarn" % dir["server"],
@@ -2621,8 +2630,7 @@ def installServer(phpVersion, db, logLevel = "2", ssl = False, federatedServerNe
 def enableAppsForPhpStan(phpVersion):
     return [{
         "name": "enable-apps-for-phpstan",
-        "image": "owncloudci/php:%s" % phpVersion,
-        "pull": "always",
+        "image": OC_CI_PHP % phpVersion,
         "commands": [
             # files_external can be disabled.
             # We need it to be enabled so that the PHP static analyser can find classes in it.
@@ -2872,7 +2880,7 @@ def installCoreFromTarball(version, db, logLevel = "2", ssl = False, federatedSe
         },
     }, {
         "name": "configure-tarball",
-        "image": OC_CI_PHP % "7.4",
+        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "commands": [
             "cd %s" % pathOfServerUnderTest,
             "php occ a:l",
@@ -2990,3 +2998,107 @@ def checkStarlark():
             ],
         },
     }]
+
+def skipIfUnchanged(ctx, type):
+    if ("full-ci" in ctx.build.title.lower()):
+        return []
+
+    skip_step = {
+        "name": "skip-if-unchanged",
+        "image": OC_CI_DRONE_SKIP_PIPELINE,
+        "when": {
+            "event": [
+                "pull_request",
+            ],
+        },
+    }
+
+    # these files are not relevant for test pipelines
+    # if only files in this array are changed, then don't even run the "lint"
+    # pipelines (like code-style, phan, phpstan...)
+    allow_skip_if_changed = [
+        "^.github/.*",
+        "^changelog/.*",
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "LICENSE",
+        "LICENSE.md",
+        "README.md",
+    ]
+
+    if type == "lint":
+        skip_step["settings"] = {
+            "ALLOW_SKIP_CHANGED": allow_skip_if_changed,
+        }
+        return [skip_step]
+
+    if type == "acceptance-tests":
+        # if any of these files are touched then run all acceptance tests
+        acceptance_files = [
+            "^tests/acceptance/.*",
+            "^tests/drone/.*",
+            "^tests/data/.*",
+            "^tests/TestHelpers/.*",
+            "^tests/enable_all.php",
+            "^tests/preseed-config.php",
+            "^vendor-bin/behat/.*",
+            "^core/.*",
+            "^lib/.*",
+            "^l10n/.*",
+            "^ocm-provider/.*",
+            "^ocs/.*",
+            "^ocs-provider/.*",
+            "^resources/.*",
+            "^settings/.*",
+            "composer.json",
+            "composer.lock",
+            "Makefile",
+            "package.json",
+            "package-lock.json",
+            "yarn.lock",
+        ]
+        skip_step["settings"] = {
+            "DISALLOW_SKIP_CHANGED": acceptance_files,
+        }
+        return [skip_step]
+
+    if type == "unit-tests":
+        # if any of these files are touched then run all unit tests
+        unit_files = [
+            "^tests/apps/.*",
+            "^tests/core/.*",
+            "^tests/data/.*",
+            "^tests/docs/.*",
+            "^tests/lib/.*",
+            "^tests/Settings/.*",
+            "^tests/TestHelpers/.*",
+            "^tests/apps.php",
+            "^tests/bootstrap.php",
+            "^tests/enable_all.php",
+            "^tests/phpunit-autotest.xml",
+            "^tests/phpunit-autotest-external.xml",
+            "^tests/preseed-config.php",
+            "^tests/startsessionlistener.php",
+            "^core/.*",
+            "^lib/.*",
+            "^l10n/.*",
+            "^ocm-provider/.*",
+            "^ocs/.*",
+            "^ocs-provider/.*",
+            "^resources/.*",
+            "^settings/.*",
+            "composer.json",
+            "composer.lock",
+            "Makefile",
+            "package.json",
+            "package-lock.json",
+            "phpunit.xml",
+            "yarn.lock",
+            "sonar-project.properties",
+        ]
+        skip_step["settings"] = {
+            "DISALLOW_SKIP_CHANGED": unit_files,
+        }
+        return [skip_step]
+
+    return []
