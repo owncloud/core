@@ -21,10 +21,13 @@ Feature: translate messages in api response to preferred language
       | old         | de-DE    |
       | old         | es-ES    |
       | old         | zh-CN    |
-      | old         | fr-FR    |
       | new         | de-DE    |
       | new         | es-ES    |
       | new         | zh-CN    |
+
+    @skipOnOcV10 @issue-39931
+    Examples:
+      | old         | fr-FR    |
       | new         | fr-FR    |
 
     @skipOnOcV10 @personalSpace
