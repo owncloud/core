@@ -9,6 +9,7 @@ l10n-push:
 .PHONY: l10n-pull
 l10n-pull:
 	tx -d pull -a --skip
+	rm -r fr_FR
 
 .PHONY: l10n-clean
 l10n-clean:
