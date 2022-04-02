@@ -21,6 +21,7 @@
         <li class="type-bugfix changelog-item">Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: <a href="https://github.com/owncloud/core/pull/39829">#39829</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Avoid sending unneeded passwords in the files_external app: <a href="https://github.com/owncloud/core/pull/39841">#39841</a></li>
         <li class="type-bugfix changelog-item">Bugfix - Fix issue with requesting an invalid share id: <a href="https://github.com/owncloud/core/issues/39868">#39868</a></li>
+        <li class="type-bugfix changelog-item">Bugfix - Remove fr_FR language variant: <a href="https://github.com/owncloud/core/issues/39931">#39931</a></li>
         <li class="type-change changelog-item">Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></li>
         <li class="type-change changelog-item">Change - Update JavaScript dependencies: <a href="https://github.com/owncloud/core/pull/39709">#39709</a></li>
         <li class="type-change changelog-item">Change - Update PHP dependencies: <a href="https://github.com/owncloud/core/pull/39526">#39526</a></li>
@@ -140,6 +141,17 @@
             <p>https://github.com/owncloud/core/issues/39868<br>
             </p>
             <p>https://github.com/owncloud/core/pull/39873<br></p>
+        </li>
+        <li class="type-bugfix changelog-item">
+            <p>Bugfix - Remove fr_FR language variant: <a href="https://github.com/owncloud/core/issues/39931">#39931</a></p>
+            <p>French translations were in both the "fr" and the "fr_FR" language codes. "fr_FR" had very few
+   translations and could cause missing translations when the system did not automatically
+   choose "fr". The "fr_FR" translations have been removed. Translators should use "fr" when
+   doing translations in Transifex.
+            </p>
+            <p>https://github.com/owncloud/core/issues/39931<br>
+            </p>
+            <p>https://github.com/owncloud/core/pull/39939<br></p>
         </li>
         <li class="type-change changelog-item">
             <p>Change - Update the default poll-interval in capabilities: <a href="https://github.com/owncloud/core/pull/39143">#39143</a></p>

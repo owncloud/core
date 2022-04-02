@@ -23,6 +23,7 @@ Summary
 * Bugfix - Fix issue when encryption is enabled and a file is moved out of the share: [#39829](https://github.com/owncloud/core/pull/39829)
 * Bugfix - Avoid sending unneeded passwords in the files_external app: [#39841](https://github.com/owncloud/core/pull/39841)
 * Bugfix - Fix issue with requesting an invalid share id: [#39868](https://github.com/owncloud/core/issues/39868)
+* Bugfix - Remove fr_FR language variant: [#39931](https://github.com/owncloud/core/issues/39931)
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 * Change - Update JavaScript dependencies: [#39709](https://github.com/owncloud/core/pull/39709)
 * Change - Update PHP dependencies: [#39526](https://github.com/owncloud/core/pull/39526)
@@ -138,6 +139,16 @@ Details
 
    https://github.com/owncloud/core/issues/39868
    https://github.com/owncloud/core/pull/39873
+
+* Bugfix - Remove fr_FR language variant: [#39931](https://github.com/owncloud/core/issues/39931)
+
+   French translations were in both the "fr" and the "fr_FR" language codes. "fr_FR" had very few
+   translations and could cause missing translations when the system did not automatically
+   choose "fr". The "fr_FR" translations have been removed. Translators should use "fr" when
+   doing translations in Transifex.
+
+   https://github.com/owncloud/core/issues/39931
+   https://github.com/owncloud/core/pull/39939
 
 * Change - Update the default poll-interval in capabilities: [#39143](https://github.com/owncloud/core/pull/39143)
 
