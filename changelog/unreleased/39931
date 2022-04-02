@@ -1,0 +1,9 @@
+Bugfix: Remove fr_FR language variant
+
+French translations were in both the "fr" and the "fr_FR" language codes.
+"fr_FR" had very few translations and could cause missing translations when the
+system did not automatically choose "fr". The "fr_FR" translations have been removed.
+Translators should use "fr" when doing translations in Transifex.
+
+https://github.com/owncloud/core/issues/39931
+https://github.com/owncloud/core/pull/39939
