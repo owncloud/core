@@ -776,15 +776,15 @@ class WebDavPropertiesContext implements Context {
 	}
 
 	/**
-	 * @Then there should be an entry with href matching :pattern in the response to user :user
+	 * @Then there should be an entry with href containing :expectedHref in the response to user :user
 	 *
-	 * @param string $pattern
+	 * @param string $expectedHref
 	 * @param string $user
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	public function assertEntryWithHrefMatchingRegExpInResponseToUser(string $pattern, string $user):void {
+	public function assertEntryWithHrefMatchingRegExpInResponseToUser(string $expectedHref, string $user):void {
 		$resXml = $this->featureContext->getResponseXmlObject();
 		if ($resXml === null) {
 			$resXml = HttpRequestHelper::getResponseXml(
@@ -794,8 +794,8 @@ class WebDavPropertiesContext implements Context {
 		}
 
 		$user = $this->featureContext->getActualUsername($user);
-		$pattern = $this->featureContext->substituteInLineCodes(
-			$pattern,
+		$expectedHref = $this->featureContext->substituteInLineCodes(
+			$expectedHref,
 			$user,
 			['preg_quote' => ['/']]
 		);
@@ -808,11 +808,22 @@ class WebDavPropertiesContext implements Context {
 			// If we have run out of entries in the response, then fail the test
 			Assert::assertTrue(
 				isset($xmlPart[0]),
-				"Cannot find any entry with href matching $pattern in response to $user"
+				"Cannot find any entry having href with value $expectedHref in response to $user"
 			);
 			$value = $xmlPart[0]->__toString();
-			if (\preg_match($pattern, $value) === 1) {
-				break;
+			$decodedValue = \rawurldecode($value);
+			// for folders decoded value will be like: "/owncloud/core/remote.php/webdav/strängé folder/"
+			// expected href should be like: "remote.php/webdav/strängé folder/"
+			// for files decoded value will be like: "/owncloud/core/remote.php/ebdav/strängé folder/file.txt"
+			// expected href should be like: "remote.php/webdav/strängé folder/file.txt"
+			$explodeDecoded = \explode('/', $decodedValue);
+			$remotePhpIndex = \array_search('remote.php', $explodeDecoded);
+			if ($remotePhpIndex) {
+				$explodedHrefPartArray = \array_slice($explodeDecoded, $remotePhpIndex);
+				$actualHrefPart = \implode('/', $explodedHrefPartArray);
+				if ($actualHrefPart === $expectedHref) {
+					break;
+				}
 			}
 		}
 	}

@@ -41,25 +41,25 @@ Feature: get file properties
     When user "Alice" gets the properties of file "<file_name>" using the WebDAV API
     Then the HTTP status code should be "201"
     And the properties response should contain an etag
-    And the value of the item "//d:response/d:href" in the response to user "Alice" should match "/<expected_href>/"
+    And there should be an entry with href containing "<expected_href>" in the response to user "Alice"
     Examples:
-      | dav_version | file_name     | expected_href                                                  |
-      | old         | /C++ file.cpp | remote\.php\/webdav\/C%2[bB]%2[bB]%20file\.cpp                 |
-      | old         | /file #2.txt  | remote\.php\/webdav\/file%20%232\.txt                          |
-      | old         | /file ?2.txt  | remote\.php\/webdav\/file%20%3[fF]2\.txt                       |
-      | old         | /file &2.txt  | remote\.php\/webdav\/file%20%262\.txt                          |
-      | new         | /C++ file.cpp | remote\.php\/dav\/files\/%username%\/C%2[bB]%2[bB]%20file\.cpp |
-      | new         | /file #2.txt  | remote\.php\/dav\/files\/%username%\/file%20%232\.txt          |
-      | new         | /file ?2.txt  | remote\.php\/dav\/files\/%username%\/file%20%3[fF]2\.txt       |
-      | new         | /file &2.txt  | remote\.php\/dav\/files\/%username%\/file%20%262\.txt          |
+      | dav_version | file_name     | expected_href                                 |
+      | old         | /C++ file.cpp | remote.php/webdav/C++ file.cpp                |
+      | old         | /file #2.txt  | remote.php/webdav/file #2.txt                 |
+      | old         | /file ?2.txt  | remote.php/webdav/file ?2.txt                 |
+      | old         | /file &2.txt  | remote.php/webdav/file &2.txt                 |
+      | new         | /C++ file.cpp | remote.php/dav/files/%username%/C++ file.cpp  |
+      | new         | /file #2.txt  | remote.php/dav/files/%username%/file #2.txt   |
+      | new         | /file ?2.txt  | remote.php/dav/files/%username%/file ?2.txt   |
+      | new         | /file &2.txt  | remote.php/dav/files/%username%/file &2.txt   |
 
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav_version | file_name     | expected_href                                     |
-      | spaces      | /C++ file.cpp | dav\/spaces\/%spaceid%\/C%2[bB]%2[bB]%20file\.cpp |
-      | spaces      | /file #2.txt  | dav\/spaces\/%spaceid%\/file%20%232\.txt          |
-      | spaces      | /file ?2.txt  | dav\/spaces\/%spaceid%\/file%20%3[fF]2\.txt       |
-      | spaces      | /file &2.txt  | dav\/spaces\/%spaceid%\/file%20%262\.txt          |
+      | dav_version | file_name     | expected_href                     |
+      | spaces      | /C++ file.cpp | dav/spaces/%spaceid%/C++ file.cpp |
+      | spaces      | /file #2.txt  | dav/spaces/%spaceid%/file #2.txt  |
+      | spaces      | /file ?2.txt  | dav/spaces/%spaceid%/file ?2.txt  |
+      | spaces      | /file &2.txt  | dav/spaces/%spaceid%/file &2.txt  |
 
   @issue-ocis-reva-214
   Scenario Outline: Do a PROPFIND of various folder names
@@ -69,36 +69,36 @@ Feature: get file properties
     And user "Alice" has uploaded file with content "uploaded content" to "<folder_name>/file2.txt"
     When user "Alice" gets the properties of folder "<folder_name>" with depth 1 using the WebDAV API
     Then the HTTP status code should be "201"
-    And there should be an entry with href matching "/<expected_href>\//" in the response to user "Alice"
-    And there should be an entry with href matching "/<expected_href>\/file1.txt/" in the response to user "Alice"
-    And there should be an entry with href matching "/<expected_href>\/file2.txt/" in the response to user "Alice"
+    And there should be an entry with href containing "<expected_href>/" in the response to user "Alice"
+    And there should be an entry with href containing "<expected_href>/file1.txt" in the response to user "Alice"
+    And there should be an entry with href containing "<expected_href>/file2.txt" in the response to user "Alice"
     Examples:
-      | dav_version | folder_name     | expected_href                                                                                                            |
-      | old         | /upload         | remote\.php\/webdav\/upload                                                                                                           |
-      | old         | /strängé folder | remote\.php\/webdav\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                                           |
-      | old         | /C++ folder     | remote\.php\/webdav\/C%2[bB]%2[bB]%20folder                                                                                           |
-      | old         | /नेपाली           | remote\.php\/webdav\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80                 |
-      | old         | /folder #2.txt  | remote\.php\/webdav\/folder%20%232\.txt                                                                                               |
-      | old         | /folder ?2.txt  | remote\.php\/webdav\/folder%20%3[fF]2\.txt                                                                                            |
-      | old         | /folder &2.txt  | remote\.php\/webdav\/folder%20%262\.txt                                                                                               |
-      | new         | /upload         | remote\.php\/dav\/files\/%username%\/upload                                                                                           |
-      | new         | /strängé folder | remote\.php\/dav\/files\/%username%\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                           |
-      | new         | /C++ folder     | remote\.php\/dav\/files\/%username%\/C%2[bB]%2[bB]%20folder                                                                           |
-      | new         | /नेपाली           | remote\.php\/dav\/files\/%username%\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80 |
-      | new         | /folder #2.txt  | remote\.php\/dav\/files\/%username%\/folder%20%232\.txt                                                                               |
-      | new         | /folder ?2.txt  | remote\.php\/dav\/files\/%username%\/folder%20%3[fF]2\.txt                                                                            |
-      | new         | /folder &2.txt  | remote\.php\/dav\/files\/%username%\/folder%20%262\.txt                                                                               |
+      | dav_version | folder_name     | expected_href                                  |
+      | old         | /upload         | remote.php/webdav/upload                       |
+      | old         | /strängé folder | remote.php/webdav/strängé folder              |
+      | old         | /C++ folder     | remote.php/webdav/C++ folder                   |
+      | old         | /नेपाली           | remote.php/webdav/नेपाली                        |
+      | old         | /folder #2.txt  | remote.php/webdav/folder #2.txt                |
+      | old         | /folder ?2.txt  | remote.php/webdav/folder ?2.txt                |
+      | old         | /folder &2.txt  | remote.php/webdav/folder &2.txt                |
+      | new         | /upload         | remote.php/dav/files/%username%/upload         |
+      | new         | /strängé folder | remote.php/dav/files/%username%/strängé folder |
+      | new         | /C++ folder     | remote.php/dav/files/%username%/C++ folder     |
+      | new         | /नेपाली           | remote.php/dav/files/%username%/नेपाली          |
+      | new         | /folder #2.txt  | remote.php/dav/files/%username%/folder #2.txt  |
+      | new         | /folder ?2.txt  | remote.php/dav/files/%username%/folder ?2.txt  |
+      | new         | /folder &2.txt  | remote.php/dav/files/%username%/folder &2.txt  |
 
     @skipOnOcV10 @personalSpace
     Examples:
-      | dav_version | folder_name     | expected_href                                                                                                            |
-      | spaces      | /upload         | dav\/spaces\/%spaceid%\/upload                                                                                           |
-      | spaces      | /strängé folder | dav\/spaces\/%spaceid%\/str%[cC]3%[aA]4ng%[cC]3%[aA]9%20folder                                                           |
-      | spaces      | /C++ folder     | dav\/spaces\/%spaceid%\/C%2[bB]%2[bB]%20folder                                                                           |
-      | spaces      | /नेपाली           | dav\/spaces\/%spaceid%\/%[eE]0%[aA]4%[aA]8%[eE]0%[aA]5%87%[eE]0%[aA]4%[aA]a%[eE]0%[aA]4%be%[eE]0%[aA]4%b2%[eE]0%[aA]5%80 |
-      | spaces      | /folder #2.txt  | dav\/spaces\/%spaceid%\/folder%20%232\.txt                                                                               |
-      | spaces      | /folder ?2.txt  | dav\/spaces\/%spaceid%\/folder%20%3[fF]2\.txt                                                                            |
-      | spaces      | /folder &2.txt  | dav\/spaces\/%spaceid%\/folder%20%262\.txt                                                                               |
+      | dav_version | folder_name     | expected_href                       |
+      | spaces      | /upload         | dav/spaces/%spaceid%/upload         |
+      | spaces      | /strängé folder | dav/spaces/%spaceid%/strängé folder |
+      | spaces      | /C++ folder     | dav/spaces/%spaceid%/C++ folder     |
+      | spaces      | /नेपाली           | dav/spaces/%spaceid%/नेपाली          |
+      | spaces      | /folder #2.txt  | dav/spaces/%spaceid%/folder #2.txt  |
+      | spaces      | /folder ?2.txt  | dav/spaces/%spaceid%/folder ?2.txt  |
+      | spaces      | /folder &2.txt  | dav/spaces/%spaceid%/folder &2.txt  |
 
 
   Scenario Outline: Do a PROPFIND of various files inside various folders
@@ -113,12 +113,12 @@ Feature: get file properties
       | old         | /upload                          | abc.txt                       |
       | old         | /strängé folder                  | strängé file.txt              |
       | old         | /C++ folder                      | C++ file.cpp                  |
-      | old         | /नेपाली                            | नेपाली                          |
+      | old         | /नेपाली                          | नेपाली                        |
       | old         | /folder #2.txt                   | file #2.txt                   |
       | new         | /upload                          | abc.txt                       |
       | new         | /strängé folder (duplicate #2 &) | strängé file (duplicate #2 &) |
       | new         | /C++ folder                      | C++ file.cpp                  |
-      | new         | /नेपाली                            | नेपाली                          |
+      | new         | /नेपाली                          | नेपाली                        |
       | new         | /folder #2.txt                   | file #2.txt                   |
 
     @skipOnOcV10 @personalSpace
@@ -127,7 +127,7 @@ Feature: get file properties
       | spaces      | /upload         | abc.txt          |
       | spaces      | /strängé folder | strängé file.txt |
       | spaces      | /C++ folder     | C++ file.cpp     |
-      | spaces      | /नेपाली           | नेपाली             |
+      | spaces      | /नेपाली         | नेपाली           |
       | spaces      | /folder #2.txt  | file #2.txt      |
 
   @issue-ocis-reva-265
@@ -370,7 +370,7 @@ Feature: get file properties
       | spaces      |
 
   @issue-36920
-  @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-reva-217
+    @skipOnOcV10.3 @skipOnOcV10.4.0 @issue-ocis-reva-217
   Scenario Outline: add multiple properties to files inside a folder and do a propfind of the parent folder
     Given using <dav_version> DAV path
     And user "Alice" has created folder "/TestFolder"
