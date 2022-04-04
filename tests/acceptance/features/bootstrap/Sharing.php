@@ -3131,24 +3131,6 @@ trait Sharing {
 
 	/**
 	 * @Given /^user "([^"]*)" has accepted the (?:first|next|) pending share "([^"]*)" offered by user "([^"]*)"$/
-	 *
-	 * @param string $user
-	 * @param string $share
-	 * @param string $offeredBy
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function userHasAcceptedThePendingShareOfferedBy($user, $share, $offeredBy) {
-		$this->userAcceptsThePendingShareOfferedBy($user, $share, $offeredBy);
-		$this->theHTTPStatusCodeShouldBe(
-			200,
-			__METHOD__ . " could not accept the pending share $share to $user by $offeredBy"
-		);
-		$this->ocsContext->assertOCSResponseIndicatesSuccess();
-	}
-
-	/**
 	 * @Then /^user "([^"]*)" should be able to accept pending share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -3158,12 +3140,13 @@ trait Sharing {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function userShouldBeAbleToAcceptShareOfferedBy(
-		string $user,
-		string $share,
-		string $offeredBy
-	) {
-		$this->userHasAcceptedThePendingShareOfferedBy($user, $share, $offeredBy);
+	public function userHasAcceptedThePendingShareOfferedBy(string $user, string $share, string $offeredBy) {
+		$this->userAcceptsThePendingShareOfferedBy($user, $share, $offeredBy);
+		$this->theHTTPStatusCodeShouldBe(
+			200,
+			__METHOD__ . " could not accept the pending share $share to $user by $offeredBy"
+		);
+		$this->ocsContext->assertOCSResponseIndicatesSuccess();
 	}
 
 	/**

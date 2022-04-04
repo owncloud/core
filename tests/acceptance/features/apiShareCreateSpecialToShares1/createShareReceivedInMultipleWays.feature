@@ -179,7 +179,9 @@ Feature: share resources where the sharee receives the share in multiple ways
       | item_type   | folder          |
       | permissions | read,delete     |
     When user "Carol" shares folder "zzzfolder" with user "Alice" with permissions "read,share" using the sharing API
-    And user "Alice" accepts share "/zzzfolder" offered by user "Carol" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And user "Alice" should be able to accept pending share "/zzzfolder" offered by user "Carol"
     Then as "Alice" the info about the last share by user "Carol" with user "Alice" should include
       | uid_owner   | %username%      |
       | share_with  | %username%      |
@@ -190,15 +192,15 @@ Feature: share resources where the sharee receives the share in multiple ways
     And as "Alice" folder "/Shares/zzzfolder (2)/Carol" should exist
     @skipOnOcis
     Examples:
-      | ocs_api_version | file_target_1     | file_target_2         |
-      | 1               | /Shares/zzzfolder | /Shares/zzzfolder (2) |
-      | 2               | /Shares/zzzfolder | /Shares/zzzfolder (2) |
+      | ocs_api_version | file_target_1     | file_target_2         | ocs_status_code |
+      | 1               | /Shares/zzzfolder | /Shares/zzzfolder (2) | 100             |
+      | 2               | /Shares/zzzfolder | /Shares/zzzfolder (2) | 200             |
 
     @skipOnOcV10 @issue-ocis-2131
     Examples:
-      | ocs_api_version | file_target_1 | file_target_2  |
-      | 1               | /zzzfolder    | /zzzfolder (2) |
-      | 2               | /zzzfolder    | /zzzfolder (2) |
+      | ocs_api_version | file_target_1 | file_target_2  | ocs_status_code |
+      | 1               | /zzzfolder    | /zzzfolder (2) | 100             |
+      | 2               | /zzzfolder    | /zzzfolder (2) | 200             |
 
   @skipOnEncryptionType:user-keys @encryption-issue-132 @skipOnLDAP
   Scenario Outline: share with a group and then add a user to that group that already has a file with the shared name
@@ -248,20 +250,14 @@ Feature: share resources where the sharee receives the share in multiple ways
       | shareType   | group          |
       | shareWith   | grp1           |
       | permissions | read           |
-    And user "Brian" has accepted share "/parent" offered by user "Carol"
-    And user "Brian" has accepted share "<path>" offered by user "Carol"
-    And user "Alice" has accepted share "<path>" offered by user "Carol"
-    When user "Brian" creates folder "/Shares/parent/fo1" using the WebDAV API
-    Then the HTTP status code should be "201"
-    When user "Brian" creates folder "/Shares/parent/child1/fo2" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Brian" folder "/Shares/child1" should exist
-    When user "Brian" creates folder "/Shares/child1/fo3" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" folder "/Shares/child1/fo3" should not exist
-    When user "Alice" creates folder "/Shares/child1/fo3" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" folder "/Shares/child1/fo3" should not exist
+    When user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "<path>" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "<path>" offered by user "Carol" using the sharing API
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    And user "Brian" should be able to create folder "/Shares/parent/fo1"
+    And user "Brian" should be able to create folder "/Shares/parent/child1/fo2"
+    And user "Alice" should not be able to create folder "/Shares/child1/fo3"
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
@@ -294,21 +290,14 @@ Feature: share resources where the sharee receives the share in multiple ways
       | shareType   | group          |
       | shareWith   | grp1           |
       | permissions | read           |
-    And user "Brian" has accepted share "/parent" offered by user "Carol"
-    And user "Brian" has accepted share "<path>" offered by user "Carol"
-    And user "Alice" has accepted share "<path>" offered by user "Carol"
-    When user "Brian" moves file "/Shares/parent/child1/child2/textfile-2.txt" to "/Shares/parent/child1/child2/rename.txt" using the WebDAV API
-    Then the HTTP status code should be "201"
-    And as "Brian" file "/Shares/child1/child2/rename.txt" should exist
-    But as "Brian" file "/Shares/child1/child2/textfile-2.txt" should not exist
-    When user "Brian" moves file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" file "/Shares/child1/child2/rename.txt" should exist
-    But as "Alice" file "/Shares/child1/child2/rename2.txt" should not exist
-    When user "Alice" moves file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" file "/Shares/child1/child2/rename2.txt" should not exist
-    But as "Alice" file "/Shares/child1/child2/rename.txt" should exist
+    When user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "<path>" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "<path>" offered by user "Carol" using the sharing API
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    And user "Brian" should be able to rename file "/Shares/parent/child1/child2/textfile-2.txt" to "/Shares/parent/child1/child2/rename.txt"
+    And user "Brian" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
+    And user "Alice" should not be able to rename file "/Shares/child1/child2/rename.txt" to "/Shares/child1/child2/rename2.txt"
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
@@ -341,19 +330,14 @@ Feature: share resources where the sharee receives the share in multiple ways
       | shareType   | group          |
       | shareWith   | grp1           |
       | permissions | read           |
-    And user "Brian" has accepted share "/parent" offered by user "Carol"
-    And user "Brian" has accepted share "<path>" offered by user "Carol"
-    And user "Alice" has accepted share "<path>" offered by user "Carol"
-    When user "Brian" deletes file "/Shares/parent/child1/child2/textfile-2.txt" using the WebDAV API
-    Then the HTTP status code should be "204"
-    And as "Brian" file "/Shares/child1/child2/textfile-2.txt" should not exist
-    And as "Brian" folder "/Shares/child1" should exist
-    When user "Brian" deletes folder "/Shares/child1/child2" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" folder "/Shares/child1" should exist
-    When user "Alice" deletes folder "/Shares/child1/child2" using the WebDAV API
-    Then the HTTP status code should be "403"
-    And as "Alice" folder "/Shares/child1/child2" should exist
+    When user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
+    And user "Brian" accepts share "<path>" offered by user "Carol" using the sharing API
+    And user "Alice" accepts share "<path>" offered by user "Carol" using the sharing API
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    And user "Brian" should be able to delete file "/Shares/parent/child1/child2/textfile-2.txt"
+    And user "Brian" should not be able to delete folder "/Shares/child1/child2"
+    And user "Alice" should not be able to delete folder "/Shares/child1/child2"
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-2440
     Examples:
       | path    |
@@ -478,9 +462,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "100"
     And user "Brian" should be able to rename file "/Shares/child1/child2/textfile-2.txt" to "/Shares/child1/child2/rename.txt"
-    And as "Brian" file "/Shares/parent/child1/child2/rename.txt" should exist
     And user "Brian" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
-    And as "Alice" file "/Shares/parent/child1/child2/rename.txt" should exist
     And user "Alice" should not be able to rename file "/Shares/parent/child1/child2/rename.txt" to "/Shares/parent/child1/child2/rename2.txt"
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2440
     Examples:
@@ -520,9 +502,7 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then the HTTP status code of responses on all endpoints should be "200"
     And the OCS status code of responses on all endpoints should be "100"
     And user "Brian" should be able to delete file "/Shares/child1/child2/textfile-2.txt"
-    And as "Brian" folder "/Shares/parent" should exist
     And user "Brian" should not be able to delete folder "/Shares/parent/child1"
-    And as "Alice" folder "/Shares/parent" should exist
     And user "Alice" should not be able to delete folder "/Shares/parent/child1"
     @skipOnOcV10.6 @skipOnOcV10.7 @skipOnOcV10.8.0 @issue-ocis-2440
     Examples:
@@ -558,8 +538,10 @@ Feature: share resources where the sharee receives the share in multiple ways
     When user "Brian" accepts share "<path>" offered by user "Carol" using the sharing API
     And user "Brian" accepts share "/parent" offered by user "Carol" using the sharing API
     And user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
-    Then user "Brian" should be able to share folder "/Shares/child1" with user "Alice" with permissions "read" using the sharing API
-    And user "Alice" accepts share "<path>" offered by user "Brian" using the sharing API
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    And user "Brian" should be able to share folder "/Shares/child1" with user "Alice" with permissions "read" using the sharing API
+    And user "Alice" should be able to accept pending share "<path>" offered by user "Brian"
     And as "Brian" folder "/Shares/parent" should exist
     And as "Alice" folder "/Shares/parent" should exist
     And as "Alice" folder "/Shares/child1" should exist
@@ -601,7 +583,9 @@ Feature: share resources where the sharee receives the share in multiple ways
       | permissions | read            |
     When user "Alice" accepts share "/parent" offered by user "Carol" using the sharing API
     And user "Brian" accepts share "<path>" offered by user "Carol" using the sharing API
-    Then user "Alice" should be able to create folder "/Shares/parent/child1/fo1"
+    Then the HTTP status code of responses on all endpoints should be "200"
+    And the OCS status code of responses on all endpoints should be "100"
+    And user "Alice" should be able to create folder "/Shares/parent/child1/fo1"
     And user "Alice" should be able to create folder "/Shares/parent/child1/child2/fo2"
     And user "Alice" should be able to delete folder "/Shares/parent/child1/fo1"
     And user "Alice" should be able to delete folder "/Shares/parent/child1/child2/fo2"
@@ -636,20 +620,22 @@ Feature: share resources where the sharee receives the share in multiple ways
       | shareType   | group  |
       | shareWith   | grp    |
       | permissions | read   |
-    And user "Brian" has accepted share "/parent" offered by user "Alice"
-    When user "Brian" moves folder "/Shares/parent" to "/Shares/sharedParent" using the WebDAV API
-    And user "Alice" shares folder "parent" with user "Brian" using the sharing API
+    When user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And user "Brian" should be able to rename folder "/Shares/parent" to "/Shares/sharedParent"
+    And user "Alice" should be able to share folder "parent" with user "Brian" with permissions "read" using the sharing API
     # Note: Brian has already accepted the share of this resource as a member of "grp".
     #       Now he has also received the same resource shared directly to "Brian".
     #       The server should effectively "auto-accept" this new "copy" of the resource
     #       and present to Brian only the single resource "Shares/sharedParent"
-    Then as "Brian" folder "Shares/parent" should not exist
+    And as "Brian" folder "Shares/parent" should not exist
     And as "Brian" folder "Shares/sharedParent" should exist
     And as "Brian" file "Shares/sharedParent/child/lorem.txt" should exist
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnOcV10 @issue-39347
   Scenario Outline: Share receiver renames a group share and receives same resource through user share with additional permissions
@@ -660,10 +646,14 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Alice" has created folder "parent"
     And user "Alice" has created folder "parent/child"
     And user "Alice" has uploaded file with content "Share content" to "parent/child/lorem.txt"
-    When user "Alice" shares folder "parent" with group "grp" with permissions "read" using the sharing API
-    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
-    And user "Brian" moves folder "/Shares/parent" to "/Shares/sharedParent" using the WebDAV API
-    And user "Alice" shares folder "parent" with user "Brian" with permissions "all" using the sharing API
+    And user "Alice" has created a share with settings
+      | path        | parent |
+      | shareType   | group  |
+      | shareWith   | grp    |
+      | permissions | read   |
+    And user "Brian" has accepted share "/parent" offered by user "Alice"
+    And user "Brian" has moved folder "/Shares/parent" to "/Shares/sharedParent"
+    When user "Alice" shares folder "parent" with user "Brian" with permissions "all" using the sharing API
     # Note: Brian has already accepted the share of this resource as a member of "grp".
     #       Now he has also received the same resource shared directly to "Brian".
     #       The server should effectively "auto-accept" this new "copy" of the resource
@@ -671,7 +661,6 @@ Feature: share resources where the sharee receives the share in multiple ways
     Then as "Brian" folder "Shares/parent" should not exist
     And as "Brian" folder "Shares/sharedParent" should exist
     And as "Brian" file "Shares/sharedParent/child/lorem.txt" should exist
-    And user "Brian" should be able to delete file "Shares/parent/child/lorem.txt"
     Examples:
       | ocs_api_version |
       | 1               |
@@ -686,19 +675,20 @@ Feature: share resources where the sharee receives the share in multiple ways
     And user "Alice" has created folder "parent"
     And user "Alice" has created folder "parent/child"
     And user "Alice" has uploaded file with content "Share content" to "parent/child/lorem.txt"
-    When user "Alice" shares folder "parent" with group "grp" with permissions "all" using the sharing API
-    And user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
-    And user "Brian" moves folder "/Shares/parent" to "/Shares/sharedParent" using the WebDAV API
-    And user "Alice" shares folder "parent" with user "Brian" with permissions "read" using the sharing API
+    And user "Alice" has shared folder "parent" with group "grp" with permissions "all"
+    When user "Brian" accepts share "/parent" offered by user "Alice" using the sharing API
+    Then the HTTP status code should be "200"
+    And the OCS status code should be "<ocs_status_code>"
+    And user "Brian" should be able to rename folder "/Shares/parent" to "/Shares/sharedParent"
+    And user "Alice" should be able to share folder "parent" with user "Brian" with permissions "read" using the sharing API
     # Note: Brian has already accepted the share of this resource as a member of "grp".
     #       Now he has also received the same resource shared directly to "Brian".
     #       The server should effectively "auto-accept" this new "copy" of the resource
     #       and present to Brian only the single resource "Shares/sharedParent"
-    Then as "Brian" folder "Shares/parent" should not exist
+    And as "Brian" folder "Shares/parent" should not exist
     And as "Brian" folder "Shares/sharedParent" should exist
     And as "Brian" file "Shares/sharedParent/child/lorem.txt" should exist
-    And user "Brian" should be able to delete file "Shares/parent/child/lorem.txt"
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
