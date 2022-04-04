@@ -21,6 +21,7 @@
 
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\Assert;
@@ -999,6 +1000,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function usersHaveBeenCreated(
 		bool $initialize,
@@ -1115,8 +1117,36 @@ trait Provisioning {
 		$users = [];
 		$editData = [];
 		foreach ($usersAttributes as $userAttributes) {
-			\array_push($users, $userAttributes['userid']);
-			$this->addUserToCreatedUsersList($userAttributes['userid'], $userAttributes['password'], $userAttributes['displayName'], $userAttributes['email']);
+			$users[] = $userAttributes['userid'];
+			if ($useGraph) {
+				$userResponse = GraphHelper::getUser(
+					$this->getBaseUrl(),
+					$this->getStepLineRef(),
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$userAttributes['userid']
+				);
+				if ($userResponse->getStatusCode() !== 200) {
+					throw new Exception(
+						__METHOD__ . " Unexpected failure when getting the user '" .
+						$userAttributes['userid'] . "'" .
+						"\nHTTP status " . $userResponse->getStatusCode() .
+						"\nError message " . $userResponse->getBody()
+					);
+				}
+
+				$userJsonResponse = $this->getJsonDecodedResponse($userResponse);
+				$userAttributes['id'] = $userJsonResponse['id'];
+			} else {
+				$userAttributes['id'] = null;
+			}
+			$this->addUserToCreatedUsersList(
+				$userAttributes['userid'],
+				$userAttributes['password'],
+				$userAttributes['displayName'],
+				$userAttributes['email'],
+				$userAttributes['id']
+			);
 
 			if (OcisHelper::isTestingOnOcisOrReva()) {
 				OcisHelper::createEOSStorageHome(
@@ -1130,10 +1160,10 @@ trait Provisioning {
 				continue;
 			}
 			if (isset($userAttributes['displayName'])) {
-				\array_push($editData, ['user' => $userAttributes['userid'], 'key' => 'displayname', 'value' => $userAttributes['displayName']]);
+				$editData[] = ['user' => $userAttributes['userid'], 'key' => 'displayname', 'value' => $userAttributes['displayName']];
 			}
 			if (isset($userAttributes['email'])) {
-				\array_push($editData, ['user' => $userAttributes['userid'], 'key' => 'email', 'value' => $userAttributes['email']]);
+				$editData[] = ['user' => $userAttributes['userid'], 'key' => 'email', 'value' => $userAttributes['email']];
 			}
 		}
 		// Edit the users in parallel to make the process faster.
@@ -3029,15 +3059,18 @@ trait Provisioning {
 	 * @param string|null $password
 	 * @param string|null $displayName
 	 * @param string|null $email
+	 * @param string|null $userId only set for the users created using the Graph API
 	 * @param bool $shouldExist
 	 *
 	 * @return void
+	 * @throws JsonException
 	 */
 	public function addUserToCreatedUsersList(
 		?string $user,
 		?string $password,
 		?string $displayName = null,
 		?string $email = null,
+		?string $userId = null,
 		bool $shouldExist = true
 	):void {
 		$user = $this->getActualUsername($user);
@@ -3047,7 +3080,8 @@ trait Provisioning {
 			"displayname" => $displayName,
 			"email" => $email,
 			"shouldExist" => $shouldExist,
-			"actualUsername" => $user
+			"actualUsername" => $user,
+			"id" => $userId
 		];
 
 		if ($this->currentServer === 'LOCAL') {
@@ -3617,7 +3651,7 @@ trait Provisioning {
 		) {
 			//guess yourself
 			$method = "ldap";
-		} elseif ($method ===null && GraphHelper::isTestingWithGraphApi()) {
+		} elseif ($method === null && GraphHelper::isTestingWithGraphApi()) {
 			$method = "graph";
 		} elseif ($method === null) {
 			$method = "api";
@@ -3673,14 +3707,24 @@ trait Provisioning {
 				};
 				break;
 			case "graph":
+				$groupId = $this->getCreatedGroups()[$group]["id"];
+				$usersList = $this->getCreatedUsers();
+				$lowerCasedUser = \strtolower($user);
+				$userId = $usersList[$lowerCasedUser]["id"];
 				$result = GraphHelper::addUserToGroup(
 					$this->getBaseUrl(),
 					$this->getStepLineRef(),
 					$this->getAdminUsername(),
 					$this->getAdminPassword(),
-					$user,
-					$group
+					$userId,
+					$groupId
 				);
+				if ($checkResult && ($result->getStatusCode() !== 204)) {
+					throw new Exception(
+						"could not add user to group. "
+						. $result->getStatusCode() . " " . $result->getBody()
+					);
+				}
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -3884,7 +3928,7 @@ trait Provisioning {
 		if ($method === null) {
 			if ($this->isTestingWithLdap()) {
 				$method = "ldap";
-			} else if (GraphHelper::isTestingWithGraphApi()) {
+			} elseif (GraphHelper::isTestingWithGraphApi()) {
 				$method = "graph";
 			} else {
 				$method = "api";
@@ -3893,6 +3937,7 @@ trait Provisioning {
 		$group = \trim($group);
 		$method = \trim(\strtolower($method));
 		$groupCanBeDeleted = false;
+		$groupId = null;
 		switch ($method) {
 			case "api":
 				$result = UserHelper::createGroup(
@@ -3941,14 +3986,15 @@ trait Provisioning {
 					$this->getAdminPassword(),
 					$group,
 				);
+				$jsonBody = $this->getJsonDecodedResponse($result);
 				if ($result->getStatusCode() === 200) {
 					$groupCanBeDeleted = true;
+					$groupId = $jsonBody["id"];
 				} else {
-					$jsonBody = $this->getJsonDecodedResponse($result);
 					throw new Exception(
-						"Error: failed creating group '$group'. \n"
-						. "Status code: " . $jsonBody['error']['code'] ." \n"
-						. "Message: " . $jsonBody['error']['message'] . " \n"
+						'Error: failed creating group "' . $group . '" \n'
+						. 'Status code: ' . $jsonBody["error"]["code"] . ' \n'
+						. 'Message: ' . $jsonBody['error']['message'] . ' \n'
 					);
 				}
 				break;
@@ -3958,7 +4004,7 @@ trait Provisioning {
 				);
 		}
 
-		$this->addGroupToCreatedGroupsList($group, true, $groupCanBeDeleted);
+		$this->addGroupToCreatedGroupsList($group, true, $groupCanBeDeleted, $groupId);
 	}
 
 	/**
@@ -4426,6 +4472,7 @@ trait Provisioning {
 	 *
 	 * @return bool
 	 * @throws Exception
+	 * @throws GuzzleException
 	 */
 	public function groupExists(string $group):bool {
 		if ($this->isTestingWithLdap() && OcisHelper::isTestingOnOcisOrReva()) {
@@ -4437,7 +4484,11 @@ trait Provisioning {
 			return false;
 		}
 		$group = \rawurlencode($group);
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group";
+		$base = (GraphHelper::isTestingWithGraphApi())
+			? '/graph/v1.0'
+			: '/ocs/v2.php/cloud';
+		$path = $base . "/groups/$group";
+		$fullUrl = $this->getBaseUrl() . $path;
 		$this->response = HttpRequestHelper::get(
 			$fullUrl,
 			$this->getStepLineRef(),

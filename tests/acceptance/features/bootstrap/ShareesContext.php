@@ -170,6 +170,7 @@ class ShareesContext implements Context {
 	 * @param string $shareeType
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
 	public function getArrayOfShareesResponded(
 		ResponseInterface $response,
