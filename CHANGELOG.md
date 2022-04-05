@@ -183,7 +183,7 @@ Details
    - laminas/laminas-validator (2.15.0 to 2.17.0) - laminas/laminas-zendframework-bridge
    (1.4.0 to 1.4.1) - league/flysystem (1.1.5 to 1.1.9) - league/mime-type-detection (1.8.0 to
    1.9.0) - opis/closure (3.6.2 to 3.6.3) - paragonie/constant_time_encoding (2.4.0 to 2.5.0)
-   - phpseclib/phpseclib (3.0.11 to 3.0.13) - sabre/dav (4.2.0 to 4.3.1) - sabre/vobject (4.4.0
+   - phpseclib/phpseclib (3.0.11 to 3.0.14) - sabre/dav (4.2.0 to 4.3.1) - sabre/vobject (4.4.0
    to 4.4.1)
 
    The following have been updated in apps/files_external/3rdparty: - google/apiclient
@@ -204,6 +204,7 @@ Details
    https://github.com/owncloud/core/pull/39780
    https://github.com/owncloud/core/pull/39838
    https://github.com/owncloud/core/pull/39859
+   https://github.com/owncloud/core/pull/39949
 
 * Change - Update Symfony components: [#39526](https://github.com/owncloud/core/pull/39526)
 
