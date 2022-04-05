@@ -812,15 +812,25 @@ class WebDavPropertiesContext implements Context {
 			);
 			$value = $xmlPart[0]->__toString();
 			$decodedValue = \rawurldecode($value);
-			// for folders decoded value will be like: "/owncloud/core/remote.php/webdav/strängé folder/"
+			// for folders, decoded value will be like: "/owncloud/core/remote.php/webdav/strängé folder/"
 			// expected href should be like: "remote.php/webdav/strängé folder/"
-			// for files decoded value will be like: "/owncloud/core/remote.php/ebdav/strängé folder/file.txt"
+			// for files, decoded value will be like: "/owncloud/core/remote.php/webdav/strängé folder/file.txt"
 			// expected href should be like: "remote.php/webdav/strängé folder/file.txt"
 			$explodeDecoded = \explode('/', $decodedValue);
-			$remotePhpIndex = \array_search('remote.php', $explodeDecoded);
+			// get the first item of the expected href.
+			// i.e remote.php from "remote.php/webdav/strängé folder/file.txt"
+			// or dav from "dav/spaces/%spaceid%/C++ file.cpp"
+			$explodeExpected = \explode('/', $expectedHref);
+			$remotePhpIndex = \array_search($explodeExpected[0], $explodeDecoded);
 			if ($remotePhpIndex) {
 				$explodedHrefPartArray = \array_slice($explodeDecoded, $remotePhpIndex);
 				$actualHrefPart = \implode('/', $explodedHrefPartArray);
+				if ($this->featureContext->getDavPathVersion() === WebDavHelper::DAV_VERSION_SPACES) {
+					// for spaces webdav, space id is included in the href
+					// space id from our helper is returned as d8c029e0\-2bc9\-4b9a\-8613\-c727e5417f05
+					// so we've to remove "\" before every "-"
+					$expectedHref = str_replace('\-', '-', $expectedHref);
+				}
 				if ($actualHrefPart === $expectedHref) {
 					break;
 				}
