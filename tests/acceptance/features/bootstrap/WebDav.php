@@ -3207,27 +3207,6 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has uploaded the following files$/
-	 *
-	 * @param string $user
-	 * @param TableNode $table
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function userHasUploadedFollowingFiles(
-		string $user,
-		TableNode $table
-	):void {
-		$this->verifyTableNodeColumns($table, ["path", "content"]);
-		$files = $table->getHash();
-		foreach ($files as $destination) {
-			$this->userHasUploadedAFileWithContentTo($user, $destination["content"], $destination["path"])[0];
-		}
-		$this->emptyLastHTTPStatusCodesArray();
-	}
-
-	/**
 	 * @When /^user "([^"]*)" downloads the following files using the WebDAV API$/
 	 *
 	 * @param string $user
@@ -3396,6 +3375,7 @@ trait WebDav {
 		$this->pauseUploadDelete();
 		$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		$this->lastUploadDeleteTime = \time();
+		$this->pushToLastStatusCodesArrays();
 	}
 
 	/**

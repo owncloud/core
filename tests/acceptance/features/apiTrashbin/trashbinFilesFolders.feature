@@ -100,12 +100,11 @@ Feature: files and folders exist in the trashbin after being deleted
       | /folderC/textfile0.txt |
       | /folderD/textfile0.txt |
     Then the HTTP status code of responses on all endpoints should be "204"
-    And as "Alice" the folders with following original paths should exist in the trashbin
-      | path                   |
-      | /folderA/textfile0.txt |
-      | /folderB/textfile0.txt |
-      | /folderC/textfile0.txt |
-      | /textfile0.txt         |
+    And as "Alice" the folder with original path "/folderA/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/folderB/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/folderC/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/folderD/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | old      |
@@ -118,17 +117,13 @@ Feature: files and folders exist in the trashbin after being deleted
     And user "Alice" has created folder "/folderB"
     And user "Alice" has copied file "/textfile0.txt" to "/folderA/textfile0.txt"
     And user "Alice" has copied file "/textfile0.txt" to "/folderB/textfile0.txt"
-    When user "Alice" deletes the following files
-      | path                   |
-      | /folderA/textfile0.txt |
-      | /folderB/textfile0.txt |
-      | /textfile0.txt         |
+    When user "Alice" deletes file "/folderA/textfile0.txt" using the WebDAV API
+    And user "Alice" deletes file "/folderB/textfile0.txt" using the WebDAV API
+    And user "Alice" deletes file "/textfile0.txt" using the WebDAV API
     Then the HTTP status code of responses on all endpoints should be "204"
-    And as "Alice" the folders with following original paths should exist in the trashbin
-      | path                   |
-      | /folderA/textfile0.txt |
-      | /folderB/textfile0.txt |
-      | /textfile0.txt         |
+    And as "Alice" the folder with original path "/folderA/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/folderB/textfile0.txt" should exist in the trashbin
+    And as "Alice" the folder with original path "/textfile0.txt" should exist in the trashbin
     Examples:
       | dav-path |
       | old      |
