@@ -254,7 +254,9 @@ Feature: sharing
     And the response should contain 4 entries
     And folder "/folder1" should be included as path in the response
     And folder "/folder1/folder2" should be included as path in the response
-    And user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
+    When user "Alice" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
     And the response should contain 2 entries
     And folder "/folder1" should not be included as path in the response
     And folder "/folder1/folder2" should be included as path in the response
@@ -371,16 +373,14 @@ Feature: sharing
     And user "Alice" has created folder "/PARENT"
     And user "Alice" has uploaded file with content "file in parent folder" to "/PARENT/parent.txt"
     When user "Alice" shares folder "/PARENT" with group "😀 😁" using the sharing API
-    Then user "Brian" should see the following elements
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And user "Brian" should see the following elements
       | /PARENT/           |
       | /PARENT/parent.txt |
-    And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     And user "Carol" should see the following elements
       | /PARENT/           |
       | /PARENT/parent.txt |
-    And the OCS status code should be "<ocs_status_code>"
-    And the HTTP status code should be "200"
     Examples:
       | ocs_api_version | ocs_status_code |
       | 1               | 100             |
@@ -398,14 +398,16 @@ Feature: sharing
       | grp1      |
     And user "Brian" has been added to group "grp1"
     And user "Alice" has uploaded file with content "some content" to "lorem.txt"
-    When user "Alice" shares file "lorem.txt" with group "grp1" using the sharing API
-    And the administrator adds user "Carol" to group "grp1" using the provisioning API
-    Then the content of file "lorem.txt" for user "Brian" should be "some content"
+    And user "Alice" has shared file "lorem.txt" with group "grp1"
+    When the administrator adds user "Carol" to group "grp1" using the provisioning API
+    Then the OCS status code should be "<ocs_status_code>"
+    And the HTTP status code should be "200"
+    And the content of file "lorem.txt" for user "Brian" should be "some content"
     And the content of file "lorem.txt" for user "Carol" should be "some content"
     Examples:
-      | ocs_api_version |
-      | 1               |
-      | 2               |
+      | ocs_api_version | ocs_status_code |
+      | 1               | 100             |
+      | 2               | 200             |
 
   @skipOnLDAP
   # deleting an LDAP group is not relevant or possible using the provisioning API
@@ -459,43 +461,55 @@ Feature: sharing
     And user "Brian" has moved file "/textfile0.txt" to "/common/textfile0.txt"
     And user "Brian" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
     When user "Carol" uploads file "filesForUpload/file_to_overwrite.txt" to "/textfile0.txt" using the WebDAV API
-    Then the content of file "/common/sub/textfile0.txt" for user "Carol" should be "BLABLABLA" plus end-of-line
+    Then the HTTP status code should be "204"
+    And the content of file "/common/sub/textfile0.txt" for user "Carol" should be "BLABLABLA" plus end-of-line
     And the content of file "/textfile0.txt" for user "Carol" should be "BLABLABLA" plus end-of-line
     And user "Carol" should see the following elements
       | /common/sub/textfile0.txt |
       | /textfile0.txt            |
 
-  Scenario: sharing back to resharer is allowed
-    Given these users have been created with default attributes and without skeleton files:
+  Scenario Outline: sharing back to resharer is not allowed
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
       | Carol    |
     And user "Alice" has created folder "userZeroFolder"
     And user "Alice" has shared folder "userZeroFolder" with user "Brian"
     And user "Brian" has created folder "userZeroFolder/userOneFolder"
-    When user "Brian" shares folder "userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share" using the sharing API
-    And user "Carol" shares folder "userOneFolder" with user "Brian" using the sharing API
-    Then the HTTP status code should be "200"
-#    Then the HTTP status code should be "405"
+    And user "Brian" has shared folder "userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share"
+    When user "Carol" shares folder "userOneFolder" with user "Brian" using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
     And as "Brian" folder "userOneFolder" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
 
-  Scenario: sharing back to original sharer is allowed
-    Given these users have been created with default attributes and without skeleton files:
+  Scenario Outline: sharing back to original sharer is not allowed
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
       | Carol    |
     And user "Alice" has created folder "userZeroFolder"
     And user "Alice" has shared folder "userZeroFolder" with user "Brian"
     And user "Brian" has created folder "userZeroFolder/userOneFolder"
-    When user "Brian" shares folder "userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share" using the sharing API
-    And user "Carol" shares folder "userOneFolder" with user "Alice" using the sharing API
-    Then the HTTP status code should be "200"
-#    Then the HTTP status code should be "405"
+    And user "Brian" has shared folder "userZeroFolder/userOneFolder" with user "Carol" with permissions "read, share"
+    When user "Carol" shares folder "userOneFolder" with user "Alice" using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
     And as "Alice" folder "userOneFolder" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
 
   @issue-enterprise-3896
-  Scenario: sharing a subfolder to a user that already received parent folder share
-    Given these users have been created with default attributes and without skeleton files:
+  Scenario Outline: sharing a subfolder to a user that already received parent folder share is not allowed
+    Given using OCS API version "<ocs_api_version>"
+    And these users have been created with default attributes and without skeleton files:
       | username |
       | Brian    |
       | Carol    |
@@ -504,11 +518,15 @@ Feature: sharing
     And user "Alice" has shared folder "userZeroFolder" with user "Brian"
     And user "Alice" has shared folder "userZeroFolder" with user "Carol"
     And user "Brian" has created folder "userZeroFolder/userOneFolder"
-    When user "Brian" shares folder "userZeroFolder/userOneFolder" with user "David" with permissions "read, share" using the sharing API
-    And user "David" shares folder "userOneFolder" with user "Carol" using the sharing API
-    Then the HTTP status code should be "200"
-#    Then the HTTP status code should be "405"
+    And user "Brian" has shared folder "userZeroFolder/userOneFolder" with user "David" with permissions "read, share"
+    When user "David" shares folder "userOneFolder" with user "Carol" using the sharing API
+    Then the OCS status code should be "404"
+    And the HTTP status code should be "<http_status_code>"
     And as "Carol" folder "userOneFolder" should not exist
+    Examples:
+      | ocs_api_version | http_status_code |
+      | 1               | 200              |
+      | 2               | 404              |
 
   Scenario Outline: shares to a deleted user should not be listed as shares for the sharer
     Given using OCS API version "<ocs_api_version>"
@@ -537,8 +555,8 @@ Feature: sharing
     And user "Alice" has created folder "/Folder1"
     And user "Alice" has created folder "/Folder2"
     And user "Alice" has shared folder "/Folder1" with user "Brian"
-    When user "Alice" moves folder "/Folder2" to "/renamedFolder2" using the WebDAV API
-    And user "Alice" shares folder "/renamedFolder2" with user "Brian" using the sharing API
+    And user "Alice" has moved folder "/Folder2" to "/renamedFolder2"
+    When user "Alice" shares folder "/renamedFolder2" with user "Brian" using the sharing API
     Then the OCS status code should be "<ocs_status_code>"
     And the HTTP status code should be "200"
     And the fields of the last response to user "Alice" sharing with user "Brian" should include

@@ -115,8 +115,8 @@ Feature: sharing
     Given using OCS API version "1"
     And user "Alice" has created folder "/shared"
     And user "Alice" has shared folder "shared" with user "Brian" with permissions "create"
-    When user "Brian" uploads file "filesForUpload/textfile.txt" to "shared/textfile.txt" using the WebDAV API
-    And user "Brian" deletes file "/shared/textfile.txt" using the WebDAV API
+    And user "Brian" has uploaded file "filesForUpload/textfile.txt" to "shared/textfile.txt"
+    When user "Brian" deletes file "/shared/textfile.txt" using the WebDAV API
     Then the HTTP status code should be "403"
     And as "Alice" file "/shared/textfile.txt" should exist
 
