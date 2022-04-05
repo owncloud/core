@@ -15,7 +15,8 @@ Feature: propagation of etags when restoring a file or folder from trash
     And user "Alice" has stored etag of element "/upload"
     And user "Alice" has stored etag of element "/upload/sub"
     When user "Alice" restores the file with original path "/upload/sub/file.txt" using the trashbin API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /upload     |
@@ -37,7 +38,8 @@ Feature: propagation of etags when restoring a file or folder from trash
     And user "Alice" has stored etag of element "/restore"
     And user "Alice" has stored etag of element "/restore/sub"
     When user "Alice" restores the file with original path "/upload/sub/file.txt" to "/restore/sub/file.txt" using the trashbin API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path         |
       | Alice | /            |
       | Alice | /restore     |
@@ -57,7 +59,8 @@ Feature: propagation of etags when restoring a file or folder from trash
     And user "Alice" has stored etag of element "/upload"
     And user "Alice" has stored etag of element "/upload/sub"
     When user "Alice" restores the folder with original path "/upload/sub/toDelete" using the trashbin API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /upload     |
@@ -79,7 +82,8 @@ Feature: propagation of etags when restoring a file or folder from trash
     And user "Alice" has stored etag of element "/restore"
     And user "Alice" has stored etag of element "/restore/sub"
     When user "Alice" restores the folder with original path "/upload/sub/toDelete" to "/restore/sub/toDelete" using the trashbin API
-    Then these etags should have changed:
+    Then the HTTP status code should be "201"
+    And these etags should have changed:
       | user  | path         |
       | Alice | /            |
       | Alice | /restore     |

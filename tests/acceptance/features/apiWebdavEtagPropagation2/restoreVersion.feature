@@ -16,7 +16,8 @@ Feature: propagation of etags when restoring a version of a file
     And user "Alice" has stored etag of element "/upload"
     And user "Alice" has stored etag of element "/upload/sub"
     When user "Alice" restores version index "1" of file "/upload/sub/file.txt" using the WebDAV API
-    Then these etags should have changed:
+    Then the HTTP status code should be "204"
+    And these etags should have changed:
       | user  | path        |
       | Alice | /           |
       | Alice | /upload     |
