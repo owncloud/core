@@ -3512,6 +3512,7 @@ class FeatureContext extends BehatVariablesContext {
 		$this->ocsContext = new OCSContext();
 		$this->authContext = new AuthContext();
 		$this->appConfigurationContext = new AppConfigurationContext();
+		$this->graphContext = new GraphContext();
 		$this->ocsContext->before($scope);
 		$this->authContext->setUpScenario($scope);
 		$this->appConfigurationContext->setUpScenario($scope);
